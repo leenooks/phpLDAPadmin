@@ -7,9 +7,9 @@
 <icon>images/mail_alias.png</icon>
 <description>New LDAP Alias</description>
 <askcontainer>1</askcontainer>
-<rdn>aliasedObjectName</rdn>
+<rdn>uid</rdn>
 <visible>1</visible>
-<invalid>1</invalid>
+<invalid>0</invalid>
 
 <objectClasses>
 <objectClass id="alias"></objectClass>
@@ -20,6 +20,11 @@
 <attribute id="aliasedObjectName">
 	<display>Alias To</display>
 	<order>1</order>
+	<page>1</page>
+</attribute>
+<attribute id="uid">
+	<display>User ID</display>
+	<order>2</order>
 	<page>1</page>
 </attribute>
 </attributes>

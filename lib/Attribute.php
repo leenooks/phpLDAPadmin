@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Attribute.php,v 1.2.2.2 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Attribute.php,v 1.2.2.3 2008/11/28 23:26:51 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -253,10 +253,7 @@ class Attribute {
 
 	public function isRdn() {
 		if ($this->entry) {
-			//$rdn = get_rdn($this->entry->getDn());
-    			//$attr = $this->name;
-			//return preg_match("/^${attr}=/", $rdn);
-			return ($this->name == $this->entry->getRdnAttributeName());
+			return (preg_grep('/'.$this->name.'/',$this->entry->getRdnAttributeName()));
 		} else {
 			return false;
 		}

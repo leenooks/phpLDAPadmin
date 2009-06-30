@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.80.2.9 2008/01/30 11:14:02 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.80.2.17 2008/12/13 08:57:09 wurley Exp $
 
 /**
  * Contains code to be executed at the top of each application page.
@@ -26,7 +26,9 @@ if (! defined('APPCONFIG'))
  */
 $app['direct_scripts'] = array('cmd.php','index.php',
 	'view_jpeg_photo.php','entry_chooser.php',
-	'password_checker.php','download_binary_attr.php');
+	'password_checker.php','download_binary_attr.php',
+	'unserialize.php'
+	);
 
 foreach ($app['direct_scripts'] as $script) {
 	$scriptOK = false;
@@ -132,19 +134,30 @@ error_reporting(E_ALL);
 # Start our session.
 pla_session_start();
 
+# Initialise the hooks
+require_once LIBDIR.'hooks.php';
+
 # If we get here, and $_SESSION[APPCONFIG] is not set, then redirect the user to the index.
 if (! isset($_SESSION[APPCONFIG])) {
-	if (isset($_REQUEST['server_id']))
-		header(sprintf('Location: index.php?server_id=%s',$_REQUEST['server_id']));
-	else
-		header('Location: index.php');
+	header(sprintf('Location: index.php?URI=%s',base64_encode($_SERVER['QUERY_STRING'])));
 	die();
 
 } else {
+	# SF Bug #1903987
+	if (! method_exists($_SESSION[APPCONFIG],'CheckCustom'))
+		error('Unknown situation, $_SESSION[APPCONFIG] exists, but method CheckCustom() does not','error',null,true,true);
+
 	# Check our custom variables.
 	# @todo: Change this so that we dont process a cached session.
 	$_SESSION[APPCONFIG]->CheckCustom();
 }
+
+# Check for safe mode.
+if (ini_get('safe_mode') && ! get_request('cmd','GET'))
+	system_message(array(
+	'title'=>_('PHP Safe Mode'),
+	'body'=>_('You have PHP Safe Mode enabled. PLA may work unexpectedly in Safe Mode.'),
+	'type'=>'info'));
 
 # Set our timezone, if it is specified in config.php
 if ($_SESSION[APPCONFIG]->GetValue('appearance','timezone'))
@@ -163,11 +176,11 @@ if (DEBUG_ENABLED)
 
 # Set our PHP timelimit.
 if ($_SESSION[APPCONFIG]->GetValue('session','timelimit'))
-	set_time_limit($_SESSION[APPCONFIG]->GetValue('session','timelimit'));
+	@set_time_limit($_SESSION[APPCONFIG]->GetValue('session','timelimit'));
 
 # If debug mode is set, increase the time_limit, since we probably need it.
 if (DEBUG_ENABLED && $_SESSION[APPCONFIG]->GetValue('session','timelimit'))
-	set_time_limit($_SESSION[APPCONFIG]->GetValue('session','timelimit') * 5);
+	@set_time_limit($_SESSION[APPCONFIG]->GetValue('session','timelimit') * 5);
 
 /**
  * Language configuration. Auto or specified?
@@ -204,7 +217,7 @@ if ($language == 'auto') {
 				(file_exists($language_dir) && is_readable($language_dir))) {
 
 				# Set language
-				putenv('LANG='.$HTTP_LANG); # e.g. LANG=de_DE
+				@putenv('LANG='.$HTTP_LANG); # e.g. LANG=de_DE
 				$HTTP_LANG .= '.UTF-8';
 				setlocale(LC_ALL,$HTTP_LANG); # set LC_ALL to de_DE
 				bindtextdomain('messages',LANGDIR);
@@ -225,7 +238,7 @@ if ($language == 'auto') {
 			$language = 'en_GB';
 
 		# Set language
-		putenv('LANG='.$language); # e.g. LANG=de_DE
+		@putenv('LANG='.$language); # e.g. LANG=de_DE
 		$language .= '.UTF-8';
 		setlocale(LC_ALL,$language); # set LC_ALL to de_DE
 		bindtextdomain('messages',LANGDIR);
@@ -261,16 +274,23 @@ if (isset($_REQUEST['server_id'])) {
  * Look/evaluate our timeout
  */
 if (isset($ldapserver) && is_object($ldapserver) && method_exists($ldapserver,'haveAuthInfo')) {
-	if ($ldapserver->haveAuthInfo() && isset($ldapserver->auth_type) && $ldapserver->auth_type != 'config') {
+	if ($ldapserver->haveAuthInfo() && isset($ldapserver->auth_type) && ! in_array($ldapserver->auth_type,array('config','http'))) {
 		/**
 		 * If time out value has been reached:
 		 * - log out user
 		 * - put $server_id in array of recently timed out servers
 		 */
 		if (function_exists('session_timed_out') && session_timed_out($ldapserver)) {
-			$app['url_timeout'] = sprintf('cmd.php?cmd=timeout&server_id=%s',$_REQUEST['server_id']);
-			printf('<script type="text/javascript" language="javascript">location.href=\'%s\'</script>',
-				htmlspecialchars($app['url_timeout']));
+
+			# If $session_timeout not defined, use ( session_cache_expire() - 1 )
+			$session_timeout = $ldapserver->session_timeout ? $ldapserver->session_timeout : session_cache_expire()-1;
+
+			system_message(array(
+				'title'=>_('Session Timed Out'),
+				'body'=>sprintf('%s %s %s',
+					_('Your Session timed out after'),$session_timeout,
+					_('min. of inactivity. You have been automatically logged out.')),
+				'type'=>'info'),'index.php');
 			die();
 		}
 	}

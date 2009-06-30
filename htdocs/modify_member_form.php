@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/modify_member_form.php,v 1.5.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/modify_member_form.php,v 1.5.2.6 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Displays a form to allow the user to modify group members.
@@ -18,12 +18,12 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'));
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 if (! $ldapserver->haveAuthInfo())
-	pla_error(_('Not enough information to login to server. Please check your configuration.'));
+	error(_('Not enough information to login to server. Please check your configuration.'),'error','index.php');
 
-$attr = $_GET['attr'];
-$dn = isset($_GET['dn']) ? $_GET['dn'] : null;
+$attr = get_request('attr','GET');
+$dn = get_request('dn','GET');
 $encoded_dn = rawurlencode($dn);
 $encoded_attr = rawurlencode($attr);
 
@@ -39,7 +39,7 @@ if ($current_members)
 else
 	$num_current_members = 0;
 
-sort($current_members);
+usort($current_members,'pla_compare_dns');
 
 # Loop through all base dn's and search possible member entries
 foreach ($ldapserver->getBaseDN() as $base_dn) {
@@ -74,6 +74,7 @@ printf('<h3 class="subtitle">%s <b>%s</b> &nbsp;&nbsp;&nbsp; %s: <b>%s</b></h3>'
 printf('%s <b>%s</b> %s <b>%s</b>:',
 	_('There are'),$num_current_members,_('members in group'),htmlspecialchars($rdn));
 
+$possible_members = array();
 for ($i=0; $i<count($possible_values); $i++) {
 	if (preg_match("/^$attr$/i",$_SESSION[APPCONFIG]->GetValue('modify_member','posixgroupattr')))
 		$possible_members[$i] = $possible_values[$i][$_SESSION[APPCONFIG]->GetValue('modify_member','posixattr')];
@@ -81,7 +82,7 @@ for ($i=0; $i<count($possible_values); $i++) {
 		$possible_members[$i] = $possible_values[$i][$_SESSION[APPCONFIG]->GetValue('modify_member','attr')];
 }
 
-sort($possible_members);
+usort($possible_members,'pla_compare_dns');
 
 /*
  * Show only user that are not already in group.
@@ -110,8 +111,8 @@ echo '<input type="hidden" name="cmd" value="update_confirm" />';
 echo '<table class="modify_members">';
 
 echo '<tr>';
-printf('<td><img src="images/user.png" alt="Users" /> %s</td>',_('Available members'));
-printf('<td><img src="images/uniquegroup.png" alt="Members" /> %s</td>',_('Group members'));
+printf('<td><img src="%s/user.png" alt="Users" /> %s</td>',IMGDIR,_('Available members'));
+printf('<td><img src="%s/uniquegroup.png" alt="Members" /> %s</td>',IMGDIR,_('Group members'));
 echo '</tr>';
 
 # Generate select box from all possible members

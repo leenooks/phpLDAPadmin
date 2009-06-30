@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_value_form.php,v 1.39.2.3 2008/01/13 05:43:13 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_value_form.php,v 1.39.2.6 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Displays a form to allow the user to enter a new value to add
@@ -13,9 +13,10 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'));
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
 # The DN and ATTR we are working with.
+$entry = array();
 $entry['dn']['encode'] = get_request('dn','GET',true);
 $entry['dn']['string'] = urldecode($entry['dn']['encode']);
 $entry['dn']['html'] = htmlspecialchars($entry['dn']['string']);
@@ -34,7 +35,7 @@ $entry['rdn']['html'] = htmlspecialchars($entry['rdn']['string']);
 /***************/
 	
 if (! $entry['dn']['string'] || ! $ldapserver->dnExists($entry['dn']['string']))
-	pla_error(sprintf(_('The entry (%s) does not exist.'),$entry['dn']['html']),null,-1,true);
+	error(sprintf(_('The entry (%s) does not exist.'),$entry['dn']['html']),'error','index.php');
 
 $tree = get_cached_item($ldapserver->server_id,'tree');
 $entry['ldap'] = null;
@@ -52,7 +53,7 @@ eval('$reader = new '.$_SESSION[APPCONFIG]->GetValue('appearance','entry_reader'
 $reader->visit('Start', $entry['ldap']);
 
 if (! $entry['ldap'] || $entry['ldap']->isReadOnly())
-	pla_error(sprintf(_('The entry (%s) is in readonly mode.'),$entry['dn']['html']),null,-1,true);
+	error(sprintf(_('The entry (%s) is in readonly mode.'),$entry['dn']['html']),'error','index.php');
 
 /*********************/
 /* attribute values  */ 
@@ -71,11 +72,13 @@ if (!$ldap['attr']) {
 $ldap['count'] = $ldap['attr']->getValueCount();
 
 if ($ldap['attr']->isReadOnly())
-	pla_error(sprintf(_('The attribute (%s) is in readonly mode.'),$entry['attr']['html']),null,-1,true);
+	error(sprintf(_('The attribute (%s) is in readonly mode.'),$entry['attr']['html']),'error','index.php');
+
 if (! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value'))
-	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('add attribute value')));
+	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('add attribute value')),'error','index.php');
+
 if (($ldap['attr']->getValueCount() == 0) && ! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add'))
-	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('add attribute')));
+	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('add attribute')),'error','index.php');
 
 $entry['attr']['oclass'] = (strcasecmp($entry['attr']['string'],'objectClass') == 0) ? true : false;
 
@@ -156,8 +159,8 @@ if ($entry['attr']['oclass']) {
 	echo '</tr>';
 
 	if ($_SESSION[APPCONFIG]->GetValue('appearance','show_hints'))
-		printf('<tr><td colspan=2><small><br /><img src="images/light.png" alt="Hint" /><span class="hint">%s</span></small></td></tr>',
-			_('Note: You may be required to enter new attributes that these objectClass(es) require'));
+		printf('<tr><td colspan=2><small><br /><img src="%s/light.png" alt="Hint" /><span class="hint">%s</span></small></td></tr>',
+			IMGDIR,_('Note: You may be required to enter new attributes that these objectClass(es) require'));
 	echo '</table>';
 	echo '</center>';
 	echo '</form>';
@@ -165,7 +168,7 @@ if ($entry['attr']['oclass']) {
 } else {
 	# Draw a blank field
 	echo '<table border=0><tr><td>';
-	$writer->draw('BlankValue', $ldap['attr'], $ldap['count']);
+	$writer->draw('BlankValue',$ldap['attr'],$ldap['count'],$reader);
 	echo '</td></tr><tr><td>';
 
 	if ($ldap['schema']->getDescription())

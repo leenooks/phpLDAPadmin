@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
 HOME=$PWD/$(dirname $0)
 cd ../../locale
 
 for i in $(ls -1); do
-	if [ $i == 'CVS' ];  then
+	if [ "$i" == "CVS" ];  then
 		continue;
 	else
 		echo Processing: $i

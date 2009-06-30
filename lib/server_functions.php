@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.51.2.7 2008/01/31 12:34:26 wurley Exp $ */
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.51.2.15 2008/12/13 08:57:41 wurley Exp $
 
 /**
  * Classes and functions for LDAP server configuration and capability
@@ -77,7 +77,7 @@ class LDAPserver {
 		$return = false;
 
 		# For session or cookie auth_types, we check the session or cookie to see if a user has logged in.
-		if (in_array($this->auth_type,array('session','cookie','http'))) {
+		if (in_array($this->auth_type,array('session','cookie'))) {
 
 			/* we don't look at getLoggedInPass() cause it may be null for anonymous binds
 			 * getLoggedInDN() will never return null if someone is really logged in. */
@@ -88,11 +88,30 @@ class LDAPserver {
 
 		/* whether or not the login_dn or pass is specified, we return
 		 * true here. (if they are blank, we do an anonymous bind anyway) */
+		} elseif ($this->auth_type == 'http') {
+
+			# This is temp, to avoid multiple displays of this message
+			static $shown = false;
+
+			if (! $this->getLoggedInDN() && ! $shown) {
+				system_message(array(
+					'title'=>_('No HTTP AUTH information'),
+					'body'=>_('Your configuration file has authentication set to http_auth, however, there was none presented to phpLDAPadmin'),
+					'type'=>'error'));
+
+				$shown = true;
+			}
+
+			if ($this->getLoggedInDN())
+				$return = true;
+			else
+				$return = false;
+
 		} elseif ($this->auth_type == 'config') {
 			$return = true;
 
 		} else {
-			error(sprintf(_('Error: You have an error in your config file. The only three allowed values for auth_type in the $servers section are \'session\', \'cookie\', and \'config\'. You entered \'%s\', which is not allowed.'),htmlspecialchars($this->auth_type)),'error',true);
+			error(sprintf(_('Error: You have an error in your config file. The only three allowed values for auth_type in the $servers section are \'session\', \'cookie\', and \'config\'. You entered \'%s\', which is not allowed.'),htmlspecialchars($this->auth_type)),'error',null,true);
 		}
 
 		if (DEBUG_ENABLED)
@@ -159,6 +178,15 @@ class LDAPserver {
 						$this->connection[$connect_id]['login_dn'],
 						$this->connection[$connect_id]['login_pass'] ? md5($this->connection[$connect_id]['login_pass']) : '');
  			}
+
+		} elseif ($this->auth_type == 'http') {
+			if (! $dn && ! $pass)
+				$connect_id = 'anonymous';
+
+			else {
+				$this->connection[$connect_id]['login_dn'] = $dn;
+				$this->connection[$connect_id]['login_pass'] = $pass;
+			}
 
 		} else {
 			if (DEBUG_ENABLED)
@@ -262,7 +290,7 @@ class LDAPserver {
 		# Try to fire up TLS is specified in the config
 		if ($this->isTLSEnabled()) {
 			function_exists('ldap_start_tls') or error(_('Your PHP install does not support TLS.'),'error');
-			@ldap_start_tls($resource) or error(_('Could not start TLS. Please check your LDAP server configuration.'),'error',true);
+			@ldap_start_tls($resource) or error(_('Could not start TLS. Please check your LDAP server configuration.'),'error',null,true);
 		}
 
 		$bind_result = false;
@@ -309,9 +337,9 @@ class LDAPserver {
 
 					# invalid regex?
 					if (is_null($authz_id)) {
-						pla_error(sprintf(_('It seems that sasl_authz_id_regex "%s"." contains invalid PCRE regular expression.'),
-							$this->connection[$connect_id]['sasl_authz_id_regex']).
-							((isset($php_errormsg)) ? ' Error message: '.$php_errormsg : ''));
+						error(sprintf(_('It seems that sasl_authz_id_regex "%s"." contains invalid PCRE regular expression.'),
+							$this->connection[$connect_id]['sasl_authz_id_regex']).((isset($php_errormsg)) ? ' Error message: '.$php_errormsg : '')
+							,'error','index.php');
 					}
 				}
 
@@ -696,8 +724,8 @@ class LDAPserver {
 
 		# This error message is not localized as only developers should ever see it
 		if (! in_array($schema_to_fetch,$valid_schema_to_fetch))
-			pla_error(sprintf('Bad parameter provided to function to %s::getRawSchema(). "%s" is not valid for the schema_to_fetch parameter.',
-					get_class($this),htmlspecialchars($schema_to_fetch)));
+			error(sprintf('Bad parameter provided to function to %s::getRawSchema(). "%s" is not valid for the schema_to_fetch parameter.',
+					get_class($this),htmlspecialchars($schema_to_fetch)),'error','index.php');
 
 		# Try to get the schema DN from the specified entry.
 		$schema_dn = $this->getSchemaDN($dn);
@@ -841,7 +869,7 @@ class LDAPserver {
 
 			# We need to have objectclasses and attribues, so display an error, asking the user to get us this information.
 			if (in_array($schema_to_fetch,$schema_error_message_array)) {
-				pla_error(sprintf('Our attempts to find your SCHEMA for "%s" have FAILED.<br /><br />%s',$schema_to_fetch,$schema_error_message));
+				error(sprintf('Our attempts to find your SCHEMA for "%s" have FAILED.<br /><br />%s',$schema_to_fetch,$schema_error_message),'error','index.php');
 
 			} else {
 				$return = false;
@@ -856,8 +884,8 @@ class LDAPserver {
 		# Did we get something unrecognizable?
 		if (gettype($schema_search) != 'resource') {
 			if (in_array($schema_to_fetch,$schema_error_message_array)) {
-				pla_error(sprintf('Our attempts to find your SCHEMA for "%s" has return UNEXPECTED results.<br /><br /><small>(We expected a "resource" for $schema_search, instead, we got (%s))</small><br /><br />%s<br /><br />Dump of $schema_search:<hr /><pre><small>%s</small></pre>',
-					$schema_to_fetch,gettype($schema_search),$schema_error_message,serialize($schema_search)));
+				error(sprintf('Our attempts to find your SCHEMA for "%s" has return UNEXPECTED results.<br /><br /><small>(We expected a "resource" for $schema_search, instead, we got (%s))</small><br /><br />%s<br /><br />Dump of $schema_search:<hr /><pre><small>%s</small></pre>',
+					$schema_to_fetch,gettype($schema_search),$schema_error_message,serialize($schema_search)),'error','index.php');
 
 			} else {
 				$return = false;
@@ -879,8 +907,8 @@ class LDAPserver {
 
 		if(! isset($schema_entries[0][$schema_to_fetch])) {
 			if (in_array($schema_to_fetch,$schema_error_message_array)) {
-				pla_error(sprintf('Our attempts to find your SCHEMA for "%s" has return UNEXPECTED results.<br /><br /><small>(We expected a "%s" in the $schema array but it wasnt there.)</small><br /><br />%s<br /><br />Dump of $schema_search:<hr /><pre><small>%s</small></pre>',
-					$schema_to_fetch,gettype($schema_search),$schema_error_message,serialize($schema_entries)));
+				error(sprintf('Our attempts to find your SCHEMA for "%s" has return UNEXPECTED results.<br /><br /><small>(We expected a "%s" in the $schema array but it wasnt there.)</small><br /><br />%s<br /><br />Dump of $schema_search:<hr /><pre><small>%s</small></pre>',
+					$schema_to_fetch,gettype($schema_search),$schema_error_message,serialize($schema_entries)),'error','index.php');
 
 			} else {
 				$return = false;
@@ -1243,8 +1271,8 @@ class LDAPserver {
 						}
 
 						if (! isset($attrs[strtolower($sup_attr_name)])){
-							pla_error(sprintf('Schema error: attributeType "%s" inherits from "%s", but attributeType "%s" does not exist.',
-								$attr->getName(),$sup_attr_name,$sup_attr_name));
+							error(sprintf('Schema error: attributeType "%s" inherits from "%s", but attributeType "%s" does not exist.',
+								$attr->getName(),$sup_attr_name,$sup_attr_name),'error','index.php');
 							return;
 						}
 
@@ -1325,6 +1353,15 @@ class LDAPserver {
 					}
 				}
 
+				# Force May
+				foreach ($object_class->force_may as $attr_name) {
+					if (isset($attrs[strtolower($attr_name->name)]))
+						$attrs[strtolower($attr_name->name)]->setForceMay();
+
+					else {
+						#echo "Warning, attr not set: $attr_name<br />";
+					}
+				}
 			}
 
 			$return = $attrs;
@@ -1521,7 +1558,10 @@ class LDAPserver {
 	function rename($dn,$new_rdn,$container,$deleteoldrdn) {
 		$this->lastop = 'write';
 		if (! @ldap_rename($this->connect(true,$this->lastop,false,false),$dn,$new_rdn,$container,$deleteoldrdn)) {
-			pla_error(_('Could not rename the entry'),$this->error(),$this->errno(),false);
+			system_message(array(
+				'title'=>_('Could not rename the entry.'),
+				'body'=>ldap_error_msg($this->error(),$this->errno()),
+				'type'=>'error'));
 
 		} else {
 			# Update the tree
@@ -1778,7 +1818,7 @@ class LDAPserver {
 				if ($attr = ldap_first_attribute($resource,$entry_id,$attrs)) {
 
 					if (DEBUG_ENABLED)
-						debug_log('Processing ATTR [%s].',64,__FILE__,__LINE__,__METHOD__,$attr);
+						debug_log('Processing First ATTR [%s].',64,__FILE__,__LINE__,__METHOD__,$attr);
 
 					# Iterate over the attributes
 					while ($attr) {
@@ -1797,6 +1837,10 @@ class LDAPserver {
 							$return[$dn][$attr] = $values;
 
 						$attr = ldap_next_attribute($resource,$entry_id,$attrs);
+
+						if (DEBUG_ENABLED)
+							debug_log('Processing Next ATTR [%s].',64,__FILE__,__LINE__,__METHOD__,$attr);
+
 					} # end while attr
 				}
 
@@ -1972,7 +2016,7 @@ class LDAPserver {
 				break;
 
 			default:
-				pla_error(sprintf(_('Unknown auth_type: %s'),htmlspecialchars($this->auth_type)));
+				error(sprintf(_('Unknown auth_type: %s'),htmlspecialchars($this->auth_type)),'error','index.php');
 				break;
 		}
 	}
@@ -2044,7 +2088,7 @@ class LDAPserver {
 				break;
 
 			default:
-				pla_error(sprintf(_('Unknown auth_type: %s'),htmlspecialchars($auth_type)));
+				error(sprintf(_('Unknown auth_type: %s'),htmlspecialchars($auth_type)),'error','index.php');
 				break;
 		}
 	}
@@ -2153,7 +2197,7 @@ class LDAPserver {
 
 		# See what the server schema says about this attribute
 		$schema_attr = $this->getSchemaAttribute($attr_name);
-		if (! $schema_attr) {
+		if (! is_object($schema_attr)) {
 
 			/* Strangely, some attributeTypes may not show up in the server
 			 * schema. This behavior has been observed in MS Active Directory.*/
@@ -2172,6 +2216,7 @@ class LDAPserver {
 			strcasecmp($attr_name,'networkaddress') == 0 ||
 			strcasecmp($attr_name,'objectGUID') == 0 ||
 			strcasecmp($attr_name,'objectSID') == 0 ||
+			strcasecmp($attr_name,'jpegPhoto') == 0 ||
 			$syntax == '1.3.6.1.4.1.1466.115.121.1.10' ||
 			$syntax == '1.3.6.1.4.1.1466.115.121.1.28' ||
 			$syntax == '1.3.6.1.4.1.1466.115.121.1.5' ||
@@ -2338,7 +2383,7 @@ class LDAPserver {
 				break;
 
 			default:
-				pla_error(sprintf(_('Unknown auth_type: %s'),htmlspecialchars($this->auth_type)));
+				error(sprintf(_('Unknown auth_type: %s'),htmlspecialchars($this->auth_type)),'error','index.php');
 		}
 	}
 
@@ -2385,11 +2430,11 @@ class LDAPserver {
 					break;
 
 				case 'http':
-					if (isset($_SERVER['PHP_AUTH_USER']))
-					{
+					if (isset($_SERVER['PHP_AUTH_USER'])) {
 						if ($this->isLoginAttrEnabled()) {
 							if ($this->isLoginStringEnabled()) {
 								$return = str_replace('<username>',$_SERVER['PHP_AUTH_USER'],$this->getLoginString());
+
 							} else {
 								if ($this->login_dn)
 									$this->connect(true,'user',false,true,$this->login_dn,$this->login_pass);
@@ -2406,38 +2451,40 @@ class LDAPserver {
 									$result = $this->search(null,$base_dn,$filter,array('dn'));
 									$result = array_pop($result);
 									$return = $result['dn'];
-									if ($return) break;
+									if ($return)
+										break;
 								}
 							}
+
 						} else {
 							$return = $_SERVER['PHP_AUTH_USER'];
 						}
-					}
-					else
+
+					} else
 						$return = false;
 
 					if ($return) {
 						$dn = $return;
 						$pass = '';
-						if (isset($_SERVER['PHP_AUTH_PW'])) $pass = $_SERVER['PHP_AUTH_PW'];
+
+						if (isset($_SERVER['PHP_AUTH_PW']))
+							$pass = $_SERVER['PHP_AUTH_PW'];
 
 						if ($this->userIsAllowedLogin($dn)) {
 							$ds = $this->connect(false,'user',true,true,$dn,$pass);
+
 							if (! is_resource($ds)) {
 								system_message(array(
 									'title'=>_('Authenticate to server'),
 									'body'=>_('Bad username or password. Please try again.'),
 									'type'=>'error'),
 									sprintf('cmd.php?cmd=login_form&server_id=%s',$this->server_id));
-								syslog_notice("Authentification FAILED for $dn");
 							}
 
-							$this->auth_type = 'config';
 							$this->login_dn = $dn;
 							$this->login_pass = $pass;
 
 						} else {
-							$this->auth_type = 'session';
 							$return = false;
 						}
 					}
@@ -2449,7 +2496,7 @@ class LDAPserver {
 					break;
 
 				default:
-					pla_error(sprintf(_('Unknown auth_type: %s'),htmlspecialchars($auth_type)));
+					error(sprintf(_('Unknown auth_type: %s'),htmlspecialchars($auth_type)),'error','index.php');
 			}
 		}
 
@@ -2494,6 +2541,108 @@ class LDAPserver {
 			'structuralObjectClass','entryUUID','modifytimestamp',
 			'subschemaSubentry','hasSubordinates','+');
 
+		$search = $this->search(null,$dn,'(objectClass=*)',$attrs,'base',false,$deref);
+
+		$return_attrs = array();
+		foreach ($search as $dn => $attrs)
+			foreach ($attrs as $attr => $value) {
+				if (is_array($value)) {
+					foreach ($value as $val) $return_attrs[$attr][] = $val;
+				} else {
+					$return_attrs[$attr][] = $value;
+				}
+			}
+
+		return $return_attrs;
+	}
+
+	/**
+	 * Gets the user defined operational attributes for an entry. Given a DN, this function fetches that entry's
+	 * operational (ie, system or internal) attributes.
+	 *
+	 * These attributes should be treated as internal attributes.
+	 *
+	 * The returned associative array is of this form:
+	 * <code>
+	 *	Array (
+	 *		[nsroleDN] => Array (
+	 *			[0] => "cn=nsManagedDisabledRole,dc=example,dc=com",
+	 *			[1] => "cn=nsDisabledRole,dc=example,dc=com",
+	 *			[2] => "cn=nsAdminRole,dc=example,dc=com"
+	 *		)
+	 *		[passwordExpirationTime]=> Array (
+	 *			[0] => "20080314183611Z"
+	 *		)
+	 *		[passwordAllowChangeTime] => Array (
+	 *			[0] => "20080116175354Z"
+	 *		)
+	 *	)
+	 * </code>
+	 *
+	 * @param string $dn The DN of the entry whose interal attributes are desired.
+	 * @param int $deref For aliases and referrals, this parameter specifies whether to
+	 *            follow references to the referenced DN or to fetch the attributes for
+	 *            the referencing DN. See http://php.net/ldap_search for the 4 valid
+	 *            options.
+	 * @return array An associative array whose keys are attribute names and whose values
+	 *              are arrays of values for the aforementioned attribute.
+	 */
+	function getCustomDNSysAttrs($dn,$deref=LDAP_DEREF_NEVER) {
+		if (DEBUG_ENABLED)
+			debug_log('Entered with (%s,%s)',17,__FILE__,__LINE__,__METHOD__,$dn,$deref);
+
+		$attrs = $this->custom_sys_attrs;
+		$search = $this->search(null,$dn,'(objectClass=*)',$attrs,'base',false,$deref);
+
+		$return_attrs = array();
+		foreach ($search as $dn => $attrs)
+			foreach ($attrs as $attr => $value) {
+				if (is_array($value)) {
+					foreach ($value as $val) $return_attrs[$attr][] = $val;
+				} else {
+					$return_attrs[$attr][] = $value;
+				}
+			}
+
+		return $return_attrs;
+	}
+
+	/**
+	 * Gets the user defined operational attributes for an entry. Given a DN, this function fetches that entry's
+	 * operational (ie, system or internal) attributes.
+	 *
+	 * These attributes should be treated as regular attributes, not as internal attributes.
+	 *
+	 * The returned associative array is of this form:
+	 * <code>
+	 *	Array (
+	 *		[nsroleDN] => Array (
+	 *			[0] => "cn=nsManagedDisabledRole,dc=example,dc=com",
+	 *			[1] => "cn=nsDisabledRole,dc=example,dc=com",
+	 *			[2] => "cn=nsAdminRole,dc=example,dc=com"
+	 *		)
+	 *		[passwordExpirationTime]=> Array (
+	 *			[0] => "20080314183611Z"
+	 *		)
+	 *		[passwordAllowChangeTime] => Array (
+	 *			[0] => "20080116175354Z"
+	 *		)
+	 *	)
+	 * </code>
+	 *
+	 * @param string $dn The DN of the entry whose interal attributes are desired.
+	 * @param int $deref For aliases and referrals, this parameter specifies whether to
+	 *            follow references to the referenced DN or to fetch the attributes for
+	 *            the referencing DN. See http://php.net/ldap_search for the 4 valid
+	 *            options.
+	 * @return array An associative array whose keys are attribute names and whose values
+	 *              are arrays of values for the aforementioned attribute.
+	 */
+	function getCustomDNAttrs($dn,$deref=LDAP_DEREF_NEVER) {
+		if (DEBUG_ENABLED)
+			debug_log('Entered with (%s,%s)',17,__FILE__,__LINE__,__METHOD__,$dn,$deref);
+
+		$attrs = $this->custom_attrs;
 		$search = $this->search(null,$dn,'(objectClass=*)',$attrs,'base',false,$deref);
 
 		$return_attrs = array();
@@ -2733,7 +2882,8 @@ class LDAPserver {
 				$_SESSION[APPCONFIG]->ldapservers->GetValue($this->server_id,'unique_attrs','pass'));
 
 			if (! $con)
-				pla_error(sprintf(_('Unable to bind to <b>%s</b> with your with unique_attrs credentials. Please check your configuration file.'),$this->name));
+				error(sprintf(_('Unable to bind to <b>%s</b> with your with unique_attrs credentials. Please check your configuration file.'),$this->name),
+					'error','index.php');
 
 			# Build our search filter to double check each attribute.
 			$searchfilter = '(|';
@@ -2895,6 +3045,20 @@ class LDAPserver {
 
 		return null;
 	}
+
+	/**
+	 * This function determines if the specified attribute is contained in the force_may list
+	 * as configured in config.php.
+	 *
+	 * @return bool True if the specified attribute is in the $force_may list and false
+	 *              otherwise.
+	 */
+	function isForceMay($attr_name) {
+		if (DEBUG_ENABLED) 
+			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$attr_name);
+
+		return in_array($attr_name,$this->force_may);
+	}
 }
 
 class LDAPservers {
@@ -3052,6 +3216,15 @@ class LDAPservers {
 			'desc'=>'Password for DN to use when evaluating numbers',
 			'default'=>null);
 
+		$this->default->auto_number['uidpool_dn'] = array(
+			'desc'=>'DN to use for the uidPool',
+			'default'=>'cn=uidPool,dc=example,dc=com');
+
+		$this->default->force_may['attrs'] = array(
+			'desc'=>'Attributes to force as MAY attributes, even though the schema may indicate that they are MUST attributes',
+			'var' => 'force_may',
+			'default'=>array());
+
 		$this->default->unique_attrs['dn'] = array(
 			'desc'=>'DN to use when evaluating uniqueness',
 			'default'=>null);
@@ -3098,6 +3271,16 @@ class LDAPservers {
 			'desc' => 'SASL properties',
 			'var' => 'sasl_props',
 			'default' => null);
+
+		$this->default->server['custom_attrs'] = array(
+			'desc' => 'Custom operational attributes to be treated as regular attributes',
+			'var' => 'custom_attrs',
+			'default' => array(''));
+
+		$this->default->server['custom_sys_attrs'] = array(
+			'desc' => 'Custom operational attributes to be treated as internal attributes',
+			'var' => 'custom_sys_attrs',
+			'default' => array(''));
 	}
 
 	function SetValue($server_id,$key,$index,$value) {
@@ -3106,21 +3289,21 @@ class LDAPservers {
 				$server_id,$key,$index,$value);
 
 		if (! isset($this->default->$key))
-			pla_error("ERROR: Setting a key [$key] that isnt predefined.");
+			error("ERROR: Setting a key [$key] that isnt predefined.",'error','index.php');
 		else
 			$default = $this->default->$key;
 
 		if (! isset($default[$index]))
-			pla_error("ERROR: Setting a index [$index] that isnt predefined.");
+			error("ERROR: Setting a index [$index] that isnt predefined.",'error','index.php');
 		else
 			$default = $default[$index];
 
 		# Test if its should be an array or not.
 		if (is_array($default['default']) && ! is_array($value))
-			pla_error("Error in configuration file, {$key}['$index'] SHOULD be an array of values.");
+			error("Error in configuration file, {$key}['$index'] SHOULD be an array of values.",'error','index.php');
 
 		if (! is_array($default['default']) && is_array($value))
-			pla_error("Error in configuration file, {$key}['$index'] should NOT be an array of values.");
+			error("Error in configuration file, {$key}['$index'] should NOT be an array of values.",'error','index.php');
 
 		# Some special processing.
 		# @todo: Add ldaps port details here.

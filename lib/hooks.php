@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/hooks.php,v 1.10.2.1 2007/12/26 09:26:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/hooks.php,v 1.10.2.3 2008/11/28 04:44:54 wurley Exp $
 
 /**
  * Functions related to hooks management.
@@ -52,7 +52,6 @@ function sort_array_by_priority($a,$b) {
 function run_hook($hook_name,$args) {
 	$hooks = isset($_SESSION[APPCONFIG]) ? $_SESSION[APPCONFIG]->hooks : array();
 
-	$debug = 0;
 	syslog_debug("Running hook $hook_name.");
 
 	if (! array_key_exists($hook_name,$hooks)) {
@@ -109,17 +108,17 @@ function run_hook($hook_name,$args) {
  *				called upon failure.
  */
 function add_hook($hook_name,$priority,$hook_function,$rollback_function) {
-	global $config;
-
-	if (! array_key_exists($hook_name,$config->hooks)) {
-		$config->hooks[$hook_name] = array();
-	}
+	if (! array_key_exists($hook_name,$_SESSION[APPCONFIG]->hooks))
+		$_SESSION[APPCONFIG]->hooks[$hook_name] = array();
 
 	remove_hook($hook_name,-1,$hook_function,'');
 
-	array_push($config->hooks[$hook_name],array('priority' => $priority,'hook_function' => $hook_function,'rollback_function' => $rollback_function));
+	array_push($_SESSION[APPCONFIG]->hooks[$hook_name],array(
+		'priority' => $priority,
+		'hook_function' => $hook_function,
+		'rollback_function' => $rollback_function));
 
-	uasort($config->hooks[$hook_name],"sort_array_by_priority");
+	uasort($_SESSION[APPCONFIG]->hooks[$hook_name],'sort_array_by_priority');
 }
 
 /**
@@ -138,17 +137,15 @@ function add_hook($hook_name,$priority,$hook_function,$rollback_function) {
  *				as a rollback will be removed.
  */
 function remove_hook($hook_name,$priority,$hook_function,$rollback_function) {
-	global $config;
+	if (array_key_exists($hook_name,$_SESSION[APPCONFIG]->hooks)) {
+		reset($_SESSION[APPCONFIG]->hooks[$hook_name]);
 
-	if (array_key_exists($hook_name,$config->hooks)) {
-		reset($config->hooks[$hook_name]);
-
-		while (list($key,$hook) = each($config->hooks[$hook_name])) {
+		while (list($key,$hook) = each($_SESSION[APPCONFIG]->hooks[$hook_name])) {
 			if (($priority >= 0 && $priority == $hook['priority']) ||
 				($hook_function && $hook_function == $hook['hook_function']) ||
 				($rollback_function && $rollback_function == $hook['rollback_function'])) {
 
-				unset($config->hooks[$hook_name][$key]);
+				unset($_SESSION[APPCONFIG]->hooks[$hook_name][$key]);
 			}
 		}
 	}
@@ -160,22 +157,18 @@ function remove_hook($hook_name,$priority,$hook_function,$rollback_function) {
  * @param hook_name	Name of hook to clear.
  */
 function clear_hooks($hook_name) {
-	global $config;
-	if (!isset($config) && isset($_SESSION[APPCONFIG]))
-		$config = $_SESSION[APPCONFIG];
-
-	if (array_key_exists($hook_name,$config->hooks))
-		unset($config->hooks[$hook_name]);
+	if (array_key_exists($hook_name,$_SESSION[APPCONFIG]->hooks))
+		unset($_SESSION[APPCONFIG]->hooks[$hook_name]);
 }
 
 # Evaluating user-made hooks
 if (is_dir(HOOKSDIR.'functions')) {
 	$dir = dir(HOOKSDIR.'functions');
 
-	while (false !== ($entry = $dir->read())) {
-		$filename = sprintf('%s/%s/%s',HOOKSDIR,'functions',$entry);
+	while (false !== ($hookfile = $dir->read())) {
+		$filename = sprintf('%s/%s/%s',HOOKSDIR,'functions',$hookfile);
 
-		if (is_file($filename) and eregi('php[0-9]?$',$entry))
+		if (is_file($filename) and eregi('php[0-9]?$',$hookfile))
 			require_once "$filename";
 	}
 

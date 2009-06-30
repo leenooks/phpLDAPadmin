@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE template SYSTEM "template.dtd">
 <template>
-<title>Address Book Entry (mozillaOrgPerson)</title>
+<title>Address Book Entry (mozillaAbPersonAlpha)</title>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
 <icon>images/user.png</icon>
 <description>New Address Book Entry</description>
@@ -11,7 +11,7 @@
 
 <objectClasses>
 <objectClass id="inetOrgPerson"></objectClass>
-<objectClass id="mozillaAddressBookEntry"></objectClass>
+<objectClass id="mozillaAbPersonAlpha"></objectClass>
 </objectClasses>
 
 <attributes>
@@ -36,7 +36,7 @@
 	<spacer>1</spacer>
 </attribute>
 <attribute id="mail">
-	<display>t_email</display>
+	<display>Email</display>
 	<order>5</order>
 </attribute>
 <attribute id="mozillaSecondEmail">
@@ -44,96 +44,120 @@
 	<order>6</order>
 	<spacer>1</spacer>
 </attribute>
+<attribute id="nsAIMid">
+	<display>Screen Name</display>
+	<order>7</order>
+</attribute>
 <attribute id="telephoneNumber">
 	<display>Work Phone</display>
 	<icon>images/phone.png</icon>
-	<order>7</order>
+	<order>8</order>
 </attribute>
 <attribute id="homePhone">
 	<display>Home Phone</display>
-	<order>8</order>
+	<order>9</order>
 </attribute>
 <attribute id="facsimileTelephoneNumber">
 	<display>Fax</display>
-	<order>9</order>
+	<order>10</order>
 </attribute>
 <attribute id="pager">
 	<display>Page</display>
-	<order>10</order>
+	<order>11</order>
 </attribute>
 <attribute id="mobile">
 	<display>Mobile</display>
-	<order>11</order>
+	<order>12</order>
 	<spacer>1</spacer>
 </attribute>
-<attribute id="homePostalAddress">
+<attribute id="mozillaHomeStreet">
 	<display>Home Address</display>
-	<order>12</order>
-</attribute>
-<attribute id="mozillaHomePostalAddress2">
-	<display>Home Address 2</display>
 	<order>13</order>
+</attribute>
+<attribute id="mozillaHomeStreet2">
+	<display>Home Address 2</display>
+	<order>14</order>
 </attribute>
 <attribute id="mozillaHomeLocalityName">
 	<display>Home City</display>
-	<order>14</order>
+	<order>15</order>
 </attribute>
 <attribute id="mozillaHomeState">
 	<display>Home State</display>
-	<order>15</order>
+	<order>16</order>
 </attribute>
 <attribute id="mozillaHomePostalCode">
 	<display>Home ZIP/Postal Code</display>
-	<order>16</order>
+	<order>17</order>
 </attribute>
 <attribute id="mozillaHomeCountryName">
 	<display>Home Country</display>
-	<order>17</order>
+	<order>18</order>
 </attribute>
 <attribute id="mozillaHomeUrl">
 	<display>Home Web page</display>
-	<order>18</order>
+	<order>19</order>
 	<spacer>1</spacer>
 </attribute>
 <attribute id="title">
 	<display>Work Title</display>
-	<order>19</order>
+	<order>20</order>
 </attribute>
 <attribute id="ou">
 	<display>Work Department</display>
-	<order>20</order>
+	<order>21</order>
 </attribute>
 <attribute id="o">
 	<display>Work Organization</display>
-	<order>21</order>
+	<order>22</order>
 </attribute>
 <attribute id="street">
 	<display>Work Address</display>
-	<order>22</order>
+	<order>23</order>
 </attribute>
 <attribute id="mozillaWorkStreet2">
 	<display>Work Address 2</display>
-	<order>23</order>
+	<order>24</order>
 </attribute>
 <attribute id="l">
 	<display>Work City</display>
-	<order>24</order>
+	<order>25</order>
 </attribute>
 <attribute id="st">
 	<display>Work State/Province</display>
-	<order>25</order>
+	<order>26</order>
 </attribute>
 <attribute id="postalCode">
 	<display>Work ZIP/Postal Code</display>
-	<order>26</order>
+	<order>27</order>
 </attribute>
 <attribute id="c">
 	<display>Work Country</display>
-	<order>27</order>
+	<order>28</order>
 </attribute>
 <attribute id="mozillaWorkUrl">
 	<display>Work Web page</display>
-	<order>28</order>
+	<order>29</order>
+</attribute>
+<attribute id="description">
+	<display>Note</display>
+	<order>30</order>
+</attribute>
+<attribute id="mozillaCustom1">
+	<display>Custom 1</display>
+	<order>31</order>
+</attribute>
+<attribute id="mozillaCustom2">
+	<display>Custom 2</display>
+	<order>32</order>
+</attribute>
+<attribute id="mozillaCustom3">
+	<display>Custom 3</display>
+	<order>33</order>
+</attribute>
+<attribute id="mozillaCustom4">
+	<display>Custom 4</display>
+	<order>34</order>
 </attribute>
 </attributes>
 </template>

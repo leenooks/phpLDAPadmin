@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/create.php,v 1.48.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/create.php,v 1.48.2.4 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Creates a new object.
@@ -19,12 +19,12 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'), null, -1, true);
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
 if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_create'))
-	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('create entry')));
+	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('create entry')),'error','index.php');
 
-$rdn_attr = isset($_POST['rdn_attribute']) ? $_POST['rdn_attribute'] : null;
+$rdn_attr = get_request('rdn_attribute');
 
 $entryfactoryclass = $_SESSION[APPCONFIG]->GetValue('appearance','entry_factory');
 eval('$entry_factory = new '.$entryfactoryclass.'();');
@@ -36,7 +36,7 @@ $entry->accept($reader);
 $container = $entry->getContainer();
 
 if (!$container || !$ldapserver->dnExists($container))
-	pla_error(sprintf(_('The container you specified (%s) does not exist. Please try again.'),htmlspecialchars($container)),null,-1,true);
+	error(sprintf(_('The container you specified (%s) does not exist. Please try again.'),htmlspecialchars($container)),'error','index.php');
 
 $tree = get_cached_item($ldapserver->server_id,'tree');
 if ($tree) {
@@ -46,18 +46,18 @@ if ($tree) {
 
 	$container_entry = $tree->getEntry($container);
 	if ($container_entry->isLeaf())
-		pla_error(sprintf(_('The container (%s) is a leaf.'), htmlspecialchars($container)), null, -1, true);
+		error(sprintf(_('The container (%s) is a leaf.'), htmlspecialchars($container)),'error','index.php');
 }
 
 $entry->setRdnAttributeName($rdn_attr);
 if (!$entry->getRdnAttribute())
-	pla_error(sprintf(_('The Rdn attribute (%s) does not exist.'), htmlspecialchars($rdn_attr)), null, -1, true);
+	error(sprintf(_('The Rdn attribute (%s) does not exist.'), htmlspecialchars($rdn_attr)),'error','index.php');
 
 $new_dn = $entry->getDn();
 if (! $new_dn)
-	pla_error(_('You left the RDN field blank.'));
+	error(_('You left the RDN field blank.'),'error','index.php');
 
-$redirect = isset($_POST['redirect']) ? $_POST['redirect'] : false;
+$redirect = get_request('redirect','POST',false,false);
 
 $new_entry = array();
 $attrs = $entry->getAttributes();
@@ -69,8 +69,9 @@ foreach ($attrs as $attr) {
 			$new_vals[] = $val;
 	}
 
-	if ($attr->isRequired() && !$new_vals)
-		pla_error(sprintf(_('You left the value blank for required attribute (%s).'), htmlspecialchars($attr->getName())));
+	if ($attr->isRequired() && !$new_vals && !$ldapserver->isIgnoredAttr($attr->getName())) 
+			error(sprintf(_('You left the value blank for required attribute (%s).'),htmlspecialchars($attr->getName())),'error','index.php');
+	
 
 	if ($new_vals)
 		$new_entry[$attr->getName()] = $new_vals;
@@ -83,7 +84,7 @@ foreach ($new_entry as $attr => $vals) {
 	# Check to see if this is a unique Attribute
 	if ($badattr = $ldapserver->checkUniqueAttr($new_dn,$attr,$vals)) {
 		$search_href = sprintf('?cmd=search&amp;search=true&amp;form=advanced&amp;server_id=%s&amp;filter=%s=%s', $ldapserver->server_id,$attr,$badattr);
-		pla_error(sprintf(_('Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href=\'%s\'>search</a> for that entry.'),$attr,$badattr,$new_dn,$search_href));
+		error(sprintf(_('Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href=\'%s\'>search</a> for that entry.'),$attr,$badattr,$new_dn,$search_href),'error','index.php');
 	}
 }
 
@@ -129,6 +130,9 @@ if ($add_result) {
 	}
 
 } else {
-	pla_error(_('Could not add the object to the LDAP server.'),$ldapserver->error(),$ldapserver->errno());
+	system_message(array(
+		'title'=>_('Could not add the object to the LDAP server.'),
+		'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
+		'type'=>'error'));
 }
 ?>

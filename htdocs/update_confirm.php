@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.49.2.3 2008/01/13 05:37:01 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.49.2.4 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Takes the results of clicking "Save" in template_engine.php and determines which
@@ -16,17 +16,18 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'));
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
 /***************/
 /* get entry   */ 
 /***************/
-	
+
+$entry = array();
 $entry['dn']['string'] = get_request('dn');
 $entry['dn']['encode'] = rawurlencode($entry['dn']['string']);
 
 if (! $entry['dn']['string'] || ! $ldapserver->dnExists($entry['dn']['string']))
-	pla_error(sprintf(_('The entry (%s) does not exist.'),htmlspecialchars($entry['dn']['string'])),null,-1,true);
+	error(sprintf(_('The entry (%s) does not exist.'),htmlspecialchars($entry['dn']['string'])),'error','index.php');
 
 $tree = get_cached_item($ldapserver->server_id,'tree');
 $entry['ldap'] = null;
@@ -40,7 +41,7 @@ if ($tree) {
 }
 
 if (! $entry['ldap'] || $entry['ldap']->isReadOnly())
-	pla_error(sprintf(_('The entry (%s) is in readonly mode.'),htmlspecialchars($entry['dn']['string'])),null,-1,true);
+	error(sprintf(_('The entry (%s) is in readonly mode.'),htmlspecialchars($entry['dn']['string'])),'error','index.php');
 
 /***************/
 /* old values  */ 
@@ -96,9 +97,9 @@ $attr_to_delete = array();
 
 // if objectClass attribute is modified
 if (isset($entry['values']['new']['objectClass'])) {
-	if (!isset($entry['values']['old']['objectClass'])) {
-		pla_error(_('An entry should have one structural objectClass.'));
-	}
+	if (!isset($entry['values']['old']['objectClass']))
+		error(_('An entry should have one structural objectClass.'),'error','index.php');
+
 	// deleted objectClasses
 	foreach ($entry['values']['old']['objectClass'] as $oldOC) {
 		if (!in_array($oldOC, $entry['values']['new']['objectClass'])) {

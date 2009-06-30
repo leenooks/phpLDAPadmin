@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy.php,v 1.44.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy.php,v 1.44.2.3 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Copies a given object to create a new one.
@@ -17,8 +17,9 @@
 require './common.php';
 
 if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_move'))
-	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('copy entry')));
+	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('copy entry')),'error','index.php');
 
+$entry = array();
 $entry['src']['id'] = get_request('server_id');
 $entry['dst']['id'] = get_request('dest_server_id');
 
@@ -26,10 +27,10 @@ $entry['src']['ldapserver'] = $_SESSION[APPCONFIG]->ldapservers->Instance($entry
 $entry['dst']['ldapserver'] = $_SESSION[APPCONFIG]->ldapservers->Instance($entry['dst']['id']);
 
 if ($entry['dst']['ldapserver']->isReadOnly())
-	pla_error(_('Destination server is currently READ-ONLY.'));
+	error(_('Destination server is currently READ-ONLY.'),'error','index.php');
 
 if (! $entry['src']['ldapserver']->haveAuthInfo() || ! $entry['dst']['ldapserver']->haveAuthInfo())
-	pla_error(_('Not enough information to login to server. Please check your configuration.'));
+	error(_('Not enough information to login to server. Please check your configuration.'),'error','index.php');
 
 $entry['src']['dn'] = get_request('old_dn');
 $entry['dst']['dn'] = get_request('new_dn');
@@ -38,19 +39,19 @@ $entry['src']['remove'] = (get_request('remove') == 'yes') ? true : false;
 
 # Error checking
 if (strlen(trim($entry['dst']['dn'])) == 0)
-	pla_error(_('You left the destination DN blank.'));
+	error(_('You left the destination DN blank.'),'error','index.php');
 
 if (pla_compare_dns($entry['src']['dn'],$entry['dst']['dn']) == 0 && $entry['src']['id'] == $entry['dst']['id'])
-	pla_error(_('The source and destination DN are the same.'));
+	error(_('The source and destination DN are the same.'),'error','index.php');
 
 if ($entry['dst']['ldapserver']->dnExists($entry['dst']['dn']))
-	pla_error(sprintf(_('The destination entry (%s) already exists.'),pretty_print_dn($entry['dst']['dn'])));
+	error(sprintf(_('The destination entry (%s) already exists.'),pretty_print_dn($entry['dst']['dn'])),'error','index.php');
 
 if (! $entry['dst']['ldapserver']->dnExists(get_container($entry['dst']['dn'])))
-	pla_error(sprintf(_('The destination container (%s) does not exist.'),pretty_print_dn(get_container($entry['dst']['dn']))));
+	error(sprintf(_('The destination container (%s) does not exist.'),pretty_print_dn(get_container($entry['dst']['dn']))),'error','index.php');
 
 if ($entry['src']['recursive']) {
-	$filter = isset($_POST['filter']) ? $_POST['filter'] : '(objectClass=*)';
+	$filter = get_request('filter','POST',false,'(objectClass=*)');
 
 	# Build a tree similar to that of the tree browser to give to r_copy_dn
 	$snapshot_tree = array();
@@ -141,7 +142,11 @@ function copy_dn($ldapserver_src,$ldapserver_dst,$dn_src,$dn_dst) {
 		$add_result = $ldapserver_dst->add($dn_dst,$new_entry);
 		if (! $add_result) {
 			echo '</small><br /><br />';
-			pla_error(_('Failed to copy DN: ').$dn_dst,$ldapserver_dst->error(),$ldapserver_dst->errno());
+			system_message(array(
+				'title'=>_('Failed to copy DN.').sprintf(' (%s)',$dn_dst),
+				'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
+				'type'=>'error'));
+
 		} else {
 			run_hook('post_entry_create',
 				array('server_id'=>$ldapserver_dst->server_id,'dn'=>$dn_dst,'attrs'=>$new_entry));

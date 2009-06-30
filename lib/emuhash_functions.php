@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/emuhash_functions.php,v 1.6.10.1 2007/12/21 12:11:55 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/emuhash_functions.php,v 1.6.10.2 2008/12/12 12:20:23 wurley Exp $
 
 /*******************************************************************************
  * emuhash - partly emulates the php mhash functions
@@ -64,7 +64,7 @@ if( ! function_exists( 'mhash' ) && ! function_exists( 'mhash_keygen_s2k' ) ) {
 			$pwhandle = fopen( $tmpfile, "w" );
 
 			if( ! $pwhandle )
-				pla_error( "Unable to create a temporary file '$tmpfile' to create hashed password" );
+				error(sprintf('Unable to create a temporary file %s to create hashed password',$tmpfile) ,'error','index.php');
 
 			fwrite( $pwhandle, $password_clear );
 			fclose( $pwhandle );

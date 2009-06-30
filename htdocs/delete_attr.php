@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete_attr.php,v 1.16.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete_attr.php,v 1.16.2.2 2008/12/12 12:20:22 wurley Exp $
 
 /**
  *  Deletes an attribute from an entry with NO confirmation.
@@ -15,23 +15,24 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'));
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
 if (! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete'))
-	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('delete attribute')));
+	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('delete attribute')),'error','index.php');
 
+$entry = array();
 $entry['dn']['string'] = get_request('dn');
 $entry['dn']['encode'] = rawurlencode($entry['dn']['string']);
 $entry['attr'] = get_request('attr');
 
 if (! $entry['dn']['string'])
-	pla_error(_('No DN specified'));
+	error(_('No DN specified'),'error','index.php');
 
 if (! $entry['attr'])
-	pla_error(_('No attribute name specified.'));
+	error(_('No attribute name specified.'),'error','index.php');
 
 if ($ldapserver->isAttrReadOnly($entry['attr']))
-	pla_error(sprintf(_('The attribute "%s" is flagged as read-only in the phpLDAPadmin configuration.'),htmlspecialchars($entry['attr'])));
+	error(sprintf(_('The attribute "%s" is flagged as read-only in the phpLDAPadmin configuration.'),htmlspecialchars($entry['attr'])),'error','index.php');
 
 $update_array = array();
 $update_array[$entry['attr']] = array();
@@ -47,6 +48,9 @@ if ($result) {
 	die();
 
 } else {
-	pla_error(_('Could not perform ldap_modify operation.'),$ldapserver->error(),$ldapserver->errno());
+	system_message(array(
+		'title'=>_('Could not perform ldap_modify operation.'),
+		'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
+		'type'=>'error'));
 }
 ?>

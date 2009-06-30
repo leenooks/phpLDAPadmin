@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter1.php,v 1.3.2.13 2008/01/28 11:40:16 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter1.php,v 1.3.2.30 2008/12/19 00:35:09 wurley Exp $
 
 define('IdEntryRefreshMenuItem', '0');
 define('IdEntryExportBaseMenuItem', '1');
@@ -42,12 +42,12 @@ class EntryWriter1 extends EntryWriter {
 	/**************************/
 
 	protected function drawEntryHeader($entry) {
-		// title
+		# Title
 		$this->draw('Title', $entry);
 		$this->draw('Subtitle', $entry);
 		echo "\n";
 
-		// menu
+		# Menu
 		$this->draw('Menu', $entry);
 	}
 
@@ -56,13 +56,20 @@ class EntryWriter1 extends EntryWriter {
 	protected function drawEntryMenu($entry) {}
 
 	protected function drawEntryJavascript($entry) {
+		printf("\n<!-- START: %s -->\n",__METHOD__);
+
 		if (isset($_SESSION[APPCONFIG])) {
-			echo '<script type="text/javascript" language="javascript">';
-			echo 'var defaults = new Array();var default_date_format = "';
-			echo $_SESSION[APPCONFIG]->GetValue('appearance', 'date');
-			echo '";</script>';
+			echo "\n";
+			echo '<!-- Global settings for the js_calendar -->'."\n";
+			echo '<script type="text/javascript" language="javascript">'."\n";
+			echo 'var defaults = new Array();'."\n";
+			printf('var default_date_format = "%s";',$_SESSION[APPCONFIG]->GetValue('appearance', 'date'));
+			echo "\n";
+			echo '</script>'."\n";
+			echo "\n";
 		}
 
+		echo '<!-- START Global functions for general PLA processing. -->'."\n";
 		echo '<script type="text/javascript" language="javascript">
 		      function pla_getComponentById(id) {
 		          return document.getElementById(id);
@@ -105,69 +112,75 @@ class EntryWriter1 extends EntryWriter {
 		          } else { // text, textarea
 		              component.value = value;
 		          }
-		      }</script>';
+		      }
 
-		echo '<script type="text/javascript" language="javascript">
 		      function getAttributeComponents(prefix, name) {
 		          var components = new Array();
-			  var i = 0;
+		          var i = 0;
 		          var j = 0;
 		          var c = pla_getComponentsByName(prefix + "_values[" + name + "][" + j + "]");
 		          while (c && (c.length > 0)) {
 		              for (var k = 0; k < c.length; k++) {
-				  components[i++] = c[k];
+		                 components[i++] = c[k];
 		              }
 		              ++j;
 		              c = pla_getComponentsByName(prefix + "_values[" + name + "][" + j + "]");
 		          }
-			  c = pla_getComponentsByName(prefix + "_values[" + name + "][]");
+		          c = pla_getComponentsByName(prefix + "_values[" + name + "][]");
 		          if (c && (c.length > 0)) {
 		              for (var k = 0; k < c.length; k++) {
-				  components[i++] = c[k];
+		                 components[i++] = c[k];
 		              }
 		          }
-			  return components;
-	              }
+		          return components;
+		      }
+
 		      function getAttributeValues(prefix, name) {
-			  var components = getAttributeComponents(prefix, name);
+		          var components = getAttributeComponents(prefix, name);
 		          var values = new Array();
 		          for (var k = 0; k < components.length; k++) {
 		              var val = pla_getComponentValue(components[k]);
 		              if (val) values[values.length] = val;
 		          }
-			  return values;
-		      }</script>';
+		          return values;
+		      }
+		</script>'."\n";
+		echo '<!-- END Global functions for general PLA processing. -->'."\n";
+		echo "\n";
 
 		echo '<script type="text/javascript" language="javascript">
 		      function validateForm(silence) {
-			  var i = 0;
-			  var valid = true;
-			  var components = null;';
+		          var i = 0;
+		          var valid = true;
+		          var components = null;'."\n";
+
 		foreach ($entry->getAttributes() as $attribute) {
-			if ($attribute->isVisible()) {
-				echo 'components = getAttributeComponents("new", "'.$attribute->getName().'");
-			              for (i = 0; i < components.length; i++) {
-					  if (window.validate_'.$attribute->getName().') {
+			if ($attribute->isVisible() && ($attribute->hasProperty('onchange')) || $attribute->isRequired()) {
+				echo "\n";
+				echo '       components = getAttributeComponents("new", "'.$attribute->getName().'");
+				             for (i = 0; i < components.length; i++) {
+				          if (window.validate_'.$attribute->getName().') {
 				              valid = (!validate_'.$attribute->getName().'(components[i], silence) || !valid) ? false : true;
 				          }
 				      }';
+				echo "\n";
 			}
 		}
 		echo '    return valid;
 		      }
-		      </script>';
+		</script>'."\n";
 
 		echo '<script type="text/javascript" language="javascript">
 		      function submitForm(form) {
 		          for (var i = 0; i < form.elements.length; i++) {
 		              form.elements[i].blur();
 		          }
-			  return validateForm(true);
+		         return validateForm(true);
 		      }
 		      function alertError(err, silence) {
 		          if (!silence) alert(err);
 		      }
-		      </script>';
+		      </script>'."\n";
 
 		for ($i = 0; $i < count($this->shown_attributes); $i++) {
 			$this->draw('Javascript', $this->shown_attributes[$i]);
@@ -175,7 +188,9 @@ class EntryWriter1 extends EntryWriter {
 
 		echo '<script type="text/javascript" language="javascript">
 		      validateForm(true);
-		      </script>';
+		      </script>'."\n";
+
+		printf("\n<!-- END: %s -->\n",__METHOD__);
 	}
 
 	/********************************/
@@ -186,10 +201,10 @@ class EntryWriter1 extends EntryWriter {
 		if (DEBUG_ENABLED)
 			debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$entry->getDn());
 
-		// init
+		# Init
 		$this->visit('Entry::Start', $entry);
 
-		// check
+		# Check
 		$container = $entry->getContainer();
 		$container_ok = true;
 		$objectclasses_ok = true;
@@ -205,17 +220,17 @@ class EntryWriter1 extends EntryWriter {
 			}
 		}
 
-		// header
+		# Header
 		$this->draw('Header', $entry);
 
-		// errors
+		# Errors
 		if (!$container_ok) {
-			pla_error(sprintf(_('The container you specified (%s) does not exist.'),htmlspecialchars($container)), null, -1, false);
+			error(sprintf(_('The container you specified (%s) does not exist.'),htmlspecialchars($container)),'error');
 			echo '<br />';
 		}
 
 		if (!$objectclasses_ok) {
-			pla_error(_('You did not select any objectClasses for this object.'), null, -1, false);
+			error(_('You did not select any objectClasses for this object.'),'error');
 			echo '<br />';
 		}
 	}
@@ -318,7 +333,7 @@ class EntryWriter1 extends EntryWriter {
 	public function drawDefaultCreatingEntryStepFormEnd($entry, $step) {
 		echo '</form>';
 
-		// javascript
+		# Javascript
 		$this->draw('Javascript', $entry);
 	}
 
@@ -381,13 +396,11 @@ class EntryWriter1 extends EntryWriter {
 	protected function drawDefaultCreatingEntryShownAttributes($entry) {
 		$attrs = array();
 
-		// put required attributes first
-		foreach ($this->shown_attributes as $sa) {
+		# Put required attributes first
+		foreach ($this->shown_attributes as $sa)
 			if ($sa->isRequired()) $attrs[] = $sa;
-		}
-		foreach ($this->shown_attributes as $sa) {
+		foreach ($this->shown_attributes as $sa)
 			if (!$sa->isRequired()) $attrs[] = $sa;
-		}
 
 		$has_required_attrs = false;
 		$has_optional_attrs = false;
@@ -409,7 +422,7 @@ class EntryWriter1 extends EntryWriter {
 				}
 			}
 
-			$this->draw('', $attr);
+			$this->draw('',$attr,$entry);
 			echo "\n";
 		}
 
@@ -421,7 +434,7 @@ class EntryWriter1 extends EntryWriter {
 
 	protected function drawDefaultCreatingEntryHiddenAttributes($entry) {
 		foreach ($this->hidden_attributes as $attr) {
-			$this->draw('', $attr);
+			$this->draw('',$attr,$entry);
 			echo "\n";
 		}
 	}
@@ -438,13 +451,13 @@ class EntryWriter1 extends EntryWriter {
 		if (DEBUG_ENABLED)
 			debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$entry->getDn());
 
-		// init
+		# Init
 		$this->visit('Entry::Start', $entry);
 
-		// header
+		# Header
 		$this->draw('Header', $entry);
 
-		// form start
+		# Form start
 		if (! $entry->isReadOnly()) {
 			echo '<form action="cmd.php?cmd=update_confirm" method="post" enctype="multipart/form-data" name="entry_form" onSubmit="return submitForm(this)">';
 			printf('<input type="hidden" name="server_id" value="%s" />',$this->index);
@@ -459,21 +472,21 @@ class EntryWriter1 extends EntryWriter {
 		if (DEBUG_ENABLED)
 			debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$entry->getDn());
 
-		// draw internal attributes
+		# Draw internal attributes
 		if (get_request('show_internal_attrs','REQUEST')) {
 			$this->draw('InternalAttributes', $entry);
 			echo "\n\n";
 		}
 
-		// draw visible attributes
+		# Draw visible attributes
 		$this->draw('ShownAttributes', $entry);
 
-		// form end
+		# Form end
 		if (! $entry->isReadOnly()) {
 			$this->draw('FormSubmitButton', $entry);
 			echo '</table>';
 
-			// draw hidden attributes
+			# Draw hidden attributes
 			$this->draw('HiddenAttributes', $entry);
 
 			printf('</form>');
@@ -482,7 +495,7 @@ class EntryWriter1 extends EntryWriter {
 			printf('</table>');
 		}
 
-		// javascript
+		# Javascript
 		$this->draw('Javascript', $entry);
 	}
 
@@ -631,13 +644,13 @@ class EntryWriter1 extends EntryWriter {
 
 			case IdEntryRenameMenuItem :
 				if (!$entry->isReadOnly() && $config->isCommandAvailable('entry_rename')) {
-					$rdnAttr = $entry->getAttribute($entry->getRdnAttributeName());
-					if ($rdnAttr && $rdnAttr->isVisible() && !$rdnAttr->isReadOnly()) {
-						return $this->get('RenameMenuItem', $entry);
-					} else {
-						return '';
+					foreach ($entry->getRdnAttributeName() as $rdnAttr) {
+						$rdnAttr = $entry->getAttribute($rdnAttr);
+						if ($rdnAttr && $rdnAttr->isVisible() && !$rdnAttr->isReadOnly())
+							return $this->get('RenameMenuItem', $entry);
 					}
-				} else return '';
+				}
+				return '';
 
 			case IdEntryDeleteAttributeMessage :
 				if ($config->GetValue('appearance', 'show_hints')
@@ -666,15 +679,15 @@ class EntryWriter1 extends EntryWriter {
 				static $children_count = false;
 				static $more_children = false;
 				if ($children_count === false) {
-					// visible children in the tree
+					# Visible children in the tree
 					$children_count = $entry->getChildrenNumber();
-					// is there filtered children ?
+					# Is there filtered children ?
 					$more_children = $entry->isSizeLimited();
 					if (!$more_children) {
-						// all children in ldap
+						# All children in ldap
 						$all_children = $this->getLDAPServer()->getContainerContents(
-								 $entry->getDn(), $children_count + 1,
-								 '(objectClass=*)', $config->GetValue('deref','view'));
+							$entry->getDn(), $children_count + 1,
+							'(objectClass=*)', $config->GetValue('deref','view'));
 						$more_children = (count($all_children) > $children_count);
 					}
 				}
@@ -805,7 +818,7 @@ class EntryWriter1 extends EntryWriter {
 	}
 
 	protected function getDefaultEditingEntryDeleteAttributeMessage($entry) {
-		if ($_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete_value'))
+		if ($_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete_value') && ! $entry->isReadOnly())
 			return sprintf($this->hint_layout,_('Hint: To delete an attribute, empty the text field and click save.'));
 		else
 			return '';
@@ -830,7 +843,7 @@ class EntryWriter1 extends EntryWriter {
 		$counter = 0;
 
 		foreach ($this->internal_attributes as $attr) {
-			$this->draw('',$attr);
+			$this->draw('',$attr,$entry);
 			$counter++;
 			echo "\n";
 		}
@@ -844,14 +857,14 @@ class EntryWriter1 extends EntryWriter {
 
 	protected function drawDefaultEditingEntryShownAttributes($entry) {
 		foreach ($this->shown_attributes as $attr) {
-			$this->draw('',$attr);
+			$this->draw('',$attr,$entry);
 			echo "\n";
 		}
 	}
 
 	protected function drawDefaultEditingEntryHiddenAttributes($entry) {
 		foreach ($this->hidden_attributes as $attr) {
-			$this->draw('',$attr);
+			$this->draw('',$attr,$entry);
 			echo "\n";
 		}
 	}
@@ -970,13 +983,11 @@ class EntryWriter1 extends EntryWriter {
 				echo '<form action="cmd.php?cmd=template_engine" method="post" enctype="multipart/form-data" name="entry_form" onSubmit="return submitForm(this)">';
 
 			} else {
-				// Patch 1539633
-				// default action is create.php
-				// you can change this behavior by setting <action>myscript.php</action> in template header
 				echo '<form action="cmd.php" method="post" enctype="multipart/form-data" name="entry_form" onSubmit="return submitForm(this)">';
 				printf('<input type="hidden" name="cmd" value="%s" />',
 					$entry->hasProperty('action') ? rawurlencode($entry->getProperty('action')) : 'create');
 			}
+
 		} else {
 			$this->draw('DefaultCreatingEntry::StepFormStart', $entry, $step);
 		}
@@ -998,7 +1009,7 @@ class EntryWriter1 extends EntryWriter {
 
 		$this->draw('RdnChooser', $entry);
 
-		// draw attributes
+		# Draw attributes
 		$this->draw('ShownAttributes', $entry);
 
 		$this->draw('StepFormSubmitButton', $entry, $step);
@@ -1040,6 +1051,7 @@ class EntryWriter1 extends EntryWriter {
 		$i = -1;
 		$templates = &$entry->getTemplates();
 		$nb_templates = count($templates);
+
 		if ($entry->hasDefaultTemplate()) $nb_templates++;
 
 		foreach ($templates as $template_name => $template_attrs) {
@@ -1109,12 +1121,13 @@ class EntryWriter1 extends EntryWriter {
 
 		foreach ($this->shown_attributes as $attr) {
 			$page = $attr->getProperty('page');
+
 			if ($page == $this->step) {
-				$this->draw('', $attr);
+				$this->draw('',$attr,$entry);
 				echo "\n";
-			//} elseif ($page < $this->step) {
+
 			} else {
-				// the displayed attributes are the visible attributes in shown_attributes list
+				# The displayed attributes are the visible attributes in shown_attributes list
 				$attr->hide();
 				$this->hidden_attributes[] = $attr;
 			}
@@ -1128,15 +1141,13 @@ class EntryWriter1 extends EntryWriter {
 		}
 
 		foreach ($this->hidden_attributes as $attr) {
-			//$page = $attr->hasProperty('page') ? $attr->getProperty('page') : -1;
-			//if ($page <= $this->step) {
-				$this->draw('', $attr);
-				echo "\n";
-			//}
+			$this->draw('',$attr,$entry);
+			echo "\n";
 		}
 	}
 
 	protected function drawTemplateCreatingEntryJavascript($entry) {
+		printf("\n<!-- START: %s -->\n",__METHOD__);
 		$this->draw('DefaultCreatingEntry::Javascript', $entry);
 
 		$templates = new Templates($this->index);
@@ -1173,17 +1184,21 @@ class EntryWriter1 extends EntryWriter {
 					// here comes template-specific implementation, generated by php
 					if (false) {}';
 		foreach ($entry->getAttributes() as $attribute) {
-			$attr = $attribute->getName();
-			echo "\n\t\t\t\t\telse if ((i = id.indexOf('_".$attr."_')) >= 0) {\n";
-			echo "\t\t\t\t\t\tpre = id.substring(0, i+1);\n";
-			echo "\t\t\t\t\t\tsuf = id.substring(i + 1 + '$attr'.length, id.length);\n";
-			$this->draw('FillJavascript', $attribute, 'id', 'value');
-			if (isset($hash['autoFill'.$attr])) {
-				echo $hash['autoFill'.$attr];
+			if ($attribute->isVisible() && ($attribute->hasProperty('onchange')) || $attribute->isRequired()) {
+				$attr = $attribute->getName();
+				echo "\n\t\t\t\t\telse if ((i = id.indexOf('_".$attr."_')) >= 0) {\n";
+				echo "\t\t\t\t\t\tpre = id.substring(0, i+1);\n";
+				echo "\t\t\t\t\t\tsuf = id.substring(i + 1 + '$attr'.length, id.length);\n";
+				$this->draw('FillJavascript', $attribute, 'id', 'value');
+				if (isset($hash['autoFill'.$attr])) {
+					echo $hash['autoFill'.$attr];
+				}
+				echo "\t\t\t}\n";
 			}
-			echo "\t\t\t}\n";
 		}
 		echo '}}</script>';
+
+		printf("\n<!-- END: %s -->\n",__METHOD__);
 	}
 
 	/********************************/
@@ -1258,6 +1273,7 @@ class EntryWriter1 extends EntryWriter {
 		$i = -1;
 		$templates = &$entry->getTemplates();
 		$nb_templates = count($templates);
+
 		if ($entry->hasDefaultTemplate()) $nb_templates++;
 
 		foreach ($templates as $template_name => $template_attrs) {
@@ -1309,7 +1325,7 @@ class EntryWriter1 extends EntryWriter {
 	protected function drawTemplateEditingEntryShownAttributes($entry) {
 		foreach ($this->shown_attributes as $attr) {
 			// @todo if this->page == attr->page
-			$this->draw('', $attr);
+			$this->draw('',$attr,$entry);
 			echo "\n";
 		}
 	}
@@ -1320,6 +1336,7 @@ class EntryWriter1 extends EntryWriter {
 	}
 
 	protected function drawTemplateEditingEntryJavascript($entry) {
+		printf("\n<!-- START: %s -->\n",__METHOD__);
 		$this->draw('DefaultEditingEntry::Javascript', $entry);
 
 		$templates = new Templates($this->index);
@@ -1354,44 +1371,47 @@ class EntryWriter1 extends EntryWriter {
 					// here comes template-specific implementation, generated by php
 					if (false) {}';
 		foreach ($entry->getAttributes() as $attribute) {
-			$attr = $attribute->getName();
-			echo "\n\t\t\telse if ((i = id.indexOf('_".$attr."_')) >= 0) {\n";
-			echo "\t\t\t\tpre = id.substring(0, i+1);\n";
-			echo "\t\t\t\tsuf = id.substring(i + 1 + '$attr'.length, id.length);\n";
-			$this->draw('FillJavascript', $attribute, 'id', 'value');
-			if (isset($hash['autoFill'.$attr])) {
-				echo $hash['autoFill'.$attr];
+			if ($attribute->isVisible() && ($attribute->hasProperty('onchange')) || $attribute->isRequired()) {
+				$attr = $attribute->getName();
+				echo "\n\t\t\telse if ((i = id.indexOf('_".$attr."_')) >= 0) {\n";
+				echo "\t\t\t\tpre = id.substring(0, i+1);\n";
+				echo "\t\t\t\tsuf = id.substring(i + 1 + '$attr'.length, id.length);\n";
+				$this->draw('FillJavascript', $attribute, 'id', 'value');
+				if (isset($hash['autoFill'.$attr])) {
+					echo $hash['autoFill'.$attr];
+				}
+				echo "\t\t\t}\n";
 			}
-			echo "\t\t\t}\n";
 		}
 		echo '}}</script>';
+		printf("\n<!-- END: %s -->\n",__METHOD__);
 	}
 
 	/**************************/
 	/* Paint an Attribute     */
 	/**************************/
 
-	protected function drawAttribute($attribute) {
+	protected function drawAttribute($attribute,$entry) {
 		if ($attribute->isVisible()) $this->draw('Informations', $attribute);
-		$this->draw('Values', $attribute);
+		$this->draw('Values',$attribute,$entry);
 	}
 
 	protected function drawAttributeJavascript($attribute) {
-		echo '<script type="text/javascript" language="javascript">';
+		echo '<script type="text/javascript" language="javascript">'."\n";
 		echo 'function focus_'.$attribute->getName().'(component) {';
 		$this->draw('FocusJavascript', $attribute, 'component');
-		echo '}';
+		echo '}'."\n";
 		echo 'function blur_'.$attribute->getName().'(component) {';
 		$this->draw('BlurJavascript', $attribute, 'component');
-		echo '}';
+		echo '}'."\n";
 		echo 'function validate_'.$attribute->getName().'(component, silence) {';
 		echo '    var valid = true;';
 		$this->draw('ValidateJavascript', $attribute, 'component', 'silence', 'valid');
-		echo '    if (valid) component.style.backgroundColor = "white";';
-		echo '    else component.style.backgroundColor = \'#F0F0FF\';';
+		echo '    if (valid) { component.style.backgroundColor = "white"; component.style.color = "black"; }';
+		echo '    else { component.style.backgroundColor = \'#FFFFA0\'; component.style.color = "black"; }';
 		echo '    return valid;';
-		echo '}';
-		echo '</script>';
+		echo '}'."\n";
+		echo '</script>'."\n";
 	}
 
 	protected function drawAttributeFocusJavascript($attribute, $component) {
@@ -1413,11 +1433,12 @@ class EntryWriter1 extends EntryWriter {
 			echo 'var vals = getAttributeValues("new", "'.$attribute->getName().'");
 			      if (vals.length <= 0) {
 			          '.$var_valid.' = false;
-				  alertError("'._('This attribute is required')._(':').' '.$attribute->getFriendlyName().'", '.$silence.');
+			          alertError("'._('This attribute is required')._(':').' '.$attribute->getFriendlyName().'", '.$silence.');
 			      }';
 			echo 'var comp = getAttributeComponents("new", "'.$attribute->getName().'");
 			      for (var i = 0; i < comp.length; i++) {
-				   comp[i].style.backgroundColor = '.$var_valid.' ? "white" : \'#F0F0FF\';
+			           comp[i].style.backgroundColor = '.$var_valid.' ? "white" : \'#FFFFA0\';
+			           comp[i].style.color = '.$var_valid.' ? "black" : \'#00005F\';
 			      }';
 		}
 	}
@@ -1436,7 +1457,6 @@ class EntryWriter1 extends EntryWriter {
 
 	protected function getTemplateCreatingEntryAttributeBlurJavascript($entry, $attribute, $component) {
 		$j = 'fill('.$component.'.id, pla_getComponentValue('.$component.'));';
-		//$j .= $this->get('DefaultCreatingEntry::AttributeBlurJavascript',$entry, $attribute, $component);
 		return $j;
 	}
 
@@ -1446,7 +1466,6 @@ class EntryWriter1 extends EntryWriter {
 
 	protected function getTemplateEditingEntryAttributeBlurJavascript($entry, $attribute, $component) {
 		$j = 'fill('.$component.'.id, pla_getComponentValue('.$component.'));';
-		//$j .= $this->get('DefaultEditingEntry::AttributeBlurJavascript',$entry, $attribute, $component);
 		return $j;
 	}
 
@@ -1494,6 +1513,12 @@ class EntryWriter1 extends EntryWriter {
 			$attr_note .= $rdn_note;
 		}
 
+		$hint_note = $this->get('HintNote',$attribute);
+		if ($hint_note) {
+			if (trim($attr_note)) $attr_note .= ', ';
+			$attr_note .= $hint_note;
+		}
+
 		if ($attr_note) printf('<sup><small>%s</small></sup>', $attr_note);
 
 		if ($attribute->isReadOnly() && $this->getLDAPServer()->isAttrReadOnly($attribute->getName())) {
@@ -1503,14 +1528,14 @@ class EntryWriter1 extends EntryWriter {
 		}
 	}
 
-	protected function drawAttributeValues($attribute) {
+	protected function drawAttributeValues($attribute,$entry) {
 		if ($attribute->isVisible()) $this->draw('StartValueLine', $attribute);
 
 		# draws values
 		$value_count = $attribute->getValueCount();
 		$i = 0;
 		for (; $i < $value_count; $i++) {
-			$this->draw('Value', $attribute, $i);
+			$this->draw('Value',$attribute,$i,$entry);
 		}
 
 		if ($this->context == ENTRY_WRITER_CREATION_CONTEXT) {
@@ -1519,7 +1544,7 @@ class EntryWriter1 extends EntryWriter {
 			else $blankvalue_count -= $value_count;
 
 			for ($j = 0; $j < $blankvalue_count; $j++) {
-				$this->draw('BlankValue', $attribute, $i + $j);
+				$this->draw('BlankValue',$attribute,$i+$j,$entry);
 			}
 		}
 
@@ -1548,7 +1573,7 @@ class EntryWriter1 extends EntryWriter {
 		switch ($i) {
 			case IdAttributeAddValueMenuItem :
 				if ($attribute->isVisible() && !$attribute->isReadOnly()
-					&& !$attribute->isRdn() && $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value')) {
+					&& $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value')) {
 					if ($attribute->getMaxValueCount() < 0 || $attribute->getValueCount() < $attribute->getMaxValueCount()) {
 						return $this->get('AddValueMenuItem', $attribute);
 					}
@@ -1595,7 +1620,7 @@ class EntryWriter1 extends EntryWriter {
 		}
 	}
 
-	protected function drawAttributeValue($attribute, $i) {
+	protected function drawAttributeValue($attribute,$i,$entry) {
 		if (DEBUG_ENABLED)
 			debug_log('Entered with (%s, %d)',1,__FILE__,__LINE__,__METHOD__,$attribute->getName(),$i);
 
@@ -1610,7 +1635,7 @@ class EntryWriter1 extends EntryWriter {
 
 		$this->draw('OldValue', $attribute, $i);
 
-		$this->draw('NewValue', $attribute, $i);
+		$this->draw('NewValue',$attribute,$i,$entry);
 
 		if ($attribute->isVisible()) {
 			echo '</td><td valign="top" align="right" width="100%">';
@@ -1626,7 +1651,10 @@ class EntryWriter1 extends EntryWriter {
 	 * Save the current value to detect changes
 	 */
 	protected function drawAttributeOldValue($attribute, $i) {
-		$val = $attribute->getValue($i);
+		if ($this->context == ENTRY_WRITER_EDITING_CONTEXT)
+			$val = $attribute->getValue($i);
+		else
+			$val = '';
 		if (!is_string($val)) $val = '';
 		if ($i < 0) $i = 0;
 
@@ -1637,20 +1665,33 @@ class EntryWriter1 extends EntryWriter {
 	/**
 	 * Display the current value
 	 */
-	protected function drawAttributeNewValue($attribute, $i) {
+	protected function drawAttributeNewValue($attribute,$i,$entry) {
 		if (!$attribute->isVisible()) {
 			$this->draw('HiddenValue', $attribute, $i);
+			$this->draw('Javascript',$attribute);
 
 		} elseif ($attribute->isReadOnly() || ($attribute->getEntry() && $attribute->getEntry()->getDn() && $attribute->isRdn())) {
-			$this->draw('ReadOnlyValue', $attribute, $i);
+
+			/* If this is the RDN, we need to see if it has multiple values. If it does, and the multivalues are not
+			 * not in the RDN, then we need to make them editable. */
+
+			if ($attribute->isRdn()) {
+				$rdn = split('\+',get_rdn($entry->getDN()));
+				if (in_array(sprintf('%s=%s',$attribute->getName(),$attribute->getValue($i)),$rdn))
+					$this->draw('ReadOnlyValue', $attribute, $i);
+				else
+					$this->draw('ReadWriteValue', $attribute, $i);
+
+			} else
+				$this->draw('ReadOnlyValue', $attribute, $i);
 
 		} else {
 			$this->draw('ReadWriteValue', $attribute, $i);
-		}	
+		}
 	}
 
-	protected function drawAttributeBlankValue($attribute, $i) {
-		$this->draw('Value', $attribute, $i);
+	protected function drawAttributeBlankValue($attribute,$i,$entry) {
+		$this->draw('Value',$attribute,$i,$entry);
 	}
 
 	protected function drawAttributeHiddenValue($attribute, $i) {
@@ -1753,8 +1794,8 @@ class EntryWriter1 extends EntryWriter {
 			$found = false;
 
 			printf('<select id="%s_%s_%s" name="%s[%s][%s]">',
-			       $id, htmlspecialchars($attribute->getName()), $i,
-			       $id, htmlspecialchars($attribute->getName()), $i);
+				$id, htmlspecialchars($attribute->getName()), $i,
+				$id, htmlspecialchars($attribute->getName()), $i);
 
 			foreach ($opts as $v) {
 				printf('<option value="%s" %s>%s</option>', $v, ($v == $default) ? 'selected' : '', $v);
@@ -1766,9 +1807,9 @@ class EntryWriter1 extends EntryWriter {
 			echo '</select>';
 		} else {
 			printf('<input type="text" name="%s[%s][%s]" id="%s_%s_%s" value="%s" size="4" />',
-			       $id, htmlspecialchars($attribute->getName()), $i,
-			       $id, htmlspecialchars($attribute->getName()), $i,
-			       htmlspecialchars($default));
+				$id, htmlspecialchars($attribute->getName()), $i,
+				$id, htmlspecialchars($attribute->getName()), $i,
+				htmlspecialchars($default));
 		}
 
 		if ($display) {
@@ -1854,9 +1895,8 @@ class EntryWriter1 extends EntryWriter {
 			printf('<img src="%s/go.png" alt="Go" align="top" />&nbsp;',IMGDIR);
 
 		} elseif ($this->getLDAPServer()->dnExists($val)) {
-			$href = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',$this->index,$val);
-			printf('<a title="%s %s" href="%s"><img src="%s/go.png" alt="Go" /></a>&nbsp;',_('Go to'),
-				htmlspecialchars($val), htmlspecialchars($href),IMGDIR);
+			printf('<a title="%s %s" href="cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s"><img src="%s/go.png" alt="Go" /></a>&nbsp;',
+				_('Go to'),htmlspecialchars($val),$this->index,rawurlencode($val),IMGDIR);
 
 		} else {
 			printf('<a title="%s %s"><img src="%s/nogo.png" alt="Go" /></a>&nbsp;',_('DN not available'),htmlspecialchars($val),IMGDIR);
@@ -1872,8 +1912,9 @@ class EntryWriter1 extends EntryWriter {
 
 	protected function drawAttributeUrlValueIcon($attribute, $val) {
 		$img = sprintf('<img src="%s/dc.png" alt="%s" align="top" />',IMGDIR,_('URL'));
+		$url = split(' +',$val,2);
 		if (strlen($val) <= 0) echo $img;
-		else printf('<a href="%s" target="new">'.$img.'</a>', htmlspecialchars($val));
+		else printf('<a href="%s" target="new">%s</a>',htmlspecialchars($url[0]),$img);
 		echo '&nbsp;';
 	}
 
@@ -1884,24 +1925,26 @@ class EntryWriter1 extends EntryWriter {
 
 		if ($attribute->getEntry() && $attribute->getEntry()->getDn() // if not creating attribute
 			&& $config->isCommandAvailable('schema') ) {
+
 			$href = sprintf('cmd.php?cmd=schema&server_id=%s&view=attributes&viewvalue=%s',
 				$this->index, real_attr_name($attribute->getName()));
 			printf('<a title="'._('Click to view the schema definition for attribute type \'%s\'')
 				.'" href="%s">%s</a>', $attribute->getName(), htmlspecialchars($href), $attr_display);
+
 		} else {
 			printf('%s', $attr_display);
 		}
 	}
 
 	protected function getAttributeAliasNote($attribute) {
-		# is there a user-friendly translation available for this attribute?
+		# Is there a user-friendly translation available for this attribute?
 		$friendly_name = $attribute->getFriendlyName();
 
-		if ($friendly_name != $attribute->getName()) {
-			return sprintf('<acronym title="%s: \'%s\' %s \'%s\'">%s</acronym>',_('Note'),$friendly_name,_('is an alias for'),$attribute->getName(),_('alias'));
-		} else {
+		if ($friendly_name != $attribute->getName())
+			return sprintf('<acronym title="%s: \'%s\' %s \'%s\'">%s</acronym>',
+				_('Note'),$friendly_name,_('is an alias for'),$attribute->getName(),_('alias'));
+		else
 			return '';
-		}
 	}
 
 	protected function getAttributeRequiredNote($attribute) {
@@ -1944,6 +1987,15 @@ class EntryWriter1 extends EntryWriter {
 		# is this attribute required because its the RDN
 		if ($attribute->isRdn()) {
 			return "<acronym title=\"" . _('This attribute is required for the RDN.') . "\">" . 'rdn' . "</acronym>&nbsp;";
+		} else {
+			return '';
+		}
+	}
+
+	protected function getAttributeHintNote($attribute) {
+		# Is there a hint for this attribute
+		if ($attribute->getHint()) {
+			return sprintf('<acronym title="%s">%s</acronym>&nbsp;',htmlspecialchars($attribute->getHint()),_('hint'));
 		} else {
 			return '';
 		}
@@ -2029,6 +2081,7 @@ class EntryWriter1 extends EntryWriter {
 	}
 
 	protected function drawBinaryAttributeJavascript($attribute) {
+		printf("\n<!-- START: %s  -->\n",__METHOD__);
 		$this->draw('Attribute::Javascript', $attribute);
 
 		$dn = '';
@@ -2057,6 +2110,7 @@ class EntryWriter1 extends EntryWriter {
 		}
 	}
 	</script>';
+		printf("\n<!-- END: %s  -->\n",__METHOD__);
 	}
 
 	protected function drawBinaryAttributeBlurJavascript($attribute, $component) {
@@ -2071,16 +2125,17 @@ class EntryWriter1 extends EntryWriter {
 		if (!is_string($val)) $val = '';
 
 		printf('<span style="white-space: nowrap;"><input type="text" class="value" id="f_date_%s_%s"'
-		       .' name="new_values[%s][%s]" value="%s" onFocus="focus_%s(this);" onBlur="blur_%s(this);" %s %s/>&nbsp;',
+			.' name="new_values[%s][%s]" value="%s" onFocus="focus_%s(this);" onBlur="blur_%s(this);" %s %s/>&nbsp;',
 			$attribute->getName(), $i, htmlspecialchars($attribute->getName()), $i, htmlspecialchars($val),
 			$attribute->getName(), $attribute->getName(),
 			($attribute->getSize() > 0) ? 'size="'.$attribute->getSize().'"' : '',
 			($attribute->getMaxLength() > 0) ? 'maxlength="'.$attribute->getMaxLength().'"' : '');
 		draw_date_selector_link($attribute->getName().'_'.$i);
-		echo '</span>';
+		echo '</span>'."\n";
 	}
 
 	protected function drawDateAttributeJavascript($attribute) {
+		printf("\n<!-- START: %s  -->\n",__METHOD__);
 		$this->draw('Attribute::Javascript', $attribute);
 
 		$entry['date'] = $_SESSION[APPCONFIG]->GetValue('appearance','date_attrs');
@@ -2100,6 +2155,7 @@ class EntryWriter1 extends EntryWriter {
 			if (in_array_ignore_case($attribute->getName(),array_keys($entry['time'])) && ($entry['time'][$attribute->getName()]))
 				printf('<script type="text/javascript" language="javascript">defaults[\'f_time_%s_%s\'] = \'%s\';</script>',$attribute->getName(),$i,'true');
 		}
+		printf("\n<!-- END: %s  -->\n",__METHOD__);
 	}
 
 	/***************************/
@@ -2119,7 +2175,7 @@ class EntryWriter1 extends EntryWriter {
 		$input_id = sprintf('new_values_%s_%s', htmlspecialchars($attribute->getName()), $i);
 
 		printf('<span style="white-space: nowrap;"><input type="text" class="value" name="%s" id="%s" value="%s"'
-		       .' onFocus="focus_%s(this);" onBlur="blur_%s(this);" %s %s/>&nbsp;',
+			.' onFocus="focus_%s(this);" onBlur="blur_%s(this);" %s %s/>&nbsp;',
 			$input_name, $input_id, htmlspecialchars($val),
 			$attribute->getName(), $attribute->getName(),
 			($attribute->getSize() > 0) ? 'size="'.$attribute->getSize().'"' : '',
@@ -2135,6 +2191,7 @@ class EntryWriter1 extends EntryWriter {
 			$this->draw('Helper', $attribute, $i);
 			echo '</td></tr></table>';
 		}
+		echo "\n";
 	}
 
 	protected function drawDnAttributeIcon($attribute, $val) {
@@ -2261,7 +2318,7 @@ class EntryWriter1 extends EntryWriter {
 	/* Paint a ObjectClassAttribute */
 	/********************************/
 
-	protected function drawObjectClassAttributeNewValue($attribute, $i) {
+	protected function drawObjectClassAttributeNewValue($attribute,$i,$entry) {
 		$val = $attribute->getValue($i);
 		if (!is_string($val)) $val = '';
 		if ($i < 0) $i = 0;
@@ -2282,7 +2339,7 @@ class EntryWriter1 extends EntryWriter {
 				_('This is a structural ObjectClass and cannot be removed.'),
 				_('structural'));
 		} else {
-			$this->draw('Attribute::NewValue', $attribute, $i);
+			$this->draw('Attribute::NewValue',$attribute,$i,$entry);
 		}
 	}
 
@@ -2300,15 +2357,12 @@ class EntryWriter1 extends EntryWriter {
 	/*****************************/
 
 	protected function drawPasswordAttributeOldValue($attribute, $i) {
-		//if ($this->context == ENTRY_WRITER_CREATION_CONTEXT) {
-			$this->draw('Attribute::OldValue', $attribute, $i);
-		//}
+		$this->draw('Attribute::OldValue', $attribute, $i);
 	}
 
 	protected function drawPasswordAttributeHiddenValue($attribute, $i) {
-		if ($this->context == ENTRY_WRITER_CREATION_CONTEXT) {
+		if ($this->context == ENTRY_WRITER_CREATION_CONTEXT)
 			$this->draw('Attribute::HiddenValue', $attribute, $i);
-		}
 	}
 
 	protected function drawPasswordAttributeReadOnlyValue($attribute, $i) {
@@ -2321,9 +2375,10 @@ class EntryWriter1 extends EntryWriter {
 		$obfuscate_password = obfuscate_password_display($enc_type);
 
 		printf('<input type="%s" class="roval" name="new_values[%s][%s]" id="new_values_%s_%s" value="%s" %s readonly /><br />',
-		        ($obfuscate_password ? 'password' : 'text'),
+			($obfuscate_password ? 'password' : 'text'),
 			htmlspecialchars($attribute->getName()), $i, htmlspecialchars($attribute->getName()),
 			$i, htmlspecialchars($val), ($attribute->getSize() > 0) ? 'size="'.$attribute->getSize().'"' : '');
+
 		if ($val != '') $this->draw('CheckLink', $attribute, 'new_values_'.htmlspecialchars($attribute->getName()).'_'.$i);
 	}
 
@@ -2335,16 +2390,15 @@ class EntryWriter1 extends EntryWriter {
 		$enc_type = get_enc_type($val);
 
 		# Set the default hashing type if the password is blank (must be newly created)
-		if ($val == '') {
+		if ($val == '')
 			$enc_type = get_default_hash($this->index);
-		}
 
 		echo '<table cellspacing="0" cellpadding="0"><tr><td valign="top">';
 
 		$obfuscate_password = obfuscate_password_display($enc_type);
 		$id = sprintf('new_values_%s_%s', htmlspecialchars($attribute->getName()), $i);
 		printf('<input type="%s" class="value" name="new_values[%s][%s]" id="%s" value="%s"'
-		       .' onFocus="focus_%s(this);" onBlur="blur_%s(this);" %s %s/>',
+			.' onFocus="focus_%s(this);" onBlur="blur_%s(this);" %s %s/>',
 			($obfuscate_password ? 'password' : 'text'),
 			htmlspecialchars($attribute->getName()), $i, $id,
 			htmlspecialchars($val),
@@ -2353,19 +2407,20 @@ class EntryWriter1 extends EntryWriter {
 			($attribute->getMaxLength() > 0) ? 'maxlength="'.$attribute->getMaxLength().'"' : '');
 
 		echo '</td><td valign="top">';
-		if ($attribute->hasProperty('helper')) {
+
+		if ($attribute->hasProperty('helper'))
 			$this->draw('Helper', $attribute, $i);
-		} else {
-			echo enc_type_select_list($enc_type,'enc',$attribute,$i);
-		}
+		else
+			echo enc_type_select_list($enc_type,'enc',$attribute->getName(),$i);
+
 		echo '</td></tr><tr><td valign="top">';
 
 		if ($attribute->hasProperty('verify') && $attribute->getProperty('verify') && $obfuscate_password) {
 			$id_v = sprintf('new_values_verify_%s_%s', htmlspecialchars($attribute->getName()), $i);
 			printf('<input type="password" class="value" name="new_values_verify[%s][%s]" id="%s" value="" %s %s/>',
-			       htmlspecialchars($attribute->getName()), $i, $id_v,
-			       ($attribute->getSize() > 0) ? 'size="'.$attribute->getSize().'"' : '',
-			       ($attribute->getMaxLength() > 0) ? 'maxlength="'.$attribute->getMaxLength().'"' : '');
+				htmlspecialchars($attribute->getName()), $i, $id_v,
+				($attribute->getSize() > 0) ? 'size="'.$attribute->getSize().'"' : '',
+				($attribute->getMaxLength() > 0) ? 'maxlength="'.$attribute->getMaxLength().'"' : '');
 			echo '</td><td valign="top">';
 			printf('(%s)', _('confirm'));
 			echo '</td></tr><tr><td valign="top">';
@@ -2394,6 +2449,7 @@ class EntryWriter1 extends EntryWriter {
 	}
 
 	protected function drawPasswordAttributeJavascript($attribute) {
+		printf("\n<!-- START: %s  -->\n",__METHOD__);
 		$this->draw('Attribute::Javascript', $attribute);
 
 		static $already_draw = false;
@@ -2401,6 +2457,7 @@ class EntryWriter1 extends EntryWriter {
 		else $already_draw = true;
 
 		# add the javascript so we can call check password later.
+		printf("\n<!-- %s  -->\n",__METHOD__);
 		echo '
 	<script type="text/javascript" language="javascript">
 		function passwordComparePopup(component_id) {
@@ -2409,6 +2466,7 @@ class EntryWriter1 extends EntryWriter {
 			if (mywindow.opener == null) mywindow.opener = self;
 		}
 	</script>';
+		printf("\n<!-- END: %s  -->\n",__METHOD__);
 	}
 
 	/***********************************/
@@ -2416,12 +2474,14 @@ class EntryWriter1 extends EntryWriter {
 	/***********************************/
 
 	protected function drawRandomPasswordAttributeJavascript($attribute) {
+		printf("\n<!-- START: %s  -->\n",__METHOD__);
 		$this->draw('PasswordAttribute::Javascript', $attribute);
 
 		$pwd = password_generate();
 		$pwd = str_replace("\\", "\\\\", $pwd);
 		$pwd = str_replace("'", "\\'", $pwd);
 
+		printf("\n<!-- %s  -->\n",__METHOD__);
 		echo '<script type="text/javascript" language="javascript">';
 		printf('var i = 0; var component = document.getElementById(\'new_values_%s_\'+i);', $attribute->getName());
 		printf('while (component) { if (!component.value) {');
@@ -2429,15 +2489,16 @@ class EntryWriter1 extends EntryWriter {
 		printf('alert(\'%s%s\n%s\');', _('A random password was generated for you'), _(':'), $pwd);
 		printf('} i++; component = document.getElementById(\'new_values_%s_\'+i); }', $attribute->getName());
 		echo '</script>';
+		printf("\n<!-- END: %s  -->\n",__METHOD__);
 	}
 
 	/******************************/
 	/* Paint a SelectionAttribute */
 	/******************************/
 
-	protected function drawSelectionAttributeValues($attribute) {
+	protected function drawSelectionAttributeValues($attribute,$entry) {
 		if (!$attribute->isVisible() || !$attribute->isMultiple() || ($attribute->getValueCount() > 0)) {
-			$this->draw('Attribute::Values', $attribute);
+			$this->draw('Attribute::Values',$attribute,$entry);
 		} else {
 			$this->draw('StartValueLine', $attribute);
 			$this->draw('Value', $attribute, 0);
@@ -2463,7 +2524,7 @@ class EntryWriter1 extends EntryWriter {
 
 	protected function drawSelectionAttributeReadWriteValue($attribute, $i) {
 		if ($attribute->isMultiple()) {
-			// for multiple selection, we draw the component only one time
+			# For multiple selection, we draw the component only one time
 			if ($i > 0) return;
 
 			if (($attribute->getSize() > 0) && ($attribute->getSize() < $attribute->getOptionCount())) {
@@ -2472,22 +2533,27 @@ class EntryWriter1 extends EntryWriter {
 					htmlspecialchars($attribute->getName()), $attribute->getSize());
 				$vals = $attribute->getValues();
 				$j = 0;
+
 				foreach ($attribute->getSelection() as $value => $description) {
 					if (in_array($value, $vals)) $selected[$value] = true;
 					$id = 'new_values_'.htmlspecialchars($attribute->getName()).'_'.($j++);
 					printf('<option id="%s" value="%s" onMouseDown="focus_%s(this);" onClick="blur_%s(this);" %s>%s</option>',
-					       $id, $value, htmlspecialchars($attribute->getName()), htmlspecialchars($attribute->getName()),
-					       isset($selected[$value]) ? 'selected' : '', $description);
+						$id, $value, htmlspecialchars($attribute->getName()), htmlspecialchars($attribute->getName()),
+						isset($selected[$value]) ? 'selected' : '', $description);
+					echo "\n";
 				}
+
 				foreach ($vals as $val) {
 					if (!isset($selected[$val])) {
 						$id = 'new_values_'.htmlspecialchars($attribute->getName()).'_'.($j++);
 						printf('<option id="%s" value="%s" onMouseDown="focus_%s(this);" onClick="blur_%s(this);" selected>'
-						       .'%s</option>', $id, $val, htmlspecialchars($attribute->getName()),
-						       htmlspecialchars($attribute->getName()), $val);
+							.'%s</option>', $id, $val, htmlspecialchars($attribute->getName()),
+							htmlspecialchars($attribute->getName()), $val);
 					}
+					echo "\n";
 				}
 				echo '</select>';
+
 			} else {
 				$selected = array();
 				$vals = $attribute->getValues();
@@ -2498,12 +2564,13 @@ class EntryWriter1 extends EntryWriter {
 					if (in_array($value, $vals)) $selected[$value] = true;
 					$id = 'new_values_'.htmlspecialchars($attribute->getName()).'_'.($j++);
 					printf('<tr><td><input type="checkbox" id="%s" name="new_values[%s][]" value="%s"'
-					       .' onFocus="focus_%s(this);" onClick="blur_%s(this);" %s /></td><td>%s</td></tr>',
-					        $id, htmlspecialchars($attribute->getName()), $value,
-				                $attribute->getName(), $attribute->getName(),
+						.' onFocus="focus_%s(this);" onClick="blur_%s(this);" %s /></td><td>%s</td></tr>',
+						$id, htmlspecialchars($attribute->getName()), $value,
+						$attribute->getName(), $attribute->getName(),
 						isset($selected[$value]) ? 'checked' : '',
 						"<span style=\"white-space: nowrap;\">&nbsp;$description</span>");
 				}
+
 				foreach ($vals as $val) {
 					if (!isset($selected[$val])) {
 						$id = 'new_values_'.htmlspecialchars($attribute->getName()).'_'.($j++);
@@ -2516,35 +2583,49 @@ class EntryWriter1 extends EntryWriter {
 				}
 				echo '</table>';
 			}
+
 		} else {
 			$val = $attribute->getValue($i);
 			if (!is_string($val)) $val = '';
 			if ($i < 0) $i = 0;
 
-			if ($attribute->hasProperty('helper')) {
+			if ($attribute->hasProperty('helper'))
 				echo '<table cellspacing="0" cellpadding="0"><tr><td valign="top">';
-			}
 
 			$found = false;
 			$empty_value = false;
 
 			$id = 'new_values_'.htmlspecialchars($attribute->getName()).'_'.$i;
+
+			# If we are a required attribute, and the selection is blank, then the user cannot submit this form.
+			if ($attribute->isRequired() && ! count($attribute->getSelection()))
+				system_message(array(
+					'title'=>_('Template Value Error'),
+					'body'=>sprintf('This template uses a selection list for attribute [<b>%s</b>], however the selection list is empty.<br />You may need to create some dependancy entries in your LDAP server so that this attribute renders with values. Alternatively, you may be able to define the appropriate selection values in the template file.',$attribute->getName()),
+					'type'=>'warn'));
+
+
 			printf('<select id="%s" name="new_values[%s][]" onFocus="focus_%s(this);" onChange="blur_%s(this);">',
-			       $id, htmlspecialchars($attribute->getName()), $attribute->getName(), $attribute->getName());
+				$id, htmlspecialchars($attribute->getName()), $attribute->getName(), $attribute->getName());
 
 			foreach ($attribute->getSelection() as $value => $description) {
 				printf('<option value="%s" %s>%s</option>', $value,
 					($value == $val) ? 'selected' : '', $description);
 				if ($value == $val) $found = true;
 				if ($value == '') $empty_value = true;
+				echo "\n";
 			}
+
 			if (!$found) {
 				/*if ($val || ($i >= 0) || ($attribute->getEntry() && $attribute->getEntry()->getDn()))*/
 				printf('<option value="%s" selected>%s</option>', $val, $val);
 				if ($val == '') $empty_value = true;
+				echo "\n";
 			}
+
 			if ((strlen($val) > 0) && !$empty_value && ($attribute->getEntry() && $attribute->getEntry()->getDn())) {
 				printf('<option value="">(%s)</option>', _('none, remove value'));
+				echo "\n";
 			}
 			echo '</select>';
 
@@ -2563,17 +2644,18 @@ class EntryWriter1 extends EntryWriter {
 					return $this->get('Attribute::MenuItem', $attribute, $i);
 				}
 				return '';
+
 			case IdAttributeModifyMemberMenuItem :
 				return '';
+
 			default :
 				return $this->get('Attribute::MenuItem', $attribute, $i);
 		}
 	}
 
 	protected function drawSelectionAttributeIcon($attribute, $val) {
-		if (!$attribute->isMultiple() || $attribute->isReadOnly()) {
+		if (!$attribute->isMultiple() || $attribute->isReadOnly())
 			$this->draw('Attribute::Icon', $attribute, $val);
-		}
 	}
 
 	/***************************/
@@ -2626,7 +2708,6 @@ class EntryWriter1 extends EntryWriter {
 	protected function drawShadowAttributeShadowDate($attribute, $shadow_date) {
 		$config = $_SESSION[APPCONFIG];
 
-		//$shadow_format_attrs = array_merge($shadow_before_today_attrs,$shadow_after_today_attrs);
 		$shadow_before_today_attrs = arrayLower($attribute->shadow_before_today_attrs);
 		$shadow_after_today_attrs = arrayLower($attribute->shadow_after_today_attrs);
 		$today = date('U');

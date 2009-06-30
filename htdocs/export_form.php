@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/export_form.php,v 1.26.2.1 2008/01/13 05:37:01 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/export_form.php,v 1.26.2.2 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * export_form.php
@@ -13,6 +13,7 @@ require './common.php';
 
 require LIBDIR.'export_functions.php';
 
+$entry = array();
 $entry['format'] = get_request('format','GET',false,get_line_end_format());
 $entry['scope'] = get_request('scope','GET',false,'base');
 $entry['id'] = get_request('exporter_id','GET',false,0);

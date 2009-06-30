@@ -134,11 +134,17 @@ $config->custom->commands['all'] = array(
    An AttributeFactory defines which class to use to represent a given attribute */
 // $config->custom->appearance['attribute_factory'] = "AttributeFactory";
 
+/* Just show your custom templates. */
+// $config->custom->appearance['custom_templates_only'] = false;
+
+/* Disable the default template. */
+// $config->custom->appearance['disable_default_template'] = false;
+
 /* Configure what objects are shown in left hand tree */
 // $config->custom->appearance['tree_filter'] = '(objectclass=*)';
 
 /* The height and width of the tree. If these values are not set, then
-   no tree scroll bars are provided.
+   no tree scroll bars are provided. */
 // $config->custom->appearance['tree_height'] = null;
 #  $config->custom->appearance['tree_height'] = 600;
 // $config->custom->appearance['tree_width'] = null;
@@ -270,7 +276,8 @@ $ldapservers->SetValue($i,'server','name','My LDAP Server');
    authentication with dn.
    This is useful, when users should be able to log in with their uid, but
    the ldap administrator wants to log in with his root-dn, that does not
-   necessarily have the uid attribute. */
+   necessarily have the uid attribute.
+   When using this feature, login_class is ignored. */
 // $ldapservers->SetValue($i,'login','fallback_dn',false);
 
 /* If you specified 'cookie' or 'session' as the auth_type above, and you
@@ -314,7 +321,7 @@ $ldapservers->SetValue($i,'server','name','My LDAP Server');
 // $ldapservers->SetValue($i,'auto_number','min','1000');
 
 /* The DN of the uidPool entry when 'uidpool' mechanism is used above. */
-#  $servers[$i]['auto_uid_number_uid_pool_dn'] = 'cn=uidPool,dc=example,dc=com';
+// $ldapservers->SetValue($i,'auto_number','uidpool_dn','cn=uidPool,dc=example,dc=com');
 
 /* If you set this, then phpldapadmin will bind to LDAP with this user ID when
    searching for the uidnumber. The idea is, this user id would have full
@@ -363,6 +370,25 @@ $ldapservers->SetValue($i,'server','name','My LDAP Server');
 /* Set this if you want phpldapadmin to perform rename operation on entry which
    has children. Certain servers are known to allow it, certain are not */
 // $ldapservers->SetValue($i,'server','branch_rename',false);
+
+/* If you set this, then phpldapadmin will show these attributes as
+   internal attributes, even if they are not defined in your schema. */
+// $ldapservers->SetValue($i,'server','custom_sys_attrs',array(''));
+#  $ldapservers->SetValue($i,'server','custom_sys_attrs',array('passwordExpirationTime','passwordAllowChangeTime'));
+
+/* If you set this, then phpldapadmin will show these attributes on
+   objects, even if they are not defined in your schema. */
+// $ldapservers->SetValue($i,'server','custom_attrs',array(''));
+#  $ldapservers->SetValue($i,'server','custom_attrs',array('nsRoleDN','nsRole','nsAccountLock'));
+
+/* These attributes will be forced to MAY attributes and become option in the
+   templates. If they are not defined in the templates, then they wont appear
+   as per normal template processing. You may want to do this becuase your LDAP
+   server may automatically calculate a default value.
+   In Fedora Directory Server using the DNA Plugin one could ignore uidNumber,
+   gidNumber and sambaSID. */
+// $ldapservers->SetValue($i,'force_may','attrs',array(''));
+#  $ldapservers->SetValue($i,'force_may','attrs',array('uidNumber','gidNumber','sambaSID'));
 
 /**************************************************************************
  * If you want to configure additional LDAP servers, do so below.         *
@@ -494,7 +520,7 @@ $friendly_attrs['uid']                      = 'User Name';
 /*********************************************/
 
 /* Add "modify group members" link to the attribute. */
-// $config->custom->modify_member['groupattr'] = array('member','uniqueMember','memberUid')
+// $config->custom->modify_member['groupattr'] = array('member','uniqueMember','memberUid');
 
 /* Configure filter for member search. This only applies to "modify group members" feature */
 // $config->custom->modify_member['filter'] = '(objectclass=Person)';

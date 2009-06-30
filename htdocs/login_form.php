@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login_form.php,v 1.29.2.4 2008/01/13 05:37:01 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login_form.php,v 1.29.2.7 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Displays the login form for a server for users who specify 'cookie' or 'session' for their auth_type.
@@ -14,12 +14,12 @@
 require './common.php';
 
 if (! in_array($ldapserver->auth_type, array('cookie','session')))
-	pla_error(sprintf(_('Unknown auth_type: %s'),htmlspecialchars($ldapserver->auth_type)));
+	error(sprintf(_('Unknown auth_type: %s'),htmlspecialchars($ldapserver->auth_type)),'error','index.php');
 
 printf('<h3 class="title">%s %s</h3>',_('Authenticate to server'),$ldapserver->name);
 
 # Check for a secure connection
-if (! isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on') {
+if (! isset($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) != 'on') {
 	echo '<br />';
 	echo '<center>';
 	echo '<span style="color:red">';
@@ -36,8 +36,8 @@ echo '<form action="cmd.php" method="post" name="login_form">';
 echo '<input type="hidden" name="cmd" value="login" />';
 printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 
-if (isset($_GET['redirect']))
-	printf('<input type="hidden" name="redirect" value="%s" />',rawurlencode($_GET['redirect']));
+if (get_request('redirect','GET',false,false))
+	printf('<input type="hidden" name="redirect" value="%s" />',rawurlencode(get_request('redirect','GET')));
 
 echo '<center>';
 echo '<table class="forminput">';

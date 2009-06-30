@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/TemplateCreatingEntry.php,v 1.3.2.1 2007/12/26 09:26:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/TemplateCreatingEntry.php,v 1.3.2.2 2008/11/28 12:50:20 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -66,7 +66,10 @@ class TemplateCreatingEntry extends DefaultCreatingEntry {
 	}
 
 	public function hasDefaultTemplate() {
-		return $this->default_template;
+		if ($_SESSION[APPCONFIG]->GetValue('appearance','disable_default_template'))
+			return false;
+		else
+			return $this->default_template;
 	}
 
 	public function getAttributes() {

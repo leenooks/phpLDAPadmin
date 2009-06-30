@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/entry_chooser.php,v 1.31.2.3 2008/01/13 05:37:00 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/entry_chooser.php,v 1.31.2.5 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Display a selection (popup window) to pick a DN.
@@ -10,6 +10,7 @@
 include './common.php';
 include HTDOCDIR.'header.php';
 
+$entry = array();
 $entry['container'] = get_request('container','GET');
 $entry['element'] = get_request('form_element','GET');
 $entry['rdn'] = get_request('rdn','GET');
@@ -38,7 +39,7 @@ if ($entry['container']) {
 if (isset($ldapserver) && ! is_null($entry['container'])) {
 
 	if (! $ldapserver->haveAuthInfo())
-		pla_error(_('Not enough information to login to server. Please check your configuration.'));
+		error(_('Not enough information to login to server. Please check your configuration.'),'error','index.php');
 
 	$entry['children'] = $ldapserver->getContainerContents($entry['container'],0,'(objectClass=*)',$_SESSION[APPCONFIG]->GetValue('deref','tree'));
 	sort($entry['children']);
@@ -61,7 +62,7 @@ if (isset($ldapserver) && ! is_null($entry['container'])) {
 
 	echo '<tr>';
 	echo '<td class="blank">&nbsp;</td>';
-	printf('<td class="icon"><a href="%s"><img src="images/up.png" alt="Up" /></a></td>',$href['up']);
+	printf('<td class="icon"><a href="%s"><img src="%s/up.png" alt="Up" /></a></td>',$href['up'],IMGDIR);
 	printf('<td colspan=2><a href="%s">%s</a></td>',$href['up'],_('Back Up...'));
 	echo '</tr>';
 
@@ -76,7 +77,7 @@ if (isset($ldapserver) && ! is_null($entry['container'])) {
 
 			echo '<tr>';
 			echo '<td class="blank">&nbsp;</td>';
-			printf('<td class="icon"><a href="%s"><img src="images/plus.png" alt="Plus" /></a></td>',$href['expand']);
+			printf('<td class="icon"><a href="%s"><img src="%s/plus.png" alt="Plus" /></a></td>',$href['expand'],IMGDIR);
 
 			printf('<td colspan=2><a href="%s">%s</a></td>',$href['return'],htmlspecialchars($dn));
 			echo '</tr>';
@@ -107,7 +108,7 @@ if (isset($ldapserver) && ! is_null($entry['container'])) {
 
 						echo '<tr>';
 						echo '<td class="blank">&nbsp;</td>';
-						printf('<td colspan=2 class="icon"><a href="%s"><img src="images/plus.png" alt="Plus" /></a></td>',$href['expand']);
+						printf('<td colspan=2 class="icon"><a href="%s"><img src="%s/plus.png" alt="Plus" /></a></td>',$href['expand'],IMGDIR);
 						printf('<td colspan=2><a href="%s">%s</a></td>',$href['return'],htmlspecialchars($dn));
 					}
 				}

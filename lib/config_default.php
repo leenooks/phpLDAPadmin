@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.27.2.7 2008/01/30 11:16:02 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.27.2.9 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Configuration processing and defaults.
@@ -83,6 +83,10 @@ class Config {
 		$this->default->appearance['date_attrs_showtime'] = array(
 			'desc'=>'Array of attributes that should show a the time when showing the jscalendar',
 			'default'=>array(''));
+
+		$this->default->appearance['disable_default_template'] = array(
+			'desc'=>'Disabled the Default Template',
+			'default'=>false);
 
 		$this->default->appearance['hide_debug_info'] = array(
 			'desc'=>'Hide the features that may provide sensitive debugging information to the browser',
@@ -508,10 +512,10 @@ class Config {
 
 		if (! isset($config[$key]))
 			error(sprintf('A call was made in [%s] to GetValue requesting [%s] that isnt predefined.',
-				basename($_SERVER['PHP_SELF']),$key),'error',true);
+				basename($_SERVER['PHP_SELF']),$key),'error',null,true);
 
 		if (! isset($config[$key][$index]))
-			error(sprintf('Requesting an index [%s] in key [%s] that isnt predefined.',$index,$key),'error',true);
+			error(sprintf('Requesting an index [%s] in key [%s] that isnt predefined.',$index,$key),'error',null,true);
 
 		return isset($config[$key][$index]['value']) ? $config[$key][$index]['value'] : $config[$key][$index]['default'];
 	}
@@ -526,23 +530,23 @@ class Config {
 				if (isset($this->default->$masterkey)) {
 
 					if (! is_array($masterdetails))
-						error(sprintf('Error in configuration file, [%s] should be an ARRAY.',$masterdetails),'error',true);
+						error(sprintf('Error in configuration file, [%s] should be an ARRAY.',$masterdetails),'error',null,true);
 
 					foreach ($masterdetails as $key => $value) {
 						# Test that the key is correct.
 						if (! in_array($key,array_keys($this->default->$masterkey)))
-							error(sprintf('Error in configuration file, [%s] has not been defined as a configurable variable.',$key),'error',true);
+							error(sprintf('Error in configuration file, [%s] has not been defined as a configurable variable.',$key),'error',null,true);
 
 						# Test if its should be an array or not.
 						if (is_array($this->default->{$masterkey}[$key]['default']) && ! is_array($value))
-							error(sprintf('Error in configuration file, %s[\'%s\'] SHOULD be an array of values.',$masterkey,$key),'error',true);
+							error(sprintf('Error in configuration file, %s[\'%s\'] SHOULD be an array of values.',$masterkey,$key),'error',null,true);
 
 						if (! is_array($this->default->{$masterkey}[$key]['default']) && is_array($value))
-							error(sprintf('Error in configuration file, %s[\'%s\'] should NOT be an array of values.',$masterkey,$key),'error',true);
+							error(sprintf('Error in configuration file, %s[\'%s\'] should NOT be an array of values.',$masterkey,$key),'error',null,true);
 					}
 
 				} else {
-					error(sprintf('Error in configuration file, [%s] has not been defined as a MASTER configurable variable.',$masterkey),'error',true);
+					error(sprintf('Error in configuration file, [%s] has not been defined as a MASTER configurable variable.',$masterkey),'error',null,true);
 				}
 			}
 		}

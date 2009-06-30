@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy_form.php,v 1.30.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy_form.php,v 1.30.2.3 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Copies a given object to create a new one.
@@ -15,8 +15,9 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'));
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
+$entry = array();
 $entry['dn'] = get_request('dn','GET');
 $entry['rdn'] = get_rdn($entry['dn']);
 
@@ -99,7 +100,7 @@ echo '</table></form>';
 echo "\n";
 
 if ($_SESSION[APPCONFIG]->GetValue('appearance','show_hints'))
-	printf('<small><img src="images/light.png" alt="Light" /><span class="hint">%s</span></small>',_('Hint: Copying between different servers only works if there are no schema violations'));
+	printf('<small><img src="%s/light.png" alt="Light" /><span class="hint">%s</span></small>',IMGDIR,_('Hint: Copying between different servers only works if there are no schema violations'));
 
 echo '</center>';
 ?>

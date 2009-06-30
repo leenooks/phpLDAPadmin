@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/PLMTree.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/PLMTree.php,v 1.2.2.1 2008/11/29 11:33:53 wurley Exp $
 
 require HTDOCDIR.JSDIR.'phplayersmenu/lib/PHPLIB.php';
 require HTDOCDIR.JSDIR.'phplayersmenu/lib/layersmenu-common.inc.php';
@@ -41,8 +41,8 @@ class PLMTree extends HTMLTree {
 		if (! isset($tm)) {
 			$tm = new TreeMenu();
 			$tm->setDirroot(JSDIR.'phplayersmenu/');
-			$tm->setIcondir(HTDOCDIR.'/images/');
-			$tm->setIconwww('images/');
+			$tm->setIcondir(IMGDIR);
+			$tm->setIconwww(IMGDIR);
 			$tm->setImgwww(JSDIR.'phplayersmenu/menuimages/');
 		}
 

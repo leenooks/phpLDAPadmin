@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.43.2.3 2008/01/04 14:29:44 wurley Exp $ */
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.43.2.8 2008/12/12 12:20:23 wurley Exp $
 
 /**
  * Classes and functions for the template engine.ation and capability
@@ -42,9 +42,10 @@ class xml2array {
 		$this->strXmlData = xml_parse($this->resParser,$strInputXML);
 
 		if (! $this->strXmlData)
-			die(sprintf('XML error: %s at line %d',
+			die(sprintf('XML error: %s at line %d in file %s',
 				xml_error_string(xml_get_error_code($this->resParser)),
-				xml_get_current_line_number($this->resParser)));
+				xml_get_current_line_number($this->resParser),
+				$file));
 
 		xml_parser_free($this->resParser);
 
@@ -113,7 +114,7 @@ class Templates {
 			while( ( $file = readdir( $dir ) ) !== false ) {
 				if (! preg_match('/.xml$/',$file)) continue;
 
-				if ($_SESSION['plaConfig']->GetValue('appearance','custom_templates_only')
+				if ($_SESSION[APPCONFIG]->GetValue('appearance','custom_templates_only')
 					&& ! preg_match('/^custom_/',$file))
 					continue;
 
@@ -141,7 +142,7 @@ class Templates {
 				if (! preg_match('/.xml$/',$file))
 					continue;
 
-				if ($_SESSION['plaConfig']->GetValue('appearance','custom_templates_only')
+				if ($_SESSION[APPCONFIG]->GetValue('appearance','custom_templates_only')
 					&& ! preg_match('/^custom_/',$file))
 					continue;
 
@@ -682,7 +683,7 @@ class Templates {
 						$args[0] = $_SESSION[APPCONFIG]->ldapservers->GetValue($ldapserver->server_id,'auto_number','search_base');
 
 					$container = $ldapserver->getContainerParent($container,$args[0]);
-					$vals = get_next_number($ldapserver,$container,$args[1],(!empty($args[2]) && ($args[2] == 'true')) ? true : false,(!empty($args[3])) ? $args[3] : false);
+					$vals = get_next_number($ldapserver,$container,$args[1],(!empty($args[2]) && ($args[2] == 'false')) ? false : true,(!empty($args[3])) ? $args[3] : false);
 					# operate calculus on next number.
 					if (!empty($args[4])) {
 						$mod = split(';',$args[4]);
@@ -981,8 +982,8 @@ class Templates {
 							if (isset($_POST['form'][$varname]))
 								$function_args[] = $_POST['form'][$varname];
 							else
-								pla_error(sprintf(_('Your template calls php.Function for a default value, however (%s) is NOT available in the POST FORM variables. The following variables are available [%s].'),$varname,
-									(isset($_POST['form']) ? implode('|',array_keys($_POST['form'])) : 'NONE')));
+								error(sprintf(_('Your template calls php.Function for a default value, however (%s) is NOT available in the POST FORM variables. The following variables are available [%s].'),$varname,
+									(isset($_POST['form']) ? implode('|',array_keys($_POST['form'])) : 'NONE')),'error','index.php');
 						} else {
 							$function_args[] = $arg;
 						}

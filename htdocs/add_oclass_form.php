@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass_form.php,v 1.25.2.1 2008/01/13 05:37:00 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass_form.php,v 1.25.2.2 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * This page may simply add the objectClass and take you back to the edit page,
@@ -20,14 +20,15 @@
  */
 require './common.php';
 
+$entry = array();
 $entry['oclass']['new'] = get_request('new_oclass','REQUEST');
 $entry['dn']['string'] = get_request('dn','REQUEST');
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'));
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
 if (! $entry['oclass']['new'])
-	pla_error(_('You did not select any ObjectClasses for this object. Please go back and do so.'));
+	error(_('You did not select any ObjectClasses for this object. Please go back and do so.'),'error','index.php');
 
 /* Ensure that the object has defined all MUST attrs for this objectClass.
  * If it hasn't, present a form to have the user enter values for all the
@@ -108,7 +109,10 @@ if (count($ldap['attrs']['need']) > 0) {
 	$result = $ldapserver->attrModify($entry['dn']['string'],array('objectClass'=>$entry['oclass']['new']));
 
 	if (! $result)
-		pla_error('Could not perform ldap_mod_add operation.',$ldapserver->error(),$ldapserver->errno());
+		system_message(array(
+			'title'=>_('Could not perform ldap_mod_add operation.'),
+			'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
+			'type'=>'error'));
 
 	else {
 		$href = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s&modified_attrs[]=objectClass',

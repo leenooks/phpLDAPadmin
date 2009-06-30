@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete_form.php,v 1.26.2.1 2008/01/13 05:37:00 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete_form.php,v 1.26.2.2 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * delete_form.php
@@ -16,8 +16,9 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'));
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
+$entry = array();
 $entry['dn']['string'] = get_request('dn','GET');
 $entry['dn']['html'] = htmlspecialchars($entry['dn']['string']);
 

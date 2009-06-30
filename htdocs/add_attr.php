@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr.php,v 1.20.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr.php,v 1.20.2.2 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Adds an attribute/value pair to an object
@@ -19,11 +19,12 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'));
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
 if (! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add'))
-	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('add attribute')));
+	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('add attribute')),'error','index.php');
 
+$entry = array();
 $entry['val'] = get_request('val','POST');
 $entry['binary'] = get_request('binary','POST');
 
@@ -34,7 +35,7 @@ $entry['attr']['string'] = get_request('attr','POST');
 $entry['attr']['encode'] = rawurlencode($entry['attr']['string']);
 
 if ((strlen($entry['binary']) <= 0) && (strlen($entry['val']) <= 0))
-	pla_error(_('You left the attribute value blank. Please go back and try again.'));
+	error(_('You left the attribute value blank. Please go back and try again.'),'error','index.php');
 
 /*
  * Special case for binary attributes (like jpegPhoto and userCertificate):
@@ -48,44 +49,44 @@ if ($badattr = $ldapserver->checkUniqueAttr($entry['dn']['string'],$entry['attr'
 	$href = htmlspecialchars(sprintf('cmd.php?cmd=search&search=true&form=advanced&server_id=%s&filter=%s=%s',
 		$ldapserver->server_id,$entry['attr']['string'],$badattr));
 
-	pla_error(sprintf(_('Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href=\'%s\'>search</a> for that entry.'),$entry['attr']['string'],$badattr,$entry['dn']['string'],$href));
+	error(sprintf(_('Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href=\'%s\'>search</a> for that entry.'),$entry['attr']['string'],$badattr,$entry['dn']['string'],$href),'error','index.php');
 }
 
 if (strlen($entry['binary']) > 0) {
 	if ($_FILES['val']['size'] == 0)
-		pla_error(_('The file you chose is either empty or does not exist. Please go back and try again.'));
+		error(_('The file you chose is either empty or does not exist. Please go back and try again.'),'error','index.php');
 
 	if (! is_uploaded_file($_FILES['val']['tmp_name'])) {
 		if (isset($_FILES['val']['error']))
 
 			switch($_FILES['val']['error']) {
 				case 0: # No error; possible file attack!
-					pla_error(_('Security error: The file being uploaded may be malicious.'));
+					error(_('Security error: The file being uploaded may be malicious.'),'error','index.php');
 					break;
 
 				case 1: # Uploaded file exceeds the upload_max_filesize directive in php.ini
-					pla_error(_('The file you uploaded is too large. Please check php.ini, upload_max_size setting'));
+					error(_('The file you uploaded is too large. Please check php.ini, upload_max_size setting'),'error','index.php');
 					break;
 
 				case 2: # Uploaded file exceeds the MAX_FILE_SIZE directive specified in the html form
-					pla_error(_('The file you uploaded is too large. Please check php.ini, upload_max_size setting'));
+					error(_('The file you uploaded is too large. Please check php.ini, upload_max_size setting'),'error','index.php');
 					break;
 
 				case 3: # Uploaded file was only partially uploaded
-					pla_error(_('The file you selected was only partially uploaded, likley due to a network error.'));
+					error(_('The file you selected was only partially uploaded, likley due to a network error.'),'error','index.php');
 					break;
 
 				case 4: # No file was uploaded
-					pla_error(_('You left the attribute value blank. Please go back and try again.'));
+					error(_('You left the attribute value blank. Please go back and try again.'),'error','index.php');
 					break;
 
 				default: # A default error, just in case!  :)
-					pla_error(_('Security error: The file being uploaded may be malicious.'));
+					error(_('Security error: The file being uploaded may be malicious.'),'error','index.php');
 					break;
 			}
 
 		else
-			pla_error(_('Security error: The file being uploaded may be malicious.'));
+			error(_('Security error: The file being uploaded may be malicious.'),'error','index.php');
 	}
 
 	$binaryfile['name'] = $_FILES['val']['tmp_name'];
@@ -125,7 +126,10 @@ if ($result) {
 	die();
 
 } else {
-	pla_error(_('Failed to add the attribute.'),$ldapserver->error(),$ldapserver->errno());
+	system_message(array(
+		'title'=>_('Failed to add the attribute.'),
+		'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
+		'type'=>'error'));
 }
 
 /**

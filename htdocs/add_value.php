@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_value.php,v 1.21.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_value.php,v 1.21.2.2 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Adds a value to an attribute for a given dn.
@@ -18,12 +18,13 @@
  */
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'));
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
 if (! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value'))
-	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('add attribute value')));
+	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('add attribute value')),'error','index.php');
 
 # The DN and ATTR we are working with.
+$entry = array();
 $entry['dn']['encode'] = get_request('dn','POST',true);
 $entry['dn']['string'] = rawurldecode($entry['dn']['encode']);
 $entry['attr']['encode'] = get_request('attr','POST',true);
@@ -34,7 +35,7 @@ $entry['value']['string'] = get_request('new_value','POST',true);
 $entry['value']['bin'] = get_request('binary','POST') ? true : false;
 
 if ($ldapserver->isAttrReadOnly($entry['attr']['string']))
-	pla_error(sprintf(_('The attribute "%s" is flagged as read-only in the phpLDAPadmin configuration.'),$entry['attr']['html']));
+	error(sprintf(_('The attribute "%s" is flagged as read-only in the phpLDAPadmin configuration.'),$entry['attr']['html']),'error','index.php');
 
 /*
  * Special case for binary attributes:
@@ -56,7 +57,7 @@ if ($badattr = $ldapserver->checkUniqueAttr($entry['dn']['string'],$entry['attr'
 	$href = htmlspecialchars(sprintf('cmd.php?cmd=search&search=true&form=advanced&server_id=%s&filter=%s=%s',
 		$ldapserver->server_id,$entry['attr']['string'],$badattr));
 
-	pla_error(sprintf(_('Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href=\'%s\'>search</a> for that entry.'),$entry['attr']['string'],$badattr,$entry['dn']['string'],$href));
+	error(sprintf(_('Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href=\'%s\'>search</a> for that entry.'),$entry['attr']['string'],$badattr,$entry['dn']['string'],$href),'error','index.php');
 }
 
 # Call the custom callback for each attribute modification and verify that it should be modified.
@@ -69,8 +70,11 @@ if (run_hook('pre_attr_add',
 		$add_result = $ldapserver->attrModify($entry['dn']['string'],$new_entry);
 
 		if (! $add_result) {
-			pla_error(_('Could not perform ldap_mod_add operation.'),
-				  $ldapserver->error(),$ldapserver->errno());
+			system_message(array(
+				'title'=>_('Could not perform ldap_mod_add operation.'),
+				'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
+				'type'=>'error'));
+
 		} else {
 			run_hook('post_attr_modify',
 				array('server_id'=>$ldapserver->server_id,'dn'=>$entry['dn']['string'],'attr_name'=>$entry['attr']['string'],'new_value'=>$new_entry));

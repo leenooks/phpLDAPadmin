@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/schema.php,v 1.67.2.4 2008/01/28 20:58:08 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/schema.php,v 1.67.2.7 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Displays the schema for the specified server_id
@@ -17,8 +17,9 @@
 require './common.php';
 
 if (! $_SESSION[APPCONFIG]->isCommandAvailable('schema'))
-	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('view schema')));
+	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('view schema')),'error','index.php');
 
+$entry = array();
 $entry['view'] = get_request('view','GET','false','objectClasses');
 $entry['value'] = get_request('viewvalue','GET');
 
@@ -63,7 +64,7 @@ echo '<br />';
 switch($entry['view']) {
 
 	case 'syntaxes':
-		$highlight_oid = isset($_GET['highlight_oid']) ? $_GET['highlight_oid'] : false;
+		$highlight_oid = get_request('highlight_oid','GET',false,false);
 
 		echo '<center>';
 		print '<table class="result_table" border=0>';
@@ -73,7 +74,7 @@ switch($entry['view']) {
 
 		$schema_syntaxes = $ldapserver->SchemaSyntaxes(null,true);
 		if (! $schema_syntaxes)
-			pla_error($schema_error_str);
+			error($schema_error_str,'error','index.php');
 
 		foreach ($schema_syntaxes as $syntax) {
 			$counter++;
@@ -108,14 +109,15 @@ switch($entry['view']) {
 			'usage' => _('Usage'),
 			'maximum_length' => _('Maximum Length'),
 			'aliases' => _('Aliases'),
-			'used_by_objectclasses' => _('Used by objectClasses')
+			'used_by_objectclasses' => _('Used by objectClasses'),
+			'force_as_may' => _('Force as MAY by config')
 		);
 
 		$schema_attrs = $ldapserver->SchemaAttributes();
 		$schema_object_classes = $ldapserver->SchemaObjectClasses();
 
 		if (! $schema_attrs || ! $schema_object_classes)
-			pla_error($schema_error_str);
+			error($schema_error_str,'error','index.php');
 
 		printf('<small>%s:</small>',_('Jump to an attribute type'));
 		echo '<form action="cmd.php" method="get">';
@@ -279,6 +281,10 @@ switch($entry['view']) {
 							print '</td>';
 							break;
 
+						case 'force_as_may':
+							printf('<td>%s</td>',$attr->forced_as_may ? _('Yes') : _('No'));
+							break;
+
 					}
 					print '</tr>';
 				}
@@ -292,7 +298,7 @@ switch($entry['view']) {
 	case 'matching_rules':
 		$schema_matching_rules = $ldapserver->MatchingRules(null,true);
 		if (! $schema_matching_rules)
-			pla_error($schema_error_str);
+			error($schema_error_str,'error','index.php');
 
 		printf('<small>%s</small><br />',_('Jump to a matching rule'));
 
@@ -371,7 +377,7 @@ switch($entry['view']) {
 	case 'objectClasses':
 		$schema_oclasses = $ldapserver->SchemaObjectClasses();
 		if (! $schema_oclasses)
-			pla_error($schema_error_str);
+			error($schema_error_str,'error','index.php');
 
 		printf('<small>%s:</small>',_('Jump to an objectClass'));
 
@@ -485,6 +491,11 @@ switch($entry['view']) {
 							$href = htmlspecialchars(sprintf($entry['href']['objectClasses'],strtolower($attr->getSource())));
 							printf('<small>(%s <a href="%s">%s</a>)</small>',_('Inherited from'),$href,$attr->getSource());
 						}
+
+						if ($oclass->isForceMay($attr->getName())) {
+							echo '<br />';
+							printf('<small>%s</small>',_('This attribute has been forced as a MAY attribute by the configuration'));
+						}
 						echo '</li>';
 					}
 					echo '</ul>';
@@ -502,5 +513,5 @@ switch($entry['view']) {
 }
 
 if (! is_null($entry['value']) && ! $entry['viewed'])
-	pla_error(sprintf(_('No such schema item: "%s"'),htmlspecialchars($entry['value'])));
+	error(sprintf(_('No such schema item: "%s"'),htmlspecialchars($entry['value'])),'error','index.php');
 ?>

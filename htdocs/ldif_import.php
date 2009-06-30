@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import.php,v 1.35.2.2 2008/01/28 12:58:43 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import.php,v 1.35.2.4 2008/12/12 12:20:22 wurley Exp $
  
 /**
  * Imports an LDIF file to the specified server_id.
@@ -16,8 +16,9 @@
 require './common.php';
 
 if (! $_SESSION[APPCONFIG]->isCommandAvailable('import'))
-	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('import')));
+	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('import')),'error','index.php');
 
+$entry = array();
 $entry['continuous_mode'] = get_request('continuous_mode') ? true : false;
 $entry['ldif'] = get_request('ldif');
 
@@ -31,20 +32,20 @@ if ($entry['ldif']) {
 	$entry['size'] = $_FILES['ldif_file']['size'];
 
 	if (! is_array($_FILES['ldif_file'])) {
-		pla_error(_('Missing uploaded file.'),null,-1,false);
+		error(_('Missing uploaded file.'),'error');
 		return;
 	}
 	if (! file_exists($file)) {
-		pla_error(_('No LDIF file specified. Please try again.'),null,-1,false);
+		error(_('No LDIF file specified. Please try again.'),'error');
 		return;
 	}
 	if ($entry['size'] <= 0) {
-		pla_error(_('Uploaded LDIF file is empty.'),null,-1,false);
+		error(_('Uploaded LDIF file is empty.'),'error');
 		return;
 	}
 
 } else {
-	pla_error(_('You must either upload a file or provide an LDIF in the text box.'),null,-1,false);
+	error(_('You must either upload a file or provide an LDIF in the text box.'),'error');
 	return;
 }
 
@@ -182,7 +183,7 @@ function display_pla_parse_error($exception,$faultyEntry) {
 	$errorMessage = $actionErrorMsg[$faultyEntry->getChangeType()];
 
 	echo '<center>';
-	echo '<table class="error"><tr><td class="img"><img src="images/warning.png" /></td>';
+	printf('<table class="error"><tr><td class="img"><img src="%s/warning.png" /></td>',IMGDIR);
 	echo '<td>';
 	printf('<center><h2>%s</h2></center>',_('LDIF Parse Error'));
 	echo '<br />';

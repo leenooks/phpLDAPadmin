@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass.php,v 1.19 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass.php,v 1.19.2.1 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Adds an objectClass to the specified dn.
@@ -20,11 +20,12 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'));
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
 if ($ldapserver->isAttrReadOnly('objectClass'))
-	pla_error(_('ObjectClasses are flagged as read only in the phpLDAPadmin configuration.'));
+	error(_('ObjectClasses are flagged as read only in the phpLDAPadmin configuration.'),'error','index.php');
 
+$entry = array();
 $entry['dn']['encode'] = get_request('dn');
 $entry['dn']['string'] = urldecode($entry['dn']['encode']);
 
@@ -42,7 +43,7 @@ if (is_array($entry['new']['attrs']) && count($entry['new']['attrs']) > 0)
 			$href['search'] = htmlspecialchars(sprintf('cmd.php?cmd=search&search=true&form=advanced&server_id=%s&filter=%s=%s',
 				$ldapserver->server_id,$attr,$badattr));
 
-			pla_error(sprintf(_('Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href=\'%s\'>search</a> for that entry.'),$attr,$badattr,$entry['dn']['string'],$href['search']));
+			error(sprintf(_('Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href=\'%s\'>search</a> for that entry.'),$attr,$badattr,$entry['dn']['string'],$href['search']),'error','index.php');
 		}
 
 		$new_entry[$attr] = $val;
@@ -51,7 +52,10 @@ if (is_array($entry['new']['attrs']) && count($entry['new']['attrs']) > 0)
 $result = $ldapserver->attrModify($entry['dn']['string'],$new_entry);
 
 if (! $result)
-	pla_error(_('Could not perform ldap_mod_add operation.'),$ldapserver->error(),$ldapserver->errno());
+	system_message(array(
+		'title'=>_('Could not perform ldap_mod_add operation.'),
+		'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
+		'type'=>'error'));
 
 else {
 	$modified_attrs = array_keys($entry['new']['attrs']);

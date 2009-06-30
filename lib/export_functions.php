@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/export_functions.php,v 1.36.2.1 2007/12/26 09:26:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/export_functions.php,v 1.36.2.2 2008/12/12 12:20:23 wurley Exp $
 
 /**
  * Fuctions and classes for exporting ldap entries to others formats
@@ -249,8 +249,10 @@ class PlaLdapExporter extends PlaAbstractExporter {
 
 		# if no result, there is a something wrong
 		if (! $this->results && $this->ldap_info->ldapserver->errno())
-			pla_error(_('Encountered an error while performing search.'),$this->ldap_info->ldapserver->error(),
-				$this->ldap_info->ldapserver->errno());
+			system_message(array(
+				'title'=>_('Encountered an error while performing search.'),
+				'body'=>ldap_error_msg($this->ldap_info->ldapserver->error(),$this->ldap_info->ldapserver->errno()),
+				'type'=>'error'));
 
 		usort($this->results,'pla_compare_dns');
 		$this->num_entries = count($this->results);

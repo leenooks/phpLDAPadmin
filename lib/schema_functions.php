@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/schema_functions.php,v 1.92 2007/12/15 07:50:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/schema_functions.php,v 1.92.2.1 2008/11/29 09:23:11 wurley Exp $
 
 /**
  * Classes and functions for fetching and parsing schema from an LDAP server.
@@ -61,6 +61,8 @@ class ObjectClass extends SchemaItem {
 	var $must_attrs;
 	# Arrays of attribute names that this objectClass allows, but does not require
 	var $may_attrs;
+	# Arrays of attribute names that this objectClass has been forced to MAY attrs, due to configuration
+	var $force_may;
 	# Boolean value indicating whether this objectClass is obsolete
 	var $is_obsolete;
 	# Array of objectClasses which inherit from this one (must be set at runtime explicitly by the caller)
@@ -76,6 +78,7 @@ class ObjectClass extends SchemaItem {
 		$this->sup_classes = array();
 		$this->type = $ldapserver->schema_oclass_default;
 		$this->must_attrs = array();
+		$this->force_may = array();
 		$this->may_attrs = array();
 		$this->is_obsolete = false;
 		$this->children_objectclasses = array();
@@ -265,11 +268,17 @@ class ObjectClass extends SchemaItem {
 
 					foreach ($attrs as $string) {
 						$attr = new ObjectClass_ObjectClassAttribute($string,$this->name);
-						array_push($this->must_attrs,$attr);
+
+						if ($ldapserver->isForceMay($attr->name)) {
+							array_push($this->force_may,$attr);
+							array_push($this->may_attrs,$attr);
+
+						} else
+							array_push($this->must_attrs,$attr);
 					}
 
 					if (DEBUG_ENABLED)
-						debug_log('Case MUST returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->must_attrs);
+						debug_log('Case MUST returned (%s) (%s)',8,__FILE__,__LINE__,__METHOD__,$this->must_attrs,$this->force_may);
 					break;
 
 				case 'MAY':
@@ -304,8 +313,8 @@ class ObjectClass extends SchemaItem {
 		$this->description = preg_replace("/\'$/",'',$this->description);
 
 		if (DEBUG_ENABLED)
-			debug_log('Returning () - NAME (%s), DESCRIPTION (%s), MUST (%s), MAY (%s)',9,__FILE__,__LINE__,__METHOD__,
-				$this->name,$this->description,$this->must_attrs,$this->may_attrs);
+			debug_log('Returning () - NAME (%s), DESCRIPTION (%s), MUST (%s), MAY (%s), FORCE MAY (%s)',9,__FILE__,__LINE__,__METHOD__,
+				$this->name,$this->description,$this->must_attrs,$this->may_attrs,$this->force_may);
 	}
 
 	/**
@@ -547,6 +556,17 @@ class ObjectClass extends SchemaItem {
 
 		$this->may_attrs = array_values(array_unique(array_merge($this->may_attrs,$new_may_attrs)));
 	}
+
+	/**
+	 * Determine if an array is listed in the force_may attrs
+	 */
+	function isForceMay($attr) {
+		foreach ($this->force_may as $forcemay)
+			if ($forcemay->getName() == $attr)
+				return true;
+
+		return false;
+	}
 }
 
 /**
@@ -628,6 +648,8 @@ class AttributeType extends SchemaItem {
 	var $used_in_object_classes;
 	# A list of object class names that require this attribute type.
 	var $required_by_object_classes;
+	# This attribute has been forced a MAY attribute by the configuration.
+	var $forced_as_may;
 
 	/**
 	 * Initialize the class' member variables
@@ -654,10 +676,11 @@ class AttributeType extends SchemaItem {
 		$this->type = null;
 		$this->used_in_object_classes = array();
 		$this->required_by_object_classes = array();
+		$this->forced_as_may = false;
 	}
 
 	/**
-	 * Creates a new AttributeType objcet from a raw LDAP AttributeType string.
+	 * Creates a new AttributeType object from a raw LDAP AttributeType string.
 	 */
 	function AttributeType($raw_ldap_attr_string) {
 		if (DEBUG_ENABLED)
@@ -1107,6 +1130,13 @@ class AttributeType extends SchemaItem {
 	 */
 	function getRequiredByObjectClasses() {
 		return $this->required_by_object_classes;
+	}
+
+	/**
+	 * This function will mark this attribute as a forced MAY attribute
+	 */
+	function setForceMay() {
+		$this->forced_as_may = true;
 	}
 }
 

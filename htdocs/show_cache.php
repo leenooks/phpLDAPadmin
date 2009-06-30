@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/show_cache.php,v 1.3.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/show_cache.php,v 1.3.2.3 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * This script shows the contents of the cache for debugging purposes
@@ -11,6 +11,7 @@
 
 require './common.php';
 
+$entry = array();
 $entry['key'] = get_request('key','REQUEST');
 $entry['index'] = get_request('index','REQUEST');
 
@@ -80,7 +81,7 @@ if (! $_SESSION[APPCONFIG]->GetValue('appearance','hide_debug_info')) {
 			poststr += "&index=" + encodeURI(xx);
 		}
 
-		obj.innerHTML = '<img src="images/ajax-spinner.gif" /> Loading...';
+		obj.innerHTML = '<img src="<?php echo IMGDIR ?>/ajax-spinner.gif" /> Loading...';
 		makePOSTRequest('cmd.php',poststr,'alertCacheContents','cancelCacheContents');
 	}
 

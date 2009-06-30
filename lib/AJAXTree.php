@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/AJAXTree.php,v 1.2 2007/12/15 07:50:31 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/AJAXTree.php,v 1.2.2.2 2008/12/12 06:46:15 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -101,7 +101,7 @@ class AJAXTree extends PLMTree {
 		}
 
 		echo '<a href="'.$edit_href.'" onclick="return displayMainPage(\''.$edit_href_params.'\');" title="'.$dn.'" >';
-		echo '<img align="top" border="0" class="imgs" id="jt'.$node_id.'folder" src="images/'.$entry->getIcon($ldapserver).'" alt="->" />';
+		printf('<img align="top" border="0" class="imgs" id="jt%sfolder" src="%s/%s" alt="->" />',$node_id,IMGDIR,$entry->getIcon($ldapserver));
 		echo '</a>';
 		echo '&nbsp;';
 		echo '<a href="'.$edit_href.'" onclick="return displayMainPage(\''.$edit_href_params.'\');" title="'.$dn.'" class="phplm">';
@@ -131,6 +131,10 @@ class AJAXTree extends PLMTree {
 		$first_child = $this->get_plm_before_first_child($parent_entry,$code);
 		$last_child = $this->get_plm_after_last_child($parent_entry,$code);
 
+		# If compression is on, we need to compress this output - but only if called by draw_tree_node
+		if (function_exists('isCompress') && isCompress() && get_request('cmd','REQUEST') == 'draw_tree_node')
+			ob_start();
+
 		echo $first_child;
 
 		for ($i=0; $i<count($children); $i++) {
@@ -141,6 +145,12 @@ class AJAXTree extends PLMTree {
 		}
 
 		echo $last_child;
+
+		# If compression is on, we need to compress this output
+		if (function_exists('isCompress') && isCompress() && get_request('cmd','REQUEST') == 'draw_tree_node') {
+			$output = ob_get_clean();
+			echo gzencode($output);
+		}
 	}
 
 	/**
@@ -272,7 +282,7 @@ class AJAXTree extends PLMTree {
 			}
 			//folderLayer.src = \'js/phplayersmenu/menuimages/tree_folder_open.png\';
 			//folderLayer.src = \'js/phplayersmenu/menuimages/tree_folder_closed.png\';
-			nodeLayer.src = \'images/ajax-spinner.gif\';
+			nodeLayer.src = \''.IMGDIR.'ajax-spinner.gif\';
 
 			// perform action
 			if (action == 2) {
@@ -310,7 +320,7 @@ class AJAXTree extends PLMTree {
 		}
 		function displayMainPage(urlParameters) {
 			var mainPageDiv = getMainPageDiv();
-			if (mainPageDiv) includeHTML(mainPageDiv, \'<img src="images/ajax-progress.gif"><br><small>'._('Retrieving DN').'...<\/small>\');
+			if (mainPageDiv) includeHTML(mainPageDiv, \'<img src="'.IMGDIR.'ajax-progress.gif"><br><small>'._('Retrieving DN').'...<\/small>\');
 			makeGETRequest(\'cmd.php\', urlParameters+\'&meth=get_body\', \'alertMainPage\', \'cancelMainPage\');
 			return false;
 		}
@@ -337,7 +347,7 @@ class AJAXTree extends PLMTree {
 			$output .= $this->get_indentation($level);
 			$output .= '<img align="top" border="0" class="imgs" src="js/phplayersmenu/menuimages/tree_split.png" alt="--" />';
 			$output .= '<a href="'.htmlspecialchars($href).'" title="'.$entry->getDn().'">';
-			$output .= '<img align="top" border="0" class="imgs" src="images/star.png" alt="->" />';
+			$output .= sprintf('<img align="top" border="0" class="imgs" src="%s/star.png" alt="->" />',IMGDIR);
 			$output .= '</a>';
 			$output .= '&nbsp;';
 			$output .= '<a href="'.htmlspecialchars($href).'" title="'._('Create new entry here').'" class="phplm">';
@@ -361,7 +371,7 @@ class AJAXTree extends PLMTree {
 			$output .= $this->get_indentation($level);
 			$output .= '<img align="top" border="0" class="imgs" src="js/phplayersmenu/menuimages/tree_corner.png" alt="--" />';
 			$output .= '<a href="'.htmlspecialchars($href).'" title="'.$entry->getDn().'">';
-			$output .= '<img align="top" border="0" class="imgs" src="images/star.png" alt="->" />';
+			$output .= sprintf('<img align="top" border="0" class="imgs" src="%s/star.png" alt="->" />',IMGDIR);
 			$output .= '</a>';
 			$output .= '&nbsp;';
 			$output .= '<a href="'.htmlspecialchars($href).'" title="'._('Create new entry here').'" class="phplm">';

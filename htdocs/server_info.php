@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/server_info.php,v 1.27.2.2 2008/01/13 05:37:01 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/server_info.php,v 1.27.2.4 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Fetches and displays all information that it can from the specified server
@@ -13,7 +13,7 @@
  */
 
 if (! $_SESSION[APPCONFIG]->isCommandAvailable('server_info'))
-	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('view server informations')));
+	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('view server information')),'error','index.php');
 
 # The attributes we'll examine when searching the LDAP server's RootDSE
 $root_dse_attributes = array(
@@ -94,8 +94,8 @@ foreach ($attrs as $attr => $values) {
 		print '<tr>';
 
 		if (preg_match('/^[0-9]+\.[0-9]+/',$value)) {
-			printf('<td width=5%%><img src="images/rfc.png" title="%s" alt="%s" /></td>',
-			       htmlspecialchars($value), htmlspecialchars($value));
+			printf('<td width=5%%><img src="%s/rfc.png" title="%s" alt="%s" /></td>',
+			       IMGDIR,htmlspecialchars($value), htmlspecialchars($value));
 
 			if ($oidtext = support_oid_to_text($value))
 				if (isset($oidtext['ref']))

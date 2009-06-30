@@ -1,0 +1,11 @@
+##
+## Used for storing the next gid and next uid in the the directory
+##
+objectclass ( 1.3.6.1.4.1.7165.1.2.2.3 NAME 'uidPool' SUP top AUXILIARY
+       DESC 'Pool for allocating UNIX uids'
+       MUST ( uidNumber $ cn ) )
+
+
+objectclass ( 1.3.6.1.4.1.7165.1.2.2.4 NAME 'gidPool' SUP top AUXILIARY
+       DESC 'Pool for allocating UNIX gids'
+       MUST ( gidNumber $ cn ) )

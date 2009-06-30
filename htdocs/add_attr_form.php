@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr_form.php,v 1.16.2.2 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr_form.php,v 1.16.2.4 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Displays a form for adding an attribute/value to an LDAP entry.
@@ -15,8 +15,9 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'));
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
+$entry = array();
 $entry['dn']['string'] = get_request('dn','GET');
 $entry['rdn'] = get_rdn($entry['dn']['string']);
 
@@ -24,6 +25,7 @@ printf('<h3 class="title">%s <b>%s</b></h3>',_('Add new attribute'),htmlspecialc
 printf('<h3 class="subtitle">%s: <b>%s</b> &nbsp;&nbsp;&nbsp; %s: <b>%s</b></h3>',
 	_('Server'),$ldapserver->name,_('Distinguished Name'),htmlspecialchars($entry['dn']['string']));
 
+$dn = array();
 $dn['attrs'] = $ldapserver->getDNAttrs($entry['dn']['string']);
 $dn['oclasses'] = $ldapserver->getDNAttr($entry['dn']['string'],'objectClass');
 

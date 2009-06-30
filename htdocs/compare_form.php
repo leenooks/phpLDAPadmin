@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/compare_form.php,v 1.5 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/compare_form.php,v 1.5.2.1 2008/12/12 07:29:55 wurley Exp $
 
 /**
  * Compares to DN entries side by side.
@@ -14,7 +14,7 @@
 
 require_once './common.php';
 
-$dn = (isset($_GET['dn']) ? $_GET['dn'] : '');
+$dn = get_request('dn','GET');
 $rdn = get_rdn($dn);
 $select_server_html = server_select_list($ldapserver->server_id,true,'server_id_dst');
 

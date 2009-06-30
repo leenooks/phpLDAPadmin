@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/mass_delete.php,v 1.17.2.2 2008/01/13 05:37:01 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/mass_delete.php,v 1.17.2.3 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Enables user to mass delete multiple entries using checkboxes.
@@ -19,23 +19,23 @@
 
 require './common.php';
 
-if( $ldapserver->isReadOnly() )
-	pla_error(_('Unable to delete, server is in READY-ONLY mode.'));
+if ($ldapserver->isReadOnly())
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
-if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_delete', 'mass_delete'))
-	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('delete mass entries')));
+if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_delete','mass_delete'))
+	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('delete mass entries')),'error','index.php');
 
 $confirmed = isset($_POST['confirmed']) ? true : false;
 isset($_POST['mass_delete']) or
-	pla_error(_('Error calling mass_delete.php. Missing mass_delete in POST vars.'));
+	error(_('Error calling mass_delete.php. Missing mass_delete in POST vars.'),'error','index.php');
 
 $mass_delete = $_POST['mass_delete'];
 
 is_array($mass_delete) or
-	pla_error(_('mass_delete POST var is not an array.'));
+	error(_('mass_delete POST var is not an array.'),'error','index.php');
 
 $ldapserver->isMassDeleteEnabled() or
-	pla_error(_('Mass deletion is not enabled. Please enable it in config.php before proceeding.'));
+	error(_('Mass deletion is not enabled. Please enable it in config.php before proceeding.'),'error','index.php');
 
 printf('<h3 class="title">%s</h3>',_('Mass Deleting'));
 
@@ -48,7 +48,7 @@ if ($confirmed == true) {
 	$failed_dns = array();
 
 	if (! is_array($mass_delete))
-		pla_error(_('Malformed mass_delete array.'));
+		error(_('Malformed mass_delete array.'),'error','index.php');
 
 	if (count($mass_delete) == 0) {
 		echo '<br />';

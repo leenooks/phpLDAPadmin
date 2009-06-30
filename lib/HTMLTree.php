@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/HTMLTree.php,v 1.2.2.6 2008/01/27 10:17:28 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/HTMLTree.php,v 1.2.2.10 2008/12/13 02:13:13 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -43,8 +43,8 @@ class HTMLTree extends Tree {
 					printf('<tr><td class="blank" colspan="%s">&nbsp;</td></tr>',$this->getDepth()+3);
 
 				printf('<tr><td>&nbsp;</td><td><div style="overflow: auto; %s%s"><table class="tree" border=0>',
-					$_SESSION['plaConfig']->GetValue('appearance','tree_width') ? sprintf('width: %spx; ',$_SESSION['plaConfig']->GetValue('appearance','tree_width')) : '',
-					$_SESSION['plaConfig']->GetValue('appearance','tree_height') ? sprintf('height: %spx; ',$_SESSION['plaConfig']->GetValue('appearance','tree_height')) : '');
+					$_SESSION[APPCONFIG]->GetValue('appearance','tree_width') ? sprintf('width: %spx; ',$_SESSION[APPCONFIG]->GetValue('appearance','tree_width')) : '',
+					$_SESSION[APPCONFIG]->GetValue('appearance','tree_height') ? sprintf('height: %spx; ',$_SESSION[APPCONFIG]->GetValue('appearance','tree_height')) : '');
 
 				foreach ($ldapserver->getBaseDN() as $base_dn) {
 					# Did we get a base_dn for this server somehow?
@@ -55,7 +55,7 @@ class HTMLTree extends Tree {
 						if (! $ldapserver->dnExists($base_dn)) {
 							$javascript_id++;
 
-							printf('<tr><td class="spacer"></td><td class="spacer"></td><td><img src="images/unknown.png" /></td><td colspan="%s">%s</td></tr>',$this->getDepth()+3-3,pretty_print_dn($base_dn));
+							printf('<tr><td class="spacer"></td><td class="spacer"></td><td><img src="%s/unknown.png" /></td><td colspan="%s">%s</td></tr>',IMGDIR,$this->getDepth()+3-3,pretty_print_dn($base_dn));
 
 							/* Move this form and add it to the end of the html - otherwise the javascript
 							 * doesnt work when isMassDeleteEnabled returning true.
@@ -103,9 +103,10 @@ class HTMLTree extends Tree {
 			}
 		} else { // end if $ldapserver->haveAuthInfo()
 			/* We don't have enough information to login to this server
-			 * Draw the "login..." link
-			 */
-			$this->draw_login_link();
+			 * Draw the "login..." link */
+
+			if ($ldapserver->auth_type != 'http')
+				$this->draw_login_link();
 		}
 
 		$this->draw_mass_deletion_submit_button();
@@ -153,14 +154,14 @@ class HTMLTree extends Tree {
 		$ldapserver = $this->getLdapServer();
 
 		echo '<tr class="server">';
-		printf('<td class="icon"><img src="images/server.png" alt="%s" /></td>',_('Server'));
+		printf('<td class="icon"><img src="%s/server.png" alt="%s" /></td>',IMGDIR,_('Server'));
 		printf('<td class="name" colspan="%s">',$this->getDepth()+3-1);
 		printf('%s',htmlspecialchars($ldapserver->name));
 
-		if ($ldapserver->haveAuthInfo() && $ldapserver->auth_type != 'config') {
+		if ($ldapserver->haveAuthInfo() && ! in_array($ldapserver->auth_type,array('config','http'))) {
 			$m = sprintf(_('Inactivity will log you off at %s'),
 				strftime('%H:%M',time() + ($ldapserver->session_timeout*60)));
-			printf(' <img width=14 height=14 src="images/timeout.png" title="%s" alt="%s"/>',$m,$m);
+			printf(' <img width=14 height=14 src="%s/timeout.png" title="%s" alt="%s"/>',IMGDIR,$m,$m);
 		}
 		echo '</td></tr>';
 	}
@@ -209,7 +210,7 @@ class HTMLTree extends Tree {
 				if ($_SESSION[APPCONFIG]->isCommandAvailable('export')) return $this->get_export_menu_item();
 				else return '';
 			case 6 :
-				if ($ldapserver->auth_type != 'config') return $this->get_logout_menu_item();
+				if (! in_array($ldapserver->auth_type,array('config','http'))) return $this->get_logout_menu_item();
 				else return '';
 			default :
 				return false;
@@ -220,56 +221,56 @@ class HTMLTree extends Tree {
 		$ldapserver = $this->getLdapServer();
 		$href = sprintf('cmd.php?cmd=schema&server_id=%s',$ldapserver->server_id);
 
-		return sprintf('<a title="%s %s" href="%s"><img src="%s" alt="%s" /><br />%s</a>',
-			_('View schema for'),$ldapserver->name,htmlspecialchars($href),'images/schema.png',_('schema'),_('schema'));
+		return sprintf('<a title="%s %s" href="%s"><img src="%s/%s" alt="%s" /><br />%s</a>',
+			_('View schema for'),$ldapserver->name,htmlspecialchars($href),IMGDIR,'schema.png',_('schema'),_('schema'));
 	}
 
 	protected function get_search_menu_item() {
 		$ldapserver = $this->getLdapServer();
 		$href = sprintf('cmd.php?cmd=search&server_id=%s&form=undefined',$ldapserver->server_id);
 
-		return sprintf('<a title="%s %s" href="%s"><img src="%s" alt="%s" /><br />%s</a>',
-			_('search'),$ldapserver->name,htmlspecialchars($href),'images/search.png',_('search'),_('search'));
+		return sprintf('<a title="%s %s" href="%s"><img src="%s/%s" alt="%s" /><br />%s</a>',
+			_('search'),$ldapserver->name,htmlspecialchars($href),IMGDIR,'search.png',_('search'),_('search'));
 	}
 
 	protected function get_refresh_menu_item() {
 		$ldapserver = $this->getLdapServer();
 		$href = sprintf('cmd.php?cmd=refresh&server_id=%s',$ldapserver->server_id);
 
-		return sprintf('<a title="%s %s" href="%s"><img src="%s" alt="%s" /><br />%s</a>',
-			_('Refresh all expanded containers for'),$ldapserver->name,htmlspecialchars($href),'images/refresh-big.png',_('refresh'),_('refresh'));
+		return sprintf('<a title="%s %s" href="%s"><img src="%s/%s" alt="%s" /><br />%s</a>',
+			_('Refresh all expanded containers for'),$ldapserver->name,htmlspecialchars($href),IMGDIR,'refresh-big.png',_('refresh'),_('refresh'));
 	}
 
 	protected function get_info_menu_item() {
 		$ldapserver = $this->getLdapServer();
 		$href = sprintf('cmd.php?cmd=server_info&server_id=%s',$ldapserver->server_id);
 
-		return sprintf('<a title="%s" href="%s"><img src="%s" alt="%s" /><br />%s</a>',
-			_('View server-supplied information'),htmlspecialchars($href),'images/info.png',_('info'),_('info'));
+		return sprintf('<a title="%s" href="%s"><img src="%s/%s" alt="%s" /><br />%s</a>',
+			_('View server-supplied information'),htmlspecialchars($href),IMGDIR,'info.png',_('info'),_('info'));
 	}
 
 	protected function get_import_menu_item() {
 		$ldapserver = $this->getLdapServer();
 		$href = sprintf('cmd.php?cmd=ldif_import_form&server_id=%s',$ldapserver->server_id);
 
-		return sprintf('<a title="%s" href="%s"><img src="%s" alt="%s" /><br />%s</a>',
-			_('Import entries from an LDIF file'),htmlspecialchars($href),'images/import.png',_('import'),_('import'));
+		return sprintf('<a title="%s" href="%s"><img src="%s/%s" alt="%s" /><br />%s</a>',
+			_('Import entries from an LDIF file'),htmlspecialchars($href),IMGDIR,'import.png',_('import'),_('import'));
 	}
 
 	protected function get_export_menu_item() {
 		$ldapserver = $this->getLdapServer();
 		$href = sprintf('cmd.php?cmd=export_form&server_id=%s',$ldapserver->server_id);
 
-		return sprintf('<a title="%s" href="%s"><img src="%s" alt="%s" /><br />%s</a>',
-			_('Export entries'),htmlspecialchars($href),'images/export.png',_('export'),_('export'));
+		return sprintf('<a title="%s" href="%s"><img src="%s/%s" alt="%s" /><br />%s</a>',
+			_('Export entries'),htmlspecialchars($href),IMGDIR,'export.png',_('export'),_('export'));
 	}
 
 	protected function get_logout_menu_item() {
 		$ldapserver = $this->getLdapServer();
 		$href = sprintf('cmd.php?cmd=logout&server_id=%s',$ldapserver->server_id);
 
-		return sprintf('<a title="%s" href="%s"><img src="%s" alt="%s" /><br />%s</a>',
-			_('Logout of this server'),htmlspecialchars($href),'images/logout.png',_('logout'),_('logout'));
+		return sprintf('<a title="%s" href="%s"><img src="%s/%s" alt="%s" /><br />%s</a>',
+			_('Logout of this server'),htmlspecialchars($href),IMGDIR,'logout.png',_('logout'),_('logout'));
 	}
 
 	protected function draw_logged_in_dn() {
@@ -338,7 +339,7 @@ class HTMLTree extends Tree {
 		$href['expand'] = sprintf('cmd.php?cmd=expand&server_id=%s&amp;dn=%s',$ldapserver->server_id,$encoded_dn);
 		$href['collapse'] = sprintf('cmd.php?cmd=collapse&server_id=%s&amp;dn=%s',$ldapserver->server_id,$encoded_dn);
 		$href['edit'] = sprintf('cmd.php?cmd=template_engine&server_id=%s&amp;dn=%s',$ldapserver->server_id,$encoded_dn);
-		$img_src = sprintf('images/%s',$dnEntry->getIcon($ldapserver));
+		$img_src = sprintf('%s/%s',IMGDIR,$dnEntry->getIcon($ldapserver));
 		$rdn = get_rdn($dn);
 
 		echo '<tr class="option">';
@@ -362,15 +363,15 @@ class HTMLTree extends Tree {
 		# Is this node expanded? (deciding whether to draw "+" or "-")
 		if ($dnEntry->isOpened()) {
 			if (!$child_count && !$ldapserver->isShowCreateEnabled()) {
-				echo '<td class="expander"><img src="images/minus.png" alt="-" /></td>';
+				printf('<td class="expander"><img src="%s/minus.png" alt="-" /></td>',IMGDIR);
 			} else {
-				printf('<td class="expander"><a href="%s"><img src="images/minus.png" alt="-" /></a></td>',$href['collapse']);
+				printf('<td class="expander"><a href="%s"><img src="%s/minus.png" alt="-" /></a></td>',$href['collapse'],IMGDIR);
 			}
 		} else {
 			if (($child_count !== false) && (!$child_count) && (!$ldapserver->isShowCreateEnabled())) {
-				echo '<td class="expander"><img src="images/minus.png" alt="-" /></td>';
+				printf('<td class="expander"><img src="%s/minus.png" alt="-" /></td>',IMGDIR);
 			} else {
-				printf('<td class="expander"><a href="%s"><img src="images/plus.png" alt="+" /></a></td>',$href['expand']);
+				printf('<td class="expander"><a href="%s"><img src="%s/plus.png" alt="+" /></a></td>',$href['expand'],IMGDIR);
 			}
 		}
 		$colspan--;
@@ -458,7 +459,7 @@ class HTMLTree extends Tree {
 
 		echo '<td class="spacer"></td>';
 		echo '<td class="spacer"></td>';
-		printf('<td class="icon"><a href="%s"><img src="images/star.png" alt="%s" /></a></td>',$href,_('new'));
+		printf('<td class="icon"><a href="%s"><img src="%s/star.png" alt="%s" /></a></td>',$href,IMGDIR,_('new'));
 		printf('<td class="link" colspan="%s"><a href="%s" title="%s %s">%s</a></td>',
 			$this->getDepth()+3-$level-1-3,$href,_('Create a new entry in'),$rdn,_('Create new entry here'));
 		echo '</tr>';
@@ -473,7 +474,7 @@ class HTMLTree extends Tree {
 			sprintf('cmd.php?cmd=%s&server_id=%s',get_custom_file($ldapserver->server_id,'login_form',''),$ldapserver->server_id));
 
 		echo '<tr class="option"><td class="spacer"></td>';
-		printf('<td class="icon"><a href="%s"><img src="images/uid.png" alt="%s" /></a></td>',$href,_('login'));
+		printf('<td class="icon"><a href="%s"><img src="%s/uid.png" alt="%s" /></a></td>',$href,IMGDIR,_('login'));
 		printf('<td class="logged_in" colspan="%s"><a href="%s">%s</a></td>',$this->getDepth()+3-2,$href,_('Login').'...');
 		echo '</tr>';
 
@@ -489,7 +490,7 @@ class HTMLTree extends Tree {
 	protected function draw_logout_link() {
 		$ldapserver = $this->getLdapServer();
 
-		if ($ldapserver->auth_type != 'config') {
+		if (! in_array($ldapserver->auth_type,array('config','http'))) {
 			printf('<tr><td class="spacer"></td><td colspan="%s"><small><a href="cmd.php?cmd=%s&server_id=%s">%s</a></small></td></tr>',
 				$this->getDepth()+3-1,get_custom_file($ldapserver->server_id,'logout',''),$ldapserver->server_id,_('logout'));
 		}

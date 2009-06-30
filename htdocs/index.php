@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/index.php,v 1.49.2.5 2008/01/12 10:01:28 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/index.php,v 1.49.2.10 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -40,6 +40,10 @@ if (! is_readable(LIBDIR.'functions.php')) {
 if (ob_get_level())
 	ob_end_clean();
 
+# Make sure this PHP install has pcre
+if (! extension_loaded('pcre'))
+	die('<p>Your install of PHP appears to be missing PCRE support.</p><p>Please install PCRE support before using phpLDAPadmin.<br /><small>(Dont forget to restart your web server afterwards)</small></p>');
+
 require LIBDIR.'functions.php';
 
 # Define the path to our configuration file.
@@ -48,9 +52,30 @@ if (defined('CONFDIR'))
 else
 	$app['config_file'] = 'config.php';
 
+# Make sure this PHP install has session support
+if (! extension_loaded('session'))
+	error('<p>Your install of PHP appears to be missing php-session support.</p><p>Please install php-session support before using phpLDAPadmin.<br /><small>(Dont forget to restart your web server afterwards)</small></p>','error',null,true);
+
 # Make sure this PHP install has gettext, we use it for language translation
 if (! extension_loaded('gettext'))
-	error('<p>Your install of PHP appears to be missing GETTEXT support.</p><p>GETTEXT is used for language translation.</p><p>Please install GETTEXT support before using phpLDAPadmin.<br /><small>(Dont forget to restart your web server afterwards)</small></p>','error',true);
+	system_message(array(
+		'title'=>_('Missing required extension'),
+		'body'=>'Your install of PHP appears to be missing GETTEXT support.</p><p>GETTEXT is used for language translation.</p><p>Please install GETTEXT support before using phpLDAPadmin.<br /><small>(Dont forget to restart your web server afterwards)</small>',
+		'type'=>'error'));
+
+# Make sure this PHP install has all our required extensions
+if (! extension_loaded('ldap'))
+	system_message(array(
+		'title'=>_('Missing required extension'),
+		'body'=>'Your install of PHP appears to be missing LDAP support.<br /><br />Please install LDAP support before using phpLDAPadmin.<br /><small>(Dont forget to restart your web server afterwards)</small>',
+		'type'=>'error'));
+
+# Make sure that we have php-xml loaded.
+if (! function_exists('xml_parser_create'))
+	system_message(array(
+		'title'=>_('Missing required extension'),
+		'body'=>'Your install of PHP appears to be missing XML support.<br /><br />Please install XML support before using phpLDAPadmin.<br /><small>(Dont forget to restart your web server afterwards)</small>',
+		'type'=>'error'));
 
 /**
  * Helper functions.
@@ -59,10 +84,10 @@ if (! extension_loaded('gettext'))
 if (isset($app['function_files']) && is_array($app['function_files']))
 	foreach ($app['function_files'] as $file_name ) {
 		if (! file_exists($file_name))
-			error(sprintf('Fatal error: Required file "%s" does not exist.',$file_name),'error',true);
+			error(sprintf('Fatal error: Required file "%s" does not exist.',$file_name),'error',null,true);
 
 		if (! is_readable($file_name))
-			error(sprintf('Fatal error: Cannot read the file "%s", its permissions may be too strict.',$file_name),'error',true);
+			error(sprintf('Fatal error: Cannot read the file "%s", its permissions may be too strict.',$file_name),'error',null,true);
 
 		ob_start();
 		require $file_name;
@@ -71,10 +96,10 @@ if (isset($app['function_files']) && is_array($app['function_files']))
 
 # Configuration File check
 if (! file_exists($app['config_file'])) {
-	error(sprintf(_('You need to configure %s. Edit the file "%s" to do so. An example config file is provided in "%s.example".'),'phpLDAPadmin',$app['config_file'],$app['config_file']),'error',true);
+	error(sprintf(_('You need to configure %s. Edit the file "%s" to do so. An example config file is provided in "%s.example".'),'phpLDAPadmin',$app['config_file'],$app['config_file']),'error',null,true);
 
 } elseif (! is_readable($app['config_file'])) {
-	error(sprintf('Fatal error: Cannot read your configuration file "%s", its permissions may be too strict.',$app['config_file']),'error',true);
+	error(sprintf('Fatal error: Cannot read your configuration file "%s", its permissions may be too strict.',$app['config_file']),'error',null,true);
 }
 
 # If our config file fails the sanity check, then stop now.
@@ -86,6 +111,9 @@ if (! check_config($app['config_file'])) {
 
 	exit;
 }
+
+if ($uri = get_request('URI','GET'))
+	header(sprintf('Location: cmd.php?%s',base64_decode($uri)));
 
 include './cmd.php';
 ?>

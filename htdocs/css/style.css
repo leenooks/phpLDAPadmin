@@ -1,4 +1,4 @@
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/css/style.css,v 1.48.2.4 2008/01/13 07:17:23 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/css/style.css,v 1.48.2.8 2008/12/19 00:38:31 wurley Exp $ */
 
 /* Global Page */
 table.page {
@@ -96,7 +96,7 @@ table.page table.control td.logo img.logo {
 	text-align: right;
 
 	width: 100px;
-	height: 60px;
+	height: 50px;
 }
 
 /* Global Page - LDAP Tree */
@@ -276,6 +276,7 @@ table.tree td.rdn a:hover {
 	font-size: 13px;
 	color: #841212;
 	background-color: #FFF0C0;
+	text-decoration: none;
 }
 
 table.tree td.rdn span.count {
@@ -294,13 +295,6 @@ table.tree td.link a {
 }
 
 table.tree td.link a:hover {
-	font-size: 13px;
-	color: #841212;
-	background-color: #FFF0C0;
-	text-decoration: none;
-}
-
-table.tree td.rdn a:hover {
 	font-size: 13px;
 	color: #841212;
 	background-color: #FFF0C0;
@@ -438,6 +432,7 @@ table.entry input {
 }
 
 table.entry input.value {
+	color: #000000;
 	font-size: 14px;
 	width: 350px;
 	background-color: #FFFFFF;
@@ -447,15 +442,16 @@ table.entry div.helper {
 	text-align: left;
 	white-space: nowrap;
 	background-color: #FFFFFF;
+	color: #888;
 	font-size: 14px;
 	font-weight: normal;
-	color: #888;
 }
 
 table.entry input.roval {
 	font-size: 14px;
 	width: 350px;
 	background-color: #FFFFFF;
+	color: #000000;
 	border: none;
 }
 
@@ -463,12 +459,14 @@ table.entry textarea.value {
 	font-size: 14px;
 	width: 350px;
 	background-color: #FFFFFF;
+	color: #000000;
 }
 
 table.entry textarea.roval {
 	font-size: 14px;
 	width: 350px;
 	background-color: #FFFFFF;
+	color: #000000;
 	border: none;
 }
 
@@ -604,41 +602,50 @@ table.entry tr.updated td.ew2_val {
 #login {
 	background: url('../images/uid.png') no-repeat 0 1px;
 	background-color: #FAFAFF;
+	color: #000000;
 	padding-left: 17px;
 }
 
 #login:focus {
 	background-color: #F0F0FF;
+	color: #000000;
 }
 
 #login:disabled {
 	background-color: #DDDDFF;
+	color: #000000;
 }
 
 #password {
 	background: url('../images/key.png') no-repeat 0 1px;
 	background-color: #FAFAFF;
+	color: #000000;
 	padding-left: 17px;
 }
 
 #password:focus {
 	background-color: #F0F0FF;
+	color: #000000;
 }
 
 #password:disabled {
 	background-color: #DDDDFF;
+	color: #000000;
 }
 
 #generic {
 	background-color: #FAFAFF;
+	color: #000000;
 	padding-left: 17px;
 }
 #generic:focus {
 	background-color: #F0F0FF;
+	color: #000000;
 }
 
 #generic:disabled {
 	background-color: #DDDDFF;
+	color: #000000;
 }
 
 /* After input results */

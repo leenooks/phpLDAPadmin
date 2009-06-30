@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/page.php,v 1.3.2.14 2008/01/27 11:57:39 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/page.php,v 1.3.2.16 2008/12/12 09:20:06 wurley Exp $
 
 /**
  * Page Rendering Functions
@@ -28,7 +28,7 @@ class page {
 
 		# Default Values for configurable items.
 		$this->_default['stylecss'] = CSSDIR.'style.css';
-		$this->_default['logo'] = IMGDIR.'logo_small.jpg';
+		$this->_default['logo'] = IMGDIR.'logo-small.png';
 		$this->_default['sysmsg']['error'] = IMGDIR.'warning.png';
 		$this->_default['sysmsg']['warn'] = IMGDIR.'notice.png';
 		$this->_default['sysmsg']['info'] = IMGDIR.'light-big.png';
@@ -45,11 +45,7 @@ class page {
 		}
 
 		header('Content-type: text/html; charset="UTF-8"');
-		if (isset($_SESSION[APPCONFIG])
-			&& $_SESSION[APPCONFIG]->GetValue('appearance','compress')
-			&& eregi('gzip',$_SERVER['HTTP_ACCEPT_ENCODING'])
-			&& ! ini_get('zlib.output_compression')) {
-
+		if (isCompress()) {
 			header('Content-Encoding: gzip');
 
 			if (DEBUG_ENABLED)
@@ -304,11 +300,7 @@ class page {
 				echo $object->draw('body');
 		}
 
-		if ($compress && ob_get_level() && isset($_SESSION[APPCONFIG])
-			&& $_SESSION[APPCONFIG]->GetValue('appearance','compress')
-			&& ! ini_get('zlib.output_compression')
-			&& eregi('gzip',$_SERVER['HTTP_ACCEPT_ENCODING'])) {
-
+		if ($compress && ob_get_level() && isCompress()) {
 			$output = ob_get_contents();
 			ob_end_clean();
 
@@ -324,7 +316,9 @@ class page {
 		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
 			debug_log('Entered with ()',129,__FILE__,__LINE__,__METHOD__);
 
-		printf('<tr class="foot"><td colspan=3>%s</td></tr>',pla_version());
+		printf('<tr class="foot"><td><small>%s</small></td><td colspan=2>%s</td></tr>',
+			isCompress() ? '[C]' : '&nbsp;',
+			pla_version());
 	}
 
 	public function display($filter=array()) {
@@ -384,11 +378,7 @@ class page {
 		echo '</html>';
 
 		# compress output
-		if (ob_get_level() && isset($_SESSION[APPCONFIG])
-			&& $_SESSION[APPCONFIG]->GetValue('appearance','compress')
-			&& ! ini_get('zlib.output_compression')
-			&& eregi('gzip',$_SERVER['HTTP_ACCEPT_ENCODING'])) {
-
+		if (ob_get_level() && isCompress()) {
 			$output = ob_get_contents();
 			ob_end_clean();
 

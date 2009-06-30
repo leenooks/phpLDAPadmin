@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_list.php,v 1.7.2.3 2008/01/13 05:37:02 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_list.php,v 1.7.2.5 2008/11/30 13:19:49 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -20,7 +20,7 @@ foreach ($results as $dn => $dndetails) {
 	echo '<table class="result" border=0>';
 
 	echo '<tr class="list_title">';
-	printf('<td class="icon"><img src="images/%s" alt="icon" /></td>',get_icon($ldapserver,$dn));
+	printf('<td class="icon"><img src="%s/%s" alt="icon" /></td>',IMGDIR,get_icon($ldapserver,$dn));
 
 	$formatted_dn = get_rdn($dn);
 	if (!$_SESSION[APPCONFIG]->isCommandAvailable('schema')) {

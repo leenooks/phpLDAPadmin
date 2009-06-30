@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_table.php,v 1.9.2.3 2008/01/13 05:37:02 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_table.php,v 1.9.2.4 2008/11/29 11:33:53 wurley Exp $
 
 /**
  * Incoming variables (among others)
@@ -31,7 +31,7 @@ foreach ($results as $dn => $dndetails) {
 
 	$edit_url = sprintf('cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s',$ldapserver->server_id,rawurlencode($dn));
 	$attrs_display = array();
-	$attrs_display[''] = sprintf('<center><a href="%s"><img src="images/%s" alt="icon" /></a></center>',$edit_url,get_icon($ldapserver,$dn));
+	$attrs_display[''] = sprintf('<center><a href="%s"><img src="%s/%s" alt="icon" /></a></center>',$edit_url,IMGDIR,get_icon($ldapserver,$dn));
 
 	if ($_SESSION[APPCONFIG]->isCommandAvailable('schema')) {
 		$dn_display = strlen($dn) > 40

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryReader.php,v 1.2.2.3 2008/01/27 14:09:14 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryReader.php,v 1.2.2.5 2008/12/12 12:20:22 wurley Exp $
 
 define('ENTRY_READER_CREATION_CONTEXT', '1');
 define('ENTRY_READER_EDITING_CONTEXT', '2');
@@ -113,7 +113,11 @@ class EntryReader extends Visitor {
 		// @todo editing objectclasses
 		if (($this->context == ENTRY_READER_CREATION_CONTEXT) && ($name == 'objectClass')) return;
 
-		$old_vals = $this->get('OldValues', $attribute);
+		if ($this->context == ENTRY_READER_EDITING_CONTEXT)
+			$old_vals = $this->get('OldValues', $attribute);
+		else
+			$old_vals = array();
+
 		$new_vals = $this->get('NewValues', $attribute);
 
 		if (isset($_POST['old_values'][$name])) {
@@ -205,7 +209,7 @@ class EntryReader extends Visitor {
 		}
 
 		if (is_null($val)) {
-			pla_error(sprintf(_('Your template is missing variable (%s)'), $request));
+			error(sprintf(_('Your template is missing variable (%s)'),$request),'error','index.php');
 		}
 
 		return $val;
@@ -255,7 +259,7 @@ class EntryReader extends Visitor {
 					if (function_exists($matches[1])) {
 						$val = call_user_func($matches[1], $matches[2], $attribute, $i, $val);
 					} else {
-						pla_error(sprintf(_('Your template has an unknown post function (%s).'), $matches[1]));
+						error(sprintf(_('Your template has an unknown post function (%s).'),$matches[1]),'error','index.php');
 					}
 			}
 		}

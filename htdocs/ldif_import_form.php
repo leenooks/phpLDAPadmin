@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import_form.php,v 1.22.2.1 2008/01/13 05:43:13 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import_form.php,v 1.22.2.3 2008/12/12 12:20:22 wurley Exp $
  
 /**
  * Displays a form to allow the user to upload and import
@@ -13,10 +13,10 @@
 require './common.php';
 
 if (! ini_get('file_uploads'))
-	pla_error(_('Your PHP.INI does not have file_uploads = ON. Please enable file uploads in PHP.'));
+	error(_('Your PHP.INI does not have file_uploads = ON. Please enable file uploads in PHP.'),'error','index.php');
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'));
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
 printf('<h3 class="title" colspan=0>%s</h3>',_('Import LDIF File'));
 printf('<h3 class="subtitle" colspan=0>%s: <b>%s</b></h3>',_('Server'),htmlspecialchars($ldapserver->name));
@@ -38,7 +38,7 @@ printf('<tr><td>&nbsp;</td><td class="small"><b>%s %s</b></td></tr>',_('Maximum 
 
 echo '<tr><td colspan=2>&nbsp;</td></tr>';
 printf('<tr><td>%s</td></tr>',_('Or paste your LDIF here'));
-echo '<tr><td colspan=2><textarea name="ldif" rows="20" cols="60"></textarea></td></tr>';
+echo '<tr><td colspan=2><textarea name="ldif" rows="20" cols="100"></textarea></td></tr>';
 echo '<tr><td colspan=2>&nbsp;</td></tr>';
 printf('<tr><td>&nbsp;</td><td class="small"><input type="checkbox" name="continuous_mode" value="1" />%s</td></tr>',
 	_("Don't stop on errors"));

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/timeout_functions.php,v 1.10.2.2 2008/01/27 05:11:41 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/timeout_functions.php,v 1.10.2.4 2008/12/13 08:57:09 wurley Exp $
 
 /**
  * A collection of functions used throughout phpLDAPadmin for the timeout and automatic logout feature
@@ -42,7 +42,6 @@ function unset_lastactivity($ldapserver) {
  * Check if custom session timeout has been reached for server $ldapserver.
  * If it has:
  * 	- automatically log out user by calling $ldapserver->unsetLoginDN()
- *	- if $server_id is equal to right frame $server_id, load timeout.php page in the right frame
  *	- return true
  *
  * @param object $ldapserver The LDAPServer object of the server which the user has logged in.
@@ -69,7 +68,7 @@ function session_timed_out($ldapserver) {
 
 			if (in_array($ldapserver->auth_type,array('cookie','session'))) {
 				syslog_notice('Logout for '.$ldapserver->getLoggedInDN());
-				$ldapserver->unsetLoginDN() or pla_error(_('Could not logout.'));
+				$ldapserver->unsetLoginDN() or error(_('Could not logout.'),'error','index.php');
 			}
 
 			return true;

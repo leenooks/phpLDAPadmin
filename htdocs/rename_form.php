@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename_form.php,v 1.11.2.1 2008/01/13 05:37:01 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename_form.php,v 1.11.2.2 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Displays a form for renaming an LDAP entry.
@@ -17,9 +17,9 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'));
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 if (! $ldapserver->haveAuthInfo())
-	pla_error(_('Not enough information to login to server. Please check your configuration.'));
+	error(_('Not enough information to login to server. Please check your configuration.'),'error','index.php');
 
 $dn = $_GET['dn'];
 $rdn = get_rdn($dn);

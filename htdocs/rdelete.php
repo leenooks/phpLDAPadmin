@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rdelete.php,v 1.28.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rdelete.php,v 1.28.2.3 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Recursively deletes the specified DN and all of its children
@@ -15,17 +15,18 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'));
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
-if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_delete', 'simple_delete'))
-	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('delete entry')));
+if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_delete','simple_delete'))
+	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('delete entry')),'error','index.php');
 
-$entry['dn'] = $_POST['dn'];
+$entry = array();
+$entry['dn'] = get_request('dn');
 if (! $entry['dn'])
-	pla_error(_('You must specify a DN'));
+	error(_('You must specify a DN'),'error','index.php');
 
 if (! $ldapserver->dnExists($entry['dn']))
-	pla_error(sprintf(_('No such entry: %s'),htmlspecialchars($entry['dn'])));
+	error(sprintf('%s (%s)',_('No such entry.'),htmlspecialchars($entry['dn'])),'error','index.php');
 
 printf('<h3 class="title">'._('Deleting %s').'</h3>',htmlspecialchars(get_rdn($entry['dn'])));
 printf('<h3 class="subtitle">%s</h3>',_('Recursive delete progress'));
@@ -42,8 +43,10 @@ if ($result) {
 	printf(_('Entry %s and sub-tree deleted successfully.'),'<b>'.htmlspecialchars($entry['dn']).'</b>');
 
 } else {
-	pla_error(sprintf(_('Could not delete the entry: %s'),htmlspecialchars($entry['dn'])),
-		$ldapserver->error(),$ldapserver->errno());
+	system_message(array(
+		'title'=>_('Could not delete the entry.').sprintf(' (%s)',pretty_print_dn($entry['dn'])),
+		'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
+		'type'=>'error'));
 }
 
 function pla_rdelete($ldapserver,$dn) {
@@ -60,8 +63,10 @@ function pla_rdelete($ldapserver,$dn) {
 				return true;
 
 			} else {
-				pla_error(sprintf(_('Failed to delete entry %s'),htmlspecialchars($dn)),
-					$ldapserver->error(),$ldapserver->errno());
+				system_message(array(
+					'title'=>_('Could not delete the entry.').sprintf(' (%s)',pretty_print_dn($entry['dn'])),
+					'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
+					'type'=>'error'));
 			}
 
 	} else {
@@ -77,8 +82,10 @@ function pla_rdelete($ldapserver,$dn) {
 				return true;
 
 			} else {
-				pla_error(sprintf(_('Failed to delete entry %s'),htmlspecialchars($dn)),
-					$ldapserver->error(),$ldapserver->errno());
+				system_message(array(
+					'title'=>_('Could not delete the entry.').sprintf(' (%s)',pretty_print_dn($entry['dn'])),
+					'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
+					'type'=>'error'));
 			}
 	}
 }

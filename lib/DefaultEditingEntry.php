@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/DefaultEditingEntry.php,v 1.2.2.2 2007/12/29 08:25:24 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/DefaultEditingEntry.php,v 1.2.2.3 2008/03/01 02:13:03 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -32,10 +32,20 @@ class DefaultEditingEntry extends Entry {
 			if (!$int_attrs_vals) $int_attrs_vals = array();
 			elseif (!is_array($int_attrs_vals)) $int_attrs_vals = array($int_attrs_vals);
 
+			$custom_int_attrs_vals = $ldapserver->getCustomDNSysAttrs($this->getDn());
+			if (! $custom_int_attrs_vals) $attrs_vals = array();
+			elseif (! is_array($custom_int_attrs_vals)) $custom_int_attrs_vals = array($custom_int_attrs_vals);
+
 			$attrs_vals = $ldapserver->getDNAttrs($this->getDn(),false,$_SESSION[APPCONFIG]->GetValue('deref','view'));
 			if (! $attrs_vals) $attrs_vals = array();
 			elseif (! is_array($attrs_vals)) $attrs_vals = array($attrs_vals);
 
+			$custom_attrs_vals = $ldapserver->getCustomDNAttrs($this->getDn(),false,$_SESSION[APPCONFIG]->GetValue('deref','view'));
+			if (! $custom_attrs_vals) $attrs_vals = array();
+			elseif (! is_array($custom_attrs_vals)) $custom_attrs_vals = array($custom_attrs_vals);
+
+			$int_attrs_vals = array_merge($int_attrs_vals,$custom_int_attrs_vals);
+			$attrs_vals = array_merge($attrs_vals,$custom_attrs_vals);
 			$attrs_vals = array_merge($attrs_vals, $int_attrs_vals);
 			uksort($attrs_vals,'sortAttrs'); # Sort these entries
 

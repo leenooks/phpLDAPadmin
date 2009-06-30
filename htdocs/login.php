@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login.php,v 1.56.2.4 2008/01/04 12:29:15 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login.php,v 1.56.2.5 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * For servers whose auth_type is set to 'cookie' or 'session'. Pass me the
@@ -149,7 +149,7 @@ if (! is_resource($ds)) {
 }
 
 $ldapserver->auth_type = $save_auth_type;
-$ldapserver->setLoginDN($login['dn'],$login['pass'],$anon_bind) or pla_error(_('Could not set cookie.'));
+$ldapserver->setLoginDN($login['dn'],$login['pass'],$anon_bind) or error(_('Could not set cookie.'),'error','index.php');
 set_lastactivity($ldapserver);
 
 if (! $anon_bind) {

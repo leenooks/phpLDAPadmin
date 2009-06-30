@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/export.php,v 1.18.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/export.php,v 1.18.2.4 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -15,8 +15,9 @@ ini_set('session.cache_limiter','');
 require LIBDIR.'export_functions.php';
 
 if (! $_SESSION[APPCONFIG]->isCommandAvailable('export'))
-	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('export')));
+	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('export')),'error','index.php');
 
+$entry = array();
 $entry['base_dn'] = get_request('dn');
 $entry['format'] = get_request('format','POST',false,'unix');
 $entry['scope'] = get_request('scope','POST',false,'base');
@@ -40,8 +41,8 @@ if ($entry['sys_attr']) {
 	array_push($attributes,'+');
 }
 
-(! is_null($entry['exporter_id'])) or pla_error(_('You must choose an export format.'));
-isset($exporters[$entry['exporter_id']]) or pla_error(_('Invalid export format'));
+(! is_null($entry['exporter_id'])) or error(_('You must choose an export format.'),'error','index.php');
+isset($exporters[$entry['exporter_id']]) or error(_('Invalid export format'),'error','index.php');
 
 # Initialisation of other variables
 $friendly_rdn = get_rdn($entry['base_dn'],1);
@@ -85,13 +86,13 @@ switch ($entry['exporter_id']) {
 
 	default:
 		# truly speaking,this default case will never be reached. See check at the bottom.
-		pla_error(_('No available exporter found.'));
+		error(_('No available exporter found.'),'error','index.php');
 }
 
 # set the CLRN
 $exporter->setOutputFormat($br);
 
-if (isset($_REQUEST['compress']) && $_REQUEST['compress'] = 'on')
+if (get_request('compress','REQUEST') == 'on')
 	$exporter->compress(true);
 
 # prevent script from bailing early for long search
@@ -99,7 +100,10 @@ if (isset($_REQUEST['compress']) && $_REQUEST['compress'] = 'on')
 
 # send the header
 if ($entry['file']) {
-	if (ob_get_level()) ob_end_clean();
+	$obStatus = ob_get_status();
+	if (isset($obStatus['type']) && $obStatus['type'] && $obStatus['status']) 
+		ob_end_clean();
+
 	header('Content-type: application/download');
 	header(sprintf('Content-Disposition: filename="%s.%s"',$friendly_rdn,$exporters[$entry['exporter_id']]['extension'].($exporter->isCompressed()?'.gz':'')));
 	$exporter->export();

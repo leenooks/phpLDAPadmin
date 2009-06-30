@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete.php,v 1.27.2.2 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete.php,v 1.27.2.3 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Deletes a DN and presents a "job's done" message.
@@ -15,24 +15,25 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'));
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
 if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_delete', 'simple_delete'))
-	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('delete entry')));
+	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('delete entry')),'error','index.php');
 
+$entry = array();
 $entry['dn'] = get_request('dn');
 
 if (! $entry['dn'])
-	pla_error(_('You must specify a DN'));
+	error(_('You must specify a DN'),'error','index.php');
 
 if (! $ldapserver->dnExists($entry['dn']))
-	pla_error(sprintf(_('No such entry: %s'),'<b>'.pretty_print_dn($entry['dn']).'</b>'));
+	error(sprintf('%s (%s)',_('No such entry.'),'<b>'.pretty_print_dn($entry['dn']).'</b>'),'error','index.php');
 
 # Check the user-defined custom callback first.
 if (run_hook('pre_entry_delete',array('server_id'=>$ldapserver->server_id,'dn'=>$entry['dn'])))
 	$result = $ldapserver->delete($entry['dn']);
 else
-	pla_error(sprintf(_('Could not delete the entry: %s'),'<b>'.pretty_print_dn($entry['dn']).'</b>'));
+	error(sprintf(_('Could not delete the entry: %s'),'<b>'.pretty_print_dn($entry['dn']).'</b>'),'error','index.php');
 
 if ($result) {
 	# Custom callback
@@ -46,7 +47,9 @@ if ($result) {
 		sprintf('index.php?server_id=%s',$ldapserver->server_id));
 
 } else {
-	pla_error(sprintf(_('Could not delete the entry: %s'),'<b>'.pretty_print_dn($entry['dn']).'</b>'),
-	  $ldapserver->error(),$ldapserver->errno());
+	system_message(array(
+		'title'=>_('Could not delete the entry.').sprintf(' (%s)',pretty_print_dn($entry['dn'])),
+		'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
+		'type'=>'error'));
 }
 ?>

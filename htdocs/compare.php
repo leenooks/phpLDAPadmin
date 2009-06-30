@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/compare.php,v 1.16.2.3 2008/01/13 06:33:50 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/compare.php,v 1.16.2.7 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Compare two DNs - the destination DN is editable.
@@ -8,27 +8,28 @@
 
 require_once './common.php';
 
-$dn_src = isset($_POST['dn_src']) ? $_POST['dn_src'] : null;
-$dn_dst = isset($_POST['dn_dst']) ? $_POST['dn_dst'] : null;
+$dn_src = get_request('dn_src');
+$dn_dst = get_request('dn_dst');
 
 $encoded_dn_src = rawurlencode($dn_src);
 $encoded_dn_dst = rawurlencode($dn_dst);
 
-$server_id_src = (isset($_POST['server_id_src']) ? $_POST['server_id_src'] : '');
-$server_id_dst = (isset($_POST['server_id_dst']) ? $_POST['server_id_dst'] : '');
+$server_id_src = get_request('server_id_src');
+$server_id_dst = get_request('server_id_dst');
 
 $ldapserver_src = $_SESSION[APPCONFIG]->ldapservers->Instance($server_id_src);
 if (! $ldapserver_src->haveAuthInfo())
-	pla_error(_('Not enough information to login to server. Please check your configuration.'));
+	error(_('Not enough information to login to server. Please check your configuration.'),'error','index.php');
 
 $ldapserver_dst = $_SESSION[APPCONFIG]->ldapservers->Instance($server_id_dst);
 if (! $ldapserver_src->haveAuthInfo())
-	pla_error(_('Not enough information to login to server. Please check your configuration.'));
+	error(_('Not enough information to login to server. Please check your configuration.'),'error','index.php');
 
 if (! $ldapserver_src->dnExists($dn_src))
-	pla_error(sprintf(_('No such entry: %s'),pretty_print_dn($dn_src)));
+	error(sprintf('%s (%s)',_('No such entry.'),pretty_print_dn($dn_src)),'error','index.php');
+
 if (! $ldapserver_dst->dnExists($dn_dst))
-	pla_error(sprintf(_('No such entry: %s'),pretty_print_dn($dn_dst)));
+	error(sprintf('%s (%s)',_('No such entry.'),pretty_print_dn($dn_dst)),'error','index.php');
 
 $attrs_src = $ldapserver_src->getDNAttrs($dn_src,false,$_SESSION[APPCONFIG]->GetValue('deref','view'));
 $attrs_dst = $ldapserver_dst->getDNAttrs($dn_dst,false,$_SESSION[APPCONFIG]->GetValue('deref','view'));
@@ -253,12 +254,12 @@ foreach ($attrs_all as $attr) {
 
 			if (count($vals) > 1)
 				for ($i=1; $i<=count($vals); $i++)
-					printf('<a href="%s&amp;value_num=%s"><img src="images/save.png" /> %s(%s)</a><br />',$href,$i,_('download value'),$i);
+					printf('<a href="%s&amp;value_num=%s"><img src="%s/save.png" /> %s(%s)</a><br />',$href,$i,_('download value'),IMGDIR,$i);
 			else
-				printf('<a href="%s"><img src="images/save.png" /> %s</a><br />',$href,_('download value'));
+				printf('<a href="%s"><img src="%s/save.png" /> %s</a><br />',$href,IMGDIR,_('download value'));
 
 			if ($side == 'dst' && ! $ldapserver_dst->isReadOnly() && ! $ldapserver->isAttrReadOnly($attr))
-				printf('<a href="javascript:deleteAttribute(\'%s\');" style="color:red;"><img src="images/trash.png" /> %s</a>',$attr,_('delete attribute'));
+				printf('<a href="javascript:deleteAttribute(\'%s\');" style="color:red;"><img src="%s/trash.png" /> %s</a>',$attr,IMGDIR,_('delete attribute'));
 
 			echo '</small>';
 			echo '</td>';
@@ -322,8 +323,7 @@ foreach ($attrs_all as $attr) {
 
 			if ($side == 'dst') {
 				printf('<input style="width: 260px" type="password" name="new_values[userpassword]" value="%s" />',htmlspecialchars($user_password));
-				echo enc_type_select_list($enc_type);
-
+				echo enc_type_select_list($enc_type,'enc','userpassword',0);
 			}
 
 			echo '<br />';
@@ -383,8 +383,8 @@ foreach ($attrs_all as $attr) {
 			# Is this value is a structural objectClass, make it read-only
 			if (0 == strcasecmp($attr,'objectClass')) {
 
-				printf('<a title="%s" href="cmd.php?cmd=schema&amp;server_id=%s&amp;view=objectClasses&amp;viewvalue=%s"><img src="images/info.png" /></a>',
-					_('View the schema description for this objectClass'),$ldapserver->server_id,htmlspecialchars($val));
+				printf('<a title="%s" href="cmd.php?cmd=schema&amp;server_id=%s&amp;view=objectClasses&amp;viewvalue=%s"><img src="%s/info.png" /></a>',
+					_('View the schema description for this objectClass'),$ldapserver->server_id,htmlspecialchars($val),IMGDIR);
 
 				$schema_object = $ldapserver->getSchemaObjectClass($val);
 
@@ -400,14 +400,14 @@ foreach ($attrs_all as $attr) {
 			}
 
 			if (is_dn_string($val) || $ldapserver->isDNAttr($attr))
-				printf('<a title="%s" href="cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s"><img style="vertical-align: top" src="images/go.png" /></a>',
-					sprintf(_('Go to %s'),htmlspecialchars($val)),$ldapserver->server_id,rawurlencode($val));
+				printf('<a title="%s" href="cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s"><img style="vertical-align: top" src="%s/go.png" /></a>',
+					sprintf(_('Go to %s'),htmlspecialchars($val)),$ldapserver->server_id,rawurlencode($val),IMGDIR);
 
 			elseif (is_mail_string($val))
-				printf('<a href="mailto:%s><img style="vertical-align: center" src="images/mail.png" /></a>',htmlspecialchars($val));
+				printf('<a href="mailto:%s><img style="vertical-align: center" src="%s/mail.png" /></a>',htmlspecialchars($val),IMGDIR);
 
 			elseif (is_url_string($val))
-				printf('<a href="%s" target="new"><img style="vertical-align: center" src="images/dc.png" /></a>',htmlspecialchars($val));
+				printf('<a href="%s" target="new"><img style="vertical-align: center" src="%s/dc.png" /></a>',htmlspecialchars($val),IMGDIR);
 
 			if ($ldapserver->isMultiLineAttr($attr,$val)) {
 				if ($side == 'dst')

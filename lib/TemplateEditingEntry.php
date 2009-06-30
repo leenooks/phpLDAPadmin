@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/TemplateEditingEntry.php,v 1.3.2.2 2007/12/29 08:24:11 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/TemplateEditingEntry.php,v 1.3.2.4 2008/11/28 12:50:20 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -19,7 +19,7 @@ class TemplateEditingEntry extends DefaultEditingEntry {
 		parent::__construct($dn);
 		$this->templates = array();
 		$this->valid = false;
-		$this->default_template = false;
+		$this->default_template = true;
 		$this->selected_template = '';
 	}
 
@@ -81,7 +81,10 @@ class TemplateEditingEntry extends DefaultEditingEntry {
 	}
 
 	public function hasDefaultTemplate() {
-		return $this->default_template;
+        if ($_SESSION[APPCONFIG]->GetValue('appearance','disable_default_template'))
+			return false;
+		else
+			return $this->default_template;
 	}
 
 	public function getAttributes() {
@@ -105,12 +108,22 @@ class TemplateEditingEntry extends DefaultEditingEntry {
 
 			$int_attrs_vals = $ldapserver->getDNSysAttrs($this->getDn());
 			if (! $int_attrs_vals) $attrs_vals = array();
-			elseif (! is_array($int_attrs_vals)) $int_attrs_vals = array($attrs_vals);
+			elseif (! is_array($int_attrs_vals)) $int_attrs_vals = array($int_attrs_vals);
+
+			$custom_int_attrs_vals = $ldapserver->getCustomDNSysAttrs($this->getDn());
+			if (! $custom_int_attrs_vals) $attrs_vals = array();
+			elseif (! is_array($custom_int_attrs_vals)) $custom_int_attrs_vals = array($custom_int_attrs_vals);
 
 			$attrs_vals = $ldapserver->getDNAttrs($this->getDn(),false,$_SESSION[APPCONFIG]->GetValue('deref','view'));
 			if (! $attrs_vals) $attrs_vals = array();
 			elseif (! is_array($attrs_vals)) $attrs_vals = array($attrs_vals);
 
+			$custom_attrs_vals = $ldapserver->getCustomDNAttrs($this->getDn(),false,$_SESSION[APPCONFIG]->GetValue('deref','view'));
+			if (! $custom_attrs_vals) $attrs_vals = array();
+			elseif (! is_array($custom_attrs_vals)) $custom_attrs_vals = array($custom_attrs_vals);
+
+			$int_attrs_vals = array_merge($int_attrs_vals,$custom_int_attrs_vals);
+			$attrs_vals = array_merge($attrs_vals,$custom_attrs_vals);
 			$attrs_vals = array_merge($attrs_vals,$int_attrs_vals);
 
 			$selected_tmpl = isset($this->templates[$this->selected_template])

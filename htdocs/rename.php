@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename.php,v 1.33.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename.php,v 1.33.2.3 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Renames a DN to a different name.
@@ -18,25 +18,25 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'));
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
 if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_rename'))
-	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('rename entry')));
+	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('rename entry')),'error','index.php');
 
-$dn = ($_POST['dn']);
+$dn = get_request('dn');
 if (! $ldapserver->isBranchRenameEnabled()) {
 	# we search all children, not only the visible children in the tree
 	$children = $ldapserver->getContainerContents($dn);
 	if (count($children) > 0)
-		pla_error(_('You cannot rename an entry which has children entries (eg, the rename operation is not allowed on non-leaf entries)'));
+		error(_('You cannot rename an entry which has children entries (eg, the rename operation is not allowed on non-leaf entries)'),'error','index.php');
 }
 
-$new_rdn = ($_POST['new_rdn']);
+$new_rdn = get_request('new_rdn');
 $container = get_container($dn);
 $new_dn = sprintf('%s,%s',$new_rdn,$container);
 
 if ($new_dn == $dn)
-	pla_error(_('You did not change the RDN'));
+	error(_('You did not change the RDN'),'error','index.php');
 
 $old_dn_attr = explode('=',$dn);
 $old_dn_attr = $old_dn_attr[0];
@@ -44,7 +44,7 @@ $old_dn_attr = $old_dn_attr[0];
 $new_dn_value = explode('=',$new_rdn,2);
 
 if (count($new_dn_value) != 2 || ! isset($new_dn_value[1]))
-	pla_error(_('Invalid RDN value'));
+	error(_('Invalid RDN value'),'error','index.php');
 
 $new_dn_attr = $new_dn_value[0];
 $new_dn_value = $new_dn_value[1];
@@ -58,7 +58,7 @@ if ($success) {
 	$success = $ldapserver->rename($dn,$new_rdn,$container,$deleteoldrdn);
 
 } else {
-	pla_error(_('Could not rename the entry') );
+	error(_('Could not rename the entry'),'error','index.php');
 }
 
 if ($success) {

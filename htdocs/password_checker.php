@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/password_checker.php,v 1.10.2.1 2008/01/13 05:37:01 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/password_checker.php,v 1.10.2.3 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -11,6 +11,7 @@ require './common.php';
 include HTDOCDIR.'header.php';
 
 echo '<body>';
+$entry = array();
 $entry['hash'] = get_request('hash','REQUEST');
 $entry['password'] = get_request('check_password','REQUEST');
 $entry['action'] = get_request('action','REQUEST');
@@ -34,7 +35,7 @@ echo '<table class="forminput" width=100% border=0>';
 echo '<tr>';
 printf('<td class="heading">%s</td>',_('Compare'));
 printf('<td><input type="%s" name="hash" id="hash" value="%s" /></td>',
-	$entry['enc_type'] ? 'text' : 'password',htmlspecialchars($entry['hash']));
+	(obfuscate_password_display($entry['enc_type']) ? 'password' : 'text'),htmlspecialchars($entry['hash']));
 echo '</tr>';
 
 echo '<tr>';

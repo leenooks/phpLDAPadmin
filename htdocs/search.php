@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/search.php,v 1.78.2.6 2008/01/27 11:57:38 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/search.php,v 1.78.2.8 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Perform LDAP searches and draw the advanced/simple search forms
@@ -24,6 +24,7 @@ define('SIZE_LIMIT_EXCEEDED',4);
 $result_formats = array('list','table');
 
 # Our incoming variables
+$entry = array();
 $entry['format'] = get_request('format','GET','false',$_SESSION[APPCONFIG]->GetValue('search','display'));
 $entry['form'] = get_request('form','GET',false,get_request('form','SESSION'));
 
@@ -117,15 +118,15 @@ echo '<br />';
 if ($entry['search']) {
 	if ($entry['form'] == 'advanced') {
 		if (! $_SESSION[APPCONFIG]->isCommandAvailable('search','advanced_search'))
-			pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('advanced search')));
+			error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('advanced search')),'error','index.php');
 
 	} elseif ($entry['form'] == 'predefined') {
 		if (! $_SESSION[APPCONFIG]->isCommandAvailable('search','predefined_search'))
-			pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('predefined search')));
+			error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('predefined search')),'error','index.php');
 
 	} elseif ($entry['form'] == 'simple') {
 		if (! $_SESSION[APPCONFIG]->isCommandAvailable('search','simple_search'))
-			pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('simple search')));
+			error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('simple search')),'error','index.php');
 	}
 
 	if ($entry['form'] == 'advanced') {
@@ -247,7 +248,10 @@ if ($entry['search']) {
 				$entry['scope'],$entry['orderby']['array'],$_SESSION[APPCONFIG]->GetValue('deref','search'));
 
 			if ((! $results) && $ldapserver->errno())
-				pla_error(_('Encountered an error while performing search.'),$ldapserver->error(),$ldapserver->errno());
+				system_message(array(
+					'title'=>_('Encountered an error while performing search.'),
+					'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
+					'type'=>'error'));
 
 			$errno = $ldapserver->errno();
 
@@ -269,11 +273,11 @@ if ($entry['search']) {
 				$href = htmlspecialchars(sprintf('cmd.php?cmd=export_form&server_id=%s&scope=%s&dn=%s&filter=%s&attributes=%s',
 					$ldapserver->server_id,$entry['scope'],$base_dn,rawurlencode($entry['filter']['clean']),rawurlencode(join(', ',$search_result_attributes))));
 
-				printf('<td style="text-align: right"><small>[ <a href="%s"><img src="images/save.png" alt="Save" /> %s</a> ]',
-					$href,_('export results'));
+				printf('<td style="text-align: right"><small>[ <a href="%s"><img src="%s/save.png" alt="Save" /> %s</a> ]',
+					$href,IMGDIR,_('export results'));
 			}
 
-			printf('[ <img src="images/rename.png" alt="rename" /> %s%s',_('Format'),_(':'));
+			printf('[ <img src="%s/rename.png" alt="rename" /> %s%s',IMGDIR,_('Format'),_(':'));
 
 			foreach ($result_formats as $f) {
 				echo '&nbsp;';
@@ -380,7 +384,7 @@ if ($entry['search']) {
 				elseif ($entry['format'] == 'table')
 					require LIBDIR.'search_results_table.php';
 				else
-					pla_error(sprintf(_('Unrecognized search result format: %s'),htmlspecialchars($entry['format'])));
+					error(sprintf(_('Unrecognized search result format: %s'),htmlspecialchars($entry['format'])),'error','index.php');
 
 				echo '<br />';
 				if (trim($pager_html))

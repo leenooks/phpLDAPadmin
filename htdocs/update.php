@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update.php,v 1.29.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update.php,v 1.29.2.3 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Updates or deletes a value from a specified attribute for a specified dn.
@@ -26,24 +26,25 @@
 
 require './common.php';
 
+$entry = array();
 $entry['dn']['string'] = get_request('dn');
 $entry['dn']['encode'] = rawurlencode($entry['dn']['string']);
 
 # If cancel was submited, got back to the edit display.
-if (isset($_REQUEST['cancel'])) {
+if (get_request('cancel','REQUEST')) {
 	header(sprintf('Location: cmd.php?cmd=template_engine&server_id=%s&dn=%s',$ldapserver->server_id,$entry['dn']['encode']));
 	die();
 }
 
 if ($ldapserver->isReadOnly())
-	pla_error(_('You cannot perform updates while server is in read-only mode'));
+	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
 $entry['update'] = get_request('update_array','POST',false,array());
 $entry['skip'] = get_request('skip_array','POST',false,array());
 $failed_attrs = array();
 
 if (! is_array($entry['update']))
-	pla_error(_('update_array is malformed. This might be a phpLDAPadmin bug. Please report it.'));
+	error(_('update_array is malformed. This might be a phpLDAPadmin bug. Please report it.'),'error','index.php');
 
 run_hook ('pre_update',
 	array('server_id'=>$ldapserver->server_id,'dn'=>$entry['dn']['string'],'update_array'=>$entry['update']));
@@ -58,13 +59,14 @@ foreach ($entry['update'] as $attr => $val) {
 			$entry['update'][$attr] = array();
 
 			if (! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete'))
-				pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('delete attribute')));
+				error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('delete attribute')),'error','index.php');
+
 		} else { # Skip change
 			$entry['update'][$attr] = $val;
 
 			if (! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value')
 			    && ! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete_value'))
-				pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('modify attribute values')));
+				error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('modify attribute values')),'error','index.php');
 		}
 
 	} else {
@@ -77,7 +79,7 @@ foreach ($entry['update'] as $attr => $val) {
 
 			if (! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value')
 			    && ! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete_value'))
-				pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('modify attribute values')));
+				error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('modify attribute values')),'error','index.php');
 		}
 	}
 }
@@ -89,8 +91,8 @@ foreach ($entry['update'] as $attr_name => $val) {
 		$href['search'] = sprintf('cmd.php?cmd=search&search=true&form=advanced&server_id=%s&filter=%s=%s',
 			$ldapserver->server_id,$attr_name,$badattr);
 
-		pla_error(sprintf(_('Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href="%s">search</a> for that entry.'),
-			$attr_name,$badattr,$entry['dn']['string'],$href['search']));
+		error(sprintf(_('Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href="%s">search</a> for that entry.'),
+			$attr_name,$badattr,$entry['dn']['string'],$href['search']),'error','index.php');
 	}
 
 	if (run_hook('pre_attr_modify',
@@ -100,8 +102,9 @@ foreach ($entry['update'] as $attr_name => $val) {
 		$failed_attrs[$attr_name] = $val;
 
 	} elseif ($ldapserver->isAttrReadOnly($attr)) {
-		pla_error(sprintf(_('The attribute "%s" is flagged as read-only in the phpLDAPadmin configuration.'),
-			htmlspecialchars($attr_name)));
+		error(sprintf(_('The attribute "%s" is flagged as read-only in the phpLDAPadmin configuration.'),
+			htmlspecialchars($attr_name)),'error','index.php');
+
 	} else {
 		// binary values
 		if (isset($_SESSION['submitform'][$attr_name])) {
@@ -175,6 +178,9 @@ if ($result) {
 	die();
 
 } else {
-	pla_error(_('Could not perform ldap_modify operation.'),$ldapserver->error(),$ldapserver->errno());
+	system_message(array(
+		'title'=>_('Could not perform ldap_modify operation.'),
+		'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
+		'type'=>'error'));
 }
 ?>

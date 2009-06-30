@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/session_functions.php,v 1.18.2.4 2008/01/13 06:35:51 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/session_functions.php,v 1.18.2.5 2008/12/12 12:20:23 wurley Exp $
 
 /**
  * A collection of functions to handle sessions throughout phpLDAPadmin.
@@ -117,7 +117,7 @@ function pla_session_start() {
 	@header('Cache-control: private'); // IE 6 Fix
 
 	if (pla_session_id_paranoid && ! pla_session_verify_id())
-		pla_error('Session inconsistent or session timeout');
+		error('Session inconsistent or session timeout','error','index.php');
 
 	# Check we have the correct version of the SESSION cache
 	if (isset($_SESSION['cache']) || isset($_SESSION[pla_session_id_init])) {

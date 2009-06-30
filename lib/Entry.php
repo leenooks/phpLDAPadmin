@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Entry.php,v 1.2.2.3 2008/01/27 07:23:43 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Entry.php,v 1.2.2.4 2008/11/28 23:26:51 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -58,10 +58,17 @@ abstract class Entry {
 	}
 
 	public function getRdnAttributeName() {
-		$attr = '';
+		$attr = array();
 		if ($this->dn) {
-			$i = strpos($this->dn, '=');
-			if ($i !== false) $attr = substr($this->dn, 0, $i);
+			$i = strpos($this->dn, ',');
+			if ($i !== false) {
+				$attrs = split('\+',substr($this->dn, 0, $i));
+				foreach ($attrs as $id => $attr) {
+					list ($name,$value) = split('=',$attr);
+					$attrs[$id] = $name;
+				}
+				$attr = array_unique($attrs);
+			}
 		}
 		return $attr;
 	}

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/DefaultCreatingEntry.php,v 1.2.2.2 2007/12/29 08:24:10 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/DefaultCreatingEntry.php,v 1.2.2.3 2008/11/29 01:35:47 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -145,8 +145,8 @@ class DefaultCreatingEntry extends Entry {
 
 	public function getRdnAttributeName() {
 		$attr = $this->getRdnAttribute();
-		if ($attr) return $attr->getName();
-		else return '';
+		if ($attr) return array($attr->getName());
+		else return array('');
 	}
 
 	public function getRdnAttribute() {

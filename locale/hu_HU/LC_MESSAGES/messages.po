@@ -1,1550 +1,2899 @@
 # : $
-
-
 msgid ""
 msgstr ""
 "Project-Id-Version: messages\n"
 "Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
+"POT-Creation-Date: 2004-01-14 17:45+0200\n"
+"PO-Revision-Date: 2008-11-29 00:06+0000\n"
+"Last-Translator: Deon George <Unknown>\n"
 "Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
-"Last-Translator: VOROSBARANYI Zoltan <http://vbzo.li/>\n"
-"POT-Creation-Date: 2005-11-29 17:45+0100\n"
-"PO-Revision-Date: 2005-11-29 18:22+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-
-"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
-
-
-msgid "Simple Search Form"
-msgstr "Egyszerű keresési űrlap"
-
-
-msgid "Advanced Search Form"
-msgstr "Részletes keresési űrlap"
-
-
-msgid "Server"
-msgstr "Kiszolgáló"
-
-
-msgid "Search for entries whose"
-msgstr "Bejegyzések keresése, ahol:"
-
-
-msgid "Base DN"
-msgstr "Alap-DN"
-
-
-msgid "Search Scope"
-msgstr "A keresés hatásköre"
-
-
-msgid "Show Attributtes"
-msgstr "Attribútumok megjelenítése"
-
-
-msgid "Search"
-msgstr "Keresés"
-
-
-msgid "Select a predefined search"
-msgstr "Előre definiált keresés kiválasztása"
-
-
-msgid "Predefined Searches"
-msgstr "Előre definiált keresések"
-
-
-msgid "No queries have been defined in config.php."
-msgstr "Nincs keresés definiálva a config.php-ben."
-
-
-msgid "Request feature"
-msgstr "Új tulajdonság kérése"
-
-
-msgid "Report a bug"
-msgstr "Hiba jelentése"
-
-
-msgid "schema"
-msgstr "séma"
-
-
-msgid "search"
-msgstr "keresés"
-
-
-msgid "create"
-msgstr "létrehozás"
-
-
-msgid "info"
-msgstr "infó"
-
-
-msgid "import"
-msgstr "import"
-
-
-msgid "refresh"
-msgstr "frissítés"
-
-
-msgid "logout"
-msgstr "kilépés"
-
-
-msgid "Create new entry here"
-msgstr "Új bejegyzés"
-
-
-msgid "View schema for"
-msgstr "Séma megtekintése:"
-
-
-msgid "Refresh all expanded containers for"
-msgstr "Az összes kiterjesztett tároló frissítése:"
-
-
-msgid "Create a new entry on"
-msgstr "Új bejegyzés létrehozása:"
-
-
-msgid "new"
-msgstr "új"
-
-
-msgid "View server-supplied information"
-msgstr "A kiszolgáló információinak megtekintése"
-
-
-msgid "Import entries from an LDIF file"
-msgstr "LDIF-állományból bejegyzések importálása"
-
-
-msgid "Logout of this server"
-msgstr "Kilépés ebből a kiszolgálóból"
-
-
-msgid "Logged in as: "
-msgstr "Belépve mint"
-
-
-msgid "read only"
-msgstr "csak olvasható"
-
-
-msgid "This attribute has been flagged as read only by the phpLDAPadmin administrator"
-msgstr "A phpLDAPadmin adminisztrátora ezt az attribútumot csak olvashatóra állította"
-
-
-msgid "Could not determine the root of your LDAP tree."
-msgstr "Nem tudom megállapítani az LDAP-fa gyökerét."
-
-
-msgid "It appears that the LDAP server has been configured to not reveal its root."
-msgstr "Az LDAP-kiszolgálót úgy konfigurálták, hogy ne fedje föl az LDAP-fa gyökerét."
-
-
-msgid "Please specify it in config.php"
-msgstr "Kérem adja meg a config.php-ban"
-
-
-msgid "Login..."
-msgstr "Belépés..."
-
-
-msgid "login"
-msgstr "belépés"
-
-
-msgid "Delete this entry"
-msgstr "A bejegyzés törlése"
-
-
-msgid "You will be prompted to confirm this decision"
-msgstr "Ezt a döntést majd még meg kell erősíteni"
-
-
-msgid "Copy or move this entry"
-msgstr "A bejegyzés másolása"
-
-
-msgid "Copy this object to another location, a new DN, or another server"
-msgstr "Az objektum másolása más helyre új DN-nel és/vagy másik kiszolgálóra"
-
-
-msgid "Export"
-msgstr "Exportálás"
-
-
-msgid "Save a dump of this object"
-msgstr "Az objektum kiírása"
-
-
-msgid "Save a dump of this object and all of its children"
-msgstr "Az objektum és az összes gyermekének kiírása"
-
-
-msgid "Export subtree"
-msgstr "Részfa exportálása"
-
-
-msgid "Create a child entry"
-msgstr "Gyermekbejegyzés létrehozása"
-
-
-msgid "Rename Entry"
-msgstr "A bejegyzés átnevezése"
-
-
-msgid "Rename"
-msgstr "Átnevezés"
-
-
-msgid "rename"
-msgstr "ÃtnevezÃ©s"
-
-
-msgid "Add"
-msgstr "Hozzáadás"
-
-
-msgid "View"
-msgstr "Megtekintés"
-
-
-msgid "View 1 child"
-msgstr "A gyermek megtekintése (1 darab)"
-
-
-msgid "View %s children"
-msgstr "A gyermekek megtekintése (%s darab)"
-
-
-msgid "Add new attribute"
-msgstr "Új attribútum hozzáadása"
-
-
-msgid "Add new ObjectClass"
-msgstr "Új objektumosztály hozzáadása"
-
-
-msgid "Hide internal attributes"
-msgstr "Belső attribútumok elrejtése"
-
-
-msgid "Show internal attributes"
-msgstr "Belső attribútumok megjelenítése"
-
-
-msgid "Click to view the schema defintion for attribute type '%s'"
-msgstr "Kattintással megjelenik a(z) %s attribútumtípus sémabeli definíciója"
-
-
-msgid "none"
-msgstr "nincs"
-
-
-msgid "No internal attributes"
-msgstr "Nincs belső attribútum"
-
-
-msgid "This entry has no attributes"
-msgstr "A bejegyzésnek nincs attribútuma"
-
-
-msgid "Save Changes"
-msgstr "Változások mentése"
-
-
-msgid "add value"
-msgstr "érték hozzáadása"
-
-
-msgid "Add an additional value to attribute '%s'"
-msgstr "Érték hozzáadása a(z) %s attribútumhoz"
-
-
-msgid "Refresh"
-msgstr "Frissítés"
-
-
-msgid "Refresh this entry"
-msgstr "Bejegyzés frissítése"
-
-
-msgid "Hint: To delete an attribute, empty the text field and click save."
-msgstr "Tipp: Az attribútum törléséhez előbb törölje a mezőt, majd kattintson a változtatások mentésére."
-
-
-msgid "Hint: To view the schema for an attribute, click the attribute name."
-msgstr "Tipp: Az attribútum sémájának megtekintéséhez kattintson az attribútum nevére."
-
-
-msgid "Some attributes (%s) were modified and are highlighted below."
-msgstr "Módosult néhány attribútum (%s), s ezek kiemelve szerepelnek az alábbiakban."
-
-
-msgid "An attribute (%s) was modified and is highlighted below."
-msgstr "Módosult egy attribútum (%s), s ez kiemelve szerepel az alábbiakban. "
-
-
-msgid "Viewing entry in read-only mode."
-msgstr "A bejegyzés megtekintése csak olvasható üzemmódban."
-
-
-msgid "no new attributes available for this entry"
-msgstr "a bejegyzéshez nem tartozik új attribútum"
-
-
-msgid "no new binary attributes available for this entry"
-msgstr "a bejegyzéshez nem tartozik új bináris attribútum"
-
-
-msgid "Binary value"
-msgstr "Bináris érték"
-
-
-msgid "Add new binary attribute"
-msgstr "Új bináris attribútum hozzáadása"
-
-
-msgid "Note: '%s' is an alias for '%s'"
-msgstr "A(z) %s álneve a(z) %s attribútumnévnek"
-
-
-msgid "download value"
-msgstr "érték letöltése"
-
-
-msgid "delete attribute"
-msgstr "attribútum törlése"
-
-
-msgid "true"
-msgstr "igaz"
-
-
-msgid "false"
-msgstr "hamis"
-
-
-msgid "none, remove value"
-msgstr "nincs, érték törése"
-
-
-msgid "Really delete attribute"
-msgstr "Attribútum tényleges törlése"
-
-
-msgid "Add New Value"
-msgstr "Új érték hozzáadása"
-
-
-msgid "The server does not fully support the LDAP protocol."
-msgstr "A kiszolgáló nem beszéli elég jól az LDAP-protokollt"
-
-
-msgid "Your version of PHP does not correctly perform the query."
-msgstr "Ez a PHP-verzió nem tudja szabályosan végrehajtani a keresést."
-
-
-msgid "phpLDAPadmin doesn't know how to fetch the schema for your server."
-msgstr "Vagy végül is a phpLDAPadmin nem tudja hogyan kell a sémát letölteni erről a kiszolgálóról."
-
-
-msgid "Jump to an objectClass"
-msgstr "Ugrás az objektumosztályhoz"
-
-
-msgid "Jump to an attribute type"
-msgstr "Ugrás az attribútumtípushoz"
-
-
-msgid "Jump to a matching rule"
-msgstr "Ugrás az illesztőszabályhoz"
-
-
-msgid "Schema for server"
-msgstr "Séma:"
-
-
-msgid "Required Attributes"
-msgstr "Kötelező attribútumok"
-
-
-msgid "Optional Attributes"
-msgstr "Opcionális attribútumok"
-
-
-msgid "Optional Binary Attributes"
-msgstr "Opcionális bináris attribútumok"
-
-
-msgid "OID"
-msgstr "OID"
-
-
-msgid "Aliases"
-msgstr "Álnevek (alias)"
-
-
-msgid "Description"
-msgstr "Leírás"
-
-
-msgid "no description"
-msgstr "nincs leírás"
-
-
-msgid "Name"
-msgstr "Név"
-
-
-msgid "Equality"
-msgstr "Egyenlőség"
-
-
-msgid "This objectClass is obsolete."
-msgstr "Ez az objektumosztály maradi"
-
-
-msgid "Inherits from"
-msgstr "Kitől öröklődik"
-
-
-msgid "Inherited from"
-msgstr "Kitől örökölte:"
-
-
-msgid "Parent to"
-msgstr "Kinek a szülője"
-
-
-msgid "Jump to this objectClass definition"
-msgstr "Ugrás ehhez az objektumosztály-definícióhoz"
-
-
-msgid "Matching Rule OID"
-msgstr "Illesztőszabály-OID"
-
-
-msgid "Syntax OID"
-msgstr "Szintaxis-OID"
-
-
-msgid "not applicable"
-msgstr "nem alkalmazható"
-
-
-msgid "not specified"
-msgstr "nincs megadva"
-
-
-msgid "character"
-msgstr "karakter"
-
-
-msgid "Used by objectClasses"
-msgstr "Mely osztályok használják"
-
-
-msgid "Used by Attributes"
-msgstr "Mely attribútumok használják"
-
-
-msgid "Maximum Length"
-msgstr "Maximális hossz"
-
-
-msgid "Syntaxes"
-msgstr "Szintaxisok"
-
-
-msgid "Matching Rules"
-msgstr "Illesztőszabályok"
-
-
-msgid "Obsolete"
-msgstr "Maradi"
-
-
-msgid "Ordering"
-msgstr "Sorbarendezés"
-
-
-msgid "Substring Rule"
-msgstr "Alfüzér-szabály"
-
-
-msgid "Single Valued"
-msgstr "Egyértékű"
-
-
-msgid "Collective"
-msgstr "Kollektív"
-
-
-msgid "User Modification"
-msgstr "Felhasználó-módosítás"
-
-
-msgid "Usage"
-msgstr "Használat"
-
-
-msgid "Could not retrieve schema from"
-msgstr "Nem tudom a sémát elérni,"
-
-
-msgid "Type"
-msgstr "Típus"
-
-
-msgid "Entry %s deleted successfully."
-msgstr "A(z) %s bejegyzés sikeresen törölve."
-
-
-msgid "You must specify a DN"
-msgstr "A DN-t meg kell adni"
-
-
-msgid "Could not delete the entry: %s"
-msgstr "Nem tudom a(z) %s bejegyzést törölni"
-
-
-msgid "No such entry: %s"
-msgstr "Nincs ilyen bejegyzés: %s"
-
-
-msgid "Delete %s"
-msgstr "A(z) %s törlése"
-
-
-msgid "Permanently delete all children also?"
-msgstr "Az összes gyermeket is töröljem?"
-
-
-msgid "This entry is the root of a sub-tree containing %s entries."
-msgstr "Ez a bejegyzés egy %s bejegyzést tartalmazó részfa gyökere."
-
-
-msgid "view entries"
-msgstr "bejegyzések megtekintése"
-
-
-msgid "phpLDAPadmin can recursively delete this entry and all %s of its children. See below for a list of all the entries that this action will delete. Do you want to do this?"
-msgstr "Rekurzív módon törölhetem ezt a bejegyzést, és mind a(z) %s gyermekét. Lásd alul a bejegyzéseket, amelyeket törölnék. Óhajtja törölni?"
-
-
-msgid "Note: this is potentially very dangerous and you do this at your own risk. This operation cannot be undone. Take into consideration aliases, referrals, and other things that may cause problems."
-msgstr "Megj.: Ez a törlés veszélyes lehet. A műveletet nem lehet visszavonni!"
-
-
-msgid "Delete all %s objects"
-msgstr "Mind a(z) %s objektum törlése"
-
-
-msgid "Recursive delete progress"
-msgstr "A rekurzív törlés folyamatban"
-
-
-msgid "Entry %s and sub-tree deleted successfully."
-msgstr "A(z) %s bejegyzés és a részfa sikeresen törölve."
-
-
-msgid "Failed to delete entry %s"
-msgstr "A(z) %s bejegyzés törlése sikertelen"
-
-
-msgid "List of entries to be deleted:"
-msgstr "A törlendő bejegyzések listája:"
-
-
-msgid "Are you sure you want to permanently delete this object?"
-msgstr "Biztos törölni óhajtja ezt az objektumot?"
-
-
-msgid "DN"
-msgstr "DN"
-
-
-msgid "The attribute \"%s\" is flagged as read-only in the phpLDAPadmin configuration."
-msgstr "A(z) %s attribútum csak olvasható a phpLDAPadmin konfigurációja szerint."
-
-
-msgid "No attribute name specified."
-msgstr "Nincs megadva az attribútumnév."
-
-
-msgid "No DN specified"
-msgstr "Nincs megadva a DN"
-
-
-msgid "You left the attribute value blank. Please go back and try again."
-msgstr "Az attribútumértéket üresen hagyta. Kérem lépjen vissza és próbálja újra."
-
-
-msgid "Failed to add the attribute."
-msgstr "Nem tudtam az attribútumot hozzáadni."
-
-
-msgid "The file you chose is either empty or does not exist. Please go back and try again."
-msgstr "A kiválasztott állomány vagy üres, vagy nem létezik. Kérem lépjen vissza és próbálja újra."
-
-
-msgid "Security error: The file being uploaded may be malicious."
-msgstr "Biztonsági hiba: a feltöltendő állomány veszélyes elemeket tartalmazhat."
-
-
-msgid "Your PHP configuration has disabled file uploads. Please check php.ini before proceeding."
-msgstr "A PHP-konfiguráció tiltja az állományok feltöltését. Kérem ellenőrizze a php.ini állományt."
-
-
-msgid "The file you uploaded is too large. Please check php.ini, upload_max_size setting"
-msgstr "A feltöltött állomány túl nagy. Kérem ellenőrizze a php.ini állományban a upload_max_size beállítást."
-
-
-msgid "The file you selected was only partially uploaded, likley due to a network error."
-msgstr "A kiválasztott állomány csak részben töltődött föl valószínűleg hálózati hiba miatt."
-
-
-msgid "Maximum file size: %s"
-msgstr "Maximális állományméret: %s"
-
-
-msgid "Modification successful!"
-msgstr "A módosítás sikerült!"
-
-
-msgid "Since you changed your password, you must now login again with your new password."
-msgstr "Mivel megváltoztatta a jelszót most újra be kell jelentkeznie az új jelszóval."
-
-
-msgid "New Required Attributes"
-msgstr "Új kötelező attribútumok"
-
-
-msgid "This action requires you to add"
-msgstr "Ez a művelet megközeveteli hogy hozzáadjon"
-
-
-msgid "new attributes"
-msgstr "új attribútumo(ka)t"
-
-
-msgid "Instructions: In order to add these objectClass(es) to this entry, you must specify"
-msgstr "Az új objektumosztály hozzáadásához"
-
-
-msgid "that this objectClass requires. You can do so in this form."
-msgstr "kell megadni ezen az űrlapon."
-
-
-msgid "Add ObjectClass and Attributes"
-msgstr "Objektumosztály és attribútumok hozzáadása"
-
-
-msgid "ObjectClasses"
-msgstr "Objektumosztályok"
-
-
-msgid "Click to popup a dialog to select an entry (DN) graphically"
-msgstr "Kattintásra egy új ablak jön föl, amelyben egy bejegyzést választhat a DN alapján."
-
-
-msgid "You cannot perform updates while server is in read-only mode"
-msgstr "Nem lehet módosítani mikor a kiszolgáló csak olvasható üzemmódban van"
-
-
-msgid "Bad server id"
-msgstr "Hibás kiszolgáló-azonosító"
-
-
-msgid "Not enough information to login to server. Please check your configuration."
-msgstr "Kevés az adat a belépéshez. Kérem ellenőrizze a konfigurációt."
-
-
-msgid "Could not connect to LDAP server."
-msgstr "Nem tudok csatlakozni az LDAP-kiszolgálóhoz."
-
-
-msgid "Could not connect to \"%s\" on port \"%s\""
-msgstr "Nem tudok csatlakozni a(z) %s géphez a(z) %s porton."
-
-
-msgid "Could not perform ldap_mod_add operation."
-msgstr "Nem tudom végrehajtani az ldap_mod_add műveletet."
-
-
-msgid "Success"
-msgstr "Siker"
-
-
-msgid "Server: "
-msgstr "Kiszolgáló: "
-
-
-msgid "Looking in: "
-msgstr "Keresés itt: "
-
-
-msgid "No DN specified in query string!"
-msgstr "Nincs megadva a DN a keresési füzérben!"
-
-
-msgid "Back Up..."
-msgstr "Vissza..."
-
-
-msgid "no entries"
-msgstr "nics bejegyzés"
-
-
-msgid "Could not determine base DN"
-msgstr "Nem tudom az alap-DN-t meghatározni"
-
-
-msgid "This could happen for several reasons, the most probable of which are:"
-msgstr "Ez több dolog miatt történhet, például:"
-
-
-msgid "Yes"
-msgstr "Igen"
-
-
-msgid "No"
-msgstr "Nem"
-
-
-msgid "Go"
-msgstr "Mehet"
-
-
-msgid "Delete"
-msgstr "Törlés"
-
-
-msgid "Back"
-msgstr "Vissza"
-
-
-msgid "object"
-msgstr "objektum"
-
-
-msgid "Delete all"
-msgstr "Minden törlése"
-
-
-msgid "hint"
-msgstr "tipp"
-
-
-msgid "bug"
-msgstr "hiba"
-
-
-msgid "warning"
-msgstr "figyelmeztetés"
-
-
-msgid "light"
-msgstr "lámpa"
-
-
-msgid "Proceed &gt;&gt;"
-msgstr "Tovább &gt;&gt;"
-
-
-msgid "Add new"
-msgstr "Új"
-
-
-msgid "value to"
-msgstr "érték, RDN:"
-
-
-msgid "Distinguished Name"
-msgstr "Megkülönböztető név (DN)"
-
-
-msgid "Current list of"
-msgstr "Az aktuális lista"
-
-
-msgid "values for attribute"
-msgstr "értéket tartalmaz. Attribútum:"
-
-
-msgid "Note: You will get an \"inappropriate matching\" error if you have not setup an EQUALITY rule on your LDAP server for this attribute."
-msgstr "Megj.: Ha nincs beállítva EGYENLŐSÉG-szabály ehhez az attribútumhoz a kiszolgáló az ún. inappropriate matching hibát adja vissza."
-
-
-msgid "Enter the value you would like to add:"
-msgstr "Adja meg a kívánt értéket:"
-
-
-msgid "Note: You may be required to enter new attributes that these objectClass(es) require"
-msgstr "Megj.: Lehet hogy új kötelező attribútumokat kell bevinnie ehhez az objektumosztályhoz"
-
-
-msgid "Syntax"
-msgstr "Szintaxis"
-
-
-msgid "You left the destination DN blank."
-msgstr "Üresen hagyta a cél-DN mezejét"
-
-
-msgid "The destination entry (%s) already exists."
-msgstr "A célbejegyzés (%s) már létezik."
-
-
-msgid "The destination container (%s) does not exist."
-msgstr "A cél-tároló (%s) nem létezik."
-
-
-msgid "The source and destination DN are the same."
-msgstr "A forrás- és cél-DN ugyanaz."
-
-
-msgid "Copying "
-msgstr "Másolás: "
-
-
-msgid "Recursive copy progress"
-msgstr "Rekurzív másolás folyamatban"
-
-
-msgid "Building snapshot of tree to copy... "
-msgstr "A fáról készítek egy pillanatfelvételt a másoláshoz... "
-
-
-msgid "Copy successful! Would you like to "
-msgstr "A másolás sikerült! Szeretné-e "
-
-
-msgid "view the new entry"
-msgstr "megtekinteni az új bejegyzést"
-
-
-msgid "Failed to copy DN: "
-msgstr "A DN másolása nem sikerült: "
-
-
-msgid "Template"
-msgstr "Minta"
-
-
-msgid "using template"
-msgstr "használt minta:"
-
-
-msgid "Go to %s"
-msgstr "Menj a(z) %s DN-hez"
-
-
-msgid "to a new object"
-msgstr "; az új objektum"
-
-
-msgid "Destination DN"
-msgstr "Cél-DN"
-
-
-msgid "The full DN of the new entry to be created when copying the source entry"
-msgstr "A másolással létrejövő új bejegyzés teljes DN-je"
-
-
-msgid "Destination Server"
-msgstr "Célkiszolgáló"
-
-
-msgid "Hint: Copying between different servers only works if there are no schema violations"
-msgstr "Tipp: A kiszolgálók közötti másolás csak akkor működik, ha nincs séma-sértés"
-
-
-msgid "Recursively copy all children of this object as well."
-msgstr "Az objektum összes gyermekeinek rekurzív másolása."
-
-
-msgid "Recursive copy"
-msgstr "Rekurzív másolás"
-
-
-msgid "Filter"
-msgstr "Szűrő"
-
-
-msgid "When performing a recursive copy, only copy those entries which match this filter"
-msgstr "Rekurzív másolásnál csak azokat másolja le, amelyekre illik ez a szűrő"
-
-
-msgid "You left the value blank for required attribute (%s)."
-msgstr "A(z) %s kötelező attribútum értékét üresen hagyta."
-
-
-msgid "Redirecting..."
-msgstr "Átirányítás..."
-
-
-msgid "here"
-msgstr "ide"
-
-
-msgid "Could not add the object to the LDAP server."
-msgstr "Nem tudom az objektumot létrehozni a kiszolgálón."
-
-
-msgid "Create Object"
-msgstr "Objektum létrehozása"
-
-
-msgid "Choose a template"
-msgstr "Válasszon mintát"
-
-
-msgid "Select a template for the creation process"
-msgstr "Válasszon mintát a létrehozási folyamathoz"
-
-
-msgid "You left the RDN field blank."
-msgstr "Az RDN-mezőt üresen hagyta"
-
-
-msgid "The container you specified (%s) does not exist. Please try again."
-msgstr "A(z) %s tároló nem létezik. Kérem próbálja újra."
-
-
-msgid "You did not select any ObjectClasses for this object. Please go back and do so."
-msgstr "Nem választott objektumosztályt ehhez az objektumhoz. Kérem lépjen vissza és válasszon egyet."
-
-
-msgid "Hint: You must choose exactly one structural objectClass (shown in bold above)"
-msgstr "Tipp: Legalább egy strukturális objektumosztályt kell választania"
-
-
-msgid "Step 1 of 2: Name and ObjectClass(es)"
-msgstr "Első lépés: Név és objektumosztály(ok)"
-
-
-msgid "Step 2 of 2: Specify attributes and values"
-msgstr "Második lépés: Adja meg az attribútumokat és értékeiket"
-
-
-msgid "Relative Distinguished Name"
-msgstr "Viszonylagos megkülönböztető név (RDN)"
-
-
-msgid "RDN"
-msgstr "RDN"
-
-
-msgid "(example: cn=MyNewPerson)"
-msgstr "(példa: cn=ÚjEmber)"
-
-
-msgid "Container"
-msgstr "Tároló"
-
-
-msgid "You have not logged into the selected server yet, so you cannot perform searches on it."
-msgstr "Nem lépett be a kiválasztott kiszolgálóba, s így nem tudok keresni."
-
-
-msgid "Click here to go to the login form"
-msgstr "Kattintson ide a belépési űrlap eléréséhez"
-
-
-msgid "Unrecognized criteria option: "
-msgstr "Ismeretlen kritérium-opció: "
-
-
-msgid "If you want to add your own criteria to the list. Be sure to edit search.php to handle them. Quitting."
-msgstr "Ha kritériumot kíván adni a listához szerkessze meg a search.php-t, hogy kezelje le azokat. Most kilépek."
-
-
-msgid "Entries found: "
-msgstr "A megtalált bejegyzések: "
-
-
-msgid "Filter performed: "
-msgstr "Használt szűrő: "
-
-
-msgid "Search performed by phpLDAPadmin in"
-msgstr "A phpLDAPadmin"
-
-
-msgid "seconds"
-msgstr "s alatt hajtotta végre a keresést"
-
-
-msgid "Sub (entire subtree)"
-msgstr "Az egész részfa"
-
-
-msgid "One (one level beneath base)"
-msgstr "Egy szint az alap-DN alatt"
-
-
-msgid "Base (base dn only)"
-msgstr "Csak az alap-DN"
-
-
-msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))"
-msgstr "Szabványos LDAP-szűrő, pl. (&(sn=Kovács)(givenname=István))"
-
-
-msgid "Search Filter"
-msgstr "Keresőszűrő"
-
-
-msgid "A list of attributes to display in the results (comma-separated)"
-msgstr "A megjelenítendő találatok attribútumainak vesszővel elválasztott listája"
-
-
-msgid "equals"
-msgstr "egyenlő"
-
-
-msgid "starts with"
-msgstr "kezdet"
-
-
-msgid "contains"
-msgstr "tartalmaz"
-
-
-msgid "ends with"
-msgstr "végződés"
-
-
-msgid "sounds like"
-msgstr "hangzás"
-
-
-msgid "Could not retrieve LDAP information from the server. This may be due to a <a href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version of PHP or perhaps your LDAP server has access control specified that prevents LDAP clients from accessing the RootDSE."
-msgstr "Nem tudom az információt letölteni a kiszolgálóról"
-
-
-msgid "Server info for: "
-msgstr "Kiszolgáló-infó: "
-
-
-msgid "Server reports the following information about itself"
-msgstr "A kiszolgáló ezeket az információkat közölte önmagáról"
-
-
-msgid "This server has nothing to report."
-msgstr "A kiszolgálónak nincs mit elküldenie"
-
-
-msgid "update_array is malformed. This might be a phpLDAPadmin bug. Please report it."
-msgstr "Az update_array hibés. Ez a phpLDAPadmin hibája lehet, kérem jelentse."
-
-
-msgid "Could not perform ldap_modify operation."
-msgstr "Nem tudom elvégezni az ldap_modify műveletet."
-
-
-msgid "Do you want to make these changes?"
-msgstr "Érvényesíteni kívánja a változásokat?"
-
-
-msgid "Attribute"
-msgstr "Attribútumok"
-
-
-msgid "Old Value"
-msgstr "Régi érték"
-
-
-msgid "New Value"
-msgstr "Új érték"
-
-
-msgid "[attribute deleted]"
-msgstr "[attribútum törölve]"
-
-
-msgid "Commit"
-msgstr "Érvényesítés"
-
-
-msgid "Cancel"
-msgstr "Mégsem"
-
-
-msgid "You made no changes"
-msgstr "Nem történt változtatás"
-
-
-msgid "Use the menu to the left to navigate"
-msgstr "A bal oldali menüvel tájékozódhat a programban"
-
-
-msgid "Credits"
-msgstr "Köszönetnyilvánítás"
-
-
-msgid "ChangeLog"
-msgstr "Változtatások naplója"
-
-
-msgid "Donate"
-msgstr "Adományozzon"
-
-
-msgid "Unsafe file name: "
-msgstr "Nem biztonságos állománynév: "
-
-
-msgid "No such file: "
-msgstr "Nincs ilyen állomány: "
-
-
-msgid "You have enabled auto_uid_numbers for <b>%s</b> in your configuration,"
-"                                  but you have not specified the auto_uid_number_mechanism. Please correct"
-"                                  this problem."
-msgstr "Az auto_uid_numbers engedélyezett a konfigurációban  a(z) <b>%s</b> kiszolgálóhoz, de az auto_uid_number_mechanism nincs megadva. Kérem írja be ezt az értéket."
-
-
-msgid "You specified the \"auto_uid_number_mechanism\" as \"uidpool\""
-"                            in your configuration for server <b>%s</b>, but you did not specify the"
-"                            audo_uid_number_uid_pool_dn. Please specify it before proceeding."
-msgstr "A konfigurációban az auto_uid_number_mechanism értéke uidpool a(z) <b>%s</b> kiszolgálóhoz, de nem adta meg az auto_uid_number_uid_pool_dn értékét. Kérem írja be ezt az értéket."
-
-
-msgid "It appears that the uidPool you specified in your configuration (\"%s\")"
-"                              does not exist."
-msgstr "A konfigurációban megadott uidPool nem létezik (%s)."
-
-
-msgid "You specified the \"auto_uid_number_mechanism\" as \"search\" in your"
-"                              configuration for server <b>%s</b>, but you did not specify the"
-"                              \"auto_uid_number_search_base\". Please specify it before proceeding."
-msgstr "A konfigurációban az auto_uid_number_mechanism értéke search a(z) <b>%s</b> kiszolgálóhoz, de nem adta meg az auto_uid_number_search_base értékét. Kérem írja be ezt az értéket."
-
-
-msgid "Unable to bind to <b>%s</b> with your with auto_uid credentials. Please check your configuration file."
-msgstr "A bind művelet sikertelen a(z) <b>%s</b> kiszolgálóhoz az auto_uid használatával. Kérem ellenőrizze a konfigurációt. "
-
-
-msgid "Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base for server %s"
-msgstr "A konfigurációban érvénytelen auto_uid_search_base van megadva a(z) <b>%s</b> kiszolgálóhoz."
-
-
-msgid "You specified an invalid value for auto_uid_number_mechanism (\"%s\")"
-"                                   in your configration. Only \"uidpool\" and \"search\" are valid."
-"                                   Please correct this problem."
-msgstr "Érvénytelen értéket adott meg a auto_uid_number_mechanism-nak (%s). Csak uidpool és search a megengedett érték."
-
-
-msgid "Error: You have an error in your config file. The only three allowed values"
-"                                    for auth_type in the $servers section are 'session', 'cookie', and 'config'. You entered '%s',"
-"                                    which is not allowed. "
-msgstr "Csak a session, cookie és config a megengedett értékek az auth_type-nak a konfigurációban. A megadott helytelen érték: %s."
-
-
-msgid "Your PHP install does not support TLS."
-msgstr "Ez a PHP nem támogatja a TLS-t."
-
-
-msgid "Could not start TLS. Please check your LDAP server configuration."
-msgstr "Nem tudom a TLS-t elindítani. Kérem ellenőrizze az LDAP-kiszolgálót és a konfigurációt."
-
-
-msgid "Could not bind anonymously to server."
-msgstr "Az anonymous bind művelet nem sikerült."
-
-
-msgid "Could not bind to the LDAP server."
-msgstr "A bind művelet sikertelen az LDAP-kiszolgálóhoz."
-
-
-msgid "Anonymous Bind"
-msgstr "Anonymous bind"
-
-
-msgid "Bad username or password. Please try again."
-msgstr "Helytelen felhasználónév vagy jelszó. Kérem próbálja újra."
-
-
-msgid "Successfully logged into server <b>%s</b>"
-msgstr "A(z) %s kiszolgálóhoz sikeresen bejelentkezett."
-
-
-msgid "Could not set cookie."
-msgstr "Nem tudok sütit beállítani."
-
-
-msgid "LDAP said: %s"
-msgstr "Az LDAP ezt mondta: %s"
-
-
-msgid "Error"
-msgstr "Hiba"
-
-
-msgid "browse"
-msgstr "böngészés"
-
-
-msgid "Delete Photo"
-msgstr "Fotó törlése"
-
-
-msgid "Your system crypt library does not support blowfish encryption."
-msgstr "Ez a PHP nem támogatja a blowfish titkosítást."
-
-
-msgid "Your system crypt library does not support md5crypt encryption."
-msgstr "Ez a PHP nem támogatja az md5crypt titkosítást."
-
-
-msgid "Your PHP install does not have the mhash() function. Cannot do SHA hashes."
-msgstr "Ez a PHP nem tartalmazza az mhash() függvényt. Nem tudok SHA hash-eket kezelni."
-
-
-msgid "jpegPhoto contains errors<br />"
-msgstr "A jpegPhoto hibás<br />"
-
-
-msgid "Error number: %s (%s)"
-msgstr "Hibaszám: %s (%s)"
-
-
-msgid "Description: %s <br /><br />"
-msgstr "Leírás: %s <br /><br />"
-
-
-msgid "Error number: %s<br /><br />"
-msgstr "Hibaszám: %s<br /><br />"
-
-
-msgid "Description: (no description available)<br />"
-msgstr "Leírás: (nincs leírás)<br />"
-
-
-msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
-msgstr "Ez a phpLDAPadmin hibája? Ha igen, kérem <a href='%s'>jelentse</a>."
-
-
-msgid "Unrecognized error number: "
-msgstr "Ismeretlen hibaszám: "
-
-
-msgid "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
-"             <b>You found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>"
-"             <td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
-"             </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>"
-"	<tr><td colspan='2'><center><a target='new' href='%s'>Please check and see if this bug has been reported here</a>.</center></td></tr>"
-"	<tr><td colspan='2'><center><a target='new' href='%s'>If it hasnt been reported, you may report this bug by clicking here</a>.</center></td></tr>"
-"	</table></center><br />"
-msgstr "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
-"             <b>Egy kisebb hibát talált a phpLDAPadmin-ban!</b></td></tr><tr><td>Hiba:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Állomány:</td>"
-"             <td><b>%s.</b> sor <b>%s</b>, hívó <b>%s</b></td></tr><tr><td>Verziók:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
-"             </td></tr><tr><td>Web-kiszolgáló:</td><td><b>%s</b></td></tr><tr><td colspan='2'><center><a target='new' href='%s'>"
-"             Kérem jelentse a hibát, kattintson ide!</a>.</center></td></tr></table></center><br />"
-
-
-msgid "Congratulations! You found a bug in phpLDAPadmin.<br /><br />"
-"	     <table class='bug'>"
-"	     <tr><td>Error:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>Level:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>File:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>Line:</td><td><b>%s</b></td></tr>"
-"		 <tr><td>Caller:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>PLA Version:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>PHP Version:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>Web server:</td><td><b>%s</b></td></tr>"
-"	     </table>"
-"	     <br />"
-"	     Please report this bug by clicking below!"
-msgstr "Gratulálunk! Hibát talált a phpLDAPadmin-ban.<br /><br />"
-"	     <table class='bug'>"
-"	     <tr><td>Hiba:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>Szint:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>Állomány:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>Sor:</td><td><b>%s</b></td></tr>"
-"		 <tr><td>Hívó:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>PLA Verzió:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>PHP Verzió:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>Web-kiszolgáló:</td><td><b>%s</b></td></tr>"
-"	     </table>"
-"	     <br />"
-"	     Kérjük jelentse a hibát, kattintson alulra!"
-
-
-msgid "Import LDIF File"
-msgstr "LDIF-állomány importálása"
-
-
-msgid "Select an LDIF file:"
-msgstr "LDIF-állomány kiválasztása"
-
-
-msgid "Don't stop on errors"
-msgstr "Ne állj meg hiba esetén"
-
-
-msgid "Adding..."
-msgstr "Hozzáadás..."
-
-
-msgid "Deleting..."
-msgstr "Törlés..."
-
-
-msgid "Modifying..."
-msgstr "Módosítás..."
-
-
-msgid "No version found. Assuming 1."
-msgstr "Nem találtam verziószámot, feltételeztem, hogy 1-es."
-
-
-msgid "A valid dn line is required."
-msgstr "Érvényes DN-sor kell."
-
-
-msgid "Missing uploaded file."
-msgstr "A feltöltött állomány hiányzik."
-
-
-msgid "Uploaded LDIF file is empty."
-msgstr "A feltöltött LDIF-állomány üres."
-
-
-msgid "empty"
-msgstr "üres"
-
-
-msgid "File"
-msgstr "Állomány"
-
-
-msgid "%s bytes"
-msgstr "%s byte"
-
-
-msgid "Failed"
-msgstr "Sikertelen"
-
-
-msgid "LDIF Parse Error"
-msgstr "LDIF-pásztázási hiba"
-
-
-msgid "Could not add object:"
-msgstr "Nem tudom ezt az objektumot hozzáadni:"
-
-
-msgid "Could not rename object:"
-msgstr "Nem tudom ezt az objektumot átnevezni:"
-
-
-msgid "Could not delete object:"
-msgstr "Nem tudom ezt az objektumot törölni:"
-
-
-msgid "Could not modify object:"
-msgstr "Nem tudom ezt az objektumot módosítani:"
-
-
-msgid "Line Number:"
-msgstr "Sorszám:"
-
-
-msgid "Line:"
-msgstr "Sor:"
-
-
-msgid "Export format"
-msgstr "Export-formátum"
-
-
-msgid "Line ends"
-msgstr "Sorvégek"
-
-
-msgid "You must choose an export format."
-msgstr "Az export formátumát ki kell választani."
-
-
-msgid "Invalid export format"
-msgstr "Az export formátuma érvénytelen"
-
-
-msgid "No available exporter found."
-msgstr "Nincs használható exportáló."
-
-
-msgid "Encountered an error while performing search."
-msgstr "Keresés közben hibába akadtam."
-
-
-msgid "Showing results %s through %s."
-msgstr "A(z) %s és %s közé eső találatok megjelenítése."
-
-
-msgid "Searching..."
-msgstr "Folyik a keresés..."
-
-
-msgid "Notice, search size limit exceeded."
-msgstr "Figyelem: a keresési méret korlátja túllépve."
-
-
-msgid "Entry"
-msgstr "Bejegyzés"
-
-
-msgid "LDIF Export for: %s"
-msgstr "A(z) %s LDIF exportja"
-
-
-msgid "Generated by phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) on %s"
-msgstr "A phpLDAPadmin generálta, dátum: %s"
-
-
-msgid "Total Entries"
-msgstr "Bejegyzések száma összesen"
-
-
-msgid "DSLM Export for: %s"
-msgstr "A(z) %s DSLM exportja"
-
-
-msgid "You left the password blank."
-msgstr "A jelszó üresen maradt."
-
-
-msgid "No one is logged in to that server."
-msgstr "Arra a kiszolgálóra nincs bejelentkezve senki."
-
-
-msgid "Could not logout."
-msgstr "Nem sikerült kilépni."
-
-
-msgid "Unknown auth_type: %s"
-msgstr "Ismeretlen auth_type: %s"
-
-
-msgid "Logged out successfully from server <b>%s</b>"
-msgstr "A kilépés sikerült a(z) <b>%s</b> kiszolgálóból"
-
-
-msgid "Authenticate to server %s"
-msgstr "Azonosítsa magát a(z) %s kiszolgálón"
-
-
-msgid "Warning: This web connection is unencrypted."
-msgstr "Figyelem: A kapcsolat a bögészővel titkosítatlan."
-
-
-msgid "You are not using 'https'. Web browser will transmit login information in clear text."
-msgstr "Nem https kapcsolatot használ. A böngésző a bejelentkezés adatait sima szöveg formátumban fogja továbbítani"
-
-
-msgid "Login DN"
-msgstr "Bejelentkezési DN"
-
-
-msgid "User name"
-msgstr "A felhasználó neve"
-
-
-msgid "Password"
-msgstr "Jelszó"
-
-
-msgid "Authenticate"
-msgstr "Azonosítás"
-
-
-msgid "Entry Chooser"
-msgstr "Bejegyzés kiválasztása"
-
-
-msgid "You need to configure phpLDAPadmin. Edit the file 'config/config.php' to do so. An example config file is provided in 'config/config.php.example'"
-msgstr "Konfigurálnia kell a phpLDAPadmint a config.php állomány szerkesztésével, amihez mintául a config.php.example szolgálhat."
-
-
-msgid "Deletes not allowed in read only mode."
-msgstr "Csak olvasható üzemmódban a törlés nem működik."
-
-
-msgid "Error calling mass_delete.php. Missing mass_delete in POST vars."
-msgstr "Hiba a mass_delete.php hívásakor. A POST változók közül hiányzik a mass_delete."
-
-
-msgid "mass_delete POST var is not an array."
-msgstr "A mass_delete POST változó nem tömb."
-
-
-msgid "Mass deletion is not enabled. Please enable it in config.php before proceeding."
-msgstr "A tömeges törlés nincs engedélyezve. Mielőtt folytatná, állítsa át az enable_mass_delete értékét config.php állományban."
-
-
-msgid "Mass Deleting"
-msgstr "Tömeges törlés"
-
-
-msgid "Deletion progress on server \"%s\""
-msgstr "A törlési művelet a(z) %s kiszolgálón"
-
-
-msgid "Malformed mass_delete array."
-msgstr "A tömeges törléshez megadott tömb formátuma helytelen"
-
-
-msgid "You did not select any entries to delete."
-msgstr "Nem választotta ki a törlendő bejegyzés(eke)t. "
-
-
-msgid "Deleting %s"
-msgstr "%s törölve"
-
-
+"X-Launchpad-Export-Date: 2008-11-29 23:48+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
+
+#: ../../htdocs/mass_delete.php:86
+#, php-format
 msgid "%s of %s entries failed to be deleted."
 msgstr "%s darab bejegyzés törlése nem sikerült a(z) %s darabból."
 
+#: ../../lib/EntryWriter1.php:960
+msgid "("
+msgstr ""
 
+#: ../../lib/HTMLTree.php:486
+msgid "(Session timed out. Automatically logged out.)"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:962
+msgid ")"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:279 ../../lib/EntryWriter1.php:247
+#: ../../lib/EntryWriter1.php:254 ../../lib/EntryWriter1.php:261
+#: ../../lib/EntryWriter1.php:507 ../../lib/EntryWriter1.php:513
+#: ../../lib/EntryWriter1.php:520 ../../lib/EntryWriter1.php:1033
+#: ../../lib/EntryWriter1.php:1036 ../../lib/EntryWriter1.php:1255
+#: ../../lib/EntryWriter1.php:1418 ../../lib/EntryWriter1.php:2463
+#: ../../lib/EntryWriter2.php:21 ../../lib/EntryWriter2.php:175
+#: ../../lib/page.php:200 ../../htdocs/create.php:25
+#: ../../htdocs/create.php:115 ../../htdocs/update_confirm.php:309
+#: ../../htdocs/update_confirm.php:312 ../../htdocs/add_value_form.php:76
+#: ../../htdocs/add_value_form.php:78 ../../htdocs/add_value_form.php:112
+#: ../../htdocs/server_info.php:16 ../../htdocs/purge_cache.php:13
+#: ../../htdocs/view_jpeg_photo.php:25 ../../htdocs/schema.php:20
+#: ../../htdocs/update.php:61 ../../htdocs/update.php:67
+#: ../../htdocs/update.php:80 ../../htdocs/rename.php:24
+#: ../../htdocs/delete_attr.php:21 ../../htdocs/delete.php:21
+#: ../../htdocs/mass_delete.php:26 ../../htdocs/copy.php:20
+#: ../../htdocs/copy.php:76 ../../htdocs/add_value.php:24
+#: ../../htdocs/search.php:120 ../../htdocs/search.php:124
+#: ../../htdocs/search.php:128 ../../htdocs/search.php:265
+#: ../../htdocs/search.php:276 ../../htdocs/search.php:295
+#: ../../htdocs/search.php:299 ../../htdocs/export.php:18
+#: ../../htdocs/ldif_import.php:19 ../../htdocs/refresh.php:17
+#: ../../htdocs/rdelete.php:21 ../../htdocs/add_attr.php:25
+msgid ":"
+msgstr ""
+
+#: ../../lib/search_form_advanced.php:103
+msgid "A list of attributes to display in the results (comma-separated)"
+msgstr ""
+"A megjelenítendő találatok attribútumainak vesszővel elválasztott listája"
+
+#: ../../lib/functions.php:1292
+msgid "A query on the uidpool_dn did return a valid uidNumber."
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:2463 ../../lib/template_functions.php:962
+msgid "A random password was generated for you"
+msgstr ""
+
+#: ../../lib/ldif_functions.php:532
+msgid "A valid deleteoldrdn attribute should be specified"
+msgstr ""
+
+#: ../../lib/ldif_functions.php:243
+msgid "A valid dn line is required."
+msgstr "Érvényes DN-sor kell."
+
+#: ../../lib/ldif_functions.php:538
+msgid "A valid newrdn attribute  should be specified"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:789 ../../htdocs/add_attr_form.php:104
+#: ../../htdocs/add_attr_form.php:148
+msgid "Add"
+msgstr "Hozzáadás"
+
+#: ../../htdocs/add_value_form.php:182
+msgid "Add New Value"
+msgstr "Új érték hozzáadása"
+
+#: ../../htdocs/compare.php:466 ../../htdocs/add_oclass_form.php:104
+msgid "Add ObjectClass and Attributes"
+msgstr "Objektumosztály és attribútumok hozzáadása"
+
+#: ../../htdocs/modify_member_form.php:145
+msgid "Add all"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:1847 ../../htdocs/compare.php:479
+#, php-format
+msgid "Add an additional value to attribute '%s'"
+msgstr "Érték hozzáadása a(z) %s attribútumhoz"
+
+#: ../../htdocs/add_value_form.php:93
+msgid "Add new"
+msgstr "Új"
+
+#: ../../htdocs/add_value_form.php:153 ../../htdocs/compare.php:470
+msgid "Add new ObjectClass"
+msgstr "Új objektumosztály hozzáadása"
+
+#: ../../lib/EntryWriter1.php:789 ../../htdocs/add_attr_form.php:23
+#: ../../htdocs/add_attr_form.php:72
+msgid "Add new attribute"
+msgstr "Új attribútum hozzáadása"
+
+#: ../../htdocs/add_attr_form.php:114
+msgid "Add new binary attribute"
+msgstr "Új bináris attribútum hozzáadása"
+
+#: ../../htdocs/modify_member_form.php:145
+msgid "Add selected"
+msgstr ""
+
+#: ../../htdocs/ldif_import.php:62
+msgid "Adding..."
+msgstr "Hozzáadás..."
+
+#: ../../lib/search_form_predefined.php:34
+#: ../../lib/search_form_advanced.php:25 ../../lib/search_form_simple.php:35
+msgid "Advanced Search Form"
+msgstr "Részletes keresési űrlap"
+
+#: ../../lib/config_default.php:646
+msgid "Alias for"
+msgstr ""
+
+#: ../../htdocs/schema.php:110
+msgid "Aliases"
+msgstr "Álnevek (alias)"
+
+#: ../../htdocs/mass_delete.php:88
 msgid "All entries deleted successfully."
 msgstr "Az összes bejegyzés törlése sikerült."
 
+#: ../../lib/EntryWriter1.php:825
+#, php-format
+msgid "An attribute (%s) was modified and is highlighted below."
+msgstr "Módosult egy attribútum (%s), s ez kiemelve szerepel az alábbiakban."
 
+#: ../../htdocs/update_confirm.php:100
+msgid "An entry should have one structural objectClass."
+msgstr ""
+
+#: ../../htdocs/login_form.php:60
+msgid "Anonymous"
+msgstr ""
+
+#: ../../htdocs/login.php:164
+msgid "Anonymous Bind"
+msgstr "Anonymous bind"
+
+#: ../../htdocs/delete_form.php:102
+msgid "Are you sure you want to permanently delete this object?"
+msgstr "Biztos törölni óhajtja ezt az objektumot?"
+
+#: ../../htdocs/update_confirm.php:202 ../../htdocs/compare.php:46
+msgid "Attribute"
+msgstr "Attribútumok"
+
+#: ../../htdocs/schema.php:42
+msgid "Attribute Types"
+msgstr ""
+
+#: ../../lib/ldif_functions.php:455
+msgid "Attribute is not valid"
+msgstr ""
+
+#: ../../lib/ldif_functions.php:375
+msgid "Attribute not well formed"
+msgstr ""
+
+#: ../../htdocs/login_form.php:63
+msgid "Authenticate"
+msgstr "Azonosítás"
+
+#: ../../lib/HTMLTree.php:95 ../../lib/server_functions.php:2442
+#: ../../htdocs/login.php:26 ../../htdocs/login.php:91
+#: ../../htdocs/login.php:116 ../../htdocs/login.php:136
+#: ../../htdocs/login.php:143 ../../htdocs/login.php:163
+#: ../../htdocs/login_form.php:19
+msgid "Authenticate to server"
+msgstr ""
+
+#: ../../htdocs/modify_member_form.php:114
+msgid "Available members"
+msgstr ""
+
+#: ../../htdocs/entry_chooser.php:65
+msgid "Back Up..."
+msgstr "Vissza..."
+
+#: ../../lib/server_functions.php:341 ../../lib/server_functions.php:2443
+#: ../../htdocs/login.php:92 ../../htdocs/login.php:144
+msgid "Bad username or password. Please try again."
+msgstr "Helytelen felhasználónév vagy jelszó. Kérem próbálja újra."
+
+#: ../../lib/search_form_advanced.php:90 ../../htdocs/export_form.php:31
+msgid "Base (base dn only)"
+msgstr "Csak az alap-DN"
+
+#: ../../lib/search_form_advanced.php:64 ../../htdocs/export_form.php:52
+#: ../../htdocs/search.php:295
+msgid "Base DN"
+msgstr "Alap-DN"
+
+#: ../../lib/EntryWriter1.php:2001 ../../htdocs/compare.php:251
+msgid "Binary value"
+msgstr "Bináris érték"
+
+#: ../../htdocs/copy.php:61
+msgid "Building snapshot of tree to copy... "
+msgstr "A fáról készítek egy pillanatfelvételt a másoláshoz... "
+
+#: ../../lib/export_functions.php:38
+msgid "CSV (Spreadsheet)"
+msgstr ""
+
+#: ../../lib/functions.php:63
+msgid "Called to load a class that cant be found"
+msgstr ""
+
+#: ../../htdocs/update_confirm.php:304 ../../htdocs/delete_form.php:77
+#: ../../htdocs/delete_form.php:127
+msgid "Cancel"
+msgstr "Mégsem"
+
+#: ../../htdocs/compare.php:343
+msgid "Check password"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:2427
+msgid "Check password..."
+msgstr ""
+
+#: ../../lib/EntryReader.php:346 ../../lib/EntryReader.php:374
+msgid "Checking passwords"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:796
+msgid "Children"
+msgstr ""
+
+#: ../../lib/functions.php:3223
+msgid "Click to popup a dialog to select a date graphically"
+msgstr ""
+
+#: ../../lib/functions.php:2239
+msgid "Click to popup a dialog to select an entry (DN) graphically"
+msgstr ""
+"Kattintásra egy új ablak jön föl, amelyben egy bejegyzést választhat a DN "
+"alapján."
+
+#: ../../lib/EntryWriter1.php:1914 ../../htdocs/server_info.php:83
+#: ../../htdocs/compare.php:145
+#, php-format
+msgid "Click to view the schema definition for attribute type '%s'"
+msgstr ""
+
+#: ../../htdocs/schema.php:106
+msgid "Collective"
+msgstr "Kollektív"
+
+#: ../../htdocs/update_confirm.php:303
+msgid "Commit"
+msgstr "Érvényesítés"
+
+#: ../../lib/EntryWriter1.php:775 ../../htdocs/password_checker.php:35
+#: ../../htdocs/compare_form.php:29 ../../htdocs/compare_form.php:64
+msgid "Compare"
+msgstr ""
+
+#: ../../htdocs/compare_form.php:21
+msgid "Compare another DN with"
+msgstr ""
+
+#: ../../htdocs/compare_form.php:41 ../../htdocs/compare_form.php:53
+msgid "Compare this DN with another"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:776
+msgid "Compare with another entry"
+msgstr ""
+
+#: ../../htdocs/compare.php:42
+msgid "Comparing the following DNs"
+msgstr ""
+
+#: ../../htdocs/export_form.php:84
+msgid "Compress"
+msgstr ""
+
+#: ../../lib/session_functions.php:138
+msgid "Configuration cache stale."
+msgstr ""
+
+#: ../../htdocs/mass_delete.php:92
+#, php-format
 msgid "Confirm mass delete of %s entries on server %s"
 msgstr "Hagyja jóvá a(z) %s bejegyzés tömeges törlését a(z) %s kiszolgálóról"
 
+#: ../../lib/EntryWriter1.php:327
+msgid "Container"
+msgstr "Tároló"
 
-msgid "Yes, delete!"
-msgstr "Igen, törlődjön"
+#: ../../lib/EntryWriter1.php:256
+msgid "Container and ObjectClass(es)"
+msgstr ""
 
+#: ../../lib/ldif_functions.php:525
+msgid "Container is null"
+msgstr ""
 
-msgid "You cannot rename an entry which has children entries (eg, the rename operation is not allowed on non-leaf entries)"
-msgstr "Nem nevezhet át olyan bejegyzést aminek gyermekei vannak (azaz az átnevezés művelete csak levél-bejegyzéseken megengedett)"
+#: ../../htdocs/copy_form.php:45 ../../htdocs/copy_form.php:51
+msgid "Copy"
+msgstr ""
 
+#: ../../htdocs/copy_form.php:96
+msgid "Copy "
+msgstr ""
 
-msgid "You did not change the RDN"
-msgstr "Nem változtatta meg az RDN-t"
+#: ../../htdocs/copy.php:88
+msgid "Copy Entry"
+msgstr ""
 
+#: ../../lib/EntryWriter1.php:741
+msgid "Copy or move this entry"
+msgstr "A bejegyzés másolása"
 
-msgid "Invalid RDN value"
-msgstr "Érvénytelen RDN érték"
+#: ../../htdocs/copy.php:76 ../../htdocs/copy.php:106
+msgid "Copy successful!"
+msgstr ""
 
+#: ../../lib/EntryWriter1.php:740
+msgid "Copy this object to another location,a new DN, or another server"
+msgstr ""
 
+#: ../../htdocs/copy.php:57
+msgid "Copying "
+msgstr "Másolás: "
+
+#: ../../htdocs/ldif_import.php:70
+msgid "Could not add object:"
+msgstr "Nem tudom ezt az objektumot hozzáadni:"
+
+#: ../../htdocs/create.php:133
+msgid "Could not add the object to the LDAP server."
+msgstr "Nem tudom az objektumot létrehozni a kiszolgálón."
+
+#: ../../htdocs/login.php:137
+msgid "Could not bind anonymously to server."
+msgstr "Az anonymous bind művelet nem sikerült."
+
+#: ../../lib/server_functions.php:350
+#, php-format
+msgid "Could not bind to the LDAP server (%s)."
+msgstr ""
+
+#: ../../lib/server_functions.php:347
+#, php-format
+msgid "Could not connect to \"%s\" on port \"%s\""
+msgstr "Nem tudok csatlakozni a(z) %s géphez a(z) %s porton."
+
+#: ../../lib/HTMLTree.php:96
+msgid "Could not connect to LDAP server"
+msgstr ""
+
+#: ../../htdocs/ldif_import.php:71
+msgid "Could not delete object:"
+msgstr "Nem tudom ezt az objektumot törölni:"
+
+#: ../../htdocs/delete.php:35 ../../htdocs/delete.php:49
+#: ../../htdocs/rdelete.php:45
+#, php-format
+msgid "Could not delete the entry: %s"
+msgstr "Nem tudom a(z) %s bejegyzést törölni"
+
+#: ../../htdocs/entry_chooser.php:101
+msgid "Could not determine base DN"
+msgstr "Nem tudom az alap-DN-t meghatározni"
+
+#: ../../lib/HTMLTree.php:82
+msgid "Could not determine the root of your LDAP tree."
+msgstr "Nem tudom megállapítani az LDAP-fa gyökerét."
+
+#: ../../lib/functions.php:1849
+#, php-format
+msgid "Could not fetch jpeg data from LDAP server for attribute %s."
+msgstr ""
+
+#: ../../lib/timeout_functions.php:72 ../../htdocs/logout.php:24
+msgid "Could not logout."
+msgstr "Nem sikerült kilépni."
+
+#: ../../htdocs/ldif_import.php:74
+msgid "Could not modify object:"
+msgstr "Nem tudom ezt az objektumot módosítani:"
+
+#: ../../htdocs/add_oclass.php:54 ../../htdocs/add_value.php:72
+msgid "Could not perform ldap_mod_add operation."
+msgstr "Nem tudom végrehajtani az ldap_mod_add műveletet."
+
+#: ../../htdocs/update.php:178 ../../htdocs/delete_attr.php:50
+msgid "Could not perform ldap_modify operation."
+msgstr "Nem tudom elvégezni az ldap_modify műveletet."
+
+#: ../../htdocs/ldif_import.php:72 ../../htdocs/ldif_import.php:73
+msgid "Could not rename object:"
+msgstr "Nem tudom ezt az objektumot átnevezni:"
+
+#: ../../lib/server_functions.php:1533 ../../htdocs/rename.php:61
 msgid "Could not rename the entry"
 msgstr "A bejegyzést nem sikerült átnevezni"
 
+#: ../../htdocs/schema.php:31
+msgid "Could not retrieve schema from"
+msgstr "Nem tudom a sémát elérni,"
 
+#: ../../htdocs/login.php:152
+msgid "Could not set cookie."
+msgstr "Nem tudok sütit beállítani."
+
+#: ../../lib/server_functions.php:265
+msgid "Could not start TLS. Please check your LDAP server configuration."
+msgstr ""
+"Nem tudom a TLS-t elindítani. Kérem ellenőrizze az LDAP-kiszolgálót és a "
+"konfigurációt."
+
+#: ../../lib/functions.php:1864
+#, php-format
+msgid ""
+"Could not write to the $jpeg_temp_dir directory %s. Please verify that your "
+"web server can write files there."
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:783
+msgid "Create"
+msgstr ""
+
+#: ../../htdocs/create.php:118
+msgid "Create Entry"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:242 ../../lib/EntryWriter1.php:313
+#: ../../lib/EntryWriter2.php:82
+msgid "Create Object"
+msgstr "Objektum létrehozása"
+
+#: ../../lib/EntryWriter1.php:783
+msgid "Create a child entry"
+msgstr "Gyermekbejegyzés létrehozása"
+
+#: ../../lib/HTMLTree.php:463
+msgid "Create a new entry in"
+msgstr ""
+
+#: ../../htdocs/create.php:128
+msgid "Create another entry"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:70
+msgid "Create it?"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:463 ../../lib/PLMTree.php:142
+#: ../../lib/PLMTree.php:162 ../../lib/AJAXTree.php:343
+#: ../../lib/AJAXTree.php:344 ../../lib/AJAXTree.php:367
+#: ../../lib/AJAXTree.php:368
+msgid "Create new entry here"
+msgstr "Új bejegyzés"
+
+#: ../../htdocs/create.php:115
+msgid "Creation successful!"
+msgstr ""
+
+#: ../../htdocs/welcome.php:25
+msgid "Credits"
+msgstr "Köszönetnyilvánítás"
+
+#: ../../htdocs/add_value_form.php:112
+msgid "Current list of"
+msgstr "Az aktuális lista"
+
+#: ../../lib/EntryWriter1.php:739
+msgid "Cut"
+msgstr ""
+
+#: ../../htdocs/delete_form.php:107
+msgid "DN"
+msgstr "DN"
+
+#: ../../lib/EntryWriter1.php:1886
+msgid "DN not available"
+msgstr ""
+
+#: ../../lib/export_functions.php:414
+#, php-format
+msgid "DSLM Export for: %s"
+msgstr "A(z) %s DSLM exportja"
+
+#: ../../lib/EntryWriter1.php:1095 ../../lib/EntryWriter1.php:1301
+msgid "Default"
+msgstr ""
+
+#: ../../htdocs/delete_form.php:117
+msgid "Delete"
+msgstr "Törlés"
+
+#: ../../htdocs/delete_form.php:27
+#, php-format
+msgid "Delete %s"
+msgstr "A(z) %s törlése"
+
+#: ../../lib/HTMLTree.php:139
+msgid "Delete Checked Entries"
+msgstr ""
+
+#: ../../htdocs/delete.php:43
+msgid "Delete DN"
+msgstr ""
+
+#: ../../lib/functions.php:1871
+msgid "Delete Photo"
+msgstr "Fotó törlése"
+
+#: ../../htdocs/copy_form.php:86 ../../htdocs/copy_form.php:92
+msgid "Delete after copy (move):"
+msgstr ""
+
+#: ../../htdocs/delete_form.php:68
+#, php-format
+msgid "Delete all %s objects"
+msgstr "Mind a(z) %s objektum törlése"
+
+#: ../../lib/functions.php:1906
+msgid "Delete photo"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:763
+msgid "Delete this entry"
+msgstr "A bejegyzés törlése"
+
+#: ../../htdocs/rdelete.php:54 ../../htdocs/rdelete.php:71
+msgid "Deleting"
+msgstr ""
+
+#: ../../htdocs/mass_delete.php:61 ../../htdocs/rdelete.php:30
+#, php-format
+msgid "Deleting %s"
+msgstr "%s törölve"
+
+#: ../../htdocs/ldif_import.php:63
+msgid "Deleting..."
+msgstr "Törlés..."
+
+#: ../../htdocs/mass_delete.php:43
+#, php-format
+msgid "Deletion progress on server \"%s\""
+msgstr "A törlési művelet a(z) %s kiszolgálón"
+
+#: ../../lib/functions.php:1790 ../../lib/functions.php:1793
+#: ../../htdocs/add_value_form.php:172 ../../htdocs/schema.php:70
+#: ../../htdocs/schema.php:98 ../../htdocs/schema.php:410
+#: ../../htdocs/ldif_import.php:110 ../../htdocs/ldif_import.php:120
+#: ../../htdocs/ldif_import.php:190
+msgid "Description"
+msgstr "Leírás"
+
+#: ../../htdocs/compare_form.php:53 ../../htdocs/copy_form.php:64
+msgid "Destination DN"
+msgstr "Cél-DN"
+
+#: ../../htdocs/compare_form.php:61 ../../htdocs/copy_form.php:70
+msgid "Destination Server"
+msgstr "Célkiszolgáló"
+
+#: ../../htdocs/copy.php:29
+msgid "Destination server is currently READ-ONLY."
+msgstr ""
+
+#: ../../htdocs/create.php:126
+msgid "Display the new created entry"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:512 ../../htdocs/add_value_form.php:95
+#: ../../htdocs/compare.php:49 ../../htdocs/compare.php:52
+#: ../../htdocs/delete_form.php:29 ../../htdocs/delete_form.php:107
+#: ../../htdocs/rename_form.php:29 ../../htdocs/compare_form.php:24
+#: ../../htdocs/modify_member_form.php:72 ../../htdocs/copy_form.php:47
+#: ../../htdocs/add_attr_form.php:25
+msgid "Distinguished Name"
+msgstr "Megkülönböztető név (DN)"
+
+#: ../../htdocs/mass_delete.php:95
+#, php-format
+msgid "Do you really want to delete %s %s %s"
+msgstr ""
+
+#: ../../htdocs/update_confirm.php:190
+msgid "Do you want to make these changes?"
+msgstr "Érvényesíteni kívánja a változásokat?"
+
+#: ../../htdocs/welcome.php:30
+msgid "Documentation"
+msgstr ""
+
+#: ../../htdocs/ldif_import_form.php:44
+msgid "Don't stop on errors"
+msgstr "Ne állj meg hiba esetén"
+
+#: ../../lib/functions.php:355 ../../htdocs/welcome.php:35
+msgid "Donate"
+msgstr "Adományozzon"
+
+#: ../../lib/export_functions.php:252 ../../htdocs/search.php:250
+msgid "Encountered an error while performing search."
+msgstr "Keresés közben hibába akadtam."
+
+#: ../../htdocs/add_value_form.php:135
+msgid "Enter the value you would like to add:"
+msgstr "Adja meg a kívánt értéket:"
+
+#: ../../htdocs/search.php:265
+msgid "Entries found"
+msgstr ""
+
+#: ../../lib/export_functions.php:319
+msgid "Entry"
+msgstr "Bejegyzés"
+
+#: ../../htdocs/rdelete.php:42
+#, php-format
+msgid "Entry %s and sub-tree deleted successfully."
+msgstr "A(z) %s bejegyzés és a részfa sikeresen törölve."
+
+#: ../../htdocs/entry_chooser.php:19
+msgid "Entry Chooser"
+msgstr "Bejegyzés kiválasztása"
+
+#: ../../htdocs/create.php:123
+msgid "Entry created"
+msgstr ""
+
+#: ../../htdocs/schema.php:101
+msgid "Equality"
+msgstr "Egyenlőség"
+
+#: ../../lib/functions.php:130 ../../lib/functions.php:513
+msgid "Error"
+msgstr "Hiba"
+
+#: ../../htdocs/mass_delete.php:30
+msgid "Error calling mass_delete.php. Missing mass_delete in POST vars."
+msgstr ""
+"Hiba a mass_delete.php hívásakor. A POST változók közül hiányzik a "
+"mass_delete."
+
+#: ../../htdocs/ldif_import.php:118
+msgid "Error code"
+msgstr ""
+
+#: ../../lib/functions.php:1789 ../../lib/functions.php:1792
+#: ../../lib/functions.php:1798
+msgid "Error number"
+msgstr ""
+
+#: ../../lib/server_functions.php:95
+#, php-format
+msgid ""
+"Error: You have an error in your config file. The only three allowed values "
+"for auth_type in the $servers section are 'session', 'cookie', and 'config'. "
+"You entered '%s', which is not allowed."
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:733 ../../htdocs/export_form.php:36
+#: ../../htdocs/export_form.php:46
+msgid "Export"
+msgstr "Exportálás"
+
+#: ../../lib/HTMLTree.php:264
+msgid "Export entries"
+msgstr ""
+
+#: ../../htdocs/export_form.php:97
+msgid "Export format"
+msgstr "Export-formátum"
+
+#: ../../lib/EntryWriter1.php:804
+msgid "Export subtree"
+msgstr "Részfa exportálása"
+
+#: ../../htdocs/mass_delete.php:73 ../../htdocs/ldif_import.php:103
+#: ../../htdocs/ldif_import.php:116 ../../htdocs/ldif_import.php:139
+#: ../../htdocs/ldif_import.php:162
+msgid "Failed"
+msgstr "Sikertelen"
+
+#: ../../htdocs/add_attr.php:128
+msgid "Failed to add the attribute."
+msgstr "Nem tudtam az attribútumot hozzáadni."
+
+#: ../../htdocs/copy.php:144
+msgid "Failed to copy DN: "
+msgstr "A DN másolása nem sikerült: "
+
+#: ../../htdocs/rdelete.php:63 ../../htdocs/rdelete.php:80
+#, php-format
+msgid "Failed to delete entry %s"
+msgstr "A(z) %s bejegyzés törlése sikertelen"
+
+#: ../../tools/unserialize.php:14 ../../lib/functions.php:132
+#: ../../lib/functions.php:535 ../../htdocs/ldif_import.php:54
+msgid "File"
+msgstr "Állomány"
+
+#: ../../htdocs/copy_form.php:81
+msgid "Filter"
+msgstr "Szűrő"
+
+#: ../../htdocs/search.php:299
+msgid "Filter performed"
+msgstr ""
+
+#: ../../htdocs/schema.php:112
+msgid "Force as MAY by config"
+msgstr ""
+
+#: ../../htdocs/search.php:276
+msgid "Format"
+msgstr ""
+
+#: ../../tools/unserialize.php:17 ../../lib/functions.php:539
+msgid "Function"
+msgstr ""
+
+#: ../../lib/export_functions.php:195
+#, php-format
+msgid ""
+"Generated by phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) on %s"
+msgstr "A phpLDAPadmin generálta, dátum: %s"
+
+#: ../../lib/functions.php:61 ../../lib/functions.php:598
+msgid "Generic Error"
+msgstr ""
+
+#: ../../htdocs/schema.php:134 ../../htdocs/schema.php:318
+#: ../../htdocs/schema.php:364 ../../htdocs/schema.php:395
+msgid "Go"
+msgstr "Mehet"
+
+#: ../../htdocs/update_confirm.php:330
+msgid "Go back"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:1882
+msgid "Go to"
+msgstr ""
+
+#: ../../htdocs/compare.php:403
+#, php-format
+msgid "Go to %s"
+msgstr "Menj a(z) %s DN-hez"
+
+#: ../../htdocs/modify_member_form.php:115
+msgid "Group members"
+msgstr ""
+
+#: ../../lib/functions.php:359
+msgid "Help"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:748
+msgid "Hide"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:749
+msgid "Hide internal attributes"
+msgstr "Belső attribútumok elrejtése"
+
+#: ../../lib/EntryWriter1.php:493
+msgid "Hint"
+msgstr ""
+
+#: ../../htdocs/copy_form.php:102
+msgid ""
+"Hint: Copying between different servers only works if there are no schema "
+"violations"
+msgstr ""
+"Tipp: A kiszolgálók közötti másolás csak akkor működik, ha nincs séma-sértés"
+
+#: ../../lib/EntryWriter1.php:809
+msgid "Hint: To delete an attribute, empty the text field and click save."
+msgstr ""
+"Tipp: Az attribútum törléséhez előbb törölje a mezőt, majd kattintson a "
+"változtatások mentésére."
+
+#: ../../lib/EntryWriter1.php:815
+msgid "Hint: To view the schema for an attribute, click the attribute name."
+msgstr ""
+"Tipp: Az attribútum sémájának megtekintéséhez kattintson az attribútum "
+"nevére."
+
+#: ../../lib/EntryWriter1.php:357
+msgid ""
+"Hint: You must choose exactly one structural objectClass (shown in bold "
+"above)"
+msgstr "Tipp: Legalább egy strukturális objektumosztályt kell választania"
+
+#: ../../lib/functions.php:347
+msgid "Home"
+msgstr ""
+
+#: ../../htdocs/ldif_import.php:195
+#, php-format
+msgid "If so, please <a href=\"%s\">report it</a>."
+msgstr ""
+
+#: ../../htdocs/search.php:215
+msgid ""
+"If you want to add your own criteria to the list. Be sure to edit search.php "
+"to handle them. Quitting."
+msgstr ""
+"Ha kritériumot kíván adni a listához szerkessze meg a search.php-t, hogy "
+"kezelje le azokat. Most kilépek."
+
+#: ../../htdocs/ldif_import_form.php:21 ../../htdocs/ldif_import.php:51
+msgid "Import LDIF File"
+msgstr "LDIF-állomány importálása"
+
+#: ../../lib/HTMLTree.php:256
+msgid "Import entries from an LDIF file"
+msgstr "LDIF-állományból bejegyzések importálása"
+
+#: ../../htdocs/add_oclass_form.php:80
+msgid "In order to add these objectClass(es) to this entry, you must specify"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:161
+#, php-format
+msgid "Inactivity will log you off at %s"
+msgstr ""
+
+#: ../../htdocs/export_form.php:78
+msgid "Include system attributes"
+msgstr ""
+
+#: ../../lib/functions.php:225
+msgid "Incorrect version of PHP"
+msgstr ""
+
+#: ../../htdocs/schema.php:468 ../../htdocs/schema.php:491
+msgid "Inherited from"
+msgstr "Kitől örökölte:"
+
+#: ../../htdocs/schema.php:100 ../../htdocs/schema.php:417
+msgid "Inherits from"
+msgstr "Kitől öröklődik"
+
+#: ../../htdocs/add_oclass_form.php:79
+msgid "Instructions"
+msgstr ""
+
+#: ../../lib/server_functions.php:344
+msgid "Insufficient access rights."
+msgstr ""
+
+#: ../../htdocs/rename.php:47
+msgid "Invalid RDN value"
+msgstr "Érvénytelen RDN érték"
+
+#: ../../htdocs/export.php:44
+msgid "Invalid export format"
+msgstr "Az export formátuma érvénytelen"
+
+#: ../../htdocs/ldif_import.php:195
+msgid "Is this a phpLDAPadmin bug?"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:83
+msgid ""
+"It appears that the LDAP server has been configured to not reveal its root."
+msgstr ""
+"Az LDAP-kiszolgálót úgy konfigurálták, hogy ne fedje föl az LDAP-fa gyökerét."
+
+#: ../../lib/server_functions.php:312
+#, php-format
+msgid ""
+"It seems that sasl_authz_id_regex \"%s\".\" contains invalid PCRE regular "
+"expression."
+msgstr ""
+
+#: ../../htdocs/schema.php:302
+msgid "Jump to a matching rule"
+msgstr "Ugrás az illesztőszabályhoz"
+
+#: ../../htdocs/schema.php:121
+msgid "Jump to an attribute type"
+msgstr "Ugrás az attribútumtípushoz"
+
+#: ../../htdocs/schema.php:381
+msgid "Jump to an objectClass"
+msgstr "Ugrás az objektumosztályhoz"
+
+#: ../../htdocs/schema.php:426 ../../htdocs/schema.php:444
+msgid "Jump to this objectClass definition"
+msgstr "Ugrás ehhez az objektumosztály-definícióhoz"
+
+#: ../../lib/functions.php:1780 ../../htdocs/ldif_import.php:144
+msgid "LDAP said"
+msgstr ""
+
+#: ../../lib/export_functions.php:309
+#, php-format
+msgid "LDIF Export for: %s"
+msgstr "A(z) %s LDIF exportja"
+
+#: ../../htdocs/ldif_import.php:187
+msgid "LDIF Parse Error"
+msgstr "LDIF-pásztázási hiba"
+
+#: ../../htdocs/ldif_import.php:147
+msgid "LDIF text import"
+msgstr ""
+
+#: ../../htdocs/ldif_import.php:108 ../../htdocs/ldif_import.php:191
+msgid "Line"
+msgstr ""
+
+#: ../../htdocs/ldif_import.php:106 ../../htdocs/ldif_import.php:192
+msgid "Line Number"
+msgstr ""
+
+#: ../../htdocs/export_form.php:111
+msgid "Line ends"
+msgstr "Sorvégek"
+
+#: ../../htdocs/delete_form.php:87
+msgid "List of entries to be deleted:"
+msgstr "A törlendő bejegyzések listája:"
+
+#: ../../lib/HTMLTree.php:279
+msgid "Logged in as"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:477 ../../htdocs/update.php:158
+msgid "Login"
+msgstr ""
+
+#: ../../htdocs/login_form.php:46
+msgid "Login DN"
+msgstr "Bejelentkezési DN"
+
+#: ../../htdocs/timeout.php:37
+msgid "Login..."
+msgstr "Belépés..."
+
+#: ../../htdocs/logout.php:33
+msgid "Logout"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:272
+msgid "Logout of this server"
+msgstr "Kilépés ebből a kiszolgálóból"
+
+#: ../../htdocs/entry_chooser.php:33
+msgid "Looking in"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:1891
+msgid "Mail"
+msgstr ""
+
+#: ../../htdocs/copy_form.php:88
+msgid "Make sure your filter (above) will select all child records."
+msgstr ""
+
+#: ../../htdocs/mass_delete.php:51
+msgid "Malformed mass_delete array."
+msgstr "A tömeges törléshez megadott tömb formátuma helytelen"
+
+#: ../../htdocs/mass_delete.php:40
+msgid "Mass Deleting"
+msgstr "Tömeges törlés"
+
+#: ../../htdocs/mass_delete.php:38
+msgid ""
+"Mass deletion is not enabled. Please enable it in config.php before "
+"proceeding."
+msgstr ""
+"A tömeges törlés nincs engedélyezve. Mielőtt folytatná, állítsa át az "
+"enable_mass_delete értékét config.php állományban."
+
+#: ../../htdocs/schema.php:323
+msgid "Matching Rule OID"
+msgstr "Illesztőszabály-OID"
+
+#: ../../htdocs/schema.php:44
+msgid "Matching Rules"
+msgstr "Illesztőszabályok"
+
+#: ../../htdocs/add_value_form.php:179 ../../htdocs/schema.php:109
+msgid "Maximum Length"
+msgstr "Maximális hossz"
+
+#: ../../htdocs/ldif_import_form.php:37 ../../htdocs/add_attr_form.php:155
+msgid "Maximum file size"
+msgstr ""
+
+#: ../../lib/functions.php:329
+msgid "Memory Limit low."
+msgstr ""
+
+#: ../../lib/template_functions.php:419
+#, php-format
+msgid "Missing %s in the XML file."
+msgstr ""
+
+#: ../../lib/ldif_functions.php:169
+msgid "Missing attibutes or changetype attribute for entry"
+msgstr ""
+
+#: ../../lib/ldif_functions.php:352 ../../lib/ldif_functions.php:390
+msgid "Missing attributes for the entry"
+msgstr ""
+
+#: ../../lib/functions.php:311
+msgid "Missing required configuration"
+msgstr ""
+
+#: ../../lib/functions.php:233 ../../lib/functions.php:240
+msgid "Missing required extension"
+msgstr ""
+
+#: ../../htdocs/ldif_import.php:34
+msgid "Missing uploaded file."
+msgstr "A feltöltött állomány hiányzik."
+
+#: ../../htdocs/update.php:154
+msgid "Modification successful!"
+msgstr "A módosítás sikerült!"
+
+#: ../../htdocs/modify_member_form.php:69
+msgid "Modify group"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:1860
+#, php-format
+msgid "Modify members for '%s'"
+msgstr ""
+
+#: ../../htdocs/ldif_import.php:66
+msgid "Modifying..."
+msgstr "Módosítás..."
+
+#: ../../htdocs/schema.php:323
+msgid "Name"
+msgstr "Név"
+
+#: ../../htdocs/add_oclass_form.php:75 ../../htdocs/add_oclass_form.php:93
+msgid "New Required Attributes"
+msgstr "Új kötelező attribútumok"
+
+#: ../../htdocs/update_confirm.php:202
+msgid "New Value"
+msgstr "Új érték"
+
+#: ../../htdocs/schema.php:168 ../../htdocs/schema.php:225
+#: ../../htdocs/schema.php:229 ../../htdocs/schema.php:233
+#: ../../htdocs/schema.php:284
+msgid "No"
+msgstr "Nem"
+
+#: ../../htdocs/delete_attr.php:28
+msgid "No DN specified"
+msgstr "Nincs megadva a DN"
+
+#: ../../htdocs/ldif_import.php:38
+msgid "No LDIF file specified. Please try again."
+msgstr ""
+
+#: ../../lib/Entry.php:282
+msgid "No Template"
+msgstr ""
+
+#: ../../htdocs/compare.php:186 ../../htdocs/compare.php:199
+msgid "No Value"
+msgstr ""
+
+#: ../../htdocs/delete_attr.php:31
+msgid "No attribute name specified."
+msgstr "Nincs megadva az attribútumnév."
+
+#: ../../htdocs/export.php:88
+msgid "No available exporter found."
+msgstr "Nincs használható exportáló."
+
+#: ../../htdocs/purge_cache.php:26
+msgid "No cache to purge."
+msgstr ""
+
+#: ../../htdocs/add_value_form.php:115
+msgid "No current value for attribute"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:840 ../../lib/EntryWriter2.php:104
+msgid "No internal attributes"
+msgstr "Nincs belső attribútum"
+
+#: ../../htdocs/logout.php:19
+msgid "No one is logged in to that server."
+msgstr "Arra a kiszolgálóra nincs bejelentkezve senki."
+
+#: ../../lib/search_form_predefined.php:42
+msgid "No queries have been defined in config.php."
+msgstr "Nincs keresés definiálva a config.php-ben."
+
+#: ../../htdocs/compare.php:29 ../../htdocs/compare.php:31
+#: ../../htdocs/template_engine.php:25
+#: ../../htdocs/download_binary_attr.php:26 ../../htdocs/delete.php:29
+#: ../../htdocs/rdelete.php:28
+#, php-format
+msgid "No such entry: %s"
+msgstr "Nincs ilyen bejegyzés: %s"
+
+#: ../../htdocs/view_jpeg_photo.php:25
+msgid "No such file"
+msgstr ""
+
+#: ../../htdocs/schema.php:515
+#, php-format
+msgid "No such schema item: \"%s\""
+msgstr ""
+
+#: ../../lib/ldif_functions.php:621
+msgid "No version found. Assuming 1."
+msgstr "Nem találtam verziószámot, feltételeztem, hogy 1-es."
+
+#: ../../htdocs/compare.php:22 ../../htdocs/compare.php:26
+#: ../../htdocs/rename_form.php:22 ../../htdocs/download_binary_attr.php:17
+#: ../../htdocs/entry_chooser.php:41 ../../htdocs/copy.php:32
+#: ../../htdocs/modify_member_form.php:23
+msgid ""
+"Not enough information to login to server. Please check your configuration."
+msgstr "Kevés az adat a belépéshez. Kérem ellenőrizze a konfigurációt."
+
+#: ../../lib/EntryWriter1.php:1926 ../../htdocs/compare.php:105
+msgid "Note"
+msgstr ""
+
+#: ../../htdocs/add_value_form.php:160
+msgid ""
+"Note: You may be required to enter new attributes that these objectClass(es) "
+"require"
+msgstr ""
+"Megj.: Lehet hogy új kötelező attribútumokat kell bevinnie ehhez az "
+"objektumosztályhoz"
+
+#: ../../htdocs/delete_form.php:59
+msgid ""
+"Note: this is potentially very dangerous and you do this at your own risk. "
+"This operation cannot be undone. Take into consideration aliases, referrals, "
+"and other things that may cause problems."
+msgstr ""
+"Megj.: Ez a törlés veszélyes lehet. A műveletet nem lehet visszavonni!"
+
+#: ../../htdocs/search.php:310
+msgid "Notice, search size limit exceeded."
+msgstr "Figyelem: a keresési méret korlátja túllépve."
+
+#: ../../htdocs/schema.php:407
+msgid "OID"
+msgstr "OID"
+
+#: ../../lib/EntryWriter1.php:340 ../../htdocs/schema.php:41
+msgid "ObjectClasses"
+msgstr "Objektumosztályok"
+
+#: ../../htdocs/add_oclass.php:26
+msgid ""
+"ObjectClasses are flagged as read only in the phpLDAPadmin configuration."
+msgstr ""
+
+#: ../../lib/template_functions.php:273
+msgid "ObjectClasses in XML dont exist in LDAP server."
+msgstr ""
+
+#: ../../htdocs/schema.php:99 ../../htdocs/schema.php:341
+msgid "Obsolete"
+msgstr "Maradi"
+
+#: ../../htdocs/update_confirm.php:202
+msgid "Old Value"
+msgstr "Régi érték"
+
+#: ../../lib/search_form_advanced.php:87 ../../htdocs/export_form.php:32
+msgid "One (one level beneath base)"
+msgstr "Egy szint az alap-DN alatt"
+
+#: ../../lib/EntryWriter1.php:407 ../../lib/EntryWriter1.php:417
+#: ../../htdocs/schema.php:452
+msgid "Optional Attributes"
+msgstr "Opcionális attribútumok"
+
+#: ../../htdocs/schema.php:34
+msgid "Or lastly, your LDAP server doesnt provide this information."
+msgstr ""
+
+#: ../../htdocs/ldif_import_form.php:40
+msgid "Or paste your LDIF here"
+msgstr ""
+
+#: ../../lib/search_form_advanced.php:112
+msgid "Order by"
+msgstr ""
+
+#: ../../htdocs/schema.php:102
+msgid "Ordering"
+msgstr "Sorbarendezés"
+
+#: ../../lib/common.php:158
+msgid "PHP Safe Mode"
+msgstr ""
+
+#: ../../htdocs/search.php:324 ../../htdocs/search.php:362
+#, php-format
+msgid "Page %d"
+msgstr ""
+
+#: ../../htdocs/schema.php:433
+msgid "Parent to"
+msgstr "Kinek a szülője"
+
+#: ../../htdocs/login_form.php:53
+msgid "Password"
+msgstr "Jelszó"
+
+#: ../../htdocs/password_checker.php:27
+msgid "Password Checker Tool"
+msgstr ""
+
+#: ../../htdocs/password_checker.php:57
+msgid "Passwords do not match!"
+msgstr ""
+
+#: ../../htdocs/password_checker.php:55
+msgid "Passwords match!"
+msgstr ""
+
+#: ../../htdocs/delete_form.php:35
+msgid "Permanently delete all children also?"
+msgstr "Az összes gyermeket is töröljem?"
+
+#: ../../lib/functions.php:140
+msgid "Please check and see if this bug has been reported"
+msgstr ""
+
+#: ../../lib/functions.php:1855
+msgid ""
+"Please set $jpeg_temp_dir to a writable directory in the phpLDAPadmin "
+"config.php"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:84
+msgid "Please specify it in config.php"
+msgstr "Kérem adja meg a config.php-ban"
+
+#: ../../lib/search_form_predefined.php:8
+#: ../../lib/search_form_advanced.php:52 ../../lib/search_form_simple.php:43
+msgid "Predefined Searches"
+msgstr "Előre definiált keresések"
+
+#: ../../lib/EntryWriter1.php:308 ../../lib/EntryWriter2.php:78
+msgid "Proceed &gt;&gt;"
+msgstr "Tovább &gt;&gt;"
+
+#: ../../htdocs/ldif_import_form.php:45 ../../htdocs/export_form.php:126
+msgid "Proceed >>"
+msgstr ""
+
+#: ../../lib/functions.php:349
+msgid "Purge all cached data in phpLDAPadmin, including server schemas."
+msgstr ""
+
+#: ../../htdocs/purge_cache.php:31
+msgid "Purge cache"
+msgstr ""
+
+#: ../../lib/functions.php:349
+msgid "Purge caches"
+msgstr ""
+
+#: ../../htdocs/purge_cache.php:28
+#, php-format
+msgid "Purged %s bytes of cache."
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:2088 ../../htdocs/compare.php:506
+msgid "Really delete attribute"
+msgstr "Attribútum tényleges törlése"
+
+#: ../../htdocs/copy_form.php:75
+msgid "Recursive copy"
+msgstr "Rekurzív másolás"
+
+#: ../../htdocs/copy.php:58
+msgid "Recursive copy progress"
+msgstr "Rekurzív másolás folyamatban"
+
+#: ../../htdocs/rdelete.php:31
+msgid "Recursive delete progress"
+msgstr "A rekurzív törlés folyamatban"
+
+#: ../../htdocs/copy_form.php:77
+msgid "Recursively copy all children of this object as well."
+msgstr "Az objektum összes gyermekeinek rekurzív másolása."
+
+#: ../../lib/EntryWriter1.php:725 ../../lib/EntryWriter1.php:726
+msgid "Refresh"
+msgstr "Frissítés"
+
+#: ../../lib/HTMLTree.php:240
+msgid "Refresh all expanded containers for"
+msgstr "Az összes kiterjesztett tároló frissítése:"
+
+#: ../../lib/EntryWriter1.php:726
+msgid "Refresh this entry"
+msgstr "Bejegyzés frissítése"
+
+#: ../../htdocs/modify_member_form.php:149
+msgid "Remove selected"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:769 ../../htdocs/rename_form.php:35
+msgid "Rename"
+msgstr "Átnevezés"
+
+#: ../../htdocs/rename_form.php:27 ../../htdocs/rename.php:71
+msgid "Rename Entry"
+msgstr "A bejegyzés átnevezése"
+
+#: ../../htdocs/rename.php:67
+msgid "Rename successful!"
+msgstr ""
+
+#: ../../htdocs/ldif_import.php:64 ../../htdocs/ldif_import.php:65
+msgid "Renaming..."
+msgstr ""
+
+#: ../../lib/functions.php:353
+msgid "Report a bug"
+msgstr "Hiba jelentése"
+
+#: ../../lib/functions.php:351
+msgid "Request feature"
+msgstr "Új tulajdonság kérése"
+
+#: ../../lib/EntryWriter1.php:397 ../../lib/EntryWriter1.php:404
+#: ../../htdocs/schema.php:452
+msgid "Required Attributes"
+msgstr "Kötelező attribútumok"
+
+#: ../../lib/EntryWriter1.php:1962 ../../htdocs/compare.php:162
+#, php-format
+msgid "Required attribute for objectClass(es) %s"
+msgstr ""
+
+#: ../../lib/AJAXTree.php:313
+msgid "Retrieving DN"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:732 ../../lib/EntryWriter1.php:803
+msgid "Save"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:861 ../../lib/EntryWriter2.php:117
+#: ../../htdocs/compare.php:495
+msgid "Save Changes"
+msgstr "Változások mentése"
+
+#: ../../lib/EntryWriter1.php:733
+msgid "Save a dump of this object"
+msgstr "Az objektum kiírása"
+
+#: ../../lib/EntryWriter1.php:804
+msgid "Save a dump of this object and all of its children"
+msgstr "Az objektum és az összes gyermekének kiírása"
+
+#: ../../htdocs/export_form.php:81
+msgid "Save as file"
+msgstr ""
+
+#: ../../htdocs/modify_member_form.php:177
+msgid "Save changes"
+msgstr ""
+
+#: ../../htdocs/schema.php:37
+msgid "Schema for server"
+msgstr "Séma:"
+
+#: ../../lib/search_form_predefined.php:64
+#: ../../lib/search_form_advanced.php:116 ../../lib/search_form_simple.php:75
+#: ../../htdocs/search.php:148
+msgid "Search"
+msgstr "Keresés"
+
+#: ../../lib/export_functions.php:198 ../../lib/search_form_advanced.php:98
+#: ../../htdocs/export_form.php:72
+msgid "Search Filter"
+msgstr "Keresőszűrő"
+
+#: ../../lib/export_functions.php:197 ../../lib/search_form_advanced.php:80
+#: ../../htdocs/export_form.php:59
+msgid "Search Scope"
+msgstr "A keresés hatásköre"
+
+#: ../../lib/search_form_simple.php:53
+msgid "Search for entries whose"
+msgstr "Bejegyzések keresése, ahol:"
+
+#: ../../htdocs/search.php:111
+msgid "Searching is not permitted"
+msgstr ""
+
+#: ../../htdocs/add_attr.php:63 ../../htdocs/add_attr.php:83
+#: ../../htdocs/add_attr.php:88
+msgid "Security error: The file being uploaded may be malicious."
+msgstr ""
+"Biztonsági hiba: a feltöltendő állomány veszélyes elemeket tartalmazhat."
+
+#: ../../lib/search_form_predefined.php:46
+msgid "Select a predefined search"
+msgstr "Előre definiált keresés kiválasztása"
+
+#: ../../lib/EntryWriter1.php:1021
+msgid "Select a template for the creation process"
+msgstr "Válasszon mintát a létrehozási folyamathoz"
+
+#: ../../lib/EntryWriter1.php:1244
+msgid "Select a template to edit the entry"
+msgstr ""
+
+#: ../../htdocs/ldif_import_form.php:32
+msgid "Select an LDIF file"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:156 ../../lib/EntryWriter1.php:247
+#: ../../lib/EntryWriter1.php:506 ../../lib/EntryWriter1.php:1033
+#: ../../lib/export_functions.php:196 ../../lib/search_form_advanced.php:61
+#: ../../lib/search_form_simple.php:51 ../../htdocs/add_value_form.php:95
+#: ../../htdocs/compare.php:49 ../../htdocs/compare.php:52
+#: ../../htdocs/delete_form.php:29 ../../htdocs/delete_form.php:105
+#: ../../htdocs/rename_form.php:29 ../../htdocs/compare_form.php:22
+#: ../../htdocs/ldif_import_form.php:22 ../../htdocs/export_form.php:49
+#: ../../htdocs/entry_chooser.php:32 ../../htdocs/entry_chooser.php:98
+#: ../../htdocs/modify_member_form.php:72 ../../htdocs/ldif_import.php:53
+#: ../../htdocs/copy_form.php:46 ../../htdocs/add_attr_form.php:25
+msgid "Server"
+msgstr "Kiszolgáló"
+
+#: ../../lib/page.php:200
+msgid "Server Select"
+msgstr ""
+
+#: ../../htdocs/server_info.php:66
+msgid "Server info for: "
+msgstr "Kiszolgáló-infó: "
+
+#: ../../htdocs/server_info.php:67
+msgid "Server reports the following information about itself"
+msgstr "A kiszolgáló ezeket az információkat közölte önmagáról"
+
+#: ../../lib/EntryWriter1.php:754
+msgid "Show"
+msgstr ""
+
+#: ../../lib/search_form_advanced.php:104 ../../htdocs/export_form.php:75
+msgid "Show Attributtes"
+msgstr "Attribútumok megjelenítése"
+
+#: ../../lib/functions.php:357
+msgid "Show Cache"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:755
+msgid "Show internal attributes"
+msgstr "Belső attribútumok megjelenítése"
+
+#: ../../htdocs/search.php:318
+#, php-format
+msgid "Showing results %s through %s."
+msgstr "A(z) %s és %s közé eső találatok megjelenítése."
+
+#: ../../lib/search_form_predefined.php:30
+#: ../../lib/search_form_advanced.php:44 ../../lib/search_form_simple.php:15
+msgid "Simple Search Form"
+msgstr "Egyszerű keresési űrlap"
+
+#: ../../htdocs/update.php:156
+msgid ""
+"Since you changed your password, you must now login again with your new "
+"password."
+msgstr ""
+"Mivel megváltoztatta a jelszót most újra be kell jelentkeznie az új "
+"jelszóval."
+
+#: ../../htdocs/schema.php:105
+msgid "Single Valued"
+msgstr "Egyértékű"
+
+#: ../../htdocs/update_confirm.php:202
+msgid "Skip"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:826
+#, php-format
+msgid "Some attributes (%s) were modified and are highlighted below."
+msgstr ""
+"Módosult néhány attribútum (%s), s ezek kiemelve szerepelnek az alábbiakban."
+
+#: ../../htdocs/login.php:117
+msgid "Sorry, you are not allowed to use phpLDAPadmin with this LDAP server."
+msgstr ""
+
+#: ../../htdocs/compare_form.php:41
+msgid "Source DN"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:263
+msgid "Specify attributes and values"
+msgstr ""
+
+#: ../../lib/search_form_advanced.php:97
+msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))"
+msgstr "Szabványos LDAP-szűrő, pl. (&(sn=Kovács)(givenname=István))"
+
+#: ../../lib/EntryWriter1.php:253 ../../lib/EntryWriter1.php:260
+#, php-format
+msgid "Step %s of %s"
+msgstr ""
+
+#: ../../lib/search_form_advanced.php:84 ../../htdocs/export_form.php:33
+msgid "Sub (entire subtree)"
+msgstr "Az egész részfa"
+
+#: ../../htdocs/schema.php:103
+msgid "Substring Rule"
+msgstr "Alfüzér-szabály"
+
+#: ../../htdocs/mass_delete.php:69 ../../htdocs/copy.php:64
+#: ../../htdocs/ldif_import.php:114 ../../htdocs/ldif_import.php:136
+#: ../../htdocs/rdelete.php:59 ../../htdocs/rdelete.php:76
+msgid "Success"
+msgstr "Siker"
+
+#: ../../htdocs/delete.php:44
+msgid "Successfully deleted DN "
+msgstr ""
+
+#: ../../htdocs/login.php:164
+msgid "Successfully logged into server."
+msgstr ""
+
+#: ../../htdocs/compare.php:64
+msgid "Switch Entry"
+msgstr ""
+
+#: ../../htdocs/add_value_form.php:175 ../../htdocs/schema.php:104
+msgid "Syntax"
+msgstr "Szintaxis"
+
+#: ../../htdocs/schema.php:70
+msgid "Syntax OID"
+msgstr "Szintaxis-OID"
+
+#: ../../htdocs/schema.php:43
+msgid "Syntaxes"
+msgstr "Szintaxisok"
+
+#: ../../lib/EntryWriter1.php:519
+msgid "Template"
+msgstr "Minta"
+
+#: ../../lib/EntryWriter1.php:2570
+msgid "Template Value Error"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:1036 ../../lib/EntryWriter1.php:1255
+msgid "Templates"
+msgstr ""
+
+#: ../../htdocs/create.php:54
+#, php-format
+msgid "The Rdn attribute (%s) does not exist."
+msgstr ""
+
+#: ../../htdocs/update.php:103 ../../htdocs/delete_attr.php:34
+#: ../../htdocs/add_value.php:37
+#, php-format
+msgid ""
+"The attribute \"%s\" is flagged as read-only in the phpLDAPadmin "
+"configuration."
+msgstr ""
+"A(z) %s attribútum csak olvasható a phpLDAPadmin konfigurációja szerint."
+
+#: ../../htdocs/add_value_form.php:74
+#, php-format
+msgid "The attribute (%s) is in readonly mode."
+msgstr ""
+
+#: ../../lib/ldif_functions.php:410
+msgid "The attribute name should be add, delete or replace"
+msgstr ""
+
+#: ../../lib/ldif_functions.php:514
+msgid "The attribute name should be newsuperior"
+msgstr ""
+
+#: ../../lib/ldif_functions.php:448
+#, php-format
+msgid ""
+"The attribute to modify doesnt match the one specified by the %s attribute."
+msgstr ""
+
+#: ../../htdocs/create.php:49
+#, php-format
+msgid "The container (%s) is a leaf."
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:213
+#, php-format
+msgid "The container you specified (%s) does not exist."
+msgstr ""
+
+#: ../../htdocs/create.php:39
+#, php-format
+msgid "The container you specified (%s) does not exist. Please try again."
+msgstr "A(z) %s tároló nem létezik. Kérem próbálja újra."
+
+#: ../../htdocs/update_confirm.php:309
+msgid "The deletion of objectClass(es)"
+msgstr ""
+
+#: ../../htdocs/copy.php:50
+#, php-format
+msgid "The destination container (%s) does not exist."
+msgstr "A cél-tároló (%s) nem létezik."
+
+#: ../../htdocs/copy.php:47
+#, php-format
+msgid "The destination entry (%s) already exists."
+msgstr "A célbejegyzés (%s) már létezik."
+
+#: ../../htdocs/update_confirm.php:29 ../../htdocs/add_value_form.php:37
+#, php-format
+msgid "The entry (%s) does not exist."
+msgstr ""
+
+#: ../../htdocs/update_confirm.php:43 ../../htdocs/add_value_form.php:55
+#, php-format
+msgid "The entry (%s) is in readonly mode."
+msgstr ""
+
+#: ../../lib/ldif_functions.php:483
+msgid "The entry is not valid"
+msgstr ""
+
+#: ../../htdocs/add_attr.php:56
+msgid ""
+"The file you chose is either empty or does not exist. Please go back and try "
+"again."
+msgstr ""
+"A kiválasztott állomány vagy üres, vagy nem létezik. Kérem lépjen vissza és "
+"próbálja újra."
+
+#: ../../htdocs/add_attr.php:75
+msgid ""
+"The file you selected was only partially uploaded, likley due to a network "
+"error."
+msgstr ""
+"A kiválasztott állomány csak részben töltődött föl valószínűleg hálózati "
+"hiba miatt."
+
+#: ../../htdocs/add_attr.php:67 ../../htdocs/add_attr.php:71
+msgid ""
+"The file you uploaded is too large. Please check php.ini, upload_max_size "
+"setting"
+msgstr ""
+"A feltöltött állomány túl nagy. Kérem ellenőrizze a php.ini állományban a "
+"upload_max_size beállítást."
+
+#: ../../htdocs/copy_form.php:64
+msgid ""
+"The full DN of the new entry to be created when copying the source entry"
+msgstr "A másolással létrejövő új bejegyzés teljes DN-je"
+
+#: ../../lib/search_form_advanced.php:80
+msgid "The scope in which to search"
+msgstr ""
+
+#: ../../htdocs/search.php:371
+msgid "The search found no results."
+msgstr ""
+
+#: ../../htdocs/schema.php:32
+msgid "The server does not fully support the LDAP protocol."
+msgstr "A kiszolgáló nem beszéli elég jól az LDAP-protokollt"
+
+#: ../../htdocs/copy.php:44
+msgid "The source and destination DN are the same."
+msgstr "A forrás- és cél-DN ugyanaz."
+
+#: ../../lib/ldif_functions.php:333
+msgid "The url attribute value should begin with file:///"
+msgstr ""
+
+#: ../../htdocs/modify_member_form.php:75
+msgid "There are"
+msgstr ""
+
+#: ../../lib/functions.php:1267
+msgid "There is more than one dn for uidpool,please change filter parameter"
+msgstr ""
+
+#: ../../htdocs/add_oclass_form.php:76
+msgid "This action requires you to add"
+msgstr "Ez a művelet megközeveteli hogy hozzáadjon"
+
+#: ../../lib/EntryWriter1.php:1509 ../../lib/EntryWriter2.php:210
+#: ../../htdocs/compare.php:166
+msgid ""
+"This attribute has been flagged as read only by the phpLDAPadmin "
+"administrator"
+msgstr ""
+"A phpLDAPadmin adminisztrátora ezt az attribútumot csak olvashatóra állította"
+
+#: ../../htdocs/schema.php:496
+msgid ""
+"This attribute has been forced as a MAY attribute by the configuration"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:1418
+msgid "This attribute is required"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:1971
+msgid "This attribute is required for the RDN."
+msgstr ""
+
+#: ../../lib/HTMLTree.php:70
+msgid "This base entry does not exist."
+msgstr ""
+
+#: ../../htdocs/schema.php:32
+msgid ""
+"This could happen for several reasons, the most probable of which are:"
+msgstr "Ez több dolog miatt történhet, például:"
+
+#: ../../lib/search_form_advanced.php:74
+msgid "This entry does not exist."
+msgstr ""
+
+#: ../../htdocs/compare.php:70
+msgid "This entry has no attributes"
+msgstr "A bejegyzésnek nincs attribútuma"
+
+#: ../../htdocs/delete_form.php:46
+#, php-format
+msgid "This entry is the root of a sub-tree containing %s entries."
+msgstr "Ez a bejegyzés egy %s bejegyzést tartalmazó részfa gyökere."
+
+#: ../../lib/EntryWriter1.php:2316 ../../htdocs/compare.php:392
+msgid "This is a structural ObjectClass and cannot be removed."
+msgstr ""
+
+#: ../../lib/search_form_advanced.php:71
+msgid "This is not a valid DN."
+msgstr ""
+
+#: ../../htdocs/schema.php:415
+msgid "This objectClass is obsolete."
+msgstr "Ez az objektumosztály maradi"
+
+#: ../../htdocs/create.php:25 ../../htdocs/add_value_form.php:76
+#: ../../htdocs/add_value_form.php:78 ../../htdocs/server_info.php:16
+#: ../../htdocs/purge_cache.php:13 ../../htdocs/schema.php:20
+#: ../../htdocs/update.php:61 ../../htdocs/update.php:67
+#: ../../htdocs/update.php:80 ../../htdocs/rename.php:24
+#: ../../htdocs/delete_attr.php:21 ../../htdocs/delete.php:21
+#: ../../htdocs/mass_delete.php:26 ../../htdocs/copy.php:20
+#: ../../htdocs/add_value.php:24 ../../htdocs/search.php:120
+#: ../../htdocs/search.php:124 ../../htdocs/search.php:128
+#: ../../htdocs/export.php:18 ../../htdocs/ldif_import.php:19
+#: ../../htdocs/refresh.php:17 ../../htdocs/rdelete.php:21
+#: ../../htdocs/add_attr.php:25
+msgid "This operation is not permitted by the configuration"
+msgstr ""
+
+#: ../../htdocs/server_info.php:71
+msgid "This server has nothing to report."
+msgstr "A kiszolgálónak nincs mit elküldenie"
+
+#: ../../lib/EntryWriter1.php:1073
+msgid "This template is not allowed in this container."
+msgstr ""
+
+#: ../../htdocs/login_form.php:28
+msgid "This web connection is unencrypted"
+msgstr ""
+
+#: ../../htdocs/password_checker.php:41
+msgid "To"
+msgstr ""
+
+#: ../../htdocs/timeout.php:36
+msgid "To log back in please click on the following link:"
+msgstr ""
+
+#: ../../lib/export_functions.php:199
+msgid "Total Entries"
+msgstr "Bejegyzések száma összesen"
+
+#: ../../lib/EntryWriter1.php:762
+msgid "Trash"
+msgstr ""
+
+#: ../../htdocs/schema.php:412
+msgid "Type"
+msgstr "Típus"
+
+#: ../../lib/EntryWriter1.php:1898
+msgid "URL"
+msgstr ""
+
+#: ../../lib/functions.php:1264
+msgid "Uidpool dn not found, please change filter parameter"
+msgstr ""
+
+#: ../../lib/functions.php:1184 ../../lib/functions.php:1248
+#, php-format
+msgid ""
+"Unable to bind to <b>%s</b> with your with auto_uid credentials. Please "
+"check your configuration file."
+msgstr ""
+"A bind művelet sikertelen a(z) <b>%s</b> kiszolgálóhoz az auto_uid "
+"használatával. Kérem ellenőrizze a konfigurációt."
+
+#: ../../lib/server_functions.php:2852
+#, php-format
+msgid ""
+"Unable to bind to <b>%s</b> with your with unique_attrs credentials. Please "
+"check your configuration file."
+msgstr ""
+
+#: ../../htdocs/mass_delete.php:23
+msgid "Unable to delete, server is in READY-ONLY mode."
+msgstr ""
+
+#: ../../lib/ldif_functions.php:327
+msgid "Unable to open file"
+msgstr ""
+
+#: ../../lib/ldif_functions.php:320
+msgid "Unable to read file"
+msgstr ""
+
+#: ../../lib/server_functions.php:1988 ../../lib/server_functions.php:2060
+#: ../../lib/server_functions.php:2355 ../../lib/server_functions.php:2466
+#: ../../htdocs/logout.php:30 ../../htdocs/login_form.php:17
+#, php-format
+msgid "Unknown auth_type: %s"
+msgstr "Ismeretlen auth_type: %s"
+
+#: ../../lib/functions.php:1285
+msgid "Unknown uidpool type."
+msgstr ""
+
+#: ../../htdocs/search.php:214
+msgid "Unrecognized criteria option: "
+msgstr "Ismeretlen kritérium-opció: "
+
+#: ../../lib/functions.php:122
+msgid "Unrecognized error number"
+msgstr ""
+
+#: ../../htdocs/search.php:383
+#, php-format
+msgid "Unrecognized search result format: %s"
+msgstr ""
+
+#: ../../htdocs/view_jpeg_photo.php:18
+msgid "Unsafe file name"
+msgstr ""
+
+#: ../../htdocs/ldif_import.php:42
+msgid "Uploaded LDIF file is empty."
+msgstr "A feltöltött LDIF-állomány üres."
+
+#: ../../htdocs/schema.php:108
+msgid "Usage"
+msgstr "Használat"
+
+#: ../../htdocs/welcome.php:18
+msgid "Use the menu to the left to navigate"
+msgstr "A bal oldali menüvel tájékozódhat a programban"
+
+#: ../../htdocs/schema.php:323
+msgid "Used by Attributes"
+msgstr "Mely attribútumok használják"
+
+#: ../../htdocs/schema.php:111
+msgid "Used by objectClasses"
+msgstr "Mely osztályok használják"
+
+#: ../../htdocs/schema.php:107
+msgid "User Modification"
+msgstr "Felhasználó-módosítás"
+
+#: ../../lib/EntryWriter1.php:797
+#, php-format
+msgid "View %s children"
+msgstr "A gyermekek megtekintése (%s darab)"
+
+#: ../../lib/EntryWriter1.php:797
+msgid "View 1 child"
+msgstr "A gyermek megtekintése (1 darab)"
+
+#: ../../lib/HTMLTree.php:224
+msgid "View schema for"
+msgstr "Séma megtekintése:"
+
+#: ../../lib/HTMLTree.php:248
+msgid "View server-supplied information"
+msgstr "A kiszolgáló információinak megtekintése"
+
+#: ../../lib/EntryWriter1.php:2328 ../../htdocs/compare.php:386
+msgid "View the schema description for this objectClass"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:819
+msgid "Viewing entry in read-only mode."
+msgstr "A bejegyzés megtekintése csak olvasható üzemmódban."
+
+#: ../../lib/page.php:62
+msgid ""
+"WARNING: You cannot have PHP compression and phpLDAPadmin compression "
+"enabled at the same time. Please unset zlib.output_compression or set "
+"$config->custom->appearance['compress']=false"
+msgstr ""
+
+#: ../../lib/page.php:62 ../../htdocs/login_form.php:28
+msgid "Warning"
+msgstr ""
+
+#: ../../htdocs/copy_form.php:81
+msgid ""
+"When performing a recursive copy, only copy those entries which match this "
+"filter"
+msgstr ""
+"Rekurzív másolásnál csak azokat másolja le, amelyekre illik ez a szűrő"
+
+#: ../../htdocs/schema.php:168 ../../htdocs/schema.php:225
+#: ../../htdocs/schema.php:229 ../../htdocs/schema.php:233
+#: ../../htdocs/schema.php:284
+msgid "Yes"
+msgstr "Igen"
+
+#: ../../htdocs/mass_delete.php:107
+msgid "Yes, delete!"
+msgstr "Igen, törlődjön"
+
+#: ../../htdocs/login_form.php:27
+msgid ""
+"You are not using 'https'. Web browser will transmit login information in "
+"clear text."
+msgstr ""
+"Nem https kapcsolatot használ. A böngésző a bejelentkezés adatait sima "
+"szöveg formátumban fogja továbbítani"
+
+#: ../../htdocs/create.php:22 ../../htdocs/update_confirm.php:19
+#: ../../htdocs/add_value_form.php:16 ../../htdocs/template_engine.php:54
+#: ../../htdocs/delete_form.php:19 ../../htdocs/rename_form.php:20
+#: ../../htdocs/add_oclass.php:23 ../../htdocs/update.php:39
+#: ../../htdocs/download_binary_attr.php:15 ../../htdocs/rename.php:21
+#: ../../htdocs/delete_attr.php:18 ../../htdocs/ldif_import_form.php:19
+#: ../../htdocs/delete.php:18 ../../htdocs/add_oclass_form.php:27
+#: ../../htdocs/add_value.php:21 ../../htdocs/modify_member_form.php:21
+#: ../../htdocs/copy_form.php:18 ../../htdocs/rdelete.php:18
+#: ../../htdocs/add_attr.php:22 ../../htdocs/add_attr_form.php:18
+msgid "You cannot perform updates while server is in read-only mode"
+msgstr ""
+"Nem lehet módosítani mikor a kiszolgáló csak olvasható üzemmódban van"
+
+#: ../../htdocs/rename.php:31
+msgid ""
+"You cannot rename an entry which has children entries (eg, the rename "
+"operation is not allowed on non-leaf entries)"
+msgstr ""
+"Nem nevezhet át olyan bejegyzést aminek gyermekei vannak (azaz az átnevezés "
+"művelete csak levél-bejegyzéseken megengedett)"
+
+#: ../../htdocs/rename.php:39
+msgid "You did not change the RDN"
+msgstr "Nem változtatta meg az RDN-t"
+
+#: ../../htdocs/add_oclass_form.php:30
+msgid ""
+"You did not select any ObjectClasses for this object. Please go back and do "
+"so."
+msgstr ""
+"Nem választott objektumosztályt ehhez az objektumhoz. Kérem lépjen vissza és "
+"válasszon egyet."
+
+#: ../../htdocs/mass_delete.php:55
+msgid "You did not select any entries to delete."
+msgstr "Nem választotta ki a törlendő bejegyzés(eke)t."
+
+#: ../../lib/EntryWriter1.php:218
+msgid "You did not select any objectClasses for this object."
+msgstr ""
+
+#: ../../lib/functions.php:144
+msgid "You found a non-fatal phpLDAPadmin bug!"
+msgstr ""
+
+#: ../../lib/common.php:159
+msgid ""
+"You have PHP Safe Mode enabled. PLA may work unexpectedly in Safe Mode."
+msgstr ""
+
+#: ../../htdocs/search.php:149
+msgid ""
+"You have not logged into the selected server yet, so you cannot perform "
+"searches on it."
+msgstr "Nem lépett be a kiválasztott kiszolgálóba, s így nem tudok keresni."
+
+#: ../../lib/EntryReader.php:347 ../../lib/EntryReader.php:375
+msgid "You have specified two different passwords"
+msgstr ""
+
+#: ../../htdocs/create.php:58
+msgid "You left the RDN field blank."
+msgstr "Az RDN-mezőt üresen hagyta"
+
+#: ../../htdocs/add_attr.php:37 ../../htdocs/add_attr.php:79
+msgid "You left the attribute value blank. Please go back and try again."
+msgstr ""
+"Az attribútumértéket üresen hagyta. Kérem lépjen vissza és próbálja újra."
+
+#: ../../htdocs/copy.php:41
+msgid "You left the destination DN blank."
+msgstr "Üresen hagyta a cél-DN mezejét"
+
+#: ../../htdocs/login.php:27
+msgid "You left the password blank."
+msgstr "A jelszó üresen maradt."
+
+#: ../../htdocs/create.php:73
+#, php-format
+msgid "You left the value blank for required attribute (%s)."
+msgstr "A(z) %s kötelező attribútum értékét üresen hagyta."
+
+#: ../../htdocs/update_confirm.php:326
+msgid "You made no changes"
+msgstr "Nem történt változtatás"
+
+#: ../../htdocs/export.php:43
+msgid "You must choose an export format."
+msgstr "Az export formátumát ki kell választani."
+
+#: ../../htdocs/ldif_import.php:47
+msgid "You must either upload a file or provide an LDIF in the text box."
+msgstr ""
+
+#: ../../htdocs/delete.php:26 ../../htdocs/rdelete.php:25
+msgid "You must specify a DN"
+msgstr "A DN-t meg kell adni"
+
+#: ../../htdocs/compare.php:469
+#, php-format
+msgid ""
+"You need one of the following ObjectClass(es) to add this attribute %s."
+msgstr ""
+
+#: ../../htdocs/index.php:82
+#, php-format
+msgid ""
+"You need to configure %s. Edit the file \"%s\" to do so. An example config "
+"file is provided in \"%s.example\"."
+msgstr ""
+
+#: ../../lib/functions.php:1305
+#, php-format
+msgid ""
+"You specified an invalid value for auto_uid_number_mechanism (\"%s\")\n"
+"\t\t\t\tin your configration. Only \"uidpool\" and \"search\" are valid.\n"
+"\t\t\t\tPlease correct this problem."
+msgstr ""
+
+#: ../../lib/functions.php:1163
+#, php-format
+msgid ""
+"You specified the \"auto_uid_number_mechanism\" as \"search\" in your\n"
+"\t\t\t\t\t\tconfiguration for server <b>%s</b>, but you did not specify the\n"
+"\t\t\t\t\t\t\"auto_uid_number_search_base\". Please specify it before "
+"proceeding."
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:763
+msgid "You will be prompted to confirm this decision"
+msgstr "Ezt a döntést majd még meg kell erősíteni"
+
+#: ../../htdocs/add_attr_form.php:152
+msgid ""
+"Your PHP configuration has disabled file uploads. Please check php.ini "
+"before proceeding."
+msgstr ""
+"A PHP-konfiguráció tiltja az állományok feltöltését. Kérem ellenőrizze a "
+"php.ini állományt."
+
+#: ../../lib/functions.php:1988 ../../lib/functions.php:1999
+#: ../../lib/functions.php:2010 ../../lib/functions.php:2058
+#: ../../lib/functions.php:2076
+msgid ""
+"Your PHP install does not have the mhash() function. Cannot do SHA hashes."
+msgstr ""
+"Ez a PHP nem tartalmazza az mhash() függvényt. Nem tudok SHA hash-eket "
+"kezelni."
+
+#: ../../lib/server_functions.php:264
+msgid "Your PHP install does not support TLS."
+msgstr "Ez a PHP nem támogatja a TLS-t."
+
+#: ../../lib/server_functions.php:279
+msgid ""
+"Your PHP installation does not support ldap_sasl_bind() function. This "
+"function is present in PHP 5.x when compiled with --with-ldap-sasl."
+msgstr ""
+
+#: ../../htdocs/ldif_import_form.php:16
+msgid ""
+"Your PHP.INI does not have file_uploads = ON. Please enable file uploads in "
+"PHP."
+msgstr ""
+
+#: ../../htdocs/timeout.php:33
+msgid "Your Session timed out after"
+msgstr ""
+
+#: ../../htdocs/update.php:92
+#, php-format
+msgid ""
+"Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT "
+"allowed. That attribute/value belongs to another entry.<p>You might like to "
+"<a href=\"%s\">search</a> for that entry."
+msgstr ""
+
+#: ../../htdocs/create.php:87 ../../htdocs/add_oclass.php:45
+#: ../../htdocs/add_value.php:59 ../../htdocs/add_attr.php:51
+#, php-format
+msgid ""
+"Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT "
+"allowed. That attribute/value belongs to another entry.<p>You might like to "
+"<a href='%s'>search</a> for that entry."
+msgstr ""
+
+#: ../../lib/session_functions.php:139
+msgid "Your configuration has been automatically refreshed."
+msgstr ""
+
+#: ../../lib/functions.php:1172
+#, php-format
+msgid ""
+"Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base "
+"for server %s"
+msgstr ""
+"A konfigurációban érvénytelen auto_uid_search_base van megadva a(z) "
+"<b>%s</b> kiszolgálóhoz."
+
+#: ../../lib/functions.php:1969 ../../lib/functions.php:2103
+msgid "Your system crypt library does not support blowfish encryption."
+msgstr "Ez a PHP nem támogatja a blowfish titkosítást."
+
+#: ../../lib/functions.php:1955 ../../lib/functions.php:2133
+msgid "Your system crypt library does not support extended DES encryption."
+msgstr ""
+
+#: ../../lib/functions.php:1962 ../../lib/functions.php:2118
+msgid "Your system crypt library does not support md5crypt encryption."
+msgstr "Ez a PHP nem támogatja az md5crypt titkosítást."
+
+#: ../../lib/template_functions.php:984
+#, php-format
+msgid ""
+"Your template calls php.Function for a default value, however (%s) is NOT "
+"available in the POST FORM variables. The following variables are available "
+"[%s]."
+msgstr ""
+
+#: ../../lib/EntryReader.php:262
+#, php-format
+msgid "Your template has an unknown post function (%s)."
+msgstr ""
+
+#: ../../lib/EntryReader.php:212
+#, php-format
+msgid "Your template is missing variable (%s)"
+msgstr ""
+
+#: ../../htdocs/schema.php:33
+msgid "Your version of PHP does not correctly perform the query."
+msgstr "Ez a PHP-verzió nem tudja szabályosan végrehajtani a keresést."
+
+#: ../../htdocs/update_confirm.php:254 ../../htdocs/update_confirm.php:258
+msgid "[attribute deleted]"
+msgstr "[attribútum törölve]"
+
+#: ../../lib/EntryWriter1.php:2035 ../../lib/EntryWriter1.php:2242
+msgid "[no value]"
+msgstr ""
+
+#: ../../htdocs/add_value_form.php:78 ../../htdocs/add_attr.php:25
+msgid "add attribute"
+msgstr ""
+
+#: ../../htdocs/add_value_form.php:76 ../../htdocs/add_value.php:24
+msgid "add attribute value"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:1848 ../../htdocs/compare.php:466
+#: ../../htdocs/compare.php:479
+msgid "add value"
+msgstr "érték hozzáadása"
+
+#: ../../htdocs/search.php:120
+msgid "advanced search"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:1926 ../../htdocs/compare.php:105
+msgid "alias"
+msgstr ""
+
+#: ../../lib/functions.php:2243
+msgid "browse"
+msgstr "böngészés"
+
+#: ../../lib/functions.php:353
+msgid "bug"
+msgstr "hiba"
+
+#: ../../lib/functions.php:1901 ../../htdocs/ldif_import.php:54
+msgid "bytes"
+msgstr ""
+
+#: ../../lib/functions.php:132
+msgid "caller"
+msgstr ""
+
+#: ../../htdocs/schema.php:248
+msgid "character"
+msgstr "karakter"
+
+#: ../../htdocs/add_value_form.php:179 ../../htdocs/schema.php:248
+msgid "characters"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:2404
+msgid "confirm"
+msgstr ""
+
+#: ../../htdocs/copy.php:20
+msgid "copy entry"
+msgstr ""
+
+#: ../../htdocs/create.php:25
+msgid "create entry"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:2031 ../../htdocs/compare.php:261
+#: ../../htdocs/update.php:61 ../../htdocs/delete_attr.php:21
+msgid "delete attribute"
+msgstr "attribútum törlése"
+
+#: ../../htdocs/delete.php:21 ../../htdocs/rdelete.php:21
+msgid "delete entry"
+msgstr ""
+
+#: ../../htdocs/mass_delete.php:26
+msgid "delete mass entries"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:2020 ../../lib/EntryWriter1.php:2024
+#: ../../htdocs/compare.php:256 ../../htdocs/compare.php:258
+msgid "download value"
+msgstr "érték letöltése"
+
+#: ../../htdocs/compare.php:280
+msgid "empty"
+msgstr "üres"
+
+#: ../../htdocs/mass_delete.php:96
+msgid "entries"
+msgstr ""
+
+#: ../../htdocs/mass_delete.php:96
+msgid "entry"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:264 ../../htdocs/export.php:18
+msgid "export"
+msgstr ""
+
+#: ../../htdocs/search.php:273
+msgid "export results"
+msgstr ""
+
+#: ../../lib/AttributeFactory.php:39 ../../htdocs/compare.php:358
+msgid "false"
+msgstr "hamis"
+
+#: ../../htdocs/create.php:115 ../../htdocs/copy.php:76
+#: ../../htdocs/copy.php:106
+msgid "has been created."
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:1980
+msgid "hint"
+msgstr "tipp"
+
+#: ../../lib/HTMLTree.php:256 ../../htdocs/ldif_import.php:19
+msgid "import"
+msgstr "import"
+
+#: ../../lib/HTMLTree.php:248
+msgid "info"
+msgstr "infó"
+
+#: ../../lib/EntryWriter1.php:1926 ../../htdocs/compare.php:105
+msgid "is an alias for"
+msgstr ""
+
+#: ../../lib/functions.php:1870
+msgid "jpegPhoto contains errors<br />"
+msgstr "A jpegPhoto hibás<br />"
+
+#: ../../lib/functions.php:351
+msgid "light"
+msgstr "lámpa"
+
+#: ../../lib/functions.php:132
+msgid "line"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:476
+msgid "login"
+msgstr "belépés"
+
+#: ../../lib/HTMLTree.php:272 ../../lib/HTMLTree.php:494
+msgid "logout"
+msgstr "kilépés"
+
+#: ../../htdocs/mass_delete.php:35
+msgid "mass_delete POST var is not an array."
+msgstr "A mass_delete POST változó nem tömb."
+
+#: ../../htdocs/modify_member_form.php:75
+msgid "members in group"
+msgstr ""
+
+#: ../../htdocs/timeout.php:33
+msgid "min. of inactivity. You have been automatically logged out."
+msgstr ""
+
+#: ../../htdocs/update.php:67 ../../htdocs/update.php:80
+msgid "modify attribute values"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:1860
+msgid "modify group members"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:461
+msgid "new"
+msgstr "új"
+
+#: ../../htdocs/add_oclass_form.php:76 ../../htdocs/add_oclass_form.php:81
+msgid "new attributes"
+msgstr "új attribútumo(ka)t"
+
+#: ../../htdocs/schema.php:158
+msgid "no description"
+msgstr "nincs leírás"
+
+#: ../../lib/functions.php:1793
+msgid "no description available"
+msgstr ""
+
+#: ../../htdocs/entry_chooser.php:69
+msgid "no entries"
+msgstr "nics bejegyzés"
+
+#: ../../htdocs/add_attr_form.php:109
+msgid "no new attributes available for this entry"
+msgstr "a bejegyzéshez nem tartozik új attribútum"
+
+#: ../../htdocs/add_attr_form.php:161
+msgid "no new binary attributes available for this entry"
+msgstr "a bejegyzéshez nem tartozik új bináris attribútum"
+
+#: ../../lib/EntryWriter1.php:405 ../../lib/EntryWriter1.php:418
+#: ../../lib/functions.php:2788 ../../htdocs/schema.php:175
+#: ../../htdocs/schema.php:257 ../../htdocs/schema.php:272
+#: ../../htdocs/schema.php:350 ../../htdocs/schema.php:419
+#: ../../htdocs/schema.php:439 ../../htdocs/schema.php:475
+#: ../../htdocs/schema.php:503
+msgid "none"
+msgstr "nincs"
+
+#: ../../lib/EntryWriter1.php:2590 ../../htdocs/compare.php:359
+msgid "none, remove value"
+msgstr "nincs, érték törése"
+
+#: ../../htdocs/schema.php:244
+msgid "not applicable"
+msgstr "nem alkalmazható"
+
+#: ../../htdocs/schema.php:189 ../../htdocs/schema.php:201
+#: ../../htdocs/schema.php:206 ../../htdocs/schema.php:237
+msgid "not specified"
+msgstr "nincs megadva"
+
+#: ../../htdocs/delete_form.php:54
+#, php-format
+msgid ""
+"phpLDAPadmin can recursively delete this entry and all %s of its children. "
+"See below for a list of all the entries that this action will delete. Do you "
+"want to do this?"
+msgstr ""
+"Rekurzív módon törölhetem ezt a bejegyzést, és mind a(z) %s gyermekét. Lásd "
+"alul a bejegyzéseket, amelyeket törölnék. Óhajtja törölni?"
+
+#: ../../htdocs/schema.php:33
+msgid "phpLDAPadmin doesn't know how to fetch the schema for your server."
+msgstr ""
+"Vagy végül is a phpLDAPadmin nem tudja hogyan kell a sémát letölteni erről a "
+"kiszolgálóról."
+
+#: ../../htdocs/welcome.php:16
+msgid "phpLDAPadmin logo"
+msgstr ""
+
+#: ../../htdocs/search.php:124
+msgid "predefined search"
+msgstr ""
+
+#: ../../htdocs/purge_cache.php:13
+msgid "purge"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:41 ../../lib/EntryWriter1.php:1510
+#: ../../lib/EntryWriter2.php:211 ../../htdocs/compare.php:166
+msgid "read only"
+msgstr "csak olvasható"
+
+#: ../../lib/HTMLTree.php:240
+msgid "refresh"
+msgstr "frissítés"
+
+#: ../../htdocs/refresh.php:17
+msgid "refresh server"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:1829
+msgid "rename"
+msgstr "ÃtnevezÃ©s"
+
+#: ../../htdocs/rename.php:24
+msgid "rename entry"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:1962 ../../htdocs/compare.php:162
+msgid "required"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:224
+msgid "schema"
+msgstr "séma"
+
+#: ../../lib/HTMLTree.php:232
+msgid "search"
+msgstr "keresés"
+
+#: ../../htdocs/search.php:266
+msgid "seconds"
+msgstr "s alatt hajtotta végre a keresést"
+
+#: ../../lib/EntryWriter1.php:368 ../../lib/EntryWriter2.php:23
+msgid "select the rdn attribute"
+msgstr ""
+
+#: ../../htdocs/search.php:128
+msgid "simple search"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:961
+#, php-format
+msgid "step %s of %s"
+msgstr ""
+
+#: ../../lib/EntryWriter1.php:2317 ../../htdocs/compare.php:392
+msgid "structural"
+msgstr ""
+
+#: ../../htdocs/add_oclass_form.php:82
+msgid "that this objectClass requires."
+msgstr ""
+
+#: ../../htdocs/mass_delete.php:96
+msgid "these"
+msgstr ""
+
+#: ../../htdocs/mass_delete.php:96
+msgid "this"
+msgstr ""
+
+#: ../../htdocs/copy_form.php:51
+msgid "to a new object"
+msgstr "; az új objektum"
+
+#: ../../lib/AttributeFactory.php:38 ../../htdocs/compare.php:357
+msgid "true"
+msgstr "igaz"
+
+#: ../../lib/functions.php:1277
+msgid ""
+"uidpool_dn not found. Please check filter (arg 3) or set up uidpool_dn in "
+"config file"
+msgstr ""
+
+#: ../../htdocs/update.php:46
+msgid ""
+"update_array is malformed. This might be a phpLDAPadmin bug. Please report "
+"it."
+msgstr ""
+"Az update_array hibés. Ez a phpLDAPadmin hibája lehet, kérem jelentse."
+
+#: ../../htdocs/add_value_form.php:93
+msgid "value to"
+msgstr "érték, RDN:"
+
+#: ../../htdocs/add_value_form.php:112
+msgid "values for attribute"
+msgstr "értéket tartalmaz. Attribútum:"
+
+#: ../../htdocs/delete_form.php:48
+msgid "view entries"
+msgstr "bejegyzések megtekintése"
+
+#: ../../htdocs/schema.php:20
+msgid "view schema"
+msgstr ""
+
+#: ../../htdocs/server_info.php:16
+msgid "view server informations"
+msgstr ""
+
+#: ../../htdocs/update_confirm.php:312
+msgid "will delete the attribute(s)"
+msgstr ""
+
+#: ../../htdocs/compare_form.php:29
+msgid "with "
+msgstr ""
+
+#~ msgid "equals"
+#~ msgstr "egyenlő"
+
+#~ msgid "contains"
+#~ msgstr "tartalmaz"
+
+#~ msgid "create"
+#~ msgstr "létrehozás"
+
+#~ msgid "Create a new entry on"
+#~ msgstr "Új bejegyzés létrehozása:"
+
+#~ msgid "Logged in as: "
+#~ msgstr "Belépve mint "
+
+#~ msgid "Copy this object to another location, a new DN, or another server"
+#~ msgstr "Az objektum másolása más helyre új DN-nel és/vagy másik kiszolgálóra"
+
+#~ msgid "View"
+#~ msgstr "Megtekintés"
+
+#~ msgid "Click to view the schema defintion for attribute type '%s'"
+#~ msgstr "Kattintással megjelenik a(z) %s attribútumtípus sémabeli definíciója"
+
+#~ msgid "Note: '%s' is an alias for '%s'"
+#~ msgstr "A(z) %s álneve a(z) %s attribútumnévnek"
+
+#~ msgid "Entry %s deleted successfully."
+#~ msgstr "A(z) %s bejegyzés sikeresen törölve."
+
+#~ msgid ""
+#~ "Instructions: In order to add these objectClass(es) to this entry, you must "
+#~ "specify"
+#~ msgstr "Az új objektumosztály hozzáadásához"
+
+#~ msgid "that this objectClass requires. You can do so in this form."
+#~ msgstr "kell megadni ezen az űrlapon."
+
+#~ msgid "Bad server id"
+#~ msgstr "Hibás kiszolgáló-azonosító"
+
+#~ msgid "Could not connect to LDAP server."
+#~ msgstr "Nem tudok csatlakozni az LDAP-kiszolgálóhoz."
+
+#~ msgid "Server: "
+#~ msgstr "Kiszolgáló: "
+
+#~ msgid "Looking in: "
+#~ msgstr "Keresés itt: "
+
+#~ msgid "No DN specified in query string!"
+#~ msgstr "Nincs megadva a DN a keresési füzérben!"
+
+#~ msgid ""
+#~ "Note: You will get an \"inappropriate matching\" error if you have not setup "
+#~ "an EQUALITY rule on your LDAP server for this attribute."
+#~ msgstr ""
+#~ "Megj.: Ha nincs beállítva EGYENLŐSÉG-szabály ehhez az attribútumhoz a "
+#~ "kiszolgáló az ún. inappropriate matching hibát adja vissza."
+
+#~ msgid "Copy successful! Would you like to "
+#~ msgstr "A másolás sikerült! Szeretné-e "
+
+#~ msgid "view the new entry"
+#~ msgstr "megtekinteni az új bejegyzést"
+
+#~ msgid "Choose a template"
+#~ msgstr "Válasszon mintát"
+
+#~ msgid "Click here to go to the login form"
+#~ msgstr "Kattintson ide a belépési űrlap eléréséhez"
+
+#~ msgid "Entries found: "
+#~ msgstr "A megtalált bejegyzések: "
+
+#~ msgid "Filter performed: "
+#~ msgstr "Használt szűrő: "
+
+#~ msgid "Search performed by phpLDAPadmin in"
+#~ msgstr "A phpLDAPadmin"
+
+#~ msgid "starts with"
+#~ msgstr "kezdet"
+
+#~ msgid "ends with"
+#~ msgstr "végződés"
+
+#~ msgid "sounds like"
+#~ msgstr "hangzás"
+
+#~ msgid ""
+#~ "Could not retrieve LDAP information from the server. This may be due to a <a "
+#~ "href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version of PHP "
+#~ "or perhaps your LDAP server has access control specified that prevents LDAP "
+#~ "clients from accessing the RootDSE."
+#~ msgstr "Nem tudom az információt letölteni a kiszolgálóról"
+
+#~ msgid "ChangeLog"
+#~ msgstr "Változtatások naplója"
+
+#~ msgid "Unsafe file name: "
+#~ msgstr "Nem biztonságos állománynév: "
+
+#~ msgid "No such file: "
+#~ msgstr "Nincs ilyen állomány: "
+
+#~ msgid ""
+#~ "You have enabled auto_uid_numbers for <b>%s</b> in your configuration,       "
+#~ "                           but you have not specified the "
+#~ "auto_uid_number_mechanism. Please correct                                  "
+#~ "this problem."
+#~ msgstr ""
+#~ "Az auto_uid_numbers engedélyezett a konfigurációban  a(z) <b>%s</b> "
+#~ "kiszolgálóhoz, de az auto_uid_number_mechanism nincs megadva. Kérem írja be "
+#~ "ezt az értéket."
+
+#~ msgid ""
+#~ "You specified the \"auto_uid_number_mechanism\" as \"uidpool\"               "
+#~ "             in your configuration for server <b>%s</b>, but you did not "
+#~ "specify the                            audo_uid_number_uid_pool_dn. Please "
+#~ "specify it before proceeding."
+#~ msgstr ""
+#~ "A konfigurációban az auto_uid_number_mechanism értéke uidpool a(z) <b>%s</b> "
+#~ "kiszolgálóhoz, de nem adta meg az auto_uid_number_uid_pool_dn értékét. Kérem "
+#~ "írja be ezt az értéket."
+
+#~ msgid ""
+#~ "It appears that the uidPool you specified in your configuration (\"%s\")     "
+#~ "                         does not exist."
+#~ msgstr "A konfigurációban megadott uidPool nem létezik (%s)."
+
+#~ msgid ""
+#~ "You specified the \"auto_uid_number_mechanism\" as \"search\" in your        "
+#~ "                      configuration for server <b>%s</b>, but you did not "
+#~ "specify the                              \"auto_uid_number_search_base\". "
+#~ "Please specify it before proceeding."
+#~ msgstr ""
+#~ "A konfigurációban az auto_uid_number_mechanism értéke search a(z) <b>%s</b> "
+#~ "kiszolgálóhoz, de nem adta meg az auto_uid_number_search_base értékét. Kérem "
+#~ "írja be ezt az értéket."
+
+#~ msgid ""
+#~ "You specified an invalid value for auto_uid_number_mechanism (\"%s\")        "
+#~ "                           in your configration. Only \"uidpool\" and "
+#~ "\"search\" are valid.                                   Please correct this "
+#~ "problem."
+#~ msgstr ""
+#~ "Érvénytelen értéket adott meg a auto_uid_number_mechanism-nak (%s). Csak "
+#~ "uidpool és search a megengedett érték."
+
+#~ msgid ""
+#~ "Error: You have an error in your config file. The only three allowed values  "
+#~ "                                  for auth_type in the $servers section are "
+#~ "'session', 'cookie', and 'config'. You entered '%s',                         "
+#~ "           which is not allowed. "
+#~ msgstr ""
+#~ "Csak a session, cookie és config a megengedett értékek az auth_type-nak a "
+#~ "konfigurációban. A megadott helytelen érték: %s. "
+
+#~ msgid "LDAP said: %s"
+#~ msgstr "Az LDAP ezt mondta: %s"
+
+#~ msgid "Error number: %s (%s)"
+#~ msgstr "Hibaszám: %s (%s)"
+
+#~ msgid "Description: %s <br /><br />"
+#~ msgstr "Leírás: %s <br /><br />"
+
+#~ msgid "Error number: %s<br /><br />"
+#~ msgstr "Hibaszám: %s<br /><br />"
+
+#~ msgid "Description: (no description available)<br />"
+#~ msgstr "Leírás: (nincs leírás)<br />"
+
+#~ msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
+#~ msgstr "Ez a phpLDAPadmin hibája? Ha igen, kérem <a href='%s'>jelentse</a>."
+
+#~ msgid "Unrecognized error number: "
+#~ msgstr "Ismeretlen hibaszám: "
+
+#~ msgid ""
+#~ "<center><table class='notice'><tr><td colspan='2'><center><img "
+#~ "src='images/warning.png' height='12' width='13' />             <b>You found "
+#~ "a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> "
+#~ "(<b>%s</b>)</td></tr><tr><td>File:</td>             <td><b>%s</b> line "
+#~ "<b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: "
+#~ "<b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>             </td></tr><tr><td>Web "
+#~ "server:</td><td><b>%s</b></td></tr>\t<tr><td colspan='2'><center><a "
+#~ "target='new' href='%s'>Please check and see if this bug has been reported "
+#~ "here</a>.</center></td></tr>\t<tr><td colspan='2'><center><a target='new' "
+#~ "href='%s'>If it hasnt been reported, you may report this bug by clicking "
+#~ "here</a>.</center></td></tr>\t</table></center><br />"
+#~ msgstr ""
+#~ "<center><table class='notice'><tr><td colspan='2'><center><img "
+#~ "src='images/warning.png' height='12' width='13' />             <b>Egy kisebb "
+#~ "hibát talált a phpLDAPadmin-"
+#~ "ban!</b></td></tr><tr><td>Hiba:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><t"
+#~ "d>Állomány:</td>             <td><b>%s.</b> sor <b>%s</b>, hívó "
+#~ "<b>%s</b></td></tr><tr><td>Verziók:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, "
+#~ "SAPI: <b>%s</b>             </td></tr><tr><td>Web-"
+#~ "kiszolgáló:</td><td><b>%s</b></td></tr><tr><td colspan='2'><center><a "
+#~ "target='new' href='%s'>             Kérem jelentse a hibát, kattintson "
+#~ "ide!</a>.</center></td></tr></table></center><br />"
+
+#~ msgid ""
+#~ "Congratulations! You found a bug in phpLDAPadmin.<br /><br />\t     <table "
+#~ "class='bug'>\t     <tr><td>Error:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>Level:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>File:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>Line:</td><td><b>%s</b></td></tr>\t\t "
+#~ "<tr><td>Caller:</td><td><b>%s</b></td></tr>\t     <tr><td>PLA "
+#~ "Version:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP "
+#~ "Version:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP "
+#~ "SAPI:</td><td><b>%s</b></td></tr>\t     <tr><td>Web "
+#~ "server:</td><td><b>%s</b></td></tr>\t     </table>\t     <br />\t     Please "
+#~ "report this bug by clicking below!"
+#~ msgstr ""
+#~ "Gratulálunk! Hibát talált a phpLDAPadmin-ban.<br /><br />\t     <table "
+#~ "class='bug'>\t     <tr><td>Hiba:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>Szint:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>Állomány:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>Sor:</td><td><b>%s</b></td></tr>\t\t "
+#~ "<tr><td>Hívó:</td><td><b>%s</b></td></tr>\t     <tr><td>PLA "
+#~ "Verzió:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP "
+#~ "Verzió:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP "
+#~ "SAPI:</td><td><b>%s</b></td></tr>\t     <tr><td>Web-"
+#~ "kiszolgáló:</td><td><b>%s</b></td></tr>\t     </table>\t     <br />\t     "
+#~ "Kérjük jelentse a hibát, kattintson alulra!"
+
+#~ msgid "Select an LDIF file:"
+#~ msgstr "LDIF-állomány kiválasztása"
+
+#~ msgid "Line Number:"
+#~ msgstr "Sorszám:"
+
+#~ msgid "Line:"
+#~ msgstr "Sor:"
+
+#~ msgid "Optional Binary Attributes"
+#~ msgstr "Opcionális bináris attribútumok"
+
+#~ msgid "Maximum file size: %s"
+#~ msgstr "Maximális állományméret: %s"
+
+#~ msgid "Back"
+#~ msgstr "Vissza"
+
+#~ msgid "object"
+#~ msgstr "objektum"
+
+#~ msgid "Delete all"
+#~ msgstr "Minden törlése"
+
+#~ msgid "warning"
+#~ msgstr "figyelmeztetés"
+
+#~ msgid "using template"
+#~ msgstr "használt minta:"
+
+#~ msgid "Redirecting..."
+#~ msgstr "Átirányítás..."
+
+#~ msgid "here"
+#~ msgstr "ide"
+
+#~ msgid "Step 1 of 2: Name and ObjectClass(es)"
+#~ msgstr "Első lépés: Név és objektumosztály(ok)"
+
+#~ msgid "Step 2 of 2: Specify attributes and values"
+#~ msgstr "Második lépés: Adja meg az attribútumokat és értékeiket"
+
+#~ msgid "Relative Distinguished Name"
+#~ msgstr "Viszonylagos megkülönböztető név (RDN)"
+
+#~ msgid "RDN"
+#~ msgstr "RDN"
+
+#~ msgid "(example: cn=MyNewPerson)"
+#~ msgstr "(példa: cn=ÚjEmber)"
+
+#~ msgid "Could not bind to the LDAP server."
+#~ msgstr "A bind művelet sikertelen az LDAP-kiszolgálóhoz."
+
+#~ msgid "Successfully logged into server <b>%s</b>"
+#~ msgstr "A(z) %s kiszolgálóhoz sikeresen bejelentkezett."
+
+#~ msgid "%s bytes"
+#~ msgstr "%s byte"
+
+#~ msgid "Searching..."
+#~ msgstr "Folyik a keresés..."
+
+#~ msgid "Logged out successfully from server <b>%s</b>"
+#~ msgstr "A kilépés sikerült a(z) <b>%s</b> kiszolgálóból"
+
+#~ msgid "Authenticate to server %s"
+#~ msgstr "Azonosítsa magát a(z) %s kiszolgálón"
+
+#~ msgid "Warning: This web connection is unencrypted."
+#~ msgstr "Figyelem: A kapcsolat a bögészővel titkosítatlan."
+
+#~ msgid "User name"
+#~ msgstr "A felhasználó neve"
+
+#~ msgid ""
+#~ "You need to configure phpLDAPadmin. Edit the file 'config/config.php' to do "
+#~ "so. An example config file is provided in 'config/config.php.example'"
+#~ msgstr ""
+#~ "Konfigurálnia kell a phpLDAPadmint a config.php állomány szerkesztésével, "
+#~ "amihez mintául a config.php.example szolgálhat."
+
+#~ msgid "Deletes not allowed in read only mode."
+#~ msgstr "Csak olvasható üzemmódban a törlés nem működik."

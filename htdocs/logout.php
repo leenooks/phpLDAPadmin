@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/logout.php,v 1.20.2.1 2007/12/26 03:25:38 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/logout.php,v 1.20.2.2 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * For servers whose auth_type is set to 'cookie' or 'session'. Pass me
@@ -16,18 +16,18 @@
 require './common.php';
 
 if (! $ldapserver->haveAuthInfo())
-	pla_error(_('No one is logged in to that server.'));
+	error(_('No one is logged in to that server.'),'error','index.php');
 
 if (in_array($ldapserver->auth_type, array('cookie','session','http'))) {
 	syslog_notice (sprintf('Logout for %s',$ldapserver->getLoggedInDN()));
 	if($ldapserver->auth_type!='http')
-		$ldapserver->unsetLoginDN() or pla_error(_('Could not logout.'));
+		$ldapserver->unsetLoginDN() or error(_('Could not logout.'),'error','index.php');
 	unset_lastactivity($ldapserver);
 
 	@session_destroy();
 
 } else
-	pla_error(sprintf(_('Unknown auth_type: %s'), htmlspecialchars($ldapserver->auth_type)));
+	error(sprintf(_('Unknown auth_type: %s'),htmlspecialchars($ldapserver->auth_type)),'error','index.php');
 
 system_message(array(
 	'title'=>_('Logout'),

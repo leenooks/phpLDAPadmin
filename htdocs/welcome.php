@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/welcome.php,v 1.26.2.2 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/welcome.php,v 1.26.2.4 2008/12/12 08:41:30 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -13,7 +13,7 @@ require './common.php';
 
 echo '<center>';
 echo '<br /><br />';
-printf('<img src="images/logo.jpg" title="%s" alt="%s" />',_('phpLDAPadmin logo'),_('phpLDAPadmin logo'));
+printf('<img src="%s/logo.png" title="%s" alt="%s" />',IMGDIR,_('phpLDAPadmin logo'),_('phpLDAPadmin logo'));
 echo '<br /><br />';
 echo _('Use the menu to the left to navigate');
 echo '<br /><br />';

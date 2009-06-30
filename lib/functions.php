@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.303.2.26 2008/01/30 11:17:00 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.303.2.41 2008/12/12 12:52:26 wurley Exp $
 
 /**
  * A collection of common generic functions used throughout the application.
@@ -37,8 +37,6 @@ $app['function_files'] = array(
 	LIBDIR.'template_functions.php',
 	# Functions for hashing passwords with OpenSSL binary (only if mhash not present)
 	LIBDIR.'emuhash_functions.php',
-	# Functions for running various hooks
-	LIBDIR.'hooks.php',
 	# Functions for creating Samba passwords
 	LIBDIR.'createlm.php',
 	# Functions for timeout and automatic logout feature
@@ -64,6 +62,15 @@ function __autoload($className) {
 			'body'=>sprintf('%s: %s [%s]',
 				__METHOD__,_('Called to load a class that cant be found'),$className),
 			'type'=>'error'));
+}
+
+/**
+ * If gettext is not installed, we will emulate it here.
+ */
+if (! function_exists('_')) {
+	function _($msg) {
+		return $msg;
+	}
 }
 
 /**
@@ -151,7 +158,7 @@ function pla_error_handler($errno,$errstr,$file,$lineno) {
 	}
 
 	# If this is a more serious error, call the error call.
-	error(sprintf('%s: %s',$errtype,$errstr),'error',true,true);
+	error(sprintf('%s: %s',$errtype,$errstr),'error',null,true,true);
 }
 
 /**
@@ -161,6 +168,11 @@ function pla_error_handler($errno,$errstr,$file,$lineno) {
  * @return string The current version as read from the VERSION file.
  */
 function pla_version() {
+	static $return = null;
+
+	if ($return)
+		return $return;
+
 	$version_file = realpath(LIBDIR.'../VERSION');
 	if (! file_exists($version_file))
 		$return = 'UNKNOWN';
@@ -227,27 +239,6 @@ function check_config($config_file) {
 			'title'=>_('Incorrect version of PHP'),
 			'body'=>sprintf('phpLDAPadmin requires PHP version %s or greater.<br /><small>(You are using %s)</small>',
 				REQUIRED_PHP_VERSION,phpversion()),
-			'type'=>'error'));
-
-	# Make sure this PHP install has all our required extensions
-	if (! extension_loaded('ldap'))
-		system_message(array(
-			'title'=>_('Missing required extension'),
-			'body'=>'Your install of PHP appears to be missing LDAP support.<br /><br />Please install LDAP support before using phpLDAPadmin.<br /><small>(Dont forget to restart your web server afterwards)</small>',
-			'type'=>'error'));
-
-	# Make sure that we have php-xml loaded.
-	if (! function_exists('xml_parser_create'))
-		system_message(array(
-			'title'=>_('Missing required extension'),
-			'body'=>'Your install of PHP appears to be missing XML support.<br /><br />Please install XML support before using phpLDAPadmin.<br /><small>(Dont forget to restart your web server afterwards)</small>',
-			'type'=>'error'));
-
-	# Make sure their session save path is writable, if they are using a file system session module, that is.
-	if (! strcasecmp('Files',session_module_name() && ! is_writable(realpath(session_save_path()))))
-		system_message(array(
-			'title'=>_('PHP session configuration incorrect'),
-			'body'=>sprintf('Your PHP session configuration is incorrect. Please check the value of session.save_path in your php.ini to ensure that the directory specified there exists and is writable.  The current setting of "%s" is un-writable by the web server.',session_save_path()),
 			'type'=>'error'));
 
 	$config = new Config;
@@ -353,19 +344,19 @@ function check_config($config_file) {
  */
 function cmd_control_pane() {
 	return array(
-		'home'=>array('link'=>sprintf('<a href="cmd.php?cmd=welcome" title="%s"><img src="images/home-big.png" alt="%s" /><br />%s</a>',_('Home'),_('Home'),_('Home'))),
-		'purge'=>array('link'=>sprintf('<a href="cmd.php?cmd=purge_cache" title="%s"><img src="images/trash-big.png" alt="%s" /><br />%s</a>',
-			_('Purge caches'),_('Purge all cached data in phpLDAPadmin, including server schemas.'),_('Purge caches'))),
-		'external_links:feature'=>array('link'=>sprintf('<a href="%s" target="new" title="%s"><img src="images/request-feature.png" alt="%s" /><br />%s</a>',
-			get_href('add_rfe'),_('Request feature'),_('light'),_('Request feature'))),
-		'external_links:bug'=>array('link'=>sprintf('<a href="%s" target="new" title="%s"><img src="images/bug-big.png" alt="%s" /><br />%s</a>',
-			get_href('add_bug'),_('Report a bug'),_('bug'),_('Report a bug'))),
-		'external_links:donation'=>array('link'=>sprintf('<a href="%s" target="new" title="%s"><img src="images/smile-big.png" alt="%s" /><br />%s</a>',
-			get_href('donate'),_('Donate'),_('Donate'),_('Donate'))),
-		'appearance:hide_debug_info'=>array('link'=>sprintf('<a href="cmd.php?cmd=show_cache" title="%s"><img src="images/debug-cache.png" alt="%s" /><br />%s</a>',
-			_('Show Cache'),_('Show Cache'),_('Show Cache'))),
-		'external_links:help'=>array('link'=>sprintf('<a href="%s" target="new" title="%s"><img src="images/help-big.png" alt="%s" /><br />%s</a>',
-			get_href('documentation'),_('Help'),_('Help'),_('Help')))
+		'home'=>array('link'=>sprintf('<a href="cmd.php?cmd=welcome" title="%s"><img src="%s/home-big.png" alt="%s" /><br />%s</a>',_('Home'),IMGDIR,_('Home'),_('Home'))),
+		'purge'=>array('link'=>sprintf('<a href="cmd.php?cmd=purge_cache" title="%s"><img src="%s/trash-big.png" alt="%s" /><br />%s</a>',
+			_('Purge caches'),IMGDIR,_('Purge all cached data in phpLDAPadmin, including server schemas.'),_('Purge caches'))),
+		'external_links:feature'=>array('link'=>sprintf('<a href="%s" target="new" title="%s"><img src="%s/request-feature.png" alt="%s" /><br />%s</a>',
+			get_href('add_rfe'),_('Request feature'),IMGDIR,_('light'),_('Request feature'))),
+		'external_links:bug'=>array('link'=>sprintf('<a href="%s" target="new" title="%s"><img src="%s/bug-big.png" alt="%s" /><br />%s</a>',
+			get_href('add_bug'),_('Report a bug'),IMGDIR,_('bug'),_('Report a bug'))),
+		'external_links:donation'=>array('link'=>sprintf('<a href="%s" target="new" title="%s"><img src="%s/smile-big.png" alt="%s" /><br />%s</a>',
+			get_href('donate'),_('Donate'),IMGDIR,_('Donate'),_('Donate'))),
+		'appearance:hide_debug_info'=>array('link'=>sprintf('<a href="cmd.php?cmd=show_cache" title="%s"><img src="%s/debug-cache.png" alt="%s" /><br />%s</a>',
+			_('Show Cache'),IMGDIR,_('Show Cache'),_('Show Cache'))),
+		'external_links:help'=>array('link'=>sprintf('<a href="%s" target="new" title="%s"><img src="%s/help-big.png" alt="%s" /><br />%s</a>',
+			get_href('documentation'),_('Help'),IMGDIR,_('Help'),_('Help')))
 	);
 }
 
@@ -387,6 +378,14 @@ function debug_dump($variable,$die=false,$onlydebugaddr=false) {
 
 	if ($die)
 		die();
+}
+
+/**
+ * This function generates a backtrace
+ * @param boolean Whether to stop execution or not.
+ */
+function debug_dump_backtrace($msg='Calling BackTrace',$die=false) {
+	error($msg,'note',null,$die,true);
 }
 
 /**
@@ -498,7 +497,7 @@ function debug_log($msg,$level=0) {
 /**
  * Display an error message in the system message panel of the page.
  */
-function error($msg,$type='note',$fatal=false,$backtrace=false) {
+function error($msg,$type='note',$redirect=null,$fatal=false,$backtrace=false) {
 	global $www;
 	global $counter;
 
@@ -510,7 +509,10 @@ function error($msg,$type='note',$fatal=false,$backtrace=false) {
 	if (! isset($www['page']))
 		$www['page'] = new page();
 
-	$www['page']->setsysmsg(array('title'=>_('Error'),'body'=>$msg,'type'=>$type));
+	if ($fatal)
+		$www['page']->setsysmsg(array('title'=>_('Error'),'body'=>$msg,'type'=>$type));
+	else
+		system_message(array('title'=>_('Error'),'body'=>$msg,'type'=>$type),$redirect);
 
 	# Spin loop detection
 	if ($counter++ > 20) {
@@ -525,24 +527,33 @@ function error($msg,$type='note',$fatal=false,$backtrace=false) {
 
 		$body = '<table class="result_table">';
 		$body .= "\n";
-		foreach (debug_backtrace() as $error => $line) {
-			$body .= sprintf('<tr class="hightlight"><td colspan="2"><b><small>%s</small></b></td><td>%s (%s)</td></tr>',
-				_('File'),isset($line['file']) ? $line['file'] : '',isset($line['line']) ? $line['line'] : '');
 
+		foreach (debug_backtrace() as $error => $line) {
+			$_SESSION['backtrace'][$error]['file'] = $line['file'];
+			$_SESSION['backtrace'][$error]['line'] = $line['line'];
+			$body .= sprintf('<tr class="hightlight"><td colspan="2"><b><small>%s</small></b></td><td>%s (%s)</td></tr>',
+				_('File'),isset($line['file']) ? $line['file'] : $last['file'],isset($line['line']) ? $line['line'] : '');
+
+			$_SESSION['backtrace'][$error]['function'] = $line['function'];
 			$body .= sprintf('<tr><td>&nbsp;</td><td><b><small>%s</small></b></td><td><small>%s',
 				_('Function'),$line['function']);
 
-			if (isset($line['args']))
+			if (isset($line['args'])) {
+				$display = strlen(serialize($line['args'])) < 50 ? serialize($line['args']) : substr(serialize($line['args']),0,50).'...<TRUNCATED>';
+				$_SESSION['backtrace'][$error]['args'] = $line['args'];
 				if (file_exists(LIBDIR.'../tools/unserialize.php'))
-					$body .= sprintf('&nbsp;(<a href="%s?var=%s">%s</a>)',
-						'/tools/unserialize.php',
-						htmlspecialchars(serialize($line['args'])),
-						htmlspecialchars(serialize($line['args'])));
+					$body .= sprintf('&nbsp;(<a href="%s?index=%s" target="backtrace">%s</a>)',
+						'../tools/unserialize.php',$error,htmlspecialchars($display));
 				else
-					$body .= sprintf('&nbsp;(%s)',htmlspecialchars(serialize($line['args'])));
+					$body .= sprintf('&nbsp;(%s)',htmlspecialchars($display));
+			}
 			$body .= '</small></td></tr>';
 			$body .= "\n";
+
+			if ($line['file'])
+				$last['file'] = $line['file'];
 		}
+
 		$body .= '</table>';
 		$body .= "\n";
 		$backtraceblock->SetBody($body);
@@ -609,7 +620,16 @@ function system_message($msg,$redirect=null) {
 
 	$_SESSION['sysmsg'][] = $msg;
 
+	if (get_request('redirect','GET'))
+		debug_dump_backtrace('Redirect Loop Detected',true);
+
 	if ($redirect) {
+		if (preg_match('/\?/',$redirect))
+			$redirect .= '&';
+		else
+			$redirect .= '?';
+		$redirect .= 'redirect=true';
+
 		header("Location: $redirect");
 		die();
 	}
@@ -1149,17 +1169,17 @@ function get_next_number(&$ldapserver,$startbase='',$type='uid',$increment=false
 				$base_dn = $_SESSION[APPCONFIG]->ldapservers->GetValue($ldapserver->server_id,'auto_number','search_base');
 
 				if (is_null($base_dn))
-					pla_error(sprintf(_('You specified the "auto_uid_number_mechanism" as "search" in your
+					error(sprintf(_('You specified the "auto_uid_number_mechanism" as "search" in your
 						configuration for server <b>%s</b>, but you did not specify the
-						"auto_uid_number_search_base". Please specify it before proceeding.'),$ldapserver->name));
+						"auto_uid_number_search_base". Please specify it before proceeding.'),$ldapserver->name),'error','index.php');
 
 			} else {
 				$base_dn = $startbase;
 			}
 
 			if (! $ldapserver->dnExists($base_dn))
-				pla_error(sprintf(_('Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base for server %s'),
-					$ldapserver->name));
+				error(sprintf(_('Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base for server %s'),
+					$ldapserver->name),'error','index.php');
 
 			$filter = '(|(uidNumber=*)(gidNumber=*))';
 			$results = array();
@@ -1170,12 +1190,13 @@ function get_next_number(&$ldapserver,$startbase='',$type='uid',$increment=false
 				$_SESSION[APPCONFIG]->ldapservers->GetValue($ldapserver->server_id,'auto_number','pass'));
 
 			if (! $con)
-				pla_error(sprintf(_('Unable to bind to <b>%s</b> with your with auto_uid credentials. Please check your configuration file.'),$ldapserver->name));
+				error(sprintf(_('Unable to bind to <b>%s</b> with your with auto_uid credentials. Please check your configuration file.'),$ldapserver->name),
+					'error','index.php');
 
 			$search = $ldapserver->search($con,$base_dn,$filter,array('uidNumber','gidNumber'),'sub',false,$_SESSION[APPCONFIG]->GetValue('deref','search'));
 
 			if (! is_array($search))
-				pla_error('Untrapped error.');
+				error(_('Untrapped error.'),'error','index.php');
 
 			foreach ($search as $dn => $attrs) {
 				$attrs = array_change_key_case($attrs);
@@ -1198,7 +1219,7 @@ function get_next_number(&$ldapserver,$startbase='',$type='uid',$increment=false
 						}
 						break;
 					default :
-						pla_error(sprintf('Unknown type [%s] in search',$type));
+						error(sprintf('Unknown type [%s] in search',$type),'error','index.php');
 				}
 			}
 
@@ -1234,13 +1255,15 @@ function get_next_number(&$ldapserver,$startbase='',$type='uid',$increment=false
 				$_SESSION[APPCONFIG]->ldapservers->GetValue($ldapserver->server_id,'auto_number','pass'));
 
 			if (! $con)
-				pla_error(sprintf(_('Unable to bind to <b>%s</b> with your with auto_uid credentials. Please check your configuration file.'),$ldapserver->name));
+				error(sprintf(_('Unable to bind to <b>%s</b> with your with auto_uid credentials. Please check your configuration file.'),$ldapserver->name),
+					'error','index.php');
 
 			# assume that uidpool dn is set in config file if no filter given
-			if (empty($filter))
+			if (empty($filter)) {
 				$uidpool_dn = $_SESSION[APPCONFIG]->ldapservers->GetValue($ldapserver->server_id,'auto_number','uidpool_dn');
+				$filter = '(objectclass=*)';
 
-			else {
+			} else {
 				$filter = str_replace(array('&amp;',':::'),array('&',','),$filter);
 				$dns = $ldapserver->search($con,$startbase,$filter,array('dn'),'sub');
 
@@ -1249,10 +1272,10 @@ function get_next_number(&$ldapserver,$startbase='',$type='uid',$increment=false
 						break;
 
 					case '0':
-						pla_error(_('Uidpool dn not found, please change filter parameter'));
+						error(_('Uidpool dn not found, please change filter parameter'),'error','index.php');
 
 					default:
-						pla_error(_('There is more than one dn for uidpool,please change filter parameter'));
+						error(_('There is more than one dn for uidpool,please change filter parameter'),'error','index.php');
 				}
 
 				list ($key,$attrs) = each($dns);
@@ -1260,31 +1283,38 @@ function get_next_number(&$ldapserver,$startbase='',$type='uid',$increment=false
 				$uidpool_dn = $attrs['dn'];
 			}
 
-			if (empty($uidpool_dn))
-				pla_error(_('uidpool_dn not found. Please check filter (arg 3) or set up uidpool_dn in config file'));
+			# Check that the UIDPOOL DN exists.
+			if (empty($uidpool_dn) || (! $ldapserver->dnExists($uidpool_dn)))
+				error(_('uidpool_dn not found. Please check filter (arg 3) or set up uidpool_dn in config file'),'error','index.php');
 
-			$attrs = array($type);
-			$key = strtolower($type);
-			$realkey = $type;
+			switch ($type) {
+				case 'uid' : $attr = 'uidnumber';
+					break;
+				case 'gid' : $attr = 'gidnumber';
+					break;
+				default :
+					error(_('Unknown uidpool type.'),'error','index.php');
+			}
 
-			$number = $ldapserver->search($con,$uidpool_dn,$filter,$attrs,'base');
-			list($rkey,$number) = each($number);
-			$number = array_change_key_case($number);
-			$number = $number[$key];
+			$number = $ldapserver->search($con,$uidpool_dn,$filter,array($attr),'base');
+			$numbers = array_change_key_case($number[$uidpool_dn]);
 
-			if (isset($increment) && ($increment == 'true')) {
-				$updatedattr = array ($key => $number + 1);
+			if (! isset($numbers[$attr]))
+				error(_('A query on the uidpool_dn did return a valid uidNumber.'),'error','index.php');
+			else
+
+			if ($increment) {
+				$updatedattr = array($attr => $numbers[$attr] + 1);
 				$ldapserver->modify($uidpool_dn,$updatedattr);
 			}
 
-			return $number;
+			return $numbers[$attr];
 			break;
 
 		# No other cases allowed. The user has an error in the configuration
 		default :
-			pla_error( sprintf( _('You specified an invalid value for auto_uid_number_mechanism ("%s")
-				in your configration. Only "uidpool" and "search" are valid.
-				Please correct this problem.') , $mechanism) );
+			error(sprintf(_('You specified an invalid value for auto_uid_number_mechanism ("%s") in your configration. Only "uidpool" and "search" are valid.
+				Please correct this problem.'),$mechanism),'error','index.php');
 	}
 }
 
@@ -1380,7 +1410,7 @@ function get_icon( $ldapserver, $dn ) {
 		$cval = explode( '=', $tmp[0], 2 );
 		$cval = isset( $cval[1] ) ? $cval[1] : false;
 		if( $cval && false === strpos( $cval, ".." ) &&
-			file_exists( realpath( sprintf("./images/countries/%s.png",strtolower($cval)) ) ) )
+			file_exists(realpath(sprintf('%s/countries/%s.png',IMGDIR,strtolower($cval)))))
 
 			return sprintf("countries/%s.png",strtolower($cval));
 
@@ -1732,56 +1762,28 @@ function support_oid_to_text($oid_id) {
 }
 
 /**
- * Prints an HTML-formatted error string. If you specify the optional
- * parameters $ldap_err_msg and $ldap_err_no, this function will
- * lookup the error number and display a verbose message in addition
- * to the message you pass it.
- *
- * @param string $msg The error message to display.
- * @param string $ldap_err_msg (optional) The error message supplied by the LDAP server
- * @param string $ldap_err_no (optional) The hexadecimal error number string supplied by the LDAP server
- * @param bool $fatal (optional) If true, phpLDAPadmin will terminate execution with the PHP die() function.
- *
- * @see die
- * @see ldap_errno
- * @see pla_verbose_error
+ * Print an LDAP error message
  */
-function pla_error($msg,$ldap_err_msg=null,$ldap_err_no=-1,$fatal=true) {
-	if (defined('DEBUG_ENABLED') && (DEBUG_ENABLED))
-		debug_log('Entered with (%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$msg,$ldap_err_msg,$ldap_err_no,$fatal);
+function ldap_error_msg($msg,$errnum) {
+	$body = '<table border=0>';
 
-	$title = '';
+	$errnum = ('0x'.str_pad(dechex($errnum),2,0,STR_PAD_LEFT));
+	$verbose_error = pla_verbose_error($errnum);
 
-	if (function_exists('syslog_err'))
-		syslog_err($msg);
+	$body .= sprintf('<tr><td><b>%s</b>:</td><td>%s</td></tr>',_('LDAP said'),htmlspecialchars($msg));
 
-	if ($ldap_err_msg)
-		$title = sprintf('<b>%s</b>: %s',_('LDAP said'),htmlspecialchars($ldap_err_msg));
-
-	if ($ldap_err_no != -1) {
-		$body = '<table>';
-
-		$ldap_err_no = ('0x'.str_pad(dechex($ldap_err_no),2,0,STR_PAD_LEFT));
-		$verbose_error = pla_verbose_error($ldap_err_no);
-
-		if ($verbose_error) {
-			$body .= sprintf('<tr><td colspan="2"><b>%s</b>: %s (%s)</td></tr>',_('Error number'),$ldap_err_no,$verbose_error['title']);
-			$body .= sprintf('<tr><td colspan="2"><b>%s</b>: %s</td></tr>',_('Description'),$verbose_error['desc']);
-		} else {
-			$body .= sprintf('<tr><td colspan="2"><b>%s</b>: %s</td></tr>',_('Error number'),$ldap_err_no);
-			$body .= sprintf('<tr><td colspan="2"><b>%s</b>: (%s)</td></tr>',_('Description'),_('no description available'));
-		}
-		$body .= '</table>';
-
-		if (function_exists('syslog_err'))
-			syslog_err(sprintf('%s %s',_('Error number'),$ldap_err_no));
+	if ($verbose_error) {
+		$body .= sprintf('<tr><td><b>%s</b>:</td><td>%s (%s)</td></tr>',_('Error number'),$errnum,$verbose_error['title']);
+		$body .= sprintf('<tr><td><b>%s</b>:</td><td>%s</td></tr>',_('Description'),$verbose_error['desc']);
 
 	} else {
-		$body = $msg;
+		$body .= sprintf('<tr><td><b>%s</b>:</td><td>%s</td></tr>',_('Error number'),$errnum);
+		$body .= sprintf('<tr><td><b>%s</b>:</td><td>(%s)</td></tr>',_('Description'),_('no description available'));
 	}
 
-	system_message(array('title'=>$title ? $title : 'Error','body'=>$body,'type'=>'error'),$fatal ? 'index.php' : null);
+	$body .= '</table>';
+
+	return $body;
 }
 
 /**
@@ -1832,7 +1834,7 @@ function draw_jpeg_photos($ldapserver,$dn,$attr_name='jpegPhoto',$draw_delete_bu
 
 	$jpeg_temp_dir = realpath($_SESSION[APPCONFIG]->GetValue('jpeg','tmpdir').'/');
 	if (! is_writable($jpeg_temp_dir))
-		pla_error(_('Please set $jpeg_temp_dir to a writable directory in the phpLDAPadmin config.php') );
+		error(_('Please set $jpeg_temp_dir to a writable directory in the phpLDAPadmin config.php'),'error','index.php');
 
 	if (! is_array($jpeg_data[$attr_name]))
 		$jpeg_data[$attr_name] = array($jpeg_data[$attr_name]);
@@ -1841,7 +1843,8 @@ function draw_jpeg_photos($ldapserver,$dn,$attr_name='jpegPhoto',$draw_delete_bu
 		$jpeg_filename = tempnam($jpeg_temp_dir.'/','pla');
 		$outjpeg = @fopen($jpeg_filename,'wb');
 		if (! $outjpeg)
-			pla_error(sprintf(_('Could not write to the $jpeg_temp_dir directory %s. Please verify that your web server can write files there.'),$jpeg_temp_dir));
+			error(sprintf(_('Could not write to the $jpeg_temp_dir directory %s. Please verify that your web server can write files there.'),$jpeg_temp_dir),
+				'error','index.php');
 		fwrite($outjpeg,$jpeg);
 		fclose ($outjpeg);
 
@@ -1902,7 +1905,7 @@ function draw_jpeg_photos($ldapserver,$dn,$attr_name='jpegPhoto',$draw_delete_bu
 		}
 		closedir($handle);
 	} else {
-		pla_error(sprintf('failed to open dir %s : permission denied', $jpeg_temp_dir), null, -1, false, false);
+		error(sprintf('failed to open dir %s : permission denied',$jpeg_temp_dir),'error');
 	}
 }
 
@@ -1932,21 +1935,21 @@ function password_hash( $password_clear, $enc_type ) {
 		case 'ext_des':
 			// extended des crypt. see OpenBSD crypt man page.
 			if ( ! defined( 'CRYPT_EXT_DES' ) || CRYPT_EXT_DES == 0 )
-				pla_error( _('Your system crypt library does not support extended DES encryption.') );
+				error(_('Your system crypt library does not support extended DES encryption.'),'error','index.php');
 
 			$new_value = '{CRYPT}' . crypt( $password_clear, '_' . random_salt(8) );
 			break;
 
 		case 'md5crypt':
 			if( ! defined( 'CRYPT_MD5' ) || CRYPT_MD5 == 0 )
-				pla_error( _('Your system crypt library does not support md5crypt encryption.') );
+				error(_('Your system crypt library does not support md5crypt encryption.'),'error','index.php');
 
 			$new_value = '{CRYPT}' . crypt( $password_clear , '$1$' . random_salt(9) );
 			break;
 
 		case 'blowfish':
 			if( ! defined( 'CRYPT_BLOWFISH' ) || CRYPT_BLOWFISH == 0 )
-				pla_error( _('Your system crypt library does not support blowfish encryption.') );
+				error(_('Your system crypt library does not support blowfish encryption.'),'error','index.php');
 
 			// hardcoded to second blowfish version and set number of rounds
 			$new_value = '{CRYPT}' . crypt( $password_clear , '$2a$12$' . random_salt(13) );
@@ -1965,7 +1968,7 @@ function password_hash( $password_clear, $enc_type ) {
 				$new_value = '{SHA}' . base64_encode( mhash( MHASH_SHA1, $password_clear) );
 
 			} else {
-				pla_error( _('Your PHP install does not have the mhash() function. Cannot do SHA hashes.') );
+				error(_('Your PHP install does not have the mhash() function. Cannot do SHA hashes.'),'error','index.php');
 			}
 			break;
 
@@ -1976,7 +1979,7 @@ function password_hash( $password_clear, $enc_type ) {
 				$new_value = "{SSHA}".base64_encode( mhash( MHASH_SHA1, $password_clear.$salt ).$salt );
 
 			} else {
-				pla_error( _('Your PHP install does not have the mhash() function. Cannot do SHA hashes.') );
+				error(_('Your PHP install does not have the mhash() function. Cannot do SHA hashes.'),'error','index.php');
 			}
 			break;
 
@@ -1987,7 +1990,7 @@ function password_hash( $password_clear, $enc_type ) {
 				$new_value = "{SMD5}".base64_encode( mhash( MHASH_MD5, $password_clear.$salt ).$salt );
 
 			} else {
-				pla_error( _('Your PHP install does not have the mhash() function. Cannot do SHA hashes.') );
+				error(_('Your PHP install does not have the mhash() function. Cannot do SHA hashes.'),'error','index.php');
 			}
 			break;
 
@@ -2026,7 +2029,8 @@ function password_check( $cryptedpassword, $plainpassword ) {
 			// check php mhash support before using it
 			if( function_exists( 'mhash' ) ) {
 				$hash = base64_decode($cryptedpassword);
-				$salt = substr($hash, -4);
+				# OpenLDAP uses a 4 byte salt, SunDS uses an 8 byte salt - both from char 20.
+				$salt = substr($hash,20);
 				$new_hash = base64_encode( mhash( MHASH_SHA1, $plainpassword.$salt).$salt );
 
 				if( strcmp( $cryptedpassword, $new_hash ) == 0 )
@@ -2035,7 +2039,7 @@ function password_check( $cryptedpassword, $plainpassword ) {
 					return false;
 
 			} else {
-				pla_error( _('Your PHP install does not have the mhash() function. Cannot do SHA hashes.') );
+				error(_('Your PHP install does not have the mhash() function. Cannot do SHA hashes.'),'error','index.php');
 			}
 			break;
 
@@ -2053,7 +2057,7 @@ function password_check( $cryptedpassword, $plainpassword ) {
 					return false;
 
 			} else {
-				pla_error( _('Your PHP install does not have the mhash() function. Cannot do SHA hashes.') );
+				error(_('Your PHP install does not have the mhash() function. Cannot do SHA hashes.'),'error','index.php');
 			}
 			break;
 
@@ -2080,7 +2084,7 @@ function password_check( $cryptedpassword, $plainpassword ) {
 
 				// make sure that web server supports blowfish crypt
 				if( ! defined( 'CRYPT_BLOWFISH' ) || CRYPT_BLOWFISH == 0 )
-					pla_error( _('Your system crypt library does not support blowfish encryption.') );
+					error(_('Your system crypt library does not support blowfish encryption.'),'error','index.php');
 
 				list(,$version,$rounds,$salt_hash) = explode('$',$cryptedpassword);
 
@@ -2095,7 +2099,7 @@ function password_check( $cryptedpassword, $plainpassword ) {
 
 				// make sure that web server supports md5 crypt
 				if( ! defined( 'CRYPT_MD5' ) || CRYPT_MD5 == 0 )
-					pla_error( _('Your system crypt library does not support md5crypt encryption.') );
+					error(_('Your system crypt library does not support md5crypt encryption.'),'error','index.php');
 
 				list(,$type,$salt,$hash) = explode('$',$cryptedpassword);
 
@@ -2110,7 +2114,7 @@ function password_check( $cryptedpassword, $plainpassword ) {
 
 				// make sure that web server supports ext_des
 				if ( ! defined( 'CRYPT_EXT_DES' ) || CRYPT_EXT_DES == 0 )
-					pla_error( _('Your system crypt library does not support extended DES encryption.') );
+					error(_('Your system crypt library does not support extended DES encryption.'),'error','index.php');
 
 				if( crypt($plainpassword, $cryptedpassword ) == $cryptedpassword )
 					return true;
@@ -2218,7 +2222,7 @@ function draw_chooser_link( $form_element, $include_choose_text=true, $rdn="none
 
 	$title = _('Click to popup a dialog to select an entry (DN) graphically');
 
-	printf('<a href="%s" title="%s"><img class="chooser" src="images/find.png" alt="Find" /></a>',$href,$title);
+	printf('<a href="%s" title="%s"><img class="chooser" src="%s/find.png" alt="Find" /></a>',$href,$title,IMGDIR);
 	if ($include_choose_text)
 		printf('<span class="x-small"><a href="%s" title="%s">%s</a></span>',$href,$title,_('browse'));
 }
@@ -2330,7 +2334,7 @@ function dn_unescape($dn) {
  */
 function get_href($type,$extra_info='') {
 	$sf = 'https://sourceforge.net';
-	$pla = 'http://phpldapadmin.wiki.sourceforge.net';
+	$pla = 'http://phpldapadmin.sourceforge.net';
 	$group_id = '61828';
 	$bug_atid = '498546';
 	$rfe_atid = '498549';
@@ -2921,13 +2925,13 @@ function server_info_list($visible=false) {
 	return $server_info_list;
 }
 
-function enc_type_select_list($enc_type,$id,$attribute,$i) {
+function enc_type_select_list($enc_type,$id,$attributename,$i) {
 	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,$enc_type,$id,$attribute,$i);
+		debug_log('Entered with (%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,$enc_type,$id,$attributename,$i);
 
 	$html = sprintf('<select id="%s_%s_%s" name="%s[%s][%s]">',
-		$id, htmlspecialchars($attribute->getName()), $i,
-		$id, htmlspecialchars($attribute->getName()), $i);
+		$id,htmlspecialchars($attributename),$i,
+		$id,htmlspecialchars($attributename),$i);
 
 	$html .= '<option>clear</option>';
 	foreach (array('crypt','ext_des','md5crypt','blowfish','md5','smd5','sha','ssha') as $option)
@@ -3201,7 +3205,7 @@ function draw_date_selector_link( $attr ) {
 
 	$href = "javascript:dateSelector('$attr');";
 	$title = _('Click to popup a dialog to select a date graphically');
-	printf('<a href="%s" title="%s"><img class="chooser" src="images/calendar.png" id="f_trigger_%s" style="cursor: pointer;" alt="Calendar" /></a>',$href,$title,$attr);
+	printf('<a href="%s" title="%s"><img class="chooser" src="%s/calendar.png" id="f_trigger_%s" style="cursor: pointer;" alt="Calendar" /></a>',$href,$title,IMGDIR,$attr);
 }
 
 /**
@@ -3222,5 +3226,14 @@ function random_junk() {
  */
 function htmlid($sid,$dn) {
 	return sprintf('SID%s:%s',$sid,preg_replace('/[\ =,]/','_',$dn));
+}
+
+/**
+ * Is compression enabled for output
+ */
+function isCompress() {
+	return (isset($_SESSION[APPCONFIG]) && $_SESSION[APPCONFIG]->GetValue('appearance','compress')
+		&& ! ini_get('zlib.output_compression')
+		&& eregi('gzip',$_SERVER['HTTP_ACCEPT_ENCODING']));
 }
 ?>

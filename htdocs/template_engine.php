@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.45.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.45.2.2 2008/12/12 12:20:22 wurley Exp $
 
 /**
  * Template render engine.
@@ -15,6 +15,7 @@
 
 require_once './common.php';
 
+$entry = array();
 $entry['dn']['encode'] = get_request('dn','REQUEST');
 $entry['dn']['string'] = rawurldecode($entry['dn']['encode']);
 $entry['template'] = get_request('template','REQUEST',false,'');
@@ -22,7 +23,7 @@ $entry['template'] = get_request('template','REQUEST',false,'');
 # If we have a DN, then this is to edit the entry.
 if ($entry['dn']['string']) {
 	$ldapserver->dnExists($entry['dn']['string'])
-		or pla_error(sprintf(_('No such entry: %s'),pretty_print_dn($entry['dn']['string'])));
+		or error(sprintf('%s (%s)',_('No such entry'),pretty_print_dn($entry['dn']['string'])),'error','index.php');
 
 	$tree = get_cached_item($ldapserver->server_id,'tree');
 
@@ -51,7 +52,7 @@ if ($entry['dn']['string']) {
 
 } else {
 	if ($ldapserver->isReadOnly())
-		pla_error(_('You cannot perform updates while server is in read-only mode'));
+		error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
 	# Create a new empty entry
 	$entryfactoryclass = $_SESSION[APPCONFIG]->GetValue('appearance','entry_factory');
