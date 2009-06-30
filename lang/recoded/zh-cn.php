@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/recoded/zh-cn.php,v 1.2 2005/03/25 01:21:31 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/recoded/zh-cn.php,v 1.3 2005/04/05 07:33:23 wurley Exp $
 // Translate to Simplified Chinese, by уея╘ф╫(heromyth), from zxpmyth@yahoo.com.cn
 // Based on en.php,v 1.119 2005/03/16 20:57:45
 

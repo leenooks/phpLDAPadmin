@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/login.php,v 1.40 2005/03/16 11:20:25 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/login.php,v 1.41 2005/04/03 09:24:41 wurley Exp $
 
 /**
  * For servers whose auth_type is set to 'cookie' or 'session'. Pass me the login info
@@ -58,9 +58,11 @@ elseif ( $ldapserver->isLoginAttrEnabled() ) {
 		// the DN to use when searching for the login_attr user.
 		$ldapserver->auth_type = 'config';
 
-		// search for the "uid" first, this will be an anonymous bind.
 		set_error_handler( 'temp_login_error_handler' );
-		$ldapserver->connect(true,true);
+		if ($ldapserver->login_dn)
+			$ldapserver->connect(true,false);
+		else
+			$ldapserver->connect(true,true);
 		restore_error_handler();
 
 		if (!empty($servers[$ldapserver->server_id]['login_class'])) {

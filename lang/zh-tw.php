@@ -1,4 +1,4 @@
-<?
+<?php
 
 /*        ---   INSTRUCTIONS FOR TRANSLATORS   ---
  *

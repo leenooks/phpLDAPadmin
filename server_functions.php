@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/server_functions.php,v 1.9 2005/03/25 15:45:01 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/server_functions.php,v 1.10 2005/04/05 07:46:24 wurley Exp $ */
 
 /**
  * Classes and functions for LDAP server configuration and capability
@@ -780,7 +780,7 @@ class LDAPServer
 	 *
 	 * @return string|false
 	 */
-	function getLoginString( $server_id )
+	function getLoginString()
 	{
 		global $servers;
 
