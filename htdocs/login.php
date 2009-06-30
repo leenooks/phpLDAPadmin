@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login.php,v 1.56.2.2 2007/12/29 08:24:10 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login.php,v 1.56.2.3 2007/12/31 01:30:09 wurley Exp $
 
 /**
  * For servers whose auth_type is set to 'cookie' or 'session'. Pass me the
@@ -96,6 +96,9 @@ if ($anon_bind) {
 		# Restore the original auth_type
 		$ldapserver->auth_type = $save_auth_type;
 	}
+
+} else {
+	$login['dn'] = $login['val'];
 }
 
 # We fake a 'config' server auth_type to omit duplicated code
