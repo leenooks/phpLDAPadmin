@@ -1,8 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_dns_entry.php,v 1.7 2004/03/19 20:13:09 i18phpldapadmin Exp $
-
-
-require 'common.php';
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_dns_entry.php,v 1.8 2004/05/05 12:47:54 uugdave Exp $
 
 // Common to all templates
 $container = $_POST['container'];

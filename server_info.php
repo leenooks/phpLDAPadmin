@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/server_info.php,v 1.10 2004/05/03 13:04:42 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/server_info.php,v 1.11 2004/05/06 04:01:40 uugdave Exp $
  
 
 /* 
@@ -48,21 +48,23 @@ $server_name = $servers[$server_id]['name'];
 $ds = pla_ldap_connect( $server_id ) or pla_error( $lang['could_not_connect'] );
 
 // Fetch basic RootDSE attributes using the + and *. 
-$r = ldap_read( $ds, '', 'objectClass=*', array( '+', '*' ) );
+$r = @ldap_read( $ds, '', 'objectClass=*', array( '+', '*' ) );
 if( ! $r )
 	pla_error( $lang['could_not_fetch_server_info'], ldap_error( $ds ), ldap_errno( $ds )  );
-$entry = ldap_first_entry( $ds, $r );
-$attrs = ldap_get_attributes( $ds, $entry );
-$count = ldap_count_entries( $ds, $r );
+$entry = @ldap_first_entry( $ds, $r );
+if( ! $entry )
+	pla_error( $lang['could_not_fetch_server_info'], ldap_error( $ds ), ldap_errno( $ds )  );
+$attrs = @ldap_get_attributes( $ds, $entry );
+$count = @ldap_count_entries( $ds, $r );
 
 // After fetching the "basic" attributes from the RootDSE, try fetching the 
 // more advanced ones (from ths list). Add them to the list of attrs to display
 // if they weren't already fetched. (this was added as a work-around for OpenLDAP 
 // on RHEL 3.
-$r2 = ldap_read( $ds, '', 'objectClass=*', $root_dse_attributes );
+$r2 = @ldap_read( $ds, '', 'objectClass=*', $root_dse_attributes );
 if( $r2 ) {
-    $entry2 = ldap_first_entry( $ds, $r );
-    $attrs2 = ldap_get_attributes( $ds, $entry );
+    $entry2 = @ldap_first_entry( $ds, $r );
+    $attrs2 = @ldap_get_attributes( $ds, $entry );
     for( $i=0; $i<$attrs2['count']; $i++ ) {
             $attr = $attrs2[$i];
         if( ! isset( $attrs[ $attr ] ) ) {

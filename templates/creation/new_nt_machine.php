@@ -1,8 +1,6 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_nt_machine.php,v 1.10 2004/03/19 20:13:09 i18phpldapadmin Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_nt_machine.php,v 1.11 2004/05/05 12:47:54 uugdave Exp $
 
-
-require 'common.php';
 
 // Common to all templates
 $container = $_POST['container'];

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/export_form.php,v 1.6 2004/03/19 20:13:08 i18phpldapadmin Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/export_form.php,v 1.7 2004/05/05 23:21:57 xrenard Exp $
 
 /**
  * export_form.php
@@ -9,7 +9,6 @@
  *
  */
 
-require 'common.php';
 require 'export_functions.php';
 
 $server_id = isset( $_GET['server_id'] ) ? $_GET['server_id']:NULL ;

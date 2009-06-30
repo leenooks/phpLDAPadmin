@@ -1,7 +1,6 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/export.php,v 1.5 2004/03/19 20:13:08 i18phpldapadmin Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/export.php,v 1.6 2004/05/05 23:22:57 xrenard Exp $
 
-require 'common.php';
 require 'export_functions.php';
 
 // get the POST parameters

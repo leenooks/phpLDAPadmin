@@ -1,7 +1,5 @@
 <?php
 
-require 'common.php';
-
 // customize this to your needs
 $default_container = "ou=Addresses";
 

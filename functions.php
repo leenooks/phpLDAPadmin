@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/functions.php,v 1.177 2004/05/01 13:53:52 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/functions.php,v 1.180 2004/05/08 13:28:56 uugdave Exp $
 
 
 /**
@@ -693,6 +693,22 @@ function show_hints()
 }
 
 /**
+ * Determines if the user has enabled auto uidNumbers for the specified server ID.
+ *
+ * @param int $server_id The id of the server of interest.
+ * @return bool True if auto uidNumbers are enabled, false otherwise.
+ */
+function auto_uid_numbers_enabled( $server_id ) 
+{
+    global $servers;
+    if( isset( $servers[$server_id]['enable_auto_uid_numbers'] ) &&
+        true == $servers[$server_id]['enable_auto_uid_numbers'] )
+        return true;
+    else
+        return false;
+}
+
+/**
  * For hosts who have 'enable_auto_uid_numbers' set to true, this function will
  * get the next available uidNumber using the host's preferred mechanism
  * (uidpool or search). The uidpool mechanism uses a user-configured entry in
@@ -723,6 +739,8 @@ function get_next_uid_number( $server_id )
 	// Some error checking
 	if( ! check_server_id( $server_id ) )
 		return false;
+    if( ! auto_uid_numbers_enabled( $server_id ) )
+        return false;
 	$server_name = isset( $servers[ $server_id ]['name'] ) ?
 		$servers[$server_id]['name'] :
 		"Server $server_id";
@@ -926,7 +944,7 @@ function is_attr_binary( $server_id, $attr_name )
 		return true;
     }
 
-	@require_once realpath( 'schema_functions.php' );
+	@require_once realpath( './schema_functions.php' );
 
     // See what the server schema says about this attribute
 	$schema_attr = get_schema_attribute( $server_id, $attr_name );

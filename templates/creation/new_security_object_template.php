@@ -1,8 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_security_object_template.php,v 1.2 2004/03/19 20:13:09 i18phpldapadmin Exp $
-
-
-require 'common.php';
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_security_object_template.php,v 1.3 2004/05/05 12:47:54 uugdave Exp $
 
 // customize this to your needs
 $default_container = "ou=server";

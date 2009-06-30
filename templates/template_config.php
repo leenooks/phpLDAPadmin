@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/template_config.php,v 1.16 2004/05/01 14:03:56 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/template_config.php,v 1.17 2004/05/08 11:14:55 xrenard Exp $
 
 /**
  * template_config.php
@@ -86,11 +86,6 @@ $templates[] =
 	array(  'desc'    => 'Simple Security Object',
 		'icon'    => 'images/user.png',
 		'handler' => 'new_security_object_template.php' ); 
-$templates[] =
-	array(  'desc'    => 'Mozilla User',
-		'icon'    => 'images/user.png',
-		'handler' => 'mozilla_template.php' ); 
-
 
 $templates[] =
 	array(  'desc'    => 'Custom',

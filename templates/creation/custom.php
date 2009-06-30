@@ -1,8 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/custom.php,v 1.28 2004/04/13 03:50:49 uugdave Exp $
-
-
-require 'common.php';
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/custom.php,v 1.29 2004/05/05 12:47:54 uugdave Exp $
 
 // Common to all templates
 $rdn = isset( $_POST['rdn'] ) ? $_POST['rdn'] : null;

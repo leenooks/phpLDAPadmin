@@ -1,7 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_smbgroup_template.php,v 1.9 2004/04/12 22:40:55 xrenard Exp $
-
-require 'common.php';
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_smbgroup_template.php,v 1.11 2004/05/08 12:27:17 xrenard Exp $
 
 // Common to all templates
 $rdn = isset( $_POST['rdn'] ) ? $_POST['rdn'] : null;
@@ -96,7 +94,7 @@ function autoFillSambaGroupRID( form ){
                  <select name="builtin_sid">
                      <optgroup label="Local Group">
    <?php foreach( $built_in_local_groups as $sid => $name ){ ?>
-                         <option value="<?php echo $sid; ?>"><?php echo $name; ?> (<?php echo $sid; ?>)</option>  <?  } ?>
+                         <option value="<?php echo $sid; ?>"><?php echo $name; ?> (<?php echo $sid; ?>)</option>  <?php  } ?>
 	              </optgroup>
                       <optgroup  label="Global Groups">
 			<?php foreach($samba3_domains as $samba3_domain) { ?>

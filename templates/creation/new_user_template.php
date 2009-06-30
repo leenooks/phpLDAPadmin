@@ -1,8 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_user_template.php,v 1.13 2004/03/19 20:13:09 i18phpldapadmin Exp $
-
-
-require 'common.php';
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_user_template.php,v 1.17 2004/05/08 13:31:04 uugdave Exp $
 
 /*
  * TODO Add a check: If the server is configured to use auto_uid_numbers AND the 
@@ -188,7 +185,7 @@ function autoFillHomeDir( form )
 <tr>
 	<td></td>
 	<td class="heading">UID Number:</td>
-	<?php $next_uid_number = get_next_uid_number( $server_id ); ?>
+	<?php $next_uid_number = ( auto_uid_numbers_enabled( $server_id ) ? get_next_uid_number( $server_id ) : false ); ?>
 	<td><input type="text" name="uid_number" value="<?php echo $next_uid_number ?>" />
 	<?php if( false !== $next_uid_number ) echo "<small>(automatically determined)</small>"; ?>
 	</td>
@@ -196,7 +193,7 @@ function autoFillHomeDir( form )
 <tr>
 	<td></td>
 	    <?php $posix_groups_found = ( is_array( $posix_groups )?1:0 );?>
-	<td class="heading"><?echo $posix_groups_found?"Group":"GID Number"?>:</td>
+	<td class="heading"><?php echo $posix_groups_found?"Group":"GID Number"?>:</td>
 	    <td>
 	    <?php if( $posix_groups_found ){?>
 	       <select name="gid_number">
@@ -231,6 +228,8 @@ function autoFillHomeDir( form )
 	$home_dir = trim( $_POST['home_dir'] );
 
 	/* Critical assertions */
+    if( ! trim( $user_name ) )
+        pla_error( "You left the user name field blank" );
 	$password1 == $password2 or
 		pla_error( "Your passwords don't match. Please go back and try again." );
 	0 != strlen( $uid_number ) or
@@ -244,6 +243,7 @@ function autoFillHomeDir( form )
 	       		       "Please go back and try again." );
 
 	$password = password_hash( $password1, $encryption );
+
 
 	?>
 	<center><h3>Confirm account creation:</h3></center>

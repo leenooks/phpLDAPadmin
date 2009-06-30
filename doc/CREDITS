@@ -1,4 +1,4 @@
-$Header: /cvsroot/phpldapadmin/phpldapadmin/doc/CREDITS,v 1.12 2004/03/25 12:50:39 uugdave Exp $  
+$Header: /cvsroot/phpldapadmin/phpldapadmin/doc/CREDITS,v 1.13 2004/05/06 20:04:26 i18phpldapadmin Exp $  
  * Project Developers:
 
   - David Smith         Maintainer
@@ -36,6 +36,7 @@ $Header: /cvsroot/phpldapadmin/phpldapadmin/doc/CREDITS,v 1.12 2004/03/25 12:50:
     Aleksey Soldatov
   - Unknown                    Italian
   - Alexandre Maciel           Brasilian (Portuguese)
+    Elton (CLeGi)
   - Piotr Tarnowski (DrFugazi) Polish
   - Gunnar Nystrom             Swedish
 

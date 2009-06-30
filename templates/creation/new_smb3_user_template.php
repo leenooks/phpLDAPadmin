@@ -1,7 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_smb3_user_template.php,v 1.15 2004/04/29 13:17:02 xrenard Exp $
-
-require realpath( 'common.php' );
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_smb3_user_template.php,v 1.20 2004/05/08 11:41:04 xrenard Exp $
 
 $samba3_domains = get_samba3_domains();
 
@@ -54,10 +52,17 @@ function autoFillHomeDir( form ){
 function autoFillSambaRID( form ){
   var sambaRID;
   var uidNumber;
-  // TO DO:need to check if uidNumber is an integer
-  uidNumber = form.uid_number.value;
-  sambaRID = (2*uidNumber)+1000;
-  form.samba3_user_rid.value = sambaRID;
+  
+  //check if the UID Number is a number
+  if(!isNaN(form.uid_number.value)){
+    uidNumber = form.uid_number.value;
+    sambaRID = (2*uidNumber)+1000;
+    form.samba3_user_rid.value = sambaRID;
+  }
+  // otherwise (re)set the samba rid value to an empty string
+  else{
+    form.samba3_user_rid.value = "";
+  }
 }
 function autoFillSambaGroupRID( form ){
   var gidNumber;
@@ -94,7 +99,10 @@ function autoFillSambaGroupRID( form ){
 <tr>
 	<td></td>
 	<td class="heading">UID Number:</td>
-	<td><input type="text" name="uid_number" value="" onChange="autoFillSambaRID(this.form)" /></td>
+        <?php $next_uid_number = get_next_uid_number( $server_id ); ?>
+	<td><input type="text" name="uid_number" value="<?php echo $next_uid_number; ?>"  onChange="autoFillSambaRID(this.form)" />
+	   <?php if( false !== $next_uid_number ) echo "<small>(automatically determined)</small>"; ?>
+       </td>
 </tr>
 <tr>
 	<td></td>
@@ -102,7 +110,7 @@ function autoFillSambaGroupRID( form ){
 	<td><select name="samba3_domain_sid">
 <?php foreach($samba3_domains as $samba3_domain) ?>
       <option value="<?php echo $samba3_domain['sid'] ?>"><?php echo $samba3_domain['sid'] ?></option>
-</select> - <input type="text" name="samba3_user_rid" id="samba3_user_rid" value="" size="7"/></td>
+</select> - <input type="text" name="samba3_user_rid" id="samba3_user_rid" value="" size="7" onfocus="autoFillSambaRID(this.form)"/></td>
 </tr>
 <tr class="spacer"><td colspan="3"></tr>
 <tr>
@@ -225,7 +233,7 @@ function autoFillSambaGroupRID( form ){
 <tr>
 	<td></td>
 	    <?php $posix_groups_found = ( is_array( $posix_groups )?1:0 );?>
-	<td class="heading"><?echo $posix_groups_found?"Unix Group":"GID Number"?>:</td>
+	<td class="heading"><?php echo $posix_groups_found?"Unix Group":"GID Number"?>:</td>
 	    <td>
 	    <?php if( $posix_groups_found ){?>
 	       <select name="gid_number" onchange="autoFillSambaGroupRID( this.form )">
@@ -250,7 +258,7 @@ function autoFillSambaGroupRID( form ){
                  <select name="builtin_sid">
                      <optgroup label="Local Group">
    <?php foreach( $built_in_local_groups as $sid => $name ){ ?>
-                         <option value="<?php echo $sid; ?>"><?php echo $name; ?> (<?php echo $sid; ?>)</option>  <?  } ?>
+                         <option value="<?php echo $sid; ?>"><?php echo $name; ?> (<?php echo $sid; ?>)</option>  <?php  } ?>
 	              </optgroup>
                       <optgroup  label="Global Groups">
 			<?php foreach($samba3_domains as $samba3_domain) { ?>

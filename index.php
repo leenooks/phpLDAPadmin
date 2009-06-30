@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/index.php,v 1.22 2004/03/19 20:13:08 i18phpldapadmin Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/index.php,v 1.23 2004/05/05 12:30:32 uugdave Exp $
 
 
 /*******************************************
@@ -68,6 +68,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
  */
 function check_config()
 {
+    global $lang;
 	/* Make sure their PHP version is current enough */
 	if( strcmp( phpversion(), REQUIRED_PHP_VERSION ) < 0 ) {
 		pla_error( "phpLDAPadmin requires PHP version 4.1.0 or greater. You are using " . phpversion() );

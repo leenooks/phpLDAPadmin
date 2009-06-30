@@ -31,7 +31,9 @@ if( ! function_exists( 'mhash' ) && ! function_exists( 'mhash_keygen_s2k' ) ) {
 		$emuhash_openssl = '/usr/bin/openssl';
 
 	// don't create mhash functions if we don't have a working openssl
-	if ( ! is_executable( $emuhash_openssl ) ) {
+    if( ! file_exists( $emuhash_openssl ) )
+        unset( $emuhash_openssl );
+	elseif ( function_exists( 'is_executable' ) && ! is_executable( $emuhash_openssl ) ) {
 		unset( $emuhash_openssl );
 	} else {
 
@@ -57,6 +59,8 @@ function openssl_hash( $openssl_hash_id, $password_clear ) {
 	set_magic_quotes_runtime( 0 );
 	$tmpfile = tempnam( $emuhash_temp_dir, "emuhash" );
 	$pwhandle = fopen( $tmpfile, "w" );
+    if( ! $pwhandle )
+        pla_error( "Unable to create a temporary file '$tmpfile' to create hashed password" );
 	fwrite( $pwhandle, $password_clear );
 	fclose( $pwhandle );
 	$cmd = $emuhash_openssl . ' ' . $openssl_hash_id . ' -binary < ' . $tmpfile;

@@ -1,7 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_smbuser_template.php,v 1.14 2004/03/19 20:13:09 i18phpldapadmin Exp $
-
-	require realpath( 'common.php' );
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_smbuser_template.php,v 1.15 2004/05/05 12:47:54 uugdave Exp $
 
 	$default_container = "ou=Users";
 	$default_home = "/home";

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/search.php,v 1.38 2004/04/12 01:44:08 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/search.php,v 1.39 2004/05/08 13:26:27 uugdave Exp $
  
 
 /*
@@ -191,7 +191,11 @@ if( isset( $_GET['search'] ) )
 		// grab the size limit set in config.php
 		$size_limit = isset ( $search_result_size_limit ) && is_numeric( $search_result_size_limit ) ? 
 						$search_result_size_limit :
-						0;
+						50;
+        // Sanity check
+        if( $size_limit < 1 )
+            $size_limit = 1;
+
 		$page = isset( $_GET['page'] ) ? $_GET['page'] : 0;
 
 		$time_start = utime();

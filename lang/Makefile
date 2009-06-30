@@ -1,7 +1,7 @@
 # 
 # This Makefile (lang/Makefile) converts the source lang files to UTF8
 # coding. You need iconv installed to use it.
-# $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/Makefile,v 1.18 2004/03/19 20:25:50 i18phpldapadmin Exp $
+# $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/Makefile,v 1.19 2004/05/04 19:10:29 i18phpldapadmin Exp $
 # ToDo: detect the encoding in the "source"
 #
 # posible detect of the language
@@ -21,6 +21,7 @@ PHP=php
 
 TARGETS=${DESTDIR}/auto.php \
 		${DESTDIR}/ca.php \
+		${DESTDIR}/cz.php \
 		${DESTDIR}/de.php \
 		${DESTDIR}/en.php \
 		${DESTDIR}/es.php \
@@ -31,6 +32,7 @@ TARGETS=${DESTDIR}/auto.php \
 		${DESTDIR}/pt-br.php \
 		${DESTDIR}/ru.php \
 		${DESTDIR}/sv.php \
+	        ${DESTDIR}/zh-tw.php \
 		${DESTDIR}/zz.php \
 		${DESTDIR}/zzz.php
 
@@ -69,6 +71,11 @@ ${DESTDIR}/auto.php: 	auto.php
 ${DESTDIR}/ca.php: 	ca.php
 	@echo "Fixing encoding ca.php to UTF8 "${DESTDIR}/ca.php
 	@iconv -f iso8859-1 -t utf8 ca.php > ${DESTDIR}/ca.php
+
+${DESTDIR}/cz.php: 	cz.php
+	@echo "Fixing encoding cz.php to UTF8 "${DESTDIR}/cz.php
+	@iconv -f windows-1250 -t utf8 cz.php > ${DESTDIR}/cz.php
+
 
 ${DESTDIR}/de.php: 	de.php
 	@echo "Fixing encoding de.php to UTF8 "${DESTDIR}/de.php
@@ -110,6 +117,11 @@ ${DESTDIR}/ru.php: 	ru.php
 	@echo "Fixing encoding ru.php to UTF8 "${DESTDIR}/ru.php
 	@iconv -f utf8 -t utf8 ru.php > ${DESTDIR}/ru.php
 
+${DESTDIR}/zh-tw.php:	zh-tw.php
+	@echo "Copying only the zz.php"
+        # 	@iconv -f utf8 -t utf8 zh-tw.php ${DESTDIR}/zh-tw.php
+        # INTERNAL BUG COULDN CONVERT IT, SO WE COPY IT
+	cp zh-tw.php ${DESTDIR}/zh-tw.php
 ${DESTDIR}/zz.php:	zz.php
 	@echo "Copying only the zz.php"
 	@cp zz.php ${DESTDIR}/zz.php
