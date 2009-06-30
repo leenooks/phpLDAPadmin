@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.26.2.28 2006/02/19 04:15:03 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.26.2.34 2006/03/13 23:13:43 wurley Exp $
 
 /**
  * Template render engine.
@@ -256,7 +256,7 @@ if (isset($template['empty_attrs'])) {
 			# Some conditional checking.
 			# $detail['must'] & $detail['disable'] cannot be set at the same time.
 			if (isset($detail['must']) && $detail['must'] && isset($detail['disable']) && $detail['disable'])
-				pla_error(printf(_('Attribute [%s] is a MUST attribute, so it cannot be disabled.'),$attr));
+				pla_error(sprintf(_('Attribute [%s] is a MUST attribute, so it cannot be disabled.'),$attr));
 
 			# If this attribute is disabled, go to the next one.
 			if (isset($detail['disable']) && $detail['disable'])
@@ -294,13 +294,17 @@ if (isset($template['empty_attrs'])) {
 					$type = 'select';
 			}
 
-			# @todo: $detail['must'] && $detail['hidden'] must have $detail['value'] (with a value).
 			# @todo: if value is a select list, then it cannot be hidden.
 
 			# If this is a hidden attribute, then set its value.
 			if (isset($detail['hidden']) && $detail['hidden']) {
-				printf('<input type="%s" name="form[%s]" id="%s" value="%s"/>','hidden',$attr,$attr,$detail['value']);
-				continue;
+				if (isset($detail['value'])) {
+					printf('<input type="%s" name="form[%s]" id="%s" value="%s"/>','hidden',$attr,$attr,$detail['value']);
+					continue;
+
+				} else {
+					pla_error(sprintf(_('Attribute [%s] is a HIDDEN attribute, however, it is missing a VALUE in your template.'),$attr));
+				}
 			}
 
 			# This is a displayed attribute.
@@ -324,8 +328,12 @@ if (isset($template['empty_attrs'])) {
 			# Display the label.
 			if (isset($detail['description']) && (trim($detail['description'])))
 				printf('<acronym title="%s">%s</acronym>:',$detail['description'],$detail['display']);
-			else
+
+			elseif (isset($detail['display']))
 				printf('%s:',$detail['display']);
+
+			else
+				printf('%s:',_('No DISPLAY/DESCRIPTION attribute in template file'));
 
 			echo '</td>';
 
@@ -490,7 +498,7 @@ if (isset($template['empty_attrs'])) {
 			foreach ($_REQUEST['form'] as $attr => $value) {
 
 				# Remove blank attributes.
-				if (! $_REQUEST['form'][$attr]) {
+				if (! is_array($_REQUEST['form'][$attr]) && trim($_REQUEST['form'][$attr]) == '') {
 					unset($_REQUEST['form'][$attr]);
 					continue;
 				}
@@ -521,12 +529,14 @@ if (isset($template['empty_attrs'])) {
 
 			}
 
-			echo '<tr class="spacer"><td colspan="3"></td></tr>';
-			foreach (array_keys($_SESSION['submitform']) as $attr) {
+			if (isset($_SESSION['submitform'])) {
+				echo '<tr class="spacer"><td colspan="3"></td></tr>';
+				foreach (array_keys($_SESSION['submitform']) as $attr) {
 
-				printf('<tr class="%s"><td colspan=2>%s</td><td><b>%s</b>',
-					($counter++%2==0?'even':'odd'),$attr,_('Binary value not displayed'));
-				printf('<input type="hidden" name="attrs[]" value="%s" /></td></tr>',$attr);
+					printf('<tr class="%s"><td colspan=2>%s</td><td><b>%s</b>',
+						($counter++%2==0?'even':'odd'),$attr,_('Binary value not displayed'));
+					printf('<input type="hidden" name="attrs[]" value="%s" /></td></tr>',$attr);
+				}
 			}
 	}
 
@@ -1007,7 +1017,8 @@ foreach ($template['attrs'] as $attr => $vals) {
 
 			$schema_object = $ldapserver->getSchemaObjectClass($val);
 
-			if ($schema_object->getType() == 'structural') {
+			# This should be an object, but we'll test it anyway
+			if (is_object($schema_object) && $schema_object->getType() == 'structural') {
 				printf(' %s <small>(<acronym title="%s">%s</acronym>)</small><br />',
 					$val,_('This is a structural ObjectClass and cannot be removed.'),_('structural'));
 				printf('<input type="hidden" name="%s" id="%s" value="%s" />',$input_name,$input_id,htmlspecialchars($val));

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.283.2.32 2006/02/19 03:00:40 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.283.2.33 2006/03/13 23:13:43 wurley Exp $
 
 /**
  * A collection of functions used throughout phpLDAPadmin.
@@ -84,6 +84,9 @@ function obfuscate_password_display($enc=null) {
 function pretty_print_dn( $dn ) {
 	if (DEBUG_ENABLED)
 		debug_log('pretty_print_dn(): Entered with (%s)',1,$dn);
+
+	if (! is_dn_string($dn))
+		pla_error(sprintf(_('DN %s is not an LDAP distinguished name.'),$dn));
 
 	$dn = pla_explode_dn( $dn );
 	foreach( $dn as $i => $element ) {

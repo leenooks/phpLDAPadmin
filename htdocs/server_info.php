@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/server_info.php,v 1.22.2.3 2005/12/08 11:55:57 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/server_info.php,v 1.22.2.4 2006/03/08 23:00:18 wurley Exp $
 
 /**
  * Fetches and displays all information that it can from the specified server
@@ -58,9 +58,10 @@ $attrs = array_pop($ldapserver->search(null,'','objectClass=*',array('+','*'),'b
    on RHEL 3. */
 $attrs2 = array_pop($ldapserver->search(null,'','objectClass=*',$root_dse_attributes,'base'));
 
-foreach ($attrs2 as $attr => $values)
-	if (! isset($attrs[$attr]))
-		$attrs[$attr] = $attrs2[$attr];
+if (is_array($attrs2))
+	foreach ($attrs2 as $attr => $values)
+		if (! isset($attrs[$attr]))
+			$attrs[$attr] = $attrs2[$attr];
 
 include './header.php';
 

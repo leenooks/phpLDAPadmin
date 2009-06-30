@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/custom.php,v 1.43.2.5 2005/12/11 08:21:03 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/custom.php,v 1.43.2.6 2006/03/01 01:04:05 wurley Exp $
 
 $rdn = isset($_POST['rdn']) ? $_POST['rdn'] : null;
 $container = $_POST['container'];
@@ -146,8 +146,10 @@ if ($step == 1) {
 
 			# is there a user-friendly translation available for this attribute?
 			if (isset($friendly_attrs[strtolower($attr)]))
-				$attr_display = sprintf('<acronym title='._('Note: \'%s\' is an alias for \'%s\'').'">%s</acronym>"',
-					htmlspecialchars($attr),htmlspecialchars($friendly_attrs[strtolower($attr)]));
+				$attr_display = sprintf('<acronym title="%s: \'%s\' %s \'%s\'">%s</acronym>',
+					_('Note'),htmlspecialchars($attr),_('is an alias for'),
+					htmlspecialchars($friendly_attrs[strtolower($attr)]),
+					htmlspecialchars($friendly_attrs[strtolower($attr)]));
 			else
 				$attr_display = htmlspecialchars($attr);
 
