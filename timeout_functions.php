@@ -70,7 +70,7 @@ function session_timed_out( $ldapserver )
 		if ( ( time()-$last_activity ) > ( $session_timeout*60 ) ) {
 
 			if( in_array($ldapserver->auth_type, array('cookie','session')) ) {
-				syslog_msg ( LOG_NOTICE,"Logout for " . get_logged_in_dn( $ldapserver ) );
+				syslog_notice ( "Logout for " . get_logged_in_dn( $ldapserver ) );
 				unset_login_dn( $ldapserver ) or pla_error( $lang['could_not_logout'] );
 			}
 

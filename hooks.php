@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/hooks.php,v 1.5 2005/04/05 07:34:24 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/hooks.php,v 1.6 2005/04/15 13:16:59 wurley Exp $
 
 /**
  * Functions related to hooks management.
@@ -58,11 +58,10 @@ function run_hook ( $hook_name, $args ) {
   global $hooks;
 
   $debug = 0;
-  if ($debug)
-	syslog_msg ( LOG_DEBUG, "Running hook $hook_name." );
+	syslog_debug ( "Running hook $hook_name." );
 
   if ( ! array_key_exists ( $hook_name, $hooks ) ) {
-      syslog_msg ( LOG_NOTICE,"Hook '$hook_name' not defined !\n" );
+      syslog_notice ( "Hook '$hook_name' not defined !\n" );
       return true;
   }
 
@@ -75,25 +74,22 @@ function run_hook ( $hook_name, $args ) {
    * numerical weight. */
   while ( list ( $key, $hook ) = each ( $hooks[$hook_name] ) ) {
       array_push ( $rollbacks, $hook['rollback_function'] );
-      if ($debug)
-	syslog_msg ( LOG_DEBUG,"Calling " . $hook['hook_function'] . "\n" );
+	syslog_debug ( "Calling " . $hook['hook_function'] . "\n" );
       $result = call_user_func_array ( $hook['hook_function'], $args );
-      syslog_msg ( "Called " . $hook['hook_function'] . "\n" );
+      syslog_notice ( "Called " . $hook['hook_function'] . "\n" );
 
       /** If a procedure fails, its optional rollback is executed with
        * the same arguments.  After that, all rollbacks from
        * previously executed procedures are executed in the reverse
        * order.  */
       if ( $result != true ) {
-	  if ($debug)
-		syslog_msg ( LOG_DEBUG, "Function " . $hook['hook_function'] . " returned $result\n" );
+		syslog_debug ( "Function " . $hook['hook_function'] . " returned $result\n" );
 
 	  while ( $rollbacks ) {
 	      $rollback = array_pop ( $rollbacks );
 
 	      if ( $rollback != false ) {
-		  if ($debug)
-			syslog_msg ( LOG_DEBUG,"Executing rollback $rollback\n" );
+			syslog_debug ( "Executing rollback $rollback\n" );
 		  call_user_func_array ( $rollback, $args );
 		}
 	    }

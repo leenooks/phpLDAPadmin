@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/modification/default.php,v 1.82 2005/03/21 21:17:29 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/modification/default.php,v 1.83 2005/04/22 10:56:32 wurley Exp $
  
 
 /*
@@ -281,8 +281,12 @@ foreach( $attrs as $attr => $vals ) {
 	}
 
 	// is this attribute required because its the RDN
-	if (preg_match("/^${attr}=/",$rdn))
+	if (preg_match("/^${attr}=/",$rdn)) {
+		if( trim( $attr_note ) )
+			$attr_note .= ', ';
+
 		$attr_note .= "&nbsp;<acronym title=\"" . $lang['required_by_entry'] . "\">" . 'rdn' . "</acronym>&nbsp;";
+	}
 	?>
 
 	<?php  

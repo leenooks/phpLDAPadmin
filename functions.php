@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/functions.php,v 1.251 2005/03/26 01:18:24 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/functions.php,v 1.252 2005/04/15 13:16:58 wurley Exp $
 
 /**
  * A collection of functions used throughout phpLDAPadmin.
@@ -2264,7 +2264,7 @@ function pla_error( $msg, $ldap_err_msg=null, $ldap_err_no=-1, $fatal=true )
 	<?php
 
 	if ( isset($use_syslog) and $use_syslog )
-	  syslog_msg ( LOG_ERR, $msg );
+	  syslog_err ( $msg );
 
 	if( $ldap_err_msg ) {
 		echo sprintf($lang['ldap_said'], htmlspecialchars( $ldap_err_msg ));
@@ -2286,7 +2286,7 @@ function pla_error( $msg, $ldap_err_msg=null, $ldap_err_no=-1, $fatal=true )
 		}
 
 		if ( isset($use_syslog) and $use_syslog )
-			syslog_msg ( LOG_ERR,sprintf($lang['ferror_number_short'], $ldap_err_no) );
+			syslog_err ( sprintf($lang['ferror_number_short'], $ldap_err_no) );
 	}
 	?>
 	<br />
@@ -3789,7 +3789,7 @@ function debug_log($msg,$level=0) {
 		$debug_level = -1;
 
 	if ($level <= $debug_level)
-		return syslog_msg( LOG_NOTICE,sprintf('%s(%s): %s',$caller,$level,$msg) );
+		return syslog_notice( sprintf('%s(%s): %s',$caller,$level,$msg) );
 }
 
 function enc_type_select_list($enc_type) {

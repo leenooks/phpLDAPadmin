@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/syslog.php,v 1.5 2005/04/05 07:34:23 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/syslog.php,v 1.7 2005/04/18 21:24:44 wurley Exp $
 
 /**
  * Functions related to syslog logging.
@@ -53,4 +53,66 @@ function syslog_msg ( $emergency, $log_string, $ldapserver=null ) {
 	return true;
 }
 
+/**
+ * Issue an error message via syslog.
+ *
+ * @param log_string	Log message to send to syslog.
+ * @param server_id	If set, print the logged user as well.
+ *
+ * @return true on success.
+ */
+function syslog_error ( $log_string, $ldapserver=null ) {
+	global $use_syslog;
+
+	if ( isset($use_syslog) && $use_syslog != false)
+		return syslog_msg ( LOG_ERR, $log_string, $ldapserver );
+}
+
+/**
+ * Issue a warning message via syslog.
+ *
+ * @param log_string	Log message to send to syslog.
+ * @param server_id	If set, print the logged user as well.
+ *
+ * @return true on success.
+ */
+function syslog_warning ( $log_string, $ldapserver=null ) {
+	global $use_syslog;
+
+	if ( isset($use_syslog) && $use_syslog != false)
+		return syslog_msg ( LOG_WARNING, $log_string, $ldapserver );
+}
+
+/**
+ * Issue a notice message via syslog.
+ *
+ * @param log_string	Log message to send to syslog.
+ * @param server_id	If set, print the logged user as well.
+ *
+ * @return true on success.
+ */
+function syslog_notice ( $log_string, $ldapserver=null ) {
+	global $use_syslog;
+
+	if ( isset($use_syslog) && $use_syslog != false)
+		return syslog_msg ( LOG_NOTICE, $log_string, $ldapserver );
+}
+
+/**
+ * Issue a debug message via syslog, only if $log_level is set to
+ * 'debug' from the config file.
+ *
+ * @param log_string	Log message to send to syslog.
+ * @param server_id	If set, print the logged user as well.
+ *
+ * @return true on success or if debug log is not activated.
+ */
+function syslog_debug ( $log_string, $ldapserver=null ) {
+	global $log_level;
+
+	if ( isset($log_level) and $log_level == 'debug' )
+		return syslog_msg ( LOG_DEBUG, $log_string, $ldapserver );
+
+	return true;
+}
 ?>

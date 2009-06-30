@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/logout.php,v 1.14 2005/03/16 11:20:25 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/logout.php,v 1.15 2005/04/15 13:16:59 wurley Exp $
 
 /**
  * For servers whose auth_type is set to 'cookie' or 'session'. Pass me
@@ -22,7 +22,7 @@ if( ! $ldapserver->haveAuthInfo())
 	pla_error( $lang['no_one_logged_in'] );
 
 if( in_array($ldapserver->auth_type, array('cookie','session')) ) {
-        syslog_msg ( LOG_NOTICE,"Logout for " . get_logged_in_dn( $ldapserver ) );
+        syslog_notice ( "Logout for " . get_logged_in_dn( $ldapserver ) );
 	unset_login_dn( $ldapserver ) or pla_error( $lang['could_not_logout'] );
 	unset_lastactivity( $ldapserver );
 } else

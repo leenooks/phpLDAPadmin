@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/login.php,v 1.41 2005/04/03 09:24:41 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/login.php,v 1.42 2005/04/15 13:16:59 wurley Exp $
 
 /**
  * For servers whose auth_type is set to 'cookie' or 'session'. Pass me the login info
@@ -120,7 +120,7 @@ if( ! is_resource( $ds ) ) {
 	else
 		pla_error( $lang['bad_user_name_or_password'] );
 
-	syslog_msg ( LOG_NOTICE,"Authentification FAILED for $dn" );
+	syslog_notice ( "Authentification FAILED for $dn" );
 }
 
 $ldapserver->auth_type = $save_auth_type;
@@ -132,7 +132,7 @@ $_SESSION['tree'][$ldapserver->server_id] = array();
 $_SESSION['tree_icons'][$ldapserver->server_id] = array();
 
 if( ! $anon_bind ) {
-	syslog_msg ( LOG_NOTICE,"Authentification successful for $dn" );
+	syslog_notice ( "Authentification successful for $dn" );
 }
 
 session_write_close();
