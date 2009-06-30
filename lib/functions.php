@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.283.2.30 2006/01/15 13:05:52 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.283.2.32 2006/02/19 03:00:40 wurley Exp $
 
 /**
  * A collection of functions used throughout phpLDAPadmin.
@@ -12,6 +12,7 @@ define('LANGDIR',sprintf('%s/',realpath(LIBDIR.'../locale/')));
 define('CONFDIR',sprintf('%s/',realpath(LIBDIR.'../config')));
 define('TMPLDIR',sprintf('%s/',realpath(LIBDIR.'../templates/')));
 define('DOCDIR',sprintf('%s/',realpath(LIBDIR.'../doc/')));
+define('HOOKSDIR',sprintf('%s/',realpath(LIBDIR.'../hooks/')));
 define('CSSDIR','css/');
 define('JSDIR','js/');
 
@@ -1254,7 +1255,7 @@ function draw_jpeg_photos($ldapserver,$dn,$attr_name='jpegPhoto',$draw_delete_bu
 		if ($width > 300) {
 			$scale_factor = 300 / $width;
 			$img_width = 300;
-			$img_height = $height * $scale_factor;
+			$img_height = intval($height * $scale_factor);
 
 		} else {
 			$img_width = $width;

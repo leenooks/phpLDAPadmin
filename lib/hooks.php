@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/hooks.php,v 1.6 2005/04/15 13:16:59 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/hooks.php,v 1.6.4.1 2006/01/26 11:49:15 wurley Exp $
 
 /**
  * Functions related to hooks management.
@@ -171,8 +171,8 @@ function clear_hooks ( $hook_name )      {
 }
 
 /* Evaluating user-made hooks */
-if ( is_dir('hooks') ) {
-  $dir = dir ('hooks');
+if ( is_dir(HOOKSDIR) ) {
+  $dir = dir (HOOKSDIR);
 
   while (false !== ($entry = $dir -> read() ) ) {
       if ( is_file ("hooks/$entry") and eregi ('php[0-9]?$', $entry) ) {

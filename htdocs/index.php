@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/index.php,v 1.42.2.8 2006/01/01 11:54:09 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/index.php,v 1.42.2.9 2006/01/26 12:01:02 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -178,6 +178,12 @@ function check_config() {
 	if (strcmp(phpversion(),REQUIRED_PHP_VERSION) < 0) {
 		pla_error(sprintf('phpLDAPadmin requires PHP version %s or greater. You are using %s',
 			REQUIRED_PHP_VERSION,phpversion()));
+	}
+
+	# Make sure this PHP install has gettext, we use it for language translation
+	if (! extension_loaded('gettext')) {
+		pla_error('Your install of PHP appears to be missing GETTEXT support. GETTEXT is used for language translation. Please install GETTEXT support before using phpLDAPadmin. (Dont forget to restart your web server afterwards)');
+		return false;
 	}
 
 	# Make sure this PHP install has all our required extensions

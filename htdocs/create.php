@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/create.php,v 1.44.2.5 2005/12/09 14:29:15 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/create.php,v 1.44.2.6 2006/02/19 02:57:01 wurley Exp $
 
 /**
  * Creates a new object.
@@ -81,6 +81,10 @@ if (isset($attrs) && is_array($attrs)) {
 
 				$val = $binary_data;
 				$new_entry[$attr][] = $val;
+
+			} elseif (isset($_SESSION['submitform'][$attr])) {
+				$new_entry[$attr][] = $_SESSION['submitform'][$attr];
+				unset($_SESSION['submitform'][$attr]);
 			}
 
 		} else {

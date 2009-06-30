@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.29.2.15 2005/12/31 04:26:34 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.29.2.18 2006/02/25 12:14:17 wurley Exp $ */
 
 /**
  * Classes and functions for the template engine.ation and capability
@@ -441,11 +441,31 @@ class Templates {
 		list($command,$arg) = split(':',$value);
 
 		switch ($command) {
-			#autoFill:attr,string (with %attr%)
-			#@todo: The autofill mods need to be more flexible, so that multiple can be used eg: /T/l
+			/*
+			autoFill:string
+			string is a literal string, and may contain many fields like %attr|start-end/flags%
+			       to substitute values read from other fields.
+			|start-end is optional, but must be present if the k flag is used.
+			/flags is optional.
+			
+			flags may be:
+			T:    Read display text from selection item (drop-down list), otherwise, read the value of the field
+			      For fields that aren't selection items, /T shouldn't be used, and the field value will always be read.
+			k:    Tokenize:
+			      If the "k" flag is not given:
+			           A |start-end instruction will perform a sub-string operation upon
+			           the value of the attr, passing character positions start-end through.
+			           start can be 0 for first character, or any other integer.
+			           end can be 0 for last character, or any other integer for a specific position.
+			      If the "k" flag is given:
+			      The string read will be split into fields, using : as a delimiter
+			           "start" indicates which field number to pass through.
+			l:    Make the result lower case.
+			U:    Make the result upper case.
+			*/
 			case 'autoFill' :
 				list($attr,$string) = split(',',$arg);
-				preg_match_all('/%(\w+)(\|[0-9]*-[0-9]*)?(\/[lTU])?%/U',$string,$matchall);
+				preg_match_all('/%(\w+)(\|[0-9]*-[0-9]*)?(\/[klTU]+)?%/U',$string,$matchall);
 				//print"<PRE>";print_r($matchall); //0 = highlevel match, 1 = attr, 2 = subst, 3 = mod
 
 				if (! isset($_js_hash['autoFill'.$origin]))
@@ -476,44 +496,50 @@ class Templates {
 
 					$_js_hash['autoFill'.$origin] .= sprintf("  var %s;\n",$match_attr);
 
-					if (trim($match_subst)) {
-						preg_match_all('/([0-9]*)-([0-9]*)/',$match_subst,$substrarray);
-					}
-
-					if ($match_mod == '/T') {
+					if (strstr($match_mod,'T')) {
 						$_js_hash['autoFill'.$origin] .= sprintf(
 							"   %s = document.getElementById('%s').options[document.getElementById('%s').selectedIndex].text;\n",
 							$match_attr,$match_attr,$match_attr);
-
 					} else {
+						$_js_hash['autoFill'.$origin] .= sprintf("   %s = document.getElementById('%s').value;\n",
+							$match_attr,$match_attr);
+					}
+
+					if (strstr($match_mod,'k')) {
+						preg_match_all('/([0-9]+)/',trim($match_subst),$substrarray);
+						if (isset($substrarray[1][0])) {
+							$tok_idx = $substrarray[1][0];
+						} else {
+							$tok_idx = '0';
+						}
+						$_js_hash['autoFill'.$origin] .= sprintf("   %s = %s.split(':')[%s];\n",$match_attr,$match_attr,$tok_idx);
+					} else {
+						preg_match_all('/([0-9]*)-([0-9]*)/',trim($match_subst),$substrarray);
 						if ((isset($substrarray[1][0]) && $substrarray[1][0]) || (isset($substrarray[2][0]) && $substrarray[2][0])) {
-							$_js_hash['autoFill'.$origin] .= sprintf('   %s = document.getElementById("%s").value.substr(%s,%s)',
+							$_js_hash['autoFill'.$origin] .= sprintf("   %s = %s.substr(%s,%s);\n",
 								$match_attr,$match_attr,
 								$substrarray[1][0] ? $substrarray[1][0] : '0',
-								$substrarray[2][0] ? $substrarray[2][0] : sprintf('document.getElementById("%s").value.length',$match_attr));
-						} else {
-							$_js_hash['autoFill'.$origin] .= sprintf(' %s = document.getElementById(\'%s\').value',
-								$match_attr,$match_attr);
+								$substrarray[2][0] ? $substrarray[2][0] : sprintf('%s.length',$match_attr));
 						}
+					}
 
-						switch ($match_mod) {
-							case '/l':
-								$_js_hash['autoFill'.$origin] .= '.toLowerCase()';
-								break;
-						}
-						$_js_hash['autoFill'.$origin] .= ";\n";
+					if (strstr($match_mod,'l')) {
+						$_js_hash['autoFill'.$origin] .= sprintf("   %s = %s.toLowerCase();\n",$match_attr,$match_attr);
+					}
+					if (strstr($match_mod,'U')) {
+						$_js_hash['autoFill'.$origin] .= sprintf("   %s = %s.toUpperCase();\n",$match_attr,$match_attr);
 					}
 
 					# Matchfor only entry without modifiers.
 					$formula = preg_replace('/^%('.$match_attr.')%$/U','$1 + \'\'',$formula);
 					# Matchfor only entry with modifiers.
-					$formula = preg_replace('/^%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[lTU])?%$/U','$1 + \'\'',$formula);
+					$formula = preg_replace('/^%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[klTU]+)?%$/U','$1 + \'\'',$formula);
 					# Matchfor begining entry.
-					$formula = preg_replace('/^%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[lTU])?%/U','$1 + \'',$formula);
+					$formula = preg_replace('/^%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[klTU]+)?%/U','$1 + \'',$formula);
 					# Matchfor ending entry.
-					$formula = preg_replace('/%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[lTU])?%$/U','\' + $1 ',$formula);
+					$formula = preg_replace('/%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[klTU]+)?%$/U','\' + $1 ',$formula);
 					# Match for entries not at begin/end.
-					$formula = preg_replace('/%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[lTU])?%/U','\' + $1 + \'',$formula);
+					$formula = preg_replace('/%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[:lTU]+)?%/U','\' + $1 + \'',$formula);
 				}
 
 				$_js_hash['autoFill'.$origin] .= sprintf(" fillRec('%s', %s);\n",$attr,$formula);
@@ -562,6 +588,7 @@ class Templates {
 					$picklistvalues = return_ldap_hash($ldapserver,$container,$args[1],$args[2],$ldap_attrs);
 
 					$detail['value'] = sprintf('<select name="form[%s]" id="%%s" %%s %%s>',(isset($args[4]) ? $args[4] : $args[2]));
+					$counter = 0;
 					foreach ($picklistvalues as $key => $values) {
 						$display = $args[3];
 
@@ -570,8 +597,8 @@ class Templates {
 						}
 
 						if (! isset($picklist[$display])) {
-							$detail['value'] .= sprintf('<option id="%s" value="%s" %s>%s</option>',
-								$display,$values[$args[2]],
+							$detail['value'] .= sprintf('<option id="%s%s" value="%s" %s>%s</option>',
+								(isset($args[4]) ? $args[4] : $args[2]),++$counter,$values[$args[2]],
 								($default == $display ? 'selected' : ''),
 								$display);
 							$picklist[$display] = true;
@@ -602,8 +629,8 @@ class Templates {
 
 							$varname = $matches[1];
 
-							if (isset($_POST['form']['post'][$varname]))
-								$function_args[] = $_POST['form']['post'][$varname];
+							if (isset($_POST['form'][$varname]))
+								$function_args[] = $_POST['form'][$varname];
 							else
 								pla_error(sprintf(_('Your template calls php.Function for a default value, however (%s) is NOT available in the POST FORM variables. The following variables are available [%s].'),$varname,
 									(isset($_POST['form']) ? implode('|',array_keys($_POST['form'])) : 'NONE')));
@@ -614,7 +641,7 @@ class Templates {
 
 					# Call the PHP function if exists (PHP 4 >= 4.0.4, PHP 5)
 					if (function_exists($function_name))
-						$detail['value'] = call_user_func_array($function_name,$args);
+						$detail['value'] = call_user_func_array($function_name,$function_args);
 
 					break;
 

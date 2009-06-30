@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.34.2.24 2006/01/15 13:05:52 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.34.2.28 2006/02/25 14:08:54 wurley Exp $ */
 
 /**
  * Classes and functions for LDAP server configuration and capability
@@ -336,7 +336,8 @@ class LDAPserver {
 
 			if ($this->connect()) {
 				$r = array_pop($this->search(null,'','objectClass=*',array('namingContexts'),'base'));
-				$r = array_change_key_case($r);
+				if (is_array($r))
+						$r = array_change_key_case($r);
 
 				if (isset($r['namingcontexts'])) {
 					if (! is_array($r['namingcontexts']))
@@ -414,12 +415,12 @@ class LDAPserver {
 		global $config;
 
 		if ($this->connect(false) && $this->haveAuthInfo() && ! $this->isReadOnly() &&
-			! $config->GetValue('appearance','tree_plm')) {
+			! $config->GetValue('appearance','tree_plm') && 
+			$config->GetValue('appearance','mass_delete') === true)
 
-			$config->GetValue('appearance','mass_delete') === true;
 			return true;
 
-		} else
+		else
 			return false;
 	}
 
@@ -1135,7 +1136,7 @@ class LDAPserver {
 					   with its name set to the alias name, and all other data copied.*/
 					foreach ($aliases as $alias_attr_name) {
 						# clone is a PHP5 function and must be used.
-						if (function_exists('clone'))
+						if (version_compare(PHP_VERSION,'5.0') > 0 )
 							$new_attr = clone($attr);
 						else
 							$new_attr = $attr;
@@ -1435,8 +1436,12 @@ class LDAPserver {
 
 			# Delete entry from parent's children as well.
 			$parent = get_container($dn);
-			$index = array_search($dn,$tree['browser'][$parent]['children']);
-			unset($tree['browser'][$parent]['children'][$index]);
+
+			# If the parent hasnt been opened in the tree, then there wont be any children.
+			if (isset($tree['browser'][$parent]['children'])) {
+				$index = array_search($dn,$tree['browser'][$parent]['children']);
+				unset($tree['browser'][$parent]['children'][$index]);
+			}
 
 			# Might be worthwhile adding it to our miss list, while we are here.
 			$tree['misses'][$dn] = true;
@@ -2433,11 +2438,14 @@ class LDAPserver {
 				get_class($this),$dn,$lower_case_attr_names,$deref);
 
 		$attrs = array_pop($this->search(null,dn_escape($dn),'(objectClass=*)',array(),'base',false,$deref));
-		if ($lower_case_attr_names)
-			$attrs = array_change_key_case($attrs);
 
-		if (is_array($attrs))
+		if (is_array($attrs)) {
+			if ($lower_case_attr_names)
+				$attrs = array_change_key_case($attrs);
+
 			ksort($attrs);
+		}
+
 		return $attrs;
 	}
 

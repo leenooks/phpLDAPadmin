@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.26.2.26 2006/01/12 22:07:54 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.26.2.28 2006/02/19 04:15:03 wurley Exp $
 
 /**
  * Template render engine.
@@ -90,10 +90,10 @@ if (isset($template['empty_attrs'])) {
 		printf('<input type="hidden" name="new_dn" value="%s" />',$new_dn);
 
 	} else {
-		echo '<form action="template_engine.php" method="post" id="template_form" name="template_form">';
+		echo '<form action="template_engine.php" method="post" id="template_form" name="template_form" enctype="multipart/form-data">';
 	}
 
-	if (isset($_REQUEST['form']))
+	if (isset($_REQUEST['form'])) {
 		foreach ($_REQUEST['form'] as $attr => $value) {
 
 			# Check for any with post actions.
@@ -167,6 +167,26 @@ if (isset($template['empty_attrs'])) {
 				printf('<input type="hidden" name="form[%s]" value="%s" />',$attr,$value);
 		}
 
+		# Have we got a Binary Attribute?
+		if (isset($_FILES['form']['name']) && is_array($_FILES['form']['name'])) {
+			foreach ($_FILES['form']['name'] as $attr => $details) {
+				if (is_uploaded_file($_FILES['form']['tmp_name'][$attr])) {
+					$file = $_FILES['form']['tmp_name'][$attr];
+					$f = fopen($file,'r');
+					$binary_data = fread($f,filesize($file));
+					fclose($f);
+
+					// @todo: This may need to be implemented.
+					//if (is_binary_option_required($ldapserver,$attr))
+					//	$attr .= ';binary';
+
+					$_SESSION['submitform'][$attr] = $binary_data;
+					printf('<input type="hidden" name="form[%s]" value="" />',$attr);
+				}
+			}
+		}
+	}
+
 	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 	printf('<input type="hidden" name="template" value="%s" />',$_REQUEST['template']);
 	printf('<input type="hidden" name="object_classes" value="%s" />',rawurlencode(serialize(array_values($template['objectclass']))));
@@ -195,14 +215,14 @@ if (isset($template['empty_attrs'])) {
 		} else {
 			echo '<td>&nbsp;</td>';
 			echo '<td class="heading">Container <acronym title="Distinguished Name">DN</acronym>:</td>';
-			printf('<td><input type="text" name="container" size="40" value="%s" disabled /></td></tr>',
+			printf('<td><input type="text" name="container" size="40" value="%s" disabled />',
 				htmlspecialchars($_REQUEST['container']));
-			printf('<input type="hidden" name="container" value="%s" />',$_REQUEST['container']);
+			printf('<input type="hidden" name="container" value="%s" /></td></tr>',$_REQUEST['container']);
 			echo '<tr class="spacer"><td colspan="3"></td></tr>';
 		}
 
 	} else {
-		printf('<input type="hidden" name="container" value="%s" />',$_REQUEST['container']);
+		printf('<td><input type="hidden" name="container" value="%s" /></td></tr>',$_REQUEST['container']);
 	}
 
 	$count = 0;
@@ -323,7 +343,19 @@ if (isset($template['empty_attrs'])) {
 			# Display the input box.
 			echo '<td>';
 
-			if (in_array($type,array('text','password'))) {
+			# Is this a binary attribute
+			if ($ldapserver->isAttrBinary($attr)) {
+				printf('<input type="file" name="form[%s]" size="20" />',$attr);
+
+			if (! ini_get('file_uploads'))
+				printf('<br /><small><b>%s</b></small><br />',
+					_('Your PHP configuration has disabled file uploads. Please check php.ini before proceeding.'));
+
+			else
+				printf('<br /><small><b>%s: %s</b></small><br />',
+					_('Maximum file size'),ini_get('upload_max_filesize'));
+
+			} elseif (in_array($type,array('text','password'))) {
 				printf('<input type="%s" size="%s" name="form[%s]%s" id="%s" value="%s" %s%s%s />',
 					$type,$size,$attr,(isset($detail['array']) && ($detail['array'] > 1) ? '[]' : ''),$attr,
 					(isset($detail['value']) ? $detail['value'] : ''),
@@ -464,14 +496,16 @@ if (isset($template['empty_attrs'])) {
 				}
 
 				$attrs[] = $attr;
+				printf('<tr class="%s"><td colspan=2>',($counter++%2==0?'even':'odd'));
 				printf('<input type="hidden" name="attrs[]" value="%s" />',$attr);
+
 				if (is_array($value))
 					foreach ($value as $item) {
 						if ($item && ! isset($unique[$item])) {
 							$unique[$item] = 1;
-							printf('<tr class="%s"><td colspan=2>%s</td><td><b>%s</b></td></tr>',
-								($counter++%2==0?'even':'odd'),$attr,htmlspecialchars($item));
-							printf('<input type="hidden" name="vals[%s][]" value="%s" />',array_search($attr,$attrs),$item);
+							printf('<input type="hidden" name="vals[%s][]" value="%s" />',
+								array_search($attr,$attrs),$item);
+							printf('%s</td><td><b>%s</b></td></tr>',$attr,htmlspecialchars($item));
 						}
 					}
 
@@ -481,13 +515,19 @@ if (isset($template['empty_attrs'])) {
 						if (obfuscate_password_display($_REQUEST['enc']))
 							$display = '********';
 
-					printf('<tr class="%s"><td colspan=2>%s</td><td><b>%s</b></td></tr>',
-						($counter++%2==0?'even':'odd'),$attr,htmlspecialchars($display));
 					printf('<input type="hidden" name="vals[]" value="%s" />',$value);
+					printf('%s</td><td><b>%s</b></td></tr>',$attr,htmlspecialchars($display));
 				}
 
 			}
 
+			echo '<tr class="spacer"><td colspan="3"></td></tr>';
+			foreach (array_keys($_SESSION['submitform']) as $attr) {
+
+				printf('<tr class="%s"><td colspan=2>%s</td><td><b>%s</b>',
+					($counter++%2==0?'even':'odd'),$attr,_('Binary value not displayed'));
+				printf('<input type="hidden" name="attrs[]" value="%s" /></td></tr>',$attr);
+			}
 	}
 
 	echo '<tr class="spacer"><td colspan="3"></td></tr>';
@@ -577,7 +617,7 @@ if (isset($template['empty_attrs'])) {
 			$jstext .= "\t\t\telse if (id == '$attr') {\n";
 			if (isset($detail['must']))
 				$jstext .= "\t\t\t\treduceMust('$attr');\n";
-			$hash =& $templates->getJsHash();
+			$hash = $templates->getJsHash();
 			if (isset($hash['autoFill'.$attr])) {
 				$jstext .= $hash['autoFill'.$attr];
 			}
