@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/purge_cache.php,v 1.8 2005/12/17 00:00:11 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/purge_cache.php,v 1.9 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -8,12 +8,11 @@
  */
 
 require './common.php';
-include './header.php';
+
+if (! $_SESSION['plaConfig']->isCommandAvailable('purge'))
+	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('purge')));
 
 $purge_session_keys = array('cache');
-
-echo '<body>';
-echo '<h3 class="title">Purging Caches</h3><br /><br /><br />';
 
 $size = 0;
 foreach ($purge_session_keys as $key) {
@@ -22,17 +21,15 @@ foreach ($purge_session_keys as $key) {
 		unset($_SESSION[$key]);
 	}
 }
-pla_session_close();
 
-echo '<center>';
 if (! $size)
-	echo _('No cache to purge.');
+	$body =  _('No cache to purge.');
 else
-	printf(_('Purged %s bytes of cache.'),number_format($size));
+	$body = sprintf(_('Purged %s bytes of cache.'),number_format($size));
 
-echo '</center>';
-
-echo '<!-- refresh the tree view (with the new DN renamed)and redirect to the edit_dn page -->';
-echo '<script type="text/javascript" language="javascript">parent.left_frame.location.reload();</script>';
-echo '</body></html>';
+system_message(array(
+	'title'=>_('Purge cache'),
+	'body'=>$body,
+	'type'=>'info'),
+	'index.php');
 ?>

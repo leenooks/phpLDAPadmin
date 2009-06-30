@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.50 2006/10/28 16:33:32 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.51 2007/12/15 07:50:33 wurley Exp $ */
 
 /**
  * Classes and functions for LDAP server configuration and capability
@@ -13,46 +13,37 @@
  */
 class LDAPserver {
 	/** Server ID as defined in config.php */
-	var $server_id;
+	public $server_id;
 	/** Server Name as defined in config.php */
-	var $name;
+	public $name;
 	/** Server Hostname as defined in config.php */
-	var $host;
+	public $host;
 	/** Server Port as defined in config.php */
-	var $port;
+	public $port;
 	/** Server Authentication method as defined in config.php */
-	var $auth_type;
+	public $auth_type;
 	/** Server Authentication Login DN as defined in config.php */
-	var $login_dn;
+	public $login_dn;
 	/** Server Authentication Password as defined in config.php */
-	var $login_pass;
-
-	/** SASL auth */
-	var $sasl_auth = false;
-	var $sasl_mech = "PLAIN";
-	var $sasl_realm = "";
-	var $sasl_authz_id = "";
-	var $sasl_authz_id_regex = null;
-	var $sasl_authz_id_replacement = null;
-	var $sasl_props = null;
-
-	/** Array of our connections to this LDAP server */
-	var $connections = array();
+	public $login_pass;
 	/** Server Base Dn */
-	var $_baseDN;
+	private $_baseDN = null;
 	/** Schema DN */
-	var $_schemaDN = null;
+	private $_schemaDN = null;
 	/** Raw Schema entries */
-	var $_schema_entries = null;
+	private $_schema_entries = null;
+	/** Our LDAP connections */
+	private $connection = array();
+	/** Last LDAP server operation */
+	private $lastop = null;
 
 	/** Default constructor.
 	 * @param int $server_id the server_id of the LDAP server as defined in config.php
 	 */
-	function LDAPserver($server_id) {
+	function __construct($server_id) {
 		if (DEBUG_ENABLED)
-			debug_log('%s::__construct(): Entered with (%s)',17,get_class($this),$server_id);
+			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$server_id);
 
-		$this->_baseDN = null;
 		$this->server_id = $server_id;
 	}
 
@@ -66,7 +57,7 @@ class LDAPserver {
 	 */
 	function isValidServer() {
 		if (DEBUG_ENABLED)
-			debug_log('%s::isValidServer(): Entered with ()',17,get_class($this));
+			debug_log('Entered with ()',17,__FILE__,__LINE__,__METHOD__);
 
 		if (trim($this->host))
 			return true;
@@ -81,11 +72,12 @@ class LDAPserver {
 	 * to authenticate against the server. For example, if the user specifies
 	 * auth_type of 'cookie' in the config for that server, it checks the $_COOKIE array to
 	 * see if the cookie username and password is set for the server. If the auth_type
-	 * is 'session', the $_SESSION array is checked.
+	 * is 'session', the $_SESSION array is checked. If the auth_type is 'http', the
+	 * $_SERVER['PHP_AUTH_USER'] and $_SERVER['PHP_AUTH_PW'] is checked.
 	 *
 	 * There are three cases for this function depending on the auth_type configured for
-	 * the specified server. If the auth_type is session or cookie, then getLoggedInDN() is
-	 * called to verify that the user has logged in. If the auth_type is config, then the
+	 * the specified server. If the auth_type is session or cookie or http, then getLoggedInDN() 
+	 * is called to verify that the user has logged in. If the auth_type is config, then the
 	 * $ldapservers configuration in config.php is checked to ensure that the user has specified
 	 * login information. In any case, if phpLDAPadmin has enough information to login
 	 * to the server, true is returned. Otherwise false is returned.
@@ -95,25 +87,25 @@ class LDAPserver {
 	 */
 	function haveAuthInfo() {
 		if (DEBUG_ENABLED) {
-			debug_log('%s::haveAuthInfo(): Entered with ()',17,get_class($this));
-			debug_log('%s::haveAuthInfo(): We are a (%s) auth_type',80,get_class($this),$this->auth_type);
+			debug_log('Entered with ()',17,__FILE__,__LINE__,__METHOD__);
+			debug_log('We are a (%s) auth_type',80,__FILE__,__LINE__,__METHOD__,$this->auth_type);
 		}
 
 		# Set default return
 		$return = false;
 
 		# For session or cookie auth_types, we check the session or cookie to see if a user has logged in.
-		if (in_array($this->auth_type,array('session','cookie'))) {
+		if (in_array($this->auth_type,array('session','cookie','http'))) {
 
 			/* we don't look at getLoggedInPass() cause it may be null for anonymous binds
-			   getLoggedInDN() will never return null if someone is really logged in. */
+			 * getLoggedInDN() will never return null if someone is really logged in. */
 			if ($this->getLoggedInDN())
 				$return = true;
 			else
 				$return = false;
 
 		/* whether or not the login_dn or pass is specified, we return
-		   true here. (if they are blank, we do an anonymous bind anyway) */
+		 * true here. (if they are blank, we do an anonymous bind anyway) */
 		} elseif ($this->auth_type == 'config') {
 			$return = true;
 
@@ -122,25 +114,9 @@ class LDAPserver {
 		}
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::haveAuthInfo(): Returning (%s)',17,get_class($this),$return);
+			debug_log('Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$return);
 
 		return $return;
-	}
-
-	function _connect($connect_name) {
-		if (DEBUG_ENABLED)
-			debug_log('%s::_connect(): Entered with (%s)',17,get_class($this),$connect_name);
-
-		if (isset($this->connections[$connect_name]['resource'])) {
-			if (DEBUG_ENABLED)
-				debug_log('%s::_connect(): Returning CACHED connection resource [%s](%s)',16,
-					get_class($this),$this->connections[$connect_name]['resource'],$connect_name);
-
-			return $this->connections[$connect_name]['resource'];
-
-		}
-
-		return false;
 	}
 
 	/**
@@ -151,118 +127,152 @@ class LDAPserver {
 	 * @param bool $reconnect Use a cached connetion, or create a new one.
 	 * @returns resource|false Connection resource to LDAP server, or false if no connection made.
 	 */
-	function connect($process_error=true,$connect_id='user',$reconnect=false,$dn=null,$pass=null) {
+	function connect($process_error=true,$connect_id='user',$reconnect=false,$readonly=true,$dn=null,$pass=null) {
+		global $CACHE;
+
 		if (DEBUG_ENABLED)
-			debug_log('%s::connect(): Entered with (%s,%s,%s)',17,
-				get_class($this),$process_error,$connect_id,$reconnect);
+			debug_log('Entered with (%s,%s,%s)',17,__FILE__,__LINE__,__METHOD__,
+				$process_error,$connect_id,$reconnect);
 
 		# Quick return if we have already connected.
-		$resource = $this->_connect($connect_id);
-		if (is_resource($resource) && ! $reconnect)
-			return $resource;
+		if (isset($this->connection[$connect_id]['resource']) && ! $reconnect) {
+			if (DEBUG_ENABLED)
+				debug_log('Returning CACHED connection resource [%s](%s)',16,__FILE__,__LINE__,__METHOD__,
+					$this->connection[$connect_id]['resource'],$connect_id);
 
+			return $this->connection[$connect_id]['resource'];
+		}
+
+		# No identifiable connection exists, lest create a new one.
 		if (DEBUG_ENABLED)
-			debug_log('%s::connect(): Creating new connection [%s] for Server ID [%s]',16,
-				get_class($this),$connect_id,$this->server_id);
+			debug_log('Creating new connection [%s] for Server ID [%s]',16,__FILE__,__LINE__,__METHOD__,
+				$connect_id,$this->server_id);
 
-		# grab the auth info based on the auth_type for this server
+		# Grab the AUTH INFO based on the auth_type for this server
 		if ($connect_id == 'anonymous') {
 			if (DEBUG_ENABLED)
-				debug_log('%s::connect(): This IS an anonymous login',80,get_class($this));
+				debug_log('This IS an anonymous login',80,__FILE__,__LINE__,__METHOD__);
 
-			$this->connections[$connect_id]['login_dn'] = null;
-			$this->connections[$connect_id]['login_pass'] = null;
+			$this->connection[$connect_id]['login_dn'] = null;
+			$this->connection[$connect_id]['login_pass'] = null;
 
 		} elseif ($this->auth_type == 'config') {
 			if (DEBUG_ENABLED)
-				debug_log('%s::connect(): This IS a "config" login',80,get_class($this));
+				debug_log('This IS a "config" login',80,__FILE__,__LINE__,__METHOD__);
 
 			if (! $this->login_dn) {
 				if (DEBUG_ENABLED)
-					debug_log('%s::connect(): No login_dn, so well do anonymous',80,get_class($this));
+					debug_log('No login_dn for CONFIG auth_type, so well do anonymous',80,__FILE__,__LINE__,__METHOD__);
 
 				$connect_id = 'anonymous';
 
  			} else {
-				$this->connections[$connect_id]['login_dn'] = $this->login_dn;
-				$this->connections[$connect_id]['login_pass'] = $this->login_pass;
+				$this->connection[$connect_id]['login_dn'] = $this->login_dn;
+				$this->connection[$connect_id]['login_pass'] = $this->login_pass;
 
 				if (DEBUG_ENABLED)
-					debug_log('%s::connect(): Config settings, DN [%s], PASS [%s]',80,
-						get_class($this),$this->connections[$connect_id]['login_dn'],
-						$this->connections[$connect_id]['login_pass'] ? md5($this->connections[$connect_id]['login_pass']) : '');
+					debug_log('CONFIG auth_type settings, DN [%s], PASS [%s]',80,__FILE__,__LINE__,__METHOD__,
+						$this->connection[$connect_id]['login_dn'],
+						$this->connection[$connect_id]['login_pass'] ? md5($this->connection[$connect_id]['login_pass']) : '');
  			}
 
 		} else {
 			if (DEBUG_ENABLED)
-				debug_log('%s::connect(): This IS some other login',80,get_class($this));
+				debug_log('This IS some other login',80,__FILE__,__LINE__,__METHOD__);
 
 			# Did we pass the dn/pass to this function?
 			if ($dn) {
-				$this->connections[$connect_id]['login_dn'] = $dn;
-				$this->connections[$connect_id]['login_pass'] = $pass;
+				$this->connection[$connect_id]['login_dn'] = $dn;
+				$this->connection[$connect_id]['login_pass'] = $pass;
+
+				if (DEBUG_ENABLED)
+					debug_log('Login settings were passed to this function, DN [%s], PASS [%s]',80,__FILE__,__LINE__,__METHOD__,
+						$this->connection[$connect_id]['login_dn'],
+						$this->connection[$connect_id]['login_pass'] ? md5($this->connection[$connect_id]['login_pass']) : '');
 
 			# Was this an anonyous bind (the cookie stores 0 if so)?
 			} elseif ($this->getLoggedInDN() == 'anonymous') {
 				$connect_id = 'anonymous';
-				$this->connections[$connect_id]['login_dn'] = null;
-				$this->connections[$connect_id]['login_pass'] = null;
+				$this->connection[$connect_id]['login_dn'] = null;
+				$this->connection[$connect_id]['login_pass'] = null;
+
+				if (DEBUG_ENABLED)
+					debug_log('Already logged in as anonymous',80,__FILE__,__LINE__,__METHOD__);
 
  			} else {
-				$this->connections[$connect_id]['login_dn'] = $this->getLoggedInDN();
-				$this->connections[$connect_id]['login_pass'] = $this->getLoggedInPass();
+				$this->connection[$connect_id]['login_dn'] = $this->getLoggedInDN();
+				$this->connection[$connect_id]['login_pass'] = $this->getLoggedInPass();
+
+				if (DEBUG_ENABLED)
+					debug_log('Already logged in as DN [%s], PASS [%s]',80,__FILE__,__LINE__,__METHOD__,
+						$this->connection[$connect_id]['login_dn'],
+						$this->connection[$connect_id]['login_pass'] ? md5($this->connection[$connect_id]['login_pass']) : '');
 			}
 		}
 
-		# SASL auth
+		# Work out if we are doing a SASL AUTH
 		if ($this->sasl_auth) {
-			$this->connections[$connect_id]['sasl_auth'] = true;
-			$this->connections[$connect_id]['sasl_mech'] = $this->sasl_mech;
-			$this->connections[$connect_id]['sasl_realm'] = $this->sasl_realm;
-			$this->connections[$connect_id]['sasl_authz_id'] = $this->sasl_authz_id;
-			$this->connections[$connect_id]['sasl_authz_id_regex'] = $this->sasl_authz_id_regex;
-			$this->connections[$connect_id]['sasl_authz_id_replacement'] = $this->sasl_authz_id_replacement;
-			$this->connections[$connect_id]['sasl_props'] = $this->sasl_props;
+			$this->connection[$connect_id]['sasl_auth'] = true;
+			$this->connection[$connect_id]['sasl_mech'] = $this->sasl_mech;
+			$this->connection[$connect_id]['sasl_realm'] = $this->sasl_realm;
+			$this->connection[$connect_id]['sasl_authz_id'] = $this->sasl_authz_id;
+			$this->connection[$connect_id]['sasl_authz_id_regex'] = $this->sasl_authz_id_regex;
+			$this->connection[$connect_id]['sasl_authz_id_replacement'] = $this->sasl_authz_id_replacement;
+			$this->connection[$connect_id]['sasl_props'] = $this->sasl_props;
 
 		} else {
-			$this->connections[$connect_id]['sasl_auth'] = false;
+			$this->connection[$connect_id]['sasl_auth'] = false;
 		}
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::connect(): Config settings, DN [%s], PASS [%s]',80,
-				get_class($this),$this->connections[$connect_id]['login_dn'],
-				$this->connections[$connect_id]['login_pass'] ? md5($this->connections[$connect_id]['login_pass']) : '');
+			debug_log('Summary config settings, DN [%s], PASS [%s]',80,__FILE__,__LINE__,__METHOD__,
+				$this->connection[$connect_id]['login_dn'],
+				$this->connection[$connect_id]['login_pass'] ? md5($this->connection[$connect_id]['login_pass']) : '');
 
-
-		if ($connect_id != 'anonymous' && ! $this->connections[$connect_id]['login_dn'] && ! $this->connections[$connect_id]['login_pass']) {
+		# Test if we have info to login.
+		if ($connect_id != 'anonymous' && ! $this->connection[$connect_id]['login_dn'] && ! $this->connection[$connect_id]['login_pass']) {
 			if (DEBUG_ENABLED)
-				debug_log('%s::connect(): We dont have enough auth info for server [%s]',80,get_class($this),$this->server_id);
+				debug_log('We dont have enough auth info for server [%s]',80,__FILE__,__LINE__,__METHOD__,$this->server_id);
 
 			return false;
 		}
 
-		# Now that we have worked out the connect_id, lets just check and see if we have already connected.
-		$resource = $this->_connect($connect_id);
-		if (is_resource($resource) && ! $reconnect)
-			return $resource;
+		# If we get here, we need to login - now figure out which server.
+		if (! $readonly) {
+				$host = $this->hostwr ? $this->hostwr : $this->host;
+				$port = $this->hostwr && $this->portwr ? $this->portwr : $this->port;
+				$connect_id = 'write';
+		} else {
+			$host = $this->host;
+			$port = $this->port;
+		}
+
+		# Our connect_id may have changed, lets just check and see if we have already connected.
+		if (isset($this->connection[$connect_id]['resource']) && ! $reconnect) {
+			if (DEBUG_ENABLED)
+				debug_log('Returning CACHED connection resource [%s](%s)',16,__FILE__,__LINE__,__METHOD__,
+					$this->connection[$connect_id]['resource'],$connect_id);
+
+			return $this->connection[$connect_id]['resource'];
+		}
 
 		run_hook('pre_connect',array('server_id'=>$this->server_id,'connect_id'=>$connect_id));
 
-		if ($this->port)
-			$resource = @ldap_connect($this->host,$this->port);
+		if ($port)
+			$resource = @ldap_connect($host,$port);
 		else
-			$resource = @ldap_connect($this->host);
+			$resource = @ldap_connect($host);
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::connect(): LDAP Resource [%s], Host [%s], Port [%s]',16,
-				get_class($this),$resource,$this->host,$this->port);
+			debug_log('LDAP Resource [%s], Host [%s], Port [%s]',16,__FILE__,__LINE__,__METHOD__,
+				$resource,$host,$port);
 
 		# Go with LDAP version 3 if possible (needed for renaming and Novell schema fetching)
 		@ldap_set_option($resource,LDAP_OPT_PROTOCOL_VERSION,3);
 
 		/* Disabling this makes it possible to browse the tree for Active Directory, and seems
-		   to not affect other LDAP servers (tested with OpenLDAP) as phpLDAPadmin explicitly
-		   specifies deref behavior for each ldap_search operation. */
+		 * to not affect other LDAP servers (tested with OpenLDAP) as phpLDAPadmin explicitly
+		 * specifies deref behavior for each ldap_search operation. */
 		@ldap_set_option($resource,LDAP_OPT_REFERRALS,0);
 
 		# Try to fire up TLS is specified in the config
@@ -277,69 +287,69 @@ class LDAPserver {
 		 * Implementation of SASL ldap_bind()
 		 * This option requires PHP 5.x compiled with --with-ldap-sasl=DIR
 		 */
-		if (isset($this->connections[$connect_id]['sasl_auth']) && # admin marked this server to use SASL auth
-			$this->connections[$connect_id]['sasl_auth'] == true) {
+		if (isset($this->connection[$connect_id]['sasl_auth']) &&
+			$this->connection[$connect_id]['sasl_auth'] == true) {
 
 			# No support for ldap_sasl_bind?
 			if (! function_exists('ldap_sasl_bind'))
 				pla_error(_('Your PHP installation does not support ldap_sasl_bind() function. This function is present in PHP 5.x when compiled with --with-ldap-sasl.'));
 
 			# Fill variables
-			$props = $this->connections[$connect_id]['sasl_props'];
-			$mech = $this->connections[$connect_id]['sasl_mech'];
-			$realm = $this->connections[$connect_id]['sasl_realm'];
+			$props = $this->connection[$connect_id]['sasl_props'];
+			$mech = $this->connection[$connect_id]['sasl_mech'];
+			$realm = $this->connection[$connect_id]['sasl_realm'];
 			$authz_id = null;
 
 			if (DEBUG_ENABLED)
-				debug_log('%s::connect(): Resource [%s], Using SASL bind method. Bind DN [%s]',9,
-					get_class($this),$resource,$this->connections[$connect_id]['login_dn']);
+				debug_log('Resource [%s], Using SASL bind method. Bind DN [%s]',9,__FILE__,__LINE__,__METHOD__,
+					$resource,$this->connection[$connect_id]['login_dn']);
 
 			# do we need to rewrite authz_id?
-				if (isset($this->connections[$connect_id]['sasl_authz_id']) &&
-					strlen($this->connections[$connect_id]['sasl_authz_id']) > 0)
+				if (isset($this->connection[$connect_id]['sasl_authz_id']) &&
+					strlen($this->connection[$connect_id]['sasl_authz_id']) > 0)
 
-					$authz_id = $this->connections[$connect_id]['sasl_authz_id'];
+					$authz_id = $this->connection[$connect_id]['sasl_authz_id'];
 
 				else {
 
 					# ok, here we go
 					if (DEBUG_ENABLED)
-						debug_log('%s::connect(): Resource [%s], Rewriting bind DN [%s] -> authz_id with regex [%s] and replacement [%s].',9,
-							get_class($this),$resource,$this->connections[$connect_id]['login_dn'],
-							$this->connections[$connect_id]['sasl_authz_id_regex'],
-							$this->connections[$connect_id]['sasl_authz_id_replacement']);
+						debug_log('Resource [%s], Rewriting bind DN [%s] -> authz_id with regex [%s] and replacement [%s].',9,__FILE__,__LINE__,__METHOD__,
+							$resource,$this->connection[$connect_id]['login_dn'],
+							$this->connection[$connect_id]['sasl_authz_id_regex'],
+							$this->connection[$connect_id]['sasl_authz_id_replacement']);
 
-					$authz_id = @preg_replace($this->connections[$connect_id]['sasl_authz_id_regex'],
-						$this->connections[$connect_id]['sasl_authz_id_replacement'],
-						$this->connections[$connect_id]['login_dn']);
+					$authz_id = @preg_replace($this->connection[$connect_id]['sasl_authz_id_regex'],
+						$this->connection[$connect_id]['sasl_authz_id_replacement'],
+						$this->connection[$connect_id]['login_dn']);
 
 					# invalid regex?
 					if (is_null($authz_id)) {
 						pla_error(sprintf(_('It seems that sasl_authz_id_regex "%s"." contains invalid PCRE regular expression.'),
-							$this->connections[$connect_id]['sasl_authz_id_regex']).
+							$this->connection[$connect_id]['sasl_authz_id_regex']).
 							((isset($php_errormsg)) ? ' Error message: '.$php_errormsg : ''));
 					}
 				}
 
 				if (DEBUG_ENABLED)
-					debug_log('%s::connect(): Resource [%s], SASL OPTIONS: mech [%s], realm [%s], authz_id [%s], props [%s]',9,
-						get_class($this),$resource,$mech,$realm,$authz_id,$props);
+					debug_log('Resource [%s], SASL OPTIONS: mech [%s], realm [%s], authz_id [%s], props [%s]',9,__FILE__,__LINE__,__METHOD__,
+						$resource,$mech,$realm,$authz_id,$props);
 
 				$bind_result = @ldap_sasl_bind($resource,
-					$this->connections[$connect_id]['login_dn'],$this->connections[$connect_id]['login_pass'],
+					$this->connection[$connect_id]['login_dn'],$this->connection[$connect_id]['login_pass'],
 					$mech,$realm,$authz_id,$props);
 
 		} else {
-			$bind_result = @ldap_bind($resource,$this->connections[$connect_id]['login_dn'],
-				$this->connections[$connect_id]['login_pass']);
+			$bind_result = @ldap_bind($resource,$this->connection[$connect_id]['login_dn'],
+				$this->connection[$connect_id]['login_pass']);
 		}
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::connect(): Resource [%s], Bind Result [%s]',16,get_class($this),$resource,$bind_result);
+			debug_log('Resource [%s], Bind Result [%s]',16,__FILE__,__LINE__,__METHOD__,$resource,$bind_result);
 
 		if (! $bind_result) {
 			if (DEBUG_ENABLED)
-				debug_log('%s::connect(): Leaving with FALSE, bind FAILed',16,get_class($this));
+				debug_log('Leaving with FALSE, bind FAILed',16,__FILE__,__LINE__,__METHOD__);
 
 			if ($process_error) {
 				switch (ldap_errno($resource)) {
@@ -350,7 +360,7 @@ class LDAPserver {
 						pla_error(_('Insufficient access rights.'));
 						break;
 					case -1:
-						pla_error(sprintf(_('Could not connect to "%s" on port "%s"'),$this->host,$this->port));
+						pla_error(sprintf(_('Could not connect to "%s" on port "%s"'),$host,$port));
 						break;
 					default:
 						pla_error(_('Could not bind to the LDAP server.'),ldap_err2str($resource),$resource);
@@ -363,16 +373,16 @@ class LDAPserver {
 
 		if (is_resource($resource) && ($bind_result)) {
 			if (DEBUG_ENABLED)
-				debug_log('%s::connect(): Bind successful',16,get_class($this));
+				debug_log('Bind successful',16,__FILE__,__LINE__,__METHOD__);
 
-			$this->connections[$connect_id]['resource'] = $resource;
+			$this->connection[$connect_id]['resource'] = $resource;
 		}
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::connect(): Leaving with Connect [%s], Resource [%s]',16,
-				get_class($this),$connect_id,$this->connections[$connect_id]['resource']);
+			debug_log('Leaving with Connect [%s], Resource [%s]',16,__FILE__,__LINE__,__METHOD__,
+				$connect_id,$this->connection[$connect_id]['resource']);
 
- 		return $this->connections[$connect_id]['resource'];
+ 		return $this->connection[$connect_id]['resource'];
  	}
 
 	/**
@@ -391,36 +401,35 @@ class LDAPserver {
 	 */
 	function getBaseDN() {
 		if (DEBUG_ENABLED)
-			debug_log('%s::getBaseDN(): Entered with ()',17,get_class($this));
-
-		global $ldapservers;
+			debug_log('Entered with ()',17,__FILE__,__LINE__,__METHOD__);
 
 		# Return the cached entry if we've been here before.
 		if (! is_null($this->_baseDN)) {
-			debug_log('%s::getBaseDN(): Return CACHED BaseDN [%s]',17,get_class($this),implode('|',$this->_baseDN));
+			debug_log('Return CACHED BaseDN [%s]',17,__FILE__,__LINE__,__METHOD__,implode('|',$this->_baseDN));
 			return $this->_baseDN;
 		}
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::getBaseDN(): Checking config for BaseDN',80,get_class($this));
+			debug_log('Checking config for BaseDN',80,__FILE__,__LINE__,__METHOD__);
 
 		# If the base is set in the configuration file, then just return that.
-		if (count($ldapservers->GetValue($this->server_id,'server','base')) > 0) {
-			$this->_baseDN = $ldapservers->GetValue($this->server_id,'server','base');
+		if (count($_SESSION['plaConfig']->ldapservers->GetValue($this->server_id,'server','base')) > 0) {
+			$this->_baseDN = $_SESSION['plaConfig']->ldapservers->GetValue($this->server_id,'server','base');
 
 			if (DEBUG_ENABLED)
-				debug_log('%s::getBaseDN(): Return BaseDN from Config [%s]',17,get_class($this),implode('|',$this->_baseDN));
+				debug_log('Return BaseDN from Config [%s]',17,__FILE__,__LINE__,__METHOD__,implode('|',$this->_baseDN));
 
 			return $this->_baseDN;
 
 		# We need to figure it out.
 		} else {
 			if (DEBUG_ENABLED)
-				debug_log('%s::getBaseDN(): Connect to LDAP to find BaseDN',80,get_class($this));
+				debug_log('Connect to LDAP to find BaseDN',80,__FILE__,__LINE__,__METHOD__);
 
 			if ($this->connect()) {
 				$r = $this->search(null,'','objectClass=*',array('namingContexts'),'base');
 				$r = array_pop($r);
+
 				if (is_array($r))
 						$r = array_change_key_case($r);
 
@@ -429,7 +438,7 @@ class LDAPserver {
 						$r['namingcontexts'] = array($r['namingcontexts']);
 
 					if (DEBUG_ENABLED)
-						debug_log('%s::getBaseDN(): LDAP Entries:%s',80,get_class($this),implode('|',$r['namingcontexts']));
+						debug_log('LDAP Entries:%s',80,__FILE__,__LINE__,__METHOD__,implode('|',$r['namingcontexts']));
 
 					$this->_baseDN = $r['namingcontexts'];
 
@@ -462,8 +471,6 @@ class LDAPserver {
 	 * @return bool
 	 */
 	function isReadOnly() {
-		global $config;
-
 		# Set default return
 		$return = false;
 
@@ -471,12 +478,12 @@ class LDAPserver {
 			$return = true;
 
 		elseif ($this->getLoggedInDN() === 'anonymous' &&
-			($config->GetValue('appearance','anonymous_bind_implies_read_only') === true))
+			($_SESSION['plaConfig']->GetValue('appearance','anonymous_bind_implies_read_only') === true))
 
 			$return = true;
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::isReadOnly(): Entered with (), Returning (%s)',17,get_class($this),$return);
+			debug_log('Entered with (), Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$return);
 
 		return $return;
 	}
@@ -486,7 +493,7 @@ class LDAPserver {
 	 *
 	 * Mass deletion is enabled in config.php this:
 	 * <code>
-	 *	$config->custom->appearance['mass_delete'] = true;
+	 *	$config->custom->commands['all'] = array('entry_delete' => array('mass_delete' => true));
 	 * </code>
 	 * Notice that mass deletes are not enabled on a per-server basis, but this
 	 * function checks that the server is not in a read-only state as well.
@@ -495,13 +502,10 @@ class LDAPserver {
 	 */
 	function isMassDeleteEnabled() {
 		if (DEBUG_ENABLED)
-			debug_log('%s::isMassDeleteEnabled(): Entered with ()',17,get_class($this));
-
-		global $config;
+			debug_log('Entered with ()',17,__FILE__,__LINE__,__METHOD__);
 
 		if ($this->connect(false) && $this->haveAuthInfo() && ! $this->isReadOnly() &&
-			! $config->GetValue('appearance','tree_plm') && 
-			$config->GetValue('appearance','mass_delete') === true)
+			$_SESSION['plaConfig']->isCommandAvailable('entry_delete', 'mass_delete'))
 
 			return true;
 
@@ -517,14 +521,20 @@ class LDAPserver {
 	 * If NOT set, then default to show the Create New item.
 	 * If IS set, then return the value (it should be true or false).
 	 *
+	 * The entry creation command must be available.
+	 * <code>
+	 *	$config->custom->commands['all'] = array('entry_create' => true);
+	 * </code>
+	 *
 	 * @default true
 	 * @return bool True if the feature is enabled and false otherwise.
 	 */
 	function isShowCreateEnabled() {
 		if (DEBUG_ENABLED)
-			debug_log('%s::isShowCreateEnabled(): Entered with ()',17,get_class($this));
+			debug_log('Entered with ()',17,__FILE__,__LINE__,__METHOD__);
 
-		return $this->show_create;
+		if (! $_SESSION['plaConfig']->isCommandAvailable('entry_create')) return false;
+		else return $this->show_create;
 	}
 
 	/**
@@ -540,7 +550,7 @@ class LDAPserver {
 	 */
 	function isLowBandwidth() {
 		if (DEBUG_ENABLED)
-			debug_log('%s::isLowBandwidth(): Entered with ()',17,get_class($this));
+			debug_log('Entered with ()',17,__FILE__,__LINE__,__METHOD__);
 
 		return $this->low_bandwidth;
 	}
@@ -562,7 +572,7 @@ class LDAPserver {
 			$return = false;
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::isVisible(): Entered with (), Returning (%s)',17,get_class($this),$return);
+			debug_log('Entered with (), Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$return);
 
 		return $return;
 	}
@@ -577,7 +587,7 @@ class LDAPserver {
 	 */
 	function getSchemaDN($dn='') {
 		if (DEBUG_ENABLED)
-			debug_log('%s::getSchemaDN(): Entered with (%s)',25,get_class($this),$dn);
+			debug_log('Entered with (%s)',25,__FILE__,__LINE__,__METHOD__,$dn);
 
 		# If we already got the SchemaDN, then return it.
 		if ($this->_schemaDN)
@@ -586,23 +596,24 @@ class LDAPserver {
 		if (! $this->connect())
 			return false;
 
+		$this->lastop = 'read';
 		$search = @ldap_read($this->connect(),$dn,'objectClass=*',array('subschemaSubentry'));
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::getSchemaDN(): Search returned (%s)',24,get_class($this),is_resource($search));
+			debug_log('Search returned (%s)',24,__FILE__,__LINE__,__METHOD__,is_resource($search));
 
 		# Fix for broken ldap.conf configuration.
 		if (! $search && ! $dn) {
 			if (DEBUG_ENABLED)
-				debug_log('%s::getSchemaDN(): Trying to find the DN for "broken" ldap.conf',80,get_class($this));
+				debug_log('Trying to find the DN for "broken" ldap.conf',80,__FILE__,__LINE__,__METHOD__);
 
 			if (isset($this->_baseDN)) {
 				foreach ($this->_baseDN as $base) {
 					$search = @ldap_read($this->connect(),$base,'objectClass=*',array('subschemaSubentry'));
 
 					if (DEBUG_ENABLED)
-						debug_log('%s::getSchemaDN(): Search returned (%s) for base (%s)',24,
-							get_class($this),is_resource($search),$base);
+						debug_log('Search returned (%s) for base (%s)',24,__FILE__,__LINE__,__METHOD__,
+							is_resource($search),$base);
 
 					if ($search)
 						break;
@@ -615,7 +626,7 @@ class LDAPserver {
 
 		if (! @ldap_count_entries($this->connect(),$search)) {
 			if (DEBUG_ENABLED)
-				debug_log('%s::getSchemaDN(): Search returned 0 entries. Returning NULL',25,get_class($this));
+				debug_log('Search returned 0 entries. Returning NULL',25,__FILE__,__LINE__,__METHOD__);
 
 			return null;
 		}
@@ -623,7 +634,7 @@ class LDAPserver {
 		$entries = @ldap_get_entries($this->connect(),$search);
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::getSchemaDN(): Search returned [%s]',24,get_class($this),$entries);
+			debug_log('Search returned [%s]',24,__FILE__,__LINE__,__METHOD__,$entries);
 
 		if (! $entries || ! is_array($entries))
 			return null;
@@ -631,7 +642,7 @@ class LDAPserver {
 		$entry = isset($entries[0]) ? $entries[0] : false;
 		if (! $entry) {
 			if (DEBUG_ENABLED)
-				debug_log('%s::getSchemaDN(): Entry is false, Returning NULL',80,get_class($this));
+				debug_log('Entry is false, Returning NULL',80,__FILE__,__LINE__,__METHOD__);
 
 			return null;
 		}
@@ -639,7 +650,7 @@ class LDAPserver {
 		$sub_schema_sub_entry = isset($entry[0]) ? $entry[0] : false;
 		if (! $sub_schema_sub_entry) {
 			if (DEBUG_ENABLED)
-				debug_log('%s::getSchemaDN(): Sub Entry is false, Returning NULL',80,get_class($this));
+				debug_log('Sub Entry is false, Returning NULL',80,__FILE__,__LINE__,__METHOD__);
 
 			return null;
 		}
@@ -647,7 +658,7 @@ class LDAPserver {
 		$this->_schemaDN = isset($entry[$sub_schema_sub_entry][0]) ? $entry[$sub_schema_sub_entry][0] : false;
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::getSchemaDN(): Returning (%s)',25,get_class($this),$this->_schemaDN);
+			debug_log('Returning (%s)',25,__FILE__,__LINE__,__METHOD__,$this->_schemaDN);
 
 		return $this->_schemaDN;
 	}
@@ -680,7 +691,7 @@ class LDAPserver {
 	 */
 	function getRawSchema($schema_to_fetch,$dn='') {
 		if (DEBUG_ENABLED)
-			debug_log('%s::getRawSchema(): Entered with (%s,%s)',25,get_class($this),$schema_to_fetch,$dn);
+			debug_log('Entered with (%s,%s)',25,__FILE__,__LINE__,__METHOD__,$schema_to_fetch,$dn);
 
 		$valid_schema_to_fetch = array('objectclasses','attributetypes','ldapsyntaxes','matchingrules','matchingruleuse');
 
@@ -694,7 +705,7 @@ class LDAPserver {
 			$schema = $this->_schema_entries[$schema_to_fetch];
 
 			if (DEBUG_ENABLED)
-				debug_log('%s::getRawSchema(): Returning CACHED (%s)',25,get_class($this),$schema);
+				debug_log('Returning CACHED (%s)',25,__FILE__,__LINE__,__METHOD__,$schema);
 
 			return $schema;
 		}
@@ -716,11 +727,11 @@ class LDAPserver {
 
 		if ($schema_dn) {
 			if (DEBUG_ENABLED)
-				debug_log('%s::getRawSchema(): Using Schema DN (%s)',24,get_class($this),$schema_dn);
+				debug_log('Using Schema DN (%s)',24,__FILE__,__LINE__,__METHOD__,$schema_dn);
 
 			foreach (array('(objectClass=*)','(objectClass=subschema)') as $schema_filter) {
 				if (DEBUG_ENABLED)
-					debug_log('%s::getRawSchema(): Looking for schema with Filter (%s)',24,get_class($this),$schema_filter);
+					debug_log('Looking for schema with Filter (%s)',24,__FILE__,__LINE__,__METHOD__,$schema_filter);
 
 				$schema_search = @ldap_read($this->connect(),$schema_dn,$schema_filter,array($schema_to_fetch),0,0,0,LDAP_DEREF_ALWAYS);
 
@@ -730,17 +741,18 @@ class LDAPserver {
 				$schema_entries = @ldap_get_entries($this->connect(),$schema_search);
 
 				if (DEBUG_ENABLED)
-					debug_log('%s::getRawSchema(): Search returned [%s]',24,get_class($this),$schema_entries);
+					debug_log('Search returned [%s]',24,__FILE__,__LINE__,__METHOD__,$schema_entries);
 
-				if (is_array($schema_entries) && isset($schema_entries['count'])) {
+				if (is_array($schema_entries) && isset($schema_entries['count']) && $schema_entries['count']) {
 					if (DEBUG_ENABLED)
-						debug_log('%s::getRawSchema(): Found schema with filter of (%s)',24,get_class($this),$schema_filter);
+						debug_log('Found schema with (DN:%s) (FILTER:%s) (ATTR:%s)',24,__FILE__,__LINE__,__METHOD__,
+							$schema_dn,$schema_filter,$schema_to_fetch);
 
 					break;
 				}
 
 				if (DEBUG_ENABLED)
-					debug_log('%s::getRawSchema(): Didnt find schema with filter (%s)',24,get_class($this),$schema_filter);
+					debug_log('Didnt find schema with filter (%s)',24,__FILE__,__LINE__,__METHOD__,$schema_filter);
 
 				unset($schema_entries);
 				$schema_search = null;
@@ -748,10 +760,10 @@ class LDAPserver {
 		}
 
 		/* Second chance: If the DN or Root DSE didn't give us the subschemaSubentry, ie $schema_search
-		   is still null, use some common subSchemaSubentry DNs as a work-around. */
+		 * is still null, use some common subSchemaSubentry DNs as a work-around. */
 		if (is_null($schema_search)) {
 			if (DEBUG_ENABLED)
-				debug_log('%s::getRawSchema(): Attempting work-arounds for "broken" LDAP servers...',24,get_class($this));
+				debug_log('Attempting work-arounds for "broken" LDAP servers...',24,__FILE__,__LINE__,__METHOD__);
 
 			foreach ($this->getBaseDN() as $base) {
 				$ldap['W2K3 AD'][expand_dn_with_base($base,'cn=Aggregate,cn=Schema,cn=configuration,')] = '(objectClass=*)';
@@ -765,8 +777,8 @@ class LDAPserver {
 			foreach ($ldap as $ldap_server_name => $ldap_options) {
 				foreach ($ldap_options as $ldap_dn => $ldap_filter) {
 					if (DEBUG_ENABLED)
-						debug_log('%s::getRawSchema(): Attempting [%s] (%s) (%s)<BR>',24,
-							get_class($this),$ldap_server_name,$ldap_dn,$ldap_filter);
+						debug_log('Attempting [%s] (%s) (%s)<BR>',24,__FILE__,__LINE__,__METHOD__,
+							$ldap_server_name,$ldap_dn,$ldap_filter);
 
 					$schema_search = @ldap_read($this->connect(),$ldap_dn,$ldap_filter,
 						array($schema_to_fetch), 0, 0, 0, LDAP_DEREF_ALWAYS);
@@ -776,17 +788,17 @@ class LDAPserver {
 					$schema_entries = @ldap_get_entries($this->connect(),$schema_search);
 
 					if (DEBUG_ENABLED)
-						debug_log('%s::getRawSchema(): Search returned [%s]',24,get_class($this),$schema_entries);
+						debug_log('Search returned [%s]',24,__FILE__,__LINE__,__METHOD__,$schema_entries);
 
 					if ($schema_entries && isset($schema_entries[0][$schema_to_fetch])) {
 						if (DEBUG_ENABLED)
-							debug_log('%s::getRawSchema(): Found schema with filter of (%s)',24,get_class($this),$ldap_filter);
+							debug_log('Found schema with filter of (%s)',24,__FILE__,__LINE__,__METHOD__,$ldap_filter);
 
 						break;
 					}
 
 					if (DEBUG_ENABLED)
-						debug_log('%s::getRawSchema(): Didnt find schema with filter (%s)',24,get_class($this),$ldap_filter);
+						debug_log('Didnt find schema with filter (%s)',24,__FILE__,__LINE__,__METHOD__,$ldap_filter);
 
 					unset($schema_entries);
 					$schema_search = null;
@@ -798,12 +810,12 @@ class LDAPserver {
 
 		if (is_null($schema_search)) {
 			/* Still cant find the schema, try with the RootDSE
-			   Attempt to pull schema from Root DSE with scope "base", or
-			   Attempt to pull schema from Root DSE with scope "one" (work-around for Isode M-Vault X.500/LDAP) */
+			 * Attempt to pull schema from Root DSE with scope "base", or
+			 * Attempt to pull schema from Root DSE with scope "one" (work-around for Isode M-Vault X.500/LDAP) */
 			foreach (array('base','one') as $ldap_scope) {
 				if (DEBUG_ENABLED)
-					debug_log('%s::getRawSchema(): Attempting to find schema with scope (%s), filter (objectClass=*) and a blank base.',24,
-						get_class($this),$ldap_scope);
+					debug_log('Attempting to find schema with scope (%s), filter (objectClass=*) and a blank base.',24,__FILE__,__LINE__,__METHOD__,
+						$ldap_scope);
 
 				switch ($ldap_scope) {
 					case 'base':
@@ -820,17 +832,17 @@ class LDAPserver {
 
 				$schema_entries = @ldap_get_entries($this->connect(),$schema_search);
 				if (DEBUG_ENABLED)
-					debug_log('%s::getRawSchema(): Search returned [%s]',24,get_class($this),$schema_entries);
+					debug_log('Search returned [%s]',24,__FILE__,__LINE__,__METHOD__,$schema_entries);
 
 				if ($schema_entries && isset($schema_entries[0][$schema_to_fetch])) {
 					if (DEBUG_ENABLED)
-						debug_log('%s::getRawSchema(): Found schema with filter of (%s)',24,get_class($this),'(objectClass=*)');
+						debug_log('Found schema with filter of (%s)',24,__FILE__,__LINE__,__METHOD__,'(objectClass=*)');
 
 					break;
 				}
 
 				if (DEBUG_ENABLED)
-					debug_log('%s::getRawSchema(): Didnt find schema with filter (%s)',24,get_class($this),'(objectClass=*)');
+					debug_log('Didnt find schema with filter (%s)',24,__FILE__,__LINE__,__METHOD__,'(objectClass=*)');
 
 				unset($schema_entries);
 				$schema_search = null;
@@ -851,7 +863,7 @@ class LDAPserver {
 				$return = false;
 
 				if (DEBUG_ENABLED)
-					debug_log('%s::getRawSchema(): Returning because schema_search is NULL (%s)',25,get_class($this),$return);
+					debug_log('Returning because schema_search is NULL (%s)',25,__FILE__,__LINE__,__METHOD__,$return);
 
 				return $return;
 			}
@@ -867,8 +879,7 @@ class LDAPserver {
 				$return = false;
 
 				if (DEBUG_ENABLED)
-					debug_log('%s::getRawSchema(): Returning because schema_search type is not a resource (%s)',25,
-						get_class($this),$return);
+					debug_log('Returning because schema_search type is not a resource (%s)',25,__FILE__,__LINE__,__METHOD__,$return);
 
 				return $return;
 			}
@@ -877,8 +888,7 @@ class LDAPserver {
 		if (! $schema_entries) {
 			$return = false;
 			if (DEBUG_ENABLED)
-				debug_log('%s::getRawSchema(): Returning false since ldap_get_entries() returned false.',25,
-					get_class($this),$return);
+				debug_log('Returning false since ldap_get_entries() returned false.',25,__FILE__,__LINE__,__METHOD__,$return);
 
 			return $return;
 		}
@@ -892,8 +902,7 @@ class LDAPserver {
 				$return = false;
 
 				if (DEBUG_ENABLED)
-					debug_log('%s::getRawSchema(): Returning because (%s) isnt in the schema array. (%s)',25,
-						get_class($this),$schema_to_fetch,$return);
+					debug_log('Returning because (%s) isnt in the schema array. (%s)',25,__FILE__,__LINE__,__METHOD__,$schema_to_fetch,$return);
 
 				return $return;
 			}
@@ -910,7 +919,7 @@ class LDAPserver {
 		$this->_schema_entries[$schema_to_fetch] = $schema;
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::getRawSchema(): Returning (%s)',25,get_class($this),$schema);
+			debug_log('Returning (%s)',25,__FILE__,__LINE__,__METHOD__,$schema);
 
 		return $schema;
 	}
@@ -936,7 +945,7 @@ class LDAPserver {
 			$return = false;
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::isLoginAttrEnabled(): Entered with (), Returning (%s)',17,get_class($this),$return);
+			debug_log('Entered with (), Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$return);
 
 		return $return;
 	}
@@ -953,7 +962,7 @@ class LDAPserver {
 	 */
 	function isLoginStringEnabled() {
 		if (DEBUG_ENABLED)
-			debug_log('%s::isLoginStringEnabled(): login_attr is [%s]',80,get_class($this),$this->login_attr);
+			debug_log('login_attr is [%s]',80,__FILE__,__LINE__,__METHOD__,$this->login_attr);
 
 		if (! strcasecmp($this->login_attr,'string'))
 			$return = true;
@@ -961,7 +970,7 @@ class LDAPserver {
 			$return = false;
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::isLoginStringEnabled(): Entered with (), Returning (%s)',17,get_class($this),$return);
+			debug_log('Entered with (), Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$return);
 
 		return $return;
 	}
@@ -978,7 +987,7 @@ class LDAPserver {
 	 */
 	function getLoginString() {
 		if (DEBUG_ENABLED)
-			debug_log('%s::getLoginString(): Entered with ()',17,get_class($this));
+			debug_log('Entered with ()',17,__FILE__,__LINE__,__METHOD__,__FILE__,__LINE__,__METHOD__);
 
 		return $this->login_string;
 	}
@@ -994,16 +1003,14 @@ class LDAPserver {
 	 * @return bool
 	 */
 	function isAnonBindAllowed() {
-		global $ldapservers;
-
-		// If only_login_allowed_dns is set, then we cant have anonymous.
-		if (count($ldapservers->GetValue($this->server_id,'login','allowed_dns')) > 0)
+		# If only_login_allowed_dns is set, then we cant have anonymous.
+		if (count($_SESSION['plaConfig']->ldapservers->GetValue($this->server_id,'login','allowed_dns')) > 0)
 			$return = false;
 		else
-			$return = $ldapservers->GetValue($this->server_id,'login','anon_bind');
+			$return = $_SESSION['plaConfig']->ldapservers->GetValue($this->server_id,'login','anon_bind');
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::isAnonBindAllowed(): Entered with (), Returning (%s)',17,get_class($this),$return);
+			debug_log('Entered with (), Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$return);
 
 		return $return;
 	}
@@ -1021,7 +1028,7 @@ class LDAPserver {
 	 */
 	function isTLSEnabled() {
 		if (DEBUG_ENABLED)
-			debug_log('%s::isTLSEnabled(): Entered with ()',17,get_class($this));
+			debug_log('Entered with ()',17,__FILE__,__LINE__,__METHOD__);
 
 		return $this->tls;
 	}
@@ -1039,8 +1046,7 @@ class LDAPserver {
 	 * @return bool
 	 */
 	function isBranchRenameEnabled() {
-		debug_log('%s::isBranchRenameEnabled(): Entered with (), Returning (%s).',17,
-			get_class($this),$this->branch_rename);
+		debug_log('Entered with (), Returning (%s).',17,__FILE__,__LINE__,__METHOD__,$this->branch_rename);
 
  		return $this->branch_rename;
 	}
@@ -1059,14 +1065,13 @@ class LDAPserver {
 	 * @see getSchemaObjectClass
 	 */
 	function SchemaObjectClasses($dn='') {
-		debug_log('%s::SchemaObjectClasses(): Entered with (%s)',25,get_class($this),$dn);
+		debug_log('Entered with (%s)',25,__FILE__,__LINE__,__METHOD__,$dn);
 
 		# Set default return
 		$return = null;
 
 		if ($return = get_cached_item($this->server_id,'schema','objectclasses')) {
-			debug_log('%s::SchemaObjectClasses(): Returning CACHED [%s] (%s)',25,
-				get_class($this),$this->server_id,'objectclasses');
+			debug_log('Returning CACHED [%s] (%s)',25,__FILE__,__LINE__,__METHOD__,$this->server_id,'objectclasses');
 
 			return $return;
 		}
@@ -1099,7 +1104,7 @@ class LDAPserver {
 			set_cached_item($this->server_id,'schema','objectclasses',$return);
 		}
 
-		debug_log('%s::SchemaObjectClasses(): Returning (%s)',25,get_class($this),$return);
+		debug_log('Returning (%s)',25,__FILE__,__LINE__,__METHOD__,$return);
 		return $return;
 	}
 
@@ -1108,7 +1113,7 @@ class LDAPserver {
 	 *
 	 * @param string $oclass_name The name of the objectClass to fetch.
 	 * @param string $dn (optional) It is easier to fetch schema if a DN is provided
-	 *             which defines the subschemaSubEntry attribute (all entries should).
+	 *               which defines the subschemaSubEntry attribute (all entries should).
 	 *
 	 * @return ObjectClass The specified ObjectClass object or false on error.
 	 *
@@ -1125,8 +1130,7 @@ class LDAPserver {
 		if (isset($oclasses[$oclass_name]))
 			$return = $oclasses[$oclass_name];
 
-		debug_log('%s::getSchemaObjectClass(): Entered with (%s,%s), Returning (%s).',25,
-			get_class($this),$oclass_name,$dn,$return);
+		debug_log('Entered with (%s,%s), Returning (%s).',25,__FILE__,__LINE__,__METHOD__,$oclass_name,$dn,$return);
 		return $return;
 	}
 
@@ -1152,8 +1156,7 @@ class LDAPserver {
 		if (isset($schema_attrs[$attr_name]))
 			$return = $schema_attrs[$attr_name];
 
-		debug_log('%s::getSchemaAttribute(): Entered with (%s,%s), Returning (%s).',25,
-			get_class($this),$attr_name,$dn,$return);
+		debug_log('Entered with (%s,%s), Returning (%s).',25,__FILE__,__LINE__,__METHOD__,$attr_name,$dn,$return);
 		return $return;
 	}
 
@@ -1169,14 +1172,13 @@ class LDAPserver {
 	 * @return array An array of AttributeType objects.
 	 */
 	function SchemaAttributes($dn=null) {
-		debug_log('%s::SchemaAttributes(): Entered with (%s)',25,get_class($this),$dn);
+		debug_log('Entered with (%s)',25,__FILE__,__LINE__,__METHOD__,$dn);
 
 		# Set default return
 		$return = null;
 
 		if ($return = get_cached_item($this->server_id,'schema','attributes')) {
-			debug_log('%s::SchemaAttributes(): Returning CACHED [%s] (%s)',25,
-				get_class($this),$this->server_id,'attributes');
+			debug_log('(): Returning CACHED [%s] (%s)',25,__FILE__,__LINE__,__METHOD__,$this->server_id,'attributes');
 			return $return;
 		}
 
@@ -1218,7 +1220,7 @@ class LDAPserver {
 
 				if (is_array($aliases) && count($aliases) > 0) {
 					/* foreach of the attribute's aliases, create a new entry in the attrs array
-					   with its name set to the alias name, and all other data copied.*/
+					 * with its name set to the alias name, and all other data copied.*/
 					foreach ($aliases as $alias_attr_name) {
 						$new_attr = clone $attr;
 
@@ -1239,8 +1241,8 @@ class LDAPserver {
 				if (trim($sup_attr_name)) {
 
 					/* This loop really should traverse infinite levels of inheritance (SUP) for attributeTypes,
-					   but just in case we get carried away, stop at 100. This shouldn't happen, but for
-					   some weird reason, we have had someone report that it has happened. Oh well.*/
+					 * but just in case we get carried away, stop at 100. This shouldn't happen, but for
+					 * some weird reason, we have had someone report that it has happened. Oh well.*/
 					$i = 0;
 					while ($i++<100 /** 100 == INFINITY ;) */) {
 
@@ -1262,26 +1264,28 @@ class LDAPserver {
 						if (is_null($sup_attr_name) || strlen(trim($sup_attr_name)) == 0) {
 
 							/* Since this attribute's superior attribute does not have another superior
-							   attribute, clone its properties for this attribute. Then, replace
-							   those cloned values with those that can be explicitly set by the child
-							   attribute attr). Save those few properties which the child can set here:*/
+							 * attribute, clone its properties for this attribute. Then, replace
+							 * those cloned values with those that can be explicitly set by the child
+							 * attribute attr). Save those few properties which the child can set here:*/
 							$tmp_name = $attr->getName();
 							$tmp_oid = $attr->getOID();
 							$tmp_sup = $attr->getSupAttribute();
 							$tmp_aliases = $attr->getAliases();
 							$tmp_single_val = $attr->getIsSingleValue();
+							$tmp_desc = $attr->getDescription();
 
 							/* clone the SUP attributeType and populate those values
-							   that were set by the child attributeType */
+							 * that were set by the child attributeType */
 							$attr = clone $sup_attr;
 
 							$attr->setOID($tmp_oid);
 							$attr->setName($tmp_name);
 							$attr->setSupAttribute($tmp_sup);
 							$attr->setAliases($tmp_aliases);
+							$attr->setDescription($tmp_desc);
 
 							/* only overwrite the SINGLE-VALUE property if the child explicitly sets it
-							   (note: All LDAP attributes default to multi-value if not explicitly set SINGLE-VALUE) */
+							 * (note: All LDAP attributes default to multi-value if not explicitly set SINGLE-VALUE) */
 							if ($tmp_single_val)
 								$attr->setIsSingleValue(true);
 
@@ -1338,7 +1342,7 @@ class LDAPserver {
 			set_cached_item($this->server_id,'schema','attributes',$return);
 		}
 
-		debug_log('%s::SchemaAttributes(): Returning (%s)',25,get_class($this),$return);
+		debug_log('Returning (%s)',25,__FILE__,__LINE__,__METHOD__,$return);
 		return $return;
 	}
 
@@ -1351,8 +1355,7 @@ class LDAPserver {
 		$return = null;
 
 		if ($return = get_cached_item($this->server_id,'schema','matchingrules')) {
-			debug_log('%s::MatchingRules(): Returning CACHED [%s] (%s).',25,
-				get_class($this),$this->server_id,'matchingrules');
+			debug_log('Returning CACHED [%s] (%s).',25,__FILE__,__LINE__,__METHOD__,$this->server_id,'matchingrules');
 			return $return;
 		}
 
@@ -1374,7 +1377,7 @@ class LDAPserver {
 			ksort($rules);
 
 			/* For each MatchingRuleUse entry, add the attributes who use it to the
-			   MatchingRule in the $rules array.*/
+			 * MatchingRule in the $rules array.*/
 			$raw_matching_rule_use = $this->getRawSchema('matchingRuleUse');
 
 			if ($raw_matching_rule_use != false) {
@@ -1391,7 +1394,7 @@ class LDAPserver {
 
 			} else {
 				/* No MatchingRuleUse entry in the subschema, so brute-forcing
-				   the reverse-map for the "$rule->getUsedByAttrs()" data.*/
+				 * the reverse-map for the "$rule->getUsedByAttrs()" data.*/
 				$attrs = $this->SchemaAttributes($dn);
 				if (is_array($attrs))
 					foreach ($attrs as $attr) {
@@ -1408,7 +1411,7 @@ class LDAPserver {
 			set_cached_item($this->server_id,'schema','matchingrules',$return);
 		}
 
-		debug_log('%s::MatchingRules(): Entered with (%s), Returning (%s).',25,get_class($this),$dn,$return);
+		debug_log('Entered with (%s), Returning (%s).',25,__FILE__,__LINE__,__METHOD__,$dn,$return);
 		return $return;
 	}
 
@@ -1421,8 +1424,7 @@ class LDAPserver {
 		$return = null;
 
 		if ($return = get_cached_item($this->server_id,'schema','syntaxes')) {
-			debug_log('%s::SchemaSyntaxes(): Returning CACHED [%s] (%s).',25,
-				get_class($this),$this->server_id,'syntaxes');
+			debug_log('Returning CACHED [%s] (%s).',25,__FILE__,__LINE__,__METHOD__,$this->server_id,'syntaxes');
 			return $return;
 		}
 
@@ -1448,8 +1450,7 @@ class LDAPserver {
 			set_cached_item($this->server_id,'schema','syntaxes',$return);
 		}
 
-		debug_log('%s::SchemaSyntaxes(): Entered with (%s), Returning (%s).',25,
-			get_class($this),$dn,$return);
+		debug_log('Entered with (%s), Returning (%s).',25,__FILE__,__LINE__,__METHOD__,$dn,$return);
 		return $return;
 	}
 
@@ -1458,20 +1459,15 @@ class LDAPserver {
 	 *
 	 */
 	function add($dn,$entry_array) {
-		$result = @ldap_add($this->connect(),dn_escape($dn),$entry_array);
+		$this->lastop = 'write';
+		foreach ($entry_array as $attr => $val) {
+			$entry_array[$attr] = dn_unescape($val);
+		}
+		$result = @ldap_add($this->connect(true,$this->lastop,false,false),dn_escape($dn),$entry_array);
 
 		if ($result) {
 			$tree = get_cached_item($this->server_id,'tree');
-			$tree['browser'][$dn]['icon'] = get_icon($this,$dn);
-
-			# If this DN is in our miss list, we can remove it now.
-			if (isset($tree['misses'][$dn]))
-				unset($tree['misses'][$dn]);
-
-			# Update this DN's parent's children list as well.
-			$parent = get_container($dn);
-			$tree['browser'][$parent]['children'][] = $dn;
-			usort($tree['browser'][$parent]['children'],'pla_compare_dns');
+			$tree->addEntry($dn);
 
 			set_cached_item($this->server_id,'tree','null',$tree);
 		}
@@ -1483,45 +1479,43 @@ class LDAPserver {
 	 * Modify objects
 	 */
 	function modify($dn,$update_array) {
-		return @ldap_modify($this->connect(),dn_escape($dn),$update_array);
+		$this->lastop = 'write';
+		return @ldap_modify($this->connect(true,$this->lastop,false,false),dn_escape($dn),$update_array);
 	}
 
 	/**
 	 * Modify attributes
 	 */
 	function attrModify($dn,$update_array) {
-		return @ldap_mod_add($this->connect(),dn_escape($dn),$update_array);
+		$this->lastop = 'write';
+		return @ldap_mod_add($this->connect(true,$this->lastop,false,false),dn_escape($dn),$update_array);
 	}
 
 	function attrDelete($dn,$update_array) {
-		return @ldap_mod_del($this->connect(),dn_escape($dn),$update_array);
+		$this->lastop = 'write';
+		return @ldap_mod_del($this->connect(true,$this->lastop,false,false),dn_escape($dn),$update_array);
 	}
 
 	function attrReplace($dn,$update_array) {
-		return @ldap_mod_replace($this->connect(),dn_escape($dn),$update_array);
+		$this->lastop = 'write';
+		return @ldap_mod_replace($this->connect(true,$this->lastop,false,false),dn_escape($dn),$update_array);
 	}
 
 	/**
 	 * Delete objects
 	 */
 	function delete($dn) {
-		$result = @ldap_delete($this->connect(),dn_escape($dn));
+		if (DEBUG_ENABLED)
+			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$dn);
+
+		$this->lastop = 'write';
+		$result = @ldap_delete($this->connect(true,$this->lastop,false,false),dn_escape($dn));
+		if (DEBUG_ENABLED)
+			debug_log('Delete Result (%s)',16,__FILE__,__LINE__,__METHOD__,$result);
 
 		if ($result) {
 			$tree = get_cached_item($this->server_id,'tree');
-			unset($tree['browser'][$dn]);
-
-			# Delete entry from parent's children as well.
-			$parent = get_container($dn);
-
-			# If the parent hasnt been opened in the tree, then there wont be any children.
-			if (isset($tree['browser'][$parent]['children'])) {
-				$index = array_search($dn,$tree['browser'][$parent]['children']);
-				unset($tree['browser'][$parent]['children'][$index]);
-			}
-
-			# Might be worthwhile adding it to our miss list, while we are here.
-			$tree['misses'][$dn] = true;
+			$tree->delEntry($dn);
 
 			set_cached_item($this->server_id,'tree','null',$tree);
 		}
@@ -1534,27 +1528,16 @@ class LDAPserver {
 	 *
 	 */
 	function rename($dn,$new_rdn,$container,$deleteoldrdn) {
-		if (! @ldap_rename($this->connect(),$dn,$new_rdn,$container,$deleteoldrdn)) {
+		$this->lastop = 'write';
+		if (! @ldap_rename($this->connect(true,$this->lastop,false,false),$dn,$new_rdn,$container,$deleteoldrdn)) {
 			pla_error(_('Could not rename the entry'),$this->error(),$this->errno(),false);
 
 		} else {
 			# Update the tree
 			$tree = get_cached_item($this->server_id,'tree');
 			$newdn = sprintf('%s,%s',$new_rdn,$container);
-			$tree['browser'][$newdn] = $tree['browser'][$dn];
-			unset($tree['browser'][$dn]);
+			$tree->renameEntry($dn, $newdn);
 
-			# Might be worthwhile adding it to our miss list, while we are here.
-			$tree['misses'][$dn] = true;
-			if (isset($tree['misses'][$newdn]))
-				unset($tree['misses'][$newdn]);
-
-			# Update the parent's children
-			$parent = get_container($dn);
-			$index = array_search($dn,$tree['browser'][$parent]['children']);
-			$tree['browser'][$parent]['children'][$index] = $newdn;
-
-			usort($tree['browser'][$parent]['children'],'pla_compare_dns');
 			set_cached_item($this->server_id,'tree','null',$tree);
 
 			return true;
@@ -1563,18 +1546,18 @@ class LDAPserver {
 
 	/**
 	 * Return error from last operation
-	 *
+	 * @todo: This may not infact return the right error - especially if a different connect(params) were used.
 	 */
 	function error() {
-		return ldap_error($this->connect());
+		return ldap_error($this->connect(false,$this->lastop));
 	}
 
 	/**
 	 * Return errno from last operation
-	 *
+	 * @todo: This may not infact return the right error - especially if a different connect(params) were used.
 	 */
 	function errno() {
-		return ldap_errno($this->connect());
+		return ldap_errno($this->connect(false,$this->lastop));
 	}
 
 	/**
@@ -1590,48 +1573,46 @@ class LDAPserver {
 	function dnExists($dn) {
 		# Set default return
 		$return = false;
+		$this->lastop = 'read';
 
 		$tree = get_cached_item($this->server_id,'tree');
+		if (! $tree)
+			$tree = Tree::getInstance($this->server_id);
 
-		if (isset($tree['browser'][$dn])) {
-			debug_log('%s::dnExists(): Returning CACHED HIT (%s)',17,
-				get_class($this),$this->server_id,$dn);
+		$entry_dn = $tree->getEntry($dn);
+		if ($entry_dn) {
+			if (DEBUG_ENABLED)
+				debug_log('Returning CACHED HIT (%s)',17,__FILE__,__LINE__,__METHOD__,$this->server_id,$dn);
 			return true;
 
-		} elseif (isset($tree['misses'][$dn])) {
-			debug_log('%s::dnExists(): Returning CACHED MISS (%s)',17,
-				get_class($this),$this->server_id,$dn);
+		} elseif ($tree->isMissed($dn)) {
+			if (DEBUG_ENABLED)
+				debug_log('Returning CACHED MISS (%s)',17,__FILE__,__LINE__,__METHOD__,$this->server_id,$dn);
 			return false;
 
 		# We havent looked for this dn.
 		} else {
 			if (DEBUG_ENABLED)
-				debug_log('%s::dnExists(): Search for (%s) [%s]',16,get_class($this),$this->server_id,$dn);
+				debug_log('Search for (%s) [%s]',16,__FILE__,__LINE__,__METHOD__,$this->server_id,$dn);
 
+			# if the entry is not in the tree, we are doing a global search
 			$search_result = @ldap_read($this->connect(false),dn_escape($dn),'objectClass=*',array('dn'));
 
 			if ($search_result) {
 				$num_entries = ldap_count_entries($this->connect(false),$search_result);
 
-				if ($num_entries > 0) {
+				if ($num_entries > 0)
 					$return = true;
-					$tree['browser'][$dn]['icon'] = get_icon($this,$dn);
-
-				} else {
+				else
 					$return = false;
-					$tree['misses'][$dn] = true;
-				}
 
 			} else {
 				$return = false;
-				$tree['misses'][$dn] = true;
 			}
-			set_cached_item($this->server_id,'tree','null',$tree);
 		}
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::dnExists(): Entered with (%s,%s), Returning (%s)',17,
-				get_class($this),$this->server_id,$dn,$return);
+			debug_log('Entered with (%s,%s), Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$this->server_id,$dn,$return);
 
 		return $return;
 	}
@@ -1641,24 +1622,24 @@ class LDAPserver {
 	 * child entries one level beneath the parent. For example, for the following tree:
 	 *
 	 * <code>
-	 * dc=example,dc=com
-	 *   ou=People
-	 *      cn=Dave
-	 *      cn=Fred
-	 *      cn=Joe
-	 *      ou=More People
-	 *         cn=Mark
-	 *         cn=Bob
+	 *	dc=example,dc=com
+	 *		ou=People
+	 *			cn=Dave
+	 *			cn=Fred
+	 *			cn=Joe
+	 *		ou=More People
+	 *			cn=Mark
+	 *			cn=Bob
 	 * </code>
 	 *
 	 * Calling <code>getContainerContents("ou=people,dc=example,dc=com")</code>
 	 * would return the following list:
 	 *
 	 * <code>
-	 *  cn=Dave
-	 *  cn=Fred
-	 *  cn=Joe
-	 *  ou=More People
+	 *	cn=Dave
+	 *	cn=Fred
+	 *	cn=Joe
+	 *	ou=More People
 	 * </code>
 	 *
 	 * @param string $dn The DN of the entry whose children to return.
@@ -1669,42 +1650,23 @@ class LDAPserver {
 	 */
 
 	function getContainerContents($dn,$size_limit=0,$filter='(objectClass=*)',$deref=LDAP_DEREF_ALWAYS) {
-		$tree = get_cached_item($this->server_id,'tree');
-
-		if (isset($tree['browser'][$dn]['children']) && $filter == '(objectClass=*)')
-			if (! isset($tree['browser'][$dn]['size_limited']) || ! $tree['browser'][$dn]['size_limited'])
-				return $tree['browser'][$dn]['children'];
+		if (DEBUG_ENABLED)
+			debug_log('Entered with (%s,%s,%s,%s)',17,__FILE__,__LINE__,__METHOD__,$dn,$size_limit,$filter,$deref);
 
 		$return = array();
-		$search = $this->search(null,dn_escape($dn),$filter,array('dn'),'one',true,$deref,($size_limit > 0 ? $size_limit+1 : $size_limit));
 
-		if (! $search) {
-			$tree['browser'][$dn]['children'] = array();
-
-		} else {
+		$search = $this->search(null,dn_escape($dn),$filter,array('dn'),'one',true,$deref,/*($size_limit > 0 ? $size_limit+1 : $size_limit)*/$size_limit);
+		if ($search) {
 			foreach ($search as $searchdn => $entry) {
-				$child_dn = dn_unescape($entry['dn']);
-				$tree['browser'][$child_dn]['icon'] = get_icon($this,$child_dn);
+				$child_dn = $entry['dn'];
 				$return[] = $child_dn;
 			}
-
-			usort($return,'pla_compare_dns');
-			$tree['browser'][$dn]['children'] = $return;
-
-			if ($size_limit > 0 && count($tree['browser'][$dn]['children']) > $size_limit)
-				$tree['browser'][$dn]['size_limited'] = true;
-			else
-				if (isset($tree['browser'][$dn]['size_limited']))
-					unset($tree['browser'][$dn]['size_limited']);
 		}
 
-		set_cached_item($this->server_id,'tree','null',$tree);
-
 		if (DEBUG_ENABLED)
-			debug_log('%s::getContainerContents(): Entered with (%s,%s,%s,%s), Returning (%s)',17,
-				get_class($this),$dn,$size_limit,$filter,$deref,$return);
+			debug_log('Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$return);
 
-		return $tree['browser'][$dn]['children'];
+		return $return;
 	}
 
 	/**
@@ -1720,21 +1682,18 @@ class LDAPserver {
 	 * print_r( $samba_users );
 	 *
 	 * // prints (for example):
-	 * //  Array
-	 * //    (
-	 * //       [uid=jsmith,ou=People,dc=example,dc=com] => Array
-	 * //           (
-	 * //               [dn] => "uid=jsmith,ou=People,dc=example,dc=com"
-	 * //               [uid] => "jsmith"
-	 * //               [homeDirectory] => "\\server\jsmith"
-	 * //           )
-	 * //       [uid=byoung,ou=People,dc=example,dc=com] => Array
-	 * //           (
-	 * //               [dn] => "uid=byoung,ou=Samba,ou=People,dc=example,dc=com"
-	 * //               [uid] => "byoung"
-	 * //               [homeDirectory] => "\\server\byoung"
-	 * //           )
-	 * //    )
+	 * //	Array (
+	 * //		[uid=jsmith,ou=People,dc=example,dc=com] => Array (
+	 * //			[dn] => "uid=jsmith,ou=People,dc=example,dc=com"
+	 * //			[uid] => "jsmith"
+	 * //			[homeDirectory] => "\\server\jsmith"
+	 * //		)
+	 * //		[uid=byoung,ou=People,dc=example,dc=com] => Array (
+	 * //			[dn] => "uid=byoung,ou=Samba,ou=People,dc=example,dc=com"
+	 * //			[uid] => "byoung"
+	 * //			[homeDirectory] => "\\server\byoung"
+	 * //		)
+	 * //	)
 	 * </code>
 	 *
 	 * WARNING: This function will use a lot of memory on large searches since the entire result set is
@@ -1746,17 +1705,18 @@ class LDAPserver {
 	 * @param string $base_dn The DN of the base of search.
 	 * @param array $attrs An array of attributes to include in the search result (example: array( "objectClass", "uid", "sn" )).
 	 * @param string $scope The LDAP search scope. Must be one of "base", "one", or "sub". Standard LDAP search scope.
-	 * @param bool $sort_results Specify false to not sort results by DN or true to have the
-	 *  returned array sorted by DN (uses ksort)
+	 * @param bool $sort_results Specify false to not sort results by DN
+	 *                           or true to have the returned array sorted by DN (uses ksort)
+	 *                           or an array of attribute names to sort by attribute values
 	 * @param int $deref When handling aliases or referrals, this specifies whether to follow referrals. Must be one of
-	 *  LDAP_DEREF_ALWAYS, LDAP_DEREF_NEVER, LDAP_DEREF_SEARCHING, or LDAP_DEREF_FINDING. See the PHP LDAP API for details.
+	 *	LDAP_DEREF_ALWAYS, LDAP_DEREF_NEVER, LDAP_DEREF_SEARCHING, or LDAP_DEREF_FINDING. See the PHP LDAP API for details.
 	 * @param int $size_limit Size limit for search
-	 * @todo: Add entries to tree cache.
 	 */
-	function search($resource=null,$base_dn=null,$filter,$attrs=array(),$scope='sub',$sort_results=true,$deref=LDAP_DEREF_NEVER,$size_limit=0,$sort_by=null) {
+	function search($resource=null,$base_dn=null,$filter,$attrs=array(),$scope='sub',$sort_results=true,$deref=LDAP_DEREF_NEVER,$size_limit=0) {
 		if (DEBUG_ENABLED)
-			debug_log('%s::search(): Entered with (%s,%s,%s,%s,%s,%s,%s)',17,
-				get_class($this),is_resource($this),$base_dn,$filter,$attrs,$scope,$sort_results,$deref);
+			debug_log('Entered with (%s,%s,%s,%s,%s,%s,%s)',17,__FILE__,__LINE__,__METHOD__,
+				is_resource($this),$base_dn,$filter,$attrs,$scope,$sort_results,$deref);
+		$this->lastop = 'read';
 
 		# If we dont have a resource, we'll connect with default settings
 		if (! is_resource($resource))
@@ -1770,7 +1730,7 @@ class LDAPserver {
 			}
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::search(): %s search PREPARE.',16,get_class($this),$scope);
+			debug_log('%s search PREPARE.',16,__FILE__,__LINE__,__METHOD__,$scope);
 
 		switch ($scope) {
 			case 'base':
@@ -1788,33 +1748,46 @@ class LDAPserver {
 		}
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::search(): %s search from base [%s] with [%s] for [%s] COMPLETE ().',16,
-				get_class($this),$scope,$base_dn,$filter,$attrs,is_null($search));
+			debug_log('Search scope [%s] base [%s] filter [%s] attrs [%s] COMPLETE (%s).',16,__FILE__,__LINE__,__METHOD__,
+				$scope,$base_dn,$filter,$attrs,is_null($search));
 
 		if (! $search)
 			return array();
 
 		$return = array();
-		if (is_array($sort_by))
-			foreach ($sort_by as $sort)
-				if (in_array($sort,$attrs))
-					ldap_sort($resource,$search,$sort);
+
+		# @todo: this needs to convert everything to lowercase to work.
+		if (is_array($sort_results))
+			# we sort with the more important attribute (the first one) at the end
+			for ($i = count($sort_results) - 1; $i >= 0; --$i)
+				if (($sort_results[$i] == 'dn') || in_array($sort_results[$i], $attrs))
+					ldap_sort($resource, $search, $sort_results[$i]);
 
 		# Get the first entry identifier
-		if ($entry_id = ldap_first_entry($resource,$search))
+		if ($entry_id = ldap_first_entry($resource,$search)) {
 
 			# Iterate over the entries
 			while ($entry_id) {
 
 				# Get the distinguished name of the entry
 				$dn = ldap_get_dn($resource,$entry_id);
+
+				if (DEBUG_ENABLED)
+					debug_log('Got DN [%s].',64,__FILE__,__LINE__,__METHOD__,$dn);
+
 				$return[$dn]['dn'] = $dn;
 
 				# Get the attributes of the entry
 				$attrs = ldap_get_attributes($resource,$entry_id);
 
+				if (DEBUG_ENABLED)
+					debug_log('Got ATTRS [%s].',64,__FILE__,__LINE__,__METHOD__,$attrs);
+
 				# Get the first attribute of the entry
-				if ($attr = ldap_first_attribute($resource,$entry_id,$attrs))
+				if ($attr = ldap_first_attribute($resource,$entry_id,$attrs)) {
+
+					if (DEBUG_ENABLED)
+						debug_log('Processing ATTR [%s].',64,__FILE__,__LINE__,__METHOD__,$attr);
 
 					# Iterate over the attributes
 					while ($attr) {
@@ -1834,16 +1807,18 @@ class LDAPserver {
 
 						$attr = ldap_next_attribute($resource,$entry_id,$attrs);
 					} # end while attr
+				}
 
 				$entry_id = ldap_next_entry($resource,$entry_id);
 
 			} # End while entry_id
+		}
 
-		if ($sort_results && is_array($return))
+		if (($sort_results === true) && is_array($return))
 			ksort($return);
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::search(): Returning (%s)',17,get_class($this),$return);
+			debug_log('Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$return);
 
 		return $return;
 	}
@@ -1851,14 +1826,14 @@ class LDAPserver {
 	/**
 	 * Determines if an attribute's value can contain multiple lines. Attributes that fall
 	 * in this multi-line category may be configured in config.php. Hence, this function
-	 * accesses the global variable $config->custom->appearance['multi_line_attributes'];
+	 * accesses the global variable $_SESSION['plaConfig']->custom->appearance['multi_line_attributes'];
 	 *
 	 * Usage example:
 	 * <code>
-	 *  if ($ldapserver->isMultiLineAttr('postalAddress'))
-	 *      echo "<textarea name=\"postalAddress\"></textarea>";
-	 *  else
-	 *      echo "<input name=\"postalAddress\" type=\"text\">";
+	 *	if ($ldapserver->isMultiLineAttr('postalAddress'))
+	 *		echo "<textarea name=\"postalAddress\"></textarea>";
+	 *	else
+	 *		echo "<input name=\"postalAddress\" type=\"text\">";
 	 * </code>
 	 *
 	 * @param string $attr_name The name of the attribute of interestd (case insensivite)
@@ -1867,8 +1842,6 @@ class LDAPserver {
 	 * @return bool
 	 */
 	function isMultiLineAttr($attr_name,$val=null) {
-		global $config;
-
 		# Set default return
 		$return = false;
 
@@ -1878,7 +1851,7 @@ class LDAPserver {
 
 		# Next, compare strictly by name first
 		else
-			foreach ($config->GetValue('appearance','multi_line_attributes') as $multi_line_attr_name)
+			foreach ($_SESSION['plaConfig']->GetValue('appearance','multi_line_attributes') as $multi_line_attr_name)
 				if (strcasecmp($multi_line_attr_name,$attr_name) == 0) {
 					$return = true;
 					break;
@@ -1892,7 +1865,7 @@ class LDAPserver {
 				$syntax_oid = $schema_attr->getSyntaxOID();
 
 				if ($syntax_oid)
-					foreach ($config->GetValue('appearance','multi_line_syntax_oids') as $multi_line_syntax_oid)
+					foreach ($_SESSION['plaConfig']->GetValue('appearance','multi_line_syntax_oids') as $multi_line_syntax_oid)
 						if ($multi_line_syntax_oid == $syntax_oid) {
 							$return = true;
 							break;
@@ -1901,8 +1874,7 @@ class LDAPserver {
 		}
 
 		if (DEBUG_ENABLED)
-			debug_log('%s:isMultiLineAttr(): Entered with (%s,%s), Returning (%s)',17,
-				get_class($this),$attr_name,$val,$return);
+			debug_log('Entered with (%s,%s), Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$attr_name,$val,$return);
 
 		return $return;
 	}
@@ -1915,7 +1887,7 @@ class LDAPserver {
 	 */
 	function isDNAttr($attr_name) {
 		if (DEBUG_ENABLED)
-			debug_log('%s:isDNAttr(): Entered with (%s)',17,get_class($this),$attr_name);
+			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$attr_name);
 
 		# Simple test first
 		$dn_attrs = array('aliasedObjectName');
@@ -1967,7 +1939,7 @@ class LDAPserver {
 	 */
 	function setLoginDN($dn,$password,$anon_bind) {
 		if (DEBUG_ENABLED)
-			debug_log('%s:setLoginDN(): Entered with (%s,%s,%s)',17,get_class($this),$dn,$password,$anon_bind);
+			debug_log('Entered with (%s,%s,%s)',17,__FILE__,__LINE__,__METHOD__,$dn,$password,$anon_bind);
 
 		if (! $this->auth_type)
 			return false;
@@ -2026,7 +1998,7 @@ class LDAPserver {
 	 */
 	function unsetLoginDN() {
 		if (DEBUG_ENABLED)
-			debug_log('%s:unsetLoginDN(): Entered with ()',17,get_class($this));
+			debug_log('Entered with ()',17,__FILE__,__LINE__,__METHOD__);
 
 		if (! $this->auth_type)
 			return false;
@@ -2097,7 +2069,7 @@ class LDAPserver {
 	 */
 	function isJpegPhoto($attr_name) {
 		if (DEBUG_ENABLED)
-			debug_log('%s:isJpegPhoto(): Entered with (%s)',17,get_class($this),$attr_name);
+			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$attr_name);
 
 		# easy quick check
 		if (! strcasecmp($attr_name,'jpegPhoto') || ! strcasecmp($attr_name,'photo'))
@@ -2128,7 +2100,7 @@ class LDAPserver {
 	 */
 	function isAttrBoolean($attr_name) {
 		if (DEBUG_ENABLED)
-			debug_log('%s:isAttrBoolean(): Entered with (%s)',17,get_class($this),$attr_name);
+			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$attr_name);
 
 		$type = ($schema_attr = $this->getSchemaAttribute($attr_name)) ? $schema_attr->getType() : null;
 
@@ -2154,7 +2126,7 @@ class LDAPserver {
 	 */
 	function isAttrBinary($attr_name) {
 		if (DEBUG_ENABLED)
-			debug_log('%s:isAttrBinary(): Entered with (%s)',17,get_class($this),$attr_name);
+			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$attr_name);
 
 		/**
 		 * Determining if an attribute is binary can be an expensive operation.
@@ -2193,7 +2165,7 @@ class LDAPserver {
 		if (! $schema_attr) {
 
 			/* Strangely, some attributeTypes may not show up in the server
-			   schema. This behavior has been observed in MS Active Directory.*/
+			 * schema. This behavior has been observed in MS Active Directory.*/
 			$type = null;
 			$syntax = null;
 
@@ -2230,7 +2202,7 @@ class LDAPserver {
 	 * in config.php with the $read_only_attrs array.
 	 * Attributes are configured as read-only in config.php thus:
 	 * <code>
-	 *  $read_only_attrs = array( "objectClass", "givenName" );
+	 *	$read_only_attrs = array( "objectClass", "givenName" );
 	 * </code>
 	 *
 	 * @param string $attr The name of the attribute to test.
@@ -2238,9 +2210,10 @@ class LDAPserver {
 	 */
 	function isAttrReadOnly($attr) {
 		if (DEBUG_ENABLED)
-			debug_log('%s:isAttrReadOnly(): Entered with (%s)',17,get_class($this),$attr);
+			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$attr);
 
-		global $read_only_attrs, $read_only_except_dn;
+		$read_only_attrs = isset($_SESSION['plaConfig']->read_only_attrs) ? $_SESSION['plaConfig']->read_only_attrs : array();
+		$read_only_except_dn = isset($_SESSION['plaConfig']->read_only_except_dn) ? $_SESSION['plaConfig']->read_only_except_dn : '';
 
 		$attr = trim($attr);
 		if (! $attr)
@@ -2253,7 +2226,7 @@ class LDAPserver {
 			return false;
 
 		# Is the user excluded?
-		if (isset($read_only_except_dn) && $this->userIsMember($this->getLoggedInDN(),$read_only_except_dn))
+		if (isset($read_only_except_dn) && $read_only_except_dn && $this->userIsMember($this->getLoggedInDN(),$read_only_except_dn))
 			return false;
 
 		foreach ($read_only_attrs as $attr_name)
@@ -2269,13 +2242,13 @@ class LDAPserver {
 	 * array.
 	 * Attributes are configured as hidden in config.php thus:
 	 * <code>
-	 *  $hidden_attrs = array( "objectClass", "givenName" );
+	 *	$hidden_attrs = array( "objectClass", "givenName" );
 	 * </code>
 	 * or
 	 * <code>
-	 *  $hidden_attrs_ro = array( "objectClass", "givenName", "shadowWarning",
-	 *                     "shadowLastChange", "shadowMax", "shadowFlag",
-	 *                     "shadowInactive", "shadowMin", "shadowExpire" );
+	 *	$hidden_attrs_ro = array( "objectClass", "givenName", "shadowWarning",
+	 *		"shadowLastChange", "shadowMax", "shadowFlag",
+	 *		"shadowInactive", "shadowMin", "shadowExpire" );
 	 * </code>
 	 *
 	 * @param string $attr The name of the attribute to test.
@@ -2283,9 +2256,11 @@ class LDAPserver {
 	 */
 	function isAttrHidden($attr) {
 		if (DEBUG_ENABLED)
-			debug_log('%s:isAttrHidden(): Entered with (%s)',17,get_class($this),$attr);
+			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$attr);
 
-		global $hidden_attrs, $hidden_attrs_ro, $hidden_except_dn;
+		$hidden_attrs = isset($_SESSION['plaConfig']->hidden_attrs) ? $_SESSION['plaConfig']->hidden_attrs : array();
+		$hidden_attrs_ro = isset($_SESSION['plaConfig']->hidden_attrs_ro) ? $_SESSION['plaConfig']->hidden_attrs_ro : array();
+		$hidden_except_dn = isset($_SESSION['plaConfig']->hidden_except_dn) ? $_SESSION['plaConfig']->hidden_except_dn : '';
 
 		$attr = trim($attr);
 		if (! $attr)
@@ -2304,7 +2279,7 @@ class LDAPserver {
 			$hidden_attrs_ro = $hidden_attrs;
 
 		# Is the user excluded?
-		if (isset($hidden_except_dn) && $this->userIsMember($this->getLoggedInDN(),$hidden_except_dn))
+		if (isset($hidden_except_dn) && $hidden_except_dn && $this->userIsMember($this->getLoggedInDN(),$hidden_except_dn))
 			return false;
 
 		if ($this->isReadOnly()) {
@@ -2322,7 +2297,7 @@ class LDAPserver {
 	}
 
 	/**
-	 * Fetches the password of the currently logged in user (for auth_types "cookie" and "session" only)
+	 * Fetches the password of the currently logged in user (for auth_types "cookie", "session" and "http" only)
 	 * or false if the current login is anonymous.
 	 *
 	 * @return string
@@ -2331,7 +2306,7 @@ class LDAPserver {
 	 */
 	function getLoggedInPass() {
 		if (DEBUG_ENABLED)
-			debug_log('%s::getLoggedInPass(): Entered with ()',17,get_class($this));
+			debug_log('Entered with ()',17,__FILE__,__LINE__,__METHOD__);
 
 		if (! $this->auth_type)
 			return false;
@@ -2358,6 +2333,15 @@ class LDAPserver {
 					return pla_blowfish_decrypt($pass);
 				break;
 
+			case 'http':
+				$pass = isset($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : false;
+
+				if ($pass == '0')
+					return null;
+				else
+					return $pass;
+				break;	
+
 			case 'config':
 				return $this->login_pass;
 				break;
@@ -2370,7 +2354,7 @@ class LDAPserver {
 	/**
 	 * Returns the DN who is logged in currently to the given server, which may
 	 * either be a DN or the string 'anonymous'. This applies only for auth_types
-	 * "cookie" and "session".
+	 * "cookie", "session" and "http".
 	 *
 	 * One place where this function is used is the tree viewer:
 	 * After a user logs in, the text "Logged in as: " is displayed under the server
@@ -2385,7 +2369,7 @@ class LDAPserver {
 		$return = false;
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::getLoggedInDN(): auth_type is [%s]',66,get_class($this),$this->auth_type);
+			debug_log('auth_type is [%s]',66,__FILE__,__LINE__,__METHOD__,$this->auth_type);
 
 		if ($this->auth_type) {
 			switch ($this->auth_type) {
@@ -2409,6 +2393,71 @@ class LDAPserver {
 
 					break;
 
+				case 'http':
+					if (isset($_SERVER['PHP_AUTH_USER']))
+					{
+						if ($this->isLoginAttrEnabled()) {
+							if ($this->isLoginStringEnabled()) {
+								$return = str_replace('<username>',$_SERVER['PHP_AUTH_USER'],$this->getLoginString());
+							} else {
+								if ($this->login_dn)
+									$this->connect(true,'user',false,true,$this->login_dn,$this->login_pass);
+								else
+									$this->connect(true,'anonymous');
+
+								if (! empty($this->login_class))
+									$filter = sprintf('(&(objectClass=%s)(%s=%s))',
+									                  $this->login_class,$this->login_attr,$_SERVER['PHP_AUTH_USER']);
+								else
+									$filter = sprintf('%s=%s',$this->login_attr,$_SERVER['PHP_AUTH_USER']);
+
+								foreach ($this->getBaseDN() as $base_dn) {
+									$result = $this->search(null,$base_dn,$filter,array('dn'));
+									$result = array_pop($result);
+									$return = $result['dn'];
+									if ($return) break;
+								}
+							}
+						} else {
+							$return = $_SERVER['PHP_AUTH_USER'];
+						}
+					}
+					else
+						$return = false;
+
+					if ($return) {
+						$dn = $return;
+						$pass = '';
+						if (isset($_SERVER['PHP_AUTH_PW'])) $pass = $_SERVER['PHP_AUTH_PW'];
+
+						if ($this->userIsAllowedLogin($dn)) {
+							$ds = $this->connect(false,'user',true,true,$dn,$pass);
+							if (! is_resource($ds)) {
+								system_message(array(
+									'title'=>_('Authenticate to server'),
+									'body'=>_('Bad username or password. Please try again.'),
+									'type'=>'error'),
+									'cmd.php?cmd=login_form');
+								syslog_notice("Authentification FAILED for $dn");
+							}
+
+							$this->auth_type = 'config';
+							$this->login_dn = $dn;
+							$this->login_pass = $pass;
+						} else {
+							//system_message(array(
+							//	'title'=>_('Authenticate to server'),
+							//	'body'=>_('Sorry, you are not allowed to use phpLDAPadmin with this LDAP server.'),
+							//	'type'=>'error'),
+							//	'cmd.php?cmd=login_form');
+							//pla_error(_('Sorry, you are not allowed to use phpLDAPadmin with this LDAP server.'));
+							$this->auth_type = 'session';
+							$return = false;
+						}
+					}
+
+					break;
+
 				case 'config':
 					$return = $this->login_dn;
 					break;
@@ -2419,7 +2468,7 @@ class LDAPserver {
 		}
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::getLoggedInDN(): Entered with (), Returning (%s)',17,get_class($this),$return);
+			debug_log('Entered with (), Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$return);
 
 		return $return;
 	}
@@ -2430,21 +2479,17 @@ class LDAPserver {
 	 * "creatorsName", and any other attribute that the LDAP server sets automatically. The returned
 	 * associative array is of this form:
 	 * <code>
-	 *  Array
-	 *  (
-	 *    [creatorsName] => Array
-	 *        (
-	 *           [0] => "cn=Admin,dc=example,dc=com"
-	 *        )
-	 *    [createTimeStamp]=> Array
-	 *        (
-	 *           [0] => "10401040130"
-	 *        )
-	 *    [hasSubordinates] => Array
-	 *        (
-	 *           [0] => "FALSE"
-	 *        )
-	 *  )
+	 *	Array (
+	 *		[creatorsName] => Array (
+	 *			[0] => "cn=Admin,dc=example,dc=com"
+	 *		)
+	 *		[createTimeStamp]=> Array (
+	 *			[0] => "10401040130"
+	 *		)
+	 *		[hasSubordinates] => Array (
+	 *			[0] => "FALSE"
+	 *		)
+	 *	)
 	 * </code>
 	 *
 	 * @param string $dn The DN of the entry whose interal attributes are desired.
@@ -2457,16 +2502,22 @@ class LDAPserver {
 	 */
 	function getDNSysAttrs($dn,$deref=LDAP_DEREF_NEVER) {
 		if (DEBUG_ENABLED)
-			debug_log('%s:getDNSysAttrs(): Entered with (%s,%s)',17,get_class($this),$dn,$deref);
+			debug_log('Entered with (%s,%s)',17,__FILE__,__LINE__,__METHOD__,$dn,$deref);
 
 		$attrs = array('creatorsname','createtimestamp','modifiersname',
 			'structuralObjectClass','entryUUID','modifytimestamp',
 			'subschemaSubentry','hasSubordinates','+');
 
 		$search = $this->search(null,$dn,'(objectClass=*)',$attrs,'base',false,$deref);
+
+		$return_attrs = array();
 		foreach ($search as $dn => $attrs)
 			foreach ($attrs as $attr => $value) {
-				$return_attrs[$attr][] = $value;
+				if (is_array($value)) {
+					foreach ($value as $val) $return_attrs[$attr][] = $val;
+				} else {
+					$return_attrs[$attr][] = $value;
+				}
 			}
 
 		return $return_attrs;
@@ -2482,26 +2533,21 @@ class LDAPserver {
 	 * Sample return value of <code>getDNAttrs( 0, "cn=Bob,ou=pepole,dc=example,dc=com" )</code>
 	 *
 	 * <code>
-	 * Array
-	 *  (
-	 *   [objectClass] => Array
-	 *       (
-	 *           [0] => person
-	 *           [1] => top
-	 *       )
-	 *   [cn] => Array
-	 *       (
-	 *           [0] => Bob
-	 *       )
-	 *   [sn] => Array
-	 *       (
-	 *           [0] => Jones
-	 *       )
-	 *   [dn] => Array
-	 *       (
-	 *            [0] => cn=Bob,ou=pepole,dc=example,dc=com
-	 *       )
-	 *  )
+	 *	Array (
+	 *		[objectClass] => Array (
+	 *			[0] => person
+	 *			[1] => top
+	 *		)
+	 *		[cn] => Array (
+	 *			[0] => Bob
+	 *		)
+	 *		[sn] => Array (
+	 *			[0] => Jones
+	 *		)
+	 *		[dn] => Array (
+	 *			[0] => cn=Bob,ou=pepole,dc=example,dc=com
+	 *		)
+	 *	)
 	 * </code>
 	 *
 	 * @param string $dn The distinguished name (DN) of the entry whose attributes/values to fetch.
@@ -2517,19 +2563,34 @@ class LDAPserver {
 	 * @see getDNAttr
 	 */
 	function getDNAttrs($dn,$lower_case_attr_names=false,$deref=LDAP_DEREF_NEVER) {
+		global $CACHE;
+
 		if (DEBUG_ENABLED)
-			debug_log('%s:getDNAttrs(): Entered with (%s,%s,%s)',17,
-				get_class($this),$dn,$lower_case_attr_names,$deref);
+			debug_log('Entered with (%s,%s,%s)',17,__FILE__,__LINE__,__METHOD__,$dn,$lower_case_attr_names,$deref);
 
-		$attrs = $this->search(null,dn_escape($dn),'(objectClass=*)',array(),'base',false,$deref);
-		$attrs = array_pop($attrs);
+		$attrs = null;
 
-		if (is_array($attrs)) {
-			if ($lower_case_attr_names)
-				$attrs = array_change_key_case($attrs);
+		if (isset($CACHE['dnattrs'][$dn])) {
+			if (DEBUG_ENABLED)
+				debug_log('Entered with (%s,%s,%s), Returning CACHED (%s)',17,__FILE__,__LINE__,__METHOD__,
+					$dn,$lower_case_attr_names,$deref,$CACHE['dnattrs'][$dn]);
 
-			ksort($attrs);
+			$attrs = $CACHE['dnattrs'][$dn];
+
+		} else {
+			$attrs = $this->search(null,dn_escape($dn),'(objectClass=*)',array(),'base',false,$deref);
+			if (count($attrs))
+				$attrs = array_pop($attrs);
+
+			foreach ($attrs as $key => $values)
+				if (! is_array($attrs[$key]))
+					$attrs[$key] = array($attrs[$key]);
+
+			$CACHE['dnattrs'][$dn] = $attrs;
 		}
+
+		if ($lower_case_attr_names)
+			$attrs = array_change_key_case($attrs);
 
 		return $attrs;
 	}
@@ -2539,20 +2600,16 @@ class LDAPserver {
 	 * one attribute of an object. Example calls:
 	 *
 	 * <code>
-	 * print_r( getDNAttr( 0, "cn=Bob,ou=people,dc=example,dc=com", "sn" ) );
-	 * // prints:
-	 * //  Array
-	 * //    (
-	 * //       [0] => "Smith"
-	 * //    )
+	 *	print_r( getDNAttr( 0, "cn=Bob,ou=people,dc=example,dc=com", "sn" ) );
+	 *	Array (
+	 *		[0] => "Smith"
+	 *	)
 	 *
 	 * print_r( getDNAttr( 0, "cn=Bob,ou=people,dc=example,dc=com", "objectClass" ) );
-	 * // prints:
-	 * //  Array
-	 * //    (
-	 * //       [0] => "top"
-	 * //       [1] => "person"
-	 * //    )
+	 *	Array (
+	 *		[0] => "top"
+	 *		[1] => "person"
+	 *	)
 	 * </code>
 	 *
 	 * @param string $dn The distinguished name (DN) of the entry whose attributes/values to fetch.
@@ -2565,11 +2622,11 @@ class LDAPserver {
 	 *            the referencing DN. See http://php.net/ldap_search for the 4 valid
 	 *            options.
 	 * @see getDNAttrs
+	 * @return array
 	 */
 	function getDNAttr($dn,$attr,$lower_case_attr_names=false,$deref=LDAP_DEREF_NEVER) {
 		if (DEBUG_ENABLED)
-			debug_log('%s:getDNAttr(): Entered with (%s,%s,%s,%s)',17,
-				get_class($this),$dn,$attr,$lower_case_attr_names,$deref);
+			debug_log('Entered with (%s,%s,%s,%s)',17,__FILE__,__LINE__,__METHOD__,$dn,$attr,$lower_case_attr_names,$deref);
 
 		if ($lower_case_attr_names)
 			$attr = strtolower($attr);
@@ -2579,7 +2636,7 @@ class LDAPserver {
 		if (isset($attrs[$attr]))
 			return $attrs[$attr];
 		else
-			return false;
+			return array();
 	}
 
 	/**
@@ -2590,6 +2647,8 @@ class LDAPserver {
 	 * @see get_container
 	 */
 	function getContainerTop($dn) {
+		$return = $dn;
+
 		foreach ($this->getBaseDN() as $base_dn) {
 			if (preg_match("/${base_dn}$/",$dn)) {
 				$return = $base_dn;
@@ -2597,48 +2656,51 @@ class LDAPserver {
 			}
 		}
 
-		debug_log('%s:getContainerTop(): Entered with (%s), Returning (%s)',17,get_class($this),$dn,$return);
+		if (DEBUG_ENABLED)
+			debug_log('Entered with (%s), Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$dn,$return);
 		return $return;
 	}
 
 	/**
 	 * Given a DN string and a path like syntax, this returns the parent container portion of the string.
 	 * @param string $dn The DN whose container string to return.
-	 * @param string $path Either '/', '.' or a series of '../'
+	 * @param string $path Either '/', '.' or something like '../../<rdn>'
 	 * @return string The container
 	 * @see get_rdn
 	 * @see get_container
 	 */
 	function getContainerParent($container,$path) {
 		if (DEBUG_ENABLED)
-			debug_log('%s:getContainerParent(): Entered with (%s,%s)',17,get_class($this),$container,$path);
+			debug_log('Entered with (%s,%s)',17,__FILE__,__LINE__,__METHOD__,$container,$path);
 
 		$top = $this->getContainerTop($container);
 
-		if ($path == '/') {
-			return $top;
+		if ($path[0] == '/') {
+			$container = $top;
+			$path = substr($path, 1);
 
 		} elseif ($path == '.') {
 			return $container;
 
-		} else {
-			$parenttree = explode('/',$path);
-
-			foreach ($parenttree as $index => $value) {
-				if ($value == '..') {
-					if (get_container($container))
-						$container = get_container($container);
-
-					if ($container == $top)
-						break;
-
-				} else {
-					break;
-				}
-			}
-
-			return $container;
 		}
+
+		$parenttree = explode('/',$path);
+
+		foreach ($parenttree as $index => $value) {
+			if ($value == '..') {
+				if (get_container($container))
+					$container = get_container($container);
+
+				if ($container == $top)
+					break;
+			} elseif($value) {
+				$container = "$value,$container";
+			} else {
+				break;
+			}
+		}
+
+		return $container;
 	}
 
 	/**
@@ -2646,17 +2708,17 @@ class LDAPserver {
 	 */
 	function showFriendlyAttr($attr) {
 		if (DEBUG_ENABLED)
-			debug_log('%s:showFriendlyAttr(): Entered with (%s)',17,get_class($this),$attr);
+			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$attr);
 
-		$friendly_attrs = process_friendly_attr_table();
+		$_SESSION['plaConfig']->friendly_attrs = process_friendly_attr_table();
 
-		if (isset($friendly_attrs[strtolower($attr)]))
-			$return = $friendly_attrs[strtolower($attr)];
+		if (isset($_SESSION['plaConfig']->friendly_attrs[strtolower($attr)]))
+			$return = $_SESSION['plaConfig']->friendly_attrs[strtolower($attr)];
 		else
 			$return = $attr;
 
 		if (DEBUG_ENABLED)
-			debug_log('%s:showFriendlyAttr(): Returning (%s)',17,get_class($this),$return);
+			debug_log('Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$return);
 		return $return;
 	}
 
@@ -2664,13 +2726,13 @@ class LDAPserver {
 	 * Determins if the specified attribute is contained in the $unique_attrs list
 	 * configured in config.php.
 	 * @return bool True if the specified attribute is in the $unique_attrs list and false
-	 *                  otherwise.
+	 *              otherwise.
 	 */
 	function isUniqueAttr($attr_name) {
 		if (DEBUG_ENABLED)
-			debug_log('%s:isUniqueAttr(): Entered with (%s)',17,get_class($this),$attr_name);
+			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$attr_name);
 
-		global $unique_attrs;
+		$unique_attrs = isset($_SESSION['plaConfig']->unique_attrs) ? $_SESSION['plaConfig']->unique_attrs : array();
 
 		if (isset($unique_attrs) && is_array($unique_attrs))
 			foreach ($unique_attrs as $attr)
@@ -2693,17 +2755,15 @@ class LDAPserver {
 	 */
 	function checkUniqueAttr($dn,$attr_name,$new_value) {
 		if (DEBUG_ENABLED)
-			debug_log('%s:checkUniqueAttr(): Entered with (%s,%s,%s)',17,
-				get_class($this),$dn,$attr_name,count($new_value));
-
-		global $ldapservers;
+			debug_log('Entered with (%s,%s,%s)',17,__FILE__,__LINE__,__METHOD__,
+				$dn,$attr_name,count($new_value));
 
 		# Is this attribute in the unique_attrs list?
 		if ($this->isUniqueAttr($attr_name)) {
 
-			$con = $this->connect(false,'unique_attr',false,
-				$ldapservers->GetValue($this->server_id,'unique_attrs','dn'),
-				$ldapservers->GetValue($this->server_id,'unique_attrs','pass'));
+			$con = $this->connect(false,'unique_attr',false,true,
+				$_SESSION['plaConfig']->ldapservers->GetValue($this->server_id,'unique_attrs','dn'),
+				$_SESSION['plaConfig']->ldapservers->GetValue($this->server_id,'unique_attrs','pass'));
 
 			if (! $con)
 				pla_error(sprintf(_('Unable to bind to <b>%s</b> with your with unique_attrs credentials. Please check your configuration file.'),$this->name));
@@ -2761,7 +2821,7 @@ class LDAPserver {
 	 */
 	function userIsMember($user,$group) {
 		if (DEBUG_ENABLED)
-			debug_log('%s:userIsMember(): Entered with (%s,%s)',17,get_class($this),$user,$group);
+			debug_log('Entered with (%s,%s)',17,__FILE__,__LINE__,__METHOD__,$user,$group);
 
 		$user = strtolower($user);
 		$group = $this->getDNAttrs($group,false,$deref=LDAP_DEREF_NEVER);
@@ -2786,30 +2846,28 @@ class LDAPserver {
 				in_array($user,arrayLower($group['uniquemember'])))
 
 				return true;
-
-			return false;
 		}
+
+		return false;
 	}
 
 	/**
 	 */
 	function userIsAllowedLogin($user) {
 		if (DEBUG_ENABLED)
-			debug_log('%s:userIsAllowedLogin(): Entered with (%s)',17,get_class($this),$user);
-
-		global $ldapservers;
+			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$user);
 
 		$user = trim(strtolower($user));
 
-		if (! $ldapservers->GetValue($this->server_id,'login','allowed_dns'))
+		if (! $_SESSION['plaConfig']->ldapservers->GetValue($this->server_id,'login','allowed_dns'))
 			return true;
 
-		foreach ($ldapservers->GetValue($this->server_id,'login','allowed_dns') as $login_allowed_dn) {
+		foreach ($_SESSION['plaConfig']->ldapservers->GetValue($this->server_id,'login','allowed_dns') as $login_allowed_dn) {
 			if (DEBUG_ENABLED)
-				debug_log('%s:userIsAllowedLogin: Working through (%s)',80,get_class($this),$login_allowed_dn);
+				debug_log('Working through (%s)',80,__FILE__,__LINE__,__METHOD__,$login_allowed_dn);
 
 			/* Check if $login_allowed_dn is an ldap search filter
-			   Is first occurence of 'filter=' (case ensitive) at position 0 ? */
+			 * Is first occurence of 'filter=' (case ensitive) at position 0 ? */
 			if (preg_match('/^\([&|]\(/',$login_allowed_dn)) {
 				$filter = $login_allowed_dn;
 
@@ -2819,8 +2877,8 @@ class LDAPserver {
 					$results = $this->search(null,$base_dn,$filter,array('dn'));
 
 					if (DEBUG_ENABLED)
-						debug_log('%s:userIsAllowedLogin: Search, Filter [%s], BaseDN [%s] Results [%s]',16,
-							get_class($this),$filter, $base_dn,$results);
+						debug_log('Search, Filter [%s], BaseDN [%s] Results [%s]',16,__FILE__,__LINE__,__METHOD__,
+							$filter, $base_dn,$results);
 
 					if ($results) {
 						foreach ($results as $result)
@@ -2831,8 +2889,7 @@ class LDAPserver {
 						if (count($dn_array) !== 0)
 							foreach ($dn_array as $result_dn) {
 								if (DEBUG_ENABLED)
-									debug_log('%s:userIsAllowedLogin: Comparing with [%s]',80,
-										get_class($this),$result_dn);
+									debug_log('Comparing with [%s]',80,__FILE__,__LINE__,__METHOD__,$result_dn);
 
 								# Check if $result_dn is a user DN
 								if (strcasecmp($user,trim(strtolower($result_dn))) == 0)
@@ -2898,6 +2955,19 @@ class LDAPservers {
 			'var'=>'port',
 			'default'=>'389');
 
+		/* Normally PLA will direct all read/write operations to host/port above. However,
+		 * if you specify hostwr/portwr, then write operations will be directed to that host/port.
+		 * Keep in mind, PLA is unaware that they may be two separate hosts and replication delays.  */
+		$this->default->server['hostwr'] = array(
+			'desc'=>'Host Name for write replica',
+			'var'=>'hostwr',
+			'default'=>null);
+
+		$this->default->server['portwr'] = array(
+			'desc'=>'Port Number for write replica',
+			'var'=>'portwr',
+			'default'=>'389');
+
 		$this->default->server['base'] = array(
 			'desc'=>'Base DN',
 			'default'=>array());
@@ -2928,7 +2998,7 @@ class LDAPservers {
 			'default'=>false);
 
 		/* This was created for IDS - since it doesnt present STRUCTURAL against objectClasses
-		   definitions when reading the schema.*/
+		 * definitions when reading the schema.*/
 		$this->default->server['schema_oclass_default'] = array(
 			'desc'=>'When reading the schema, and it doesnt specify objectClass type, default it to this',
 			'var'=>'schema_oclass_default',
@@ -2948,6 +3018,11 @@ class LDAPservers {
 			'desc'=>'Attribute to use to find the users DN',
 			'var'=>'login_attr',
 			'default'=>'dn');
+
+		$this->default->login['fallback_dn'] = array(
+			'desc'=>'Enable fallback to dn when using attr != dn',
+			'var'=>'login_fallback_dn',
+			'default'=>false);
 
 		$this->default->login['class'] = array(
 			'desc'=>'Strict login to users containing a specific objectClass',
@@ -3060,8 +3135,8 @@ class LDAPservers {
 
 	function SetValue($server_id,$key,$index,$value) {
 		if (defined('DEBUG_ENABLED') && (DEBUG_ENABLED))
-			debug_log('%s::SetValue(): Entered with (%s,%s,%s,%s)',3,
-				get_class($this),$server_id,$key,$index,$value);
+			debug_log('Entered with (%s,%s,%s,%s)',3,__FILE__,__LINE__,__METHOD__,
+				$server_id,$key,$index,$value);
 
 		if (! isset($this->default->$key))
 			pla_error("ERROR: Setting a key [$key] that isnt predefined.");
@@ -3081,10 +3156,11 @@ class LDAPservers {
 			pla_error("Error in configuration file, {$key}['$index'] should NOT be an array of values.");
 
 		# Some special processing.
+		# @todo: Add ldaps port details here.
 		if ($key == 'server') {
 			switch ($index) {
 				case 'host' :
-					if (strstr($value,"ldapi://"))
+					if (strstr($value,'ldapi://'))
 						$this->_ldapservers[$server_id][$key]['port'] = false;
 					break;
 			}
@@ -3098,28 +3174,70 @@ class LDAPservers {
 		else
 			$return = $this->default->{$key}[$index]['default'];
 
-		if (DEBUG_ENABLED)
-			debug_log('%s::GetValue(): Entered with (%s,%s,%s), Returning (%s)',3,
-				get_class($this),$server_id,$key,$index,$return);
+		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
+			debug_log('Entered with (%s,%s,%s), Returning (%s)',3,__FILE__,__LINE__,__METHOD__,
+				$server_id,$key,$index,$return);
 
 		return $return;
 	}
 
-	function GetServerList() {
-		return count($this->_ldapservers) ? array_keys($this->_ldapservers) : null;
-	}
+	function GetServerList($onlyvisible=true) {
+		global $CACHE;
 
-	function Instance($server_id) {
-		$instance = new LDAPserver($server_id);
+		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
+			debug_log('Entered with (%s)',3,__FILE__,__LINE__,__METHOD__,$onlyvisible);
 
-		foreach ($this->default as $key => $details) {
-			foreach ($details as $index => $value) {
-				if (isset($value['var']))
-					$instance->{$value['var']} = $this->GetValue($server_id,$key,$index);
-			}
+		if (! isset($CACHE['serverlist'])) {
+			$CACHE['serverlist'] = array();
+
+			foreach ($this->_ldapservers as $id => $ldapserver)
+				if (! $onlyvisible || ($onlyvisible && $this->GetValue($id,'appearance','visible')))
+					$CACHE['serverlist'][$id] = true;
+
+		} else {
+			if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
+				debug_log('Entered with (%s), Returning CACHED (%s)',3,__FILE__,__LINE__,__METHOD__,$onlyvisible,$CACHE['serverlist']);
+
+			return array_keys($CACHE['serverlist']);
 		}
 
-		return $instance;
+		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
+			debug_log('Entered with (%s), Returning (%s)',3,__FILE__,__LINE__,__METHOD__,$onlyvisible,$CACHE['serverlist']);
+
+		return array_keys($CACHE['serverlist']);
+	}
+
+	function Instance($server_id=null) {
+		if (DEBUG_ENABLED)
+			debug_log('Entered with (%s)',3,__FILE__,__LINE__,__METHOD__,$server_id);
+
+		global $CACHE;
+
+		# If no server_id defined, then pick the lowest one.
+		if (is_null($server_id))
+			$server_id = min($this->GetServerList());
+
+		if (! isset($CACHE['instance'][$server_id])) {
+			if (DEBUG_ENABLED)
+				debug_log('New instance of server (%s)',3,__FILE__,__LINE__,__METHOD__,$server_id);
+
+			$instance = new LDAPserver($server_id);
+
+			foreach ($this->default as $key => $details) {
+				foreach ($details as $index => $value) {
+					if (isset($value['var']))
+						$instance->{$value['var']} = $this->GetValue($server_id,$key,$index);
+				}
+			}
+
+			$CACHE['instance'][$server_id] = $instance;
+
+		} else {
+			if (DEBUG_ENABLED)
+				debug_log('Returning CACHEd instance (%s)',3,__FILE__,__LINE__,__METHOD__,$server_id);
+		}
+
+		return $CACHE['instance'][$server_id];
 	}
 }
 ?>

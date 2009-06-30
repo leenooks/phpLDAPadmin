@@ -6,9 +6,9 @@ msgstr ""
 "Project-Id-Version: messages\n"
 "Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
 "Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
-"Last-Translator: Unknown <nobody@nodomain.org>\n"
+"Last-Translator: Alvis Zhang <alvis_zhang@hotmail.com>\n"
 "POT-Creation-Date: 2005-11-29 17:45+0100\n"
-"PO-Revision-Date: 2005-11-29 18:22+0100\n"
+"PO-Revision-Date: 2007-04-11 17:00+0800\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,423 +18,423 @@ msgstr ""
 
 
 msgid "Simple Search Form"
-msgstr "¼òµ¥ËÑË÷±í¸ñ"
+msgstr "ç®€å•æœç´¢è¡¨æ ¼"
 
 
 msgid "Server"
-msgstr "·şÎñÆ÷"
+msgstr "æœåŠ¡å™¨"
 
 
 msgid "Search for entries whose"
-msgstr "ËÑË÷ÌõÄ¿µÄËùÊô"
+msgstr "æœç´¢æ¡ç›®çš„æ‰€å±"
 
 
 msgid "Base DN"
-msgstr "»ù±¾DN"
+msgstr "åŸºæœ¬DN"
 
 
 msgid "Search Scope"
-msgstr "ËÑË÷·¶Î§"
+msgstr "æœç´¢èŒƒå›´"
 
 
 msgid "Show Attributtes"
-msgstr "ÏÔÊ¾ÊôĞÔ"
+msgstr "æ˜¾ç¤ºå±æ€§"
 
 
 msgid "Search"
-msgstr "ËÑË÷"
+msgstr "æœç´¢"
 
 
 msgid "Select a predefined search"
-msgstr "Ñ¡ÔñÒ»¸öÔ¤¶¨ÒåµÄËÑË÷"
+msgstr "é€‰æ‹©ä¸€ä¸ªé¢„å®šä¹‰çš„æœç´¢"
 
 
 msgid "Predefined Searches"
-msgstr "Ô¤¶¨ÒåµÄËÑË÷"
+msgstr "é¢„å®šä¹‰çš„æœç´¢"
 
 
 msgid "No queries have been defined in config.php."
-msgstr "ÔÚconfig.phpÀïÃ»ÓĞÌõÄ¿¶¨Òå¡£"
+msgstr "åœ¨config.phpé‡Œæ²¡æœ‰æ¡ç›®å®šä¹‰ã€‚"
 
 
 msgid "export results"
-msgstr "µ¼³ö½á¹û"
+msgstr "å¯¼å‡ºç»“æœ"
 
 
 msgid "Unrecognized search result format: %s"
-msgstr "²»ÄÜÊ¶±ğµÄËÑË÷½á¹û¸ñÊ½£º %s"
+msgstr "ä¸èƒ½è¯†åˆ«çš„æœç´¢ç»“æœæ ¼å¼ï¼š %s"
 
 
 msgid "Format"
-msgstr "¸ñÊ½"
+msgstr "æ ¼å¼"
 
 
 msgid "list"
-msgstr "ÁĞ±í"
+msgstr "åˆ—è¡¨"
 
 
 msgid "table"
-msgstr "±í¸ñ"
+msgstr "è¡¨æ ¼"
 
 
 msgid "Your config.php specifies an invalid value for $default_search_display: %s. Please fix it"
-msgstr "ÄãµÄconfig.php ¸ø$default_search_displayÖ¸¶¨ÁËÒ»¸ö·Ç·¨µÄÖµ£º %s£¬Çë¸üÕı"
+msgstr "ä½ çš„config.php ç»™$default_search_displayæŒ‡å®šäº†ä¸€ä¸ªéæ³•çš„å€¼ï¼š %sï¼Œè¯·æ›´æ­£"
 
 
 msgid "Page %d"
-msgstr "µÚ%dÒ³"
+msgstr "ç¬¬%dé¡µ"
 
 
 msgid "The search found no results."
-msgstr "Õâ´ÎËÑË÷Ã»ÕÒµ½½á¹û¡£"
+msgstr "è¿™æ¬¡æœç´¢æ²¡æ‰¾åˆ°ç»“æœã€‚"
 
 
 msgid "Request feature"
-msgstr "¹¦ÄÜĞèÇó"
+msgstr "åŠŸèƒ½éœ€æ±‚"
 
 
 msgid "Report a bug"
-msgstr "±¨¸æ´íÂ©"
+msgstr "æŠ¥å‘Šé”™æ¼"
 
 
 msgid "create"
-msgstr "´´½¨"
+msgstr "åˆ›å»º"
 
 
 msgid "info"
-msgstr "ĞÅÏ¢"
+msgstr "ä¿¡æ¯"
 
 
 msgid "import"
-msgstr "µ¼Èë"
+msgstr "å¯¼å…¥"
 
 
 msgid "refresh"
-msgstr "Ë¢ĞÂ"
+msgstr "åˆ·æ–°"
 
 
 msgid "logout"
-msgstr "ÍË³ö"
+msgstr "é€€å‡º"
 
 
 msgid "Create new entry here"
-msgstr "´´½¨ĞÂÌõÄ¿"
+msgstr "åˆ›å»ºæ–°æ¡ç›®"
 
 
 msgid "View schema for"
-msgstr "²é¿´¸ñÊ½"
+msgstr "æŸ¥çœ‹æ ¼å¼"
 
 
 msgid "Refresh all expanded containers for"
-msgstr "Ë¢ĞÂËùÓĞÕ¹¿ªµÄÈİÆ÷£¬À´×Ô"
+msgstr "åˆ·æ–°æ‰€æœ‰å±•å¼€çš„å®¹å™¨ï¼Œæ¥è‡ª"
 
 
 msgid "Create a new entry on"
-msgstr "´´½¨ĞÂÌõÄ¿µ½"
+msgstr "åˆ›å»ºæ–°æ¡ç›®åˆ°"
 
 
 msgid "new"
-msgstr "ĞÂ½¨"
+msgstr "æ–°å»º"
 
 
 msgid "View server-supplied information"
-msgstr "²é¿´¸½¼ÓµÄ·şÎñÆ÷ĞÅÏ¢"
+msgstr "æŸ¥çœ‹é™„åŠ çš„æœåŠ¡å™¨ä¿¡æ¯"
 
 
 msgid "Import entries from an LDIF file"
-msgstr "´ÓLDIFÎÄ¼şµ¼ÈëÌõÄ¿"
+msgstr "ä»LDIFæ–‡ä»¶å¯¼å…¥æ¡ç›®"
 
 
 msgid "Logout of this server"
-msgstr "ÍË³öÕâ¸ö·şÎñÆ÷"
+msgstr "é€€å‡ºè¿™ä¸ªæœåŠ¡å™¨"
 
 
 msgid "Logged in as: "
-msgstr "µÇÂ¼Îª£º "
+msgstr "ç™»å½•ä¸ºï¼š "
 
 
 msgid "This is not a valid DN."
-msgstr "¸ÃDNÊÇÎŞĞ§¡£"
+msgstr "è¯¥DNæ˜¯æ— æ•ˆã€‚"
 
 
 msgid "This entry does not exist."
-msgstr "¸ÃÌõÄ¿²»´æÔÚ¡£"
+msgstr "è¯¥æ¡ç›®ä¸å­˜åœ¨ã€‚"
 
 
 msgid "read only"
-msgstr "Ö»¶Á"
+msgstr "åªè¯»"
 
 
 msgid "This attribute has been flagged as read only by the phpLDAPadmin administrator"
-msgstr "¸ÃÊôĞÔÒÑ¾­±»phpLDAPadmin ¹ÜÀíÔ±±êÊ¶ÎªÖ»¶Á"
+msgstr "è¯¥å±æ€§å·²ç»è¢«phpLDAPadmin ç®¡ç†å‘˜æ ‡è¯†ä¸ºåªè¯»"
 
 
 msgid "Could not determine the root of your LDAP tree."
-msgstr "¼ì²â²»µ½ÄãµÄLDAPÊ÷µÄ¸ù¡£"
+msgstr "æ£€æµ‹ä¸åˆ°ä½ çš„LDAPæ ‘çš„æ ¹ã€‚"
 
 
 msgid "It appears that the LDAP server has been configured to not reveal its root."
-msgstr "ºÃÏñÄãµÄLDAP·şÎñÆ÷ÅäÖÃÀ´ÏŞÖÆÁË²»ÒªÏÔÂ¶ËüµÄ¸ù¡£"
+msgstr "å¥½åƒä½ çš„LDAPæœåŠ¡å™¨é…ç½®æ¥é™åˆ¶äº†ä¸è¦æ˜¾éœ²å®ƒçš„æ ¹ã€‚"
 
 
 msgid "Please specify it in config.php"
-msgstr "ÇëÔÚconfig.phpÀïÖ¸¶¨Ëü"
+msgstr "è¯·åœ¨config.phpé‡ŒæŒ‡å®šå®ƒ"
 
 
 msgid "Create a new entry in"
-msgstr "´´½¨ĞÂÌõÄ¿ÓÚ"
+msgstr "åˆ›å»ºæ–°æ¡ç›®äº"
 
 
 msgid "Login..."
-msgstr "µÇÂ¼¡­"
+msgstr "ç™»å½•â€¦"
 
 
 msgid "login"
-msgstr "µÇÂ¼"
+msgstr "ç™»å½•"
 
 
 msgid "This base entry does not exist."
-msgstr "¸Ã»ù×¼ÌõÄ¿²»´æÔÚ¡£"
+msgstr "è¯¥åŸºå‡†æ¡ç›®ä¸å­˜åœ¨ã€‚"
 
 
 msgid "Create it?"
-msgstr "Òª´´½¨ËüÂğ£¿"
+msgstr "è¦åˆ›å»ºå®ƒå—ï¼Ÿ"
 
 
 msgid "Delete this entry"
-msgstr "É¾³ı¸ÃÌõÄ¿"
+msgstr "åˆ é™¤è¯¥æ¡ç›®"
 
 
 msgid "You will be prompted to confirm this decision"
-msgstr "Äã»áµÃµ½ÌáÊ¾ÒªÇóÈ·ÈÏ¸ÃÑ¡Ôñ"
+msgstr "ä½ ä¼šå¾—åˆ°æç¤ºè¦æ±‚ç¡®è®¤è¯¥é€‰æ‹©"
 
 
 msgid "Copy or move this entry"
-msgstr "¸´ÖÆºÍÒÆ¶¯¸ÃÌõÄ¿"
+msgstr "å¤åˆ¶å’Œç§»åŠ¨è¯¥æ¡ç›®"
 
 
 msgid "Copy this object to another location, a new DN, or another server"
-msgstr "°ÑÕâ¸ö¶ÔÏó¸´ÖÆµ½ÁíÒ»¸öÎ»ÖÃ£¬Ò»¸öĞÂDN»òÁíÒ»¸ö·şÎñÆ÷¡£"
+msgstr "æŠŠè¿™ä¸ªå¯¹è±¡å¤åˆ¶åˆ°å¦ä¸€ä¸ªä½ç½®ï¼Œä¸€ä¸ªæ–°DNæˆ–å¦ä¸€ä¸ªæœåŠ¡å™¨ã€‚"
 
 
 msgid "Export"
-msgstr "µ¼³ö"
+msgstr "å¯¼å‡º"
 
 
 msgid "Save a dump of this object"
-msgstr "±£´æÒ»¸ö¸Ã¶ÔÏóµÄµ¼³ö"
+msgstr "ä¿å­˜ä¸€ä¸ªè¯¥å¯¹è±¡çš„å¯¼å‡º"
 
 
 msgid "Save a dump of this object and all of its children"
-msgstr "±£´æÒ»¸ö¸Ã¶ÔÏó¼°ÆäËùÓĞº¢×ÓµÄµ¼³ö"
+msgstr "ä¿å­˜ä¸€ä¸ªè¯¥å¯¹è±¡åŠå…¶æ‰€æœ‰å­©å­çš„å¯¼å‡º"
 
 
 msgid "Export subtree"
-msgstr "µ¼³ö×ÓÊ÷"
+msgstr "å¯¼å‡ºå­æ ‘"
 
 
 msgid "Create a child entry"
-msgstr "´´½¨Ò»¸ö×ÓÌõÄ¿"
+msgstr "åˆ›å»ºä¸€ä¸ªå­æ¡ç›®"
 
 
 msgid "Rename Entry"
-msgstr "ÌõÄ¿¸üÃû"
+msgstr "æ¡ç›®æ›´å"
 
 
 msgid "Rename"
-msgstr "¸üÃû"
+msgstr "æ›´å"
 
 
 msgid "rename"
-msgstr "Å¾Ã¼ÃƒÃ»"
+msgstr "é‡å‘½å"
 
 
 msgid "Add"
-msgstr "Ôö¼Ó"
+msgstr "å¢åŠ "
 
 
 msgid "View"
-msgstr "²é¿´"
+msgstr "æŸ¥çœ‹"
 
 
 msgid "View 1 child"
-msgstr "²é¿´1¸ö×ÓÌõÄ¿"
+msgstr "æŸ¥çœ‹1ä¸ªå­æ¡ç›®"
 
 
 msgid "View %s children"
-msgstr "²é¿´%s¸ö×ÓÌõÄ¿"
+msgstr "æŸ¥çœ‹%sä¸ªå­æ¡ç›®"
 
 
 msgid "Add new attribute"
-msgstr "Ôö¼ÓĞÂµÄÊôĞÔ"
+msgstr "å¢åŠ æ–°çš„å±æ€§"
 
 
 msgid "Add new ObjectClass"
-msgstr "Ôö¼ÓĞÂµÄObjectClass"
+msgstr "å¢åŠ æ–°çš„ObjectClass"
 
 
 msgid "Hide internal attributes"
-msgstr "Òş²ØÄÚ²¿ÊôĞÔ"
+msgstr "éšè—å†…éƒ¨å±æ€§"
 
 
 msgid "Show internal attributes"
-msgstr "ÏÔÊ¾ÄÚ²¿ÊôĞÔ"
+msgstr "æ˜¾ç¤ºå†…éƒ¨å±æ€§"
 
 
 msgid "Click to view the schema defintion for attribute type '%s'"
-msgstr "µã»÷²é¿´ÊôĞÔÀàĞÍ'%s'µÄ¸ñÊ½¶¨Òå"
+msgstr "ç‚¹å‡»æŸ¥çœ‹å±æ€§ç±»å‹'%s'çš„æ ¼å¼å®šä¹‰"
 
 
 msgid "none"
-msgstr "Ê²Ã´¶¼Ã»ÓĞ"
+msgstr "ä»€ä¹ˆéƒ½æ²¡æœ‰"
 
 
 msgid "No internal attributes"
-msgstr "Ã»ÓĞÄÚ²¿ÊôĞÔ"
+msgstr "æ²¡æœ‰å†…éƒ¨å±æ€§"
 
 
 msgid "This entry has no attributes"
-msgstr "Õâ¸öÌõÄ¿Ã»ÓĞÊôĞÔ"
+msgstr "è¿™ä¸ªæ¡ç›®æ²¡æœ‰å±æ€§"
 
 
 msgid "Save Changes"
-msgstr "±£´æ¸ü¸Ä"
+msgstr "ä¿å­˜æ›´æ”¹"
 
 
 msgid "add value"
-msgstr "¸³Öµ"
+msgstr "èµ‹å€¼"
 
 
 msgid "Add an additional value to attribute '%s'"
-msgstr "¸øÊôĞÔ'%s'¸³Ò»¸ö¸½¼ÓµÄÖµ"
+msgstr "ç»™å±æ€§'%s'èµ‹ä¸€ä¸ªé™„åŠ çš„å€¼"
 
 
 msgid "Refresh this entry"
-msgstr "Ë¢ĞÂÕâ¸öÌõÄ¿"
+msgstr "åˆ·æ–°è¿™ä¸ªæ¡ç›®"
 
 
 msgid "Hint: To delete an attribute, empty the text field and click save."
-msgstr "ÌáÊ¾£º ÏëÒªÉ¾³ıÒ»¸öÊôĞÔ£¬Çë½«ÎÄ±¾×Ö¶ÎÇå¿Õ£¬È»ºóµã»÷±£´æ¡£"
+msgstr "æç¤ºï¼š æƒ³è¦åˆ é™¤ä¸€ä¸ªå±æ€§ï¼Œè¯·å°†æ–‡æœ¬å­—æ®µæ¸…ç©ºï¼Œç„¶åç‚¹å‡»ä¿å­˜ã€‚"
 
 
 msgid "Hint: To view the schema for an attribute, click the attribute name."
-msgstr "ÌáÊ¾£º Òª²é¿´Ò»¸öÊôĞÔµÄ¸ñÊ½£¬Çëµã»÷ÊôĞÔµÄÃû³Æ¡£"
+msgstr "æç¤ºï¼š è¦æŸ¥çœ‹ä¸€ä¸ªå±æ€§çš„æ ¼å¼ï¼Œè¯·ç‚¹å‡»å±æ€§çš„åç§°ã€‚"
 
 
 msgid "Some attributes (%s) were modified and are highlighted below."
-msgstr "ÏÂÃæÓĞÒ»Ğ©ÊôĞÔ(%s) ±»ĞŞ¸ÄÁË£¬¶øÇÒ±»±êÊ¶Îª¸ßÁÁ¡£"
+msgstr "ä¸‹é¢æœ‰ä¸€äº›å±æ€§(%s) è¢«ä¿®æ”¹äº†ï¼Œè€Œä¸”è¢«æ ‡è¯†ä¸ºé«˜äº®ã€‚"
 
 
 msgid "An attribute (%s) was modified and is highlighted below."
-msgstr "ÏÂÃæÒ»¸öÊôĞÔ(%s) ±»ĞŞ¸ÄÁË£¬¶øÇÒ±»±êÊ¶Îª¸ßÁÁ"
+msgstr "ä¸‹é¢ä¸€ä¸ªå±æ€§(%s) è¢«ä¿®æ”¹äº†ï¼Œè€Œä¸”è¢«æ ‡è¯†ä¸ºé«˜äº®"
 
 
 msgid "Viewing entry in read-only mode."
-msgstr "ÒÔÖ»¶ÁÄ£Ê½²é¿´ÌõÄ¿¡£"
+msgstr "ä»¥åªè¯»æ¨¡å¼æŸ¥çœ‹æ¡ç›®ã€‚"
 
 
 msgid "no new attributes available for this entry"
-msgstr "Õâ¸öÌõÄ¿Ã»ÓĞÌá¹©ĞÂµÄÊôĞÔ"
+msgstr "è¿™ä¸ªæ¡ç›®æ²¡æœ‰æä¾›æ–°çš„å±æ€§"
 
 
 msgid "no new binary attributes available for this entry"
-msgstr "Õâ¸öÌõÄ¿Ã»ÓĞÌá¹©ĞÂµÄ¶ş½øÖÆÊôĞÔ"
+msgstr "è¿™ä¸ªæ¡ç›®æ²¡æœ‰æä¾›æ–°çš„äºŒè¿›åˆ¶å±æ€§"
 
 
 msgid "Binary value"
-msgstr "¶ş½øÖÆÖµ"
+msgstr "äºŒè¿›åˆ¶å€¼"
 
 
 msgid "Add new binary attribute"
-msgstr "Ôö¼ÓĞÂµÄ¶ş½øÖÆÖµ"
+msgstr "å¢åŠ æ–°çš„äºŒè¿›åˆ¶å€¼"
 
 
 msgid "Note: '%s' is an alias for '%s'"
-msgstr "×¢Òâ£º '%s'ÊÇ'%s'µÄÒ»¸ö±ğÃû"
+msgstr "æ³¨æ„ï¼š '%s'æ˜¯'%s'çš„ä¸€ä¸ªåˆ«å"
 
 
 msgid "Required attribute for objectClass(es) %s"
-msgstr "objectClass(es) %sËù±ØĞèµÄÊôĞÔ"
+msgstr "objectClass(es) %sæ‰€å¿…éœ€çš„å±æ€§"
 
 
 msgid "download value"
-msgstr "ÏÂÔØÖµ"
+msgstr "ä¸‹è½½å€¼"
 
 
 msgid "delete attribute"
-msgstr "É¾³ıÊôĞÔ"
+msgstr "åˆ é™¤å±æ€§"
 
 
 msgid "true"
-msgstr "ÕæµÄ"
+msgstr "çœŸçš„"
 
 
 msgid "false"
-msgstr "¼ÙµÄ"
+msgstr "å‡çš„"
 
 
 msgid "none, remove value"
-msgstr "Ê²Ã´¶¼Ã»ÓĞ£¬½«ÖµÒÆ³ı"
+msgstr "ä»€ä¹ˆéƒ½æ²¡æœ‰ï¼Œå°†å€¼ç§»é™¤"
 
 
 msgid "Really delete attribute"
-msgstr "ÕæµÄÉ¾³ıÊôĞÔ"
+msgstr "çœŸçš„åˆ é™¤å±æ€§"
 
 
 msgid "Add New Value"
-msgstr "Ôö¼ÓĞÂµÄÖµ"
+msgstr "å¢åŠ æ–°çš„å€¼"
 
 
 msgid "The server does not fully support the LDAP protocol."
-msgstr "Õâ¸ö·şÎñÆ÷²¢²»ÍêÈ«Ö§³ÖLDAP Ğ­Òé¡£"
+msgstr "è¿™ä¸ªæœåŠ¡å™¨å¹¶ä¸å®Œå…¨æ”¯æŒLDAP åè®®ã€‚"
 
 
 msgid "Your version of PHP does not correctly perform the query."
-msgstr "ÄãµÄPHP°æ±¾²»ÄÜÕıÈ·µØÍê³É²éÑ¯¡£"
+msgstr "ä½ çš„PHPç‰ˆæœ¬ä¸èƒ½æ­£ç¡®åœ°å®ŒæˆæŸ¥è¯¢ã€‚"
 
 
 msgid "phpLDAPadmin doesn't know how to fetch the schema for your server."
-msgstr "phpLDAPadmin²»ÖªµÀÈç¹û»ñÈ¡ÄãµÄ·şÎñÆ÷µÄ¸ñÊ½¡£"
+msgstr "phpLDAPadminä¸çŸ¥é“å¦‚æœè·å–ä½ çš„æœåŠ¡å™¨çš„æ ¼å¼ã€‚"
 
 
 msgid "Or lastly, your LDAP server doesnt provide this information."
-msgstr "»òÕß×îºó£¬ÄãµÄLDAP·şÎñÆ÷Ã»ÓĞÌá¹©¸ÃĞÅÏ¢¡£"
+msgstr "æˆ–è€…æœ€åï¼Œä½ çš„LDAPæœåŠ¡å™¨æ²¡æœ‰æä¾›è¯¥ä¿¡æ¯ã€‚"
 
 
 msgid "Jump to an objectClass"
-msgstr "Ìø×ªµ½Ò»¸öobjectClass"
+msgstr "è·³è½¬åˆ°ä¸€ä¸ªobjectClass"
 
 
 msgid "View the schema description for this objectClass"
-msgstr "²é¿´¸ÃobjectClassµÄ¸ñÊ½ÃèÊö"
+msgstr "æŸ¥çœ‹è¯¥objectClassçš„æ ¼å¼æè¿°"
 
 
 msgid "Jump to an attribute type"
-msgstr "Ìø×ªµ½Ò»¸öÊôĞÔÀàĞÍ"
+msgstr "è·³è½¬åˆ°ä¸€ä¸ªå±æ€§ç±»å‹"
 
 
 msgid "Jump to a matching rule"
-msgstr "Ìø×ªµ½Ò»¸öÆ¥ÅäµÄ¹æÔò"
+msgstr "è·³è½¬åˆ°ä¸€ä¸ªåŒ¹é…çš„è§„åˆ™"
 
 
 msgid "Schema for server"
-msgstr "·şÎñÆ÷µÄ¸ñÊ½"
+msgstr "æœåŠ¡å™¨çš„æ ¼å¼"
 
 
 msgid "Required Attributes"
-msgstr "±ØĞèµÄÊôĞÔ"
+msgstr "å¿…éœ€çš„å±æ€§"
 
 
 msgid "required"
-msgstr "±ØĞèµÄ"
+msgstr "å¿…éœ€çš„"
 
 
 msgid "Optional Attributes"
-msgstr "¿ÉÑ¡µÄÊôĞÔ"
+msgstr "å¯é€‰çš„å±æ€§"
 
 
 msgid "Optional Binary Attributes"
-msgstr "¿ÉÑ¡µÄ¶ş½øÖÆÊôĞÔ"
+msgstr "å¯é€‰çš„äºŒè¿›åˆ¶å±æ€§"
 
 
 msgid "OID"
@@ -442,195 +442,195 @@ msgstr "OID"
 
 
 msgid "Aliases"
-msgstr "±ğÃû"
+msgstr "åˆ«å"
 
 
 msgid "Description"
-msgstr "ÃèÊö"
+msgstr "æè¿°"
 
 
 msgid "no description"
-msgstr "Ã»ÓĞÃèÊö"
+msgstr "æ²¡æœ‰æè¿°"
 
 
 msgid "Name"
-msgstr "Ãû³Æ"
+msgstr "åç§°"
 
 
 msgid "Equality"
-msgstr "ÏàµÈ"
+msgstr "ç›¸ç­‰"
 
 
 msgid "This objectClass is obsolete."
-msgstr "¸ÃobjectClass¹ı¾ÃÁË¡£"
+msgstr "è¯¥objectClassè¿‡ä¹…äº†ã€‚"
 
 
 msgid "Inherits from"
-msgstr "¼Ì³ĞÓÚ"
+msgstr "ç»§æ‰¿äº"
 
 
 msgid "Inherited from"
-msgstr "±»¼Ì³ĞÓÚ"
+msgstr "è¢«ç»§æ‰¿äº"
 
 
 msgid "Parent to"
-msgstr "Ë«Ç×Ö¸Ïò"
+msgstr "åŒäº²æŒ‡å‘"
 
 
 msgid "Jump to this objectClass definition"
-msgstr "Ìø×ªµ½¸ÃobjectClassµÄ¶¨Òå´¦"
+msgstr "è·³è½¬åˆ°è¯¥objectClassçš„å®šä¹‰å¤„"
 
 
 msgid "Matching Rule OID"
-msgstr "Æ¥Åä¹æÔò OID"
+msgstr "åŒ¹é…è§„åˆ™ OID"
 
 
 msgid "Syntax OID"
-msgstr "Óï·¨¹æÔòOID"
+msgstr "è¯­æ³•è§„åˆ™OID"
 
 
 msgid "not applicable"
-msgstr "²»¿ÉÓ¦ÓÃ"
+msgstr "ä¸å¯åº”ç”¨"
 
 
 msgid "not specified"
-msgstr "Î´Ö¸¶¨µÄ"
+msgstr "æœªæŒ‡å®šçš„"
 
 
 msgid "character"
-msgstr "µ¥¸ö×Ö·û"
+msgstr "å•ä¸ªå­—ç¬¦"
 
 
 msgid "characters"
-msgstr "¶à¸ö×Ö·û"
+msgstr "å¤šä¸ªå­—ç¬¦"
 
 
 msgid "Used by objectClasses"
-msgstr "±»objectClassesËùÊ¹ÓÃµÄ"
+msgstr "è¢«objectClassesæ‰€ä½¿ç”¨çš„"
 
 
 msgid "Used by Attributes"
-msgstr "±»ÊôĞÔËùÊ¹ÓÃµÄ"
+msgstr "è¢«å±æ€§æ‰€ä½¿ç”¨çš„"
 
 
 msgid "Maximum Length"
-msgstr "×î´ó³¤¶È"
+msgstr "æœ€å¤§é•¿åº¦"
 
 
 msgid "Attribute Types"
-msgstr "ÊôĞÔÀàĞÍ"
+msgstr "å±æ€§ç±»å‹"
 
 
 msgid "Syntaxes"
-msgstr "Óï·¨¹æÔò"
+msgstr "è¯­æ³•è§„åˆ™"
 
 
 msgid "Matching Rules"
-msgstr "Æ¥Åä¹æÔò"
+msgstr "åŒ¹é…è§„åˆ™"
 
 
 msgid "Obsolete"
-msgstr "×÷·ÏµÄ"
+msgstr "ä½œåºŸçš„"
 
 
 msgid "Ordering"
-msgstr "ÅÅĞò"
+msgstr "æ’åº"
 
 
 msgid "Substring Rule"
-msgstr "×Ó´®¹æÔò"
+msgstr "å­ä¸²è§„åˆ™"
 
 
 msgid "Single Valued"
-msgstr "µ¥¸ö¸³ÖµµÄ"
+msgstr "å•ä¸ªèµ‹å€¼çš„"
 
 
 msgid "Collective"
-msgstr "¼¯ÌåµÄ"
+msgstr "é›†ä½“çš„"
 
 
 msgid "User Modification"
-msgstr "ÓÃ»§ĞŞ¸Ä"
+msgstr "ç”¨æˆ·ä¿®æ”¹"
 
 
 msgid "Usage"
-msgstr "Ê¹ÓÃ¸ñÊ½"
+msgstr "ä½¿ç”¨æ ¼å¼"
 
 
 msgid "Could not retrieve schema from"
-msgstr "²»ÄÜÕÒ»Ø¸ñÊ½µÄµØ·½"
+msgstr "ä¸èƒ½æ‰¾å›æ ¼å¼çš„åœ°æ–¹"
 
 
 msgid "Type"
-msgstr "ÀàĞÍ"
+msgstr "ç±»å‹"
 
 
 msgid "No such schema item: \"%s\""
-msgstr "Ã»ÓĞÕâÑùµÄ¸ñÊ½ÏîÄ¿£º \"%s\""
+msgstr "æ²¡æœ‰è¿™æ ·çš„æ ¼å¼é¡¹ç›®ï¼š \"%s\""
 
 
 msgid "Entry %s deleted successfully."
-msgstr "³É¹¦É¾³ıÌõÄ¿£º%s¡£"
+msgstr "æˆåŠŸåˆ é™¤æ¡ç›®ï¼š%sã€‚"
 
 
 msgid "You must specify a DN"
-msgstr "Äã±ØĞëÖ¸¶¨Ò»¸öDN"
+msgstr "ä½ å¿…é¡»æŒ‡å®šä¸€ä¸ªDN"
 
 
 msgid "Could not delete the entry: %s"
-msgstr "²»ÄÜÉ¾³ı¸ÃÌõÄ¿£º %s"
+msgstr "ä¸èƒ½åˆ é™¤è¯¥æ¡ç›®ï¼š %s"
 
 
 msgid "No such entry: %s"
-msgstr "Ã»ÓĞÕâÑùµÄÌõÄ¿£º %s"
+msgstr "æ²¡æœ‰è¿™æ ·çš„æ¡ç›®ï¼š %s"
 
 
 msgid "Delete %s"
-msgstr "É¾³ı£º%s"
+msgstr "åˆ é™¤ï¼š%s"
 
 
 msgid "Permanently delete all children also?"
-msgstr "Ò²ÒªÓÀ¾ÃÉ¾³ıËùµÄ×ÓÌõÄ¿Âğ£¿"
+msgstr "ä¹Ÿè¦æ°¸ä¹…åˆ é™¤æ‰€çš„å­æ¡ç›®å—ï¼Ÿ"
 
 
 msgid "This entry is the root of a sub-tree containing %s entries."
-msgstr "¸ÃÌõÄ¿ÊÇ¸ù£¬Æä×ÓÊ÷ÖĞ°üº¬ÓĞÌõÄ¿£º%s¡£"
+msgstr "è¯¥æ¡ç›®æ˜¯æ ¹ï¼Œå…¶å­æ ‘ä¸­åŒ…å«æœ‰æ¡ç›®ï¼š%sã€‚"
 
 
 msgid "view entries"
-msgstr "²é¿´ÌõÄ¿"
+msgstr "æŸ¥çœ‹æ¡ç›®"
 
 
 msgid "phpLDAPadmin can recursively delete this entry and all %s of its children. See below for a list of all the entries that this action will delete. Do you want to do this?"
-msgstr "phpLDAPadmin¿ÉÒÔµİ¹éµØÉ¾³ı¸ÃÌõÄ¿¼°ÆäËùÓĞ×ÓÌõÄ¿ÖĞµÄ£º%s¡£ ¹ØÓÚÕâ¸ö¶¯×÷¿ÉÄÜ»áÉ¾³ıµÄËùÓĞÌõÄ¿ÁĞ±í£¬Çë²é¿´ÏÂÃæ¡£ ÄãÕæµÄÏëÕâÑù×öÂğ£¿"
+msgstr "phpLDAPadminå¯ä»¥é€’å½’åœ°åˆ é™¤è¯¥æ¡ç›®åŠå…¶æ‰€æœ‰å­æ¡ç›®ä¸­çš„ï¼š%sã€‚ å…³äºè¿™ä¸ªåŠ¨ä½œå¯èƒ½ä¼šåˆ é™¤çš„æ‰€æœ‰æ¡ç›®åˆ—è¡¨ï¼Œè¯·æŸ¥çœ‹ä¸‹é¢ã€‚ ä½ çœŸçš„æƒ³è¿™æ ·åšå—ï¼Ÿ"
 
 
 msgid "Note: this is potentially very dangerous and you do this at your own risk. This operation cannot be undone. Take into consideration aliases, referrals, and other things that may cause problems."
-msgstr "×¢ÊÍ£º Õâ¸ö¿ÉÄÜÇ±ÔÚÎ£ÏÕ£¬ºó¹û×Ô¸º¡£ Õâ¸ö²Ù×÷²»¿É»Ö¸´¡£ Ò»¶¨Òª¿¼ÂÇµ½aliases£¨±ğÃû£©¡¢ referrals£¨ÌáÃû£©ÒÔ¼°ÆäËü¿ÉÄÜÒıÆğÎÊÌâµÄÊÂÇé¡£"
+msgstr "æ³¨é‡Šï¼š è¿™ä¸ªå¯èƒ½æ½œåœ¨å±é™©ï¼Œåæœè‡ªè´Ÿã€‚ è¿™ä¸ªæ“ä½œä¸å¯æ¢å¤ã€‚ ä¸€å®šè¦è€ƒè™‘åˆ°aliasesï¼ˆåˆ«åï¼‰ã€ referralsï¼ˆæåï¼‰ä»¥åŠå…¶å®ƒå¯èƒ½å¼•èµ·é—®é¢˜çš„äº‹æƒ…ã€‚"
 
 
 msgid "Delete all %s objects"
-msgstr "É¾³ıËùÓĞµÄ¶ÔÏó£º%s "
+msgstr "åˆ é™¤æ‰€æœ‰çš„å¯¹è±¡ï¼š%s "
 
 
 msgid "Recursive delete progress"
-msgstr "µİ¹éÊ½É¾³ı¹ı³Ì"
+msgstr "é€’å½’å¼åˆ é™¤è¿‡ç¨‹"
 
 
 msgid "Entry %s and sub-tree deleted successfully."
-msgstr "³É¹¦É¾³ıÌõÄ¿%s ºÍ×ÓÊ÷¡£"
+msgstr "æˆåŠŸåˆ é™¤æ¡ç›®%s å’Œå­æ ‘ã€‚"
 
 
 msgid "Failed to delete entry %s"
-msgstr "É¾³ıÌõÄ¿£º%s Ê§°Ü"
+msgstr "åˆ é™¤æ¡ç›®ï¼š%s å¤±è´¥"
 
 
 msgid "List of entries to be deleted:"
-msgstr "½«±»É¾³ıµÄÌõÄ¿ÁĞ±í£º"
+msgstr "å°†è¢«åˆ é™¤çš„æ¡ç›®åˆ—è¡¨ï¼š"
 
 
 msgid "Are you sure you want to permanently delete this object?"
-msgstr "È·ÈÏÄãÏëÓÀ¾ÃÉ¾³ıÕâ¸ö¶ÔÏóÂğ£¿"
+msgstr "ç¡®è®¤ä½ æƒ³æ°¸ä¹…åˆ é™¤è¿™ä¸ªå¯¹è±¡å—ï¼Ÿ"
 
 
 msgid "DN"
@@ -638,79 +638,79 @@ msgstr "DN"
 
 
 msgid "The attribute \"%s\" is flagged as read-only in the phpLDAPadmin configuration."
-msgstr " ÔÚphpLDAPadminµÄÅäÖÃÖĞ£¬ÊôĞÔ\"%s\"±»±êÊ¶ÎªÖ»¶Á¡£"
+msgstr " åœ¨phpLDAPadminçš„é…ç½®ä¸­ï¼Œå±æ€§\"%s\"è¢«æ ‡è¯†ä¸ºåªè¯»ã€‚"
 
 
 msgid "No attribute name specified."
-msgstr "Ã»ÓĞÖ¸¶¨ÊôĞÔÃû³Æ¡£"
+msgstr "æ²¡æœ‰æŒ‡å®šå±æ€§åç§°ã€‚"
 
 
 msgid "No DN specified"
-msgstr "Ã»ÓĞÖ¸¶¨DN "
+msgstr "æ²¡æœ‰æŒ‡å®šDN "
 
 
 msgid "You left the attribute value blank. Please go back and try again."
-msgstr "ÊôĞÔÖµÎª¿Õ°×¡£ Çë·µ»ØÔÙÊÔ¡£"
+msgstr "å±æ€§å€¼ä¸ºç©ºç™½ã€‚ è¯·è¿”å›å†è¯•ã€‚"
 
 
 msgid "Failed to add the attribute."
-msgstr "Ôö¼ÓÊôĞÔÊ§°Ü¡£"
+msgstr "å¢åŠ å±æ€§å¤±è´¥ã€‚"
 
 
 msgid "The file you chose is either empty or does not exist. Please go back and try again."
-msgstr "ÄãÑ¡ÔñµÄÎÄ¼şÎª¿Õ»ò²»´æÔÚ¡£ Çë·µ»ØÔÙÊÔ¡£"
+msgstr "ä½ é€‰æ‹©çš„æ–‡ä»¶ä¸ºç©ºæˆ–ä¸å­˜åœ¨ã€‚ è¯·è¿”å›å†è¯•ã€‚"
 
 
 msgid "Security error: The file being uploaded may be malicious."
-msgstr "°²È«´íÎó£º ÉÏ´«µÄÕâ¸öÎÄ¼ş¿ÉÄÜ´æÔÚ°²È«Î£ÏÕ¡£"
+msgstr "å®‰å…¨é”™è¯¯ï¼š ä¸Šä¼ çš„è¿™ä¸ªæ–‡ä»¶å¯èƒ½å­˜åœ¨å®‰å…¨å±é™©ã€‚"
 
 
 msgid "Your PHP configuration has disabled file uploads. Please check php.ini before proceeding."
-msgstr "ÄãµÄPHPÅäÖÃ²»ÔÊĞíÉÏ´«ÎÄ¼ş¡£ ÇëÔÚ½øĞĞÏÂ²½Ö®Ç°¼ì²éÒ»ÏÂphp.ini¡£"
+msgstr "ä½ çš„PHPé…ç½®ä¸å…è®¸ä¸Šä¼ æ–‡ä»¶ã€‚ è¯·åœ¨è¿›è¡Œä¸‹æ­¥ä¹‹å‰æ£€æŸ¥ä¸€ä¸‹php.iniã€‚"
 
 
 msgid "The file you uploaded is too large. Please check php.ini, upload_max_size setting"
-msgstr "ÄãÉÏ´«µÄÎÄ¼şÌ«´ó¡£ Çë¼ì²éphp.iniÖĞµÄupload_max_size ÉèÖÃ"
+msgstr "ä½ ä¸Šä¼ çš„æ–‡ä»¶å¤ªå¤§ã€‚ è¯·æ£€æŸ¥php.iniä¸­çš„upload_max_size è®¾ç½®"
 
 
 msgid "The file you selected was only partially uploaded, likley due to a network error."
-msgstr "ÄãÑ¡ÔñµÄÎÄ¼şÉÏ´«²»ÍêÕû£¬¿ÉÄÜÊÇÒòÎªÍøÂçµÄÔµ¹Ê¡£"
+msgstr "ä½ é€‰æ‹©çš„æ–‡ä»¶ä¸Šä¼ ä¸å®Œæ•´ï¼Œå¯èƒ½æ˜¯å› ä¸ºç½‘ç»œçš„ç¼˜æ•…ã€‚"
 
 
 msgid "Maximum file size: %s"
-msgstr "×î´óÎÄ¼ş³ß´ç£º %s"
+msgstr "æœ€å¤§æ–‡ä»¶å°ºå¯¸ï¼š %s"
 
 
 msgid "Modification successful!"
-msgstr "³É¹¦ĞŞ¸Ä£¡"
+msgstr "æˆåŠŸä¿®æ”¹ï¼"
 
 
 msgid "Since you changed your password, you must now login again with your new password."
-msgstr "ÒòÎªÄã¸ü¸ÄÁËÃÜÂë£¬ÄãÏÖÔÚ±ØĞëÊ¹ÓÃĞÂµÄÃÜÂëÖØĞÂµÇÂ¼¡£"
+msgstr "å› ä¸ºä½ æ›´æ”¹äº†å¯†ç ï¼Œä½ ç°åœ¨å¿…é¡»ä½¿ç”¨æ–°çš„å¯†ç é‡æ–°ç™»å½•ã€‚"
 
 
 msgid "New Required Attributes"
-msgstr "ĞÂÔö±ØĞèµÄÊôĞÔ"
+msgstr "æ–°å¢å¿…éœ€çš„å±æ€§"
 
 
 msgid "This action requires you to add"
-msgstr "Õâ¸ö¶¯×÷ÒªÇóÄãÔö¼Ó"
+msgstr "è¿™ä¸ªåŠ¨ä½œè¦æ±‚ä½ å¢åŠ "
 
 
 msgid "new attributes"
-msgstr "ĞÂÔöÊôĞÔ"
+msgstr "æ–°å¢å±æ€§"
 
 
 msgid "Instructions: In order to add these objectClass(es) to this entry, you must specify"
-msgstr "Ö¸µ¼£º ÎªÁËÔö¼ÓÕâ¸öobjectClass µ½¸ÃÌõÄ¿£¬Äã±ØĞëÖ¸¶¨"
+msgstr "æŒ‡å¯¼ï¼š ä¸ºäº†å¢åŠ è¿™ä¸ªobjectClass åˆ°è¯¥æ¡ç›®ï¼Œä½ å¿…é¡»æŒ‡å®š"
 
 
 msgid "that this objectClass requires. You can do so in this form."
-msgstr "Õâ¸ÃobjectClassËù±ØĞèµÄ¡£ Äã¿ÉÒÔÔÚÕâ¸ö±íÀïÍê³É¡£"
+msgstr "è¿™è¯¥objectClassæ‰€å¿…éœ€çš„ã€‚ ä½ å¯ä»¥åœ¨è¿™ä¸ªè¡¨é‡Œå®Œæˆã€‚"
 
 
 msgid "Add ObjectClass and Attributes"
-msgstr "Ôö¼ÓObjectClass ºÍÊôĞÔ"
+msgstr "å¢åŠ ObjectClass å’Œå±æ€§"
 
 
 msgid "ObjectClasses"
@@ -718,111 +718,111 @@ msgstr "ObjectClasses"
 
 
 msgid "Click to popup a dialog to select an entry (DN) graphically"
-msgstr "µã»÷µ¯³öÒ»¸ö¶Ô»°¿òÀ´ÒÔÍ¼ĞÎ·½Ê½Ñ¡ÔñÒ»¸öÌõÄ¿(DN) "
+msgstr "ç‚¹å‡»å¼¹å‡ºä¸€ä¸ªå¯¹è¯æ¡†æ¥ä»¥å›¾å½¢æ–¹å¼é€‰æ‹©ä¸€ä¸ªæ¡ç›®(DN) "
 
 
 msgid "You cannot perform updates while server is in read-only mode"
-msgstr "·şÎñÆ÷ÊÇÒÔÖ»¶Á·½Ê½ÔËĞĞ£¬Äã²»ÄÜÍê³É¸üĞÂ"
+msgstr "æœåŠ¡å™¨æ˜¯ä»¥åªè¯»æ–¹å¼è¿è¡Œï¼Œä½ ä¸èƒ½å®Œæˆæ›´æ–°"
 
 
 msgid "Bad server id"
-msgstr "´íÎóµÄ·şÎñÆ÷id"
+msgstr "é”™è¯¯çš„æœåŠ¡å™¨id"
 
 
 msgid "Not enough information to login to server. Please check your configuration."
-msgstr "Ã»ÓĞ×ã¹»µÄĞÅÏ¢À´µÇÂ¼·şÎñÆ÷¡£ Çë¼ì²éÄãµÄÅäÖÃ¡£"
+msgstr "æ²¡æœ‰è¶³å¤Ÿçš„ä¿¡æ¯æ¥ç™»å½•æœåŠ¡å™¨ã€‚ è¯·æ£€æŸ¥ä½ çš„é…ç½®ã€‚"
 
 
 msgid "Could not connect to LDAP server."
-msgstr "²»ÄÜÁ¬½Óµ½LDAP·şÎñÆ÷¡£"
+msgstr "ä¸èƒ½è¿æ¥åˆ°LDAPæœåŠ¡å™¨ã€‚"
 
 
 msgid "Could not connect to \"%s\" on port \"%s\""
-msgstr "²»ÄÜÁ¬½Óµ½\"%s\" µÄ\"%s\"¶Ë¿Ú"
+msgstr "ä¸èƒ½è¿æ¥åˆ°\"%s\" çš„\"%s\"ç«¯å£"
 
 
 msgid "Could not perform ldap_mod_add operation."
-msgstr "²»ÄÜÍê³Éldap_mod_add ²Ù×÷¡£"
+msgstr "ä¸èƒ½å®Œæˆldap_mod_add æ“ä½œã€‚"
 
 
 msgid "Home"
-msgstr "Ö÷Ò³"
+msgstr "ä¸»é¡µ"
 
 
 msgid "Help"
-msgstr "°ïÖú"
+msgstr "å¸®åŠ©"
 
 
 msgid "Success"
-msgstr "³É¹¦"
+msgstr "æˆåŠŸ"
 
 
 msgid "Server: "
-msgstr "·şÎñÆ÷£º"
+msgstr "æœåŠ¡å™¨ï¼š"
 
 
 msgid "Looking in: "
-msgstr "ÕıÔÚ²é¿´£º"
+msgstr "æ­£åœ¨æŸ¥çœ‹ï¼š"
 
 
 msgid "No DN specified in query string!"
-msgstr "ÔÚ²éÑ¯´®ÖĞÃ»ÓĞÖ¸¶¨DN£¡"
+msgstr "åœ¨æŸ¥è¯¢ä¸²ä¸­æ²¡æœ‰æŒ‡å®šDNï¼"
 
 
 msgid "Back Up..."
-msgstr "ºóÍË..."
+msgstr "åé€€..."
 
 
 msgid "no entries"
-msgstr "Ã»ÓĞÌõÄ¿"
+msgstr "æ²¡æœ‰æ¡ç›®"
 
 
 msgid "Could not determine base DN"
-msgstr "²»ÄÜÈ·¶¨base DN£¨»ùDN£©"
+msgstr "ä¸èƒ½ç¡®å®šbase DNï¼ˆåŸºDNï¼‰"
 
 
 msgid "This could happen for several reasons, the most probable of which are:"
-msgstr "³öÏÖÕâÖÖÇé¿ö¿ÉÄÜÓĞ¼¸¸öÔ­Òò£¬ÆäÖĞ×îÓĞ¿ÉÄÜµÄÊÇ£º"
+msgstr "å‡ºç°è¿™ç§æƒ…å†µå¯èƒ½æœ‰å‡ ä¸ªåŸå› ï¼Œå…¶ä¸­æœ€æœ‰å¯èƒ½çš„æ˜¯ï¼š"
 
 
 msgid "Yes"
-msgstr "ÊÇ"
+msgstr "æ˜¯"
 
 
 msgid "No"
-msgstr "²»"
+msgstr "ä¸"
 
 
 msgid "Go"
-msgstr "¿ªÊ¼"
+msgstr "å¼€å§‹"
 
 
 msgid "Delete"
-msgstr "É¾³ı"
+msgstr "åˆ é™¤"
 
 
 msgid "Back"
-msgstr "ºóÍË"
+msgstr "åé€€"
 
 
 msgid "object"
-msgstr "¶ÔÏó"
+msgstr "å¯¹è±¡"
 
 
 msgid "Delete all"
-msgstr "É¾³ıËùÓĞµÄ"
+msgstr "åˆ é™¤æ‰€æœ‰çš„"
 
 
 msgid "hint"
-msgstr "ÌáÊ¾"
+msgstr "æç¤º"
 
 
 msgid "bug"
-msgstr "´íÂ©"
+msgstr "é”™æ¼"
 
 
 msgid "warning"
-msgstr "¾¯¸æ"
+msgstr "è­¦å‘Š"
 
 
 msgid "light"
@@ -830,231 +830,231 @@ msgstr "light"
 
 
 msgid "Proceed &gt;&gt;"
-msgstr "¼ÌĞø &gt;&gt;"
+msgstr "ç»§ç»­ &gt;&gt;"
 
 
 msgid "Please set $jpeg_temp_dir to a writable directory in the phpLDAPadmin config.php"
-msgstr "ÇëÔÚphpLDAPadminµÄconfig.phpÀï£¬½«$jpeg_temp_dirÉèÖÃµ½Ò»¸ö¿ÉĞ´µÄÄ¿Â¼"
+msgstr "è¯·åœ¨phpLDAPadminçš„config.phpé‡Œï¼Œå°†$jpeg_temp_dirè®¾ç½®åˆ°ä¸€ä¸ªå¯å†™çš„ç›®å½•"
 
 
 msgid "Could not write to the $jpeg_temp_dir directory %s. Please verify that your web server can write files there."
-msgstr "²»ÄÜ½«%sĞ´Èë$jpeg_temp_dirÄ¿Â¼¡£ÇëÈ·¶¨ÄãµÄweb·şÎñÆ÷ÄÜ¹»ÔÚÄÇÀïĞ´ÎÄ¼ş¡£"
+msgstr "ä¸èƒ½å°†%så†™å…¥$jpeg_temp_dirç›®å½•ã€‚è¯·ç¡®å®šä½ çš„webæœåŠ¡å™¨èƒ½å¤Ÿåœ¨é‚£é‡Œå†™æ–‡ä»¶ã€‚"
 
 
 msgid "Could not fetch jpeg data from LDAP server for attribute %s."
-msgstr "²»ÄÜ´ÓLDAP·şÎñÆ÷ÎªÊôĞÔ%s»ñµÃjpegÊı¾İ¡£"
+msgstr "ä¸èƒ½ä»LDAPæœåŠ¡å™¨ä¸ºå±æ€§%sè·å¾—jpegæ•°æ®ã€‚"
 
 
 msgid "Delete photo"
-msgstr "É¾³ıÍ¼Æ¬"
+msgstr "åˆ é™¤å›¾ç‰‡"
 
 
 msgid "Add new"
-msgstr "ĞÂÔö"
+msgstr "æ–°å¢"
 
 
 msgid "value to"
-msgstr "¸³Öµ¸ø"
+msgstr "èµ‹å€¼ç»™"
 
 
 msgid "Distinguished Name"
-msgstr "Ê¶±ğÃû£¨DN£©"
+msgstr "è¯†åˆ«åï¼ˆDNï¼‰"
 
 
 msgid "Current list of"
-msgstr "µ±Ç°ÁĞ±í"
+msgstr "å½“å‰åˆ—è¡¨"
 
 
 msgid "values for attribute"
-msgstr "ÊôĞÔÖµ"
+msgstr "å±æ€§å€¼"
 
 
 msgid "Note: You will get an \"inappropriate matching\" error if you have not setup an EQUALITY rule on your LDAP server for this attribute."
-msgstr "×¢ÊÍ£º Èç¹ûÔÚÄãµÄLDAP·şÎñÆ÷ÉÏÃ»ÓĞÎªÕâ¸öÊôĞÔÉèÖÃEQUALITY ¹æÔòµÄ»°£¬Äã¿ÉÄÜ»áÅöµ½\"inappropriate matching£¨²»ÕıÈ·µÄÆ¥Åä£©\"ÕâÑùµÄ´íÎó¡£"
+msgstr "æ³¨é‡Šï¼š å¦‚æœåœ¨ä½ çš„LDAPæœåŠ¡å™¨ä¸Šæ²¡æœ‰ä¸ºè¿™ä¸ªå±æ€§è®¾ç½®EQUALITY è§„åˆ™çš„è¯ï¼Œä½ å¯èƒ½ä¼šç¢°åˆ°\"inappropriate matchingï¼ˆä¸æ­£ç¡®çš„åŒ¹é…ï¼‰\"è¿™æ ·çš„é”™è¯¯ã€‚"
 
 
 msgid "Enter the value you would like to add:"
-msgstr "ÊäÈëÄãÏëÔö¼ÓµÄÖµ£º"
+msgstr "è¾“å…¥ä½ æƒ³å¢åŠ çš„å€¼ï¼š"
 
 
 msgid "Note: You may be required to enter new attributes that these objectClass(es) require"
-msgstr "×¢ÊÍ£º ¿ÉÄÜ»áÒªÇóÄãÊäÈë¸ÃobjectClassËù±ØĞèµÄĞÂÊôĞÔ¡£"
+msgstr "æ³¨é‡Šï¼š å¯èƒ½ä¼šè¦æ±‚ä½ è¾“å…¥è¯¥objectClassæ‰€å¿…éœ€çš„æ–°å±æ€§ã€‚"
 
 
 msgid "Syntax"
-msgstr "¹æÔò"
+msgstr "è§„åˆ™"
 
 
 msgid "You left the destination DN blank."
-msgstr " Ä¿±êDNÏîÎª¿Õ¡£"
+msgstr " ç›®æ ‡DNé¡¹ä¸ºç©ºã€‚"
 
 
 msgid "The destination entry (%s) already exists."
-msgstr "Ä¿±êÌõÄ¿ (%s) ÒÑ¾­´æÔÚ¡£"
+msgstr "ç›®æ ‡æ¡ç›® (%s) å·²ç»å­˜åœ¨ã€‚"
 
 
 msgid "The destination container (%s) does not exist."
-msgstr "Ä¿±êÈİÆ÷ (%s) ²»´æÔÚ¡£"
+msgstr "ç›®æ ‡å®¹å™¨ (%s) ä¸å­˜åœ¨ã€‚"
 
 
 msgid "The source and destination DN are the same."
-msgstr "Ô´ºÍÄ¿±êDN ÏàÍ¬¡£"
+msgstr "æºå’Œç›®æ ‡DN ç›¸åŒã€‚"
 
 
 msgid "Copying "
-msgstr "ÕıÔÚ¸´ÖÆ "
+msgstr "æ­£åœ¨å¤åˆ¶ "
 
 
 msgid "Recursive copy progress"
-msgstr "µİ¹éÊÖ¸´ÖÆ¹ı³Ì"
+msgstr "é€’å½’æ‰‹å¤åˆ¶è¿‡ç¨‹"
 
 
 msgid "Building snapshot of tree to copy... "
-msgstr "ÕıÔÚ½¨Á¢ÓÃÓÚ¸´ÖÆµÄÊ÷µÄ¿ìÕÕ¡­ "
+msgstr "æ­£åœ¨å»ºç«‹ç”¨äºå¤åˆ¶çš„æ ‘çš„å¿«ç…§â€¦ "
 
 
 msgid "Copy successful! Would you like to "
-msgstr "¸´ÖÆ³É¹¦£¡ Äã»¹ÏëÒª "
+msgstr "å¤åˆ¶æˆåŠŸï¼ ä½ è¿˜æƒ³è¦ "
 
 
 msgid "view the new entry"
-msgstr "²é¿´ĞÂÌõÄ¿"
+msgstr "æŸ¥çœ‹æ–°æ¡ç›®"
 
 
 msgid "Failed to copy DN: "
-msgstr "¸´ÖÆDN²»³É¹¦£º "
+msgstr "å¤åˆ¶DNä¸æˆåŠŸï¼š "
 
 
 msgid "Template"
-msgstr "Ñù°å"
+msgstr "æ ·æ¿"
 
 
 msgid "using template"
-msgstr "Ê¹ÓÃÑù°å"
+msgstr "ä½¿ç”¨æ ·æ¿"
 
 
 msgid "Go to %s"
-msgstr "×ªµ½ %s"
+msgstr "è½¬åˆ° %s"
 
 
 msgid "This is a structural ObjectClass and cannot be removed."
-msgstr "ÕâÊÇ¸ö½á¹¹»¯µÄObjectClass£¬Òò´Ë²»ÄÜÒÆ³ı¡£"
+msgstr "è¿™æ˜¯ä¸ªç»“æ„åŒ–çš„ObjectClassï¼Œå› æ­¤ä¸èƒ½ç§»é™¤ã€‚"
 
 
 msgid "structural"
-msgstr "½á¹¹»¯"
+msgstr "ç»“æ„åŒ–"
 
 
 msgid "Copy "
-msgstr "¸´ÖÆ"
+msgstr "å¤åˆ¶"
 
 
 msgid "to a new object"
-msgstr "³ÉÎªÒ»¸öĞÂµÄ¶ÔÏó"
+msgstr "æˆä¸ºä¸€ä¸ªæ–°çš„å¯¹è±¡"
 
 
 msgid "Destination DN"
-msgstr "Ä¿±êDN"
+msgstr "ç›®æ ‡DN"
 
 
 msgid "The full DN of the new entry to be created when copying the source entry"
-msgstr "ÔÚ¸´ÖÆ¸ÃÔ´ÌõÄ¿Ê±£¬½«±»½¨Á¢µÄĞÂÌõÄ¿µÄÍêÕûDN "
+msgstr "åœ¨å¤åˆ¶è¯¥æºæ¡ç›®æ—¶ï¼Œå°†è¢«å»ºç«‹çš„æ–°æ¡ç›®çš„å®Œæ•´DN "
 
 
 msgid "Destination Server"
-msgstr "Ä¿±ê·şÎñÆ÷"
+msgstr "ç›®æ ‡æœåŠ¡å™¨"
 
 
 msgid "Hint: Copying between different servers only works if there are no schema violations"
-msgstr "ÌáÊ¾£º ÔÚÁ½¸ö²»Í¬µÄ·şÎñÆ÷Ö®¼ä¸´ÖÆÊ±£¬ÒªÇóËüÃÇÃ»ÓĞ\"schema£¨¸ñÊ½£©³åÍ»\""
+msgstr "æç¤ºï¼š åœ¨ä¸¤ä¸ªä¸åŒçš„æœåŠ¡å™¨ä¹‹é—´å¤åˆ¶æ—¶ï¼Œè¦æ±‚å®ƒä»¬æ²¡æœ‰\"schemaï¼ˆæ ¼å¼ï¼‰å†²çª\""
 
 
 msgid "Recursively copy all children of this object as well."
-msgstr "ÁíÍâ»¹Òªµİ¹é¸´ÖÆ´Ë¶ÔÏóµÄËùÓĞ×ÓÄÚÈİ¡£"
+msgstr "å¦å¤–è¿˜è¦é€’å½’å¤åˆ¶æ­¤å¯¹è±¡çš„æ‰€æœ‰å­å†…å®¹ã€‚"
 
 
 msgid "Recursive copy"
-msgstr "µİ¹é¸´ÖÆ"
+msgstr "é€’å½’å¤åˆ¶"
 
 
 msgid "Filter"
-msgstr "¹ıÂËÆ÷"
+msgstr "è¿‡æ»¤å™¨"
 
 
 msgid "When performing a recursive copy, only copy those entries which match this filter"
-msgstr "ÔÚÍê³ÉÒ»¸öµİ¹é¸´ÖÆÊ±£¬Ö»»á¸´ÖÆÄÄĞ©Æ¥ÅäÕâ¸ö¹ıÂËÆ÷µÄÌõÄ¿¡£"
+msgstr "åœ¨å®Œæˆä¸€ä¸ªé€’å½’å¤åˆ¶æ—¶ï¼Œåªä¼šå¤åˆ¶å“ªäº›åŒ¹é…è¿™ä¸ªè¿‡æ»¤å™¨çš„æ¡ç›®ã€‚"
 
 
 msgid "Delete after copy (move):"
-msgstr "¸´ÖÆºóÉ¾³ı£¨¼´ÒÆ¶¯£©£º"
+msgstr "å¤åˆ¶ååˆ é™¤ï¼ˆå³ç§»åŠ¨ï¼‰ï¼š"
 
 
 msgid "Make sure your filter (above) will select all child records."
-msgstr "È·ÈÏÄãµÄ¹ıÂËÆ÷£¨¼ûÉÏÃæ£©»áÑ¡ÔñËùÓĞµÄ×Ó¼ÇÂ¼¡£"
+msgstr "ç¡®è®¤ä½ çš„è¿‡æ»¤å™¨ï¼ˆè§ä¸Šé¢ï¼‰ä¼šé€‰æ‹©æ‰€æœ‰çš„å­è®°å½•ã€‚"
 
 
 msgid "You left the value blank for required attribute (%s)."
-msgstr "±ØĞèÊôĞÔ(%s)µÄÖµÎª¿Õ°×¡£"
+msgstr "å¿…éœ€å±æ€§(%s)çš„å€¼ä¸ºç©ºç™½ã€‚"
 
 
 msgid "Redirecting..."
-msgstr "ÖØ¶¨Ïò..."
+msgstr "é‡å®šå‘..."
 
 
 msgid "here"
-msgstr "ÕâÀï"
+msgstr "è¿™é‡Œ"
 
 
 msgid "Could not add the object to the LDAP server."
-msgstr "²»ÄÜÔö¼Ó¸Ã¶ÔÏóµ½LDAP·şÎñÆ÷¡£"
+msgstr "ä¸èƒ½å¢åŠ è¯¥å¯¹è±¡åˆ°LDAPæœåŠ¡å™¨ã€‚"
 
 
 msgid "Create Object"
-msgstr "´´½¨¶ÔÏó"
+msgstr "åˆ›å»ºå¯¹è±¡"
 
 
 msgid "Choose a template"
-msgstr "Ñ¡ÔñÑù°å"
+msgstr "é€‰æ‹©æ ·æ¿"
 
 
 msgid "Select a template for the creation process"
-msgstr "Ñ¡ÔñÓÃÓÚ´´½¨¹ı³ÌµÄÑù°å"
+msgstr "é€‰æ‹©ç”¨äºåˆ›å»ºè¿‡ç¨‹çš„æ ·æ¿"
 
 
 msgid "Save as file"
-msgstr "Áí´æÎªÎÄ¼ş"
+msgstr "å¦å­˜ä¸ºæ–‡ä»¶"
 
 
 msgid "You left the RDN field blank."
-msgstr "RDN¶ÎÎª¿Õ°×¡£"
+msgstr "RDNæ®µä¸ºç©ºç™½ã€‚"
 
 
 msgid "The container you specified (%s) does not exist. Please try again."
-msgstr "ÄãÖ¸¶¨µÄ(%s)ÈİÆ÷²»´æÔÚ¡£ ÇëÔÙÊÔÊÔ¡£"
+msgstr "ä½ æŒ‡å®šçš„(%s)å®¹å™¨ä¸å­˜åœ¨ã€‚ è¯·å†è¯•è¯•ã€‚"
 
 
 msgid "You did not select any ObjectClasses for this object. Please go back and do so."
-msgstr "ÄãÃ»ÓĞÎª¸Ã¶ÔÏóÑ¡ÔñÈÎºÎObjectClasses¡£ Çë·µ»ØÕÕ×ö¡£"
+msgstr "ä½ æ²¡æœ‰ä¸ºè¯¥å¯¹è±¡é€‰æ‹©ä»»ä½•ObjectClassesã€‚ è¯·è¿”å›ç…§åšã€‚"
 
 
 msgid "Hint: You must choose exactly one structural objectClass (shown in bold above)"
-msgstr "ÌáÊ¾£º Äã±ØÓĞÑ¡ÔñÒ»¸ö½á¹¹»¯µÄobjectClass (ÈçÉÏÃæ´ÖÌåËùÏÔÊ¾µÄ)"
+msgstr "æç¤ºï¼š ä½ å¿…æœ‰é€‰æ‹©ä¸€ä¸ªç»“æ„åŒ–çš„objectClass (å¦‚ä¸Šé¢ç²—ä½“æ‰€æ˜¾ç¤ºçš„)"
 
 
 msgid "Your config specifies a handler of \"%s\" for this template but this file is not readable because the permissions are too strict."
-msgstr "ÄãÔÚÅäÖÃÖĞÖ¸¶¨ÁËÓÃÓÚ¸ÃÑù°åµÄ\"%s\"µÄÊÖ±ú£¬µ«ÊÇÕâ¸öÎÄ¼şÒòÎª½ûÖ¹È¨ÏŞÌ«ÑÏ¸ñ¶ø²»¿É¶Á¡£"
+msgstr "ä½ åœ¨é…ç½®ä¸­æŒ‡å®šäº†ç”¨äºè¯¥æ ·æ¿çš„\"%s\"çš„æ‰‹æŸ„ï¼Œä½†æ˜¯è¿™ä¸ªæ–‡ä»¶å› ä¸ºç¦æ­¢æƒé™å¤ªä¸¥æ ¼è€Œä¸å¯è¯»ã€‚"
 
 
 msgid "Step 1 of 2: Name and ObjectClass(es)"
-msgstr "µÚÒ»²½£º Name ºÍ ObjectClass(es)"
+msgstr "ç¬¬ä¸€æ­¥ï¼š Name å’Œ ObjectClass(es)"
 
 
 msgid "Step 2 of 2: Specify attributes and values"
-msgstr "µÚ¶ş²½£º Ö¸¶¨ÊôĞÔºÍÖµ"
+msgstr "ç¬¬äºŒæ­¥ï¼š æŒ‡å®šå±æ€§å’Œå€¼"
 
 
 msgid "Relative Distinguished Name"
-msgstr "Relative Distinguished Name£¨Ïà¶Ô±êÊ¶Ãû£©"
+msgstr "Relative Distinguished Nameï¼ˆç›¸å¯¹æ ‡è¯†åï¼‰"
 
 
 msgid "RDN"
@@ -1062,341 +1062,341 @@ msgstr "RDN"
 
 
 msgid "(example: cn=MyNewPerson)"
-msgstr "(ÀıÈç£º cn=MyNewPerson)"
+msgstr "(ä¾‹å¦‚ï¼š cn=MyNewPerson)"
 
 
 msgid "Container"
-msgstr "Container£¨ÈİÆ÷£©"
+msgstr "Containerï¼ˆå®¹å™¨ï¼‰"
 
 
 msgid "You have not logged into the selected server yet, so you cannot perform searches on it."
-msgstr "Äã»¹Ã»ÓĞµÇÈëËùÑ¡ÔñµÄ·şÎñÆ÷£¬Òò´ËÄã²»ÄÜÔÚËüÉÏÃæÍê³ÉËÑË÷¡£"
+msgstr "ä½ è¿˜æ²¡æœ‰ç™»å…¥æ‰€é€‰æ‹©çš„æœåŠ¡å™¨ï¼Œå› æ­¤ä½ ä¸èƒ½åœ¨å®ƒä¸Šé¢å®Œæˆæœç´¢ã€‚"
 
 
 msgid "Click here to go to the login form"
-msgstr "µã»÷ÕâÀï×ªµ½µÇÂ¼±í¸ñ"
+msgstr "ç‚¹å‡»è¿™é‡Œè½¬åˆ°ç™»å½•è¡¨æ ¼"
 
 
 msgid "Unrecognized criteria option: "
-msgstr "²»ÈÏÊ¶µÄcriteria£¨±ê×¼£©Ñ¡Ïî£º "
+msgstr "ä¸è®¤è¯†çš„criteriaï¼ˆæ ‡å‡†ï¼‰é€‰é¡¹ï¼š "
 
 
 msgid "If you want to add your own criteria to the list. Be sure to edit search.php to handle them. Quitting."
-msgstr "Èç¹ûÄãÏëÔö¼Ó×Ô¼ºµÄcriteria µ½ÁĞ±íÀï¡£ ¼ÇµÃ±à¼­search.php À´´¦ÀíËüÃÇ¡£ ÍË³ö¡£"
+msgstr "å¦‚æœä½ æƒ³å¢åŠ è‡ªå·±çš„criteria åˆ°åˆ—è¡¨é‡Œã€‚ è®°å¾—ç¼–è¾‘search.php æ¥å¤„ç†å®ƒä»¬ã€‚ é€€å‡ºã€‚"
 
 
 msgid "Entries found: "
-msgstr "ÕÒµ½µÄÌõÄ¿£º "
+msgstr "æ‰¾åˆ°çš„æ¡ç›®ï¼š "
 
 
 msgid "Filter performed: "
-msgstr "Ó¦ÓÃÁËµÄ¹ıÂËÆ÷£º "
+msgstr "åº”ç”¨äº†çš„è¿‡æ»¤å™¨ï¼š "
 
 
 msgid "Search performed by phpLDAPadmin in"
-msgstr "phpLDAPadminÍê³ÉËÑË÷£¬ÓÃÊ±"
+msgstr "phpLDAPadminå®Œæˆæœç´¢ï¼Œç”¨æ—¶"
 
 
 msgid "seconds"
-msgstr "Ãë"
+msgstr "ç§’"
 
 
 msgid "The scope in which to search"
-msgstr "ËÑË÷µÄ·¶Î§"
+msgstr "æœç´¢çš„èŒƒå›´"
 
 
 msgid "Sub (entire subtree)"
-msgstr "Sub (Õû¸ö×ÓÊ÷)"
+msgstr "Sub (æ•´ä¸ªå­æ ‘)"
 
 
 msgid "One (one level beneath base)"
-msgstr "One (baseÖ®ÏÂµÄÒ»¼¶)"
+msgstr "One (baseä¹‹ä¸‹çš„ä¸€çº§)"
 
 
 msgid "Base (base dn only)"
-msgstr "Base (½öÏŞÓÚbase dn)"
+msgstr "Base (ä»…é™äºbase dn)"
 
 
 msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))"
-msgstr "±ê×¼µÄLDAPËÑË÷¹ıÂËÆ÷¡£ ÀıÈç£º (&(sn=Smith)(givenname=David))"
+msgstr "æ ‡å‡†çš„LDAPæœç´¢è¿‡æ»¤å™¨ã€‚ ä¾‹å¦‚ï¼š (&(sn=Smith)(givenname=David))"
 
 
 msgid "Search Filter"
-msgstr "ËÑË÷¹ıÂËÆ÷"
+msgstr "æœç´¢è¿‡æ»¤å™¨"
 
 
 msgid "A list of attributes to display in the results (comma-separated)"
-msgstr "ÓÃÓÚÏÔÊ¾ÔÚ½á¹ûÖĞµÄÊôĞÔÁĞ±í(ÒÔ¶ººÅ¸ô¿ª)"
+msgstr "ç”¨äºæ˜¾ç¤ºåœ¨ç»“æœä¸­çš„å±æ€§åˆ—è¡¨(ä»¥é€—å·éš”å¼€)"
 
 
 msgid "equals"
-msgstr "µÈÓÚ"
+msgstr "ç­‰äº"
 
 
 msgid "starts with"
-msgstr "¿ªÊ¼ÓÚ"
+msgstr "å¼€å§‹äº"
 
 
 msgid "contains"
-msgstr "°üº¬"
+msgstr "åŒ…å«"
 
 
 msgid "ends with"
-msgstr "½áÊøÓÚ"
+msgstr "ç»“æŸäº"
 
 
 msgid "sounds like"
-msgstr "¿´ÆğÀ´Ïó"
+msgstr "çœ‹èµ·æ¥è±¡"
 
 
 msgid "Could not retrieve LDAP information from the server. This may be due to a <a href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version of PHP or perhaps your LDAP server has access control specified that prevents LDAP clients from accessing the RootDSE."
-msgstr "²»ÄÜ´Ó·şÎñÆ÷ÉÏÈ¡µÃLDAPĞÅÏ¢¡£ ¿ÉÄÜÊÇÒòÎªÄãµÄPHP´æÔÚÕâ¸ö<a href=\"http://bugs.php.net/bug.php?id=29587\">´íÂ©</a>£¬»òÕßÊÇÄãµÄLDAP·şÎñÆ÷ÀïÖ¸¶¨µÄ\"·ÃÎÊ¿ØÖÆ\"½ûÖ¹LDAP¿Í»§¶Ë·ÃÎÊRootDSE¡£"
+msgstr "ä¸èƒ½ä»æœåŠ¡å™¨ä¸Šå–å¾—LDAPä¿¡æ¯ã€‚ å¯èƒ½æ˜¯å› ä¸ºä½ çš„PHPå­˜åœ¨è¿™ä¸ª<a href=\"http://bugs.php.net/bug.php?id=29587\">é”™æ¼</a>ï¼Œæˆ–è€…æ˜¯ä½ çš„LDAPæœåŠ¡å™¨é‡ŒæŒ‡å®šçš„\"è®¿é—®æ§åˆ¶\"ç¦æ­¢LDAPå®¢æˆ·ç«¯è®¿é—®RootDSEã€‚"
 
 
 msgid "Server info for: "
-msgstr "·şÎñÆ÷ĞÅÏ¢£º "
+msgstr "æœåŠ¡å™¨ä¿¡æ¯ï¼š "
 
 
 msgid "Server reports the following information about itself"
-msgstr "ÏÂÁĞĞÅÏ¢ÊÇ·şÎñÆ÷±¨¸æµÄ¹ØÓÚËü×Ô¼ºµÄĞÅÏ¢"
+msgstr "ä¸‹åˆ—ä¿¡æ¯æ˜¯æœåŠ¡å™¨æŠ¥å‘Šçš„å…³äºå®ƒè‡ªå·±çš„ä¿¡æ¯"
 
 
 msgid "This server has nothing to report."
-msgstr "¸Ã·şÎñÆ÷Ã»ÓĞ±¨¸æÈÎºÎĞÅÏ¢¡£"
+msgstr "è¯¥æœåŠ¡å™¨æ²¡æœ‰æŠ¥å‘Šä»»ä½•ä¿¡æ¯ã€‚"
 
 
 msgid "update_array is malformed. This might be a phpLDAPadmin bug. Please report it."
-msgstr "¿´²»¶®update_array¡£ Õâ¿ÉÄÜÊÇphpLDAPadminµÄ´íÂ©¡£ Çë±¨¸æ¡£"
+msgstr "çœ‹ä¸æ‡‚update_arrayã€‚ è¿™å¯èƒ½æ˜¯phpLDAPadminçš„é”™æ¼ã€‚ è¯·æŠ¥å‘Šã€‚"
 
 
 msgid "Could not perform ldap_modify operation."
-msgstr "²»ÄÜÍê³Éldap_modify ²Ù×÷¡£"
+msgstr "ä¸èƒ½å®Œæˆldap_modify æ“ä½œã€‚"
 
 
 msgid "Do you want to make these changes?"
-msgstr "ÄãÏëÓ¦ÓÃÕâĞ©±ä»¯Âğ£¿"
+msgstr "ä½ æƒ³åº”ç”¨è¿™äº›å˜åŒ–å—ï¼Ÿ"
 
 
 msgid "Attribute"
-msgstr "ÊôĞÔ"
+msgstr "å±æ€§"
 
 
 msgid "Old Value"
-msgstr "¾ÉÖµ"
+msgstr "æ—§å€¼"
 
 
 msgid "New Value"
-msgstr "ĞÂÖµ"
+msgstr "æ–°å€¼"
 
 
 msgid "[attribute deleted]"
-msgstr "[É¾³ıµÄÊôĞÔ]"
+msgstr "[åˆ é™¤çš„å±æ€§]"
 
 
 msgid "Commit"
-msgstr "Ìá½»"
+msgstr "æäº¤"
 
 
 msgid "Cancel"
-msgstr "È¡Ïû"
+msgstr "å–æ¶ˆ"
 
 
 msgid "You made no changes"
-msgstr "ÄãÃ»ÓĞ½øĞĞ¸ü¸Ä"
+msgstr "ä½ æ²¡æœ‰è¿›è¡Œæ›´æ”¹"
 
 
 msgid "Go back"
-msgstr "·µ»Ø"
+msgstr "è¿”å›"
 
 
 msgid "Use the menu to the left to navigate"
-msgstr "Ê¹ÓÃ×ó±ß²Ëµ¥À´µ¼º½"
+msgstr "ä½¿ç”¨å·¦è¾¹èœå•æ¥å¯¼èˆª"
 
 
 msgid "Credits"
-msgstr "ÈÙÓş"
+msgstr "è£èª‰"
 
 
 msgid "ChangeLog"
-msgstr "±ä¸ü¼ÇÂ¼"
+msgstr "å˜æ›´è®°å½•"
 
 
 msgid "Donate"
-msgstr "¾èÔù"
+msgstr "æèµ "
 
 
 msgid "phpLDAPadmin logo"
-msgstr "phpLDAPadmin ±êÊ¶"
+msgstr "phpLDAPadmin æ ‡è¯†"
 
 
 msgid "Purge caches"
-msgstr "Çå¿Õ»º´æ"
+msgstr "æ¸…ç©ºç¼“å­˜"
 
 
 msgid "No cache to purge."
-msgstr "Ã»ÓĞ»º´æ¿ÉÇå¿Õ¡£"
+msgstr "æ²¡æœ‰ç¼“å­˜å¯æ¸…ç©ºã€‚"
 
 
 msgid "Purged %s bytes of cache."
-msgstr "Çå¿Õ»º´æ%s ¸ö×Ö½Ú¡£"
+msgstr "æ¸…ç©ºç¼“å­˜%s ä¸ªå­—èŠ‚ã€‚"
 
 
 msgid "Purge all cached data in phpLDAPadmin, including server schemas."
-msgstr "Çå¿ÕËùÓĞÔÚphpLDAPadminÖĞ»º´æµÄÊı¾İ£¬°üÀ¨·şÎñÆ÷schema£¨¸ñÊ½£©¡£"
+msgstr "æ¸…ç©ºæ‰€æœ‰åœ¨phpLDAPadminä¸­ç¼“å­˜çš„æ•°æ®ï¼ŒåŒ…æ‹¬æœåŠ¡å™¨schemaï¼ˆæ ¼å¼ï¼‰ã€‚"
 
 
 msgid "Unsafe file name: "
-msgstr "²»°²È«µÄÎÄ¼şÃû£º "
+msgstr "ä¸å®‰å…¨çš„æ–‡ä»¶åï¼š "
 
 
 msgid "No such file: "
-msgstr "Ã»ÓĞÕâÑùµÄÎÄ¼ş£º "
+msgstr "æ²¡æœ‰è¿™æ ·çš„æ–‡ä»¶ï¼š "
 
 
 msgid "You have enabled auto_uid_numbers for <b>%s</b> in your configuration,"
 "                                  but you have not specified the auto_uid_number_mechanism. Please correct"
 "                                  this problem."
-msgstr "ÔÚÄãµÄÅäÖÃÖĞÎª <b>%s</b> ÆôÓÃÁËauto_uid_numbers£¬"
-"                                  µ«ÊÇÄãÃ»ÓĞÖ¸¶¨auto_uid_number_mechanism¡£ Çë¸üÕı"
-"                                  Õâ¸öÎÊÌâ"
+msgstr "åœ¨ä½ çš„é…ç½®ä¸­ä¸º <b>%s</b> å¯ç”¨äº†auto_uid_numbersï¼Œ"
+"                                  ä½†æ˜¯ä½ æ²¡æœ‰æŒ‡å®šauto_uid_number_mechanismã€‚ è¯·æ›´æ­£"
+"                                  è¿™ä¸ªé—®é¢˜"
 
 
 msgid "You specified the \"auto_uid_number_mechanism\" as \"uidpool\""
 "                            in your configuration for server <b>%s</b>, but you did not specify the"
 "                            audo_uid_number_uid_pool_dn. Please specify it before proceeding."
-msgstr "ÄãÔÚ·şÎñ<b>%s</b>µÄÅäÖÃÖĞÖ¸¶¨\"auto_uid_number_mechanism\" Îª \"uidpool\"£¬"
-"                            µ«ÊÇÄãÃ»ÓĞÖ¸¶¨"
-"                            audo_uid_number_uid_pool_dn¡£ ÇëÔÚ½øĞĞÏÂ²½Ç°Ö¸¶¨Ëü¡£"
+msgstr "ä½ åœ¨æœåŠ¡<b>%s</b>çš„é…ç½®ä¸­æŒ‡å®š\"auto_uid_number_mechanism\" ä¸º \"uidpool\"ï¼Œ"
+"                            ä½†æ˜¯ä½ æ²¡æœ‰æŒ‡å®š"
+"                            audo_uid_number_uid_pool_dnã€‚ è¯·åœ¨è¿›è¡Œä¸‹æ­¥å‰æŒ‡å®šå®ƒã€‚"
 
 
 msgid "It appears that the uidPool you specified in your configuration (\"%s\")"
 "                              does not exist."
-msgstr "ºÃÏñÄãÔÚÅäÖÃ(\"%s\")ÖĞÖ¸¶¨µÄuidPool"
-"                              ²»´æÔÚ¡£"
+msgstr "å¥½åƒä½ åœ¨é…ç½®(\"%s\")ä¸­æŒ‡å®šçš„uidPool"
+"                              ä¸å­˜åœ¨ã€‚"
 
 
 msgid "You specified the \"auto_uid_number_mechanism\" as \"search\" in your"
 "                              configuration for server <b>%s</b>, but you did not specify the"
 "                              \"auto_uid_number_search_base\". Please specify it before proceeding."
-msgstr "ÄãÔÚ·şÎñÆ÷<b>%s<b>µÄÅäÖÃÎÄ¼şÖĞÖ¸¶¨ÁË\"auto_uid_number_mechanism\" Îª \"search\"£¬"
-"                              µ«ÊÇÄãÃ»ÓĞÖ¸¶¨"
-"                              \"auto_uid_number_search_base\"¡£ ÇëÔÚ½øĞĞÏÂ²½Ç°Ö¸¶¨Ëü¡£"
+msgstr "ä½ åœ¨æœåŠ¡å™¨<b>%s<b>çš„é…ç½®æ–‡ä»¶ä¸­æŒ‡å®šäº†\"auto_uid_number_mechanism\" ä¸º \"search\"ï¼Œ"
+"                              ä½†æ˜¯ä½ æ²¡æœ‰æŒ‡å®š"
+"                              \"auto_uid_number_search_base\"ã€‚ è¯·åœ¨è¿›è¡Œä¸‹æ­¥å‰æŒ‡å®šå®ƒã€‚"
 
 
 msgid "Unable to bind to <b>%s</b> with your with auto_uid credentials. Please check your configuration file."
-msgstr "Ê¹ÓÃauto_uid credentials²»ÄÜ°ó¶¨µ½<b>%s</b>¡£ Çë¼ì²éÄãµÄÅäÖÃÎÄ¼ş¡£"
+msgstr "ä½¿ç”¨auto_uid credentialsä¸èƒ½ç»‘å®šåˆ°<b>%s</b>ã€‚ è¯·æ£€æŸ¥ä½ çš„é…ç½®æ–‡ä»¶ã€‚"
 
 
 msgid "Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base for server %s"
-msgstr "ÄãµÄphpLDAPadminÅäÖÃÎª·şÎñÆ÷%sÖ¸¶¨ÁËÒ»¸ö·Ç·¨µÄauto_uid_search_base "
+msgstr "ä½ çš„phpLDAPadminé…ç½®ä¸ºæœåŠ¡å™¨%sæŒ‡å®šäº†ä¸€ä¸ªéæ³•çš„auto_uid_search_base "
 
 
 msgid "You specified an invalid value for auto_uid_number_mechanism (\"%s\")"
 "                                   in your configration. Only \"uidpool\" and \"search\" are valid."
 "                                   Please correct this problem."
-msgstr "ÄãÔÚÅäÖÃÎÄ¼şÖĞÎªauto_uid_number_mechanism (\"%s\")Ö¸¶¨ÁËÒ»¸ö·Ç·¨µÄÖµ"
-"                                   ¡£ Ö»ÓĞ\"uidpool\" ºÍ \"search\" ÊÇºÏ·¨µÄ¡£"
-"                                   Çë¸üÕıÕâ¸öÎÊÌâ¡£"
+msgstr "ä½ åœ¨é…ç½®æ–‡ä»¶ä¸­ä¸ºauto_uid_number_mechanism (\"%s\")æŒ‡å®šäº†ä¸€ä¸ªéæ³•çš„å€¼"
+"                                   ã€‚ åªæœ‰\"uidpool\" å’Œ \"search\" æ˜¯åˆæ³•çš„ã€‚"
+"                                   è¯·æ›´æ­£è¿™ä¸ªé—®é¢˜ã€‚"
 
 
 msgid "Error: You have an error in your config file. The only three allowed values"
 "                                    for auth_type in the $servers section are 'session', 'cookie', and 'config'. You entered '%s',"
 "                                    which is not allowed. "
-msgstr "´íÎó£º ÔÚÄãµÄÅäÖÃÎÄ¼şÖĞÓĞ¸ö´íÎó¡£ ½öÔÊĞíÓÃÓÚ"
-"                                    $servers²¿·ÖµÄauth_typeµÄÖµÎª 'session', 'cookie', and 'config'¡£ ÊäÈë'%s'£¬"
-"                                    ÕâÊÇ²»ÔÊĞíµÄ¡£ "
+msgstr "é”™è¯¯ï¼š åœ¨ä½ çš„é…ç½®æ–‡ä»¶ä¸­æœ‰ä¸ªé”™è¯¯ã€‚ ä»…å…è®¸ç”¨äº"
+"                                    $serverséƒ¨åˆ†çš„auth_typeçš„å€¼ä¸º 'session', 'cookie', and 'config'ã€‚ è¾“å…¥'%s'ï¼Œ"
+"                                    è¿™æ˜¯ä¸å…è®¸çš„ã€‚ "
 
 
 msgid "Unable to bind to <b>%s</b> with your with unique_attrs credentials. Please check your configuration file."
-msgstr "²»ÄÜÊ¹ÓÃunique_attrs °ó¶¨µ½<b>%s</b>¡£ Çë¼ì²éÄãµÄÅäÖÃÎÄ¼ş¡£"
+msgstr "ä¸èƒ½ä½¿ç”¨unique_attrs ç»‘å®šåˆ°<b>%s</b>ã€‚ è¯·æ£€æŸ¥ä½ çš„é…ç½®æ–‡ä»¶ã€‚"
 
 
 msgid "Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href='%s'>search</a> for that entry."
-msgstr "ÄãÆóÍ¼Ôö¼Ó<b>%s</b> (<i>%s</i>) µ½ <br><b>%s</b><br>£¬ÕâÊÇ²»ÔÊĞíµÄ¡£ ¸ÃÊôĞÔ/ÖµÊôÓÚÈÎºÎÌõÄ¿¡£<p>Äã¿ÉÄÜÏë<a href='%s'>ËÑË÷</a> ¸ÃÌõÌõÄ¿¡£"
+msgstr "ä½ ä¼å›¾å¢åŠ <b>%s</b> (<i>%s</i>) åˆ° <br><b>%s</b><br>ï¼Œè¿™æ˜¯ä¸å…è®¸çš„ã€‚ è¯¥å±æ€§/å€¼å±äºä»»ä½•æ¡ç›®ã€‚<p>ä½ å¯èƒ½æƒ³<a href='%s'>æœç´¢</a> è¯¥æ¡æ¡ç›®ã€‚"
 
 
 msgid "Your PHP install does not support TLS."
-msgstr "Äã°²×°µÄPHP ²»Ö§³ÖTLS¡£"
+msgstr "ä½ å®‰è£…çš„PHP ä¸æ”¯æŒTLSã€‚"
 
 
 msgid "Could not start TLS. Please check your LDAP server configuration."
-msgstr "²»ÄÜÆôÓÃTLS¡£ Çë¼ì²éÄãµÄLDAP ·şÎñÆ÷ÅäÖÃ¡£"
+msgstr "ä¸èƒ½å¯ç”¨TLSã€‚ è¯·æ£€æŸ¥ä½ çš„LDAP æœåŠ¡å™¨é…ç½®ã€‚"
 
 
 msgid "Could not bind anonymously to server."
-msgstr "²»ÄÜÄäÃû°ó¶¨µ½·şÎñÆ÷¡£"
+msgstr "ä¸èƒ½åŒ¿åç»‘å®šåˆ°æœåŠ¡å™¨ã€‚"
 
 
 msgid "Could not bind to the LDAP server."
-msgstr "²»ÄÜ°ó¶¨µ½¸ÃLDAP·şÎñÆ÷¡£"
+msgstr "ä¸èƒ½ç»‘å®šåˆ°è¯¥LDAPæœåŠ¡å™¨ã€‚"
 
 
 msgid "Anonymous Bind"
-msgstr "ÄäÃû°ó¶¨"
+msgstr "åŒ¿åç»‘å®š"
 
 
 msgid "Bad username or password. Please try again."
-msgstr "´íÎóµÄÓÃ»§Ãû»òÃÜÂë¡£ ÇëÔÙÊÔÊÔ¡£"
+msgstr "é”™è¯¯çš„ç”¨æˆ·åæˆ–å¯†ç ã€‚ è¯·å†è¯•è¯•ã€‚"
 
 
 msgid "Successfully logged into server <b>%s</b>"
-msgstr "³É¹¦µÇÂ¼µ½·şÎñÆ÷<b>%s</b>"
+msgstr "æˆåŠŸç™»å½•åˆ°æœåŠ¡å™¨<b>%s</b>"
 
 
 msgid "Could not set cookie."
-msgstr "²»ÄÜÉèÖÃcookie¡£"
+msgstr "ä¸èƒ½è®¾ç½®cookieã€‚"
 
 
 msgid "LDAP said: %s"
-msgstr "LDAPËµ£º %s"
+msgstr "LDAPè¯´ï¼š %s"
 
 
 msgid "Error"
-msgstr "³ö´í"
+msgstr "å‡ºé”™"
 
 
 msgid "browse"
-msgstr "ä¯ÀÀ"
+msgstr "æµè§ˆ"
 
 
 msgid "Your system crypt library does not support extended DES encryption."
-msgstr "ÄãµÄÏµÍ³¼ÓÃÜ¿â²»Ö§³ÖÀ©Õ¹µÄDES¼ÓÃÜ¡£"
+msgstr "ä½ çš„ç³»ç»ŸåŠ å¯†åº“ä¸æ”¯æŒæ‰©å±•çš„DESåŠ å¯†ã€‚"
 
 
 msgid "Your system crypt library does not support blowfish encryption."
-msgstr "ÄãµÄÏµÍ³¼ÓÃÜ¿â²»Ö§³Öblowfish¼ÓÃÜ¡£"
+msgstr "ä½ çš„ç³»ç»ŸåŠ å¯†åº“ä¸æ”¯æŒblowfishåŠ å¯†ã€‚"
 
 
 msgid "Your system crypt library does not support md5crypt encryption."
-msgstr "ÄãµÄÏµÍ³¼ÓÃÜ¿â²»Ö§³Ömd5crypt¼ÓÃÜ¡£"
+msgstr "ä½ çš„ç³»ç»ŸåŠ å¯†åº“ä¸æ”¯æŒmd5cryptåŠ å¯†ã€‚"
 
 
 msgid "jpegPhoto contains errors<br />"
-msgstr "jpegPhoto °üº¬ÓĞ´í<br />"
+msgstr "jpegPhoto åŒ…å«æœ‰é”™<br />"
 
 
 msgid "Error number: %s (%s)"
-msgstr "´íÎó´úºÅ %s"
+msgstr "é”™è¯¯ä»£å· %s"
 
 
 msgid "Description: %s <br /><br />"
-msgstr "ÃèÊö£º %s <br /><br />"
+msgstr "æè¿°ï¼š %s <br /><br />"
 
 
 msgid "Error number: %s<br /><br />"
-msgstr "´íÎó´úºÅ£º %s <br /><br />"
+msgstr "é”™è¯¯ä»£å·ï¼š %s <br /><br />"
 
 
 msgid "Description: (no description available)<br />"
-msgstr "ÃèÊö£º (Ã»ÓĞÃèÊö¿ÉÌá¹©)<br />"
+msgstr "æè¿°ï¼š (æ²¡æœ‰æè¿°å¯æä¾›)<br />"
 
 
 msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
-msgstr "ÕâÊÇ¸öphpLDAPadmin ´íÂ©Âğ£¿ Èç¹ûÊÇ£¬¾ÍÇë<a href='%s'>±¨¸æÒ»¸ö</a>¡£"
+msgstr "è¿™æ˜¯ä¸ªphpLDAPadmin é”™æ¼å—ï¼Ÿ å¦‚æœæ˜¯ï¼Œå°±è¯·<a href='%s'>æŠ¥å‘Šä¸€ä¸ª</a>ã€‚"
 
 
 msgid "Unrecognized error number: "
-msgstr "²»ÈÏÊ¶µÄ´íÎó´úºÅ£º "
+msgstr "ä¸è®¤è¯†çš„é”™è¯¯ä»£å·ï¼š "
 
 
 msgid "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
@@ -1407,10 +1407,10 @@ msgid "<center><table class='notice'><tr><td colspan='2'><center><img src='image
 "	<tr><td colspan='2'><center><a target='new' href='%s'>If it hasnt been reported, you may report this bug by clicking here</a>.</center></td></tr>"
 "	</table></center><br />"
 msgstr "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
-"             <b>Äã·¢ÏÖÁËÒ»¸ö·ÇÖÂÊ¹µÄphpLDAPadmin ´íÂ©£¡</b></td></tr><tr><td>´íÎó£º</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>ÎÄ¼ş£º</td>"
-"             <td><b>%s</b> ĞĞ <b>%s</b>£¬µ÷ÓÃº¯Êı <b>%s</b></td></tr><tr><td>°æ±¾£º</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
-"             </td></tr><tr><td>Web ·şÎñÆ÷£º</td><td><b>%s</b></td></tr><tr><td colspan='2'><center><a target='new' href='%s'>"
-"             Çëµã»÷ÕâÀï±¨¸æ¸Ã´íÂ©</a>¡£</center></td></tr></table></center><br />"
+"             <b>ä½ å‘ç°äº†ä¸€ä¸ªéè‡´ä½¿çš„phpLDAPadmin é”™æ¼ï¼</b></td></tr><tr><td>é”™è¯¯ï¼š</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>æ–‡ä»¶ï¼š</td>"
+"             <td><b>%s</b> è¡Œ <b>%s</b>ï¼Œè°ƒç”¨å‡½æ•° <b>%s</b></td></tr><tr><td>ç‰ˆæœ¬ï¼š</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
+"             </td></tr><tr><td>Web æœåŠ¡å™¨ï¼š</td><td><b>%s</b></td></tr><tr><td colspan='2'><center><a target='new' href='%s'>"
+"             è¯·ç‚¹å‡»è¿™é‡ŒæŠ¥å‘Šè¯¥é”™æ¼</a>ã€‚</center></td></tr></table></center><br />"
 
 
 msgid "Congratulations! You found a bug in phpLDAPadmin.<br /><br />"
@@ -1427,172 +1427,172 @@ msgid "Congratulations! You found a bug in phpLDAPadmin.<br /><br />"
 "	     </table>"
 "	     <br />"
 "	     Please report this bug by clicking below!"
-msgstr "¹§Ï²Äã£¡ Äã·¢ÏÖÁËphpLDAPadminµÄÒ»¸ö´íÂ©¡£<br /><br />"
+msgstr "æ­å–œä½ ï¼ ä½ å‘ç°äº†phpLDAPadminçš„ä¸€ä¸ªé”™æ¼ã€‚<br /><br />"
 "	     <table class='bug'>"
-"	     <tr><td>´íÎó£º</td><td><b>%s</b></td></tr>"
-"	     <tr><td>¼¶±ğ:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>ÎÄ¼ş£º</td><td><b>%s</b></td></tr>"
-"	     <tr><td>ĞĞ£º</td><td><b>%s</b></td></tr>"
-"		 <tr><td>µ÷ÓÃÕß£º</td><td><b>%s</b></td></tr>"
-"	     <tr><td>PLA °æ±¾£º</td><td><b>%s</b></td></tr>"
-"	     <tr><td>PHP °æ±¾£º</td><td><b>%s</b></td></tr>"
+"	     <tr><td>é”™è¯¯ï¼š</td><td><b>%s</b></td></tr>"
+"	     <tr><td>çº§åˆ«:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>æ–‡ä»¶ï¼š</td><td><b>%s</b></td></tr>"
+"	     <tr><td>è¡Œï¼š</td><td><b>%s</b></td></tr>"
+"		 <tr><td>è°ƒç”¨è€…ï¼š</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PLA ç‰ˆæœ¬ï¼š</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP ç‰ˆæœ¬ï¼š</td><td><b>%s</b></td></tr>"
 "	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>PHP ·şÎñÆ÷£º</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP æœåŠ¡å™¨ï¼š</td><td><b>%s</b></td></tr>"
 "	     </table>"
 "	     <br />"
-"	     ÇëÍ¨¹ıµã»÷ÏÂÃæÀ´±¨¸æÕâ¸ö´íÂ©£¡"
+"	     è¯·é€šè¿‡ç‚¹å‡»ä¸‹é¢æ¥æŠ¥å‘Šè¿™ä¸ªé”™æ¼ï¼"
 
 
 msgid "Import LDIF File"
-msgstr "µ¼ÈëLDIFÎÄ¼ş"
+msgstr "å¯¼å…¥LDIFæ–‡ä»¶"
 
 
 msgid "Select an LDIF file:"
-msgstr "Ñ¡ÔñÒ»¸öLDIFÎÄ¼ş£º"
+msgstr "é€‰æ‹©ä¸€ä¸ªLDIFæ–‡ä»¶ï¼š"
 
 
 msgid "Don't stop on errors"
-msgstr "·¢Éú´íÎóÊ±²»Í£Ö¹"
+msgstr "å‘ç”Ÿé”™è¯¯æ—¶ä¸åœæ­¢"
 
 
 msgid "Adding..."
-msgstr "Ôö¼Ó..."
+msgstr "å¢åŠ ..."
 
 
 msgid "Deleting..."
-msgstr "É¾³ı..."
+msgstr "åˆ é™¤..."
 
 
 msgid "Renaming..."
-msgstr "¸üÃû..."
+msgstr "æ›´å..."
 
 
 msgid "Modifying..."
-msgstr "ĞŞ¸Ä..."
+msgstr "ä¿®æ”¹..."
 
 
 msgid "No version found. Assuming 1."
-msgstr "Ã»ÓĞÕÒµ½°æ±¾ºÅ¡£ ¼ÙÉè 1¡£"
+msgstr "æ²¡æœ‰æ‰¾åˆ°ç‰ˆæœ¬å·ã€‚ å‡è®¾ 1ã€‚"
 
 
 msgid "A valid dn line is required."
-msgstr "ÒªÇóÒ»¸öºÏ·¨µÄdnĞĞ¡£"
+msgstr "è¦æ±‚ä¸€ä¸ªåˆæ³•çš„dnè¡Œã€‚"
 
 
 msgid "Missing uploaded file."
-msgstr "¶ªÊ§ÉÏ´«µÄÎÄ¼ş¡£"
+msgstr "ä¸¢å¤±ä¸Šä¼ çš„æ–‡ä»¶ã€‚"
 
 
 msgid "No LDIF file specified. Please try again."
-msgstr "Ã»ÓĞÖ¸¶¨LDIFÎÄ¼ş¡£ ÇëÔÙÊÔÊÔ¡£"
+msgstr "æ²¡æœ‰æŒ‡å®šLDIFæ–‡ä»¶ã€‚ è¯·å†è¯•è¯•ã€‚"
 
 
 msgid "Uploaded LDIF file is empty."
-msgstr "ÉÏ´«µÄLDIF ÎÄ¼şÎª¿Õ¡£"
+msgstr "ä¸Šä¼ çš„LDIF æ–‡ä»¶ä¸ºç©ºã€‚"
 
 
 msgid "empty"
-msgstr "¿ÕµÄ"
+msgstr "ç©ºçš„"
 
 
 msgid "File"
-msgstr "ÎÄ¼ş"
+msgstr "æ–‡ä»¶"
 
 
 msgid "%s bytes"
-msgstr "%s ×Ö½Ú"
+msgstr "%s å­—èŠ‚"
 
 
 msgid "Failed"
-msgstr "Ê§°Ü"
+msgstr "å¤±è´¥"
 
 
 msgid "LDIF Parse Error"
-msgstr "LDIF½âÎö´íÎó"
+msgstr "LDIFè§£æé”™è¯¯"
 
 
 msgid "Could not add object:"
-msgstr "²»ÄÜÔö¼Ó¶ÔÏó£º"
+msgstr "ä¸èƒ½å¢åŠ å¯¹è±¡ï¼š"
 
 
 msgid "Could not rename object:"
-msgstr "²»ÄÜ¸üÃû¶ÔÏó£º"
+msgstr "ä¸èƒ½æ›´åå¯¹è±¡ï¼š"
 
 
 msgid "Could not delete object:"
-msgstr "²»ÄÜÉ¾³ı¶ÔÏó£º"
+msgstr "ä¸èƒ½åˆ é™¤å¯¹è±¡ï¼š"
 
 
 msgid "Could not modify object:"
-msgstr "²»ÄÜĞŞ¸Ä¶ÔÏó£º"
+msgstr "ä¸èƒ½ä¿®æ”¹å¯¹è±¡ï¼š"
 
 
 msgid "Line Number:"
-msgstr "ĞĞºÅ£º"
+msgstr "è¡Œå·ï¼š"
 
 
 msgid "Line:"
-msgstr "ĞĞÊı:"
+msgstr "è¡Œæ•°:"
 
 
 msgid "Export format"
-msgstr "µ¼³ö¸ñÊ½"
+msgstr "å¯¼å‡ºæ ¼å¼"
 
 
 msgid "Line ends"
-msgstr "ĞĞ½áÊø"
+msgstr "è¡Œç»“æŸ"
 
 
 msgid "You must choose an export format."
-msgstr "²»±ØĞëÑ¡ÔñÒ»¸öµ¼³ö¸ñÊ½¡£"
+msgstr "ä¸å¿…é¡»é€‰æ‹©ä¸€ä¸ªå¯¼å‡ºæ ¼å¼ã€‚"
 
 
 msgid "Invalid export format"
-msgstr "·Ç·¨µÄµ¼³ö¸ñÊ½"
+msgstr "éæ³•çš„å¯¼å‡ºæ ¼å¼"
 
 
 msgid "No available exporter found."
-msgstr "Ã»ÓĞÕÒµ½¿ÉÓÃµ¼³öÆ÷¡£"
+msgstr "æ²¡æœ‰æ‰¾åˆ°å¯ç”¨å¯¼å‡ºå™¨ã€‚"
 
 
 msgid "Encountered an error while performing search."
-msgstr "ÔÚÖ´ĞĞËÑË÷Ê±Åöµ½Ò»¸ö´íÎó¡£"
+msgstr "åœ¨æ‰§è¡Œæœç´¢æ—¶ç¢°åˆ°ä¸€ä¸ªé”™è¯¯ã€‚"
 
 
 msgid "Showing results %s through %s."
-msgstr "ÏÔÊ¾½á¹û%s£¬ËüÊÇÍ¨¹ı%sÀ´Íê³ÉµÄ¡£"
+msgstr "æ˜¾ç¤ºç»“æœ%sï¼Œå®ƒæ˜¯é€šè¿‡%sæ¥å®Œæˆçš„ã€‚"
 
 
 msgid "Searching..."
-msgstr "ËÑË÷..."
+msgstr "æœç´¢..."
 
 
 msgid "Notice, search size limit exceeded."
-msgstr "×¢Òâ£¬³¬³öËÑË÷´óĞ¡ÏŞÖÆ¡£"
+msgstr "æ³¨æ„ï¼Œè¶…å‡ºæœç´¢å¤§å°é™åˆ¶ã€‚"
 
 
 msgid "Entry"
-msgstr "ÌõÄ¿"
+msgstr "æ¡ç›®"
 
 
 msgid "LDIF Export for: %s"
-msgstr "Îª£º %s£¬µ¼³öLDIF"
+msgstr "ä¸ºï¼š %sï¼Œå¯¼å‡ºLDIF"
 
 
 msgid "Generated by phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) on %s"
-msgstr "ÓÉphpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) ÔÚ %sÉÏÉú³ÉµÄ"
+msgstr "ç”±phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) åœ¨ %sä¸Šç”Ÿæˆçš„"
 
 
 msgid "Total Entries"
-msgstr "ÌõÄ¿×ÜÊı"
+msgstr "æ¡ç›®æ€»æ•°"
 
 
 msgid "DSLM Export for: %s"
-msgstr "Îª£º %s£¬µ¼³öDSLM"
+msgstr "ä¸ºï¼š %sï¼Œå¯¼å‡ºDSLM"
 
 
 msgid "Include system attributes"
-msgstr "°üº¬ÏµÍ³ÊôĞÔ"
+msgstr "åŒ…å«ç³»ç»Ÿå±æ€§"
 
 
 msgid "CSV (Spreadsheet)"
@@ -1600,522 +1600,522 @@ msgstr "CSV (Spreadsheet)"
 
 
 msgid "You left the password blank."
-msgstr "ÄãµÄÃÜÂëÎª¿Õ¡£"
+msgstr "ä½ çš„å¯†ç ä¸ºç©ºã€‚"
 
 
 msgid "No one is logged in to that server."
-msgstr "Ã»ÈËµÇÂ¼µ½¸Ã·şÎñÆ÷¡£"
+msgstr "æ²¡äººç™»å½•åˆ°è¯¥æœåŠ¡å™¨ã€‚"
 
 
 msgid "Could not logout."
-msgstr "²»ÄÜÍË³ö¡£"
+msgstr "ä¸èƒ½é€€å‡ºã€‚"
 
 
 msgid "Unknown auth_type: %s"
-msgstr "²»ÄÜÊ¶±ğµÄauth_type£º %s"
+msgstr "ä¸èƒ½è¯†åˆ«çš„auth_typeï¼š %s"
 
 
 msgid "Logged out successfully from server <b>%s</b>"
-msgstr "³É¹¦´Ó<b>%s</b>·şÎñÆ÷ÍË³ö"
+msgstr "æˆåŠŸä»<b>%s</b>æœåŠ¡å™¨é€€å‡º"
 
 
 msgid "Authenticate to server %s"
-msgstr "ÈÏÖ¤µ½·şÎñÆ÷%s"
+msgstr "è®¤è¯åˆ°æœåŠ¡å™¨%s"
 
 
 msgid "Warning: This web connection is unencrypted."
-msgstr "¾¯¸æ£º ´ËwebÁ¬½ÓÃ»ÓĞ¼ÓÃÜ¡£"
+msgstr "è­¦å‘Šï¼š æ­¤webè¿æ¥æ²¡æœ‰åŠ å¯†ã€‚"
 
 
 msgid "You are not using 'https'. Web browser will transmit login information in clear text."
-msgstr "ÄãÃ»ÓĞÊ¹ÓÃ'https'¡£ Webä¯ÀÀÆ÷½«»áÒÔÃ÷ÎÄ´«ÊäµÇÂ¼ĞÅÏ¢¡£"
+msgstr "ä½ æ²¡æœ‰ä½¿ç”¨'https'ã€‚ Webæµè§ˆå™¨å°†ä¼šä»¥æ˜æ–‡ä¼ è¾“ç™»å½•ä¿¡æ¯ã€‚"
 
 
 msgid "Login DN"
-msgstr "µÇÂ¼DN"
+msgstr "ç™»å½•DN"
 
 
 msgid "User name"
-msgstr "ÓÃ»§Ãû"
+msgstr "ç”¨æˆ·å"
 
 
 msgid "Password"
-msgstr "ÃÜÂë"
+msgstr "å¯†ç "
 
 
 msgid "Authenticate"
-msgstr "ÈÏÖ¤"
+msgstr "è®¤è¯"
 
 
 msgid "Sorry, you are not allowed to use phpLDAPadmin with this LDAP server."
-msgstr "¶Ô²»Æğ£¬ÕâÌ¨LDAP·şÎñÆ÷²»ÔÊĞíÄãÊ¹ÓÃphpLDAPadmin¡£"
+msgstr "å¯¹ä¸èµ·ï¼Œè¿™å°LDAPæœåŠ¡å™¨ä¸å…è®¸ä½ ä½¿ç”¨phpLDAPadminã€‚"
 
 
 msgid "Entry Chooser"
-msgstr "ÌõÄ¿Ñ¡ÔñÆ÷"
+msgstr "æ¡ç›®é€‰æ‹©å™¨"
 
 
 msgid "You need to configure phpLDAPadmin. Edit the file 'config/config.php' to do so. An example config file is provided in 'config/config.php.example'"
-msgstr "ÄãĞèÒªÅäÖÃphpLDAPadmin¡£ ±à¼­ÎÄ¼ş'config.php'¾Í¿ÉÒÔ¡£ ÓĞ¸öÑùÀıÅäÖÃÎÄ¼şÌá¹©ÔÚ 'config.php.example'Àï"
+msgstr "ä½ éœ€è¦é…ç½®phpLDAPadminã€‚ ç¼–è¾‘æ–‡ä»¶'config.php'å°±å¯ä»¥ã€‚ æœ‰ä¸ªæ ·ä¾‹é…ç½®æ–‡ä»¶æä¾›åœ¨ 'config.php.example'é‡Œ"
 
 
 msgid "Deletes not allowed in read only mode."
-msgstr "ÔÚÖ»¶ÁÄ£Ê½ÏÂ²»ÔÊĞíÉ¾³ı¡£"
+msgstr "åœ¨åªè¯»æ¨¡å¼ä¸‹ä¸å…è®¸åˆ é™¤ã€‚"
 
 
 msgid "Error calling mass_delete.php. Missing mass_delete in POST vars."
-msgstr "´íÎóµ÷ÓÃmass_delete.php¡£ÔÚPOST±äÁ¿ÖĞ¶ªÊ§ mass_delete¡£"
+msgstr "é”™è¯¯è°ƒç”¨mass_delete.phpã€‚åœ¨POSTå˜é‡ä¸­ä¸¢å¤± mass_deleteã€‚"
 
 
 msgid "mass_delete POST var is not an array."
-msgstr "mass_delete POST ±äÁ¿²»ÊÇ¸öÊı×é¡£"
+msgstr "mass_delete POST å˜é‡ä¸æ˜¯ä¸ªæ•°ç»„ã€‚"
 
 
 msgid "Mass deletion is not enabled. Please enable it in config.php before proceeding."
-msgstr "Mass deletion(´óÁ¿É¾³ı)Ã»ÓĞÆôÓÃ¡£ ÇëÔÚ½øĞĞÏÂÒ»²½Ç°ÔÚconfig.phpÖĞÆôÓÃËü¡£"
+msgstr "Mass deletion(å¤§é‡åˆ é™¤)æ²¡æœ‰å¯ç”¨ã€‚ è¯·åœ¨è¿›è¡Œä¸‹ä¸€æ­¥å‰åœ¨config.phpä¸­å¯ç”¨å®ƒã€‚"
 
 
 msgid "Mass Deleting"
-msgstr "ÕıÔÚ´óÁ¿É¾³ı"
+msgstr "æ­£åœ¨å¤§é‡åˆ é™¤"
 
 
 msgid "Deletion progress on server \"%s\""
-msgstr "·şÎñÆ÷\"%s\"ÉÏµÄÉ¾³ı¹ı³Ì"
+msgstr "æœåŠ¡å™¨\"%s\"ä¸Šçš„åˆ é™¤è¿‡ç¨‹"
 
 
 msgid "Malformed mass_delete array."
-msgstr "²»¹æÔòµÄmass_delete Êı×é¡£"
+msgstr "ä¸è§„åˆ™çš„mass_delete æ•°ç»„ã€‚"
 
 
 msgid "You did not select any entries to delete."
-msgstr "ÄãÃ»ÓĞÑ¡ÔñÈÎºÎÒªÉ¾³ıµÄÌõÄ¿¡£"
+msgstr "ä½ æ²¡æœ‰é€‰æ‹©ä»»ä½•è¦åˆ é™¤çš„æ¡ç›®ã€‚"
 
 
 msgid "Deleting %s"
-msgstr "ÕıÔÚÉ¾³ı %s"
+msgstr "æ­£åœ¨åˆ é™¤ %s"
 
 
 msgid "%s of %s entries failed to be deleted."
-msgstr "É¾³ıÌõÄ¿%s£¨ÊôÓÚ%s£©Ê§°Ü¡£"
+msgstr "åˆ é™¤æ¡ç›®%sï¼ˆå±äº%sï¼‰å¤±è´¥ã€‚"
 
 
 msgid "All entries deleted successfully."
-msgstr "ËùÓĞÌõÄ¿É¾³ı³É¹¦¡£"
+msgstr "æ‰€æœ‰æ¡ç›®åˆ é™¤æˆåŠŸã€‚"
 
 
 msgid "Confirm mass delete of %s entries on server %s"
-msgstr "È·ÈÏ´óÁ¿É¾³ıÌõÄ¿%s£¨ÔÚ·şÎñÆ÷%sÉÏ£©"
+msgstr "ç¡®è®¤å¤§é‡åˆ é™¤æ¡ç›®%sï¼ˆåœ¨æœåŠ¡å™¨%sä¸Šï¼‰"
 
 
 msgid "Yes, delete!"
-msgstr "ÊÇµÄ£¬É¾³ı£¡"
+msgstr "æ˜¯çš„ï¼Œåˆ é™¤ï¼"
 
 
 msgid "You cannot rename an entry which has children entries (eg, the rename operation is not allowed on non-leaf entries)"
-msgstr "Äã²»ÄÜ¸üÃûÒ»¸ö´øÓĞ×ÓÌõÄ¿µÄÌõÄ¿£¬¾ÙÀı£¬¸üÃû²Ù×÷ÔÊĞíÔÚ·ÇÒ¶×ÓÌõÄ¿ÉÏÍê³É"
+msgstr "ä½ ä¸èƒ½æ›´åä¸€ä¸ªå¸¦æœ‰å­æ¡ç›®çš„æ¡ç›®ï¼Œä¸¾ä¾‹ï¼Œæ›´åæ“ä½œå…è®¸åœ¨éå¶å­æ¡ç›®ä¸Šå®Œæˆ"
 
 
 msgid "You did not change the RDN"
-msgstr "Äã²»ÄÜ¸ü¸ÄRDN"
+msgstr "ä½ ä¸èƒ½æ›´æ”¹RDN"
 
 
 msgid "Invalid RDN value"
-msgstr "ÎŞĞ§µÄRDNÖµ"
+msgstr "æ— æ•ˆçš„RDNå€¼"
 
 
 msgid "Could not rename the entry"
-msgstr "²»ÄÜ¸üÃû¸ÃÌõÄ¿"
+msgstr "ä¸èƒ½æ›´åè¯¥æ¡ç›®"
 
 
 msgid "Passwords match!"
-msgstr "ÃÜÂëÆ¥Åä£¡"
+msgstr "å¯†ç åŒ¹é…ï¼"
 
 
 msgid "Passwords do not match!"
-msgstr "ÃÜÂë²»Æ¥Åä£¡"
+msgstr "å¯†ç ä¸åŒ¹é…ï¼"
 
 
 msgid "Password Checker Tool"
-msgstr "ÃÜÂë¼ì²é¹¤¾ß"
+msgstr "å¯†ç æ£€æŸ¥å·¥å…·"
 
 
 msgid "Compare"
-msgstr "±È½Ï"
+msgstr "æ¯”è¾ƒ"
 
 
 msgid "To"
-msgstr "Óë"
+msgstr "ä¸"
 
 
 msgid "Using the"
-msgstr "Ê¹ÓÃ¸Ã"
+msgstr "ä½¿ç”¨è¯¥"
 
 
 msgid "You may switch to the "
-msgstr "Äã¿ÉÒÔ×ª»»µ½"
+msgstr "ä½ å¯ä»¥è½¬æ¢åˆ°"
 
 
 msgid "default template"
-msgstr "Ä¬ÈÏÄ£°å"
+msgstr "é»˜è®¤æ¨¡æ¿"
 
 
 msgid "User Account (posixAccount)"
-msgstr "ÓÃ»§ÕËºÅ(posixAccount)"
+msgstr "ç”¨æˆ·è´¦å·(posixAccount)"
 
 
 msgid "Address Book Entry (inetOrgPerson)"
-msgstr "µØÖ·²¾ÌõÄ¿(inetOrgPerson)"
+msgstr "åœ°å€ç°¿æ¡ç›®(inetOrgPerson)"
 
 
 msgid "Address Book Entry (mozillaOrgPerson)"
-msgstr "µØÖ·²¾ÌõÄ¿(mozillaOrgPerson)"
+msgstr "åœ°å€ç°¿æ¡ç›®(mozillaOrgPerson)"
 
 
 msgid "Kolab User Entry"
-msgstr "KolabÓÃ»§ÌõÄ¿"
+msgstr "Kolabç”¨æˆ·æ¡ç›®"
 
 
 msgid "Organisational Unit"
-msgstr "×éÖ¯»¯µ¥Ôª(Organizational Unit)"
+msgstr "ç»„ç»‡åŒ–å•å…ƒ(Organizational Unit)"
 
 
 msgid "Organisational Role"
-msgstr "×éÖ¯»¯½ÇÉ«"
+msgstr "ç»„ç»‡åŒ–è§’è‰²"
 
 
 msgid "Posix Group"
-msgstr "Posix×é"
+msgstr "Posixç»„"
 
 
 msgid "Samba NT Machine"
-msgstr "Samba NT Ö÷»ú"
+msgstr "Samba NT ä¸»æœº"
 
 
 msgid "Samba 3 NT Machine"
-msgstr "Samba 3 NT Ö÷»ú"
+msgstr "Samba 3 NT ä¸»æœº"
 
 
 msgid "Samba User"
-msgstr "Samba ÓÃ»§"
+msgstr "Samba ç”¨æˆ·"
 
 
 msgid "Samba 3 User"
-msgstr "Samba 3 ÓÃ»§"
+msgstr "Samba 3 ç”¨æˆ·"
 
 
 msgid "Samba 3 Group Mapping"
-msgstr "Samba 3 ×éÓ³Ïñ(Mapping)"
+msgstr "Samba 3 ç»„æ˜ åƒ(Mapping)"
 
 
 msgid "DNS Entry"
-msgstr "DNS ÌõÄ¿"
+msgstr "DNS æ¡ç›®"
 
 
 msgid "Simple Security Object"
-msgstr "¼òµ¥°²È«¶ÔÏó(Simple Security Object)"
+msgstr "ç®€å•å®‰å…¨å¯¹è±¡(Simple Security Object)"
 
 
 msgid "Courier Mail Account"
-msgstr "Courier ÓÊ¼şÕËºÅ"
+msgstr "Courier é‚®ä»¶è´¦å·"
 
 
 msgid "Courier Mail Alias"
-msgstr "Courier ÓÊ¼ş±ğÃû"
+msgstr "Courier é‚®ä»¶åˆ«å"
 
 
 msgid "LDAP Alias"
-msgstr "LDAP ±ğÃû"
+msgstr "LDAP åˆ«å"
 
 
 msgid "Sendmail Cluster"
-msgstr "Sendmail ¼¯Èº"
+msgstr "Sendmail é›†ç¾¤"
 
 
 msgid "Sendmail Domain"
-msgstr "Sendmail Óò"
+msgstr "Sendmail åŸŸ"
 
 
 msgid "Sendmail Alias"
-msgstr "Sendmail ±ğÃû"
+msgstr "Sendmail åˆ«å"
 
 
 msgid "Sendmail Virtual Domain"
-msgstr "Sendmail ĞéÄâÓò"
+msgstr "Sendmail è™šæ‹ŸåŸŸ"
 
 
 msgid "Sendmail Virtual Users"
-msgstr "Sendmail ĞéÄâÓÃ»§"
+msgstr "Sendmail è™šæ‹Ÿç”¨æˆ·"
 
 
 msgid "Sendmail Relays"
-msgstr "Sendmail »Ø¸´"
+msgstr "Sendmail å›å¤"
 
 
 msgid "Custom"
-msgstr "×Ô¶¨Òå"
+msgstr "è‡ªå®šä¹‰"
 
 
 msgid "My Samba domain Name"
-msgstr "ÎÒµÄSambaÓòÃû"
+msgstr "æˆ‘çš„SambaåŸŸå"
 
 
 msgid "Administrators"
-msgstr "¹ÜÀíÔ±"
+msgstr "ç®¡ç†å‘˜"
 
 
 msgid "Users"
-msgstr "ÓÃ»§"
+msgstr "ç”¨æˆ·"
 
 
 msgid "Guests"
-msgstr "Ò»°ãÓÃ»§(Guests)"
+msgstr "ä¸€èˆ¬ç”¨æˆ·(Guests)"
 
 
 msgid "Power Users"
-msgstr "ÔöÇ¿ÓÃ»§(Power Users)"
+msgstr "å¢å¼ºç”¨æˆ·(Power Users)"
 
 
 msgid "Account Operators"
-msgstr "ÕËºÅ¹ÜÀíÔ±"
+msgstr "è´¦å·ç®¡ç†å‘˜"
 
 
 msgid "Server Operators"
-msgstr "·şÎñÆ÷¹ÜÀíÔ±"
+msgstr "æœåŠ¡å™¨ç®¡ç†å‘˜"
 
 
 msgid "Print Operators"
-msgstr "´òÓ¡¹ÜÀíÔ±"
+msgstr "æ‰“å°ç®¡ç†å‘˜"
 
 
 msgid "Backup Operators"
-msgstr "±¸·İ¹ÜÀíÔ±"
+msgstr "å¤‡ä»½ç®¡ç†å‘˜"
 
 
 msgid "Replicator"
-msgstr "¸´ÖÆÆ÷(Replicator)"
+msgstr "å¤åˆ¶å™¨(Replicator)"
 
 
 msgid " Unable to create the Samba passwords. Please, check the configuration in template_config.php"
-msgstr "²»ÄÜ½¨Á¢SambaÃÜÂë¡£Çë¼ì²éÎÄ¼ştemplate_config.phpÀïµÄÅäÖÃ¡£"
+msgstr "ä¸èƒ½å»ºç«‹Sambaå¯†ç ã€‚è¯·æ£€æŸ¥æ–‡ä»¶template_config.phpé‡Œçš„é…ç½®ã€‚"
 
 
 msgid "Error: You have an error in your samba confguration."
-msgstr "´íÎó£ºÔÚÄãµÄsambaÅäÖÃÀïÓĞ¸ö´íÎó¡£"
+msgstr "é”™è¯¯ï¼šåœ¨ä½ çš„sambaé…ç½®é‡Œæœ‰ä¸ªé”™è¯¯ã€‚"
 
 
 msgid "Error: A name and a sid for your samba domain need to be provided."
-msgstr "´íÎó£ºĞèÒªÎªÄãµÄsambaÓòÌá¹©Ò»¸öÃû×Ö(name)ºÍÒ»¸ösid¡£"
+msgstr "é”™è¯¯ï¼šéœ€è¦ä¸ºä½ çš„sambaåŸŸæä¾›ä¸€ä¸ªåå­—(name)å’Œä¸€ä¸ªsidã€‚"
 
 
 msgid "Error: No name provided for samba domain."
-msgstr "´íÎó£ºÃ»ÓĞÎªsambaÓòÌá¹©Ãû×Ö¡£"
+msgstr "é”™è¯¯ï¼šæ²¡æœ‰ä¸ºsambaåŸŸæä¾›åå­—ã€‚"
 
 
 msgid "Error: No sid provided for samba domain."
-msgstr "´íÎó£ºÃ»ÓĞÎªsambaÓòÌá¹©sid¡£"
+msgstr "é”™è¯¯ï¼šæ²¡æœ‰ä¸ºsambaåŸŸæä¾›sidã€‚"
 
 
 msgid "Samba Account"
-msgstr "Samba ÕËºÅ"
+msgstr "Samba è´¦å·"
 
 
 msgid "samba account"
-msgstr "samba ÕËºÅ"
+msgstr "samba è´¦å·"
 
 
 msgid "New User Account"
-msgstr "ĞÂ½¨ÓÃ»§ÕËºÅ"
+msgstr "æ–°å»ºç”¨æˆ·è´¦å·"
 
 
 msgid "Hint: To customize this template, edit the file templates/creation/new_user_template.php"
-msgstr "ÌáÊ¾£ºÏëÒª¶¨ÖÆÄ£°åµÄ»°£¬Äã¿ÉÒÔ±à¼­ÎÄ¼ştemplates/creation/new_user_template.php"
+msgstr "æç¤ºï¼šæƒ³è¦å®šåˆ¶æ¨¡æ¿çš„è¯ï¼Œä½ å¯ä»¥ç¼–è¾‘æ–‡ä»¶templates/creation/new_user_template.php"
 
 
 msgid "First name"
-msgstr "µÚÒ»¸öÃû×Ö"
+msgstr "ç¬¬ä¸€ä¸ªåå­—"
 
 
 msgid "Last name"
-msgstr "×îºóÒ»¸öÃû×Ö"
+msgstr "æœ€åä¸€ä¸ªåå­—"
 
 
 msgid "first"
-msgstr "µÚÒ»¸ö"
+msgstr "ç¬¬ä¸€ä¸ª"
 
 
 msgid "last"
-msgstr "×îºóÒ»¸ö"
+msgstr "æœ€åä¸€ä¸ª"
 
 
 msgid "Common name"
-msgstr "¹«ÓĞÃû×Ö(Common name)"
+msgstr "å…¬æœ‰åå­—(Common name)"
 
 
 msgid "Encryption"
-msgstr "¼ÓÃÜ·½·¨"
+msgstr "åŠ å¯†æ–¹æ³•"
 
 
 msgid "Login Shell"
-msgstr "µÇÂ¼Shell"
+msgstr "ç™»å½•Shell"
 
 
 msgid "Home Directory"
-msgstr "Ö÷Ä¿Â¼"
+msgstr "ä¸»ç›®å½•"
 
 
 msgid "UID Number"
-msgstr "UIDºÅ"
+msgstr "UIDå·"
 
 
 msgid "(automatically determined)"
-msgstr "£¨×Ô¶¯¼ì²âµ½µÄ£©"
+msgstr "ï¼ˆè‡ªåŠ¨æ£€æµ‹åˆ°çš„ï¼‰"
 
 
 msgid "Group"
-msgstr "×é"
+msgstr "ç»„"
 
 
 msgid "GID Number"
-msgstr "GIDºÅ"
+msgstr "GIDå·"
 
 
 msgid "Your passwords don't match. Please go back and try again."
-msgstr "ÄãµÄÃÜÂë²»Æ¥Åä¡£Çë·µ»ØÔÙÊÔÊÔ¡£"
+msgstr "ä½ çš„å¯†ç ä¸åŒ¹é…ã€‚è¯·è¿”å›å†è¯•è¯•ã€‚"
 
 
 msgid "You cannot leave the %s blank. Please go back and try again."
-msgstr "%s´¦²»ÄÜÎª¿Õ¡£Çë·µ»ØÔÙÊÔÊÔ¡£"
+msgstr "%så¤„ä¸èƒ½ä¸ºç©ºã€‚è¯·è¿”å›å†è¯•è¯•ã€‚"
 
 
 msgid "You can only enter numeric values for the %s field. Please go back and try again."
-msgstr "%s×Ö¶Î²»ÄÜÖ»ÊäÈëÊı×Ö¡£Çë·µ»ØÔÙÊÔÊÔ¡£"
+msgstr "%så­—æ®µä¸èƒ½åªè¾“å…¥æ•°å­—ã€‚è¯·è¿”å›å†è¯•è¯•ã€‚"
 
 
 msgid "The container you specified (%s) does not exist. Please go back and try again."
-msgstr "ÄãÖ¸¶¨µÄÈİÆ÷(%s)²»´æÔÚ¡£Çë·µ»ØÔÙÊÔÊÔ¡£"
+msgstr "ä½ æŒ‡å®šçš„å®¹å™¨(%s)ä¸å­˜åœ¨ã€‚è¯·è¿”å›å†è¯•è¯•ã€‚"
 
 
 msgid "Confirm account creation"
-msgstr "È·ÈÏ´´½¨ÕËºÅ"
+msgstr "ç¡®è®¤åˆ›å»ºè´¦å·"
 
 
 msgid "[secret]"
-msgstr "[ÒşÃØ]"
+msgstr "[éšç§˜]"
 
 
 msgid "Create Account"
-msgstr "´´½¨ÕËºÅ"
+msgstr "åˆ›å»ºè´¦å·"
 
 
 msgid "New Address Book Entry"
-msgstr "ĞÂ½¨µØÖ·²¾ÌõÄ¿"
+msgstr "æ–°å»ºåœ°å€ç°¿æ¡ç›®"
 
 
 msgid "Organisation"
-msgstr "×éÖ¯"
+msgstr "ç»„ç»‡"
 
 
 msgid "Address"
-msgstr "µØÖ·"
+msgstr "åœ°å€"
 
 
 msgid "City"
-msgstr "³ÇÊĞ"
+msgstr "åŸå¸‚"
 
 
 msgid "Postal code"
-msgstr "ÓÊÕş±àÂë"
+msgstr "é‚®æ”¿ç¼–ç "
 
 
 msgid "Street"
-msgstr "½ÖµÀ"
+msgstr "è¡—é“"
 
 
 msgid "Work phone"
-msgstr "¹¤×÷µç»°"
+msgstr "å·¥ä½œç”µè¯"
 
 
 msgid "Fax"
-msgstr "´«Õæ(Fax)"
+msgstr "ä¼ çœŸ(Fax)"
 
 
 msgid "Mobile"
-msgstr "ÒÆ¶¯µç»°(Mobile)"
+msgstr "ç§»åŠ¨ç”µè¯(Mobile)"
 
 
 msgid "Email"
-msgstr "µç×ÓÓÊ¼ş"
+msgstr "ç”µå­é‚®ä»¶"
 
 
 msgid "You cannot leave the Common Name blank. Please go back and try again."
-msgstr "¹«ÓĞÃû×Ö(Common Name)²»ÄÜÎª¿Õ¡£Çë·µ»ØÔÙÊÔÊÔ¡£"
+msgstr "å…¬æœ‰åå­—(Common Name)ä¸èƒ½ä¸ºç©ºã€‚è¯·è¿”å›å†è¯•è¯•ã€‚"
 
 
 msgid "Confirm entry creation:"
-msgstr "È·ÈÏ´´½¨ÌõÄ¿£º"
+msgstr "ç¡®è®¤åˆ›å»ºæ¡ç›®ï¼š"
 
 
 msgid "Create Address"
-msgstr "´´½¨µØÖ·²¾"
+msgstr "åˆ›å»ºåœ°å€ç°¿"
 
 
 msgid "Check password..."
-msgstr "ÕıÔÚ¼ì²éÃÜÂë¡­¡­"
+msgstr "æ­£åœ¨æ£€æŸ¥å¯†ç â€¦â€¦"
 
 
 msgid "Comparing the following DNs"
-msgstr "±È½Ï½ô¸ú×ÅµÄDN"
+msgstr "æ¯”è¾ƒç´§è·Ÿç€çš„DN"
 
 
 msgid "Compare another DN with"
-msgstr "±È½ÏÁíÒ»¸öDN¸ú"
+msgstr "æ¯”è¾ƒå¦ä¸€ä¸ªDNè·Ÿ"
 
 
 msgid "with "
-msgstr "Í¬ "
+msgstr "åŒ "
 
 
 msgid "Source DN"
-msgstr "Ô´DN"
+msgstr "æºDN"
 
 
 msgid "Compare this DN with another"
-msgstr "½«¸ÃDNÓëÁíÒ»¸ö±È½Ï"
+msgstr "å°†è¯¥DNä¸å¦ä¸€ä¸ªæ¯”è¾ƒ"
 
 
 msgid "Switch Entry"
-msgstr "ÇĞ»»ÌõÄ¿"
+msgstr "åˆ‡æ¢æ¡ç›®"
 
 
 msgid "No Value"
-msgstr "Ã»ÓĞÖµ"
+msgstr "æ²¡æœ‰å€¼"
 
 
 msgid "Compare with another entry"
-msgstr "Í¬ÁíÒ»¸öÌõÄ¿½øĞĞ±È½Ï"
+msgstr "åŒå¦ä¸€ä¸ªæ¡ç›®è¿›è¡Œæ¯”è¾ƒ"
 
 
 msgid "You need one of the following ObjectClass(es) to add this attribute %s."
-msgstr "ÒªĞÂÔöÊôĞÔ%s£¬ÄãĞèÒªÏÂÃæµÄObjectClass(es)¡ª¡ª¶ÔÏóÀà¡£"
+msgstr "è¦æ–°å¢å±æ€§%sï¼Œä½ éœ€è¦ä¸‹é¢çš„ObjectClass(es)â€”â€”å¯¹è±¡ç±»ã€‚"
 
 
 msgid "Your Session timed out after"
-msgstr "ÄãµÄ»á»°ÆÚ½«ÔÚÎŞ»î¶¯µÄ"
+msgstr "ä½ çš„ä¼šè¯æœŸå°†åœ¨æ— æ´»åŠ¨çš„"
 
 
 msgid "min. of inactivity. You have been automatically logged out."
-msgstr "·ÖÖÓºó¹ıÆÚ¡£Äã½«×Ô¶¯ÍË³ö¡£"
+msgstr "åˆ†é’Ÿåè¿‡æœŸã€‚ä½ å°†è‡ªåŠ¨é€€å‡ºã€‚"
 
 
 msgid "To log back in please click on the following link:"
-msgstr "ÏëµÇÂ¼»ØÀ´£¬Çëµã»÷ÏÂÃæµÄÁ´½Ó£º"
+msgstr "æƒ³ç™»å½•å›æ¥ï¼Œè¯·ç‚¹å‡»ä¸‹é¢çš„é“¾æ¥ï¼š"
 
 
 msgid "(Session timed out. Automatically logged out.)"
-msgstr "(»á»°³¬Ê±£¬×Ô¶¯ÍË³ö¡£)"
+msgstr "(ä¼šè¯è¶…æ—¶ï¼Œè‡ªåŠ¨é€€å‡ºã€‚)"
 
 
 msgid "Inactivity will log you off at %s"
-msgstr "ÔÚ%sÈç¹û»î¶¯£¬Äã½«±»µÇ³ö¡£"
+msgstr "åœ¨%så¦‚æœæ´»åŠ¨ï¼Œä½ å°†è¢«ç™»å‡ºã€‚"
 
 

@@ -1,16 +1,10 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login.php,v 1.55 2006/09/12 13:09:08 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login.php,v 1.56 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * For servers whose auth_type is set to 'cookie' or 'session'. Pass me the
  * login info and I'll write two cookies, pla_login_dn_X and pla_pass_X where X
  * is the server_id. The cookie_time comes from config.php
- *
- * Variables that come in via common.php
- *  - server_id
- * Variables that come in as POST vars:
- *  - login_dn
- *  - login_pass
  *
  * @package phpLDAPadmin
  */
@@ -19,21 +13,21 @@
 
 require './common.php';
 
-# Prevents users from coming here without going through the proper channels
-if (! isset($ldapserver))
-	header('Location: index.php');
-
-$dn = isset($_POST['login_dn']) ? $_POST['login_dn'] : null;
-$pass = isset($_POST['login_pass']) ? $_POST['login_pass'] : null;
-$uid = isset($_POST['uid']) ? $_POST['uid'] : null;
+$dn = get_request('login_dn');
+$pass = get_request('login_pass');
+$uid = get_request('uid');
 
 if ($ldapserver->isAnonBindAllowed())
-	$anon_bind = isset($_POST['anonymous_bind']) && $_POST['anonymous_bind'] == 'on' ? true : false;
+	$anon_bind = get_request('anonymous_bind') == 'on' ? true : false;
 else
 	$anon_bind = false;
 
-if (! $anon_bind)
-	strlen($pass) or pla_error(_('You left the password blank.'));
+if (! $anon_bind && ! strlen($pass))
+	system_message(array(
+		'title'=>_('Authenticate to server'),
+		'body'=>_('You left the password blank.'),
+		'type'=>'warn'),
+		'cmd.php?cmd=login_form');
 
 $save_auth_type = $ldapserver->auth_type;
 
@@ -63,13 +57,10 @@ if ($anon_bind) {
 		   the DN to use when searching for the login_attr user. */
 		$ldapserver->auth_type = 'config';
 
-		set_error_handler('temp_login_error_handler');
 		if ($ldapserver->login_dn)
-			$ldapserver->connect(true,'user');
+			$ldapserver->connect();
 		else
 			$ldapserver->connect(true,'anonymous');
-
-		restore_error_handler();
 
 		if (! empty($ldapserver->login_class))
 			$filter = sprintf('(&(objectClass=%s)(%s=%s))',$ldapserver->login_class,$ldapserver->login_attr,$uid);
@@ -92,12 +83,18 @@ if ($anon_bind) {
 			}
 		}
 
-
 		# If we got here then we werent able to find a DN for the login filter.
 		if (! $dn)
-			pla_error(_('Bad username or password. Please try again.'));
+			if ($ldapserver->login_fallback_dn)
+				$dn = $uid;
+			else
+				system_message(array(
+					'title'=>_('Authenticate to server'),
+					'body'=>_('Bad username or password. Please try again.'),
+					'type'=>'error'),
+					'cmd.php?cmd=login_form');
 
-		# restore the original auth_type
+		# Restore the original auth_type
 		$ldapserver->auth_type = $save_auth_type;
 	}
 }
@@ -113,25 +110,38 @@ $ldapserver->login_pass = $pass;
 
 # Verify that dn is allowed to login
 if (! $ldapserver->userIsAllowedLogin($dn))
-	pla_error(_('Sorry, you are not allowed to use phpLDAPadmin with this LDAP server.'));
+	system_message(array(
+		'title'=>_('Authenticate to server'),
+		'body'=>_('Sorry, you are not allowed to use phpLDAPadmin with this LDAP server.'),
+		'type'=>'error'),
+		'cmd.php?cmd=login_form');
 
 if (DEBUG_ENABLED)
 	debug_log('User is not prohibited from logging in - now bind with DN [%s]',64,$dn);
 
-# verify that the login is good
+# Verify that the login is good
 if (is_null($dn) && is_null($pass))
-	$ds = $ldapserver->connect(true,'anonymous',true);
+	$ds = $ldapserver->connect(false,'anonymous',true);
 else
-	$ds = $ldapserver->connect(true,'user',true);
+	$ds = $ldapserver->connect(false,'user',true);
 
 if (DEBUG_ENABLED)
 	debug_log('Connection returned [%s]',64,$ds);
 
 if (! is_resource($ds)) {
 	if ($anon_bind)
-		pla_error(_('Could not bind anonymously to server.'),null,null,true);
+		system_message(array(
+			'title'=>_('Authenticate to server'),
+			'body'=>_('Could not bind anonymously to server.'),
+			'type'=>'error'),
+			'cmd.php?cmd=login_form');
+
 	else
-		pla_error(_('Bad username or password. Please try again.'),null,null,true);
+		system_message(array(
+			'title'=>_('Authenticate to server'),
+			'body'=>_('Bad username or password. Please try again.'),
+			'type'=>'error'),
+			'cmd.php?cmd=login_form');
 
 	syslog_notice("Authentification FAILED for $dn");
 }
@@ -144,34 +154,12 @@ if (! $anon_bind) {
 	syslog_notice("Authentification successful for $dn");
 }
 
-pla_session_close();
+# Since we were successful, clear the cache so that it will be refreshed with the new creditentials.
+del_cached_item($ldapserver->server_id,'tree','null');
 
-include './header.php';
-echo '<body>';
-
-echo '<script type="text/javascript" language="javascript">';
-if ($anon_bind && $config->GetValue('appearance','anonymous_bind_redirect_no_tree'))
-	printf("parent.location.href='search.php?server_id=%s'",$ldapserver->server_id);
-else
-	echo 'parent.left_frame.location.reload();';
-echo '</script>';
-
-echo '<center><br /><br /><br />';
-printf(_('Successfully logged into server <b>%s</b>').'<br />',htmlspecialchars($ldapserver->name));
-
-if ($anon_bind)
-	printf('(%s)',_('Anonymous Bind'));
-
-echo '<br /></center>';
-echo '</body></html>';
-
-/**
- * Only gets called when we fail to login.
- */
-function temp_login_error_handler($errno,$errstr,$file,$lineno) {
-	if (ini_get('error_reporting') == 0 || error_reporting() == 0)
-		return;
-
-	pla_error(_('Could not connect to LDAP server.').'<br /><br />'.htmlspecialchars($errstr));
-}
+system_message(array(
+	'title'=>_('Authenticate to server'),
+	'body'=>_('Successfully logged into server.').($anon_bind ? sprintf(' (%s)',_('Anonymous Bind')) : ''),
+	'type'=>'info'),
+	'index.php');
 ?>

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/modify_member_form.php,v 1.4 2006/10/29 01:47:08 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/modify_member_form.php,v 1.5 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * Displays a form to allow the user to modify group members.
@@ -39,25 +39,21 @@ if ($current_members)
 else
 	$num_current_members = 0;
 
-/*
- * If there is only one member, convert scalar to array,
- * arrays are required later when processing members
- */
-if ($num_current_members == 1)
-	$current_members = array($current_members);
-
 sort($current_members);
 
 # Loop through all base dn's and search possible member entries
 foreach ($ldapserver->getBaseDN() as $base_dn) {
 
 	# Get all entries that can be added to the group
-	if (preg_match("/^$attr$/i",$config->GetValue('modify_member','posixgroupattr')))
+
+	if (preg_match("/^$attr$/i",$_SESSION['plaConfig']->GetValue('modify_member','posixgroupattr')))
 		$possible_values = array_merge($ldapserver->search(null,$base_dn,
-			$config->GetValue('modify_member','posixfilter'),array($config->GetValue('modify_member','posixattr'))));
+			$_SESSION['plaConfig']->GetValue('modify_member','posixfilter'),
+			array($_SESSION['plaConfig']->GetValue('modify_member','posixattr'))));
 	else
 		$possible_values = array_merge($ldapserver->search(null,$base_dn,
-			$config->GetValue('modify_member','filter'),array($config->GetValue('modify_member','attr'))));
+			$_SESSION['plaConfig']->GetValue('modify_member','filter'),
+			array($_SESSION['plaConfig']->GetValue('modify_member','attr'))));
 }
 
 if ($possible_values)
@@ -79,10 +75,10 @@ printf('%s <b>%s</b> %s <b>%s</b>:',
 	_('There are'),$num_current_members,_('members in group'),htmlspecialchars($rdn));
 
 for ($i=0; $i<count($possible_values); $i++) {
-	if (preg_match("/^$attr$/i",$config->GetValue('modify_member','posixgroupattr')))
-		$possible_members[$i] = $possible_values[$i][$config->GetValue('modify_member','posixattr')];
+	if (preg_match("/^$attr$/i",$_SESSION['plaConfig']->GetValue('modify_member','posixgroupattr')))
+		$possible_members[$i] = $possible_values[$i][$_SESSION['plaConfig']->GetValue('modify_member','posixattr')];
 	else
-		$possible_members[$i] = $possible_values[$i][$config->GetValue('modify_member','attr')];
+		$possible_members[$i] = $possible_values[$i][$_SESSION['plaConfig']->GetValue('modify_member','attr')];
 }
 
 sort($possible_members);
@@ -108,7 +104,8 @@ foreach ($possible_members as $pkey => $possible) {
 # Modifications will be sent to update_confirm which takes care of rest of the processing
 echo '<br />';
 echo '<br />';
-echo '<form action="update_confirm.php" method="post" class="add_value" name="member">';
+echo '<form action="cmd.php" method="post" class="add_value" name="member">';
+echo '<input type="hidden" name="cmd" value="update_confirm" />';
 
 echo '<table class="modify_members">';
 
@@ -166,7 +163,6 @@ printf('<input type="hidden" name="attr" value="%s" />',$encoded_attr);
 for ($i=0; $i<$num_current_members; $i++)
 	printf('<input type="hidden" name="old_values[%s][%s]" value="%s" />',
 		htmlspecialchars($attr),$i,htmlspecialchars($current_members[$i]));
-
 /*
  * Javascript generates array of input text boxes from new members.
  * update_confirm.php will see this as new_values[member-attribute][item]

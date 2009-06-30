@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.79 2006/09/17 07:22:09 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.80 2007/12/15 07:50:32 wurley Exp $
 
 /**
  * Contains code to be executed at the top of each phpLDAPadmin page.
@@ -16,9 +16,56 @@
  * @package phpLDAPadmin
  */
 
+# Catch any scripts that are called directly.
+foreach (array('cmd.php','index.php','view_jpeg_photo.php','entry_chooser.php','password_checker.php', 'download_binary_attr.php') as $script) {
+	$scriptOK = false;
+
+	if (preg_match('/'.$script.'$/',$_SERVER['SCRIPT_NAME'])) {
+		$scriptOK = true;
+		break;
+	}
+}
+
+if (! $scriptOK) {
+	if ($_REQUEST['server_id'])
+		header(sprintf('Location: index.php?server_id=%s',$_REQUEST['server_id']));
+	else
+		header('Location: index.php');
+	die();
+}
+
+/**
+ * Timer stopwatch, used to instrument PLA
+ */
+if (! function_exists('stopwatch')) {
+	function stopwatch() {
+		static $mt_previous = 0;
+
+		list($usec,$sec) = explode(' ',microtime());
+		$mt_current = (float)$usec + (float)$sec;
+
+		if (! $mt_previous) {
+			$mt_previous = $mt_current;
+			return 0;
+
+		} else {
+			$mt_diff = ($mt_current - $mt_previous);
+			$mt_previous = $mt_current;
+			return sprintf('%.5f',$mt_diff);
+		}
+	}
+
+# For compatability - if common has been sourced, then return to the calling script.
+} else {
+	return;
+}
+
+if (function_exists('date_default_timezone_set'))
+	date_default_timezone_set('UTC');
 $timer = stopwatch();
 
-@define('LIBDIR','../lib/');
+if (! defined('LIBDIR'))
+	define('LIBDIR','../lib/');
 
 # For PHP5 backward/forward compatibility
 if (! defined('E_STRICT'))
@@ -27,14 +74,12 @@ if (! defined('E_STRICT'))
 # General functions needed to proceed.
 ob_start();
 require_once realpath(LIBDIR.'functions.php');
-ob_end_clean();
+if (ob_get_level()) ob_end_clean();
 
-# Turn on all notices and warnings. This helps us write cleaner code (we hope at least)
-if (phpversion() < 5)
-	pla_error('Sorry, PLA is now a PHP5 application.<BR>For a PHP4 application, please use a 0.9.x version.');
-
-/* Our custom error handler receives all error notices that pass the error_reporting()
-   level set above. */
+/* Turn on all notices and warnings. This helps us write cleaner code (we hope at least)
+ * Our custom error handler receives all error notices that pass the error_reporting()
+ * level set above.
+ */
 set_error_handler('pla_error_handler');
 # Disable error reporting until all our required functions are loaded.
 error_reporting(0);
@@ -50,32 +95,91 @@ foreach ($pla_function_files as $file_name) {
 	require_once realpath ($file_name);
 }
 
-# Now read in config_default.php, which also reads in config.php
+# Now read in config_default.php
 require_once realpath(LIBDIR.'config_default.php');
-ob_end_clean();
+if (ob_get_level()) ob_end_clean();
 
 # We are now ready for error reporting.
-error_reporting(E_DEBUG);
+error_reporting(E_ALL);
 
-/**
- * At this point we have read all our additional function PHP files and our configuration.
- */
+pla_session_start();
 
-# Check our custom variables.
-$config->CheckCustom();
+# Check we have the correct version of the SESSION cache
+if (isset($_SESSION['cache'])) {
+	if (!is_array($_SESSION[pla_session_id_init])) $_SESSION[pla_session_id_init] = array();
 
-if (pla_session_start())
-	run_hook('post_session_init',array());
+	if (!isset($_SESSION[pla_session_id_init]['version']) || !isset($_SESSION[pla_session_id_init]['config'])
+	    || $_SESSION[pla_session_id_init]['version'] !== pla_version()
+	    || $_SESSION[pla_session_id_init]['config'] != filemtime(CONFDIR.'config.php')) {
+	
+		$_SESSION[pla_session_id_init]['version'] = pla_version();
+		$_SESSION[pla_session_id_init]['config'] = filemtime(CONFDIR.'config.php');
+
+		unset($_SESSION['cache']);
+		unset($_SESSION['plaConfig']);
+
+		# Our configuration information has changed, so we'll redirect to index.php to get it reloaded again.
+		system_message(array(
+			'title'=>_('Configuration cache stale.'),
+			'body'=>_('Your configuration has been automatically refreshed.'),
+			'type'=>'info'));
+
+		$config_file = CONFDIR.'config.php';
+		check_config($config_file);
+
+	} else {
+		# Sanity check, specially when upgrading from a previous release.
+		foreach (array_keys($_SESSION['cache']) as $id)
+			if (isset($_SESSION['cache'][$id]['tree']['null']) && ! is_object($_SESSION['cache'][$id]['tree']['null']))
+				unset($_SESSION['cache'][$id]);
+	}
+}
+
+# If we came via index.php, then set our $config.
+if (! isset($_SESSION['plaConfig']) && isset($config))
+	$_SESSION['plaConfig'] = $config;
+
+# If we get here, and plaConfig is not set, then redirect the user to the index.
+if (! isset($_SESSION['plaConfig'])) {
+	header('Location: index.php');
+	die();
+
+} else {
+	# Check our custom variables.
+	# @todo: Change this so that we dont process a cached session.
+	$_SESSION['plaConfig']->CheckCustom();
+}
+
+# If we are here, $_SESSION is set - so enabled DEBUGing if it has been configured.
+if (($_SESSION['plaConfig']->GetValue('debug','syslog') || $_SESSION['plaConfig']->GetValue('debug','file'))
+	&& $_SESSION['plaConfig']->GetValue('debug','level'))
+	define('DEBUG_ENABLED',1);
+else
+	define('DEBUG_ENABLED',0);
+
+# Since DEBUG_ENABLED is set later, as $config may not be set, we'll 
+if (DEBUG_ENABLED)
+	debug_log('PLA (%s) initialised and starting with (%s).',1,pla_version(),$_REQUEST);
+
+# Set our PHP timelimit.
+if ($_SESSION['plaConfig']->GetValue('session','timelimit'))
+	set_time_limit($_SESSION['plaConfig']->GetValue('session','timelimit'));
+
+# If debug mode is set, increase the time_limit, since we probably need it.
+if (DEBUG_ENABLED && $_SESSION['plaConfig']->GetValue('session','timelimit'))
+	set_time_limit($_SESSION['plaConfig']->GetValue('session','timelimit') * 5);
+
+# @todo: Change this so that we dont process a cached session.
+$_SESSION['plaConfig']->friendly_attrs = process_friendly_attr_table();
 
 /*
  * Language configuration. Auto or specified?
  * Shall we attempt to auto-determine the language?
  */
 
-$language = $config->GetValue('appearance','language');
+$language = $_SESSION['plaConfig']->GetValue('appearance','language');
 
 if ($language == 'auto') {
-
 	# Make sure their browser correctly reports language. If not, skip this.
 	if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 
@@ -131,19 +235,9 @@ if ($language == 'auto') {
 		bindtextdomain('messages',LANGDIR);
 		bind_textdomain_codeset('messages','UTF-8');
 		textdomain('messages');
-		header('Content-type: text/html; charset=UTF-8', true);
+		header('Content-type: text/html; charset=UTF-8',true);
 	}
 }
-
-# If config.php doesn't create the templates array, create it here.
-if (! isset($templates) || ! is_array($templates))
-	$templates = array();
-
-# Always including the 'custom' template (the most generic and flexible)
-$templates['custom'] =
-	array('desc' => 'Custom',
-		'icon' => 'images/object.png',
-		'handler' => 'custom.php');
 
 /*
  * Strip slashes from GET, POST, and COOKIE variables if this
@@ -157,45 +251,34 @@ if (get_magic_quotes_gpc() && (! isset($slashes_stripped) || ! $slashes_stripped
 	$slashes_stripped = true;
 }
 
+if (isset($_REQUEST['server_id'])) {
+	$ldapserver = $_SESSION['plaConfig']->ldapservers->Instance($_REQUEST['server_id']);
+} else {
+	$ldapserver = $_SESSION['plaConfig']->ldapservers->Instance(null);
+}
+
+# Test to see if we should log out the user due to the timeout.
+if ($ldapserver->haveAuthInfo() && $ldapserver->auth_type != 'config') {
+	/* If time out value has been reached:
+	   - log out user
+	   - put $server_id in array of recently timed out servers */
+	if (session_timed_out($ldapserver)) {
+		$timeout_url = 'cmd.php?cmd=timeout&server_id='.$ldapserver->server_id;
+		echo '<script type="text/javascript" language="javascript">location.href=\''.$timeout_url.'\'</script>';
+		die();
+	}
+}
+
 /*
  * Update $_SESSION['activity']
  * for timeout and automatic logout feature
  */
-if (isset($_REQUEST['server_id'])) {
-	$ldapserver = $ldapservers->Instance($_REQUEST['server_id']);
-	if ($ldapserver->haveAuthInfo())
-		set_lastactivity($ldapserver);
-}
+if ($ldapserver->haveAuthInfo())
+	set_lastactivity($ldapserver);
 
 /**
- * Timer stopwatch, used to instrument PLA
+ * At this point we have read all our additional function PHP files and our configuration.
  */
-function stopwatch() {
-	static $mt_previous = 0;
+run_hook('post_session_init',array());
 
-	list($usec, $sec) = explode(' ',microtime());
-	$mt_current = (float)$usec + (float)$sec;
-
-	if (! $mt_previous) {
-		$mt_previous = $mt_current;
-		return 0;
-
-	} else {
-		$mt_diff = ($mt_current - $mt_previous);
-		$mt_previous = $mt_current;
-		return sprintf('%.5f',$mt_diff);
-	}
-}
-
-/**
- * This function will convert the browser two character language into the
- * default 5 character language, where the country portion should NOT be
- * assumed to be upper case characters of the first two characters.
- */
-function auto_lang($lang) {
-	switch ($lang) {
-		case 'ja': return 'ja_JP';
-		default: return sprintf('%s_%s',$lang,strtoupper($lang));
-	}
-}
 ?>

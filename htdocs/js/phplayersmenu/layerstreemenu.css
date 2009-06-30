@@ -1,18 +1,18 @@
-.treemenudiv	{
+table.tree .treemenudiv	{
 	display: block;
 	white-space: nowrap;
 	padding-top: 1px;
 	padding-bottom: 1px;
 }
 
-.phplmnormal	{
+table.tree .phplmnormal	{
 	font-family: bitstream vera sans, luxi sans, verdana, geneva, arial, helvetica, sans-serif;
 	font-size: 13px;
 	color: #000000;
 	text-decoration: none;
 }
 
-a.phplmnormal:hover	{
+table.tree a.phplmnormal:hover	{
 	font-family: bitstream vera sans, luxi sans, verdana, geneva, arial, helvetica, sans-serif;
 	font-size: 13px;
 	color: #000000;
@@ -20,21 +20,21 @@ a.phplmnormal:hover	{
 	text-decoration: none;
 }
 
-a.phplm:link	{
+table.tree a.phplm:link	{
 	font-family: bitstream vera sans, luxi sans, verdana, geneva, arial, helvetica, sans-serif;
 	font-size: 13px;
 	color: #000000;
 	text-decoration: none;
 }
 
-a.phplm:visited	{
+table.tree a.phplm:visited	{
 	font-family: bitstream vera sans, luxi sans, verdana, geneva, arial, helvetica, sans-serif;
 	font-size: 13px;
 	color: #000000;
 	text-decoration: none;
 }
 
-a.phplm:hover	{
+table.tree a.phplm:hover	{
 	font-family: bitstream vera sans, luxi sans, verdana, geneva, arial, helvetica, sans-serif;
 	font-size: 13px;
 	color: #841212;
@@ -42,14 +42,14 @@ a.phplm:hover	{
 	text-decoration: none;
 }
 
-a.phplm:active	{
+table.tree a.phplm:active	{
 	font-family: bitstream vera sans, luxi sans, verdana, geneva, arial, helvetica, sans-serif;
 	font-size: 13px;
 	color: #ff0000;
 	text-decoration: none;
 }
 
-a.phplmselected:link	{
+table.tree a.phplmselected:link	{
 	font-family: bitstream vera sans, luxi sans, verdana, geneva, arial, helvetica, sans-serif;
 	font-size: 13px;
 	color: #dd0000;
@@ -57,7 +57,7 @@ a.phplmselected:link	{
 	text-decoration: none;
 }
 
-a.phplmselected:visited	{
+table.tree a.phplmselected:visited	{
 	font-family: bitstream vera sans, luxi sans, verdana, geneva, arial, helvetica, sans-serif;
 	font-size: 13px;
 	color: #dd0000;
@@ -65,7 +65,7 @@ a.phplmselected:visited	{
 	text-decoration: none;
 }
 
-a.phplmselected:hover	{
+table.tree a.phplmselected:hover	{
 	font-family: bitstream vera sans, luxi sans, verdana, geneva, arial, helvetica, sans-serif;
 	font-size: 13px;
 	color: #841212;
@@ -73,7 +73,7 @@ a.phplmselected:hover	{
 	text-decoration: none;
 }
 
-a.phplmselected:active	{
+table.tree a.phplmselected:active	{
 	font-family: bitstream vera sans, luxi sans, verdana, geneva, arial, helvetica, sans-serif;
 	font-size: 13px;
 	color: #ff0000;

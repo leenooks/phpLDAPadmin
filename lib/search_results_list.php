@@ -1,11 +1,9 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_list.php,v 1.6 2005/12/10 10:34:55 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_list.php,v 1.7 2007/12/15 07:50:33 wurley Exp $
 
 /**
  * @package phpLDAPadmin
  */
-
-$friendly_attrs = process_friendly_attr_table();
 
 # Iterate over each entry
 $i = 0;
@@ -19,16 +17,24 @@ foreach ($results as $dn => $dndetails) {
 	if ($i >= $end_entry)
 		break;
 
-	echo '<div class="search_result">';
-	echo '<table><tr>';
-	printf('<td><img src="images/%s" /></td>',get_icon($ldapserver,$dn));
-	printf('<td><a href="template_engine.php?server_id=%s&amp;dn=%s">%s</a></td>',
-		$ldapserver->server_id,rawurlencode(dn_unescape($dn)),htmlspecialchars(get_rdn($dn)));
-	echo '</tr></table>';
-	echo '</div>';
+	echo '<table class="search_result" border=0>';
 
-	echo '<table class="attrs">';
-	printf('<tr><td class="attr" valign="top">dn</td><td>%s</td></tr>',htmlspecialchars(dn_unescape($dn)));
+	echo '<tr class="list_dn">';
+	printf('<td class="icon"><img src="images/%s" alt="icon" /></td>',get_icon($ldapserver,$dn));
+
+	$formatted_dn = get_rdn($dn);
+	if (!$_SESSION['plaConfig']->isCommandAvailable('schema')) {
+		$formatted_dn = explode('=', $formatted_dn, 2);
+		$formatted_dn = $formatted_dn[1];
+	}
+
+	printf('<td colspan=2><a href="cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s">%s</a></td>',
+		$ldapserver->server_id,rawurlencode(dn_unescape($dn)),htmlspecialchars($formatted_dn));
+	echo '</tr>';
+
+	if ($_SESSION['plaConfig']->isCommandAvailable('schema')) {
+		printf('<tr class="list_attr"><td class="blank">&nbsp;</td><td class="attr">dn</td><td class="val">%s</td></tr>',htmlspecialchars(dn_unescape($dn)));
+	}
 
 	# Iterate over each attribute for this entry
 	foreach ($dndetails as $attr => $values) {
@@ -39,14 +45,19 @@ foreach ($results as $dn => $dndetails) {
 		if ($ldapserver->isAttrBinary($attr))
 			$values = array('(binary)');
 
-		if (isset($friendly_attrs[strtolower($attr)]))
-			$attr = sprintf('<acronym title="Alias for $attr">%s</acronym>',
-				htmlspecialchars($friendly_attrs[strtolower($attr)]));
-		else
+		if (isset($_SESSION['plaConfig']->friendly_attrs[strtolower($attr)])) {
+			$a = $attr;
+			$attr = htmlspecialchars($_SESSION['plaConfig']->friendly_attrs[strtolower($attr)]);
+			if ($_SESSION['plaConfig']->isCommandAvailable('schema')) {
+				$attr = sprintf('<acronym title="Alias for %s">%s</acronym>', $a, $attr);
+			}
+		} else
 			$attr = htmlspecialchars($attr);
 
-		echo '<tr>';
+		echo '<tr class="list_attr">';
+		echo '<td class="blank">&nbsp;</td>';
 		printf('<td class="attr" valign="top">%s</td>',$attr);
+
 		echo '<td class="val">';
 
 		if ($ldapserver->isJpegPhoto($attr))
@@ -65,9 +76,6 @@ foreach ($results as $dn => $dndetails) {
 	}
 
 	echo '</table>';
-
-	# Flush every 5th entry (speeds things up a bit)
-	if ($i % 5 == 0)
-		flush();
+	echo '<br />';
 }
 ?>

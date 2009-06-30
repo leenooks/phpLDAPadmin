@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename.php,v 1.32 2007/03/18 02:06:20 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename.php,v 1.33 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * Renames a DN to a different name.
@@ -19,11 +19,13 @@ require './common.php';
 
 if ($ldapserver->isReadOnly())
 	pla_error(_('You cannot perform updates while server is in read-only mode'));
-if (! $ldapserver->haveAuthInfo())
-	pla_error(_('Not enough information to login to server. Please check your configuration.'));
+
+if (! $_SESSION['plaConfig']->isCommandAvailable('entry_rename'))
+	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('rename entry')));
 
 $dn = ($_POST['dn']);
 if (! $ldapserver->isBranchRenameEnabled()) {
+	# we search all children, not only the visible children in the tree
 	$children = $ldapserver->getContainerContents($dn);
 	if (count($children) > 0)
 		pla_error(_('You cannot rename an entry which has children entries (eg, the rename operation is not allowed on non-leaf entries)'));
@@ -62,16 +64,13 @@ if ($success) {
 if ($success) {
 	run_hook('post_rename_entry',array('server_id'=>$ldapserver->server_id,'old_dn'=>$dn,'new_dn'=>$new_dn_value));
 
-	$edit_url = sprintf('template_engine.php?server_id=%s&dn=%s',$ldapserver->server_id,rawurlencode($new_dn));
+	$rename_message = sprintf('%s',_('Rename successful!'));
+	$redirect_url = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',$ldapserver->server_id,rawurlencode($new_dn));
 
-	echo '<html><head>';
-	echo '<!-- refresh the tree view (with the new DN renamed) and redirect to the edit_dn page -->';
-	printf('<script language="javascript">parent.left_frame.location.reload();location.href="%s";</script>',$edit_url);
-	echo "<!-- If the JavaScript didn't work, here's a meta tag to do the job -->";
-	printf('<meta http-equiv="refresh" content="0; url=%s" />',$edit_url);
-	echo '</head><body>';
-
-	printf('%s <a href="%s">%s</a>',_('Redirecting...'),$edit_url,_('here'));
-	echo '</body></html>';
+	system_message(array(
+		'title'=>_('Rename Entry'),
+		'body'=>$rename_message,
+		'type'=>'info'),
+		$redirect_url);
 }
 ?>

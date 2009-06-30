@@ -1,11 +1,9 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/schema.php,v 1.66 2007/03/21 23:33:58 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/schema.php,v 1.67 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * Displays the schema for the specified server_id
  *
- * Variables that come in via common.php
- *  - server_id
  * Variables that come in as GET vars:
  *  - view (optional: can be 'attr' or empty. If 'attr', show that attribute)
  *  - attr (optional)
@@ -18,65 +16,57 @@
 
 require './common.php';
 
-if( ! $ldapserver->haveAuthInfo())
-	pla_error( _('Not enough information to login to server. Please check your configuration.') );
+if (! $_SESSION['plaConfig']->isCommandAvailable('schema'))
+	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('view schema')));
 
-$view = isset($_GET['view']) ? $_GET['view'] : 'objectClasses';
-$viewvalue = isset($_GET['viewvalue']) ? $_GET['viewvalue'] : null;
+$entry['view'] = get_request('view','GET','false','objectClasses');
+$entry['value'] = get_request('viewvalue','GET');
 
-if (trim($viewvalue) == "")
-	$viewvalue = null;
-if (! is_null($viewvalue))
-	$viewed = false;
-
-include './header.php';
+if (! is_null($entry['value'])) {
+	$entry['viewed'] = false;
+	$entry['value'] = strtolower($entry['value']);
+}
 
 $schema_error_str = sprintf('%s <b>%s</b>.<br /><br /></center>%s<ul><li>%s</li><li>%s</li><li>%s</li><li>%s</li></ul>',
 	_('Could not retrieve schema from'),htmlspecialchars($ldapserver->name),
 	_('This could happen for several reasons, the most probable of which are:'),_('The server does not fully support the LDAP protocol.'),
 	_('Your version of PHP does not correctly perform the query.'),_('phpLDAPadmin doesn\'t know how to fetch the schema for your server.'),
 	_('Or lastly, your LDAP server doesnt provide this information.'));
-?>
 
-<body>
+printf('<h3 class="title">%s <b>%s</b></h3>',
+	_('Schema for server'),
+	htmlspecialchars($ldapserver->name));
 
-<h3 class="title"><?php echo _('Schema for server'); ?>
-	<b><?php echo htmlspecialchars($ldapserver->name); ?></b></h3>
+$entry['schema_types'] = array(
+	'objectClasses'=>'ObjectClasses',
+	'attributes'=>'Attribute Types',
+	'syntaxes'=>'Syntaxes',
+	'matching_rules'=>'Matching Rules');
 
-<br />
+echo '<br />';
+echo '<center>';
 
-<center>
-	<?php echo ( $view=='objectClasses' ?
-		_('ObjectClasses') :
-		sprintf('<a href="?server_id=%s&amp;view=%s">%s</a>',
-			$ldapserver->server_id,'objectClasses',_('ObjectClasses'))); ?>
-		|
-	<?php echo ( $view=='attributes' ?
-		_('Attribute Types'):
-		sprintf('<a href="?server_id=%s&amp;view=%s">%s</a>',
-			$ldapserver->server_id,'attributes',_('Attribute Types'))); ?>
-		|
-	<?php echo ( $view=='syntaxes' ?
-		_('Syntaxes') :
-		sprintf('<a href="?server_id=%s&amp;view=%s">%s</a>',
-			$ldapserver->server_id,'syntaxes',_('Syntaxes'))); ?>
-		|
-	<?php echo ( $view=='matching_rules' ?
-		_('Matching Rules') :
-		sprintf('<a href="?server_id=%s&amp;view=%s">%s</a>',
-			$ldapserver->server_id,'matching_rules',_('Matching Rules'))); ?>
-</center>
-<br />
+$counter = 0;
+foreach ($entry['schema_types'] as $item => $value) {
+	if ($counter++)
+		echo ' | ';
 
-<?php flush();
+	$entry['href'][$item] = sprintf('?cmd=schema&server_id=%s&view=%s&viewvalue=%%s',$ldapserver->server_id,$item);
 
-switch($view) {
+	$href = htmlspecialchars(sprintf($entry['href'][$item],''));
+	echo ($entry['view'] == $item ? _($value) : sprintf('<a href="%s">%s</a>',$href,_($value)));
+}
+
+echo '</center>';
+echo '<br />';
+
+switch($entry['view']) {
 
 	case 'syntaxes':
 		$highlight_oid = isset($_GET['highlight_oid']) ? $_GET['highlight_oid'] : false;
 
-		print '<table class="schema_attr" width="100%">';
-		printf('<tr><th>%s</th><th>%s</th></tr>',_('Syntax OID'),_('Description'));
+		print '<table class="schema" border=0>';
+		printf('<tr class="name"><td>%s</td><td>%s</td></tr>',_('Syntax OID'),_('Description'));
 
 		$counter = 1;
 
@@ -95,13 +85,30 @@ switch($view) {
 			else
 				printf('<tr class="%s">',$counter%2==0?'even':'odd');
 
-			printf('<td>%s</td><td>%s</td></tr>',$oid,$desc);
+			printf('<td class="type">%s</td><td class="type">%s</td></tr>',$oid,$desc);
 		}
 
 		print '</table>';
 		break;
 
 	case 'attributes':
+		$entry['attr_types'] = array(
+			'desc' => _('Description'),
+			'obsolete' => _('Obsolete'),
+			'inherits' => _('Inherits from'),
+			'equality' => _('Equality'),
+			'ordering' => _('Ordering'),
+			'substring_rule' => _('Substring Rule'),
+			'syntax' => _('Syntax'),
+			'single_valued' => _('Single Valued'),
+			'collective' => _('Collective'),
+			'user_modification' => _('User Modification'),
+			'usage' => _('Usage'),
+			'maximum_length' => _('Maximum Length'),
+			'aliases' => _('Aliases'),
+			'used_by_objectclasses' => _('Used by objectClasses')
+		);
+
 		$schema_attrs = $ldapserver->SchemaAttributes();
 		$schema_object_classes = $ldapserver->SchemaObjectClasses();
 
@@ -109,135 +116,125 @@ switch($view) {
 			pla_error($schema_error_str);
 
 		printf('<small>%s:</small>',_('Jump to an attribute type'));
-		echo '<form action="schema.php" method="get">';
-		printf('<input type="hidden" name="view" value="%s" />',$view);
+		echo '<form action="cmd.php" method="get">';
+		echo '<input type="hidden" name="cmd" value="schema" />';
+		printf('<input type="hidden" name="view" value="%s" />',$entry['view']);
 		printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 
 		echo '<select name="viewvalue" onChange="submit()">';
 		echo '<option value=""> - all -</option>';
-
 		foreach ($schema_attrs as $name => $attr)
 			printf('<option value="%s" %s>%s</option>',
-				$name,$name == $viewvalue ? 'selected ': '',$attr->getName());
-
+				$name,$name == $entry['value'] ? 'selected ': '',$attr->getName());
 		echo '</select>';
 
 		printf('<input type="submit" value="%s" /></form>',_('Go'));
 
 		echo '<br />';
-		echo '<table class="schema_attr" width="100%">';
 
 		foreach ($schema_attrs as $attr) {
-			if (is_null($viewvalue) || ! strcasecmp($viewvalue,$attr->getName())) {
-				if (! is_null($viewvalue))
-					$viewed = true;
+			if (is_null($entry['value']) || ! strcasecmp($entry['value'],$attr->getName())) {
+				if (! is_null($entry['value']))
+					$entry['viewed'] = true;
 
-				printf('<tr><th colspan="2"><a name="%s">%s</a></th></tr>',
+				echo '<table class="schema" border=0>';
+				printf('<tr class="name"><td colspan=2><a name="%s">%s</a></td></tr>',
 					strtolower($attr->getName()),$attr->getName());
 
 				$counter = 0;
 
-				foreach (
-					array('desc','obsolete','inherits','equality','ordering','substring_rule','syntax',
-						'single_valued','collective','user_modification','usage','maximum_length',
-						'aliases','used_by_objectclasses'
-					) as $item) {
+				foreach ($entry['attr_types'] as $item => $value) {
 
 					printf('<tr class="%s">',++$counter%2 ? 'odd' : 'even');
+					printf('<td class="type">%s</td>',$value);
 
 					switch ($item) {
 						case 'desc':
-							printf('<td>%s</td>',_('Description'));
 							printf('<td>%s</td>',
 								is_null($attr->getDescription()) ?
 									'('._('no description').')' : $attr->getDescription());
 
 							print '</tr>';
 							printf('<tr class="%s">',++$counter%2 ? 'odd' : 'even');
-							echo '<td><acronym title="Object Identier">OID</acronym></td>';
+							echo '<td class="type"><acronym title="Object Identier">OID</acronym></td>';
 							printf('<td>%s</td>',$attr->getOID());
 
 							break;
 
 						case 'obsolete':
-							printf('<td>%s</td>',_('Obsolete'));
 							printf('<td>%s</td>',$attr->getIsObsolete() ? '<b>'._('Yes').'</b>' : _('No'));
 							break;
 
 						case 'inherits':
-							printf('<td>%s</td>',_('Inherits from'));
 							print '<td>';
 
 							if (is_null($attr->getSupAttribute()))
 								printf('(%s)',_('none'));
 
-							else
-								printf('<a href="?server_id=%s&amp;view=%s&amp;viewvalue=%s">%s</a>',
-									$ldapserver->server_id,$view,
-									strtolower($attr->getSupAttribute()),$attr->getSupAttribute());
+							else {
+								$href = htmlspecialchars(sprintf($entry['href']['attributes'],strtolower($attr->getSupAttribute())));
+								printf('<a href="%s">%s</a>',$href,$attr->getSupAttribute());
+							}
 
 							print '</td>';
 							break;
 
 						case 'equality':
-							printf('<td>%s</td>',_('Equality'));
-							printf('<td>%s</td>',
-								is_null($attr->getEquality()) ? '('._('not specified').')' :
-									sprintf('<a href="?server_id=%s&amp;view=matching_rules&amp;viewvalue=%s">%s</a>',
-										$ldapserver->server_id,$attr->getEquality(),$attr->getEquality()));
+							print '<td>';
+
+							if (is_null($attr->getEquality()))
+								printf('(%s)',_('not specified'));
+
+							else {
+								$href = htmlspecialchars(sprintf($entry['href']['matching_rules'],$attr->getEquality()));
+								printf('<a href="%s">%s</a>',$href,$attr->getEquality());
+							}
+
+							print '</td>';
 							break;
 
 						case 'ordering':
-							printf('<td>%s</td>',_('Ordering'));
 							printf('<td>%s</td>',
 								is_null($attr->getOrdering()) ? '('._('not specified').')' : $attr->getOrdering());
 							break;
 
 						case 'substring_rule':
-							printf('<td>%s</td>',_('Substring Rule'));
 							printf('<td>%s</td>',
 								is_null($attr->getSubstr()) ? '('._('not specified').')' : $attr->getSubstr());
 							break;
 
 						case 'syntax':
-							printf('<td>%s</td>',_('Syntax'));
 							print '<td>';
 
 							if (is_null($attr->getType())) {
 								echo $attr->getSyntaxOID();
 
 							} else {
-								printf('<a href="?server_id=%s&amp;view=syntaxes&amp;highlight_oid=%s#%s">%s (%s)</a>',
-									$ldapserver->server_id,
-									$attr->getSyntaxOID(),$attr->getSyntaxOID(),
-									$attr->getType(),$attr->getSyntaxOID());
+								$href = htmlspecialchars(sprintf($entry['href']['syntaxes'].'&highlight_oid=%s#%s','',
+									$attr->getSyntaxOID(),$attr->getSyntaxOID()));
+								printf('<a href="%s">%s (%s)</a>',$href,$attr->getType(),$attr->getSyntaxOID());
 							}
 
 							print '</td>';
 							break;
 
 						case 'single_valued':
-							printf('<td>%s</td>',_('Single Valued'));
 							printf('<td>%s</td>',$attr->getIsSingleValue() ? _('Yes') : _('No'));
 							break;
 
 						case 'collective':
-							printf('<td>%s</td>',_('Collective'));
 							printf('<td>%s</td>',$attr->getIsCollective() ? _('Yes') : _('No'));
 							break;
 
 						case 'user_modification':
-							printf('<td>%s</td>',_('User Modification'));
 							printf('<td>%s</td>',$attr->getIsNoUserModification() ? _('No') : _('Yes'));
 							break;
 
 						case 'usage':
-							printf('<td>%s</td>',_('Usage'));
 							printf('<td>%s</td>',$attr->getUsage() ? $attr->getUsage() : '('._('not specified').')');
 							break;
 
 						case 'maximum_length':
-							printf('<td>%s</td>',_('Maximum Length'));
 							print '<td>';
 
 							if ( is_null($attr->getMaxLength()))
@@ -251,31 +248,31 @@ switch($view) {
 							break;
 
 						case 'aliases':
-							printf('<td>%s</td>',_('Aliases'));
 							print '<td>';
 
 							if (count($attr->getAliases()) == 0)
-								echo '('._('none').')';
+								printf('(%s)',_('none'));
 
 							else
-								foreach ($attr->getAliases() as $alias_attr_name)
-									printf('<a href="?server_id=%s&amp;view=attributes&amp;viewvalue=%s">%s</a>',
-										$ldapserver->server_id,strtolower($alias_attr_name),$alias_attr_name);
+								foreach ($attr->getAliases() as $alias_attr_name) {
+									$href = htmlspecialchars(sprintf($entry['href']['attributes'],strtolower($alias_attr_name)));
+									printf('<a href="%s">%s</a>',$href,$alias_attr_name);
+								}
 
 							print '</td>';
 							break;
 
 						case 'used_by_objectclasses':
-							printf('<td>%s</td>',_('Used by objectClasses'));
 							print '<td>';
 
 							if (count($attr->getUsedInObjectClasses()) == 0)
-								echo '('._('none').')';
+								printf('(%s)',_('none'));
 
 							else
-								foreach ($attr->getUsedInObjectClasses() as $used_in_oclass)
-									printf('<a href="?server_id=%s&amp;view=objectClasses&amp;viewvalue=%s">%s</a> ',
-										$ldapserver->server_id,strtolower($used_in_oclass),$used_in_oclass);
+								foreach ($attr->getUsedInObjectClasses() as $used_in_oclass) {
+									$href = htmlspecialchars(sprintf($entry['href']['objectClasses'],strtolower($used_in_oclass)));
+									printf('<a href="%s">%s</a> ',$href,$used_in_oclass);
+								}
 
 							print '</td>';
 							break;
@@ -283,12 +280,11 @@ switch($view) {
 					}
 					print '</tr>';
 				}
-
-				flush();
+				print '</table>';
+				echo '<br />';
 			}
 		}
 
-		print '</table>';
 		break;
 
 	case 'matching_rules':
@@ -298,26 +294,25 @@ switch($view) {
 
 		printf('<small>%s</small><br />',_('Jump to a matching rule'));
 
-		print '<form action="schema.php" method="get">';
+		print '<form action="cmd.php" method="get">';
+		print '<input type="hidden" name="cmd" value="schema" />';
 		printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 		print '<input type="hidden" name="view" value="matching_rules" />';
 
 		print '<select name="viewvalue" onChange="submit()">';
 		print '<option value=""> - all -</option>';
-
 		foreach ($schema_matching_rules as $rule)
 			printf('<option value="%s" %s>%s</option>',
 				$rule->getName(),
-				($rule->getName() == $viewvalue ? 'selected': ''),
+				($rule->getName() == $entry['value'] ? 'selected': ''),
 				$rule->getName());
-
 		print '</select>';
 
 		printf('<input type="submit" value="%s" />',_('Go'));
 		print '</form>';
 
-		print '<table class="schema_attr" width="100%">';
-		printf('<tr><th>%s</th><th>%s</th><th>%s</th></tr>',
+		print '<table class="schema" border=0>';
+		printf('<tr class="name"><td>%s</td><td>%s</td><td>%s</td></tr>',
 			_('Matching Rule OID'),_('Name'),_('Used by Attributes'));
 
 		$counter = 1;
@@ -327,10 +322,10 @@ switch($view) {
 			$oid = htmlspecialchars($rule->getOID());
 			$desc = htmlspecialchars($rule->getName());
 
-			if ( is_null($viewvalue) || $viewvalue == ($rule->getName())) {
+			if ( is_null($entry['value']) || $entry['value'] == strtolower($rule->getName())) {
 
-				if (! is_null($viewvalue))
-					$viewed = true;
+				if (! is_null($entry['value']))
+					$entry['viewed'] = true;
 
 				if (null != $rule->getDescription())
 					$desc .= sprintf(' (%s)',$rule->getDescription());
@@ -339,25 +334,26 @@ switch($view) {
 					$desc .= sprintf(' <span style="color:red">%s</span>',_('Obsolete'));
 
 				printf('<tr class="%s">',$counter%2 ? 'odd' : 'even');
-				printf('<td>%s</td>',$oid);
-				printf('<td>%s</td>',$desc);
+				printf('<td class="type">%s</td>',$oid);
+				printf('<td class="type">%s</td>',$desc);
 
-				print '<td>';
+				print '<td class="type">';
 
 				if (count($rule->getUsedByAttrs()) == 0) {
 					printf('<center>(%s)</center><br /><br />',_('none'));
 
 				} else {
-					print '<table><tr><td style="text-align: right">';
-					print '<form action="schema.php" method="get">';
+					print '<table width=100% border=0><tr><td style="text-align: right">';
+					print '<form action="cmd.php" method="get">';
+					print '<input type="hidden" name="cmd" value="schema" />';
 					printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 					print '<input type="hidden" name="view" value="attributes" />';
 
 					print '<select style="width: 150px; color:black; background-color: #eee" size="4" name="viewvalue">';
 					foreach ($rule->getUsedByAttrs() as $attr)
 						printf('<option>%s</option>',$attr);
-
 					print '</select><br />';
+
 					printf('<input type="submit" value="%s" />',_('Go'));
 					print '</form>';
 					print '</td></tr></table>';
@@ -377,17 +373,16 @@ switch($view) {
 
 		printf('<small>%s:</small>',_('Jump to an objectClass'));
 
-		echo '<form action="schema.php" method="get">';
-		printf('<input type="hidden" name="view" value="%s" />',$view);
+		echo '<form action="cmd.php" method="get">';
+		echo '<input type="hidden" name="cmd" value="schema" />';
+		printf('<input type="hidden" name="view" value="%s" />',$entry['view']);
 		printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 
 		echo '<select name="viewvalue" onChange="submit()">';
 		echo '<option value=""> - all - </option>';
-
 		foreach ($schema_oclasses as $name => $oclass)
 			printf('<option value="%s" %s>%s</option>',
-				$name,$name == $viewvalue ? 'selected ': '',$oclass->getName());
-
+				$name,$name == $entry['value'] ? 'selected ': '',$oclass->getName());
 		echo '</select>';
 
 		printf('<input type="submit" value="%s" />',_('Go'));
@@ -395,124 +390,117 @@ switch($view) {
 
 		echo '<br />';
 
-		flush();
-
 		foreach ($schema_oclasses as $name => $oclass) {
-			if (is_null($viewvalue) || ($viewvalue == $name)) {
-				if (! is_null($viewvalue))
-					$viewed = true;
+			if (is_null($entry['value']) || ($entry['value'] == $name)) {
+				if (! is_null($entry['value']))
+					$entry['viewed'] = true;
 
-				printf('<h4 class="oclass"><a name="%s">%s</a></h4>',$name,$oclass->getName());
-				printf('<h4 class="oclass_sub">%s: <b>%s</b></h4>',_('OID'),$oclass->getOID());
+				echo '<table class="schema_oclass" border=0>';
+				printf('<tr class="name"><td colspan=4><a name="%s">%s</a></td></tr>',$name,$oclass->getName());
+				printf('<tr class="detail"><td colspan=4>%s: <b>%s</b></td></tr>',_('OID'),$oclass->getOID());
 
 				if ($oclass->getDescription())
-					printf('<h4 class="oclass_sub">%s: <b>%s</b></h4>',_('Description'),$oclass->getDescription());
+					printf('<tr class="detail"><td colspan=4>%s: <b>%s</b></td></tr>',_('Description'),$oclass->getDescription());
 
-				printf('<h4 class="oclass_sub">%s: <b>%s</b></h4>',_('Type'),$oclass->getType());
+				printf('<tr class="detail"><td colspan=4>%s: <b>%s</b></td></tr>',_('Type'),$oclass->getType());
 
 				if ($oclass->getIsObsolete())
-					printf('<h4 class="oclass_sub">%s</h4>',_('This objectClass is obsolete.'));
+					printf('<tr class="detail"><td colspan=4>%s</td></tr>',_('This objectClass is obsolete.'));
 
-				printf('<h4 class="oclass_sub">%s: <b>',_('Inherits from'));
+				printf('<tr class="detail"><td colspan=4>%s: <b>',_('Inherits from'));
 				if (count($oclass->getSupClasses()) == 0)
 					printf('(%s)',_('none'));
 
 				else
 					foreach ($oclass->getSupClasses() as $i => $object_class) {
-						printf('<a title="%s" href="?server_id=%s&amp;view=%s&amp;viewvalue=%s">%s</a>',
-							_('Jump to this objectClass definition'),
-							$ldapserver->server_id,$view,strtolower(htmlspecialchars($object_class)),
-							htmlspecialchars($object_class));
+						$href = htmlspecialchars(sprintf($entry['href']['objectClasses'],strtolower($object_class)));
+
+						printf('<a title="%s" href="%s">%s</a>',
+							_('Jump to this objectClass definition'),$href,$object_class);
 
 						if ($i < count($oclass->getSupClasses()) - 1)
 							echo ', ';
 					}
-				echo '</b></h4>';
+				echo '</b></td></tr>';
 
-				printf('<h4 class="oclass_sub">%s: <b>',_('Parent to'));
-				if (strcasecmp($oclass->getName(),'top') == 0)
-					printf('(<a href="schema.php?view=objectClasses&amp;server_id=%s">all</a>)',$ldapserver->server_id);
+				printf('<tr class="detail"><td colspan=4>%s: <b>',_('Parent to'));
+				if (strcasecmp($oclass->getName(),'top') == 0) {
+					$href = htmlspecialchars(sprintf($entry['href']['objectClasses'],''));
+					printf('(<a href="%s">all</a>)',$href);
 
-				elseif (count($oclass->getChildObjectClasses()) == 0)
+				} elseif (count($oclass->getChildObjectClasses()) == 0)
 					printf('(%s)',_('none'));
 
 				else
 					foreach ($oclass->getChildObjectClasses() as $i => $object_class) {
-						printf('<a title="%s" href="?server_id=%s&amp;view=%s&amp;viewvalue=%s">%s</a>',
-							_('Jump to this objectClass definition'),
-							$ldapserver->server_id,$view,strtolower(htmlspecialchars($object_class)),
-							htmlspecialchars($object_class));
+						$href = htmlspecialchars(sprintf($entry['href']['objectClasses'],strtolower($object_class)));
+						printf('<a title="%s" href="%s">%s</a>',_('Jump to this objectClass definition'),$href,$object_class);
 
 						if ( $i < count($oclass->getChildObjectClasses()) - 1)
 							echo ', ';
 					}
-				echo '</b></h4>';
+				echo '</b></td></tr>';
 
-				echo '<table width="100%" class="schema_oclasses">';
-				echo '<tr>';
-				printf('<th width="50%%"><b>%s</b></th>',_('Required Attributes'));
-				printf('<th width="50%%"><b>%s</b></th>',_('Optional Attributes'));
-				echo '</tr>';
+				printf('<tr class="attrshead"><td class="left">&nbsp;</td><td><b>%s</b></td><td><b>%s</b></td><td class="right">&nbsp;</td></tr>',
+					_('Required Attributes'),_('Optional Attributes'));
 
-				echo '<tr>';
+				echo '<tr class="attrs">';
+				echo '<td class="left">&nbsp;</td>';
 				echo '<td>';
-				if (count($oclass->getMustAttrs($schema_oclasses)) > 0) {
-					echo '<ul class="schema">';
 
+				if (count($oclass->getMustAttrs($schema_oclasses)) > 0) {
+
+					echo '<ul class="schema">';
 					foreach ($oclass->getMustAttrs($schema_oclasses) as $attr) {
 						echo '<li>';
-						printf('<a href="?server_id=%s&amp;view=attributes&amp;viewvalue=%s">%s</a>',
-							$ldapserver->server_id,rawurlencode(strtolower($attr->getName())),htmlspecialchars($attr->getName()));
+						$href = htmlspecialchars(sprintf($entry['href']['attributes'],strtolower($attr->getName())));
+						printf('<a href="%s">%s</a>',$href,$attr->getName());
 
 						if ($attr->getSource() != $oclass->getName()) {
 							echo '<br />';
-							printf('<small>&nbsp;&nbsp;(%s <a href="?server_id=%s&amp;view=objectClasses&amp;viewvalue=%s">%s</a>)</small>',
-								_('Inherited from'),$ldapserver->server_id,strtolower($attr->getSource()),$attr->getSource());
+							$href = htmlspecialchars(sprintf($entry['href']['objectClasses'],strtolower($attr->getSource())));
+							printf('<small>(%s <a href="%s">%s</a>)</small>',_('Inherited from'),$href,$attr->getSource());
 						}
 						echo '</li>';
 					}
-
 					echo '</ul>';
 
 				} else
-					printf('<center>(%s)</center>',_('none'));
-
+					printf('(%s)',_('none'));
 
 				echo '</td>';
-
-				echo '<td width="50%">';
+				echo '<td>';
 
 				if (count($oclass->getMayAttrs($schema_oclasses)) > 0) {
-					echo '<ul class="schema">';
 
+					echo '<ul class="schema">';
 					foreach ($oclass->getMayAttrs($schema_oclasses) as $attr) {
 						echo '<li>';
-						printf('<a href="?server_id=%s&amp;view=attributes&amp;viewvalue=%s">%s</a>',
-							$ldapserver->server_id,rawurlencode(strtolower($attr->getName())),htmlspecialchars($attr->getName()));
+						$href = htmlspecialchars(sprintf($entry['href']['attributes'],strtolower($attr->getName())));
+						printf('<a href="%s">%s</a>',$href,$attr->getName());
 
 						if ($attr->getSource() != $oclass->getName()) {
 							echo '<br />';
-							printf('<small>&nbsp;&nbsp; (%s <a href="?server_id=%s&amp;view=objectClasses&amp;viewvalue=%s">%s</a>)</small>',
-								_('Inherited from'),$ldapserver->server_id,strtolower($attr->getSource()),$attr->getSource());
+							$href = htmlspecialchars(sprintf($entry['href']['objectClasses'],strtolower($attr->getSource())));
+							printf('<small>(%s <a href="%s">%s</a>)</small>',_('Inherited from'),$href,$attr->getSource());
 						}
 						echo '</li>';
 					}
-
 					echo '</ul>';
 
 				} else
-					printf('<center>(%s)</center>',_('none'));
+					printf('(%s)',_('none'));
 
 				echo '</td>';
+				echo '<td class="right">&nbsp;</td>';
 				echo '</tr>';
 				echo '</table>';
+				echo '<br />';
 			}
 		} /* End foreach objectClass */
 		break;
 }
 
-if (! is_null($viewvalue) && ! $viewed)
-	pla_error(sprintf(_('No such schema item: "%s"'),htmlspecialchars($viewvalue)));
-
-echo '</body>';
-echo '</html>';
+if (! is_null($entry['value']) && ! $entry['viewed'])
+	pla_error(sprintf(_('No such schema item: "%s"'),htmlspecialchars($entry['value'])));
+?>

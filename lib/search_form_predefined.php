@@ -1,45 +1,53 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_predefined.php,v 1.9 2005/12/10 10:34:55 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_predefined.php,v 1.10 2007/12/15 07:50:33 wurley Exp $
 
 /**
  * @package phpLDAPadmin
  */
 
-echo '<form action="search.php" method="get" class="search">';
+echo '<form action="cmd.php" method="get" class="search">';
+echo '<input type="hidden" name="cmd" value="search" />';
 echo '<input type="hidden" name="search" value="true" />';
 echo '<input type="hidden" name="form" value="predefined" />';
-printf('<input type="hidden" name="format" value="%s" />',$format);
+printf('<input type="hidden" name="format" value="%s" />',$entry['format']);
+printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 
-echo '<table><tr><td>';
+echo '<table class="search" border=0>';
 
-if (isset($_GET['predefined']))
-	$selected_q_number = intval($_GET['predefined']);
+if ($entry['predefined'])
+	$selected_q_number = intval($entry['predefined']);
 else
 	$selected_q_number = null;
 
-printf('<center><b>%s</b><br />',_('Predefined Searches'));
-printf('<small>(<a href="search.php?server_id=%s&amp;form=simple">%s</a> | <a href="search.php?server_id=%s&amp;form=advanced">%s</a>)</small>',
-	$ldapserver->server_id,_('Simple Search Form'),
-	$ldapserver->server_id,_('Advanced Search Form'));
+printf('<tr><td class="title" colspan=2>%s</td></tr>',_('Predefined Searches'));
 
-echo '<br /><br />';
+$ss = $_SESSION['plaConfig']->isCommandAvailable('search', 'simple_search');
+$as = $_SESSION['plaConfig']->isCommandAvailable('search', 'advanced_search');
+if ($ss | $as) {
+	echo '<tr><td class="subtitle" colspan=2>(';
+	if ($ss) {
+		printf('<a href="cmd.php?cmd=search&amp;server_id=%s&amp;form=simple">%s</a>', $ldapserver->server_id,_('Simple Search Form'));
+		if ($as) echo '	| ';
+	}
+	if ($as) {
+		printf('<a href="cmd.php?cmd=search&amp;server_id=%s&amp;form=advanced">%s</a>', $ldapserver->server_id,_('Advanced Search Form'));
+	}
+	echo ')</td></tr>';
+}
 
-if (! isset($queries) || ! is_array($queries) || count($queries) == 0) {
-	echo '<br />';
-	echo _('No queries have been defined in config.php.');
-	echo '<br /><br /><br />';
-	echo '</center>';
-	echo '</td></tr></table>';
-	echo '</body></html>';
-	die();
+echo '<tr><td colspan=2>&nbsp;</td></tr>';
+
+if (! isset($_SESSION['plaConfig']->queries) || ! is_array($_SESSION['plaConfig']->queries) || count($_SESSION['plaConfig']->queries) == 0) {
+	printf('<tr><td>%s</td></tr>',_('No queries have been defined in config.php.'));
 
 } else {
+	echo '<tr>';
+	printf('<td><small>%s: </small></td>',_('Select a predefined search'));
 
-	printf('<small>%s: </small>',_('Select a predefined search'));
+	echo '<td>';
 	echo '<select name="predefined">';
 
-	foreach ($queries as $q_number => $q) {
-
+	foreach ($_SESSION['plaConfig']->queries as $q_number => $q) {
 		if ($selected_q_number === $q_number)
 			$selected = ' selected';
 		else
@@ -49,12 +57,11 @@ if (! isset($queries) || ! is_array($queries) || count($queries) == 0) {
 	}
 
 	echo '</select>';
+	echo '</td></tr>';
 
+	echo '<tr><td colspan=2>&nbsp;</td></tr>';
+	printf('<tr><td colspan=2><center><input type="submit" value="%s" /></center></td></tr>',_('Search'));
 }
 
-echo '<br /><br />';
-printf('<center><input type="hidden" name="server_id" value="%s" /></center>',$ldapserver->server_id);
-printf('<center><input type="submit" value="%s" /></center>',_('Search'));
-echo '</center>';
-echo '</td></tr></table></form>';
+echo '</table></form>';
 ?>

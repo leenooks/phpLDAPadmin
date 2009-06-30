@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/session_functions.php,v 1.17 2006/01/03 20:39:59 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/session_functions.php,v 1.18 2007/12/15 07:50:33 wurley Exp $
 
 /**
  * A collection of functions to handle sessions throughout phpLDAPadmin.
@@ -67,6 +67,12 @@ function pla_session_verify_id() {
 	return ($ip_ses == $ip_ver);
 }
 
+function pla_session_param() {
+	/* If cookies were disabled, build the url parameter for the session id.
+	   It will be append to the url to be redirect */
+	return (SID != '') ? sprintf('&%s=%s',session_name(),session_id()) : '';
+}
+
 /**
  * The only function which should be called by a user
  *
@@ -75,43 +81,43 @@ function pla_session_verify_id() {
  * @return bool Returns true if the session was started the first time
  */
 function pla_session_start() {
-	if (DEBUG_ENABLED)
-		debug_log('pla_session_start(): Entered with ()',1);
+	/* If session.auto_start is on in the server's PHP configuration (php.ini), then
+	 * we will have problems loading our schema cache since the session will have started
+	 * prior to loading the SchemaItem (and descedants) class. Destroy the auto-started
+	 * session to prevent this problem.
+	 */
+	if (ini_get('session.auto_start'))
+		@session_destroy();
 
-    // If session.auto_start is on in the server's PHP configuration (php.ini), then
-    // we will have problems loading our schema cache since the session will have started
-    // prior to loading the SchemaItem (and descedants) class. Destroy the auto-started
-    // session to prevent this problem.
-    if( ini_get( 'session.auto_start' ) )
-        @session_destroy();
+	# Do we already have a session?
+	if (@session_id())
+		die;
 
-	// Do we already have a session?
-    if( @session_id() ) {
-        return;
-    }
+	@session_name(PLA_SESSION_ID);
+	@session_start();
 
-    @session_name( PLA_SESSION_ID );
-    @session_start();
+	# Do we have a valid session?
+	$is_initialized = is_array($_SESSION) && array_key_exists(pla_session_id_init,$_SESSION);
 
-	// Do we have a valid session?
-	$is_initialized = is_array( $_SESSION ) && array_key_exists( pla_session_id_init, $_SESSION );
-	if( ! $is_initialized ) {
-		if( pla_session_id_paranoid ) {
-			ini_set('session.use_trans_sid', 0);
+	if (! $is_initialized) {
+		if (pla_session_id_paranoid) {
+			ini_set('session.use_trans_sid',0);
 			@session_destroy();
-		        @session_id(pla_session_get_id());
+			@session_id(pla_session_get_id());
 			@session_start();
-			ini_set('session.use_trans_sid', 1);
+			ini_set('session.use_trans_sid',1);
 		}
-		$_SESSION[pla_session_id_init] = true;
+
+		$_SESSION[pla_session_id_init]['version'] = pla_version();
+		$_SESSION[pla_session_id_init]['config'] = filemtime(CONFDIR.'config.php');
 	}
 
-	@header("Cache-control: private"); // IE 6 Fix
+	@header('Cache-control: private'); // IE 6 Fix
 
-	if( pla_session_id_paranoid && ! pla_session_verify_id() )
-		pla_error("Session inconsistent or session timeout");
+	if (pla_session_id_paranoid && ! pla_session_verify_id())
+		pla_error('Session inconsistent or session timeout');
 
-	return ( ! $is_initialized ) ? true : false;
+	return (! $is_initialized) ? true : false;
 }
 
 /**

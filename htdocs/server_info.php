@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/server_info.php,v 1.26 2006/09/17 06:35:11 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/server_info.php,v 1.27 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * Fetches and displays all information that it can from the specified server
@@ -12,7 +12,8 @@
 /**
  */
 
-require './common.php';
+if (! $_SESSION['plaConfig']->isCommandAvailable('server_info'))
+	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('view server informations')));
 
 # The attributes we'll examine when searching the LDAP server's RootDSE
 $root_dse_attributes = array(
@@ -46,9 +47,6 @@ $root_dse_attributes = array(
 	'*'
 	);
 
-if (! $ldapserver->haveAuthInfo())
-	pla_error( _('Not enough information to login to server. Please check your configuration.') );
-
 # Fetch basic RootDSE attributes using the + and *.
 $attrs = $ldapserver->search(null,'','objectClass=*',array('+','*'),'base');
 $attrs = array_pop($attrs);
@@ -65,16 +63,13 @@ if (is_array($attrs2))
 		if (! isset($attrs[$attr]))
 			$attrs[$attr] = $attrs2[$attr];
 
-include './header.php';
-
-echo '<body>';
 printf('<h3 class="title">%s%s</h3>',_('Server info for: '),htmlspecialchars($ldapserver->name));
 printf('<h3 class="subtitle">%s</h3>',_('Server reports the following information about itself'));
 
 if (count($attrs) == 0) {
 	echo '<br /><br />';
 	printf('<center>%s</center>',_('This server has nothing to report.'));
-	exit;
+	return;
 }
 
 echo '<table class="edit_dn">';
@@ -85,7 +80,7 @@ foreach ($attrs as $attr => $values) {
 	$schema_href = sprintf('schema.php?server_id=%s&amp;view=attributes&amp;viewvalue=%s',$ldapserver->server_id,$attr);
 
 	echo '<tr><td class="attr">';
-	printf('<b><a title="'._('Click to view the schema definition for attribute type \'%s\'').'" href="%s">%s</a></b>',
+	printf('<a title="'._('Click to view the schema definition for attribute type \'%s\'').'" href="%s">%s</a>',
 		$attr,$schema_href,htmlspecialchars($attr));
 	echo '</td></tr>';
 
@@ -99,8 +94,8 @@ foreach ($attrs as $attr => $values) {
 		print '<tr>';
 
 		if (preg_match('/^[0-9]+\.[0-9]+/',$value)) {
-			printf('<td width=5%%><acronym title="%s"><img src="images/rfc.png" /></acronym></td>',
-				htmlspecialchars($value));
+			printf('<td width=5%%><img src="images/rfc.png" title="%s" alt="%s" /></td>',
+			       htmlspecialchars($value), htmlspecialchars($value));
 
 			if ($oidtext = support_oid_to_text($value))
 				if (isset($oidtext['ref']))
@@ -109,7 +104,7 @@ foreach ($attrs as $attr => $values) {
 					printf('<td>%s</td>',$oidtext['title']);
 
 			else
-				if ($value)
+			if (strlen($value) > 0)
 					printf('<td><small>%s</small></td>',$value);
 
 		} else {
@@ -128,5 +123,5 @@ foreach ($attrs as $attr => $values) {
 	echo '</table>';
 	echo '</td></tr>';
 }
-echo '</table></body></html>';
+echo '</table>';
 ?>

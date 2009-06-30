@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import.php,v 1.34 2005/12/10 10:34:54 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import.php,v 1.35 2007/12/15 07:50:30 wurley Exp $
  
 /**
  * Imports an LDIF file to the specified server_id.
@@ -15,36 +15,43 @@
 
 require './common.php';
 
-if (! $ldapserver->haveAuthInfo())
-	pla_error(_('Not enough information to login to server. Please check your configuration.'));
+if (! $_SESSION['plaConfig']->isCommandAvailable('import'))
+	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('import')));
 
-$continuous_mode = isset($_POST['continuous_mode']) ? 1 : 0;
+$entry['continuous_mode'] = get_request('continuous_mode') ? true : false;
+$entry['ldif'] = get_request('ldif');
 
-if (isset($_REQUEST['ldif']) && trim($_REQUEST['ldif'])) {
-	$textarealdif = $_REQUEST['ldif'];
-	$remote_file = 'STDIN';
-	$file_len = strlen($textarealdif);
+if ($entry['ldif']) {
+	$entry['remote_file'] = 'STDIN';
+	$entry['size'] = strlen($entry['ldif']);
 
 } elseif (isset($_FILES['ldif_file'])) {
 	$file = $_FILES['ldif_file']['tmp_name'];
-	$remote_file = $_FILES['ldif_file']['name'];
-	$file_len = $_FILES['ldif_file']['size'];
+	$entry['remote_file'] = $_FILES['ldif_file']['name'];
+	$entry['size'] = $_FILES['ldif_file']['size'];
 
-	is_array($_FILES['ldif_file']) or pla_error(_('Missing uploaded file.'));
-	file_exists($file) or pla_error(_('No LDIF file specified. Please try again.'));
-	$file_len > 0 or pla_error(_('Uploaded LDIF file is empty.'));
+	if (! is_array($_FILES['ldif_file'])) {
+		pla_error(_('Missing uploaded file.'),null,-1,false);
+		return;
+	}
+	if (! file_exists($file)) {
+		pla_error(_('No LDIF file specified. Please try again.'),null,-1,false);
+		return;
+	}
+	if ($entry['size'] <= 0) {
+		pla_error(_('Uploaded LDIF file is empty.'),null,-1,false);
+		return;
+	}
 
 } else {
-	pla_error(_('You must either upload a file or provide an LDIF in the text box.'));
+	pla_error(_('You must either upload a file or provide an LDIF in the text box.'),null,-1,false);
+	return;
 }
 
-include './header.php';
-
-echo '<body>';
 printf('<h3 class="title">%s</h3>',_('Import LDIF File'));
 printf('<h3 class="subtitle">%s: <b>%s</b> %s: <b>%s (%s %s)</b></h3>',
 	_('Server'),htmlspecialchars($ldapserver->name),
-	_('File'),htmlspecialchars($remote_file),number_format($file_len),_('bytes'));
+	_('File'),htmlspecialchars($entry['remote_file']),number_format($entry['size']),_('bytes'));
 echo '<br /><br />';
 
 require LIBDIR.'ldif_functions.php';
@@ -67,10 +74,10 @@ $actionErrorMsg['moddn']= _('Could not rename object:');
 $actionErrorMsg['modify']= _('Could not modify object:');
 
 # instantiate the reader
-if (isset($textarealdif))
-	$ldifReader = new LdifReaderStdIn($textarealdif,$continuous_mode);
+if (isset($entry['ldif']))
+	$ldifReader = new LdifReaderStdIn($entry['ldif'],$entry['continuous_mode']);
 else
-	$ldifReader = new LdifReader($file,$continuous_mode);
+	$ldifReader = new LdifReader($file,$entry['continuous_mode']);
 
 # instantiate the writer
 $ldapWriter = new LdapWriter($ldapserver);
@@ -81,16 +88,16 @@ if (!$ldifReader->hasVersionNumber())
 
 $i=0;
 # if .. else not mandatory but should be easier to maintain
-if ($continuous_mode) {
+if ($entry['continuous_mode']) {
 	while ($ldifReader->readEntry()) {
 		$i++;
 
 		# get the entry. 
 		$currentEntry = $ldifReader->fetchEntryObject();
-		$edit_href = sprintf('template_engine.php?server_id=%s&amp;dn=%s',$ldapserver->server_id,
+		$edit_href = sprintf('cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s',$ldapserver->server_id,
 			rawurlencode($currentEntry->dn));
 		$changeType = $currentEntry->getChangeType();
-		printf('<small>%s <a href="%s">%s</a>',$actionString[$changeType],$edit_href,$entry->dn);
+		printf('<small>%s <a href="%s">%s</a>',$actionString[$changeType],$edit_href,$currentEntry->dn);
 
 		if ($ldifReader->hasRaisedException()) {
 			printf(' <span style="color:red;">%s</span></small><br />',_('Failed'));
@@ -113,9 +120,6 @@ if ($continuous_mode) {
 					_('Description'),$ldapserver->error());
 			}
 		}
-
-		if ($i % 5 == 0)
-			flush();
 	} # end while
 
 } else {
@@ -123,7 +127,7 @@ if ($continuous_mode) {
 	while ($entry = $ldifReader->readEntry()) {
 		$i++;
 
-		$edit_href = sprintf('template_engine.php?server_id=%s&amp;dn=%s',$ldapserver->server_id,
+		$edit_href = sprintf('cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s',$ldapserver->server_id,
 			rawurlencode($entry->dn));
 		$changeType = $entry->getChangeType();
 		printf('<small>%s <a href="%s">%s</a>',$actionString[$changeType],$edit_href,$entry->dn);
@@ -131,14 +135,20 @@ if ($continuous_mode) {
 		if ($ldapWriter->ldapModify($entry)) {
 			printf(' <span style="color:green;">%s</span></small><br />',_('Success'));
 
-			if ($i % 5 == 0)
-				flush();
-
 		} else {
 			printf(' <span style="color:red;">%s</span></small><br /><br />',_('Failed'));
-			reload_left_frame();
-			pla_error($actionErrorMsg[$changeType].' '.htmlspecialchars($entry->dn),
-				$ldapserver->error(),$ldapserver->errno());
+			$ldap_err_no = ('0x'.str_pad(dechex($ldapserver->errno()),2,0,STR_PAD_LEFT));
+			$verbose_error = pla_verbose_error($ldap_err_no);
+
+			$errormsg = sprintf('%s <b>%s</b>',$actionErrorMsg[$changeType],htmlspecialchars($entry->dn));
+			$errormsg .= sprintf('<br />%s: <b>%s</b>',_('LDAP said'),$verbose_error['title']);
+			$errormsg .= sprintf('<br />%s',$verbose_error['desc']);
+			system_message(array(
+				'title'=>_('LDIF text import'),
+				'body'=>$errormsg,
+				'type'=>'warn'));
+
+			break;
 		}
 	}
 
@@ -161,21 +171,12 @@ if ($continuous_mode) {
 
 # close the file
 $ldifReader->done();
-reload_left_frame();
-
-function reload_left_frame(){
-	echo '<script type="text/javascript" language="javascript">parent.left_frame.location.reload();</script>';
-}
-
-function display_error_message($error_message){
-	printf('<div style="color:red;"><small>%s</small></div>',$error_message);
-}
 
 function display_warning($warning){
 	printf('<div style="color:orange"><small>%s</small></div>',$warning);
 }
 
-function display_pla_parse_error($exception,$faultyEntry){
+function display_pla_parse_error($exception,$faultyEntry) {
 	global $actionErrorMsg;
 
 	$errorMessage = $actionErrorMsg[$faultyEntry->getChangeType()];
@@ -197,6 +198,4 @@ function display_pla_parse_error($exception,$faultyEntry){
 	echo '</tr>';
 	echo '<center>';
 }
-
-echo '</body></html>';
 ?>

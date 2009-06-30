@@ -1,12 +1,9 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/refresh.php,v 1.17 2005/12/17 00:00:11 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/refresh.php,v 1.18 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * This script alters the session variable 'tree', by re-querying
  * the LDAP server to grab the contents of every expanded container.
- *
- * Variables that come in via common.php
- *  - server_id
  *
  * @package phpLDAPadmin
  */
@@ -16,11 +13,11 @@
 
 require './common.php';
 
-if (! isset($ldapserver))
-	header('Location: tree.php');
+if (! $_SESSION['plaConfig']->isCommandAvailable('server_refresh'))
+	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('refresh server')));
 
 unset($_SESSION['cache'][$ldapserver->server_id]['tree']);
-pla_session_close();
 
-header(sprintf('Location: tree.php#%s',$ldapserver->server_id));
+header(sprintf('Location: cmd.php?server_id=%s',$ldapserver->server_id));
+die();
 ?>

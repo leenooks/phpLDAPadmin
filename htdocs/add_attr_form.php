@@ -1,11 +1,9 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr_form.php,v 1.15 2006/10/28 07:22:39 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr_form.php,v 1.16 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * Displays a form for adding an attribute/value to an LDAP entry.
  *
- * Variables that come in via common.php
- *  - server_id
  * Variables that come in as GET vars:
  *  - dn (rawurlencoded)
  *
@@ -18,87 +16,78 @@ require './common.php';
 
 if ($ldapserver->isReadOnly())
 	pla_error(_('You cannot perform updates while server is in read-only mode'));
-if (! $ldapserver->haveAuthInfo())
-	pla_error(_('Not enough information to login to server. Please check your configuration.'));
 
-$dn = $_GET['dn'];
-$encoded_dn = rawurlencode($dn);
-$rdn = get_rdn($dn);
+$entry['dn']['string'] = get_request('dn','GET');
+$entry['rdn'] = get_rdn($entry['dn']['string']);
 
-$friendly_attrs = process_friendly_attr_table();
-
-include './header.php';
-
-echo '<body>';
-
-printf('<h3 class="title">%s <b>%s</b></h3>',_('Add new attribute'),htmlspecialchars($rdn));
+printf('<h3 class="title">%s <b>%s</b></h3>',_('Add new attribute'),htmlspecialchars($entry['rdn']));
 printf('<h3 class="subtitle">%s: <b>%s</b> &nbsp;&nbsp;&nbsp; %s: <b>%s</b></h3>',
-	_('Server'),$ldapserver->name,_('Distinguished Name'),htmlspecialchars($dn));
+	_('Server'),$ldapserver->name,_('Distinguished Name'),htmlspecialchars($entry['dn']['string']));
 
-$attrs = $ldapserver->getDNAttrs($dn);
+$dn['attrs'] = $ldapserver->getDNAttrs($entry['dn']['string']);
+$dn['oclasses'] = $ldapserver->getDNAttr($entry['dn']['string'],'objectClass');
 
-$oclasses = $ldapserver->getDNAttr($dn,'objectClass');
-if (! is_array($oclasses))
-	$oclasses = array($oclasses);
+if (! is_array($dn['oclasses']))
+	$dn['oclasses'] = array($dn['oclasses']);
 
-$avail_attrs = array();
+$ldap['attrs']['avail'] = array();
 
-if (array_search('extensibleObject',$oclasses) !== FALSE) {
-	$schema_attrs = $ldapserver->SchemaAttributes();
+if (array_search('extensibleObject',$dn['oclasses']) !== false) {
+	$ldap['attrs']['ldap'] = $ldapserver->SchemaAttributes();
 
-	foreach ($schema_attrs as $attr)
-		$avail_attrs[]=$attr->getName();
+	foreach ($ldap['attrs']['ldap'] as $attr)
+		$ldap['attrs']['avail'][] = $attr->getName();
 
 } else {
-	$schema_oclasses = $ldapserver->SchemaObjectClasses($dn);
+	$ldap['oclasses'] = $ldapserver->SchemaObjectClasses($entry['dn']['string']);
 
-	foreach ($oclasses as $oclass) {
-		$schema_oclass = $ldapserver->getSchemaObjectClass($oclass,$dn);
+	foreach ($dn['oclasses'] as $oclass) {
+		$ldap['oclass'] = $ldapserver->getSchemaObjectClass($oclass,$entry['dn']['string']);
 
-		if ($schema_oclass && strcasecmp('objectclass',get_class($schema_oclass)) == 0)
-			$avail_attrs = array_merge($schema_oclass->getMustAttrNames($schema_oclasses),
-				$schema_oclass->getMayAttrNames($schema_oclasses),
-				$avail_attrs);
+		if ($ldap['oclass'] && strcasecmp('objectclass',get_class($ldap['oclass'])) == 0)
+			$ldap['attrs']['avail'] = array_merge($ldap['oclass']->getMustAttrNames($ldap['oclasses']),
+				$ldap['oclass']->getMayAttrNames($ldap['oclasses']),
+				$ldap['attrs']['avail']);
 	}
 }
 
-$avail_attrs = array_unique($avail_attrs);
-$avail_attrs = array_filter($avail_attrs,'not_an_attr');
-sort($avail_attrs);
+$ldap['attrs']['avail'] = array_unique($ldap['attrs']['avail']);
+$ldap['attrs']['avail'] = array_filter($ldap['attrs']['avail'],'not_an_attr');
+sort($ldap['attrs']['avail']);
 
-$avail_binary_attrs = array();
+$ldap['binattrs']['avail'] = array();
 
-foreach ($avail_attrs as $i => $attr) {
-
+foreach ($ldap['attrs']['avail'] as $i => $attr) {
 	if ($ldapserver->isAttrBinary($attr)) {
-		$avail_binary_attrs[] = $attr;
-		unset($avail_attrs[$i]);
+		$ldap['binattrs']['avail'][] = $attr;
+		unset($ldap['attrs']['avail'][$i]);
 	}
 }
 
 echo '<center>';
 
-if (is_array($avail_attrs) && count($avail_attrs) > 0) {
+if (is_array($ldap['attrs']['avail']) && count($ldap['attrs']['avail']) > 0) {
 	echo '<br />';
 	echo _('Add new attribute');
 	echo '<br />';
 	echo '<br />';
 
-	echo '<form action="add_attr.php" method="post">';
+	echo '<form action="cmd.php" method="post">';
+	echo '<input type="hidden" name="cmd" value="add_attr" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
-	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($dn));
+	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($entry['dn']['string']));
 
 	echo '<select name="attr">';
 
 	$attr_select_html = '';
-	usort($avail_attrs,'sortAttrs');
+	usort($ldap['attrs']['avail'],'sortAttrs');
 
-	foreach ($avail_attrs as $a) {
+	foreach ($ldap['attrs']['avail'] as $a) {
 
 		# is there a user-friendly translation available for this attribute?
-		if (isset($friendly_attrs[strtolower($a)])) {
+		if (isset($_SESSION['plaConfig']->friendly_attrs[strtolower($a)])) {
 			$attr_display = sprintf('%s (%s)',
-				htmlspecialchars($friendly_attrs[strtolower($a)]),
+				htmlspecialchars($_SESSION['plaConfig']->friendly_attrs[strtolower($a)]),
 				htmlspecialchars($a));
 
 		} else {
@@ -119,29 +108,30 @@ if (is_array($avail_attrs) && count($avail_attrs) > 0) {
 	printf('<small>(%s)</small>',_('no new attributes available for this entry'));
 }
 
-if (count($avail_binary_attrs) > 0) {
+if (count($ldap['binattrs']['avail']) > 0) {
 	echo '<br />';
 	echo _('Add new binary attribute');
 	echo '<br />';
 	echo '<br />';
 
 	echo '<!-- Form to add a new BINARY attribute to this entry -->';
-	echo '<form action="add_attr.php" method="post" enctype="multipart/form-data">';
+	echo '<form action="cmd.php" method="post" enctype="multipart/form-data">';
+	echo '<input type="hidden" name="cmd" value="add_attr" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
-	printf('<input type="hidden" name="dn" value="%s" />',$dn);
+	printf('<input type="hidden" name="dn" value="%s" />',$entry['dn']['string']);
 	echo '<input type="hidden" name="binary" value="true" />';
 
 	echo '<select name="attr">';
 
 	$attr_select_html = '';
-	usort($avail_binary_attrs,'sortAttrs');
+	usort($ldap['binattrs']['avail'],'sortAttrs');
 
-	foreach ($avail_binary_attrs as $a) {
+	foreach ($ldap['binattrs']['avail'] as $a) {
 
 		# is there a user-friendly translation available for this attribute?
-		if (isset($friendly_attrs[strtolower($a)])) {
+		if (isset($_SESSION['plaConfig']->friendly_attrs[strtolower($a)])) {
 			$attr_display = sprintf('%s (%s)',
-				htmlspecialchars($friendly_attrs[strtolower($a)]),
+				htmlspecialchars($_SESSION['plaConfig']->friendly_attrs[strtolower($a)]),
 				htmlspecialchars($a));
 
 		} else {
@@ -171,8 +161,6 @@ if (count($avail_binary_attrs) > 0) {
 }
 
 echo '</center>';
-echo '</body>';
-echo '</html>';
 
 /**
  * Given an attribute $x, this returns true if it is NOT already specified
@@ -183,9 +171,9 @@ echo '</html>';
  * @ignore
  */
 function not_an_attr($x) {
-	global $attrs;
+	global $dn;
 
-	foreach($attrs as $attr => $values)
+	foreach ($dn['attrs'] as $attr => $values)
 		if (strcasecmp($attr,$x) == 0)
 			return false;
 

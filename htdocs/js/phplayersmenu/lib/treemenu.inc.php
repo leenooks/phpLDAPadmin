@@ -203,15 +203,25 @@ function newTreeMenu(
 		// corner at end of subtree or t-split
 			if ($not_a_leaf) {
 				if ($cnt == $this->_firstItem[$menu_name]) {
-					$img = $img_collapse_corner_first;
-					$alt = $alt_collapse_corner_first;
-					$this->_treeMenu[$menu_name] .= '<a onmousedown="' . $toggle_function_name . "('" . $cnt . "')" . '"><img align="top" border="0" class="imgs" id="jt' . $cnt . 'node" src="' . $img . '" alt="' . $alt . '" /></a>';
+					if ($this->tree[$cnt]['last_item'] && $this->tree[$cnt]['children']) {
+						// Xavier Bruyet : 2006.09.28
+						// Display for the first time the tree without the root node expanded
+						$img = $img_expand_corner_first;
+						$alt = $alt_expand_corner_first;
+						// @todo: nasty hack, should really do this better.
+						$parsed_href = preg_replace('/template_engine/','expand',$this->tree[$cnt]['parsed_href']);
+						$this->_treeMenu[$menu_name] .= '<a href="' . $parsed_href . '"><img align="top" border="0" class="imgs" id="jt' . $cnt . 'node" src="' . $img . '" alt="' . $alt . '" /></a>';
+					} else {
+						$img = $img_collapse_corner_first;
+						$alt = $alt_collapse_corner_first;
+						$this->_treeMenu[$menu_name] .= '<a onmousedown="' . $toggle_function_name . "('" . $cnt . "')" . '"><img align="top" border="0" class="imgs" id="jt' . $cnt . 'node" src="' . $img . '" alt="' . $alt . '" /></a>';
+					}
 				} else {
 					if ($this->tree[$cnt]['last_item'] && $this->tree[$cnt]['children']) {
 						$img = $img_expand_corner;
 						$alt = $alt_expand_corner;
 						// @todo: nasty hack, should really do this better.
-						$parsed_href = preg_replace('/template_engine.php/','expand.php',$this->tree[$cnt]['parsed_href']);
+						$parsed_href = preg_replace('/template_engine/','expand',$this->tree[$cnt]['parsed_href']);
 						$this->_treeMenu[$menu_name] .= '<a href="' . $parsed_href . '"><img align="top" border="0" class="imgs" id="jt' . $cnt . 'node" src="' . $img . '" alt="' . $alt . '" /></a>';
 					} else {
 						$img = $img_collapse_corner;
@@ -235,7 +245,7 @@ function newTreeMenu(
 						$img = $img_expand;
 						$alt = $alt_expand;
 						// @todo: nasty hack, should really do this better.
-						$parsed_href = preg_replace('/template_engine.php/','expand.php',$this->tree[$cnt]['parsed_href']);
+						$parsed_href = preg_replace('/template_engine/','expand',$this->tree[$cnt]['parsed_href']);
 
 						$this->_treeMenu[$menu_name] .= '<a href="' . $parsed_href . '"><img align="top" border="0" class="imgs" id="jt' . $cnt . 'node" src="' . $img . '" alt="' . $alt . '" /></a>';
 					} else {
@@ -331,6 +341,11 @@ function newTreeMenu(
 		'img_folder_closed'		=> $img_folder_closed,
 		'img_folder_open'		=> $img_folder_open
 	));
+
+	$inc = '<!-- # PHP layers menu. -->
+	        <script type="text/javascript" language="javascript" src="js/phplayersmenu/libjs/layersmenu-browser_detection.js"></script>
+	        <script type="text/javascript" language="javascript" src="js/phplayersmenu/libjs/layerstreemenu-cookies.js"></script>';
+
 	$toggle_function = $t->parse('out', 'tplfile');
 	$toggle_function =
 	'<script language="JavaScript" type="text/javascript">' . "\n" .
@@ -349,7 +364,7 @@ function newTreeMenu(
 	'// -->' . "\n" .
 	'</script>' . "\n";
 
-	$this->_treeMenu[$menu_name] = $toggle_function . "\n" . $this->_treeMenu[$menu_name] . "\n" . $toggle;
+	$this->_treeMenu[$menu_name] = $inc . "\n" . $toggle_function . "\n" . $this->_treeMenu[$menu_name] . "\n" . $toggle;
 
 	return $this->_treeMenu[$menu_name];
 }

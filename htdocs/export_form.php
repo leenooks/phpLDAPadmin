@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/export_form.php,v 1.25 2006/10/29 12:49:24 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/export_form.php,v 1.26 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * export_form.php
@@ -10,15 +10,16 @@
  */
 
 require './common.php';
+
 require LIBDIR.'export_functions.php';
 
-$format = isset($_GET['format']) ? $_GET['format'] : get_line_end_format();
-$scope = isset($_GET['scope']) ? $_GET['scope'] : 'base' ;
-$exporter_id = isset($_GET['exporter_id']) ? $_GET['exporter_id'] : 0 ;
-$dn = isset($_GET['dn']) ? $_GET['dn'] : null;
-$filter = isset($_GET['filter']) ? $_GET['filter'] : '(objectClass=*)';
-$attributes = isset($_GET['attributes']) ? $_GET['attributes'] : '*';
-$sys_attr = isset($_GET['sys_attr']) && $_GET['sys_attr'] == 'true' ? true : false;
+$entry['format'] = get_request('format','GET',false,get_line_end_format());
+$entry['scope'] = get_request('scope','GET',false,'base');
+$entry['id'] = get_request('exporter_id','GET',false,0);
+$entry['dn'] = get_request('dn','GET');
+$entry['filter'] = get_request('filter','GET',false,'(objectClass=*)');
+$entry['attr'] = get_request('attributes','GET',false,'*');
+$entry['sys_attr'] = get_request('sys_attr','GET') ? true: false;
 
 $available_formats = array (
 	'unix' => 'UNIX (Linux, BSD)',
@@ -32,15 +33,12 @@ $available_scopes = array (
 	'sub' => _('Sub (entire subtree)')
 );
 
-
-include './header.php';
-
-echo '<body>';
 printf('<h3 class="title">%s</h3>',_('Export'));
 echo '<br />';
 echo '<center>';
-echo '<form name="export_form" action="export.php" method="post">';
-echo '<table class="export_form">';
+echo '<form name="export_form" action="cmd.php" method="post">';
+echo '<input type="hidden" name="cmd" value="export" />';
+echo '<table class="export">';
 echo '<tr>';
 echo '<td>';
 
@@ -48,11 +46,11 @@ echo '<fieldset>';
 printf('<legend>%s</legend>',_('Export'));
 
 echo '<table>';
-printf('<tr><td>%s</td><td>%s</td></tr>',_('Server'),server_select_list());
+printf('<tr><td>%s</td><td>%s</td></tr>',_('Server'),server_select_list($ldapserver->server_id));
 
 echo '<tr>';
 printf('<td style="white-space:nowrap">%s</td>',_('Base DN'));
-printf('<td><span style="white-space: nowrap;"><input type="text" name="dn" id="dn" style="width:230px" value="%s" />&nbsp;',htmlspecialchars($dn));
+printf('<td><span style="white-space: nowrap;"><input type="text" name="dn" id="dn" style="width:230px" value="%s" />&nbsp;',htmlspecialchars($entry['dn']));
 draw_chooser_link('export_form.dn');
 echo '</span></td>';
 echo '</tr>';
@@ -64,20 +62,20 @@ echo '<td>';
 
 foreach ($available_scopes as $id => $desc)
 	printf('<input type="radio" name="scope" value="%s" id="%s"%s /><label for="%s">%s</label><br />',
-		htmlspecialchars($id),htmlspecialchars($id),($id == $scope) ? 'checked="true"' : '',
+		htmlspecialchars($id),htmlspecialchars($id),($id == $entry['scope']) ? 'checked="true"' : '',
 		htmlspecialchars($id),htmlspecialchars($desc));
 
 echo '</td>';
 echo '</tr>';
 
 printf('<tr><td>%s</td><td><input type="text" name="filter" style="width:300px" value="%s" /></td></tr>',
-	_('Search Filter'),htmlspecialchars($filter));
+	_('Search Filter'),htmlspecialchars($entry['filter']));
 
 printf('<tr><td>%s</td><td><input type="text" name="attributes" style="width:300px" value="%s" /></td></tr>',
-	_('Show Attributtes'),htmlspecialchars($attributes));
+	_('Show Attributtes'),htmlspecialchars($entry['attr']));
 
 printf('<tr><td>&nbsp;</td><td><input type="checkbox" name="sys_attr" id="sys_attr" %s/> <label for="sys_attr">%s</label></td></tr>',
-	$sys_attr ? 'checked="true" ' : '',_('Include system attributes'));
+	$entry['sys_attr'] ? 'checked="true" ' : '',_('Include system attributes'));
 
 printf('<tr><td>&nbsp;</td><td><input type="checkbox" id="save_as_file" name="save_as_file" onclick="toggle_disable_field_saveas(this)" /> <label for="save_as_file">%s</label></td></tr>',
 	_('Save as file'));
@@ -100,7 +98,7 @@ printf('<legend>%s</legend>',_('Export format'));
 
 foreach ($exporters as $index => $exporter) {
 	printf('<input type="radio" name="exporter_id" id="exporter_id_%s" value="%s"%s />',
-		htmlspecialchars($index),htmlspecialchars($index),($index==$exporter_id) ? ' checked="true"' : '');
+		htmlspecialchars($index),htmlspecialchars($index),($index==$entry['id']) ? ' checked="true"' : '');
 	printf('<label for="%s">%s</label><br />',
 		htmlspecialchars($index),htmlspecialchars($exporter['desc']));
 }
@@ -113,7 +111,7 @@ echo '<fieldset style="height: 100px">';
 printf('<legend>%s</legend>',_('Line ends'));
 foreach ($available_formats as $id => $desc)
 	printf('<input type="radio" name="format" value="%s" id="%s"%s /><label for="%s">%s</label><br />',
-		htmlspecialchars($id),htmlspecialchars($id),($format==$id) ? ' checked="true"' : '',
+		htmlspecialchars($id),htmlspecialchars($id),($entry['format']==$id) ? ' checked="true"' : '',
 		htmlspecialchars($id),htmlspecialchars($desc));
 
 echo '</fieldset>';
@@ -161,5 +159,3 @@ function get_line_end_format() {
         }
 -->
 </script>
-</body>
-</html>

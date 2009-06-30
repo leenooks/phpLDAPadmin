@@ -1,14 +1,9 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/expand.php,v 1.25 2006/10/28 11:42:10 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/expand.php,v 1.26 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * This script alters the session variable 'tree', expanding it
  * at the dn specified in the query string.
- *
- * Variables that come in via common.php
- *  - server_id
- * Variables that come in as GET vars:
- *  - dn (rawurlencoded)
  *
  * Note: this script is equal and opposite to collapse.php
  * @package phpLDAPadmin
@@ -18,28 +13,14 @@
  */
 
 require './common.php';
-no_expire_header();
 
-if (! $ldapserver->haveAuthInfo())
-	pla_error(_('Not enough information to login to server. Please check your configuration.'));
-
-# This allows us to display large sub-trees without running out of time.
-@set_time_limit(0);
-
-$dn = $_GET['dn'];
-
-# We dont need this result, as we'll use the SESSION value when we call tree.php
-$ldapserver->getContainerContents($dn,0,$config->GetValue('appearance','tree_filter'),$config->GetValue('deref','tree'));
-
+$dn = get_request('dn','GET',true);
 $tree = get_cached_item($ldapserver->server_id,'tree');
-$tree['browser'][$dn]['open'] = true;
+$entry = $tree->getEntry($dn);
+$entry->open();
 set_cached_item($ldapserver->server_id,'tree','null',$tree);
 
-/* If cookies were disabled, build the url parameter for the session id.
-   It will be append to the url to be redirect */
-$id_session_param = '';
-if (SID != '')
-	$id_session_param = sprintf('&%s=%s',session_name(),session_id());
-
-header(sprintf('Location:tree.php?foo=%s#%s_%s%s',random_junk(),$ldapserver->server_id,rawurlencode($dn),$id_session_param));
+header(sprintf('Location:index.php?server_id=%s&junk=%s#%s%s',
+	$ldapserver->server_id,random_junk(),htmlid($ldapserver->server_id,$dn),pla_session_param()));
+die();
 ?>

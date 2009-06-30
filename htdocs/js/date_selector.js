@@ -1,15 +1,17 @@
 function dateSelector(id) {
-  	var el = document.getElementById('f_date_'+id);
+	var el = document.getElementById('f_date_'+id);
 	var format = gettype(el.id);
 	var epoch;
 	var parse = false;
 
-    	var cal = new Calendar(0, null, onSelect, onClose);
+	var cal = new Calendar(0, null, onSelect, onClose);
+
 	if (defaults['f_time_'+id]) {
 		cal.showsTime = true;
 	} else {
 		cal.showsTime = false;
 	}
+
 	cal.weekNumbers = true;
 	cal.showsOtherMonths = true;
 	cal.create();

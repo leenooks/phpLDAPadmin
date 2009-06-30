@@ -1,9 +1,9 @@
 <?php
 /*
-$Id: createlm.php,v 1.3 2006/04/29 07:29:10 wurley Exp $
+$Id: createlm.php,v 1.4 2007/12/15 07:50:32 wurley Exp $
 
   This code is part of LDAP Account Manager (http://www.sourceforge.net/projects/lam)
-  Copyright (C) 2004 Roland Gruber
+  Copyright (C) 2004 - 2006 Roland Gruber
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -43,95 +43,95 @@ class smbHash {
 # Contants used in lanlam hash calculations
 # Ported from SAMBA/source/libsmb/smbdes.c:perm1[56]
 var $perm1 = array(57, 49, 41, 33, 25, 17,  9,
-	1, 58, 50, 42, 34, 26, 18,
-	10,  2, 59, 51, 43, 35, 27,
-	19, 11,  3, 60, 52, 44, 36,
-	63, 55, 47, 39, 31, 23, 15,
-	7, 62, 54, 46, 38, 30, 22,
-	14,  6, 61, 53, 45, 37, 29,
-	21, 13,  5, 28, 20, 12,  4);
+              1, 58, 50, 42, 34, 26, 18,
+             10,  2, 59, 51, 43, 35, 27,
+             19, 11,  3, 60, 52, 44, 36,
+             63, 55, 47, 39, 31, 23, 15,
+              7, 62, 54, 46, 38, 30, 22,
+             14,  6, 61, 53, 45, 37, 29,
+             21, 13,  5, 28, 20, 12,  4);
 # Ported from SAMBA/source/libsmb/smbdes.c:perm2[48]
 var $perm2 = array(14, 17, 11, 24,  1,  5,
-	3, 28, 15,  6, 21, 10,
-	23, 19, 12,  4, 26,  8,
-	16,  7, 27, 20, 13,  2,
-	41, 52, 31, 37, 47, 55,
-	30, 40, 51, 45, 33, 48,
-	44, 49, 39, 56, 34, 53,
-	46, 42, 50, 36, 29, 32);
+              3, 28, 15,  6, 21, 10,
+             23, 19, 12,  4, 26,  8,
+             16,  7, 27, 20, 13,  2,
+             41, 52, 31, 37, 47, 55,
+             30, 40, 51, 45, 33, 48,
+             44, 49, 39, 56, 34, 53,
+             46, 42, 50, 36, 29, 32);
 # Ported from SAMBA/source/libsmb/smbdes.c:perm3[64]
 var $perm3 = array(58, 50, 42, 34, 26, 18, 10,  2,
-	60, 52, 44, 36, 28, 20, 12,  4,
-	62, 54, 46, 38, 30, 22, 14,  6,
-	64, 56, 48, 40, 32, 24, 16,  8,
-	57, 49, 41, 33, 25, 17,  9,  1,
-	59, 51, 43, 35, 27, 19, 11,  3,
-	61, 53, 45, 37, 29, 21, 13,  5,
-	63, 55, 47, 39, 31, 23, 15,  7);
+             60, 52, 44, 36, 28, 20, 12,  4,
+             62, 54, 46, 38, 30, 22, 14,  6,
+             64, 56, 48, 40, 32, 24, 16,  8,
+             57, 49, 41, 33, 25, 17,  9,  1,
+             59, 51, 43, 35, 27, 19, 11,  3,
+             61, 53, 45, 37, 29, 21, 13,  5,
+             63, 55, 47, 39, 31, 23, 15,  7);
 # Ported from SAMBA/source/libsmb/smbdes.c:perm4[48]
 var $perm4 = array(32,  1,  2,  3,  4,  5,
-	4,  5,  6,  7,  8,  9,
-	8,  9, 10, 11, 12, 13,
-	12, 13, 14, 15, 16, 17,
-	16, 17, 18, 19, 20, 21,
-	20, 21, 22, 23, 24, 25,
-	24, 25, 26, 27, 28, 29,
-	28, 29, 30, 31, 32,  1);
+                 4,  5,  6,  7,  8,  9,
+                 8,  9, 10, 11, 12, 13,
+                12, 13, 14, 15, 16, 17,
+                16, 17, 18, 19, 20, 21,
+                20, 21, 22, 23, 24, 25,
+                24, 25, 26, 27, 28, 29,
+                28, 29, 30, 31, 32,  1);
 # Ported from SAMBA/source/libsmb/smbdes.c:perm5[32]
 var $perm5 = array(16,  7, 20, 21,
-	29, 12, 28, 17,
-	1, 15, 23, 26,
-	5, 18, 31, 10,
-	2,  8, 24, 14,
-	32, 27,  3,  9,
-	19, 13, 30,  6,
-	22, 11,  4, 25);
+                   29, 12, 28, 17,
+                    1, 15, 23, 26,
+                    5, 18, 31, 10,
+                    2,  8, 24, 14,
+                   32, 27,  3,  9,
+                   19, 13, 30,  6,
+                   22, 11,  4, 25);
 # Ported from SAMBA/source/libsmb/smbdes.c:perm6[64]
 var $perm6 = array(40,  8, 48, 16, 56, 24, 64, 32,
-	39,  7, 47, 15, 55, 23, 63, 31,
-	38,  6, 46, 14, 54, 22, 62, 30,
-	37,  5, 45, 13, 53, 21, 61, 29,
-	36,  4, 44, 12, 52, 20, 60, 28,
-	35,  3, 43, 11, 51, 19, 59, 27,
-	34,  2, 42, 10, 50, 18, 58, 26,
-	33,  1, 41,  9, 49, 17, 57, 25);
+             39,  7, 47, 15, 55, 23, 63, 31,
+             38,  6, 46, 14, 54, 22, 62, 30,
+             37,  5, 45, 13, 53, 21, 61, 29,
+             36,  4, 44, 12, 52, 20, 60, 28,
+             35,  3, 43, 11, 51, 19, 59, 27,
+             34,  2, 42, 10, 50, 18, 58, 26,
+             33,  1, 41,  9, 49, 17, 57, 25);
 # Ported from SAMBA/source/libsmb/smbdes.c:sc[16]
 var $sc = array(1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1);
 # Ported from SAMBA/source/libsmb/smbdes.c:sbox[8][4][16]
 # Side note, I used cut and paste for all these numbers, I did NOT
 # type them all in =)
 var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5,  9,  0,  7),
-		array( 0, 15,  7,  4, 14,  2, 13,  1, 10,  6, 12, 11,  9,  5,  3,  8),
-		array( 4,  1, 14,  8, 13,  6,  2, 11, 15, 12,  9,  7,  3, 10,  5,  0),
-		array(15, 12,  8,  2,  4,  9,  1,  7,  5, 11,  3, 14, 10,  0,  6, 13)),
-	array(array(15,  1,  8, 14,  6, 11,  3,  4,  9,  7,  2, 13, 12,  0,  5, 10),
-		array( 3, 13,  4,  7, 15,  2,  8, 14, 12,  0,  1, 10,  6,  9, 11,  5),
-		array( 0, 14,  7, 11, 10,  4, 13,  1,  5,  8, 12,  6,  9,  3,  2, 15),
-		array(13,  8, 10,  1,  3, 15,  4,  2, 11,  6,  7, 12,  0,  5, 14,  9)),
-	array(array(10,  0,  9, 14,  6,  3, 15,  5,  1, 13, 12,  7, 11,  4,  2,  8),
-		array(13,  7,  0,  9,  3,  4,  6, 10,  2,  8,  5, 14, 12, 11, 15,  1),
-		array(13,  6,  4,  9,  8, 15,  3,  0, 11,  1,  2, 12,  5, 10, 14,  7),
-		array( 1, 10, 13,  0,  6,  9,  8,  7,  4, 15, 14,  3, 11,  5,  2, 12)),
-	array(array( 7, 13, 14,  3,  0,  6,  9, 10,  1,  2,  8,  5, 11, 12,  4, 15),
-		array(13,  8, 11,  5,  6, 15,  0,  3,  4,  7,  2, 12,  1, 10, 14,  9),
-		array(10,  6,  9,  0, 12, 11,  7, 13, 15,  1,  3, 14,  5,  2,  8,  4),
-		array( 3, 15,  0,  6, 10,  1, 13,  8,  9,  4,  5, 11, 12,  7,  2, 14)),
-	array(array( 2, 12,  4,  1,  7, 10, 11,  6,  8,  5,  3, 15, 13,  0, 14,  9),
-		array(14, 11,  2, 12,  4,  7, 13,  1,  5,  0, 15, 10,  3,  9,  8,  6),
-		array( 4,  2,  1, 11, 10, 13,  7,  8, 15,  9, 12,  5,  6,  3,  0, 14),
-		array(11,  8, 12,  7,  1, 14,  2, 13,  6, 15,  0,  9, 10,  4,  5,  3)),
-	array(array(12,  1, 10, 15,  9,  2,  6,  8,  0, 13,  3,  4, 14,  7,  5, 11),
-		array(10, 15,  4,  2,  7, 12,  9,  5,  6,  1, 13, 14,  0, 11,  3,  8),
-		array( 9, 14, 15,  5,  2,  8, 12,  3,  7,  0,  4, 10,  1, 13, 11,  6),
-		array( 4,  3,  2, 12,  9,  5, 15, 10, 11, 14,  1,  7,  6,  0,  8, 13)),
-	array(array( 4, 11,  2, 14, 15,  0,  8, 13,  3, 12,  9,  7,  5, 10,  6,  1),
-		array(13,  0, 11,  7,  4,  9,  1, 10, 14,  3,  5, 12,  2, 15,  8,  6),
-		array( 1,  4, 11, 13, 12,  3,  7, 14, 10, 15,  6,  8,  0,  5,  9,  2),
-		array( 6, 11, 13,  8,  1,  4, 10,  7,  9,  5,  0, 15, 14,  2,  3, 12)),
-	array(array(13,  2,  8,  4,  6, 15, 11,  1, 10,  9,  3, 14,  5,  0, 12,  7),
-		array( 1, 15, 13,  8, 10,  3,  7,  4, 12,  5,  6, 11,  0, 14,  9,  2),
-		array( 7, 11,  4,  1,  9, 12, 14,  2,  0,  6, 10, 13, 15,  3,  5,  8),
-		array( 2,  1, 14,  7,  4, 10,  8, 13, 15, 12,  9,  0,  3,  5,  6, 11)));
+             array( 0, 15,  7,  4, 14,  2, 13,  1, 10,  6, 12, 11,  9,  5,  3,  8),
+             array( 4,  1, 14,  8, 13,  6,  2, 11, 15, 12,  9,  7,  3, 10,  5,  0),
+             array(15, 12,  8,  2,  4,  9,  1,  7,  5, 11,  3, 14, 10,  0,  6, 13)),
+            array(array(15,  1,  8, 14,  6, 11,  3,  4,  9,  7,  2, 13, 12,  0,  5, 10),
+             array( 3, 13,  4,  7, 15,  2,  8, 14, 12,  0,  1, 10,  6,  9, 11,  5),
+             array( 0, 14,  7, 11, 10,  4, 13,  1,  5,  8, 12,  6,  9,  3,  2, 15),
+             array(13,  8, 10,  1,  3, 15,  4,  2, 11,  6,  7, 12,  0,  5, 14,  9)),
+            array(array(10,  0,  9, 14,  6,  3, 15,  5,  1, 13, 12,  7, 11,  4,  2,  8),
+             array(13,  7,  0,  9,  3,  4,  6, 10,  2,  8,  5, 14, 12, 11, 15,  1),
+             array(13,  6,  4,  9,  8, 15,  3,  0, 11,  1,  2, 12,  5, 10, 14,  7),
+             array( 1, 10, 13,  0,  6,  9,  8,  7,  4, 15, 14,  3, 11,  5,  2, 12)),
+            array(array( 7, 13, 14,  3,  0,  6,  9, 10,  1,  2,  8,  5, 11, 12,  4, 15),
+             array(13,  8, 11,  5,  6, 15,  0,  3,  4,  7,  2, 12,  1, 10, 14,  9),
+             array(10,  6,  9,  0, 12, 11,  7, 13, 15,  1,  3, 14,  5,  2,  8,  4),
+             array( 3, 15,  0,  6, 10,  1, 13,  8,  9,  4,  5, 11, 12,  7,  2, 14)),
+            array(array( 2, 12,  4,  1,  7, 10, 11,  6,  8,  5,  3, 15, 13,  0, 14,  9),
+             array(14, 11,  2, 12,  4,  7, 13,  1,  5,  0, 15, 10,  3,  9,  8,  6),
+             array( 4,  2,  1, 11, 10, 13,  7,  8, 15,  9, 12,  5,  6,  3,  0, 14),
+             array(11,  8, 12,  7,  1, 14,  2, 13,  6, 15,  0,  9, 10,  4,  5,  3)),
+            array(array(12,  1, 10, 15,  9,  2,  6,  8,  0, 13,  3,  4, 14,  7,  5, 11),
+             array(10, 15,  4,  2,  7, 12,  9,  5,  6,  1, 13, 14,  0, 11,  3,  8),
+             array( 9, 14, 15,  5,  2,  8, 12,  3,  7,  0,  4, 10,  1, 13, 11,  6),
+             array( 4,  3,  2, 12,  9,  5, 15, 10, 11, 14,  1,  7,  6,  0,  8, 13)),
+            array(array( 4, 11,  2, 14, 15,  0,  8, 13,  3, 12,  9,  7,  5, 10,  6,  1),
+             array(13,  0, 11,  7,  4,  9,  1, 10, 14,  3,  5, 12,  2, 15,  8,  6),
+             array( 1,  4, 11, 13, 12,  3,  7, 14, 10, 15,  6,  8,  0,  5,  9,  2),
+             array( 6, 11, 13,  8,  1,  4, 10,  7,  9,  5,  0, 15, 14,  2,  3, 12)),
+            array(array(13,  2,  8,  4,  6, 15, 11,  1, 10,  9,  3, 14,  5,  0, 12,  7),
+             array( 1, 15, 13,  8, 10,  3,  7,  4, 12,  5,  6, 11,  0, 14,  9,  2),
+             array( 7, 11,  4,  1,  9, 12, 14,  2,  0,  6, 10, 13, 15,  3,  5,  8),
+             array( 2,  1, 14,  7,  4, 10,  8, 13, 15, 12,  9,  0,  3,  5,  6, 11)));
 
 	/**
 	* Fixes too large numbers
@@ -275,12 +275,12 @@ var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5
 			$keyb[$i] = ($key2[$i/8] & (1<<(7-($i%8)))) ? 1:0;
 			$outb[$i] = 0;
 		}
-		$outb = $this->dohash($inb, $keyb, $forw);
+		$outb = $this->doHash($inb, $keyb, $forw);
 		for ($i = 0; $i < 8; $i++) {
 			$out[$i] = 0;
 		}
-		for ($i = 0; $i < 65; $i++) {
-			if ( isset($outb[$i]) && $outb[$i] )  {
+		for ($i = 0; $i < 64; $i++) {
+			if ( $outb[$i] )  {
 				$out[$i/8] |= (1<<(7-($i%8)));
 			}
 		}
@@ -329,193 +329,7 @@ var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5
 	* @return string hash value
 	*/
 	function nthash($password = "") {
-		$password = substr($password,0,128);
-		$password2 = "";
-		for ($i = 0; $i < strlen($password); $i++) $password2 .= $password[$i] . chr(0);
-		$password = $password2;
-		$hex = $this->mdfour($password);
-		for ($i = 0; $i < sizeof($hex); $i++) {
-			$hex[$i] = sprintf("%02X", $hex[$i]);
-		}
-		return join("", $hex);
-	}
-
-	# Support functions
-	# Ported from SAMBA/source/lib/md4.c:F,G and H respectfully
-	function F($X, $Y, $Z) {
-		$ret = (($X&$Y) | ((~((int)$X))&$Z));
-		if ($this->x($ret) > 4294967296) {
-			$ret = (2*4294967296) - $this->x($ret);
-		}
-		return $ret;
-	}
-
-	function G($X, $Y, $Z) {
-		return ($X&$Y) | ($X&$Z) | ($Y&$Z);
-	}
-	
-	function H($X, $Y, $Z) {
-		return $X^$Y^$Z;
-	}
-
-	# Ported from SAMBA/source/lib/md4.c:mdfour
-	function mdfour($in) {
-		$in = unpack("C*",$in);
-		$in = array_values($in);
-		$b = sizeof($in) * 8;
-		$A = array(0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476);
-		while (sizeof($in) > 64 ) {
-			$M = $this->copy64($in);
-			$this->mdfour64($A[0], $A[1], $A[2], $A[3], $M);
-			$new_in = array();
-			for ($i = 64; $i < sizeof($in); $i++) $new_in[] = $in[$i];
-			$in = $new_in;
-		}
-		$buf = $in;
-		$buf[] = 0x80;
-		for ($i = sizeof($buf) - 1; $i < 127; $i++) $buf[] = 0;
-		if ( sizeof($in) <= 55 ) {
-			$temp = $this->copy4($b);
-			$buf[56] = $temp[0];
-			$buf[57] = $temp[1];
-			$buf[58] = $temp[2];
-			$buf[59] = $temp[3];
-			$M = $this->copy64($buf);
-			$this->mdfour64($A[0], $A[1], $A[2], $A[3], $M);
-		}
-		else {
-			$temp = $this->copy4($b);
-			$buf[120] = $temp[0];
-			$buf[121] = $temp[1];
-			$buf[122] = $temp[2];
-			$buf[123] = $temp[3];
-			$M = $this->copy64($buf);
-			$this->mdfour64($A[0], $A[1], $A[2], $A[3], $M);
-			$temp = array();
-			for ($i = 64; $i < sizeof($buf); $i++) $temp[] = $buf[$i];
-			$M = $this->copy64($temp);
-			$this->mdfour64($A[0], $A[1], $A[2], $A[3], $M);
-		}
-		$out = array();
-		$temp = $this->copy4($A[0]);
-		for ($i = 0; $i < 4; $i++) $out[] = $temp[$i];
-		$temp = $this->copy4($A[1]);
-		for ($i = 0; $i < 4; $i++) $out[] = $temp[$i];
-		$temp = $this->copy4($A[2]);
-		for ($i = 0; $i < 4; $i++) $out[] = $temp[$i];
-		$temp = $this->copy4($A[3]);
-		for ($i = 0; $i < 4; $i++) $out[] = $temp[$i];
-		return $out;
-	}
-
-	# Ported from SAMBA/source/lib/md4.c:copy4
-	function copy4($x) {
-		$out = array();
-		$out[0] = $x&0xFF;
-		$out[1] = $this->unsigned_shift_r($x, 8)&0xFF;
-		$out[2] = $this->unsigned_shift_r($x, 16)&0xFF;
-		$out[3] = $this->unsigned_shift_r($x, 24)&0xFF;
-		return $out;
-	}
-
-	# Ported from SAMBA/source/lib/md4.c:copy64
-	function copy64($in) {
-		for ($i = 0; $i < 16; $i++) {
-			$M[$i] = ($in[$i*4+3]<<24) | ($in[$i*4+2]<<16) | ($in[$i*4+1]<<8) | ($in[$i*4+0]<<0);
-		}
-		return $M;
-	}
-
-	# Ported from SAMBA/source/lib/md4.c:mdfour64
-	function mdfour64(&$A, &$B, &$C, &$D, $M) {
-		$X = array();
-		for ($i = 0; $i < 16; $i++) $X[] = $M[$i];
-		$AA=$A;
-		$BB=$B;
-		$CC=$C;
-		$DD=$D;
-		$this->ROUND1($A,$B,$C,$D,  0,  3, $X);
-		$this->ROUND1($D,$A,$B,$C,  1,  7, $X);
-		$this->ROUND1($C,$D,$A,$B,  2, 11, $X);
-		$this->ROUND1($B,$C,$D,$A,  3, 19, $X);
-		$this->ROUND1($A,$B,$C,$D,  4,  3, $X);  $this->ROUND1($D,$A,$B,$C,  5,  7, $X);
-		$this->ROUND1($C,$D,$A,$B,  6, 11, $X);  $this->ROUND1($B,$C,$D,$A,  7, 19, $X);
-		$this->ROUND1($A,$B,$C,$D,  8,  3, $X);  $this->ROUND1($D,$A,$B,$C,  9,  7, $X);
-		$this->ROUND1($C,$D,$A,$B, 10, 11, $X);  $this->ROUND1($B,$C,$D,$A, 11, 19, $X);
-		$this->ROUND1($A,$B,$C,$D, 12,  3, $X);  $this->ROUND1($D,$A,$B,$C, 13,  7, $X);
-		$this->ROUND1($C,$D,$A,$B, 14, 11, $X);  $this->ROUND1($B,$C,$D,$A, 15, 19, $X);
-		$this->ROUND2($A,$B,$C,$D,  0,  3, $X);  $this->ROUND2($D,$A,$B,$C,  4,  5, $X);
-		$this->ROUND2($C,$D,$A,$B,  8,  9, $X);  $this->ROUND2($B,$C,$D,$A, 12, 13, $X);
-		$this->ROUND2($A,$B,$C,$D,  1,  3, $X);  $this->ROUND2($D,$A,$B,$C,  5,  5, $X);
-		$this->ROUND2($C,$D,$A,$B,  9,  9, $X);  $this->ROUND2($B,$C,$D,$A, 13, 13, $X);
-		$this->ROUND2($A,$B,$C,$D,  2,  3, $X);  $this->ROUND2($D,$A,$B,$C,  6,  5, $X);
-		$this->ROUND2($C,$D,$A,$B, 10,  9, $X);  $this->ROUND2($B,$C,$D,$A, 14, 13, $X);
-		$this->ROUND2($A,$B,$C,$D,  3,  3, $X);  $this->ROUND2($D,$A,$B,$C,  7,  5, $X);
-		$this->ROUND2($C,$D,$A,$B, 11,  9, $X);  $this->ROUND2($B,$C,$D,$A, 15, 13, $X);
-		$this->ROUND3($A,$B,$C,$D,  0,  3, $X);  $this->ROUND3($D,$A,$B,$C,  8,  9, $X);
-		$this->ROUND3($C,$D,$A,$B,  4, 11, $X);  $this->ROUND3($B,$C,$D,$A, 12, 15, $X);
-		$this->ROUND3($A,$B,$C,$D,  2,  3, $X);  $this->ROUND3($D,$A,$B,$C, 10,  9, $X);
-		$this->ROUND3($C,$D,$A,$B,  6, 11, $X);  $this->ROUND3($B,$C,$D,$A, 14, 15, $X);
-		$this->ROUND3($A,$B,$C,$D,  1,  3, $X);  $this->ROUND3($D,$A,$B,$C,  9,  9, $X);
-		$this->ROUND3($C,$D,$A,$B,  5, 11, $X);  $this->ROUND3($B,$C,$D,$A, 13, 15, $X);
-		$this->ROUND3($A,$B,$C,$D,  3,  3, $X);  $this->ROUND3($D,$A,$B,$C, 11,  9, $X);
-		$this->ROUND3($C,$D,$A,$B,  7, 11, $X);  $this->ROUND3($B,$C,$D,$A, 15, 15, $X);
-		
-		$A = $this->add32(array($A, $AA)); $B = $this->add32(array($B, $BB));
-		$C = $this->add32(array($C, $CC)); $D = $this->add32(array($D, $DD));
-	}
-
-	# Needed? because perl seems to choke on overflowing when doing bitwise
-	# operations on numbers larger than 32 bits. Well, it did on my machine =)
-	function add32($v) {
-		$sum = array();
-		for ($i = 0; $i < sizeof($v); $i++) {
-			$v[$i] = array($this->unsigned_shift_r(($v[$i]&0xffff0000), 16), ($v[$i]&0xffff));
-		}
-		for ($i = 0; $i < sizeof($v); $i++) {
-			@$sum[0] += $v[$i][0];
-			@$sum[1] += $v[$i][1];
-		}
-		$sum[0] += ($sum[1]&0xffff0000)>>16;
-		$sum[1] &= 0xffff;
-		$sum[0] &= 0xffff;
-		$ret = ($sum[0]<<16) | $sum[1];
-		if ($this->x($ret) > 4294967296) {
-			$ret = (2*4294967296) - $this->x($ret);
-		}
-		return $ret;
-	}
-
-	# Ported from SAMBA/source/lib/md4.c:ROUND1
-	function ROUND1(&$a,$b,$c,$d,$k,$s,$X) {
-		$a = $this->md4lshift($this->add32(array($a, $this->F($b,$c,$d), $X[$k])), $s);
-		return $a;
-	}
-
-	# Ported from SAMBA/source/lib/md4.c:ROUND2
-	function ROUND2(&$a,$b,$c,$d,$k,$s,$X) {
-		$a = $this->md4lshift($this->add32(array($a, $this->G($b,$c,$d), $X[$k] + 0x5A827999)), $s);
-		return $a;
-	}
-
-	# Ported from SAMBA/source/lib/md4.c:ROUND3
-	function ROUND3(&$a,$b,$c,$d,$k,$s,$X) {
-		$a = $this->md4lshift($this->add32(array($a + $this->H($b,$c,$d) + $X[$k] + 0x6ED9EBA1)), $s);
-		return $a;
-	}
-
-	# Ported from SAMBA/source/lib/md4.c:lshift
-	# Renamed to prevent clash with SAMBA/source/libsmb/smbdes.c:lshift
-	function md4lshift($x, $s) {
-		$x &= 0xFFFFFFFF;
-		if ($this->x($x) > 4294967296) {
-			$x = (2*4294967296) - $this->x($x);
-		}
-		$ret = ((($x<<$s)&0xFFFFFFFF) | $this->unsigned_shift_r($x, (32-$s)));
-		if ($this->x($ret) > 4294967296) {
-			$ret = (2*4294967296) - $this->x($ret);
-		}
-		return $ret;
+		return strtoupper(bin2hex(hash('md4', iconv("UTF-8","UTF-16LE",$password),true)));
 	}
 
 	/**

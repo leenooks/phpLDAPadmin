@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/download_binary_attr.php,v 1.14 2005/12/10 10:34:54 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/download_binary_attr.php,v 1.15 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -25,9 +25,10 @@ $value_num = isset($_GET['value_num']) ? $_GET['value_num'] : null;
 if (! $ldapserver->dnExists($dn))
 	pla_error(sprintf(_('No such entry: %s'),pretty_print_dn($dn)));
 
-$search = $ldapserver->search(null,$dn,'(objectClass=*)',array($attr),'base',false,$config->GetValue('deref','view'));
+$search = $ldapserver->search(null,$dn,'(objectClass=*)',array($attr),'base',false,$_SESSION['plaConfig']->GetValue('deref','view'));
 
 # Dump the binary data to the browser
+if (ob_get_level()) ob_end_clean();
 header('Content-type: octet-stream');
 header("Content-disposition: attachment; filename=$attr");
 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/ldif_functions.php,v 1.28 2005/12/10 10:34:55 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/ldif_functions.php,v 1.29 2007/12/15 07:50:32 wurley Exp $
 
 /**
  * @todo put the display_parse_error method in ldif_import here
@@ -19,9 +19,9 @@
  * @package phpLDAPadmin
  */
 class LdifEntry {
-	var $dn;
-	var $changeType;
-	var $attributes = array();
+	public $dn;
+	public $changeType;
+	public $attributes = array();
 
 	/**
 	 * Creates a new LdifEntry, with optionally specified DN, changeType, and attributes.
@@ -99,9 +99,9 @@ class LdifEntry {
  * @package phpLDAPadmin
  */
 class LdifEntryReaderException {
-	var $lineNumber;
-	var $currentLine;
-	var $message;
+	public $lineNumber;
+	public $currentLine;
+	public $message;
 
 	/**
 	 * Constructor of the exception
@@ -125,19 +125,19 @@ class LdifEntryReaderException {
  */
 class LdifEntryReader {
 	# The entry
-	var $entry;
+	public $entry;
 
 	# The lines of the entry fetch from the file
-	var $lines;
+	public $lines;
 
 	# The dn of the entry
-	var $dn='';
+	public $dn='';
 
 	# Error flag
-	var $_error;
+	public $_error;
 
 	# The current line number of the entry;
-	var $_currentLineNumber;
+	public $_currentLineNumber;
 
 	/**
 	 * Constructor of the LdifEntryReader
@@ -548,9 +548,9 @@ class LdifEntryReader {
  * @package phpLDAPadmin
  */
 class LdifReaderException {
-	var $lineNumber;
-	var $message;
-	var $currentLine;
+	public $lineNumber;
+	public $message;
+	public $currentLine;
 
 	/**
 	 * Constructor of the exception
@@ -572,28 +572,28 @@ class LdifReaderException {
  */
 class Reader {
 	# The current line number
-	var $_currentLineNumber;
+	public $_currentLineNumber;
 
 	# The current line
-	var $_currentLine;
+	public $_currentLine;
 
 	# The current entry
-	var $_currentEntry;
+	public $_currentEntry;
 
 	# Array containing the lines of the current entry
-	var $_currentLines;
+	public $_currentLines;
 
 	# Warning message. Only use for the verion number
-	var $_warningMessage;
+	public $_warningMessage;
 
 	# Warning version number.
-	var $_warningVersion;
+	public $_warningVersion;
 
 	# Boolean flag for error
-	var $_error;
+	public $_error;
 
 	# Continuous mode operation flag
-	var $continuous_mode;
+	public $continuous_mode;
 
 	/**
 	 * Check if the ldif version is present in the ldif
@@ -855,7 +855,7 @@ class Reader {
  */
 class FileReader extends Reader {
 	# The file pointer
-	var $_fp;
+	public $_fp;
 
 	/**
 	 * Constructor of the FileReader class
@@ -969,8 +969,8 @@ class LdifReaderStdIn extends Reader {
  * @package phpLDAPadmin
  */
 class LdapWriter {
-	var $ldapserver;
-	var $_writeError=0;
+	public $ldapserver;
+	public $_writeError=0;
 
 	/**
 	 * Constructor

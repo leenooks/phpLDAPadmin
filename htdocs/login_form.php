@@ -1,11 +1,8 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login_form.php,v 1.28 2006/10/29 11:44:36 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login_form.php,v 1.29 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * Displays the login form for a server for users who specify 'cookie' or 'session' for their auth_type.
- *
- * Variables that come in via common.php
- * - server_id
  *
  * @package phpLDAPadmin
  * @author The phpLDAPadmin development team
@@ -19,9 +16,6 @@ require './common.php';
 if (! in_array($ldapserver->auth_type, array('cookie','session')))
 	pla_error(sprintf(_('Unknown auth_type: %s'),htmlspecialchars($ldapserver->auth_type)));
 
-include './header.php';
-
-echo '<body>';
 printf('<h3 class="title">%s %s</h3>',_('Authenticate to server'),$ldapserver->name);
 
 # Check for a secure connection
@@ -38,7 +32,8 @@ if (! isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on') {
 }
 
 # Login form.
-echo '<form action="login.php" method="post" name="login_form">';
+echo '<form action="cmd.php" method="post" name="login_form">';
+echo '<input type="hidden" name="cmd" value="login" />';
 printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 
 if (isset($_GET['redirect']))
@@ -47,14 +42,14 @@ if (isset($_GET['redirect']))
 echo '<center>';
 echo '<table class="login">';
 
-printf('<tr><td><b>%s</b></td></tr>',$ldapserver->isLoginAttrEnabled() ? _('Login Name') : _('Login DN'));
+printf('<tr><td><b>%s:</b></td></tr>',$ldapserver->isLoginAttrEnabled() ? _('Login Name') : _('Login DN'));
 
 printf('<tr><td><input type="text" id="pla_login" name="%s" size="40" value="%s" /></td></tr>',
 	$ldapserver->isLoginAttrEnabled() ? 'uid' : 'login_dn',
 	$ldapserver->isLoginAttrEnabled() ? '' : $ldapserver->login_dn);
 
 echo '<tr><td colspan=2>&nbsp;</td></tr>';
-printf('<tr><td><b>%s</b></td></tr>',_('Password'));
+printf('<tr><td><b>%s:</b></td></tr>',_('Password'));
 echo '<tr><td><input type="password" id="pla_pass" size="40" value="" name="login_pass" /></td></tr>';
 echo '<tr><td colspan=2>&nbsp;</td></tr>';
 
@@ -70,6 +65,8 @@ echo '</table>';
 echo '</center>';
 echo '</form>';
 
+echo '<script type="text/javascript" language="javascript">document.getElementById(\'pla_login\').focus()</script>';
+
 if( $ldapserver->isAnonBindAllowed() ) { ?>
 <script type="text/javascript" language="javascript">
 <!--
@@ -79,13 +76,10 @@ if( $ldapserver->isAnonBindAllowed() ) { ?>
 			anon_checkbox.form.login_pass.disabled = true;
 		} else {
 			anon_checkbox.form.<?php echo $ldapserver->isLoginAttrEnabled() ? 'uid' : 'login_dn'; ?>.disabled = false;
+			anon_checkbox.form.<?php echo $ldapserver->isLoginAttrEnabled() ? 'uid' : 'login_dn'; ?>.focus();
 			anon_checkbox.form.login_pass.disabled = false;
 		}
 	}
 -->
 </script>
 <?php }
-
-echo '</body>';
-echo '</html>';
-?>

@@ -1,11 +1,9 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete.php,v 1.26 2005/12/17 00:00:11 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete.php,v 1.27 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * Deletes a DN and presents a "job's done" message.
  *
- * Variables that come in via common.php
- *  - server_id
  * Variables that come in as POST vars:
  *  - dn (rawurlencoded)
  *
@@ -18,38 +16,37 @@ require './common.php';
 
 if ($ldapserver->isReadOnly())
 	pla_error(_('You cannot perform updates while server is in read-only mode'));
-if (! $ldapserver->haveAuthInfo())
-	pla_error(_('Not enough information to login to server. Please check your configuration.'));
 
-$dn = $_POST['dn'];
+if (! $_SESSION['plaConfig']->isCommandAvailable('entry_delete', 'simple_delete'))
+	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('delete entry')));
 
-if (is_null($dn))
+$entry['dn'] = get_request('dn');
+
+if (! $entry['dn'])
 	pla_error(_('You must specify a DN'));
 
-if (! $ldapserver->dnExists($dn))
-	pla_error(sprintf(_('No such entry: %s'),'<b>'.pretty_print_dn($dn).'</b>'));
+if (! $ldapserver->dnExists($entry['dn']))
+	pla_error(sprintf(_('No such entry: %s'),'<b>'.pretty_print_dn($entry['dn']).'</b>'));
 
 # Check the user-defined custom callback first.
-if (run_hook('pre_entry_delete',array('server_id'=>$ldapserver->server_id,'dn'=>$dn)))
-	$del_result = $ldapserver->delete($dn);
+if (run_hook('pre_entry_delete',array('server_id'=>$ldapserver->server_id,'dn'=>$entry['dn'])))
+	$result = $ldapserver->delete($entry['dn']);
 else
-	pla_error(sprintf(_('Could not delete the entry: %s'),'<b>'.pretty_print_dn($dn).'</b>'));
+	pla_error(sprintf(_('Could not delete the entry: %s'),'<b>'.pretty_print_dn($entry['dn']).'</b>'));
 
-if ($del_result) {
+if ($result) {
 	# Custom callback
-	run_hook('post_entry_delete',array('server_id'=>$ldapserver->server_id,'dn'=>$dn));
+	run_hook('post_entry_delete',
+		array('server_id'=>$ldapserver->server_id,'dn'=>$entry['dn']));
 
-	include './header.php';
-	echo '<body>';
-
-	echo '<script type="text/javascript" language="javascript">parent.left_frame.location.reload();</script>';
-	echo '<br /><br />';
-	printf('<center>'._('Entry %s deleted successfully.').'</center>','<b>'.pretty_print_dn($dn).'</b>');
-	echo '</body>';
+	system_message(array(
+		'title'=>_('Delete DN'),
+		'body'=>_('Successfully deleted DN ').sprintf('<b>%s</b>',$entry['dn']),
+		'type'=>'info'),
+		'index.php');
 
 } else {
-	pla_error(sprintf(_('Could not delete the entry: %s'),'<b>'.pretty_print_dn($dn).'</b>'),
-		  $ldapserver->error(),$ldapserver->errno());
+	pla_error(sprintf(_('Could not delete the entry: %s'),'<b>'.pretty_print_dn($entry['dn']).'</b>'),
+	  $ldapserver->error(),$ldapserver->errno());
 }
-echo '</html>';
 ?>

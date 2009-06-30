@@ -14,7 +14,7 @@
 
 <!-- Template Definition -->
 <!ELEMENT template (title,regexp?,icon?,description?,askcontainer?,rdn?,
-			destinationcontainer?,action?,
+			destinationcontainer?,action?,leaf?,
 			visible?,invalid?,objectClasses,attributes)>
 
 <!-- ObjectClasses Definition -->
@@ -24,13 +24,13 @@
 
 <!-- Attributes Definition -->
 <!ELEMENT attributes (attribute*)>
-<!ELEMENT attribute (array?, default?, cols?, description?, display?, helper?, hidden?, hint?,
-			icon?, onchange*, order?, override?, page?, post?,
-			presubmit?, rows?, spacer*, type?, value*, verify?)>
+<!ELEMENT attribute (array?, value*, cols?, description?, display?, helper?, hidden?, readonly?, hint?,
+			icon?, onchange*, order?, override?, page?, post?,minvalnb?,maxvalnb?,
+			presubmit?, rows?, spacer*, type?, option*, verify?)>
 <!ATTLIST attribute id CDATA #REQUIRED>
 
 <!-- helper -->
-<!ELEMENT helper (default?,display?,hint?,id?,location?,value*)>
+<!ELEMENT helper (value*,display?,hint?,id?,location?,option*)>
 
 <!-- ================================================================ -->
 
@@ -49,12 +49,16 @@
 <!ELEMENT invalid (#PCDATA)>
 <!ELEMENT destinationcontainer (#PCDATA)>
 <!ELEMENT action (#PCDATA)>
+<!ELEMENT leaf (#PCDATA)>
 
 <!-- Attribute Parameters -->
 <!ELEMENT array (#PCDATA)>
+<!ELEMENT minvalnb (#PCDATA)>
+<!ELEMENT maxvalnb (#PCDATA)>
 <!ELEMENT cols (#PCDATA)>
-<!ELEMENT default (#PCDATA)>
+<!ELEMENT value (#PCDATA)>
 <!ELEMENT hidden (#PCDATA)>
+<!ELEMENT readonly (#PCDATA)>
 <!ELEMENT onchange (#PCDATA)>
 <!ELEMENT order (#PCDATA)>
 <!ELEMENT override (#PCDATA)>
@@ -69,4 +73,4 @@
 <!-- Helper Parameters -->
 <!ELEMENT id (#PCDATA)>
 <!ELEMENT location (#PCDATA)>
-<!ELEMENT value (#PCDATA)>
+<!ELEMENT option (#PCDATA)>

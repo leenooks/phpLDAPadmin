@@ -1,12 +1,10 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete_form.php,v 1.25 2007/03/18 02:14:16 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete_form.php,v 1.26 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * delete_form.php
  * Displays a last chance confirmation form to delete a dn.
  *
- * Variables that come in via common.php
- *  - server_id
  * Variables that come in as GET vars:
  *  - dn (rawurlencoded)
  *
@@ -19,82 +17,79 @@ require './common.php';
 
 if ($ldapserver->isReadOnly())
 	pla_error(_('You cannot perform updates while server is in read-only mode'));
-if (! $ldapserver->haveAuthInfo())
-	pla_error(_('Not enough information to login to server. Please check your configuration.'));
 
-$dn = $_GET['dn'];
-$children = $ldapserver->getContainerContents($dn,0,'(objectClass=*)',LDAP_DEREF_NEVER);
-$has_children = count($children) > 0 ? true : false;
+$entry['dn']['string'] = get_request('dn','GET');
+$entry['dn']['html'] = htmlspecialchars($entry['dn']['string']);
 
-include './header.php';
+# We search all children, not only the visible children in the tree
+$entry['children'] = $ldapserver->getContainerContents($entry['dn']['string'],0,'(objectClass=*)',LDAP_DEREF_NEVER);
 
-echo '<body>';
-printf('<h3 class="title">'._('Delete %s').'</h3>',htmlspecialchars(get_rdn($dn)));
+printf('<h3 class="title">'._('Delete %s').'</h3>',htmlspecialchars(get_rdn($entry['dn']['string'])));
 printf('<h3 class="subtitle">%s: <b>%s</b> &nbsp;&nbsp;&nbsp; %s: <b>%s</b></h3>',
-	_('Server'),$ldapserver->name,_('Distinguished Name'),htmlspecialchars($dn));
+	_('Server'),$ldapserver->name,_('Distinguished Name'),$entry['dn']['html']);
 echo "\n";
 
 echo '<center>';
 
-if ($has_children) {
+if (count($entry['children'])) {
 	printf('<b>%s</b><br /><br />',_('Permanently delete all children also?'));
-	flush();
 
-	# get the total number of child objects (whole sub-tree)
-	$s = $ldapserver->search(null,dn_escape($dn),'objectClass=*',array('dn'));
-	$sub_tree_count = count($s);
+	# Get the total number of child objects (whole sub-tree)
+	$search['entries'] = $ldapserver->search(null,dn_escape($entry['dn']['string']),'objectClass=*',array('dn'));
+	$search['count'] = count($search['entries']);
+	$search['href'] = htmlspecialchars(sprintf('cmd.php?cmd=search&search=true&;server_id=%s&filter=%s&base_dn=%s&form=advanced&scope=sub',
+		$ldapserver->server_id,rawurlencode('objectClass=*'),rawurlencode($entry['dn']['string'])));
 
-	echo '<table class="delete_confirm">';
+	echo '<table class="delete" border=0>';
 	echo '<tr>';
-	echo '<td><p>';
-	printf(_('This entry is the root of a sub-tree containing %s entries.'),$sub_tree_count);
-	printf('<small>(<a href="search.php?search=true&amp;server_id=%s&amp;filter=%s&amp;base_dn=%s&amp;form=advanced&amp;scope=sub">%s</a>)</small>',
-		$ldapserver->server_id,rawurlencode('objectClass=*'),rawurlencode($dn),_('view entries'));
-	echo '<br /><br />';
+	echo '<td colspan=2>';
+	printf(_('This entry is the root of a sub-tree containing %s entries.'),$search['count']);
+	printf(' <small>(<a href="%s">%s</a>)</small>',
+		$search['href'],_('view entries'));
+	echo '</td></tr>';
 
-	printf(_('phpLDAPadmin can recursively delete this entry and all %s of its children. See below for a list of all the entries that this action will delete. Do you want to do this?'),($sub_tree_count-1));
-	echo '<br /><br />';
+	echo '<tr><td colspan=2>&nbsp;</td></tr>';
 
-	printf('<small>%s</small>',
+	printf('<tr><td colspan=2>%s</td></tr>',
+		sprintf(_('phpLDAPadmin can recursively delete this entry and all %s of its children. See below for a list of all the entries that this action will delete. Do you want to do this?'),$search['count']-1));
+
+	echo '<tr><td colspan=2>&nbsp;</td></tr>';
+
+	printf('<tr><td colspan=2><small>%s</small></td></tr>',
 		_('Note: this is potentially very dangerous and you do this at your own risk. This operation cannot be undone. Take into consideration aliases, referrals, and other things that may cause problems.'));
-	echo '<br /><br />';
 	echo "\n";
 
-	echo '<table width="100%">';
 	echo '<tr>';
-	echo '<td><center>';
-	echo '<form action="rdelete.php" method="post">';
-	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($dn));
+	echo '<td width=50%><center>';
+	echo '<form action="cmd.php" method="post">';
+	echo '<input type="hidden" name="cmd" value="rdelete" />';
+	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($entry['dn']['string']));
 	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
-	printf('<input type="submit" class="scary" value="%s" />',sprintf(_('Delete all %s objects'),$sub_tree_count));
+	printf('<input type="submit" class="scary" value="%s" />',sprintf(_('Delete all %s objects'),$search['count']));
 	echo '</form>';
 	echo '</center></td>';
 
-	echo '<td><center>';
-	echo '<form action="template_engine.php" method="get">';
-	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($dn));
+	echo '<td width=50%><center>';
+	echo '<form action="cmd.php" method="get">';
+	echo '<input type="hidden" name="cmd" value="template_engine" />';
+	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($entry['dn']['string']));
 	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 	printf('<input type="submit" name="submit" value="%s" class="cancel" />',_('Cancel'));
 	echo '</form>';
 	echo '</center></td>';
 	echo '</tr>';
-	echo '</table>';
 	echo "\n";
 
-	echo '</td>';
-	echo '</tr>';
 	echo '</table>';
 	echo "\n";
-
-	flush();
 
 	echo '<br /><br />';
 	echo _('List of entries to be deleted:');
 	echo '<br />';
 
-	printf('<select size="%s" multiple disabled style="background:white; color:black;width:500px" >',min(10,$sub_tree_count));
-	$i=0;
-	foreach ($s as $dn => $junk) {
+	printf('<select size="%s" multiple disabled style="background:white; color:black;width:500px" >',min(10,$search['count']));
+	$i = 0;
+	foreach ($search['entries'] as $dn => $junk) {
 		$i++;
 		printf('<option>%s. %s</option>',$i,htmlspecialchars(dn_unescape($dn)));
 	}
@@ -102,34 +97,32 @@ if ($has_children) {
 	echo "\n";
 
 } else {
-	echo '<table class="delete_confirm">';
-	echo '<tr>';
+	echo '<table class="delete" border=0>';
 
-	echo '<td nowrap>';
-	echo _('Are you sure you want to permanently delete this object?');
-	echo '<br /><br />';
+	printf('<tr><td colspan=4>%s</td></tr>',_('Are you sure you want to permanently delete this object?'));
+	echo '<tr><td colspan=4>&nbsp;</td></tr>';
 
-	printf('<acronym title="%s">%s</acronym>: <b>%s</b>',_('Distinguished Name'),_('DN'),pretty_print_dn($dn));
-	echo '<br />';
-	printf('%s: <b>%s</b>',_('Server'),htmlspecialchars($ldapserver->name));
-	echo '<br /><br />';
+	printf('<tr><td width=10%%>%s:</td><td colspan=3 width=75%%><b>%s</b></td></tr>',_('Server'),htmlspecialchars($ldapserver->name));
+	printf('<tr><td width=10%%><acronym title="%s">%s</acronym></td><td colspan=3 width=75%%><b>%s</b></td></tr>',
+		_('Distinguished Name'),_('DN'),$entry['dn']['string']);
+	echo '<tr><td colspan=4>&nbsp;</td></tr>';
 	echo "\n";
 
-	echo '<table width="100%">';
 	echo '<tr>';
-
-	echo '<td><center>';
-	echo '<form action="delete.php" method="post">';
-	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($dn));
+	echo '<td colspan=2 width=50%><center>';
+	echo '<form action="cmd.php" method="post">';
+	echo '<input type="hidden" name="cmd" value="delete" />';
+	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($entry['dn']['string']));
 	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 	printf('<input type="submit" name="submit" value="%s" class="scary" />',_('Delete'));
 	echo '</form>';
 
 	echo '</center></td>';
+	echo '<td colspan=2 width=50%><center>';
 
-	echo '<td><center>';
-	echo '<form action="template_engine.php" method="get">';
-	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($dn));
+	echo '<form action="cmd.php" method="get">';
+	echo '<input type="hidden" name="cmd" value="template_engine" />';
+	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($entry['dn']['string']));
 	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 	printf('<input type="submit" name="submit" value="%s" class="cancel" />',_('Cancel'));
 	echo '</form>';
@@ -138,16 +131,8 @@ if ($has_children) {
 	echo '</tr>';
 	echo '</table>';
 	echo "\n";
-
-	echo '</td>';
-	echo '</tr>';
-	echo '</table>';
-	echo "\n";
-
 }
 
 echo '</center>';
 echo '<br />';
-echo '</body>';
-echo '</html>';
 ?>

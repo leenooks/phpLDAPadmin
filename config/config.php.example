@@ -66,6 +66,67 @@ $config->custom->session['blowfish'] = '';
    environments. */
 #  $config->custom->password['no_random_crypt_salt'] = true;
 
+/*********************************************/
+/* Commands                                  */
+/*********************************************/
+
+/* Command availability ; if you don't authorize a command the command
+   links will not be shown and the command action will not be permitted.
+   For better security, set also ACL in your ldap directory. */
+
+/*
+$config->custom->commands['all'] = array(
+ 'home'    => true,
+ 'external_links' => array('feature'  => true,
+                           'bug'      => true,
+                           'donation' => true,
+                           'help'     => true,
+                           'credits'  => true),
+ 'purge'   => true,
+ 'schema'  => true,
+ 'import'  => false,
+ 'export'  => true,
+ 'search'  => array('simple_search'     => true,
+                    'predefined_search' => false,
+                    'advanced_search'   => false),
+ 'server_refresh' => false,
+ 'server_info'    => false,
+ 'entry_refresh'  => true,
+ 'entry_move'     => true,
+ 'entry_internal_attributes_show' => true,
+ 'entry_delete'  => array('simple_delete' => true,
+                          'mass_delete'   => false),
+ 'entry_rename'  => true,
+ 'entry_compare' => true,
+ 'entry_create'  => true,
+ 'attribute_add'          => true,
+ 'attribute_add_value'    => true,
+ 'attribute_delete'       => true,
+ 'attribute_delete_value' => true);
+*/
+
+/*********************************************/
+/* Appearance                                */
+/*********************************************/
+
+/* If you want to choose the appearance of the tree, specify a class name which
+   inherits from the Tree class. */
+// $config->custom->appearance['tree'] = "HTMLTree";
+#  $config->custom->appearance['tree'] = "PLMTree";
+
+/* If you want to customise the entry view/edition, specify your factory name which
+   inherits from the EntryFactory class.
+   The 'DefaultEntryFactory' draws all the attributes of an entry according this
+   config file and the ldap schema definition ; the 'TemplateEntryFactory' draws
+   an entry according to the template whose regexp matches with the dn. */
+#  $config->custom->appearance['entry_factory'] = "DefaultEntryFactory";
+// $config->custom->appearance['entry_factory'] = "TemplateEntryFactory";
+
+/* If you want to customise an attribute view/edition, specify your factory name which
+   inherits from the AttributeFactory class.
+   An AttributeFactory defines which class to use to represent a given attribute */
+// $config->custom->appearance['attribute_factory'] = "AttributeFactory";
+
 /* Configure what objects are shown in left hand tree */
 // $config->custom->appearance['tree_filter'] = '(objectclass=*)';
 
@@ -94,12 +155,14 @@ $ldapservers->SetValue($i,'server','name','My LDAP Server');
    auto-detect it for you. */
 // $ldapservers->SetValue($i,'server','base',array(''));
 
-/* Three options for auth_type:
+/* Four options for auth_type:
    1. 'cookie': you will login via a web form, and a client-side cookie will
       store your login dn and password.
    2. 'session': same as cookie but your login dn and password are stored on the
       web server in a persistent session variable.
-   3. 'config': specify your login dn and password here in this config file. No
+   3. 'http': same as session but your login dn and password are retrieved via
+      HTTP authentication.
+   4. 'config': specify your login dn and password here in this config file. No
       login will be required to use phpLDAPadmin for this server.
 
    Choose wisely to protect your authentication information appropriately for
@@ -187,6 +250,14 @@ $ldapservers->SetValue($i,'server','name','My LDAP Server');
    specify 'string', in which case you can provide a string to use for logging
    users in. See 'login_string' directly below. */
 // $ldapservers->SetValue($i,'login','attr','dn');
+
+/* If you specified something different from 'dn', for example 'uid', as the
+   login_attr above, you can optionally specify here to fall back to
+   authentication with dn.
+   This is useful, when users should be able to log in with their uid, but
+   the ldap administrator wants to log in with his root-dn, that does not
+   necessarily have the uid attribute. */
+// $ldapservers->SetValue($i,'login','fallback_dn',false);
 
 /* If you specified 'cookie' or 'session' as the auth_type above, and you
    specified 'string' for 'login_attr' above, you must provide a string here for

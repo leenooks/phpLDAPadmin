@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.25 2007/01/18 21:03:58 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.27 2007/12/15 11:38:59 wurley Exp $
 
 /**
  * Configuration processing and defaults.
@@ -15,8 +15,20 @@ class Config {
 	public $custom;
 	protected $default;
 
-	function Config() {
+	public $ldapservers = array();
+	public $friendly_attrs = array();
+	public $queries = array();
+	public $attrs_display_order = array();
+	public $hidden_attrs = array();
+	public $hidden_except_dn = '';
+	public $hidden_attrs_ro = array();
+	public $read_only_attrs = array();
+	public $read_only_except_dn = '';
+	public $unique_attrs = array();
 
+	public $hooks = array();
+
+	public function __construct() {
 		$this->custom = new stdClass;
 		$this->default = new stdClass;
 
@@ -33,9 +45,14 @@ class Config {
 		 * Set to true if you want phpLDAPadmin to redirect anonymous
 		 * users to a search form with no tree viewer on the left after
 		 * logging in.
+		 * @todo: With the new no-frames PLA, this code is broken, and needs to be fixed.
 		 */
 		$this->default->appearance['anonymous_bind_redirect_no_tree'] = array(
 			'desc'=>'Redirect user to search form if anonymous',
+			'default'=>false);
+
+		$this->default->appearance['compress'] = array(
+			'desc'=>'Compress Output',
 			'default'=>false);
 
 		$this->default->appearance['date'] = array(
@@ -50,9 +67,9 @@ class Config {
 			'desc'=>'Array of attributes that should show a the time when showing the jscalendar',
 			'default'=>array(''));
 
-		$this->default->appearance['hide_configuration_management'] = array(
-			'desc'=>'Hide the Sourceforge related links',
-			'default'=>false);
+		$this->default->appearance['hide_debug_info'] = array(
+			'desc'=>'Hide the features that may provide sensitive debugging information to the browser',
+			'default'=>true);
 
 		/** Language
 		 * The language setting. If you set this to 'auto', phpLDAPadmin will
@@ -65,21 +82,13 @@ class Config {
 			'desc'=>'Language',
 			'default'=>'auto');
 
-		/** Mass Delete
-		 * Set to true if you want to draw a checkbox next to each entry in the tree viewer
-		 * to be able to delete multiple entries at once
-		 */
-		$this->default->appearance['mass_delete'] = array(
-			'desc'=>'Enable mass delete in tree viewer',
-			'default'=>false);
-
 		/**
 		 * If you want certain attributes to be editable as multi-line, include them in this list
 		 * A multi-line textarea will be drawn instead of a single-line text field
 		 */
 		$this->default->appearance['multi_line_attributes'] = array(
 			'desc'=>'Attributes to show as multiline attributes',
-			'default'=>array("postalAddress","homePostalAddress","personalSignature"));
+			'default'=>array('postalAddress','homePostalAddress','personalSignature','description','mailReplyText'));
 
 		/**
 		 * A list of syntax OIDs which support multi-line attribute values:
@@ -88,9 +97,9 @@ class Config {
 			'desc'=>'Attributes to show as multiline attributes',
 			'default'=>array(
 				// octet string syntax OID:
-				"1.3.6.1.4.1.1466.115.121.1.40",
+				'1.3.6.1.4.1.1466.115.121.1.40',
 				// postal address syntax OID:
-				"1.3.6.1.4.1.1466.115.121.1.41"));
+				'1.3.6.1.4.1.1466.115.121.1.41'));
 
 		/** Obfuscate Password
 		 * If true, display all password hash values as "******". Note that clear-text
@@ -116,13 +125,27 @@ class Config {
 			'desc'=>'Show a additional create link on the top of the list if there are more than 10 entries',
 			'default'=>true);
 
+		/*
+		 * What to do after entry creation :
+		 * 2 : display the creation form again
+		 * 1 : display the new created entry
+		 * 0 : display the choice between 1 and 2
+		 */
+		$this->default->appearance['action_after_creation'] = array(
+			'desc'=>'Display the new created entry',
+			'default'=>1);
+
 		$this->default->appearance['show_schema_link'] = array(
 			'desc'=>'Show the schema link for each attribute',
 			'default'=>true);
 
 		$this->default->appearance['show_attribute_notes'] = array(
 			'desc'=>'Show notes for each attribute',
-			'default'=>true);		
+			'default'=>true);
+
+		$this->default->appearance['stylesheet'] = array(
+			'desc'=>'Style sheet to use',
+			'default'=>'style.css');
 
 		/** Tree display
 		 * A format string used to display enties in the tree viewer (left-hand side)
@@ -153,10 +176,6 @@ class Config {
 			'desc'=>'Pixel width of the left frame view (tree browser)',
 			'default'=>320);
 
-		$this->default->appearance['tree_plm'] = array(
-			'desc'=>'Whether to enable the PHPLayersMenu for the tree',
-			'default'=>false);
-
 		/**
 		 * Tree display filter
 		 * LDAP filter used to search entries for the tree viewer (left-hand side)
@@ -164,6 +183,26 @@ class Config {
 		$this->default->appearance['tree_filter'] = array(
 			'desc'=>'LDAP search filter for the tree entries',
 			'default'=>'(objectClass=*)');
+
+		$this->default->appearance['tree'] = array(
+			'desc'=>'Class name which inherits from Tree class and implements the draw() method',
+			'default'=>'HTMLTree');
+
+		$this->default->appearance['entry_factory'] = array(
+			'desc'=>'Class name which inherits from EntryFactory class',
+			'default'=>'TemplateEntryFactory');
+
+		$this->default->appearance['attribute_factory'] = array(
+			'desc'=>'Class name which inherits from AttributeFactory class',
+			'default'=>'AttributeFactory');
+
+		$this->default->appearance['entry_reader'] = array(
+			'desc'=>'Class name which inherits from EntryReader class',
+			'default'=>'EntryReader');
+
+		$this->default->appearance['entry_writer'] = array(
+			'desc'=>'Class name which inherits from EntryWriter class',
+			'default'=>'EntryWriter1');
 
 		/** Caching
 		 */
@@ -179,19 +218,56 @@ class Config {
 			'desc'=>'Cache Browser Tree',
 			'default'=>true);
 
+		/**
+		 * Define command availability ; if the value of a command is true,
+		 * the command will be available.
+		 */
+		$this->default->commands['all'] = array(
+			'desc'=>'Define command availability',
+			'default'=> array(
+				'home' => true,
+				'external_links' => array('feature' => true,
+					'bug' => true,
+					'donation' => true,
+					'help' => true,
+					'credits' => true),
+				'purge' => true,
+				'schema' => true,
+				'import' => true,
+				'export' => true,
+				'logout' => true,
+				'search' => array('simple_search' => true,
+					'predefined_search' => true,
+					'advanced_search' => true),
+				'server_refresh' => true,
+				'server_info' => true,
+				'entry_refresh' => true,
+				'entry_move' => true,
+				'entry_internal_attributes_show' => true,
+				'entry_delete' => array('simple_delete' => true,
+					'mass_delete' => false),
+				'entry_rename' => true,
+				'entry_compare' => true,
+				'entry_create' => true,
+				'attribute_add' => true,
+				'attribute_add_value' => true,
+				'attribute_delete' => true,
+				'attribute_delete_value' => true
+			));
+
 		/** Aliases and Referrrals
 		 * Similar to ldapsearch's -a option, the following options allow you to configure
 		 * how phpLDAPadmin will treat aliases and referrals in the LDAP tree.
 		 * For the following four settings, avaialable options include:
 		 *
-		 *    LDAP_DEREF_NEVER     - aliases are never dereferenced (eg, the contents of
-		 *                           the alias itself are shown and not the referenced entry).
-		 *    LDAP_DEREF_SEARCHING - aliases should be dereferenced during the search but
-		 *                           not when locating the base object of the search.
-		 *    LDAP_DEREF_FINDING   - aliases should be dereferenced when locating the base
-		 *                           object but not during the search.
-		 *    LDAP_DEREF_ALWAYS    - aliases should be dereferenced always (eg, the contents
-		 *                           of the referenced entry is shown and not the aliasing entry)
+		 * LDAP_DEREF_NEVER	- aliases are never dereferenced (eg, the contents of
+		 *			the alias itself are shown and not the referenced entry).
+		 * LDAP_DEREF_SEARCHING	- aliases should be dereferenced during the search but
+		 *			not when locating the base object of the search.
+		 * LDAP_DEREF_FINDING	- aliases should be dereferenced when locating the base
+		 *			object but not during the search.
+		 * LDAP_DEREF_ALWAYS	- aliases should be dereferenced always (eg, the contents
+		 *			of the referenced entry is shown and not the aliasing entry)
 		 */
 		@$this->default->deref['export'] = array(
 			'desc'=>'',
@@ -221,6 +297,14 @@ class Config {
 		$this->default->debug['file'] = array(
 			'desc'=>'Name of file to send debug output to',
 			'default'=>null);
+
+		$this->default->debug['addr'] = array(
+			'desc'=>'IP address of PLA client to provide debugging info.',
+			'default'=>null);
+
+		$this->default->debug['append'] = array(
+			'desc'=>'Whether to append to the debug file, or create it fresh each time',
+			'default'=>true);
 
 		/** Temp Directories
 		 * This directory must be readable and writable by your web server
@@ -290,6 +374,14 @@ class Config {
 		$this->default->session['blowfish'] = array(
 			'desc'=>'Blowfish key to encrypt cookie details',
 			'default'=>null);
+
+		$this->default->session['memorylimit'] = array(
+			'desc'=>'Set the PHP memorylimit warning threshold.',
+			'default'=>24);
+
+		$this->default->session['timelimit'] = array(
+			'desc'=>'Set the PHP timelimit.',
+			'default'=>30);
 
 		/** Cookie Time
 		 * If you used auth_type 'form' in the servers list, you can adjust how long the cookie will last
@@ -427,14 +519,42 @@ class Config {
 			}
 		}
 	}
+
+	/**
+	 * The parameter number is variable.
+	 * For example : isCommandAvailable('search', 'simple_search')
+	 */
+	public function isCommandAvailable() {
+		$a = func_get_args();
+		if (count($a) == 1 && is_array($a[0]))
+			$a = $a[0];
+		$i = 0;
+
+		# Command availability list
+		$cmd = $this->GetValue('commands','all');
+		# Search for the command
+		while ($i < count($a)) {
+			if (! is_array($cmd))
+				return $cmd;
+			if (! isset($cmd[$a[$i]]))
+				return false;
+
+			$cmd = $cmd[$a[$i]];
+			$i++;
+		}
+
+		# If this is a leaf command, return its availability
+		if (! is_array($cmd))
+			return $cmd;
+
+		# Else the command is available, if one of its sub-command is available
+		$a[] = '';
+		foreach ($cmd as $c => $v) {
+			$a[$i] = $c;
+			if ($this->isCommandAvailable($a))
+				return true;
+		}
+		return false;
+	}
 }
-
-# Define our configuration variable.
-$config = new Config;
-require (CONFDIR.'config.php');
-
-if (($config->GetValue('debug','syslog') || $config->GetValue('debug','file')) && $config->GetValue('debug','level'))
-	define('DEBUG_ENABLED',1);
-else
-	define('DEBUG_ENABLED',0);
 ?>

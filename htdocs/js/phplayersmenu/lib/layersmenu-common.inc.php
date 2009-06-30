@@ -315,7 +315,9 @@ function setLibjsdir($libjsdir)
 	if ($libjsdir != '' && substr($libjsdir, -1) != '/') {
 		$libjsdir .= '/';
 	}
-	if ($libjsdir == '' || substr($libjsdir, 0, 1) != '/') {
+	if ($libjsdir == '' || (substr($libjsdir, 0, 1) != '/' && substr($libjsdir, 1, 1) != ':')) {
+		// libjsdir != /.../...
+		// and libjsdir != C:\...\...
 		$foobar = strpos($libjsdir, $this->dirroot);
 		if ($foobar === false || $foobar != 0) {
 			$libjsdir = $this->dirroot . $libjsdir;
@@ -339,7 +341,7 @@ function setImgdir($imgdir)
 	if ($imgdir != '' && substr($imgdir, -1) != '/') {
 		$imgdir .= '/';
 	}
-	if ($imgdir == '' || substr($imgdir, 0, 1) != '/') {
+	if ($imgdir == '' || (substr($imgdir, 0, 1) != '/' && substr($imgdir, 1, 1) != ':')) {
 		$foobar = strpos($imgdir, $this->dirroot);
 		if ($foobar === false || $foobar != 0) {
 			$imgdir = $this->dirroot . $imgdir;
@@ -376,7 +378,7 @@ function setIcondir($icondir)
 	if ($icondir != '' && substr($icondir, -1) != '/') {
 		$icondir .= '/';
 	}
-	if ($icondir == '' || substr($icondir, 0, 1) != '/') {
+	if ($icondir == '' || (substr($icondir, 0, 1) != '/' && substr($icondir, 1, 1) != ':')) {
 		$foobar = strpos($icondir, $this->dirroot);
 		if ($foobar === false || $foobar != 0) {
 			$icondir = $this->dirroot . $icondir;
@@ -437,7 +439,7 @@ function setTpldirCommon($tpldir)
 	if ($tpldir != '' && substr($tpldir, -1) != '/') {
 		$tpldir .= '/';
 	}
-	if ($tpldir == '' || substr($tpldir, 0, 1) != '/') {
+	if ($tpldir == '' || (substr($tpldir, 0, 1) != '/' && substr($tpldir, 1, 1) != ':')) {
 		$foobar = strpos($tpldir, $this->dirroot);
 		if ($foobar === false || $foobar != 0) {
 			$tpldir = $this->dirroot . $tpldir;

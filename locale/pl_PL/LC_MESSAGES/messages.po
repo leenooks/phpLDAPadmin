@@ -1,2188 +1,2562 @@
 # : $
-
-
 msgid ""
 msgstr ""
 "Project-Id-Version: messages\n"
-"Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
-"Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
+"Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sf.net\n"
+"POT-Creation-Date: 2004-01-14 17:45+0200\n"
+"PO-Revision-Date: 2007-11-07 14:37:00+0100\n"
 "Last-Translator: Piotr (DrFugazi) Tarnowski\n"
-"POT-Creation-Date: 2005-11-29 17:45+0100\n"
-"PO-Revision-Date: 2005-11-29 18:22+0100\n"
+"Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
-
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-
-msgid "Simple Search Form"
-msgstr "Wyszukiwanie proste"
-
-
-msgid "Advanced Search Form"
-msgstr "Wyszukiwanie zaawansowane"
-
-
-msgid "Server"
-msgstr "Serwer"
-
-
-msgid "Search for entries whose"
-msgstr "Szukaj wpisów w których"
-
-
-msgid "Base DN"
-msgstr "Bazowa DN"
-
-
-msgid "Search Scope"
-msgstr "Zakres przeszukiwania"
-
-
-msgid "Show Attributtes"
-msgstr "Pokaż atrybuty"
-
-
-msgid "Search"
-msgstr "Szukaj"
-
-
-msgid "equals"
-msgstr "równa się"
-
-
-msgid "contains"
-msgstr "zawiera"
-
-
-msgid "Select a predefined search"
-msgstr "Wybierz predefiniowane wyszukiwanie"
-
-
-msgid "Predefined Searches"
-msgstr "Predefiniowane wyszukiwania"
-
-
-msgid "No queries have been defined in config.php."
-msgstr "Brak zdefiniowanych zapytań w config.php."
-
-
-msgid "export results"
-msgstr "wyeksportuj wyniki"
-
-
-msgid "Unrecognized search result format: %s"
-msgstr "Nierozpoznany format wyniku wyszukiwania: %s"
-
-
-msgid "Format"
-msgstr "Format"
-
-
-msgid "list"
-msgstr "lista"
-
-
-msgid "table"
-msgstr "tabela"
-
-
-msgid "Your config.php specifies an invalid value for $default_search_display: %s. Please fix it"
-msgstr "W Twojej konfiguracji (config.php) określona jest nieprawidłowa wartość dla $default_search_display: %s. Proszę to poprawić"
-
-
-msgid "Page %d"
-msgstr "Strona %d"
-
-
-msgid "Next Page"
-msgstr "Następna strona"
-
-
-msgid "The search found no results."
-msgstr "Wyszukiwanie nie przyniosło żadnych rezultatów."
-
-
-msgid "Request feature"
-msgstr "Zgłoś zapotrzebowanie"
-
-
-msgid "Report a bug"
-msgstr "Zgłoś błąd"
-
-
-msgid "schema"
-msgstr "schemat"
-
-
-msgid "search"
-msgstr "szukaj"
-
-
-msgid "create"
-msgstr "utwórz"
-
-
-msgid "info"
-msgstr "info"
-
-
-msgid "import"
-msgstr "import"
-
-
-msgid "refresh"
-msgstr "odśwież"
-
-
-msgid "logout"
-msgstr "wyloguj"
-
-
-msgid "Create new entry here"
-msgstr "Utwórz nowy wpis"
-
-
-msgid "View schema for"
-msgstr "Pokaż schemat dla"
-
-
-msgid "Refresh all expanded containers for"
-msgstr "Odśwież wszystkie otwarte kontenery dla"
-
-
-msgid "Create a new entry on"
-msgstr "Utwórz nowy wpis na"
-
-
-msgid "new"
-msgstr "nowy"
-
-
-msgid "View server-supplied information"
-msgstr "Pokaż informacje o serwerze"
-
-
-msgid "Import entries from an LDIF file"
-msgstr "Importuj wpisy z pliku LDIF"
-
-
-msgid "Logout of this server"
-msgstr "Wyloguj z tego serwera"
-
-
-msgid "Logged in as: "
-msgstr "Zalogowany/a jako: "
-
-
-msgid "This is not a valid DN."
-msgstr "To nie jest prawidłowa DN."
-
-
-msgid "This entry does not exist."
-msgstr "Ten wpis nie istnieje"
-
-
-msgid "read only"
-msgstr "tylko-do-odczytu"
-
-
-msgid "This attribute has been flagged as read only by the phpLDAPadmin administrator"
-msgstr "Ten atrybut został oznaczony przez administratora phpLDAPadmin jako tylko-do-odczytu"
-
-
-msgid "Could not determine the root of your LDAP tree."
-msgstr "Nie można ustalić korzenia Twojego drzewa LDAP."
-
-
-msgid "It appears that the LDAP server has been configured to not reveal its root."
-msgstr "Wygląda, że serwer LDAP jest skonfigurowany tak, aby nie ujawniać swojego korzenia."
-
-
-msgid "Please specify it in config.php"
-msgstr "Proszę określić to w pliku config.php"
-
-
-msgid "Create a new entry in"
-msgstr "Utwórz nowy wpis w"
-
-
-msgid "Login..."
-msgstr "Logowanie..."
-
-
-msgid "login"
-msgstr "login"
-
-
-msgid "This base entry does not exist."
-msgstr "Ten wpis bazowy nie istnieje"
-
-
-msgid "Create it?"
-msgstr "Utworzyć ?"
-
-
-msgid "Delete this entry"
-msgstr "Usuń ten wpis"
-
-
-msgid "You will be prompted to confirm this decision"
-msgstr "Będziesz poproszony/a o potwierdzenie tej decyzji"
-
-
-msgid "Copy or move this entry"
-msgstr "Skopiuj lub przenieś ten wpis"
-
-
-msgid "Copy this object to another location, a new DN, or another server"
-msgstr "Skopiuj ten obiekt do innej lokalizacji, nowej DN, lub do innego serwera"
-
-
-msgid "Export"
-msgstr "Eksportuj"
-
-
-msgid "export"
-msgstr "eksportuj"
-
-
-msgid "Save a dump of this object"
-msgstr "Zapisz zrzut tego obiektu"
-
-
-msgid "Save a dump of this object and all of its children"
-msgstr "Zapisz zrzut tego obiektu i wszystkich potomnych"
-
-
-msgid "Export subtree"
-msgstr "Eksportuj całe poddrzewo"
-
-
-msgid "Create a child entry"
-msgstr "Utwórz wpis potomny"
-
-
-msgid "Rename Entry"
-msgstr "Zmień nazwę wpisu"
-
-
-msgid "Rename"
-msgstr "Zmień nazwę"
-
-
-msgid "rename"
-msgstr "zmień nazwę"
-
-
-msgid "Add"
-msgstr "Dodaj"
-
-
-msgid "View"
-msgstr "Pokaż"
-
-
-msgid "View 1 child"
-msgstr "Pokaż 1 wpis potomny"
-
-
-msgid "View %s children"
-msgstr "Pokaż %s wpisy/ów potomne/ych"
-
-
-msgid "Add new attribute"
-msgstr "Dodaj nowy atrybut"
-
-
-msgid "Add new ObjectClass"
-msgstr "Dodaj nową klasę obiektu"
-
-
-msgid "Hide internal attributes"
-msgstr "Ukryj wewnętrzne atrybuty"
-
-
-msgid "Show internal attributes"
-msgstr "Pokaż wewnętrzne atrybuty"
-
-
-msgid "Click to view the schema defintion for attribute type '%s'"
-msgstr "Kliknij aby obejrzeć definicje schematu dla atrybutu typu '%s'"
-
-
-msgid "none"
-msgstr "brak"
-
-
-msgid "No internal attributes"
-msgstr "Brak atrybutów wewnętrznych"
-
-
-msgid "This entry has no attributes"
-msgstr "Ten wpis nie posiada atrybutów"
-
-
-msgid "Save Changes"
-msgstr "Zapisz zmiany"
-
-
-msgid "add value"
-msgstr "dodaj wartość"
-
-
-msgid "Add an additional value to attribute '%s'"
-msgstr "Dodaj dodatkową wartość do atrybutu '%s'"
-
-
-msgid "Refresh"
-msgstr "Odśwież"
-
-
-msgid "Refresh this entry"
-msgstr "Odśwież ten wpis"
-
-
-msgid "Hint: To delete an attribute, empty the text field and click save."
-msgstr "Wskazówka: Aby skasować atrybut, wyczyść pole tekstowe i kliknij zapisz."
-
-
-msgid "Hint: To view the schema for an attribute, click the attribute name."
-msgstr "Wskazówka: Aby zobaczyć schemat dla atrybutu, kliknij na nazwie atrybutu."
-
-
-msgid "Some attributes (%s) were modified and are highlighted below."
-msgstr "Niektóre atrybuty (%s) zostały zmodyfikowane i są wyróżnione poniżej."
-
-
-msgid "An attribute (%s) was modified and is highlighted below."
-msgstr "Atrybut (%s) został zmodyfikowany i jest wyróżniony poniżej."
-
-
-msgid "Viewing entry in read-only mode."
-msgstr "Oglądanie wpisu w trybie tylko-do-odczytu."
-
-
-msgid "no new attributes available for this entry"
-msgstr "brak nowych atrybutów dostępnych dla tego wpisu"
-
-
-msgid "no new binary attributes available for this entry"
-msgstr "brak nowych atrybutów binarnych dla tego wpisu"
-
-
-msgid "Binary value"
-msgstr "Wartość binarna"
-
-
-msgid "Add new binary attribute"
-msgstr "Dodaj nowy atrybut binarny"
-
-
-msgid "Note: '%s' is an alias for '%s'"
-msgstr "Uwaga: '%s' jest aliasem dla '%s'"
-
-
-msgid "Required attribute for objectClass(es) %s"
-msgstr "Atrybut wymagany dla klas(y) obiektu %s"
-
-
-msgid "This attribute is required for the RDN."
-msgstr "Ten atrybut jest wymagany dla RDN"
-
-
-msgid "download value"
-msgstr "pobierz (download) wartość"
-
-
-msgid "delete attribute"
-msgstr "usuń atrybut"
-
-
-msgid "true"
-msgstr "prawda"
-
-
-msgid "false"
-msgstr "fałsz"
-
-
-msgid "none, remove value"
-msgstr "brak, usuń wartość"
-
-
-msgid "Really delete attribute"
-msgstr "Definitywnie usuń atrybut"
-
-
-msgid "Add New Value"
-msgstr "Dodaj nową wartość"
-
-
-msgid "The server does not fully support the LDAP protocol."
-msgstr "Serwer nie wspiera w pełni protokołu LDAP."
-
-
-msgid "Your version of PHP does not correctly perform the query."
-msgstr "Twoja wersja PHP niepoprawnie wykonuje zapytanie."
-
-
-msgid "phpLDAPadmin doesn't know how to fetch the schema for your server."
-msgstr "phpLDAPadmin nie wie jak uzyskać schemat z Twojego serwera."
-
-
-msgid "Or lastly, your LDAP server doesnt provide this information."
-msgstr "Lub w ostateczności, Twój serwer nie dostarcza tej informacji."
-
-
-msgid "Jump to an objectClass"
-msgstr "Skocz do klasy obiektu"
-
-
-msgid "View the schema description for this objectClass"
-msgstr "Pokaż opis schematu dla tej klasy obiektu"
-
-
-msgid "Jump to an attribute type"
-msgstr "Skocz do typu atrybutu"
-
-
-msgid "Jump to a matching rule"
-msgstr "Skocz do reguły dopasowania"
-
-
-msgid "Schema for server"
-msgstr "Schemat dla serwera"
-
-
-msgid "Required Attributes"
-msgstr "Wymagane atrybuty"
-
-
-msgid "required"
-msgstr "wymagane"
-
-
-msgid "Optional Attributes"
-msgstr "Opcjonalne atrybuty"
-
-
-msgid "Optional Binary Attributes"
-msgstr "Opcjonalne atrybuty binarne"
-
-
-msgid "OID"
-msgstr "OID"
-
-
-msgid "Aliases"
-msgstr "Aliasy"
-
-
-msgid "Description"
-msgstr "Opis"
-
-
-msgid "no description"
-msgstr "brak opisu"
-
-
-msgid "Name"
-msgstr "Nazwa"
-
-
-msgid "Equality"
-msgstr "Równość"
-
-
-msgid "This objectClass is obsolete."
-msgstr "Ta klasa obiektu jest przestarzała"
-
-
-msgid "Inherits from"
-msgstr "Dziedziczy z"
-
-
-msgid "Inherited from"
-msgstr "dziedziczone z"
-
-
-msgid "Parent to"
-msgstr "Nadrzędny dla"
-
-
-msgid "Jump to this objectClass definition"
-msgstr "Skocz do definicji klasy obiektu"
-
-
-msgid "Matching Rule OID"
-msgstr "OID reguły dopasowania"
-
-
-msgid "Syntax OID"
-msgstr "OID składni"
-
-
-msgid "not applicable"
-msgstr "nie dotyczy"
-
-
-msgid "not specified"
-msgstr "nie określone"
-
-
-msgid "character"
-msgstr "znak"
-
-
-msgid "characters"
-msgstr "znaki/ów"
-
-
-msgid "Used by objectClasses"
-msgstr "Używane przez klasy obiektu"
-
-
-msgid "Used by Attributes"
-msgstr "Używane przez atrybuty"
-
-
-msgid "Maximum Length"
-msgstr "Maksymalna długość"
-
-
-msgid "Attribute Types"
-msgstr "Typy atrybutów"
-
-
-msgid "Syntaxes"
-msgstr "Składnie"
-
-
-msgid "ObjectClasses"
-msgstr "Klasy Obiektu"
-
-
-msgid "Matching Rules"
-msgstr "Reguły Dopasowania"
-
-
-msgid "Obsolete"
-msgstr "Przestarzałe "
-
-
-msgid "Ordering"
-msgstr "Uporządkowanie"
-
-
-msgid "Substring Rule"
-msgstr "Reguła podciągu (Substring Rule)"
-
-
-msgid "Single Valued"
-msgstr "Pojedynczo ceniona (Single Valued)"
-
-
-msgid "Collective"
-msgstr "Zbiorcza "
-
-
-msgid "User Modification"
-msgstr "Modyfikacja użytkownika"
-
-
-msgid "Usage"
-msgstr "Użycie"
-
-
-msgid "Could not retrieve schema from"
-msgstr "Nie można uzyskać schematu z"
-
-
-msgid "Type"
-msgstr "Typ"
-
-
-msgid "No such schema item: \"%s\""
-msgstr "Nie ma takiej pozycji w schemacie: \"%s\""
-
-
-msgid "A random password was generated for you"
-msgstr "Zostało wygenerowane losowe hasło"
-
-
-msgid "Entry %s deleted successfully."
-msgstr "Wpis %s został pomyślnie usunięty."
-
-
-msgid "You must specify a DN"
-msgstr "Musisz określić DN"
-
-
-msgid "Could not delete the entry: %s"
-msgstr "Nie można usunąć wpisu: %s"
-
-
-msgid "No such entry: %s"
-msgstr "Nie ma takiego wpisu: %s"
-
-
-msgid "Delete %s"
-msgstr "Usuń %s"
-
-
-msgid "Permanently delete all children also?"
-msgstr "Czy trwale usunąć także wpisy potomne ?"
-
-
-msgid "This entry is the root of a sub-tree containing %s entries."
-msgstr "Ten wpis jest korzeniem poddrzewa zawierającego %s wpisów."
-
-
-msgid "view entries"
-msgstr "pokaż wpisy"
-
-
-msgid "phpLDAPadmin can recursively delete this entry and all %s of its children. See below for a list of all the entries that this action will delete. Do you want to do this?"
-msgstr "phpLDAPadmin może rekursywnie usunąć ten wpis i wszystkie jego %s wpisy/ów potomne/ych. Sprawdź poniższą listę wpisów przeznaczonych do usunięcia.<br /> Czy na pewno chcesz to zrobić ?"
-
-
-msgid "Note: this is potentially very dangerous and you do this at your own risk. This operation cannot be undone. Take into consideration aliases, referrals, and other things that may cause problems."
-msgstr "Uwaga: ta operacja jest potencjalnie bardzo niebezpieczna i wykonujesz ją na własne ryzyko. Ta akcja nie może zostać cofnięta. Weź pod uwagę aliasy, owołania i inne rzeczy, które mogą spowodować problemy."
-
-
-msgid "Delete all %s objects"
-msgstr "Usuń wszystkie %s obiekty/ów"
-
-
-msgid "Recursive delete progress"
-msgstr "Postęp rekursywnego usuwania"
-
-
-msgid "Entry %s and sub-tree deleted successfully."
-msgstr "Wpis %s oraz poddrzewo zostały pomyślnie usunięte."
-
-
-msgid "Failed to delete entry %s"
-msgstr "Błąd podczas usuwania wpisu %s"
-
-
-msgid "The attribute \"%s\" is flagged as read-only in the phpLDAPadmin configuration."
-msgstr "Atrybut \"%s\" jest oznaczony jako tylko-do-odczytu w konfiguracji phpLDAPadmin."
-
-
-msgid "No attribute name specified."
-msgstr "Nie określono nazwy atrybutu."
-
-
-msgid "No DN specified"
-msgstr "Nie określono DN"
-
-
-msgid "You left the attribute value blank. Please go back and try again."
-msgstr "Pozostawiłeś/aś pustą wartość atrybutu. Proszę wrócić i spróbować ponownie."
-
-
-msgid "Failed to add the attribute."
-msgstr "Błąd podczas dodawania atrybutu."
-
-
-msgid "The file you chose is either empty or does not exist. Please go back and try again."
-msgstr "Wybrany plik jest pusty lub nie istnieje. Wróć i spróbuj ponownie."
-
-
-msgid "Security error: The file being uploaded may be malicious."
-msgstr "Błąd bezpieczeństwa: Załadowany plik może stanowić zagrożenie."
-
-
-msgid "Your PHP configuration has disabled file uploads. Please check php.ini before proceeding."
-msgstr "Twoja konfiguracja PHP uniemożliwia załadowanie plików. Proszę sprawdzić php.ini przed kontynuacją."
-
-
-msgid "The file you uploaded is too large. Please check php.ini, upload_max_size setting"
-msgstr "Załadowany plik jest zbyt duży. Proszę sprawdzić ustawienie upload_max_size w php.ini"
-
-
-msgid "The file you selected was only partially uploaded, likley due to a network error."
-msgstr "Wybrany plik został tylko częściowo załadowany, prawdopodobnie wystąpił błąd w sieci."
-
-
-msgid "Maximum file size: %s"
-msgstr "Maksymalny rozmiar pliku: %s"
-
-
-msgid "Modification successful!"
-msgstr "Modyfikacja zakończona pomyślnie."
-
-
-msgid "Since you changed your password, you must now login again with your new password."
-msgstr "Jeśli zmieniłeś/aś hasło, musisz się zalogować ponownie z nowym hasłem."
-
-
-msgid "New Required Attributes"
-msgstr "Nowe atrybuty wymagane"
-
-
-msgid "This action requires you to add"
-msgstr "Ta akcja wymaga, abyś dodał/a"
-
-
-msgid "new attributes"
-msgstr "nowe atrybuty"
-
-
-msgid "Instructions: In order to add these objectClass(es) to this entry, you must specify"
-msgstr "Instrukcja: Aby dodać tę/e klasę/y obiektu do tego wpisu, musisz określić"
-
-
-msgid "that this objectClass requires. You can do so in this form."
-msgstr "co ta klasa obiektu wymaga. Możesz zrobić to w tym formularzu."
-
-
-msgid "Add ObjectClass and Attributes"
-msgstr "Dodaj klasę obiektu i atrybuty"
-
-
-msgid "Click to popup a dialog to select an entry (DN) graphically"
-msgstr "Kliknij aby wywołać okno i wybrać wpis (DN) graficznie"
-
-
-msgid "Click to popup a dialog to select a date graphically"
-msgstr "Kliknij aby wywołać okno i wybrać datę graficznie"
-
-
-msgid "You cannot perform updates while server is in read-only mode"
-msgstr "Nie możesz wykonać modyfikacji dopóki serwer jest w trybie tylko-do-odczytu"
-
-
-msgid "Bad server id"
-msgstr "Zły identyfikator (id) serwera"
-
-
-msgid "Not enough information to login to server. Please check your configuration."
-msgstr "Brak wystarczających informacji aby zalogować się do serwera. Proszę sprawdzić konfigurację."
-
-
-msgid "Could not connect to LDAP server."
-msgstr "Nie można podłączyć się do serwera LDAP."
-
-
-msgid "Could not connect to \"%s\" on port \"%s\""
-msgstr "Nie można podłączyć się do \"%s\" na port \"%s\""
-
-
-msgid "Could not perform ldap_mod_add operation."
-msgstr "Nie można dokonać operacji ldap_mod_add."
-
-
-msgid "Home"
-msgstr "Strona główna"
-
-
-msgid "Help"
-msgstr "Pomoc"
-
-
-msgid "Success"
-msgstr "Sukces"
-
-
-msgid "Server: "
-msgstr "Serwer: "
-
-
-msgid "Looking in: "
-msgstr "Szukam w: "
-
-
-msgid "No DN specified in query string!"
-msgstr "Nie określono DN w zapytaniu !"
-
-
-msgid "Back Up..."
-msgstr "Do góry..."
-
-
-msgid "no entries"
-msgstr "brak wpisów"
-
-
-msgid "Could not determine base DN"
-msgstr "Nie można określić bazowego DN"
-
-
-msgid "This could happen for several reasons, the most probable of which are:"
-msgstr "To mogło zdarzyć się z kilku powodów, z których najbardziej prawdopodobne to:"
-
-
-msgid "Yes"
-msgstr "Tak"
-
-
-msgid "No"
-msgstr "Nie"
-
-
-msgid "Go"
-msgstr "Idź"
-
-
-msgid "Delete"
-msgstr "Usuń"
-
-
-msgid "Back"
-msgstr "Powrót"
-
-
-msgid "object"
-msgstr "obiekt"
-
-
-msgid "Delete all"
-msgstr "Usuń wszystko"
-
-
-msgid "hint"
-msgstr "wskazówka"
-
-
-msgid "bug"
-msgstr "błąd (bug)"
-
-
-msgid "warning"
-msgstr "ostrzeżenie"
-
-
-msgid "light"
-msgstr "żarówka"
-
-
-msgid "Proceed &gt;&gt;"
-msgstr "Dalej &gt;&gt;"
-
-
-msgid "Please set $jpeg_temp_dir to a writable directory in the phpLDAPadmin config.php"
-msgstr "Proszę ustawić zmienną $jpeg_temp_dir w config.php na katalog z możliwością zapisu plików"
-
-
-msgid "Could not write to the $jpeg_temp_dir directory %s. Please verify that your web server can write files there."
-msgstr "Nie można zapisać do katalogu $jpeg_temp_dir %s. Sprawdź proszę czy Twój serwer może zapisywać pliki w tym katalogu."
-
-
-msgid "Could not fetch jpeg data from LDAP server for attribute %s."
-msgstr "Nie można pobrać danych jpeg z serwera LDAP dla atrybutu %s."
-
-
-msgid "Delete photo"
-msgstr "Usuń zdjęcie"
-
-
-msgid "value to"
-msgstr "wartość do"
-
-
-msgid "Distinguished Name"
-msgstr "Wyróżniona Nazwa (DN)"
-
-
-msgid "Current list of"
-msgstr "Aktualna lista"
-
-
-msgid "values for attribute"
-msgstr "wartości dla atrybutu"
-
-
-msgid "Note: You will get an \"inappropriate matching\" error if you have not setup an EQUALITY rule on your LDAP server for this attribute."
-msgstr "Uwaga: Jeśli nie ustawisz reguły EQUALITY dla tego atrybutu na Twoim serwerze LDAP otrzymasz błąd \"niewłaściwe dopasowanie (inappropriate matching)\""
-
-
-msgid "Enter the value you would like to add:"
-msgstr "Wprowadź wartość, którą chcesz dodać:"
-
-
-msgid "Note: You may be required to enter new attributes that these objectClass(es) require"
-msgstr "Uwaga: może być wymagane wprowadzenie nowych atrybutów wymaganych przez tę/e klasę/y obiektu"
-
-
-msgid "Syntax"
-msgstr "Składnia"
-
-
-msgid "You left the destination DN blank."
-msgstr "Nie wypełniono docelowej DN."
-
-
-msgid "The destination entry (%s) already exists."
-msgstr "Docelowy wpis (%s) już istnieje."
-
-
-msgid "The destination container (%s) does not exist."
-msgstr "Docelowy kontener (%s) nie istnieje."
-
-
-msgid "The source and destination DN are the same."
-msgstr "Źródłowa i docelowa DN są takie same."
-
-
-msgid "Copying "
-msgstr "Kopiowanie "
-
-
-msgid "Recursive copy progress"
-msgstr "Postęp kopiowania rekursywnego"
-
-
-msgid "Building snapshot of tree to copy... "
-msgstr "Budowanie migawki (snapshot) drzewa do skopiowania... "
-
-
-msgid "Copy successful! Would you like to "
-msgstr "Kopiowanie zakończone pomyślnie. Czy chcesz "
-
-
-msgid "view the new entry"
-msgstr "zobaczyć nowy wpis "
-
-
-msgid "Failed to copy DN: "
-msgstr "Błąd podczas kopiowania DN: "
-
-
-msgid "Template"
-msgstr "Szablon"
-
-
-msgid "using template"
-msgstr "wykorzystując szablon"
-
-
-msgid "Go to %s"
-msgstr "Idź do %s"
-
-
-msgid "This is a structural ObjectClass and cannot be removed."
-msgstr "To jest strukturalna klasa obiektu i nie może zostać usunięta."
-
-
-msgid "structural"
-msgstr "strukturalna"
-
-
-msgid "Copy "
-msgstr "Kopiuj "
-
-
-msgid "to a new object"
-msgstr "do nowego obiektu"
-
-
-msgid "Destination DN"
-msgstr "Docelowa DN"
-
-
-msgid "The full DN of the new entry to be created when copying the source entry"
-msgstr "Pełna DN nowego wpisu do utworzenia poprzez skopiowanie wpisu źródłowego"
-
-
-msgid "Destination Server"
-msgstr "Docelowy serwer"
-
-
-msgid "Hint: Copying between different servers only works if there are no schema violations"
-msgstr "Wskazówka: Kopiowanie pomiędzy różnymi serwerami działa wtedy, gdy nie występuje naruszenie schematów"
-
-
-msgid "Recursively copy all children of this object as well."
-msgstr "Rekursywne kopiowanie wszystkich potomnych obiektów"
-
-
-msgid "Recursive copy"
-msgstr "Kopia rekursywna"
-
-
-msgid "Filter"
-msgstr "Filtr"
-
-
-msgid "When performing a recursive copy, only copy those entries which match this filter"
-msgstr "Podczas rekursywnego kopiowania, kopiowane są tylko wpisy pasujące do filtra"
-
-
-msgid "Delete after copy (move):"
-msgstr "Usuń po skopiowaniu (przenieś):"
-
-
-msgid "Make sure your filter (above) will select all child records."
-msgstr "Upewnij się, że ustawienia filtra (powyżej) pozwalają na wybranie wszystkich rekordów podrzędnych."
-
-
-msgid "You left the value blank for required attribute (%s)."
-msgstr "Brak wartości dla wymaganego atrybutu (%s)."
-
-
-msgid "Redirecting..."
-msgstr "Przekierowuję"
-
-
-msgid "here"
-msgstr "tutaj"
-
-
-msgid "Could not add the object to the LDAP server."
-msgstr "Nie można dodać obiektu do serwera LDAP."
-
-
-msgid "Create Object"
-msgstr "Utwórz obiekt"
-
-
-msgid "Choose a template"
-msgstr "Wybierz szablon"
-
-
-msgid "Select a template for the creation process"
-msgstr "Wybierz szablon dla procesu tworzenia"
-
-
-msgid "Save as file"
-msgstr "Zapisz jako"
-
-
-msgid "You left the RDN field blank."
-msgstr "Pozostawiłeś/aś puste pole RDN."
-
-
-msgid "The container you specified (%s) does not exist. Please try again."
-msgstr "Kontener który określiłeś/aś (%s) nie istnieje. Spróbuj ponownie."
-
-
-msgid "You did not select any ObjectClasses for this object. Please go back and do so."
-msgstr "Nie wybrałeś/aś żadnych Klas Obiektu dla tego obiektu. Wróć proszę i zrób to."
-
-
-msgid "Hint: You must choose exactly one structural objectClass (shown in bold above)"
-msgstr "Wskazówka: Musisz wybrać dokładnie jedną strukturalną klasę obiektu (wyróżnioną pogrubieniem)"
-
-
-msgid "This template is not allowed in this container."
-msgstr "Ten szablon nie jest dostępny w tym kontenerze"
-
-
-msgid "This template has been disabled, possibly due to missing schema or missing template XML fields."
-msgstr "Ten szablon został zablokowany, prawdopodobnie z powodu brakującego schamatu lub brakujących pól szablonu XML."
-
-
-msgid "Your config specifies a handler of \"%s\" for this template but this file is not readable because the permissions are too strict."
-msgstr "Twoja konfiguracja określa obsługę \"%s\" dla tego szablonu, ale tego pliku nie da się odczytać, ponieważ uprawnienia są zbyt restrykcyjne."
-
-
-msgid "Step 1 of 2: Name and ObjectClass(es)"
-msgstr "Krok 1 z 2: Nazwa i klasa/y obiektu"
-
-
-msgid "Step 2 of 2: Specify attributes and values"
-msgstr "Krok 2 z 2: Określenie atrybutów i wartości"
-
-
-msgid "Relative Distinguished Name"
-msgstr "Relatywna Wyróżniona Nazwa (RDN)"
-
-
-msgid "RDN"
-msgstr "RDN"
-
-
-msgid "(example: cn=MyNewPerson)"
-msgstr "(przykład: cn=MyNewPerson)"
-
-
-msgid "Container"
-msgstr "Kontener"
-
-
-msgid "You have not logged into the selected server yet, so you cannot perform searches on it."
-msgstr "Nie zalogowałeś/aś się jeszcze do wybranego serwera, więc nie możesz go przeszukiwać."
-
-
-msgid "Click here to go to the login form"
-msgstr "Kliknij tutaj aby przejść do formularza logowania"
-
-
-msgid "Unrecognized criteria option: "
-msgstr "Nierozpoznane kryterium opcji: "
-
-
-msgid "If you want to add your own criteria to the list. Be sure to edit search.php to handle them. Quitting."
-msgstr "Jeśli chcesz dodać własne kryteria do listy, zmodyfikuj plik search.php aby to obsłużyć."
-
-
-msgid "Entries found: "
-msgstr "Znaleziono wpisów: "
-
-
-msgid "Filter performed: "
-msgstr "Zastosowano filtr: "
-
-
-msgid "Search performed by phpLDAPadmin in"
-msgstr "Wyszukiwanie wykonane przez phpLDAPadmin w"
-
-
-msgid "seconds"
-msgstr "sekund(y)"
-
-
-msgid "The scope in which to search"
-msgstr "Przeszukiwany zakres"
-
-
-msgid "Sub (entire subtree)"
-msgstr "Sub (całe poddrzewo)"
-
-
-msgid "One (one level beneath base)"
-msgstr "One (jeden poziom poniżej bazowej)"
-
-
-msgid "Base (base dn only)"
-msgstr "Base (tylko bazowa dn)"
-
-
-msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))"
-msgstr "Standardowy filtr dla LDAP. Na przykład: (&(sn=Kowalski)(givenname=Jan))"
-
-
-msgid "Search Filter"
-msgstr "Filtr wyszukiwania"
-
-
-msgid "A list of attributes to display in the results (comma-separated)"
-msgstr "Lista atrybutów do wyświetlenia rezultatów (rozdzielona przecinkami)"
-
-
-msgid "starts with"
-msgstr "zaczyna się od"
-
-
-msgid "ends with"
-msgstr "kończy się na"
-
-
-msgid "sounds like"
-msgstr "brzmi jak"
-
-
-msgid "Could not retrieve LDAP information from the server. This may be due to a <a href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version of PHP or perhaps your LDAP server has access control specified that prevents LDAP clients from accessing the RootDSE."
-msgstr "Nie można uzyskać informacji od serwera LDAP. Może to być spowodowane <a href=\"http://bugs.php.net/bug.php?id=29587\">błędem</a> w Twojej wersji PHP albo na przykład tym, że Twój serwer LDAP posiada listę kontroli dostępu nie zezwalającą na pobranie RootDSE klientom LDAP"
-
-
-msgid "Server info for: "
-msgstr "Informacja o serwerze: "
-
-
-msgid "Server reports the following information about itself"
-msgstr "Serwer zwrócił następujące informacje o sobie"
-
-
-msgid "This server has nothing to report."
-msgstr "Ten serwer nie chce nic powiedzieć o sobie :)."
-
-
-msgid "update_array is malformed. This might be a phpLDAPadmin bug. Please report it."
-msgstr "tablica modyfikacji (update_array) jest zniekształcona. To może być błąd (bug) w phpLDAPadmin. Proszę to zgłosić."
-
-
-msgid "Could not perform ldap_modify operation."
-msgstr "Nie można wykonać operacji modyfikacji (ldap_modify)."
-
-
-msgid "Do you want to make these changes?"
-msgstr "Czy chcesz dokonać tych zmian ?"
-
-
-msgid "Attribute"
-msgstr "Atrybuty"
-
-
-msgid "Old Value"
-msgstr "Stara wartość"
-
-
-msgid "New Value"
-msgstr "Nowa wartość"
-
-
-msgid "[attribute deleted]"
-msgstr "[atrybut usunięty]"
-
-
-msgid "Commit"
-msgstr "Zatwierdź"
-
-
-msgid "Cancel"
-msgstr "Anuluj"
-
-
-msgid "You made no changes"
-msgstr "Nie dokonano żadnych zmian"
-
-
-msgid "Use the menu to the left to navigate"
-msgstr "Użyj menu z lewej strony do nawigacji"
-
-
-msgid "Credits"
-msgstr "Lista płac"
-
-
-msgid "ChangeLog"
-msgstr "Historia zmian"
-
-
-msgid "Documentation"
-msgstr "Dokumentacja"
-
-
-msgid "Donate"
-msgstr "Wesprzyj projekt"
-
-
-msgid "phpLDAPadmin logo"
-msgstr "phpLDAPadmin logo"
-
-
-msgid "Purge caches"
-msgstr "Wyczyść cache"
-
-
-msgid "No cache to purge."
-msgstr "Nie ma czego czyścić."
-
-
-msgid "Purged %s bytes of cache."
-msgstr "Wyczyszczono %s bajtów pamięci podręcznej (cache)."
-
-
-msgid "Purge all cached data in phpLDAPadmin, including server schemas."
-msgstr "Czyści wszystkie dane podręczne (cache) w phpLDAPadmin, łącznie ze schematami serwera"
-
-
-msgid "Unsafe file name: "
-msgstr "Niebezpieczna nazwa pliku: "
-
-
-msgid "No such file: "
-msgstr "Nie znaleziono pliku: "
-
-
-msgid "You have enabled auto_uid_numbers for <b>%s</b> in your configuration,"
-"                                  but you have not specified the auto_uid_number_mechanism. Please correct"
-"                                  this problem."
-msgstr "Zezwoliłeś/aś na automatyczne nadawanie uid (auto_uid_numbers) dla <b>%s</b> w konfiguracji, ale nie określiłeś/aś mechanizmu (auto_uid_number_mechanism). Proszę skorygować ten problem."
-
-
-msgid "You specified the \"auto_uid_number_mechanism\" as \"uidpool\""
-"                            in your configuration for server <b>%s</b>, but you did not specify the"
-"                            audo_uid_number_uid_pool_dn. Please specify it before proceeding."
-msgstr "Określiłeś/aś mechanizm autonumerowania uid \"auto_uid_number_mechanism\" jako \"uidpool\" w konfiguracji Twojego serwera <b>%s</b>, lecz nie określiłeś/aś audo_uid_number_uid_pool_dn. Proszę określ to zanim przejdziesz dalej."
-
-
-msgid "It appears that the uidPool you specified in your configuration (\"%s\")"
-"                              does not exist."
-msgstr "Wygląda na to, że uidPool, którą określiłeś/aś w Twojej konfiguracji (\"%s\") nie istnieje."
-
-
-msgid "You specified the \"auto_uid_number_mechanism\" as \"search\" in your"
-"                              configuration for server <b>%s</b>, but you did not specify the"
-"                              \"auto_uid_number_search_base\". Please specify it before proceeding."
-msgstr "Określiłeś/aś \"auto_uid_number_mechanism\" jako \"search\" w konfiguracji Twojego serwera <b>%s</b>, ale nie określiłeś/aś bazy \"auto_uid_number_search_base\". Zrób to zanim przejdziesz dalej."
-
-
-msgid "Unable to bind to <b>%s</b> with your with auto_uid credentials. Please check your configuration file."
-msgstr "Nie można podłączyć do <b>%s</b> z podaną tożsamością auto_uid. Proszę sprawdzić swój plik konfiguracyjny."
-
-
-msgid "Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base for server %s"
-msgstr "W Twojej konfiguracji phpLDAPadmin określona jest nieprawidłowa wartość auto_uid_search_base dla serwera %s"
-
-
-msgid "You specified an invalid value for auto_uid_number_mechanism (\"%s\")"
-"                                   in your configration. Only \"uidpool\" and \"search\" are valid."
-"                                   Please correct this problem."
-msgstr "Określiłeś/aś błędną wartość dla auto_uid_number_mechanism (\"%s\") w konfiguracji. Tylko \"uidpool\" i \"search\" są poprawne. Proszę skorygować ten problem."
-
-
-msgid "Error: You have an error in your config file. The only three allowed values"
-"                                    for auth_type in the $servers section are 'session', 'cookie', and 'config'. You entered '%s',"
-"                                    which is not allowed. "
-msgstr "Błąd: Masz błąd w pliku konfiguracji. Trzy możliwe wartości dla auth_type w sekcji $servers to 'session', 'cookie' oraz 'config'.  Ty wpisałeś/aś '%s', co jest niedozwolone. "
-
-
-msgid "Unable to bind to <b>%s</b> with your with unique_attrs credentials. Please check your configuration file."
-msgstr "Nie można podłączyć do <b>%s</b> z podaną tożsamością unique_attrs. Proszę sprawdzić swój plik konfiguracyjny."
-
-
-msgid "Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href='%s'>search</a> for that entry."
-msgstr "Próba dodania <b>%s</b> (<i>%s</i>) do <br><b>%s</b><br> jest NIEDOZWOLONA. Ten atrybut/wartość należy do innego wpisu.<p>Jeśli chcesz, możesz <a href='%s'>poszukać</a> tego wpisu."
-
-
-msgid "Your PHP install does not support TLS."
-msgstr "Twoja instalacja PHP nie wspiera TLS."
-
-
-msgid "Could not start TLS. Please check your LDAP server configuration."
-msgstr "Nie można uruchomić TLS. Proszę sprawdzić konfigurację serwera LDAP."
-
-
-msgid "Could not bind anonymously to server."
-msgstr "Nie można anonimowo podłączyć do serwera."
-
-
-msgid "Anonymous Bind"
-msgstr "Podłączenie anonimowe"
-
-
-msgid "Bad username or password. Please try again."
-msgstr "Zła nazwa użytkownika lub hasło. Spróbuj ponownie."
-
-
-msgid "Successfully logged into server <b>%s</b>"
-msgstr "Pomyślnie zalogowano do serwera <b>%s</b>"
-
-
-msgid "Could not set cookie."
-msgstr "Nie można ustawić ciasteczka (cookie)."
-
-
-msgid "LDAP said: %s"
-msgstr "LDAP odpowiedział: %s"
-
-
-msgid "Error"
-msgstr "Błąd"
-
-
-msgid "browse"
-msgstr "przeglądaj"
-
-
-msgid "Delete Photo"
-msgstr "Usuń fotografię"
-
-
-msgid "Your system crypt library does not support extended DES encryption."
-msgstr "Twoja systemowa biblioteka crypt nie wspiera rozszerzonego szyfrowania DES"
-
-
-msgid "Your system crypt library does not support blowfish encryption."
-msgstr "Twoja systemowa biblioteka crypt nie wspiera szyfrowania blowfish."
-
-
-msgid "Your system crypt library does not support md5crypt encryption."
-msgstr "Twoja systemowa biblioteka crypt nie wspiera szyfrowania md5crypt."
-
-
-msgid "Your PHP install does not have the mhash() function. Cannot do SHA hashes."
-msgstr "Twoja instalacja PHP nie posiada funkcji mhash(). Nie mogę tworzyć haszy SHA."
-
-
-msgid "jpegPhoto contains errors<br />"
-msgstr "jpegPhoto zawiera błędy<br />"
-
-
-msgid "Error number: %s (%s)"
-msgstr "Błąd numer: %s (%s)"
-
-
-msgid "Description: %s <br /><br />"
-msgstr "Opis: %s<br /><br />"
-
-
-msgid "Error number: %s<br /><br />"
-msgstr "Błąd numer: %s<br /><br />"
-
-
-msgid "Description: (no description available)<br />"
-msgstr "Opis: (brak dostępnego opisu)<br />"
-
-
-msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
-msgstr "Czy jest to błąd w phpLDAPadmin ? Jeśli tak, proszę go <a href='%s'>zgłosić</a>."
-
-
-msgid "Unrecognized error number: "
-msgstr "Nierozpoznany numer błędu: "
-
-
-msgid "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
-"             <b>You found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>"
-"             <td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
-"             </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>"
-"	<tr><td colspan='2'><center><a target='new' href='%s'>Please check and see if this bug has been reported here</a>.</center></td></tr>"
-"	<tr><td colspan='2'><center><a target='new' href='%s'>If it hasnt been reported, you may report this bug by clicking here</a>.</center></td></tr>"
-"	</table></center><br />"
-msgstr "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
-"             <b>Znalazłeś błąd w phpLDAPadmin (nie krytyczny) !</b></td></tr><tr><td>Błąd:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Plik:</td>"
-"             <td><b>%s</b> linia <b>%s</b>, wywołane z <b>%s</b></td></tr><tr><td>Wersje:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
-"             </td></tr><tr><td>Serwer Web:</td><td><b>%s</b></td></tr><tr><td colspan='2'><center><a target='new' href='%s'>"
-"             Sprawdź proszę czy ten błąd nie został już zgłoszony tutaj</a>.</center></td></tr>"
-"	     <tr><td colspan='2'><center><a target='new' href='%s'>Jeśli nie został jeszcze zgłoszony, to możesz go zgłosić tutaj</a>.</center></td></tr>"
-"	     </table></center><br />"
-
-
-msgid "Congratulations! You found a bug in phpLDAPadmin.<br /><br />"
-"	     <table class='bug'>"
-"	     <tr><td>Error:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>Level:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>File:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>Line:</td><td><b>%s</b></td></tr>"
-"		 <tr><td>Caller:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>PLA Version:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>PHP Version:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>Web server:</td><td><b>%s</b></td></tr>"
-"	     </table>"
-"	     <br />"
-"	     Please report this bug by clicking below!"
-msgstr "Gratulacje ! Znalazłeś błąd w phpLDAPadmin.<br /><br />"
-"	     <table class='bug'>"
-"	     <tr><td>Błąd:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>Poziom:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>Plik:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>Linia:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>Wywołane z:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>Wersja PLA:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>Wersja PHP:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
-"	     <tr><td>Serwer Web:</td><td><b>%s</b></td></tr>"
-"	     </table>"
-"	     <br />"
-"         Proszę zgłoś ten błąd klikając poniżej !"
-
-
-msgid "Import LDIF File"
-msgstr "Importuj plik LDIF"
-
-
-msgid "Select an LDIF file:"
-msgstr "Wybierz plik LDIF:"
-
-
-msgid "Don't stop on errors"
-msgstr "Nie zatrzymuj się po napotkaniu błędów"
-
-
-msgid "Adding..."
-msgstr "Dodawanie..."
-
-
-msgid "Deleting..."
-msgstr "Usuwanie..."
-
-
-msgid "Renaming..."
-msgstr "Zmiana nazwy..."
-
-
-msgid "Modifying..."
-msgstr "Modyfikowanie..."
-
-
-msgid "No version found. Assuming 1."
-msgstr "Nie znaleziono numeru wersji. Przyjmuję 1."
-
-
-msgid "A valid dn line is required."
-msgstr "Wymagana jest poprawna linia DN."
-
-
-msgid "Missing uploaded file."
-msgstr "Brak wgrywanego pliku."
-
-
-msgid "No LDIF file specified. Please try again."
-msgstr "Nie określono pliku LDIF. Spróbuj ponownie."
-
-
-msgid "Uploaded LDIF file is empty."
-msgstr "Wgrany plik LDIF jest pusty."
-
-
-msgid "empty"
-msgstr "pusty"
-
-
-msgid "File"
-msgstr "Plik"
-
-
-msgid "%s bytes"
-msgstr "%s bajtów"
-
-
-msgid "Your PHP.INI does not have file_uploads = ON. Please enable file uploads in PHP."
-msgstr "Twój plik konfiguracyjny PHP.INI nie zawiera file_uploads = ON. Proszę włączyć wgrywanie plików w konfiguracji PHP."
-
-
-msgid "Failed"
-msgstr "Nieudane"
-
-
-msgid "LDIF Parse Error"
-msgstr "Błąd przetwarzania LDIF (Parse Error)"
-
-
-msgid "Could not add object:"
-msgstr "Nie można dodać obiektu:"
-
-
-msgid "Could not rename object:"
-msgstr "Nie można zmienić nazwy obiektu:"
-
-
-msgid "Could not delete object:"
-msgstr "Nie można usunąć obiektu:"
-
-
-msgid "Could not modify object:"
-msgstr "Nie można zmodyfikować obiektu:"
-
-
-msgid "Line Number:"
-msgstr "Linia numer:"
-
-
-msgid "Line:"
-msgstr "Linia:"
-
-
-msgid "Are you sure you want to permanently delete this object?"
-msgstr "Czy na pewno trwale usunąć ten obiekt ?"
-
-
-msgid "List of entries to be deleted:"
-msgstr "Lista wpisów do usunięcia:"
-
-
-msgid "DN"
-msgstr "DN"
-
-
-msgid "Export format"
-msgstr "Format eksportu"
-
-
-msgid "Line ends"
-msgstr "Zakończenie linii"
-
-
-msgid "You must choose an export format."
-msgstr "Musisz wybrać format eksportu."
-
-
-msgid "Invalid export format"
-msgstr "Błędny format eksportu"
-
-
-msgid "No available exporter found."
-msgstr "Nie znaleziono dostępnego eksportera."
-
-
-msgid "Encountered an error while performing search."
-msgstr "Napotkano błąd podczas szukania."
-
-
-msgid "Showing results %s through %s."
-msgstr "Pokazywanie rezultatów %s przez %s."
-
-
-msgid "Searching..."
-msgstr "Szukam..."
-
-
-msgid "Notice, search size limit exceeded."
-msgstr "Uwaga, przekroczono limit rozmiaru wyszukiwania."
-
-
-msgid "Entry"
-msgstr "Wpis"
-
-
-msgid "LDIF Export for: %s"
-msgstr "Eksport LDIF dla: %s"
-
-
-msgid "Generated by phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) on %s"
-msgstr "Wygenerowane przez phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) na %s"
-
-
-msgid "Total Entries"
-msgstr "Łącznie wpisów"
-
-
-msgid "DSLM Export for: %s"
-msgstr "Eksport DSLM dla: %s"
-
-
-msgid "Include system attributes"
-msgstr "Zawiera atrybuty systemowe"
-
-
-msgid "CSV (Spreadsheet)"
-msgstr "CVS (arkusz)"
-
-
-msgid "You left the password blank."
-msgstr "Pozostawiłeś/aś puste hasło."
-
-
-msgid "No one is logged in to that server."
-msgstr "Nikt nie jest zalogowany do tego serwera."
-
-
-msgid "Could not logout."
-msgstr "Nie można wylogować."
-
-
-msgid "Unknown auth_type: %s"
-msgstr "Nieznany auth_type: %s"
-
-
-msgid "Logged out successfully from server <b>%s</b>"
-msgstr "Pomyślnie wylogowano z serwera <b>%s</b>"
-
-
-msgid "Authenticate to server %s"
-msgstr "Uwierzytelnienie dla serwera %s"
-
-
-msgid "Warning: This web connection is unencrypted."
-msgstr "Uwaga: To połączenie nie jest szyfrowane."
-
-
-msgid "You are not using 'https'. Web browser will transmit login information in clear text."
-msgstr "Nie używasz 'https'. Przeglądarka będzie transmitować informację logowania czystym tekstem (clear text)."
-
-
-msgid "Login DN"
-msgstr "Login DN"
-
-
-msgid "User name"
-msgstr "Nazwa użytkownika"
-
-
-msgid "Password"
-msgstr "Hasło"
-
-
-msgid "Authenticate"
-msgstr "Zaloguj"
-
-
-msgid "Sorry, you are not allowed to use phpLDAPadmin with this LDAP server."
-msgstr "Przykro mi, ale nie masz uprawnień aby korzystać z phpLDAPadmin na tym serwerze LDAP."
-
-
-msgid "Entry Chooser"
-msgstr "Wybór wpisu"
-
-
-msgid "You need to configure phpLDAPadmin. Edit the file 'config/config.php' to do so. An example config file is provided in 'config/config.php.example'"
-msgstr "Musisz skonfigurować phpLDAPadmin. Wyedytuj plik 'config.php' aby to zrobić. Przykład pliku konfiguracji znajduje się w 'config.php.example'"
-
-
-msgid "Deletes not allowed in read only mode."
-msgstr "Usuwanie jest niedozwolone w trybie tylko-do-odczytu."
-
-
-msgid "Error calling mass_delete.php. Missing mass_delete in POST vars."
-msgstr "Błąd podczas wywołania mass_delete.php. Brakująca mass_delete w zmiennych POST."
-
-
-msgid "mass_delete POST var is not an array."
-msgstr "zmienna POST mass_delete nie jest w tablicą."
-
-
-msgid "Mass deletion is not enabled. Please enable it in config.php before proceeding."
-msgstr "Masowe usuwanie nie jest dozwolone. Odblokuj to proszę w config.php przed kontynuacją."
-
-
-msgid "Mass Deleting"
-msgstr "Masowe usuwanie"
-
-
-msgid "Deletion progress on server \"%s\""
-msgstr "Postęp usuwania na serwerze \"%s\""
-
-
-msgid "Malformed mass_delete array."
-msgstr "Zniekształcona tablica mass_delete."
-
-
-msgid "You did not select any entries to delete."
-msgstr "Nie wybrano żadnegych wpisów do usunięcia."
-
-
-msgid "Deleting %s"
-msgstr "Usuwanie %s"
-
-
+#: ../../htdocs/mass_delete.php:86
+#, php-format
 msgid "%s of %s entries failed to be deleted."
 msgstr "%s z %s wpisów nie zostało usuniętych."
 
+#: ../../lib/EntryWriter1.php:946
+msgid "("
+msgstr "("
 
+#: ../../lib/HTMLTree.php:477
+msgid "(Session timed out. Automatically logged out.)"
+msgstr "(Sesja wygasła. Automatycznie wylogowano.)"
+
+#: ../../lib/EntryWriter1.php:948
+msgid ")"
+msgstr ")"
+
+#: ../../htdocs/purge_cache.php:13 ../../htdocs/refresh.php:17
+#: ../../htdocs/search.php:120 ../../htdocs/search.php:124
+#: ../../htdocs/search.php:128 ../../htdocs/search.php:265
+#: ../../htdocs/search.php:276 ../../htdocs/search.php:295
+#: ../../htdocs/search.php:299 ../../htdocs/schema.php:20
+#: ../../htdocs/delete.php:21 ../../htdocs/update.php:61
+#: ../../htdocs/update.php:67 ../../htdocs/update.php:80
+#: ../../htdocs/create.php:25 ../../htdocs/create.php:114
+#: ../../htdocs/add_value.php:24 ../../htdocs/export.php:18
+#: ../../htdocs/delete_attr.php:21 ../../htdocs/mass_delete.php:26
+#: ../../htdocs/add_attr.php:25 ../../htdocs/ldif_import.php:19
+#: ../../htdocs/add_value_form.php:76 ../../htdocs/add_value_form.php:78
+#: ../../htdocs/add_value_form.php:104 ../../htdocs/rename.php:24
+#: ../../htdocs/update_confirm.php:322 ../../htdocs/update_confirm.php:327
+#: ../../htdocs/rdelete.php:21 ../../htdocs/server_info.php:16
+#: ../../htdocs/copy.php:20 ../../htdocs/copy.php:76
+#: ../../htdocs/view_jpeg_photo.php:25 ../../lib/HTMLTree.php:274
+#: ../../lib/page.php:184 ../../lib/EntryWriter1.php:247
+#: ../../lib/EntryWriter1.php:254 ../../lib/EntryWriter1.php:261
+#: ../../lib/EntryWriter1.php:507 ../../lib/EntryWriter1.php:512
+#: ../../lib/EntryWriter1.php:1019 ../../lib/EntryWriter1.php:1022
+#: ../../lib/EntryWriter1.php:1244 ../../lib/EntryWriter1.php:1413
+#: ../../lib/EntryWriter1.php:2425 ../../lib/EntryWriter2.php:21
+#: ../../lib/EntryWriter2.php:175
+msgid ":"
+msgstr ":"
+
+#: ../../lib/search_form_advanced.php:102
+msgid "A list of attributes to display in the results (comma-separated)"
+msgstr "Lista atrybutów do wyświetlenia w wynikach (rozdzielona przecinkami)"
+
+#: ../../lib/template_functions.php:944 ../../lib/EntryWriter1.php:2425
+msgid "A random password was generated for you"
+msgstr "Zostało wygenerowane losowe hasło"
+
+#: ../../lib/ldif_functions.php:532
+msgid "A valid deleteoldrdn attribute should be specified"
+msgstr "Powinien zostać podany poprawny atrybut deleteoldrdn"
+
+#: ../../lib/ldif_functions.php:243
+msgid "A valid dn line is required."
+msgstr "Wymagana jest poprawna linia DN."
+
+#: ../../lib/ldif_functions.php:538
+msgid "A valid newrdn attribute  should be specified"
+msgstr "Powinien zostać podany poprawny atrybut newrdn"
+
+#: ../../htdocs/add_attr_form.php:103 ../../htdocs/add_attr_form.php:147
+#: ../../lib/EntryWriter1.php:775
+msgid "Add"
+msgstr "Dodaj"
+
+#: ../../htdocs/add_value_form.php:240
+msgid "Add New Value"
+msgstr "Dodaj nową wartość"
+
+#: ../../htdocs/compare.php:528 ../../htdocs/add_oclass_form.php:104
+msgid "Add ObjectClass and Attributes"
+msgstr "Dodaj klasę obiektu i atrybuty"
+
+#: ../../htdocs/modify_member_form.php:144
+msgid "Add all"
+msgstr "Dodaj wszystko"
+
+#: ../../htdocs/compare.php:539 ../../lib/EntryWriter1.php:1808
+#, php-format
+msgid "Add an additional value to attribute '%s'"
+msgstr "Dodaj dodatkową wartość do atrybutu '%s'"
+
+#: ../../htdocs/add_value_form.php:98
+msgid "Add new"
+msgstr "Dodaj nowy"
+
+#: ../../htdocs/compare.php:530 ../../htdocs/add_value_form.php:196
+msgid "Add new ObjectClass"
+msgstr "Dodaj nową klasę obiektu"
+
+#: ../../htdocs/add_attr_form.php:23 ../../htdocs/add_attr_form.php:71
+#: ../../lib/EntryWriter1.php:775
+msgid "Add new attribute"
+msgstr "Dodaj nowy atrybut"
+
+#: ../../htdocs/add_attr_form.php:113
+msgid "Add new binary attribute"
+msgstr "Dodaj nowy atrybut binarny"
+
+#: ../../htdocs/modify_member_form.php:144
+msgid "Add selected"
+msgstr "Dodaj wybrane"
+
+#: ../../htdocs/ldif_import.php:62
+msgid "Adding..."
+msgstr "Dodawanie..."
+
+#: ../../lib/search_form_advanced.php:32 ../../lib/search_form_simple.php:34
+#: ../../lib/search_form_predefined.php:33
+msgid "Advanced Search Form"
+msgstr "Wyszukiwanie zaawansowane"
+
+#: ../../htdocs/schema.php:108
+msgid "Aliases"
+msgstr "Aliasy"
+
+#: ../../htdocs/mass_delete.php:88
 msgid "All entries deleted successfully."
 msgstr "Wszystkie wpisy pomyślnie usunieto."
 
-
-msgid "Confirm mass delete of %s entries on server %s"
-msgstr "Potwierdź masowe usunięcie %s wpisów na serwerze %s"
-
-
-msgid "Yes, delete!"
-msgstr "Tak, usuń !"
-
-
-msgid "You cannot rename an entry which has children entries (eg, the rename operation is not allowed on non-leaf entries)"
-msgstr "Nie możesz zmienić nazwy wpisu, posiadającego wpisy potomne (np. operacja zmiany nazwy nie jest dozwolona na wpisach nie będących liścmi)."
-
-
-msgid "You did not change the RDN"
-msgstr "Nie zmieniłeś/aś RDN"
-
-
-msgid "Invalid RDN value"
-msgstr "Błędna wartość RDN"
-
-
-msgid "Could not rename the entry"
-msgstr "Nie można zmienić nazwy wpisu"
-
-
-msgid "Passwords match!"
-msgstr "Hasła zgodne !"
-
-
-msgid "Passwords do not match!"
-msgstr "Hasła nie zgadzają się !"
-
-
-msgid "Password Checker Tool"
-msgstr "Narzędzie do sprawdzania haseł"
-
-
-msgid "To"
-msgstr "Do"
-
-
-msgid "Using the"
-msgstr "Używając"
-
-
-msgid "You may switch to the "
-msgstr "Możesz przełączyć się do "
-
-
-msgid "default template"
-msgstr "domyślnego szablonu"
-
-
-msgid "User Account (posixAccount)"
-msgstr "Konto Użytkownika (posixAccount)"
-
-
-msgid "Address Book Entry (inetOrgPerson)"
-msgstr "Wpis Książki Adresowej (inetOrgPerson)"
-
-
-msgid "Address Book Entry (mozillaOrgPerson)"
-msgstr "Wpis Książki Adresowej (mozillaOrgPerson)"
-
-
-msgid "Kolab User Entry"
-msgstr "Wpis Użytkownika Kolab"
-
-
-msgid "Organisational Unit"
-msgstr "Jednostka Organizacyjna"
-
-
-msgid "New Organisational Unit"
-msgstr "Nowa Jednostka Organizacyjna"
-
-
-msgid "Organisational Role"
-msgstr "Rola w Organizacji"
-
-
-msgid "Posix Group"
-msgstr "Grupa Posix"
-
-
-msgid "Samba NT Machine"
-msgstr "Maszyna Samba NT"
-
-
-msgid "Samba 3 NT Machine"
-msgstr "Maszyna Samba 3 NT"
-
-
-msgid "Samba User"
-msgstr "Użytkownik Samba"
-
-
-msgid "Samba 3 User"
-msgstr "Użytkownik Samba 3"
-
-
-msgid "Samba 3 Group Mapping"
-msgstr "Przypisanie grupy Samba 3"
-
-
-msgid "DNS Entry"
-msgstr "Wpis DNS"
-
-
-msgid "Simple Security Object"
-msgstr "Prosty obiekt bezpieczeństwa (SSO)"
-
-
-msgid "Courier Mail Account"
-msgstr "Konto Pocztowe w Courier"
-
-
-msgid "Courier Mail Alias"
-msgstr "Alias Pocztowy w Courier"
-
-
-msgid "LDAP Alias"
-msgstr "Alias w LDAP"
-
-
-msgid "Sendmail Cluster"
-msgstr "Klaster Sendmail"
-
-
-msgid "Sendmail Domain"
-msgstr "Domena Sendmail"
-
-
-msgid "Sendmail Alias"
-msgstr "Alias Sendmail"
-
-
-msgid "Sendmail Virtual Domain"
-msgstr "Wirtualna Domena Sendmail"
-
-
-msgid "Sendmail Virtual Users"
-msgstr "Wirtualni Użytkownicy Sendmail"
-
-
-msgid "Sendmail Relays"
-msgstr "Sendmail Relays"
-
-
-msgid "Custom"
-msgstr "Ogólne"
-
-
-msgid "My Samba domain Name"
-msgstr "Moja nazwa domeny w Samba"
-
-
-msgid "Administrators"
-msgstr "Administratorzy"
-
-
-msgid "Users"
-msgstr "Użytkownicy"
-
-
-msgid "Guests"
-msgstr "Goście"
-
-
-msgid "Power Users"
-msgstr "Użytkownicy zaawansowani"
-
-
-msgid "Account Operators"
-msgstr "Operatorzy kont"
-
-
-msgid "Server Operators"
-msgstr "Operatorzy serwera"
-
-
-msgid "Print Operators"
-msgstr "Operatorzy drukowania"
-
-
-msgid "Backup Operators"
-msgstr "Operatorzy archiwizacji danych"
-
-
-msgid "Replicator"
-msgstr "Replikator"
-
-
-msgid " Unable to create the Samba passwords. Please, check the configuration in template_config.php"
-msgstr " Nie można utworzyć haseł Samba. Proszę sprawdzić konfigurację w template_config.php"
-
-
-msgid "Error: You have an error in your samba confguration."
-msgstr "Błąd: masz błąd w konfiguracji samby"
-
-
-msgid "Error: A name and a sid for your samba domain need to be provided."
-msgstr "Błąd: musisz wprowadzić nazwę oraz sid dla Twojej domeny samby."
-
-
-msgid "Error: No name provided for samba domain."
-msgstr "Błąd: brak nazwy dla domeny samby."
-
-
-msgid "Error: No sid provided for samba domain."
-msgstr "Błąd: brak sid dla domeny samby"
-
-
-msgid "Samba Account"
-msgstr "Konto Samba"
-
-
-msgid "samba account"
-msgstr "konto samba"
-
-
-msgid "New User Account"
-msgstr "Nowe konto użytkownika"
-
-
-msgid "Hint: To customize this template, edit the file templates/creation/new_user_template.php"
-msgstr "Wskazówka: Aby dostosować ten szablon, wyedytuj plik templates/creation/new_user_template.php"
-
-
-msgid "First name"
-msgstr "Imię"
-
-
-msgid "Last name"
-msgstr "Nazwisko"
-
-
-msgid "first"
-msgstr "imię"
-
-
-msgid "last"
-msgstr "nazwisko"
-
-
-msgid "State"
-msgstr "Stan"
-
-
-msgid "Encryption"
-msgstr "Szyfrowanie"
-
-
-msgid "Login Shell"
-msgstr "Powłoka (shell)"
-
-
-msgid "Home Directory"
-msgstr "Katalog domowy"
-
-
-msgid "UID Number"
-msgstr "Numer UID"
-
-
-msgid "(automatically determined)"
-msgstr "(automatycznie określony)"
-
-
-msgid "Group"
-msgstr "Grupa"
-
-
-msgid "GID Number"
-msgstr "Numer GID"
-
-
-msgid "User ID"
-msgstr "ID Użytkownika"
-
-
-msgid "Your passwords don't match. Please go back and try again."
-msgstr "Hasła nie zgadzają się. Wróc i spróbuj ponownie."
-
-
-msgid "You cannot leave the %s blank. Please go back and try again."
-msgstr "Nie możesz pozostawić pustego pola %s. Wróć i spróbuj ponownie."
-
-
-msgid "You can only enter numeric values for the %s field. Please go back and try again."
-msgstr "Pole %s może zawierać tylko wartości numeryczne. Wróć i spróbuj ponownie."
-
-
-msgid "The container you specified (%s) does not exist. Please go back and try again."
-msgstr "Kontener który wybrałeś/aś (%s) nie istnieje. Wróć i spróbuj ponownie."
-
-
-msgid "Confirm account creation"
-msgstr "Potwierdź utworzenie konta"
-
-
-msgid "[secret]"
-msgstr "[tajne]"
-
-
-msgid "Create Account"
-msgstr "Utwórz konto"
-
-
-msgid "Verify"
-msgstr "Weryfikuj"
-
-
-msgid "New Posix Group"
-msgstr "Nowa Grupa Posix"
-
-
-msgid "New Address Book Entry"
-msgstr "Nowy wpis w Książce Adresowej"
-
-
-msgid "Organisation"
-msgstr "Organizacja"
-
-
-msgid "Address"
-msgstr "Adres"
-
-
-msgid "City"
-msgstr "Miasto"
-
-
-msgid "Postal code"
-msgstr "Kod pocztowy"
-
-
-msgid "Street"
-msgstr "Ulica"
-
-
-msgid "Work phone"
-msgstr "Telefon służbowy"
-
-
-msgid "Fax"
-msgstr "Fax"
-
-
-msgid "Mobile"
-msgstr "Telefon komórkowy"
-
-
-msgid "Email"
-msgstr "E-mail"
-
-
-msgid "You cannot leave the Common Name blank. Please go back and try again."
-msgstr "Nie możesz pozostawić pustego pola Nazwa. Wróć i spróbuj ponownie."
-
-
-msgid "Confirm entry creation:"
-msgstr "Potwierdź utworzenie wpisu:"
-
-
-msgid "Create Address"
-msgstr "Utwórz adres"
-
-
+#: ../../lib/EntryWriter1.php:811
+#, php-format
+msgid "An attribute (%s) was modified and is highlighted below."
+msgstr "Atrybut (%s) został zmodyfikowany i jest wyróżniony poniżej."
+
+#: ../../htdocs/update_confirm.php:100
+msgid "An entry should have one structural objectClass."
+msgstr "Wpis powinien posiadać jedną strukturalną klasę obiektu (objectClass)."
+
+#: ../../htdocs/login_form.php:59
+msgid "Anonymous"
+msgstr "Podłączenie anonimowe"
+
+#: ../../htdocs/login.php:162
+msgid "Anonymous Bind"
+msgstr "Podłączenie anonimowe"
+
+#: ../../htdocs/delete_form.php:102
+msgid "Are you sure you want to permanently delete this object?"
+msgstr "Czy na pewno trwale usunąć ten obiekt ?"
+
+#: ../../htdocs/compare.php:55 ../../htdocs/update_confirm.php:202
+msgid "Attribute"
+msgstr "Atrybuty"
+
+#: ../../lib/ldif_functions.php:455
+msgid "Attribute is not valid"
+msgstr "Atrubut nie jest prawidłowy"
+
+#: ../../lib/ldif_functions.php:375
+msgid "Attribute not well formed"
+msgstr "Atrybut ma niewłaściwą postać"
+
+#: ../../htdocs/login_form.php:62
+msgid "Authenticate"
+msgstr "Zaloguj"
+
+#: ../../htdocs/login.php:27 ../../htdocs/login.php:92
+#: ../../htdocs/login.php:114 ../../htdocs/login.php:134
+#: ../../htdocs/login.php:141 ../../htdocs/login.php:161
+#: ../../htdocs/login_form.php:19 ../../lib/HTMLTree.php:90
+#: ../../lib/server_functions.php:2434
+msgid "Authenticate to server"
+msgstr "Uwierzytelnienie dla serwera"
+
+#: ../../htdocs/modify_member_form.php:113
+msgid "Available members"
+msgstr "Dostępni członkowie"
+
+#: ../../htdocs/entry_chooser.php:65
+msgid "Back Up..."
+msgstr "Do góry..."
+
+#: ../../lib/functions.php:1140
+msgid "Backtrace"
+msgstr "Śledzenie wstecz"
+
+#: ../../htdocs/login.php:93 ../../htdocs/login.php:142
+#: ../../lib/server_functions.php:357 ../../lib/server_functions.php:2435
+msgid "Bad username or password. Please try again."
+msgstr "Zła nazwa użytkownika lub hasło. Spróbuj ponownie."
+
+#: ../../htdocs/export_form.php:31 ../../lib/search_form_advanced.php:89
+msgid "Base (base dn only)"
+msgstr "Base (tylko bazowa dn)"
+
+#: ../../htdocs/search.php:295 ../../htdocs/export_form.php:52
+#: ../../lib/search_form_advanced.php:63
+msgid "Base DN"
+msgstr "Bazowa DN"
+
+#: ../../htdocs/compare.php:276 ../../lib/EntryWriter1.php:1952
+msgid "Binary value"
+msgstr "Wartość binarna"
+
+#: ../../htdocs/copy.php:61
+msgid "Building snapshot of tree to copy... "
+msgstr "Budowanie migawki (snapshot) drzewa do skopiowania... "
+
+#: ../../lib/export_functions.php:38
+msgid "CSV (Spreadsheet)"
+msgstr "CVS (arkusz)"
+
+#: ../../htdocs/delete_form.php:77 ../../htdocs/delete_form.php:127
+#: ../../htdocs/update_confirm.php:313
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: ../../htdocs/compare.php:383
+msgid "Check password"
+msgstr "Sprawdź hasło"
+
+#: ../../lib/EntryWriter1.php:2389
 msgid "Check password..."
 msgstr "Sprawdź hasło"
 
+#: ../../lib/EntryReader.php:352
+msgid "Checking passwords"
+msgstr "Sprawdzam hasła"
 
-msgid "(Auto evaluated on submission.)"
-msgstr "(Automatycznie wyliczane przy wysłaniu)"
+#: ../../lib/EntryWriter1.php:782
+msgid "Children"
+msgstr "Wpisy potomne"
 
+#: ../../lib/functions.php:3047
+msgid "Click to popup a dialog to select a date graphically"
+msgstr "Kliknij aby wywołać okno i wybrać datę graficznie"
 
+#: ../../lib/functions.php:1754
+msgid "Click to popup a dialog to select an entry (DN) graphically"
+msgstr "Kliknij aby wywołać okno i wybrać wpis (DN) graficznie"
+
+#: ../../htdocs/compare.php:162 ../../htdocs/server_info.php:83
+#: ../../lib/EntryWriter1.php:1874
+#, php-format
+msgid "Click to view the schema definition for attribute type '%s'"
+msgstr "Kliknij aby zobaczyć definicję schematu dla atrybutu typu '%s'"
+
+#: ../../htdocs/schema.php:104
+msgid "Collective"
+msgstr "Zbiorcza "
+
+#: ../../htdocs/update_confirm.php:310
+msgid "Commit"
+msgstr "Zatwierdź"
+
+#: ../../htdocs/password_checker.php:33 ../../htdocs/compare_form.php:29
+#: ../../htdocs/compare_form.php:64 ../../lib/EntryWriter1.php:761
 msgid "Compare"
 msgstr "Porównaj"
 
-
-msgid "Comparing the following DNs"
-msgstr "Porównuję następujące DN"
-
-
+#: ../../htdocs/compare_form.php:21
 msgid "Compare another DN with"
 msgstr "Porównaj inny DN z"
 
-
-msgid "with "
-msgstr "z"
-
-
-msgid "Source DN"
-msgstr "Źródłowa DN"
-
-
+#: ../../htdocs/compare_form.php:41 ../../htdocs/compare_form.php:53
 msgid "Compare this DN with another"
 msgstr "Prównaj tą DN z inną"
 
-
-msgid "Switch Entry"
-msgstr "Zamień wpisy"
-
-
-msgid "No Value"
-msgstr "Brak wartości"
-
-
+#: ../../lib/EntryWriter1.php:762
 msgid "Compare with another entry"
 msgstr "Porównaj z innym wpisem"
 
+#: ../../htdocs/compare.php:50
+msgid "Comparing the following DNs"
+msgstr "Porównuję następujące DN"
 
-msgid "You need one of the following ObjectClass(es) to add this attribute %s."
-msgstr "Musisz posiadać jedną z następujących klas obiektów, aby dodać ten atrybut %s "
+#: ../../htdocs/export_form.php:84
+msgid "Compress"
+msgstr "Kompresja"
 
+#: ../../lib/common.php:123
+msgid "Configuration cache stale."
+msgstr "Przestarzała konfiguracja w cache."
 
-msgid "Your Session timed out after"
-msgstr "Twoja sesja wygaśnie po"
+#: ../../htdocs/mass_delete.php:92
+#, php-format
+msgid "Confirm mass delete of %s entries on server %s"
+msgstr "Potwierdź masowe usunięcie %s wpisów na serwerze %s"
 
+#: ../../lib/EntryWriter1.php:327
+msgid "Container"
+msgstr "Kontener"
 
-msgid "min. of inactivity. You have been automatically logged out."
-msgstr "min. nieaktywności. Zostaniesz automatycznie wylogowany/a."
+#: ../../lib/EntryWriter1.php:256
+msgid "Container and ObjectClass(es)"
+msgstr "Kontener i klasa/y obiektu"
 
+#: ../../lib/ldif_functions.php:525
+msgid "Container is null"
+msgstr "Kontener jest nieokreślony"
 
-msgid "To log back in please click on the following link:"
-msgstr "Aby się zalogować ponownie kliknij w następujący link:"
+#: ../../htdocs/copy_form.php:45 ../../htdocs/copy_form.php:51
+msgid "Copy"
+msgstr "Kopiuj"
 
+#: ../../htdocs/copy_form.php:96
+msgid "Copy "
+msgstr "Kopiuj "
 
-msgid "(Session timed out. Automatically logged out.)"
-msgstr "(Sesja wygasła. Automatycznie wylogowano)"
+#: ../../htdocs/copy.php:88
+msgid "Copy Entry"
+msgstr "Kopiuj wpis"
 
+#: ../../lib/EntryWriter1.php:727
+msgid "Copy or move this entry"
+msgstr "Skopiuj lub przenieś ten wpis"
 
+#: ../../htdocs/copy.php:76 ../../htdocs/copy.php:106
+msgid "Copy successful!"
+msgstr "Kopiowanie zakończone pomyślnie!"
+
+#: ../../lib/EntryWriter1.php:726
+msgid "Copy this object to another location,a new DN, or another server"
+msgstr ""
+"Skopiuj ten obiekt do innej lokalizacji, nowej DN, lub na inny serwer"
+
+#: ../../htdocs/copy.php:57
+msgid "Copying "
+msgstr "Kopiowanie "
+
+#: ../../htdocs/ldif_import.php:70
+msgid "Could not add object:"
+msgstr "Nie można dodać obiektu:"
+
+#: ../../htdocs/create.php:132
+msgid "Could not add the object to the LDAP server."
+msgstr "Nie można dodać obiektu do serwera LDAP."
+
+#: ../../htdocs/login.php:135
+msgid "Could not bind anonymously to server."
+msgstr "Nie można anonimowo podłączyć do serwera."
+
+#: ../../lib/server_functions.php:366
+msgid "Could not bind to the LDAP server."
+msgstr "Nie można podłączyć się do serwera LDAP."
+
+#: ../../lib/server_functions.php:363
+#, php-format
+msgid "Could not connect to \"%s\" on port \"%s\""
+msgstr "Nie można podłączyć się do \"%s\" na port \"%s\""
+
+#: ../../lib/HTMLTree.php:91
+msgid "Could not connect to LDAP server"
+msgstr "Nie można ustanowić połączenia z serwerem LDAP."
+
+#: ../../htdocs/ldif_import.php:71
+msgid "Could not delete object:"
+msgstr "Nie można usunąć obiektu:"
+
+#: ../../htdocs/delete.php:35 ../../htdocs/delete.php:49
+#: ../../htdocs/rdelete.php:45
+#, php-format
+msgid "Could not delete the entry: %s"
+msgstr "Nie można usunąć wpisu: %s"
+
+#: ../../htdocs/entry_chooser.php:101
+msgid "Could not determine base DN"
+msgstr "Nie można określić bazowego DN"
+
+#: ../../lib/HTMLTree.php:78
+msgid "Could not determine the root of your LDAP tree."
+msgstr "Nie można ustalić korzenia Twojego drzewa LDAP."
+
+#: ../../lib/functions.php:1326
+#, php-format
+msgid "Could not fetch jpeg data from LDAP server for attribute %s."
+msgstr "Nie można pobrać danych jpeg z serwera LDAP dla atrybutu %s."
+
+#: ../../htdocs/logout.php:24 ../../lib/timeout_functions.php:74
+msgid "Could not logout."
+msgstr "Nie można wylogować."
+
+#: ../../htdocs/ldif_import.php:74
+msgid "Could not modify object:"
+msgstr "Nie można zmodyfikować obiektu:"
+
+#: ../../htdocs/add_oclass.php:54 ../../htdocs/add_value.php:72
+msgid "Could not perform ldap_mod_add operation."
+msgstr "Nie można dokonać operacji ldap_mod_add."
+
+#: ../../htdocs/update.php:178 ../../htdocs/delete_attr.php:50
+msgid "Could not perform ldap_modify operation."
+msgstr "Nie można wykonać operacji modyfikacji (ldap_modify)."
+
+#: ../../htdocs/ldif_import.php:72 ../../htdocs/ldif_import.php:73
+msgid "Could not rename object:"
+msgstr "Nie można zmienić nazwy obiektu:"
+
+#: ../../htdocs/rename.php:61 ../../lib/server_functions.php:1530
+msgid "Could not rename the entry"
+msgstr "Nie można zmienić nazwy wpisu"
+
+#: ../../htdocs/schema.php:31
+msgid "Could not retrieve schema from"
+msgstr "Nie można uzyskać schematu z"
+
+#: ../../htdocs/login.php:150
+msgid "Could not set cookie."
+msgstr "Nie można ustawić ciasteczka (cookie)."
+
+#: ../../lib/server_functions.php:281
+msgid "Could not start TLS. Please check your LDAP server configuration."
+msgstr "Nie można uruchomić TLS. Proszę sprawdzić konfigurację serwera LDAP."
+
+#: ../../lib/functions.php:1341
+#, php-format
+msgid ""
+"Could not write to the $jpeg_temp_dir directory %s. Please verify that your "
+"web server can write files there."
+msgstr ""
+"Nie można zapisać do katalogu $jpeg_temp_dir %s. Sprawdź proszę czy Twój "
+"serwer może zapisywać pliki w tym katalogu."
+
+#: ../../lib/EntryWriter1.php:769
+msgid "Create"
+msgstr "Utwórz"
+
+#: ../../htdocs/create.php:117
+msgid "Create Entry"
+msgstr "Utwórz wpis"
+
+#: ../../lib/EntryWriter1.php:242 ../../lib/EntryWriter1.php:313
+#: ../../lib/EntryWriter2.php:82
+msgid "Create Object"
+msgstr "Utwórz obiekt"
+
+#: ../../lib/EntryWriter1.php:769
+msgid "Create a child entry"
+msgstr "Utwórz wpis potomny"
+
+#: ../../lib/HTMLTree.php:454
+msgid "Create a new entry in"
+msgstr "Utwórz nowy wpis w"
+
+#: ../../htdocs/create.php:127
+msgid "Create another entry"
+msgstr "Utwórz inny wpis"
+
+#: ../../lib/HTMLTree.php:66
+msgid "Create it?"
+msgstr "Utworzyć ?"
+
+#: ../../lib/PLMTree.php:142 ../../lib/PLMTree.php:162
+#: ../../lib/HTMLTree.php:454 ../../lib/AJAXTree.php:343
+#: ../../lib/AJAXTree.php:344 ../../lib/AJAXTree.php:367
+#: ../../lib/AJAXTree.php:368
+msgid "Create new entry here"
+msgstr "Utwórz nowy wpis"
+
+#: ../../htdocs/create.php:114
+msgid "Creation successful!"
+msgstr "Utworzono pomyślnie!"
+
+#: ../../htdocs/welcome.php:27
+msgid "Credits"
+msgstr "Twórcy"
+
+#: ../../htdocs/add_value_form.php:104
+msgid "Current list of"
+msgstr "Aktualna lista"
+
+#: ../../lib/EntryWriter1.php:725
+msgid "Cut"
+msgstr "Wytnij"
+
+#: ../../htdocs/delete_form.php:107
+msgid "DN"
+msgstr "DN"
+
+#: ../../lib/EntryWriter1.php:1847
+msgid "DN not available"
+msgstr "DN nie dostępna"
+
+#: ../../lib/export_functions.php:414
+#, php-format
+msgid "DSLM Export for: %s"
+msgstr "Eksport DSLM dla: %s"
+
+#: ../../lib/EntryWriter1.php:1084 ../../lib/EntryWriter1.php:1294
+msgid "Default"
+msgstr "Domyślny"
+
+#: ../../htdocs/delete_form.php:117
+msgid "Delete"
+msgstr "Usuń"
+
+#: ../../htdocs/delete_form.php:27
+#, php-format
+msgid "Delete %s"
+msgstr "Usuń %s"
+
+#: ../../lib/HTMLTree.php:134
+msgid "Delete Checked Entries"
+msgstr "Usuń zaznaczone wpisy"
+
+#: ../../htdocs/delete.php:43
+msgid "Delete DN"
+msgstr "Usuń DN"
+
+#: ../../lib/functions.php:1348
+msgid "Delete Photo"
+msgstr "Usuń fotografię"
+
+#: ../../htdocs/copy_form.php:86 ../../htdocs/copy_form.php:92
+msgid "Delete after copy (move):"
+msgstr "Usuń po skopiowaniu (przenieś):"
+
+#: ../../htdocs/delete_form.php:68
+#, php-format
+msgid "Delete all %s objects"
+msgstr "Usuń wszystkie %s obiekty/ów"
+
+#: ../../lib/functions.php:1383
+msgid "Delete photo"
+msgstr "Usuń zdjęcie"
+
+#: ../../lib/EntryWriter1.php:749
+msgid "Delete this entry"
+msgstr "Usuń ten wpis"
+
+#: ../../htdocs/rdelete.php:54 ../../htdocs/rdelete.php:71
+msgid "Deleting"
+msgstr "Usuwanie"
+
+#: ../../htdocs/mass_delete.php:61 ../../htdocs/rdelete.php:30
+#, php-format
+msgid "Deleting %s"
+msgstr "Usuwanie %s"
+
+#: ../../htdocs/ldif_import.php:63
+msgid "Deleting..."
+msgstr "Usuwanie..."
+
+#: ../../htdocs/mass_delete.php:43
+#, php-format
+msgid "Deletion progress on server \"%s\""
+msgstr "Postęp usuwania na serwerze \"%s\""
+
+#: ../../htdocs/schema.php:69 ../../htdocs/schema.php:96
+#: ../../htdocs/schema.php:403 ../../htdocs/ldif_import.php:110
+#: ../../htdocs/ldif_import.php:120 ../../htdocs/ldif_import.php:190
+#: ../../htdocs/add_value_form.php:230 ../../lib/functions.php:1128
+#: ../../lib/functions.php:1131
+msgid "Description"
+msgstr "Opis"
+
+#: ../../htdocs/copy_form.php:64 ../../htdocs/compare_form.php:53
+msgid "Destination DN"
+msgstr "Docelowa DN"
+
+#: ../../htdocs/copy_form.php:70 ../../htdocs/compare_form.php:61
+msgid "Destination Server"
+msgstr "Docelowy serwer"
+
+#: ../../htdocs/copy.php:29
+msgid "Destination server is currently READ-ONLY."
+msgstr "Docelowy serwer jest obecnie TYLKO-DO-ODCZYTU"
+
+#: ../../htdocs/create.php:125
+msgid "Display the new created entry"
+msgstr "Pokaż nowo utworzony wpis"
+
+#: ../../htdocs/modify_member_form.php:72 ../../htdocs/rename_form.php:29
+#: ../../htdocs/add_attr_form.php:25 ../../htdocs/delete_form.php:29
+#: ../../htdocs/delete_form.php:107 ../../htdocs/compare.php:58
+#: ../../htdocs/compare.php:61 ../../htdocs/copy_form.php:47
+#: ../../htdocs/add_value_form.php:100 ../../htdocs/compare_form.php:24
+#: ../../lib/EntryWriter1.php:511
+msgid "Distinguished Name"
+msgstr "Wyróżniona Nazwa (DN)"
+
+#: ../../htdocs/mass_delete.php:95
+#, php-format
+msgid "Do you really want to delete %s %s %s"
+msgstr "Czy na prawdę chcesz usunąć %s %s %s"
+
+#: ../../htdocs/update_confirm.php:190
+msgid "Do you want to make these changes?"
+msgstr "Czy chcesz dokonać tych zmian ?"
+
+#: ../../htdocs/welcome.php:32
+msgid "Documentation"
+msgstr "Dokumentacja"
+
+#: ../../htdocs/ldif_import_form.php:33 ../../htdocs/ldif_import_form.php:44
+msgid "Don't stop on errors"
+msgstr "Nie zatrzymuj się po napotkaniu błędów"
+
+#: ../../htdocs/welcome.php:37 ../../lib/page.php:146
+msgid "Donate"
+msgstr "Wesprzyj projekt"
+
+#: ../../htdocs/search.php:250 ../../lib/export_functions.php:252
+msgid "Encountered an error while performing search."
+msgstr "Napotkano błąd podczas szukania."
+
+#: ../../htdocs/add_value_form.php:178
+msgid "Enter the value you would like to add:"
+msgstr "Wprowadź wartość, którą chcesz dodać:"
+
+#: ../../htdocs/search.php:265
+msgid "Entries found"
+msgstr "Znaleziono wpisów: "
+
+#: ../../lib/export_functions.php:319
+msgid "Entry"
+msgstr "Wpis"
+
+#: ../../htdocs/rdelete.php:42
+#, php-format
+msgid "Entry %s and sub-tree deleted successfully."
+msgstr "Wpis %s oraz poddrzewo zostały pomyślnie usunięte."
+
+#: ../../htdocs/entry_chooser.php:19
+msgid "Entry Chooser"
+msgstr "Wybór wpisu"
+
+#: ../../htdocs/create.php:122
+msgid "Entry created"
+msgstr "Wpis utworzono"
+
+#: ../../htdocs/schema.php:99
+msgid "Equality"
+msgstr "Równość"
+
+#: ../../lib/functions.php:1072 ../../lib/functions.php:1107
+#: ../../lib/functions.php:1241
+msgid "Error"
+msgstr "Błąd"
+
+#: ../../htdocs/mass_delete.php:30
+msgid "Error calling mass_delete.php. Missing mass_delete in POST vars."
+msgstr ""
+"Błąd podczas wywołania mass_delete.php. Brakująca mass_delete w zmiennych "
+"POST."
+
+#: ../../htdocs/ldif_import.php:118
+msgid "Error code"
+msgstr "Kod błędu"
+
+#: ../../lib/functions.php:1127 ../../lib/functions.php:1130
+#: ../../lib/functions.php:1137
+msgid "Error number"
+msgstr "Numer błędu"
+
+#: ../../lib/server_functions.php:113
+#, php-format
+msgid ""
+"Error: You have an error in your config file. The only three allowed values "
+"for auth_type in the $servers section are 'session', 'cookie', and 'config'. "
+"You entered '%s', which is not allowed."
+msgstr ""
+"Błąd: Masz błąd w pliku konfiguracji. Trzy możliwe wartości dla auth_type w "
+"sekcji $servers to 'session', 'cookie' oraz 'config'. "
+"Wprowadzono wartość '%s', która nie jest dozwolona."
+
+#: ../../htdocs/export_form.php:36 ../../htdocs/export_form.php:46
+#: ../../lib/EntryWriter1.php:719
+msgid "Export"
+msgstr "Eksportuj"
+
+#: ../../lib/HTMLTree.php:259
+msgid "Export entries"
+msgstr "Eksportuj wpisy"
+
+#: ../../htdocs/export_form.php:97
+msgid "Export format"
+msgstr "Format eksportu"
+
+#: ../../lib/EntryWriter1.php:790
+msgid "Export subtree"
+msgstr "Eksportuj całe poddrzewo"
+
+#: ../../htdocs/mass_delete.php:73 ../../htdocs/ldif_import.php:103
+#: ../../htdocs/ldif_import.php:116 ../../htdocs/ldif_import.php:139
+#: ../../htdocs/ldif_import.php:162
+msgid "Failed"
+msgstr "Nieudane"
+
+#: ../../htdocs/add_attr.php:128
+msgid "Failed to add the attribute."
+msgstr "Błąd podczas dodawania atrybutu."
+
+#: ../../htdocs/copy.php:144
+msgid "Failed to copy DN: "
+msgstr "Błąd podczas kopiowania DN: "
+
+#: ../../htdocs/rdelete.php:63 ../../htdocs/rdelete.php:80
+#, php-format
+msgid "Failed to delete entry %s"
+msgstr "Błąd podczas usuwania wpisu %s"
+
+#: ../../htdocs/ldif_import.php:54 ../../lib/functions.php:1158
+#: ../../lib/functions.php:1243
+msgid "File"
+msgstr "Plik"
+
+#: ../../htdocs/copy_form.php:81
+msgid "Filter"
+msgstr "Filtr"
+
+#: ../../htdocs/search.php:299
+msgid "Filter performed"
+msgstr "Zastosowano filtr"
+
+#: ../../htdocs/search.php:276
+msgid "Format"
+msgstr "Format"
+
+#: ../../lib/functions.php:1159
+msgid "Function"
+msgstr "Funkcja"
+
+#: ../../lib/export_functions.php:195
+#, php-format
+msgid ""
+"Generated by phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) on %s"
+msgstr ""
+"Wygenerowane przez phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) na %"
+"s"
+
+#: ../../lib/functions.php:3107
+msgid "Generic Error"
+msgstr "Błąd ogólny"
+
+#: ../../htdocs/schema.php:131 ../../htdocs/schema.php:311
+#: ../../htdocs/schema.php:357 ../../htdocs/schema.php:388
+msgid "Go"
+msgstr "Idź"
+
+#: ../../htdocs/update_confirm.php:350
+msgid "Go back"
+msgstr "Wstecz"
+
+#: ../../lib/EntryWriter1.php:1843
+msgid "Go to"
+msgstr "Idź do"
+
+#: ../../htdocs/compare.php:451
+#, php-format
+msgid "Go to %s"
+msgstr "Idź do %s"
+
+#: ../../htdocs/modify_member_form.php:114
+msgid "Group members"
+msgstr "Członkowie grupy"
+
+#: ../../lib/page.php:158
+msgid "Help"
+msgstr "Pomoc"
+
+#: ../../lib/EntryWriter1.php:734
+msgid "Hide"
+msgstr "Ukryj"
+
+#: ../../lib/EntryWriter1.php:735
+msgid "Hide internal attributes"
+msgstr "Ukryj wewnętrzne atrybuty"
+
+#: ../../lib/EntryWriter1.php:493
+msgid "Hint"
+msgstr "Wskazówka"
+
+#: ../../htdocs/copy_form.php:102
+msgid ""
+"Hint: Copying between different servers only works if there are no schema "
+"violations"
+msgstr ""
+"Wskazówka: Kopiowanie pomiędzy różnymi serwerami działa wtedy, gdy nie "
+"występuje naruszenie schematów"
+
+#: ../../lib/EntryWriter1.php:795
+msgid "Hint: To delete an attribute, empty the text field and click save."
+msgstr ""
+"Wskazówka: Aby skasować atrybut, wyczyść pole tekstowe i kliknij zapisz."
+
+#: ../../lib/EntryWriter1.php:801
+msgid "Hint: To view the schema for an attribute, click the attribute name."
+msgstr ""
+"Wskazówka: Aby zobaczyć schemat dla atrybutu, kliknij na nazwie atrybutu."
+
+#: ../../lib/EntryWriter1.php:357
+msgid ""
+"Hint: You must choose exactly one structural objectClass (shown in bold "
+"above)"
+msgstr ""
+"Wskazówka: Musisz wybrać dokładnie jedną strukturalną klasę obiektu "
+"(wyróżnioną pogrubieniem)"
+
+#: ../../lib/page.php:122
+msgid "Home"
+msgstr "Strona główna"
+
+#: ../../htdocs/ldif_import.php:195
+#, php-format
+msgid "If so, please <a href=\"%s\">report it</a>."
+msgstr ""
+"Jeśli tak, proszę go <a href='%s'>zgłosić</a>."
+
+#: ../../htdocs/search.php:215
+msgid ""
+"If you want to add your own criteria to the list. Be sure to edit search.php "
+"to handle them. Quitting."
+msgstr ""
+"Jeśli chcesz dodać własne kryteria do listy, zmodyfikuj plik search.php aby "
+"to obsłużyć."
+
+#: ../../htdocs/ldif_import_form.php:21 ../../htdocs/ldif_import.php:51
+msgid "Import LDIF File"
+msgstr "Importuj plik LDIF"
+
+#: ../../lib/HTMLTree.php:251
+msgid "Import entries from an LDIF file"
+msgstr "Importuj wpisy z pliku LDIF"
+
+#: ../../htdocs/add_oclass_form.php:80
+msgid "In order to add these objectClass(es) to this entry, you must specify"
+msgstr "Aby dodać tę/e klasę/y obiektu do tego wpisu, musisz określić"
+
+#: ../../lib/HTMLTree.php:156
+#, php-format
 msgid "Inactivity will log you off at %s"
 msgstr "Brak aktywności wyloguje Cię o %s"
 
+#: ../../htdocs/export_form.php:78
+msgid "Include system attributes"
+msgstr "Zawiera atrybuty systemowe"
 
-msgid "Attribute [%s] is a MUST attribute, so it cannot be disabled."
-msgstr "Atrybut [%] jest atrybutem WYMAGANYM, więc nie może być niedostępny."
+#: ../../htdocs/schema.php:462 ../../htdocs/schema.php:485
+msgid "Inherited from"
+msgstr "Dziedziczone z"
 
+#: ../../htdocs/schema.php:98 ../../htdocs/schema.php:410
+msgid "Inherits from"
+msgstr "Dziedziczy z"
 
-msgid "We are missing a page for [%s] attributes."
-msgstr "Brakuje nam strony dla atrybutów [%s]."
+#: ../../htdocs/add_oclass_form.php:79
+msgid "Instructions"
+msgstr "Instrukcje"
 
+#: ../../lib/server_functions.php:360
+msgid "Insufficient access rights."
+msgstr "Niewystarczające uprawnienia dostępu."
+
+#: ../../htdocs/rename.php:47
+msgid "Invalid RDN value"
+msgstr "Błędna wartość RDN"
+
+#: ../../htdocs/export.php:44
+msgid "Invalid export format"
+msgstr "Błędny format eksportu"
+
+#: ../../htdocs/ldif_import.php:195
+msgid "Is this a phpLDAPadmin bug?"
+msgstr "Czy jest to bug w phpLDAPadmin ?"
+
+#: ../../lib/HTMLTree.php:79
+msgid ""
+"It appears that the LDAP server has been configured to not reveal its root."
+msgstr ""
+"Wygląda, że serwer LDAP jest skonfigurowany tak, aby nie ujawniać swojego "
+"korzenia."
+
+#: ../../lib/server_functions.php:328
+#, php-format
+msgid ""
+"It seems that sasl_authz_id_regex \"%s\".\" contains invalid PCRE regular "
+"expression."
+msgstr "Wygląda na to, że sasl_authz_id_regex \"%s\".\" zawiera nieprawidłowe "
+"wyrażenie regularne PCRE."
+
+#: ../../htdocs/schema.php:295
+msgid "Jump to a matching rule"
+msgstr "Skocz do reguły dopasowania"
+
+#: ../../htdocs/schema.php:118
+msgid "Jump to an attribute type"
+msgstr "Skocz do typu atrybutu"
+
+#: ../../htdocs/schema.php:374
+msgid "Jump to an objectClass"
+msgstr "Skocz do klasy obiektu"
+
+#: ../../htdocs/schema.php:419 ../../htdocs/schema.php:437
+msgid "Jump to this objectClass definition"
+msgstr "Skocz do definicji klasy obiektu"
+
+#: ../../htdocs/ldif_import.php:144 ../../lib/functions.php:1120
+msgid "LDAP said"
+msgstr "LDAP odpowiedział"
+
+#: ../../lib/export_functions.php:309
+#, php-format
+msgid "LDIF Export for: %s"
+msgstr "Eksport LDIF dla: %s"
+
+#: ../../htdocs/ldif_import.php:187
+msgid "LDIF Parse Error"
+msgstr "Błąd przetwarzania LDIF (Parse Error)"
+
+#: ../../htdocs/ldif_import.php:147
+msgid "LDIF text import"
+msgstr "Import tekstowego LDIF"
+
+#: ../../htdocs/ldif_import.php:108 ../../htdocs/ldif_import.php:191
+msgid "Line"
+msgstr "Linia"
+
+#: ../../htdocs/ldif_import.php:106 ../../htdocs/ldif_import.php:192
+msgid "Line Number"
+msgstr "Linia numer"
+
+#: ../../htdocs/export_form.php:111
+msgid "Line ends"
+msgstr "Zakończenie linii"
+
+#: ../../htdocs/delete_form.php:87
+msgid "List of entries to be deleted:"
+msgstr "Lista wpisów do usunięcia:"
+
+#: ../../lib/HTMLTree.php:274
+msgid "Logged in as"
+msgstr "Zalogowany/a jako"
+
+#: ../../htdocs/update.php:158 ../../lib/HTMLTree.php:468
+msgid "Login"
+msgstr "Zaloguj"
+
+#: ../../htdocs/login_form.php:45
+msgid "Login DN"
+msgstr "Login DN"
+
+#: ../../htdocs/login_form.php:45
+msgid "Login Name"
+msgstr "Nazwa użytkownika"
+
+#: ../../htdocs/timeout.php:35
+msgid "Login..."
+msgstr "Logowanie..."
+
+#: ../../htdocs/logout.php:33
+msgid "Logout"
+msgstr "Wyloguj"
+
+#: ../../lib/HTMLTree.php:267
+msgid "Logout of this server"
+msgstr "Wyloguj z tego serwera"
+
+#: ../../htdocs/entry_chooser.php:33
+msgid "Looking in"
+msgstr "Szukam w"
+
+#: ../../lib/EntryWriter1.php:1852
+msgid "Mail"
+msgstr "E-mail"
+
+#: ../../htdocs/copy_form.php:88
+msgid "Make sure your filter (above) will select all child records."
+msgstr ""
+"Upewnij się, że ustawienia filtra (powyżej) pozwalają na wybranie wszystkich "
+"rekordów podrzędnych."
+
+#: ../../htdocs/mass_delete.php:51
+msgid "Malformed mass_delete array."
+msgstr "Zniekształcona tablica mass_delete."
+
+#: ../../htdocs/mass_delete.php:40
+msgid "Mass Deleting"
+msgstr "Masowe usuwanie"
+
+#: ../../htdocs/mass_delete.php:38
+msgid ""
+"Mass deletion is not enabled. Please enable it in config.php before "
+"proceeding."
+msgstr ""
+"Masowe usuwanie nie jest dozwolone. Odblokuj to proszę w config.php przed "
+"kontynuacją."
+
+#: ../../htdocs/schema.php:316
+msgid "Matching Rule OID"
+msgstr "OID reguły dopasowania"
+
+#: ../../htdocs/schema.php:107 ../../htdocs/add_value_form.php:237
+msgid "Maximum Length"
+msgstr "Maksymalna długość"
+
+#: ../../htdocs/ldif_import_form.php:35 ../../htdocs/add_attr_form.php:154
+msgid "Maximum file size"
+msgstr "Maksymalny rozmiar pliku"
+
+#: ../../lib/functions.php:3278
+msgid "Memory Limit low."
+msgstr "Niski limit pamięci."
+
+#: ../../lib/template_functions.php:411
+#, php-format
+msgid "Missing %s in the XML file."
+msgstr "Brakuje %s w pliku XML."
+
+#: ../../lib/ldif_functions.php:169
+msgid "Missing attibutes or changetype attribute for entry"
+msgstr "Brakuje atrybutów lub zmieniono typ atrybutu dla wpisu"
+
+#: ../../lib/ldif_functions.php:352 ../../lib/ldif_functions.php:390
+msgid "Missing attributes for the entry"
+msgstr "Brakuje atrybutów dla tego wpisu"
+
+#: ../../lib/functions.php:3168 ../../lib/functions.php:3175
+#: ../../lib/functions.php:3182 ../../lib/functions.php:3259
+msgid "Missing required extension"
+msgstr "Brak wymaganego rozszerzenia"
+
+#: ../../htdocs/ldif_import.php:34
+msgid "Missing uploaded file."
+msgstr "Brak wgrywanego pliku."
+
+#: ../../htdocs/update.php:154
+msgid "Modification successful!"
+msgstr "Modyfikacja zakończona pomyślnie."
+
+#: ../../htdocs/modify_member_form.php:69
+msgid "Modify group"
+msgstr "Modyfikuj grupę"
+
+#: ../../lib/EntryWriter1.php:1821
+#, php-format
+msgid "Modify members for '%s'"
+msgstr "Modyfikuj listę członków dla '%s'"
+
+#: ../../htdocs/ldif_import.php:66
+msgid "Modifying..."
+msgstr "Modyfikowanie..."
+
+#: ../../htdocs/schema.php:316
+msgid "Name"
+msgstr "Nazwa"
+
+#: ../../htdocs/add_oclass_form.php:75 ../../htdocs/add_oclass_form.php:93
+msgid "New Required Attributes"
+msgstr "Nowe atrybuty wymagane"
+
+#: ../../htdocs/update_confirm.php:202
+msgid "New Value"
+msgstr "Nowa wartość"
+
+#: ../../htdocs/schema.php:165 ../../htdocs/schema.php:222
+#: ../../htdocs/schema.php:226 ../../htdocs/schema.php:230
+msgid "No"
+msgstr "Nie"
+
+#: ../../htdocs/delete_attr.php:28
+msgid "No DN specified"
+msgstr "Nie określono DN"
+
+#: ../../htdocs/ldif_import.php:38
+msgid "No LDIF file specified. Please try again."
+msgstr "Nie określono pliku LDIF. Spróbuj ponownie."
+
+#: ../../htdocs/compare.php:206 ../../htdocs/compare.php:219
+msgid "No Value"
+msgstr "Brak wartości"
+
+#: ../../htdocs/delete_attr.php:31
+msgid "No attribute name specified."
+msgstr "Nie określono nazwy atrybutu."
+
+#: ../../htdocs/export.php:88
+msgid "No available exporter found."
+msgstr "Nie znaleziono dostępnego eksportera."
+
+#: ../../htdocs/purge_cache.php:26
+msgid "No cache to purge."
+msgstr "Nie ma czego czyścić."
+
+#: ../../htdocs/add_value_form.php:107
+msgid "No current value for attribute"
+msgstr "Brak wartości dla atrybutu"
+
+#: ../../lib/EntryWriter1.php:826 ../../lib/EntryWriter2.php:104
+msgid "No internal attributes"
+msgstr "Brak atrybutów wewnętrznych"
+
+#: ../../htdocs/logout.php:19
+msgid "No one is logged in to that server."
+msgstr "Nikt nie jest zalogowany do tego serwera."
+
+#: ../../lib/search_form_predefined.php:41
+msgid "No queries have been defined in config.php."
+msgstr "Brak zdefiniowanych zapytań w config.php."
+
+#: ../../htdocs/delete.php:29 ../../htdocs/compare.php:32
+#: ../../htdocs/compare.php:34 ../../htdocs/download_binary_attr.php:26
+#: ../../htdocs/rdelete.php:28 ../../htdocs/template_engine.php:25
+#, php-format
+msgid "No such entry: %s"
+msgstr "Nie ma takiego wpisu: %s"
+
+#: ../../htdocs/view_jpeg_photo.php:25
+msgid "No such file"
+msgstr "Nie znaleziono pliku"
+
+#: ../../htdocs/schema.php:505
+#, php-format
+msgid "No such schema item: \"%s\""
+msgstr "Nie ma takiej pozycji w schemacie: \"%s\""
+
+#: ../../lib/ldif_functions.php:621
+msgid "No version found. Assuming 1."
+msgstr "Nie znaleziono numeru wersji. Przyjmuję 1."
+
+#: ../../htdocs/modify_member_form.php:23 ../../htdocs/rename_form.php:22
+#: ../../htdocs/entry_chooser.php:41 ../../htdocs/compare.php:25
+#: ../../htdocs/compare.php:29 ../../htdocs/download_binary_attr.php:17
+#: ../../htdocs/copy.php:32
+msgid ""
+"Not enough information to login to server. Please check your configuration."
+msgstr ""
+"Brak wystarczających informacji aby zalogować się do serwera. Proszę "
+"sprawdzić konfigurację."
+
+#: ../../htdocs/compare.php:123 ../../lib/EntryWriter1.php:1886
+#, php-format
+msgid "Note: '%s' is an alias for '%s'"
+msgstr "Uwaga: '%s' jest aliasem dla '%s'"
+
+#: ../../htdocs/add_value_form.php:202
+msgid ""
+"Note: You may be required to enter new attributes that these objectClass(es) "
+"require"
+msgstr ""
+"Uwaga: może być wymagane wprowadzenie nowych atrybutów wymaganych przez tę/e "
+"klasę/y obiektu"
+
+#: ../../htdocs/delete_form.php:59
+msgid ""
+"Note: this is potentially very dangerous and you do this at your own risk. "
+"This operation cannot be undone. Take into consideration aliases, referrals, "
+"and other things that may cause problems."
+msgstr ""
+"Uwaga: ta operacja jest potencjalnie bardzo niebezpieczna i wykonujesz ją na "
+"własne ryzyko. Ta akcja nie może zostać cofnięta. Weź pod uwagę aliasy, "
+"owołania i inne rzeczy, które mogą spowodować problemy."
+
+#: ../../htdocs/search.php:310
+msgid "Notice, search size limit exceeded."
+msgstr "Uwaga, przekroczono limit rozmiaru wyszukiwania."
+
+#: ../../htdocs/schema.php:400
+msgid "OID"
+msgstr "OID"
+
+#: ../../lib/EntryWriter1.php:340
+msgid "ObjectClasses"
+msgstr "Klasy Obiektu"
+
+#: ../../htdocs/add_oclass.php:26
+msgid ""
+"ObjectClasses are flagged as read only in the phpLDAPadmin configuration."
+msgstr ""
+"Klasy obiektów oznaczone są jako tylko-do-odczytu w konfiguracji phpLDAPadmin."
+
+#: ../../lib/template_functions.php:265
+msgid "ObjectClasses in XML dont exist in LDAP server."
+msgstr "Klasy obiektów w XML nie istnieją na serwerze LDAP."
+
+#: ../../htdocs/schema.php:97 ../../htdocs/schema.php:334
+msgid "Obsolete"
+msgstr "Przestarzałe "
+
+#: ../../htdocs/update_confirm.php:202
+msgid "Old Value"
+msgstr "Stara wartość"
+
+#: ../../htdocs/export_form.php:32 ../../lib/search_form_advanced.php:86
+msgid "One (one level beneath base)"
+msgstr "One (jeden poziom poniżej bazowej)"
+
+#: ../../htdocs/schema.php:445 ../../lib/EntryWriter1.php:407
+#: ../../lib/EntryWriter1.php:417
+msgid "Optional Attributes"
+msgstr "Opcjonalne atrybuty"
+
+#: ../../htdocs/schema.php:34
+msgid "Or lastly, your LDAP server doesnt provide this information."
+msgstr "Lub w ostateczności, Twój serwer nie dostarcza tej informacji."
+
+#: ../../lib/search_form_advanced.php:111
+msgid "Order by"
+msgstr "Uporządkuj po"
+
+#: ../../htdocs/schema.php:100
+msgid "Ordering"
+msgstr "Uporządkowanie"
+
+#: ../../htdocs/search.php:324 ../../htdocs/search.php:362
+#, php-format
+msgid "Page %d"
+msgstr "Strona %d"
+
+#: ../../htdocs/schema.php:426
+msgid "Parent to"
+msgstr "Nadrzędny dla"
+
+#: ../../htdocs/login_form.php:52
+msgid "Password"
+msgstr "Hasło"
+
+#: ../../htdocs/password_checker.php:25
+msgid "Password Checker Tool"
+msgstr "Narzędzie do sprawdzania haseł"
+
+#: ../../htdocs/password_checker.php:55
+msgid "Passwords do not match!"
+msgstr "Hasła nie zgadzają się !"
+
+#: ../../htdocs/password_checker.php:53
+msgid "Passwords match!"
+msgstr "Hasła zgodne !"
+
+#: ../../htdocs/ldif_import_form.php:39
+msgid "Paste your LDIF here"
+msgstr "Wklej tutaj LDIF"
+
+#: ../../htdocs/delete_form.php:35
+msgid "Permanently delete all children also?"
+msgstr "Czy trwale usunąć także wpisy potomne ?"
+
+#: ../../lib/functions.php:1250
+msgid "Please check and see if this bug has been reported"
+msgstr "Proszę sprawdzić czy ten błąd (bug) został już zgłoszony"
+
+#: ../../lib/functions.php:1332
+msgid ""
+"Please set $jpeg_temp_dir to a writable directory in the phpLDAPadmin config."
+"php"
+msgstr ""
+"Proszę ustawić zmienną $jpeg_temp_dir w config.php na katalog z możliwością "
+"zapisu plików"
+
+#: ../../lib/HTMLTree.php:80
+msgid "Please specify it in config.php"
+msgstr "Proszę określić to w pliku config.php"
+
+#: ../../lib/search_form_advanced.php:51 ../../lib/search_form_simple.php:42
+#: ../../lib/search_form_predefined.php:22
+msgid "Predefined Searches"
+msgstr "Predefiniowane wyszukiwania"
+
+#: ../../lib/EntryWriter1.php:308 ../../lib/EntryWriter2.php:78
+msgid "Proceed &gt;&gt;"
+msgstr "Dalej &gt;&gt;"
+
+#: ../../htdocs/ldif_import_form.php:34 ../../htdocs/ldif_import_form.php:45
+#: ../../htdocs/export_form.php:126
+msgid "Proceed >>"
+msgstr "Dalej >>"
+
+#: ../../lib/page.php:128
+msgid "Purge all cached data in phpLDAPadmin, including server schemas."
+msgstr ""
+"Czyści wszystkie dane podręczne (cache) w phpLDAPadmin, łącznie ze "
+"schematami serwera"
+
+#: ../../htdocs/purge_cache.php:31
+msgid "Purge cache"
+msgstr "Wyczyść cache"
+
+#: ../../lib/page.php:128
+msgid "Purge caches"
+msgstr "Wyczyść cache"
+
+#: ../../htdocs/purge_cache.php:28
+#, php-format
+msgid "Purged %s bytes of cache."
+msgstr "Wyczyszczono %s bajtów pamięci podręcznej (cache)."
+
+#: ../../htdocs/compare.php:566 ../../lib/EntryWriter1.php:2039
+msgid "Really delete attribute"
+msgstr "Definitywnie usuń atrybut"
+
+#: ../../htdocs/copy_form.php:75
+msgid "Recursive copy"
+msgstr "Kopia rekursywna"
+
+#: ../../htdocs/copy.php:58
+msgid "Recursive copy progress"
+msgstr "Postęp kopiowania rekursywnego"
+
+#: ../../htdocs/rdelete.php:31
+msgid "Recursive delete progress"
+msgstr "Postęp rekursywnego usuwania"
+
+#: ../../htdocs/copy_form.php:77
+msgid "Recursively copy all children of this object as well."
+msgstr "Rekursywne kopiowanie wszystkich potomnych obiektów"
+
+#: ../../lib/EntryWriter1.php:711 ../../lib/EntryWriter1.php:712
+msgid "Refresh"
+msgstr "Odśwież"
+
+#: ../../lib/HTMLTree.php:235
+msgid "Refresh all expanded containers for"
+msgstr "Odśwież wszystkie otwarte kontenery dla"
+
+#: ../../lib/EntryWriter1.php:712
+msgid "Refresh this entry"
+msgstr "Odśwież ten wpis"
+
+#: ../../htdocs/modify_member_form.php:148
+msgid "Remove selected"
+msgstr "Usuń zaznaczone"
+
+#: ../../htdocs/rename_form.php:35 ../../lib/EntryWriter1.php:755
+msgid "Rename"
+msgstr "Zmień nazwę"
+
+#: ../../htdocs/rename_form.php:27 ../../htdocs/rename.php:71
+msgid "Rename Entry"
+msgstr "Zmień nazwę wpisu"
+
+#: ../../htdocs/rename.php:67
+msgid "Rename successful!"
+msgstr "Modyfikacja zakończona pomyślnie!"
+
+#: ../../htdocs/ldif_import.php:64 ../../htdocs/ldif_import.php:65
+msgid "Renaming..."
+msgstr "Zmiana nazwy..."
+
+#: ../../lib/page.php:140
+msgid "Report a bug"
+msgstr "Zgłoś błąd"
+
+#: ../../lib/page.php:134
+msgid "Request feature"
+msgstr "Zgłoś zapotrzebowanie"
+
+#: ../../htdocs/schema.php:445 ../../lib/EntryWriter1.php:397
+#: ../../lib/EntryWriter1.php:404
+msgid "Required Attributes"
+msgstr "Wymagane atrybuty"
+
+#: ../../htdocs/compare.php:171 ../../lib/EntryWriter1.php:1922
+#, php-format
+msgid "Required attribute for objectClass(es) %s"
+msgstr "Atrybut wymagany dla klas(y) obiektu %s"
+
+#: ../../lib/AJAXTree.php:313
+msgid "Retrieving DN"
+msgstr "Pobieranie DN"
+
+#: ../../lib/EntryWriter1.php:718 ../../lib/EntryWriter1.php:789
+msgid "Save"
+msgstr "Zapisz"
+
+#: ../../htdocs/compare.php:554 ../../lib/EntryWriter1.php:847
+#: ../../lib/EntryWriter2.php:117
+msgid "Save Changes"
+msgstr "Zapisz zmiany"
+
+#: ../../lib/EntryWriter1.php:719
+msgid "Save a dump of this object"
+msgstr "Zapisz zrzut tego obiektu"
+
+#: ../../lib/EntryWriter1.php:790
+msgid "Save a dump of this object and all of its children"
+msgstr "Zapisz zrzut tego obiektu i wszystkich potomnych"
+
+#: ../../htdocs/export_form.php:81
+msgid "Save as file"
+msgstr "Zapisz jako"
+
+#: ../../htdocs/modify_member_form.php:176
+msgid "Save changes"
+msgstr "Zapisz zmiany"
+
+#: ../../htdocs/schema.php:37
+msgid "Schema for server"
+msgstr "Schemat dla serwera"
+
+#: ../../htdocs/search.php:148 ../../lib/search_form_advanced.php:115
+#: ../../lib/search_form_simple.php:74 ../../lib/search_form_predefined.php:63
+msgid "Search"
+msgstr "Szukaj"
+
+#: ../../htdocs/export_form.php:72 ../../lib/export_functions.php:198
+#: ../../lib/search_form_advanced.php:97
+msgid "Search Filter"
+msgstr "Filtr wyszukiwania"
+
+#: ../../htdocs/export_form.php:59 ../../lib/export_functions.php:197
+#: ../../lib/search_form_advanced.php:79
+msgid "Search Scope"
+msgstr "Zakres przeszukiwania"
+
+#: ../../lib/search_form_simple.php:52
+msgid "Search for entries whose"
+msgstr "Szukaj wpisów w których"
+
+#: ../../htdocs/search.php:392
+msgid "Search performed by phpLDAPadmin in"
+msgstr "Wyszukiwanie wykonane przez phpLDAPadmin w"
+
+#: ../../htdocs/search.php:111
+msgid "Searching is not permitted"
+msgstr "Wyszukiwanie nie jest dozwolone"
+
+#: ../../htdocs/add_attr.php:63 ../../htdocs/add_attr.php:83
+#: ../../htdocs/add_attr.php:88
+msgid "Security error: The file being uploaded may be malicious."
+msgstr "Błąd bezpieczeństwa: Załadowany plik może stanowić zagrożenie."
+
+#: ../../lib/search_form_predefined.php:45
+msgid "Select a predefined search"
+msgstr "Wybierz predefiniowane wyszukiwanie"
+
+#: ../../lib/EntryWriter1.php:1007
+msgid "Select a template for the creation process"
+msgstr "Wybierz szablon dla procesu tworzenia"
+
+#: ../../lib/EntryWriter1.php:1233
+msgid "Select a template to edit the entry"
+msgstr "Wybierz szablon do edycji wpisu"
+
+#: ../../htdocs/ldif_import_form.php:25
+msgid "Select an LDIF file"
+msgstr "Wybierz plik LDIF"
+
+#: ../../htdocs/modify_member_form.php:72 ../../htdocs/rename_form.php:29
+#: ../../htdocs/entry_chooser.php:32 ../../htdocs/entry_chooser.php:98
+#: ../../htdocs/ldif_import_form.php:22 ../../htdocs/add_attr_form.php:25
+#: ../../htdocs/delete_form.php:29 ../../htdocs/delete_form.php:105
+#: ../../htdocs/compare.php:58 ../../htdocs/compare.php:61
+#: ../../htdocs/copy_form.php:46 ../../htdocs/ldif_import.php:53
+#: ../../htdocs/add_value_form.php:100 ../../htdocs/compare_form.php:22
+#: ../../htdocs/export_form.php:49 ../../lib/export_functions.php:196
+#: ../../lib/HTMLTree.php:151 ../../lib/EntryWriter1.php:247
+#: ../../lib/EntryWriter1.php:506 ../../lib/EntryWriter1.php:1019
+#: ../../lib/search_form_advanced.php:60 ../../lib/search_form_simple.php:50
+msgid "Server"
+msgstr "Serwer"
+
+#: ../../lib/page.php:184
+msgid "Server Select"
+msgstr "Wybierz serwer"
+
+#: ../../htdocs/server_info.php:66
+msgid "Server info for: "
+msgstr "Informacja o serwerze: "
+
+#: ../../htdocs/server_info.php:67
+msgid "Server reports the following information about itself"
+msgstr "Serwer zwrócił następujące informacje o sobie"
+
+#: ../../lib/EntryWriter1.php:740
+msgid "Show"
+msgstr "Pokaż"
+
+#: ../../htdocs/export_form.php:75 ../../lib/search_form_advanced.php:103
+msgid "Show Attributtes"
+msgstr "Pokaż atrybuty"
+
+#: ../../lib/page.php:152
+msgid "Show Cache"
+msgstr "Wyświetl cache"
+
+#: ../../lib/EntryWriter1.php:741
+msgid "Show internal attributes"
+msgstr "Pokaż wewnętrzne atrybuty"
+
+#: ../../htdocs/search.php:318
+#, php-format
+msgid "Showing results %s through %s."
+msgstr "Pokazywanie rezultatów %s przez %s."
+
+#: ../../lib/search_form_advanced.php:43 ../../lib/search_form_simple.php:23
+#: ../../lib/search_form_predefined.php:29
+msgid "Simple Search Form"
+msgstr "Wyszukiwanie proste"
+
+#: ../../htdocs/update.php:156
+msgid ""
+"Since you changed your password, you must now login again with your new "
+"password."
+msgstr ""
+"Jeśli zmieniłeś/aś hasło, musisz się zalogować ponownie z nowym hasłem."
+
+#: ../../htdocs/schema.php:103
+msgid "Single Valued"
+msgstr "Pojedynczo ceniona (Single Valued)"
+
+#: ../../htdocs/update_confirm.php:202
+msgid "Skip"
+msgstr "Pomiń"
+
+#: ../../lib/EntryWriter1.php:812
+#, php-format
+msgid "Some attributes (%s) were modified and are highlighted below."
+msgstr "Niektóre atrybuty (%s) zostały zmodyfikowane i są wyróżnione poniżej."
+
+#: ../../htdocs/login.php:115
+msgid "Sorry, you are not allowed to use phpLDAPadmin with this LDAP server."
+msgstr ""
+"Przykro mi, ale nie masz uprawnień aby korzystać z phpLDAPadmin na tym "
+"serwerze LDAP."
+
+#: ../../htdocs/compare_form.php:41
+msgid "Source DN"
+msgstr "Źródłowa DN"
+
+#: ../../lib/EntryWriter1.php:263
+msgid "Specify attributes and values"
+msgstr "Określ atrybuty i wartości"
+
+#: ../../lib/search_form_advanced.php:96
+msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))"
+msgstr ""
+"Standardowy filtr dla LDAP. Na przykład: (&(sn=Kowalski)(givenname=Jan))"
+
+#: ../../lib/EntryWriter1.php:253 ../../lib/EntryWriter1.php:260
+#, php-format
+msgid "Step %s of %s"
+msgstr "Krok %s z %s"
+
+#: ../../htdocs/export_form.php:33 ../../lib/search_form_advanced.php:83
+msgid "Sub (entire subtree)"
+msgstr "Sub (całe poddrzewo)"
+
+#: ../../htdocs/schema.php:101
+msgid "Substring Rule"
+msgstr "Reguła podciągu (Substring Rule)"
+
+#: ../../htdocs/mass_delete.php:69 ../../htdocs/ldif_import.php:114
+#: ../../htdocs/ldif_import.php:136 ../../htdocs/rdelete.php:59
+#: ../../htdocs/rdelete.php:76 ../../htdocs/copy.php:64
+msgid "Success"
+msgstr "Sukces"
+
+#: ../../htdocs/delete.php:44
+msgid "Successfully deleted DN "
+msgstr "Pomyślnie usunięto DN"
+
+#: ../../htdocs/login.php:162
+msgid "Successfully logged into server."
+msgstr "Pomyślnie zalogowano do serwera."
+
+#: ../../htdocs/compare.php:72
+msgid "Switch Entry"
+msgstr "Zamień wpisy"
+
+#: ../../htdocs/schema.php:102 ../../htdocs/add_value_form.php:233
+msgid "Syntax"
+msgstr "Składnia"
+
+#: ../../htdocs/schema.php:69
+msgid "Syntax OID"
+msgstr "OID składni"
+
+#: ../../lib/EntryWriter1.php:1022 ../../lib/EntryWriter1.php:1244
+msgid "Templates"
+msgstr "Szablony"
+
+#: ../../htdocs/create.php:54
+#, php-format
+msgid "The Rdn attribute (%s) does not exist."
+msgstr "Atrybut Rdn (%s) nie istnieje."
+
+#: ../../htdocs/update.php:103 ../../htdocs/add_value.php:37
+#: ../../htdocs/delete_attr.php:34
+#, php-format
+msgid ""
+"The attribute \"%s\" is flagged as read-only in the phpLDAPadmin "
+"configuration."
+msgstr ""
+"Atrybut \"%s\" jest oznaczony jako tylko-do-odczytu w konfiguracji "
+"phpLDAPadmin."
+
+#: ../../htdocs/add_value_form.php:74
+#, php-format
+msgid "The attribute (%s) is in readonly mode."
+msgstr "Atrybut (%s) jest w trybie tylko-do-odczytu."
+
+#: ../../lib/ldif_functions.php:410
+msgid "The attribute name should be add, delete or replace"
+msgstr "Nazwa atrybutu powinna mieć wartość add, delete lub replace"
+
+#: ../../lib/ldif_functions.php:514
+msgid "The attribute name should be newsuperior"
+msgstr "Nazwa atrybutu powinna mieć wartość newsuperior"
+
+#: ../../lib/ldif_functions.php:448
+#, php-format
+msgid ""
+"The attribute to modify doesnt match the one specified by the %s attribute."
+msgstr "Atrybut do modyfikacji nie pasuje do atrybutu określonego przez %s."
+
+#: ../../htdocs/create.php:49
+#, php-format
+msgid "The container (%s) is a leaf."
+msgstr "Docelowy kontener (%s) jest liściem."
+
+#: ../../lib/EntryWriter1.php:213
+#, php-format
+msgid "The container you specified (%s) does not exist."
+msgstr "Kontener który określiłeś/aś (%s) nie istnieje."
+
+#: ../../htdocs/create.php:39
+#, php-format
+msgid "The container you specified (%s) does not exist. Please try again."
+msgstr "Kontener który określiłeś/aś (%s) nie istnieje. Spróbuj ponownie."
+
+#: ../../htdocs/update_confirm.php:321
+msgid "The deletion of objectClass(es)"
+msgstr "Usuwanie klas/y obiektu/ów"
+
+#: ../../htdocs/copy.php:50
+#, php-format
+msgid "The destination container (%s) does not exist."
+msgstr "Docelowy kontener (%s) nie istnieje."
+
+#: ../../htdocs/copy.php:47
+#, php-format
+msgid "The destination entry (%s) already exists."
+msgstr "Docelowy wpis (%s) już istnieje."
+
+#: ../../htdocs/add_value_form.php:37 ../../htdocs/update_confirm.php:29
+#, php-format
+msgid "The entry (%s) does not exist."
+msgstr "Wpis (%s) nie istnieje"
+
+#: ../../htdocs/add_value_form.php:55 ../../htdocs/update_confirm.php:43
+#, php-format
+msgid "The entry (%s) is in readonly mode."
+msgstr "Wpis (%s) jest w trybie tylko-do-odczytu."
+
+#: ../../lib/ldif_functions.php:483
+msgid "The entry is not valid"
+msgstr "Nieprawidłowy wpis"
+
+#: ../../htdocs/add_attr.php:56
+msgid ""
+"The file you chose is either empty or does not exist. Please go back and try "
+"again."
+msgstr "Wybrany plik jest pusty lub nie istnieje. Wróć i spróbuj ponownie."
+
+#: ../../htdocs/add_attr.php:75
+msgid ""
+"The file you selected was only partially uploaded, likley due to a network "
+"error."
+msgstr ""
+"Wybrany plik został tylko częściowo załadowany, prawdopodobnie wystąpił błąd "
+"w sieci."
+
+#: ../../htdocs/add_attr.php:67 ../../htdocs/add_attr.php:71
+msgid ""
+"The file you uploaded is too large. Please check php.ini, upload_max_size "
+"setting"
+msgstr ""
+"Załadowany plik jest zbyt duży. Proszę sprawdzić ustawienie upload_max_size "
+"w php.ini"
+
+#: ../../htdocs/copy_form.php:64
+msgid ""
+"The full DN of the new entry to be created when copying the source entry"
+msgstr ""
+"Pełna DN nowego wpisu do utworzenia poprzez skopiowanie wpisu źródłowego"
+
+#: ../../lib/search_form_advanced.php:79
+msgid "The scope in which to search"
+msgstr "Przeszukiwany zakres"
+
+#: ../../htdocs/search.php:371
+msgid "The search found no results."
+msgstr "Wyszukiwanie nie przyniosło żadnych rezultatów."
+
+#: ../../htdocs/schema.php:32
+msgid "The server does not fully support the LDAP protocol."
+msgstr "Serwer nie wspiera w pełni protokołu LDAP."
+
+#: ../../htdocs/copy.php:44
+msgid "The source and destination DN are the same."
+msgstr "Źródłowa i docelowa DN są takie same."
+
+#: ../../lib/ldif_functions.php:333
+msgid "The url attribute value should begin with file:///"
+msgstr "Wartość url atrybutu powinna zaczynać się od file:///"
+
+#: ../../htdocs/modify_member_form.php:75
+msgid "There are"
+msgstr "Tutaj są"
+
+#: ../../lib/functions.php:535
+msgid "There is more than one dn for uidpool,please change filter parameter"
+msgstr "Jest więcej niż jedna dn dla uidpool, proszę zmienić parametry filtra"
+
+#: ../../htdocs/add_oclass_form.php:76
+msgid "This action requires you to add"
+msgstr "Ta akcja wymaga, abyś dodał/a"
+
+#: ../../htdocs/compare.php:181 ../../lib/EntryWriter1.php:1499
+#: ../../lib/EntryWriter2.php:210
+msgid ""
+"This attribute has been flagged as read only by the phpLDAPadmin "
+"administrator"
+msgstr ""
+"Ten atrybut został oznaczony przez administratora phpLDAPadmin jako tylko-do-"
+"odczytu"
+
+#: ../../lib/EntryWriter1.php:1413
+msgid "This attribute is required"
+msgstr "Ten atrybut jest wymagany"
+
+#: ../../lib/EntryWriter1.php:1931
+msgid "This attribute is required for the RDN."
+msgstr "Ten atrybut jest wymagany dla RDN"
+
+#: ../../lib/HTMLTree.php:66
+msgid "This base entry does not exist."
+msgstr "Ten wpis bazowy nie istnieje"
+
+#: ../../htdocs/schema.php:32
+msgid "This could happen for several reasons, the most probable of which are:"
+msgstr ""
+"To mogło zdarzyć się z kilku powodów, z których najbardziej prawdopodobne to:"
+
+#: ../../lib/search_form_advanced.php:73
+msgid "This entry does not exist."
+msgstr "Ten wpis nie istnieje"
+
+#: ../../htdocs/compare.php:79
+msgid "This entry has no attributes"
+msgstr "Ten wpis nie posiada atrybutów"
+
+#: ../../htdocs/delete_form.php:46
+#, php-format
+msgid "This entry is the root of a sub-tree containing %s entries."
+msgstr "Ten wpis jest korzeniem poddrzewa zawierającego %s wpisów."
+
+#: ../../htdocs/compare.php:438 ../../lib/EntryWriter1.php:2269
+#, php-format
+msgid "This is a structural ObjectClass and cannot be removed."
+msgstr "To jest strukturalna klasa obiektu i nie może zostać usunięta."
+
+#: ../../lib/search_form_advanced.php:70
+msgid "This is not a valid DN."
+msgstr "To nie jest prawidłowa DN."
+
+#: ../../htdocs/schema.php:408
+msgid "This objectClass is obsolete."
+msgstr "Ta klasa obiektu jest przestarzała"
+
+#: ../../htdocs/purge_cache.php:13 ../../htdocs/refresh.php:17
+#: ../../htdocs/search.php:120 ../../htdocs/search.php:124
+#: ../../htdocs/search.php:128 ../../htdocs/schema.php:20
+#: ../../htdocs/delete.php:21 ../../htdocs/update.php:61
+#: ../../htdocs/update.php:67 ../../htdocs/update.php:80
+#: ../../htdocs/create.php:25 ../../htdocs/add_value.php:24
+#: ../../htdocs/export.php:18 ../../htdocs/delete_attr.php:21
+#: ../../htdocs/mass_delete.php:26 ../../htdocs/add_attr.php:25
+#: ../../htdocs/ldif_import.php:19 ../../htdocs/add_value_form.php:76
+#: ../../htdocs/add_value_form.php:78 ../../htdocs/rename.php:24
+#: ../../htdocs/rdelete.php:21 ../../htdocs/server_info.php:16
+#: ../../htdocs/copy.php:20
+msgid "This operation is not permitted by the configuration"
+msgstr "Ta operacja nie jest dozwolona przez konfigurację"
+
+#: ../../htdocs/server_info.php:71
+msgid "This server has nothing to report."
+msgstr "Ten serwer nie chce nic powiedzieć o sobie :)."
+
+#: ../../lib/EntryWriter1.php:1060
+msgid "This template is not allowed in this container."
+msgstr "Ten szablon nie jest dostępny w tym kontenerze"
+
+#: ../../htdocs/login_form.php:28
+msgid "This web connection is unencrypted"
+msgstr "To połączenie nie jest szyfrowane"
+
+#: ../../htdocs/password_checker.php:39
+msgid "To"
+msgstr "Do"
+
+#: ../../htdocs/timeout.php:34
+msgid "To log back in please click on the following link:"
+msgstr "Aby się zalogować ponownie kliknij w następujący link:"
+
+#: ../../lib/export_functions.php:199
+msgid "Total Entries"
+msgstr "Łącznie wpisów"
+
+#: ../../lib/EntryWriter1.php:748
+msgid "Trash"
+msgstr "Kosz"
+
+#: ../../htdocs/schema.php:405
+msgid "Type"
+msgstr "Typ"
+
+#: ../../lib/EntryWriter1.php:1859
+msgid "URL"
+msgstr "URL"
+
+#: ../../lib/functions.php:532
+msgid "Uidpool dn not found, please change filter parameter"
+msgstr "Uidpool dn nie znaleziona, proszę zmienić parametry filtra"
+
+#: ../../lib/functions.php:453 ../../lib/functions.php:517
+#, php-format
+msgid ""
+"Unable to bind to <b>%s</b> with your with auto_uid credentials. Please "
+"check your configuration file."
+msgstr ""
+"Nie można podłączyć do <b>%s</b> z podaną tożsamością auto_uid. Proszę "
+"sprawdzić swój plik konfiguracyjny."
+
+#: ../../lib/server_functions.php:2766
+#, php-format
+msgid ""
+"Unable to bind to <b>%s</b> with your with unique_attrs credentials. Please "
+"check your configuration file."
+msgstr ""
+"Nie można podłączyć do <b>%s</b> z podaną tożsamością unique_attrs. Proszę "
+"sprawdzić swój plik konfiguracyjny."
+
+#: ../../htdocs/mass_delete.php:23
+msgid "Unable to delete, server is in READY-ONLY mode."
+msgstr "Nie można usunąć, serwer jest w trybie TYLKO-DO-ODCZYTU."
+
+#: ../../lib/ldif_functions.php:327
+msgid "Unable to open file"
+msgstr "Nie można otworzyć pliku"
+
+#: ../../lib/ldif_functions.php:320
+msgid "Unable to read file"
+msgstr "Nie możńa odczytać pliku"
+
+#: ../../htdocs/login_form.php:17 ../../htdocs/logout.php:30
+#: ../../lib/server_functions.php:1981 ../../lib/server_functions.php:2053
+#: ../../lib/server_functions.php:2347 ../../lib/server_functions.php:2463
+#, php-format
+msgid "Unknown auth_type: %s"
+msgstr "Nieznany auth_type: %s"
+
+#: ../../htdocs/search.php:214
+msgid "Unrecognized criteria option: "
+msgstr "Nierozpoznane kryterium opcji: "
+
+#: ../../lib/functions.php:1234
+msgid "Unrecognized error number"
+msgstr "Nierozpoznany błąd numer"
+
+#: ../../htdocs/search.php:383
+#, php-format
+msgid "Unrecognized search result format: %s"
+msgstr "Nierozpoznany format wyniku wyszukiwania: %s"
+
+#: ../../htdocs/view_jpeg_photo.php:18
+msgid "Unsafe file name"
+msgstr "Niebezpieczna nazwa pliku"
+
+#: ../../htdocs/ldif_import.php:42
+msgid "Uploaded LDIF file is empty."
+msgstr "Wgrany plik LDIF jest pusty."
+
+#: ../../htdocs/schema.php:106
+msgid "Usage"
+msgstr "Użycie"
+
+#: ../../htdocs/welcome.php:20
+msgid "Use the menu to the left to navigate"
+msgstr "Użyj menu z lewej strony do nawigacji"
+
+#: ../../htdocs/schema.php:316
+msgid "Used by Attributes"
+msgstr "Używane przez atrybuty"
+
+#: ../../htdocs/schema.php:109
+msgid "Used by objectClasses"
+msgstr "Używane przez klasy obiektu"
+
+#: ../../htdocs/schema.php:105
+msgid "User Modification"
+msgstr "Modyfikacja użytkownika"
+
+#: ../../lib/EntryWriter1.php:783
+#, php-format
+msgid "View %s children"
+msgstr "Pokaż %s wpisy/ów potomne/ych"
+
+#: ../../lib/EntryWriter1.php:783
+msgid "View 1 child"
+msgstr "Pokaż 1 wpis potomny"
+
+#: ../../lib/HTMLTree.php:219
+msgid "View schema for"
+msgstr "Pokaż schemat dla"
+
+#: ../../lib/HTMLTree.php:243
+msgid "View server-supplied information"
+msgstr "Pokaż informacje o serwerze"
+
+#: ../../htdocs/compare.php:433 ../../lib/EntryWriter1.php:2281
+msgid "View the schema description for this objectClass"
+msgstr "Pokaż opis schematu dla tej klasy obiektu"
+
+#: ../../lib/EntryWriter1.php:805
+msgid "Viewing entry in read-only mode."
+msgstr "Oglądanie wpisu w trybie tylko-do-odczytu."
+
+#: ../../htdocs/login_form.php:28
+msgid "Warning"
+msgstr "Ostrzeżenie"
+
+#: ../../htdocs/copy_form.php:81
+msgid ""
+"When performing a recursive copy, only copy those entries which match this "
+"filter"
+msgstr ""
+"Podczas rekursywnego kopiowania, kopiowane są tylko wpisy pasujące do tego filtra"
+
+#: ../../htdocs/schema.php:165 ../../htdocs/schema.php:222
+#: ../../htdocs/schema.php:226 ../../htdocs/schema.php:230
+msgid "Yes"
+msgstr "Tak"
+
+#: ../../htdocs/mass_delete.php:107
+msgid "Yes, delete!"
+msgstr "Tak, usuń !"
+
+#: ../../htdocs/login_form.php:27
+msgid ""
+"You are not using 'https'. Web browser will transmit login information in "
+"clear text."
+msgstr ""
+"Nie używasz 'https'. Przeglądarka będzie transmitować informację logowania "
+"czystym tekstem (clear text)."
+
+#: ../../htdocs/modify_member_form.php:21 ../../htdocs/rename_form.php:20
+#: ../../htdocs/ldif_import_form.php:19 ../../htdocs/delete.php:18
+#: ../../htdocs/add_attr_form.php:18 ../../htdocs/update.php:39
+#: ../../htdocs/add_oclass.php:23 ../../htdocs/delete_form.php:19
+#: ../../htdocs/create.php:22 ../../htdocs/add_value.php:21
+#: ../../htdocs/delete_attr.php:18 ../../htdocs/copy_form.php:18
+#: ../../htdocs/add_attr.php:22 ../../htdocs/add_oclass_form.php:27
+#: ../../htdocs/add_value_form.php:16 ../../htdocs/rename.php:21
+#: ../../htdocs/update_confirm.php:19 ../../htdocs/download_binary_attr.php:15
+#: ../../htdocs/rdelete.php:18 ../../htdocs/template_engine.php:54
+msgid "You cannot perform updates while server is in read-only mode"
+msgstr ""
+"Nie możesz wykonać modyfikacji dopóki serwer jest w trybie tylko-do-odczytu"
+
+#: ../../htdocs/rename.php:31
+msgid ""
+"You cannot rename an entry which has children entries (eg, the rename "
+"operation is not allowed on non-leaf entries)"
+msgstr ""
+"Nie możesz zmienić nazwy wpisu, posiadającego wpisy potomne (np. operacja "
+"zmiany nazwy nie jest dozwolona na wpisach nie będących liścmi)."
+
+#: ../../htdocs/rename.php:39
+msgid "You did not change the RDN"
+msgstr "Nie zmieniłeś/aś RDN"
+
+#: ../../htdocs/add_oclass_form.php:30
+msgid ""
+"You did not select any ObjectClasses for this object. Please go back and do "
+"so."
+msgstr ""
+"Nie wybrałeś/aś żadnych Klas Obiektu dla tego obiektu. Wróć proszę i zrób to."
+
+#: ../../htdocs/mass_delete.php:55
+msgid "You did not select any entries to delete."
+msgstr "Nie wybrano żadnegych wpisów do usunięcia."
+
+#: ../../lib/EntryWriter1.php:218
+msgid "You did not select any objectClasses for this object."
+msgstr "Nie wybrałeś/aś żadnych Klas Obiektu dla tego obiektu."
+
+#: ../../lib/functions.php:1254
+msgid "You found a non-fatal phpLDAPadmin bug!"
+msgstr "Znalazłeś/aś niekrytyczny błąd w phpLDAPadmin !"
+
+#: ../../htdocs/search.php:149
+msgid ""
+"You have not logged into the selected server yet, so you cannot perform "
+"searches on it."
+msgstr ""
+"Nie zalogowałeś/aś się jeszcze do wybranego serwera, więc nie możesz go "
+"przeszukiwać."
+
+#: ../../lib/EntryReader.php:353
+msgid "You have specified two different passwords"
+msgstr "Podano dwa różne hasła"
+
+#: ../../htdocs/create.php:58
+msgid "You left the RDN field blank."
+msgstr "Pozostawiłeś/aś puste pole RDN."
+
+#: ../../htdocs/add_attr.php:37 ../../htdocs/add_attr.php:79
+msgid "You left the attribute value blank. Please go back and try again."
+msgstr ""
+"Pozostawiono pustą wartość atrybutu. Proszę wrócić i spróbować ponownie."
+
+#: ../../htdocs/copy.php:41
+msgid "You left the destination DN blank."
+msgstr "Nie wypełniono docelowej DN."
+
+#: ../../htdocs/login.php:28
+msgid "You left the password blank."
+msgstr "Pozostawiono puste hasło."
+
+#: ../../htdocs/create.php:73
+#, php-format
+msgid "You left the value blank for required attribute (%s)."
+msgstr "Brak wartości dla wymaganego atrybutu (%s)."
+
+#: ../../htdocs/update_confirm.php:346
+msgid "You made no changes"
+msgstr "Nie dokonano żadnych zmian"
+
+#: ../../htdocs/export.php:43
+msgid "You must choose an export format."
+msgstr "Musisz wybrać format eksportu."
+
+#: ../../htdocs/ldif_import.php:47
+msgid "You must either upload a file or provide an LDIF in the text box."
+msgstr "Musisz załadować plik lub wprowadzić LDIF w polu tekstowym."
+
+#: ../../htdocs/delete.php:26 ../../htdocs/rdelete.php:25
+msgid "You must specify a DN"
+msgstr "Musisz określić DN"
+
+#: ../../htdocs/compare.php:530
+#, php-format
+msgid "You need one of the following ObjectClass(es) to add this attribute %s."
+msgstr ""
+"Musisz posiadać jedną z następujących klas obiektów, aby dodać ten atrybut %"
+"s "
+
+#: ../../htdocs/index.php:77
+#, php-format
+msgid ""
+"You need to configure phpLDAPadmin. Edit the file \"%s\" to do so. An "
+"example config file is provided in \"%s.example\"."
+msgstr ""
+"Musisz skonfigurować phpLDAPadmin. Wyedytuj plik \"%s\" aby to zrobić. "
+"Przykład pliku konfiguracji znajduje się w \"%s.example\"."
+
+#: ../../lib/functions.php:565
+#, php-format
+msgid ""
+"You specified an invalid value for auto_uid_number_mechanism (\"%s\")\n"
+"\t\t\t\tin your configration. Only \"uidpool\" and \"search\" are valid.\n"
+"\t\t\t\tPlease correct this problem."
+msgstr ""
+"Określono błędną wartość dla auto_uid_number_mechanism (\"%s\")\n"
+"\t\t\t\tw konfiguracji. Tylko \"uidpool\" i \"search\" są poprawne.\n"
+"\t\t\t\tProszę skorygować ten problem."
+
+#: ../../lib/functions.php:432
+#, php-format
+msgid ""
+"You specified the \"auto_uid_number_mechanism\" as \"search\" in your\n"
+"\t\t\t\t\t\tconfiguration for server <b>%s</b>, but you did not specify the\n"
+"\t\t\t\t\t\t\"auto_uid_number_search_base\". Please specify it before "
+"proceeding."
+msgstr ""
+"Określono \"auto_uid_number_mechanism\" jako \"search\" w konfiguracji\n"
+"\t\t\t\t\t\tTwojego serwera <b>%s</b>, ale nie określono bazy\n"
+"\t\t\t\t\t\t\"auto_uid_number_search_base\". Zrób to zanim przejdziesz dalej."
+
+#: ../../lib/EntryWriter1.php:749
+msgid "You will be prompted to confirm this decision"
+msgstr "Będziesz poproszony/a o potwierdzenie tej decyzji"
+
+#: ../../htdocs/add_attr_form.php:151
+msgid ""
+"Your PHP configuration has disabled file uploads. Please check php.ini "
+"before proceeding."
+msgstr ""
+"Twoja konfiguracja PHP uniemożliwia załadowanie plików. Proszę sprawdzić php."
+"ini przed kontynuacją."
+
+#: ../../lib/functions.php:1464 ../../lib/functions.php:1475
+#: ../../lib/functions.php:1486 ../../lib/functions.php:1533
+#: ../../lib/functions.php:1551
+msgid ""
+"Your PHP install does not have the mhash() function. Cannot do SHA hashes."
+msgstr ""
+"Twoja instalacja PHP nie posiada funkcji mhash(). Nie mogę tworzyć haszy SHA."
+
+#: ../../lib/server_functions.php:280
+msgid "Your PHP install does not support TLS."
+msgstr "Twoja instalacja PHP nie wspiera TLS."
+
+#: ../../lib/server_functions.php:295
+msgid ""
+"Your PHP installation does not support ldap_sasl_bind() function. This "
+"function is present in PHP 5.x when compiled with --with-ldap-sasl."
+msgstr "Twoja instalacja PHP nie wspiera funkcji ldap_sasl_bind(). "
+"Ta funkcja jest obecna w PHP 5.x jeśli skompilowane jest z opcją "
+"--with-ldap-sasl."
+
+#: ../../htdocs/ldif_import_form.php:16
+msgid ""
+"Your PHP.INI does not have file_uploads = ON. Please enable file uploads in "
+"PHP."
+msgstr ""
+"Twój plik konfiguracyjny PHP.INI nie zawiera file_uploads = ON. Proszę "
+"włączyć wgrywanie plików w konfiguracji PHP."
+
+#: ../../htdocs/timeout.php:31
+msgid "Your Session timed out after"
+msgstr "Twoja sesja wygaśnie po"
+
+#: ../../htdocs/update.php:92
+#, php-format
+msgid ""
+"Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT "
+"allowed. That attribute/value belongs to another entry.<p>You might like to "
+"<a href=\"%s\">search</a> for that entry."
+msgstr ""
+"Próba dodania <b>%s</b> (<i>%s</i>) do <br><b>%s</b><br> jest NIEDOZWOLONA. "
+"Ten atrybut/wartość należy do innego wpisu.<p>Jeśli chcesz, możesz <a href=\"%s\">poszukać</a> tego wpisu."
+
+#: ../../htdocs/add_oclass.php:45 ../../htdocs/create.php:86
+#: ../../htdocs/add_value.php:59 ../../htdocs/add_attr.php:51
+#, php-format
+msgid ""
+"Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT "
+"allowed. That attribute/value belongs to another entry.<p>You might like to "
+"<a href='%s'>search</a> for that entry."
+msgstr ""
+"Próba dodania <b>%s</b> (<i>%s</i>) do <br><b>%s</b><br> jest NIEDOZWOLONA. "
+"Ten atrybut/wartość należy do innego wpisu.<p>Jeśli chcesz, możesz <a href='%"
+"s'>poszukać</a> tego wpisu."
+
+#: ../../lib/functions.php:2195
+#, php-format
+msgid ""
+"Your config.php specifies an invalid value for $default_search_display: %s. "
+"Please fix it"
+msgstr ""
+"W Twojej konfiguracji (config.php) określona jest nieprawidłowa wartość dla "
+"$default_search_display: %s. Proszę to poprawić"
+
+#: ../../lib/common.php:124
+msgid "Your configuration has been automatically refreshed."
+msgstr "Konfiguracja została automatycznie odświeżona."
+
+#: ../../lib/functions.php:441
+#, php-format
+msgid ""
+"Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base "
+"for server %s"
+msgstr ""
+"W Twojej konfiguracji phpLDAPadmin określona jest nieprawidłowa wartość "
+"auto_uid_search_base dla serwera %s"
+
+#: ../../lib/functions.php:1445 ../../lib/functions.php:1578
+msgid "Your system crypt library does not support blowfish encryption."
+msgstr "Twoja systemowa biblioteka crypt nie wspiera szyfrowania blowfish."
+
+#: ../../lib/functions.php:1431 ../../lib/functions.php:1608
+msgid "Your system crypt library does not support extended DES encryption."
+msgstr ""
+"Twoja systemowa biblioteka crypt nie wspiera rozszerzonego szyfrowania DES"
+
+#: ../../lib/functions.php:1438 ../../lib/functions.php:1593
+msgid "Your system crypt library does not support md5crypt encryption."
+msgstr "Twoja systemowa biblioteka crypt nie wspiera szyfrowania md5crypt."
+
+#: ../../lib/template_functions.php:966
+#, php-format
+msgid ""
+"Your template calls php.Function for a default value, however (%s) is NOT "
+"available in the POST FORM variables. The following variables are available "
+"[%s]."
+msgstr "Twój szablon wywołuje funkcję php dla domyślnej wartości, jednak (%s) "
+"NIE jest dozwolona w zmiennych POST FORM. Dozwolone są następujące zmienne [%s]."
+
+#: ../../lib/EntryReader.php:267
+#, php-format
+msgid "Your template has an unknown post function (%s)."
+msgstr "Twój szablon posiada nieznaną funkcję post (%s)."
+
+#: ../../lib/EntryReader.php:203
+#, php-format
+msgid "Your template is missing variable (%s)"
+msgstr "Twój szablon nie posiada zmiennej (%s)"
+
+#: ../../htdocs/schema.php:33
+msgid "Your version of PHP does not correctly perform the query."
+msgstr "Twoja wersja PHP niepoprawnie wykonuje zapytanie."
+
+#: ../../htdocs/update_confirm.php:260 ../../htdocs/update_confirm.php:264
+msgid "[attribute deleted]"
+msgstr "[atrybut usunięty]"
+
+#: ../../lib/EntryWriter1.php:1986 ../../lib/EntryWriter1.php:2195
+msgid "[no value]"
+msgstr "[brak wartości]"
+
+#: ../../htdocs/add_attr.php:25 ../../htdocs/add_value_form.php:78
+msgid "add attribute"
+msgstr "dodaj atrybut"
+
+#: ../../htdocs/add_value.php:24 ../../htdocs/add_value_form.php:76
+msgid "add attribute value"
+msgstr "dodaj wartość atrybutu"
+
+#: ../../htdocs/compare.php:528 ../../htdocs/compare.php:539
+#: ../../lib/EntryWriter1.php:1809
+msgid "add value"
+msgstr "dodaj wartość"
+
+#: ../../htdocs/search.php:120
+msgid "advanced search"
+msgstr "wyszukiwanie zaawansowane"
+
+#: ../../lib/functions.php:1758
+msgid "browse"
+msgstr "przeglądaj"
+
+#: ../../lib/page.php:140
+msgid "bug"
+msgstr "błąd (bug)"
+
+#: ../../htdocs/ldif_import.php:54 ../../lib/functions.php:1378
+msgid "bytes"
+msgstr "bajtów"
+
+#: ../../lib/functions.php:1243
+msgid "caller"
+msgstr "wywołujący"
+
+#: ../../htdocs/schema.php:245
+msgid "character"
+msgstr "znak"
+
+#: ../../htdocs/schema.php:245 ../../htdocs/add_value_form.php:237
+msgid "characters"
+msgstr "znaki/ów"
+
+#: ../../lib/EntryWriter1.php:2366
+msgid "confirm"
+msgstr "potwierdź"
+
+#: ../../htdocs/copy.php:20
+msgid "copy entry"
+msgstr "kopiuj wpis"
+
+#: ../../htdocs/create.php:25
+msgid "create entry"
+msgstr "utwórz wpis"
+
+#: ../../htdocs/update.php:61 ../../htdocs/compare.php:289
+#: ../../htdocs/delete_attr.php:21 ../../lib/EntryWriter1.php:1982
+msgid "delete attribute"
+msgstr "usuń atrybut"
+
+#: ../../htdocs/delete.php:21 ../../htdocs/rdelete.php:21
+msgid "delete entry"
+msgstr "usuń wpis"
+
+#: ../../htdocs/mass_delete.php:26
+msgid "delete mass entries"
+msgstr "masowo usuń wpisy"
+
+#: ../../htdocs/compare.php:280 ../../htdocs/compare.php:283
+#: ../../lib/EntryWriter1.php:1971 ../../lib/EntryWriter1.php:1975
+msgid "download value"
+msgstr "pobierz (download) wartość"
+
+#: ../../htdocs/compare.php:312
+msgid "empty"
+msgstr "pusty"
+
+#: ../../htdocs/mass_delete.php:96
+msgid "entries"
+msgstr "wpisów"
+
+#: ../../htdocs/mass_delete.php:96
+msgid "entry"
+msgstr "wpis"
+
+#: ../../htdocs/export.php:18 ../../lib/HTMLTree.php:259
+msgid "export"
+msgstr "eksportuj"
+
+#: ../../htdocs/search.php:273
+msgid "export results"
+msgstr "wyeksportuj wyniki"
+
+#: ../../htdocs/compare.php:402 ../../lib/AttributeFactory.php:36
+msgid "false"
+msgstr "fałsz"
+
+#: ../../htdocs/create.php:114 ../../htdocs/copy.php:76
+#: ../../htdocs/copy.php:106
+msgid "has been created."
+msgstr "zastał utworzony."
+
+#: ../../htdocs/ldif_import.php:19 ../../lib/HTMLTree.php:251
+msgid "import"
+msgstr "import"
+
+#: ../../lib/HTMLTree.php:243
+msgid "info"
+msgstr "info"
+
+#: ../../lib/functions.php:1347
+msgid "jpegPhoto contains errors<br />"
+msgstr "jpegPhoto zawiera błędy<br />"
+
+#: ../../lib/page.php:134
+msgid "light"
+msgstr "żarówka"
+
+#: ../../lib/functions.php:1243
+msgid "line"
+msgstr "linia"
+
+#: ../../lib/HTMLTree.php:467
+msgid "login"
+msgstr "login"
+
+#: ../../lib/HTMLTree.php:267 ../../lib/HTMLTree.php:485
+msgid "logout"
+msgstr "wyloguj"
+
+#: ../../htdocs/mass_delete.php:35
+msgid "mass_delete POST var is not an array."
+msgstr "zmienna POST mass_delete nie jest w tablicą."
+
+#: ../../htdocs/modify_member_form.php:75
+msgid "members in group"
+msgstr "członkowie w grupie"
+
+#: ../../htdocs/timeout.php:31
+msgid "min. of inactivity. You have been automatically logged out."
+msgstr "min. nieaktywności. Zostaniesz automatycznie wylogowany/a."
+
+#: ../../htdocs/update.php:67 ../../htdocs/update.php:80
+msgid "modify attribute values"
+msgstr "modyfikacja wartości atrybutu"
+
+#: ../../lib/EntryWriter1.php:1821
+msgid "modify group members"
+msgstr "modyfikuj listę członków grupy"
+
+#: ../../lib/HTMLTree.php:452
+msgid "new"
+msgstr "nowy"
+
+#: ../../htdocs/add_oclass_form.php:76 ../../htdocs/add_oclass_form.php:81
+msgid "new attributes"
+msgstr "nowe atrybuty"
+
+#: ../../htdocs/schema.php:155
+msgid "no description"
+msgstr "brak opisu"
+
+#: ../../lib/functions.php:1131
+msgid "no description available"
+msgstr "brak opisu"
+
+#: ../../htdocs/entry_chooser.php:69
+msgid "no entries"
+msgstr "brak wpisów"
+
+#: ../../htdocs/add_attr_form.php:108
+msgid "no new attributes available for this entry"
+msgstr "brak nowych atrybutów dostępnych dla tego wpisu"
+
+#: ../../htdocs/add_attr_form.php:160
+msgid "no new binary attributes available for this entry"
+msgstr "brak nowych atrybutów binarnych dla tego wpisu"
+
+#: ../../htdocs/schema.php:172 ../../htdocs/schema.php:254
+#: ../../htdocs/schema.php:269 ../../htdocs/schema.php:343
+#: ../../htdocs/schema.php:412 ../../htdocs/schema.php:432
+#: ../../htdocs/schema.php:469 ../../htdocs/schema.php:492
+#: ../../lib/functions.php:2409 ../../lib/EntryWriter1.php:405
+#: ../../lib/EntryWriter1.php:418
+msgid "none"
+msgstr "brak"
+
+#: ../../htdocs/compare.php:403 ../../lib/EntryWriter1.php:2543
+msgid "none, remove value"
+msgstr "brak, usuń wartość"
+
+#: ../../htdocs/schema.php:241
+msgid "not applicable"
+msgstr "nie dotyczy"
+
+#: ../../htdocs/schema.php:186 ../../htdocs/schema.php:198
+#: ../../htdocs/schema.php:203 ../../htdocs/schema.php:234
+msgid "not specified"
+msgstr "nie określone"
+
+#: ../../htdocs/delete_form.php:54
+#, php-format
+msgid ""
+"phpLDAPadmin can recursively delete this entry and all %s of its children. "
+"See below for a list of all the entries that this action will delete. Do you "
+"want to do this?"
+msgstr ""
+"phpLDAPadmin może rekursywnie usunąć ten wpis i wszystkie jego %s wpisy/ów "
+"potomne/ych. Sprawdź poniższą listę wpisów przeznaczonych do usunięcia.<br /"
+"> Czy na pewno chcesz to zrobić ?"
+
+#: ../../htdocs/schema.php:33
+msgid "phpLDAPadmin doesn't know how to fetch the schema for your server."
+msgstr "phpLDAPadmin nie wie jak uzyskać schemat z Twojego serwera."
+
+#: ../../htdocs/welcome.php:16 ../../htdocs/welcome.php:17
+msgid "phpLDAPadmin logo"
+msgstr "phpLDAPadmin logo"
+
+#: ../../htdocs/search.php:124
+msgid "predefined search"
+msgstr "predefiniowane wyszukiwania"
+
+#: ../../htdocs/purge_cache.php:13
+msgid "purge"
+msgstr "wyczyść"
+
+#: ../../htdocs/compare.php:181 ../../lib/HTMLTree.php:41
+#: ../../lib/EntryWriter1.php:1500 ../../lib/EntryWriter2.php:211
+msgid "read only"
+msgstr "tylko do odczytu"
+
+#: ../../lib/HTMLTree.php:235
+msgid "refresh"
+msgstr "odśwież"
+
+#: ../../htdocs/refresh.php:17
+msgid "refresh server"
+msgstr "odśwież serwer"
+
+#: ../../lib/EntryWriter1.php:1790
+msgid "rename"
+msgstr "zmień nazwę"
+
+#: ../../htdocs/rename.php:24
+msgid "rename entry"
+msgstr "zmień nazwę wpisu"
+
+#: ../../htdocs/compare.php:171 ../../lib/EntryWriter1.php:1922
+msgid "required"
+msgstr "wymagane"
+
+#: ../../lib/HTMLTree.php:219
+msgid "schema"
+msgstr "schemat"
+
+#: ../../lib/HTMLTree.php:227
+msgid "search"
+msgstr "szukaj"
+
+#: ../../htdocs/search.php:266 ../../htdocs/search.php:392
+msgid "seconds"
+msgstr "sekund(y)"
+
+#: ../../lib/EntryWriter1.php:368 ../../lib/EntryWriter2.php:23
+msgid "select the rdn attribute"
+msgstr "wybierz atrybut rdn"
+
+#: ../../htdocs/search.php:128
+msgid "simple search"
+msgstr "wyszukiwanie proste"
+
+#: ../../lib/EntryWriter1.php:947
+#, php-format
+msgid "step %s of %s"
+msgstr "krok %s z %s"
+
+#: ../../htdocs/compare.php:438 ../../lib/EntryWriter1.php:2270
+msgid "structural"
+msgstr "strukturalna"
+
+#: ../../htdocs/add_oclass_form.php:82
+msgid "that this objectClass requires."
+msgstr "co ta klasa obiektu wymaga."
+
+#: ../../htdocs/mass_delete.php:96
+msgid "these"
+msgstr "te"
+
+#: ../../htdocs/mass_delete.php:96
+msgid "this"
+msgstr "ten"
+
+#: ../../htdocs/copy_form.php:51
+msgid "to a new object"
+msgstr "do nowego obiektu"
+
+#: ../../htdocs/compare.php:401 ../../lib/AttributeFactory.php:35
+msgid "true"
+msgstr "prawda"
+
+#: ../../lib/functions.php:544
+msgid ""
+"uidpool_dn not found. Please check filter (arg 3) or set up uidpool_dn in "
+"config file"
+msgstr "nie znaleziono uidpool_dn. Proszę sprawdzić fitr (arg 3) lub ustawić uidpool_dn w pliku konfiguracyjnym"
+
+#: ../../htdocs/update.php:46
+msgid ""
+"update_array is malformed. This might be a phpLDAPadmin bug. Please report "
+"it."
+msgstr ""
+"tablica modyfikacji (update_array) jest zniekształcona. To może być błąd "
+"(bug) w phpLDAPadmin. Proszę to zgłosić."
+
+#: ../../htdocs/add_value_form.php:98
+msgid "value to"
+msgstr "wartość do"
+
+#: ../../htdocs/add_value_form.php:104
+msgid "values for attribute"
+msgstr "wartości dla atrybutu"
+
+#: ../../htdocs/delete_form.php:48
+msgid "view entries"
+msgstr "pokaż wpisy"
+
+#: ../../htdocs/schema.php:20
+msgid "view schema"
+msgstr "pokaż schemat"
+
+#: ../../htdocs/server_info.php:16
+msgid "view server informations"
+msgstr "pokaż informacje o serwerze"
+
+#: ../../htdocs/update_confirm.php:326
+msgid "will delete the attribute(s)"
+msgstr "usunie atrybut/y"
+
+#: ../../htdocs/compare_form.php:29
+msgid "with "
+msgstr "z"
 

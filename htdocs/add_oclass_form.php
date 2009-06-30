@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass_form.php,v 1.24 2005/12/10 10:34:54 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass_form.php,v 1.25 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * This page may simply add the objectClass and take you back to the edit page,
@@ -9,8 +9,6 @@
  *    attributes with 1 or more not defined by the object. In that case, we will
  *    present a form for the user to add those attributes to the object.
  *
- * Variables that come in via common.php
- *  - server_id
  * Variables that come in as REQUEST vars:
  *  - dn (rawurlencoded)
  *  - new_oclass
@@ -22,116 +20,102 @@
  */
 require './common.php';
 
-if( $ldapserver->isReadOnly() )
-	pla_error( _('You cannot perform updates while server is in read-only mode') );
-if( ! $ldapserver->haveAuthInfo())
-	pla_error( _('Not enough information to login to server. Please check your configuration.') );
+$entry['oclass']['new'] = get_request('new_oclass','REQUEST');
+$entry['dn']['string'] = get_request('dn','REQUEST');
 
-if (! isset($_REQUEST['new_oclass']))
-        pla_error( _('You did not select any ObjectClasses for this object. Please go back and do so.'));
+if ($ldapserver->isReadOnly())
+	pla_error(_('You cannot perform updates while server is in read-only mode'));
 
-$new_oclass = $_REQUEST['new_oclass'];
-$dn = rawurldecode( $_REQUEST['dn'] );
-$encoded_dn = rawurlencode( $dn );
+if (! $entry['oclass']['new'])
+	pla_error(_('You did not select any ObjectClasses for this object. Please go back and do so.'));
 
 /* Ensure that the object has defined all MUST attrs for this objectClass.
  * If it hasn't, present a form to have the user enter values for all the
- * newly required attrs. */
+ * newly required attrs.
+ */
 
-$entry = $ldapserver->getDNAttrs($dn,true);
+$entry['dn']['attrs'] = $ldapserver->getDNAttrs($entry['dn']['string'],true);
 
-$current_attrs = array();
-foreach( $entry as $attr => $junk )
-	$current_attrs[] = strtolower($attr);
+$entry['attrs']['current'] = array();
+foreach ($entry['dn']['attrs'] as $attr => $junk)
+	$entry['attrs']['current'][] = strtolower($attr);
 
-// grab the required attributes for the new objectClass
-$schema_oclasses = $ldapserver->SchemaObjectClasses();
-$must_attrs = array();
-foreach( $new_oclass as $oclass_name ) {
-	$oclass = $ldapserver->getSchemaObjectClass($oclass_name);
-	if( $oclass )
-		$must_attrs = array_merge( $must_attrs, $oclass->getMustAttrNames( $schema_oclasses ) );
+# Grab the required attributes for the new objectClass
+$ldap['oclasses'] = $ldapserver->SchemaObjectClasses();
+$ldap['attrs']['must'] = array();
+foreach ($entry['oclass']['new'] as $oclass_name) {
+	$ldap['oclass'] = $ldapserver->getSchemaObjectClass($oclass_name);
+
+	if ($ldap['oclass'])
+		$ldap['attrs']['must'] = array_merge($ldap['attrs']['must'],$ldap['oclass']->getMustAttrNames($ldap['oclasses']));
 }
-$must_attrs = array_unique( $must_attrs );
+$ldap['attrs']['must'] = array_unique($ldap['attrs']['must']);
 
-// We don't want any of the attr meta-data, just the string
-//foreach( $must_attrs as $i => $attr )
-	//$must_attrs[$i] = $attr->getName();
-
-// build a list of the attributes that this new objectClass requires,
-// but that the object does not currently contain
-$needed_attrs = array();
-foreach( $must_attrs as $attr ) {
+/* Build a list of the attributes that this new objectClass requires,
+ * but that the object does not currently contain
+ */
+$ldap['attrs']['need'] = array();
+foreach ($ldap['attrs']['must'] as $attr) {
 	$attr = $ldapserver->getSchemaAttribute($attr);
 
-	//echo "<pre>"; var_dump( $attr ); echo "</pre>";
-
-	// First, check if one of this attr's aliases is already an attribute of this entry
-	foreach( $attr->getAliases() as $alias_attr_name )
-		if( in_array( strtolower( $alias_attr_name ), $current_attrs ) )
-
-		// Skip this attribute since it's already in the entry
+	# First, check if one of this attr's aliases is already an attribute of this entry
+	foreach ($attr->getAliases() as $alias_attr_name)
+		if (in_array(strtolower($alias_attr_name),$entry['attrs']['current']))
 			continue;
 
-	if( in_array( strtolower($attr->getName()), $current_attrs ) )
+	if (in_array(strtolower($attr->getName()),$entry['attrs']['current']))
 		continue;
 
-	// We made it this far, so the attribute needs to be added to this entry in order
-	// to add this objectClass
-	$needed_attrs[] = $attr;
+	/* We made it this far, so the attribute needs to be added to this entry in order
+	 * to add this objectClass */
+	$ldap['attrs']['need'][] = $attr;
 }
 
-if( count( $needed_attrs ) > 0 ) {
-	include './header.php'; ?>
-	<body>
+if (count($ldap['attrs']['need']) > 0) {
+	printf('<h3 class="title">%s</h3>',_('New Required Attributes'));
+	printf('<h3 class="subtitle">%s %s %s</h3>',_('This action requires you to add'),count($ldap['attrs']['need']),_('new attributes'));
 
-	<h3 class="title"><?php echo _('New Required Attributes'); ?></h3>
-	<h3 class="subtitle"><?php echo _('This action requires you to add') . ' ' . count($needed_attrs) .
-		' ' . _('new attributes'); ?></h3>
+	printf('<small><b>%s: </b>%s <b>%s</b> %s %s</small>',
+		_('Instructions'),
+		_('In order to add these objectClass(es) to this entry, you must specify'),
+		count($ldap['attrs']['need']),_('new attributes'),
+		_('that this objectClass requires.'));
 
-	<small>
+	echo '<br /><br />';
 
-	<?php echo _('Instructions: In order to add these objectClass(es) to this entry, you must specify');
-	echo ' ' . count( $needed_attrs ) . ' ' . _('new attributes') . ' ';
-	echo _('that this objectClass requires. You can do so in this form.'); ?>
+	echo '<form action="cmd.php" method="post">';
+	echo '<input type="hidden" name="cmd" value="add_oclass" />';
+	printf('<input type="hidden" name="new_oclass" value="%s" />',rawurlencode(serialize($entry['oclass']['new'])));
+	printf('<input type="hidden" name="dn" value="%s" />',rawurlencode($entry['dn']['string']));
+	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 
-	</small>
+	echo '<table class="edit_dn" cellspacing="0">';
+	printf('<tr><th colspan="2">%s</th></tr>',_('New Required Attributes'));
 
-	<br />
-	<br />
+	foreach ($ldap['attrs']['need'] as $count => $attr) {
+		printf('<tr><td class="attr">%s</td></tr>',htmlspecialchars($attr->getName()));
+		printf('<tr><td class="val"><input type="text" name="new_attrs[%s]" value="" size="40" /></td></tr>',htmlspecialchars($attr->getName()));
+	}
 
-	<form action="add_oclass.php" method="post">
-	<input type="hidden" name="new_oclass" value="<?php echo rawurlencode( serialize( $new_oclass ) ); ?>" />
-	<input type="hidden" name="dn" value="<?php echo $encoded_dn; ?>" />
-	<input type="hidden" name="server_id" value="<?php echo $ldapserver->server_id; ?>" />
+	echo '</table>';
 
-	<table class="edit_dn" cellspacing="0">
-	<tr><th colspan="2"><?php echo _('New Required Attributes'); ?></th></tr>
+	echo '<br /><br />';
 
-	<?php foreach( $needed_attrs as $count => $attr ) { ?>
+	printf('<center><input type="submit" value="%s" /></center>',_('Add ObjectClass and Attributes'));
+	echo '</form>';
 
-        <tr><td class="attr"><b><?php echo htmlspecialchars($attr->getName()); ?></b></td></tr>
-	<tr><td class="val"><input type="text" name="new_attrs[<?php echo htmlspecialchars($attr->getName()); ?>]" value="" size="40" /></tr>
-	<?php } ?>
+} else {
+	$result = $ldapserver->attrModify($entry['dn']['string'],array('objectClass'=>$entry['oclass']['new']));
 
-	</table>
-	<br />
-	<br />
-	<center><input type="submit" value="<?php echo _('Add ObjectClass and Attributes'); ?>" /></center>
-	</form>
+	if (! $result)
+		pla_error('Could not perform ldap_mod_add operation.',$ldapserver->error(),$ldapserver->errno());
 
-	</body>
-	</html>
+	else {
+		$href = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s&modified_attrs[]=objectClass',
+			$ldapserver->server_id,rawurlencode($entry['dn']['string']));
 
-<?php } else {
-
-	$add_res = $ldapserver->attrModify($dn,array('objectClass'=>$new_oclass));
-	if (! $add_res)
-		pla_error("Could not perform ldap_mod_add operation.",
-			  $ldapserver->error(),$ldapserver->errno());
-	else
-		header(sprintf('Location: template_engine.php?server_id=%s&dn=%s&modified_attrs[]=objectClass',
-			$ldapserver->server_id,$encoded_dn));
-
+		header(sprintf('Location: %s',$href));
+		die();
+	}
 }
 ?>

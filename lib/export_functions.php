@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/export_functions.php,v 1.34 2005/12/17 00:00:12 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/export_functions.php,v 1.36 2007/12/15 11:42:01 wurley Exp $
 
 /**
  * Fuctions and classes for exporting ldap entries to others formats
@@ -55,10 +55,10 @@ $exporters[] = array(
  * @package phpLDAPadmin
  */
 class LdapExportInfo {
-	var $ldapserver;
-	var $base_dn;
-	var $query_filter;
-	var $scope;
+	public $ldapserver;
+	public $base_dn;
+	public $query_filter;
+	public $scope;
 
 	/**
 	 * Create a new LdapExportInfo object
@@ -70,9 +70,7 @@ class LdapExportInfo {
 	 */
 
 	function LdapExportInfo($server_id,$base_dn=null,$query_filter=null,$scope=null) {
-		global $ldapservers;
-
-		$this->ldapserver = $ldapservers->Instance($server_id);
+		$this->ldapserver = $_SESSION['plaConfig']->ldapservers->Instance($server_id);
 		$this->ldapserver->base_dn = $base_dn;
 		$this->ldapserver->query_filter = $query_filter;
 		$this->ldapserver->scope = $scope;
@@ -120,11 +118,11 @@ class PlaAbstractExporter {
  */
 class PlaExporter extends PlaAbstractExporter {
 	# Default CRLN
-	var $br = "\n";
+	public $br = "\n";
 	# The wrapped $exporter
-	var $exporter;
+	public $exporter;
 
-	var $compress = false;
+	public $compress = false;
 
 	/**
 	 * Constructor
@@ -219,14 +217,14 @@ class PlaExporter extends PlaAbstractExporter {
  * @package phpLDAPadmin
  */
 class PlaLdapExporter extends PlaAbstractExporter {
-	var $scope;
-	var $base_dn;
-	var $server_id;
-	var $queryFilter;
-	var $attributes;
-	var $ldap_info;
-	var $results;
-	var $num_entries;
+	public $scope;
+	public $base_dn;
+	public $server_id;
+	public $queryFilter;
+	public $attributes;
+	public $ldap_info;
+	public $results;
+	public $num_entries;
 
 	/**
 	 * Create a PlaLdapExporter object.
@@ -236,8 +234,6 @@ class PlaLdapExporter extends PlaAbstractExporter {
 	 * @param String $scope the scope for export
 	 */
 	function PlaLdapExporter($server_id,$queryFilter,$base_dn,$scope,$attributes) {
-		global $config;
-
 		$this->scope = $scope;
 		$this->base_dn = $base_dn;
 		$this->server_id = $server_id;
@@ -249,7 +245,7 @@ class PlaLdapExporter extends PlaAbstractExporter {
 
 		# get the data to be exported
 		$this->results = $this->ldap_info->ldapserver->search(null,$this->base_dn,$this->queryFilter,$this->attributes,
-			$this->scope,true,$config->GetValue('deref','export'));
+			$this->scope,true,$_SESSION['plaConfig']->GetValue('deref','export'));
 
 		# if no result, there is a something wrong
 		if (! $this->results && $this->ldap_info->ldapserver->errno())
@@ -292,10 +288,10 @@ class PlaLdapExporter extends PlaAbstractExporter {
  */
 class PlaLdifExporter extends PlaExporter {
 	# variable to keep the count of the entries
-	var $counter = 0;
+	public $counter = 0;
 
 	# the maximum length of the ldif line
-	var $MAX_LDIF_LINE_LENGTH = 76;
+	public $MAX_LDIF_LINE_LENGTH = 76;
 
 	/**
 	 * Create a PlaLdifExporter object
@@ -369,8 +365,8 @@ class PlaLdifExporter extends PlaExporter {
 			$length_string = strlen($str);
 
 			/* need to do minus one to align on the right
-			   the first line with the possible following lines
-			   as these will have an extra space. */
+			 * the first line with the possible following lines
+			 * as these will have an extra space. */
 			$max_length = $this->MAX_LDIF_LINE_LENGTH-1;
 		}
 		$output .= $str.$this->br;
@@ -385,7 +381,7 @@ class PlaLdifExporter extends PlaExporter {
  * @package phpLDAPadmin
  */
 class PlaDsmlExporter extends PlaExporter {
-	var $counter = 0;
+	public $counter = 0;
 
 	/**
 	 * Create a PlaDsmlExporter object
@@ -478,7 +474,7 @@ class PlaDsmlExporter extends PlaExporter {
  */
 class PlaVcardExporter extends PlaExporter {
 	# mappping one to one attribute
-	var $vcardMapping = array('cn' => 'FN',
+	public $vcardMapping = array('cn' => 'FN',
 		'title' => 'TITLE',
 		'homePhone' => 'TEL;HOME',
 		'mobile' => 'TEL;CELL',
@@ -492,7 +488,7 @@ class PlaVcardExporter extends PlaExporter {
 		'description' => 'NOTE'
 		);
 
-	var $deliveryAddress = array('postOfficeBox',
+	public $deliveryAddress = array('postOfficeBox',
 		'street',
 		'l',
 		'st',
@@ -508,9 +504,9 @@ class PlaVcardExporter extends PlaExporter {
 	 * A basic implementation is provided here. Customize to your need
 	 **/
 	function export() {
+		$output = '';
 		# Sift through the entries.
-		foreach ($this->pla_results() as $dn => $dndetails) {
-			unset($dndetails['dn']);
+		foreach ($this->pla_results() as $id => $dndetails) {
 
 			# check the attributes needed for the delivery address field
 			$addr = 'ADR:';
@@ -522,7 +518,7 @@ class PlaVcardExporter extends PlaExporter {
 				$addr .= ';';
 			}
 
-			$output = 'BEGIN:VCARD'.$this->br;
+			$output .= 'BEGIN:VCARD'.$this->br;
 
 			# loop for the attributes
 			foreach ($dndetails as $key => $attr) {
@@ -530,11 +526,11 @@ class PlaVcardExporter extends PlaExporter {
 					$attr = array($attr);
 
 				/* if an attribute of the ldap entry exist
-				   in the mapping array for vcard */
+				 * in the mapping array for vcard */
 				if (isset($this->vcardMapping[$key])) {
 
 					/* case of organisation. Need to append the
-					   possible ou attribute*/
+					 * possible ou attribute*/
 					if (strcasecmp($key ,'o') == 0) {
 						$output .= sprintf('%s:%s',$this->vcardMapping[$key],$attr[0]);
 
@@ -556,7 +552,7 @@ class PlaVcardExporter extends PlaExporter {
 				}
 			}
 
-			$output .= sprintf('UID:%s'."%s",$dn,$this->br);
+			$output .= sprintf('UID:%s'."%s",isset($dndetails['entryUUID']) ? $dndetails['entryUUID'] : $dndetails['dn'],$this->br);
 			$output .= 'VERSION:2.1'.$this->br;
 			$output .= $addr.$this->br;
 			$output .= 'END:VCARD'.$this->br;
@@ -584,10 +580,10 @@ class PlaCSVExporter extends PlaExporter {
 	 * When doing an exporter, the method export need to be overriden.
 	 * A basic implementation is provided here. Customize to your need
 	 **/
-	var $separator = ',';
-	var $qualifier = '"';
-	var $multivalue_separator = ' | ';
-	var $escapeCode = '"';
+	public $separator = ',';
+	public $qualifier = '"';
+	public $multivalue_separator = ' | ';
+	public $escapeCode = '"';
 
 	function export() {
 		$entries = array();
@@ -596,8 +592,8 @@ class PlaCSVExporter extends PlaExporter {
 		$ldap_info = $this->pla_get_ldap_info();
 
 		$output = '';
-		/* go thru and find all the attribute names first.  This is needed, because, otherwise we have
-		   no idea as to which search attributes were actually populated with data */
+		/* go thru and find all the attribute names first. This is needed, because, otherwise we have
+		 * no idea as to which search attributes were actually populated with data */
 		foreach ($this->pla_results() as $dn => $dndetails) {
 			foreach (array_keys($dndetails) as $key) {
 				if (!in_array($key,$headers))
@@ -667,7 +663,7 @@ class PlaCSVExporter extends PlaExporter {
 	} #end export
 
 	/* function to escape data, where the qualifier happens to also
-	   be in the data. */
+	 * be in the data. */
 	function LdapEscape ($var) {
 		return str_replace($this->qualifier,$this->escapeCode.$this->qualifier,$var);
 	}
@@ -688,13 +684,13 @@ class MyCustomExporter extends PlaExporter {
 	function export() {
 
 		/* With the method pla->get_ldap_info,
-		   you have access to some values related
-		   to you ldap server */
+		 * you have access to some values related
+		 * to you ldap server */
 		$ldap_info = $this->pla_get_ldap_info();
 
 		/* Just a simple loop. For each entry
-		   do your custom export
-		   see PlaLdifExporter or PlaDsmlExporter as an example */
+		 * do your custom export
+		 * see PlaLdifExporter or PlaDsmlExporter as an example */
 		foreach ($this->pla_results() as $dn => $dndetails) {
 			unset($dndetails['dn']);
 

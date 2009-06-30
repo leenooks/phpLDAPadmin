@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.48 2006/10/29 12:49:24 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.49 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * Takes the results of clicking "Save" in template_engine.php and determines which
@@ -14,107 +14,177 @@
  */
 
 require './common.php';
-include './header.php';
 
 if ($ldapserver->isReadOnly())
 	pla_error(_('You cannot perform updates while server is in read-only mode'));
 
-$dn = $_POST['dn'];
-$old_values = $_POST['old_values'];
-$new_values = $_POST['new_values'];
-$encoded_dn = rawurlencode($dn);
-$rdn = get_rdn($dn);
+/***************/
+/* get entry   */ 
+/***************/
+	
+$entry['dn']['string'] = get_request('dn');
+$entry['dn']['encode'] = rawurlencode($entry['dn']['string']);
 
-echo '<body>';
-printf('<h3 class="title">%s</h3>',htmlspecialchars($rdn));
-printf('<h3 class="subtitle">%s: <b>%s</b> &nbsp;&nbsp;&nbsp; %s: <b>%s</b></h3>',
-	_('Server'),$ldapserver->name,_('Distinguished Name'),htmlspecialchars($dn));
-echo "\n\n";
+if (! $entry['dn']['string'] || ! $ldapserver->dnExists($entry['dn']['string']))
+	pla_error(sprintf(_('The entry (%s) does not exist.'),htmlspecialchars($entry['dn']['string'])),null,-1,true);
 
-run_hook('pre_update_array_processing',array('server_id'=>$ldapserver->server_id,
-	'dn'=>$dn,'old_values'=>$old_values,'new_values'=>$new_values));
+$tree = get_cached_item($ldapserver->server_id,'tree');
+$entry['ldap'] = null;
+if ($tree) {
+	$entry['ldap'] = $tree->getEntry($entry['dn']['string']);
 
-$update_array = array();
-foreach ($old_values as $attr => $old_val) {
-	# Did the user delete the field?
-	if (! isset($new_values[$attr]))
-		$update_array[$attr] = '';
+	if (! $entry['ldap'])
+		$tree->addEntry($entry['dn']['string']);
 
-	# Did the user change the field?
-	elseif ($old_val !== $new_values[$attr]) {
-		$new_val = $new_values[$attr];
+	$entry['ldap'] = $tree->getEntry($entry['dn']['string']);
+}
 
-		# Special case for userPassword attributes
-		if (strcasecmp($attr,'userPassword') == 0) {
-			foreach ($new_val as $key => $userpassword) {
-				if (trim($userpassword))
-					$new_val[$key] = password_hash($userpassword,$_POST['enc_type'][$key]);
-				else
-					unset($new_val[$key]);
+if (! $entry['ldap'] || $entry['ldap']->isReadOnly())
+	pla_error(sprintf(_('The entry (%s) is in readonly mode.'),htmlspecialchars($entry['dn']['string'])),null,-1,true);
+
+/***************/
+/* old values  */ 
+/***************/
+
+$entry['values']['old'] = array();
+foreach ($entry['ldap']->getAttributes() as $old_attr) {
+	$name = $old_attr->getName();
+	$entry['values']['old'][$name] = array();
+
+	foreach ($old_attr->getValues() as $old_val) {
+		if (strlen($old_val) > 0)
+			$entry['values']['old'][$name][] = $old_val;
+	}
+}
+
+/***************/
+/* new values  */ 
+/***************/
+
+eval('$reader = new '.$_SESSION['plaConfig']->GetValue('appearance','entry_reader').'($ldapserver);');
+$entry['ldap']->accept($reader);
+
+$entry['values']['new'] = array();
+foreach ($entry['ldap']->getAttributes() as $new_attr) {
+	if ($new_attr->hasBeenModified()) {
+		$name = $new_attr->getName();
+
+		if (!isset($entry['values']['old'][$name]))
+			$entry['values']['old'][$name] = array();
+
+		$entry['values']['new'][$name] = array();
+
+		foreach ($new_attr->getValues() as $i => $new_val) {
+			if ($new_attr instanceof BinaryAttribute) {
+				$n = $new_attr->getFileName($i);
+				$p = $new_attr->getFilePath($i);
+				$new_val = md5("$n|$p");
 			}
 
-			$password_already_hashed = true;
-
-		# Special case for samba password
-		} elseif (strcasecmp($attr,'sambaNTPassword') == 0 && trim($new_val[0])) {
-			$sambapassword = new smbHash;
-			$new_val[0] = $sambapassword->nthash($new_val[0]);
-
-		# Special case for samba password
-		} elseif (strcasecmp($attr,'sambaLMPassword') == 0 && trim($new_val[0])) {
-			$sambapassword = new smbHash;
-			$new_val[0] = $sambapassword->lmhash($new_val[0]);
-		}
-
-		# Retest in case our now encoded password is the same.
-		if ($new_val === $old_val)
-			continue;
-
-		if ($new_val)
-			$update_array[$attr] = $new_val;
-	}
-}
-
-# Check user password with new encoding.
-if (isset($new_values['userpassword']) && is_array($new_values['userpassword'])) {
-	foreach ($new_values['userpassword'] as $key => $userpassword) {
-		if ($userpassword) {
-			if ($old_values['userpassword'][$key] == $new_values['userpassword'][$key] && 
-				get_enc_type($old_values['userpassword'][$key]) == $_POST['enc_type'][$key])
-				continue;
-
-			$new_values['userpassword'][$key] = password_hash($userpassword,$_POST['enc_type'][$key]);
+			if (strlen($new_val) > 0)
+				$entry['values']['new'][$name][] = $new_val;
 		}
 	}
-
-	if ($old_values['userpassword'] != $new_values['userpassword'])
-		$update_array['userpassword'] = $new_values['userpassword'];
 }
 
-# strip empty vals from update_array and ensure consecutive indices for each attribute
-foreach ($update_array as $attr => $val) {
-	if (is_array($val)) {
-		foreach($val as $i => $v)
-			if (null == $v || 0 == strlen($v))
-				unset($update_array[$attr][$i]);
+/************************/
+/* objectClass deletion */
+/************************/
 
-		$update_array[$attr] = array_values($update_array[$attr]);
+$oc_to_delete = array();
+$attr_to_delete = array();
+
+// if objectClass attribute is modified
+if (isset($entry['values']['new']['objectClass'])) {
+	if (!isset($entry['values']['old']['objectClass'])) {
+		pla_error(_('An entry should have one structural objectClass.'));
+	}
+	// deleted objectClasses
+	foreach ($entry['values']['old']['objectClass'] as $oldOC) {
+		if (!in_array($oldOC, $entry['values']['new']['objectClass'])) {
+			$oc_to_delete[] = $oldOC;
+		}
+	}
+	// search the attributes used by each deleted objecClass
+	// we must maybe delete these attributes
+	foreach ($oc_to_delete as $oc) {
+		$soc = $ldapserver->getSchemaObjectClass($oc);
+		if ($soc) {
+			$ocs = $ldapserver->SchemaObjectClasses();
+			$ma = $soc->getMustAttrs($ocs);
+			foreach ($ma as $a) {
+				if (!isset($attr_to_delete[$a->getName()])) {
+					$attr_to_delete[$a->getName()] = $a;
+				}
+			}
+			$ma = $soc->getMayAttrs($ocs);
+			foreach ($ma as $a) {
+				if (!isset($attr_to_delete[$a->getName()])) {
+					$attr_to_delete[$a->getName()] = $a;
+				}
+			}
+		}
+	}
+	// if an attribute is still used by an objectClass we don't delete,
+	// we don't delete this attribute
+	foreach ($attr_to_delete as $name => $ad) {
+		$found = false;
+		$at = $ldapserver->getSchemaAttribute($name);
+		foreach ($at->getUsedInObjectClasses() as $oc) {
+			if (in_array($oc, $entry['values']['new']['objectClass'])) {
+				$found = true;
+				break;
+			}
+		}
+		if (!$found) {
+			foreach ($at->getRequiredByObjectClasses() as $oc) {
+				if (in_array($oc, $entry['values']['new']['objectClass'])) {
+					$found = true;
+					break;
+				}
+			}
+		}
+		if ($found) {
+			unset($attr_to_delete[$name]);
+		} else {
+			if (isset($entry['values']['old'][$name]) && (count($entry['values']['old'][$name]) > 0)) {
+				$found = true;
+			} else {
+				foreach ($entry['values']['new'] as $attr_name => $attr_values) {
+					if ($name == $attr_name) {
+						$found = true;
+						break;
+					}
+				}
+			}
+			if (!$found) {
+				unset($attr_to_delete[$name]);
+			} else {
+				$entry['values']['new'][$name] = array();
+				$attr_to_delete[$name] = $name;
+			}
+		}
 	}
 }
 
-/* At this point, the update_array should look like this (example):
-  Array(
-	cn => Array(
-		[0] => 'Dave',
-		[1] => 'Bob')
-	sn => 'Smith',
-	telephoneNumber => '555-1234')
-  This array should be ready to be passed to ldap_modify() */
+/****************/
+/* update array */ 
+/****************/
 
-run_hook('post_update_array_processing',array('server_id'=>$ldapserver->server_id,
-	'dn'=>$dn,'update_array'=>$update_array));
+eval('$writer = new '.$_SESSION['plaConfig']->GetValue('appearance','entry_writer').'($ldapserver);');
+$writer->draw('Title',$entry['ldap']);
+$writer->draw('Subtitle',$entry['ldap']);
 
-if (count($update_array) > 0) {
+echo "\n\n";
+
+run_hook('pre_update_array_processing',
+	array('server_id'=>$ldapserver->server_id,'dn'=>$entry['dn']['string'],'old_values'=>$entry['values']['old'],'new_values'=>$entry['values']['new']));
+
+/***************/
+/* confirm     */ 
+/***************/
+	
+if (count($entry['values']['new']) > 0) {
 	echo '<br />';
 	echo '<center>';
 	echo _('Do you want to make these changes?');
@@ -122,44 +192,47 @@ if (count($update_array) > 0) {
 
 	# <!-- Commit button and acompanying form -->
 	echo "\n\n";
-	echo '<form action="update.php" method="post">';
+	echo '<form action="cmd.php" method="post">';
+	echo '<input type="hidden" name="cmd" value="update" />';
 	echo "\n";
 	echo '<table class="confirm">';
 	echo "\n";
 
-	printf('<tr><th>%s</th><th>%s</th><th>%s</th><th>%s</th></tr>',
+	printf('<tr class="heading"><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
 		_('Attribute'),_('Old Value'),_('New Value'),_('Skip'));
 
 	echo "\n\n";
 	$counter = 0;
 
-	run_hook('pre_display_update_array',array('server_id'=>$ldapserver->server_id,'dn'=>$dn,
-		'update_array'=>$update_array));
-
-	foreach ($update_array as $attr => $new_val) {
+	$friendly_attrs = $_SESSION['plaConfig']->friendly_attrs;
+	foreach ($entry['values']['new'] as $attr => $new_val) {
 		$counter++;
 
-		if (! array_key_exists($attr,$old_values) or ! array_key_exists($attr,$new_values))
-			continue;
-
 		printf('<tr class="%s">',$counter%2 ? 'even' : 'odd');
-		printf('<td><b>%s</b></td>',htmlspecialchars($attr));
+		echo '<td><b>';
+		$attr_display = isset($friendly_attrs[strtolower($attr)]) ? $friendly_attrs[strtolower($attr)] : $attr;
+		if (strcmp($attr,$attr_display) && $_SESSION['plaConfig']->isCommandAvailable('schema')) {
+			printf('<acronym title="Alias for %s">%s</acronym>',$attr,htmlspecialchars($attr_display));
+		} else {
+			echo htmlspecialchars($attr_display);
+		}
+		echo '</b></td>';
 		echo '<td><span style="white-space: nowrap;">';
 
 		if (strcasecmp($attr,'userPassword') == 0) {
-			foreach ($old_values[$attr] as $key => $value) {
-				if (obfuscate_password_display(get_enc_type($old_values[$attr][$key])))
-					echo preg_replace('/./','*',$old_values[$attr][$key]).'<br />';
+			foreach ($entry['values']['old'][$attr] as $key => $value) {
+				if (obfuscate_password_display(get_enc_type($entry['values']['old'][$attr][$key])))
+					echo preg_replace('/./','*',$entry['values']['old'][$attr][$key]).'<br />';
 				else
-					echo nl2br(htmlspecialchars($old_values[$attr][$key])).'<br />';
+					echo nl2br(htmlspecialchars($entry['values']['old'][$attr][$key])).'<br />';
 			}
 
-		} elseif (is_array($old_values[$attr]))
-			foreach ($old_values[$attr] as $v)
+		} elseif (is_array($entry['values']['old'][$attr]))
+			foreach ($entry['values']['old'][$attr] as $v)
 				echo nl2br(htmlspecialchars($v)).'<br />';
 
 		else
-			echo nl2br(htmlspecialchars($old_values[$attr])).'<br />';
+			echo nl2br(htmlspecialchars($entry['values']['old'][$attr])).'<br />';
 
 		echo '</span></td>';
 		echo '<td><span style="white-space: nowrap;">';
@@ -167,7 +240,7 @@ if (count($update_array) > 0) {
 		# Is this a multi-valued attribute?
 		if (is_array($new_val)) {
 			if (strcasecmp($attr,'userPassword') == 0) {
-				foreach ($new_values[$attr] as $key => $value) {
+				foreach ($entry['values']['new'][$attr] as $key => $value) {
 					if (isset($new_val[$key])) {
 						if (obfuscate_password_display(get_enc_type($new_val[$key])))
 							echo preg_replace('/./','*',$new_val[$key]).'<br />';
@@ -179,51 +252,59 @@ if (count($update_array) > 0) {
 			} else {
 
 				foreach ($new_val as $i => $v) {
-					if ($v == '') {
-						# Remove it from the update array if it's empty
-						unset($update_array[$attr][$i]);
-						$update_array[$attr] = array_values($update_array[$attr]);
-
-					} else {
 						echo nl2br(htmlspecialchars($v)).'<br />';
-					}
 				}
 			}
 
-			/* was this a multi-valued attribute deletion? If so,
-			   fix the $update_array to reflect that per update_confirm.php's
-			   expectations */
-			if ($update_array[$attr] == array(0=>'') || $update_array[$attr] == array()) {
-				$update_array[$attr] = '';
+			if (! $new_val) {
 				printf('<span style="color: red">%s</span>',_('[attribute deleted]'));
 			}
 
-		} elseif ($new_val != '')
+		} elseif ($new_val == '')
 				printf('<span style="color: red">%s</span>',_('[attribute deleted]'));
 
 		echo '</span></td>';
 
- 		printf('<td><input name="skip_array[%s]" type="checkbox" /></td>',htmlspecialchars($attr));
+		$input_disabled = '';
+		if (in_array($attr, $attr_to_delete)) $input_disabled = 'disabled="disabled"';
+		$input_onclick = '';
+		if ($attr == 'objectClass' && (count($attr_to_delete) > 0)) {
+			$input_onclick = 'onclick="if (this.checked) {';
+			foreach ($attr_to_delete as $ad_name) {
+				$input_onclick .= "document.forms[0].elements['skip_array[$ad_name]'].disabled = false;";
+				$input_onclick .= "document.forms[0].elements['skip_array[$ad_name]'].checked = true;";
+			}
+			$input_onclick .= '} else {';
+			foreach ($attr_to_delete as $ad_name) {
+				$input_onclick .= "document.forms[0].elements['skip_array[$ad_name]'].checked = false;";
+				$input_onclick .= "document.forms[0].elements['skip_array[$ad_name]'].disabled = true;";
+			}
+			$input_onclick .= '}"';
+		}
+ 		printf('<td><input name="skip_array[%s]" type="checkbox" %s %s/></td>',htmlspecialchars($attr),$input_disabled,$input_onclick);
 		echo '</tr>'."\n\n";
 	}
-
-	run_hook('post_display_update_array',array('server_id'=>$ldapserver->server_id,'dn'=>$dn,
-		'update_array'=>$update_array,'index'=>$counter));
 
 	echo '</table><table class="form">';
 	echo '<tr>';
 	echo '<td>';
 	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
-	printf('<input type="hidden" name="dn" value="%s" />',$dn);
+	printf('<input type="hidden" name="dn" value="%s" />',$entry['dn']['string']);
 
-	foreach ($update_array as $attr => $val) {
-		if (is_array($val))
-			foreach($val as $i => $v)
-				printf('<input type="hidden" name="update_array[%s][%s]" value="%s" />',
-					htmlspecialchars($attr),$i,htmlspecialchars($v)); 
-		else
-			printf('<input type="hidden" name="update_array[%s]" value="%s" />',
-				htmlspecialchars($attr),htmlspecialchars($val));
+	foreach ($entry['values']['new'] as $attr => $val) {
+		if (count($val) > 0) {
+			if (is_array($val)) {
+				foreach($val as $i => $v)
+					printf('<input type="hidden" name="update_array[%s][%s]" value="%s" />',
+						htmlspecialchars($attr),$i,htmlspecialchars($v));
+			} else {
+				printf('<input type="hidden" name="update_array[%s]" value="%s" />',
+					htmlspecialchars($attr),htmlspecialchars($val));
+			}
+		} else {
+			printf('<input type="hidden" name="update_array[%s]" value="" />',
+				htmlspecialchars($attr));
+		}
 	}
 
 	printf('<input type="submit" value="%s" class="happy" />',_('Commit'));
@@ -234,15 +315,39 @@ if (count($update_array) > 0) {
 	echo '</tr>';
 	echo '</table>';
 	echo '</form>';
+
+	if (count($attr_to_delete) > 0) {
+		echo '<table class="form"><tr><td><br/>';
+		echo _('The deletion of objectClass(es)');
+		echo _(':');
+		echo ' <b>';
+		echo implode('</b>, <b>', $oc_to_delete);
+		echo '</b><br/>';
+		echo _('will delete the attribute(s)');
+		echo _(':');
+		echo ' <b>';
+		$i = 0;
+		foreach ($attr_to_delete as $attr) {
+			if ($i++ != 0) echo '</b>, <b>';
+			$attr_display = isset($friendly_attrs[strtolower($attr)]) ? $friendly_attrs[strtolower($attr)] : $attr;
+			if (strcmp($attr,$attr_display) && $_SESSION['plaConfig']->isCommandAvailable('schema')) {
+				printf('<acronym title="Alias for %s">%s</acronym>',$attr,htmlspecialchars($attr_display));
+			} else {
+				echo htmlspecialchars($attr_display);
+			}
+		}
+		echo '</b></td></tr></table>';
+	}
+
 	echo '</center>';
 
 } else {
 	echo '<center>';
 	echo _('You made no changes');
-	printf(' <a href="template_engine.php?server_id=%s&amp;dn=%s">%s</a>.',
-		$ldapserver->server_id,$encoded_dn,_('Go back'));
+	$href = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',
+		 $ldapserver->server_id,$entry['dn']['encode']);
+
+	printf(' <a href="%s">%s</a>.',htmlspecialchars($href),_('Go back'));
 	echo '</center>';
 }
-
-echo '</body>';
 ?>

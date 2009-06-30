@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/export.php,v 1.17 2005/12/17 00:00:11 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/export.php,v 1.18 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -7,46 +7,48 @@
 /**
  */
 
+require './common.php';
+
 # Fix a bug with IE:
 ini_set('session.cache_limiter','');
 
-require './common.php';
 require LIBDIR.'export_functions.php';
 
-if (! $ldapserver->haveAuthInfo())
-	pla_error(_('Not enough information to login to server. Please check your configuration.'));
+if (! $_SESSION['plaConfig']->isCommandAvailable('export'))
+	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('export')));
 
-$base_dn = isset($_POST['dn']) ? $_POST['dn']:NULL;
-$format = isset($_POST['format']) ? $_POST['format'] : 'unix';
-$scope = isset($_POST['scope']) ? $_POST['scope'] : 'base';
-$filter = isset($_POST['filter']) ? $_POST['filter'] : 'objectclass=*';
-$target = isset($_POST['target']) ? $_POST['target'] : 'display';
-$save_as_file = isset($_POST['save_as_file']) && $_POST['save_as_file'] == 'on';
+$entry['base_dn'] = get_request('dn');
+$entry['format'] = get_request('format','POST',false,'unix');
+$entry['scope'] = get_request('scope','POST',false,'base');
+$entry['filter'] = get_request('filter','POST',false,'objectclass=*');
+$entry['attr'] = get_request('attributes');
+$entry['sys_attr'] = get_request('sys_attr');
+$entry['file'] = get_request('save_as_file') ? true : false;
+$entry['exporter_id'] = get_request('exporter_id');
 
-if (isset($_POST['filter'])) {
-	preg_replace('/\s+/','',$_POST['filter']);
-	$attributes = split(',',preg_replace('/\s+/','',$_POST['attributes']));
+if ($entry['filter']) {
+	$entry['filter'] = preg_replace('/\s+/','',$entry['filter']);
+	$attributes = split(',',preg_replace('/\s+/','',$entry['attr']));
 
 } else {
 	$attributes = array();
 }
 
-# add system attributes if needed
-if (isset($_POST['sys_attr'])) {
+# Add system attributes if needed
+if ($entry['sys_attr']) {
 	array_push($attributes,'*');
 	array_push($attributes,'+');
 }
 
-isset($_POST['exporter_id']) or pla_error(_('You must choose an export format.'));
-$exporter_id = $_POST['exporter_id'];
-isset($exporters[$exporter_id]) or pla_error(_('Invalid export format'));
+(! is_null($entry['exporter_id'])) or pla_error(_('You must choose an export format.'));
+isset($exporters[$entry['exporter_id']]) or pla_error(_('Invalid export format'));
 
 # Initialisation of other variables
-$friendly_rdn = get_rdn($base_dn,1);
-$extension = $exporters[$exporter_id]['extension'];
+$friendly_rdn = get_rdn($entry['base_dn'],1);
+$extension = $exporters[$entry['exporter_id']]['extension'];
 
 # default case not really needed
-switch ($format) {
+switch ($entry['format']) {
 	case 'win':
 		$br = "\r\n";
 		break;
@@ -59,12 +61,12 @@ switch ($format) {
 }
 
 # get the decoree,ie the source
-$plaLdapExporter = new PlaLdapExporter($ldapserver->server_id,$filter,$base_dn,$scope,$attributes);
+$plaLdapExporter = new PlaLdapExporter($ldapserver->server_id,$entry['filter'],$entry['base_dn'],$entry['scope'],$attributes);
 
 # the decorator do it that way for the moment
 $exporter = null;
 
-switch ($exporter_id) {
+switch ($entry['exporter_id']) {
 	case 0:
 		$exporter = new PlaLdifExporter($plaLdapExporter);
 		break;
@@ -96,16 +98,16 @@ if (isset($_REQUEST['compress']) && $_REQUEST['compress'] = 'on')
 @set_time_limit(0);
 
 # send the header
-if ($save_as_file)
+if ($entry['file']) {
+	if (ob_get_level()) ob_end_clean();
 	header('Content-type: application/download');
-else
-	header('Content-type: text/plain');
+	header(sprintf('Content-Disposition: filename="%s.%s"',$friendly_rdn,$exporters[$entry['exporter_id']]['extension'].($exporter->isCompressed()?'.gz':'')));
+	$exporter->export();
+	die();
 
-header(sprintf('Content-Disposition: filename="%s.%s"',$friendly_rdn,$exporters[$exporter_id]['extension'].($exporter->isCompressed()?'.gz':'')));
-header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
-header('Cache-Control: post-check=0, pre-check=0', false);
-
-# and export
-$exporter->export();
+} else {
+	print '<span style="font-size: 14px; font-family: courier;"><pre>';
+	$exporter->export();
+	print '</pre></span>';
+}
 ?>

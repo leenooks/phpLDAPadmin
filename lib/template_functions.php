@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.41 2006/10/28 16:38:36 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.43 2007/12/15 11:15:24 wurley Exp $ */
 
 /**
  * Classes and functions for the template engine.ation and capability
@@ -95,47 +95,72 @@ class xml2array {
 
 class Templates {
 	var $_creation_template = array();
+	var $_editing_template = array();
 	var $_js_hash = array();
 
 	function Templates($server_id) {
 		if (DEBUG_ENABLED)
-			debug_log('%s::__construct(): Entered with ()',5,get_class($this));
+			debug_log('Entered with ()',5,__FILE__,__LINE__,__METHOD__);
 
 		if ($this->_creation_template = get_cached_item($server_id,'template','creation')) {
 			if (DEBUG_ENABLED)
-				debug_log('%s::init(): Using CACHED [%s]',5,get_class($this),'templates');
+				debug_log('Using CACHED [%s]',5,__FILE__,__LINE__,__METHOD__,'templates');
 
 		} else {
-			$dir = opendir(TMPLDIR);
+			$dir = opendir(TMPLDIR.'creation');
 
 			$this->template_num = 0;
 			while( ( $file = readdir( $dir ) ) !== false ) {
 				if (! preg_match('/.xml$/',$file)) continue;
 
 				$objXML = new xml2array();
-				$xmldata = $objXML->parse(TMPLDIR.$file);
+				$xmldata = $objXML->parse(TMPLDIR.'creation/'.$file);
 
 				$template_name = preg_replace('/.xml$/','',$file);
+				$this->_creation_template[$template_name] = array();
 
-				$this->storeTemplate($template_name,$xmldata);
+				$this->storeTemplate($this->_creation_template[$template_name],$xmldata);
 			}
 			masort($this->_creation_template,'title');
 			set_cached_item($server_id,'template','creation',$this->_creation_template);
 		}
+
+		if ($this->_editing_template = get_cached_item($server_id,'template','editing')) {
+			if (DEBUG_ENABLED)
+				debug_log('Using CACHED [%s]',5,__FILE__,__LINE__,__METHOD__,'templates');
+
+		} else {
+			$dir = opendir(TMPLDIR.'modification');
+
+			$this->template_num = 0;
+			while (($file = readdir($dir)) !== false) {
+				if (! preg_match('/.xml$/',$file))
+					continue;
+
+				$objXML = new xml2array();
+				$xmldata = $objXML->parse(TMPLDIR.'modification/'.$file);
+
+				$template_name = preg_replace('/.xml$/','',$file);
+				$this->_editing_template[$template_name] = array();
+
+				$this->storeTemplate($this->_editing_template[$template_name], $xmldata);
+			}
+
+			masort($this->_creation_template,'title');
+			set_cached_item($server_id,'template','editing',$this->_editing_template);
+		}
 	}
 
-	function storeTemplate($xtemplate,$xmldata) {
+	function storeTemplate(&$template,$xmldata) {
 		if (DEBUG_ENABLED)
-			debug_log('%s::storeTemplate(): Entered with (%s,%s)',5,
-				get_class($this),$template,$xmldata);
+			debug_log('Entered with (%s,%s)',5,__FILE__,__LINE__,__METHOD__,$template,$xmldata);
 
 		global $ldapserver;
 
 		$template['objectclass'] = array();
 		foreach ($xmldata['template'] as $xml_key => $xml_value) {
 			if (DEBUG_ENABLED)
-				debug_log('%s::storeTemplate(): Foreach loop Key [%s] Value [%s]',4,
-					get_class($this),$xml_key,is_array($xml_value));
+				debug_log('Foreach loop Key [%s] Value [%s]',4,__FILE__,__LINE__,__METHOD__,$xml_key,is_array($xml_value));
 
 			switch ($xml_key) {
 
@@ -144,8 +169,8 @@ class Templates {
 					if (isset($xmldata['template']['objectclasses']) && is_array($xmldata['template']['objectclasses'])) {
 						foreach ($xmldata['template']['objectclasses']['objectclass'] as $index => $details) {
 
-							# XML files with only 1 objectClass dont have a numeric index.
 							if (is_numeric($index)) {
+								# XML files with only 1 objectClass dont have a numeric index.
 								if ($schema = $ldapserver->getSchemaObjectClass($details['ID'])) {
 
 									# If we havent recorded this objectclass already, do so now.
@@ -162,7 +187,8 @@ class Templates {
 							} else {
 								if ($schema = $ldapserver->getSchemaObjectClass($details)) {
 									if (! isset($template['objectclass']) ||
-										! in_array($details,$template['objectclass'])) {
+										//! in_array($details,$template['objectclass'])) {
+										! in_array($schema->getName(),$template['objectclass'])) {
 
 										$template['objectclass'][] = $schema->getName();
 									}
@@ -179,7 +205,7 @@ class Templates {
 				# Build our attribute list from the DN and Template.
 				case ('attributes') :
 					if (DEBUG_ENABLED)
-						debug_log('%s::storeTemplate(): Case [%s]',4,get_class($this),'attributes');
+						debug_log('Case [%s]',4,__FILE__,__LINE__,__METHOD__,'attributes');
 
 					if (isset($xmldata['template']['attributes']) && is_array($xmldata['template']['attributes'])) {
 						$template['attribute'] = array();
@@ -188,8 +214,8 @@ class Templates {
 							foreach ($tattrs as $index => $attr_details) {
 
 								if (DEBUG_ENABLED)
-									debug_log('%s::storeTemplate(): Foreach tattrs Key [%s] Value [%s]',4,
-										get_class($this),$index,serialize($attr_details));
+									debug_log('Foreach tattrs Key [%s] Value [%s]',4,__FILE__,__LINE__,__METHOD__,
+										$index,serialize($attr_details));
 
 								# Single attribute XML files are not indexed.
 								if (is_numeric($index)) {
@@ -204,6 +230,7 @@ class Templates {
 										foreach ($attr_details as $key => $values) {
 											if (is_array($values) && isset($values['ID'])) {
 												$template['attribute'][$attr->getName()][$index]['_KEY:'.$values['ID']] = $this->_parseXML($key,$values);
+
 											} elseif (is_array($values) && isset($values['#text'])) {
 												$template['attribute'][$attr->getName()][$index][] = $values['#text'];
 
@@ -253,16 +280,6 @@ class Templates {
 			while ($supclass == true) {
 				$schema_object = $ldapserver->getSchemaObjectClass($oclass);
 
-				/*
-				 * Shouldnt be required now...
-				# Test that this is a valid objectclass - disable if an invalid one found.
-				if (! $schema_object) {
-					$template['invalid'] = 1;
-					$supclass = false;
-					continue;
-				}
-				*/
-
 				if ($schema_object->getType() == 'structural' && (! $enherited))
 					$template['structural'][] = $oclass;
 
@@ -270,8 +287,12 @@ class Templates {
 					foreach ($schema_object->getMustAttrs() as $index => $detail) {
 						$objectclassattr = $detail->getName();
 
-						if (! in_array($objectclassattr,$template['must']) &&
-							strcasecmp('objectClass',$objectclassattr) != 0) {
+						// We add the 'objectClass' attribute, only if it's explicitly
+						// in the template attribute list
+						if (! in_array($objectclassattr,$template['must'])
+							&& ((strcasecmp('objectClass',$objectclassattr) != 0)
+							|| ((strcasecmp('objectClass',$objectclassattr) == 0)
+							&& isset($template['attribute']['objectClass'])))) {
 
 							# Go through the aliases, and ignore any that are already defined.
 							$ignore = false;
@@ -307,14 +328,15 @@ class Templates {
 
 				# Keep a list to objectclasses we have processed, so we dont get into a loop.
 				$oclass_processed[] = $oclass;
+				$supoclasses = $schema_object->getSupClasses();
 
-				if ((count($schema_object->getSupClasses())) || count($superclasslist)) {
-					foreach ($schema_object->getSupClasses() as $supoclass) {
+				if (count($supoclasses) || count($superclasslist)) {
+					foreach ($supoclasses as $supoclass) {
 						if (! in_array($supoclass,$oclass_processed))
-							$supoclasslist[] = $supoclass;
+							$superclasslist[] = $supoclass;
 					}
 
-					$oclass = array_shift($supoclasslist);
+					$oclass = array_shift($superclasslist);
 					if ($oclass)
 						$enherited = true;
 					else
@@ -367,6 +389,11 @@ class Templates {
 				$template['attrs'][$detail] = $attrs[$detail];
 		}
 
+		# are there attributes defined in templates but not in may/must attributes ?
+		foreach ($template['attribute'] as $attr => $details) {
+			if (!isset($template['empty_attrs'][$attr])) $template['empty_attrs'][$attr] = $details;
+		}
+
 		# Check if there are any items without a page or order parameter, and make it 1 and 255.
 		foreach ($template['empty_attrs'] as $index => $detail) {
 			if (! isset($detail['page']))
@@ -380,20 +407,45 @@ class Templates {
 			if (! isset($template[$key])
 				|| (! is_array($template[$key]) && ! trim($template[$key]))) {
 
-				//unset($template);
 				$template['invalid'] = 1;
 				$template['invalid_reason'] = sprintf(_('Missing %s in the XML file.'),$key);
 				break;
 			}
 		}
 
-		$this->_creation_template[$xtemplate] = $template;
+		# Define attribute type according to the values
+		foreach ($template['empty_attrs'] as $attr => $details) {
+			if (isset($template['empty_attrs'][$attr]['type'])) continue;
+
+			if (isset($details['option'])) {
+				if (is_array($details['option'])) {
+					$details['type'] = 'select';
+				} elseif (preg_match('/^=php\.(\w+)\((.*)\)$/', $details['option'], $matches)) {
+					$args = preg_split('/,/',$matches[2]);
+					switch($matches[1]) {
+						case 'GetNextNumber' :
+							break;
+						case 'MultiList' :
+							$template['empty_attrs'][$attr]['type'] = 'multiselect';
+							break;
+						case 'PickList' :
+							$template['empty_attrs'][$attr]['type'] = 'select';
+							break;
+						case 'RandomPassword' :
+							break;
+						case 'DrawChooserLink' :
+							break;
+						default :
+							break;
+					}
+				}
+			}
+		}
 	}
 
 	function _parseXML($index,$attr_details) {
 		if (DEBUG_ENABLED)
-			debug_log('%s::_parseXML(): Entered with (%s,%s)',5,
-				get_class($this),$index,$attr_details);
+			debug_log('Entered with (%s,%s)',5,__FILE__,__LINE__,__METHOD__,$index,$attr_details);
 
 		if (! $attr_details) {
 			return '';
@@ -429,14 +481,21 @@ class Templates {
 		return isset($this->_creation_template[$template]) ? $this->_creation_template[$template] : null;
 	}
 
+	function getEditingTemplate($template) {
+		return isset($this->_editing_template[$template]) ? $this->_editing_template[$template] : null;
+	}
+
 	function getCreationTemplates() {
 		return $this->_creation_template;
 	}
 
+	function getEditingTemplates() {
+		return $this->_editing_template;
+	}
+
 	function OnChangeAdd($ldapserver,$origin,$value) {
 		if (DEBUG_ENABLED)
-			debug_log('%s::OnChangeAdd(): Entered with (%s,%s,%s)',5,
-				get_class($this),$ldapserver->server_id,$origin,$value);
+			debug_log('Entered with (%s,%s,%s)',5,__FILE__,__LINE__,__METHOD__,$ldapserver->server_id,$origin,$value);
 
 		global $_js_hash;
 
@@ -447,24 +506,24 @@ class Templates {
 			/*
 			autoFill:string
 			string is a literal string, and may contain many fields like %attr|start-end/flags%
-			       to substitute values read from other fields.
+				to substitute values read from other fields.
 			|start-end is optional, but must be present if the k flag is used.
 			/flags is optional.
 
 			flags may be:
-			T:    Read display text from selection item (drop-down list), otherwise, read the value of the field
-			      For fields that aren't selection items, /T shouldn't be used, and the field value will always be read.
-			k:    Tokenize:
-			      If the "k" flag is not given:
-			           A |start-end instruction will perform a sub-string operation upon
-			           the value of the attr, passing character positions start-end through.
-			           start can be 0 for first character, or any other integer.
-			           end can be 0 for last character, or any other integer for a specific position.
-			      If the "k" flag is given:
-			      The string read will be split into fields, using : as a delimiter
-			           "start" indicates which field number to pass through.
-			l:    Make the result lower case.
-			U:    Make the result upper case.
+			T:	Read display text from selection item (drop-down list), otherwise, read the value of the field
+				For fields that aren't selection items, /T shouldn't be used, and the field value will always be read.
+			k:	Tokenize:
+				If the "k" flag is not given:
+					A |start-end instruction will perform a sub-string operation upon
+					the value of the attr, passing character positions start-end through.
+					start can be 0 for first character, or any other integer.
+					end can be 0 for last character, or any other integer for a specific position.
+				If the "k" flag is given:
+					The string read will be split into fields, using : as a delimiter
+					"start" indicates which field number to pass through.
+			l:	Make the result lower case.
+			U:	Make the result upper case.
 			*/
 			case 'autoFill' :
 				list($attr,$string) = preg_split('(([^,]+),(.*))',$arg,-1,PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
@@ -490,6 +549,8 @@ class Templates {
 					$matchall[1][$index] = $matchattr->getName();
 				}
 
+				$elem_id = 0;
+
 				foreach ($matchall[0] as $index => $null) {
 					$match_attr = $matchall[1][$index];
 					$match_subst = $matchall[2][$index];
@@ -497,16 +558,29 @@ class Templates {
 
 					$substrarray = array();
 
+					if (! isset($varcount[$match_attr]))
+						$varcount[$match_attr] = 0;
+					else
+						$varcount[$match_attr]++;
+
+					$js_match_attr = $match_attr;
+					$match_attr = $js_match_attr.'xx'.$varcount[$match_attr];
+
+					$formula = preg_replace('/%'.$js_match_attr.'([|\/%])/','%'.$match_attr.'$1',$formula,1);
+
 					$_js_hash['autoFill'.$origin] .= sprintf("  var %s;\n",$match_attr);
+					$_js_hash['autoFill'.$origin] .= sprintf(
+							"  var elem$elem_id = document.getElementById(pre+'%s'+suf);\n".
+							"  if (!elem$elem_id) return;\n", $js_match_attr);
 
 					if (strstr($match_mod,'T')) {
-						$_js_hash['autoFill'.$origin] .= sprintf(
-							"   %s = document.getElementById('%s').options[document.getElementById('%s').selectedIndex].text;\n",
-							$match_attr,$match_attr,$match_attr);
+						$_js_hash['autoFill'.$origin] .= sprintf("  %s = elem$elem_id.options[elem$elem_id.selectedIndex].text;\n",
+							$match_attr);
 					} else {
-						$_js_hash['autoFill'.$origin] .= sprintf("   %s = document.getElementById('%s').value;\n",
-							$match_attr,$match_attr);
+						$_js_hash['autoFill'.$origin] .= sprintf("  %s = elem$elem_id.value;\n",$match_attr);
 					}
+
+					$elem_id++;
 
 					if (strstr($match_mod,'k')) {
 						preg_match_all('/([0-9]+)/',trim($match_subst),$substrarray);
@@ -546,9 +620,10 @@ class Templates {
 					$formula = preg_replace('/%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[klTUA]+)?%$/U','\' + $1 ',$formula);
 					# Match for entries not at begin/end.
 					$formula = preg_replace('/%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[:lTUA]+)?%/U','\' + $1 + \'',$formula);
+					$_js_hash['autoFill'.$origin] .= "\n";
 				}
 
-				$_js_hash['autoFill'.$origin] .= sprintf(" fillRec('%s', %s);\n",$attr,$formula);
+				$_js_hash['autoFill'.$origin] .= sprintf(" fillRec(pre+'%s'+suf, %s); // %s\n",$attr,$formula,$string);
 				$_js_hash['autoFill'.$origin] .= "\n";
 				break;
 
@@ -564,51 +639,46 @@ class Templates {
 
 	// @todo: The XML files need to change the field seperater to something else (ie: not comma)
 	// as it is clashing when a DN is used as an argument.
-	function EvaluateDefault(&$ldapserver,$value,$container,$counter='',$default=null) {
+	static function EvaluateDefault(&$ldapserver,$value,$container,$counter='',$default=null) {
 		if (DEBUG_ENABLED)
-			debug_log('%s::EvaluateDefault(): Entered with (%s,%s,%s,%s)',5,
-				get_class($this),$ldapserver->server_id,$value,$container,$counter);
-
-		global $ldapservers;
+			debug_log('Entered with (%s,%s,%s,%s)',5,__FILE__,__LINE__,__METHOD__,
+				$ldapserver->server_id,$value,$container,$counter);
 
 		if (preg_match('/^=php\.(\w+)\((.*)\)$/',$value,$matches)) {
 			$args = preg_split('/,/',$matches[2]);
+			$vals = array();
 
 			switch($matches[1]) {
 				case 'GetNextNumber' :
 					/*
 					 * mandatory arguments:
 					 * * arg 0
-					 *   - "$" => 'auto_number','search_base' in config file
-					 *   - "/","..","." => get container parent as usual
+					 *	- "$" => 'auto_number','search_base' in config file
+					 *	- "/","..","." => get container parent as usual
 					 * * arg 1
-					 *   - "gid" or "uid" for autosearch
-					 *   - idem or real attribute name for uidpool mechanism
-					 *     (gid and uid are mapped to sambaNextGroupRid and sambaNextUserRid)
+					 *	- "gid" or "uid" for autosearch
+					 *	- idem or real attribute name for uidpool mechanism
+					 *	(gid and uid are mapped to sambaNextGroupRid and sambaNextUserRid)
 					 * optional arguments:
 					 * * arg 2 (uidpool mechanism only)
-					 *   - "true" increments attribute by 1
-					 *   - "false" do nothing
+					 *	- "true" increments attribute by 1
+					 *	- "false" do nothing
 					 * * arg 3 (uidpool mechanism only)
-					 *   ldap filter (must match one entry only in container)
+					 *	ldap filter (must match one entry only in container)
 					 * * arg 4
-					 *   calculus on number, eg:
-					 *   *2;+1000 => number = (2*number) + 1000
+					 *	calculus on number, eg:
+					 *	*2;+1000 => number = (2*number) + 1000
 					 */
 
 					if ($args[0] == '$')
-						$args[0] = $ldapservers->GetValue($ldapserver->server_id,'auto_number','search_base');
+						$args[0] = $_SESSION['plaConfig']->ldapservers->GetValue($ldapserver->server_id,'auto_number','search_base');
 
 					$container = $ldapserver->getContainerParent($container,$args[0]);
-					$detail['value'] = get_next_number($ldapserver,$container,$args[1],
-						(!empty($args[2]) && ($args[2] == 'true')) ? true : false,(!empty($args[3])) ? $args[3] : false);
-
+					$vals = get_next_number($ldapserver,$container,$args[1],(!empty($args[2]) && ($args[2] == 'true')) ? true : false,(!empty($args[3])) ? $args[3] : false);
 					# operate calculus on next number.
 					if (!empty($args[4])) {
 						$mod = split(';',$args[4]);
-
-						$next_number = $detail['value'];
-
+						$next_number = $vals;
 						foreach ($mod as $calc) {
 							$operand = $calc{0};
 							$operator = substr ($calc,1);
@@ -632,7 +702,7 @@ class Templates {
 							}
 						}
 
-						$detail['value'] = $next_number;
+						$vals = $next_number;
 					}
 					break;
 
@@ -643,7 +713,7 @@ class Templates {
 					 * arg1: LDAP filter. must replace '&' by '&amp;'
 					 * arg2: list attribute key
 					 * arg3: display, as usual
-					 optional arguments:
+					 * optional arguments:
 					 * arg4: output attribute
 					 * arg5: container override
 					 * arg6: csv list (; separator) of added values. syntax key => display_attribute=value; key...
@@ -686,8 +756,8 @@ class Templates {
 						}
 					}
 
-					$detail['value'] = sprintf('<select name="form[%s]" id="%%s" %%s %%s>',(isset($args[4]) ? $args[4] : $args[2]));
-					$counter = 0;
+					$vals = array();
+
 					foreach ($picklistvalues as $key => $values) {
 						$display = $args[3];
 
@@ -695,16 +765,10 @@ class Templates {
 							$display = preg_replace('/%('.$arg.')(\|.+)?(\/[lU])?%/U',$values[$arg],$display);
 
 						if (! isset($picklist[$values[$args[2]]])) {
-							$detail['value'] .= sprintf('<option id="%s%s" value="%s" %s>%s</option>',
-								(!empty($args[4]) ? $args[4] : $args[2]),++$counter,$values[$args[2]],
-								($default == $values[$args[2]]) ? 'selected' : '',
-								$display);
-
-							$picklist[$values[$args[2]]] = true;
+							$vals['_KEY:'.$values[$args[2]]] = $display;
+							$picklist[$display] = true;
 						}
 					}
-
-					$detail['value'] .= '</select>';
 
 					break;
 
@@ -713,27 +777,26 @@ class Templates {
 					 * MultiList Syntax:
 					 */
 					/**
-					 mandatory fields:
-						arg 0: "/" ,"..","." - from container dn
-						arg 1: search filter, may have values like '%gidNumber%, in case of it is replaced
-								by the gidNumber setted in previous pages. '&' must be replaced by '&amp;'
-								because of xml...
-						arg 2: the key of retrived values
-					optional fields:
-						arg 3: display, as usual (plus modifier /C: Capitalize). replaced by %arg 2% if not given
-						arg 4: the value furnished in output - must be attribute id. replaced by arg 2 if not given
-						arg 5: override of container (replace ',' by ':::' in dn)
-						arg 6: csv (; separator) list of added values. syntax: value => display_key=display_value
-						arg 7: csv (; separator) list of attributes which list must be sort by. less to more important
-						arg 8: size of displayed list (default: 10lines)
-						arg 9: preselected values filter. see arg 1.
-						arg 10: key of preselected values. replaced by arg 4 if not given. replaced bty arg 2 if both are not given.
-						arg 11: base dn override for preselected values
-
-					unusual exemple:)
-					 <value>=php.MultiList(/,(&amp;(objectClass=posixAccount)(uid=groupA*)),uid,%cn/U% (%gidNumber%),memberUid,dmdName=users,root => cn=root; nobody => cn=nobody,gidNumber,10,(gidNuber=%gidNumber%),uid)</value>
-					minimal exemple:
-					 <value>=php.MultiList(/,(objectClass=posixAccount),uid)</value>
+					 * mandatory fields:
+					 *	arg 0: "/" ,"..","." - from container dn
+					 *	arg 1: search filter, may have values like '%gidNumber%, in case of it is replaced
+					 *		by the gidNumber setted in previous pages. '&' must be replaced by '&amp;'
+					 *		because of xml...
+					 *	arg 2: the key of retrived values
+					 * optional fields:
+					 *	arg 3: display, as usual (plus modifier /C: Capitalize). replaced by %arg 2% if not given
+					 *	arg 4: the value furnished in output - must be attribute id. replaced by arg 2 if not given
+					 *	arg 5: override of container (replace ',' by ':::' in dn)
+					 *	arg 6: csv (; separator) list of added values. syntax: value => display_key=display_value
+					 *	arg 7: csv (; separator) list of attributes which list must be sort by. less to more important
+					 *	arg 8: size of displayed list (default: 10lines)
+					 *	arg 9: preselected values filter. see arg 1.
+					 *	arg 10: key of preselected values. replaced by arg 4 if not given. replaced bty arg 2 if both are not given.
+					 *	arg 11: base dn override for preselected values
+					 * unusual exemple:)
+					 *	 <value>=php.MultiList(/,(&amp;(objectClass=posixAccount)(uid=groupA*)),uid,%cn/U% (%gidNumber%),memberUid,dmdName=users,root => cn=root; nobody => cn=nobody,gidNumber,10,(gidNuber=%gidNumber%),uid)</value>
+					 * minimal exemple:
+					 *	<value>=php.MultiList(/,(objectClass=posixAccount),uid)</value>
 					**/
 
 					$container = $ldapserver->getContainerParent($container,$args[0]);
@@ -745,11 +808,14 @@ class Templates {
 					$args[1] = str_replace('&amp;','&',$args[1]);
 
 					preg_match_all('/%(\w+)(\|.+)?(\/[lUC])?%/U',$args[1],$filtermatchall);
-					$formvalues = array_change_key_case($_REQUEST['form']);
 
-					foreach ($filtermatchall[1] as $arg) {
-						$value=$formvalues[strtolower($arg)];
-						$args[1] = preg_replace('/%('.$arg.')(\|.+)?(\/[lU])?%/U',$value,$args[1]);
+					if (isset($_REQUEST['form'])) {
+						$formvalues = array_change_key_case($_REQUEST['form']);
+
+						foreach ($filtermatchall[1] as $arg) {
+							$value = $formvalues[strtolower($arg)];
+							$args[1] = preg_replace('/%('.$arg.')(\|.+)?(\/[lU])?%/U',$value,$args[1]);
+						}
 					}
 
 					$args[3] = !empty($args[3]) ? $args[3] : "%{$args[2]}%";
@@ -819,33 +885,40 @@ class Templates {
 						$inpicklistvalues = return_ldap_hash($ldapserver,$container,$args[9],$args[2],$ldap_attrs);
 					}
 
-					$detail['value'] = sprintf('<select name="form[%s][]" multiple="multiple" size="%s" id="%%s" %%s %%s>',
-						(isset($args[4])) ? $args[4] : $args[2],
-						# arg 8 is the size (nbr of displayed lines) of select
-						(isset($args[8])) ? $args[8] : 10);
+					$vals = array();
 
-					$counter = 0;
 					foreach ($picklistvalues as $key => $values) {
 						$display = $args[3];
 
 						foreach ($matchall[1] as $key => $arg) {
 							$disp_val = $values[$arg];
+							if (is_array($disp_val)) $disp_val = $disp_val[0];
+							if (!$disp_val) $disp_val = '';
 
 							if ($matchall[3][$key])
 								switch ($matchall[3][$key]) {
 									case '/l':
 									# lowercase
-										$disp_val = mb_convert_case($disp_val,MB_CASE_LOWER,'utf-8');
+										if (function_exists('mb_convert_case'))
+											$disp_val = mb_convert_case($disp_val,MB_CASE_LOWER,'utf-8');
+										else
+											$disp_val = strtolower($disp_val);
 										break;
 
 									case '/U':
 									# uppercase
-										$disp_val = mb_convert_case($disp_val,MB_CASE_UPPER,'utf-8');
+										if (function_exists('mb_convert_case'))
+											$disp_val = mb_convert_case($disp_val,MB_CASE_UPPER,'utf-8');
+										else
+											$disp_val = strtoupper($disp_val);
 										break;
 
 									case '/C':
 									# capitalize
-										$disp_val = mb_convert_case($disp_val,MB_CASE_TITLE,'utf-8');
+										if (function_exists('mb_convert_case'))
+											$disp_val = mb_convert_case($disp_val,MB_CASE_TITLE,'utf-8');
+										else
+											$disp_val = ucfirst($disp_val);
 										break;
 
 									default:
@@ -858,51 +931,32 @@ class Templates {
 							if ((isset($substrarray[1][0]) && $substrarray[1][0]) || (isset($substrarray[2][0]) && $substrarray[2][0])) {
 								$begin = $substrarray[1][0] ? $substrarray[1][0] : '0';
 								$end = $substrarray[2][0] ? $substrarray[2][0] : strlen($disp_val);
-								$disp_val = mb_substr($disp_val,$begin,$end,'utf-8');
+								if (function_exists('mb_substr'))
+									$disp_val = mb_substr($disp_val,$begin,$end,'utf-8');
+								else
+									$disp_val = substr($disp_val,$begin,$end);
 							}
 
 							$display = preg_replace('/%('.$arg.')(\|.+)?(\/[lUC])?%/U',$disp_val,$display);
 						}
 
 						if (! isset($picklist[$values[$args[2]]])) {
-							if (!isset($args[9])) {
-
-								# there is no criteria filter for selected values
-								$detail['value'] .= sprintf('<option id="%s%s" value="%s" %s>%s</option>',
-									# arg 4 is the output criteria
-									((isset($args[4]) && !empty($args[4])) ? $args[4] : $args[2]),
-									++$counter,
-									$values[$args[2]],
-									# if the value the default, then select it
-									(in_array($values[$args[2]],$default)) ? 'selected' : '',
-									$display);
-
-							} else {
-								# if default filter is given
-								$detail['value'] .= sprintf('<option id="%s%s" value="%s" %s>%s</option>',
-									(isset($args[4]) ? $args[4] : $args[2]),
-									++$counter,
-									$values[$args[2]],
-									# arg 10 is the key for filter values
-									(array_key_exists($values[(isset($args[10]) ? $args[10] : (isset($args[4]) ? $args[4] : $args[2]))],$inpicklistvalues)) ? 'selected' : '',
-									$display);
-							}
-
+							$vals['_KEY:'.$values[$args[2]]] = $display;
 							$picklist[$values[$args[2]]] = true;
 						}
 					}
-					$detail['value'] .= '</select>';
 
 					break;
 
 				case 'RandomPassword' :
-					$detail['value'] = password_generate();
+					$vals = password_generate();
 					printf('<script type="text/javascript" language="javascript">alert(\'%s:\n%s\')</script>',
-						_('A random password was generated for you'),$detail['value']);
+						_('A random password was generated for you'),$vals);
+
 					break;
 
 				case 'DrawChooserLink' :
-					$detail['value'] = draw_chooser_link(sprintf('template_form.%s%s',$args[0],$counter),$args[1]);
+					$vals = draw_chooser_link(sprintf('template_form.%s%s',$args[0],$counter),$args[1]);
 
 					break;
 
@@ -928,28 +982,28 @@ class Templates {
 
 					# Call the PHP function if exists (PHP 4 >= 4.0.4, PHP 5)
 					if (function_exists($function_name))
-						$detail['value'] = call_user_func_array($function_name,$function_args);
+						$vals = call_user_func_array($function_name,$function_args);
 
 					break;
 
-				default : $detail['value'] = 'UNKNOWN';
+				default : $vals = 'UNKNOWN';
 			}
 
-			$return = $detail['value'];
+			$return = $vals;
 
 		} else {
 			$return = $value;
 		}
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::EvaluateDefault(): Returning (%s)',5,get_class($this),$return);
+			debug_log('Returning (%s)',5,__FILE__,__LINE__,__METHOD__,$return);
 		return $return;
 	}
 
 	function HelperValue($helper,$id='',$container='',$ldapserver='',$counter='',$default='') {
 		if (DEBUG_ENABLED)
-			debug_log('%s::HelperValue(): Entered with (%s,%s,%s,%s,%s,%s)',5,
-				get_class($this),$helper,$id,$container,$ldapserver->server_id,$counter,$default);
+			debug_log('Entered with (%s,%s,%s,%s,%s,%s)',5,__FILE__,__LINE__,__METHOD__,
+				$helper,$id,$container,$ldapserver->server_id,$counter,$default);
 
 		if ($container && $ldapserver && ! is_array($helper)) {
 			if (preg_match('/^=php./',$helper))
@@ -958,7 +1012,7 @@ class Templates {
 
 			else
 				# @todo: Enable size and width configuration in template
-				$html = sprintf('<input type="text" name="%s" size="8" />',$id);
+				$html = sprintf('<input type="text" name="%s" size="8" value="%s" />',$id,$helper);
 
 		} else {
 			if (is_array($helper)) {

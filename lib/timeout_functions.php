@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/timeout_functions.php,v 1.9 2006/01/03 20:39:59 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/timeout_functions.php,v 1.10 2007/12/15 07:50:33 wurley Exp $
 
 /**
  * A collection of functions used throughout phpLDAPadmin for the timeout and automatic logout feature
@@ -37,7 +37,7 @@ function unset_lastactivity($ldapserver) {
 		debug_log('unset_lastactivity(): Entered with (%s)',1,$ldapserver->server_id);
 
 	if (isset($_SESSION['activity']['server'][$ldapserver->server_id]))
-       		unset($_SESSION['activity']['server'][$ldapserver->server_id]);
+		unset($_SESSION['activity']['server'][$ldapserver->server_id]);
 }
 
 /**
@@ -69,14 +69,16 @@ function session_timed_out($ldapserver) {
 		# If diff between current time and last activity greater than $session_timeout, log out user
 		if ((time()-$last_activity) > ($session_timeout*60)) {
 
-			if (in_array($ldapserver->auth_type, array('cookie','session'))) {
+			if (in_array($ldapserver->auth_type,array('cookie','session'))) {
 				syslog_notice('Logout for '.$ldapserver->getLoggedInDN());
 				$ldapserver->unsetLoginDN() or pla_error(_('Could not logout.'));
 			}
 
 			return true;
 
-		} else
-			return false;
+		}
 	}
+
+	return false;
 }
+?>

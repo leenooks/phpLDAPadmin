@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass.php,v 1.18 2005/12/10 10:34:54 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass.php,v 1.19 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * Adds an objectClass to the specified dn.
@@ -7,8 +7,6 @@
  * Note, this does not do any schema violation checking. That is
  * performed in add_oclass_form.php.
  *
- * Variables that come in via common.php
- *  - server_id
  * Variables that come in as POST vars:
  *  - dn (rawurlencoded)
  *  - new_oclass
@@ -21,44 +19,48 @@
 
 require './common.php';
 
-if( $ldapserver->isReadOnly() )
-	pla_error( _('You cannot perform updates while server is in read-only mode') );
-if( ! $ldapserver->haveAuthInfo())
-	pla_error( _('Not enough information to login to server. Please check your configuration.') );
-
-$dn = rawurldecode( $_POST['dn'] );
-$new_oclass = unserialize( rawurldecode( $_POST['new_oclass'] ) );
-$new_attrs = $_POST['new_attrs'];
-
-$encoded_dn = rawurlencode( $dn );
+if ($ldapserver->isReadOnly())
+	pla_error(_('You cannot perform updates while server is in read-only mode'));
 
 if ($ldapserver->isAttrReadOnly('objectClass'))
-	pla_error( "ObjectClasses are flagged as read only in the phpLDAPadmin configuration." );
+	pla_error(_('ObjectClasses are flagged as read only in the phpLDAPadmin configuration.'));
+
+$entry['dn']['encode'] = get_request('dn');
+$entry['dn']['string'] = urldecode($entry['dn']['encode']);
+
+$entry['new']['oclass'] = unserialize(rawurldecode(get_request('new_oclass')));
+$entry['new']['attrs'] = get_request('new_attrs');
 
 $new_entry = array();
-$new_entry['objectClass'] = $new_oclass;
+$new_entry['objectClass'] = $entry['new']['oclass'];
 
-$new_attrs_entry = array();
-$new_oclass_entry = array( 'objectClass' => $new_oclass );
+if (is_array($entry['new']['attrs']) && count($entry['new']['attrs']) > 0)
+	foreach ($entry['new']['attrs'] as $attr => $val) {
 
-if( is_array( $new_attrs ) && count( $new_attrs ) > 0 )
-	foreach( $new_attrs as $attr => $val ) {
+		# Check to see if this is a unique Attribute
+		if ($badattr = $ldapserver->checkUniqueAttr($entry['dn']['string'],$attr,array($val))) {
+			$href['search'] = htmlspecialchars(sprintf('cmd.php?cmd=search&search=true&form=advanced&server_id=%s&filter=%s=%s',
+				$ldapserver->server_id,$attr,$badattr));
 
-		// Check to see if this is a unique Attribute
-		if ($badattr = $ldapserver->checkUniqueAttr($dn,$attr,array($val))) {
-			$search_href = sprintf('search.php?search=true&form=advanced&server_id=%s&filter=%s=%s',
-				$ldapserver->server_id,$attr,$badattr);
-			pla_error(sprintf( _('Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href=\'%s\'>search</a> for that entry.'),$attr,$badattr,$dn,$search_href ) );
+			pla_error(sprintf(_('Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href=\'%s\'>search</a> for that entry.'),$attr,$badattr,$entry['dn']['string'],$href['search']));
 		}
 
-		$new_entry[ $attr ] = $val;
+		$new_entry[$attr] = $val;
 	}
 
-$add_res = $ldapserver->attrModify($dn,$new_entry);
+$result = $ldapserver->attrModify($entry['dn']['string'],$new_entry);
 
-if (! $add_res)
+if (! $result)
 	pla_error(_('Could not perform ldap_mod_add operation.'),$ldapserver->error(),$ldapserver->errno());
 
-else
-	header(sprintf('Location: template_engine.php?server_id=%s&dn=%s&modified_attrs[]=objectclass',$ldapserver->server_id,$encoded_dn));
+else {
+	$modified_attrs = array_keys($entry['new']['attrs']);
+	$modified_attrs[] = 'objectclass';
+
+	$href['complete'] = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s&modified_attrs=%s',
+		$ldapserver->server_id,$entry['dn']['encode'],serialize($modified_attrs));
+
+	header(sprintf('Location: %s',$href['complete']));
+	die();
+}
 ?>

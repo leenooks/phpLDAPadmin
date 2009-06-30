@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_simple.php,v 1.15 2005/12/10 10:34:55 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_simple.php,v 1.16 2007/12/15 07:50:33 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -7,60 +7,75 @@
 ?>
 
 <script type="text/javascript" language="javascript">
-  function focus_filter() {
-    document.simple_search_form.filter.focus();
-  }
+	function focus_filter() {
+		document.simple_search_form.filter.focus();
+	}
 </script>
 
-<form action="search.php" method="get" class="search" name="simple_search_form">
+<form action="cmd.php" method="get" class="search" name="simple_search_form">
+<input type="hidden" name="cmd" value="search" />
 <input type="hidden" name="search" value="true" />
 <input type="hidden" name="form" value="simple" />
 <input type="hidden" name="scope" value="sub" />
-<input type="hidden" name="format" value="<?php echo $format; ?>" />
+<input type="hidden" name="format" value="<?php echo $entry['format']; ?>" />
 
-<table>
-<tr>
-	<td>
-	<center><b><?php echo _('Simple Search Form'); ?></b><br />
-	<small>(<a href="search.php?server_id=<?php echo $ldapserver->server_id; ?>&amp;form=advanced"><?php echo _('Advanced Search Form'); ?></a> |
-	<a href="search.php?server_id=<?php echo $ldapserver->server_id; ?>&amp;form=predefined"><?php echo _('Predefined Searches'); ?></a>)</small><br />
-	</center>
-	<br />
+<table class="search" border=0>
+<tr><td class="title"><?php echo _('Simple Search Form'); ?></td></tr>
 
-	<small><?php echo _('Server'); ?></small><br /> <?php echo $server_menu_html; ?><br />
-	<br />
-	<small><?php echo _('Search for entries whose'); ?></small><br />
+<?php
+	$as = $_SESSION['plaConfig']->isCommandAvailable('search', 'advanced_search');
+	$ps = $_SESSION['plaConfig']->isCommandAvailable('search', 'predefined_search');
+	if ($as | $ps) {
+		echo '<tr><td class="subtitle">(';
+		if ($as) {
+			echo '<a href="cmd.php?cmd=search&amp;server_id=';
+			echo $ldapserver->server_id;
+			echo '&amp;form=advanced">';
+			echo _('Advanced Search Form');
+			echo '</a>';
+			if ($ps) echo '	| ';
+		}
+		if ($ps) {
+			echo '<a href="cmd.php?cmd=search&amp;server_id=';
+			echo $ldapserver->server_id;
+			echo '&amp;form=predefined">';
+			echo _('Predefined Searches');
+			echo '</a>';
+		}
+		echo ')</td></tr>';
+	}
+?>
 
-	<nobr>
+<tr><td>&nbsp;</td></tr>
+<tr><td><small><b><?php echo _('Server'); ?></b></small><br /> <?php echo $server_menu_html; ?><br /></td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td><small><b><?php echo _('Search for entries whose'); ?></b></small></td></tr>
+<tr><td>
 	<select name="attribute">
-<?php  foreach( $config->GetValue('search','attributes') as $id => $attribute ) { ?>
-	<option value="<?php echo rawurlencode( $attribute ); ?>"<?php echo $attribute==$attr?' selected="true"':''; ?>>
+<?php foreach ($_SESSION['plaConfig']->GetValue('search','attributes') as $id => $attribute) { ?>
+	<option value="<?php echo rawurlencode($attribute); ?>"<?php echo $attribute==$entry['attr']?' selected="true"':''; ?>>
 <?php echo htmlspecialchars($ldapserver->showFriendlyAttr($attribute)); ?>
 	</option>
 <?php } ?>
 	</select>
-	</nobr>
 
 	<select name="criterion">
-
 <?php
-foreach( $config->GetValue('search','criteria_options') as $c ) { ?>
-	<option value="<?php echo $c; ?>"<?php echo $c==$criterion?' selected="true"':''; ?>>
+foreach ($_SESSION['plaConfig']->GetValue('search','criteria_options') as $c) { ?>
+	<option value="<?php echo $c; ?>"<?php echo $c==$entry['criterion']?' selected="true"':''; ?>>
 	<?php echo htmlspecialchars(_($c)); ?>
 	</option>
-<?php  } ?>
+<?php } ?>
 	</select>
 
-	<input type="text" name="filter" id="filter" size="20" value="<?php echo htmlspecialchars($filter); ?>" /><br />
-	<br />
-
-	<center><input type="submit" value="<?php echo _('Search'); ?>" /></center>
-	</td>
-</tr>
+	<input type="text" name="filter" id="filter" size="20" value="<?php echo htmlspecialchars($entry['filter']['clean']); ?>" />
+</td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr><td><center><input type="submit" value="<?php echo _('Search'); ?>" /></center></td></tr>
 </table>
 </form>
 
 <script type="text/javascript" language="javascript">
-    // Move the cursor to the filter field
-    focus_filter();
+	// Move the cursor to the filter field
+	focus_filter();
 </script>

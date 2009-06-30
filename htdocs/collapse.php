@@ -1,33 +1,26 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/collapse.php,v 1.15 2006/10/28 11:42:10 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/collapse.php,v 1.16 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * This script alters the session variable 'tree', collapsing it
  * at the dn specified in the query string.
  *
- * Variables that come in via common.php
- *  - server_id
- * Variables that come in as GET vars:
- *  - dn (rawurlencoded)
- *
  * Note: this script is equal and opposite to expand.php
  * @package phpLDAPadmin
+ * @see expand.php
  */
 /**
  */
 
 require './common.php';
 
-$dn = $_GET['dn'];
+$dn = get_request('dn','GET',true);
 $tree = get_cached_item($ldapserver->server_id,'tree');
-$tree['browser'][$dn]['open'] = false;
+$entry = $tree->getEntry($dn);
+$entry->close();
 set_cached_item($ldapserver->server_id,'tree','null',$tree);
 
-/* If cookies were disabled, build the url parameter for the session id.
-   It will be append to the url to be redirect */
-$id_session_param = '';
-if (SID != '')
-	$id_session_param = sprintf('&%s=%s',session_name(),session_id());
-
-header(sprintf('Location:tree.php?foo=%s#%s_%s%s',random_junk(),$ldapserver->server_id,rawurlencode($dn),$id_session_param));
+header(sprintf('Location:index.php?server_id=%s&junk=%s#%s%s',
+	$ldapserver->server_id,random_junk(),htmlid($ldapserver->server_id,$dn),pla_session_param()));
+die();
 ?>

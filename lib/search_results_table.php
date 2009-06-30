@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_table.php,v 1.8 2005/12/10 10:34:55 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_table.php,v 1.9 2007/12/15 07:50:33 wurley Exp $
 
 /**
  * Incoming variables (among others)
@@ -10,12 +10,15 @@
  * @package phpLDAPadmin
  */
 
-$friendly_attrs = process_friendly_attr_table();
-$all_attrs = array('' =>1,'dn'=>1);
+if ($_SESSION['plaConfig']->isCommandAvailable('schema')) {
+	$all_attrs = array('' =>1, 'dn'=>1);
+} else {
+	$all_attrs = array('' =>1);
+}
 $entries_display = array();
 
 /* Iterate over each entry and store the whole dang thing in memory (necessary to extract
-   all attribute names and display in table format in a single pass) */
+ * all attribute names and display in table format in a single pass) */
 $i=0;
 
 foreach ($results as $dn => $dndetails) {
@@ -26,14 +29,17 @@ foreach ($results as $dn => $dndetails) {
 	if ($i >= $end_entry)
 		break;
 
-	$dn_display = strlen($dn) > 40 ?
-		sprintf('<acronym title="%s">%s...</acronym>',htmlspecialchars($dn),htmlspecialchars(substr($dn,0,40))) :
-		htmlspecialchars($dn);
-
-	$edit_url = sprintf('template_engine.php?server_id=%s&amp;dn=%s',$ldapserver->server_id,rawurlencode($dn));
+	$edit_url = sprintf('cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s',$ldapserver->server_id,rawurlencode($dn));
 	$attrs_display = array();
-	$attrs_display[''] = sprintf('<center><a href="%s"><img src="images/%s" /></a></center>',$edit_url,get_icon($ldapserver,$dn));
-	$attrs_display['dn'] = sprintf('<a href="%s">%s</a>',$edit_url,$dn_display);
+	$attrs_display[''] = sprintf('<center><a href="%s"><img src="images/%s" alt="icon" /></a></center>',$edit_url,get_icon($ldapserver,$dn));
+
+	if ($_SESSION['plaConfig']->isCommandAvailable('schema')) {
+		$dn_display = strlen($dn) > 40
+		              ? sprintf('<acronym title="%s">%s...</acronym>',htmlspecialchars($dn),htmlspecialchars(substr($dn,0,40)))
+		              : htmlspecialchars($dn);
+
+		$attrs_display['dn'] = sprintf('<a href="%s">%s</a>',$edit_url,$dn_display);
+	}
 
 	# Iterate over each attribute for this entry and store in associative array $attrs_display
 	foreach ($dndetails as $attr => $values) {
@@ -42,10 +48,12 @@ foreach ($results as $dn => $dndetails) {
 			continue;
 
 		# Clean up the attr name
-		if (isset($friendly_attrs[strtolower($attr)]))
-			$attr_display = sprintf('<acronym title="Alias for %s">%s</acronym>',
-				$attr,htmlspecialchars($friendly_attrs[strtolower($attr)]));
-		else
+		if (isset($_SESSION['plaConfig']->friendly_attrs[strtolower($attr)])) {
+			$attr_display = htmlspecialchars($_SESSION['plaConfig']->friendly_attrs[strtolower($attr)]);
+			if ($_SESSION['plaConfig']->isCommandAvailable('schema')) {
+				$attr_display = sprintf('<acronym title="Alias for %s">%s</acronym>', $attr, $attr_display);
+			}
+		} else
 			$attr_display = htmlspecialchars($attr);
 
 		if (! isset($all_attrs[$attr_display]))
@@ -57,8 +65,10 @@ foreach ($results as $dn => $dndetails) {
 		if ($ldapserver->isJpegPhoto($attr)) {
 			ob_start();
 			draw_jpeg_photos($ldapserver,$dn,$attr,false,false,'align="center"');
-			$display = ob_get_contents();
-			ob_end_clean();
+			if (ob_get_level()) {
+				$display = ob_get_contents();
+				ob_end_clean();
+			}
 
 		} elseif ($ldapserver->isAttrBinary($attr)) {
 			$display = array('(binary)');
@@ -91,7 +101,7 @@ echo '<center>';
 echo '<table class="search_result_table">';
 
 for ($i=0;$i<count($entries_display);$i++) {
-	$entry = $entries_display[$i];
+	$result = $entries_display[$i];
 
 	if ($i %10 == 0)
 		echo $header_row;
@@ -103,8 +113,8 @@ for ($i=0;$i<count($entries_display);$i++) {
 
 	foreach ($all_attrs as $attr) {
 		echo '<td>';
-		if (isset($entry[$attr]))
-			echo $entry[$attr];
+		if (isset($result[$attr]))
+			echo $result[$attr];
 		echo '</td>';
 	}
 	echo '</tr>';

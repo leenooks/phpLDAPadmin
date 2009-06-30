@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/compare_form.php,v 1.4 2006/04/29 06:49:31 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/compare_form.php,v 1.5 2007/12/15 07:50:30 wurley Exp $
 
 /**
  * Compares to DN entries side by side.
@@ -12,18 +12,11 @@
 /**
  */
 
-require './common.php';
-
-if (! $ldapserver->haveAuthInfo())
-	pla_error(_('Not enough information to login to server. Please check your configuration.'));
+require_once './common.php';
 
 $dn = (isset($_GET['dn']) ? $_GET['dn'] : '');
 $rdn = get_rdn($dn);
 $select_server_html = server_select_list($ldapserver->server_id,true,'server_id_dst');
-
-include './header.php';
-
-echo '<body>';
 
 printf('<h3 class="title">%s %s</h3>',_('Compare another DN with'),htmlspecialchars($rdn));
 printf('<h3 class="subtitle">%s: <b>%s</b>',_('Server'),$ldapserver->name);
@@ -35,7 +28,8 @@ echo "\n";
 echo '<center>';
 printf('%s <b>%s</b> %s<br />',_('Compare'),htmlspecialchars($rdn),_('with '));
 
-echo '<form action="compare.php" method="post" name="compare_form">';
+echo '<form action="cmd.php?cmd=compare" method="post" name="compare_form">';
+printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 printf('<input type="hidden" name="server_id_src" value="%s" />',$ldapserver->server_id);
 echo "\n";
 
@@ -73,6 +67,4 @@ echo "\n";
 echo '</table>';
 echo '</form>';
 echo '</center>';
-echo '</body>';
-echo '</html>';
 ?>
