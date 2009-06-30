@@ -1,4 +1,6 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/refresh.php,v 1.9 2004/03/19 20:13:08 i18phpldapadmin Exp $
+ 
 
 /*
  * refresh.php
@@ -16,8 +18,7 @@ $server_id = $_GET['server_id'];
 if( ! check_server_id( $server_id ) || ! have_auth_info( $server_id ) )
 	header( "Location: tree.php" );
 
-session_start();
-if( ! session_is_registered( 'tree' ) )
+if( ! array_key_exists( 'tree', $_SESSION ) )
 	header( "Location: tree.php" );
 
 $tree = $_SESSION['tree'];
@@ -32,7 +33,7 @@ if( isset($tree[$server_id]) && is_array( $tree[$server_id] ) )
 {
 	foreach( $tree[$server_id] as $dn => $children )
 	{
-		$tree[$server_id][$dn] = get_container_contents( $server_id, $dn );
+		$tree[$server_id][$dn] = get_container_contents( $server_id, $dn, 0, '(objectClass=*)', get_tree_deref_setting() );
 		if( is_array( $tree[$server_id][$dn] ) ) {
 			foreach( $tree[$server_id][$dn] as $child_dn )
 				$tree_icons[$server_id][$child_dn] = get_icon( $server_id, $child_dn );

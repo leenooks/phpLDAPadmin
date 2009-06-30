@@ -1,4 +1,6 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/header.php,v 1.10 2004/03/19 20:13:08 i18phpldapadmin Exp $
+ 
 	// We want to get $language into scope in case we were included
 	// from within a function
 	global $language; 
@@ -13,8 +15,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $language; ?>" lang="<?php echo $language; ?>" dir="ltr">
 <head>
 	<title>phpLDAPadmin</title>
-	<link rel="stylesheet" href="style.css" />
-	<script src="entry_chooser.js"></script>
-	<script src="search_util.js"></script>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" href="style.css" media="screen" />
+	<script src="entry_chooser.js" type="text/javascript"></script>
+	<script src="search_util.js" type="text/javascript"></script>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 </head>

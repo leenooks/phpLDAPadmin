@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/tree.php,v 1.54 2004/04/24 12:59:30 uugdave Exp $
+
 
 /* 
  * tree.php
@@ -20,46 +22,42 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-// The entire visible tree is stored in the session.
-session_start();
+// This allows us to display large sub-trees without running out of time.
+@set_time_limit( 0 );
 
-// do we not have a tree yet? Build a new one.
-if( ! session_is_registered( 'tree' ) || ! isset( $_SESSION['tree'] ) ) {
-	session_register( 'tree' );
-	$_SESSION['tree'] = build_initial_tree(); 
-}
-// do we not have any tree icons cached yet? Build a new one.
-if( ! session_is_registered( 'tree_icons' ) || ! isset( $_SESSION['tree_icons'] ) ) {
-	session_register( 'tree_icons' );
-	$_SESSION['tree_icons'] = build_initial_tree_icons();
-}
+// do we not have a tree and tree icons yet? Build a new ones.
+initialize_session_tree();
 
-// grab the tree out of the session variable
+// get the tree and tree icons.
 $tree = $_SESSION['tree'];
 $tree_icons = $_SESSION['tree_icons'];
 
-include 'header.php'; ?>
+include 'header.php';
+?>
 
 <body>
 
-<?php 
+<?php
 	$bug_href = get_href( 'add_bug' );
 	//$open_bugs_href = get_href( 'open_bugs' );
 	$feature_href = get_href( 'add_rfe' );
 	//$open_features_href = get_href( 'open_rfes' );
+    $donate_href = get_href( 'donate' );
 ?>
 
 <h3 class="subtitle" style="margin:0px">phpLDAPadmin - <?php echo pla_version(); ?></h3>
 <table class="edit_dn_menu">
 <tr>
-	<td><img src="images/light.png" /></td>
+	<td><img src="images/light.png" alt="<?php echo $lang['light']; ?>" /></td>
 	<td><nobr><a href="<?php echo $feature_href; ?>" target="new"><?php echo $lang['request_new_feature']; ?></a>
-		<!--(<a href="<?php echo $open_features_href; ?>" target="new"><?php echo $lang['see_open_requests']; ?></a>)--></nobr></td>
 </tr>
 <tr>	
-	<td><img src="images/bug.png" /></td>
+	<td><img src="images/bug.png" alt="<?php echo $lang['bug']; ?>" /></td>
 	<td><nobr><a href="<?php echo $bug_href; ?>" target="new"><?php echo $lang['report_bug']; ?></a>
-		<!--(<a href="<?php echo $open_bugs_href; ?>" target="new"><?php echo $lang['see_open_bugs']; ?></a>)--></nobr></td>
+</tr>
+<tr>	
+	<td><img src="images/light.png" alt="<?php echo $lang['donate']; ?>" /></td>
+	<td><nobr><a href="<?php echo $donate_href; ?>" target="new"><?php echo $lang['donate']; ?></a>
 </tr>
 </table>
 
@@ -67,9 +65,10 @@ include 'header.php'; ?>
 
 <?php 
 
+// For each of the configured servers
 foreach( $servers as $server_id => $server_tree ) { 
 
-	if( $servers[$server_id]['host'] != '' ) { 
+	if( isset( $servers[$server_id] ) && trim( $servers[$server_id]['host'] ) != '' ) { 
 
 		// Does this server want mass deletion availble?
 		if( mass_delete_enabled( $server_id ) ) {
@@ -79,13 +78,13 @@ foreach( $servers as $server_id => $server_tree ) {
 
 		$server_name = $servers[$server_id]['name'];
 		echo '<tr class="server">';
-		echo '<td class="icon"><img src="images/server.png" alt="server"/></td>';
+		echo '<td class="icon"><img src="images/server.png" alt="' . $lang['server'] . '" /></td>';
 		echo '<td colspan="99"><a name="' . $server_id . '"></a>';
 		echo '<nobr>' . htmlspecialchars( $server_name ) . '</nobr></td>';
 		echo '</tr>';
 
 		// do we have what it takes to authenticate here, or do we need to
-		// present the user with a login link (for 'form' auth_types)?
+		// present the user with a login link (for 'cookie' and 'session' auth_types)?
 		if( have_auth_info( $server_id ) ) {
 
 			if( pla_ldap_connect( $server_id ) ) {
@@ -109,23 +108,29 @@ foreach( $servers as $server_id => $server_tree ) {
 				     ' href="' . $search_href . '">' . $lang['search'] . '</a> | ';
 				echo '<a title="' . $lang['refresh_expanded_containers'] . ' ' . $server_name . '"'.
 				     ' href="' . $refresh_href . '">' . $lang['refresh'] . '</a> | ';
-				echo '<a title="' . $lang['create_new_entry_on'] . ' ' . $server_name . '"'.
-				     ' href="' . $create_href . '" target="right_frame">' . $lang['create'] . '</a> | ';
+				if (show_create_enabled($server_id))
+					echo '<a title="' . $lang['create_new_entry_on'] . ' ' . $server_name . '"'.
+					     ' href="' . $create_href . '" target="right_frame">' . $lang['create'] . '</a> | ';
 				echo '<a title="' . $lang['view_server_info'] . '" target="right_frame"'.
 				     'href="' . $info_href . '">' . $lang['info'] . '</a> | ';
 				echo '<a title="' . $lang['import_from_ldif'] . '" target="right_frame"' .
 				     'href="' . $import_href .'">' . $lang['import'] . '</a>';
-				if( $servers[ $server_id ][ 'auth_type' ] == 'form' )
+				if( $servers[ $server_id ][ 'auth_type' ] != 'config'  )
 					echo ' | <a title="' . $lang['logout_of_this_server'] . '" href="' . $logout_href . 
 						'" target="right_frame">' . $lang['logout'] . '</a>';
 				echo ' )</nobr></td></tr>';
 				
-				if( $servers[$server_id]['auth_type'] == 'form' && have_auth_info( $server_id ) )
-					echo "<tr><td class=\"links\" colspan=\"100\"><nobr>" .
-						$lang['logged_in_as'] . "<a class=\"logged_in_dn\" href=\"edit.php?server_id=$server_id&amp;dn=" . 
-						rawurlencode(get_logged_in_dn($server_id)) . "\" target=\"right_frame\">" . 
-						htmlspecialchars(get_logged_in_dn($server_id)) . "</a>" .
-						"</nobr></td></tr>";
+				if( $servers[$server_id]['auth_type'] != 'config' && have_auth_info( $server_id ) ) {
+					$logged_in_dn = get_logged_in_dn( $server_id );
+					echo "<tr><td class=\"links\" colspan=\"100\"><nobr>" . $lang['logged_in_as'];
+					if( strcasecmp( "anonymous", $logged_in_dn ) )
+						echo "<a class=\"logged_in_dn\" href=\"edit.php?server_id=$server_id&amp;dn=" . 
+							rawurlencode(get_logged_in_dn($server_id)) . "\" target=\"right_frame\">" . 
+							pretty_print_dn( $logged_in_dn ) . "</a>";
+					else
+						echo "Anonymous";
+					echo "</nobr></td></tr>";
+				}
 				if( is_server_read_only( $server_id ) ) 
 					echo "<tr><td class=\"links\" colspan=\"100\"><nobr>" .
 						"(" . $lang['read_only'] . ")</nobr></td></tr>";
@@ -147,10 +152,22 @@ foreach( $servers as $server_id => $server_tree ) {
 						$expand_href =  "collapse.php?server_id=$server_id&amp;" .
 						"dn=" . rawurlencode( $base_dn );
 						$expand_img = "images/minus.png";
+                        $expand_alt = "-";
+						$child_count = number_format( count( $tree[$server_id][$base_dn] ) );
 					} else {
 						$expand_href =  "expand.php?server_id=$server_id&amp;" .
 						"dn=" . rawurlencode( $base_dn );
 						$expand_img = "images/plus.png";
+                        $expand_alt = "+";
+						$limit = isset( $search_result_size_limit ) ? $search_result_size_limit : 50;
+                        if( is_server_low_bandwidth( $server_id ) ) {
+                            $child_count = null;
+                        } else {
+                            $child_count = count( get_container_contents( $server_id, $base_dn, $limit+1, 
+                                                        '(objectClass=*)', get_tree_deref_setting() ) );
+                            if( $child_count > $limit )
+                                $child_count = $limit . '+';
+                        }
 					}
 	
 					$edit_href = "edit.php?server_id=$server_id&amp;dn=" . rawurlencode( $base_dn );
@@ -165,11 +182,14 @@ foreach( $servers as $server_id => $server_tree ) {
 					}
 					
 					echo "<td class=\"expander\">";
-					echo "<a href=\"$expand_href\"><img src=\"$expand_img\" /></td>";
+					echo "<a href=\"$expand_href\"><img src=\"$expand_img\" alt=\"$expand_alt\" /></a></td>";
 					echo "<td class=\"icon\"><a href=\"$edit_href\" target=\"right_frame\">";
-					echo "<img src=\"images/$icon\" /></a></td>\n";
+					echo "<img src=\"images/$icon\" alt=\"img\" /></a></td>\n";
 					echo "<td class=\"rdn\" colspan=\"98\"><nobr><a href=\"$edit_href\" ";
-					echo " target=\"right_frame\">" . pretty_print_dn( $base_dn ) . "</nobr></td>\n";
+					echo " target=\"right_frame\">" . pretty_print_dn( $base_dn ) . '</a>';
+                    if( $child_count )
+                        echo " <span class=\"count\">($child_count)</span>";
+					echo "</nobr></td>\n";
 					echo "</tr>\n<!-- end of base DN row -->";
 
 				} else { // end if( $base_dn )
@@ -205,11 +225,13 @@ foreach( $servers as $server_id => $server_tree ) {
 						draw_tree_html( $child_dn, $server_id, 0 );
 						if( ! is_server_read_only( $server_id ) ) {
 						echo '<td class="spacer"></td>';
-						echo '<td class="icon"><a href="' . $create_href .
-							'" target="right_frame"><img src="images/star.png" /></a></td>';
-						echo '<td class="create" colspan="100"><a href="' . $create_href . 
-							'" target="right_frame" title="' . $lang['create_new_entry_in'] . ' ' . 
-							$base_dn.'">' . $lang['create_new'] . '</a></td></tr>';
+						if( show_create_enabled( $server_id ) ) {
+							echo '<td class="icon"><a href="' . $create_href .
+								'" target="right_frame"><img src="images/star.png" alt="' . $lang['new'] . '" /></a></td>';
+							echo '<td class="create" colspan="100"><a href="' . $create_href . 
+								'" target="right_frame" title="' . $lang['create_new_entry_in'] . ' ' . 
+								$base_dn.'">' . $lang['create_new'] . '</a></td></tr>';
+						}
 					}
 				}
 
@@ -217,11 +239,11 @@ foreach( $servers as $server_id => $server_tree ) {
 				// could not connect to LDAP server
 				echo "<tr>\n";
 				echo "<td class=\"spacer\"></td>\n";
-				echo "<td><img src=\"images/warning_small.png\" /></td>\n";
+				echo "<td><img src=\"images/warning_small.png\" alt=\"" . $lang['warning'] . "\" /></td>\n";
 				echo "<td colspan=\"99\"><small><span style=\"color:red\">" . $lang['could_not_connect'] . "</span></small></td>\n";
 				echo "</tr>\n";
 
-				if( $servers[ $server_id ][ 'auth_type' ] == 'form' ) {
+				if( $servers[ $server_id ][ 'auth_type' ] != 'config' ) {
 					$logout_href =  'logout.php?server_id=' . $server_id;
 					echo "<tr>\n";
 					echo "<td class=\"spacer\"></td>\n";
@@ -244,7 +266,7 @@ foreach( $servers as $server_id => $server_tree ) {
 			echo '<tr class="login">';
 			echo '<td class="spacer"></td>';
 			echo '<td><a href="' . $login_href . '" target="right_frame">';
-			echo '<img src="images/uid.png" align="top" alt="login"/></a></td>';
+			echo '<img src="images/uid.png" align="top" alt="' . $lang['login'] . '" /></a></td>';
 			echo '<td colspan="99"><a href="' . $login_href . '" target="right_frame">' . $lang['login_link'] . '</a>';
 			echo '</td></tr>';
 		}
@@ -276,7 +298,7 @@ exit;
  */
 function draw_tree_html( $dn, $server_id, $level=0 )
 {
-	global $servers, $tree, $tree_icons, $lang;
+	global $servers, $tree, $tree_icons, $lang, $search_result_size_limit;
 	$id = $server_id;
 	
 	$encoded_dn = rawurlencode( $dn );
@@ -310,29 +332,38 @@ function draw_tree_html( $dn, $server_id, $level=0 )
 	if( isset( $tree[$server_id][$dn] ) ) { ?>
 		<td class="expander">
 			<nobr>
-			<a href="<?php echo $collapse_href; ?>"><img src="images/minus.png" alt="plus" /></a>
+			<a href="<?php echo $collapse_href; ?>"><img src="images/minus.png" alt="-" /></a>
 			</nobr>
 		</td>
-		<?php  $object_count = ' <span class="count">(' . count( $tree[$server_id][$dn] ) . ')</span>';
+		<?php  $child_count = number_format( count( $tree[$server_id][$dn] ) );
 	} else { ?>	
 		<td class="expander">
 			<nobr>
-			<a href="<?php echo $expand_href; ?>"><img src="images/plus.png" alt="minus" /></a>
+			<a href="<?php echo $expand_href; ?>"><img src="images/plus.png" alt="+" /></a>
 			</nobr>
 		</td>
-		<?php  $object_count = '';
+		<?php  	$limit = isset( $search_result_size_limit ) ? $search_result_size_limit : 50;
+            if( is_server_low_bandwidth( $server_id ) ) {
+                $child_count = null;
+            } else {
+                $child_count = count( get_container_contents( $server_id, $dn, $limit+1 ) );
+                if( $child_count > $limit )
+                    $child_count = $limit . '+';
+            }
 	} ?>	
 
 	<td class="icon">
 		<a href="<?php echo $edit_href; ?>"
 		   target="right_frame"
-		   name="<?php echo $server_id; ?>_<?php echo $encoded_dn; ?>"><img src="<?php echo $img_src; ?>" /></a>
+		   name="<?php echo $server_id; ?>_<?php echo $encoded_dn; ?>"><img src="<?php echo $img_src; ?>" alt="img" /></a>
 	</td>
 	<td class="rdn" colspan="<?php echo (97-$level); ?>">
 		<nobr>
 			<a href="<?php echo $edit_href; ?>"
 				target="right_frame"><?php echo ( pretty_print_dn( $rdn ) ); ?></a>
-				<?php echo $object_count; ?>
+				<?php if( $child_count ) { ?>
+					<span class="count">(<?php echo $child_count; ?>)</span>
+				<?php } ?>
 		</nobr>
 	</td>
 	</tr>
@@ -343,23 +374,23 @@ function draw_tree_html( $dn, $server_id, $level=0 )
 		foreach( $tree[$server_id][$dn] as $dn ) { 
 			draw_tree_html( $dn, $server_id, $level+1 );
 		}
+		if( show_create_enabled( $server_id ) ) {
 
-		// print the "Create New object" link.
-		$create_href = "create_form.php?server_id=$server_id&amp;container=$encoded_dn";
-		echo '<tr>';
-		for( $i=0; $i<=$level; $i++ ) {
+			// print the "Create New object" link.
+			$create_href = "create_form.php?server_id=$server_id&amp;container=$encoded_dn";
+			echo '<tr>';
+			for( $i=0; $i<=$level; $i++ ) {
+				echo '<td class="spacer"></td>';
+			}
 			echo '<td class="spacer"></td>';
+			echo '<td class="icon"><a href="' . $create_href .
+				'" target="right_frame"><img src="images/star.png" alt=\"' . $lang['new'] . '\" /></a></td>';
+			echo '<td class="create" colspan="' . (97-$level) . '"><a href="' . $create_href . 
+				'" target="right_frame" title="' . $lang['create_new_entry_in'] . ' ' . $rdn.'">' . 
+				$lang['create_new'] . '</a></td></tr>';
+			echo '</tr>';
 		}
-		echo '<td class="spacer"></td>';
-		echo '<td class="icon"><a href="' . $create_href .
-		     '" target="right_frame"><img src="images/star.png" /></a></td>';
-		echo '<td class="create" colspan="' . (97-$level) . '"><a href="' . $create_href . 
-		     '" target="right_frame" title="' . $lang['create_new_entry_in'] . ' ' . $rdn.'">' . 
-		     $lang['create_new'] . '</a></td></tr>';
 	}
-
-	echo '</tr>';
-
 }
 
 ?>

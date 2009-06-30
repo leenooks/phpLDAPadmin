@@ -1,20 +1,22 @@
 # 
 # This Makefile (lang/Makefile) converts the source lang files to UTF8
 # coding. You need iconv installed to use it.
-# 
+# $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/Makefile,v 1.18 2004/03/19 20:25:50 i18phpldapadmin Exp $
 # ToDo: detect the encoding in the "source"
 #
 # posible detect of the language
 #  echo `cat de.php | grep "logged_in_as" | sed s/".*="//g | file - | sed s/".*: "//g | sed s/" .*"//g`
 #
 # or 
-#
+# 
 # maybe like this
 #  cat LANG.php | sed s/"^\/"//g | sed s/".*= "//g  | sed s/";.*"//g | grep -v "<"| file - | sed s/".*: "//g | sed s/" .*"//g      
-#
+
+# Where to place the recoded language files
 DESTDIR=./recoded
+# Path to the iconv binary
 ICONV=iconv
-# php is not on all systems in /usr/bin/php
+# Path to the PHP binary
 PHP=php
 
 TARGETS=${DESTDIR}/auto.php \
@@ -25,7 +27,12 @@ TARGETS=${DESTDIR}/auto.php \
 		${DESTDIR}/fr.php \
 		${DESTDIR}/it.php \
 		${DESTDIR}/nl.php \
-		${DESTDIR}/ru.php 
+		${DESTDIR}/pl.php \
+		${DESTDIR}/pt-br.php \
+		${DESTDIR}/ru.php \
+		${DESTDIR}/sv.php \
+		${DESTDIR}/zz.php \
+		${DESTDIR}/zzz.php
 
 default: 
 	@echo "usage:"
@@ -38,10 +45,10 @@ iconvlang:	prepare ${TARGETS} syntax
 	@echo "Done!"
 
 syntax: 
-	@echo "Starting syntax"
+	@echo "Starting syntax checking..."
 	@which $(PHP) >/dev/null 2>&1 || ( echo "You must have '$(PHP)' installed to use this Makefile, but I could not find it in your path!" && exit 1 )
 	@for i in ${TARGETS}; do ${PHP} -l $$i >/dev/null 2>&1 || ( echo "Syntax errors found in $$i!" && exit 1 ); done
-	@echo "Ending syntax"
+	@echo "Done"
 
 prepare:
 	@echo "Starting prepare"
@@ -87,6 +94,27 @@ ${DESTDIR}/nl.php: 	nl.php
 	@echo "Fixing encoding nl.php to UTF8 "${DESTDIR}/nl.php
 	@iconv -f iso8859-1 -t utf8 nl.php > ${DESTDIR}/nl.php
 
+${DESTDIR}/pl.php: 	pl.php
+	@echo "Fixing encoding pl.php to UTF8 "${DESTDIR}/pl.php
+	@iconv -f iso8859-2 -t utf8 pl.php > ${DESTDIR}/pl.php
+
+${DESTDIR}/pt-br.php: 	pt-br.php
+	@echo "Fixing encoding pt-br.php to UTF8 "${DESTDIR}/pt-br.php
+	@iconv -f iso8859-1 -t utf8 pt-br.php > ${DESTDIR}/pt-br.php
+
+${DESTDIR}/sv.php: 	sv.php
+	@echo "Fixing encoding sv.php to UTF8 "${DESTDIR}/sv.php
+	@iconv -f iso8859-1 -t utf8 sv.php > ${DESTDIR}/sv.php
+
 ${DESTDIR}/ru.php: 	ru.php
 	@echo "Fixing encoding ru.php to UTF8 "${DESTDIR}/ru.php
 	@iconv -f utf8 -t utf8 ru.php > ${DESTDIR}/ru.php
+
+${DESTDIR}/zz.php:	zz.php
+	@echo "Copying only the zz.php"
+	@cp zz.php ${DESTDIR}/zz.php
+
+${DESTDIR}/zzz.php:	zzz.php
+	@echo "Copying only the zzz.php"
+	@cp zzz.php ${DESTDIR}/zzz.php
+

@@ -74,7 +74,7 @@
 0x58	LDAP_USER_CANCELLED		"The user cancelled the LDAP operation."
 0x59	LDAP_PARAM_ERROR		"An  ldap routine was called with a bad
 					parameter."
-0x5a	LDAP_NO_MEMORY			"An memory allocation (e.g., malloc(3)
+0x5a	LDAP_NO_MEMORY			"A memory allocation (e.g., malloc(3)
 					or  other  dynamic  memory  allocator)
 					call failed in an  ldap  library  rou-
 					tine."

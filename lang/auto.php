@@ -1,7 +1,8 @@
 <?php
-// Language for auto-detect
-// phpldapadmin/lang/auto.php in $Revision: 1.3 $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/auto.php,v 1.8 2004/03/19 20:13:09 i18phpldapadmin Exp $
 
+// Language for auto-detect
+// phpldapadmin/lang/auto.php in $Revision: 1.8 $
 $useLang="en"; // default use english encoding, a Option in Config would be nice
 
 // keep the beginning and ending spaces, they are used for finding the best language
@@ -19,9 +20,15 @@ $langSupport=array(" ca "=>"ca" // catalan
 		   ," it "=>"it" // italien
 		   ," it-"=>"it" // for it-ch (italien swiss)..
 		   ," nl "=>"nl" // dutch 
-		   ," nl-"=>"nl" // for ne-be, only one?  
+		   ," nl-"=>"nl" // for ne-be, only one? 
+		   ," pl "=>"pl" // polish 
+		   ," pl-"=>"pl" // maybe exist 
+		   ," pt "=>"pt-br" //  brazilian portuguese   
+		   ," pt-br"=>"pt-br" // brazilian portuguese  
 		   ," ru "=>"ru" // russian
 		   ," ru-"=>"ru" // ru- exits?
+		   ," sv "=>"sv" //swedish 
+                   ," sv-"=>"sv" // swedisch to
 		  );// all supported languages in this array
 // test 
 
@@ -39,4 +46,6 @@ foreach ($langSupport as $key=>$value) {
 }
 //echo "used:$useLang\n";
 include realpath ("$useLang".".php");// this should include from recode/ position
+$language=$useLang;
+//echo "language:".$langugage;
 ?>

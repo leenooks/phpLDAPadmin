@@ -1,4 +1,6 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/modification/user.php,v 1.4 2004/03/19 20:13:10 i18phpldapadmin Exp $
+ 
 
 /*
  * User modification template. All phpLDAPadmin templates can assume that the following
@@ -29,7 +31,6 @@ include 'header.php';
 		<b><?php echo htmlspecialchars( utf8_decode( $dn ) ); ?></b>
 </h3>
 
-<?php $default_href = "edit.php?server_id=$server_id&amp;dn=$encoded_dn&amp;use_default_template=true"; ?>
 <center><small>
 	Using the <b>user</b> template. 
 	You may switch to the <a href="<?php echo $default_href; ?>">default template</a>

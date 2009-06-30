@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_ou_template.php,v 1.9 2004/03/19 20:13:09 i18phpldapadmin Exp $
+
 
 require 'common.php';
 
@@ -6,10 +8,8 @@ require 'common.php';
 $container = $_POST['container'];
 $server_id = $_POST['server_id'];
 
-// Unique to this template
-$step = 1;
-if( isset($_POST['step']) )
-    $step = $_POST['step'];
+// Unique to this template: which step of the ou creation process are we on
+$step = isset( $_POST['step'] ) ? $_POST['step'] : 1;
 
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
@@ -40,7 +40,7 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 	</td>
 </tr>
 <tr>
-	<td colspan="3"><center><br /><input type="submit" value="Proceed &gt;&gt;" /></td>
+	<td colspan="3"><center><br /><input type="submit" value="<?php echo $lang['proceed_gt']; ?>" /></td>
 </tr>
 </table>
 </center>

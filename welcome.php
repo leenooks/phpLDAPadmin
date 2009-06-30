@@ -1,4 +1,6 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/welcome.php,v 1.9 2004/04/24 12:59:17 uugdave Exp $
+ 
 	include 'common.php'; 
 	include 'header.php'; 
 ?>
@@ -15,8 +17,8 @@
 <br />
 <br />
 <a href="documentation.php?view=credits"><?php echo $lang['credits']; ?></a> |
-<!-- <a href="documentation.php"><?php echo $lang['documentation']; ?></a> |-->
-<a href="documentation.php?view=changelog"><?php echo $lang['changelog']; ?></a>
+<a href="documentation.php?view=changelog"><?php echo $lang['changelog']; ?></a> |
+<a href="<?php echo get_href( 'donate' ); ?>" target="new"><?php echo $lang['donate']; ?></a>
 </center>
 
 </body>

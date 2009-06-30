@@ -1,4 +1,6 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/edit.php,v 1.46 2004/03/19 20:13:08 i18phpldapadmin Exp $
+ 
 
 /*
  * edit.php
@@ -24,6 +26,10 @@ $encoded_dn = rawurlencode( $decoded_dn );
 
 $server_id = isset( $_GET['server_id'] ) ? $_GET['server_id'] : false;
 $server_id !== false or pla_error( $lang['missing_server_id_in_query_string'] );
+
+// Template authors may wish to present the user with a link back to the default, generic 
+// template for editing. They may use this as the target of the href to do so.
+$default_href = "edit.php?server_id=$server_id&amp;dn=$encoded_dn&amp;use_default_template=true";
 
 $use_default_template = isset( $_GET['use_default_template'] ) ? true : false;
 

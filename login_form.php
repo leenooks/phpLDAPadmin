@@ -1,9 +1,11 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/login_form.php,v 1.18 2004/03/19 20:13:08 i18phpldapadmin Exp $
+ 
 
 /*
  * login_form.php
  * Displays the login form for a server for users who specify
- * 'form' for their auth_type.
+ * 'cookie' or 'session' for their auth_type.
  *
  * Variables that come in as GET vars:
  *  - server_id
@@ -14,10 +16,15 @@ require 'common.php';
 $server_id = isset( $_GET['server_id'] ) ? $_GET['server_id'] : null;
 
 if( $server_id != null ) {
-		check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
+		check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
 }
 
 $server = $servers[$server_id];
+
+isset( $servers[ $server_id ][ 'auth_type' ] ) or pla_error( $lang['error_auth_type_config'] );
+$auth_type = $servers[ $server_id ][ 'auth_type' ];
+if( $auth_type != 'cookie' && $auth_type != 'session' )
+    pla_error( sprintf( $lang['unknown_auth_type'], htmlspecialchars( $auth_type ) ) );
 
 include 'header.php'; ?>
 
@@ -39,14 +46,19 @@ include 'header.php'; ?>
 </script>
 
 <center>
-<h3 class="title">Authenticate to server <b><?php echo $servers[$server_id]['name']; ?></b></h3>
+<h3 class="title"><?php echo sprintf( $lang['authenticate_to_server'], $servers[$server_id]['name'] ); ?></b></h3>
 <br />
 
-<?php  if( $_SERVER['SERVER_PORT'] != HTTPS_PORT ) { ?>
+<?php if( ! isset( $_SERVER['HTTPS'] ) || $_SERVER['HTTPS'] != 'on' ) { ?>
 
 <center>
-<span style="color:red">Warning: This web connection is <acronym title="You are not using 'https'. Web browlser will transmit login information in clear text">unencrypted</acronym>.<br />
+<span style="color:red">
+	<acronym title="<?php echo $lang['not_using_https']; ?>">
+		<?php echo $lang['warning_this_web_connection_is_unencrypted']; ?>
+	</acronym>
  </span>
+ <br />
+ </center>
 
 <?php  } ?>
 
@@ -62,18 +74,23 @@ include 'header.php'; ?>
 <tr>
 </tr>
 <tr>
-	<td colspan="2"><small><label for="anonymous_bind_checkbox">Anonymous Bind</label></small> <input type="checkbox" name="anonymous_bind" onclick="toggle_disable_login_fields(this)" id="anonymous_bind_checkbox"/></td>
+	<td colspan="2"><small><label for="anonymous_bind_checkbox"><?php echo $lang['anonymous_bind']; ?></label></small> <input type="checkbox" name="anonymous_bind" onclick="toggle_disable_login_fields(this)" id="anonymous_bind_checkbox"/></td>
 </tr>
 <tr>
-<td><small>Login <?php if ( ! login_attr_enabled( $server_id ) ) { echo '<acronym title="Distinguished Name">DN</acronym>';} ?></small></td>
-<td><input type="text" name="<?php echo login_attr_enabled( $server_id ) ? 'uid' : 'login_dn'; ?>" size="40" value="<?php echo $servers[$server_id]['login_dn']; ?>" /></td>
+<td><small><?php 
+		if ( login_attr_enabled( $server_id ) ) 
+			echo $lang['user_name'];
+		else
+			echo $lang['login_dn'];
+	?></small></td>
+<td><input type="text" name="<?php echo login_attr_enabled( $server_id ) ? 'uid' : 'login_dn'; ?>" size="40" value="<?php echo login_attr_enabled( $server_id ) ? '' : $servers[$server_id]['login_dn']; ?>" /></td>
 </tr>
 <tr>
-	<td><small>Password</small></td>
+	<td><small><?php echo $lang['password']; ?></small></td>
 	<td><input type="password" name="login_pass" size="40" value="" name="login_pass" /></td>
 </tr>
 <tr>
-	<td colspan="2"><center><input type="submit" name="submit" value="Authenticate" /></center></td>
+	<td colspan="2"><center><input type="submit" name="submit" value="<?php echo $lang['authenticate']; ?>" /></center></td>
 </tr>
 </table>
 </form>

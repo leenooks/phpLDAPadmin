@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/ru.php,v 1.6 2004/03/19 20:13:09 i18phpldapadmin Exp $
+
 
 // Translate to russian Dmitry Gorpinenko dima at uz.energy.gov.ua
 $lang = array();
@@ -54,9 +56,9 @@ $lang['export_to_ldif'] = 'Экспорт в LDIF';//'Export to LDIF';
 $lang['export_to_ldif_tooltip'] = 'Сохранить дамп LDIF этого обьекта';//'Save an LDIF dump of this object';
 $lang['export_subtree_to_ldif_tooltip'] = 'Save an LDIF dump of this object and all of its children';
 $lang['export_subtree_to_ldif'] = 'Экспорт поддерева в LDIF';//'Export subtree to LDIF';
-$lang['export_to_ldif_mac'] = 'Конец строки в стиле Macintosh';//'Macintosh style line ends';
-$lang['export_to_ldif_win'] = 'Конец строки в стиле Windows';
-$lang['export_to_ldif_unix'] = 'Конец строки в стиле Windows';//'Unix style line ends';
+$lang['export_mac'] = 'Конец строки в стиле Macintosh';//'Macintosh style line ends';
+$lang['export_win'] = 'Конец строки в стиле Windows';
+$lang['export_unix'] = 'Конец строки в стиле Windows';//'Unix style line ends';
 $lang['create_a_child_entry'] = 'Создать запись-потомок';//'Create a child entry';
 $lang['add_a_jpeg_photo'] = 'Добавить jpeg-фото';//'Add a jpegPhoto';
 $lang['rename_entry'] = 'Переименовать запись';//'Rename Entry';

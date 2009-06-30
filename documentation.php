@@ -1,4 +1,6 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/documentation.php,v 1.2 2004/03/19 20:13:08 i18phpldapadmin Exp $
+ 
 
 include 'common.php';
 include 'header.php';

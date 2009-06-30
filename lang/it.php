@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/it.php,v 1.5 2004/03/19 20:13:09 i18phpldapadmin Exp $
+
 
 // Search form
 $lang['simple_search_form_str'] = 'Modulo di Ricerca Semplice';
@@ -51,9 +53,9 @@ $lang['export_to_ldif'] = 'Esporta in un LDIF';
 $lang['export_to_ldif_tooltip'] = 'Salva un formato LDIF di questo oggetto';
 $lang['export_subtree_to_ldif_tooltip'] = 'Salva un formato LDIF di questo oggetto e di tutti i suoi figli';
 $lang['export_subtree_to_ldif'] = 'Esporta il ramo in un LDIF';
-$lang['export_to_ldif_mac'] = 'Fine riga in formato Macintosh';
-$lang['export_to_ldif_win'] = 'Fine riga in formato Windows';
-$lang['export_to_ldif_unix'] = 'Fine riga in formato Unix';
+$lang['export_mac'] = 'Fine riga in formato Macintosh';
+$lang['export_win'] = 'Fine riga in formato Windows';
+$lang['export_unix'] = 'Fine riga in formato Unix';
 $lang['create_a_child_entry'] = 'Crea una voce figlia';
 $lang['add_a_jpeg_photo'] = 'Aggiungi una jpegPhoto';
 $lang['rename_entry'] = 'Rinomina la Voce';

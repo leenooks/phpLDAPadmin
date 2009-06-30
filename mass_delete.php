@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/mass_delete.php,v 1.8 2004/03/19 20:13:08 i18phpldapadmin Exp $
+
 
 /*
  * mass_delete.php
@@ -20,33 +22,32 @@ $server_id = $_POST['server_id'];
 
 check_server_id( $server_id ) or 
 	pla_error( $lang['bad_server_id'] );
-if( is_server_read_only( $server_id ) )
-	pla_error( "Deletes not allowed in read only mode." );
+if( is_server_read_only( $server_id ) ) 
+	pla_error( $lang['no_deletes_in_read_only'] );
 have_auth_info( $server_id ) or 
 	pla_error( $lang['no_enough_login_info'] );
 pla_ldap_connect( $server_id ) or 
 	pla_error( $lang['could_not_connect'] );
 $confirmed = isset( $_POST['confirmed'] ) ? true : false;
 isset( $_POST['mass_delete'] ) or 
-	pla_error( "Error in calling mass_delete.php. Missing mass_delete in POST vars." );
+	pla_error( $lang['error_calling_mass_delete'] );
 $mass_delete = $_POST['mass_delete'];
 is_array( $mass_delete ) or 
-	pla_error( "mass_delete variable is not an array in POST vars!" );
+	pla_error( $lang['mass_delete_not_array'] );
 $ds = pla_ldap_connect( $server_id );
 mass_delete_enabled( $server_id ) or 
-	pla_error( "Mass deletion is not enabled. Please enable it in config.php before proceeding. " );
+	pla_error( $lang['mass_delete_not_enabled'] );
 
 $server_name = $servers[ $server_id ][ 'name' ];
-session_start();
 
 require realpath( 'header.php' );
 
 
 echo "<body>\n";
-echo "<h3 class=\"title\">Mass Deleting</h3>\n";
+echo "<h3 class=\"title\">" . $lang['mass_deleting'] . "</h3>\n";
 
 if( $confirmed == true ) {
-		echo "<h3 class=\"subtitle\">Deletion progress on server '$server_name'</h3>\n";
+		echo "<h3 class=\"subtitle\">" . sprintf( $lang['mass_delete_progress'], $server_name ) . "</h3>\n";
 		echo "<blockquote>";
 		echo "<small>\n";
 
@@ -54,27 +55,27 @@ if( $confirmed == true ) {
 		$failed_dns = array();
 
 		if( ! is_array( $mass_delete ) )
-				pla_error( "Malformed mass_delete array" );
+				pla_error( $lang['malformed_mass_delete_array'] );
 		if( count( $mass_delete ) == 0 ) {
 				echo "<br />";
-				echo "<center>You did not select any entries to delete.</center>";
+				echo "<center>" . $lang['no_entries_to_delete'] . "</center>";
 				die();
 		}
 
 		foreach( $mass_delete as $dn => $junk ) {
 
-				echo "Deleting <b>" . htmlspecialchars($dn) . "</b>... ";
+				echo sprintf( $lang['deleting_dn'], htmlspecialchars($dn) );
 				flush();
 
 				if( true === preEntryDelete( $server_id, $dn ) ) {
 						$success = @ldap_delete( $ds, $dn );
 						if( $success ) {
 								postEntryDelete( $server_id, $dn );
-								echo "<span style=\"color:green\">success</span>.<br />\n";
+								echo " <span style=\"color:green\">" . $lang['success'] . "</span>.<br />\n";
 								$successfully_delete_dns[] = $dn;
 						}
 						else {
-								echo "<span style=\"color:red\">failed</span>.\n";
+								echo " <span style=\"color:red\">" . $lang['failed'] . "</span>.\n";
 								echo "(" . ldap_error( $ds ) . ")<br />\n";
 								$failed_dns[] = $dn;
 						}
@@ -90,15 +91,15 @@ if( $confirmed == true ) {
 		$total_count = count( $mass_delete );
 		if( $failed_count > 0 ) { 
 			echo "<span style=\"color: red; font-weight: bold;\">\n";
-			echo "$failed_count of $total_count entries failed to be deleted.</span>\n";
+			echo sprintf( $lang['total_entries_failed'], $failed_count, $total_count ) . "</span>\n";
 		} else {
 			echo "<span style=\"color: green; font-weight: bold;\">\n";
-			echo "All entries deleted successfully!</span>\n";
+			echo $lang['all_entries_successful'] . "</span>\n";
 		}
 
 	// kill the deleted DNs from the tree browser session variable and
 	// refresh the tree viewer frame (left_frame)
-	if( session_is_registered( 'tree' ) )
+	if( array_key_exists( 'tree', $_SESSION ) )
 	{
 		$tree = $_SESSION['tree'];
 		foreach( $successfully_delete_dns as $dn ) {
@@ -124,7 +125,7 @@ if( $confirmed == true ) {
 
 } else {
 	$n = count( $mass_delete );
-	echo "<h3 class=\"subtitle\">Confirm mass delete of $n entries on server '$server_name'</h3>\n";
+	echo "<h3 class=\"subtitle\">" . sprintf( $lang['confirm_mass_delete'], $n, $server_name ) . "</h3>\n";
 	?>
 	<center>
 	
@@ -144,7 +145,7 @@ if( $confirmed == true ) {
 	</ol>
 	</td></tr></table>
 
-	<input class="scary" type="submit" value="  Yes, delete!  " /></center>
+	<input class="scary" type="submit" value="  <?php echo $lang['yes_delete']; ?>  " /></center>
 
 	</form>
 

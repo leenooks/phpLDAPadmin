@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/view_jpeg_photo.php,v 1.5 2004/03/19 20:13:08 i18phpldapadmin Exp $
+
 
 require 'common.php';
 

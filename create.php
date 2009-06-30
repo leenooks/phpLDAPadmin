@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/create.php,v 1.20 2004/04/11 21:45:47 uugdave Exp $
+
 
 /*
  * create.php
@@ -37,7 +39,7 @@ if( isset( $required_attrs ) && is_array( $required_attrs ) ) {
 	foreach( $required_attrs as $attr => $val ) {
 		if( $val == '' )
 			pla_error( sprintf( $lang['create_required_attribute'], htmlspecialchars( $attr ) ) );
-		$new_entry[ $attr ][] = utf8_encode( $val );
+		$new_entry[ $attr ][] = $val; 
 	}
 }
 
@@ -45,7 +47,7 @@ if( isset( $vals ) && is_array( $vals ) ) {
 	foreach( $vals as $i => $val ) {
 		$attr = $attrs[$i];
 		if( is_attr_binary( $server_id, $attr ) ) {
-			if( $_FILES['vals']['name'][$i] != '' ) {
+			if( isset( $_FILES['vals']['name'][$i] ) && $_FILES['vals']['name'][$i] != '' ) {
 				// read in the data from the file
 				$file = $_FILES['vals']['tmp_name'][$i];
 				$f = fopen( $file, 'r' );
@@ -56,7 +58,7 @@ if( isset( $vals ) && is_array( $vals ) ) {
 			}
 		} else {
 			if( '' !== trim($val) )
-				$new_entry[ $attr ][] = utf8_encode( $val );
+			  $new_entry[ $attr ][] = $val;
 		}
 	}
 }
@@ -66,13 +68,14 @@ if( ! in_array( 'top', $new_entry['objectClass'] ) )
 	$new_entry['objectClass'][] = 'top';
 
 // UTF-8 magic. Must decode the values that have been passed to us
+// REMOVED ALL UTF8 Functions
 foreach( $new_entry as $attr => $vals )
 	if( ! is_attr_binary( $server_id, $attr ) )
 		if( is_array( $vals ) )
 			foreach( $vals as $i => $v )
-				$new_entry[ $attr ][ $i ] = utf8_decode( $v );
+                           $new_entry[ $attr ][ $i ] = $v; 
 			else
-				$new_entry[ $attr ] = utf8_decode( $vals );
+			$new_entry[ $attr ] = $vals; 
 
 //echo "<pre>"; var_dump( $new_dn );print_r( $new_entry ); echo "</pre>";
 
@@ -88,9 +91,7 @@ if( $add_result )
 	postEntryCreate( $server_id, $new_dn, $new_entry );
 	$edit_url="edit.php?server_id=$server_id&dn=" . rawurlencode( $new_dn );
 
-	// update the session tree to reflect the change
-	session_start();
-	if( session_is_registered( 'tree' ) )
+	if( array_key_exists( 'tree', $_SESSION ) )
 	{
 		$tree = $_SESSION['tree'];
 		$tree_icons = $_SESSION['tree_icons'];
@@ -115,6 +116,7 @@ if( $add_result )
 		     and redirect to the edit_dn page -->
 		<script language="javascript">
 			parent.left_frame.location.reload();
+			location.href='<?php echo $edit_url; ?>';
 		</script>
 
 		<?php } ?>
@@ -122,7 +124,7 @@ if( $add_result )
 		<meta http-equiv="refresh" content="0; url=<?php echo $edit_url; ?>" />
 	</head>
 	<body>
-	<?php echo $lang['create_redirecting'] ?>... <a href="<?php echo $edit_url; ?>"><?php echo $lang['create_here']?></a>.
+	<?php echo $lang['redirecting'] ?> <a href="<?php echo $edit_url; ?>"><?php echo $lang['here']?></a>.
 	</body>
 	</html>
 	<?php

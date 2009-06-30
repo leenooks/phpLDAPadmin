@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_dns_entry.php,v 1.7 2004/03/19 20:13:09 i18phpldapadmin Exp $
+
 
 require 'common.php';
 

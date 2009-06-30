@@ -1,4 +1,6 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_value_form.php,v 1.23 2004/04/23 12:15:29 uugdave Exp $
+ 
 
 /* 
  * add_value_form.php
@@ -13,24 +15,27 @@
 
 require 'common.php';
 
-$dn = $_GET['dn'];
+$dn = isset( $_GET['dn'] ) ? $_GET['dn'] : null;
 $encoded_dn = rawurlencode( $dn );
 $server_id = $_GET['server_id'];
-$rdn = pla_explode_dn( $dn );
-$rdn = $rdn[0];
+check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
+have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
+if( null != $dn ) {
+	$rdn = get_rdn( $dn );
+} else {
+	$rdn = null;
+}
 $server_name = $servers[$server_id]['name'];
 $attr = $_GET['attr'];
 $encoded_attr = rawurlencode( $attr );
 $current_values = get_object_attr( $server_id, $dn, $attr );
 $num_current_values = ( is_array($current_values) ? count($current_values) : 1 );
 $is_object_class = ( 0 == strcasecmp( $attr, 'objectClass' ) ) ? true : false;
-$is_jpeg_photo = ( 0 == strcasecmp( $attr, 'jpegPhoto' ) ) ? true : false;
+$is_jpeg_photo = is_jpeg_photo( $server_id, $attr ); //( 0 == strcasecmp( $attr, 'jpegPhoto' ) ) ? true : false;
 
 if( is_server_read_only( $server_id ) )
 	pla_error( $lang['no_updates_in_read_only_mode'] );
 
-check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
-have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
 
 if( $is_object_class ) { 
 	// fetch all available objectClasses and remove those from the list that are already defined in the entry
@@ -49,7 +54,7 @@ include 'header.php'; ?>
 	<?php echo $lang['add_new']; ?>
 	<b><?php echo htmlspecialchars($attr); ?></b> 
 	<?php echo $lang['value_to']; ?>
-	<b><?php echo htmlentities($rdn); ?></b></h3>
+	<b><?php echo htmlspecialchars($rdn); ?></b></h3>
 <h3 class="subtitle">
 	<?php echo $lang['server']; ?>: 
 	<b><?php echo $server_name; ?></b> &nbsp;&nbsp;&nbsp; 
@@ -61,7 +66,7 @@ include 'header.php'; ?>
 <?php if( $is_jpeg_photo ) { ?>
 	
 	<table><td>
-	<?php draw_jpeg_photos( $server_id, $dn ); ?>
+	<?php draw_jpeg_photos( $server_id, $dn, $attr, false ); ?>
 	</td></table>
 
 	<!-- Temporary warning until we find a way to add jpegPhoto values without an INAPROPRIATE_MATCHING error -->	
@@ -121,19 +126,19 @@ include 'header.php'; ?>
 
 	<?php } ?>
 
-	</select> <input type="submit" value="Add new objectClass" />
+	</select> <input type="submit" value="<?php echo $lang['add_new_objectclass']; ?>" />
 		
 	<br />
 	<?php if( show_hints() ) { ?>
 	<small>
 		<br />
-		<img src="images/light.png" /><?php echo $lang['new_required_attrs_note']; ?>
+		<img src="images/light.png" /><span class="hint"><?php echo $lang['new_required_attrs_note']; ?></span>
 	</small>
 	<?php } ?>
 
 <?php } else { ?>
 
-	<form action="add_value.php" method="post" class="new_value" <?php 
+	<form action="add_value.php" method="post" class="new_value" name="new_value_form"<?php 
 		if( is_attr_binary( $server_id, $attr ) ) echo "enctype=\"multipart/form-data\""; ?>>
 	<input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
 	<input type="hidden" name="dn" value="<?php echo $encoded_dn; ?>" />
@@ -143,17 +148,23 @@ include 'header.php'; ?>
 		<input type="file" name="new_value" />
 		<input type="hidden" name="binary" value="true" />
 	<?php } else { ?>
+        <?php if( is_multi_line_attr( $attr, $server_id ) ) { ?>
+            <textarea name="new_value" rows="3" cols="30"></textarea>
+        <?php } else { ?>
 		<input type="text" <?php 
 				if( $schema_attr->getMaxLength() ) 
 					echo "maxlength=\"" . $schema_attr->getMaxLength() . "\" "; 
-				?>name="new_value" size="40" value="" />
+				?>name="new_value" size="40" value="" /><?php 
+                    // draw the "browse" button next to this input box if this attr houses DNs:
+                    if( is_dn_attr( $server_id, $attr ) ) draw_chooser_link( "new_value_form.new_value", false ); ?>
+        <?php } ?>
 	<?php } ?>
 
-	<input type="submit" name="submit" value="Add New Value" />
+	<input type="submit" name="submit" value="<?php echo $lang['add_new_value']; ?>" />
 	<br />
 
 	<?php if( $schema_attr->getDescription() ) { ?>
-		<small><b>Description:</b> <?php echo $schema_attr->getDescription(); ?></small><br />
+		<small><b><?php echo $lang['desc']; ?>:</b> <?php echo $schema_attr->getDescription(); ?></small><br />
 	<?php } ?>
 
 	<?php if( $schema_attr->getType() ) { ?>
@@ -161,7 +172,7 @@ include 'header.php'; ?>
 	<?php } ?>
 
 	<?php if( $schema_attr->getMaxLength() ) { ?>
-		<small><b>Max length:</b> <?php echo number_format( $schema_attr->getMaxLength() ); ?>	characters</small><br />
+		<small><b><?php echo $lang['maximum_length']; ?>:</b> <?php echo number_format( $schema_attr->getMaxLength() ); ?>	<?php echo $lang['characters']; ?></small><br />
 	<?php } ?>
 
 	</form>

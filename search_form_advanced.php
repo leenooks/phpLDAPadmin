@@ -1,4 +1,6 @@
-<script>
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/search_form_advanced.php,v 1.12 2004/04/02 14:44:46 uugdave Exp $
+?><script>
 <?
 $num_server = count($server_info_list);
 for($i=0;$i<$num_server;$i++){
@@ -7,14 +9,18 @@ for($i=0;$i<$num_server;$i++){
 <? 
 }
 ?>
+  function focus_filter() {
+    document.advanced_search_form.filter.focus();
+  }
 </script>
 
-<form action="search.php" method="get" class="search">
+<form action="search.php" method="get" class="search" name="advanced_search_form">
 <input type="hidden" name="search" value="true" />
 <input type="hidden" name="form" value="advanced" />
 
 <center><b><?php echo $lang['advanced_search_form_str']; ?></b></center>
-<small>(<a href="search.php?server_id=<?php echo $server_id; ?>&amp;form=simple"><?php echo $lang['simple_search_form_str']; ?></a>)</small><br />
+<small>(<a href="search.php?server_id=<?php echo $server_id; ?>&amp;form=simple"><?php echo $lang['simple_search_form_str']; ?></a> | 
+	<a href="search.php?form=predefined"><?php echo $lang['predefined_searches']; ?></a>)</small><br />
 <br />
 
 <table>
@@ -49,7 +55,7 @@ for($i=0;$i<$num_server;$i++){
 	<tr>
 		<td><small><acronym title="<?php echo $lang['standard_ldap_search_filter']; ?>">
 			<?php echo $lang['search_filter']; ?></acronym></small></td>
-		<td><input type="text" name="filter" size="30" value="<?php echo  $filter ? htmlspecialchars($filter) : 'objectClass=*'; ?>" /></td>
+		<td><input type="text" name="filter" id="filter" size="30" value="<?php echo  $filter ? htmlspecialchars($filter) : 'objectClass=*'; ?>" /></td>
 	</tr>
 
 	<tr>
@@ -65,5 +71,9 @@ for($i=0;$i<$num_server;$i++){
 	</tr>
 </table>
 </form>
+<script language="javascript">
+    // Move the cursor to the filter field
+    focus_filter();
+</script>
 
 

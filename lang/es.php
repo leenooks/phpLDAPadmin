@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/es.php,v 1.16 2004/03/19 20:13:09 i18phpldapadmin Exp $
+
 
 // Search form
 $lang['simple_search_form_str'] = 'Formulario de búsqueda sencilla';
@@ -52,9 +54,9 @@ $lang['export_to_ldif'] = 'Exportar archivo LDIF';
 $lang['export_to_ldif_tooltip'] = 'Guardar archivo LDIF de este objeto';
 $lang['export_subtree_to_ldif_tooltip'] = 'Guardar archivo LDIF de este objeto i todos sus objetos hijos';
 $lang['export_subtree_to_ldif'] = 'Exportar archivo LDIF de sub-estructura';
-$lang['export_to_ldif_mac'] = 'Avance de línea de Macintosh';
-$lang['export_to_ldif_win'] = 'Avance de línea de Windows';
-$lang['export_to_ldif_unix'] = 'Avance de línea de Unix';
+$lang['export_mac'] = 'Avance de línea de Macintosh';
+$lang['export_win'] = 'Avance de línea de Windows';
+$lang['export_unix'] = 'Avance de línea de Unix';
 $lang['create_a_child_entry'] = 'Crear objeto como hijo';
 $lang['add_a_jpeg_photo'] = 'Agregar jpegPhoto';
 $lang['rename_entry'] = 'Renombrar objeto';
@@ -230,6 +232,7 @@ $lang['starts with'] = 'comience con';
 $lang['contains'] = 'contenga';
 $lang['ends with'] = 'termine con';
 $lang['sounds like'] = 'suene como';
+$lang['predefined_search_str'] = 'o seleccione uno de esta lista';
 
 // server_info.php
 $lang['could_not_fetch_server_info'] = 'No se ha podido sacar información LDAP del servidor';
@@ -249,13 +252,13 @@ $lang['new_value'] = 'Valor nuevo';
 $lang['attr_deleted'] = '[atributo borrado]';
 $lang['commit'] = 'Cometer';
 $lang['cancel'] = 'Cancelar';
-$lang['you_made_no_changes'] = 'No has hecho ningún canvio';
+$lang['you_made_no_changes'] = 'No has hecho ningún cambio';
 $lang['go_back'] = 'Volver atrás';
 
 // welcome.php
 $lang['welcome_note'] = 'Usa el menú de la izquierda para navegar';
 $lang['credits'] = "Créditos";
-$lang['changelog'] = "Histórico de canvios";
+$lang['changelog'] = "Histórico de cambios";
 $lang['documentation'] = "Documentación";
 
 

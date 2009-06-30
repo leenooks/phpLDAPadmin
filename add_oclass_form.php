@@ -1,4 +1,6 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_oclass_form.php,v 1.9 2004/03/19 20:13:08 i18phpldapadmin Exp $
+ 
 
 /*
  * add_oclass_form.php
@@ -83,14 +85,8 @@ if( count( $needed_attrs ) > 0 )
 	<tr><th colspan="2"><?php echo $lang['new_required_attrs']; ?></th></tr>
 
 	<?php foreach( $needed_attrs as $count => $attr ) { ?>
-		<?php  if( $count % 2 == 0 ) { ?>
-			<tr class="row1">
-		<?php  } else { ?>
-			<tr class="row2">
-		<?php  } ?>
-		<td class="attr"><b><?php echo htmlspecialchars($attr); ?></b></td>
-		<td class="val"><input type="text" name="new_attrs[<?php echo htmlspecialchars($attr); ?>]" value="" size="40" />
-	</tr>
+        <tr><td class="attr"><b><?php echo htmlspecialchars($attr); ?></b></td></tr>
+		<tr><td class="val"><input type="text" name="new_attrs[<?php echo htmlspecialchars($attr); ?>]" value="" size="40" /></tr>
 	<?php  } ?>
 
 	</table>

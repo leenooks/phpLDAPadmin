@@ -1,4 +1,6 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/search.php,v 1.38 2004/04/12 01:44:08 uugdave Exp $
+ 
 
 /*
  * search.php
@@ -22,6 +24,7 @@ else {
 	$server_id = $_GET['server_id'];
 	check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
 }
+
 
 $js_on_change_string ='';
 if( isset( $_GET['form'] ) && $_GET['form'] == 'advanced' ) 
@@ -60,7 +63,7 @@ else
 	$base_dn = try_to_get_root_dn( $server_id );
 	
 $criterion = isset( $_GET['criterion'] ) ? $_GET['criterion'] : null;
-$form = isset( $_GET['form'] )   ? $_GET['form']  : null;
+$form = isset( $_GET['form'] ) ? $_GET['form']  : null;
 $scope = isset( $_GET['scope'] ) ? $_GET['scope'] : 'sub';
 
 include 'header.php'; ?>
@@ -73,6 +76,10 @@ include 'header.php'; ?>
 
 	include 'search_form_advanced.php';
 
+} elseif( $form == 'predefined' ) {
+	
+	include 'search_form_predefined.php';
+
 } else /* Draw simple search form */ {
 
 	process_config();
@@ -82,13 +89,12 @@ include 'header.php'; ?>
 
 </center>
 
-<?php flush(); ?>
-
 <?php 
+
+flush();
 
 if( isset( $_GET['search'] ) )
 {
-
 	if( $form == 'advanced'  ) {
 		$search_result_attributes = isset( $_GET['display_attrs'] ) ? 
 						rawurldecode( $_GET['display_attrs'] ) :
@@ -116,11 +122,32 @@ if( isset( $_GET['search'] ) )
 	if( ! $ds ) 
 			pla_error( $lang['could_not_connect'] );
 	
+	//making $predefined safe for "register_globals off"
+	if( isset( $_GET['predefined'] ) )
+	{
+		$predefined = $_GET['predefined'];
+		if( is_numeric( $predefined ) )
+		{
+			$query = get_fixed_query( $predefined );
+
+			$search_result_attributes = $query['attributes'];
+			$search_attributes_display = $search_result_attributes;
+			$search_attributes = $search_result_attributes;
+
+			process_config();
+	
+			$filter = $query['filter'];
+			$scope = $query['scope'];
+			$base_dn = $query['base'];
+			$server_id = $query['server'];
+	}
+	} else { $predefined = ''; }
+	
 	if( $filter )
 	{
 
 		// if they are using the simple search form, build an LDAP search filter from their input
-		if( $form == 'simple' )
+		if( $form == 'simple' &! is_numeric( $predefined ) )
 		{
 			switch( $criterion ) {
 				case 'starts with':
@@ -155,66 +182,116 @@ if( isset( $_GET['search'] ) )
 			}
 		}
 		
-		echo "<center>Searching...</center>\n";
+		echo "<center>" . $lang['searching'] . "</center>\n";
 		flush();
 
 		// prevent script from bailing early on a long delete
 		@set_time_limit( 0 );
 
-		// grab the time limit set in config.php
+		// grab the size limit set in config.php
 		$size_limit = isset ( $search_result_size_limit ) && is_numeric( $search_result_size_limit ) ? 
 						$search_result_size_limit :
 						0;
+		$page = isset( $_GET['page'] ) ? $_GET['page'] : 0;
 
 		$time_start = utime();
 		if( $scope == 'base' )
 			$results = @ldap_read( $ds, $base_dn, $filter, $search_result_attributes, 
-										0, 0, 0, LDAP_DEREF_ALWAYS );
+										0, 0, 0, get_search_deref_setting() );
 		elseif( $scope == 'one' )
 			$results = @ldap_list( $ds, $base_dn, $filter, $search_result_attributes, 
-										0, 0, 0, LDAP_DEREF_ALWAYS );
+										0, 0, 0, get_search_deref_setting() );
 		else // scope == 'sub'
 			$results = @ldap_search( $ds, $base_dn, $filter, $search_result_attributes, 
-										0, 0, 0, LDAP_DEREF_ALWAYS );
-
+										0, 0, 0, get_search_deref_setting() );
 		$errno = @ldap_errno( $ds );
+		if( ! $results ) {
+			pla_error(  $lang['error_performing_search'], ldap_error( $ds ), ldap_errno( $ds ) );
+		}
+
 		$time_end = utime();
 		$time_elapsed = round( $time_end - $time_start, 2 );
 		$count = @ldap_count_entries( $ds, $results );
 
+		$start_entry = $page * $size_limit;
+		$end_entry = min( $start_entry + $size_limit + 1, $count+1 );
+
 		?>
 
 		<center>
-			<?php echo $lang['entries_found'] . ' ' . number_format( $count ) ?>
-			(in <?php echo $time_elapsed; ?> seconds).
+			<?php echo $lang['entries_found'] . ' <b>' . number_format( $count ) ?></b>
+			(<?php echo $time_elapsed; ?> <?php echo $lang['seconds']; ?>).<br />
 			<?php 
 
 			// The LDAP error code for the size limit exceeded error.
 			define( 'SIZE_LIMIT_EXCEEDED', 4 );
 			if( $errno && $errno == SIZE_LIMIT_EXCEEDED ) {
-				echo "<br /><small>Notice, search size limit exceeded.</small><br />\n";
-			}
-
-			if( $size_limit > 0 && $count > $size_limit ) {
-				echo "<br /><small>Showing first <b>$size_limit</b> results.</small><br />\n";
-
+				echo "<br /><small>" . $lang['size_limit_exceeded'] . "</small><br />\n";
 			}
 
 			?>
 
-		<?php  if( $form == 'simple' ) { ?>
+		<?php  if( $form == 'simple' || $form == 'predefined' ) { ?>
 			<center><small><?php echo $lang['filter_performed']; ?>
 				<?php echo htmlspecialchars( $filter ); ?></small></center>
 		<?php  } ?>
 
+		<?php 
+		// Draw the paging links
+        $pager_html = '';
+		if( $count > $size_limit ) {
+            echo sprintf( $lang['showing_results_x_through_y'], "<b>" . number_format($start_entry+1) . "</b>", "<b>" . number_format($end_entry-1) . "</b>" ) . "<br />\n";
+			$php_self = $_SERVER['PHP_SELF'];
+			if( $page != 0 )  {
+				$query_string = array_to_query_string( $_GET, array( 'page' ) );
+				$query_string .= '&page=' . ($page-1);
+				$pager_html .= "<a href=\"$php_self?$query_string\">&lsaquo;&lsaquo;</a>";
+			} else {
+				$pager_html .= "&lsaquo;&lsaquo;";
+			}
+			$pager_html .= '&nbsp;&nbsp;';
+
+            // for large search results where we page beyone the first 20 pages, 
+            // print elipsis instead of making the pager be super wide.
+            $elipsis_printed = false;
+			for( $i=0; $i<$count; $i+=$size_limit ) {
+				$page_num = $i/$size_limit;
+                if( $count > $size_limit * 20 && abs( $page_num - $page ) > 10 ) {
+                    if( ! $elipsis_printed ) {
+                        $pager_html .= '...&nbsp;&nbsp;';
+                        $elipsis_printed = true;
+                    }
+                } else if( $page == $page_num ) {
+					$pager_html .= ($page_num + 1);
+                    $pager_html .= '&nbsp;&nbsp;';
+                    $elipsis_printed = false;
+				} else {
+					$query_string = array_to_query_string( $_GET, array( 'page' ) );
+					$query_string .= '&page=' . $page_num;
+					$pager_html .= "<a href=\"$php_self?$query_string\">" . ($page_num+1) . "</a>";
+                    $pager_html .= '&nbsp;&nbsp;';
+                    $elipsis_printed = false;
+				}
+			}
+			if( $page+1 < ( $count / $size_limit ) )  {
+				$query_string = array_to_query_string( $_GET, array( 'page' ) );
+				$query_string .= '&page=' . ($page+1);
+				$pager_html .= "<a href=\"$php_self?$query_string\">&rsaquo;&rsaquo;</a>";
+			} else {
+				$pager_html .= "&rsaquo;&rsaquo;";
+			}
+
+		} 
+        echo $pager_html;
+        // Done drawing pager
+        ?>
+		<br />
+
 		</center>
 
-		<?php flush(); ?>	
+		<?php flush(); ?>
 
 		<?php 
-			if( ! $results ) {
-				pla_error(  'Encountered an error while performing search.', ldap_error( $ds ), ldap_errno( $ds ) );
-			}
 
 			$friendly_attrs = process_friendly_attr_table();
 			$entry_id = ldap_first_entry( $ds, $results );
@@ -223,11 +300,12 @@ if( isset( $_GET['search'] ) )
 			$i = 0;
 			while( $entry_id ) {
 				$i++;
-				// Only display the first $size_limit entries
-				if( $size_limit != 0 && $i > $size_limit ) {
-					break;
+				if( $i <= $start_entry ) {
+					$entry_id = ldap_next_entry( $ds, $entry_id );
+					continue;
 				}
-				
+				if( $i >= $end_entry )
+					break;
 				$dn = ldap_get_dn( $ds, $entry_id );
 				$encoded_dn = rawurlencode( $dn );
 				$rdn = get_rdn( $dn );
@@ -277,9 +355,12 @@ if( isset( $_GET['search'] ) )
 						<td class="attr" valign="top"><?php echo $attr; ?></td>
 						<td class="val">
 							<?php 
-							foreach( $values as $value )
-								echo str_replace( ' ', '&nbsp;',
-									htmlspecialchars( $value ) ) . "<br />\n";
+							if( is_jpeg_photo( $server_id, $attr ) )
+								draw_jpeg_photos( $server_id, $dn, $attr, false, false, 'align="left"' );
+							else
+								foreach( $values as $value )
+									echo str_replace( ' ', '&nbsp;',
+											htmlspecialchars( $value ) ) . "<br />\n";
 							?>
 						</td>
 					</tr>
@@ -300,6 +381,11 @@ if( isset( $_GET['search'] ) )
 				flush();
 
 		} // end while( $entry_id )
+
+        echo '<br />';
+        echo '<center>';
+        echo $pager_html;
+        echo '</center>';
 
 		?>
 

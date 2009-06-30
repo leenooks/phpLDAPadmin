@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/template_config.php,v 1.16 2004/05/01 14:03:56 uugdave Exp $
+
 /**
  * template_config.php
  * -------------------
@@ -37,6 +39,11 @@ $templates[] =
         array(  'desc'    => 'Address Book Entry (inetOrgPerson)',
                 'icon'    => 'images/user.png',
                 'handler' => 'new_address_template.php' );
+
+$templates[] =
+        array(  'desc'    => 'Kolab User Entry',
+                'icon'    => 'images/user.png',
+                'handler' => 'new_kolab_template.php' );
 
 $templates[] =
         array(  'desc'    => 'Organizational Unit',
@@ -79,11 +86,29 @@ $templates[] =
 	array(  'desc'    => 'Simple Security Object',
 		'icon'    => 'images/user.png',
 		'handler' => 'new_security_object_template.php' ); 
+$templates[] =
+	array(  'desc'    => 'Mozilla User',
+		'icon'    => 'images/user.png',
+		'handler' => 'mozilla_template.php' ); 
+
 
 $templates[] =
 	array(  'desc'    => 'Custom',
 		'icon'    => 'images/object.png',
 		'handler' => 'custom.php' ); 
+
+
+/*#####################################################################################
+## POSIX GROUP TEMPLATE CONFIGURATION                                                ##
+## ----------------------------------                                                ##
+##                                                                                   ##  
+#####################################################################################*/
+
+// uncomment to set the base dn of posix groups
+// default is set to the base dn of the server
+//$base_posix_groups="ou=People,dc=example,dc=com";
+
+
 
 
 /*######################################################################################
@@ -100,12 +125,26 @@ $templates[] =
 $mkntpwdCommand = "./templates/creation/mkntpwd";
 
 // Default domains definition (Customize)
+//   (use `net getlocalsid` on samba server)
 $default_samba3_domains = array();
 $default_samba3_domains[] =
         array(  'name'   => 'My Samba domain Name',
-                'sid' => 'S-1-5-21-1234567891-123456789-123456789' );
+                'sid' => 'S-1-5-21-479559372-1547523452-3818884970' );
+
+// The base dn of samba group. (CUSTOMIZE)
+//$samba_base_groups = "ou=Groups,ou=samba,dc=example,dc=org";
 
 
+//Definition of built-in local groups
+$built_in_local_groups = array( "S-1-5-32-544" => "Administrators",
+			        "S-1-5-32-545" => "Users",
+			        "S-1-5-32-546" => "Guests",
+			        "S-1-5-32-547" => "Power Users",
+				"S-1-5-32-548" => "Account Operators",
+				"S-1-5-32-549" => "Server Operators",
+				"S-1-5-32-550" => "Print Operators",
+				"S-1-5-32-551" => "backup Operators",
+				"S-1-5-32-552" => "Replicator" );
 
 
 /*######################################################################################
@@ -123,11 +162,6 @@ $default_samba3_domains[] =
 
 function get_template( $server_id, $dn )
 {
-
-	// For now, just use default. We will add more templates for 0.9.2.
-	// If you have custom modification templates, just modify this.
-	return 'default';
-
         // fetch and lowercase all the objectClasses in an array
         $object_classes = get_object_attr( $server_id, $dn, 'objectClass', true );
 
@@ -138,9 +172,14 @@ function get_template( $server_id, $dn )
                 $object_classes[$i] = strtolower( $class );
 
         $rdn = get_rdn( $dn );
+	if( in_array( 'groupofnames', $object_classes ) || 
+	    in_array( 'groupofuniquenames', $object_classes ) )
+	    	return 'group_of_names';
+	/*
         if( in_array( 'person', $object_classes ) &&
             in_array( 'posixaccount', $object_classes ) )
                 return 'user';
+	*/
 	// TODO: Write other templates and criteria therefor
 	// else if ...
 	//    return 'some other template';
@@ -164,4 +203,69 @@ function get_samba3_domains(){
   return $default_samba3_domains;
 }
 
+
+/**
+ * Utily class to get the samba passwords.
+ */
+
+class MkntPasswdUtil{
+
+
+  var $clearPassword = NULL;
+  var $sambaPassword ;
+  function MkntPasswdUtil(){
+    $sambaPassword = array("sambaLMPassword" => NULL,
+			   "sambaNTPassword" => NULL);
+  }
+  
+  function createSambaPasswords($password){
+    global $mkntpwdCommand;
+    $this->clearPassword = $password;
+    file_exists ( $mkntpwdCommand ) && is_executable ( $mkntpwdCommand ) or pla_error(' Unable to create the Samba passwords. Please, check the configuration in template_config.php');
+    $sambaPassCommand = $mkntpwdCommand . " " . $password;
+    if($sambaPassCommandOutput = shell_exec($sambaPassCommand)){
+      $this->sambaPassword['sambaLMPassword'] = trim( substr( $sambaPassCommandOutput , 0 , strPos( $sambaPassCommandOutput,':' ) ) );
+      $this->sambaPassword['sambaNTPassword'] = trim( substr( $sambaPassCommandOutput, strPos( $sambaPassCommandOutput ,':' ) +1 ) );
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  function getSambaLMPassword(){
+    return $this->sambaPassword['sambaLMPassword'];
+  }
+
+  function getSambaNTPassword(){
+    return $this->sambaPassword['sambaNTPassword'];
+  }
+  
+  function getSambaClearPassword(){
+    return $this->clearPassword;
+  }
+  
+  function valueOf($key){
+    return  $this->sambaPassword[$key];
+  }
+
+}
+
+
+/**
+ * Return posix group entries
+ *
+ */
+
+function get_posix_groups( $server_id , $base_dn = NULL ){
+  global $servers;
+  if( is_null( $base_dn ) )
+    $base_dn = $servers[$server_id]['base'];  
+  
+  $results = pla_ldap_search( $server_id, "objectclass=posixGroup", $base_dn, array() );
+  if( !$results )
+    return false;
+  else
+    return $results;
+}
 ?>

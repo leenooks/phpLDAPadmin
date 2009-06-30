@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_user_template.php,v 1.13 2004/03/19 20:13:09 i18phpldapadmin Exp $
+
 
 require 'common.php';
 
@@ -36,7 +38,6 @@ if( isset($_POST['step']) )
 
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
-
 ?>
 
 <script language="javascript">
@@ -71,7 +72,7 @@ function autoFillUserName( form )
 function autoFillHomeDir( form )
 {
 	var user_name;
-	var hime_dir;
+	var home_dir;
 
 	user_name = form.user_name.value.toLowerCase();
 
@@ -93,7 +94,12 @@ function autoFillHomeDir( form )
 <br />
 </center>
 
-<?php if( $step == 1 ) { ?>
+<?php if( $step == 1 ) { 
+  $base_dn = null;
+  if( isset( $base_posix_groups ) )
+    $base_dn = $base_posix_groups;
+  $posix_groups = get_posix_groups( $server_id , $base_dn );
+?>
 
 <form action="creation_template.php" method="post" id="user_form" name="user_form">
 <input type="hidden" name="step" value="2" />
@@ -189,13 +195,20 @@ function autoFillHomeDir( form )
 </tr>
 <tr>
 	<td></td>
-	<td class="heading">Group:</td>
-	<td><select name="group">
-		<option value="1000">admins (1000)</option>
-		<option value="2000">users (2000)</option>
-		<option value="3000">staff (3000)</option>
-		<option value="5000">guest (5000)</option>
-	    </select></td>
+	    <?php $posix_groups_found = ( is_array( $posix_groups )?1:0 );?>
+	<td class="heading"><?echo $posix_groups_found?"Group":"GID Number"?>:</td>
+	    <td>
+	    <?php if( $posix_groups_found ){?>
+	       <select name="gid_number">
+	       <?php foreach ( $posix_groups as $dn => $attrs ){
+		 $group_name = ereg_replace('^.*=',"",get_rdn($dn));
+	        ?>
+		 <option value="<?php echo $attrs['gidNumber'];?>"><?php echo $group_name;?> </option> 
+		 <?php } ?>
+	       </select>
+		   <?php }else{ ?><input type="text" name="gid_number"><?php } ?>
+<br />
+</td>
 </tr>
 <tr>
 	<td colspan="3"><center><br /><input type="submit" value="Proceed" /></td>
@@ -213,7 +226,7 @@ function autoFillHomeDir( form )
 	$encryption = $_POST['encryption'];
 	$login_shell = trim( $_POST['login_shell'] );
 	$uid_number = trim( $_POST['uid_number'] );
-	$gid_number = trim( $_POST['group'] );
+	$gid_number = trim( $_POST['gid_number'] );
 	$container = trim( $_POST['container'] );
 	$home_dir = trim( $_POST['home_dir'] );
 
@@ -224,6 +237,8 @@ function autoFillHomeDir( form )
 		pla_error( "You cannot leave the UID number blank. Please go back and try again." );
 	is_numeric( $uid_number ) or
 		pla_error( "You can only enter numeric values for the UID number field. Please go back and try again." );
+	is_numeric( $gid_number ) or
+		pla_error( "You can only enter numeric values for the GID number field. Please go back and try again." );
 	dn_exists( $server_id, $container ) or
 		pla_error( "The container you specified (" . htmlspecialchars( $container ) . ") does not exist. " .
 	       		       "Please go back and try again." );

@@ -1,4 +1,6 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/delete.php,v 1.16 2004/03/19 20:13:08 i18phpldapadmin Exp $
+ 
 
 /*
  * delete.php
@@ -23,6 +25,7 @@ if( is_server_read_only( $server_id ) )
 
 check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
 have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
+dn_exists( $server_id, $dn ) or pla_error( sprintf( $lang['no_such_entry'], '<b>' . pretty_print_dn( $dn ) . '</b>' ) );
 
 $ds = pla_ldap_connect( $server_id ) or pla_error( $lang['could_not_connect'] );
 
@@ -40,9 +43,7 @@ if( $del_result )
 
 	// kill the DN from the tree browser session variable and
 	// refresh the tree viewer frame (left_frame)
-
-	session_start();
-	if( session_is_registered( 'tree' ) )
+	if( array_key_exists( 'tree', $_SESSION ) )
 	{
 		$tree = $_SESSION['tree'];
 		if( isset( $tree[$server_id] ) && is_array( $tree[$server_id] ) ) {
@@ -71,13 +72,13 @@ if( $del_result )
 
 	<br />
 	<br />
-	<center><?php echo sprintf( $lang['entry_deleted_successfully'], $dn ); ?></center>
+	<center><?php echo sprintf( $lang['entry_deleted_successfully'], '<b>' .pretty_print_dn($dn) . '</b>' ); ?></center>
 
 	<?php 
 
 
 } else {
-    pla_error( sprintf( $lang['could_not_delete_entry'], htmlspecialchars( utf8_decode( $dn ) ) ),
+    pla_error( sprintf( $lang['could_not_delete_entry'], '<b>' . pretty_print_dn( $dn ) . '</b>' ),
                ldap_error( $ds ), 
                ldap_errno( $ds ) );
 }

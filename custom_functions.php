@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/custom_functions.php,v 1.5 2004/03/19 20:13:08 i18phpldapadmin Exp $
+
 
 /*
  * custom_functions.php: Choose your own adventure.
@@ -156,6 +158,14 @@ function preEntryDelete( $server_id, $dn )
  * value is ignored.
  */
 function postEntryDelete( $server_id, $dn )
+{
+	// Fill me in
+}
+
+/**
+ * This function is called, after a new session is initilaized
+ */
+function postSessionInit()
 {
 	// Fill me in
 }

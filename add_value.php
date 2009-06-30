@@ -1,4 +1,6 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_value.php,v 1.10 2004/03/19 20:13:08 i18phpldapadmin Exp $
+ 
 
 /*
  * add_value.php
@@ -22,11 +24,12 @@ $attr = $_POST['attr'];
 $encoded_attr = rawurlencode( $attr );
 $server_id = $_POST['server_id'];
 $new_value = $_POST['new_value'];
-$new_value = utf8_encode($new_value);
 $is_binary_val = isset( $_POST['binary'] ) ? true : false;
 
 if( is_server_read_only( $server_id ) )
 	pla_error( $lang['no_updates_in_read_only_mode'] );
+if( is_attr_read_only( $attr ) )
+	pla_error( "The attribute '" . htmlspecialchars( $attr ) . "' is flagged as read only in the phpLDAPadmin configuration." );
 
 check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
 have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
@@ -44,7 +47,7 @@ if( $is_binary_val )
 	$new_value = $binary_value;
 }
 
-$new_entry = array( $attr => $new_value );
+$new_entry = array( $attr => $new_value  );
 
 $add_result = @ldap_mod_add( $ds, $dn, $new_entry );
 

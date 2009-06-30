@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/common.php,v 1.48 2004/04/20 13:29:58 uugdave Exp $
+
 
 /*
  * common.php
@@ -9,38 +11,28 @@
 // Turn on all notices and warnings. This helps us write cleaner code (we hope at least)
 error_reporting( E_ALL );
 
-// We require this version or newer (use @ to surpress errors if we are included twice)
+/** The minimum version of PHP required to run phpLDAPadmin. */
 @define( 'REQUIRED_PHP_VERSION', '4.1.0' );
-@define( 'HTTPS_PORT', 443 );
+/** The default setting for $search_deref if unspecified or misconfigured by user. */
+@define( 'DEFAULT_SEARCH_DEREF_SETTING', LDAP_DEREF_ALWAYS );
+/** The default setting for $tree_deref if unspecified or misconfigured by user. */
+@define( 'DEFAULT_TREE_DEREF_SETTING',   LDAP_DEREF_NEVER  );
+/** The default setting for $export_deref if unspecified or misconfigured by user. */
+@define( 'DEFAULT_EXPORT_DEREF_SETTING', LDAP_DEREF_NEVER  );
+/** The default setting for $view_deref if unspecified or misconfigured by user. */
+@define( 'DEFAULT_VIEW_DEREF_SETTING', LDAP_DEREF_NEVER  );
 
-// config.php might not exist (if the user hasn't configured PLA yet)
-// Only include it if it does exist.
-if( file_exists( realpath( 'config.php' ) ) ) {
-	ob_start();
-	is_readable( realpath( 'config.php' ) ) or pla_error( "Could not read config.php, its permissions are too strict." );
-	require realpath( 'config.php' );
-	ob_end_clean();
+// General functions needed to proceed (pla_ldap_search(), pla_error(), get_object_attrs(), etc.)
+ob_start();
+if( ! file_exists( realpath( './functions.php' ) ) ) {
+    ob_end_clean();
+    die( "Fatal error: Required file 'functions.php' dor oes not exist." );
+} 
+if( ! is_readable( realpath( './functions.php' ) ) ) {
+    ob_end_clean();
+    die( "Cannot read the file 'functions.php' its permissions are too strict." );
 }
-
-// General functions (pla_ldap_search(), pla_error(), get_object_attrs(), etc.)
-is_readable( realpath( 'functions.php' ) ) 
-	or pla_error( "Cannot read the file 'functions.php' its permissions are too strict." );
-ob_start();
-require_once realpath( 'functions.php' );
-ob_end_clean();
-
-// Functions for reading the server schema (get_schema_object_classes(), etc.)
-is_readable( realpath( 'schema_functions.php' ) ) 
-	or pla_error( "Cannot read the file 'schema_functions.php' its permissions are too strict." );
-ob_start();
-require_once realpath( 'schema_functions.php' );
-ob_end_clean();
-
-// Functions that can be defined by the user (preEntryDelete(), postEntryDelete(), etc.)
-is_readable( realpath( 'custom_functions.php' ) ) 
-	or pla_error( "Cannot read the file 'custom_functions.php' its permissions are too strict." );
-ob_start();
-require_once realpath( 'custom_functions.php' );
+require_once realpath( './functions.php' );
 ob_end_clean();
 
 // Our custom error handler receives all error notices that pass the error_reporting()
@@ -51,16 +43,41 @@ set_error_handler( 'pla_error_handler' );
 // based on the user-configured language.
 $lang = array();
 
-// Little bit of sanity checking
-if( ! file_exists( realpath( 'lang/recoded' ) ) ) {
-	pla_error( "Your install of phpLDAPadmin is missing the 'lang/recoded' directory. This should not happen. You can try running 'make' in the lang directory" );
+
+// config.php might not exist (if the user hasn't configured PLA yet)
+// Only include it if it does exist.
+if( file_exists( realpath( './config.php' ) ) ) {
+	ob_start();
+	is_readable( realpath( './config.php' ) ) or pla_error( "Could not read config.php, its permissions are too strict." );
+	include realpath( './config.php' );
+	ob_end_clean();
 }
 
-// use English as a base-line (in case the selected language is missing strings)
-if( file_exists( realpath( 'lang/recoded/en.php' ) ) )
-	include realpath( 'lang/recoded/en.php' );
-else
-	pla_error( "Error! Missing recoded English language file. Run 'make' in the lang/ directory." );
+$required_files = array( 
+    // Functions that can be defined by the user (preEntryDelete(), postEntryDelete(), etc.)
+    './session_functions.php', 
+    // Functions for reading the server schema (get_schema_object_classes(), etc.)
+    './schema_functions.php', 
+    // Functions that can be defined by the user (preEntryDelete(), postEntryDelete(), etc.)
+    './custom_functions.php',
+    // Functions for hashing passwords with OpenSSL binary (only if mhash not present)
+    './emuhash_functions.php',
+    // The base English language strings
+    './lang/recoded/en.php' );
+
+
+// Include each required file and check for sanity.
+foreach( $required_files as $file_name ) {
+    file_exists( realpath( $file_name ) )
+        or pla_error( "Fatal error: Required file '$file_name' does not exist." );
+    is_readable( realpath( $file_name ) ) 
+        or pla_error( "Cannot read the file '$file_name' its permissions are too strict." );
+    ob_start();
+    require_once realpath( $file_name );
+    ob_end_clean();
+}
+
+pla_session_start();
 
 // Language configuration. Auto or specified?
 // Shall we attempt to auto-determine the language?
@@ -83,7 +100,9 @@ if( isset( $language ) ) {
 				// try to grab one after the other the language file
 				if( file_exists( realpath( "lang/recoded/$HTTP_LANG.php" ) ) &&
 					is_readable( realpath( "lang/recoded/$HTTP_LANG.php" ) ) ) {
+					ob_start();
 					include realpath( "lang/recoded/$HTTP_LANG.php" );
+					ob_end_clean();
 					break;
 				}
 			}
@@ -95,10 +114,12 @@ if( isset( $language ) ) {
 				$language = 'en';
 			if( file_exists( realpath( "lang/recoded/$language.php" ) ) &&
 				is_readable( realpath( "lang/recoded/$language.php" ) ) ) {
+				ob_start();
 				include realpath( "lang/recoded/$language.php" );
+				ob_end_clean();
 			} else { 
 				pla_error( "Could not read language file 'lang/recoded/$language.php'. Either the file 
-						does not exist, or permissions do not allow phpLDAPadmin to read it." );
+						does not exist, or its permissions do not allow phpLDAPadmin to read it." );
 			}
 		}
 	}
@@ -117,17 +138,6 @@ $templates['custom'] =
 // Strip slashes from GET, POST, and COOKIE variables if this
 // PHP install is configured to automatically addslashes()
 if ( get_magic_quotes_gpc() && ( ! isset( $slashes_stripped ) || ! $slashes_stripped ) ) {
-	if( ! function_exists( "array_stripslashes" ) ) {
-		function array_stripslashes(&$array) {
-			if( is_array( $array ) )
-				while ( list( $key ) = each( $array ) ) 
-					if ( is_array( $array[$key] ) && $key != $array ) 
-						array_stripslashes( $array[$key] );
-					else 
-						$array[$key] = stripslashes( $array[$key] );
-		}
-	}
-
 	array_stripslashes($_GET);
 	array_stripslashes($_POST);
 	array_stripslashes($_COOKIE);

@@ -1,7 +1,9 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/recoded/ca.php,v 1.4 2004/03/19 20:13:09 i18phpldapadmin Exp $
+
 
 // Search form
-// phpldapadmin/lang/ca.php $Revision: 1.1 $
+// phpldapadmin/lang/ca.php $Revision: 1.4 $
 //encoding: ISO-8859-1,ca.php instalació de PHP no té
 $lang['simple_search_form_str'] = 'Formulari de recerca sencilla';
 $lang['advanced_search_form_str'] = 'Formulari de recerca avançada';
@@ -54,9 +56,9 @@ $lang['export_to_ldif'] = 'Exportar arxiu LDIF';
 $lang['export_to_ldif_tooltip'] = 'Desar arxiu LDIF d\'aquest objecte';
 $lang['export_subtree_to_ldif_tooltip'] = 'Desar arxiu LDIF d\'aquest objecte i tots els seus objectes fills';
 $lang['export_subtree_to_ldif'] = 'Exportar arxiu LDIF de sub-estructura';
-$lang['export_to_ldif_mac'] = 'Avanç de línia de Macintosh';
-$lang['export_to_ldif_win'] = 'Avanç de línia de Windows';
-$lang['export_to_ldif_unix'] = 'Avanç de línia de Unix';
+$lang['export_mac'] = 'Avanç de línia de Macintosh';
+$lang['export_win'] = 'Avanç de línia de Windows';
+$lang['export_unix'] = 'Avanç de línia de Unix';
 $lang['create_a_child_entry'] = 'Crear objecte com a fill';
 $lang['add_a_jpeg_photo'] = 'Afegir jpegPhoto';
 $lang['rename_entry'] = 'Renombrar objecte';

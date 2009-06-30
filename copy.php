@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/copy.php,v 1.22 2004/04/23 12:21:53 uugdave Exp $
+
 
 /*
  * copy.php
@@ -11,8 +13,6 @@
  */
 
 require realpath( 'common.php' );
-
-session_start();
 
 $source_dn =  $_POST['old_dn'];
 $dest_dn = $_POST['new_dn'];
@@ -34,14 +34,15 @@ include 'header.php';
 /* Error checking */
 if( 0 == strlen( trim( $dest_dn ) ) )
 	pla_error( $lang['copy_dest_dn_blank'] );
-if( dn_exists( $dest_server_id, $dest_dn ) )
-	pla_error( sprintf( $lang['copy_dest_already_exists'], $dest_dn ) );
-if( ! dn_exists( $dest_server_id, get_container( $dest_dn ) ) )
-	pla_error( sprintf( $lang['copy_dest_container_does_not_exist'], get_container($dest_dn) ) );
 if( pla_compare_dns( $source_dn,$dest_dn ) == 0 && $source_server_id == $dest_server_id )
 	pla_error( $lang['copy_source_dest_dn_same'] );
+if( dn_exists( $dest_server_id, $dest_dn ) )
+	pla_error( sprintf( $lang['copy_dest_already_exists'], pretty_print_dn( $dest_dn ) ) );
+if( ! dn_exists( $dest_server_id, get_container( $dest_dn ) ) )
+	pla_error( sprintf( $lang['copy_dest_container_does_not_exist'], pretty_print_dn( get_container($dest_dn) ) ) );
 
 if( $do_recursive ) {
+	$filter = isset( $_POST['filter'] ) ? $_POST['filter'] : '(objectClass=*)';
 	// build a tree similar to that of the tree browser to give to r_copy_dn
 	$snapshot_tree = array();
 	echo "<body>\n";
@@ -51,7 +52,7 @@ if( $do_recursive ) {
 	echo "<small>\n";
 	echo $lang['copy_building_snapshot'];
 	flush();
-	build_tree( $source_server_id, $source_dn, $snapshot_tree );
+	build_tree( $source_server_id, $source_dn, $snapshot_tree, $filter );
 	echo " <span style=\"color:green\">" . $lang['success'] . "</span><br />\n";
 	flush();
 
@@ -69,8 +70,11 @@ if( $copy_result )
 	$edit_url="edit.php?server_id=$dest_server_id&dn=" . rawurlencode( $dest_dn );
 	$new_rdn = get_rdn( $dest_dn );
 	$container = get_container( $dest_dn );
-	if( session_is_registered( 'tree' ) )
+
+	if( array_key_exists( 'tree', $_SESSION ) )
 	{
+        // do we not have a tree and tree icons yet? Build a new ones.
+        initialize_session_tree();
 		$tree = $_SESSION['tree'];
 		$tree_icons = $_SESSION['tree_icons'];
 		if( isset( $tree[$dest_server_id][$container] ) )
@@ -167,14 +171,13 @@ function copy_dn( $source_server_id, $source_dn, $dest_server_id, $dest_dn )
 	}
 }
 
-function build_tree( $source_server_id, $root_dn, &$tree )
+function build_tree( $source_server_id, $root_dn, &$tree, $filter='(objectClass=*)' )
 {
-	$children = get_container_contents( $source_server_id, $root_dn );
+	$children = get_container_contents( $source_server_id, $root_dn, 0, $filter );
 	if( is_array( $children ) && count( $children ) > 0 )
 	{
 		$tree[ $root_dn ] = $children;
 		foreach( $children as $child_dn )
-			build_tree( $source_server_id, $child_dn, $tree );
+			build_tree( $source_server_id, $child_dn, $tree, $filter );
 	}
-
 }

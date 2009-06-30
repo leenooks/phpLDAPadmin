@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_oclass.php,v 1.7 2004/03/19 20:13:08 i18phpldapadmin Exp $
+
 /*
  * add_oclass.php
  * Adds an objectClass to the specified dn.
@@ -22,6 +24,8 @@ $new_oclass = $_POST['new_oclass'];
 $server_id = $_POST['server_id'];
 $new_attrs = $_POST['new_attrs'];
 
+if( is_attr_read_only( 'objectClass' ) )
+	pla_error( "ObjectClasses are flagged as read only in the phpLDAPadmin configuration." );
 if( is_server_read_only( $server_id ) )
 	pla_error( $lang['no_updates_in_read_only_mode'] );
 

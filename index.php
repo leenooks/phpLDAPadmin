@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/index.php,v 1.22 2004/03/19 20:13:08 i18phpldapadmin Exp $
+
 
 /*******************************************
 <pre>
@@ -26,10 +28,7 @@ if( ! file_exists(realpath( 'config.php' )) ) {
 <br />
 <br />
 <center>
-You need to configure phpLDAPadmin. Edit the file 'config.php' to do so.<br />
-<br />
-An example config file is provided in 'config.php.example'
-
+<?php echo $lang['need_to_configure']; ?>
 </center>
 </body>
 </html>
@@ -78,12 +77,12 @@ function check_config()
 	if( ! extension_loaded( 'ldap' ) )
 	{
 		pla_error( "Your install of PHP appears to be missing LDAP support. Please install " .
-				"LDAP support before using phpLDAPadmin." );
+				"LDAP support before using phpLDAPadmin. (Don't forget to restart your web server afterwards)" );
 		return false;
 	}
 
 	/* Make sure they have all the functions we will need */
-	$required_functions = array( 'utf8_encode', 'utf8_decode', 'htmlspecialchars' );
+	$required_functions = array( 'htmlspecialchars' );
 	foreach( $required_functions as $function ) {
 		if( ! function_exists( $function ) ) {
 			pla_error( "Your install of PHP appears to be missing the function '<b>$function()</b>' " .
@@ -95,7 +94,7 @@ function check_config()
 	/* Make sure the config file is readable */
 	//if( ! is_readable( 'config.php' ) )
 	if( ! is_readable( realpath( 'config.php' ) ) ) {
-		echo "The config file 'config.php' is not readable. Please check its permissions.";
+		pla_error( "The config file 'config.php' is not readable. Please check its permissions.", false );
 		return false;
 	}
 
@@ -153,20 +152,22 @@ function check_config()
 
 	/* check the existence of the servers array */
 	require 'config.php';
-	if( ! is_array( $servers ) || count( $servers ) == 0 ) {
-		echo "Your config.php is missing the servers array or the array is empty. ";
-		echo " Please see the sample file config.php.example ";
+	if( ! isset( $servers ) || ! is_array( $servers ) || count( $servers ) == 0 ) {
+		pla_error( "Your config.php is missing the \$servers array or the \$servers array is empty.
+				Please see the sample file config.php.example ", false );
 		return false;
 	}
 
 	/* Make sure there is at least one server in the array */
 	$count = 0;
 	foreach( $servers as $i => $server )
-		if( $server['host'] )
+		if( isset( $server['host'] ) && $server['host'] )
 			$count++;
 	if( $count == 0 ) {
-		echo "None of the " . count($servers) . " servers in your \$servers array is ";
-		echo "active in config.php. phpLDAPadmin cannot proceed util you correct this.";
+		pla_error( "None of the " . count($servers) . " servers in your \$servers configuration is
+		active in config.php. At least one of your servers must set the 'host' directive.
+		Example: <br><pre>\$servers['host'] = \"ldap.example.com\";<br></pre>
+		phpLDAPadmin cannot proceed util you correct this.", false );
 		return false;
 	}
 
@@ -176,15 +177,14 @@ function check_config()
 
 			// Make sure they specified an auth_type
 			if( ! isset( $server['auth_type'] ) ) {
-				echo "Your configuratoin has an error. You omitted the 'auth_type' directive on server number $id";
-				echo "'auth_type' must be set, and it must be one of 'config' or 'form'.";
+				pla_error( "Your configuratoin has an error. You omitted the 'auth_type' directive on server number $id
+				'auth_type' must be set, and it must be one of 'config', 'cookie', or 'session'.", false );
 				return false;
 			}
 
 			// Make sure they specified a correct auth_type
-			if( $server['auth_type'] != 'config' && $server['auth_type'] != 'form' ) {
-				echo "You specified an invalid 'auth_type' (" . htmlspecialchars( $server['auth_type'] ) . ") ";
-				echo "for server number $id in your configuration.";
+			if( $server['auth_type'] != 'config' && $server['auth_type'] != 'cookie' &&  $server['auth_type'] != 'session') {
+                pla_error( sprintf( $lang['error_auth_type_config'], htmlspecialchars( $server['auth_type'] ) ) );
 				return false;
 			}
 		}

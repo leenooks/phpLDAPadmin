@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/create_form.php,v 1.13 2004/03/19 20:13:08 i18phpldapadmin Exp $
+
 
 /*
  * create_form.php
@@ -46,16 +48,15 @@ include 'header.php'; ?>
 	<input type="hidden" name="container" value="<?php echo htmlspecialchars( $container ); ?>" />
 	<table class="create">
 	<tr>
-		<td class="heading">Server:</td>
+		<td class="heading"><?php echo $lang['server']; ?>:</td>
 		<td><?php echo $server_menu_html; ?></td>
 	</tr>
 	<tr>
-		<td class="heading">Template:</td>
+		<td class="heading"><?php echo $lang['template']; ?>:</td>
 		<td>
 			<table class="templates">
-
-			<?php foreach( $templates as $name => $template ) {
-
+            <?php
+			foreach( $templates as $name => $template ) {
 				// Check and see if this template should be shown in the list
 				$isValid = false;
 				if (isset($template['regexp'])) {
@@ -72,20 +73,17 @@ include 'header.php'; ?>
 					<td><input type="radio"
 						   name="template"
 						   value="<?php echo htmlspecialchars($name);?>"
-						   id="<?php echo htmlspecialchars($name); ?>" 
-						   <?php if( 0 == strcasecmp( 'Custom', $name ) ) { ?>
-							checked
-						   <?php } ?>
+						   id="<?php echo htmlspecialchars($name); ?>"
+                        <?php if( 0 == strcasecmp( 'Custom', $name ) ) { ?>
+						   checked
+                        <?php } ?>
 						   /></td>
-					<td><label for="<?php echo htmlspecialchars($name);?>">
-						<img src="<?php echo $template['icon']; ?>" /></label></td>
-					<td><label for="<?php echo htmlspecialchars($name);?>">
-						<?php echo htmlspecialchars( $template['desc'] ); ?></label></td>
+					<td class="icon"><label for="<?php echo htmlspecialchars($name);?>"><img src="<?php echo $template['icon']; ?>" /></label></td>
+					<td><label for="<?php echo htmlspecialchars($name);?>"><?php echo htmlspecialchars( $template['desc'] ); ?></label></td>
 				</tr>
-				<?php 
-			
+              <?php 
 				} // end if
-			
+
 			} // end foreach ?>
 
 			</table>
@@ -93,7 +91,7 @@ include 'header.php'; ?>
 	</tr>
 
 	<tr>
-		<td colspan="2"><center><input type="submit" name="submit" value="<?php echo $lang['createf_proceed']?> &gt;&gt;" /></center></td>
+		<td colspan="2"><center><input type="submit" name="submit" value="<?php echo $lang['proceed_gt']?>" /></center></td>
 	</tr>
 
 	</table>

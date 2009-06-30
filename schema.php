@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/schema.php,v 1.43 2004/04/10 15:30:59 uugdave Exp $
+
 
 /* 
  * schema.php
@@ -17,28 +19,25 @@ $view = isset( $_GET['view'] ) ? $_GET['view'] : 'objectClasses';
 $viewvalue = isset( $_GET['viewvalue'] ) ? $_GET['viewvalue'] : null; 
 
 check_server_id( $server_id ) or 
-	pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
+	pla_error( $lang['bad_server_id'].": " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or 
-	pla_error( "Not enough information to login to server. Please check your configuration." );
+	pla_error( $lang['not_enough_login_info']);
 pla_ldap_connect( $server_id ) or 
-	pla_error( "Coult not connect to LDAP server." );
+	pla_error( $lang['could_not_connect']);
 
 include 'header.php';
 
-$viewsep="#";// OK separation for links is # // the view separator
-if ($viewvalue!=null) $viewsep="&viewvalue="; // ok we want a view to point "ashort"
-
-$schema_error_str = "Could not retrieve schema from <b>" . htmlspecialchars($servers[$server_id]['name']) . "</b>.<br />
-		<br />
-		</center>
-		This could happen for several reasons, the most probable of which are:
-		<ul>
-			<li>The server does not fully support the LDAP protocol.</li>
-			<li>Your version of PHP does not correctly perform the query.</li>
-			<li>Or lastly, phpLDAPadmin doesn't know how to fetch the schema for your server.</li>
-		</ul>
-		Please <a href=\"https://sourceforge.net/tracker/?func=add&group_id=61828&atid=498546\" target=\"new\">
-		report this as a bug</a>";
+$schema_error_str = $lang['could_not_retrieve_schema_from']." <b>" 
+                    . htmlspecialchars($servers[$server_id]['name']) 
+                    . "</b>.<br /><br /></center>"
+                    .$lang['reasons_for_error']
+                    ."<ul><li>"
+                    .$lang['schema_retrieve_error_1']
+                    . "</li><li>"
+                    .$lang['schema_retrieve_error_2']
+                    ."</li><li>"
+                    .$lang['schema_retrieve_error_3']
+                    ."</li></ul><a href=\"".$lang['url_bug_report']."\" target=\"new\">".$lang['please_report_this_as_a_bug']."</a>";
 
 ?>
 
@@ -50,20 +49,20 @@ $schema_error_str = "Could not retrieve schema from <b>" . htmlspecialchars($ser
 <br />
 <center>
 	<?php echo ( $view=='objectClasses' ?
-		'objectClasses' :
-		'<a href="?server_id=' . $server_id . '&amp;view=objectClasses">objectClasses</a>' ); ?>
+		$lang['objectclasses'] :
+		'<a href="?server_id=' . $server_id . '&amp;view=objectClasses">'.$lang['objectclasses'].'</a>' ); ?>
 		|
 	<?php echo ( $view=='attributes' ?
-		'Attribute Types' :
-		'<a href="?server_id=' . $server_id . '&amp;view=attributes">Attributes</a>' ); ?>
+		$lang['attributes']:
+		'<a href="?server_id=' . $server_id . '&amp;view=attributes">'.	$lang['attributes'].'</a>' ); ?>
 		|
 	<?php echo ( $view=='syntaxes' ?
-		'Syntaxes' :
-		'<a href="?server_id=' . $server_id . '&amp;view=syntaxes">Syntaxes</a>' ); ?>
+		$lang['syntaxes'] :
+		'<a href="?server_id=' . $server_id . '&amp;view=syntaxes">'.$lang['syntaxes'].'</a>' ); ?>
 		|
 	<?php echo ( $view=='matching_rules' ?
-		'Matching Rules' :
-		'<a href="?server_id=' . $server_id . '&amp;view=matching_rules">Matching Rules</a>' ); ?>
+		$lang['matchingrules'] :
+		'<a href="?server_id=' . $server_id . '&amp;view=matching_rules">'.$lang['matchingrules'].'</a>' ); ?>
 </center>
 <br />
 
@@ -123,14 +122,20 @@ if( $view == 'syntaxes' ) {
 	?>
 	<small><?php echo $lang['jump_to_attr']; ?>:</small>
 	<form><input type="hidden" name="view" value="<?php echo $view; ?>">
-        <input type="hidden" name="server_id" value="<?php echo $server_id; ?>">						<select name="viewvalue"
-	onChange="submit()">
+        <input type="hidden" name="server_id" value="<?php echo $server_id; ?>">
+        <select name="viewvalue" onChange="submit()">
 	<option value=""> - all -</option>
 
-	<?php foreach( $schema_attrs as $attr ) { ?>
-		<option value="<?php echo $attr->getName() ; ?>"><?php echo $attr->getName(); ?></option>
-	<?php } ?>
-	</select><input type="submit" value="go"></form>
+	<?php foreach( $schema_attrs as $attr ) { 		
+                    echo '<option value="'
+                         .$attr->getName()
+                         .'" '
+                         .( 0 == strcasecmp( $attr->getName(), $viewvalue ) ? ' selected ' : '' )
+                         .'>'
+                         . $attr->getName()
+		         .'</option>';
+	 } ?>
+	</select><input type="submit" value="<?php echo $lang['go']; ?>"></form>
 
 	<br />
 	<table class="schema_attr" width="100%">
@@ -142,46 +147,45 @@ if( $view == 'syntaxes' ) {
 		$counter = 0;
 
 		echo "<tr class=\"" . (++$counter%2==0?'even':'odd') . "\">\n";
-		echo "<td>Description</td>\n";
-		echo "<td>" . ( $attr->getDescription() == null ? '(no description)' : $attr->getDescription() ). "</td>\n";
+		echo "<td>".$lang['desc']."</td>\n";
+		echo "<td>" . ( $attr->getDescription() == null ? '('.$lang['no_description'].')' : $attr->getDescription() ). "</td>\n";
 		echo "</tr>\n\n";
-
 		echo "<tr class=\"" . (++$counter%2==0?'even':'odd') . "\">\n";
-		echo "<td><acronym title=\"Object Identier\">OID</acronym></td>\n";
+		echo "<td><acronym title=\"Object Identier\">".$lang['oid']."</acronym></td>\n";
 		echo "<td>" .  $attr->getOID() . "</td>\n";
 		echo "</tr>\n\n";
 
 		echo "<tr class=\"" . (++$counter%2==0?'even':'odd') . "\">\n";
-		echo "<td>Obsolete?</td>\n";
-		echo "<td>" . ( $attr->getIsObsolete() ? '<b>Yes</b>' : 'No' ) . "</td>\n";
+		echo '<td>'.$lang['obsolete']."?</td>\n";
+		echo "<td>" . ( $attr->getIsObsolete() ? '<b>' . $lang['yes'] . '</b>' : $lang['no'] ) . "</td>\n";
 		echo "</tr>\n\n";
 
 		echo "<tr class=\"" . (++$counter%2==0?'even':'odd') . "\">\n";
 		echo "<td>".$lang['inherits']."</td>\n";
 		echo "<td>";
 		if( $attr->getSupAttribute()==null )
-			echo '(none)';
+			echo '('.$lang['none'].')';
 		else
-			echo "<a href=\"?server_id=".$server_id."&view=$view" .$viewsep. strtolower( $attr->getSupAttribute() ) . "\">" . $attr->getSupAttribute()  . "</a></td>\n";
+			echo "<a href=\"?server_id=".$server_id."&view=$view&amp;viewvalue=" . strtolower( $attr->getSupAttribute() ) . "\">" . $attr->getSupAttribute()  . "</a></td>\n";
 		echo "</tr>\n\n";
 
 		echo "<tr class=\"" . (++$counter%2==0?'even':'odd') . "\">\n";
-		echo "<td>Equality</td>\n";
-		echo "<td>" .  ( $attr->getEquality() == null ? '(not specified)' : $attr->getEquality() ) . "</td>\n";
+		echo "<td>".$lang['equality']."</td>\n";
+		echo "<td>" .  ( $attr->getEquality() == null ? '('.$lang['not_specified'].')' : "<a href=\"?server_id=".$server_id."&view=matching_rules&viewvalue=".$attr->getEquality()."\">".$attr->getEquality() ) . "</a></td>\n";
 		echo "</tr>\n\n";
 
 		echo "<tr class=\"" . (++$counter%2==0?'even':'odd') . "\">\n";
-		echo "<td>Ordering</td>\n";
-		echo "<td>" .  ( $attr->getOrdering()==null? '(not specified)' : $attr->getOrdering() ) . "</td>\n";
+		echo "<td>".$lang['ordering']."</td>\n";
+		echo "<td>" .  ( $attr->getOrdering()==null? '('.$lang['not_specified'].')' : $attr->getOrdering() ) . "</td>\n";
 		echo "</tr>\n\n";
 
 		echo "<tr class=\"" . (++$counter%2==0?'even':'odd') . "\">\n";
-		echo "<td>Substring Rule</td>\n";
-		echo "<td>" .  ( $attr->getSubstr()==null? '(not specified)' : $attr->getSubstr() ) . "</td>\n";
+		echo "<td>".$lang['substring_rule']."</td>\n";
+		echo "<td>" .  ( $attr->getSubstr()==null? '('.$lang['not_specified'].')' : $attr->getSubstr() ) . "</td>\n";
 		echo "</tr>\n\n";
 
 		echo "<tr class=\"" . (++$counter%2==0?'even':'odd') . "\">\n";
-		echo "<td>Syntax</td>\n";
+		echo "<td>".$lang['syntax']."</td>\n";
 		echo "<td>";
 		if( null != $attr->getType() ) {
 			echo "<a href=\"?server_id=$server_id&amp;view=syntaxes&amp;highlight_oid=";
@@ -194,51 +198,56 @@ if( $view == 'syntaxes' ) {
 		echo "</tr>\n\n";
 
 		echo "<tr class=\"" . (++$counter%2==0?'even':'odd') . "\">\n";
-		echo "<td>Single Valued</td>\n";
-		echo "<td>" .  ( $attr->getIsSingleValue() ? 'Yes' : 'No' ) . "</td>\n";
+		echo "<td>".$lang['single_valued']."</td>\n";
+		echo "<td>" .  ( $attr->getIsSingleValue() ? $lang['yes'] : $lang['no'] ) . "</td>\n";
 		echo "</tr>\n\n";
 
 		echo "<tr class=\"" . (++$counter%2==0?'even':'odd') . "\">\n";
-		echo "<td>Collective?</td>\n";
-		echo "<td>" .  ( $attr->getIsCollective() ? 'Yes' : 'No' ) . "</td>\n";
+		echo "<td>".$lang['collective']."?</td>\n";
+		echo "<td>" .  ( $attr->getIsCollective() ? $lang['yes'] : $lang['no'] ) . "</td>\n";
 		echo "</tr>\n\n";
 
 		echo "<tr class=\"" . (++$counter%2==0?'even':'odd') . "\">\n";
-		echo "<td>User Modification</td>\n";
-		echo "<td>" . ( $attr->getIsNoUserModification() ? 'No' : 'Yes' ) . "</td>\n";
+		echo "<td>".$lang['user_modification']."</td>\n";
+		echo "<td>" . ( $attr->getIsNoUserModification() ? $lang['no'] : $lang['yes'] ) . "</td>\n";
 		echo "</tr>\n\n";
 
 		echo "<tr class=\"" . (++$counter%2==0?'even':'odd') . "\">\n";
-		echo "<td>Usage</td>\n";
-		echo "<td>" .  ( $attr->getUsage() ? $attr->getUsage() : '(not specified)' ) . "</td>\n";
+		echo "<td>".$lang['usage']."</td>\n";
+		echo "<td>" .  ( $attr->getUsage() ? $attr->getUsage() : '('.$lang['not_specified'].')' ) . "</td>\n";
 		echo "</tr>\n\n";
 
 		echo "<tr class=\"" . (++$counter%2==0?'even':'odd') . "\">\n";
-		echo "<td>Maximum Length</td>\n";
-		echo "<td>" .  ( $attr->getMaxLength() === null ? 
-					'(not applicable)' : 
-					number_format( $attr->getMaxLength() ) . ' characters' ) . "</td>\n";
+		echo "<td>".$lang['maximum_length']."</td>\n";
+		echo "<td>";
+		if ( $attr->getMaxLength() === null ) { echo '('.$lang['not_applicable'].')';}
+		else {
+		  echo number_format( $attr->getMaxLength() ) ." ";
+		  if (  $attr->getMaxLength()>1) {echo $lang['characters'];}
+		  else { echo $lang['character']  ;}
+	                        } 
+		echo "</td>\n";
 		echo "</tr>\n\n";
 
 		echo "<tr class=\"" . (++$counter%2==0?'even':'odd') . "\">\n";
-		echo "<td>Aliases</td>\n";
+		echo "<td>".$lang['aliases']."</td>\n";
 		echo "<td>"; 
 		if( count( $attr->getAliases() ) == 0 )
-			echo "(none)";
+			echo '('.$lang['none'].')';
 		else
 			foreach( $attr->getAliases() as $alias_attr_name )
-				echo "<a href=\"?server_id=$server_id&view=attributes".$viewsep .$alias_attr_name. "\">$alias_attr_name</a> ";
+				echo "<a href=\"?server_id=$server_id&view=attributes&amp;viewvalue=" . $alias_attr_name. "\">$alias_attr_name</a> ";
 		echo "</td>";
 		echo "</tr>\n\n";
 
 		echo "<tr class=\"" . (++$counter%2==0?'even':'odd') . "\">\n";
-		echo "<td>Used by objectClasses</td>\n";
+		echo "<td>".$lang['used_by_objectclasses']."</td>\n";
 		echo "<td>";
 		if( count( $attr->getUsedInObjectClasses() ) == 0 )
-			echo "(none)";
+			echo '('.$lang['none'].')';
 		else
 			foreach( $attr->getUsedInObjectClasses() as $used_in_oclass)
-				echo "<a href=\"?server_id=$server_id&amp;view=objectClasses".$viewsep .
+				echo "<a href=\"?server_id=$server_id&amp;view=objectClasses&amp;viewvalue=" .
 					$used_in_oclass. "\">$used_in_oclass</a> ";
 		echo "</td>";
 		echo "</tr>\n\n";
@@ -250,8 +259,22 @@ if( $view == 'syntaxes' ) {
 
 } elseif( $view == 'matching_rules' ) {
 	//echo "<center>" . $lang['the_following_matching'] . "</center><br />\n\n";
+        $schema_matching_rules = get_schema_matching_rules( $server_id ); 
+	echo $lang['jump_to_matching_rule']."<br />";
+	echo '<form get="?">';
+        echo '<input type="hidden" name="server_id" value="'.$server_id.'" />';
+        echo '<input type="hidden" name="view" value="matching_rules" />';
+        echo '<select name="viewvalue" onChange="submit()">';
+        echo '<option value=""> - all -</option>';
+		foreach( $schema_matching_rules as $rule ) {
+		  echo '<option value="'.$rule->getName().'"'.($rule->getName()==$viewvalue? ' selected ': '').'>'.$rule->getName().'</option>\n';
+		}
+        
+        echo '</select>';
+       	echo '<input type="submit" value="'.$lang['go'].'" />';
+	echo '</form>';
 	echo "\n\n<table class=\"schema_attr\" width=\"100%\">\n";
-	echo "<tr><th>" . $lang['matching_rule_oid'] . "</th><th>" . $lang['name'] . "</th><th>Used by Attributes</th></tr>\n";
+	echo "<tr><th>" . $lang['matching_rule_oid'] . "</th><th>" . $lang['name'] . "</th><th>".$lang['used_by_attributes']."</th></tr>\n";
 	flush();
 	$counter=1;
 	$schema_matching_rules = get_schema_matching_rules( $server_id ); 
@@ -260,24 +283,29 @@ if( $view == 'syntaxes' ) {
 		$counter++;
 		$oid = htmlspecialchars( $rule->getOID() );
 		$desc = htmlspecialchars( $rule->getName() );
-			
+		if ( $viewvalue==null || $viewvalue==($rule->getName() ))
+		  {	
 		if( null != $rule->getDescription() )
 			$desc .= ' (' . $rule->getDescription() . ')';
 		if( true === $rule->getIsObsolete() )
 			$desc .= ' <span style="color:red">' . $lang['obsolete'] . '</span>';
 		echo "<tr class=\"" . ($counter%2==0?'even':'odd'). "\">";
-		echo "<td>$oid</small></td>";
-		echo "<td>$desc</small></td>";
+		echo "<td>$oid</td>";
+		echo "<td>$desc</td>";
 		echo "<td>";
 		if( count( $rule->getUsedByAttrs() ) == 0 ) {
-			echo "<center><small>(" . $lang['none'] . ")</small></center><br /><br />\n";
+			echo "<center>(" . $lang['none'] . ")</center><br /><br />\n";
 		} else {
-			echo "<center><select style=\"width:150px; color:black; background-color: #eee\" size=\"3\">\n";
+			echo "<table><tr><td style=\"text-align: right\"><form>";
+                        echo "<input type=\"hidden\" name=\"server_id\" value=\"".$server_id."\">";
+			echo "<input type=\"hidden\" name=\"view\" value=\"attributes\">";
+			echo "<select style=\"width: 150px; color:black; background-color: #eee\" size=\"4\" name=\"viewvalue\">\n";
 			foreach( $rule->getUsedByAttrs() as $attr )
 				echo "<option>$attr</option>\n";
-			echo "</select></center>\n";
+			echo "</select><br /><input type=\"submit\" value=\"".$lang['go']."\"></form></td></tr></table>\n";
 		}
 		echo "</td></tr>\n";
+		  }
 	}
 	echo "</table>\n";
 
@@ -293,23 +321,40 @@ if( $view == 'syntaxes' ) {
 	<select name="viewvalue"
 	onChange="submit()">
         <option value=""> - all - </option>
-	<?php foreach( $schema_oclasses as $name => $oclass ) { ?>
-		<option value="<?php echo $oclass->getName();  ?>"><?php echo $oclass->getName(); ?></option>
-	<?php } ?>
-        </select><input type="submit" value="go">
+	<?php foreach( $schema_oclasses as $name => $oclass ) { 
+		echo '<option value="'
+		     .$oclass->getName()
+                     .'"'
+                     . ($oclass->getName()==$viewvalue ? ' selected ':'')
+                     .'>'.$oclass->getName()
+		     .'</option>';
+	 } ?>
+        </select><input type="submit" value="<?php echo $lang['go']; ?>">
         </form>
+
+        <?php flush(); ?>
+
+    <?php foreach( $schema_oclasses as $name => $oclass ) { 
+        foreach( $oclass->getSupClasses() as $parent_name ) { 
+            $parent_name = strtolower( $parent_name );
+            if( isset( $schema_oclasses[ $parent_name ] ) ) {
+                $schema_oclasses[ $parent_name ]->addChildObjectClass( $oclass->getName() );
+            }
+        }
+
+    } ?>
+
 	<br />
 	<?php foreach( $schema_oclasses as $name => $oclass ) {
-	  if ( $viewvalue==null ||  $viewvalue==$oclass->getName()){
- ?>
-		<!--<small>[<a name="<?php echo $name; ?>" href="#" title="Head on up to the top.">top</a>]</small>-->
+	  if ( $viewvalue==null || $viewvalue==$oclass->getName()){ ?>
+        
 		<h4 class="oclass"><a name="<?php echo $name; ?>"><?php echo $oclass->getName(); ?></a></h4>
 		<h4 class="oclass_sub"><?php echo $lang['OID']; ?>: <b><?php echo $oclass->getOID(); ?></b></h4>
 		<?php if( $oclass->getDescription() ) { ?>
 			<h4 class="oclass_sub"><?php echo $lang['desc']; ?>: <b><?php echo $oclass->getDescription(); ?></b></h4>
 		<?php } ?>
-		<h4 class="oclass_sub">Type: <b><?php echo $oclass->getType(); ?></b></h4>
-		<?php if( /*isset( $oclass->getIsObsolete() ) && */$oclass->getIsObsolete() == true ) { ?>
+		<h4 class="oclass_sub"><?php echo $lang['type']; ?>: <b><?php echo $oclass->getType(); ?></b></h4>
+		<?php if( $oclass->getIsObsolete() == true ) { ?>
 			<h4 class="oclass_sub"><?php echo $lang['is_obsolete']; ?></h4>
 		<?php } ?>
 
@@ -319,9 +364,24 @@ if( $view == 'syntaxes' ) {
 		else
 			foreach( $oclass->getSupClasses() as $i => $object_class ) {
 				echo '<a title="' . $lang['jump_to_this_oclass'] . ' " 
-					href="?server_id='.$server_id.'&view='.$view.$viewsep . htmlspecialchars( $object_class ) ;
+					href="?server_id='.$server_id.'&view='.$view.'&amp;viewvalue='.htmlspecialchars( $object_class ) ;
 				echo '">' . htmlspecialchars( $object_class ) . '</a>';
 				if( $i < count( $oclass->getSupClasses() ) - 1 )
+					echo ', ';
+		}
+		?></b></h4>
+
+		<h4 class="oclass_sub"><?php echo $lang['parent_to']; ?>: <b><?php 
+        if( 0 == strcasecmp( $oclass->getName(), 'top' ) )
+            echo "(<a href=\"schema.php?view=objectClasses&amp;server_id=$server_id\">all</a>)";
+		elseif( count( $oclass->getChildObjectClasses() ) == 0 )
+			echo "(" . $lang['none'] . ")";
+		else
+			foreach( $oclass->getChildObjectClasses() as $i => $object_class ) {
+				echo '<a title="' . $lang['jump_to_this_oclass'] . ' " 
+					href="?server_id='.$server_id.'&view='.$view.'&amp;viewvalue='.htmlspecialchars( $object_class ) ;
+				echo '">' . htmlspecialchars( $object_class ) . '</a>';
+				if( $i < count( $oclass->getChildObjectClasses() ) - 1 )
 					echo ', ';
 		}
 		?></b></h4>
@@ -336,13 +396,13 @@ if( $view == 'syntaxes' ) {
 			<?php if( count( $oclass->getMustAttrs($schema_oclasses) ) > 0 ) {
 				echo '<ul class="schema">';
 				foreach( $oclass->getMustAttrs($schema_oclasses) as $attr ) {
-					echo "<li><a href=\"?server_id=$server_id&amp;view=attributes".$viewsep;
+					echo "<li><a href=\"?server_id=$server_id&amp;view=attributes&amp;viewvalue=";
 					echo rawurlencode( $attr->getName()  ). "\">" . htmlspecialchars($attr->getName());
 					echo "</a>";
 					if( $attr->getSource() != $oclass->getName() )
 					{
-						echo "<br /><small>&nbsp;&nbsp;(inherited from ";
-						echo "<a href=\"?server_id=$server_id&amp;view=objectClasses".$viewsep .  $attr->getSource()  . "\">" . $attr->getSource() . "</a>";
+						echo "<br /><small>&nbsp;&nbsp;(".$lang['inherited_from']." ";
+						echo "<a href=\"?server_id=$server_id&amp;view=objectClasses&amp;viewvalue=" . $attr->getSource()  . "\">" . $attr->getSource() . "</a>";
 						echo ")</small>";
 					}
 					echo "</li>\n";
@@ -357,13 +417,13 @@ if( $view == 'syntaxes' ) {
 		if( count( $oclass->getMayAttrs($schema_oclasses) ) > 0 ) {
 			echo '<ul class="schema">';
 			foreach( $oclass->getMayAttrs($schema_oclasses) as $attr ) {
-				echo "<li><a href=\"?server_id=$server_id&amp;view=attributes".$viewsep;
+				echo "<li><a href=\"?server_id=$server_id&amp;view=attributes&amp;viewvalue=";
 				echo rawurlencode( $attr->getName() ) . "\">" . htmlspecialchars($attr->getName() );
 				echo "</a>\n";
 				if( $attr->getSource() != $oclass->getName() )
 				{
-					echo "<br /><small>&nbsp;&nbsp; (inherited from ";
-					echo "<a href=\"?server_id=$server_id&amp;view=objectClasses".$viewsep .  $attr->getSource()  . "\">" . $attr->getSource() . "</a>";
+					echo "<br /><small>&nbsp;&nbsp; (".$lang['inherited_from']." ";
+					echo "<a href=\"?server_id=$server_id&amp;view=objectClasses&amp;viewvalue=" . $attr->getSource()  . "\">" . $attr->getSource() . "</a>";
 					echo ")</small>";
 				}
 				echo "</li>";

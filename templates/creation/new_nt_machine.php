@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_nt_machine.php,v 1.10 2004/03/19 20:13:09 i18phpldapadmin Exp $
+
 
 require 'common.php';
 
