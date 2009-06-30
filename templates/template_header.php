@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/template_header.php,v 1.6.4.5 2005/12/09 14:32:37 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/template_header.php,v 1.6.4.6 2006/04/29 05:46:34 wurley Exp $
 
 /**
  * Header page for engine.
@@ -27,8 +27,8 @@ $addattr_href = sprintf('add_attr_form.php?%s',$url_base);
 echo '<body>';
 
 if ($dn) {
-	$actionlayout = '<td class="icon"><img src="images/%s" /></td><td><a href="%s" title="%s">%s</a></td>';
-	$hintlayout = '<td class="icon"><img src="images/light.png" /></td><td colspan="3"><span class="hint">%s</span></td>';
+	$actionlayout = '<td class="icon"><img src="images/%s" alt="%s" /></td><td><a href="%s" title="%s">%s</a></td>';
+	$hintlayout = '<td class="icon"><img src="images/light.png" alt="Hint" /></td><td colspan="3"><span class="hint">%s</span></td>';
 
 	printf('<h3 class="title">%s</h3>',htmlspecialchars($rdn));
 	printf('<h3 class="subtitle">%s: <b>%s</b> &nbsp;&nbsp;&nbsp; %s: <b>%s</b></h3>',
@@ -37,24 +37,24 @@ if ($dn) {
 	echo "\n";
 
 	echo '<table class="edit_dn_menu"><tr>';
-	printf($actionlayout,'refresh.png',$refresh_href,_('Refresh this entry'),_('Refresh'));
-	printf($actionlayout,'save.png',$export_href_base,_('Save a dump of this object'),_('Export'));
+	printf($actionlayout,'refresh.png','Refresh',$refresh_href,_('Refresh this entry'),_('Refresh'));
+	printf($actionlayout,'save.png','Save',$export_href_base,_('Save a dump of this object'),_('Export'));
 	echo '</tr><tr>';
 
-	printf($actionlayout,'cut.png',$copy_href,_('Copy this object to another location, a new DN, or another server'),_('Copy or move this entry'));
+	printf($actionlayout,'cut.png','Cut',$copy_href,_('Copy this object to another location, a new DN, or another server'),_('Copy or move this entry'));
 
 	if ($show_internal_attrs)
-		printf($actionlayout,'tools-no.png',$refresh_href,'',_('Hide internal attributes'));
+		printf($actionlayout,'tools-no.png','Hide',$refresh_href,'',_('Hide internal attributes'));
 
 	else
-		printf($actionlayout,'tools.png',$intattr_href,'',_('Show internal attributes'));
+		printf($actionlayout,'tools.png','Show',$intattr_href,'',_('Show internal attributes'));
 
 	echo '</tr>';
 
 	if (! $ldapserver->isReadOnly()) {
 		echo '<tr>';
-		printf($actionlayout,'trash.png',$delete_href,_('You will be prompted to confirm this decision'),_('Delete this entry'));
-		printf($actionlayout,'rename.png',$rename_href,'',_('Rename'));
+		printf($actionlayout,'trash.png','Trash',$delete_href,_('You will be prompted to confirm this decision'),_('Delete this entry'));
+		printf($actionlayout,'rename.png','Rename',$rename_href,'',_('Rename'));
 		echo '</tr>';
 
 		if ($config->GetValue('appearance','show_hints')) {
@@ -64,12 +64,12 @@ if ($dn) {
 		}
 
 		echo '<tr>';
-		printf($actionlayout,'compare.png',$compare_href,'',_('Compare with another entry'));
+		printf($actionlayout,'compare.png','Compare',$compare_href,'',_('Compare with another entry'));
 		echo '</tr>';
 
 		echo '<tr>';
-		printf($actionlayout,'star.png',$create_href,'',_('Create a child entry'));
-		printf($actionlayout,'add.png',$addattr_href,'',_('Add new attribute'));
+		printf($actionlayout,'star.png','Create',$create_href,'',_('Create a child entry'));
+		printf($actionlayout,'add.png','Add',$addattr_href,'',_('Add new attribute'));
 		echo '</tr>';
 	}
 
@@ -84,8 +84,8 @@ if ($dn) {
 			$ldapserver->server_id,rawurlencode('objectClass=*'),$encoded_dn);
 
 		echo '<tr>';
-		printf($actionlayout,'children.png',$child_href,'',($children_count == 1) ? _('View 1 child') : sprintf(_('View %s children'),$children_count));
-		printf($actionlayout,'save.png',$export_href_sub,_('Save a dump of this object and all of its children'),_('Export subtree'));
+		printf($actionlayout,'children.png','Children',$child_href,'',($children_count == 1) ? _('View 1 child') : sprintf(_('View %s children'),$children_count));
+		printf($actionlayout,'save.png','Save',$export_href_sub,_('Save a dump of this object and all of its children'),_('Export subtree'));
 		echo '</tr>';
 	}
 
@@ -116,7 +116,7 @@ if ($dn) {
 	if (! $ldapserver->isReadOnly()) {
 		echo '<form action="update_confirm.php" method="post" name="edit_form">';
 		printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
-		printf('<input type="hidden" name="dn" value="%s" />',$dn);
+		printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($dn));
 	}
 
 	echo '<br />'."\n\n";

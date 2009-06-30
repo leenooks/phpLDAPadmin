@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.34.2.28 2006/02/25 14:08:54 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.34.2.29 2006/05/07 05:25:56 wurley Exp $ */
 
 /**
  * Classes and functions for LDAP server configuration and capability
@@ -2250,7 +2250,7 @@ class LDAPserver {
 	 */
 	function getLoggedInPass() {
 		if (DEBUG_ENABLED)
-			debug_log('%s:getLoggedInPass(): Entered with ()',17,get_class($this));
+			debug_log('%s::getLoggedInPass(): Entered with ()',17,get_class($this));
 
 		if (! $this->auth_type)
 			return false;
@@ -2303,6 +2303,9 @@ class LDAPserver {
 		# Set default return
 		$return = false;
 
+		if (DEBUG_ENABLED)
+			debug_log('%s::getLoggedInDN(): auth_type is [%s]',66,get_class($this),$this->auth_type);
+
 		if ($this->auth_type) {
 			switch ($this->auth_type) {
 				case 'cookie':
@@ -2335,7 +2338,7 @@ class LDAPserver {
 		}
 
 		if (DEBUG_ENABLED)
-			debug_log('%s:getLoggedInDN(): Entered with (), Returning (%s)',17,get_class($this),$return);
+			debug_log('%s::getLoggedInDN(): Entered with (), Returning (%s)',17,get_class($this),$return);
 
 		return $return;
 	}

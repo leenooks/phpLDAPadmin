@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/header.php,v 1.21.2.3 2005/12/11 04:00:23 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/header.php,v 1.21.2.4 2006/04/29 03:14:45 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -7,7 +7,6 @@
 
 /* We want to get $language into scope in case we were included
    from within a function */
-global $config;
 $language = isset($config) ? $language = $config->GetValue('appearance','language') : 'auto';
 
 # text/xml won't work with MSIE, but is very useful for debugging xhtml code.
@@ -17,8 +16,8 @@ $language = isset($config) ? $language = $config->GetValue('appearance','languag
 # XML version and encoding for well-behaved browsers
 echo '<?xml version="1.0" encoding="utf-8"?>'."\n";
 
-echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"';
-echo '  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'."\n";
+echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"'."\n";
+echo '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'."\n";
 
 printf('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="%s" lang="%s" dir="ltr">',$language,$language);
 echo "\n\n";

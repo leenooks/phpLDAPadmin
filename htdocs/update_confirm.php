@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.43.2.8 2006/01/12 22:04:51 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.43.2.11 2006/05/13 12:43:47 wurley Exp $
 
 /**
  * Takes the results of clicking "Save" in template_engine.php and determines which
@@ -76,15 +76,20 @@ foreach ($old_values as $attr => $old_val) {
 }
 
 # Check user password with new encoding.
-if (isset($new_values['userpassword']) && is_array($new_values['userpassword']))
+if (isset($new_values['userpassword']) && is_array($new_values['userpassword'])) {
 	foreach ($new_values['userpassword'] as $key => $userpassword) {
 		if ($userpassword) {
-			$new_val[$key] = password_hash($userpassword,$_POST['enc_type'][$key]);
+			if ($old_values['userpassword'][$key] == $new_values['userpassword'][$key] && 
+				get_enc_type($old_values['userpassword'][$key]) == $_POST['enc_type'][$key])
+				continue;
 
-			if ($new_val[$key] != $old_values['userpassword'][$key])
-				$update_array['userpassword'][$key] = $new_val[$key];
+			$new_values['userpassword'][$key] = password_hash($userpassword,$_POST['enc_type'][$key]);
 		}
 	}
+
+	if ($old_values['userpassword'] != $new_values['userpassword'])
+		$update_array['userpassword'] = $new_values['userpassword'];
+}
 
 # strip empty vals from update_array and ensure consecutive indices for each attribute
 foreach ($update_array as $attr => $val) {

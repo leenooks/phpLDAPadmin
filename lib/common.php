@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.76.2.6 2005/12/30 02:32:41 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.76.2.7 2006/04/29 06:31:27 wurley Exp $
 
 /**
  * Contains code to be executed at the top of each phpLDAPadmin page.
@@ -53,9 +53,6 @@ ob_end_clean();
 # We are now ready for error reporting.
 # Turn on all notices and warnings. This helps us write cleaner code (we hope at least)
 if (phpversion() >= '5') {
-	# Work-around to get PLA to work in PHP5
-	ini_set('zend.ze1_compatibility_mode',1);
-
 	# E_DEBUG is PHP5 specific and prevents warnings about using 'var' to declare class members
 	error_reporting(E_DEBUG);
 } else

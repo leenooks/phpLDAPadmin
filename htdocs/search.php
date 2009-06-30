@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/search.php,v 1.72.2.11 2005/12/31 03:13:48 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/search.php,v 1.72.2.12 2006/04/29 05:45:34 wurley Exp $
 
 /**
  * Perform LDAP searches and draw the advanced/simple search forms
@@ -233,8 +233,8 @@ if (isset($_GET['search'])) {
         <nobr>
         <small>
         <?php
-			printf('[ <a href="export_form.php?server_id=%s&amp;scope=%s&amp;dn=%s&amp;filter=%s&amp;attributes=%s"><img src="images/save.png" /> %s</a> ]',
-				$ldapserver->server_id,$scope,urlencode($base_dn),urlencode($filter),
+			printf('[ <a href="export_form.php?server_id=%s&amp;scope=%s&amp;dn=%s&amp;filter=%s&amp;attributes=%s"><img src="images/save.png" alt="Save" /> %s</a> ]',
+				$ldapserver->server_id,htmlspecialchars($scope),urlencode($base_dn),urlencode($filter),
 				urlencode(join(', ',$search_result_attributes)),_('export results'));
 
 			printf('[ <img src="images/rename.png" /> %s:',_('Format'));

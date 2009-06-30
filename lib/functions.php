@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.283.2.33 2006/03/13 23:13:43 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.283.2.36 2006/05/07 05:25:56 wurley Exp $
 
 /**
  * A collection of functions used throughout phpLDAPadmin.
@@ -86,7 +86,7 @@ function pretty_print_dn( $dn ) {
 		debug_log('pretty_print_dn(): Entered with (%s)',1,$dn);
 
 	if (! is_dn_string($dn))
-		pla_error(sprintf(_('DN %s is not an LDAP distinguished name.'),$dn));
+		pla_error(sprintf(_('DN "%s" is not an LDAP distinguished name.'),htmlspecialchars($dn)));
 
 	$dn = pla_explode_dn( $dn );
 	foreach( $dn as $i => $element ) {
@@ -1015,7 +1015,7 @@ function pla_error( $msg, $ldap_err_msg=null, $ldap_err_no=-1, $fatal=true ) {
 
 	?>
 	<center>
-	<table class="error"><tr><td class="img"><img src="images/warning.png" /></td>
+	<table class="error"><tr><td class="img"><img src="images/warning.png" alt="Warning" /></td>
 	<td><center><h2><?php echo _('Error');?></h2></center>
 	<?php echo $msg; ?>
 	<br />
@@ -1121,7 +1121,7 @@ function pla_error_handler( $errno, $errstr, $file, $lineno ) {
 
 	$errstr = preg_replace("/\s+/"," ",$errstr);
 	if( $errno == E_NOTICE ) {
-		echo sprintf(_('<center><table class=\'notice\'><tr><td colspan=\'2\'><center><img src=\'images/warning.png\' height=\'12\' width=\'13\' />
+		echo sprintf(_('<center><table class=\'notice\'><tr><td colspan=\'2\'><center><img src=\'images/warning.png\' height=\'12\' width=\'13\' alt="Warning" />
              <b>You found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>
              <td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>
              </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>
@@ -1265,7 +1265,7 @@ function draw_jpeg_photos($ldapserver,$dn,$attr_name='jpegPhoto',$draw_delete_bu
 			$img_height = $height;
 		}
 
-		printf('<img %s%s%s src="view_jpeg_photo.php?file=%s" /><br />',
+		printf('<img %s%s%s src="view_jpeg_photo.php?file=%s" alt="Photo" /><br />',
 			($fixed_width ? '' : 'width="'.$img_width.'" '),
 			($fixed_height ? '' : 'height="'.$img_height.'"'),
 			($img_html_attrs ? $img_html_attrs : ''),basename($jpeg_filename));
@@ -1640,7 +1640,7 @@ function draw_chooser_link( $form_element, $include_choose_text=true, $rdn="none
 
 	$title = _('Click to popup a dialog to select an entry (DN) graphically');
 
-	printf('<a href="%s" title="%s"><img class="chooser" src="images/find.png" /></a>',$href,$title);
+	printf('<a href="%s" title="%s"><img class="chooser" src="images/find.png" alt="Find" /></a>',$href,$title);
 	if ($include_choose_text)
 		printf('<span class="x-small"><a href="%s" title="%s">%s</a></span>',$href,$title,_('browse'));
 }
@@ -1662,6 +1662,8 @@ function draw_chooser_link( $form_element, $include_choose_text=true, $rdn="none
  * </code>
  */
 function pla_explode_dn($dn,$with_attributes=0) {
+	if (DEBUG_ENABLED)
+		debug_log('pla_explode_dn(): Entered with (%s,%s)',1,$dn,$with_attributes);
 	$dn = addcslashes(dn_escape($dn),'<>');
 
 	# split the dn
@@ -1686,6 +1688,8 @@ function pla_explode_dn($dn,$with_attributes=0) {
  * Parse a DN and escape any special characters
  */
 function dn_escape($dn) {
+	$olddn = $dn;
+
 	# Check if the RDN has a comma and escape it.
 	while (preg_match('/([^\\\\]),(\s*[^=]*\s*),/',$dn))
 		$dn = preg_replace('/([^\\\\]),(\s*[^=]*\s*),/','$1\\\\2C$2,',$dn);
@@ -1693,7 +1697,7 @@ function dn_escape($dn) {
 	$dn = preg_replace('/([^\\\\]),(\s*[^=]*\s*)([^,])$/','$1\\\\2C$2$3',$dn);
 
 	if (DEBUG_ENABLED)
-		debug_log('dn_escape(): Entered with (%s), Returning (%s)',1,$dn,$dn);
+		debug_log('dn_escape(): Entered with (%s), Returning (%s)',1,$olddn,$dn);
 
 	return $dn;
 }
@@ -2800,7 +2804,7 @@ function draw_date_selector_link( $attr ) {
 
 	$href = "javascript:dateSelector('$attr');";
 	$title = _('Click to popup a dialog to select a date graphically');
-	printf('<a href="%s" title="%s"><img class="chooser" src="images/calendar.png" id="f_trigger_%s" style="cursor: pointer;" /></a>',$href,$title,$attr);
+	printf('<a href="%s" title="%s"><img class="chooser" src="images/calendar.png" id="f_trigger_%s" style="cursor: pointer;" alt="Calendar" /></a>',$href,$title,$attr);
 }
 
 function no_expire_header() {
