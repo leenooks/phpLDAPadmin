@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_attr.php,v 1.12 2005/03/05 06:27:06 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_attr.php,v 1.13 2005/04/15 11:46:41 wurley Exp $
 
 /**
  * Adds an attribute/value pair to an object
@@ -95,7 +95,7 @@ if( $is_binary_val ) {
 
 	$val = $binary_data;
 
-	if( is_binary_option_required( $server_id, $attr ) )
+	if( is_binary_option_required( $ldapserver, $attr ) )
 		$attr .= ";binary";
 }
 
@@ -135,7 +135,7 @@ else
  * @return bool
  */
 
-function is_binary_option_required( $server_id, $attr ) {
+function is_binary_option_required( $ldapserver, $attr ) {
 
 	// list of the binary attributes which need the ";binary" option
 	$binary_attributes_with_options = array(
