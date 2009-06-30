@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Entry.php,v 1.2.2.1 2007/12/26 09:26:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Entry.php,v 1.2.2.2 2008/01/04 14:31:05 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -255,6 +255,20 @@ abstract class Entry {
 	public function getProperty($name) {
 		if ($this->hasProperty($name)) return $this->properties[$name];
 		else return null;
+	}
+
+	public function getTemplateName() {
+		if (isset($this->selected_template))
+			return $this->selected_template;
+		else
+			return '';
+	}
+
+	public function getTemplateTitle() {
+		if (isset($this->selected_template['title']))
+			return $this->templates[$this->selected_template]['title'];
+		else
+			return _('No Template');
 	}
 
 	/**

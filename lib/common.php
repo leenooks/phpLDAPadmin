@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.80.2.7 2007/12/30 02:05:16 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.80.2.8 2008/01/04 12:33:03 wurley Exp $
 
 /**
  * Contains code to be executed at the top of each application page.
@@ -17,7 +17,8 @@
  */
 
 # The index we will store our config in $_SESSION
-define('APPCONFIG','plaConfig');
+if (! defined('APPCONFIG'))
+	define('APPCONFIG','plaConfig');
 
 /**
  * Catch any scripts that are called directly.
@@ -35,6 +36,10 @@ foreach ($app['direct_scripts'] as $script) {
 		break;
 	}
 }
+
+# Anything in the tools dir can be executed directly.
+if (! $scriptOK && preg_match('/^\/tools/',$_SERVER['SCRIPT_NAME']))
+	$scriptOK = true;
 
 if (! $scriptOK) {
 	if (isset($_REQUEST['server_id']))

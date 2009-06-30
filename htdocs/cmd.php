@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/cmd.php,v 1.3.2.2 2007/12/24 10:45:57 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/cmd.php,v 1.3.2.3 2008/01/10 12:28:34 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -11,14 +11,11 @@ $www['cmd'] = get_request('cmd','REQUEST');
 $www['meth'] = get_request('meth','REQUEST');
 
 ob_start();
-
-if (is_null($www['cmd']))
-	$www['cmd'] = 'welcome';
+$file = '';
 
 switch ($www['cmd']) {
 	case '_debug' :
 		debug_dump($_REQUEST,1);
-		$file = '';
 		break;
 
 	default :
@@ -28,7 +25,7 @@ switch ($www['cmd']) {
 		elseif (defined('HTDOCDIR') && file_exists(HTDOCDIR.$www['cmd'].'.php'))
 			$file = HTDOCDIR.$www['cmd'].'.php';
 
-		else
+		elseif (file_exists('welcome.php'))
 			$file = 'welcome.php';
 }
 

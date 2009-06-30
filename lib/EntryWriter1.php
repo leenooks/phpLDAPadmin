@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter1.php,v 1.3.2.4 2007/12/26 09:26:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter1.php,v 1.3.2.6 2008/01/04 14:31:05 wurley Exp $
 
 define('IdEntryRefreshMenuItem', '0');
 define('IdEntryExportBaseMenuItem', '1');
@@ -508,11 +508,25 @@ class EntryWriter1 extends EntryWriter {
 		echo ' <b>';
 		echo $this->ldapserver->name;
 		echo '</b> &nbsp;&nbsp;&nbsp; ';
+
 		echo _('Distinguished Name');
 		echo _(':');
 		echo ' <b>';
 		echo htmlspecialchars($entry->getDn());
-		echo '</b></h3>';
+		echo '</b>';
+		echo '<br />';
+
+		echo _('Template');
+		echo _(':');
+		echo ' <b>';
+		echo htmlspecialchars($entry->getTemplateTitle());
+		echo '</b>';
+		if ($entry->getTemplateName()) {
+			echo ' (<b>';
+			echo htmlspecialchars($entry->getTemplateName());
+			echo '</b>)';
+		}
+		echo '</h3>';
 	}
 
 	protected function drawDefaultEditingEntryMenu($entry) {
@@ -2288,8 +2302,8 @@ class EntryWriter1 extends EntryWriter {
 
 	protected function drawObjectClassAttributeIcon($attribute, $val) {
 		if (strlen($val) > 0) {
-			$href = htmlspecialchars(sprintf('cmd.php?cmd=schema&server_id=%s&view=objectClasses&viewvalue=%s',
-				$this->ldapserver->server_id, $val));
+			$href = sprintf('cmd.php?cmd=schema&server_id=%s&view=objectClasses&viewvalue=%s',
+				$this->ldapserver->server_id, $val);
 			printf('<a title="%s" href="%s"><img src="images/info.png" alt="Info" /></a>&nbsp;',
 				_('View the schema description for this objectClass'), htmlspecialchars($href));
 		}

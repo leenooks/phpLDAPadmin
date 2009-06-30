@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/page.php,v 1.3.2.11 2007/12/30 02:05:46 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/page.php,v 1.3.2.13 2008/01/10 12:30:14 wurley Exp $
 
 /**
  * Page Rendering Functions
@@ -28,10 +28,10 @@ class page {
 
 		# Default Values for configurable items.
 		$this->_default['stylecss'] = CSSDIR.'style.css';
-		$this->_default['logo'] = 'images/logo_small.jpg';
-		$this->_default['sysmsg']['error'] = 'images/warning.png';
-		$this->_default['sysmsg']['warn'] = 'images/notice.png';
-		$this->_default['sysmsg']['info'] = 'images/light-big.png';
+		$this->_default['logo'] = IMGDIR.'logo_small.jpg';
+		$this->_default['sysmsg']['error'] = IMGDIR.'warning.png';
+		$this->_default['sysmsg']['warn'] = IMGDIR.'notice.png';
+		$this->_default['sysmsg']['info'] = IMGDIR.'light-big.png';
 
 		# Capture any output so far (in case we send some headers below) - there shouldnt be any output anyway.
 		$preOutput = '';
@@ -162,13 +162,14 @@ class page {
 			foreach (cmd_control_pane() as $cmd => $cmddetails) {
 				$cmds = preg_split('/:/',$cmd);
 
-				if ($_SESSION[APPCONFIG]->isCommandAvailable($cmds)) {
-					if ((isset($cmddetails['enable']) && trim($cmddetails['enable'])) || ! isset($cmddetails['enable'])) {
-						printf('<td>%s</td>',$cmddetails['link']);
+				if (defined('APPCONFIG') && isset($_SESSION[APPCONFIG]) && method_exists($_SESSION[APPCONFIG],'isCommandAvailable'))
+					if ($_SESSION[APPCONFIG]->isCommandAvailable($cmds)) {
+						if ((isset($cmddetails['enable']) && trim($cmddetails['enable'])) || ! isset($cmddetails['enable'])) {
+							printf('<td>%s</td>',$cmddetails['link']);
 
-						$empty = false;
+							$empty = false;
+						}
 					}
-				}
 			}
 
 		if ($empty)

@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.51.2.5 2007/12/26 09:26:33 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.51.2.6 2007/12/31 06:27:34 wurley Exp $ */
 
 /**
  * Classes and functions for LDAP server configuration and capability
@@ -336,16 +336,16 @@ class LDAPserver {
 			if ($process_error) {
 				switch (ldap_errno($resource)) {
 					case 0x31:
-						pla_error(_('Bad username or password. Please try again.'));
+						error(_('Bad username or password. Please try again.'),'error',true);
 						break;
 					case 0x32:
-						pla_error(_('Insufficient access rights.'));
+						error(_('Insufficient access rights.'),'error',true);
 						break;
 					case -1:
-						pla_error(sprintf(_('Could not connect to "%s" on port "%s"'),$host,$port));
+						error(sprintf(_('Could not connect to "%s" on port "%s"'),$host,$port),'error',true);
 						break;
 					default:
-						pla_error(_('Could not bind to the LDAP server.'),ldap_err2str($resource),$resource);
+						error(_('Could not bind to the LDAP server (%s).',ldap_err2str($resource),$resource),'error',true);
  				}
 
  			} else {

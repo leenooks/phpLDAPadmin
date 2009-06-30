@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.43.2.2 2007/12/26 09:26:33 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.43.2.3 2008/01/04 14:29:44 wurley Exp $ */
 
 /**
  * Classes and functions for the template engine.ation and capability
@@ -139,6 +139,10 @@ class Templates {
 			$this->template_num = 0;
 			while (($file = readdir($dir)) !== false) {
 				if (! preg_match('/.xml$/',$file))
+					continue;
+
+				if ($_SESSION['plaConfig']->GetValue('appearance','custom_templates_only')
+					&& ! preg_match('/^custom_/',$file))
 					continue;
 
 				$objXML = new xml2array();

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.27.2.3 2007/12/26 01:47:20 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.27.2.5 2008/01/10 12:29:21 wurley Exp $
 
 /**
  * Configuration processing and defaults.
@@ -476,33 +476,36 @@ class Config {
 			'default'=>array('cn','sn','uid','postalAddress','telephoneNumber'));
 	}
 
+	private function getConfigArray($usecache=true) {
+		global $CACHE;
+
+		if ($usecache && isset($CACHE[__METHOD__]))
+			return $CACHE[__METHOD__];
+
+		foreach ($this->default as $key => $vals)
+			$CACHE[__METHOD__][$key] = $vals;
+
+		foreach ($this->custom as $key => $vals)
+			foreach ($vals as $index => $val)
+				$CACHE[__METHOD__][$key][$index]['value'] = $val;
+
+		return $CACHE[__METHOD__];
+	}
+
+	/**
+	 * Get a configuration value.
+	 */
 	public function GetValue($key,$index) {
+		$config = $this->getConfigArray();
 
-		$value = null;
-
-		if (! isset($this->default->$key))
-			pla_error(sprintf('A call was made in [%s] to GetValue requesting [%s] that isnt predefined.',
+		if (! isset($config[$key]))
+			error(sprintf('A call was made in [%s] to GetValue requesting [%s] that isnt predefined.',
 				basename($_SERVER['PHP_SELF']),$key));
-		else
-			$default = $this->default->$key;
 
-		if (! isset($default[$index]))
-			pla_error("Requesting a index [$index] that isnt predefined.");
-		else
-			$default = $default[$index];
+		if (! isset($config[$key][$index]))
+			error("Requesting a index [$index] that isnt predefined.");
 
-		if (isset($default['default']))
-			$value = $default['default'];
-
-		if (isset($this->custom->$key)) {
-			$custom = $this->custom->$key;
-
-			if (isset($custom[$index]))
-				$value = $custom[$index];
-		}
-
-		//print "Returning [$value] for key [$key], index [$index]<BR>";
-		return $value;
+		return isset($config[$key][$index]['value']) ? $config[$key][$index]['value'] : $config[$key][$index]['default'];
 	}
 
 	/**
@@ -515,23 +518,23 @@ class Config {
 				if (isset($this->default->$masterkey)) {
 
 					if (! is_array($masterdetails))
-						pla_error("Error in configuration file, [$masterdetails] should be an ARRAY.");
+						error("Error in configuration file, [$masterdetails] should be an ARRAY.");
 
 					foreach ($masterdetails as $key => $value) {
 						# Test that the key is correct.
 						if (! in_array($key,array_keys($this->default->$masterkey)))
-							pla_error("Error in configuration file, [$key] has not been defined as a PLA configurable variable.");
+							error("Error in configuration file, [$key] has not been defined as a PLA configurable variable.");
 
 						# Test if its should be an array or not.
 						if (is_array($this->default->{$masterkey}[$key]['default']) && ! is_array($value))
-							pla_error("Error in configuration file, {$masterkey}['$key'] SHOULD be an array of values.");
+							error("Error in configuration file, {$masterkey}['$key'] SHOULD be an array of values.");
 
 						if (! is_array($this->default->{$masterkey}[$key]['default']) && is_array($value))
-							pla_error("Error in configuration file, {$masterkey}['$key'] should NOT be an array of values.");
+							error("Error in configuration file, {$masterkey}['$key'] should NOT be an array of values.");
 					}
 
 				} else {
-					pla_error("Error in configuration file, [$masterkey] has not been defined as a PLA MASTER configurable variable.");
+					error("Error in configuration file, [$masterkey] has not been defined as a PLA MASTER configurable variable.");
 				}
 			}
 		}
@@ -627,7 +630,8 @@ class Config {
 	 */
 	public function getFriendlyHTML($attr) {
 		if ($this->haveFriendlyName($attr))
-			return sprintf('<acronym title="%s %s">%s</acronym>',_('Alias for'),$attr,htmlspecialchars($this->getFriendlyName($attr)));
+			return sprintf('<acronym title="%s %s">%s</acronym>',
+				_('Alias for'),$attr,htmlspecialchars($this->getFriendlyName($attr)));
 		else
 			return $attr;
 	}

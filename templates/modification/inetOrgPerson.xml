@@ -4,7 +4,7 @@
 <title>Address Book Entry</title>
 <regexp>^uid=.*,</regexp>
 <icon>images/user.png</icon>
-<visible>1</visible>
+<visible>0</visible>
 <rdn>uid</rdn>
 
 <objectClasses>

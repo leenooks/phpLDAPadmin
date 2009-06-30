@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/index.php,v 1.49.2.3 2007/12/30 02:06:15 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/index.php,v 1.49.2.4 2008/01/04 12:33:03 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -18,6 +18,9 @@ PHP is not installed on your web server!!!
  * We will perform some sanity checking here, since this file is normally loaded first when users
  * first access the application.
  */
+# The index we will store our config in $_SESSION
+define('APPCONFIG','plaConfig');
+
 define('LIBDIR',sprintf('%s/',realpath('../lib/')));
 ini_set('display_errors',1);
 error_reporting(E_ALL);

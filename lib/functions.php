@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.303.2.16 2007/12/30 11:43:35 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.303.2.21 2008/01/10 12:30:13 wurley Exp $
 
 /**
  * A collection of common generic functions used throughout the application.
@@ -15,6 +15,7 @@ define('TMPLDIR',sprintf('%s/',realpath(LIBDIR.'../templates/')));
 define('DOCDIR',sprintf('%s/',realpath(LIBDIR.'../doc/')));
 define('HOOKSDIR',sprintf('%s/',realpath(LIBDIR.'../hooks/')));
 define('CSSDIR','css/');
+define('IMGDIR','images/');
 define('JSDIR','js/');
 
 /**
@@ -68,6 +69,90 @@ function __autoload($className) {
 /**
  * Generic Utility Functions
  */
+
+/**
+ * Custom error handling function.
+ * When a PHP error occurs, PHP will call this function rather than printing
+ * the typical PHP error string. This provides the application the ability to
+ * format an error message so that it looks better.
+ * Optionally, it can present a link so that a user can search/submit bugs.
+ * This function is not to be called directly. It is exclusively for the use of
+ * PHP internally. If this function is called by PHP from within a context
+ * where error handling has been disabled (ie, from within a function called
+ * with "@" prepended), then this function does nothing.
+ *
+ * @param int $errno The PHP error number that occurred (ie, E_ERROR, E_WARNING, E_PARSE, etc).
+ * @param string $errstr The PHP error string provided (ie, "Warning index "foo" is undefined)
+ * @param string $file The file in which the PHP error ocurred.
+ * @param int $lineno The line number on which the PHP error ocurred
+ *
+ * @see set_error_handler
+ */
+function pla_error_handler($errno,$errstr,$file,$lineno) {
+	if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
+		debug_log('Entered with (%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
+			$errno,$errstr,$file,$lineno);
+
+	/**
+	 * error_reporting will be 0 if the error context occurred
+	 * within a function call with '@' preprended (ie, @ldap_bind() );
+	 * So, don't report errors if the caller has specifically
+	 * disabled them with '@'
+	 */
+	if (ini_get('error_reporting') == 0 || error_reporting() == 0)
+		return;
+
+	$file = basename($file);
+	$caller = basename($_SERVER['PHP_SELF']);
+	$errtype = '';
+
+	switch ($errno) {
+		case E_STRICT: $errtype = 'E_STRICT'; break;
+		case E_ERROR: $errtype = 'E_ERROR'; break;
+		case E_WARNING: $errtype = 'E_WARNING'; break;
+		case E_PARSE: $errtype = 'E_PARSE'; break;
+		case E_NOTICE: $errtype = 'E_NOTICE'; break;
+		case E_CORE_ERROR: $errtype = 'E_CORE_ERROR'; break;
+		case E_CORE_WARNING: $errtype = 'E_CORE_WARNING'; break;
+		case E_COMPILE_ERROR: $errtype = 'E_COMPILE_ERROR'; break;
+		case E_COMPILE_WARNING: $errtype = 'E_COMPILE_WARNING'; break;
+		case E_USER_ERROR: $errtype = 'E_USER_ERROR'; break;
+		case E_USER_WARNING: $errtype = 'E_USER_WARNING'; break;
+		case E_USER_NOTICE: $errtype = 'E_USER_NOTICE'; break;
+		case E_ALL: $errtype = 'E_ALL'; break;
+
+		default: $errtype = sprintf('%s: %s',_('Unrecognized error number'),$errno);
+	}
+
+	# Take out extra spaces in error strings.
+	$errstr = preg_replace('/\s+/',' ',$errstr);
+
+	if ($errno == E_NOTICE) {
+		$body = '<table class="notice">';
+		$body .= sprintf('<tr><td>%s:</td><td><b>%s</b> (<b>%s</b>)</td></tr>',_('Error'),$errstr,$errtype);
+		$body .= sprintf('<tr><td>%s:</td><td><b>%s</b> %s <b>%s</b>, %s <b>%s</b></td></tr>',
+			_('File'),$file,_('line'),$lineno,_('caller'),$caller);
+		$body .= sprintf('<tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b></td></tr>',
+			pla_version(),phpversion(),php_sapi_name());
+		$body .= sprintf('<tr><td>Web server:</td><td><b>%s</b></td></tr>',$_SERVER['SERVER_SOFTWARE']);
+
+		if (function_exists('get_href'))
+			$body .= sprintf('<tr><td colspan="2"><a target="new" href="%s"><center>%s.</center></a></td></tr>',
+				get_href('search_bug',"&summary_keyword=".htmlspecialchars($errstr)),
+				_('Please check and see if this bug has been reported'));
+		$body .= '</table>';
+
+		system_message(array(
+			'title'=>_('You found a non-fatal phpLDAPadmin bug!'),
+			'body'=>$body,
+			'type'=>'error'));
+
+		return;
+	}
+
+	# If this is a more serious error, call the error call.
+	error(sprintf('%s: %s',$errtype,$errstr),'error',-1,true,true);
+}
 
 /**
  * Returns the phpLDAPadmin version currently running. The version
@@ -156,7 +241,7 @@ function check_config($config_file) {
 			'type'=>'error'));
 
 	# Make sure their session save path is writable, if they are using a file system session module, that is.
-	if ( ! strcasecmp('Files',session_module_name() && ! is_writable(realpath(session_save_path()))))
+	if (! strcasecmp('Files',session_module_name() && ! is_writable(realpath(session_save_path()))))
 		system_message(array(
 			'title'=>_('Missing required extension'),
 			'body'=> 'Your PHP session configuration is incorrect. Please check the value of session.save_path in your php.ini to ensure that the directory specified there exists and is writable.  The current setting of "'.session_save_path().'" is un-writable by the web server.',
@@ -298,7 +383,7 @@ function cmd_control_pane() {
  */
 function debug_dump($variable,$die=false,$onlydebugaddr=false) {
 	if ($onlydebugaddr &&
-		$_SESSION[APPCONFIG]->GetValue('debug','addr') &&
+		isset($_SESSION[APPCONFIG]) && $_SESSION[APPCONFIG]->GetValue('debug','addr') &&
 		$_SERVER['HTTP_X_FORWARDED_FOR'] != $_SESSION[APPCONFIG]->GetValue('debug','addr') &&
 		$_SERVER['REMOTE_ADDR'] != $_SESSION[APPCONFIG]->GetValue('debug','addr'))
 		return;
@@ -424,24 +509,58 @@ function error($msg,$type='note',$fatal=false,$backtrace=false) {
 	global $www;
 	global $counter;
 
-	# if the error is fatal, we'll need to stop here.
-	if (! isset($www['page']) && $fatal)
-		$www['page'] = new page(null);
-
 	# Just a check to see that we are called right.
 	if (! isset($www['page']) && ! $fatal)
 		die("Function error called incorrectly [$msg]");
+
+	# if the error is fatal, we'll need to stop here.
+	if (! isset($www['page']))
+		$www['page'] = new page(null);
 
 	$www['page']->setsysmsg(array('title'=>_('Error'),'body'=>$msg,'type'=>$type));
 
 	# Spin loop detection
 	if ($counter++ > 20) {
-		debug_dump("Spin loop detection.");
+		debug_dump('Spin loop detection.');
 		debug_dump(array('msg'=>$msg,'session'=>$_SESSION['sysmsg'],'www'=>$www),1);
 	}
 
-	if ($fatal)
+	# Do we have a backtrace to display?
+	if ($backtrace) {
+		$backtraceblock = new block();
+		$backtraceblock->SetTitle('PHP Debug Backtrace');
+
+		$body = '<table class="search_result_table">';
+		$body .= "\n";
+		foreach (debug_backtrace() as $error => $line) {
+			$body .= sprintf('<tr class="hightlight"><td colspan="2"><b><small>%s</small></b></td><td>%s (%s)</td></tr>',
+				_('File'),isset($line['file']) ? $line['file'] : '',isset($line['line']) ? $line['line'] : '');
+
+			$body .= sprintf('<tr><td>&nbsp;</td><td><b><small>%s</small></b></td><td><small>%s',
+				_('Function'),$line['function']);
+
+			if (isset($line['args']))
+				if (file_exists(LIBDIR.'../tools/unserialize.php'))
+					$body .= sprintf('&nbsp;(<a href="%s?var=%s">%s</a>)',
+						'/tools/unserialize.php',
+						htmlspecialchars(serialize($line['args'])),
+						htmlspecialchars(serialize($line['args'])));
+				else
+					$body .= sprintf('&nbsp;(%s)',htmlspecialchars(serialize($line['args'])));
+			$body .= '</small></td></tr>';
+			$body .= "\n";
+		}
+		$body .= '</table>';
+		$body .= "\n";
+		$backtraceblock->SetBody($body);
+
+		$www['page']->block_add('body',$backtraceblock);
+	}
+
+	if ($fatal) {
 		$www['page']->display(array('tree'=>false));
+		die();
+	}
 }
 
 /**
@@ -491,6 +610,9 @@ function system_message($msg,$redirect=null) {
 
 	if (! isset($msg['title']) && ! isset($msg['body']))
 		return null;
+
+	if (! isset($msg['type']))
+		$msg['type'] = 'info';
 
 	$_SESSION['sysmsg'][] = $msg;
 
@@ -614,13 +736,13 @@ function get_cached_item($server_id,$item,$subitem='null') {
 	# Check config to make sure session-based caching is enabled.
 	if ($_SESSION[APPCONFIG]->GetValue('cache',$item)) {
 
-		global $cache;
-		if (isset($cache[$server_id][$item][$subitem])) {
+		global $CACHE;
+		if (isset($CACHE[$server_id][$item][$subitem])) {
 			if (DEBUG_ENABLED)
 				debug_log('Returning MEMORY cached [%s] (%s)',1,__FILE__,__LINE__,__METHOD__,
 					$item,$subitem);
 
-			$return = $cache[$server_id][$item][$subitem];
+			$return = $CACHE[$server_id][$item][$subitem];
 
 		} elseif (isset($_SESSION['cache'][$server_id][$item][$subitem])) {
 			if (DEBUG_ENABLED)
@@ -628,7 +750,7 @@ function get_cached_item($server_id,$item,$subitem='null') {
 					$item,$subitem);
 
 			$return = $_SESSION['cache'][$server_id][$item][$subitem];
-			$cache[$server_id][$item][$subitem] = $return;
+			$CACHE[$server_id][$item][$subitem] = $return;
 
 		}
 	}
@@ -652,9 +774,9 @@ function set_cached_item($server_id,$item,$subitem='null',$data) {
 
 	# Check config to make sure session-based caching is enabled.
 	if ($_SESSION[APPCONFIG]->GetValue('cache',$item)) {
-		global $cache;
+		global $CACHE;
 
-		$cache[$server_id][$item][$subitem] = $data;
+		$CACHE[$server_id][$item][$subitem] = $data;
 		$_SESSION['cache'][$server_id][$item][$subitem] = $data;
 		return true;
 
@@ -1631,177 +1753,42 @@ function support_oid_to_text($oid_id) {
  * @see ldap_errno
  * @see pla_verbose_error
  */
-function pla_error($msg,$ldap_err_msg=null,$ldap_err_no=-1,$fatal=true,$backtrace=null) {
+function pla_error($msg,$ldap_err_msg=null,$ldap_err_no=-1,$fatal=true) {
 	if (defined('DEBUG_ENABLED') && (DEBUG_ENABLED))
 		debug_log('Entered with (%s,%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
 			$msg,$ldap_err_msg,$ldap_err_no,$fatal,$backtrace);
 
-	$server = isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : 'undefined';
-
-	if ($fatal) {
-		include_once HTDOCDIR.'header.php';
-		echo '<body>';
-	}
-
-	echo '<center>';
-	echo '<table class="error">';
-
-	printf('<tr><th colspan="4">%s</th></tr>',_('Error'));
-
-	echo '<tr>';
-	echo '<td rowspan="99" width="10%"><img src="../htdocs/images/warning.png" alt="Warning" /></td>';
-	printf('<td colspan="3"><b>%s</b></td>',$msg);
-	echo '</tr>';
-
-	echo '<tr><td colspan="3">&nbsp;</td></tr>';
+	$title = '';
 
 	if (function_exists('syslog_err'))
 		syslog_err($msg);
 
 	if ($ldap_err_msg)
-		printf('<tr><td colspan="3"><b>%s</b>: %s</td></tr>',_('LDAP said'),htmlspecialchars($ldap_err_msg));
+		$title = sprintf('<b>%s</b>: %s',_('LDAP said'),htmlspecialchars($ldap_err_msg));
 
 	if ($ldap_err_no != -1) {
+		$body = '<table>';
+
 		$ldap_err_no = ('0x'.str_pad(dechex($ldap_err_no),2,0,STR_PAD_LEFT));
 		$verbose_error = pla_verbose_error($ldap_err_no);
 
 		if ($verbose_error) {
-			printf('<tr><td colspan="2"><b>%s</b>: %s (%s)</td></tr>',_('Error number'),$ldap_err_no,$verbose_error['title']);
-			printf('<tr><td colspan="2"><b>%s</b>: %s</td></tr>',_('Description'),$verbose_error['desc']);
+			$body .= sprintf('<tr><td colspan="2"><b>%s</b>: %s (%s)</td></tr>',_('Error number'),$ldap_err_no,$verbose_error['title']);
+			$body .= sprintf('<tr><td colspan="2"><b>%s</b>: %s</td></tr>',_('Description'),$verbose_error['desc']);
 		} else {
-			printf('<tr><td colspan="2"><b>%s</b>: %s</td></tr>',_('Error number'),$ldap_err_no);
-			printf('<tr><td colspan="2"><b>%s</b>: (%s)</td></tr>',_('Description'),_('no description available'));
+			$body .= sprintf('<tr><td colspan="2"><b>%s</b>: %s</td></tr>',_('Error number'),$ldap_err_no);
+			$body .= sprintf('<tr><td colspan="2"><b>%s</b>: (%s)</td></tr>',_('Description'),_('no description available'));
 		}
-
-		echo '<tr><td colspan="3">&nbsp;</td></tr>';
+		$body .= '</table>';
 
 		if (function_exists('syslog_err'))
 			syslog_err(sprintf('%s %s',_('Error number'),$ldap_err_no));
 
-	} elseif ((defined('DEBUG_ENABLED') && DEBUG_ENABLED && function_exists('debug_backtrace')) || $backtrace) {
-		printf('<tr><td colspan="3"><b>%s</b></td></tr>',_('Backtrace'));
-
-		if (is_null($backtrace))
-			$backtrace = debug_backtrace();
-
-			printf('<tr><td>&nbsp;</td><td><b><small><span style="white-space: nowrap;">%s</span></small></b></td><td>%s</td></tr>',
-				'PHP Version',phpversion());
-			printf('<tr><td>&nbsp;</td><td><b><small><span style="white-space: nowrap;">%s</span></small></b></td><td>%s</td></tr>',
-				'PLA Version',pla_version());
-			printf('<tr><td>&nbsp;</td><td><b><small><span style="white-space: nowrap;">%s</span></small></b></td><td>%s</td></tr>',
-				'PHP SAPI',php_sapi_name());
-			printf('<tr><td>&nbsp;</td><td><b><small><span style="white-space: nowrap;">%s</span></small></b></td><td>%s</td></tr>',
-				'Web Server',$server);
-
-			echo '<tr><td colspan="3">&nbsp;</td></tr>';
-
-		foreach ($backtrace as $error => $line) {
-			printf('<tr><td rowspan="2">&nbsp;</td><td><b><small>%s</small></b></td><td>%s (%s)</td></tr>',
-				_('File'),isset($line['file']) ? $line['file'] : '',isset($line['line']) ? $line['line'] : '');
-			printf('<tr><td><b><small>%s</small></b></td><td><small>%s<br /><pre>',_('Function'),$line['function']);
-			if (isset($line['args'])) print_r($line['args']);
-			echo '</pre></small></td></tr>';
-		}
-
-		/*
-			<br />
-			<!-- Commented out due to too many false bug reports. :)
-			<br />
-			<center>
-			<small>
-			<?php printf(_('Is this a phpLDAPadmin bug? If so, please <a href=\'%s\'>report it</a>.'),get_href('add_bug'));?>
-			</small>
-			</center>
-			-->
-		*/
-	}
-	echo '</table>';
-	echo '</center>';
-
-	if ($fatal) {
-		echo '</body>';
-		echo '</html>';
-		die();
-	}
-}
-
-/**
- * phpLDAPadmin's custom error handling function. When a PHP error occurs,
- * PHP will call this function rather than printing the typical PHP error string.
- * This provides phpLDAPadmin the ability to format an error message more "pretty"
- * and provide a link for users to submit a bug report. This function is not to
- * be called by users. It is exclusively for the use of PHP internally. If this
- * function is called by PHP from within a context where error handling has been
- * disabled (ie, from within a function called with "@" prepended), then this
- * function does nothing.
- *
- * @param int $errno The PHP error number that occurred (ie, E_ERROR, E_WARNING, E_PARSE, etc).
- * @param string $errstr The PHP error string provided (ie, "Warning index "foo" is undefined)
- * @param string $file The file in which the PHP error ocurred.
- * @param int $lineno The line number on which the PHP error ocurred
- *
- * @see set_error_handler
- */
-function pla_error_handler($errno,$errstr,$file,$lineno) {
-	if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$errno,$errstr,$file,$lineno);
-
-	/* error_reporting will be 0 if the error context occurred
-	 * within a function call with '@' preprended (ie, @ldap_bind() );
-	 * So, don't report errors if the caller has specifically
-	 * disabled them with '@'
-	 */
-	if (ini_get('error_reporting') == 0 || error_reporting() == 0)
-		return;
-
-	$file = basename($file);
-	$caller = basename($_SERVER['PHP_SELF']);
-	$errtype = '';
-
-	switch ($errno) {
-		case E_STRICT: $errtype = 'E_STRICT'; break;
-		case E_ERROR: $errtype = 'E_ERROR'; break;
-		case E_WARNING: $errtype = 'E_WARNING'; break;
-		case E_PARSE: $errtype = 'E_PARSE'; break;
-		case E_NOTICE: $errtype = 'E_NOTICE'; break;
-		case E_CORE_ERROR: $errtype = 'E_CORE_ERROR'; break;
-		case E_CORE_WARNING: $errtype = 'E_CORE_WARNING'; break;
-		case E_COMPILE_ERROR: $errtype = 'E_COMPILE_ERROR'; break;
-		case E_COMPILE_WARNING: $errtype = 'E_COMPILE_WARNING'; break;
-		case E_USER_ERROR: $errtype = 'E_USER_ERROR'; break;
-		case E_USER_WARNING: $errtype = 'E_USER_WARNING'; break;
-		case E_USER_NOTICE: $errtype = 'E_USER_NOTICE'; break;
-		case E_ALL: $errtype = 'E_ALL'; break;
-
-		default: $errtype = sprintf('%s: %s',_('Unrecognized error number'),$errno);
+	} else {
+		$body = $msg;
 	}
 
-	$errstr = preg_replace('/\s+/',' ',$errstr);
-
-	if ($errno == E_NOTICE) {
-		$body = '<table class="notice">';
-		$body .= sprintf('<tr><td>%s:</td><td><b>%s</b> (<b>%s</b>)</td></tr>',_('Error'),$errstr,$errtype);
-		$body .= sprintf('<tr><td>%s:</td><td><b>%s</b> %s <b>%s</b>, %s <b>%s</b></td></tr>',
-			_('File'),$file,_('line'),$lineno,_('caller'),$caller);
-		$body .= sprintf('<tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b></td></tr>',
-			pla_version(),phpversion(),php_sapi_name());
-		$body .= sprintf('<tr><td>Web server:</td><td><b>%s</b></td></tr>',$_SERVER['SERVER_SOFTWARE']);
-
-		$body .= sprintf('<tr><td colspan="2"><a target="new" href="%s"><center>%s.</center></a></td></tr>',
-			get_href('search_bug',"&summary_keyword=".htmlspecialchars($errstr)),
-			_('Please check and see if this bug has been reported'));
-		$body .= '</table>';
-
-		system_message(array(
-			'title'=>_('You found a non-fatal phpLDAPadmin bug!'),
-			'body'=>$body,
-			'type'=>'error'));
-
-		return;
-	}
-
-	pla_error(sprintf('%s: %s',$errtype,$errstr),null,-1,true,debug_backtrace());
+	system_message(array('title'=>$title ? $title : 'Error','body'=>$body,'type'=>'error'),$fatal ? 'index.php' : null);
 }
 
 /**
@@ -2284,7 +2271,7 @@ function pla_explode_dn($dn,$with_attributes=0) {
 		if (DEBUG_ENABLED)
 			debug_log('Returning NULL - NO result.',1,__FILE__,__LINE__,__METHOD__);
 
-		return null;
+		return array();
 	}
 
 	# Remove our count value that ldap_explode_dn returns us.

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login.php,v 1.56.2.3 2007/12/31 01:30:09 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login.php,v 1.56.2.4 2008/01/04 12:29:15 wurley Exp $
 
 /**
  * For servers whose auth_type is set to 'cookie' or 'session'. Pass me the
@@ -44,7 +44,7 @@ if ($anon_bind) {
 
 	# Is this a login string (printf-style)
 	if ($ldapserver->isLoginStringEnabled()) {
-		$login['dn'] = str_replace('<username>',$ldapserver->getLoginAttr(),$ldapserver->getLoginString());
+		$login['dn'] = str_replace('<username>',$login['val'],$ldapserver->getLoginString());
 
 		if (DEBUG_ENABLED)
 			debug_log('LoginStringDN: [%s]',64,__FILE__,__LINE__,__METHOD__,$login['dn']);
