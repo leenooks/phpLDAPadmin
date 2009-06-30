@@ -1,0 +1,46 @@
+<!--This template doesnt work needs modification to the Engine.-->
+<template>
+<title>sendmail_relays</title>
+<!--<regexp>^ou=People,o=.*,</regexp>-->
+<icon>images/mail.png</icon>
+<description>New Sendmail Relays</description>
+<askcontainer>1</askcontainer>
+<rdn>sendmailMTACluster</rdn>
+<visible>1</visible>
+<invalid>1</invalid>
+
+<objectClasses>
+<objectClass id="sendmailMTAClass"></objectClass>
+</objectClasses>
+
+<attributes>
+<attribute id="sendmailMTACluster">
+	<display>Sendmail Cluster Name</display>
+	<icon>images/object.png</icon>
+	<order>1</order>
+	<page>1</page>
+</attribute>
+<attribute id="sendmailMTAHost">
+	<display>Sendmail Hostname</display>
+	<hint>Leave Blank</hint>
+	<order>2</order>
+	<page>1</page>
+</attribute>
+<attribute id="sendmailMTAKey">
+	<display>Host/Network/Address</display>
+	<order>3</order>
+	<page>1</page>
+	<default></default>
+	<default>RELAY: Allow host/network/address to relay</default>
+	<default>OK: Accept local mail but disallow relay</default>
+	<default>REJECT: Reject messages</default>
+	<default>DISCARD: Discard messages</default>
+	<default>SKIP: Apply default action to messages</default>
+	<default>ERROR: Reject message with custom error</default>
+</attribute>
+<attribute id="sendmailMTAMapName">
+	<default>access</default>
+	<hidden>1</hidden>
+</attribute>
+</attributes>
+</template>

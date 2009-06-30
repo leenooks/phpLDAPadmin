@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/pl.php,v 1.10 2004/12/09 14:16:15 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/pl.php,v 1.13 2005/03/25 01:15:27 wurley Exp $
 
 /*        ---   INSTRUCTIONS FOR TRANSLATORS   ---
  *
@@ -16,10 +16,10 @@
  *
  */
 
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/pl.php,v 1.10 2004/12/09 14:16:15 uugdave Exp $
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/pl.php,v 1.13 2005/03/25 01:15:27 wurley Exp $
  * initial translation from Piotr (DrFugazi) Tarnowski on Version 0.9.3
  */
-// Based on en.php version 1.80
+// Based on en.php version 1.120
 
 // Search form
 $lang['simple_search_form_str'] = 'Wyszukiwanie proste';
@@ -29,7 +29,6 @@ $lang['search_for_entries_whose'] = 'Szukaj wpisów w których';
 $lang['base_dn'] = 'Bazowa DN';
 $lang['search_scope'] = 'Zakres przeszukiwania';
 $lang['show_attributes'] = 'Poka¿ atrybuty';
-$lang['attributes'] = 'Atrybuty';
 $lang['Search'] = 'Szukaj';
 $lang['equals'] = 'równa siê';
 $lang['contains'] = 'zawiera';
@@ -42,10 +41,12 @@ $lang['format'] = 'Format';
 $lang['list'] = 'lista';
 $lang['table'] = 'tabela';
 $lang['bad_search_display'] = 'W Twojej konfiguracji (config.php) okre¶lona jest nieprawid³owa warto¶æ dla $default_search_display: %s. Proszê to poprawiæ';
+$lang['page_n'] = 'Strona %d';
+$lang['no_results'] = 'Wyszukiwanie nie przynios³o ¿adnych rezultatów.';
 		      
 // Tree browser
-$lang['request_new_feature'] = 'Zg³o¶ zapotrzebowanie na now± funkcjonalno¶æ';
-$lang['report_bug'] = 'Zg³o¶ b³±d (report a bug)';
+$lang['request_new_feature'] = 'Zg³o¶ zapotrzebowanie';
+$lang['report_bug'] = 'Zg³o¶ b³±d';
 $lang['schema'] = 'schemat';
 $lang['search'] = 'szukaj';
 $lang['create'] = 'utwórz';
@@ -53,7 +54,7 @@ $lang['info'] = 'info';
 $lang['import'] = 'import';
 $lang['refresh'] = 'od¶wie¿';
 $lang['logout'] = 'wyloguj';
-$lang['create_new'] = 'Utwórz nowy';
+$lang['create_new'] = 'Utwórz nowy wpis';
 $lang['view_schema_for'] = 'Poka¿ schemat dla';
 $lang['refresh_expanded_containers'] = 'Od¶wie¿ wszystkie otwarte kontenery dla';
 $lang['create_new_entry_on'] = 'Utwórz nowy wpis na';
@@ -62,6 +63,8 @@ $lang['view_server_info'] = 'Poka¿ informacje o serwerze';
 $lang['import_from_ldif'] = 'Importuj wpisy z pliku LDIF';
 $lang['logout_of_this_server'] = 'Wyloguj z tego serwera';
 $lang['logged_in_as'] = 'Zalogowany/a jako: ';
+$lang['this_base_dn_is_not_valid'] = 'To nie jest prawid³owa DN.';
+$lang['this_base_dn_does_not_exist'] = 'Ten wpis nie istnieje';
 $lang['read_only'] = 'tylko-do-odczytu';
 $lang['read_only_tooltip'] = 'Ten atrybut zosta³ oznaczony przez administratora phpLDAPadmin jako tylko-do-odczytu';
 $lang['could_not_determine_root'] = 'Nie mo¿na ustaliæ korzenia Twojego drzewa LDAP.';
@@ -70,11 +73,13 @@ $lang['please_specify_in_config'] = 'Proszê okre¶liæ to w pliku config.php';
 $lang['create_new_entry_in'] = 'Utwórz nowy wpis w';
 $lang['login_link'] = 'Logowanie...';
 $lang['login'] = 'login';
-
+$lang['base_entry_does_not_exist'] = 'Ten wpis bazowy nie istnieje';
+$lang['create_it'] = 'Utworzyæ ?';
+     
 // Entry display
 $lang['delete_this_entry'] = 'Usuñ ten wpis';
 $lang['delete_this_entry_tooltip'] = 'Bêdziesz poproszony/a o potwierdzenie tej decyzji';
-$lang['copy_this_entry'] = 'Skopiuj ten wpis';
+$lang['copy_this_entry'] = 'Skopiuj lub przenie¶ ten wpis';
 $lang['copy_this_entry_tooltip'] = 'Skopiuj ten obiekt do innej lokalizacji, nowej DN, lub do innego serwera';
 $lang['export'] = 'Eksportuj';
 $lang['export_lcase'] = 'eksportuj';
@@ -112,6 +117,7 @@ $lang['binary_value'] = 'Warto¶æ binarna';
 $lang['add_new_binary_attr'] = 'Dodaj nowy atrybut binarny';
 $lang['alias_for'] = 'Uwaga: \'%s\' jest aliasem dla \'%s\'';
 $lang['required_for'] = 'Atrybut wymagany dla klas(y) obiektu %s';
+$lang['required_by_entry'] = 'Ten atrybut jest wymagany dla RDN'; 
 $lang['download_value'] = 'pobierz (download) warto¶æ';
 $lang['delete_attribute'] = 'usuñ atrybut';
 $lang['true'] = 'prawda';
@@ -121,13 +127,10 @@ $lang['really_delete_attribute'] = 'Definitywnie usuñ atrybut';
 $lang['add_new_value'] = 'Dodaj now± warto¶æ';
 
 // Schema browser
-$lang['the_following_objectclasses'] = 'Nastêpuj±ce klasy obiektu s± wspierane przez ten serwer LDAP.';
-$lang['the_following_attributes'] = 'Nastêpuj±ce typy atrybutów s± wspierane przez ten serwer LDAP.';
-$lang['the_following_matching'] = 'Nastêpuj±ce regu³y dopasowania s± wspierane przez ten serwer LDAP.';
-$lang['the_following_syntaxes'] = 'Nastêpuj±ce sk³adnie s± wspierane przez ten serwer LDAP.';
 $lang['schema_retrieve_error_1']='Serwer nie wspiera w pe³ni protoko³u LDAP.';
 $lang['schema_retrieve_error_2']='Twoja wersja PHP niepoprawnie wykonuje zapytanie.';
-$lang['schema_retrieve_error_3']='Lub w ostateczno¶ci, phpLDAPadmin nie wie jak uzyskaæ schemat dla Twojego serwera.';
+$lang['schema_retrieve_error_3']='phpLDAPadmin nie wie jak uzyskaæ schemat z Twojego serwera.';
+$lang['schema_retrieve_error_4']='Lub w ostateczno¶ci, Twój serwer nie dostarcza tej informacji.';
 $lang['jump_to_objectclass'] = 'Skocz do klasy obiektu';
 $lang['view_schema_for_oclass'] = 'Poka¿ opis schematu dla tej klasy obiektu';
 $lang['jump_to_attr'] = 'Skocz do typu atrybutu';
@@ -224,17 +227,15 @@ $lang['not_enough_login_info'] = 'Brak wystarczaj±cych informacji aby zalogowaæ 
 $lang['could_not_connect'] = 'Nie mo¿na pod³±czyæ siê do serwera LDAP.';
 $lang['could_not_connect_to_host_on_port'] = 'Nie mo¿na pod³±czyæ siê do "%s" na port "%s"';
 $lang['could_not_perform_ldap_mod_add'] = 'Nie mo¿na dokonaæ operacji ldap_mod_add.';
-$lang['bad_server_id_underline'] = 'Z³y server_id: ';
+$lang['home'] = 'Strona g³ówna';
+$lang['help'] = 'Pomoc';
 $lang['success'] = 'Sukces';
 $lang['server_colon_pare'] = 'Serwer: ';
 $lang['look_in'] = 'Szukam w: ';
-$lang['missing_server_id_in_query_string'] = 'Nie okre¶lono ID serwera w zapytaniu !';
 $lang['missing_dn_in_query_string'] = 'Nie okre¶lono DN w zapytaniu !';
 $lang['back_up_p'] = 'Do góry...';
 $lang['no_entries'] = 'brak wpisów';
-$lang['not_logged_in'] = 'Nie zalogowany/a';
 $lang['could_not_det_base_dn'] = 'Nie mo¿na okre¶liæ bazowego DN';
-$lang['please_report_this_as_a_bug']='Proszê zg³osiæ to jako b³±d.';
 $lang['reasons_for_error']='To mog³o zdarzyæ siê z kilku powodów, z których najbardziej prawdopodobne to:';
 $lang['yes']='Tak';
 $lang['no']='Nie';
@@ -243,12 +244,16 @@ $lang['delete']='Usuñ';
 $lang['back']='Powrót';
 $lang['object']='obiekt';
 $lang['delete_all']='Usuñ wszystko';
-$lang['url_bug_report']='https://sourceforge.net/tracker/?func=add&group_id=61828&atid=498546';
 $lang['hint'] = 'wskazówka';
 $lang['bug'] = 'b³±d (bug)';
 $lang['warning'] = 'ostrze¿enie';
 $lang['light'] = '¿arówka'; // the word 'light' from 'light bulb'
 $lang['proceed_gt'] = 'Dalej &gt;&gt;';
+$lang['no_blowfish_secret'] = 'phpLDAPadmin nie mo¿e bezpiecznie szyfrowaæ danych, poniewa¿ zmienna $blowfish_secret nie jest ustawiona w config.php. Nale¿y wyedytowaæ config.php i wpisaæ jaki¶ ³añcuch znaków do zmiennej $blowfish_secret';
+$lang['jpeg_dir_not_writable'] = 'Proszê ustawiæ zmienn± $jpeg_temp_dir w config.php na katalog z mo¿liwo¶ci± zapisu plików';
+$lang['jpeg_dir_not_writable_error'] = 'Nie mo¿na zapisaæ do katalogu $jpeg_temp_dir %s. Sprawd¼ proszê czy Twój serwer mo¿e zapisywaæ pliki w tym katalogu.';
+$lang['jpeg_unable_toget'] = 'Nie mo¿na pobraæ danych jpeg z serwera LDAP dla atrybutu %s.'; 
+$lang['jpeg_delete'] = 'Usuñ zdjêcie';
 
 // Add value form
 $lang['add_new'] = 'Dodaj';
@@ -296,7 +301,9 @@ $lang['copyf_recursive_copy'] = 'Rekursywne kopiowanie wszystkich potomnych obie
 $lang['recursive_copy'] = 'Kopia rekursywna';
 $lang['filter'] = 'Filtr';
 $lang['filter_tooltip'] = 'Podczas rekursywnego kopiowania, kopiowane s± tylko wpisy pasuj±ce do filtra';
-
+$lang['delete_after_copy'] = 'Usuñ po skopiowaniu (przenie¶):';
+$lang['delete_after_copy_warn'] = 'Upewnij siê, ¿e ustawienia filtra (powy¿ej) pozwalaj± na wybranie wszystkich rekordów podrzêdnych.'; 
+     
 //create.php
 $lang['create_required_attribute'] = 'Brak warto¶ci dla wymaganego atrybutu (%s).';
 $lang['redirecting'] = 'Przekierowujê';
@@ -307,17 +314,17 @@ $lang['create_could_not_add'] = 'Nie mo¿na dodaæ obiektu do serwera LDAP.';
 $lang['createf_create_object'] = 'Utwórz obiekt';
 $lang['createf_choose_temp'] = 'Wybierz szablon';
 $lang['createf_select_temp'] = 'Wybierz szablon dla procesu tworzenia';
-$lang['createf_proceed'] = 'Dalej';
+$lang['save_as_file'] = 'Zapisz jako';
 $lang['rdn_field_blank'] = 'Pozostawi³e¶/a¶ puste pole RDN.';
 $lang['container_does_not_exist'] = 'Kontener który okre¶li³e¶/a¶ (%s) nie istnieje. Spróbuj ponownie.';
 $lang['no_objectclasses_selected'] = 'Nie wybra³e¶/a¶ ¿adnych Klas Obiektu dla tego obiektu. Wróæ proszê i zrób to.';
-$lang['hint_structural_oclass'] = 'Wskazówka: Musisz wybraæ co najmniej jedn± strukturaln± klasê obiektu (wyró¿nion± pogrubieniem)';
+$lang['hint_structural_oclass'] = 'Wskazówka: Musisz wybraæ dok³adnie jedn± strukturaln± klasê obiektu (wyró¿nion± pogrubieniem)';
 	      
 //creation_template.php
 $lang['ctemplate_on_server'] = 'Na serwerze';
 $lang['ctemplate_no_template'] = 'Brak okre¶lenia szablonu w zmiennych POST.';
-$lang['ctemplate_config_handler'] = 'Twoja konfiguracja okre¶la handler';
-$lang['ctemplate_handler_does_not_exist'] = 'dla tego szablonu. Ale, ten handler nie istnieje w szablonach/tworzonym katalogu';
+$lang['template_not_readable'] = 'Twoja konfiguracja okre¶la obs³ugê "%s" dla tego szablonu, ale tego pliku nie da siê odczytaæ, poniewa¿ uprawnienia s± zbyt restrykcyjne.';
+$lang['template_does_not_exist'] = 'Twoja konfiguracja okre¶la obs³ugê "%s" dla tego szablonu, ale pliku obs³ugi nie ma w katalogu templates/creation.';
 $lang['create_step1'] = 'Krok 1 z 2: Nazwa i klasa/y obiektu';
 $lang['create_step2'] = 'Krok 2 z 2: Okre¶lenie atrybutów i warto¶ci';
 $lang['relative_distinguished_name'] = 'Relatywna Wyró¿niona Nazwa (RDN)';
@@ -350,7 +357,7 @@ $lang['ends with'] = 'koñczy siê na';
 $lang['sounds like'] = 'brzmi jak';
 
 // server_info.php
-$lang['could_not_fetch_server_info'] = 'Nie mo¿na uzyskaæ informacji od serwera LDAP';
+$lang['could_not_fetch_server_info'] = 'Nie mo¿na uzyskaæ informacji od serwera LDAP. Mo¿e to byæ spowodowane <a href="http://bugs.php.net/bug.php?id=29587">b³êdem</a> w Twojej wersji PHP albo na przyk³ad tym, ¿e Twój serwer LDAP posiada listê kontroli dostêpu nie zezwalaj±c± na pobranie RootDSE klientom LDAP';
 $lang['server_info_for'] = 'Informacja o serwerze: ';
 $lang['server_reports_following'] = 'Serwer zwróci³ nastêpuj±ce informacje o sobie';
 $lang['nothing_to_report'] = 'Ten serwer nie chce nic powiedzieæ o sobie :).';
@@ -369,24 +376,30 @@ $lang['commit'] = 'Zatwierd¼';
 $lang['cancel'] = 'Anuluj';
 $lang['you_made_no_changes'] = 'Nie dokonano ¿adnych zmian';
 $lang['go_back'] = 'Powrót';
+$lang['unable_create_samba_pass'] = 'Nie mo¿na utworzyæ has³a dla samby. Sprawd¼ proszê swoj± konfiguracjê w template_config.php'; 
 
 // welcome.php
 $lang['welcome_note'] = 'U¿yj menu z lewej strony do nawigacji';
 $lang['credits'] = 'Lista p³ac';
 $lang['changelog'] = 'Historia zmian';
 $lang['donate'] = 'Wesprzyj projekt';
-$lang['purge_cache'] = 'Wyczy¶æ pamiêæ podrêczn±';
+$lang['pla_logo'] = 'phpLDAPadmin logo';
+     
+// Donate.php
+$lang['donation_instructions'] = 'Aby wesprzeæ projekt phpLDAPadmin skorzystaj z jednego z przycisków PayPal umieszczonych poni¿ej'; 
+$lang['donate_amount'] = 'Wesprzyj kwot± %s'; 
+
+$lang['purge_cache'] = 'Wyczy¶æ cache';
 $lang['no_cache_to_purge'] = 'Nie ma czego czy¶ciæ.';
-$lang['done_purging_caches'] = 'Wyczyszczono %s bajtów pamiêci podrêcznej.';
-	 
+$lang['done_purging_caches'] = 'Wyczyszczono %s bajtów pamiêci podrêcznej (cache).';
+$lang['purge_cache_tooltip'] = 'Czy¶ci wszystkie dane podrêczne (cache) w phpLDAPadmin, ³±cznie ze schematami serwera';
+
 // view_jpeg_photo.php
 $lang['unsafe_file_name'] = 'Niebezpieczna nazwa pliku: ';
 $lang['no_such_file'] = 'Nie znaleziono pliku: ';
 
 //function.php
-$lang['auto_update_not_setup'] = 'Zezwoli³e¶/a¶ na automatyczne nadawanie uid (auto_uid_numbers) 
-                                  dla <b>%s</b> w konfiguracji, ale nie okre¶li³e¶/a¶ mechanizmu
-                                  (auto_uid_number_mechanism). Proszê skorygowaæ ten problem.';
+$lang['auto_update_not_setup'] = 'Zezwoli³e¶/a¶ na automatyczne nadawanie uid (auto_uid_numbers) dla <b>%s</b> w konfiguracji, ale nie okre¶li³e¶/a¶ mechanizmu (auto_uid_number_mechanism). Proszê skorygowaæ ten problem.'; 
 $lang['uidpool_not_set'] = 'Okre¶li³e¶/a¶ mechanizm autonumerowania uid "auto_uid_number_mechanism" jako "uidpool" w konfiguracji Twojego serwera <b>%s</b>, lecz nie okre¶li³e¶/a¶ audo_uid_number_uid_pool_dn. Proszê okre¶l to zanim przejdziesz dalej.';
 $lang['uidpool_not_exist'] = 'Wygl±da na to, ¿e uidPool, któr± okre¶li³e¶/a¶ w Twojej konfiguracji ("%s") nie istnieje.';
 $lang['specified_uidpool'] = 'Okre¶li³e¶/a¶ "auto_uid_number_mechanism" jako "search" w konfiguracji Twojego serwera <b>%s</b>, ale nie okre¶li³e¶/a¶ bazy "auto_uid_number_search_base". Zrób to zanim przejdziesz dalej.';
@@ -402,15 +415,15 @@ $lang['could_not_bind_anon'] = 'Nie mo¿na anonimowo pod³±czyæ do serwera.';
 $lang['could_not_bind'] = 'Nie mo¿na pod³±czyæ siê do serwera LDAP.';
 $lang['anonymous_bind'] = 'Pod³±czenie anonimowe';
 $lang['bad_user_name_or_password'] = 'Z³a nazwa u¿ytkownika lub has³o. Spróbuj ponownie.';
-$lang['redirecting_click_if_nothing_happens'] = 'Przekierowujê... Kliknij tutaj je¶li nic siê nie dzieje.';
 $lang['successfully_logged_in_to_server'] = 'Pomy¶lnie zalogowano do serwera <b>%s</b>';
 $lang['could_not_set_cookie'] = 'Nie mo¿na ustawiæ ciasteczka (cookie).';
 $lang['ldap_said'] = 'LDAP odpowiedzia³: %s';
 $lang['ferror_error'] = 'B³±d';
 $lang['fbrowse'] = 'przegl±daj';
 $lang['delete_photo'] = 'Usuñ fotografiê';
-$lang['install_not_support_blowfish'] = 'Twoja instalacja PHP nie wspiera szyfrowania blowfish.';
-$lang['install_not_support_md5crypt'] = 'Twoja instalacja PHP nie wspiera szyfrowania md5crypt.';
+$lang['install_not_support_ext_des'] = 'Twoja systemowa biblioteka crypt nie wspiera rozszerzonego szyfrowania DES'; 
+$lang['install_not_support_blowfish'] = 'Twoja systemowa biblioteka crypt nie wspiera szyfrowania blowfish.';
+$lang['install_not_support_md5crypt'] = 'Twoja systemowa biblioteka crypt nie wspiera szyfrowania md5crypt.';
 $lang['install_no_mash'] = 'Twoja instalacja PHP nie posiada funkcji mhash(). Nie mogê tworzyæ haszy SHA.';
 $lang['jpeg_contains_errors'] = 'jpegPhoto zawiera b³êdy<br />';
 $lang['ferror_number'] = 'B³±d numer: %s (%s)';
@@ -442,7 +455,6 @@ $lang['ferror_congrats_found_bug'] = 'Gratulacje ! Znalaz³e¶ b³±d w phpLDAPadmin
 //ldif_import_form
 $lang['import_ldif_file_title'] = 'Importuj plik LDIF';
 $lang['select_ldif_file'] = 'Wybierz plik LDIF:';
-$lang['select_ldif_file_proceed'] = 'Dalej &gt;&gt;';
 $lang['dont_stop_on_errors'] = 'Nie zatrzymuj siê po napotkaniu b³êdów';
 
 //ldif_import
@@ -453,7 +465,7 @@ $lang['modify_action'] = 'Modyfikowanie...';
 $lang['warning_no_ldif_version_found'] = 'Nie znaleziono numeru wersji. Przyjmujê 1.';
 $lang['valid_dn_line_required'] = 'Wymagana jest poprawna linia DN.';
 $lang['missing_uploaded_file'] = 'Brak wgrywanego pliku.';
-$lang['no_ldif_file_specified.'] = 'Nie okre¶lono pliku LDIF. Spróbuj ponownie.';
+$lang['no_ldif_file_specified'] = 'Nie okre¶lono pliku LDIF. Spróbuj ponownie.';
 $lang['ldif_file_empty'] = 'Wgrany plik LDIF jest pusty.';
 $lang['empty'] = 'pusty';
 $lang['file'] = 'Plik';
@@ -489,11 +501,10 @@ $lang['generated_on_date'] = 'Wygenerowane przez phpLDAPadmin ( http://phpldapad
 $lang['total_entries'] = '£±cznie wpisów';
 $lang['dsml_export_for_dn'] = 'Eksport DSLM dla: %s';
 $lang['include_system_attrs'] = 'Zawiera atrybuty systemowe';
+$lang['csv_spreadsheet'] = 'CVS (arkusz)';
 
 // logins
-$lang['could_not_find_user'] = 'Nie mo¿na znale¼æ u¿ytkownika "%s"';
 $lang['password_blank'] = 'Pozostawi³e¶/a¶ puste has³o.';
-$lang['login_cancelled'] = 'Logowanie anulowane.';
 $lang['no_one_logged_in'] = 'Nikt nie jest zalogowany do tego serwera.';
 $lang['could_not_logout'] = 'Nie mo¿na wylogowaæ.';
 $lang['unknown_auth_type'] = 'Nieznany auth_type: %s';
@@ -505,6 +516,7 @@ $lang['login_dn'] = 'Login DN';
 $lang['user_name'] = 'Nazwa u¿ytkownika';
 $lang['password'] = 'Has³o';
 $lang['authenticate'] = 'Zaloguj';
+$lang['login_not_allowed'] = 'Przykro mi, ale nie masz uprawnieñ aby korzystaæ z phpLDAPadmin na tym serwerze LDAP.';
 
 // Entry browser
 $lang['entry_chooser_title'] = 'Wybór wpisu';
@@ -534,15 +546,25 @@ $lang['no_rdn_change'] = 'Nie zmieni³e¶/a¶ RDN';
 $lang['invalid_rdn'] = 'B³êdna warto¶æ RDN';
 $lang['could_not_rename'] = 'Nie mo¿na zmieniæ nazwy wpisu';
 
+// General errors
+$lang['mismatched_search_attr_config'] = 'Twoja konfiguracja zawiera b³±d. $search_attributes musi posiadaæ t± sam± ilo¶æ atrybutów co $search_attributes_display.';
+
+// Password checker
+$lang['passwords_match'] = 'Has³a zgodne !';
+$lang['passwords_do_not_match'] = 'Has³a nie zgadzaj± siê !'; 
+$lang['password_checker_tool'] = 'Narzêdzie do sprawdzania hase³';
+$lang['compare'] = 'Porównaj';
+$lang['to'] = 'Do';
+				     
 // Templates
 $lang['using'] = 'U¿ywaj±c';
-$lang['template'] = 'szablonu';
 $lang['switch_to'] = 'Mo¿esz prze³±czyæ siê do ';
 $lang['default_template'] = 'domy¶lnego szablonu';
 
 // template_config
 $lang['user_account'] = 'Konto U¿ytkownika (posixAccount)';
-$lang['address_book'] = 'Wpis Ksi±¿ki Adresowej (inetOrgPerson)';
+$lang['address_book_inet'] = 'Wpis Ksi±¿ki Adresowej (inetOrgPerson)';
+$lang['address_book_moz'] = 'Wpis Ksi±¿ki Adresowej (mozillaOrgPerson)';
 $lang['kolab_user'] = 'Wpis U¿ytkownika Kolab';
 $lang['organizational_unit'] = 'Jednostka Organizacyjna';
 $lang['organizational_role'] = 'Rola w Organizacji';
@@ -557,6 +579,12 @@ $lang['simple_sec_object'] = 'Prosty obiekt bezpieczeñstwa (SSO)';
 $lang['courier_mail_account'] = 'Konto Pocztowe w Courier';
 $lang['courier_mail_alias'] = 'Alias Pocztowy w Courier';
 $lang['ldap_alias'] = 'Alias w LDAP';
+$lang['sendmail_cluster'] = 'Klaster Sendmail';
+$lang['sendmail_domain'] = 'Domena Sendmail';
+$lang['sendmail_alias'] = 'Alias Sendmail';
+$lang['sendmail_virt_dom'] = 'Wirtualna Domena Sendmail';
+$lang['sendmail_virt_users'] = 'Wirtualni U¿ytkownicy Sendmail';
+$lang['sendmail_relays'] = 'Sendmail Relays';
 $lang['custom'] = 'Ogólne';
 $lang['samba_domain_name'] = 'Moja nazwa domeny w Samba';
 $lang['administrators'] = 'Administratorzy';
@@ -569,6 +597,10 @@ $lang['print_ops'] = 'Operatorzy drukowania';
 $lang['backup_ops'] = 'Operatorzy archiwizacji danych';
 $lang['replicator'] = 'Replikator';
 $lang['unable_smb_passwords'] = ' Nie mo¿na utworzyæ hase³ Samba. Proszê sprawdziæ konfiguracjê w template_config.php';
+$lang['err_smb_conf'] = 'B³±d: masz b³±d w konfiguracji samby';
+$lang['err_smb_no_name_sid'] = 'B³±d: musisz wprowadziæ nazwê oraz sid dla Twojej domeny samby.';
+$lang['err_smb_no_name'] = 'B³±d: brak nazwy dla domeny samby.';
+$lang['err_smb_no_sid'] = 'B³±d: brak sid dla domeny samby';
 
 // Samba Account Template
 $lang['samba_account'] = 'Konto Samba';
@@ -580,6 +612,8 @@ $lang['t_hint_customize'] = 'Wskazówka: Aby dostosowaæ ten szablon, wyedytuj pli
 $lang['t_name'] = 'Nazwa/Nazwisko';
 $lang['t_first_name'] = 'Imiê';
 $lang['t_last_name'] = 'Nazwisko';
+$lang['t_first'] = 'imiê';
+$lang['t_last'] = 'nazwisko';
 $lang['t_common_name'] = 'Nazwa';
 $lang['t_user_name'] = 'Nazwa u¿ytkownika';
 $lang['t_password'] = 'Has³o';
@@ -614,4 +648,25 @@ $lang['t_err_cn_blank'] = 'Nie mo¿esz pozostawiæ pustego pola Nazwa. Wróæ i spró
 $lang['t_confim_creation'] = 'Potwierd¼ utworzenie wpisu:';
 $lang['t_create_address'] = 'Utwórz adres';
 
+// default template
+$lang['t_check_pass'] = 'Sprawd¼ has³o';
+
+// compare form
+$lang['compare'] = 'Porównaj';
+$lang['comparing'] = 'Porównujê nastêpuj±ce DN';
+$lang['compare_dn'] = 'Porównaj inny DN z';
+$lang['with'] = 'z';
+$lang['compf_source_dn'] = '¬ród³owa DN';
+$lang['compf_dn_tooltip'] = 'Prównaj t± DN z inn±';
+$lang['switch_entry'] = 'Zamieñ wpisy';
+$lang['no_value'] = 'Brak warto¶ci';
+$lang['compare_with'] = 'Porównaj z innym wpisem';
+$lang['need_oclass'] = 'Musisz posiadaæ jedn± z nastêpuj±cych klas obiektów, aby dodaæ ten atrybut %s ';
+
+// Time out page
+$lang['session_timed_out_1'] = 'Twoja sesja wyga¶nie po'; 
+$lang['session_timed_out_2'] = 'min. nieaktywno¶ci. Zostaniesz automatycznie wylogowany/a.';
+$lang['log_back_in'] = 'Aby siê zalogowaæ ponownie kliknij w nastêpuj±cy link:';
+$lang['session_timed_out_tree'] = '(Sesja wygas³a. Automatycznie wylogowano)';
+$lang['timeout_at'] = 'Brak aktywno¶ci wyloguje Ciê o %s';
 ?>

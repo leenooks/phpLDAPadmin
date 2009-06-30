@@ -1,26 +1,26 @@
-$Header: /cvsroot/phpldapadmin/phpldapadmin/doc/INSTALL-es.txt,v 1.3 2004/03/19 20:22:54 i18phpldapadmin Exp $
-Estas instrucciones dejan por sentado que tienes una instalación
+$Header: /cvsroot/phpldapadmin/phpldapadmin/doc/INSTALL-es.txt,v 1.4 2005/02/06 00:37:15 wurley Exp $
+Estas instrucciones dejan por sentado que tienes una instalaciÃ³n
 funcionando de:
     a. Servidor Web (Apache, IIS, etc).
     b. PHP 4.1.0 o mas nuevo (con soporte LDAP)
         
 * Instalando phpLDAPadmin en 4 pasos muy simples:
 
-  1. Desempaqueta el archivo (si estás leyendo esto, ya lo has hecho).
-  2. Pon el directorio resultante 'phpldapadmin' en algún lugar de tu
+  1. Desempaqueta el archivo (si estÃ¡s leyendo esto, ya lo has hecho).
+  2. Pon el directorio resultante 'phpldapadmin' en algÃºn lugar de tu
   directorio web raiz.
-  3. Copia 'config.php.example' a 'config.php' y edítalo para que se
-  acomode a tu configuración y tu gusto.
-  4. Entonces, con el navegador ve a la dirección que contiene los archivos
+  3. Copia 'config.php.example' a 'config.php' y edÃ­talo para que se
+  acomode a tu configuraciÃ³n y tu gusto.
+  4. Entonces, con el navegador ve a la direcciÃ³n que contiene los archivos
   del directorio phpldapadmin.
   
 * Notas del navegador
 
-  phpLDAP se desarrolló bajo Mozilla, y será donde seguramente corra mejor.
-  Aún así, las pruebas se han hecho bajo Internet Explorer, y tendría que funcionar
-  bien también. No se ha hecho ninguna prueba con Konqueror (o cualquier navegador
+  phpLDAP se desarrollÃ³ bajo Mozilla, y serÃ¡ donde seguramente corra mejor.
+  AÃºn asÃ­, las pruebas se han hecho bajo Internet Explorer, y tendrÃ­a que funcionar
+  bien tambiÃ©n. No se ha hecho ninguna prueba con Konqueror (o cualquier navegador
   basado en kthml como Safari) o Opera. Si encuentras alguna incompatibilidad, por favor
-  háznoslo saber.
+  hÃ¡znoslo saber.
   
 * Contribuidores
 
@@ -36,21 +36,21 @@ funcionando de:
   - Bayu Irawan         userPassword hash, arreglos html, arreglos ldap_modify
   - Uwe Ebel         	arreglo short_open_tags
   - Andrew Tipton       soporte SUP en el parseador del esquema
-  - Eigil Bjørgum       soporte UTF-8
+  - Eigil BjÃ¸rgum       soporte UTF-8
   - Brandon Lederer     plantilla de entrada de DNS
     Nathan Rotschafer
   - Steve Rigler        Parche para Password hash
-  - Chris Jackson       Contraseñas Blowfish y md5crypt
+  - Chris Jackson       ContraseÃ±as Blowfish y md5crypt
   - Marius Rieder       Parseador avanzado de esquema
-  - Nick Burch          Un montón de arreglos de realpath()
+  - Nick Burch          Un montÃ³n de arreglos de realpath()
 
   Traductores:
 
-  - Uwe Ebel            Alemán
-  - Xavier Renard       Francés
-  - Dave Smith          Inglés ;)
+  - Uwe Ebel            AlemÃ¡n
+  - Xavier Renard       FrancÃ©s
+  - Dave Smith          InglÃ©s ;)
   
-    Si puedes ayudar a traducir, por favor apúntate a la lista de correo phpldapadmin:
+    Si puedes ayudar a traducir, por favor apÃºntate a la lista de correo phpldapadmin:
     https://lists.sourceforge.net/mailman/listinfo/phpldapadmin-devel
 
 

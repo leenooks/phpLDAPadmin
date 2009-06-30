@@ -1,0 +1,38 @@
+<template>
+<title>Example entry</title>
+<icon>images/star.png</icon>
+<description>This is the description</description>
+<rdn>o</rdn>
+<regexp>^$</regexp>
+<visible>0</visible>
+
+<objectClasses>
+<objectClass id="organization"></objectClass>
+</objectClasses>
+
+<attributes>
+<attribute id="attribute1">
+	<display>Attribute 1</display>
+	<description>This is the attribute description</description>
+	<default></default>
+	<hint>This is an example</hint>
+	<order>1</order>
+	<page>1</page>
+	<icon>images/user.png</icon>
+</attribute>
+<attribute id="attribute2">
+	<display>Attribute 2</display>
+	<description>This is the attribute description</description>
+	<default></default>
+	<order>2</order>
+	<page>2</page>
+</attribute>
+<attribute id="attribute3">
+	<display>Attribute 3</display>
+	<description>This is the attribute description</description>
+	<default></default>
+	<order>1</order>
+	<page>2</page>
+</attribute>
+</attributes>
+</template>

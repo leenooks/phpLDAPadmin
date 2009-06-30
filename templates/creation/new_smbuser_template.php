@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_smbuser_template.php,v 1.17 2004/12/16 22:59:50 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_smbuser_template.php,v 1.18 2005/03/05 06:27:07 wurley Exp $
 
 	$default_container = "ou=Users";
 	$default_home = "/home";
@@ -12,7 +12,7 @@
 		$step = $_POST['step'];
 		
 	//check if the sambaSamAccount objectClass is availaible
-	if( get_schema_objectclass( $server_id, 'sambaAccount' ) == null )
+	if( get_schema_objectclass( $ldapserver, 'sambaAccount' ) == null )
 		pla_error( "Your LDAP server does not have schema support for the sambaAccount objectClass. Cannot continue." );
 
 	check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
@@ -198,7 +198,7 @@
 		pla_error( "You cannot leave the UID number blank. Please go back and try again." );
 	is_numeric( $uid_number ) or
 		pla_error( "You can only enter numeric values for the UID number field. Please go back and try again." );
-	dn_exists( $server_id, $container ) or
+	dn_exists( $ldapserver, $container ) or
 		pla_error( "The container you specified (" . htmlspecialchars( $container ) . ") does not exist. " .
 	       		       "Please go back and try again." );
 

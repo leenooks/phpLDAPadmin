@@ -1,3 +1,78 @@
+* Version 0.9.7, 2005-09-11
+
+  * Summary:
+    - Now fully supporting PHP5 - this will be the last version developed on PHP4.
+    - Revamped how you configure PLA - now using a config object and some checking,
+    - Revamped how you define LDAP servers - extending the LDAPServer object and adding some checking.
+    - Fixed all functions so that they now use the LDAPServer object.
+    - Introduced the template engine and configuration by XML files. (The old templates are still in this
+      version, unchanged from 0.9.6. They will be removed after this version is released.)
+    - Changed dependancy checking to just index.php, so that common.php executes faster.
+    - Minor improvements to compare.php
+    - Much improved debug logging
+    - Much improved caching
+    - Improved LDAP server info display
+    - Some code readability cleanup
+
+    - Add other fixes as per the ChangeLog (ChangeLogCVS.txt).
+
+  Thank you for everybody who has submitted fixes/enhancements/recommendations and feedback for this version.
+
+* Version 0.9.6, 2005-04-03
+
+ * Summary:
+    The main goals for this version was to close all the outstanding bugs and apply all the submitted patchs
+    on sourceforge. All the sourceforge easy to do RFE's where also included.
+
+ * Notes:
+    - Added support for mulpiple Base DN's
+    - Added support to log for syslog (Benjamin Drieu)
+    - Added hooks feature to replace custom functions (Benjamin Drieu)
+    - Entry chooser now auto adds rdn entry for copy/move operations (wigi2)
+    - Initial support for AD Schema Retrieval
+    - Added login restriction (Samuel Tran)
+    - Added support to move objects (aka Copy then Delete) (wigi2)
+    - No longer show + next to objects that have no children in tree viewer (when hide_configuration_management=true)
+    - Added date evaluation to shadow attributes (shadowAccount)
+    - Added Enhancement to show attributes in a specifc order (Samuel Tran)
+    - Added Server Info OID descriptions
+    - Added new feature to compare two DNs
+    - Binary SID to text SID feature for MSAD objectSid entries.
+    - Added session timeout feature (Samuel Tran)
+
+ * New Languages:
+    - Taiwan (Anonymous)
+    - Simplfied Chinese (Anonymous)
+
+ * Changes:
+    - LDAP server configuration is being moved into an Object LDAPServer, all future interactions should
+      use this object class from now on.
+    - Some more conversions of english static text into language files.
+    - Some code cleanup, excess whitespace removal, etc...
+    - Tags for phpdoc updated.
+    - Added cvs header to files missing the header.
+    - LDIF Import function improvements (Xavier Renard)
+    - UniqueAttrs fix, now showing actual value (in multi value attribs) that breaches uniqueness
+    - Fixed check_lang_files when register_globals=off
+    - css fixes (Daniel van Eeden)
+    - More locatisation fixes (Piotr Tarnowski)
+    - Schema functions all use cached entries now by default
+    - Improved password encoding functions (Tomas Kuliavas)
+    - If auth_type = session, then dn and password is also blowfish encrypted
+    - Prettied up the icon index (Dave Smith)
+    - Make the rdn not editable in the default template.
+
+ * Fixes:
+    - password_check when magic_quotes_gpc is on.
+    - Misc fixes (Benjamin Drieu)
+    - Fix searchs when searching for values with brackets
+    - Unicode fixes (Daniel van Eeden)
+    - View jpeg photo minor security fix (Dave Smith)
+    - Check password link missing in read-only mode
+
+ * Sourceforge bug fixes:
+    1117099 1117316 1120048 1150947 1152962 1153360 1055401 1158148 1161425
+
 
 * Version 0.9.5, 2004-12-17
 

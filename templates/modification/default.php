@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/modification/default.php,v 1.70 2004/12/20 14:12:33 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/modification/default.php,v 1.84 2005/09/25 04:48:21 wurley Exp $
  
 
 /*
@@ -15,11 +15,16 @@
 
 /** If an entry has more children than this, stop searching and display this amount with a '+' */
 $max_children = 100;
+$today = date('U');
+$shadow_before_today_attrs = arrayLower(array('shadowLastChange','shadowMin'));
+$shadow_after_today_attrs = arrayLower(array('shadowMax','shadowExpire','shadowWarning','shadowInactive'));
+$shadow_format_attrs = array_merge($shadow_before_today_attrs, $shadow_after_today_attrs);
 
 isset( $dn ) or $dn = isset( $_GET['dn'] ) ? $_GET['dn'] : null;
 $encoded_dn = rawurlencode( $dn );
 $modified_attrs = isset( $_GET['modified_attrs'] ) ? $_GET['modified_attrs'] : false;
 isset( $server_id ) or $server_id = $_GET['server_id'];
+$ldapserver = $ldapservers->Instance($server_id);
 $show_internal_attrs = isset( $_GET['show_internal_attrs'] ) ? true : false;
 if( null != $dn ) {
 	$rdn = pla_explode_dn( $dn );
@@ -33,18 +38,18 @@ if( null != $dn ) {
 
 check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
-pla_ldap_connect( $server_id ) or pla_error( $lang['could_not_connect'] );
+//pla_ldap_connect( $server_id ) or pla_error( $lang['could_not_connect'] );
 $friendly_attrs = process_friendly_attr_table();
 if( ! isset( $attrs ) )
-	$attrs = get_object_attrs( $server_id, $dn, false, get_view_deref_setting() );
+	$attrs = get_object_attrs( $ldapserver, $dn, false, get_view_deref_setting() );
 
-pla_ldap_connect( $server_id ) or pla_error( $lang['could_not_connect'] );
-$system_attrs = get_entry_system_attrs( $server_id, $dn, get_view_deref_setting() );
-dn_exists( $server_id, $dn ) or pla_error( sprintf( $lang['no_such_entry'], pretty_print_dn( $dn ) ) );
+//pla_ldap_connect( $server_id ) or pla_error( $lang['could_not_connect'] );
+//$system_attrs = get_entry_system_attrs( $ldapserver, $dn, get_view_deref_setting() ); NEVER USED?
+dn_exists( $ldapserver, $dn ) or pla_error( sprintf( $lang['no_such_entry'], pretty_print_dn( $dn ) ) );
 
 $server_name = $servers[$server_id]['name'];
 
-include 'header.php'; ?>
+include './header.php'; ?>
 <body>
 
 <h3 class="title"><?php echo htmlspecialchars( ( $rdn ) ); ?></h3>
@@ -92,6 +97,10 @@ include 'header.php'; ?>
     </tr>
     <?php } ?>
 <tr>
+	<td class="icon"><img src="images/compare.png" /></td>
+	<td><a href="<?php echo "compare_form.php?server_id=$server_id&amp;dn=$encoded_dn"; ?>"><?php echo $lang['compare_with']; ?></a></td>
+</tr>
+<tr>
 	<td class="icon"><img src="images/star.png" /></td>
 	<td><a href="<?php echo "create_form.php?server_id=$server_id&amp;container=$encoded_dn"; ?>"><?php echo $lang['create_a_child_entry']; ?></a></td>
 	<td class="icon"><img src="images/add.png" /></td>
@@ -101,7 +110,7 @@ include 'header.php'; ?>
 
 
 <?php flush(); ?>
-<?php $children = get_container_contents( $server_id, $dn, $max_children, '(objectClass=*)', get_view_deref_setting() ); 
+<?php $children = get_container_contents( $ldapserver, $dn, $max_children, '(objectClass=*)', get_view_deref_setting() ); 
 
 if( ($children_count = count( $children ) ) > 0 ) { 
 	if( $children_count == $max_children )
@@ -164,7 +173,7 @@ if( ($children_count = count( $children ) ) > 0 ) {
 <?php
 if( $show_internal_attrs ) {
 	$counter = 0;
-	foreach( get_entry_system_attrs( $server_id, $dn ) as $attr => $vals ) {
+	foreach( get_entry_system_attrs( $ldapserver, $dn ) as $attr => $vals ) {
 		$counter++;
 		$schema_href = "schema.php?server_id=$server_id&amp;view=attributes&amp;viewvalue=" . real_attr_name($attr);
 		?>
@@ -176,7 +185,7 @@ if( $show_internal_attrs ) {
         <tr>
 		<td class="val">
         <?php 
-           if( is_attr_binary( $server_id, $attr ) ) {
+           if( is_attr_binary( $ldapserver, $attr ) ) {
                $href = "download_binary_attr.php?server_id=$server_id&amp;dn=$encoded_dn&amp;attr=$attr";
                ?>
         		<small>
@@ -228,7 +237,7 @@ foreach( $attrs as $attr => $vals ) {
 
 	flush();
 
-    $schema_attr = get_schema_attribute( $server_id, $attr, $dn );
+    $schema_attr = get_schema_attribute( $ldapserver, $attr, $dn );
     if( $schema_attr )
         $attr_syntax = $schema_attr->getSyntaxOID();
     else
@@ -238,7 +247,7 @@ foreach( $attrs as $attr => $vals ) {
 		continue;
 
 	// has the config.php specified that this attribute is to be hidden or shown?
-    if( is_attr_hidden( $server_id, $attr))
+    if( is_attr_hidden( $ldapserver, $attr))
         continue;
 
     // Setup the $attr_note, which will be displayed to the right of the attr name (if any)
@@ -257,12 +266,26 @@ foreach( $attrs as $attr => $vals ) {
 	$required_by = '';
 	if( $schema_attr )
 		foreach( $schema_attr->getRequiredByObjectClasses() as $required )
-			if( in_array( strtolower( $required ), arrayLower( $attrs['objectClass'] ) ) )
+			if( isset($attrs['objectClass']) && in_array( strtolower( $required ), arrayLower( $attrs['objectClass'] ) ) )
 				$required_by .= $required . ' ';
+
+			// It seems that some LDAP servers (Domino) returns attributes in lower case?
+			elseif( isset($attrs['objectclass']) && in_array( strtolower( $required ), arrayLower( $attrs['objectclass'] ) ) )
+				$required_by .= $required . ' ';
+
 	if( $required_by ) {
 		if( trim( $attr_note ) )
 			$attr_note .= ', ';
-			$attr_note .= "<acronym title=\"" . sprintf( $lang['required_for'], $required_by ) . "\">" . $lang['required'] . "</acronym>&nbsp;";
+
+		$attr_note .= "<acronym title=\"" . sprintf( $lang['required_for'], $required_by ) . "\">" . $lang['required'] . "</acronym>&nbsp;";
+	}
+
+	// is this attribute required because its the RDN
+	if (preg_match("/^${attr}=/",$rdn)) {
+		if( trim( $attr_note ) )
+			$attr_note .= ', ';
+
+		$attr_note .= "&nbsp;<acronym title=\"" . $lang['required_by_entry'] . "\">" . 'rdn' . "</acronym>&nbsp;";
 	}
 	?>
 
@@ -288,7 +311,7 @@ foreach( $attrs as $attr => $vals ) {
 	</td>
     <td class="attr_note">
 		<sup><small><?php echo $attr_note; ?></small></sup>
-        <?php if( is_attr_read_only( $server_id, $attr ) ) { ?>
+        <?php if( is_attr_read_only( $ldapserver, $attr ) ) { ?>
             <small>(<acronym title="<?php echo $lang['read_only_tooltip']; ?>"><?php echo $lang['read_only']; ?></acronym>)</small>
         <?php } ?>
     </td>
@@ -306,14 +329,14 @@ foreach( $attrs as $attr => $vals ) {
 	/*
 	 * Is this attribute a jpegPhoto? 
 	 */
-	if( is_jpeg_photo( $server_id, $attr ) ) {
+	if( is_jpeg_photo( $ldapserver, $attr ) ) {
 		
 		// Don't draw the delete buttons if there is more than one jpegPhoto
 		// 	(phpLDAPadmin can't handle this case yet)
-		if( is_server_read_only( $server_id ) || is_attr_read_only( $server_id, $attr ) )
-			draw_jpeg_photos( $server_id, $dn, $attr, false );
+		if( $ldapserver->isReadOnly() || is_attr_read_only( $ldapserver, $attr ) )
+			draw_jpeg_photos( $ldapserver, $dn, $attr, false );
 		else
-			draw_jpeg_photos( $server_id, $dn, $attr, true );
+			draw_jpeg_photos( $ldapserver, $dn, $attr, true );
 			
 		// proceed to the next attribute
         echo "</td></tr>\n";
@@ -326,12 +349,18 @@ foreach( $attrs as $attr => $vals ) {
 	/*
 	 * Is this attribute binary?
 	 */
-	if( is_attr_binary( $server_id, $attr ) ) {
+	if( is_attr_binary( $ldapserver, $attr ) ) {
+
+
 		$href = "download_binary_attr.php?server_id=$server_id&amp;dn=$encoded_dn&amp;attr=$attr";
 		?>
 
 		<small>
-		<?php echo $lang['binary_value']; ?><br />
+		<?php echo $lang['binary_value']; ?>
+		<?php if (! strcasecmp( $attr, 'objectSid' ) ) {
+			printf(' (%s)',binSIDtoText($vals[0]));
+		} ?>
+		<br />
 		<?php if( count( $vals ) > 1 ) { for( $i=1; $i<=count($vals); $i++ ) { ?>
 			<a href="<?php echo $href . "&amp;value_num=$i"; ?>"><img 
 				src="images/save.png" /> <?php echo $lang['download_value']; ?>(<?php echo $i; ?>)</a><br />
@@ -339,7 +368,7 @@ foreach( $attrs as $attr => $vals ) {
 			<a href="<?php echo $href; ?>"><img src="images/save.png" /> <?php echo $lang['download_value']; ?></a><br />
 		<?php } ?>
 
-		<?php if( ! is_server_read_only( $server_id ) && ! is_attr_read_only( $server_id, $attr ) ) { ?>
+		<?php if( ! is_server_read_only( $server_id ) && ! is_attr_read_only( $ldapserver, $attr ) ) { ?>
 		<a href="javascript:deleteAttribute( '<?php echo $attr; ?>' );"
 			style="color:red;"><img src="images/trash.png" /> <?php echo $lang['delete_attribute']; ?></a>
 		<?php } ?>
@@ -349,6 +378,7 @@ foreach( $attrs as $attr => $vals ) {
         </tr>
 
 		<?php 
+
         if( $is_modified_attr ) 
             echo '<tr class="updated_attr"><td class="bottom" colspan="2"></td></tr>';
         continue; 
@@ -359,27 +389,59 @@ foreach( $attrs as $attr => $vals ) {
 	 * Note: at this point, the attribute must be text-based (not binary or jpeg)
 	 */
 
+	// If we this is the userPassword attribute, add the javascript so we can call check password later.
+	if (! strcasecmp( $attr, 'userPassword' ) ) {
+		$user_password = $vals[0]; ?>
+            <script language="javascript">
+            <!--
+                function passwordComparePopup()
+                {
+                    mywindow = open( 'password_checker.php', 'myname', 'resizable=no,width=450,height=200,scrollbars=1' );
+                    mywindow.location.href = 'password_checker.php?hash=<?php echo base64_encode($user_password); ?>&base64=true';
+                    if( mywindow.opener == null ) 
+                        mywindow.opener = self;
+                }
+            -->
+            </script>
+	<?php }
 
 	/*
 	 * If this server is in read-only mode or this attribute is configured as read_only, 
 	 * simply draw the attribute values and continue.
 	 */
-	if( is_server_read_only( $server_id ) || is_attr_read_only( $server_id, $attr ) ) {
+	if( is_server_read_only( $server_id ) || is_attr_read_only( $ldapserver, $attr ) || (preg_match("/^${attr}=/",$rdn)) ) {
 		if( is_array( $vals ) ) { 
 			foreach( $vals as $i => $val ) {
 				if( trim( $val ) == "" )
 					echo "<span style=\"color:red\">[" . $lang['empty'] . "]</span><br />\n";
 				elseif( 0 == strcasecmp( $attr, 'userPassword' ) && obfuscate_password_display() )
 					echo preg_replace( '/./', '*', $val ) . "<br />";
-				else
+
+				elseif( in_array(strtolower($attr), $shadow_format_attrs) ) {
+					$shadow_date = shadow_date( $attrs, $attr);
+					echo htmlspecialchars($val)."&nbsp;";
+					echo "<small>";
+					if( ($today < $shadow_date) && in_array(strtolower($attr), $shadow_before_today_attrs) )
+						echo '<span style="color:red">'.htmlspecialchars("(".strftime(get_date_format(),$shadow_date).")").'</span>';
+					elseif( $today > $shadow_date && in_array(strtolower($attr), $shadow_after_today_attrs) ) 
+						echo '<span style="color:red">'.htmlspecialchars("(".strftime(get_date_format(),$shadow_date).")").'</span>';
+					else
+                				echo htmlspecialchars("(".strftime(get_date_format(),shadow_date( $attrs, $attr)).")");
+					echo "</small>";
+				} else
 					echo htmlspecialchars( $val ) . "<br />";
 			}
 		} else {
 			if( 0 == strcasecmp( $attr, 'userPassword' ) && obfuscate_password_display() )
 				echo preg_replace( '/./', '*', $vals ) . "<br />";
 			else
-				echo $vals . "<br />";
-		}
+				echo $vals . "<br />"; ?>
+
+
+		<?php }
+		if (! strcasecmp( $attr, 'userPassword' ) ) {?>
+			<small><a href="javascript:passwordComparePopup()"><?php echo $lang['t_check_pass']; ?></a></small>
+		<?php }
 		echo "</td>";
 		echo "</tr>";
         if( $is_modified_attr ) 
@@ -390,7 +452,7 @@ foreach( $attrs as $attr => $vals ) {
 	/*
 	 * Is this a userPassword attribute?
 	 */
-	if( 0 == strcasecmp( $attr, 'userpassword' ) ) { 
+	if( 0 == strcasecmp( $attr, 'userpassword' ) ) {
 		$user_password = $vals[0];
         $enc_type = get_enc_type( $user_password );
 
@@ -422,30 +484,10 @@ foreach( $attrs as $attr => $vals ) {
 		       name="new_values[userpassword]" 
                value="<?php echo htmlspecialchars( $user_password ); ?>" />
 
-		<select name="enc_type">
-			<option>clear</option>
-			<option<?php echo $enc_type=='crypt'?' selected="true"':''; ?>>crypt</option>
-			<option<?php echo $enc_type=='md5'?' selected="true"':''; ?>>md5</option>
-			<option<?php echo $enc_type=='smd5'?' selected="true"':''; ?>>smd5</option>
-			<option<?php echo $enc_type=='md5crypt'?' selected="true"':''; ?>>md5crypt</option>
-			<option<?php echo $enc_type=='blowfish'?' selected="true"':''; ?>>blowfish</option>
-			<option<?php echo $enc_type=='sha'?' selected="true"':''; ?>>sha</option>
-			<option<?php echo $enc_type=='ssha'?' selected="true"':''; ?>>ssha</option>
-			</select>
+		<?php echo enc_type_select_list($enc_type); ?>
 
             <br />
 
-            <script language="javascript">
-            <!--
-                function passwordComparePopup()
-                {
-                    mywindow = open( 'password_checker.php', 'myname', 'resizable=no,width=450,height=200,scrollbars=1' );
-                    mywindow.location.href = 'password_checker.php?hash=<?php echo base64_encode($user_password); ?>&base64=true';
-                    if( mywindow.opener == null ) 
-                        mywindow.opener = self;
-                }
-            -->
-            </script>
             <small><a href="javascript:passwordComparePopup()"><?php echo $lang['t_check_pass']; ?></a></small>
 
         </td></tr>
@@ -454,12 +496,12 @@ foreach( $attrs as $attr => $vals ) {
         if( $is_modified_attr ) 
             echo '<tr class="updated_attr"><td class="bottom" colspan="2"></td></tr>';
         continue; 
-	} 
+	}
 	
 	/*
 	 * Is this a boolean attribute? 
 	 */
-     if( is_attr_boolean( $server_id, $attr) ) {
+     if( is_attr_boolean( $ldapserver, $attr) ) {
 		$val = $vals[0];
 		?>
 
@@ -515,7 +557,7 @@ foreach( $attrs as $attr => $vals ) {
               href="schema.php?server_id=<?php echo $server_id; ?>&amp;view=objectClasses&amp;viewvalue=<?php echo htmlspecialchars( $val ); ?>"><img
                 src="images/info.png" /></a>
             <?php
-			$schema_object = get_schema_objectclass( $server_id, $val);
+			$schema_object = get_schema_objectclass( $ldapserver, $val);
 			if ($schema_object->type == 'structural') {
 				echo "$val <small>(<acronym title=\"" . 
                         sprintf( $lang['structural_object_class_cannot_remove'] ) . "\">" .
@@ -532,7 +574,7 @@ foreach( $attrs as $attr => $vals ) {
 
 		?>
 			       
-        <?php if( is_dn_string( $val ) || is_dn_attr( $server_id, $attr ) ) { ?>
+        <?php if( is_dn_string( $val ) || is_dn_attr( $ldapserver, $attr ) ) { ?>
              <a 
                 title="<?php echo sprintf( $lang['go_to_dn'], htmlspecialchars($val) ); ?>" 
                 href="edit.php?server_id=<?php echo $server_id; ?>&amp;dn=<?php echo rawurlencode($val); ?>"><img 
@@ -568,15 +610,15 @@ foreach( $attrs as $attr => $vals ) {
 		<?php 
 		// draw a link for popping up the entry browser if this is the type of attribute
 		// that houses DNs. 
-		if( is_dn_attr( $server_id, $attr ) )
+		if( is_dn_attr( $ldapserver, $attr ) )
 			draw_chooser_link( "edit_form.$input_id", false );
 
         // If this is a gidNumber on a non-PosixGroup entry, lookup its name and description for convenience
         if( 0 == strcasecmp( $attr, 'gidNumber' ) && 
-                ! in_array_ignore_case( 'posixGroup', get_object_attr( $server_id, $dn, 'objectClass' ) ) ) {
+                ! in_array_ignore_case( 'posixGroup', get_object_attr( $ldapserver, $dn, 'objectClass' ) ) ) {
             $gid_number = $val;
             $search_group_filter = "(&(objectClass=posixGroup)(gidNumber=$val))";
-            $group = pla_ldap_search( $server_id, $search_group_filter, null, array( 'dn', 'description' )  );
+            $group = pla_ldap_search( $ldapserver, $search_group_filter, null, array( 'dn', 'description' )  );
             if( count( $group ) > 0 ) {
                 echo "<br />";
                 $group = array_pop( $group );
@@ -590,9 +632,22 @@ foreach( $attrs as $attr => $vals ) {
                 if( $description ) echo " (" . htmlspecialchars( $description ) . ")";
                 echo "</small>";
             }
-        }
+	}
 
-        ?>
+	// Show the dates for all the shadow attributes.
+	if( in_array(strtolower($attr), $shadow_format_attrs) ) {
+        if( ( $shadow_date = shadow_date( $attrs, $attr) ) !== false ) {
+            echo "<br />";
+            echo "<small>";
+            if( ($today < $shadow_date) && in_array(strtolower($attr), $shadow_before_today_attrs) )
+                echo '<span style="color:red">'.htmlspecialchars(strftime(get_date_format(),$shadow_date)).'</span>';
+            elseif( $today > $shadow_date && in_array(strtolower($attr), $shadow_after_today_attrs) ) 
+                echo '<span style="color:red">'.htmlspecialchars(strftime(get_date_format(),$shadow_date)).'</span>';
+            else
+                echo htmlspecialchars(strftime(get_date_format(),$shadow_date));
+            echo "</small>";
+        }
+	} ?>
 
 		<br />
 	       
@@ -602,7 +657,7 @@ foreach( $attrs as $attr => $vals ) {
 		/* Draw the "add value" link under the list of values for this attributes */
 
 		if(	! is_server_read_only( $server_id ) && 
-			( $schema_attr = get_schema_attribute( $server_id, $attr, $dn ) ) &&
+			( $schema_attr = get_schema_attribute( $ldapserver, $attr, $dn ) ) &&
 			! $schema_attr->getIsSingleValue() )
 		{ 
 			$add_href = "add_value_form.php?server_id=$server_id&amp;" .

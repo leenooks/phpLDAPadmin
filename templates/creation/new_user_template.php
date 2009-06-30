@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_user_template.php,v 1.25 2004/12/20 14:12:33 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_user_template.php,v 1.26 2005/03/05 06:27:07 wurley Exp $
 
 /*
  * TODO Add a check: If the server is configured to use auto_uid_numbers AND the 
@@ -199,7 +199,7 @@ function autoFillHomeDir( form )
 <tr>
 	<td></td>
 	<td class="heading"><?php echo $lang['t_uid_number']; ?>:</td>
-	<?php $next_uid_number = ( auto_uid_numbers_enabled( $server_id ) ? get_next_uid_number( $server_id ) : false ); ?>
+	<?php $next_uid_number = ( auto_uid_numbers_enabled( $server_id ) ? get_next_uid_number( $ldapserver ) : false ); ?>
 	<td><input type="text" name="uid_number" value="<?php echo $next_uid_number ?>" />
 	<?php if( false !== $next_uid_number ) echo "<small>" . $lang['t_auto_det'] . "</small>"; ?>
 	</td>
@@ -210,7 +210,7 @@ function autoFillHomeDir( form )
     $base_dn = null;
     if( isset( $base_posix_groups ) )
         $base_dn = $base_posix_groups;
-    $posix_groups = get_posix_groups( $server_id, $base_dn );
+    $posix_groups = get_posix_groups( $ldapserver, $base_dn );
     $posix_groups_found = ( count( $posix_groups ) ? true : false ); ?>
 	<td class="heading"><?php echo $posix_groups_found ? $lang['t_group'] : $lang['t_gid_number'] ?>:</td>
 	<td>
@@ -263,7 +263,7 @@ function autoFillHomeDir( form )
 		pla_error( sprintf( $lang['t_err_field_num'], $lang['t_uid_number'] ) );
 	is_numeric( $gid_number ) or
 		pla_error( sprintf( $lang['t_err_field_num'], $lang['t_gid_number'] ) );
-	dn_exists( $server_id, $container ) or
+	dn_exists( $ldapserver, $container ) or
 		pla_error( sprintf( $lang['t_err_bad_container'], htmlspecialchars( $container ) ) );
 
 	$password = password_hash( $password1, $encryption );

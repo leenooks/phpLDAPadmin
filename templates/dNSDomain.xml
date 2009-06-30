@@ -1,0 +1,29 @@
+<template>
+<title>dns_entry</title>
+<!--<regexp>^ou=People,o=.*,</regexp>-->
+<icon>images/dc.png</icon>
+<description>New DNS Entry</description>
+<askcontainer>1</askcontainer>
+<rdn>dc</rdn>
+<visible>1</visible>
+
+<objectClasses>
+<objectClass id="dnsDomain"></objectClass>
+<objectClass id="domainRelatedObject"></objectClass>
+</objectClasses>
+
+<attributes>
+<attribute id="domainComponent">
+	<display>DC Name</display>
+	<description>Domain Component</description>
+	<override>dc</override>
+	<order>1</order>
+	<page>1</page>
+</attribute>
+<attribute id="associatedDomain">
+	<display>Associated Domain</display>
+	<order>2</order>
+	<page>1</page>
+</attribute>
+</attributes>
+</template>

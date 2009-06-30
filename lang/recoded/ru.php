@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/recoded/ru.php,v 1.6 2004/06/21 20:12:18 i18phpldapadmin Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/recoded/ru.php,v 1.7 2005/06/23 14:11:24 wurley Exp $
 
 
 /*        ---   INSTRUCTIONS FOR TRANSLATORS   ---
@@ -503,7 +503,7 @@ $lang['not_using_https'] = 'Вы не используете \'https\'. Web-бр
 $lang['login_dn'] = 'Login DN';
 $lang['user_name'] = 'Имя пользователя';
 $lang['password'] = 'Пароль';
-$lang['authenticate'] = 'Авотризация';
+$lang['authenticate'] = 'Авторизация';
 
 // Entry browser
 $lang['entry_chooser_title'] = 'Выбор записи';

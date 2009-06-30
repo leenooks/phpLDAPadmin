@@ -1,6 +1,11 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/unit_test.php,v 1.17 2004/09/07 14:23:00 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/unit_test.php,v 1.20 2005/07/16 16:23:28 wurley Exp $
 
+/**
+ * @package phpLDAPadmin
+ */
+/**
+ */
 
 include './common.php';
 include './header.php';
@@ -77,8 +82,8 @@ if( false ) {
 
 // testing get_rdn()
 if( false ) {
-    echo "Should be uid=b‰b: ";
-    echo get_rdn( "uid=b‰b,ou=People-copy1,ou=People-copy2,ou=People2,dc=example,dc=com" );
+    echo "Should be uid=b√§b: ";
+    echo get_rdn( "uid=b√§b,ou=People-copy1,ou=People-copy2,ou=People2,dc=example,dc=com" );
     echo "<br>\n";
     echo "Should be dc=com: ";
     echo get_rdn( "dc=com" );
@@ -91,7 +96,7 @@ if( false ) {
 // testing get_container()
 if( false ) {
     echo "Should be ou=People-copy1,ou=People-copy2,ou=People2,dc=example,dc=com: ";
-    var_dump( get_container( "uid=b‰b,ou=People-copy1,ou=People-copy2,ou=People2,dc=example,dc=com" ) );
+    var_dump( get_container( "uid=b√§b,ou=People-copy1,ou=People-copy2,ou=People2,dc=example,dc=com" ) );
     echo "<br>\n";
     echo "Should be null: ";
     var_dump( get_container( "dc=com" ) );
@@ -141,4 +146,5 @@ if( true ) {
     }
 }
 
+print password_generate();
 ?>

@@ -15,11 +15,11 @@
  * @author The phpLDAPadmin development team 
  **/
 
-include 'header.php';
+include './header.php';
 $rdn = get_rdn( $dn );
 $sambaAccount = explode( '=', $rdn, 2 );
 $sambaAccountRdn = $sambaAccount[1];
-$attrs = get_object_attrs( $server_id, $dn, false, get_view_deref_setting());
+$attrs = get_object_attrs( $ldapserver, $dn, false, get_view_deref_setting());
 ?>
 <body>
 <h3 class="title"><?php echo $lang['samba_account'] . ': '; ?> <b><?php echo htmlspecialchars( $sambaAccountRdn ); ?></b></h3>

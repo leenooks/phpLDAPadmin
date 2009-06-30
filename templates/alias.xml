@@ -1,0 +1,29 @@
+<!--This template doesnt work needs modification to the Engine.-->
+<template>
+<title>ldap_alias</title>
+<!--<regexp>^ou=People,o=.*,</regexp>-->
+<icon>images/mail_alias.png</icon>
+<description>New LDAP Alias</description>
+<askcontainer>1</askcontainer>
+<rdn>aliasedObjectName</rdn>
+<visible>1</visible>
+<invalid>1</invalid>
+
+<objectClasses>
+<objectClass id="alias"></objectClass>
+<objectClass id="extensibleObject"></objectClass>
+</objectClasses>
+
+<attributes>
+<attribute id="aliasedObjectName">
+	<display>Alias To</display>
+	<order>1</order>
+	<page>1</page>
+	<helper>
+		<display></display>
+		<location>side</location>
+		<value>=php.DrawChooserLink(aliasedObjectName,0)</value>
+	</helper>
+</attribute>
+</attributes>
+</template>

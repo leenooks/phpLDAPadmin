@@ -1,8 +1,16 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/help.php,v 1.5 2005/02/26 12:35:05 wurley Exp $
 
-include 'common.php';
-include 'header.php';
+/**
+ * @package phpLDAPadmin
+ */
+/**
+ */
 
+include './common.php';
+include './header.php';
+
+$forum_href = get_href( 'forum' );
 ?>
 
 <body>
@@ -12,9 +20,8 @@ include 'header.php';
 <center>
 <p>Do you have a problem or question?</p>
 <p>Perhaps you are new to LDAP and need a little guidance?</p>
-<p>Help is only one click away. Visit the online <a href="http://www.phpldapadmin.com/forum">phpLDAPadmin support forum</a>.</p>
+<p>Help is only one click away. Visit the online <a href="<?php echo $forum_href; ?>">phpLDAPadmin support forum</a>.</p>
 <br />
-<p>(Note that paying members will receive priority support, so <a target="new" href="https://www.phpldapadmin.com/product_info.php/products_id/28">buy your membership</a> today.)</p>
 </center>
 
 </body>

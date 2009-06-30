@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_security_object_template.php,v 1.4 2004/10/24 23:51:51 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_security_object_template.php,v 1.5 2005/03/05 06:27:07 wurley Exp $
 
 // customize this to your needs
 $default_container = "ou=server";
@@ -137,7 +137,7 @@ function autoFillHomeDir( form )
 	/* Critical assertions */
 	$password1 == $password2 or
 		pla_error( "Your passwords don't match. Please go back and try again." );
-	dn_exists( $server_id, $container ) or
+	dn_exists( $ldapserver, $container ) or
 		pla_error( "The container you specified (" . htmlspecialchars( $container ) . ") does not exist. " .
 	       		       "Please go back and try again." );
 

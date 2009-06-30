@@ -1,4 +1,5 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/blowfish.php,v 1.3 2005/02/25 13:44:05 wurley Exp $
 
 /**
  * The Cipher_blowfish:: class implements the Cipher interface enryption data
@@ -12,8 +13,11 @@
  * did not receive this file, see http://www.fsf.org/copyleft/lgpl.html.
  *
  * @author  Mike Cochrane <mike@graftonhall.co.nz>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.3 $
  * @since   Horde 2.2
+ * @package horde.cipher
+ */
+/**
  * @package horde.cipher
  */
 
@@ -386,7 +390,7 @@ class Horde_Cipher_blowfish {
         $parts = $this->_encryptBlock($L, $R);
         return pack("NN", $parts['L'], $parts['R']);
     }
-    
+
     /**
      * Encrypt a block on data.
      *

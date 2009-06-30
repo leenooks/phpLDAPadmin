@@ -1,9 +1,14 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/documentation.php,v 1.7 2004/12/17 15:21:15 uugdave Exp $
- 
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/documentation.php,v 1.9 2005/09/25 16:11:44 wurley Exp $
 
-include './common.php';
-include './header.php';
+/**
+ * @package phpLDAPadmin
+ */
+/**
+ */
+
+require './common.php';
+//include './header.php';
 
 echo "<body>";
 
@@ -13,7 +18,7 @@ switch( $view ) {
 		echo "<h3 class=\"title\">phpLDAPadmin Credits</h3>";
 		echo "<pre>";
 		echo "<small>";
-		include 'doc/CREDITS';
+		include DOCDIR.'CREDITS';
 		echo "</small>";
 		echo "</pre>";
 		echo "</body>";
@@ -24,7 +29,7 @@ switch( $view ) {
 		echo "<h3 class=\"title\">phpLDAPadmin ChangeLog</h3>";
 		echo "<pre>";
 		echo "<small>";
-		include 'doc/ChangeLog';
+		include DOCDIR.'ChangeLog';
 		echo "</small>";
 		echo "</pre>";
 		echo "</body>";
@@ -45,5 +50,3 @@ switch( $view ) {
 
 <h3 class="doc">Modification Templates</h3>
 <p class="doc">TODO: Write me.</p>
-
-

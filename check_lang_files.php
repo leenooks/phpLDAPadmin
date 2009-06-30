@@ -1,10 +1,15 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/check_lang_files.php,v 1.9 2004/05/23 21:53:08 i18phpldapadmin Exp $
-?>
-<?php
-// phpldapadmin/check_lang_files.php, $Revision: 1.9 $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/check_lang_files.php,v 1.11 2005/02/25 13:44:05 wurley Exp $
+
+/**
+ * Test script to check that $lang variables in each language file.
+ * @package phpLDAPadmin
+ */
+/**
+ */
 
 echo "<html><head><title>phpldapadmin - check of translation</title></head><body>";
+$CHECKLANG=$_REQUEST['CHECKLANG'];
 
 include realpath( './lang/en.php' );
 $english_lang = $lang;
@@ -39,6 +44,8 @@ if( false === $unused_keys )
 echo "</ol>\n";
 
 echo "<h1>Incomplete or Erroneous Language Files</h1>\n\n";
+if ($CHECKLANG)
+	printf("<h1>Checking language files %s</h1>\n\n",$CHECKLANG);
 echo "<h1><A HREF='?'>check all languages</A></h1>\n";
 flush();
 while( ( $file = readdir( $dir ) ) !== false ) {
@@ -48,13 +55,13 @@ while( ( $file = readdir( $dir ) ) !== false ) {
     // Sanity check. Is this really a PHP file?
 	if( ! preg_match( "/\.php$/", $file ) )
 		continue;
-	echo "<h2><A HREF='?CHECKLANG=$file'>$file</A></h2>\n";
-	echo "<ol>\n";
 	unset( $lang );
 	$lang = array();
 	include realpath( $lang_dir.'/'.$file );
 	$has_errors = false;
         if ($CHECKLANG=="" || $file===$CHECKLANG ){
+	echo "<h2><A HREF='?CHECKLANG=$file'>$file</A></h2>\n";
+	echo "<ol>\n";
 	foreach( $english_lang as $key => $string ) 
 		if( ! isset( $lang[ $key ] ) ) {
 			$has_errors = true;

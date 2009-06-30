@@ -1,62 +1,71 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/creation_template.php,v 1.18 2004/10/24 23:51:49 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/creation_template.php,v 1.29 2005/09/25 16:11:44 wurley Exp $
 
-/* file: creation_template.php
+/**
  * This file simply acts as a plugin grabber for the creator templates in
  * the directory templates/creation/
  *
- * Expected POST vars:
+ * Variables that come in via common.php
  *  server_id
+ * Expected POST vars:
  *  template
+ *
+ * @package phpLDAPadmin
+ * @deprecated This file is no longer need when the template engine is up and running.
+ */
+/**
  */
 
-require_once 'common.php';
-require 'templates/template_config.php';
+require './common.php';
 
-$template = http_get_value( 'template' );
-$template !== false or pla_error( $lang['ctemplate_no_template'] );
+if ($config->GetValue('template_engine','enable') && (! is_numeric($_REQUEST['template']))) {
+	require './template_engine.php';
+	die();
+}
 
-if( $template == 'custom' ) {
-    foreach( $templates as $id => $template ) {
-        if( $template['handler'] == 'custom.php' ) {
+require TMPLDIR.'template_config.php';
+
+if ($ldapserver->isReadOnly())
+	pla_error($lang['no_updates_in_read_only_mode']);
+if (! $ldapserver->haveAuthInfo())
+	pla_error($lang['not_enough_login_info']);
+
+$template = (isset($_REQUEST['template']) ? $_REQUEST['template'] : null);
+! is_null($template) or pla_error($lang['ctemplate_no_template']);
+
+if ($template == 'custom') {
+    foreach ($templates as $id => $template) {
+        if ($template['handler'] == 'custom.php') {
             $template = $id;
             break;
         }
     }
 }
 
-isset( $templates[$template] ) or pla_error( sprintf( $lang['invalid_template'], htmlspecialchars( $template ) ) );
+isset($templates[$template]) or pla_error(sprintf($lang['invalid_template'], htmlspecialchars($template)));
 $template_id = $template;
-$template = isset( $templates[$template] ) ? $templates[$template_id] : null;
-$server_id = http_get_value( 'server_id' );
-check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
-have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
-$ds = pla_ldap_connect( $server_id );
-pla_ldap_connection_is_error( $ds );
-$server_name = $servers[ $server_id ][ 'name' ];
+$template = isset($templates[$template]) ? $templates[$template_id] : null;
 
-if( is_server_read_only( $server_id ) )
-	pla_error( $lang['no_updates_in_read_only_mode'] );
-
-include './header.php';
-
+if (! array_key_exists('no_header',$template)) {
+	include './header.php';
 ?>
 
 <body>
 <h3 class="title"><?php echo $lang['createf_create_object']?></h3>
-<h3 class="subtitle"><?php echo $lang['ctemplate_on_server']?> '<?php echo htmlspecialchars( $server_name ); ?>', <?php echo $lang['using_template']?> '<?php echo htmlspecialchars( $template['desc'] ); ?>'</h3>
+<h3 class="subtitle"><?php echo $lang['ctemplate_on_server']?> '<?php echo htmlspecialchars($ldapserver->name); ?>', <?php echo $lang['using_template']?> '<?php echo htmlspecialchars($template['desc']); ?>'</h3>
 
-<?php
+<?php }
 
-$handler = 'templates/creation/' . $template['handler'];
-$handler = realpath( $handler );
-if( ! file_exists( $handler ) )
-	pla_error( sprintf( $lang['template_does_not_exist'], htmlspecialchars( $template['handler'] ) ) );
-if( ! is_readable( $handler ) )
-	pla_error( sprintf( $lang['template_not_readable'], htmlspecialchars( $template['handler'] ) ) );
+$handler = TMPLDIR.'creation/' . $template['handler'];
+
+if (! file_exists($handler))
+	pla_error(sprintf($lang['template_does_not_exist'],htmlspecialchars($template['handler'])));
+
+if (! is_readable($handler))
+	pla_error(sprintf($lang['template_not_readable'],htmlspecialchars($template['handler'])));
 
 include $handler;
 
-echo "</body>\n</html>";
-
+if (! array_key_exists('no_header',$template))
+	echo "</body>\n</html>";
 ?>

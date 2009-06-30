@@ -1,0 +1,48 @@
+<template>
+<title>posix_group</title>
+<!-- <regexp>^ou=.*,</regexp> -->
+<icon>images/ou.png</icon>
+<description>t_new_posixgroup</description>
+<askcontainer>1</askcontainer>
+<rdn>cn</rdn>
+<visible>1</visible>
+
+<objectClasses>
+<objectClass id="posixGroup"></objectClass>
+</objectClasses>
+
+<attributes>
+<attribute id="cn">
+	<display>t_group</display>
+	<description></description>
+	<hint></hint>
+	<icon></icon>
+	<order>1</order>
+	<page>1</page>
+</attribute>
+<attribute id="gidNumber">
+	<display>t_gid_number</display>
+	<description></description>
+	<hint>t_auto_det</hint>
+	<presubmit>=php.GetNextNumber(/,gid)</presubmit>
+	<order>2</order>
+	<page>1</page>
+	<hidden>0</hidden>
+	<spacer>1</spacer>
+</attribute>
+<attribute id="memberUid">
+	<display>users</display>
+	<description></description>
+	<hint></hint>
+	<order>3</order>
+	<page>1</page>
+	<hidden>0</hidden>
+	<array>10</array>
+	<helper>
+        <display></display>
+        <location>side</location>
+<!--        <value>=php.DrawChooserLink(memberUid,0)</value> -->
+	</helper>
+</attribute>
+</attributes>
+</template>

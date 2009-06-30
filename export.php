@@ -1,29 +1,41 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/export.php,v 1.11 2004/10/23 21:13:15 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/export.php,v 1.15 2005/09/25 16:11:44 wurley Exp $
 
-require 'export_functions.php';
+/**
+ * @package phpLDAPadmin
+ */
+/**
+ */
+
+# Fix a bug with IE:
+ini_set('session.cache_limiter','');
+
+require './common.php';
+require LIBDIR.'export_functions.php';
 
 // get the POST parameters
+$server_id = (isset($_POST['server_id']) ? $_POST['server_id'] : '');
+
+if( ! $ldapserver->haveAuthInfo())
+	pla_error( $lang['not_enough_login_info'] );
+
 $base_dn = isset($_POST['dn']) ? $_POST['dn']:NULL;
-$server_id = isset($_POST['server_id']) ? $_POST['server_id']:NULL;
 $format = isset( $_POST['format'] ) ? $_POST['format'] : "unix";
 $scope = isset($_POST['scope']) ? $_POST['scope'] : 'base';
 $filter = isset($_POST['filter']) ? $_POST['filter'] : 'objectclass=*';
 $target = isset($_POST['target']) ? $_POST['target'] : 'display';
 $save_as_file = isset( $_POST['save_as_file'] ) &&  $_POST['save_as_file'] == 'on';
-$attributes = array();
+
 // add system attributes if needed
+$attributes = array();
 if( isset( $_POST['sys_attr'] ) ){
   array_push($attributes,'*');
   array_push($attributes,'+');
 }
+
 isset($_POST['exporter_id']) or pla_error( $lang['must_choose_export_format'] );
 $exporter_id = $_POST['exporter_id'];
 isset($exporters[$exporter_id]) or  pla_error( $lang['invalid_export_format'] );
-
-// do some check
-check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
-have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
 
 // Initialisation of other variables
 $rdn = get_rdn( $base_dn );
@@ -77,6 +89,7 @@ $exporter->setOutputFormat($br);
 
 // prevent script from bailing early for long search
 @set_time_limit( 0 );
+
 
 // send the header
 if( $save_as_file ) 

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/export_form.php,v 1.19 2004/10/24 23:51:49 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/export_form.php,v 1.22 2005/09/25 16:11:44 wurley Exp $
 
 /**
  * export_form.php
@@ -7,9 +7,13 @@
  *
  * Html form to choose an export format(ldif,...)
  *
+ * @package phpLDAPadmin
+ */
+/**
  */
 
-require 'export_functions.php';
+require './common.php';
+require LIBDIR.'export_functions.php';
 
 $server_id = isset( $_GET['server_id'] ) ? $_GET['server_id']:NULL ;
 $format = isset( $_GET['format'] ) ? $_GET['format'] : get_line_end_format();
@@ -48,22 +52,7 @@ include './header.php'; ?>
               <table>
                 <tr>
                   <td><?php echo $lang['server']; ?></td>
-                  <td>
-                    <?php
-                    if( count($servers) > 1 ){
-                    	echo '<select name="server_id">';
-                    	foreach( $servers as $id => $server )
-                    		if( $server['host'] )
-                    			echo "<option value=\"$id\"". ($id==$server_id?" selected":"") .">" . htmlspecialchars($server['name']) . "</option>\n";
-                    	echo '</select>';
-                    } else {
-                      $server = reset($servers);
-                      if( $server['host'] )
-                        echo '<input type="hidden" name="server_id" value="'.key($servers).'" />' .
-                                             '<b>' . $server['name'] . '</b>';
-                    }
-                    ?>
-             </td>
+                  <td><?php print server_select_list(); ?></td>
           </tr>
           <tr>
             <td style="white-space:nowrap"><?php echo $lang['base_dn']; ?></td>

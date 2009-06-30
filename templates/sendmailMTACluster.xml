@@ -1,0 +1,22 @@
+<template>
+<title>sendmail_cluster</title>
+<!--<regexp>^ou=People,o=.*,</regexp>-->
+<icon>images/mail.png</icon>
+<description>New Sendmail Cluster</description>
+<askcontainer>1</askcontainer>
+<rdn>sendmailMTACluster</rdn>
+<visible>1</visible>
+<invalid>1</invalid>
+
+<objectClasses>
+<objectClass id="sendmailMTA"></objectClass>
+</objectClasses>
+
+<attributes>
+<attribute id="sendmailMTACluster">
+	<display>Alias To</display>
+	<order>1</order>
+	<page>1</page>
+</attribute>
+</attributes>
+</template>

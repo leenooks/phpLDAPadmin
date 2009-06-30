@@ -1,0 +1,23 @@
+<template>
+<title>organizational_unit</title>
+<!-- <regexp>^o=.*,</regexp> -->
+<icon>images/ou.png</icon>
+<description>new_organizational_unit</description>
+<askcontainer>1</askcontainer>
+<rdn>ou</rdn>
+<visible>1</visible>
+
+<objectClasses>
+<objectClass id="organizationalUnit"></objectClass>
+</objectClasses>
+
+<attributes>
+<attribute id="ou">
+	<display>organizational_unit</display>
+	<description>organizational_unit</description>
+	<hint>don't include "ou="</hint>
+	<order>1</order>
+	<page>1</page>
+</attribute>
+</attributes>
+</template>

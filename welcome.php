@@ -1,11 +1,17 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/welcome.php,v 1.17 2004/10/24 23:51:49 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/welcome.php,v 1.24 2005/09/25 16:11:44 wurley Exp $
  
-	include './common.php'; 
+/**
+ * @package phpLDAPadmin
+ */
+/**
+ */
+	require './common.php'; 
 	include './header.php'; 
+//	include './config.php'; 
     
-    // Close the session for faster page loading
-    pla_session_close();
+// Close the session for faster page loading
+pla_session_close();
 ?>
 
 <body>
@@ -21,17 +27,16 @@
 <br />
 <br />
 <?php
-if ( ! hide_configuration_management() ) {
+if (! $config->GetValue('appearance','hide_configuration_management')) {
 ?>
 <a href="documentation.php?view=credits"><?php echo $lang['credits']; ?></a> |
 <a href="documentation.php?view=changelog"><?php echo $lang['changelog']; ?></a> |
+<a href="http://wiki.pldapadmin.com/Documentation"><?php echo $lang['documentation']; ?></a> |
 <a href="<?php echo get_href( 'donate' ); ?>"><?php echo $lang['donate']; ?></a>
 <?php
 }
 ?>
 
 </center>
-
 </body>
-
 </html>

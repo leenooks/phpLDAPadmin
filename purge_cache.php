@@ -1,10 +1,16 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/purge_cache.php,v 1.6 2005/07/22 06:12:51 wurley Exp $
+
+/**
+ * @package phpLDAPadmin
+ */
+/**
+ */
 
 require './common.php';
 include './header.php';
 
-$purge_session_keys = array( 'schema' );
-
+$purge_session_keys = array('cache','tree','tree_icons');
 ?>
 
 <body>
@@ -15,21 +21,21 @@ $purge_session_keys = array( 'schema' );
 <center>
 
 <?php
-flush();
 $size = 0;
-foreach( $purge_session_keys as $key ) {
-    if( isset( $_SESSION[$key] ) ) {
-        $size += strlen( serialize( $_SESSION[$key] ) );
-        unset( $_SESSION[$key] );
-    } 
+foreach ($purge_session_keys as $key) {
+    if (isset($_SESSION[$key])) {
+        $size += strlen(serialize($_SESSION[$key]));
+        unset($_SESSION[$key]);
+    }
 }
 
 session_write_close();
 
-if( 0 == $size )
+if (! $size)
     echo $lang['no_cache_to_purge'];
+
 else
-    echo sprintf( $lang['done_purging_caches'], number_format( $size ) );
+    echo sprintf($lang['done_purging_caches'],number_format($size));
 ?>
 
 </center>

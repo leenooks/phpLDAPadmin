@@ -1,30 +1,34 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/ldif_import_form.php,v 1.16 2004/10/24 23:51:49 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/ldif_import_form.php,v 1.19 2005/08/16 09:02:50 wurley Exp $
  
-
-/* 
- * ldif_import_form.php
+/**
  * Displays a form to allow the user to upload and import
  * an LDIF file.
  *
  * Variables expected as GET vars:
  *  - server_id
+ *
+ * @package phpLDAPadmin
+ */
+/**
  */
 
 require './common.php';
 
-$server_id = $_GET['server_id'];
-$server_name = $servers[$server_id]['name'];
+$server_id = (isset($_GET['server_id']) ? $_GET['server_id'] : '');
+$ldapserver = $ldapservers->Instance($server_id);
 
-check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
-have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
+if( $ldapserver->isReadOnly() )
+	pla_error( $lang['no_updates_in_read_only_mode'] );
+if( ! $ldapserver->haveAuthInfo())
+	pla_error( $lang['not_enough_login_info'] );
 
 include './header.php'; ?>
 
 <body>
 
 <h3 class="title"><?php echo $lang['import_ldif_file_title']?></h3>
-<h3 class="subtitle"><?php echo $lang['server']?>: <b><?php echo htmlspecialchars( $server_name ); ?></b></h3>
+<h3 class="subtitle"><?php echo $lang['server']?>: <b><?php echo htmlspecialchars( $ldapserver->name ); ?></b></h3>
 
 <br />
 <br />

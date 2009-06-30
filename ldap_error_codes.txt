@@ -3,7 +3,7 @@
                                 typically the result of an internal error on your LDAP server."
 0x02	LDAP_PROTOCOL_ERROR		"A protocol violation was detected."		
 0x03	LDAP_TIMELIMIT_EXCEEDED		"The operation timed out waiting to complete."
-0x04	LDAP_SIZELIMIT_EXCEEDED		"The LDAP sever refused to serve such a large result set."
+0x04	LDAP_SIZELIMIT_EXCEEDED		"The LDAP server refused to serve such a large result set."
 0x05	LDAP_COMPARE_FALSE		"A compare operation returned false."
 0x06	LDAP_COMPARE_TRUE		"A compare operation returned true."
 0x07	LDAP_AUTH_METHOD_NOT_SUPPORTED	"The authentication method you specified is not supported by

@@ -1,0 +1,115 @@
+<template>
+<title>kolab_user</title>
+<!--<regexp>^ou=People,o=.*,</regexp>-->
+<icon>images/user.png</icon>
+<description>t_new_address</description>
+<askcontainer>1</askcontainer>
+<rdn>cn</rdn>
+<visible>1</visible>
+<invalid>1</invalid>
+
+<objectClasses>
+<objectClass id="inetOrgPerson"></objectClass>
+</objectClasses>
+
+<attributes>
+<attribute id="givenName">
+	<display>t_first_name</display>
+	<icon>images/uid.png</icon>
+	<onchange>autoFill:cn,%givenName% %sn%</onchange>
+	<order>1</order>
+</attribute>
+<attribute id="sn">
+	<display>t_last_name</display>
+	<onchange>autoFill:cn,%givenName% %sn%</onchange>
+	<order>2</order>
+</attribute>
+<attribute id="cn">
+	<display>Common Name</display>
+	<order>3</order>
+</attribute>
+<attribute id="mail">
+	<display>t_email</display>
+	<order>4</order>
+</attribute>
+<attribute id="userPassword">
+	<display>t_password</display>
+	<icon>images/lock.png</icon>
+	<order>5</order>
+	<spacer>1</spacer>
+	<type>password</type>
+	<verify>1</verify>
+	<helper>
+		<id>enc</id>
+		<display>t_encryption</display>
+		<location>side</location>
+		<value>clear</value>
+		<value>md5</value>
+	</helper>
+	<post>=php.Password(%enc%,%userPassword%)</post>
+</attribute>
+
+<attribute id="title">
+	<display>Title</display>
+	<order>6</order>
+	<icon>images/ou.png</icon>
+</attribute>
+<attribute id="alias">
+	<display>Alias</display>
+	<order>7</order>
+</attribute>
+<attribute id="o">
+	<display>t_organization</display>
+	<order>8</order>
+</attribute>
+<attribute id="ou">
+	<display>organizational_unit</display>
+	<order>9</order>
+</attribute>
+<attribute id="roomNumber">
+	<display>Room Number</display>
+	<order>10</order>
+	<spacer>1</spacer>
+</attribute>
+
+<attribute id="street">
+	<display>t_address</display>
+	<order>11</order>
+	<icon>images/mail.png</icon>
+</attribute>
+<attribute id="postOfficeBox">
+	<display>Post Box</display>
+	<order>12</order>
+</attribute>
+<attribute id="l">
+	<display>t_city</display>
+	<order>13</order>
+</attribute>
+<attribute id="st">
+	<display>t_state</display>
+	<order>14</order>
+</attribute>
+<attribute id="postalCode">
+	<display>t_postal_code</display>
+	<order>15</order>
+</attribute>
+<attribute id="c">
+	<display>Country</display>
+	<order>16</order>
+	<spacer>1</spacer>
+</attribute>
+<attribute id="telephoneNumber">
+	<display>t_work_phone</display>
+	<order>17</order>
+	<icon>images/phone.png</icon>
+</attribute>
+<attribute id="facsimileTelephoneNumber">
+	<display>t_fax</display>
+	<order>18</order>
+</attribute>
+<attribute id="mobile">
+	<display>t_mobile</display>
+	<order>19</order>
+</attribute>
+</attributes>
+</template>

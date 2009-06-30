@@ -1,186 +1,220 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/copy.php,v 1.25 2004/08/15 17:35:25 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/copy.php,v 1.35 2005/09/25 16:11:44 wurley Exp $
 
-
-/*
- * copy.php
+/**
  * Copies a given object to create a new one.
  *
  * Vars that come in as POST vars
  *  - source_dn (rawurlencoded)
  *  - new_dn (form element)
  *  - server_id
+ *
+ * @package phpLDAPadmin
+ */
+/**
  */
 
-require realpath( 'common.php' );
+require './common.php';
 
-$source_dn =  $_POST['old_dn'];
-$dest_dn = $_POST['new_dn'];
-$encoded_dn = rawurlencode( $source_dn );
-$source_server_id = $_POST['server_id'];
-$dest_server_id = $_POST['dest_server_id'];
-$do_recursive = ( isset( $_POST['recursive'] ) && $_POST['recursive'] == 'on' ) ? true : false;
+$server_id_src = (isset($_POST['server_id']) ? $_POST['server_id'] : '');
+$server_id_dst = (isset($_POST['dest_server_id']) ? $_POST['dest_server_id'] : '');
 
-if( is_server_read_only( $dest_server_id ) )
-	pla_error( $lang['copy_server_read_only'] );
+$ldapserver_src = $ldapservers->Instance($server_id_src);
+$ldapserver_dst = $ldapservers->Instance($server_id_dst);
 
-check_server_id( $source_server_id ) or pla_error( $lang['bad_server_id'] );
-have_auth_info( $source_server_id ) or pla_error( $lang['not_enough_login_info'] );
-check_server_id( $dest_server_id ) or pla_error( $lang['bad_server_id'] );
-have_auth_info( $dest_server_id ) or pla_error( $lang['not_enough_login_info'] );
+if ($ldapserver_dst->isReadOnly())
+	pla_error($lang['copy_server_read_only']);
+
+if (! $ldapserver_src->haveAuthInfo() || ! $ldapserver_dst->haveAuthInfo())
+	pla_error($lang['not_enough_login_info']);
+
+$dn_src = $_POST['old_dn'];
+$dn_dst = $_POST['new_dn'];
+$do_recursive = (isset($_POST['recursive']) && $_POST['recursive'] == 'on') ? true : false;
+$do_remove = (isset($_POST['remove']) && $_POST['remove'] == 'yes') ? true : false;
+$encoded_dn = rawurlencode($dn_src);
 
 include './header.php';
 
-/* Error checking */
-if( 0 == strlen( trim( $dest_dn ) ) )
-	pla_error( $lang['copy_dest_dn_blank'] );
-if( pla_compare_dns( $source_dn,$dest_dn ) == 0 && $source_server_id == $dest_server_id )
-	pla_error( $lang['copy_source_dest_dn_same'] );
-if( dn_exists( $dest_server_id, $dest_dn ) )
-	pla_error( sprintf( $lang['copy_dest_already_exists'], pretty_print_dn( $dest_dn ) ) );
-if( ! dn_exists( $dest_server_id, get_container( $dest_dn ) ) )
-	pla_error( sprintf( $lang['copy_dest_container_does_not_exist'], pretty_print_dn( get_container($dest_dn) ) ) );
+# Error checking
+if (0 == strlen(trim($dn_dst)))
+	pla_error($lang['copy_dest_dn_blank']);
 
-if( $do_recursive ) {
-	$filter = isset( $_POST['filter'] ) ? $_POST['filter'] : '(objectClass=*)';
-	// build a tree similar to that of the tree browser to give to r_copy_dn
+if (pla_compare_dns($dn_src,$dn_dst) == 0 && $server_id_src == $server_id_dst)
+	pla_error($lang['copy_source_dest_dn_same']);
+
+if (dn_exists($ldapserver_dst,$dn_dst))
+	pla_error(sprintf($lang['copy_dest_already_exists'],pretty_print_dn($dn_dst)));
+
+if (! dn_exists($ldapserver_dst,get_container($dn_dst)))
+	pla_error(sprintf($lang['copy_dest_container_does_not_exist'],pretty_print_dn(get_container($dn_dst))));
+
+if ($do_recursive) {
+	$filter = isset($_POST['filter']) ? $_POST['filter'] : '(objectClass=*)';
+
+	# Build a tree similar to that of the tree browser to give to r_copy_dn
 	$snapshot_tree = array();
-	echo "<body>\n";
-	echo "<h3 class=\"title\">". $lang['copy_copying'] . htmlspecialchars( $source_dn ) . "</h3>\n";
-	echo "<h3 class=\"subtitle\">" . $lang['copy_recursive_copy_progress'] ."</h3>\n";
-	echo "<br /><br />";
-	echo "<small>\n";
-	echo $lang['copy_building_snapshot'];
-	flush();
-	build_tree( $source_server_id, $source_dn, $snapshot_tree, $filter );
-	echo " <span style=\"color:green\">" . $lang['success'] . "</span><br />\n";
+	print '<body>';
+	printf('<h3 class="title">%s%s</h3>',$lang['copy_copying'],htmlspecialchars($dn_src));
+	printf('<h3 class="subtitle">%s</h3>',$lang['copy_recursive_copy_progress']);
+	print '<br /><br />';
+	print '<small>';
+	print $lang['copy_building_snapshot'];
+
 	flush();
 
-	// prevent script from bailing early on a long delete
-	@set_time_limit( 0 );
+	$snapshot_tree = build_tree($ldapserver_src,$dn_src,array(),$filter);
+	printf('<span style="color:green">%s</span><br />',$lang['success']);
+	flush();
 
-	$copy_result = r_copy_dn( $source_server_id, $dest_server_id, $snapshot_tree, $source_dn, $dest_dn );
-	echo "</small>\n";
+	# Prevent script from bailing early on a long delete
+	@set_time_limit(0);
+
+	$copy_result = r_copy_dn($ldapserver_src,$ldapserver_dst,$snapshot_tree,$dn_src,$dn_dst);
+	print '</small>';
+
 } else {
-	$copy_result = copy_dn( $source_server_id, $source_dn, $dest_server_id, $dest_dn );
+	$copy_result = copy_dn($ldapserver_src,$ldapserver_dst,$dn_src,$dn_dst);
 }
 
-if( $copy_result )
-{
-	$edit_url="edit.php?server_id=$dest_server_id&dn=" . rawurlencode( $dest_dn );
-	$new_rdn = get_rdn( $dest_dn );
-	$container = get_container( $dest_dn );
+if ($copy_result) {
+	$edit_url = sprintf('edit.php?server_id=%s&dn=%s',$server_id_dst,rawurlencode($dn_dst));
+	$new_rdn = get_rdn($dn_dst);
+	$container = get_container($dn_dst);
 
-	if( array_key_exists( 'tree', $_SESSION ) )
-	{
-        // do we not have a tree and tree icons yet? Build a new ones.
-        initialize_session_tree();
+	if (array_key_exists('tree',$_SESSION)) {
+	        # do we not have a tree and tree icons yet? Build a new ones.
+		initialize_session_tree();
 		$tree = $_SESSION['tree'];
 		$tree_icons = $_SESSION['tree_icons'];
-		if( isset( $tree[$dest_server_id][$container] ) )
-		{
-			$tree[$dest_server_id][$container][] = $dest_dn;
-			sort( $tree[ $dest_server_id ][ $container ] );
-			$tree_icons[$dest_server_id][$dest_dn] = get_icon( $dest_server_id, $dest_dn );
+
+		if (isset($tree[$server_id_dst][$container])) {
+			$tree[$server_id_dst][$container][] = $dn_dst;
+			sort($tree[$server_id_dst][$container]);
+			$tree_icons[$server_id_dst][$dn_dst] = get_icon($ldapserver_dst,$dn_dst);
+
 			$_SESSION['tree'] = $tree;
 			$_SESSION['tree_icons'] = $tree_icons;
 			session_write_close();
 		}
 	}
+?>
 
-	?>
-		<!-- refresh the tree view (with the new DN renamed)
-		and redirect to the edit_dn page -->
+	<center>
+	<?php printf('%s<a href="%s">%s</a>',$lang['copy_successful_like_to'],$edit_url,$lang['copy_view_new_entry']) ?>
+	</center>
+	<!-- refresh the tree view (with the new DN renamed)
+	and redirect to the edit_dn page -->
+	<script language="javascript">
+		parent.left_frame.location.reload();
+	</script>
+	</body>
+	</html>
+
+<?php
+	if ($do_remove) {
+		sleep(2);
+		$delete_url = sprintf('delete_form.php?server_id=%s&dn=%s',$server_id_dst,rawurlencode($dn_src));
+?>
+
+		<!-- redirect to the delete form -->
 		<script language="javascript">
-			parent.left_frame.location.reload();
+			parent.right_frame.location="<?php echo $delete_url; ?>"
 		</script>
-		<br />
-		<center>
-		<?php echo $lang['copy_successful_like_to']. "<a href=\"$edit_url\">" . $lang['copy_view_new_entry'] ."</a>"?>
-		</center>
-        <br />
-		<br />
-		<br />
-		<br />
-		</body>
-		</html>
-		<?php
-}
-else
-{
+	<?php }
+
+} else {
 	exit;
 }
 
-function r_copy_dn( $source_server_id, $dest_server_id, $tree, $root_dn, $dest_dn )
-{
+function r_copy_dn($ldapserver_src,$ldapserver_dst,$tree,$root_dn,$dn_dst) {
+	debug_log(sprintf('r_copy_dn: Entered with (%s,%s,%s,%s,%s)',
+		$ldapserver_src->server_id,$ldapserver_dst->server_id,serialize($tree),$root_dn,$dn_dst),2);
+
         global $lang;
-	echo "<nobr>". $lang['copy_copying'] . htmlspecialchars( $root_dn ) . "...";
-	flush();
-	$copy_result = copy_dn( $source_server_id, $root_dn, $dest_server_id, $dest_dn );
 
-	if( ! $copy_result ) {
+	printf('<nobr>%s %s...',$lang['copy_copying'],htmlspecialchars($root_dn));
+	flush();
+
+	$copy_result = copy_dn($ldapserver_src,$ldapserver_dst,$root_dn,$dn_dst);
+
+	if (! $copy_result)
 		return false;
-	}
 
-	echo "<span style=\"color:green\">".$lang['success']."</span></nobr><br />\n";
+	printf('<span style="color:green">%s</span></nobr><br />',$lang['success']);
 	flush();
 
-	$children = isset( $tree[ $root_dn ] ) ? $tree[ $root_dn ] : null;
-	if( is_array( $children ) && count( $children ) > 0 )
-	{
-		foreach( $children as $child_dn ) {
-			$child_rdn = get_rdn( $child_dn );
-			$new_dest_dn = $child_rdn . ',' . $dest_dn;
-			r_copy_dn( $source_server_id, $dest_server_id, $tree, $child_dn, $new_dest_dn );
+	$children = isset($tree[$root_dn]) ? $tree[$root_dn] : null;
+	if (is_array($children) && count($children) > 0) {
+		foreach($children as $child_dn) {
+			$child_rdn = get_rdn($child_dn);
+			$new_dest_dn = sprintf('%s,%s',$child_rdn,$dn_dst);
+			r_copy_dn($ldapserver_src,$ldapserver_dst,$tree,$child_dn,$new_dest_dn);
 		}
-	}
-	else
-	{
+
+	} else {
 		return true;
 	}
 
 	return true;
 }
 
-function copy_dn( $source_server_id, $source_dn, $dest_server_id, $dest_dn )
-{
-	global $ds, $lang;
+function copy_dn($ldapserver_src,$ldapserver_dst,$dn_src,$dn_dst) {
+	debug_log(sprintf('copy_dn: Entered with (%s,%s,%s,%s)',
+		$ldapserver_src->server_id,$ldapserver_dst->server_id,$dn_src,$dn_dst),2);
 
-	$ds = pla_ldap_connect( $dest_server_id );
-	pla_ldap_connection_is_error( $ds );
+	global $lang;
 
-	$attrs = get_object_attrs( $source_server_id, $source_dn );
-	$new_entry = $attrs;
-	// modify the prefix-value (ie "bob" in cn=bob) to match the destination DN's value.
-	$rdn_attr = substr( $dest_dn, 0, strpos( $dest_dn, '=' ) );
-	$rdn_value = get_rdn( $dest_dn );
-	$rdn_value = substr( $rdn_value, strpos( $rdn_value, '=' ) + 1 );
-	$new_entry[ $rdn_attr ] = $rdn_value;
-	// don't need a dn attribute in the new entry
-	unset( $new_entry['dn'] );
+	$new_entry = get_object_attrs($ldapserver_src,$dn_src);
 
-	// Check the user-defined custom call back first
-	if( true === preEntryCreate( $dest_server_id, $dest_dn, $new_entry ) ) {
-			$add_result = @ldap_add( $ds, $dest_dn, $new_entry );
-			if( ! $add_result ) {
-					postEntryCreate( $dest_server_id, $dest_dn, $new_entry );
-					echo "</small><br /><br />";
-					pla_error( $lang['copy_failed'] . $dest_dn, ldap_error( $ds ), ldap_errno( $ds ) );
-			}
+	# modify the prefix-value (ie "bob" in cn=bob) to match the destination DN's value.
+	$rdn_attr = substr($dn_dst,0,strpos($dn_dst,'='));
+	$rdn_value = get_rdn($dn_dst);
+	$rdn_value = substr($rdn_value,strpos($rdn_value,'=') + 1);
+	$new_entry[$rdn_attr] = $rdn_value;
 
-			return $add_result;
+	# don't need a dn attribute in the new entry
+	unset($new_entry['dn']);
+
+	# Check the user-defined custom call back first
+	if (true === run_hook('pre_entry_create',
+		array ('server_id'=>$ldapserver_dst->server_id,'dn'=>$dn_dst,'attrs'=>$new_entry))) {
+
+		$add_result = @ldap_add($ldapserver_dst->connect(),$dn_dst,$new_entry);
+		if (! $add_result) {
+			run_hook('post_entry_create',array('server_id'=>$ldapserver_dst->server_id,
+				'dn'=>$dn_dst,'attrs'=>$new_entry));
+
+			print '</small><br /><br />';
+			pla_error($lang['copy_failed'] . $dn_dst,ldap_error($ldapserver_dst->connect()),ldap_errno($ldapserver_dst->connect()));
+		}
+
+		return $add_result;
+
 	} else {
-			return false;
+		return false;
 	}
 }
 
-function build_tree( $source_server_id, $root_dn, &$tree, $filter='(objectClass=*)' )
-{
-	$children = get_container_contents( $source_server_id, $root_dn, 0, $filter );
-	if( is_array( $children ) && count( $children ) > 0 )
-	{
-		$tree[ $root_dn ] = $children;
-		foreach( $children as $child_dn )
-			build_tree( $source_server_id, $child_dn, $tree, $filter );
+/**
+ * @param object $ldapserver
+ * @param dn $dn
+ * @param array $tree
+ * @param string $filter
+ */
+function build_tree($ldapserver,$dn,$tree,$filter='(objectClass=*)') {
+	debug_log(sprintf('build_tree: Entered with (%s,%s,%s,%s)',
+		$ldapserver->server_id,$dn,serialize($tree),$filter),2);
+
+	$children = get_container_contents($ldapserver,$dn,0,$filter);
+
+	if (is_array($children) && count($children) > 0) {
+		$tree[$dn] = $children;
+		foreach ($children as $child_dn)
+			$tree = build_tree($ldapserver,$child_dn,$tree,$filter);
 	}
+
+	debug_log(sprintf('build_tree: Returning (%s)',serialize($tree)),1);
+	return $tree;
 }
+?>

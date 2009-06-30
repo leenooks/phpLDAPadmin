@@ -1,6 +1,15 @@
 <?php 
-    require_once '../header.php';
+/**
+ * This will show a nice table of all the icons used by phpLDAPadmin.
+ * @package phpLDAPadmin
+ */
+/**
+ */
 ?>
+<html>
+<head>
+	<link rel="stylesheet" href="../style.css" media="screen" />
+</head>
 <body>
 <h3 class="title">phpLDAPadmin icons</h3>
 <br />
@@ -9,7 +18,6 @@
 
 $dir = opendir( '.' );
 while(  ( $file = readdir( $dir ) ) !== false ) {
-    $counter++;
     if( $file == '.' || $file == '..' )
         continue;
     if( ! preg_match( '/\.png$/', $file ) )
@@ -19,15 +27,22 @@ while(  ( $file = readdir( $dir ) ) !== false ) {
     $files[ filesize( $file ) . '_' . $file ] = $file;
 }
 
-ksort( $files );
+sort( $files );
 
+$cell_style = "color: #888; text-align:center; padding: 10px; padding-bottom: 20px; vertical-align: bottom;";
 $counter = 0;
+print "<center><b>The " . count( $files ) . " icons used by phpLDAPadmin</b></center>";
+echo "<table style=\"font-family: arial; font-size: 12px;\">";
+echo "<tr>";
 foreach( $files as $file ) {
+    if( $counter % 6 == 0 ) {
+        echo "</tr>\n"; 
+        flush();
+        echo "<tr>";
+    }
     $counter++;
-    echo '<img title="' . htmlspecialchars( $file ) . '" src="' . htmlspecialchars( $file ) . '" />&nbsp;&nbsp;';
-    if( $counter % 15 == 0 )
-        echo '<br /><br />';
-    flush();
+    echo '<td style="' . $cell_style . '"><img title="' . htmlspecialchars( $file ) . '" src="' . htmlspecialchars( $file ) . '" /><br />';
+    echo "$file</td>\n";
 }
 
 ?>

@@ -1,6 +1,9 @@
+ * Project Creator:
+  - David Smith
+
  * Project Developers:
 
-  - David Smith         Maintainer
+  - Deon George         Maintainer
   - Xavier Renard       Import/Export and Samba
   - Uwe Ebel            I18n
   
@@ -9,7 +12,7 @@
   - Bayu Irawan         userPassword hash, html fixes, ldap_modify fixes
   - Uwe Ebel         	short_open_tags fix
   - Andrew Tipton       SUP support in schema parser
-  - Eigil Bjørgum      UTF-8 support
+  - Eigil Bjørgum       UTF-8 support
   - Brandon Lederer     DNS entry template
     Nathan Rotschafer
   - Steve Rigler        Password hash patch
@@ -21,6 +24,15 @@
   - Piotr Tarnowski     i18n fixes
   - Deon George         Auto-uidNumber enhancements and many fixes
   - Pierre Belanger     Speed-ups to auto-uidNumber
+  - Benjamin Drieu	Syslog, Hooks and other fixes
+  - Samuel Tran		User login restriction
+  - Daniel van Eeden	Unicode, CSS fixes
+  - Piotr Tarnowski	More locatisation fixes
+  - Tomas Kuliavas	Improved password encoding functions
+  - Alessandro De Zorzi Enhancement with the new template engine and others
+  - Matt Harrington	Fixes
+  - Jonathan Thurman	Add Multiple objectClasses
+  - And many others, whose names are lost in the changelog. Thank you.
 
  * Translators:
 
@@ -30,11 +42,11 @@
   - Xavier Renard              French
   - Dave Smith                 English ;)
   - Richard Lucassen           Dutch
-  - Andreu Sanchez             Spanish and Catal�
+  - Andreu Sanchez             Spanish and Català
   - Dmitry Gorpinenko,         Russian
     Aleksey Soldatov
     Sergey Saukh
-  - Unknown                    Italian
+  - Unknown                    Italian, Tain, Simplified Chinese
   - Alexandre Maciel           Portuguese (Brasilian)
     Elton Schroeder Fenner (CLeGi)
   - Piotr Tarnowski (DrFugazi) Polish
@@ -45,6 +57,3 @@
 
    If you can help translate, please join the phpldapadmin-devel mailing list:
    https://lists.sourceforge.net/mailman/listinfo/phpldapadmin-devel
-   
-
-   

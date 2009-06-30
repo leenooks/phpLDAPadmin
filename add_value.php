@@ -1,71 +1,74 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_value.php,v 1.13 2004/08/15 17:39:20 uugdave Exp $
- 
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_value.php,v 1.18 2005/07/22 05:42:18 wurley Exp $
 
-/*
- * add_value.php
+/**
  * Adds a value to an attribute for a given dn.
+ *
+ * Variables that come in via common.php
+ *  - server_id
  * Variables that come in as POST vars:
  *  - dn (rawurlencoded)
- *  - attr (rawurlencoded) the attribute to which we are adding a value 
- *  - server_id
+ *  - attr (rawurlencoded) the attribute to which we are adding a value
  *  - new_value (form element)
- *  - binary 
+ *  - binary
  *
- * On success, redirect to the edit_dn page.
- * On failure, echo an error.
+ * On success, redirect to the edit_dn page. On failure, echo an error.
+ *
+ * @package phpLDAPadmin
+ */
+/**
  */
 
 require './common.php';
 
-$dn = rawurldecode( $_POST['dn'] );
-$encoded_dn = rawurlencode( $dn );
+if( $ldapserver->isReadOnly() )
+	pla_error( $lang['no_updates_in_read_only_mode'] );
+if( ! $ldapserver->haveAuthInfo())
+	pla_error( $lang['not_enough_login_info'] );
+
 $attr = $_POST['attr'];
-$encoded_attr = rawurlencode( $attr );
-$server_id = $_POST['server_id'];
 $new_value = $_POST['new_value'];
+$dn = rawurldecode( $_POST['dn'] );
 $is_binary_val = isset( $_POST['binary'] ) ? true : false;
 
-if( is_server_read_only( $server_id ) )
-	pla_error( $lang['no_updates_in_read_only_mode'] );
-if( is_attr_read_only( $server_id, $attr ) )
-	pla_error( "The attribute '" . htmlspecialchars( $attr ) . "' is flagged as read only in the phpLDAPadmin configuration." );
+$encoded_dn = rawurlencode( $dn );
+$encoded_attr = rawurlencode( $attr );
 
-check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
-have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
+if( is_attr_read_only( $ldapserver, $attr ) )
+	pla_error(sprintf($lang['attr_is_read_only'],htmlspecialchars( $attr )));
 
-$ds = pla_ldap_connect( $server_id );
-pla_ldap_connection_is_error( $ds );
-
-// special case for binary attributes: 
+// special case for binary attributes:
 // we must go read the data from the file.
-if( $is_binary_val )
-{
+if( $is_binary_val ) {
 	$file = $_FILES['new_value']['tmp_name'];
+
 	$f = fopen( $file, 'r' );
 	$binary_value = fread( $f, filesize( $file ) );
 	fclose( $f );
+
 	$new_value = $binary_value;
 }
 
-$new_entry = array( $attr => $new_value  );
+$new_entry = array( $attr => $new_value );
 
 // Check to see if this is a unique Attribute
-if( $badattr = checkUniqueAttr( $server_id, $dn, $attr, $new_entry ) ) {
-	$search_href='search.php?search=true&form=advanced&server_id=' . $server_id  . '&filter=' . $attr . '=' . $badattr;
-	pla_error(sprintf( $lang['unique_attr_failed'] , $attr,$badattr,$dn,$search_href ) );
+if( $badattr = checkUniqueAttr( $ldapserver, $dn, $attr, $new_entry ) ) {
+	$search_href = sprintf('search.php?search=true&form=advanced&server_id=%s&filter=%s=%s',$ldapserver->server_id,$attr,$badattr);
+	pla_error(sprintf( $lang['unique_attr_failed'],$attr,$badattr,$dn,$search_href ) );
 }
 
 // Call the custom callback for each attribute modification
 // and verify that it should be modified.
-if( preAttrAdd( $server_id, $dn, $attr, $new_entry ) ) {
+if( run_hook ( 'pre_attr_add', array ( 'server_id' => $ldapserver->server_id, 'dn' => $dn, 'attr_name' => $attr,
+	'new_value' => $new_entry ) ) ) {
 
-$add_result = @ldap_mod_add( $ds, $dn, $new_entry );
+	$add_result = @ldap_mod_add( $ldapserver->connect(), $dn, $new_entry );
 
-if( ! $add_result )
-	pla_error( $lang['could_not_perform_ldap_mod_add'], ldap_error( $ds ), ldap_errno( $ds ) );
+	if (! $add_result)
+		pla_error($lang['could_not_perform_ldap_mod_add'],
+			ldap_error($ldapserver->connect()),ldap_errno($ldapserver->connect()));
 }
 
-header( "Location: edit.php?server_id=$server_id&dn=$encoded_dn&modified_attrs[]=$encoded_attr" );
-
+header(sprintf('Location: edit.php?server_id=%s&dn=%s&modified_attrs[]=%s',
+	$ldapserver->server_id,$encoded_dn,$encoded_attr));
 ?>

@@ -1,0 +1,38 @@
+<template>
+<title>courier_mail_alias</title>
+<!--<regexp>^ou=People,o=.*,</regexp>-->
+<icon>images/mail_alias.png</icon>
+<description>New Courier Mail Alias</description>
+<askcontainer>1</askcontainer>
+<rdn>cn</rdn>
+<visible>1</visible>
+<invalid>0</invalid>
+
+<objectClasses>
+<objectClass id="inetOrgPerson"></objectClass>
+<objectClass id="courierMailAlias"></objectClass>
+</objectClasses>
+
+<attributes>
+<attribute id="cn">
+	<display>t_common_name</display>
+	<order>1</order>
+	<page>1</page>
+</attribute>
+<attribute id="sn">
+	<display>t_last_name</display>
+	<order>2</order>
+	<page>1</page>
+</attribute>
+<attribute id="mail">
+	<display>t_email</display>
+	<order>3</order>
+	<page>1</page>
+</attribute>
+<attribute id="maildrop">
+	<display>Maildrop</display>
+	<order>4</order>
+	<page>1</page>
+</attribute>
+</attributes>
+</template>

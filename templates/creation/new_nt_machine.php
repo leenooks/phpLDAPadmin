@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_nt_machine.php,v 1.13 2004/12/16 22:59:50 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_nt_machine.php,v 1.14 2005/03/05 06:27:07 wurley Exp $
 
 
 // Common to all templates
@@ -21,7 +21,7 @@ $default_home_dir = '/dev/null';
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
 
-if( get_schema_objectclass( $server_id, 'sambaAccount' ) == null )
+if( get_schema_objectclass( $ldapserver, 'sambaAccount' ) == null )
 	pla_error( "Your LDAP server does not have schema support for the sambaAccount objectClass. Cannot continue." );
 
 ?>
@@ -87,7 +87,7 @@ if( get_schema_objectclass( $server_id, 'sambaAccount' ) == null )
 	$machine_name = trim( $_POST['machine_name'] );
 	$uid_number = trim( $_POST['uid_number'] );
 
-	dn_exists( $server_id, $container ) or
+	dn_exists( $ldapserver, $container ) or
 		pla_error( "The container you specified (" . htmlspecialchars( $container ) . ") does not exist. " .
 	       		       "Please go back and try again." );
 	?>

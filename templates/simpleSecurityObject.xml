@@ -1,0 +1,48 @@
+<template>
+<title>simple_sec_object</title>
+<!--<regexp>^ou=People,o=.*,</regexp>-->
+<icon>images/user.png</icon>
+<description>New Simple Security Object</description>
+<askcontainer>1</askcontainer>
+<rdn>userid</rdn>
+<visible>1</visible>
+
+<objectClasses>
+<objectClass id="account"></objectClass>
+<objectClass id="simpleSecurityObject"></objectClass>
+</objectClasses>
+
+<attributes>
+<attribute id="userid">
+	<display>t_user_name</display>
+	<description></description>
+	<hint></hint>
+	<icon>images/uid.png</icon>
+	<spacer>1</spacer>
+	<order>1</order>
+	<page>1</page>
+</attribute>
+<attribute id="userPassword">
+	<display>t_password</display>
+	<icon>images/lock.png</icon>
+	<description></description>
+	<hint></hint>
+	<default></default>
+	<order>5</order>
+	<page>1</page>
+	<type>password</type>
+	<verify>1</verify>
+	<helper>
+		<id>enc</id>
+		<display>t_encryption</display>
+		<location>side</location>
+		<description></description>
+		<hint></hint>
+		<default>md5</default>
+		<value>clear</value>
+		<value>md5</value>
+	</helper>
+	<post>=php.Password(%enc%,%userPassword%)</post>
+</attribute>
+</attributes>
+</template>

@@ -1,8 +1,14 @@
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/style.css,v 1.40 2004/10/23 21:13:16 uugdave Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/style.css,v 1.44 2005/03/12 14:03:36 wurley Exp $ */
 span.hint {
 	font-size: small;
 	font-weight: normal;
 	color: #888;
+}
+
+span.warning {
+	font-size: small;
+	font-weight: normal;
+	color: #f00;
 }
 
 span.x-small {
@@ -81,7 +87,7 @@ table.error tr td h2 {
 }
 
 table.error tr td.img {
-	vertical-align: center;
+	vertical-align: middle;
 	text-align: center;
 	width: 20px;
 }
@@ -130,7 +136,7 @@ table.template_display tr td {
 
 table.templates tr td {
 	text-align: left;
-	vertical-align: center;
+	vertical-align: middle;
 }
 
 table.templates tr {
@@ -143,7 +149,7 @@ table.templates td.icon {
 
 table.exporters tr td {
 	text-align: left;
-	vertical-align: center;
+	vertical-align: middle;
 }
 
 table.exporters tr {
@@ -278,11 +284,32 @@ h3.subtitle {
 	font-weight: normal;
 }
 
+table.comp_dn {
+	border-collapse: collapse;
+	border-spacing: 0px;
+	empty-cells: show;
+	font-size: 80%;
+}
+
+table.comp_dn tr {
+	width: 200px;
+}
+table.comp_dn tr td.attr {
+	background-color: #eee;
+	vertical-align: top;
+}
+
+table.comp_dn tr td.attr_note {
+	text-align: right;
+	background-color: #eee;
+	padding-right: 50px;
+}
+
 table.edit_dn {
 	border-collapse: collapse;
 	border-spacing: 0px;
 	empty-cells: show;
-	width: 500px;
+	width: 600px;
 }
 
 table.edit_dn input {
@@ -292,7 +319,7 @@ table.edit_dn input {
 table.edit_dn input.val {
 	font-size: 14px;
 	width: 350px; 
-	font-family: arial, helvetica, sans-serif
+	font-family: arial, helvetica, sans-serif;
 	background-color: white;
 }
 
@@ -335,9 +362,9 @@ table.edit_dn tr td.attr a:hover {
 
 table.edit_dn tr td.val {
 	text-align: left;
-	vertical-align: center;
+	vertical-align: middle;
 	padding-bottom: 10px;
-	padding-left: 80px;
+	padding-left: 50px;
 }
 
 
@@ -613,6 +640,16 @@ table.export_form tr td {
 	text-align: left;
 	vertical-align: top;
 	padding: 4px;
+}
+
+table.form tr td {
+	vertical-align: top;
+	padding: 4px;
+}
+
+
+.attribute_failed {
+	color: red;
 }
 
 img.chooser {

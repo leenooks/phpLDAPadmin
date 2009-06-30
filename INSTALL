@@ -28,10 +28,10 @@ in the "doc" directory.
        # mkdir /var/www/tmp, and then
        # chown root:daemon /var/www/tmp
        # chmod 1755 /var/www/tmp
-       Where tmp is the $jpeg_temp_dir configured in config.php
+       Where tmp is the $config->custom->tmpdir['jpeg'] configured in config.php
 
     * Windows 
 
-       For jpeg photos to work properly, be sure to change $jpeg_temp_dir
+       For jpeg photos to work properly, be sure to change $config->custom->tmpdir['jpeg']
        from "/tmp" to "c:\\temp" or similar.
 

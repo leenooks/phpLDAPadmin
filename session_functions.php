@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/session_functions.php,v 1.12 2004/09/09 12:45:09 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/session_functions.php,v 1.14 2005/07/16 03:13:54 wurley Exp $
 
 /**
  * A collection of functions to handle sessions throughout phpLDAPadmin.
@@ -23,8 +23,9 @@ define('pla_session_id_ses_max', 36);
  *
  * @return string the new session ID string
  */
-function pla_session_get_id()
-{
+function pla_session_get_id() {
+	debug_log(sprintf('pla_session_get_id(): Entered with ()'),2);
+
 	$id_md5 = md5(rand(1,1000000));
 	$ip_md5 = md5($_SERVER['REMOTE_ADDR']);
 	$id_hex = hexdec($id_md5[0]) + 1;
@@ -34,10 +35,10 @@ function pla_session_get_id()
 	else
 		$ip_len = $ip_hex - 1;
 
-	$new_id = substr($id_md5, 0, $id_hex) . 
+	$new_id = substr($id_md5, 0, $id_hex) .
 		substr($ip_md5, $ip_hex, $ip_len) .
 		substr($id_md5, $id_hex, pla_session_id_ses_max - ($id_hex + $ip_len));
-		
+
 	return $new_id;
 }
 
@@ -46,8 +47,9 @@ function pla_session_get_id()
  *
  * @return bool True, if the session is valid
  */
-function pla_session_verify_id()
-{
+function pla_session_verify_id() {
+	debug_log(sprintf('pla_session_verify_id(): Entered with ()'),2);
+
 	$check_id = session_id();
 	$ip_md5 = md5($_SERVER['REMOTE_ADDR']);
 	$id_hex = hexdec($check_id[0]) + 1;
@@ -56,7 +58,7 @@ function pla_session_verify_id()
 		$ip_len = pla_session_id_ip_min;
 	else
 		$ip_len = $ip_hex - 1;
-	
+
 	$ip_ses = substr($check_id, $id_hex, $ip_len);
 	$ip_ver = substr($ip_md5, $ip_hex, $ip_len);
 
@@ -70,8 +72,9 @@ function pla_session_verify_id()
  * @see PLA_SESSION_ID
  * @return bool Returns true if the session was started the first time
  */
-function pla_session_start()
-{
+function pla_session_start() {
+	debug_log(sprintf('pla_session_start(): Entered with ()'),2);
+
     // If session.auto_start is on in the server's PHP configuration (php.ini), then
     // we will have problems loading our schema cache since the session will have started
     // prior to loading the SchemaItem (and descedants) class. Destroy the auto-started
@@ -111,9 +114,7 @@ function pla_session_start()
 /**
  * Stops the current session.
  */
-function pla_session_close()
-{
+function pla_session_close() {
     @session_write_close();
 }
-
 ?>

@@ -1,0 +1,77 @@
+<template>
+<title>organizational_role</title>
+<!--<regexp>^ou=People,o=.*,</regexp>-->
+<icon>images/o.png</icon>
+<description>New Organisational Role</description>
+<askcontainer>1</askcontainer>
+<rdn>cn</rdn>
+<visible>1</visible>
+
+<objectClasses>
+<objectClass id="organizationalRole"></objectClass>
+</objectClasses>
+
+<attributes>
+<attribute id="cn">
+	<display>Role CN</display>
+	<order>1</order>
+	<spacer>1</spacer>
+</attribute>
+<attribute id="telephoneNumber">
+	<display>t_work_phone</display>
+	<order>2</order>
+	<icon>images/phone.png</icon>
+</attribute>
+<attribute id="facsimileTelephoneNumber">
+	<display>t_fax</display>
+	<order>3</order>
+	<spacer>1</spacer>
+</attribute>
+
+<attribute id="description">
+	<display>Comments</display>
+	<order>4</order>
+	<icon>images/light.png</icon>
+	<spacer>1</spacer>
+</attribute>
+
+<attribute id="roleOccupant">
+	<display>Occupant</display>
+	<order>5</order>
+	<icon>images/object.png</icon>
+	<spacer>1</spacer>
+</attribute>
+
+<attribute id="street">
+	<display>Street Address</display>
+	<order>6</order>
+	<icon>images/mail.png</icon>
+</attribute>
+<attribute id="l">
+	<display>t_city</display>
+	<order>7</order>
+</attribute>
+<attribute id="st">
+	<display>t_state</display>
+	<order>8</order>
+</attribute>
+<attribute id="postalCode">
+	<display>t_postal_code</display>
+	<order>9</order>
+	<spacer>1</spacer>
+</attribute>
+
+<attribute id="postalAddress">
+	<display>Postal Address</display>
+	<order>10</order>
+	<icon>images/mail.png</icon>
+	<spacer>1</spacer>
+</attribute>
+<attribute id="registeredAddress">
+	<display>Registered Address</display>
+	<icon>images/mail.png</icon>
+	<order>11</order>
+</attribute>
+
+</attributes>
+</template>
