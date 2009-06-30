@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.43.2.12 2007/03/18 03:16:06 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.43.2.13 2008/11/28 14:21:37 wurley Exp $
 
 /**
  * Takes the results of clicking "Save" in template_engine.php and determines which
@@ -151,15 +151,15 @@ if (count($update_array) > 0) {
 				if (obfuscate_password_display(get_enc_type($old_values[$attr][$key])))
 					echo preg_replace('/./','*',$old_values[$attr][$key]).'<br />';
 				else
-					echo nl2br(htmlspecialchars($old_values[$attr][$key])).'<br />';
+					echo nl2br(htmlspecialchars(dn_unescape($old_values[$attr][$key]))).'<br />';
 			}
 
 		} elseif (is_array($old_values[$attr]))
 			foreach ($old_values[$attr] as $v)
-				echo nl2br(htmlspecialchars($v)).'<br />';
+				echo nl2br(htmlspecialchars(dn_unescape($v))).'<br />';
 
 		else
-			echo nl2br(htmlspecialchars($old_values[$attr])).'<br />';
+			echo nl2br(htmlspecialchars(dn_unescape($old_values[$attr]))).'<br />';
 
 		echo '</span></td>';
 		echo '<td><span style="white-space: nowrap;">';
@@ -172,7 +172,7 @@ if (count($update_array) > 0) {
 						if (obfuscate_password_display(get_enc_type($new_val[$key])))
 							echo preg_replace('/./','*',$new_val[$key]).'<br />';
 						else
-							echo htmlspecialchars($new_val[$key]).'<br />';
+							echo htmlspecialchars(dn_unescape($new_val[$key])).'<br />';
 					}
 				}
 
@@ -185,7 +185,7 @@ if (count($update_array) > 0) {
 						$update_array[$attr] = array_values($update_array[$attr]);
 
 					} else {
-						echo nl2br(htmlspecialchars($v)).'<br />';
+						echo nl2br(htmlspecialchars(dn_unescape($v))).'<br />';
 					}
 				}
 			}

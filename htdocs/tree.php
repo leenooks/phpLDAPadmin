@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/tree.php,v 1.88.4.10 2007/03/18 03:16:06 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/Attic/tree.php,v 1.88.4.10 2007/03/18 03:16:06 wurley Exp $
 
 /**
  * This script displays the LDAP tree for all the servers that you have

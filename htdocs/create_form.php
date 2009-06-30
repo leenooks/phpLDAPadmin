@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/create_form.php,v 1.31.2.5 2005/12/31 04:21:37 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/Attic/create_form.php,v 1.31.2.5 2005/12/31 04:21:37 wurley Exp $
 
 /**
  * The menu where the user chooses an RDN, Container, and Template for creating a new entry.

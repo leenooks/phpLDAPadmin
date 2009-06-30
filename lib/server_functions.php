@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.34.2.32 2007/03/18 01:57:18 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.34.2.33 2008/11/28 14:21:37 wurley Exp $ */
 
 /**
  * Classes and functions for LDAP server configuration and capability
@@ -1698,16 +1698,16 @@ class LDAPserver {
 
 		switch ($scope) {
 			case 'base':
-				$search = @ldap_read($resource,$base_dn,$filter,$attrs,0,$size_limit,0,$deref);
+				$search = @ldap_read($resource,dn_escape($base_dn),$filter,$attrs,0,$size_limit,0,$deref);
 				break;
 
 			case 'one':
-				$search = @ldap_list($resource,$base_dn,$filter,$attrs,0,$size_limit,0,$deref);
+				$search = @ldap_list($resource,dn_escape($base_dn),$filter,$attrs,0,$size_limit,0,$deref);
 				break;
 
 			case 'sub':
 			default:
-				$search = @ldap_search($resource,$base_dn,$filter,$attrs,0,$size_limit,0,$deref);
+				$search = @ldap_search($resource,dn_escape($base_dn),$filter,$attrs,0,$size_limit,0,$deref);
 				break;
 		}
 

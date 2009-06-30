@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update.php,v 1.25.2.6 2006/01/14 23:33:39 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update.php,v 1.25.2.7 2008/11/28 14:21:37 wurley Exp $
 
 /**
  * Updates or deletes a value from a specified attribute for a specified dn.
@@ -49,28 +49,35 @@ $failed_attrs = array();
 if (! is_array($update_array))
 	pla_error(_('update_array is malformed. This might be a phpLDAPadmin bug. Please report it.'));
 
-run_hook ('pre_update',array('server_id'=>$ldapserver->server_id,'dn'=>$dn,'update_array'=>$update_array));
 
 # Check for delete attributes (indicated by the attribute entry appearing like this: attr => ''
-foreach ($update_array as $attr => $val)
-	if (! is_array($val))
+foreach ($update_array as $attr => $val) {
+	if (! is_array($val)) {
 		if (array_key_exists($attr,$skip_array))
 			unset($update_array[$attr]);
-
 		elseif ($val == '')
 			$update_array[$attr] = array();
 
 		# Skip change
-		else
+		else {
+			if (is_dn_string($val) || $ldapserver->isDNAttr($attr))
+				$val=dn_escape($val);
 			$update_array[$attr] = $val;
-
-	else
+		}
+	} else {
 		if (array_key_exists($attr,$skip_array))
 			unset($update_array[$attr]);
 
 		else
-			foreach ($val as $i => $v)
+			foreach ($val as $i => $v) {
+				if (is_dn_string($v) || $ldapserver->isDNAttr($attr))
+					$v=dn_escape($v);
 				$update_array[$attr][$i] = $v;
+			}
+	}
+}
+run_hook ('pre_update',array('server_id'=>$ldapserver->server_id,'dn'=>$dn,'update_array'=>$update_array));
+#die();
 
 /* Call the custom callback for each attribute modification
    and verify that it should be modified.*/

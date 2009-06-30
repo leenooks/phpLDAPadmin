@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/template_header.php,v 1.6.4.7 2007/03/18 03:23:26 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/Attic/template_header.php,v 1.6.4.7 2007/03/18 03:23:26 wurley Exp $
 
 /**
  * Header page for engine.

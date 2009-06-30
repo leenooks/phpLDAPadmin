@@ -1,4 +1,4 @@
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/css/style.css,v 1.44.4.2 2005/12/06 22:00:54 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/css/style.css,v 1.44.4.3 2008/11/28 14:21:37 wurley Exp $ */
 span.hint {
 	font-size: small;
 	font-weight: normal;
@@ -35,7 +35,7 @@ table.schema_attr th {
 	padding: 5px;
 	color: white;
 	font-weight: bold;
-	font-size: 125%;
+	font-size: 100%;
 }
 
 table.schema_attr td {
@@ -163,7 +163,7 @@ a img {
 body {
 	font-family: arial, helvetica, sans-serif;
 	background-color: white;
-	font-size: 12pt;
+	font-size: 10pt;
 }
 
 table.tree tr.login td {
@@ -204,7 +204,7 @@ table.tree tr.server td {
 	padding-top: 15px;
 	padding-bottom: 0px;
 	vertical-align: top;
-	font-size: 20px;
+	font-size: 12px;
 	text-align: left;
 }
 
@@ -212,7 +212,7 @@ table.tree td.icon {
 	text-align: center;
 	padding: 0px;
 	width: 14px;
-	font-size: 1px;
+	font-size: 10px;
 }
 
 table.tree td.rdn {
@@ -267,7 +267,7 @@ h3.title {
 	background-color: #018;
 	border: 1px solid black;
 	font-weight: normal;
-	font-size: 150%;
+	font-size: 140%;
 }
 
 h3.subtitle {
@@ -317,14 +317,14 @@ table.edit_dn input {
 }
 
 table.edit_dn input.val {
-	font-size: 14px;
+	font-size: 12px;
 	width: 350px; 
 	font-family: arial, helvetica, sans-serif;
 	background-color: white;
 }
 
 table.edit_dn textarea.val {
-	font-size: 14px;
+	font-size: 12px;
 	width: 350px; 
 	font-family: arial, helvetica, sans-serif;
 	background-color: white;
@@ -418,7 +418,7 @@ input.update_dn {
 }
 
 small {
-	font-size: 10pt;
+	font-size: 8pt;
 }
 
 form.edit_dn {
@@ -433,7 +433,7 @@ h4.oclass {
 	margin-top: 8px;
 	font-weight: normal;
 	border: 1px solid black;
-	font-size: 140%;
+	font-size: 120%;
 	color: white;
 }
 
@@ -595,7 +595,7 @@ table.create td.heading {
 }
 
 table.create td.name {
-	font-size: 13px;
+	font-size: 11px;
 	width: 350px; 
 }
 
@@ -642,7 +642,7 @@ table.export_form {
 }
 
 table.export_form tr td {
-	font-size: 13px;
+	font-size: 11px;
 	text-align: left;
 	vertical-align: top;
 	padding: 4px;

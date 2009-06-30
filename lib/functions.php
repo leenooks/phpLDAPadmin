@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.283.2.39 2007/03/18 03:12:10 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.283.2.42 2008/11/28 14:21:37 wurley Exp $
 
 /**
  * A collection of functions used throughout phpLDAPadmin.
@@ -316,6 +316,10 @@ function pla_compare_dns($dn1,$dn2) {
 
 	$dn1_parts = pla_explode_dn(pla_reverse_dn($dn1));
 	$dn2_parts = pla_explode_dn(pla_reverse_dn($dn2));
+
+	if (! $dn1_parts || ! $dn2_parts)
+		return;
+
 	assert(is_array($dn1_parts));
 	assert(is_array($dn2_parts));
 
@@ -1688,19 +1692,41 @@ function pla_explode_dn($dn,$with_attributes=0) {
 }
 
 /**
- * Parse a DN and escape any special characters
+ * Parse a DN and escape any special characters (rfc2253)
  */
 function dn_escape($dn) {
 	$olddn = $dn;
-
-	# Check if the RDN has a comma and escape it.
-	while (preg_match('/([^\\\\]),(\s*[^=]*\s*),/',$dn))
-		$dn = preg_replace('/([^\\\\]),(\s*[^=]*\s*),/','$1\\\\2C$2,',$dn);
-
-	$dn = preg_replace('/([^\\\\]),(\s*[^=]*\s*)([^,])$/','$1\\\\2C$2$3',$dn);
-
+	#
+	# http://rfc.net/rfc2253.html
+	# special    = '"' / "," / "=" / "+" / "<" /  ">" / "#" / ";"
+	# Check if the RDN has special chars escape them.
+	# -  only simplest cases are dealt with 
+	# TODO: '=' unhandled
+	# ';' may be used instead of ',' but its use is discouraged
+	while (preg_match('/([^\\\\])[;,](\s*[^=]*\s*)([;,]|$)/',$dn)) {
+		$dn = preg_replace('/([^\\\\]),(\s*[^=]*\s*)([;,]|$)/','$1\\\\2c$2$3',$dn);
+		$dn = preg_replace('/([^\\\\]);(\s*[^=]*\s*)([;,]|$)/','$1\\\\3b$2$3',$dn);
+	}
+	$dn = preg_replace('/([^\\\\])\+/','$1\\\\2b',$dn);
+	$dn = preg_replace('/([^\\\\])"/','$1\\\\22',$dn);
+	$dn = preg_replace('/([^\\\\])#([^0-9a-f]|$)/i','$1\\\\23$2',$dn);
+	$dn = preg_replace('/([^\\\\])>/','$1\\\\3e',$dn);
+	$dn = preg_replace('/([^\\\\])</','$1\\\\3c',$dn);
 	if (DEBUG_ENABLED)
 		debug_log('dn_escape(): Entered with (%s), Returning (%s)',1,$olddn,$dn);
+
+	return $dn;
+}
+
+/**
+ * Parse a DN and escape any special characters for use in javascript selection
+ */
+function dn_js_escape($dn) {
+	$olddn = $dn;
+	#
+	$dn = preg_replace('/([^\\\\])\'/','$1\\\\\'',$dn);
+	if (DEBUG_ENABLED)
+		debug_log('dn_js_escape(): Entered with (%s), Returning (%s)',1,$olddn,$dn);
 
 	return $dn;
 }
@@ -1835,6 +1861,7 @@ function pla_reverse_dn($dn) {
 	if (DEBUG_ENABLED)
 		debug_log('pla_reverse_dn(): Entered with (%s)',1,$dn);
 
+	$rev = '';
 	foreach (pla_explode_dn($dn) as $key => $branch) {
 
 		// pla_expode_dn returns the array with an extra count attribute, we can ignore that.
@@ -2274,8 +2301,8 @@ function shadow_date( $attrs, $attr) {
 	if (DEBUG_ENABLED)
 		debug_log('shadow_date(): Entered with (%s,%s)',1,$attrs,$attr);
 
-	$shadowLastChange = isset($attrs['shadowLastChange']) ? $attrs['shadowLastChange'][0] : null;
-	$shadowMax = isset($attrs['shadowMax']) ? $attrs['shadowMax'][0] : null;
+	$shadowLastChange = isset($attrs['shadowLastChange']) ? $attrs['shadowLastChange'] : null;
+	$shadowMax = isset($attrs['shadowMax']) ? $attrs['shadowMax'] : null;
 
 	if( 0 == strcasecmp( $attr, 'shadowLastChange' ) && $shadowLastChange)
 		$shadow_date = $shadowLastChange;

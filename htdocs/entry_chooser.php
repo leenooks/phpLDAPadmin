@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/entry_chooser.php,v 1.27.2.4 2005/12/31 03:13:48 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/entry_chooser.php,v 1.27.2.5 2008/11/28 14:21:37 wurley Exp $
 
 /**
  * Display a selection (popup window) to pick a DN.
@@ -70,7 +70,9 @@ if (isset($ldapserver) && $container !== false) {
 
 	else
 		foreach ($dn_list as $dn) {
-			$href = sprintf("javascript:returnDN('%s%s')",($rdn ? "$rdn," : ''),$dn);
+			$href = sprintf("javascript:returnDN('%s%s')",
+				($rdn ? '"'.htmlspecialchars(dn_js_escape($rdn)).',"' : ''),
+				htmlspecialchars(dn_js_escape($dn)));
 			echo '&nbsp;&nbsp;&nbsp;';
 			printf('<a href="entry_chooser.php?server_id=%s&amp;form_element=%s&amp;rdn=%s&amp;container=%s"><img src="images/plus.png" /></a>',
 				$ldapserver->server_id,$return_form_element,$rdn,rawurlencode($dn));

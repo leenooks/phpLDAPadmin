@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/custom.php,v 1.43.2.6 2006/03/01 01:04:05 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/Attic/custom.php,v 1.43.2.6 2006/03/01 01:04:05 wurley Exp $
 
 $rdn = isset($_POST['rdn']) ? $_POST['rdn'] : null;
 $container = $_POST['container'];

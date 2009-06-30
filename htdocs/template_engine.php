@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.26.2.38 2007/03/21 23:16:06 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.26.2.40 2008/11/28 14:21:37 wurley Exp $
 
 /**
  * Template render engine.
@@ -38,7 +38,7 @@ if (isset($_REQUEST['dn'])) {
 	if (! $ldapserver->haveAuthInfo())
 		pla_error(_('Not enough information to login to server. Please check your configuration.'));
 
-	$ldapserver->dnExists($dn)
+	$ldapserver->dnExists(dn_escape($dn))
 		or pla_error(sprintf(_('No such entry: %s'),pretty_print_dn($dn)));
 
 	$rdn = get_rdn($dn);
@@ -870,15 +870,46 @@ foreach ($template['attrs'] as $attr => $vals) {
 
 					echo '</small>';
 
-				} else
+				} else {
+		if (is_dn_string($val) || $ldapserver->isDNAttr($attr))
+
+			if ($ldapserver->dnExists($val)) {
+				printf('<a title="'._('Go to %s').
+					'" href="template_engine.php?server_id=%s&amp;dn=%s"><img '.
+					'style="vertical-align: top" src="images/go.png" alt="Go" '.
+					'/>&nbsp;%s</a>&nbsp;',
+					htmlspecialchars($val),$ldapserver->server_id,
+					rawurlencode($val),dn_unescape($val));
+			} else {
+				printf('<a title="'._('DN not available %s').'"><img '.
+					'style="vertical-align: top" src="images/nogo.png" alt="N/E" '.
+					'/>&nbsp;%s</a>&nbsp;',
+					htmlspecialchars($val),$ldapserver->server_id,
+					rawurlencode($val),dn_unescape($val));
+			}
+
+		elseif (is_mail_string($val))
+			printf('<img style="vertical-align: center" src="images/mail.png"'.
+				' alt="Mail" />&nbsp;<a href="mailto:%s">%s</a>&nbsp;',
+			 	htmlspecialchars($val),$val);
+
+		elseif (is_url_string($val))
+			printf('<img style="vertical-align: center" src="images/dc.png" '.
+				'alt="URL" />&nbsp;<a href="%s" target="new">%s</a>&nbsp;',
+				htmlspecialchars($val),$val);
+
+		else
 					echo htmlspecialchars($val).'<br />';
+
+				}
 			}
 		}
 
 		if (! strcasecmp($attr,'userPassword') && isset($user_password))
 			printf('<small><a href="javascript:passwordComparePopup(\'%s\')">%s</a></small>',base64_encode($user_password),_('Check password...'));
 
-		if (preg_match("/^${attr}=/",$rdn))
+		if (preg_match("/^${attr}=/",$rdn) &&
+		 !($ldapserver->isReadOnly() || $ldapserver->isAttrReadOnly($attr)))
 			printf('<small>(<a href="%s">%s</a>)</small>',$rename_href,_('rename'));
 
 		echo '</td>';
@@ -1038,9 +1069,9 @@ foreach ($template['attrs'] as $attr => $vals) {
 			printf('<a href="%s" target="new"><img style="vertical-align: center" src="images/dc.png" alt="URL" /></a>&nbsp;',htmlspecialchars($val));
 
 		if ($ldapserver->isMultiLineAttr($attr,$val))
-			printf('<textarea class="val" rows="3" cols="50" name="%s" id="%s">%s</textarea>',$input_name,$input_id,htmlspecialchars($val));
+			printf('<textarea class="val" rows="3" cols="50" name="%s" id="%s">%s</textarea>',$input_name,$input_id,htmlspecialchars(dn_unescape($val)));
 		else
-			printf('<input type="text" class="val" name="%s" id="%s" value="%s" />&nbsp;',$input_name,$input_id,htmlspecialchars($val));
+			printf('<input type="text" class="val" name="%s" id="%s" value="%s" />&nbsp;',$input_name,$input_id,htmlspecialchars(dn_unescape($val)));
 
 		/* draw a link for popping up the entry browser if this is the type of attribute
 		   that houses DNs. */
@@ -1071,8 +1102,12 @@ foreach ($template['attrs'] as $attr => $vals) {
 
 				$description = isset($group['description']) ? $group['description'] : null;
 
-				if ($description)
+				if (is_array($description)) {
+					foreach ($description as $item)
+						printf(' (%s)',htmlspecialchars($item));
+				} else {
 					printf(' (%s)',htmlspecialchars($description));
+				}
 
 				echo '</small>';
 			}

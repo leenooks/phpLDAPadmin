@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename.php,v 1.29.2.3 2005/12/08 11:54:19 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename.php,v 1.29.2.4 2008/11/28 14:21:37 wurley Exp $
 
 /**
  * Renames a DN to a different name.
@@ -47,13 +47,13 @@ if (count($new_dn_value) != 2 || ! isset($new_dn_value[1]))
 $new_dn_attr = $new_dn_value[0];
 $new_dn_value = $new_dn_value[1];
 
-$success = run_hook('pre_rename_entry',array('server_id'=>$ldapserver->server_id,'old_dn'=>$dn,'new_dn'=>$new_dn_value));
+$success = run_hook('pre_rename_entry',array('server_id'=>$ldapserver->server_id,'old_dn'=>dn_escape($dn),'new_dn'=>dn_escape($new_dn_value)));
 
 if ($success) {
 	$success = false;
 
 	$deleteoldrdn = $old_dn_attr == $new_dn_attr;
-	$success = $ldapserver->rename($dn,$new_rdn,$container,$deleteoldrdn);
+	$success = $ldapserver->rename(dn_escape($dn),dn_escape($new_rdn),$container,$deleteoldrdn);
 
 } else {
 	pla_error(_('Could not rename the entry') );
