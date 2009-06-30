@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.26.2.40 2008/11/28 14:21:37 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.31 2006/02/19 05:44:34 wurley Exp $
 
 /**
  * Template render engine.
@@ -38,7 +38,7 @@ if (isset($_REQUEST['dn'])) {
 	if (! $ldapserver->haveAuthInfo())
 		pla_error(_('Not enough information to login to server. Please check your configuration.'));
 
-	$ldapserver->dnExists(dn_escape($dn))
+	$ldapserver->dnExists($dn)
 		or pla_error(sprintf(_('No such entry: %s'),pretty_print_dn($dn)));
 
 	$rdn = get_rdn($dn);
@@ -87,7 +87,7 @@ if (isset($template['empty_attrs'])) {
 		$new_dn = sprintf('%s=%s,%s',$template['rdn'],$_REQUEST['form'][$template['rdn']],$_REQUEST['container']);
 
 		echo '<form action="create.php" method="post">';
-		printf('<input type="hidden" name="new_dn" value="%s" />',htmlspecialchars($new_dn));
+		printf('<input type="hidden" name="new_dn" value="%s" />',$new_dn);
 
 	} else {
 		echo '<form action="template_engine.php" method="post" id="template_form" name="template_form" enctype="multipart/form-data">';
@@ -188,7 +188,7 @@ if (isset($template['empty_attrs'])) {
 	}
 
 	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
-	printf('<input type="hidden" name="template" value="%s" />',htmlspecialchars($_REQUEST['template']));
+	printf('<input type="hidden" name="template" value="%s" />',$_REQUEST['template']);
 	printf('<input type="hidden" name="object_classes" value="%s" />',rawurlencode(serialize(array_values($template['objectclass']))));
 	printf('<input type="hidden" name="page" value="%s" />',$page+1);
 
@@ -217,12 +217,12 @@ if (isset($template['empty_attrs'])) {
 			echo '<td class="heading">Container <acronym title="Distinguished Name">DN</acronym>:</td>';
 			printf('<td><input type="text" name="container" size="40" value="%s" disabled />',
 				htmlspecialchars($_REQUEST['container']));
-			printf('<input type="hidden" name="container" value="%s" /></td></tr>',htmlspecialchars($_REQUEST['container']));
+			printf('<input type="hidden" name="container" value="%s" /></td></tr>',$_REQUEST['container']);
 			echo '<tr class="spacer"><td colspan="3"></td></tr>';
 		}
 
 	} else {
-		printf('<td><input type="hidden" name="container" value="%s" /></td></tr>',htmlspecialchars($_REQUEST['container']));
+		printf('<td><input type="hidden" name="container" value="%s" /></td></tr>',$_REQUEST['container']);
 	}
 
 	$count = 0;
@@ -256,7 +256,7 @@ if (isset($template['empty_attrs'])) {
 			# Some conditional checking.
 			# $detail['must'] & $detail['disable'] cannot be set at the same time.
 			if (isset($detail['must']) && $detail['must'] && isset($detail['disable']) && $detail['disable'])
-				pla_error(sprintf(_('Attribute [%s] is a MUST attribute, so it cannot be disabled.'),$attr));
+				pla_error(printf(_('Attribute [%s] is a MUST attribute, so it cannot be disabled.'),$attr));
 
 			# If this attribute is disabled, go to the next one.
 			if (isset($detail['disable']) && $detail['disable'])
@@ -294,17 +294,13 @@ if (isset($template['empty_attrs'])) {
 					$type = 'select';
 			}
 
+			# @todo: $detail['must'] && $detail['hidden'] must have $detail['value'] (with a value).
 			# @todo: if value is a select list, then it cannot be hidden.
 
 			# If this is a hidden attribute, then set its value.
 			if (isset($detail['hidden']) && $detail['hidden']) {
-				if (isset($detail['value'])) {
-					printf('<input type="%s" name="form[%s]" id="%s" value="%s"/>','hidden',$attr,$attr,$detail['value']);
-					continue;
-
-				} else {
-					pla_error(sprintf(_('Attribute [%s] is a HIDDEN attribute, however, it is missing a VALUE in your template.'),$attr));
-				}
+				printf('<input type="%s" name="form[%s]" id="%s" value="%s"/>','hidden',$attr,$attr,$detail['value']);
+				continue;
 			}
 
 			# This is a displayed attribute.
@@ -319,7 +315,7 @@ if (isset($template['empty_attrs'])) {
 
 			# Display the icon if one is required.
 			if (isset($detail['icon']) && trim($detail['icon']))
-				printf('<td><img src="%s" alt="Icon" /></td>',$detail['icon']);
+				printf('<td><img src="%s" /></td>',$detail['icon']);
 			else
 				printf('<td>&nbsp;</td>');
 
@@ -328,12 +324,8 @@ if (isset($template['empty_attrs'])) {
 			# Display the label.
 			if (isset($detail['description']) && (trim($detail['description'])))
 				printf('<acronym title="%s">%s</acronym>:',$detail['description'],$detail['display']);
-
-			elseif (isset($detail['display']))
-				printf('%s:',$detail['display']);
-
 			else
-				printf('%s:',_('No DISPLAY/DESCRIPTION attribute in template file'));
+				printf('%s:',$detail['display']);
 
 			echo '</td>';
 
@@ -489,7 +481,7 @@ if (isset($template['empty_attrs'])) {
 
 	# If there is no count, display the summary
 	if (! $count) {
-			printf('<tr><td><img src="%s" alt="Create" /></td><td><span class="x-small">%s :</span></td><td><b>%s</b></td></tr>',
+			printf('<tr><td><img src="%s" /></td><td><span class="x-small">%s :</span></td><td><b>%s</b></td></tr>',
 				$template['icon'],_('Create Object'),htmlspecialchars($new_dn));
 
 			echo '<tr class="spacer"><td colspan="3"></td></tr>';
@@ -498,7 +490,7 @@ if (isset($template['empty_attrs'])) {
 			foreach ($_REQUEST['form'] as $attr => $value) {
 
 				# Remove blank attributes.
-				if (! is_array($_REQUEST['form'][$attr]) && trim($_REQUEST['form'][$attr]) == '') {
+				if (! $_REQUEST['form'][$attr]) {
 					unset($_REQUEST['form'][$attr]);
 					continue;
 				}
@@ -519,11 +511,9 @@ if (isset($template['empty_attrs'])) {
 
 				else {
 					$display = $value;
-					if (isset($template['attribute'][$attr]['type']) && $template['attribute'][$attr]['type'] == 'password') {
-						$enc = (isset($_REQUEST['enc'])) ? $_REQUEST['enc'] : get_enc_type($value);
-						if (obfuscate_password_display($enc))
+					if (isset($template['attribute'][$attr]['type']) && $template['attribute'][$attr]['type'] == 'password')
+						if (obfuscate_password_display($_REQUEST['enc']))
 							$display = '********';
-					}
 
 					printf('<input type="hidden" name="vals[]" value="%s" />',$value);
 					printf('%s</td><td><b>%s</b></td></tr>',$attr,htmlspecialchars($display));
@@ -531,14 +521,12 @@ if (isset($template['empty_attrs'])) {
 
 			}
 
-			if (isset($_SESSION['submitform'])) {
-				echo '<tr class="spacer"><td colspan="3"></td></tr>';
-				foreach (array_keys($_SESSION['submitform']) as $attr) {
+			echo '<tr class="spacer"><td colspan="3"></td></tr>';
+			foreach (array_keys($_SESSION['submitform']) as $attr) {
 
-					printf('<tr class="%s"><td colspan=2>%s</td><td><b>%s</b>',
-						($counter++%2==0?'even':'odd'),$attr,_('Binary value not displayed'));
-					printf('<input type="hidden" name="attrs[]" value="%s" /></td></tr>',$attr);
-				}
+				printf('<tr class="%s"><td colspan=2>%s</td><td><b>%s</b>',
+					($counter++%2==0?'even':'odd'),$attr,_('Binary value not displayed'));
+				printf('<input type="hidden" name="attrs[]" value="%s" /></td></tr>',$attr);
 			}
 	}
 
@@ -744,7 +732,7 @@ foreach ($template['attrs'] as $attr => $vals) {
 	$schema_href = sprintf('schema.php?server_id=%s&amp;view=attributes&amp;viewvalue=%s',
 		$ldapserver->server_id,real_attr_name($attr));
 
-	printf('<b><a title="'._('Click to view the schema definition for attribute type \'%s\'').'" href="%s">%s</a></b>',$attr,$schema_href,$attr_display);
+	printf('<b><a title="'._('Click to view the schema defintion for attribute type \'%s\'').'" href="%s">%s</a></b>',$attr,$schema_href,$attr_display);
 	echo '</td>';
 
 	echo '<td class="attr_note">';
@@ -802,15 +790,15 @@ foreach ($template['attrs'] as $attr => $vals) {
 
 		if (count($vals) > 1) {
 			for ($i=1; $i<=count($vals); $i++)
-				printf('<a href="%s&amp;value_num=%s"><img src="images/save.png" alt="Save" /> %s(%s)</a><br />',
+				printf('<a href="%s&amp;value_num=%s"><img src="images/save.png" /> %s(%s)</a><br />',
 					$href,$i,_('download value'),$i);
 
 		} else {
-			printf('<a href="%s"><img src="images/save.png" alt="Save" /> %s</a><br />',$href,_('download value'));
+			printf('<a href="%s"><img src="images/save.png" /> %s</a><br />',$href,_('download value'));
 		}
 
 		if (! $ldapserver->isReadOnly() && ! $ldapserver->isAttrReadOnly($attr))
-			printf('<a href="javascript:deleteAttribute(\'%s\');" style="color:red;"><img src="images/trash.png" alt="Trash" /> %s</a>',
+			printf('<a href="javascript:deleteAttribute(\'%s\');" style="color:red;"><img src="images/trash.png" /> %s</a>',
 				$attr,_('delete attribute'));
 
 		echo '</small>';
@@ -852,11 +840,10 @@ foreach ($template['attrs'] as $attr => $vals) {
 				if (trim($val) == '')
 					printf('<span style="color:red">[%s]</span><br />',_('empty'));
 
-				elseif (! strcasecmp($attr,'userPassword') && $config->GetValue('appearance','obfuscate_password_display')) {
-					$user_password = $val;
+				elseif (! strcasecmp($attr,'userPassword') && $config->GetValue('appearance','obfuscate_password_display'))
 					echo preg_replace('/./','*',$val).'<br />';
 
-				} elseif (in_array(strtolower($attr),$shadow_format_attrs)) {
+				elseif (in_array(strtolower($attr),$shadow_format_attrs)) {
 					$shadow_date = shadow_date($attrs,$attr);
 					echo htmlspecialchars($val).'&nbsp;';
 					echo '<small>';
@@ -870,46 +857,24 @@ foreach ($template['attrs'] as $attr => $vals) {
 
 					echo '</small>';
 
-				} else {
-		if (is_dn_string($val) || $ldapserver->isDNAttr($attr))
-
-			if ($ldapserver->dnExists($val)) {
-				printf('<a title="'._('Go to %s').
-					'" href="template_engine.php?server_id=%s&amp;dn=%s"><img '.
-					'style="vertical-align: top" src="images/go.png" alt="Go" '.
-					'/>&nbsp;%s</a>&nbsp;',
-					htmlspecialchars($val),$ldapserver->server_id,
-					rawurlencode($val),dn_unescape($val));
-			} else {
-				printf('<a title="'._('DN not available %s').'"><img '.
-					'style="vertical-align: top" src="images/nogo.png" alt="N/E" '.
-					'/>&nbsp;%s</a>&nbsp;',
-					htmlspecialchars($val),$ldapserver->server_id,
-					rawurlencode($val),dn_unescape($val));
-			}
-
-		elseif (is_mail_string($val))
-			printf('<img style="vertical-align: center" src="images/mail.png"'.
-				' alt="Mail" />&nbsp;<a href="mailto:%s">%s</a>&nbsp;',
-			 	htmlspecialchars($val),$val);
-
-		elseif (is_url_string($val))
-			printf('<img style="vertical-align: center" src="images/dc.png" '.
-				'alt="URL" />&nbsp;<a href="%s" target="new">%s</a>&nbsp;',
-				htmlspecialchars($val),$val);
-
-		else
+				} else
 					echo htmlspecialchars($val).'<br />';
-
-				}
 			}
+
+//@todo: redundant?
+		} else {
+
+			if (! strcasecmp($attr,'userPassword') && obfuscate_password_display())
+				echo preg_replace('/./','*',$vals).'<br />';
+			else
+				echo $vals.'<br />';
+
 		}
 
-		if (! strcasecmp($attr,'userPassword') && isset($user_password))
+		if (! strcasecmp($attr,'userPassword'))
 			printf('<small><a href="javascript:passwordComparePopup(\'%s\')">%s</a></small>',base64_encode($user_password),_('Check password...'));
 
-		if (preg_match("/^${attr}=/",$rdn) &&
-		 !($ldapserver->isReadOnly() || $ldapserver->isAttrReadOnly($attr)))
+		if (preg_match("/^${attr}=/",$rdn))
 			printf('<small>(<a href="%s">%s</a>)</small>',$rename_href,_('rename'));
 
 		echo '</td>';
@@ -942,8 +907,8 @@ foreach ($template['attrs'] as $attr => $vals) {
 				echo htmlspecialchars($user_password);
 
 			echo '<br />';
-			printf('<input style="width: 260px" type="%s" name="new_values[userpassword][]" value="%s" />',
-				(obfuscate_password_display($enc_type) ? 'password' : 'text'),htmlspecialchars($user_password));
+			printf('<input style="width: 260px" type="%s" name="new_values[userpassword][]" value="" />',
+				(obfuscate_password_display($enc_type) ? 'password' : 'text'));
 
 			echo enc_type_select_list($enc_type);
 
@@ -1001,10 +966,10 @@ foreach ($template['attrs'] as $attr => $vals) {
 		$val = $vals[0];
 
 		printf('<input type="hidden" name="old_values[%s][]" value="%s" />',htmlspecialchars($attr),htmlspecialchars($val));
-		printf('<span style="white-space: nowrap;"><input type="text" size="30" id="f_date_%s" name="new_values[%s][0]" value="%s" />&nbsp;',
+		printf('<nobr><input type="text" size="30" id="f_date_%s" name="new_values[%s][0]" value="%s" />&nbsp;',
 			$attr,htmlspecialchars($attr),htmlspecialchars($val));
 		draw_date_selector_link($attr);
-		echo '</span></td>';
+		echo '</nobr></td>';
 		echo '</tr>';
 		$js[] = sprintf('<script type="text/javascript" language="javascript">defaults[\'f_date_%s\'] = \'%s\';</script>',$attr,$js_date_attrs[$attr]);
 
@@ -1037,13 +1002,12 @@ foreach ($template['attrs'] as $attr => $vals) {
 		# Is this value is a structural objectClass, make it read-only
 		if (! strcasecmp($attr,'objectClass')) {
 
-			printf('<a title="%s" href="schema.php?server_id=%s&amp;view=objectClasses&amp;viewvalue=%s"><img src="images/info.png" alt="Info" /></a>&nbsp;',
-				_('View the schema description for this objectClass'),$ldapserver->server_id,strtolower(htmlspecialchars($val)));
+			printf('<a title="%s" href="schema.php?server_id=%s&amp;view=objectClasses&amp;viewvalue=%s"><img src="images/info.png" /></a>&nbsp;',
+				_('View the schema description for this objectClass'),$ldapserver->server_id,htmlspecialchars($val));
 
 			$schema_object = $ldapserver->getSchemaObjectClass($val);
 
-			# This should be an object, but we'll test it anyway
-			if (is_object($schema_object) && $schema_object->getType() == 'structural') {
+			if ($schema_object->getType() == 'structural') {
 				printf(' %s <small>(<acronym title="%s">%s</acronym>)</small><br />',
 					$val,_('This is a structural ObjectClass and cannot be removed.'),_('structural'));
 				printf('<input type="hidden" name="%s" id="%s" value="%s" />',$input_name,$input_id,htmlspecialchars($val));
@@ -1055,23 +1019,23 @@ foreach ($template['attrs'] as $attr => $vals) {
 		if (is_dn_string($val) || $ldapserver->isDNAttr($attr))
 
 			if ($ldapserver->dnExists($val)) {
-				printf('<a title="'._('Go to %s').'" href="template_engine.php?server_id=%s&amp;dn=%s"><img style="vertical-align: top" src="images/go.png" alt="Go" /></a>&nbsp;',
+				printf('<a title="'._('Go to %s').'" href="template_engine.php?server_id=%s&amp;dn=%s"><img style="vertical-align: top" src="images/go.png" /></a>&nbsp;',
 					htmlspecialchars($val),$ldapserver->server_id,rawurlencode($val));
 			} else {
-				printf('<a title="'._('DN not available %s').'"><img style="vertical-align: top" src="images/nogo.png" alt="N/E" /></a>&nbsp;',
+				printf('<a title="'._('DN not available %s').'"><img style="vertical-align: top" src="images/nogo.png" /></a>&nbsp;',
 					htmlspecialchars($val),$ldapserver->server_id,rawurlencode($val));
 			}
 
 		elseif (is_mail_string($val))
-			printf('<a href="mailto:%s"><img style="vertical-align: center" src="images/mail.png" alt="Mail" /></a>&nbsp;',htmlspecialchars($val));
+			printf('<a href="mailto:%s"><img style="vertical-align: center" src="images/mail.png" /></a>&nbsp;',htmlspecialchars($val));
 
 		elseif (is_url_string($val))
-			printf('<a href="%s" target="new"><img style="vertical-align: center" src="images/dc.png" alt="URL" /></a>&nbsp;',htmlspecialchars($val));
+			printf('<a href="%s" target="new"><img style="vertical-align: center" src="images/dc.png" /></a>&nbsp;',htmlspecialchars($val));
 
 		if ($ldapserver->isMultiLineAttr($attr,$val))
-			printf('<textarea class="val" rows="3" cols="50" name="%s" id="%s">%s</textarea>',$input_name,$input_id,htmlspecialchars(dn_unescape($val)));
+			printf('<textarea class="val" rows="3" cols="50" name="%s" id="%s">%s</textarea>',$input_name,$input_id,htmlspecialchars($val));
 		else
-			printf('<input type="text" class="val" name="%s" id="%s" value="%s" />&nbsp;',$input_name,$input_id,htmlspecialchars(dn_unescape($val)));
+			printf('<input type="text" class="val" name="%s" id="%s" value="%s" />&nbsp;',$input_name,$input_id,htmlspecialchars($val));
 
 		/* draw a link for popping up the entry browser if this is the type of attribute
 		   that houses DNs. */
@@ -1102,12 +1066,8 @@ foreach ($template['attrs'] as $attr => $vals) {
 
 				$description = isset($group['description']) ? $group['description'] : null;
 
-				if (is_array($description)) {
-					foreach ($description as $item)
-						printf(' (%s)',htmlspecialchars($item));
-				} else {
+				if ($description)
 					printf(' (%s)',htmlspecialchars($description));
-				}
 
 				echo '</small>';
 			}
@@ -1164,7 +1124,7 @@ else
 <!-- This form is submitted by JavaScript when the user clicks "Delete attribute" on a binary attribute -->
 <form name="delete_attribute_form" action="delete_attr.php" method="post">
 	<input type="hidden" name="server_id" value="<?php echo $ldapserver->server_id; ?>" />
-	<input type="hidden" name="dn" value="<?php echo htmlspecialchars($dn); ?>" />
+	<input type="hidden" name="dn" value="<?php echo $dn; ?>" />
 	<input type="hidden" name="attr" value="FILLED IN BY JAVASCRIPT" />
 </form>
 

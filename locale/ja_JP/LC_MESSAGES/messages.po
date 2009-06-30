@@ -1,4 +1,4 @@
-# : $Id: messages.po,v 1.1.2.2 2005/12/20 19:32:52 wurley Exp $
+# : $Id: messages.po,v 1.3 2006/01/03 20:39:59 wurley Exp $
 #
 # Tadashi Jokagi <elf2000@users.sourceforge.net>, 2004.
 # Tadashi Jokagi <elf2000@users.sourceforge.net>, 2005.

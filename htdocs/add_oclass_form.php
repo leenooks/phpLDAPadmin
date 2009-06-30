@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass_form.php,v 1.23.2.6 2005/12/09 23:32:37 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass_form.php,v 1.24 2005/12/10 10:34:54 wurley Exp $
 
 /**
  * This page may simply add the objectClass and take you back to the edit page,

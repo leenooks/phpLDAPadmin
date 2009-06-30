@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Attic/tree_functions.php,v 1.20.2.23 2007/03/18 03:21:18 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/tree_functions.php,v 1.23 2006/01/03 20:39:59 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -39,13 +39,13 @@ function draw_server_tree() {
 	echo '<tr class="server">';
 	printf('<td class="icon"><img src="images/server.png" alt="%s" /></td>',_('Server'));
 	printf('<td colspan="99"><a name="%s"></a>',$ldapserver->server_id);
-	printf('<span style="white-space: nowrap;">%s ',htmlspecialchars($ldapserver->name));
+	printf('<nobr>%s ',htmlspecialchars($ldapserver->name));
 
 	if ($ldapserver->haveAuthInfo() && $ldapserver->auth_type != 'config')
 		printf('<acronym title="%s"><img width=14 height=14 src="images/timeout.png" alt="timeout" /></acronym>',
 			sprintf(_('Inactivity will log you off at %s'),strftime('%H:%M',time()+($ldapserver->session_timeout*60))));
 
-	echo '</span></td></tr>';
+	echo '</nobr></td></tr>';
 
 	/* do we have what it takes to authenticate here, or do we need to
 	   present the user with a login link (for 'cookie' and 'session' auth_types)? */
@@ -62,7 +62,7 @@ function draw_server_tree() {
 
 			# Draw the quick-links below the server name:
 			echo '<tr><td colspan="100" class="links">';
-			echo '<span style="white-space: nowrap;">';
+			echo '<nobr>';
 			echo '( ';
 			printf('<a title="%s %s" href="%s">%s</a> | ',_('View schema for'),$ldapserver->name,$schema_href,_('schema'));
 			printf('<a title="%s %s" href="%s">%s</a> | ',_('search'),$ldapserver->name,$search_href,_('search'));
@@ -74,11 +74,11 @@ function draw_server_tree() {
 			if ($ldapserver->auth_type != 'config')
 				printf(' | <a title="%s" href="%s" target="right_frame">%s</a>',_('Logout of this server'),$logout_href,_('logout'));
 
-			echo ' )</span></td></tr>';
+			echo ' )</nobr></td></tr>';
 
 			if ($ldapserver->auth_type != 'config') {
 				$logged_in_dn = $ldapserver->getLoggedInDN();
-				echo '<tr><td class="links" colspan="100"><span style="white-space: nowrap;">'._('Logged in as: ');
+				echo '<tr><td class="links" colspan="100"><nobr>'._('Logged in as: ');
 
 				if ($ldapserver->getDNBase($logged_in_dn) == $logged_in_dn) {
 					$logged_in_branch = '';
@@ -86,12 +86,10 @@ function draw_server_tree() {
 
 				} else {
 					$logged_in_branch = preg_replace('/,'.$ldapserver->getDNBase($logged_in_dn).'$/','',$logged_in_dn);
-					$logged_in_dn_array = pla_explode_dn($logged_in_branch);
+					$logged_in_dn_array = explode(',',$logged_in_branch);
 				}
 
-				$bases = $ldapserver->getDNBase($logged_in_dn);
-				if (is_array($bases) && count($bases))
-					$logged_in_dn_array[] = $bases;
+				$logged_in_dn_array[] = $ldapserver->getDNBase($logged_in_dn);
 
 				$rdn = $logged_in_dn;
 
@@ -110,11 +108,11 @@ function draw_server_tree() {
 				} else
 					echo 'Anonymous';
 
-				echo '</span></td></tr>';
+				echo '</nobr></td></tr>';
 			}
 
 			if ($ldapserver->isReadOnly())
-				printf('<tr><td class="links" colspan="100"><span style="white-space: nowrap;">(%s)</span></td></tr>',_('read only'));
+				printf('<tr><td class="links" colspan="100"><nobr>(%s)</nobr></td></tr>',_('read only'));
 
 			$javascript_forms = '';
 			$javascript_id = 0;
@@ -192,6 +190,9 @@ function draw_server_tree() {
 
 					$icon = isset($tree['browser'][$base_dn]['icon']) ? $tree['browser'][$base_dn]['icon'] : get_icon($ldapserver,$base_dn);
 
+					# Shall we draw the "mass-delete" checkbox?
+					if ($ldapserver->isMassDeleteEnabled())
+						printf('<td><input type="checkbox" name="mass_delete[%s]" /></td>',htmlspecialchars($base_dn));
 
 					if ($config->GetValue('appearance','tree_plm')) {
 						$tree_plm .= sprintf(".|%s|%s|%s|%s|%s|%s\n",
@@ -199,19 +200,14 @@ function draw_server_tree() {
 
 					} else {
 						echo '<tr>';
-
-						# Shall we draw the "mass-delete" checkbox?
-						if ($ldapserver->isMassDeleteEnabled())
-							printf('<td><input type="checkbox" name="mass_delete[%s]" /></td>',htmlspecialchars($base_dn));
-
 						printf('<td class="expander"><a href="%s"><img src="%s" alt="%s" /></a></td>',$expand_href,$expand_img,$expand_alt);
 						printf('<td class="icon"><a href="%s" target="right_frame"><img src="images/%s" alt="img" /></a></td>',$edit_href,$icon);
-						printf('<td class="rdn" colspan="98"><span style="white-space: nowrap;"><a href="%s" target="right_frame">%s</a>',$edit_href,pretty_print_dn($base_dn));
+						printf('<td class="rdn" colspan="98"><nobr><a href="%s" target="right_frame">%s</a>',$edit_href,pretty_print_dn($base_dn));
 
 						if ($child_count)
 							printf(' <span class="count">(%s)</span>',$child_count);
 
-						echo '</span></td>';
+						echo '</nobr></td>';
 						echo '</tr>';
 					}
 
@@ -336,9 +332,9 @@ function draw_tree_html($dn,$ldapserver,$level=0) {
 		$child_count = number_format(count($tree['browser'][$dn]['children']));
 
 		if ((! $child_count) && (! $ldapserver->isShowCreateEnabled()))
-			echo '<td class="expander"><span style="white-space: nowrap;"><img src="images/minus.png" alt="-" /></span></td>';
+			echo '<td class="expander"><nobr><img src="images/minus.png" alt="-" /></nobr></td>';
 		else
-			printf('<td class="expander"><span style="white-space: nowrap;"><a href="%s"><img src="images/minus.png" alt="-" /></a></span></td>',$collapse_href);
+			printf('<td class="expander"><nobr><a href="%s"><img src="images/minus.png" alt="-" /></a></nobr></td>',$collapse_href);
 
 	} else {
 		$size_limit = $config->GetValue('search','size_limit');
@@ -354,21 +350,21 @@ function draw_tree_html($dn,$ldapserver,$level=0) {
 		}
 
 		if ((! $child_count) && (! $ldapserver->isShowCreateEnabled()))
-			echo '<td class="expander"><span style="white-space: nowrap;"><img src="images/minus.png" alt="-" /></span></td>';
+			echo '<td class="expander"><nobr><img src="images/minus.png" alt="-" /></nobr></td>';
 		else
-			printf('<td class="expander"><span style="white-space: nowrap;"><a href="%s"><img src="images/plus.png" alt="+" /></a></span></td>',$expand_href);
+			printf('<td class="expander"><nobr><a href="%s"><img src="images/plus.png" alt="+" /></a></nobr></td>',$expand_href);
 	}
 
 	printf('<td class="icon"><a href="%s" target="right_frame" name="%s_%s"><img src="%s" alt="img" /></a></td>',
 		$edit_href,$ldapserver->server_id,$encoded_dn,$img_src);
 
-	printf('<td class="rdn" colspan="%s"><span style="white-space: nowrap;">',97-$level);
+	printf('<td class="rdn" colspan="%s"><nobr>',97-$level);
 	printf('<a href="%s" target="right_frame">%s</a>',$edit_href,draw_formatted_dn($ldapserver,$dn));
 
 	if ($child_count)
 		printf(' <span class="count">(%s)</span>',$child_count);
 
-	echo '</span></td></tr>';
+	echo '</nobr></td></tr>';
 
 	if (isset($tree['browser'][$dn]['open']) && $tree['browser'][$dn]['open']) {
 		/* Draw the "create new" link at the top of the tree list if there are more than 10

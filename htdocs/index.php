@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/index.php,v 1.42.2.10 2006/03/08 22:49:27 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/index.php,v 1.46 2006/02/25 13:12:05 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -33,14 +33,9 @@ if (! is_readable(LIBDIR.'functions.php')) {
 	ob_end_clean();
 	die("Cannot read the file 'functions.php' its permissions are too strict.");
 }
-
 require LIBDIR.'functions.php';
 $config_file = CONFDIR.'config.php';
 ob_end_clean();
-
-# Make sure this PHP install has gettext, we use it for language translation
-if (! extension_loaded('gettext'))
-	die('Your install of PHP appears to be missing GETTEXT support. GETTEXT is used for language translation. Please install GETTEXT support before using phpLDAPadmin. (Dont forget to restart your web server afterwards)');
 
 /* Helper functions.
  * Our required helper functions are defined in functions.php
@@ -183,6 +178,12 @@ function check_config() {
 	if (strcmp(phpversion(),REQUIRED_PHP_VERSION) < 0) {
 		pla_error(sprintf('phpLDAPadmin requires PHP version %s or greater. You are using %s',
 			REQUIRED_PHP_VERSION,phpversion()));
+	}
+
+	# Make sure this PHP install has gettext, we use it for language translation
+	if (! extension_loaded('gettext')) {
+		pla_error('Your install of PHP appears to be missing GETTEXT support. GETTEXT is used for language translation. Please install GETTEXT support before using phpLDAPadmin. (Dont forget to restart your web server afterwards)');
+		return false;
 	}
 
 	# Make sure this PHP install has all our required extensions

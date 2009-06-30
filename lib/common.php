@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.76.2.8 2007/01/27 13:21:35 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.78 2006/01/03 20:39:59 wurley Exp $
 
 /**
  * Contains code to be executed at the top of each phpLDAPadmin page.
@@ -29,6 +29,10 @@ ob_start();
 require_once realpath(LIBDIR.'functions.php');
 ob_end_clean();
 
+# Turn on all notices and warnings. This helps us write cleaner code (we hope at least)
+if (phpversion() < 5)
+	pla_error('Sorry, PLA is now a PHP5 application.<BR>For a PHP4 application, please use a 0.9.x version.');
+
 /* Our custom error handler receives all error notices that pass the error_reporting()
    level set above. */
 set_error_handler('pla_error_handler');
@@ -51,13 +55,7 @@ require_once realpath(LIBDIR.'config_default.php');
 ob_end_clean();
 
 # We are now ready for error reporting.
-# Turn on all notices and warnings. This helps us write cleaner code (we hope at least)
-if (phpversion() >= '5') {
-	# E_DEBUG is PHP5 specific and prevents warnings about using 'var' to declare class members
-	error_reporting(E_DEBUG);
-} else
-	# For PHP4
-	error_reporting(E_ALL);
+error_reporting(E_DEBUG);
 
 /**
  * At this point we have read all our additional function PHP files and our configuration.
@@ -107,7 +105,6 @@ if ($language == 'auto') {
 
 				# Set language
 				putenv('LANG='.$HTTP_LANG); # e.g. LANG=de_DE
-				$HTTP_LANG .= '.UTF-8';
 				setlocale(LC_ALL,$HTTP_LANG); # set LC_ALL to de_DE
 				bindtextdomain('messages',LANGDIR);
 				bind_textdomain_codeset('messages','UTF-8');
@@ -128,7 +125,6 @@ if ($language == 'auto') {
 
 		# Set language
 		putenv('LANG='.$language); # e.g. LANG=de_DE
-		$language .= '.UTF-8';
 		setlocale(LC_ALL,$language); # set LC_ALL to de_DE
 		bindtextdomain('messages',LANGDIR);
 		bind_textdomain_codeset('messages','UTF-8');

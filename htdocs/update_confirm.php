@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.43.2.13 2008/11/28 14:21:37 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.46 2006/01/29 01:51:49 wurley Exp $
 
 /**
  * Takes the results of clicking "Save" in template_engine.php and determines which
@@ -76,20 +76,15 @@ foreach ($old_values as $attr => $old_val) {
 }
 
 # Check user password with new encoding.
-if (isset($new_values['userpassword']) && is_array($new_values['userpassword'])) {
+if (isset($new_values['userpassword']) && is_array($new_values['userpassword']))
 	foreach ($new_values['userpassword'] as $key => $userpassword) {
 		if ($userpassword) {
-			if ($old_values['userpassword'][$key] == $new_values['userpassword'][$key] && 
-				get_enc_type($old_values['userpassword'][$key]) == $_POST['enc_type'][$key])
-				continue;
+			$new_val[$key] = password_hash($userpassword,$_POST['enc_type'][$key]);
 
-			$new_values['userpassword'][$key] = password_hash($userpassword,$_POST['enc_type'][$key]);
+			if ($new_val[$key] != $old_values['userpassword'][$key])
+				$update_array['userpassword'][$key] = $new_val[$key];
 		}
 	}
-
-	if ($old_values['userpassword'] != $new_values['userpassword'])
-		$update_array['userpassword'] = $new_values['userpassword'];
-}
 
 # strip empty vals from update_array and ensure consecutive indices for each attribute
 foreach ($update_array as $attr => $val) {
@@ -144,25 +139,25 @@ if (count($update_array) > 0) {
 
 		printf('<tr class="%s">',$counter%2 ? 'even' : 'odd');
 		printf('<td><b>%s</b></td>',htmlspecialchars($attr));
-		echo '<td><span style="white-space: nowrap;">';
+		echo '<td><nobr>';
 
 		if (strcasecmp($attr,'userPassword') == 0) {
 			foreach ($old_values[$attr] as $key => $value) {
 				if (obfuscate_password_display(get_enc_type($old_values[$attr][$key])))
 					echo preg_replace('/./','*',$old_values[$attr][$key]).'<br />';
 				else
-					echo nl2br(htmlspecialchars(dn_unescape($old_values[$attr][$key]))).'<br />';
+					echo nl2br(htmlspecialchars($old_values[$attr][$key])).'<br />';
 			}
 
 		} elseif (is_array($old_values[$attr]))
 			foreach ($old_values[$attr] as $v)
-				echo nl2br(htmlspecialchars(dn_unescape($v))).'<br />';
+				echo nl2br(htmlspecialchars($v)).'<br />';
 
 		else
-			echo nl2br(htmlspecialchars(dn_unescape($old_values[$attr]))).'<br />';
+			echo nl2br(htmlspecialchars($old_values[$attr])).'<br />';
 
-		echo '</span></td>';
-		echo '<td><span style="white-space: nowrap;">';
+		echo '</nobr></td>';
+		echo '<td><nobr>';
 
 		# Is this a multi-valued attribute?
 		if (is_array($new_val)) {
@@ -172,7 +167,7 @@ if (count($update_array) > 0) {
 						if (obfuscate_password_display(get_enc_type($new_val[$key])))
 							echo preg_replace('/./','*',$new_val[$key]).'<br />';
 						else
-							echo htmlspecialchars(dn_unescape($new_val[$key])).'<br />';
+							echo htmlspecialchars($new_val[$key]).'<br />';
 					}
 				}
 
@@ -185,7 +180,7 @@ if (count($update_array) > 0) {
 						$update_array[$attr] = array_values($update_array[$attr]);
 
 					} else {
-						echo nl2br(htmlspecialchars(dn_unescape($v))).'<br />';
+						echo nl2br(htmlspecialchars($v)).'<br />';
 					}
 				}
 			}
@@ -201,7 +196,7 @@ if (count($update_array) > 0) {
 		} elseif ($new_val != '')
 				printf('<span style="color: red">%s</span>',_('[attribute deleted]'));
 
-		echo '</span></td>';
+		echo '</nobr></td>';
 
  		printf('<td><input name="skip_array[%s]" type="checkbox" /></td>',htmlspecialchars($attr));
 		echo '</tr>'."\n\n";

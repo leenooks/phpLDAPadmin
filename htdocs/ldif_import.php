@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import.php,v 1.33.2.3 2005/12/10 06:55:52 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import.php,v 1.34 2005/12/10 10:34:54 wurley Exp $
  
 /**
  * Imports an LDIF file to the specified server_id.

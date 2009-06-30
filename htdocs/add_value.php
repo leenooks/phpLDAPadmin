@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_value.php,v 1.19.2.5 2005/12/09 23:32:37 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_value.php,v 1.20 2005/12/10 10:34:54 wurley Exp $
 
 /**
  * Adds a value to an attribute for a given dn.

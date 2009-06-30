@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.29.2.20 2007/03/21 23:12:03 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.34 2006/02/25 12:47:57 wurley Exp $ */
 
 /**
  * Classes and functions for the template engine.ation and capability
@@ -464,7 +464,7 @@ class Templates {
 			U:    Make the result upper case.
 			*/
 			case 'autoFill' :
-				list($attr,$string) = preg_split('(([^,]+),(.*))',$arg,-1,PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+				list($attr,$string) = split(',',$arg);
 				preg_match_all('/%(\w+)(\|[0-9]*-[0-9]*)?(\/[klTU]+)?%/U',$string,$matchall);
 				//print"<PRE>";print_r($matchall); //0 = highlevel match, 1 = attr, 2 = subst, 3 = mod
 
@@ -670,7 +670,7 @@ class Templates {
 
 			else
 				# @todo: Enable size and width configuration in template
-				$html = sprintf('<input type="text" name="%s" size="8" />',$id);
+				$html = sprintf('<input type="text" name="%s" size="8">',$id);
 
 		} else {
 			if (is_array($helper)) {

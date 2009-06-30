@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/session_functions.php,v 1.16.2.1 2005/12/31 03:06:15 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/session_functions.php,v 1.17 2006/01/03 20:39:59 wurley Exp $
 
 /**
  * A collection of functions to handle sessions throughout phpLDAPadmin.

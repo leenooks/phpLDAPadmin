@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/syslog.php,v 1.11.4.1 2005/12/09 14:32:13 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/syslog.php,v 1.12 2005/12/10 10:34:55 wurley Exp $
 
 /**
  * Functions related to syslog logging.

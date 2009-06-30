@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/export_form.php,v 1.22.4.7 2007/03/18 03:16:05 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/export_form.php,v 1.24 2005/12/17 00:00:11 wurley Exp $
 
 /**
  * export_form.php
@@ -52,9 +52,9 @@ printf('<tr><td>%s</td><td>%s</td></tr>',_('Server'),server_select_list());
 
 echo '<tr>';
 printf('<td style="white-space:nowrap">%s</td>',_('Base DN'));
-printf('<td><span style="white-space: nowrap;"><input type="text" name="dn" id="dn" style="width:230px" value="%s" />&nbsp;',htmlspecialchars($dn));
+printf('<td><nobr><input type="text" name="dn" id="dn" style="width:230px" value="%s" />&nbsp;',htmlspecialchars($dn));
 draw_chooser_link('export_form.dn');
-echo '</span></td>';
+echo '</nobr></td>';
 echo '</tr>';
 
 echo '<tr>';

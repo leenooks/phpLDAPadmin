@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_table.php,v 1.7.4.5 2005/12/09 14:31:27 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_table.php,v 1.8 2005/12/10 10:34:55 wurley Exp $
 
 /**
  * Incoming variables (among others)

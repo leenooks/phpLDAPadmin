@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete.php,v 1.24.2.3 2005/12/11 08:21:03 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete.php,v 1.26 2005/12/17 00:00:11 wurley Exp $
 
 /**
  * Deletes a DN and presents a "job's done" message.

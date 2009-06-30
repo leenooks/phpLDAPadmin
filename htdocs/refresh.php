@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/refresh.php,v 1.15.4.2 2005/12/16 11:29:35 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/refresh.php,v 1.17 2005/12/17 00:00:11 wurley Exp $
 
 /**
  * This script alters the session variable 'tree', by re-querying

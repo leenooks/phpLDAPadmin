@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/create.php,v 1.44.2.6 2006/02/19 02:57:01 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/create.php,v 1.46 2006/02/19 05:44:34 wurley Exp $
 
 /**
  * Creates a new object.

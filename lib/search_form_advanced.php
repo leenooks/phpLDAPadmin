@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_advanced.php,v 1.23.2.3 2006/10/28 05:56:56 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_advanced.php,v 1.24 2005/12/10 10:34:55 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -86,12 +86,6 @@ if( isset( $base_dn_does_not_exist ) && $base_dn_does_not_exist )
 					htmlspecialchars( $_GET['display_attrs'] ) :
 					join(', ',$config->GetValue('search','result_attributes')); ?>" />
 
-	</tr>
-	<tr>
-		<td><small><acronym title="<?php echo htmlspecialchars(_('Order by').'...'); ?>">
-			<?php echo _('Order by'); ?></acronym></small></td>
-
-		<td><input type="text" name="orderby" id="orderby" style="width: 200px" value="<?php echo  $filter ? htmlspecialchars($orderby) : ''; ?>" /></td>
 	</tr>
 	<tr>
 		<td colspan="2"><br /><center><input type="submit" value="<?php echo _('Search'); ?>" /></center></td>

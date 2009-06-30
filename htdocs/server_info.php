@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/server_info.php,v 1.22.2.5 2007/01/27 13:11:06 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/server_info.php,v 1.23 2005/12/10 10:34:54 wurley Exp $
 
 /**
  * Fetches and displays all information that it can from the specified server
@@ -50,20 +50,17 @@ if (! $ldapserver->haveAuthInfo())
 	pla_error( _('Not enough information to login to server. Please check your configuration.') );
 
 # Fetch basic RootDSE attributes using the + and *.
-$attrs = $ldapserver->search(null,'','objectClass=*',array('+','*'),'base');
-$attrs = array_pop($attrs);
+$attrs = array_pop($ldapserver->search(null,'','objectClass=*',array('+','*'),'base'));
 
 /* After fetching the "basic" attributes from the RootDSE, try fetching the
    more advanced ones (from ths list). Add them to the list of attrs to display
    if they weren't already fetched. (this was added as a work-around for OpenLDAP
    on RHEL 3. */
-$attrs2 = $ldapserver->search(null,'','objectClass=*',$root_dse_attributes,'base');
-$attrs2 = array_pop($attrs2);
+$attrs2 = array_pop($ldapserver->search(null,'','objectClass=*',$root_dse_attributes,'base'));
 
-if (is_array($attrs2))
-	foreach ($attrs2 as $attr => $values)
-		if (! isset($attrs[$attr]))
-			$attrs[$attr] = $attrs2[$attr];
+foreach ($attrs2 as $attr => $values)
+	if (! isset($attrs[$attr]))
+		$attrs[$attr] = $attrs2[$attr];
 
 include './header.php';
 
@@ -85,7 +82,7 @@ foreach ($attrs as $attr => $values) {
 	$schema_href = sprintf('schema.php?server_id=%s&amp;view=attributes&amp;viewvalue=%s',$ldapserver->server_id,$attr);
 
 	echo '<tr><td class="attr">';
-	printf('<b><a title="'._('Click to view the schema definition for attribute type \'%s\'').'" href="%s">%s</a></b>',
+	printf('<b><a title="'._('Click to view the schema defintion for attribute type \'%s\'').'" href="%s">%s</a></b>',
 		$attr,$schema_href,htmlspecialchars($attr));
 	echo '</td></tr>';
 

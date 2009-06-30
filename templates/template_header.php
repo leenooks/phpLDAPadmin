@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/Attic/template_header.php,v 1.6.4.7 2007/03/18 03:23:26 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/template_header.php,v 1.7 2005/12/10 10:34:57 wurley Exp $
 
 /**
  * Header page for engine.
@@ -9,11 +9,13 @@
 
 include './header.php';
 
+$time = gettimeofday();
+$random_junk = md5(strtotime('now').$time['usec']);
 $url_base = sprintf('server_id=%s&amp;dn=%s',$ldapserver->server_id,$encoded_dn);
 
 $export_href_base = sprintf('export_form.php?%s&amp;scope=%s',$url_base,'base');
 $export_href_sub = sprintf('export_form.php?%s&amp;scope=%s',$url_base,'sub');
-$refresh_href = sprintf('template_engine.php?%s&amp;random=%s',$url_base,random_junk());
+$refresh_href = sprintf('template_engine.php?%s&amp;random=%s',$url_base,$random_junk);
 $copy_href = sprintf('copy_form.php?%s',$url_base);
 $intattr_href = sprintf('template_engine.php?%s&amp;show_internal_attrs=true',$url_base);
 $delete_href = sprintf('delete_form.php?%s',$url_base);
@@ -25,8 +27,8 @@ $addattr_href = sprintf('add_attr_form.php?%s',$url_base);
 echo '<body>';
 
 if ($dn) {
-	$actionlayout = '<td class="icon"><img src="images/%s" alt="%s" /></td><td><a href="%s" title="%s">%s</a></td>';
-	$hintlayout = '<td class="icon"><img src="images/light.png" alt="Hint" /></td><td colspan="3"><span class="hint">%s</span></td>';
+	$actionlayout = '<td class="icon"><img src="images/%s" /></td><td><a href="%s" title="%s">%s</a></td>';
+	$hintlayout = '<td class="icon"><img src="images/light.png" /></td><td colspan="3"><span class="hint">%s</span></td>';
 
 	printf('<h3 class="title">%s</h3>',htmlspecialchars($rdn));
 	printf('<h3 class="subtitle">%s: <b>%s</b> &nbsp;&nbsp;&nbsp; %s: <b>%s</b></h3>',
@@ -35,24 +37,24 @@ if ($dn) {
 	echo "\n";
 
 	echo '<table class="edit_dn_menu"><tr>';
-	printf($actionlayout,'refresh.png','Refresh',$refresh_href,_('Refresh this entry'),_('Refresh'));
-	printf($actionlayout,'save.png','Save',$export_href_base,_('Save a dump of this object'),_('Export'));
+	printf($actionlayout,'refresh.png',$refresh_href,_('Refresh this entry'),_('Refresh'));
+	printf($actionlayout,'save.png',$export_href_base,_('Save a dump of this object'),_('Export'));
 	echo '</tr><tr>';
 
-	printf($actionlayout,'cut.png','Cut',$copy_href,_('Copy this object to another location, a new DN, or another server'),_('Copy or move this entry'));
+	printf($actionlayout,'cut.png',$copy_href,_('Copy this object to another location, a new DN, or another server'),_('Copy or move this entry'));
 
 	if ($show_internal_attrs)
-		printf($actionlayout,'tools-no.png','Hide',$refresh_href,'',_('Hide internal attributes'));
+		printf($actionlayout,'tools-no.png',$refresh_href,'',_('Hide internal attributes'));
 
 	else
-		printf($actionlayout,'tools.png','Show',$intattr_href,'',_('Show internal attributes'));
+		printf($actionlayout,'tools.png',$intattr_href,'',_('Show internal attributes'));
 
 	echo '</tr>';
 
 	if (! $ldapserver->isReadOnly()) {
 		echo '<tr>';
-		printf($actionlayout,'trash.png','Trash',$delete_href,_('You will be prompted to confirm this decision'),_('Delete this entry'));
-		printf($actionlayout,'rename.png','Rename',$rename_href,'',_('Rename'));
+		printf($actionlayout,'trash.png',$delete_href,_('You will be prompted to confirm this decision'),_('Delete this entry'));
+		printf($actionlayout,'rename.png',$rename_href,'',_('Rename'));
 		echo '</tr>';
 
 		if ($config->GetValue('appearance','show_hints')) {
@@ -62,12 +64,12 @@ if ($dn) {
 		}
 
 		echo '<tr>';
-		printf($actionlayout,'compare.png','Compare',$compare_href,'',_('Compare with another entry'));
+		printf($actionlayout,'compare.png',$compare_href,'',_('Compare with another entry'));
 		echo '</tr>';
 
 		echo '<tr>';
-		printf($actionlayout,'star.png','Create',$create_href,'',_('Create a child entry'));
-		printf($actionlayout,'add.png','Add',$addattr_href,'',_('Add new attribute'));
+		printf($actionlayout,'star.png',$create_href,'',_('Create a child entry'));
+		printf($actionlayout,'add.png',$addattr_href,'',_('Add new attribute'));
 		echo '</tr>';
 	}
 
@@ -82,8 +84,8 @@ if ($dn) {
 			$ldapserver->server_id,rawurlencode('objectClass=*'),$encoded_dn);
 
 		echo '<tr>';
-		printf($actionlayout,'children.png','Children',$child_href,'',($children_count == 1) ? _('View 1 child') : sprintf(_('View %s children'),$children_count));
-		printf($actionlayout,'save.png','Save',$export_href_sub,_('Save a dump of this object and all of its children'),_('Export subtree'));
+		printf($actionlayout,'children.png',$child_href,'',($children_count == 1) ? _('View 1 child') : sprintf(_('View %s children'),$children_count));
+		printf($actionlayout,'save.png',$export_href_sub,_('Save a dump of this object and all of its children'),_('Export subtree'));
 		echo '</tr>';
 	}
 
@@ -114,7 +116,7 @@ if ($dn) {
 	if (! $ldapserver->isReadOnly()) {
 		echo '<form action="update_confirm.php" method="post" name="edit_form">';
 		printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
-		printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($dn));
+		printf('<input type="hidden" name="dn" value="%s" />',$dn);
 	}
 
 	echo '<br />'."\n\n";
@@ -128,7 +130,7 @@ if ($dn) {
 			$schema_href = sprintf('schema.php?server_id=%s&amp;view=attributes&amp;viewvalue=%s',
 				$ldapserver->server_id,real_attr_name($attr));
 
-			printf('<tr><td colspan="2" class="attr"><b><a title="'._('Click to view the schema definition for attribute type \'%s\'').'" href="%s" />%s</b></td></tr>',
+			printf('<tr><td colspan="2" class="attr"><b><a title="'._('Click to view the schema defintion for attribute type \'%s\'').'" href="%s" />%s</b></td></tr>',
 				$attr,$schema_href,htmlspecialchars($attr));
 
 			echo '<tr><td class="val"><small>';

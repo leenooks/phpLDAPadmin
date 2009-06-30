@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.16.2.6 2007/01/27 13:25:49 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.17 2005/12/10 10:34:55 wurley Exp $
 
 /**
  * Configuration processing and defaults.
@@ -94,7 +94,7 @@ class Config {
 		 */
 		$this->default->appearance['obfuscate_password_display'] = array(
 			'desc'=>'Obfuscate the display of passwords',
-			'default'=>true);
+			'default'=>false);
 
 		$this->default->appearance['show_clear_password'] = array(
 			'desc'=>'Whether to show clear passwords if we dont obfuscate them',

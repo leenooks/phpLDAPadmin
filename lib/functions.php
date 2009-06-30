@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.283.2.42 2008/11/28 14:21:37 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.290 2006/02/25 13:12:05 wurley Exp $
 
 /**
  * A collection of functions used throughout phpLDAPadmin.
@@ -84,9 +84,6 @@ function obfuscate_password_display($enc=null) {
 function pretty_print_dn( $dn ) {
 	if (DEBUG_ENABLED)
 		debug_log('pretty_print_dn(): Entered with (%s)',1,$dn);
-
-	if (! is_dn_string($dn))
-		pla_error(sprintf(_('DN "%s" is not an LDAP distinguished name.'),htmlspecialchars($dn)));
 
 	$dn = pla_explode_dn( $dn );
 	foreach( $dn as $i => $element ) {
@@ -316,10 +313,6 @@ function pla_compare_dns($dn1,$dn2) {
 
 	$dn1_parts = pla_explode_dn(pla_reverse_dn($dn1));
 	$dn2_parts = pla_explode_dn(pla_reverse_dn($dn2));
-
-	if (! $dn1_parts || ! $dn2_parts)
-		return;
-
 	assert(is_array($dn1_parts));
 	assert(is_array($dn2_parts));
 
@@ -424,16 +417,15 @@ function get_next_number(&$ldapserver,$startbase='',$type='uid') {
 
 				if (is_null($base_dn))
 					pla_error(sprintf(_('You specified the "auto_uid_number_mechanism" as "search" in your
-						configuration for server <b>%s</b>, but you did not specify the
-						"auto_uid_number_search_base". Please specify it before proceeding.'),$ldapserver->name));
+                              configuration for server <b>%s</b>, but you did not specify the
+                              "auto_uid_number_search_base". Please specify it before proceeding.'),$ldapserver->name));
 
 			} else {
 				$base_dn = $startbase;
 			}
 
 			if (! $ldapserver->dnExists($base_dn))
-				pla_error(sprintf(_('Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base for server %s'),
-					$ldapserver->name));
+				pla_error(sprintf(_('Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base for server %s'),$ldapserver->name));
 
 			$filter = '(|(uidNumber=*)(gidNumber=*))';
 			$results = array();
@@ -505,8 +497,8 @@ function get_next_number(&$ldapserver,$startbase='',$type='uid') {
 		# No other cases allowed. The user has an error in the configuration
 		default :
 			pla_error( sprintf( _('You specified an invalid value for auto_uid_number_mechanism ("%s")
-				in your configration. Only "uidpool" and "search" are valid.
-				Please correct this problem.') , $mechanism) );
+                                   in your configration. Only "uidpool" and "search" are valid.
+                                   Please correct this problem.') , $mechanism) );
 	}
 }
 
@@ -1020,7 +1012,7 @@ function pla_error( $msg, $ldap_err_msg=null, $ldap_err_no=-1, $fatal=true ) {
 
 	?>
 	<center>
-	<table class="error"><tr><td class="img"><img src="images/warning.png" alt="Warning" /></td>
+	<table class="error"><tr><td class="img"><img src="images/warning.png" /></td>
 	<td><center><h2><?php echo _('Error');?></h2></center>
 	<?php echo $msg; ?>
 	<br />
@@ -1093,16 +1085,15 @@ function pla_error( $msg, $ldap_err_msg=null, $ldap_err_no=-1, $fatal=true ) {
  *
  * @see set_error_handler
  */
-function pla_error_handler($errno,$errstr,$file,$lineno) {
+function pla_error_handler( $errno, $errstr, $file, $lineno ) {
 	if (DEBUG_ENABLED)
 		debug_log('pla_error_handler(): Entered with (%s,%s,%s,%s)',1,$errno,$errstr,$file,$lineno);
 
-	/* error_reporting will be 0 if the error context occurred
-	 * within a function call with '@' preprended (ie, @ldap_bind() );
-	 * So, don't report errors if the caller has specifically
-	 * disabled them with '@'
-	 */
-	if (ini_get('error_reporting') == 0 || error_reporting() == 0)
+	// error_reporting will be 0 if the error context occurred
+	// within a function call with '@' preprended (ie, @ldap_bind() );
+	// So, don't report errors if the caller has specifically
+	// disabled them with '@'
+	if( 0 == ini_get( 'error_reporting' ) || 0 == error_reporting() )
 		return;
 
 	$file = basename( $file );
@@ -1127,7 +1118,7 @@ function pla_error_handler($errno,$errstr,$file,$lineno) {
 
 	$errstr = preg_replace("/\s+/"," ",$errstr);
 	if( $errno == E_NOTICE ) {
-		echo sprintf(_('<center><table class=\'notice\'><tr><td colspan=\'2\'><center><img src=\'images/warning.png\' height=\'12\' width=\'13\' alt="Warning" />
+		echo sprintf(_('<center><table class=\'notice\'><tr><td colspan=\'2\'><center><img src=\'images/warning.png\' height=\'12\' width=\'13\' />
              <b>You found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>
              <td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>
              </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>
@@ -1222,8 +1213,7 @@ function draw_jpeg_photos($ldapserver,$dn,$attr_name='jpegPhoto',$draw_delete_bu
 	if (isset($table_html_attrs) && trim($table_html_attrs) )
 		printf('<table %s><tr><td><center>',$table_html_attrs);
 
-	$jpeg_data = $ldapserver->search(null,$dn,'objectClass=*',array($attr_name),'base');
-	$jpeg_data = array_pop($jpeg_data);
+	$jpeg_data = array_pop($ldapserver->search(null,$dn,'objectClass=*',array($attr_name),'base'));
 	if (! $jpeg_data) {
 		printf(_('Could not fetch jpeg data from LDAP server for attribute %s.'),htmlspecialchars($attr_name));
 		return;
@@ -1272,7 +1262,7 @@ function draw_jpeg_photos($ldapserver,$dn,$attr_name='jpegPhoto',$draw_delete_bu
 			$img_height = $height;
 		}
 
-		printf('<img %s%s%s src="view_jpeg_photo.php?file=%s" alt="Photo" /><br />',
+		printf('<img %s%s%s src="view_jpeg_photo.php?file=%s" /><br />',
 			($fixed_width ? '' : 'width="'.$img_width.'" '),
 			($fixed_height ? '' : 'height="'.$img_height.'"'),
 			($img_html_attrs ? $img_html_attrs : ''),basename($jpeg_filename));
@@ -1647,7 +1637,7 @@ function draw_chooser_link( $form_element, $include_choose_text=true, $rdn="none
 
 	$title = _('Click to popup a dialog to select an entry (DN) graphically');
 
-	printf('<a href="%s" title="%s"><img class="chooser" src="images/find.png" alt="Find" /></a>',$href,$title);
+	printf('<a href="%s" title="%s"><img class="chooser" src="images/find.png" /></a>',$href,$title);
 	if ($include_choose_text)
 		printf('<span class="x-small"><a href="%s" title="%s">%s</a></span>',$href,$title,_('browse'));
 }
@@ -1669,8 +1659,6 @@ function draw_chooser_link( $form_element, $include_choose_text=true, $rdn="none
  * </code>
  */
 function pla_explode_dn($dn,$with_attributes=0) {
-	if (DEBUG_ENABLED)
-		debug_log('pla_explode_dn(): Entered with (%s,%s)',1,$dn,$with_attributes);
 	$dn = addcslashes(dn_escape($dn),'<>');
 
 	# split the dn
@@ -1692,41 +1680,17 @@ function pla_explode_dn($dn,$with_attributes=0) {
 }
 
 /**
- * Parse a DN and escape any special characters (rfc2253)
+ * Parse a DN and escape any special characters
  */
 function dn_escape($dn) {
-	$olddn = $dn;
-	#
-	# http://rfc.net/rfc2253.html
-	# special    = '"' / "," / "=" / "+" / "<" /  ">" / "#" / ";"
-	# Check if the RDN has special chars escape them.
-	# -  only simplest cases are dealt with 
-	# TODO: '=' unhandled
-	# ';' may be used instead of ',' but its use is discouraged
-	while (preg_match('/([^\\\\])[;,](\s*[^=]*\s*)([;,]|$)/',$dn)) {
-		$dn = preg_replace('/([^\\\\]),(\s*[^=]*\s*)([;,]|$)/','$1\\\\2c$2$3',$dn);
-		$dn = preg_replace('/([^\\\\]);(\s*[^=]*\s*)([;,]|$)/','$1\\\\3b$2$3',$dn);
-	}
-	$dn = preg_replace('/([^\\\\])\+/','$1\\\\2b',$dn);
-	$dn = preg_replace('/([^\\\\])"/','$1\\\\22',$dn);
-	$dn = preg_replace('/([^\\\\])#([^0-9a-f]|$)/i','$1\\\\23$2',$dn);
-	$dn = preg_replace('/([^\\\\])>/','$1\\\\3e',$dn);
-	$dn = preg_replace('/([^\\\\])</','$1\\\\3c',$dn);
-	if (DEBUG_ENABLED)
-		debug_log('dn_escape(): Entered with (%s), Returning (%s)',1,$olddn,$dn);
+	# Check if the RDN has a comma and escape it.
+	while (preg_match('/([^\\\\]),(\s*[^=]*\s*),/',$dn))
+		$dn = preg_replace('/([^\\\\]),(\s*[^=]*\s*),/','$1\\\\2C$2,',$dn);
 
-	return $dn;
-}
+	$dn = preg_replace('/([^\\\\]),(\s*[^=]*\s*)([^,])$/','$1\\\\2C$2$3',$dn);
 
-/**
- * Parse a DN and escape any special characters for use in javascript selection
- */
-function dn_js_escape($dn) {
-	$olddn = $dn;
-	#
-	$dn = preg_replace('/([^\\\\])\'/','$1\\\\\'',$dn);
 	if (DEBUG_ENABLED)
-		debug_log('dn_js_escape(): Entered with (%s), Returning (%s)',1,$olddn,$dn);
+		debug_log('dn_escape(): Entered with (%s), Returning (%s)',1,$dn,$dn);
 
 	return $dn;
 }
@@ -1748,7 +1712,7 @@ function dn_unescape($dn) {
  */
 function get_href($type,$extra_info='') {
 	$sf = 'https://sourceforge.net';
-	$pla = 'http://wiki.phpldapadmin.info';
+	$pla = 'http://wiki.pldapadmin.com';
 	$group_id = '61828';
 	$bug_atid = '498546';
 	$rfe_atid = '498549';
@@ -1861,7 +1825,6 @@ function pla_reverse_dn($dn) {
 	if (DEBUG_ENABLED)
 		debug_log('pla_reverse_dn(): Entered with (%s)',1,$dn);
 
-	$rev = '';
 	foreach (pla_explode_dn($dn) as $key => $branch) {
 
 		// pla_expode_dn returns the array with an extra count attribute, we can ignore that.
@@ -2301,8 +2264,8 @@ function shadow_date( $attrs, $attr) {
 	if (DEBUG_ENABLED)
 		debug_log('shadow_date(): Entered with (%s,%s)',1,$attrs,$attr);
 
-	$shadowLastChange = isset($attrs['shadowLastChange']) ? $attrs['shadowLastChange'] : null;
-	$shadowMax = isset($attrs['shadowMax']) ? $attrs['shadowMax'] : null;
+	$shadowLastChange = isset($attrs['shadowLastChange']) ? $attrs['shadowLastChange'][0] : null;
+	$shadowMax = isset($attrs['shadowMax']) ? $attrs['shadowMax'][0] : null;
 
 	if( 0 == strcasecmp( $attr, 'shadowLastChange' ) && $shadowLastChange)
 		$shadow_date = $shadowLastChange;
@@ -2538,20 +2501,6 @@ function binSIDtoText($binsid) {
 	return $result;
 }
 
-if (! function_exists('session_cache_expire')) {
-
-	/**
-	 * session_cache_expire is a php 4.2.0 function, we'll emulate it if we are using php <4.2.0
-	 */
-
-	function session_cache_expire() {
-		if (defined('DEBUG_ENABLED') && (DEBUG_ENABLED))
-			debug_log('session_cache_expire(): Entered with ()',1);
-
-		return 180;
-	}
-}
-
 /**
  * Sort a multi dimensional array.
  * @param array $data Multi demension array passed by reference
@@ -2710,7 +2659,7 @@ function password_generate() {
 			$leftover = array_merge($leftover,$llower,$lupper,$numbers,$punc);
 
 		shuffle($leftover);
-		$outarray = array_merge($outarray, a_array_rand($leftover,$length-$num_spec));
+		$outarray = array_merge($outarray, a_array_rand($leftover, $criteria['num'] - $num_spec));
 	}
 
 	shuffle($outarray);
@@ -2834,7 +2783,7 @@ function draw_date_selector_link( $attr ) {
 
 	$href = "javascript:dateSelector('$attr');";
 	$title = _('Click to popup a dialog to select a date graphically');
-	printf('<a href="%s" title="%s"><img class="chooser" src="images/calendar.png" id="f_trigger_%s" style="cursor: pointer;" alt="Calendar" /></a>',$href,$title,$attr);
+	printf('<a href="%s" title="%s"><img class="chooser" src="images/calendar.png" id="f_trigger_%s" style="cursor: pointer;" /></a>',$href,$title,$attr);
 }
 
 function no_expire_header() {
@@ -2843,15 +2792,5 @@ function no_expire_header() {
 	header('Cache-Control: no-store, no-cache, must-revalidate');
 	header('Cache-Control: post-check=0, pre-check=0', false);
 	header('Pragma: no-cache');
-}
-
-/**
- * This is for Opera. By putting "random junk" in the query string, it thinks
- * that it does not have a cached version of the page, and will thus
- * fetch the page rather than display the cached version
- */
-function random_junk() {
-	$time = gettimeofday();
-	return md5(strtotime('now').$time['usec']);
 }
 ?>

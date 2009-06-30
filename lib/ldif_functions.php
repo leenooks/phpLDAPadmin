@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/ldif_functions.php,v 1.27.2.3 2005/12/10 08:25:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/ldif_functions.php,v 1.28 2005/12/10 10:34:55 wurley Exp $
 
 /**
  * @todo put the display_parse_error method in ldif_import here

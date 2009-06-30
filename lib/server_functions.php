@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.34.2.33 2008/11/28 14:21:37 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.44 2006/02/25 14:04:12 wurley Exp $ */
 
 /**
  * Classes and functions for LDAP server configuration and capability
@@ -26,6 +26,16 @@ class LDAPserver {
 	var $login_dn;
 	/** Server Authentication Password as defined in config.php */
 	var $login_pass;
+
+	/** SASL auth */
+	var $sasl_auth = false;
+	var $sasl_mech = "PLAIN";
+	var $sasl_realm = "";
+	var $sasl_authz_id = "";
+	var $sasl_authz_id_regex = null;
+	var $sasl_authz_id_replacement = null;
+	var $sasl_props = null;
+
 	/** Array of our connections to this LDAP server */
 	var $connections = array();
 	/** Server Base Dn */
@@ -148,7 +158,7 @@ class LDAPserver {
 
 		# Quick return if we have already connected.
 		$resource = $this->_connect($connect_id);
-		if (is_resource($resource) && ! $reconnect)
+		if ($resource && ! $reconnect)
 			return $resource;
 
 		if (DEBUG_ENABLED)
@@ -204,6 +214,20 @@ class LDAPserver {
 			}
 		}
 
+		# SASL auth
+		if ($this->sasl_auth) {
+			$this->connections[$connect_id]['sasl_auth'] = true;
+			$this->connections[$connect_id]['sasl_mech'] = $this->sasl_mech;
+			$this->connections[$connect_id]['sasl_realm'] = $this->sasl_realm;
+			$this->connections[$connect_id]['sasl_authz_id'] = $this->sasl_authz_id;
+			$this->connections[$connect_id]['sasl_authz_id_regex'] = $this->sasl_authz_id_regex;
+			$this->connections[$connect_id]['sasl_authz_id_replacement'] = $this->sasl_authz_id_replacement;
+			$this->connections[$connect_id]['sasl_props'] = $this->sasl_props;
+
+		} else {
+			$this->connections[$connect_id]['sasl_auth'] = false;
+		}
+
 		if (DEBUG_ENABLED)
 			debug_log('%s::connect(): Config settings, DN [%s], PASS [%s]',80,
 				get_class($this),$this->connections[$connect_id]['login_dn'],
@@ -219,7 +243,7 @@ class LDAPserver {
 
 		# Now that we have worked out the connect_id, lets just check and see if we have already connected.
 		$resource = $this->_connect($connect_id);
-		if (is_resource($resource) && ! $reconnect)
+		if ($resource && ! $reconnect)
 			return $resource;
 
 		run_hook('pre_connect',array('server_id'=>$this->server_id,'connect_id'=>$connect_id));
@@ -247,8 +271,68 @@ class LDAPserver {
 			@ldap_start_tls($resource) or pla_error(_('Could not start TLS. Please check your LDAP server configuration.'),ldap_error($resource));
 		}
 
-		$bind_result = @ldap_bind($resource,$this->connections[$connect_id]['login_dn'],
-			$this->connections[$connect_id]['login_pass']);
+		$bind_result = false;
+
+		/**
+		 * Implementation of SASL ldap_bind()
+		 * This option requires PHP 5.x compiled with --with-ldap-sasl=DIR
+		 */
+		if (isset($this->connections[$connect_id]['sasl_auth']) && # admin marked this server to use SASL auth
+			$this->connections[$connect_id]['sasl_auth'] == true) {
+
+			# No support for ldap_sasl_bind?
+			if (! function_exists('ldap_sasl_bind'))
+				pla_error(_('Your PHP installation does not support ldap_sasl_bind() function. This function is present in PHP 5.x when compiled with --with-ldap-sasl.'));
+
+			# Fill variables
+			$props = $this->connections[$connect_id]['sasl_props'];
+			$mech = $this->connections[$connect_id]['sasl_mech'];
+			$realm = $this->connections[$connect_id]['sasl_realm'];
+			$authz_id = null;
+
+			if (DEBUG_ENABLED)
+				debug_log('%s::connect(): Resource [%s], Using SASL bind method. Bind DN [%s]',9,
+					get_class($this),$resource,$this->connections[$connect_id]['login_dn']);
+
+			# do we need to rewrite authz_id?
+				if (isset($this->connections[$connect_id]['sasl_authz_id']) &&
+					strlen($this->connections[$connect_id]['sasl_authz_id']) > 0)
+
+					$authz_id = $this->connections[$connect_id]['sasl_authz_id'];
+
+				else {
+
+					# ok, here we go
+					if (DEBUG_ENABLED)
+						debug_log('%s::connect(): Resource [%s], Rewriting bind DN [%s] -> authz_id with regex [%s] and replacement [%s].',9,
+							get_class($this),$resource,$this->connections[$connect_id]['login_dn'],
+							$this->connections[$connect_id]['sasl_authz_id_regex'],
+							$this->connections[$connect_id]['sasl_authz_id_replacement']);
+
+					$authz_id = @preg_replace($this->connections[$connect_id]['sasl_authz_id_regex'],
+						$this->connections[$connect_id]['sasl_authz_id_replacement'],
+						$this->connections[$connect_id]['login_dn']);
+
+					# invalid regex?
+					if (is_null($authz_id)) {
+						pla_error(sprintf(_('It seems that sasl_authz_id_regex "%s"." contains invalid PCRE regular expression.'),
+							$this->connections[$connect_id]['sasl_authz_id_regex']).
+							((isset($php_errormsg)) ? ' Error message: '.$php_errormsg : ''));
+					}
+				}
+
+				if (DEBUG_ENABLED)
+					debug_log('%s::connect(): Resource [%s], SASL OPTIONS: mech [%s], realm [%s], authz_id [%s], props [%s]',9,
+						get_class($this),$resource,$mech,$realm,$authz_id,$props);
+
+				$bind_result = @ldap_sasl_bind($resource,
+					$this->connections[$connect_id]['login_dn'],$this->connections[$connect_id]['login_pass'],
+					$mech,$realm,$authz_id,$props);
+
+		} else {
+			$bind_result = @ldap_bind($resource,$this->connections[$connect_id]['login_dn'],
+				$this->connections[$connect_id]['login_pass']);
+		}
 
 		if (DEBUG_ENABLED)
 			debug_log('%s::connect(): Resource [%s], Bind Result [%s]',16,get_class($this),$resource,$bind_result);
@@ -335,8 +419,7 @@ class LDAPserver {
 				debug_log('%s::getBaseDN(): Connect to LDAP to find BaseDN',80,get_class($this));
 
 			if ($this->connect()) {
-				$r = $this->search(null,'','objectClass=*',array('namingContexts'),'base');
-				$r = array_pop($r);
+				$r = array_pop($this->search(null,'','objectClass=*',array('namingContexts'),'base'));
 				if (is_array($r))
 						$r = array_change_key_case($r);
 
@@ -1671,13 +1754,13 @@ class LDAPserver {
 	 * @param array $attrs An array of attributes to include in the search result (example: array( "objectClass", "uid", "sn" )).
 	 * @param string $scope The LDAP search scope. Must be one of "base", "one", or "sub". Standard LDAP search scope.
 	 * @param bool $sort_results Specify false to not sort results by DN or true to have the
-	 *  returned array sorted by DN (uses ksort)
+	 *                  returned array sorted by DN (uses ksort)
 	 * @param int $deref When handling aliases or referrals, this specifies whether to follow referrals. Must be one of
-	 *  LDAP_DEREF_ALWAYS, LDAP_DEREF_NEVER, LDAP_DEREF_SEARCHING, or LDAP_DEREF_FINDING. See the PHP LDAP API for details.
+	 *                  LDAP_DEREF_ALWAYS, LDAP_DEREF_NEVER, LDAP_DEREF_SEARCHING, or LDAP_DEREF_FINDING. See the PHP LDAP API for details.
 	 * @param int $size_limit Size limit for search
 	 * @todo: Add entries to tree cache.
 	 */
-	function search($resource=null,$base_dn=null,$filter,$attrs=array(),$scope='sub',$sort_results=false,$deref=LDAP_DEREF_NEVER,$size_limit=0) {
+	function search($resource=null,$base_dn=null,$filter,$attrs=array(),$scope='sub',$sort_results=true,$deref=LDAP_DEREF_NEVER,$size_limit=0) {
 		if (DEBUG_ENABLED)
 			debug_log('%s::search(): Entered with (%s,%s,%s,%s,%s,%s,%s)',17,
 				get_class($this),is_resource($this),$base_dn,$filter,$attrs,$scope,$sort_results,$deref);
@@ -1698,16 +1781,16 @@ class LDAPserver {
 
 		switch ($scope) {
 			case 'base':
-				$search = @ldap_read($resource,dn_escape($base_dn),$filter,$attrs,0,$size_limit,0,$deref);
+				$search = @ldap_read($resource,$base_dn,$filter,$attrs,0,$size_limit,0,$deref);
 				break;
 
 			case 'one':
-				$search = @ldap_list($resource,dn_escape($base_dn),$filter,$attrs,0,$size_limit,0,$deref);
+				$search = @ldap_list($resource,$base_dn,$filter,$attrs,0,$size_limit,0,$deref);
 				break;
 
 			case 'sub':
 			default:
-				$search = @ldap_search($resource,dn_escape($base_dn),$filter,$attrs,0,$size_limit,0,$deref);
+				$search = @ldap_search($resource,$base_dn,$filter,$attrs,0,$size_limit,0,$deref);
 				break;
 		}
 
@@ -1719,10 +1802,6 @@ class LDAPserver {
 			return array();
 
 		$return = array();
-
-		if ($sort_results && is_array($return))
-			if (version_compare(phpversion(),'4.2.0','>='))
-				ldap_sort($resource, $search,$sort_results);
 
 		# Get the first entry identifier
 		if ($entry_id = ldap_first_entry($resource,$search))
@@ -1763,6 +1842,8 @@ class LDAPserver {
 
 			} # End while entry_id
 
+		if ($sort_results && is_array($return))
+			ksort($return);
 
 		if (DEBUG_ENABLED)
 			debug_log('%s::search(): Returning (%s)',17,get_class($this),$return);
@@ -2253,7 +2334,7 @@ class LDAPserver {
 	 */
 	function getLoggedInPass() {
 		if (DEBUG_ENABLED)
-			debug_log('%s::getLoggedInPass(): Entered with ()',17,get_class($this));
+			debug_log('%s:getLoggedInPass(): Entered with ()',17,get_class($this));
 
 		if (! $this->auth_type)
 			return false;
@@ -2306,9 +2387,6 @@ class LDAPserver {
 		# Set default return
 		$return = false;
 
-		if (DEBUG_ENABLED)
-			debug_log('%s::getLoggedInDN(): auth_type is [%s]',66,get_class($this),$this->auth_type);
-
 		if ($this->auth_type) {
 			switch ($this->auth_type) {
 				case 'cookie':
@@ -2341,7 +2419,7 @@ class LDAPserver {
 		}
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::getLoggedInDN(): Entered with (), Returning (%s)',17,get_class($this),$return);
+			debug_log('%s:getLoggedInDN(): Entered with (), Returning (%s)',17,get_class($this),$return);
 
 		return $return;
 	}
@@ -2443,8 +2521,7 @@ class LDAPserver {
 			debug_log('%s:getDNAttrs(): Entered with (%s,%s,%s)',17,
 				get_class($this),$dn,$lower_case_attr_names,$deref);
 
-		$attrs = $this->search(null,dn_escape($dn),'(objectClass=*)',array(),'base',false,$deref);
-		$attrs = array_pop($attrs);
+		$attrs = array_pop($this->search(null,dn_escape($dn),'(objectClass=*)',array(),'base',false,$deref));
 
 		if (is_array($attrs)) {
 			if ($lower_case_attr_names)
@@ -2944,6 +3021,40 @@ class LDAPservers {
 			'desc'=>'Path to custom pages',
 			'default'=>null);
 
+		$this->default->server['sasl_auth'] = array(
+			'desc' => 'Use SASL authentication when binding LDAP server',
+			'var' => 'sasl_auth',
+			'default' => false);
+
+		$this->default->server['sasl_mech'] = array(
+			'desc' => 'SASL mechanism used while binding LDAP server',
+			'var' => 'sasl_mech',
+			'default' => 'PLAIN');
+
+		$this->default->server['sasl_realm'] = array(
+			'desc' => 'SASL realm name',
+			'var' => 'sasl_realm',
+			'default' => '');
+
+		$this->default->server['sasl_authz_id'] = array(
+			'desc' => 'SASL authorization id',
+			'var' => 'sasl_authz_id',
+			'default' => '');
+
+		$this->default->server['sasl_authz_id_regex'] = array(
+			'desc' => 'SASL authorization id PCRE regular expression',
+			'var' => 'sasl_authz_id_regex',
+			'default' => null);
+
+		$this->default->server['sasl_authz_id_replacement'] = array(
+			'desc' => 'SASL authorization id PCRE regular expression replacement string',
+			'var' => 'sasl_authz_id_replacement',
+			'default' => null);
+
+		$this->default->server['sasl_props'] = array(
+			'desc' => 'SASL properties',
+			'var' => 'sasl_props',
+			'default' => null);
 	}
 
 	function SetValue($server_id,$key,$index,$value) {

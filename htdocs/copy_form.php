@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy_form.php,v 1.24.4.5 2006/04/29 03:27:41 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy_form.php,v 1.26 2005/12/17 00:00:11 wurley Exp $
 
 /**
  * Copies a given object to create a new one.
@@ -53,46 +53,34 @@ if (is_array($children) && count($children) > 0) { ?>
 
 echo '<body>';
 
-printf('<h3 class="title">%s %s</h3>',_('Copy'),htmlspecialchars($rdn));
-printf('<h3 class="subtitle">%s: <b>%s</b> &nbsp;&nbsp;&nbsp; %s: <b>%s</b></h3>',_('Server'),$ldapserver->name,
-	_('Distinguished Name'),htmlspecialchars($dn));
-echo "\n";
+printf('<h3 class="title">%s %s</h3>',_('Copy '),$rdn);
+printf('<h3 class="subtitle">%s: <b>%s</b> &nbsp;&nbsp;&nbsp; %s: <b>%s</b></h3>',_('Server'),$ldapserver->name,_('Distinguished Name'),$dn);
 
 echo '<center>';
-printf('%s <b>%s</b> %s:<br /><br />',_('Copy'),htmlspecialchars($rdn),_('to a new object'));
+printf('%s <b>%s</b> %s:<br /><br />',_('Copy '),htmlspecialchars($rdn),_('to a new object'));
 
 echo '<form action="copy.php" method="post" name="copy_form">';
-printf('<input type="hidden" name="old_dn" value="%s" />',htmlspecialchars($dn));
+printf('<input type="hidden" name="old_dn" value="%s" />',$dn);
 printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
-echo "\n";
 
 echo '<table style="border-spacing: 10px">';
-echo "\n";
-
 echo '<tr>';
-printf('<td><acronym title="%s">%s</acronym>:</td>',
-	_('The full DN of the new entry to be created when copying the source entry'),_('Destination DN'));
+printf('<td><acronym title="%s">%s</acronym>:</td>',_('The full DN of the new entry to be created when copying the source entry'),_('Destination DN'));
 printf('<td><input type="text" name="new_dn" size="45" value="%s" />',htmlspecialchars($dn));
-draw_chooser_link('copy_form.new_dn','true',htmlspecialchars($rdn));
+draw_chooser_link('copy_form.new_dn','true',$rdn);
 echo '</td></tr>';
-echo "\n";
 
 printf('<tr><td>%s</td><td>%s</td></tr>',_('Destination Server'),$select_server_html);
-echo "\n";
 
 if (is_array($children) && count($children) > 0) {
 	echo '<tr>';
 	printf('<td><label for="recursive">%s</label>:</td>',_('Recursive copy'));
 	echo '<td><input type="checkbox" id="recursive" name="recursive" onClick="toggle_disable_filter_field(this)" />';
 	printf('<small>(%s)</small></td>',_('Recursively copy all children of this object as well.'));
-	echo '</tr>'."\n";
-
-	echo '<tr>';
+	echo '</tr><tr>';
 	printf('<td><acronym title="%s">%s</acronym>:</td>',_('When performing a recursive copy, only copy those entries which match this filter'),_('Filter'));
 	echo '<td><input type="text" name="filter" value="(objectClass=*)" size="45" disabled />';
-	echo '</tr>'."\n";
-
-	echo '<tr>';
+	echo '</tr><tr>';
 	printf('<td>%s</td>',_('Delete after copy (move):'));
 	echo '<td><input type="checkbox" name="remove" value="yes"/ disabled>';
 	printf('<small>(%s)</small)</td>',_('Make sure your filter (above) will select all child records.'));
@@ -101,12 +89,9 @@ if (is_array($children) && count($children) > 0) {
 } else {
 	printf('<tr><td>%s</td><td><input type="checkbox" name="remove" value="yes"/></td></tr>',_('Delete after copy (move):'));
 }
-echo "\n";
 
 printf('<tr><td colspan="2" align="right"><input type="submit" value="%s" /></td></tr>',_('Copy '));
-echo "\n";
 echo '</table></form>';
-echo "\n";
 
 echo '<script type="text/javascript" language="javascript">';
 echo '<!--';
@@ -116,7 +101,7 @@ echo '//-->';
 echo '</script>';
 
 if ($config->GetValue('appearance','show_hints'))
-	printf('<small><img src="images/light.png" alt="Light" /><span class="hint">%s</span></small>',_('Hint: Copying between different servers only works if there are no schema violations'));
+	printf('<small><img src="images/light.png" /><span class="hint">%s</span></small>',_('Hint: Copying between different servers only works if there are no schema violations'));
 
 echo '</center></body></html>';
 ?>

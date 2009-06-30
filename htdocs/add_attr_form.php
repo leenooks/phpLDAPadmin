@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr_form.php,v 1.13.2.2 2005/12/09 14:27:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr_form.php,v 1.14 2005/12/10 10:34:54 wurley Exp $
 
 /**
  * Displays a form for adding an attribute/value to an LDAP entry.

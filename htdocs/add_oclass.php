@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass.php,v 1.17.2.5 2005/12/09 23:32:37 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass.php,v 1.18 2005/12/10 10:34:54 wurley Exp $
 
 /**
  * Adds an objectClass to the specified dn.

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/download_binary_attr.php,v 1.13.2.3 2005/12/08 11:49:28 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/download_binary_attr.php,v 1.14 2005/12/10 10:34:54 wurley Exp $
 
 /**
  * @package phpLDAPadmin

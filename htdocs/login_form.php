@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login_form.php,v 1.25.4.3 2008/11/28 14:21:37 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login_form.php,v 1.27 2005/12/17 00:00:11 wurley Exp $
 
 /**
  * Displays the login form for a server for users who specify 'cookie' or 'session' for their auth_type.
@@ -69,6 +69,12 @@ include './header.php'; ?>
 <center>
 <table class="login">
 
+<?php if( $ldapserver->isAnonBindAllowed() ) { ?>
+<tr>
+	<td colspan="2"><small><label for="anonymous_bind_checkbox"><?php echo _('Anonymous Bind'); ?></label></small> <input type="checkbox" name="anonymous_bind" onclick="toggle_disable_login_fields(this)" id="anonymous_bind_checkbox"/></td>
+</tr>
+<?php } ?>
+
 <tr>
 <td><small>
 <?php
@@ -88,15 +94,7 @@ else
 </tr>
 
 <tr>
-	<td colspan="2" align="center" valign="bottom">
-	<input type="submit" name="submit" value="<?php echo _('Authenticate'); ?>" />
-<?php if( $ldapserver->isAnonBindAllowed() ) { ?>
-	&nbsp;&nbsp;&nbsp;
-	<input type="checkbox" name="anonymous_bind" onclick="toggle_disable_login_fields(this)" 
-	id="anonymous_bind_checkbox"/>&nbsp;
-	<small><label for="anonymous_bind_checkbox"><?php echo _('Anonymous Bind'); ?></label></small>
-<?php } ?>
-	</td>
+	<td colspan="2"><center><input type="submit" name="submit" value="<?php echo _('Authenticate'); ?>" /></center></td>
 </tr>
 </table>
 </center>

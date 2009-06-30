@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import_form.php,v 1.20.2.3 2005/12/10 06:55:52 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import_form.php,v 1.21 2005/12/10 10:34:54 wurley Exp $
  
 /**
  * Displays a form to allow the user to upload and import

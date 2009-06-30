@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/timeout_functions.php,v 1.6.2.5 2005/12/31 03:06:15 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/timeout_functions.php,v 1.9 2006/01/03 20:39:59 wurley Exp $
 
 /**
  * A collection of functions used throughout phpLDAPadmin for the timeout and automatic logout feature

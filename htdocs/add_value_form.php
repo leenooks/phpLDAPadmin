@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_value_form.php,v 1.34.2.5 2007/01/27 12:51:47 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_value_form.php,v 1.36 2005/12/17 00:00:11 wurley Exp $
 
 /**
  * Displays a form to allow the user to enter a new value to add
@@ -34,16 +34,10 @@ else
 	$rdn = null;
 
 $current_values = $ldapserver->getDNAttr($dn,$attr);
-if ($current_values) {
-	if (! is_array($current_values))
-		$current_values = array($current_values);
-
-	$num_current_values = count($current_values);
-
-} else {
-	$current_values = array();
+if ($current_values)
+	$num_current_values = (is_array($current_values) ? count($current_values) : 1);
+else
 	$num_current_values = 0;
-}
 
 $is_object_class = (strcasecmp($attr, 'objectClass') == 0) ? true : false;
 
@@ -113,18 +107,18 @@ if ($num_current_values) {
 			if (strcasecmp($attr,'userPassword') == 0) {
 				foreach ($current_values as $key => $value) {
 					if (obfuscate_password_display(get_enc_type($value)))
-						echo '<li><span style="white-space: nowrap;">'.preg_replace('/./','*',$value).'<br /></li>';
+						echo '<li><nobr>'.preg_replace('/./','*',$value).'<br /></li>';
 					else
-						echo '<li><span style="white-space: nowrap;">'.htmlspecialchars($value).'<br /></li>';
+						echo '<li><nobr>'.htmlspecialchars($value).'<br /></li>';
 				}
 
 			} else {
 				foreach ($current_values as $val)
-					printf('<li><span style="white-space: nowrap;">%s</span></li>',htmlspecialchars($val));
+					printf('<li><nobr>%s</nobr></li>',htmlspecialchars($val));
 			}
 
 		} else {
-			printf('<li><span style="white-space: nowrap;">%s</span></li>',htmlspecialchars($current_values));
+			printf('<li><nobr>%s</nobr></li>',htmlspecialchars($current_values));
 		}
 
 		echo '</ul>';
