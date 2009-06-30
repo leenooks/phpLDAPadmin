@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.283.2.36 2006/05/07 05:25:56 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.283.2.39 2007/03/18 03:12:10 wurley Exp $
 
 /**
  * A collection of functions used throughout phpLDAPadmin.
@@ -420,15 +420,16 @@ function get_next_number(&$ldapserver,$startbase='',$type='uid') {
 
 				if (is_null($base_dn))
 					pla_error(sprintf(_('You specified the "auto_uid_number_mechanism" as "search" in your
-                              configuration for server <b>%s</b>, but you did not specify the
-                              "auto_uid_number_search_base". Please specify it before proceeding.'),$ldapserver->name));
+						configuration for server <b>%s</b>, but you did not specify the
+						"auto_uid_number_search_base". Please specify it before proceeding.'),$ldapserver->name));
 
 			} else {
 				$base_dn = $startbase;
 			}
 
 			if (! $ldapserver->dnExists($base_dn))
-				pla_error(sprintf(_('Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base for server %s'),$ldapserver->name));
+				pla_error(sprintf(_('Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base for server %s'),
+					$ldapserver->name));
 
 			$filter = '(|(uidNumber=*)(gidNumber=*))';
 			$results = array();
@@ -500,8 +501,8 @@ function get_next_number(&$ldapserver,$startbase='',$type='uid') {
 		# No other cases allowed. The user has an error in the configuration
 		default :
 			pla_error( sprintf( _('You specified an invalid value for auto_uid_number_mechanism ("%s")
-                                   in your configration. Only "uidpool" and "search" are valid.
-                                   Please correct this problem.') , $mechanism) );
+				in your configration. Only "uidpool" and "search" are valid.
+				Please correct this problem.') , $mechanism) );
 	}
 }
 
@@ -1088,15 +1089,16 @@ function pla_error( $msg, $ldap_err_msg=null, $ldap_err_no=-1, $fatal=true ) {
  *
  * @see set_error_handler
  */
-function pla_error_handler( $errno, $errstr, $file, $lineno ) {
+function pla_error_handler($errno,$errstr,$file,$lineno) {
 	if (DEBUG_ENABLED)
 		debug_log('pla_error_handler(): Entered with (%s,%s,%s,%s)',1,$errno,$errstr,$file,$lineno);
 
-	// error_reporting will be 0 if the error context occurred
-	// within a function call with '@' preprended (ie, @ldap_bind() );
-	// So, don't report errors if the caller has specifically
-	// disabled them with '@'
-	if( 0 == ini_get( 'error_reporting' ) || 0 == error_reporting() )
+	/* error_reporting will be 0 if the error context occurred
+	 * within a function call with '@' preprended (ie, @ldap_bind() );
+	 * So, don't report errors if the caller has specifically
+	 * disabled them with '@'
+	 */
+	if (ini_get('error_reporting') == 0 || error_reporting() == 0)
 		return;
 
 	$file = basename( $file );
@@ -1216,7 +1218,8 @@ function draw_jpeg_photos($ldapserver,$dn,$attr_name='jpegPhoto',$draw_delete_bu
 	if (isset($table_html_attrs) && trim($table_html_attrs) )
 		printf('<table %s><tr><td><center>',$table_html_attrs);
 
-	$jpeg_data = array_pop($ldapserver->search(null,$dn,'objectClass=*',array($attr_name),'base'));
+	$jpeg_data = $ldapserver->search(null,$dn,'objectClass=*',array($attr_name),'base');
+	$jpeg_data = array_pop($jpeg_data);
 	if (! $jpeg_data) {
 		printf(_('Could not fetch jpeg data from LDAP server for attribute %s.'),htmlspecialchars($attr_name));
 		return;
@@ -1719,7 +1722,7 @@ function dn_unescape($dn) {
  */
 function get_href($type,$extra_info='') {
 	$sf = 'https://sourceforge.net';
-	$pla = 'http://wiki.pldapadmin.com';
+	$pla = 'http://wiki.phpldapadmin.info';
 	$group_id = '61828';
 	$bug_atid = '498546';
 	$rfe_atid = '498549';
@@ -2680,7 +2683,7 @@ function password_generate() {
 			$leftover = array_merge($leftover,$llower,$lupper,$numbers,$punc);
 
 		shuffle($leftover);
-		$outarray = array_merge($outarray, a_array_rand($leftover, $criteria['num'] - $num_spec));
+		$outarray = array_merge($outarray, a_array_rand($leftover,$length-$num_spec));
 	}
 
 	shuffle($outarray);
@@ -2813,5 +2816,15 @@ function no_expire_header() {
 	header('Cache-Control: no-store, no-cache, must-revalidate');
 	header('Cache-Control: post-check=0, pre-check=0', false);
 	header('Pragma: no-cache');
+}
+
+/**
+ * This is for Opera. By putting "random junk" in the query string, it thinks
+ * that it does not have a cached version of the page, and will thus
+ * fetch the page rather than display the cached version
+ */
+function random_junk() {
+	$time = gettimeofday();
+	return md5(strtotime('now').$time['usec']);
 }
 ?>

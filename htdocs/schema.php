@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/schema.php,v 1.61.2.5 2005/12/30 11:52:54 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/schema.php,v 1.61.2.7 2007/03/21 23:33:19 wurley Exp $
 
 /**
  * Displays the schema for the specified server_id

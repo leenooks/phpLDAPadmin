@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.76.2.7 2006/04/29 06:31:27 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.76.2.8 2007/01/27 13:21:35 wurley Exp $
 
 /**
  * Contains code to be executed at the top of each phpLDAPadmin page.
@@ -107,6 +107,7 @@ if ($language == 'auto') {
 
 				# Set language
 				putenv('LANG='.$HTTP_LANG); # e.g. LANG=de_DE
+				$HTTP_LANG .= '.UTF-8';
 				setlocale(LC_ALL,$HTTP_LANG); # set LC_ALL to de_DE
 				bindtextdomain('messages',LANGDIR);
 				bind_textdomain_codeset('messages','UTF-8');
@@ -127,6 +128,7 @@ if ($language == 'auto') {
 
 		# Set language
 		putenv('LANG='.$language); # e.g. LANG=de_DE
+		$language .= '.UTF-8';
 		setlocale(LC_ALL,$language); # set LC_ALL to de_DE
 		bindtextdomain('messages',LANGDIR);
 		bind_textdomain_codeset('messages','UTF-8');

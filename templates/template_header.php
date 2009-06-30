@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/template_header.php,v 1.6.4.6 2006/04/29 05:46:34 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/template_header.php,v 1.6.4.7 2007/03/18 03:23:26 wurley Exp $
 
 /**
  * Header page for engine.
@@ -9,13 +9,11 @@
 
 include './header.php';
 
-$time = gettimeofday();
-$random_junk = md5(strtotime('now').$time['usec']);
 $url_base = sprintf('server_id=%s&amp;dn=%s',$ldapserver->server_id,$encoded_dn);
 
 $export_href_base = sprintf('export_form.php?%s&amp;scope=%s',$url_base,'base');
 $export_href_sub = sprintf('export_form.php?%s&amp;scope=%s',$url_base,'sub');
-$refresh_href = sprintf('template_engine.php?%s&amp;random=%s',$url_base,$random_junk);
+$refresh_href = sprintf('template_engine.php?%s&amp;random=%s',$url_base,random_junk());
 $copy_href = sprintf('copy_form.php?%s',$url_base);
 $intattr_href = sprintf('template_engine.php?%s&amp;show_internal_attrs=true',$url_base);
 $delete_href = sprintf('delete_form.php?%s',$url_base);
@@ -130,7 +128,7 @@ if ($dn) {
 			$schema_href = sprintf('schema.php?server_id=%s&amp;view=attributes&amp;viewvalue=%s',
 				$ldapserver->server_id,real_attr_name($attr));
 
-			printf('<tr><td colspan="2" class="attr"><b><a title="'._('Click to view the schema defintion for attribute type \'%s\'').'" href="%s" />%s</b></td></tr>',
+			printf('<tr><td colspan="2" class="attr"><b><a title="'._('Click to view the schema definition for attribute type \'%s\'').'" href="%s" />%s</b></td></tr>',
 				$attr,$schema_href,htmlspecialchars($attr));
 
 			echo '<tr><td class="val"><small>';

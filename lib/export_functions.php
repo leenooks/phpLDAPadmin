@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/export_functions.php,v 1.32.2.8 2005/12/10 12:04:37 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/export_functions.php,v 1.32.2.10 2007/01/27 13:28:06 wurley Exp $
 
 /**
  * Fuctions and classes for exporting ldap entries to others formats

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/compare.php,v 1.12.2.5 2005/12/17 01:28:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/compare.php,v 1.12.2.6 2007/01/27 12:38:59 wurley Exp $
 
 /**
  * Compare two DNs - the destination DN is editable.
@@ -163,7 +163,7 @@ foreach ($attrs_all as $attr) {
 		if ($side == 'src') { ?>
 			<td class="attr">
 				<?php $schema_href="schema.php?server_id=$server_id_src&amp;view=attributes&amp;viewvalue=".real_attr_name($attr); ?>
-				<b><a title="<?php echo sprintf(_('Click to view the schema defintion for attribute type \'%s\''),$attr) ?>" href="<?php echo $schema_href; ?>"><?php echo $attr_display; ?></a></b>
+				<b><a title="<?php echo sprintf(_('Click to view the schema definition for attribute type \'%s\''),$attr) ?>" href="<?php echo $schema_href; ?>"><?php echo $attr_display; ?></a></b>
 			</td>
 
 			<td class="attr_note">

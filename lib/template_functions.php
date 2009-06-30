@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.29.2.19 2006/04/27 12:33:17 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.29.2.20 2007/03/21 23:12:03 wurley Exp $ */
 
 /**
  * Classes and functions for the template engine.ation and capability
@@ -670,7 +670,7 @@ class Templates {
 
 			else
 				# @todo: Enable size and width configuration in template
-				$html = sprintf('<input type="text" name="%s" size="8">',$id);
+				$html = sprintf('<input type="text" name="%s" size="8" />',$id);
 
 		} else {
 			if (is_array($helper)) {

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.26.2.37 2006/05/05 12:50:34 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.26.2.38 2007/03/21 23:16:06 wurley Exp $
 
 /**
  * Template render engine.
@@ -519,9 +519,11 @@ if (isset($template['empty_attrs'])) {
 
 				else {
 					$display = $value;
-					if (isset($template['attribute'][$attr]['type']) && $template['attribute'][$attr]['type'] == 'password')
-						if (obfuscate_password_display($_REQUEST['enc']))
+					if (isset($template['attribute'][$attr]['type']) && $template['attribute'][$attr]['type'] == 'password') {
+						$enc = (isset($_REQUEST['enc'])) ? $_REQUEST['enc'] : get_enc_type($value);
+						if (obfuscate_password_display($enc))
 							$display = '********';
+					}
 
 					printf('<input type="hidden" name="vals[]" value="%s" />',$value);
 					printf('%s</td><td><b>%s</b></td></tr>',$attr,htmlspecialchars($display));
@@ -742,7 +744,7 @@ foreach ($template['attrs'] as $attr => $vals) {
 	$schema_href = sprintf('schema.php?server_id=%s&amp;view=attributes&amp;viewvalue=%s',
 		$ldapserver->server_id,real_attr_name($attr));
 
-	printf('<b><a title="'._('Click to view the schema defintion for attribute type \'%s\'').'" href="%s">%s</a></b>',$attr,$schema_href,$attr_display);
+	printf('<b><a title="'._('Click to view the schema definition for attribute type \'%s\'').'" href="%s">%s</a></b>',$attr,$schema_href,$attr_display);
 	echo '</td>';
 
 	echo '<td class="attr_note">';
@@ -968,10 +970,10 @@ foreach ($template['attrs'] as $attr => $vals) {
 		$val = $vals[0];
 
 		printf('<input type="hidden" name="old_values[%s][]" value="%s" />',htmlspecialchars($attr),htmlspecialchars($val));
-		printf('<nobr><input type="text" size="30" id="f_date_%s" name="new_values[%s][0]" value="%s" />&nbsp;',
+		printf('<span style="white-space: nowrap;"><input type="text" size="30" id="f_date_%s" name="new_values[%s][0]" value="%s" />&nbsp;',
 			$attr,htmlspecialchars($attr),htmlspecialchars($val));
 		draw_date_selector_link($attr);
-		echo '</nobr></td>';
+		echo '</span></td>';
 		echo '</tr>';
 		$js[] = sprintf('<script type="text/javascript" language="javascript">defaults[\'f_date_%s\'] = \'%s\';</script>',$attr,$js_date_attrs[$attr]);
 
@@ -1005,7 +1007,7 @@ foreach ($template['attrs'] as $attr => $vals) {
 		if (! strcasecmp($attr,'objectClass')) {
 
 			printf('<a title="%s" href="schema.php?server_id=%s&amp;view=objectClasses&amp;viewvalue=%s"><img src="images/info.png" alt="Info" /></a>&nbsp;',
-				_('View the schema description for this objectClass'),$ldapserver->server_id,htmlspecialchars($val));
+				_('View the schema description for this objectClass'),$ldapserver->server_id,strtolower(htmlspecialchars($val)));
 
 			$schema_object = $ldapserver->getSchemaObjectClass($val);
 
@@ -1022,10 +1024,10 @@ foreach ($template['attrs'] as $attr => $vals) {
 		if (is_dn_string($val) || $ldapserver->isDNAttr($attr))
 
 			if ($ldapserver->dnExists($val)) {
-				printf('<a title="'._('Go to %s').'" href="template_engine.php?server_id=%s&amp;dn=%s"><img style="vertical-align: top" src="images/go.png" /></a>&nbsp;',
+				printf('<a title="'._('Go to %s').'" href="template_engine.php?server_id=%s&amp;dn=%s"><img style="vertical-align: top" src="images/go.png" alt="Go" /></a>&nbsp;',
 					htmlspecialchars($val),$ldapserver->server_id,rawurlencode($val));
 			} else {
-				printf('<a title="'._('DN not available %s').'"><img style="vertical-align: top" src="images/nogo.png" /></a>&nbsp;',
+				printf('<a title="'._('DN not available %s').'"><img style="vertical-align: top" src="images/nogo.png" alt="N/E" /></a>&nbsp;',
 					htmlspecialchars($val),$ldapserver->server_id,rawurlencode($val));
 			}
 

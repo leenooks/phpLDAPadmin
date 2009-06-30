@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.43.2.11 2006/05/13 12:43:47 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.43.2.12 2007/03/18 03:16:06 wurley Exp $
 
 /**
  * Takes the results of clicking "Save" in template_engine.php and determines which
@@ -144,7 +144,7 @@ if (count($update_array) > 0) {
 
 		printf('<tr class="%s">',$counter%2 ? 'even' : 'odd');
 		printf('<td><b>%s</b></td>',htmlspecialchars($attr));
-		echo '<td><nobr>';
+		echo '<td><span style="white-space: nowrap;">';
 
 		if (strcasecmp($attr,'userPassword') == 0) {
 			foreach ($old_values[$attr] as $key => $value) {
@@ -161,8 +161,8 @@ if (count($update_array) > 0) {
 		else
 			echo nl2br(htmlspecialchars($old_values[$attr])).'<br />';
 
-		echo '</nobr></td>';
-		echo '<td><nobr>';
+		echo '</span></td>';
+		echo '<td><span style="white-space: nowrap;">';
 
 		# Is this a multi-valued attribute?
 		if (is_array($new_val)) {
@@ -201,7 +201,7 @@ if (count($update_array) > 0) {
 		} elseif ($new_val != '')
 				printf('<span style="color: red">%s</span>',_('[attribute deleted]'));
 
-		echo '</nobr></td>';
+		echo '</span></td>';
 
  		printf('<td><input name="skip_array[%s]" type="checkbox" /></td>',htmlspecialchars($attr));
 		echo '</tr>'."\n\n";
