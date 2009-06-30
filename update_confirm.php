@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/update_confirm.php,v 1.35 2004/08/15 17:39:20 uugdave Exp $
+
 
 /*
  * udpate_confirm.php
@@ -10,9 +12,11 @@
  *
  */
 
-require 'common.php';
+require './common.php';
 
-include 'header.php';
+include './header.php';
+
+include 'templates/template_config.php';
 
 $server_id = $_POST['server_id'];
 
@@ -24,31 +28,14 @@ $rdn = get_rdn( $dn );
 $old_values = $_POST['old_values'];
 $new_values = $_POST['new_values'];
 $server_name = $servers[$server_id]['name'];
+$mkntPassword = NULL;
+$samba_password_step = 0;
 if( is_server_read_only( $server_id ) )
 	pla_error( $lang['no_updates_in_read_only_mode'] );
-
-// utf8_decode all the incoming new_values and old_values as they were input 
-// from a utf8 page.
-foreach( $old_values as $attr => $vals )
-	if( is_array( $vals ) )
-		foreach( $vals as $i => $v )
-			$old_values[ $attr ][ $i ] = utf8_decode( $v );
-	else
-		$old_values[ $attr ] = utf8_decode( $vals );
-foreach( $new_values as $attr => $vals )
-	if( is_array( $vals ) )
-		foreach( $vals as $i => $v )
-			$new_values[ $attr ][ $i ] = utf8_decode( $v );
-	else
-		$new_values[ $attr ] = utf8_decode( $vals );
-
 ?>
-
 <body>
-
 <h3 class="title"><?php echo htmlspecialchars( ( $rdn ) ); ?></h3>
 <h3 class="subtitle">Server: <b><?php echo $server_name; ?></b> &nbsp;&nbsp;&nbsp; <?php echo $lang['distinguished_name']; ?>: <b><?php echo htmlspecialchars( ( $dn ) ); ?></b></h3>
-
 <?php
 $update_array = array();
 foreach( $old_values as $attr => $old_val )
@@ -63,14 +50,23 @@ foreach( $old_values as $attr => $old_val )
 		$new_val = $new_values[ $attr ];
 
 		// special case for userPassword attributes
-		if( 0 == strcasecmp( $attr, 'userPassword' ) && $new_val != '' )
-			$new_val = password_hash( $new_val, $_POST['enc_type'] );
+		if( 0 == strcasecmp( $attr, 'userPassword' ) && $new_val != '' ) {
+		  $new_val = password_hash( $new_val, $_POST['enc_type'] );
+		  $password_already_hashed = true;
+		}
+		// special case for samba password
+		else if (( 0 == strcasecmp($attr,'sambaNTPassword') || 0 == strcasecmp($attr,'sambaLMPassword')) && trim($new_val[0]) != '' ){
+		    $mkntPassword = new MkntPasswdUtil();
+		    $mkntPassword->createSambaPasswords( $new_val[0] ) or pla_error("Unable to create samba password. Please check your configuration in template_config.php");
+	 	    $new_val = $mkntPassword->valueOf($attr);
+		}
 		$update_array[ $attr ] = $new_val;
 	}
 }
 
 // special case check for a new enc_type for userPassword (not otherwise detected)
 if(	isset( $_POST['enc_type'] ) && 
+    ! isset( $password_already_hashed ) &&
 	$_POST['enc_type'] != $_POST['old_enc_type'] && 
 	$_POST['enc_type'] != 'clear' &&
 	$_POST['new_values']['userpassword'] != '' ) {
@@ -122,9 +118,12 @@ foreach( $update_array as $attr => $val ) {
 		<?php
 		if( is_array( $old_values[ $attr ] ) ) 
 			foreach( $old_values[ $attr ] as $v )
-				echo htmlspecialchars( utf8_encode( $v ) ) . "<br />";
+				echo nl2br( htmlspecialchars( $v ) ) . "<br />";
 		else  
-			echo htmlspecialchars( utf8_encode( $old_values[ $attr ] ) ) . "<br />";
+			if( 0 == strcasecmp( $attr, 'userPassword' ) && ( obfuscate_password_display() || is_null( get_enc_type( $old_values[ $attr ] ) ) ) )
+				echo preg_replace( '/./', '*', $old_values[ $attr ] ) . "<br />";
+			else 
+				echo nl2br( htmlspecialchars( $old_values[ $attr ] ) ) . "<br />";
 		echo "</nobr></td><td><nobr>";
 
 		// is this a multi-valued attribute?
@@ -135,7 +134,7 @@ foreach( $update_array as $attr => $val ) {
 					unset( $update_array[ $attr ][ $i ] );
 					$update_array[ $attr ] = array_values( $update_array[ $attr ] );
 				} else {
-					echo htmlspecialchars( utf8_encode( $v ) ) . "<br />";
+					echo nl2br( htmlspecialchars( $v ) ) . "<br />";
 				}
 			}
 
@@ -149,7 +148,10 @@ foreach( $update_array as $attr => $val ) {
 		}
 		else 
 			if( $new_val != '' ) 
-				echo htmlspecialchars( $new_val ) . "<br />";
+				if( 0 == strcasecmp( $attr, 'userPassword' ) && ( obfuscate_password_display() || is_null( get_enc_type( $new_values[ $attr ] ) ) ) )
+					echo preg_replace( '/./', '*', $new_val ) . "<br />";
+				else
+					echo htmlspecialchars( $new_val ) . "<br />";
 			else 
 				echo '<span style="color: red">' . $lang['attr_deleted'] . '</span>';
 		echo "</nobr></td></tr>\n\n";
@@ -172,14 +174,14 @@ foreach( $update_array as $attr => $val ) {
 					<?php foreach( $val as $i => $v ) { ?>
 
 						<input  type="hidden"
-							name="update_array[<?php echo htmlspecialchars( utf8_encode( $attr ) ); ?>][<?php echo $i; ?>]"
-							value="<?php echo htmlspecialchars( utf8_encode( $v ) ); ?>" />
+							name="update_array[<?php echo htmlspecialchars( $attr ); ?>][<?php echo $i; ?>]"
+							value="<?php echo htmlspecialchars( $v ); ?>" />
 					<?php } ?> 
 				<?php } else { ?>				
 
 					<input  type="hidden"
-						name="update_array[<?php echo htmlspecialchars( utf8_encode( $attr ) ); ?>]"
-						value="<?php echo htmlspecialchars( utf8_encode( $val ) ); ?>" />
+						name="update_array[<?php echo htmlspecialchars( $attr ); ?>]"
+						value="<?php echo htmlspecialchars( $val ); ?>" />
 				<?php } ?>				
 			<?php } ?>
 			<input type="submit" value="<?php echo $lang['commit']; ?>" class="happy" />

@@ -1,25 +1,24 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/ldif_functions.php,v 1.23 2004/04/18 19:21:54 xrenard Exp $
+
 
 /**
- * TODO: - handle the case for value attribute of type url (+rechecck base 64)
- *       - make an array with parse error messages 
- *         and corresponding numerical codes
- *       - put the display_parse_error method in ldif_import here 
- *       - do not allow entry whose number of unfolded lines is 
- *         over 200 for example
- *       - re-test for the differents cases
- *       - later: return the entry as an array before returning the entry object
- *         (just make a wrapper method)
- *       - make a class CVSReader wich extends FileReader  
+ * @todo put the display_parse_error method in ldif_import here 
+ * @todo do not allow entry whose number of unfolded lines is 
+ *       over 200 for example
+ * @todo later: return the entry as an array before returning the entry object
+ *       (just make a wrapper method)
+ * @todo make a class CSVReader wich extends FileReader  
+ *
+ * @package phpLDAPadmin
+ *
+ * @author The phpLDAPadmin development team
  */
 
 
 /**
- * This class represente an entry for the ldif file
- * 
+ * This class represente an entry in the ldif file
  */
-
-
 class LdifEntry{
 
   var $dn;
@@ -27,19 +26,23 @@ class LdifEntry{
   var $attributes=array();
 
   /**
-   * Constructor of the LdifEntry
+   * Creates a new LdifEntry, with optionally specified DN, changeType, and attributes.
    *
-   * @param String $dn   the distinguished name of the entry
-   * @param String $changeType the change type associated with the entry
-   * @param String[] $atts the attributes of the entry
+   * @param String $dn   the distinguished name of the entry. Default is set to an empty string
+   * @param String $changeType the change type associated with the entry. Default is set to add.
+   * @param String[]  $atts the attributes of the entry
    */
-  
   function LdifEntry($dn="",$changeType="add",$atts = array()){
     $this->dn=$dn;
     $this->changeType=$changeType;
     $this->attributes=$atts;
   }
 
+  /**
+   * Return the dn of the entry
+   *
+   * @return String the dn of the entry
+   */
   function getDn(){
     return $this->dn;
   }
@@ -47,10 +50,8 @@ class LdifEntry{
   /**
    * Setter method for the distinguished name
    *
-   * @return String the distinguished name of the entry
+   * @param String $dn the distinguished name of the entry
    */
-
-
   function setDn($dn){
     $this->dn = $dn;
   }
@@ -58,33 +59,29 @@ class LdifEntry{
   /**
    * Getter method for the change type
    *
-   * @param String $changeType the changetype
-   *
+   * @return String the change type of the entry
    */
-
   function getChangeType(){
     return $this->changeType;
   }
   
   /**
-   * Setter method for the distinguished nae
+   * Setter method for the change type of the entry
    *
-   * @return String the distinguished name of the entry
+   * @param String $changeType the change type of the entry
    */
-
   function setChangeType($changeType){
-        $this->changeType = $changeType;
+    $this->changeType = $changeType;
   }
-
+  
   /**
    * Add the attributes to the entry
    *
+   * @param String[][] $atts the attributes of the entry
    */
-
   function setAttributes($atts){
     $this->attributes = $atts;
   }
-
 
   /**
    * Get the attributes of the entry
@@ -98,17 +95,14 @@ class LdifEntry{
 }
 
 /**
- * this exception is similar to the one in LdifReader
+ * This exception is similar to the one in LdifReader
  * Should be remove latter
  * see comment for the class Ldif_LdapEntryReader
- *
- *
- *
  */
 
 class LdifEntryReaderException{
   
-
+  
   var $lineNumber;
   var $currentLine;
   var $message;
@@ -126,65 +120,58 @@ class LdifEntryReaderException{
     $this->lineNumber = $lineNumber;
     $this->currentLine =$currentLine;
     $this->message = $message;
-
   }
 }
 
 
-
 /**
  * Class in charge of reading a paricular entry
- * Strictly speaking,the fonction of this class 
- * could go to LdapLdifReader
- *
- * another reason to delegate to this class
- * is that futur change for net_ldap will have to be done only
- * in this class
- * After we can put it back to the main reader
  */
-
-
 
 class LdifEntryReader{
 
   //the entry
   var $entry;
+
+  // the lines of the entry fetch from the file
   var $lines;
+
+  // the dn of the entry
   var $dn="";
-  var $_error = 0;
-  var $_currentLineNumber=1;
+
+  // error flag
+  var $_error;
+
+  // the current line number of the entry;
+  var $_currentLineNumber;
+
   /**
    * Constructor of the LdifEntryReader
    *
    * @param String[] $lines the line of the entry
    */
-  
-
-  function LdifEntryReader(&$lines){
+  function LdifEntryReader( &$lines ){
     $this->lines = &$lines;
-//need to change the following lines
-//    $this->_currentLineNumber =  $currentLineNumber- count($this->lines);
-    $dn=$this->_getDnValue();
-    $changeType = $this->_readChangeType();	 
-    $this->entry = new LdifEntry($dn,$changeType);
+    $this->_currentLineNumber = 1;
+    $this->_error = 0;
    }
 
   /**
    * Read the change type action associated with the entry
-   * Default action is add
-   * @return String the change type action of the entry
    *
+   * @return String the change type action of the entry
    */
-
-
   function _readChangeType(){
     $changeType ="add";
     $arr = array();
+    
+    // no lines after the dn one
     if(count($this->lines)==0){
       $this->lines[0] = "";
       $this->setLdifEntryReaderException(new LdifEntryReaderException($this->_currentLineNumber,$this->lines[0],"Missing attibutes or changetype attribute for entry",new LdifEntry($this->dn)));
     }
-    if(ereg("changetype:[ ]*(delete|add|modrdn|moddn|modify)",$this->lines[0],$arr)){
+    // get the change type of the entry
+    elseif(ereg("changetype:[ ]*(delete|add|modrdn|moddn|modify)",$this->lines[0],$arr)){
       $changeType = $arr[1];
       array_shift($this->lines);
       $this->_currentLineNumber++;
@@ -195,13 +182,11 @@ class LdifEntryReader{
   /**
    * Check if the distinguished name is base 64 encoded
    *
-   * @return bool true if the dn is base 64 encoded
+   * @return boolean true if the dn is base 64 encoded, false otherwise
    */
-  
   function _isDnBase64Encoded($dn){
      return  ereg("dn::",$dn)?1:0;
   }
-  
   
   /**
    * Return the base64 decoded value of an attribute
@@ -209,11 +194,9 @@ class LdifEntryReader{
    * @param $attr the attribute to be decoded
    * @return String base64 decoded value of an attribute
    */
-  
   function _getBase64DecodedValue($attr){
     return base64_decode(trim($attr));
   }
-  
   
   /**
    * Fetch the dn value from a line of the ldif file
@@ -221,8 +204,6 @@ class LdifEntryReader{
    * @param String $currentDnLine  line with a distinguished name
    * @return the value of the distinguished name
    */
-
-
   function _getDnValue(){
     $currentDnLine=$this->lines[0];
     if($this->_isDNBase64Encoded($currentDnLine)){
@@ -230,29 +211,48 @@ class LdifEntryReader{
     }else{
       $currentDnValue = substr($currentDnLine,3,strlen($currentDnLine)-1);
     }
-    //    echo $this->_currentLineNumber;
+    // switch to the next line
     array_shift($this->lines);
     $this->_currentLineNumber++;
     return trim($currentDnValue);
   }
 
   /**
+   * Check if the dn line is valid
+   *
+   * @return boolean true if the dn is valid, false otherwise.
+   */
+  function isValidDn(){
+    return ereg("^dn:",$this->lines[0])?1:0;
+  }
+
+  /**
    * Return the entry read from the ldif lines
    *
-   *
+   * @return LdifEntry the entry
    */
-
-
   function getEntry(){
+    global $lang;
 
-    $changeType = $this->entry->getChangeType();
+    // the dn is not valid, throw the exception and return the entry with the non valid dn
+    if (! $this->isValidDn() ){
+       $dn = $this->lines[0];
+       $changeType = $this->_readChangeType();	 
+       //For the moment, overwrite the exception
+       $this->setLdifEntryReaderException(new LdifEntryReaderException($this->_currentLineNumber,$this->lines[0],$lang['valid_dn_line_required'],new LdifEntry($this->dn)));
+       return new LdifEntry( $dn , $changeType );
+    }
+      
+    $dn=$this->_getDnValue();
+    $changeType = $this->_readChangeType();	 
+    $this->entry = new LdifEntry($dn,$changeType);
+    
     if($changeType=="add"){
       $this->_getAddAttributes();
     }
     elseif($changeType=="delete"){
       //do nothing
     }
-    //  $atts =  $this->entry->getAttributes();
     elseif($changeType=="modrdn"||$changeType=="moddn"){
       $this->_getModrdnAttributes();
     }
@@ -260,19 +260,15 @@ class LdifEntryReader{
       $this->_getModifyAttributes();
     }
     return $this->entry;
-
   }
 
   /**
    * Checked if the parsing of the entry has raised some exception
    *
    * @return bool true if the reading of the entry raised some exceptions, else otherwise.
-   *
    */
-  
   function  hasRaisedException(){
     return $this->_error;
-
   }
 
   /**
@@ -287,7 +283,7 @@ class LdifEntryReader{
     $this->_error=1;
     $this->_ldifEntryReaderException= $ldifEntryReaderException;
   }
-
+  
 
   /**
    * Return the exception handler of the entry Reader
@@ -302,12 +298,7 @@ class LdifEntryReader{
   /**
    * Method to retrieve the attribute value of a ldif line,
    * and get the base 64 decoded value if it is encoded
-   *
-   * 
-   *
    */
-
-
   function _getAttributeValue($attributeValuePart){
     $attribute_value="";
     if(substr($attributeValuePart,0,1)==":"){
@@ -343,6 +334,9 @@ class LdifEntryReader{
   }
   
 
+  /**
+   * Build the attributes array when the change type is add.
+   */
   function _getAddAttributes(){
 
     if(count($this->lines)==0){
@@ -370,18 +364,18 @@ class LdifEntryReader{
 	//	$this->entry->add($attrs);
 	array_shift($this->lines);
 	$this->_currentLineNumber++;
-
       }
       else{
 	$this->setLdifEntryReaderException(new LdifEntryReaderException($this->_currentLineNumber,$this->lines[0],"Attribute not well formed",$this->entry));
 
 	//jetter l'exception
       }
-     
     }
-
   }
-  
+
+  /**
+   * Build the attributes array for the entry when the change type is modify
+   */
   function _getModifyAttributes(){
     if(count($this->lines)==0){
       $this->lines[0]="";
@@ -400,72 +394,66 @@ class LdifEntryReader{
       if(count($attribute)==2){
 	$action_attribute = trim($attribute[0]);
 	$action_attribute_value =trim($attribute[1]);
-	if($action_attribute != "add" &&$action_attribute!= "delete" &&$action_attribute !=="replace"){
+
+	if($action_attribute != "add" && $action_attribute != "delete" && $action_attribute !="replace"){
 	  $this->setLdifEntryReaderException(new LdifEntryReaderException($this->_currentLineNumber,$this->lines[0],"The attribute name should be add, delete or replace",$this->entry));
 	}
 
 	// put the action attribute in the array
 	$this->entry->attributes[$numberModification] = array();
 	$this->entry->attributes[$numberModification][$action_attribute] = $this->_getAttributeValue($action_attribute_value);
-	
+	$this->entry->attributes[$numberModification][$action_attribute_value] = array();
+
 	// fetching the attribute for the following line
 	array_shift($this->lines);
-
 	$currentLine=&$this->lines[0];
 	$this->_currentLineNumber++;
-	// while there is attributes for this entry
-	while(trim($currentLine)!="-"&&trim($currentLine)!=""&&$this->_error!=1 && $new_entry_mod !=1){
-      if(ereg(":",$currentLine)){
 	
-	//get the position of the  character  ":"
-	$pos = strpos($currentLine,":");
-	
-	//get the description of the attribute
-	$attribute_name =  substr($currentLine,0, $pos);
-		
-	// get the value part of the attribute
-	$attribute_value_part = trim(substr($currentLine,$pos+1,strlen($currentLine)));
-	$attribute_value = $this->_getAttributeValue($attribute_value_part);
+	while(trim($currentLine)!="-" && $this->_error!=1 && count($this->lines)!=0 ){
 
-	
-	    // need to handle the special case when whe add an new attribute
-	    if($attribute_name != "add"){
-	      $this->entry->attributes[$numberModification][$attribute_name][]=$this->_getAttributeValue($attribute_value);
-	      if(count($this->lines)>1){
-		array_shift($this->lines);
-		$this->_currentLineNumber++;
-		$currentLine = $this->lines[0];
-	      }
-	      else{
-		$this->setLdifEntryReaderException(new LdifEntryReaderException($this->_currentLineNumber,$this->lines[0],"Missing - ?",$this->entry));
-	      }
+	  // if there is a valid line
+	  if(ereg(":",$currentLine)){
+	    //get the position of the  character  ":"
+	    $pos = strpos($currentLine,":");
+	    //get the name of the attribute to modify
+	    $attribute_name =  substr($currentLine,0, $pos);
+
+	    //check that it correspond to the one specified before
+	    if ($attribute_name == $action_attribute_value){
+	      
+	      // get the value part of the attribute
+	      $attribute_value_part = trim(substr($currentLine,$pos+1,strlen($currentLine)));
+	      $attribute_value = $this->_getAttributeValue($attribute_value_part);
+	      $this->entry->attributes[$numberModification][$attribute_name][]=$attribute_value;
+	      array_shift($this->lines);
+	      $this->_currentLineNumber++;
+	      
+	      if(count($this->lines)!=0)
+		$currentLine = &$this->lines[0];
 	    }
 	    else{
-	      // flag set to indicate that we need to build an new attribute array and leave the inner while loop
-	      $new_entry_mod = 1;
+	      $this->setLdifEntryReaderException(new LdifEntryReaderException($this->_currentLineNumber,$this->lines[0],"The attribute to modify doesn't match the one specified by the ".$action_attribute." attribute.",$this->entry));
 	    }
 	  }
 	  else{
 	    $this->setLdifEntryReaderException(new LdifEntryReaderException($this->_currentLineNumber,$this->lines[0],"Attribute is not valid",$this->entry));
 	  }
-	  
-	}//fin while
-	$this->_currentLineNumber++;
-
-	//if we encountered the flag new_entry_mod(=1), rebuild an new array and therefore dot not shift
-	if($new_entry_mod!=1){
-
+	}// end inner while
+	
+	// we get a "-" charachter, we remove it from the array
+	if ($currentLine == "-"){
 	  array_shift($this->lines);
+	  $this->_currentLineNumber++;
 	}
 	$numberModification++;
       }
-	else{
-	  $this->setLdifEntryReaderException(new LdifEntryReaderException($this->_currentLineNumber,$this->lines[0],"Attribute is not valid",$this->entry));
-	}
-    }// end while
-  }
+    }
+  }      
 
-
+  /**
+   * Build the attributes for the entry when the change type is modrdn
+   */
+  
   function _getModrdnAttributes(){
 
   $attrs = array();
@@ -507,7 +495,6 @@ $arr=array();
 	  else{
 	    $this->setLdifEntryReaderException(new LdifEntryReaderException($this->_currentLineNumber,$this->lines[0],"the attribute name should be newsuperior",$this->entry));
 	  }
-	  
 	}
 	else{
 	//as the first character is not ,,we "can write it this way for teh moment"
@@ -518,8 +505,6 @@ $arr=array();
 	  $this->setLdifEntryReaderException(new LdifEntryReaderException($this->_currentLineNumber,$this->lines[0],"Container is null",$this->entry));
 	}
       }
-    
-
     }
     else{
       $this->setLdifEntryReaderException(new LdifEntryReaderException($this->_currentLineNumber,$this->lines[0],"a valid deleteoldrdn attribute  should be specified",$this->entry));
@@ -535,9 +520,7 @@ $arr=array();
 
 /**
  * Exception which can be raised during processing the ldif file
- *
  */
-
 
 class LdifReaderException{
   
@@ -553,8 +536,6 @@ class LdifReaderException{
    * @param String currentLine the line wich raised an exception
    * @param String the message associated the exception
    */
-
-
   function LdifReaderException($lineNumber,$currentLine,$message){
     $this->lineNumber = $lineNumber;
     $this->currentLine =$currentLine;
@@ -562,6 +543,9 @@ class LdifReaderException{
   }
 }
 
+/**
+ * Helper base class to read file.
+ */
 
 class FileReader{
   
@@ -590,13 +574,11 @@ class FileReader{
    */
   
   function eof(){
-    return feof($this->_fp);
+    return @feof($this->_fp);
   }
 
   /**
    * Helper method to switch to the next line
-   *
-   * @static 
    */
   
   function _nextLine(){
@@ -622,19 +604,17 @@ class FileReader{
   function _isBlankLine(){
     return(trim($this->_currentLine)=="")?1:0;
   }
-  
+
+  /**
+   * Close the handler
+   */
   function close(){
     return @fclose($this->_fp);
-    
   }
-
-  
 }
 
 /**
  * Main parser of the ldif file
- *
- * @package Ldap
  */
 
 class LdifReader extends FileReader{
@@ -658,6 +638,10 @@ class LdifReader extends FileReader{
   var $_warningVersion;
 
   var $_dnLineNumber;
+
+  // continuous mode operation flag
+  var $continuous_mode;
+
   /**
    * Private constructor of the LDIFReader class.
    * Marked as private as we need to instantiate the class
@@ -675,120 +659,105 @@ class LdifReader extends FileReader{
     //need to change this one
     $this->_currentEntry = new LdifEntry();
   }
-
+  
   /**
    * Constructor of the class
    *
    * @param String $path2File path of the ldif file to read
+   * @param boolean $continuous_mode 1 if continuous mode operation, 0 otherwise
    */
-    function  LdifReader($path2File){
-      parent::FileReader($path2File);
-      $this->_LdifReader();
+  function  LdifReader( $path2File , $continuous_mode = 0 ){
+    parent::FileReader( $path2File );
+    $this->continuous_mode = $continuous_mode;
+    $this->_LdifReader();
   }
-
+  
   /**
    * Returns the lines that generated the Ldif Entry.
    *
    * @return String[] The lines from the entry.
    */
-
   function getCurrentLines(){
     return $this->_currentLines;
   }
-
-
+  
   /**
    * Check if it's a ldif comment line.
    * 
    * @return bool true if it's a comment line,false otherwise
    */
-  
   function _isCommentLine(){
     return substr(trim($this->_currentLine),0,1)=="#"?1:0;
   }
-
-
+  
   /**
    * Check if the current line is a line containing the distinguished
    * name of an entry.
    *
    * @return bool true if the line contains a dn line, false otherwise.
    */
-  
   function _isDnLine(){
     return ereg("^dn:",$this->_currentLine)?1:0;
   }
-
+  
   /**
    * Return the current entry object 
    *
    * @return Ldap_Ldif_entry the current ldif entry
-   *
    */
-
   function getCurrentEntry(){
-
     return $this->_currentEntry;
-
   }
   
   /**
    * Get the lines of the next entry
    *
    * @return String[] the lines (unfolded) of the next entry
-   *
    */
-
   function nextLines(){
     $endEntryFound=0;	
     //free the array (instance member)
     unset($this->_currentLines);
+    
+    // reset the error state
+    $this->_error = 0;
 
-    if($this->_error!=1){
+    if( $this->_hasMoreEntries() && !$this->eof() ){
       
-      //if we found a valid dn line go on
-      if($this->_hasValidDnLine()&&!$this->eof() && $this->_error!=1){
+      //the first line is the dn one
+      $this->_currentLines[0]= trim($this->_currentLine);
+      
+      $count=0;
+      
+      // while we end on a blank line, fetch the attribute lines
+      while(!$this->eof() && !$endEntryFound ){
+	//fetch the next line
+	$this->_nextLine();
 	
-	//the first line is the dn one
-	$this->_currentLines[0]= trim($this->_currentLine);
+	// if the next line begin with a space,we append it to the current row
+	// else we push it into the array (unwrap)
 	
-	$count=0;
-	
-	// while we end on a blank line, fetch the attribute lines
-	while(!$this->eof() && !$endEntryFound && !$this->_ldifHasError()){
-	  //fetch the next line
-	  $this->_nextLine();
-	  
-	  // if the next line begin with a space,we append it to the current row
-	  // else we push it into the array (unwrap)
-
-	  if(substr($this->_currentLine,0,1)==" "){
-	    $this->_currentLines[$count].=trim($this->_currentLine);
-	  }
-	  elseif(substr($this->_currentLine,0,1)=="#"){
-	    //do nothing
-	    // echo $this->_currentLine;
-	  }
-	  elseif(trim($this->_currentLine)!=""){
-	    $this->_currentLines[++$count]=trim($this->_currentLine);
-	  }
-	  
-	  
+	if(substr($this->_currentLine,0,1)==" "){
+	  $this->_currentLines[$count].=trim($this->_currentLine);
+	}
+	elseif(substr($this->_currentLine,0,1)=="#"){
+	  //do nothing
+	  // echo $this->_currentLine;
+	}
+	elseif(trim($this->_currentLine)!=""){
+	  $this->_currentLines[++$count]=trim($this->_currentLine);
+	}
 	else{
 	  $endEntryFound=1;
 	}
-	}//end while
-	//return the ldif entry array
-	return $this->_currentLines;
-       }
-      else{
-	return false;
-      }
-      
+      }//end while
+      //return the ldif entry array
+      return $this->_currentLines;
     }
-    
+    else{
+      return false;
+    }
   }
-
 
   /**
    * Check if the ldif version is present in the ldif
@@ -815,49 +784,38 @@ class LdifReader extends FileReader{
       }
       else{
 	$this->_warningVersion=1;
-	$this->_warningMessage = "No version found - assuming 1";
+	global $lang;
+	$this->_warningMessage = $lang['warning_no_ldif_version_found'];
 	$ldifLineFound=1;
       }
-      
     }// end while loop
     return $this->_warningVersion;
   }
 
-  
+
   /**
-   * Private method to check if we have a valid dn line
+   * Private method to check if there is more entries in the file
    *
-   *
-   * return bool true if a valid dn line is found false otherwise.
+   * @return boolean true if an entry was found, false otherwise.
    */
-
-
-  function _hasValidDnLine(){
-        $dn_found=0;
-	while(!$this->_ldifHasError() && !$this->eof() && !$dn_found  ){
-	
-	  //if it's a comment or blank line,switch to the next line
-	  if($this->_isCommentLine() || $this->_isBlankLine()){
-	    //debug usage
-	    // echo $this->_currentLineNumber." - " .($this->_isCommentLine()?"comment":"blank line\n")."<br>";
-	    $this->_nextLine();
-	  }
-	  // case where a line with a distinguished name  is found
-	  elseif($this->_isDnLine()){
-	    $this->_currentDnLine = $this->_currentLine;
-	    $this->dnLineNumber = $this->_currentLineNumber;
-	    $dn_found=1;
-	    //echo $this->_currentLineNumber." - ".$this->_currentLine."<br>";
-	  }
-	  else{
-	    $this->setLdapLdifReaderException(new LdifReaderException($this->_currentLineNumber,$this->_currentLine,"A valid dn line is required"));
-	  }
-	}
-	return $dn_found;
+  function _hasMoreEntries(){
+    $entry_found = 0;
+    while( !$this->eof() && !$entry_found  ){
+      //if it's a comment or blank line,switch to the next line
+      if( $this->_isCommentLine() || $this->_isBlankLine() ){
+	//debug usage
+	// echo $this->_currentLineNumber." - " .($this->_isCommentLine()?"comment":"blank line\n")."<br>";
+	$this->_nextLine();
+      }
+      else{
+	   $this->_currentDnLine = $this->_currentLine;
+	   $this->dnLineNumber = $this->_currentLineNumber;
+	  $entry_found=1;
+      }
+    }
+    return $entry_found;
   }
-
-
-
+  
   /**
    * Associate the ldif reader with a exception which occurs during
    * proceesing the file.
@@ -865,11 +823,10 @@ class LdifReader extends FileReader{
    *
    * @param Ldap_LdifReaderException $ldifReaderException 
    */
-
-
   function setLdapLdifReaderException($ldifReaderException){
     $this->_ldifReaderException= $ldifReaderException;
-    $this->done();
+    if( !$this->continuous_mode )
+      $this->done();
     $this->_error=1;
   }
 
@@ -878,7 +835,6 @@ class LdifReader extends FileReader{
    *
    * @return Ldap_ldifReaderException
    */
-  
   function getLdapLdifReaderException(){
     return $this->_ldifReaderException;
   }
@@ -889,8 +845,6 @@ class LdifReader extends FileReader{
    *
    * @return true if an error was encountered, false otherwise
    */
-
-
   function _ldifHasError(){
     return  $this->_error;
   }
@@ -915,17 +869,15 @@ class LdifReader extends FileReader{
   }
 
   /**
-   * Return an entry from the ldif file
-   * wrapper upon the NextLines method
-   * 
+   * Return a ldif entry object
+   *
+   * @return LdifEntry the entry object buid from the lines of the ldif file
    */
 
   function readEntry(){
 
-
     if($lines = $this->nextLines()){
       $ldifEntryReader = new LdifEntryReader($lines);
-      
       //fetch entry
       $entry = $ldifEntryReader->getEntry();
       $this->_currentEntry = $entry;
@@ -934,27 +886,25 @@ class LdifReader extends FileReader{
 	$exception = $ldifEntryReader->getLdifEntryReaderException();
 	$faultyLineNumber = $this->dnLineNumber + $exception->lineNumber - 1;
 	$this->setLdapLdifReaderException(new LdifReaderException($faultyLineNumber,$exception->currentLine,$exception->message));
-	return false;
+
+	if ( ! $this->continuous_mode )
+	  return 0;
       }
-      else{
-	return $entry;
-      }
+      return $entry;
     }
+    else
+      return false;
   }
 
   function getWarningMessage(){
       return $this->_warningMessage;
-    
   }
 
 }
 
 /**
  * Helper class to write entries into the ldap server
- *
- *
  */
-
 
 class LdapWriter{
   
@@ -963,18 +913,29 @@ class LdapWriter{
 
   /**
    * Constructor
-   *
-   *
    */
   
   function LdapWriter(&$conn){
     $this->ldapConnexion = &$conn;
   }
 
+  /**
+   * Add a new entry to the ldap server
+   *
+   * @param LdifEntry $entry the entry to add
+   * @return true in case of success, false otherwise
+   */
   function ldapAdd($entry){
     return @ldap_add($this->ldapConnexion,$entry->dn,$entry->attributes);
   }
 
+  
+  /**
+   * Modify an entry
+   *
+   * @param LdifEntry $entry the entry to add
+   * @return true in case of success, false otherwise
+   */
 
   function ldapModify($entry){
     $changeType = $entry->getChangeType();
@@ -1016,7 +977,12 @@ class LdapWriter{
     }
     return $this->_writeError;
   }
-  
+
+  /**
+   * Close the connection to the ldap server
+   * 
+   * @return boolean true in case of success, false otherwise
+   */
   function ldapClose(){
    return @ldap_close($this->ldapConnexion);
   }

@@ -1,0 +1,67 @@
+# $Header: /cvsroot/phpldapadmin/phpldapadmin/doc/pla-test-i18n.ldif,v 1.4 2004/03/19 20:22:54 i18phpldapadmin Exp $
+# This is a Test-File for characters / encoding
+# 1. Change the
+#      ,dc=example,dc=com
+#    to avalue for your organisation
+# 2. Import it with phpldapadmin
+#
+# pla-i18n, example.com
+#
+dn: ou=pla-i18n,dc=example,dc=com
+ou: pla-i18n
+objectClass: top
+objectClass: organizationalUnit
+
+# pl, pla-i18n, example.com
+dn: ou=pl,ou=pla-i18n,dc=example,dc=com
+description:: IGRvcMOza2k=
+description:: xITFu8WaxbnEhsWDxYHDk8SYIMSFxbzFm8W6xIfFhMWCw7PEmQ==
+description:: V3NrYXrDs3drYQ==
+objectClass: top
+objectClass: organizationalUnit
+ou: pl
+
+# ru, pla-i18n, example.com
+dn: ou=ru,ou=pla-i18n,dc=example,dc=com
+description:: 0LfQstGD0YfQuNGCINC/0L7QtNC+0LHQvdC+
+description:: 0J/RgNC+0YHRgtCw0Y8g0YTQvtGA0LzQsCDQv9C+0LjRgdC6
+objectClass: top
+objectClass: organizationalUnit
+ou: ru
+
+# jp, pla-i18n, example.com
+dn: ou=jp,ou=pla-i18n,dc=example,dc=com
+ou: jp
+objectClass: top
+objectClass: organizationalUnit
+description:: SVNPLTIwMjItSlDjga7lpJrlm73nsY3oqIDoqp7jgbjjga7mi6HlvLXmgKc=
+
+# pt-br, pla-i18n, example.com
+dn: ou=pt-br,ou=pla-i18n,dc=example,dc=com
+ou: pt-br
+objectClass: top
+objectClass: organizationalUnit
+description:: VmVyIGFzIHJlcXVpc2nDp8O1ZXMgZW0gYWJlcnRv
+
+# de, pla-i18n, example.com
+dn: ou=de,ou=pla-i18n,dc=example,dc=com
+ou: de
+objectClass: top
+objectClass: organizationalUnit
+description:: U29uZGVyemVpY2hlbiDDtsOkw7zDnyDDlsOEw5w=
+description:: w5bDliDDnMOcIMOEw4Q=
+
+# sv, pla-i18n, example.com
+dn: ou=sv,ou=pla-i18n,dc=example,dc=com
+ou: sv
+objectClass: top
+objectClass: organizationalUnit
+description:: U8O2a29tZsOlbmc=
+description:: bMOldGVyIHNvbQ==
+
+# ca, pla-i18n, example.com
+dn: ou=ca,ou=pla-i18n,dc=example,dc=com
+ou: ca
+objectClass: top
+objectClass: organizationalUnit
+description:: RXMgdGluZHLDoSBxdWUgY29uZmlybWFyIGFxdWVzdGEgZGVjaXNpw7M=

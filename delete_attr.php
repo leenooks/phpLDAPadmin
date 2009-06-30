@@ -1,4 +1,6 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/delete_attr.php,v 1.9 2004/08/15 17:39:20 uugdave Exp $
+ 
 
 /* 
  *  delete_attr.php
@@ -8,7 +10,7 @@
  *  On failure, echo an error.
  */
 
-require 'common.php';
+require './common.php';
 
 $server_id = $_POST['server_id'];
 
@@ -16,16 +18,19 @@ $dn = $_POST['dn'] ;
 $encoded_dn = rawurlencode( $dn );
 $attr = $_POST['attr'];
 
-check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
+if( is_attr_read_only( $server_id, $attr ) )
+	pla_error( sprintf( $lang['attr_is_read_only'], htmlspecialchars( $attr ) ) );
+check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
 if( is_server_read_only( $server_id ) )
-	pla_error( "You cannot perform updates while server is in read-only mode" );
-have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
-if( ! $attr ) pla_error( "No attribute name specified in POST variables" );
-if( ! $dn ) pla_error( "No DN name specified in POST variables" );
+	pla_error( $lang['no_updates_in_read_only_mode'] );
+have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
+if( ! $attr ) pla_error( $lang['no_attr_specified'] );
+if( ! $dn ) pla_error( $lang['no_dn_specified'] );
 
 $update_array = array();
 $update_array[$attr] = array();
 $ds = pla_ldap_connect( $server_id );
+pla_ldap_connection_is_error( $ds );
 $res = @ldap_modify( $ds, $dn, $update_array );
 if( $res )
 {
@@ -36,7 +41,7 @@ if( $res )
 }
 else
 {
-	pla_error( "Could not perform ldap_modify operation.", ldap_error( $ds ), ldap_errno( $ds ) );
+	pla_error( $lang['could_not_perform_ldap_modify'], ldap_error( $ds ), ldap_errno( $ds ) );
 }
 
 ?>

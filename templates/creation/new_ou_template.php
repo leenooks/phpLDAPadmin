@@ -1,15 +1,12 @@
 <?php
-
-require 'common.php';
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_ou_template.php,v 1.11 2004/10/24 23:51:51 uugdave Exp $
 
 // Common to all templates
 $container = $_POST['container'];
 $server_id = $_POST['server_id'];
 
-// Unique to this template
-$step = 1;
-if( isset($_POST['step']) )
-    $step = $_POST['step'];
+// Unique to this template: which step of the ou creation process are we on
+$step = isset( $_POST['step'] ) ? $_POST['step'] : 1;
 
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
@@ -36,14 +33,15 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 	<td></td>
 	<td class="heading">Container <acronym title="Distinguished Name">DN</acronym>:</td>
 	<td><input type="text" name="container" size="40" value="<?php echo htmlspecialchars( $container ); ?>" />
-		<?php draw_chooser_link( 'ou_form.container' ); ?></td>
+		<?php draw_chooser_link( 'ou_form.container' ); ?>
 	</td>
 </tr>
 <tr>
-	<td colspan="3"><center><br /><input type="submit" value="Proceed &gt;&gt;" /></td>
+	<td colspan="3"><center><br /><input type="submit" value="<?php echo $lang['proceed_gt']; ?>" /></center></td>
 </tr>
 </table>
 </center>
+</form>
 
 <?php } elseif( $step == 2 ) {
 

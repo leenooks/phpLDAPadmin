@@ -1,5 +1,5 @@
 <?php
-	require realpath( 'common.php' );
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_smbuser_template.php,v 1.17 2004/12/16 22:59:50 uugdave Exp $
 
 	$default_container = "ou=Users";
 	$default_home = "/home";
@@ -13,7 +13,7 @@
 		
 	//check if the sambaSamAccount objectClass is availaible
 	if( get_schema_objectclass( $server_id, 'sambaAccount' ) == null )
-		pla_error( "You LDAP server does not have schema support for the sambaAccount objectClass. Cannot continue." );
+		pla_error( "Your LDAP server does not have schema support for the sambaAccount objectClass. Cannot continue." );
 
 	check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 	have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
@@ -141,7 +141,7 @@
 				echo htmlspecialchars( $container );
 			     else
 				echo htmlspecialchars( $default_container . ',' . $servers[$server_id]['base'] ); ?>" />
-		<?php draw_chooser_link( 'user_form.container' ); ?></td>
+		<?php draw_chooser_link( 'user_form.container' ); ?>
 	</td>
 </tr>
 <tr>

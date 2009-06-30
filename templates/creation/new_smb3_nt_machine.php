@@ -1,6 +1,5 @@
 <?php
-
-require 'common.php';
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_smb3_nt_machine.php,v 1.7 2004/12/16 22:59:50 uugdave Exp $
 
 // Common to all templates
 $container = $_POST['container'];
@@ -23,7 +22,7 @@ check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
 
 if( get_schema_objectclass( $server_id, 'sambaSamAccount' ) == null )
-	pla_error( "You LDAP server does not have schema support for the sambaSamAccount objectClass. Cannot continue." );
+	pla_error( "Your LDAP server does not have schema support for the sambaSamAccount objectClass. Cannot continue." );
 
 ?>
 <script language="javascript">
@@ -75,11 +74,11 @@ if( get_schema_objectclass( $server_id, 'sambaSamAccount' ) == null )
 	<td></td>
 	<td class="heading">Container:</td>
 	<td><input type="text" size="40" name="container" value="<?php echo htmlspecialchars( $container ); ?>" />
-		<?php draw_chooser_link( 'machine_form.container' ); ?></td>
+		<?php draw_chooser_link( 'machine_form.container' ); ?>
 	</td>
 </tr>
 <tr>
-	<td colspan="3"><center><br /><input type="submit" value="Proceed &gt;&gt;" />
+	<td colspan="3" style="text-align: center"><br /><input type="submit" value="Proceed &gt;&gt;" />
 		<br /><br /><br /><br /><br /><br /></td>
 </tr>
 
@@ -103,6 +102,7 @@ if( get_schema_objectclass( $server_id, 'sambaSamAccount' ) == null )
 
 </table>
 </center>
+</form>
 
 <?php } elseif( $step == 2 ) {
 

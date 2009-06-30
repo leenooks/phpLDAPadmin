@@ -1,6 +1,5 @@
 <?php
-
-require 'common.php';
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_dns_entry.php,v 1.9 2004/10/24 23:51:51 uugdave Exp $
 
 // Common to all templates
 $container = $_POST['container'];
@@ -36,19 +35,20 @@ if( isset($_POST['step']) )
 		<td></td>
 		<td class="heading">Associated Domain:</td>
 		<td><input type="text" name="associateddomain" value="" /></td>
-	<tr>
+	</tr>
 	<tr>
 		<td></td>
 		<td class="heading">Container <acronym title="Distinguished Name">DN</acronym>:</td>
 		<td><input type="text" name="container" size="40" value="<?php echo htmlspecialchars( $container ); ?>" />
-		<?php draw_chooser_link( 'dns_form.container' ); ?></td>
+		<?php draw_chooser_link( 'dns_form.container' ); ?>
 		</td>
 	</tr>
 	<tr>
-		<td colspan="3"><center><br /><input type="submit" value="Proceed &gt;&gt;" /></td>
+		<td colspan="3"><center><br /><input type="submit" value="Proceed &gt;&gt;" /></center></td>
 	</tr>
 	</table>
 	</center>
+	</form>
 
 <?php } elseif( $step == 2 ) {
 

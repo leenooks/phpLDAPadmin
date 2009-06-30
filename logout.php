@@ -1,8 +1,10 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/logout.php,v 1.10 2004/10/24 21:25:51 uugdave Exp $
+ 
 
 /*
  * logout.php
- * For servers whose auth_type is set to 'form'. Pass me 
+ * For servers whose auth_type is set to 'cookie' or 'session'. Pass me 
  * the server_id and I will log out the user (delete the cookie)
  *
  * Variables that come in as GET vars:
@@ -12,29 +14,29 @@
 require realpath( 'common.php' );
 
 $server_id = $_GET['server_id'];
-check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
-have_auth_info( $server_id ) or pla_error( "No one is logged in to that server." );
+check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
+have_auth_info( $server_id ) or pla_error( $lang['no_one_logged_in'] );
 
-unset_cookie_login_dn( $server_id ) or pla_error( "Could not delete cookie!" );
+if( ! isset( $servers[ $server_id ][ 'auth_type' ] ) )
+	return false;
+$auth_type = $servers[ $server_id ][ 'auth_type' ]; 
+if( 'cookie' == $auth_type || 'session' == $auth_type )
+	unset_login_dn( $server_id ) or pla_error( $lang['could_not_logout'] );
+else
+	pla_error( sprintf( $lang['unknown_auth_type'], htmlspecialchars( $auth_type ) ) );
 
 include realpath( 'header.php' );
 
 ?>
 
-<html>
-<head>
 <script language="javascript">
 	parent.left_frame.location.reload();
 </script>
-<link rel="stylesheet" href="style.css" />
-
-</head>
-<body>
 
 	<center>
 	<br />
 	<br />
-	Logged out successfully from <b><?php echo htmlspecialchars($servers[$server_id]['name']); ?></b><br />
+	<?php echo sprintf( $lang['logged_out_successfully'], htmlspecialchars($servers[$server_id]['name']) ); ?><br />
 	</center>
 
 </body>

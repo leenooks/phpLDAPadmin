@@ -1,13 +1,18 @@
+Installationsanleitung von phpldapadmin auf Deutsch
+===================================================
+
+$Header: /cvsroot/phpldapadmin/phpldapadmin/doc/INSTALL-de.txt,v 1.3 2004/03/01 19:48:58 i18phpldapadmin Exp $
+
 Die Installationsanweisung geht davon aus das:
     a) Ein Webserver (Apache, IIS, etc.)
     b) PHP 4.1.0 oder neuer (mit LDAP-Support)
-installiert und funktioniert
+installiert sind und auch funktionieren
 
 
 * Installation von phpLDAPadmin in vier einfachen Schritten:
 
   1. Entpacken des Archives (wenn man diesen Text lesen kann,
-     dann ist das schon geschechen)
+     dann ist das schon geschehen)
   2. Das entpackte Verzeichnis phpldapadmin sollte vom webroot
      aus erreicht werden
   3. Kopieren der 'config.php.example' nach 'config.php' 
@@ -43,19 +48,21 @@ installiert und funktioniert
      Bitte in der Datei INSTALL unter 'Translators:' nachsehen
 
      Wer in der Uebersetzung helfen moechte sollte an der Mailingliste
-     phpldapadmin-devel teilnehmen.
+     phpldapadmin-devel teilnehmen:
+
      https://lists.sourceforge.net/mailman/listinfo/phpldapadmin-devel
 
 
 * Hinweise zur Konfiguration von config.php
-  Wer eine Benuetzerfuehrung auf deutsch haben moechte sollte in der
+  Wer eine Benuetzerfuehrung auf Deutsch haben moechte sollte in der
   config.php die Zeile 
 
      $language = 'en';
 
   mit
+
      $language = 'de';
 
-  abaendern. Andere Sprachen sieht man im Unterverzeichnis 'lang'
+  abaendern. Weitere Sprachen sieht man im Unterverzeichnis 'lang'
 
 

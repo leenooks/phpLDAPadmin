@@ -14,8 +14,24 @@ in the "doc" directory.
   3. Copy 'config.php.example' to 'config.php' and edit to taste.
   4. Then, point your browser to the phpldapadmin directory.
 
-* For help
+* For additional help
 
   See the files in the "doc" directory.
   Join our mailing list: 
     https://lists.sourceforge.net/lists/listinfo/phpldapadmin-devel
+
+* Platform specific notes
+
+    * OpenBSD with chroot'ed Apache:
+
+       For jpeg photos to work properly, you must do this:
+       # mkdir /var/www/tmp, and then
+       # chown root:daemon /var/www/tmp
+       # chmod 1755 /var/www/tmp
+       Where tmp is the $jpeg_temp_dir configured in config.php
+
+    * Windows 
+
+       For jpeg photos to work properly, be sure to change $jpeg_temp_dir
+       from "/tmp" to "c:\\temp" or similar.
+

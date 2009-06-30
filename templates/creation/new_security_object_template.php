@@ -1,6 +1,5 @@
 <?php
-
-require 'common.php';
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_security_object_template.php,v 1.4 2004/10/24 23:51:51 uugdave Exp $
 
 // customize this to your needs
 $default_container = "ou=server";
@@ -74,14 +73,14 @@ function autoFillHomeDir( form )
 
 <center>
 <table class="confirm">
-<tr class="spacer"><td colspan="3"></tr>
+<tr class="spacer"><td colspan="3"></td></tr>
 <tr>
 	<td><img src="images/uid.png" /></td>
 	<td class="heading">User name:</td>
 	<td><input type="text" name="user_name" id="user_name" value=""
 		onChange="autoFillHomeDir(this.form)" onExit="autoFillHomeDir(this.form)" /></td>
 </tr>
-<tr class="spacer"><td colspan="3"></tr>
+<tr class="spacer"><td colspan="3"></td></tr>
 <tr>
 	<td><img src="images/lock.png" /></td>
 	<td class="heading">Password:</td>
@@ -102,7 +101,7 @@ function autoFillHomeDir( form )
 		<option>sha</option>
 	    </select></td>
 </tr>
-<tr class="spacer"><td colspan="3"></tr>
+<tr class="spacer"><td colspan="3"></td></tr>
 <tr>
 	<td></td>
 	<td class="heading">Container:</td>
@@ -111,14 +110,15 @@ function autoFillHomeDir( form )
 				echo htmlspecialchars( $container );
 			     else
 				echo htmlspecialchars( $default_container . ',' . $servers[$server_id]['base'] ); ?>" />
-		<?php draw_chooser_link( 'user_form.container' ); ?></td>
+		<?php draw_chooser_link( 'user_form.container' ); ?>
 	</td>
 </tr>
 <tr>
-	<td colspan="3"><center><br /><input type="submit" value="Proceed &gt;&gt;" /></td>
+	<td colspan="3"><center><br /><input type="submit" value="Proceed &gt;&gt;" /></center></td>
 </tr>
 </table>
 </center>
+</form>
 
 <?php } elseif( $step == 2 ) {
 

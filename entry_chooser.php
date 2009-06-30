@@ -1,6 +1,8 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/entry_chooser.php,v 1.16 2004/08/15 17:39:20 uugdave Exp $
 
-require 'common.php';
+
+require './common.php';
 
 $container = isset( $_GET['container'] ) ? rawurldecode( $_GET['container'] ) : false;
 $server_id = isset( $_GET['server_id'] ) ? $_GET['server_id'] : false;
@@ -8,7 +10,19 @@ $return_form_element = isset( $_GET['form_element'] ) ? htmlspecialchars( $_GET[
 
 include "header.php";
 
-echo "<h3 class=\"subtitle\">Automagic Entry Chooser</h3>\n";
+echo "<h3 class=\"subtitle\">" . $lang['entry_chooser_title'] . "</h3>\n";
+flush();
+?>
+
+<script language="javascript">
+	function returnDN( dn )
+	{
+		opener.document.<?php echo $return_form_element; ?>.value = dn;
+		close();
+	}
+</script>
+
+<?php
 
 if( $container ) {
 	echo $lang['server_colon_pare'] . "<b>" . htmlspecialchars( $servers[ $server_id ][ 'name' ] ) .  "</b><br />\n";
@@ -20,15 +34,18 @@ if( $server_id !== false && $container !== false )
 {
 	check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
 	have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
-	pla_ldap_connect( $server_id ) or pla_error( $lang['could_not_connect'] );
-	$dn_list = get_container_contents( $server_id, $container );
+
+	$ds = pla_ldap_connect( $server_id );
+	pla_ldap_connection_is_error( $ds );
+
+	$dn_list = get_container_contents( $server_id, $container, 0, '(objectClass=*)', get_tree_deref_setting() );
 	sort( $dn_list );
 
 	$base_dn = $servers[ $server_id ][ 'base' ];
 	if( ! $base_dn )
 		$base_dn = try_to_get_root_dn( $server_id );
 
-	if( $container == $base_dn ) {
+	if( 0 == pla_compare_dns( $container, $base_dn ) ) {
 		$parent_container = false;
 		$up_href = "entry_chooser.php?form_element=$return_form_element";
 	} else {
@@ -87,11 +104,3 @@ $elmpart =substr($return_form_element,strpos($return_form_element,".")+1);
 $return_form_element = $formpart . ".elements[\"" . $elmpart . "\"]";
 
 ?>
-
-<script language="javascript">
-	function returnDN( dn )
-	{
-		opener.document.<?php echo $return_form_element; ?>.value = dn;
-		close();
-	}
-</script>

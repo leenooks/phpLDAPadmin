@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/create_form.php,v 1.21 2004/10/28 13:37:39 uugdave Exp $
+
 
 /*
  * create_form.php
@@ -10,7 +12,7 @@
  *  - container (rawurlencoded) (optional)
  */
 
-require 'common.php';
+require './common.php';
 require 'templates/template_config.php';
 
 $server_id = $_REQUEST['server_id'];
@@ -25,17 +27,25 @@ have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
 $server_name = $servers[$server_id]['name'];
 
 // build the server drop-down html
-$server_menu_html = '<select name="server_id">';
-$js_dn_list = '';
-foreach( $servers as $id => $server ) {
-	if( $server['host'] ) {
-		$server_menu_html .= '<option value="'.$id.'"' . ( $id==$server_id? ' selected' : '' ) . '>';
-		$server_menu_html .= $server['name'] . '</option>';
+$server_menu_html = '';
+if (count($servers)>1){
+	$server_menu_html .= '<select name="server_id">';
+	$js_dn_list = '';
+	foreach( $servers as $id => $server ) {
+		if( $server['host'] ) {
+			$server_menu_html .= '<option value="'.$id.'"' . ( $id==$server_id? ' selected="true"' : '' ) . '>';
+			$server_menu_html .= $server['name'] . '</option>';
+		}
 	}
+	$server_menu_html .= '</select>';
+} else {
+	$server = reset($servers);
+	if( $server['host'] )
+		$server_menu_html .= '<input type="hidden" name="server_id" value="'.key($servers).'" />' .
+												 '<b>' . $server['name'] . '</b>';
 }
-$server_menu_html .= '</select>';
 
-include 'header.php'; ?>
+include './header.php'; ?>
 
 <body>
 
@@ -46,54 +56,66 @@ include 'header.php'; ?>
 	<input type="hidden" name="container" value="<?php echo htmlspecialchars( $container ); ?>" />
 	<table class="create">
 	<tr>
-		<td class="heading">Server:</td>
+		<td class="heading"><?php echo $lang['server']; ?>:</td>
 		<td><?php echo $server_menu_html; ?></td>
 	</tr>
 	<tr>
-		<td class="heading">Template:</td>
-		<td>
-			<table class="templates">
-
-			<?php foreach( $templates as $name => $template ) {
-
-				// Check and see if this template should be shown in the list
-				$isValid = false;
-				if (isset($template['regexp'])) {
-					if (@preg_match("/".$template['regexp']."/i", $container)) {
-						$isValid = true;
-					}
-				} else {
-					$isValid = true;
-				}
-
-				if ($isValid) {
-				?>
-				<tr>
-					<td><input type="radio"
-						   name="template"
-						   value="<?php echo htmlspecialchars($name);?>"
-						   id="<?php echo htmlspecialchars($name); ?>" 
-						   <?php if( 0 == strcasecmp( 'Custom', $name ) ) { ?>
-							checked
-						   <?php } ?>
-						   /></td>
-					<td><label for="<?php echo htmlspecialchars($name);?>">
-						<img src="<?php echo $template['icon']; ?>" /></label></td>
-					<td><label for="<?php echo htmlspecialchars($name);?>">
-						<?php echo htmlspecialchars( $template['desc'] ); ?></label></td>
-				</tr>
-				<?php 
-			
-				} // end if
-			
-			} // end foreach ?>
+      <td class="heading">
+        <?php echo $lang['template']; ?>:
+      </td>
+      <td>
+        <table class="template_display">
+          <tr>
+            <td>
+              <table class="templates">
+                <?php
+                $count = count( $templates );
+                $i = -1;
+                foreach( $templates as $name => $template ) {
+                    $i++;
+                    // Balance the columns properly
+                    if( ( count( $templates ) % 2 == 0 && $i == intval( $count / 2 ) ) ||
+                            ( count( $templates ) % 2 == 1 && $i == intval( $count / 2 ) + 1 ) )
+                        echo "</table></td><td><table class=\"templates\">";
+     				// Check and see if this template should be shown in the list
+     				$isValid = false;
+     				if( isset($template['regexp'] ) ) {
+     					if( @preg_match( "/".$template['regexp']."/i", $container ) ) {
+     						$isValid = true;
+     					}
+     				} else {
+     					$isValid = true;
+     				}
+     
+     				?>
+     				<tr>
+                      <td><input type="radio" name="template" value="<?php echo htmlspecialchars($name);?>" 
+                                 id="<?php echo htmlspecialchars($name); ?>"
+                                <?php if( 0 == strcasecmp( 'Custom', $name ) ) echo ' checked';
+                                if( ! $isValid ) echo ' disabled'; ?> />
+                                </td>
+                      <td class="icon"><label for="<?php echo htmlspecialchars($name);?>"><img src="<?php echo $template['icon']; ?>" /></label></td>
+                      <td>
+                        <label for="<?php echo htmlspecialchars($name);?>">
+                        <?php if( 0 == strcasecmp( 'Custom', $template['desc'] ) ) echo '<b>';
+                              if( ! $isValid ) echo "<span style=\"color: gray\"><acronym title=\"This template is not allowed in this container\">";
+                              echo htmlspecialchars( $template['desc'] ); 
+                              if( ! $isValid ) echo "</acronym></span>";
+                              if( 0 == strcasecmp( 'Custom', $template['desc'] ) ) echo '</b>'; ?>
+                        </label></td>
+                    </tr>
+                  <?php 
+             } // end foreach ?>
 
 			</table>
+            </td>
+            </tr>
+            </table>
 		</td>
 	</tr>
 
 	<tr>
-		<td colspan="2"><center><input type="submit" name="submit" value="<?php echo $lang['createf_proceed']?> &gt;&gt;" /></center></td>
+		<td colspan="2"><center><input type="submit" name="submit" value="<?php echo $lang['proceed_gt']?>" /></center></td>
 	</tr>
 
 	</table>

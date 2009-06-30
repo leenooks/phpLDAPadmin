@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/es.php,v 1.19 2004/06/07 13:01:28 uugdave Exp $
+
 
 // Search form
 $lang['simple_search_form_str'] = 'Formulario de búsqueda sencilla';
@@ -52,9 +54,9 @@ $lang['export_to_ldif'] = 'Exportar archivo LDIF';
 $lang['export_to_ldif_tooltip'] = 'Guardar archivo LDIF de este objeto';
 $lang['export_subtree_to_ldif_tooltip'] = 'Guardar archivo LDIF de este objeto i todos sus objetos hijos';
 $lang['export_subtree_to_ldif'] = 'Exportar archivo LDIF de sub-estructura';
-$lang['export_to_ldif_mac'] = 'Avance de línea de Macintosh';
-$lang['export_to_ldif_win'] = 'Avance de línea de Windows';
-$lang['export_to_ldif_unix'] = 'Avance de línea de Unix';
+$lang['export_mac'] = 'Avance de línea de Macintosh';
+$lang['export_win'] = 'Avance de línea de Windows';
+$lang['export_unix'] = 'Avance de línea de Unix';
 $lang['create_a_child_entry'] = 'Crear objeto como hijo';
 $lang['add_a_jpeg_photo'] = 'Agregar jpegPhoto';
 $lang['rename_entry'] = 'Renombrar objeto';
@@ -87,7 +89,7 @@ $lang['no_new_attrs_available'] = 'No hay atributos nuevos disponibles para este
 $lang['binary_value'] = 'Valor binario';
 $lang['add_new_binary_attr'] = 'Agregar valor binario';
 $lang['add_new_binary_attr_tooltip'] = 'Agregar atributo/valor binario de un archivo';
-$lang['alias_for'] = 'Sinónimo para';
+$lang['alias_for'] = '%s es sinónimo para %s';
 $lang['download_value'] = 'Descargar valor';
 $lang['delete_attribute'] = 'Borrar atributo';
 $lang['true'] = 'verdad';
@@ -201,7 +203,7 @@ $lang['createf_proceed'] = 'Proceder';
 $lang['ctemplate_on_server'] = 'Al servidor';
 $lang['ctemplate_no_template'] = 'No se ha especificado ninguna plantilla en las variables del POST.';
 $lang['ctemplate_config_handler'] = 'Tu configuración especifica un manejador de';
-$lang['ctemplate_handler_does_not_exist'] = 'para esta plantilla. Pero este manejador no existe en el directorio \'plantilla/creación\'.';
+$lang['ctemplate_handler_does_not_exist'] = 'para esta plantilla. Pero este manejador no existe en el directorio \'templates/creation\'.';
 
 // search.php
 $lang['you_have_not_logged_into_server'] = 'Aún no te has autenticado en ell servidor seleccionado, no puedes hacer ninguna búsqueda.';
@@ -230,6 +232,7 @@ $lang['starts with'] = 'comience con';
 $lang['contains'] = 'contenga';
 $lang['ends with'] = 'termine con';
 $lang['sounds like'] = 'suene como';
+$lang['predefined_search_str'] = 'o seleccione uno de esta lista';
 
 // server_info.php
 $lang['could_not_fetch_server_info'] = 'No se ha podido sacar información LDAP del servidor';
@@ -249,13 +252,13 @@ $lang['new_value'] = 'Valor nuevo';
 $lang['attr_deleted'] = '[atributo borrado]';
 $lang['commit'] = 'Cometer';
 $lang['cancel'] = 'Cancelar';
-$lang['you_made_no_changes'] = 'No has hecho ningún canvio';
+$lang['you_made_no_changes'] = 'No has hecho ningún cambio';
 $lang['go_back'] = 'Volver atrás';
 
 // welcome.php
 $lang['welcome_note'] = 'Usa el menú de la izquierda para navegar';
 $lang['credits'] = "Créditos";
-$lang['changelog'] = "Histórico de canvios";
+$lang['changelog'] = "Histórico de cambios";
 $lang['documentation'] = "Documentación";
 
 
@@ -298,7 +301,7 @@ $lang['ferror_discription_short'] = '<b>Descripción</b>: (no hay descripción)<br
 $lang['ferror_submit_bug'] = 'Es un error del phpLDAPadmin? Si así es, por favor <a href=\'%s\'>dínoslo</a>.';
 $lang['ferror_unrecognized_num'] = 'Número de error desconocido: ';
 $lang['ferror_nonfatil_bug'] = '<center><table class=\'notice\'><tr><td colspan=\'2\'><center><img src=\'images/warning.png\' height=\'12\' width=\'13\' />
-             <b>Has encontrado un error fatal del phpLDAPadmin!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Archivo:</td>
+             <b>Has encontrado un error menor del phpLDAPadmin!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Archivo:</td>
              <td><b>%s</b> línea <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versiones:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>
              </td></tr><tr><td>Servidor Web:</td><td><b>%s</b></td></tr><tr><td colspan=\'2\'><center><a target=\'new\' href=\'%s\'>
              Envía este error haciendo click aquí</a>.</center></td></tr></table></center><br />';

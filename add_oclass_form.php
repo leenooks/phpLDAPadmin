@@ -1,4 +1,6 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_oclass_form.php,v 1.15 2004/10/22 13:58:59 uugdave Exp $
+ 
 
 /*
  * add_oclass_form.php
@@ -15,7 +17,7 @@
  *  - new_oclass
  */
 
-require 'common.php';
+require './common.php';
 
 $dn = rawurldecode( $_POST['dn'] );
 $encoded_dn = rawurlencode( $dn );
@@ -45,19 +47,31 @@ else
 	$must_attrs = array();
 
 // We don't want any of the attr meta-data, just the string
-foreach( $must_attrs as $i => $attr )
-	$must_attrs[$i] = $attr->getName();
+//foreach( $must_attrs as $i => $attr )
+	//$must_attrs[$i] = $attr->getName();
 
 // build a list of the attributes that this new objectClass requires,
 // but that the object does not currently contain
 $needed_attrs = array();
-foreach( $must_attrs as $attr )
-	if( ! in_array( strtolower($attr), $current_attrs ) )
-		$needed_attrs[] = $attr;
+foreach( $must_attrs as $attr ) {
+    $attr = get_schema_attribute( $server_id, $attr->getName() );
+    //echo "<pre>"; var_dump( $attr ); echo "</pre>";
+    // First, check if one of this attr's aliases is already an attribute of this entry
+    foreach( $attr->getAliases() as $alias_attr_name )
+        if( in_array( strtolower( $alias_attr_name ), $current_attrs ) )
+            // Skip this attribute since it's already in the entry
+            continue;
+	if( in_array( strtolower($attr->getName()), $current_attrs ) )
+        continue;
+
+    // We made it this far, so the attribute needs to be added to this entry in order 
+    // to add this objectClass
+    $needed_attrs[] = $attr;
+}
 
 if( count( $needed_attrs ) > 0 )
 {
-	include 'header.php'; ?>
+	include './header.php'; ?>
 	<body>
 	
 	<h3 class="title"><?php echo $lang['new_required_attrs']; ?></h3>
@@ -83,14 +97,8 @@ if( count( $needed_attrs ) > 0 )
 	<tr><th colspan="2"><?php echo $lang['new_required_attrs']; ?></th></tr>
 
 	<?php foreach( $needed_attrs as $count => $attr ) { ?>
-		<?php  if( $count % 2 == 0 ) { ?>
-			<tr class="row1">
-		<?php  } else { ?>
-			<tr class="row2">
-		<?php  } ?>
-		<td class="attr"><b><?php echo htmlspecialchars($attr); ?></b></td>
-		<td class="val"><input type="text" name="new_attrs[<?php echo htmlspecialchars($attr); ?>]" value="" size="40" />
-	</tr>
+        <tr><td class="attr"><b><?php echo htmlspecialchars($attr->getName()); ?></b></td></tr>
+		<tr><td class="val"><input type="text" name="new_attrs[<?php echo htmlspecialchars($attr->getName()); ?>]" value="" size="40" /></tr>
 	<?php  } ?>
 
 	</table>
@@ -106,12 +114,13 @@ if( count( $needed_attrs ) > 0 )
 }
 else
 {
-	$ds = pla_ldap_connect( $server_id ) or pla_error( "Could not connect to LDAP server." );
+	$ds = pla_ldap_connect( $server_id );
+	pla_ldap_connection_is_error( $ds );
 	$add_res = @ldap_mod_add( $ds, $dn, array( 'objectClass' => $new_oclass ) );
 	if( ! $add_res )
 		pla_error( "Could not perform ldap_mod_add operation.", ldap_error( $ds ), ldap_errno( $ds ) );
 	else
-		header( "Location: edit.php?server_id=$server_id&dn=$encoded_dn" );
+		header( "Location: edit.php?server_id=$server_id&dn=$encoded_dn&modified_attrs[]=objectClass" );
 
 }
 

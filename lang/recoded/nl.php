@@ -1,8 +1,10 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/recoded/nl.php,v 1.9 2004/03/19 20:13:09 i18phpldapadmin Exp $
+
 
 /*
- * Übersetzung von Marius Rieder <marius.rieder@bluewin.ch>
- *                 Uwe Ebel
+ * Vertaling door Richard Lucassen <spamtrap@lucassen.org>
+ * Commentaar gaarne naar bovenstaand adres sturen a.u.b.
  */
 
 // Search form
@@ -56,9 +58,9 @@ $lang['export_to_ldif'] = 'exporteren naar LDIF';//'Export to LDIF';
 $lang['export_to_ldif_tooltip'] = 'maak LDIF dump van dit object';//'Save an LDIF dump of this object';
 $lang['export_subtree_to_ldif_tooltip'] = 'maak LDIF dump van dit object plus alle onderliggende objecten';//'Save an LDIF dump of this object and all of its children';
 $lang['export_subtree_to_ldif'] = 'exporteer deze subvelden naar LDIF';//'Export subtree to LDIF';
-$lang['export_to_ldif_mac'] = 'Macintosh regeleinden';//'Macintosh style line ends';
-$lang['export_to_ldif_win'] = 'Windows regeleinden';//'Windows style line ends';
-$lang['export_to_ldif_unix'] = 'Unix regeleinden';//'Unix style line ends';
+$lang['export_mac'] = 'Macintosh regeleinden';//'Macintosh style line ends';
+$lang['export_win'] = 'Windows regeleinden';//'Windows style line ends';
+$lang['export_unix'] = 'Unix regeleinden';//'Unix style line ends';
 $lang['create_a_child_entry'] = 'subveld aanmaken';//'Create a child entry';
 $lang['add_a_jpeg_photo'] = 'jpeg foto toevoegen';//'Add a jpegPhoto';
 $lang['rename_entry'] = 'veld hernoemen';//'Rename Entry';
@@ -239,6 +241,7 @@ $lang['starts with'] = 'begint met';//'starts with';
 $lang['contains'] = 'bevat';//'contains';
 $lang['ends with'] = 'eindigt met';//'ends with';
 $lang['sounds like'] = 'klinkt als';//'sounds like';
+$lang['predefined_search_str'] = 'of een van deze lijst uitlezen';//'or select a predefined search';
 
 // server_info.php
 $lang['could_not_fetch_server_info'] = 'kan geen LDAP van de server krijgen';//'Could not retrieve LDAP information from the server';
@@ -325,5 +328,10 @@ $lang['ldif_could_not_delete_object'] = 'Kan object niet verwijderen';
 $lang['ldif_could_not_modify_object'] = 'Kan object niet wijzigen';
 $lang['ldif_line_number'] = 'regelnummer: ';
 $lang['ldif_line'] = 'regel: ';
+
+$lang['credits'] = 'Credits';//'Credits';
+$lang['changelog'] = 'Changelog';//'ChangeLog';
+$lang['documentation'] = 'Documentatie';// 'Documentation';
+
 
 ?>

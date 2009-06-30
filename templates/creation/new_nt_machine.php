@@ -1,6 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_nt_machine.php,v 1.13 2004/12/16 22:59:50 uugdave Exp $
 
-require 'common.php';
 
 // Common to all templates
 $container = $_POST['container'];
@@ -22,7 +22,7 @@ check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
 
 if( get_schema_objectclass( $server_id, 'sambaAccount' ) == null )
-	pla_error( "You LDAP server does not have schema support for the sambaAccount objectClass. Cannot continue." );
+	pla_error( "Your LDAP server does not have schema support for the sambaAccount objectClass. Cannot continue." );
 
 ?>
 
@@ -52,7 +52,7 @@ if( get_schema_objectclass( $server_id, 'sambaAccount' ) == null )
 	<td></td>
 	<td class="heading">Container:</td>
 	<td><input type="text" size="40" name="container" value="<?php echo htmlspecialchars( $container ); ?>" />
-		<?php draw_chooser_link( 'machine_form.container' ); ?></td>
+		<?php draw_chooser_link( 'machine_form.container' ); ?>
 	</td>
 </tr>
 <tr>

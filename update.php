@@ -1,4 +1,6 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/update.php,v 1.17 2004/05/27 13:25:13 uugdave Exp $
+ 
 
 /* 
  *  update.php
@@ -37,7 +39,8 @@ $update_array = $_POST['update_array'];
 check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
 have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
 is_array( $update_array ) or pla_error( $lang['update_array_malformed'] );
-pla_ldap_connect( $server_id ) or pla_error( $lang['could_not_connect'] );
+$ds = pla_ldap_connect( $server_id );
+pla_ldap_connection_is_error( $ds );
 
 // check for delete attributes (indicated by the attribute entry appearing like this: attr => '' 
 foreach( $update_array as $attr => $val )
@@ -52,9 +55,19 @@ foreach( $update_array as $attr => $val )
 			
 // Call the custom callback for each attribute modification 
 // and verify that it should be modified.
-foreach( $update_array as $attr_name => $val )
+foreach( $update_array as $attr_name => $val ) {
+
+	// Check to see if this is a unique Attribute
+	if( $badattr = checkUniqueAttr( $server_id, $dn, $attr_name, $val ) ) {
+		$search_href='search.php?search=true&form=advanced&server_id=' . $server_id  . '&filter=' . $attr_name . '=' . $badattr;
+		pla_error(sprintf( $lang['unique_attr_failed'] , $attr_name,$badattr,$dn,$search_href ) );
+	}
+
 		if( true !== preAttrModify( $server_id, $dn, $attr_name, $val ) )
 			unset( $update_array[ $attr_name ] );
+		elseif( is_attr_read_only( $server_id, $attr ) )
+	pla_error( sprintf( $lang['attr_is_read_only'], htmlspecialchars( $attr_name ) ) );
+}
 
 $ds = pla_ldap_connect( $server_id );
 $res = @ldap_modify( $ds, $dn, $update_array );
@@ -71,10 +84,11 @@ if( $res )
 		if( 0 === strcasecmp( $attr_name, 'userPassword' ) &&
 			check_server_id( $server_id ) &&
 			isset( $servers[ $server_id ][ 'auth_type' ] ) && 
-			$servers[ $server_id ][ 'auth_type' ] == 'form' &&
+			( $servers[ $server_id ][ 'auth_type' ] == 'cookie' ||
+			$servers[ $server_id ][ 'auth_type' ] == 'session' ) &&
 			0 === pla_compare_dns( get_logged_in_dn( $server_id ), $dn ) )
 		{
-			unset_cookie_login_dn( $server_id );
+			unset_login_dn( $server_id );
 			include realpath( 'header.php' );
 
 			?>
@@ -84,10 +98,10 @@ if( $res )
 			</script>
 			<br />
 			<center>
-			<b>Modification successful!</b><br />
+			<b><?php echo $lang['modification_successful']; ?></b><br />
 			<br />
-			Since you changed your password, you must <br />
-			now <a href="login_form.php?server_id=<?php echo $server_id; ?>">login again</a> with your new password.
+			<?php echo $lang['change_password_new_login']; ?> &nbsp;
+			<a href="login_form.php?server_id=<?php echo $server_id; ?>"><?php echo $lang['login_link']; ?></a>
 			</center>
 			</body>
 			</html>

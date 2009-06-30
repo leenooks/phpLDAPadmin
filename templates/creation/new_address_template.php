@@ -1,6 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_address_template.php,v 1.13 2004/12/20 14:12:33 uugdave Exp $
 
-require 'common.php';
 
 // customize this to your needs
 $default_container = "ou=Addresses";
@@ -12,8 +12,8 @@ $server_id = $_POST['server_id'];
 // Unique to this template
 $step = isset( $_POST['step'] ) ? $_POST['step'] : 1;
 
-check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
-have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
+check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] . htmlspecialchars( $server_id ) );
+have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
 
 ?>
 
@@ -38,14 +38,14 @@ function autoFillCommonName( form )
 		return false;
 	}
 
-	common_name = last_name + ' ' + first_name;
+	common_name = first_name + ' ' + last_name;
 	form.common_name.value = common_name;
 }
 
 -->
 </script>
 
-<center><h2>New Address Book Entry<br />
+<center><h2><?php echo $lang['t_new_address']; ?><br />
 <small>(InetOrgPerson)</small></h2>
 </center>
 
@@ -58,81 +58,82 @@ function autoFillCommonName( form )
 
 <center>
 <table class="confirm">
-<tr class="spacer"><td colspan="3"></tr>
+<tr class="spacer"><td colspan="3"></td></tr>
 <tr>
 	<td><img src="images/uid.png" /></td>
-	<td class="heading">Name:</td>
+	<td class="heading"><?php echo $lang['t_name']; ?>:</td>
 	<td>
 		<input type="text" name="first_name" 
-			id="first_name" value="first" onChange="autoFillCommonName(this.form)" />
+			id="first_name" value="<?php echo $lang['t_first']; ?>" onChange="autoFillCommonName(this.form)" />
 		<input type="text" name="last_name" 
-			id="last_name" value="last" onChange="autoFillCommonName(this.form)" />
+			id="last_name" value="<?php echo $lang['t_last']; ?>" onChange="autoFillCommonName(this.form)" />
 	</td>
 </tr>
 <tr>
 	<td></td>
-	<td class="heading">Common name:</td>
+	<td class="heading"><?php echo $lang['t_common_name']; ?>:</td>
 	<td><input type="text" name="common_name" id="common_name" value="" /></td>
 </tr>
 <tr>
 	<td></td>
-	<td class="heading">Organization:</td>
+	<td class="heading"><?php echo $lang['t_organization']; ?>:</td>
 	<td><input type="text" name="organization" id="organization" value="" /></td>
 </tr>
-<tr class="spacer"><td colspan="3"></tr>
+<tr class="spacer"><td colspan="3"></td></tr>
 <tr>
 	<td><img src="images/mail.png" /></td>
-	<td class="heading">Address:</td>
+	<td class="heading"><?php echo $lang['t_address']; ?>:</td>
 	<td><input type="text" name="street" id="street" value="" /></td>
 </tr>
 <tr>
 	<td></td>
-	<td class="heading">City:</td>
+	<td class="heading"><?php echo $lang['t_city']; ?>:</td>
 	<td><input type="text" name="city" id="city" value="" /></td>
 </tr>
 <tr>
 	<td></td>
-	<td class="heading">Postal code:</td>
+	<td class="heading"><?php echo $lang['t_postal_code']; ?>:</td>
 	<td><input type="text" name="postal_code" id="postal_code" value="" /></td>
 </tr>
-<tr class="spacer"><td colspan="3"></tr>
+<tr class="spacer"><td colspan="3"></td></tr>
 <tr>
 	<td><img src="images/phone.png" /></td>
-	<td class="heading">Work phone:</td>
+	<td class="heading"><?php echo $lang['t_work_phone']; ?>:</td>
 	<td><input type="text" name="telephone_number" id="telephone_number" value="" /></td>
 </tr>
 <tr>
 	<td></td>
-	<td class="heading">Fax:</td>
+	<td class="heading"><?php echo $lang['t_fax']; ?>:</td>
 	<td><input type="text" name="fax_number" id="fax_number" value="" /></td>
 </tr>
 <tr>
 	<td></td>
-	<td class="heading">Mobile:</td>
+	<td class="heading"><?php echo $lang['t_mobile']; ?>:</td>
 	<td><input type="text" name="mobile_number" id="mobile_number" value="" /></td>
 </tr>
 <tr>
 	<td></td>
-	<td class="heading">Email:</td>
+	<td class="heading"><?php echo $lang['t_email']; ?>:</td>
 	<td><input type="text" name="email_address" id="email_address" value="" /></td>
 </tr>
-<tr class="spacer"><td colspan="3"></tr>
+<tr class="spacer"><td colspan="3"></td></tr>
 <tr>
 	<td></td>
-	<td class="heading">Container:</td>
+	<td class="heading"><?php echo $lang['t_container']; ?>:</td>
 	<td><input type="text" name="container" size="40"
 		value="<?php if( isset( $container ) )
 				echo htmlspecialchars( $container );
 			     else
 				echo htmlspecialchars( $default_container . ',' . $servers[$server_id]['base'] ); ?>" />
-		<?php draw_chooser_link( 'address_form.container' ); ?></td>
+		<?php draw_chooser_link( 'address_form.container' ); ?>
 	</td>
 </tr>
 <tr>
-	<td colspan="3"><center><br /><input type="submit" value="Proceed &gt;&gt;" /></td>
+	<td colspan="3"><center><br /><input type="submit" value="<?php echo $lang['proceed_gt']; ?>" /></center></td>
 </tr>
 </table>
 </center>
+</form>
 
 <?php } elseif( $step == 2 ) {
 
@@ -151,10 +152,10 @@ function autoFillCommonName( form )
 
 	/* Critical assertions */
 	0 != strlen( $common_name ) or
-		pla_error( "You cannot leave the Common Name blank. Please go back and try again." );
+		pla_error( $lang['t_err_cn_blank'] );
 
 	?>
-	<center><h3>Confirm entry creation:</h3></center>
+	<center><h3><?php echo $lang['t_confim_creation']; ?></h3></center>
 
 	<form action="create.php" method="post">
 	<input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
@@ -192,59 +193,57 @@ function autoFillCommonName( form )
 	<center>
 	<table class="confirm">
 	<tr class="even">
-		<td class="heading">Common name:</td>
+		<td class="heading"><?php echo $lang['t_common_name']; ?>:</td>
 		<td><b><?php echo htmlspecialchars( $common_name ); ?></b></td>
 	</tr>
 	<tr class="odd">
-		<td class="heading">First name:</td>
+		<td class="heading"><?php echo $lang['t_first_name']; ?>:</td>
 		<td><b><?php echo htmlspecialchars( $first_name ); ?></b></td>
 	</tr>
 	<tr class="even">
-		<td class="heading">Last name:</td>
+		<td class="heading"><?php echo $lang['t_last_name']; ?>:</td>
 		<td><b><?php echo htmlspecialchars( $last_name ); ?></b></td>
 	</tr>
 	<tr class="odd">
-		<td class="heading">Organization:</td>
+		<td class="heading"><?php echo $lang['t_organization']; ?>:</td>
 		<td><?php echo htmlspecialchars( $organization ); ?></td>
 	</tr>
 	<tr class="even">
-		<td class="heading">City:</td>
+		<td class="heading"><?php echo $lang['t_city']; ?>:</td>
 		<td><?php echo htmlspecialchars( $city ); ?></td>
 	</tr>
 	<tr class="odd">
-		<td class="heading">Postal code:</td>
+		<td class="heading"><?php echo $lang['t_postal_code']; ?>:</td>
 		<td><?php echo htmlspecialchars( $postal_code ); ?></td>
 	</tr>
 	<tr class="even">
-		<td class="heading">Street:</td>
+		<td class="heading"><?php echo $lang['t_street']; ?>:</td>
 		<td><?php echo htmlspecialchars( $street ); ?></td>
 	</tr>
 	<tr class="odd">
-		<td class="heading">Work phone:</td>
+		<td class="heading"><?php echo $lang['t_work_phone']; ?>:</td>
 		<td><?php echo htmlspecialchars( $telephone_number ); ?></td>
 	</tr>
 	<tr class="even">
-		<td class="heading">Fax:</td>
+		<td class="heading"><?php echo $lang['t_fax']; ?>:</td>
 		<td><?php echo htmlspecialchars( $fax_number ); ?></td>
 	</tr>
 	<tr class="odd">
-		<td class="heading">Mobile:</td>
+		<td class="heading"><?php echo $lang['t_mobile']; ?>:</td>
 		<td><?php echo htmlspecialchars( $mobile_number ); ?></td>
 	</tr>
 	<tr class="even">
-		<td class="heading">Email:</td>
+		<td class="heading"><?php echo $lang['t_email']; ?>:</td>
 		<td><?php echo htmlspecialchars( $email_address ); ?></td>
 	</tr>
 	<tr class="odd">
-		<td class="heading">Container:</td>
+		<td class="heading"><?php echo $lang['t_container']; ?>:</td>
 		<td><?php echo htmlspecialchars( $container ); ?></td>
 	</tr>
 	</table>
-	<br /><input type="submit" value="Create Address" />
+	<br /><input type="submit" value="<?php echo $lang['t_create_address']; ?>" />
 	</center>
 	</form>
 
 <?php } ?>
 
-</body>
-</html>

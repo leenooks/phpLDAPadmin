@@ -1,4 +1,6 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/edit.php,v 1.48 2004/10/14 03:33:36 uugdave Exp $
+ 
 
 /*
  * edit.php
@@ -14,8 +16,8 @@
  *  - Other vars may be set and used by the modification templates
  */
 
-require realpath( 'common.php' );
-require realpath( 'templates/template_config.php' );
+require_once realpath( 'common.php' );
+require_once realpath( 'templates/template_config.php' );
 
 $dn = isset( $_GET['dn'] ) ? $_GET['dn'] : false;
 $dn !== false or pla_error( $lang['missing_dn_in_query_string'] );
@@ -25,11 +27,18 @@ $encoded_dn = rawurlencode( $decoded_dn );
 $server_id = isset( $_GET['server_id'] ) ? $_GET['server_id'] : false;
 $server_id !== false or pla_error( $lang['missing_server_id_in_query_string'] );
 
+// Template authors may wish to present the user with a link back to the default, generic 
+// template for editing. They may use this as the target of the href to do so.
+$default_href = "edit.php?server_id=$server_id&amp;dn=$encoded_dn&amp;use_default_template=true";
+
 $use_default_template = isset( $_GET['use_default_template'] ) ? true : false;
 
 check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
+
 have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
-pla_ldap_connect( $server_id ) or pla_error( $lang['could_not_connect'] );
+
+$ds = pla_ldap_connect( $server_id );
+pla_ldap_connection_is_error( $ds );
 
 if( $use_default_template ) {
 	require realpath( 'templates/modification/default.php' );

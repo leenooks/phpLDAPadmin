@@ -1,4 +1,6 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/collapse.php,v 1.11 2004/08/15 17:39:20 uugdave Exp $
+ 
 
 /*
  * collapse.php
@@ -12,7 +14,7 @@
  * Note: this script is equal and opposite to expand.php
  */
 
-require 'common.php';
+require './common.php';
 
 $dn = $_GET['dn'];
 $encoded_dn = rawurlencode( $dn );
@@ -20,19 +22,10 @@ $server_id = $_GET['server_id'];
 
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 
-session_start();
+initialize_session_tree();
 
-// dave commented this out since it was being triggered for weird reasons
-//session_is_registered( 'tree' ) or pla_error( "Your session tree is not registered. That's weird. Shouldn't ever happen".
-//							". Just go back and it should be fixed automagically." );
-
-$tree = $_SESSION['tree'];
-
-// and remove this instance of the dn as well
-unset( $tree[$server_id][$dn] );
-
-$_SESSION['tree'] = $tree;
-session_write_close();
+if( array_key_exists( $dn, $_SESSION['tree'][$server_id] ) )
+	unset( $_SESSION['tree'][$server_id][$dn] );
 
 // This is for Opera. By putting "random junk" in the query string, it thinks
 // that it does not have a cached version of the page, and will thus

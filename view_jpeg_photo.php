@@ -1,6 +1,8 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/view_jpeg_photo.php,v 1.6 2004/08/15 17:39:20 uugdave Exp $
 
-require 'common.php';
+
+require './common.php';
 
 $file = $_GET['file'];
 

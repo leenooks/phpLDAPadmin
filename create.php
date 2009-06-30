@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/create.php,v 1.29 2004/10/28 13:37:39 uugdave Exp $
+
 
 /*
  * create.php
@@ -14,15 +16,16 @@
  *  - server_id
  */
 
-require realpath( 'common.php' );
+require realpath( './common.php' );
 
 $new_dn = isset( $_POST['new_dn'] ) ? $_POST['new_dn'] : null;
 $encoded_dn = rawurlencode( $new_dn );
 $server_id = $_POST['server_id'];
-$vals = $_POST['vals'];
-$attrs = $_POST['attrs'];
+$vals = isset( $_POST['vals'] ) ? $_POST['vals'] : array();
+$attrs = isset( $_POST['attrs'] ) ? $_POST['attrs'] : array();
 $required_attrs = isset( $_POST['required_attrs'] ) ? $_POST['required_attrs'] : false;
 $object_classes = unserialize( rawurldecode( $_POST['object_classes'] ) );
+$redirect = isset( $_POST['redirect'] ) ? $_POST['redirect'] : false;
 $container = get_container( $new_dn );
 
 if( is_server_read_only( $server_id ) )
@@ -37,15 +40,14 @@ if( isset( $required_attrs ) && is_array( $required_attrs ) ) {
 	foreach( $required_attrs as $attr => $val ) {
 		if( $val == '' )
 			pla_error( sprintf( $lang['create_required_attribute'], htmlspecialchars( $attr ) ) );
-		$new_entry[ $attr ][] = utf8_encode( $val );
+		$new_entry[ $attr ][] = $val; 
 	}
 }
 
-if( isset( $vals ) && is_array( $vals ) ) {
-	foreach( $vals as $i => $val ) {
-		$attr = $attrs[$i];
+if( isset( $attrs ) && is_array( $attrs ) ) {
+	foreach( $attrs as $i => $attr ) {
 		if( is_attr_binary( $server_id, $attr ) ) {
-			if( $_FILES['vals']['name'][$i] != '' ) {
+			if( isset( $_FILES['vals']['name'][$i] ) && $_FILES['vals']['name'][$i] != '' ) {
 				// read in the data from the file
 				$file = $_FILES['vals']['tmp_name'][$i];
 				$f = fopen( $file, 'r' );
@@ -55,8 +57,9 @@ if( isset( $vals ) && is_array( $vals ) ) {
 				$new_entry[ $attr ][] = $val;
 			}
 		} else {
+            $val = isset( $vals[$i] ) ? $vals[$i] : '';
 			if( '' !== trim($val) )
-				$new_entry[ $attr ][] = utf8_encode( $val );
+			  $new_entry[ $attr ][] = $val;
 		}
 	}
 }
@@ -65,18 +68,26 @@ $new_entry['objectClass'] = $object_classes;
 if( ! in_array( 'top', $new_entry['objectClass'] ) )
 	$new_entry['objectClass'][] = 'top';
 
-// UTF-8 magic. Must decode the values that have been passed to us
-foreach( $new_entry as $attr => $vals )
+foreach( $new_entry as $attr => $vals ) {
+
+	// Check to see if this is a unique Attribute
+	if( $badattr = checkUniqueAttr( $server_id, $new_dn, $attr, $vals ) ) {
+		$search_href='search.php?search=true&amp;form=advanced&amp;server_id=' . $server_id  . '&amp;filter=' . $attr . '=' . $badattr;
+		pla_error(sprintf( $lang['unique_attr_failed'] , $attr,$badattr,$new_dn,$search_href ) );
+	}
+
 	if( ! is_attr_binary( $server_id, $attr ) )
 		if( is_array( $vals ) )
 			foreach( $vals as $i => $v )
-				$new_entry[ $attr ][ $i ] = utf8_decode( $v );
+                           $new_entry[ $attr ][ $i ] = $v; 
 			else
-				$new_entry[ $attr ] = utf8_decode( $vals );
+			$new_entry[ $attr ] = $vals; 
+}
 
 //echo "<pre>"; var_dump( $new_dn );print_r( $new_entry ); echo "</pre>";
 
 $ds = pla_ldap_connect( $server_id );
+pla_ldap_connection_is_error( $ds );
 
 // Check the user-defined custom call back first
 if( true === preEntryCreate( $server_id, $new_dn, $new_entry ) ) 
@@ -86,11 +97,12 @@ else
 if( $add_result )
 {
 	postEntryCreate( $server_id, $new_dn, $new_entry );
-	$edit_url="edit.php?server_id=$server_id&dn=" . rawurlencode( $new_dn );
+    if( $redirect )
+        $redirect_url = $redirect;
+    else
+        $redirect_url = "edit.php?server_id=$server_id&dn=" . rawurlencode( $new_dn );
 
-	// update the session tree to reflect the change
-	session_start();
-	if( session_is_registered( 'tree' ) )
+	if( array_key_exists( 'tree', $_SESSION ) )
 	{
 		$tree = $_SESSION['tree'];
 		$tree_icons = $_SESSION['tree_icons'];
@@ -109,20 +121,21 @@ if( $add_result )
 	?>
 	<html>
 	<head>
-		<?php 	if( isset( $tree[$server_id][$container] ) ) { ?>
+		<?php 	if( isset( $tree[$server_id][$container] ) || $new_dn == $servers[$server_id]['base'] ) { ?>
 
 		<!-- refresh the tree view (with the new DN renamed)
 		     and redirect to the edit_dn page -->
 		<script language="javascript">
 			parent.left_frame.location.reload();
+			location.href='<?php echo $redirect_url; ?>';
 		</script>
 
 		<?php } ?>
 
-		<meta http-equiv="refresh" content="0; url=<?php echo $edit_url; ?>" />
+		<meta http-equiv="refresh" content="0; url=<?php echo $redirect_url; ?>" />
 	</head>
 	<body>
-	<?php echo $lang['create_redirecting'] ?>... <a href="<?php echo $edit_url; ?>"><?php echo $lang['create_here']?></a>.
+	<?php echo $lang['redirecting'] ?> <a href="<?php echo $redirect_url; ?>"><?php echo $lang['here']?></a>.
 	</body>
 	</html>
 	<?php

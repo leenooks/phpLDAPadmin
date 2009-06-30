@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_oclass.php,v 1.11 2004/08/15 17:39:20 uugdave Exp $
+
 /*
  * add_oclass.php
  * Adds an objectClass to the specified dn.
@@ -14,7 +16,7 @@
  *  - new_attrs (array, if any)
  */
 
-require 'common.php';
+require './common.php';
 
 $dn = rawurldecode( $_POST['dn'] );
 $encoded_dn = rawurlencode( $dn );
@@ -22,6 +24,8 @@ $new_oclass = $_POST['new_oclass'];
 $server_id = $_POST['server_id'];
 $new_attrs = $_POST['new_attrs'];
 
+if( is_attr_read_only( $server_id, 'objectClass' ) )
+	pla_error( "ObjectClasses are flagged as read only in the phpLDAPadmin configuration." );
 if( is_server_read_only( $server_id ) )
 	pla_error( $lang['no_updates_in_read_only_mode'] );
 
@@ -35,14 +39,23 @@ $new_attrs_entry = array();
 $new_oclass_entry = array( 'objectClass' => $new_oclass );
 
 if( is_array( $new_attrs ) && count( $new_attrs ) > 0 )
-	foreach( $new_attrs as $attr => $val )
+	foreach( $new_attrs as $attr => $val ) {
+
+		// Check to see if this is a unique Attribute
+		if( $badattr = checkUniqueAttr( $server_id, $dn, $attr, array($val) ) ) {
+			$search_href='search.php?search=true&form=advanced&server_id=' . $server_id  . '&filter=' . $attr . '=' . $badattr;
+			pla_error(sprintf( $lang['unique_attr_failed'] , $attr,$badattr,$dn,$search_href ) );
+		}
+
 		$new_entry[ $attr ] = $val;
+	}
 
 //echo "<pre>"; 
 //print_r( $new_entry );
 //exit;
 
-$ds = pla_ldap_connect( $server_id ) or pla_error( $lang['could_not_connect'] );
+$ds = pla_ldap_connect( $server_id );
+pla_ldap_connection_is_error( $ds );
 $add_res = @ldap_mod_add( $ds, $dn, $new_entry );
 
 if( ! $add_res )
@@ -51,7 +64,7 @@ if( ! $add_res )
 }
 else
 {
-	header( "Location: edit.php?server_id=$server_id&dn=$encoded_dn" );
+	header( "Location: edit.php?server_id=$server_id&dn=$encoded_dn&modified_attrs[]=objectclass" );
 }
 
 ?>

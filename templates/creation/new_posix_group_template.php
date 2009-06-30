@@ -1,6 +1,5 @@
 <?php
-
-require 'common.php';
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_posix_group_template.php,v 1.9 2004/10/24 23:51:51 uugdave Exp $
 
 // Common to all templates
 $container = $_POST['container'];
@@ -43,29 +42,33 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 	<td></td>
 	<td class="heading">Container <acronym title="Distinguished Name">DN</acronym>:</td>
 	<td><input type="text" name="container" size="40" value="<?php echo htmlspecialchars( $container ); ?>" />
-		<?php draw_chooser_link( 'posix_group_form.container' ); ?></td>
+		<?php draw_chooser_link( 'posix_group_form.container' ); ?>
 	</td>
 </tr>
 <tr>
 	<td></td>
-	<td class="heading">Users:</td>
-	<td><input type="text" name="member_uids[]" value="" /> <small>(example: dsmith)</small><br />
-<?php for( $i=1; $i<$default_number_of_users; $i++ ) { ?>
-	<input type="text" name="member_uids[]" value="" /><br />
+	<td class="heading" style="vertical-align:top">Users:</td>
+    <td>
+<?php for( $i=0; $i<=$default_number_of_users; $i++ ) { ?>
+	<input type="text" name="member_uids[<?php echo $i; ?>]" id="member_uids_<?php echo $i; ?>" value="" /><?php draw_chooser_link( "posix_group_form.member_uids_$i", false ); ?><br />
 <?php } ?>
 	</td>
 </tr>
 <tr>
-	<td colspan="3"><center><br /><input type="submit" value="Proceed &gt;&gt;" /></td>
+	<td colspan="3"><center><br /><input type="submit" value="Proceed &gt;&gt;" /></center></td>
 </tr>
 </table>
 </center>
+</form>
 
 <?php } elseif( $step == 2 ) {
 
 	$group_name = trim( $_POST['posix_group_name'] );
+    $group_name or pla_error( "You left the group name blank. Please go back and give the group a name." );
 	$container = trim( $_POST['container'] );
+    $container or pla_error( "You left the container DN blank. Please go back and give the group a container DN." );
 	$gid_number = trim( $_POST['gid_number'] );
+    $gid_number or pla_error( "You left the group GID Number blank. Please go back and give the group a GID Number." );
 	$uids = $_POST['member_uids'];
 	$member_uids = array();
 	foreach( $uids as $uid )

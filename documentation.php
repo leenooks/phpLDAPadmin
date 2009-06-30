@@ -1,7 +1,11 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/documentation.php,v 1.7 2004/12/17 15:21:15 uugdave Exp $
+ 
 
-include 'common.php';
-include 'header.php';
+include './common.php';
+include './header.php';
+
+echo "<body>";
 
 $view = isset( $_GET['view'] ) ? $_GET['view'] : false;
 switch( $view ) {

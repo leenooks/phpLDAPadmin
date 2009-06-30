@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/custom_functions.php,v 1.6 2004/05/27 13:25:13 uugdave Exp $
+
 
 /*
  * custom_functions.php: Choose your own adventure.
@@ -92,6 +94,21 @@ function preAttrModify( $server_id, $dn, $attr_name, $new_value )
 }
 
 /*
+ * This function is executed before adding an entry's
+ * attribute. If it returns true, the entry is added.
+ * If it returns false, the entry is not added.
+ * In addition to the standard $server_id and $dn params,
+ * this function also gives you the attribute name ($attr_name)
+ * and the new value that the attribute will have ($new_value).
+ * $new_value may be a string or an array of strings.
+ */
+function preAttrAdd( $server_id, $dn, $attr_name, $new_value )
+{
+	// Fill me in
+	return true;
+}
+
+/*
  * This function is executed after an entry is created.
  * Unlike preEntryCreate(), this function's return 
  * value is ignored. This is very handy for executing
@@ -156,6 +173,14 @@ function preEntryDelete( $server_id, $dn )
  * value is ignored.
  */
 function postEntryDelete( $server_id, $dn )
+{
+	// Fill me in
+}
+
+/**
+ * This function is called, after a new session is initilaized
+ */
+function postSessionInit()
 {
 	// Fill me in
 }

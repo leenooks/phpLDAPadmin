@@ -1,5 +1,6 @@
 0x00	LDAP_SUCCESS			"The operation completed successfully."
-0x01	LDAP_OPERATIONS_ERROR		"An operations error occurred."
+0x01	LDAP_OPERATIONS_ERROR	"An operations error occurred. This is
+                                typically the result of an internal error on your LDAP server."
 0x02	LDAP_PROTOCOL_ERROR		"A protocol violation was detected."		
 0x03	LDAP_TIMELIMIT_EXCEEDED		"The operation timed out waiting to complete."
 0x04	LDAP_SIZELIMIT_EXCEEDED		"The LDAP sever refused to serve such a large result set."
@@ -36,8 +37,8 @@
 0x24	LDAP_ALIAS_DEREF_PROBLEM	"A problem was encountereed when
 					dereferencing an alias"
 0x30	LDAP_INAPPROPRIATE_AUTH		"Inappropriate authentication was
-					specifiedi (e.g.,   LDAP_AUTH_SIMPLE was
-					specified and the entry does not  have
+					specified (e.g. LDAP_AUTH_SIMPLE was
+					specified and the entry does not have
 					a userPassword attribute)."
 0x31	LDAP_INVALID_CREDENTIALS	"Incorrect login DN and/or password."
 0x32	LDAP_INSUFFICIENT_ACCESS	"You do not have sufficient permissions
@@ -48,17 +49,23 @@
 0x36	LDAP_LOOP_DETECT		"A loop was detected."
 0x3C	LDAP_SORT_CONTROL_MISSING	""
 0x3D	LDAP_INDEX_RANGE_ERROR		""
-0x40	LDAP_NAMING_VIOLATION		"A naming violation occurred."
+0x40	LDAP_NAMING_VIOLATION		"A naming violation occurred. This usually
+                    means that you tried to change the value of an attribute that is used in the
+                    DN. For example, if you change the 'cn' value of an entry whose DN is 'cn=Bob
+                    Jones,dc=example,dc=com', you must also rename the entry to reflect the
+                    change."
 0x41	LDAP_OBJECT_CLASS_VIOLATION	"You tried to perform an operation that would cause an undefined attribute
 					to exist or that would remove a required attribute, given the current list
-					of ObjectClasses."
-0x42	LDAP_NOT_ALLOWED_ON_NONLEAF	"The entry you tried to operate on has children. (usually this means you
+					of ObjectClasses. This can also occur if you do not
+                    specify a structural objectClass when creating an entry, or if you specify
+                    more than one structural objectClass."
+0x42	LDAP_NOT_ALLOWED_ON_NONLEAF	"The entry you tried to operate on has children. Usually this means you
 					tried to delete or rename the entry, which you cannot do to an entry 
-					with children)."
+					with children."
 0x43	LDAP_NOT_ALLOWED_ON_RDN		"You cannot preform that operation on a the relative distinguished name
 					(RDN) of an object."
-0x44	LDAP_ALREADY_EXISTS		"The object already exists (usually you are trying to create a new object
-					on top of an existing one)"
+0x44	LDAP_ALREADY_EXISTS		"The object already exists. Usually you are trying to create a new object
+					on top of an existing one."
 0x45	LDAP_NO_OBJECT_CLASS_MODS	"ObjectClass modifications are not
 					allolwed."
 0x46	LDAP_RESULTS_TOO_LARGE		""
@@ -74,7 +81,7 @@
 0x58	LDAP_USER_CANCELLED		"The user cancelled the LDAP operation."
 0x59	LDAP_PARAM_ERROR		"An  ldap routine was called with a bad
 					parameter."
-0x5a	LDAP_NO_MEMORY			"An memory allocation (e.g., malloc(3)
+0x5a	LDAP_NO_MEMORY			"A memory allocation (e.g., malloc(3)
 					or  other  dynamic  memory  allocator)
 					call failed in an  ldap  library  rou-
 					tine."

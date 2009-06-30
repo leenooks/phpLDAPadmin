@@ -1,4 +1,6 @@
-<?php 
+<?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/server_info.php,v 1.15 2004/10/24 23:51:49 uugdave Exp $
+ 
 
 /* 
  * server_info.php
@@ -8,7 +10,7 @@
  *  - server_id
  */
  
-require 'common.php';
+require './common.php';
 
 // The attributes we'll examine when searching the LDAP server's RootDSE
 $root_dse_attributes = array( 	'namingContexts', 
@@ -31,21 +33,55 @@ $root_dse_attributes = array( 	'namingContexts',
 				'serverName',
 				'supportedCapabilities',
 				'changeLog',
-				'+' );
+                'tlsAvailableCipherSuites',
+                'tlsImplementationVersion',
+                'supportedSASLMechanisms',
+                'dsaVersion',
+                'myAccessPoint',
+                'dseType',
+				'+',
+                '*'
+                );
 
 $server_id = $_GET['server_id'];
 $server_name = $servers[$server_id]['name'];
-$ds = pla_ldap_connect( $server_id ) or pla_error( $lang['could_not_connect'] );
-$r = @ldap_read( $ds, '', 'objectClass=*', $root_dse_attributes );
+
+$ds = pla_ldap_connect( $server_id );
+pla_ldap_connection_is_error( $ds );
+
+// Fetch basic RootDSE attributes using the + and *. 
+$r = @ldap_read( $ds, '', 'objectClass=*', array( '+', '*' ) );
 if( ! $r )
-	pla_error( $lang['could_not_fetch_server_info'] );
+	pla_error( $lang['could_not_fetch_server_info'], ldap_error( $ds ), ldap_errno( $ds )  );
 $entry = @ldap_first_entry( $ds, $r );
+if( ! $entry )
+	pla_error( $lang['could_not_fetch_server_info'], ldap_error( $ds ), ldap_errno( $ds )  );
 $attrs = @ldap_get_attributes( $ds, $entry );
 $count = @ldap_count_entries( $ds, $r );
-	
-include 'header.php';
+
+// After fetching the "basic" attributes from the RootDSE, try fetching the 
+// more advanced ones (from ths list). Add them to the list of attrs to display
+// if they weren't already fetched. (this was added as a work-around for OpenLDAP 
+// on RHEL 3.
+$r2 = @ldap_read( $ds, '', 'objectClass=*', $root_dse_attributes );
+if( $r2 ) {
+    $entry2 = @ldap_first_entry( $ds, $r );
+    $attrs2 = @ldap_get_attributes( $ds, $entry );
+    for( $i=0; $i<$attrs2['count']; $i++ ) {
+            $attr = $attrs2[$i];
+        if( ! isset( $attrs[ $attr ] ) ) {
+            $attrs[ $attr ] = $attrs2[ $attr ];
+            $attrs[ 'count' ]++;
+            $attrs[] = $attr;
+        }
+    }
+}
+unset( $attrs2, $entry, $entry2 );
+
+include './header.php';
 ?>
 
+<body>
 <h3 class="title"><?php echo $lang['server_info_for'] . htmlspecialchars( $server_name ); ?></h3>
 <h3 class="subtitle"><?php echo $lang['server_reports_following']; ?></h3>
 
@@ -60,25 +96,26 @@ include 'header.php';
 <?php
 for( $i=0; $i<$attrs['count']; $i++ ) {
 	$attr = $attrs[$i];
-	$schema_href = "schema.php?server_id=$server_id&amp;view=attributes#" . strtolower($attr);
+	$schema_href = "schema.php?server_id=$server_id&amp;view=attributes&amp;viewvalue=$attr";
 	?>
 
-	<tr class="row<?php echo ($i%2!=0?"1":"2"); ?>">
+	<tr>
 		<td class="attr">
 			<b>
 			<a title="<?php echo sprintf( $lang['attr_name_tooltip'], $attr ); ?>" 
-			   href="<?php echo $schema_href; ?>"><?php echo htmlspecialchars( $attr ); ?>
+			   href="<?php echo $schema_href; ?>"><?php echo htmlspecialchars( $attr ); ?></a>
 			</b>
 		</td>
+    </tr>
+    <tr>
 		<td class="val">
 		<?php for( $j=0; $j<$attrs[ $attr ][ 'count' ]; $j++ )
 			echo htmlspecialchars( $attrs[ $attr ][ $j ] ) . "<br />\n"; ?>
 		</td>
-		</tr>
+    </tr>
 		
-<?php
-}
-?>
-
+<?php } ?>
 
 </table>
+</body>
+</html>
