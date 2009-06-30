@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.275.2.16 2005/11/01 10:06:53 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.275.2.17 2005/11/12 04:41:17 wurley Exp $
 
 /**
  * A collection of functions used throughout phpLDAPadmin.
@@ -2962,17 +2962,34 @@ function get_default_hash($server_id) {
  * @return string The current version as read from the VERSION file.
  */
 function pla_version() {
-	if (DEBUG_ENABLED)
-		debug_log('pla_version(): Entered with ()',2);
-
 	$version_file = realpath('../VERSION');
 	if (! file_exists($version_file))
-		return 'unknown version';
+		$return = 'UNKNOWN';
 
-	$f = fopen($version_file,'r');
-	$version = fread($f, filesize($version_file));
-	fclose($f);
-	return trim($version);
+	else {
+		$f = fopen($version_file,'r');
+		$version = trim(fread($f, filesize($version_file)));
+		fclose($f);
+
+		# We use cvs_prefix, because CVS will translate this on checkout otherwise.
+		$cvs_prefix = '\$Name:';
+
+		$return = preg_replace('/^'.$cvs_prefix.' RELEASE-([0-9_]+)\s*\$$/','$1',$version);
+		$return = preg_replace('/_/','.',$return);
+
+		# Check if we are a CVS copy.
+		if (preg_match('/^'.$cvs_prefix.'?\s*\$$/',$return))
+			$return = 'CVS';
+
+		# If return is still the same as version, then the tag is not one we expect.
+		elseif ($return == $version)
+			$return = 'UNKNOWN';
+	}
+
+	if (DEBUG_ENABLED)
+		debug_log('pla_version(): Entered with (), Returning (%s)',2,$return);
+
+	return $return;
 }
 
 /**

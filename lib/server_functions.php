@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.27.2.7 2005/11/01 10:06:53 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.27.2.8 2005/11/12 02:37:19 wurley Exp $ */
 
 /**
  * Classes and functions for LDAP server configuration and capability
@@ -1467,7 +1467,7 @@ class LDAPservers {
 		$this->default->login['attr'] = array(
 			'desc'=>'Attribute to use to find the users DN',
 			'var'=>'login_attr',
-			'default'=>'uid');
+			'default'=>'dn');
 
 		$this->default->login['class'] = array(
 			'desc'=>'Strict login to users containing a specific objectClass',

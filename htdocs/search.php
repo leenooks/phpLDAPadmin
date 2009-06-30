@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/search.php,v 1.71.2.1 2005/10/09 09:07:21 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/search.php,v 1.71.2.2 2005/11/08 08:09:41 wurley Exp $
 
 /**
  * Perform LDAP searches and draw the advanced/simple search forms
@@ -98,8 +98,7 @@ flush();
 if( isset( $_GET['search'] ) ) {
 	if( $form == 'advanced'  ) {
 		if (isset( $_GET['display_attrs'])) {
-			preg_replace('/\s+/','',$_GET['display_attrs']);
-			$search_result_attributes = explode(',',rawurldecode($_GET['display_attrs']));
+			$search_result_attributes = explode(',',rawurldecode(preg_replace('/\s+/','',rawurldecode($_GET['display_attrs']))));
 		} else {
 			$search_result_attributes = $config->GetValue('search','result_attributes');
 		}

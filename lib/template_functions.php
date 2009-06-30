@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.25.2.8 2005/10/25 12:50:29 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.25.2.9 2005/11/12 02:46:18 wurley Exp $ */
 
 /**
  * Classes and functions for the template engine.ation and capability
@@ -178,6 +178,10 @@ class Templates {
 									$this->_template[$template]['attribute'][$attr_details['ID']] = $this->_parseXML($index,$attr_details);
 
 								} else {
+
+									if (! strcmp($index,'ID'))
+										continue;
+
 									foreach ($attr_details as $key => $values) {
 
 										if (is_array($values) && isset($values['ID'])) {
