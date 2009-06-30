@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/create_form.php,v 1.30.2.1 2005/10/09 09:07:21 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/create_form.php,v 1.31.2.5 2005/12/31 04:21:37 wurley Exp $
 
 /**
  * The menu where the user chooses an RDN, Container, and Template for creating a new entry.
@@ -16,160 +16,119 @@
  */
 
 require './common.php';
-require TMPLDIR.'template_config.php';
 
-if( $ldapserver->isReadOnly() )
-	pla_error( $lang['no_updates_in_read_only_mode'] );
-if( ! $ldapserver->haveAuthInfo())
-	pla_error( $lang['not_enough_login_info'] );
+if ($ldapserver->isReadOnly())
+	pla_error(_('You cannot perform updates while server is in read-only mode'));
+if (! $ldapserver->haveAuthInfo())
+	pla_error(_('Not enough information to login to server. Please check your configuration.'));
 
-$step = isset( $_REQUEST['step'] ) ? $_REQUEST['step'] : 1; // defaults to 1
 $container = $_REQUEST['container'];
-
 $server_menu_html = server_select_list($ldapserver->server_id,true);
 
-include './header.php'; ?>
+include './header.php';
 
-<body>
+echo '<body>';
 
-<h3 class="title"><?php echo $lang['createf_create_object']?></h3>
-<h3 class="subtitle"><?php echo $lang['createf_choose_temp']?></h3>
-<center><h3><?php echo $lang['createf_select_temp']?></h3></center>
+printf('<h3 class="title">%s</h3>',_('Create Object'));
+printf('<h3 class="subtitle">%s</h3>',_('Choose a template'));
+printf('<center><h3>%s</h3></center>',_('Select a template for the creation process'));
 
-<form action="creation_template.php" method="post">
-	<input type="hidden" name="container" value="<?php echo htmlspecialchars( $container ); ?>" />
-	<table class="create">
-	<tr>
-		<td class="heading"><?php echo $lang['server']; ?>:</td>
-		<td><?php echo $server_menu_html; ?></td>
-	</tr>
+echo '<form action="template_engine.php" method="post">';
+printf('<input type="hidden" name="container" value="%s" />',htmlspecialchars($container));
 
-	<tr>
-		<td class="heading"><?php echo $lang['template']; ?>:</td>
-		<td>
+echo '<table class="create">';
+printf('<tr><td class="heading">%s:</td><td>%s</td></tr>',_('Server'),$server_menu_html);
 
-		<table class="template_display">
-		<tr>
-			<td>
-			<table class="templates">
+echo '<tr>';
+printf('<td class="heading">%s:</td>',_('Template'));
+echo '<td>';
 
-<?php
+echo '<table class="template_display">';
+echo '<tr><td>';
+
+echo '<table class="templates">';
+
 $i = -1;
 
-	if ($config->GetValue('template_engine','enable')) {
-		$template_xml = new Templates($ldapserver->server_id);
+$template_xml = new Templates($ldapserver->server_id);
+$templates = $template_xml->_template;
 
-		if ($config->GetValue('template_engine','disable_old'))
-		        $templates = $template_xml->getTemplates();
-
-		else
-		        $templates = array_merge($template_xml->getTemplates(),$templates);
-	}
-
-	# Remove non-visable templates.
-	foreach ($templates as $index => $template)
-		if (isset($template['visible']) && (! $template['visible']))
-			unset ($templates[$index]);
+# Remove non-visable templates.
+foreach ($templates as $index => $template)
+	if (isset($template['visible']) && (! $template['visible']))
+		unset ($templates[$index]);
 
 $templates['custom']['title'] = 'Custom';
 $templates['custom']['icon'] = 'images/object.png';
 
-$count = count( $templates );
-foreach( $templates as $name => $template ) {
+$count = count($templates);
+foreach ($templates as $name => $template) {
 	$i++;
 
 	# If the template doesnt have a title, we'll use the desc field.
 	$template['desc'] = isset($template['title']) ? $template['title'] : $template['desc'];
 
 	# Balance the columns properly
-	if( ( count( $templates ) % 2 == 0 && $i == intval( $count / 2 ) ) ||
-		( count( $templates ) % 2 == 1 && $i == intval( $count / 2 ) + 1 ) )
+	if ((count($templates) % 2 == 0 && $i == intval($count / 2)) ||
+		(count($templates) % 2 == 1 && $i == intval($count / 2) + 1))
 
-		echo "</table></td><td><table class=\"templates\">";
+		echo '</table></td><td><table class="templates">';
 
 	# Check and see if this template should be shown in the list
 	$isValid = false;
 
-	if( isset($template['regexp'] ) ) {
-		if( @preg_match( "/".$template['regexp']."/i", $container ) ) {
+	if (isset($template['regexp'])) {
+		if (@preg_match('/'.$template['regexp'].'/i',$container))
 			$isValid = true;
-		}
-
-	} else {
+	} else
 		$isValid = true;
 
 	if (isset($template['invalid']) && $template['invalid'])
 		$isValid = false;
-	} ?>
 
-			</td>
-		</tr>
+	echo '<tr>';
+	if (! $isValid || (isset($template['handler']) && ! file_exists(TMPLDIR.'creation/'.$template['handler'])))
+		echo '<td class="icon"><img src="images/error.png" /></td>';
+	else
+		printf('<td><input type="radio" name="template" value="%s" id="%s" %s /></td>',
+			htmlspecialchars($name),htmlspecialchars($name),
+			! $isValid ? 'disabled' : (strcasecmp('Custom',$name) ? '' : 'checked'));
 
-		<tr>
-<?php
-	if (isset($template['invalid']) && $template['invalid'] || (isset($template['handler']) && ! file_exists(TMPLDIR.'creation/'.$template['handler']))) {
-?>
-			<td class="icon">
-			<img src="images/error.png" />
-			</td>
-<?php
-	} else {
-?>
+	printf('<td class="icon"><label for="%s"><img src="%s" /></label></td>',
+		htmlspecialchars($name),$template['icon']);
 
-			<td>
-			<input type="radio" name="template" value="<?php echo htmlspecialchars($name);?>"
-				id="<?php echo htmlspecialchars($name); ?>"
+	printf('<td class="name"><label for="%s">',
+		htmlspecialchars($name));
 
-	<?php
-if( 0 == strcasecmp( 'Custom', $name ) ) echo ' checked';
-	if( ! $isValid ) echo ' disabled';
-?> />
+	if (strcasecmp('Custom', $template['desc']) == 0)
+		 echo '<b>';
 
-			</td>
-<?php
-	}
-?>
-
-			<td class="icon">
-			<label for="<?php echo htmlspecialchars($name);?>">
-			<img src="<?php echo $template['icon']; ?>" />
-			</label>
-			</td>
-
-			<td>
-			<label for="<?php echo htmlspecialchars($name);?>">
-
-	<?php if( 0 == strcasecmp( 'Custom', $template['desc'] ) ) echo '<b>';
-
-	if( ! $isValid )
+	if (! $isValid)
 		if (isset($template['invalid']) && $template['invalid'])
-			printf('<span style="color: gray"><acronym title="%s">',$lang['template_invalid']);
+			printf('<span style="color: gray"><acronym title="%s">',
+				isset($template['invalid_reason']) ? $template['invalid_reason'] :
+					_('This template has been disabled in the XML file.'));
 		else
-			printf('<span style="color: gray"><acronym title="%s">',$lang['template_restricted']);
+			printf('<span style="color: gray"><acronym title="%s">',
+				_('This template is not allowed in this container.'));
 
-	echo htmlspecialchars( $template['desc'] );
+	echo htmlspecialchars($template['desc']);
 
-	if( ! $isValid ) echo "</acronym></span>";
-	if( 0 == strcasecmp( 'Custom', $template['desc'] ) ) echo '</b>'; ?>
+	if (! $isValid) echo '</acronym></span>';
+	if (strcasecmp('Custom', $template['desc']) == 0)
+		echo '</b>';
 
-			</label>
-			</td>
-		</tr>
+	echo '</label></td></tr>';
 
-<?php } // end foreach ?>
+}
 
-		</table>
-		</td>
-	</tr>
-	</table>
-	</td>
-</tr>
+echo '</table>';
+echo '</td></tr></table>';
+echo '</td></tr>';
 
-<tr>
-	<td colspan="2"><center><input type="submit" name="submit" value="<?php echo $lang['proceed_gt']?>" /></center></td>
-</tr>
+printf('<tr><td colspan="2"><center><input type="submit" name="submit" value="%s" /></center></td></tr>',
+	htmlspecialchars(_('Proceed >>')));
 
-</table>
-</form>
-</body>
-</html>
+echo '</table>';
+echo '</form></body></html>';
+?>

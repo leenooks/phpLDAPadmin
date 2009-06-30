@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import_form.php,v 1.19.2.1 2005/10/19 13:26:21 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import_form.php,v 1.20.2.3 2005/12/10 06:55:52 wurley Exp $
  
 /**
  * Displays a form to allow the user to upload and import
@@ -16,46 +16,39 @@
 require './common.php';
 
 if (! ini_get('file_uploads'))
-	pla_error($lang['php_upload']);
+	pla_error(_('Your PHP.INI does not have file_uploads = ON. Please enable file uploads in PHP.'));
 
-$server_id = (isset($_GET['server_id']) ? $_GET['server_id'] : '');
-$ldapserver = $ldapservers->Instance($server_id);
+if ($ldapserver->isReadOnly())
+	pla_error(_('You cannot perform updates while server is in read-only mode'));
+if (! $ldapserver->haveAuthInfo())
+	pla_error(_('Not enough information to login to server. Please check your configuration.'));
 
-if( $ldapserver->isReadOnly() )
-	pla_error( $lang['no_updates_in_read_only_mode'] );
-if( ! $ldapserver->haveAuthInfo())
-	pla_error( $lang['not_enough_login_info'] );
+include './header.php';
 
-include './header.php'; ?>
+echo '<body>';
 
-<body>
+printf('<h3 class="title">%s</h3>',_('Import LDIF File'));
+printf('<h3 class="subtitle">%s: <b>%s</b></h3>',_('Server'),htmlspecialchars($ldapserver->name));
 
-<h3 class="title"><?php echo $lang['import_ldif_file_title']?></h3>
-<h3 class="subtitle"><?php echo $lang['server']?>: <b><?php echo htmlspecialchars( $ldapserver->name ); ?></b></h3>
+echo '<br /><br />';
+echo _('Select an LDIF file');
+echo '<br /><br />';
 
-<br />
-<br />
-<?php echo $lang['select_ldif_file']?><br />
-<br />
+echo '<form action="ldif_import.php" method="post" class="new_value" enctype="multipart/form-data">';
+printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
+echo '<input type="file" name="ldif_file" /> <br />';
+printf('<div style="margin-top: 5px;"><input type="checkbox" name="continuous_mode" value="1" /><span style="font-size: 90%%;">%s</span></div>',_("Don't stop on errors"));
+printf('<div style="margin-top:10px;"><input type="submit" value="%s" /></div>',_('Proceed >>'));
+printf('<br /><small><b>%s %s</b></small><br />',_('Maximum file size'),ini_get('upload_max_filesize'));
+echo '</form>';
 
-<form action="ldif_import.php" method="post" class="new_value" enctype="multipart/form-data">
-
-<input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
-
-<input type="file" name="ldif_file" /> <br />
-<div style="margin-top: 5px;"><input type="checkbox" name="continuous_mode" value="1" /><span style="font-size: 90%;"><?php echo $lang['dont_stop_on_errors']; ?></span></div>
-<div style="margin-top:10px;">
-<input type="submit" value="<?php echo $lang['proceed_gt']?>" />
-</div>
-<?php
-        if( ! ini_get( 'file_uploads' ) )
-            echo "<br /><small><b>" . $lang['warning_file_uploads_disabled'] . "</b></small><br />";
-        else
-            echo "<br /><small><b>" . sprintf( $lang['max_file_size'], ini_get( 'upload_max_filesize' ) ) . "</b></small><br />";
+echo '<br /><br />';
+echo _('Paste your LDIF here');
+echo '<form action="ldif_import.php" method="post" class="new_value" enctype="multipart/form-data">';
+echo '<textarea name="ldif" rows="10" cols="60"></textarea>';
+printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
+printf('<div style="margin-top: 5px;"><input type="checkbox" name="continuous_mode" value="1" /><span style="font-size: 90%%;">%s</span></div>',_("Don't stop on errors"));
+printf('<div style="margin-top:10px;"><input type="submit" value="%s" /></div>',_('Proceed >>'));
+echo '</form>';
+echo '</body></html>';
 ?>
-
-
-</form>
-
-</body>
-</html>

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass_form.php,v 1.20.2.3 2005/10/22 11:55:31 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass_form.php,v 1.23.2.6 2005/12/09 23:32:37 wurley Exp $
 
 /**
  * This page may simply add the objectClass and take you back to the edit page,
@@ -23,12 +23,12 @@
 require './common.php';
 
 if( $ldapserver->isReadOnly() )
-	pla_error( $lang['no_updates_in_read_only_mode'] );
+	pla_error( _('You cannot perform updates while server is in read-only mode') );
 if( ! $ldapserver->haveAuthInfo())
-	pla_error( $lang['not_enough_login_info'] );
+	pla_error( _('Not enough information to login to server. Please check your configuration.') );
 
-if (! isset($_POST['new_oclass']))
-        pla_error( $lang['no_objectclasses_selected']);
+if (! isset($_REQUEST['new_oclass']))
+        pla_error( _('You did not select any ObjectClasses for this object. Please go back and do so.'));
 
 $new_oclass = $_REQUEST['new_oclass'];
 $dn = rawurldecode( $_REQUEST['dn'] );
@@ -38,7 +38,7 @@ $encoded_dn = rawurlencode( $dn );
  * If it hasn't, present a form to have the user enter values for all the
  * newly required attrs. */
 
-$entry = get_object_attrs( $ldapserver, $dn, true );
+$entry = $ldapserver->getDNAttrs($dn,true);
 
 $current_attrs = array();
 foreach( $entry as $attr => $junk )
@@ -85,15 +85,15 @@ if( count( $needed_attrs ) > 0 ) {
 	include './header.php'; ?>
 	<body>
 
-	<h3 class="title"><?php echo $lang['new_required_attrs']; ?></h3>
-	<h3 class="subtitle"><?php echo $lang['requires_to_add'] . ' ' . count($needed_attrs) .
-		' ' . $lang['new_attributes']; ?></h3>
+	<h3 class="title"><?php echo _('New Required Attributes'); ?></h3>
+	<h3 class="subtitle"><?php echo _('This action requires you to add') . ' ' . count($needed_attrs) .
+		' ' . _('new attributes'); ?></h3>
 
 	<small>
 
-	<?php echo $lang['new_required_attrs_instructions'];
-	echo ' ' . count( $needed_attrs ) . ' ' . $lang['new_attributes'] . ' ';
-	echo $lang['that_this_oclass_requires']; ?>
+	<?php echo _('Instructions: In order to add these objectClass(es) to this entry, you must specify');
+	echo ' ' . count( $needed_attrs ) . ' ' . _('new attributes') . ' ';
+	echo _('that this objectClass requires. You can do so in this form.'); ?>
 
 	</small>
 
@@ -106,7 +106,7 @@ if( count( $needed_attrs ) > 0 ) {
 	<input type="hidden" name="server_id" value="<?php echo $ldapserver->server_id; ?>" />
 
 	<table class="edit_dn" cellspacing="0">
-	<tr><th colspan="2"><?php echo $lang['new_required_attrs']; ?></th></tr>
+	<tr><th colspan="2"><?php echo _('New Required Attributes'); ?></th></tr>
 
 	<?php foreach( $needed_attrs as $count => $attr ) { ?>
 
@@ -117,7 +117,7 @@ if( count( $needed_attrs ) > 0 ) {
 	</table>
 	<br />
 	<br />
-	<center><input type="submit" value="<?php echo $lang['add_oclass_and_attrs']; ?>" /></center>
+	<center><input type="submit" value="<?php echo _('Add ObjectClass and Attributes'); ?>" /></center>
 	</form>
 
 	</body>
@@ -125,12 +125,12 @@ if( count( $needed_attrs ) > 0 ) {
 
 <?php } else {
 
-	$add_res = @ldap_mod_add( $ldapserver->connect(), $dn, array( 'objectClass' => $new_oclass ) );
+	$add_res = $ldapserver->attrModify($dn,array('objectClass'=>$new_oclass));
 	if (! $add_res)
 		pla_error("Could not perform ldap_mod_add operation.",
 			  $ldapserver->error(),$ldapserver->errno());
 	else
-		header(sprintf('Location: edit.php?server_id=%s&dn=%s&modified_attrs[]=objectClass',
+		header(sprintf('Location: template_engine.php?server_id=%s&dn=%s&modified_attrs[]=objectClass',
 			$ldapserver->server_id,$encoded_dn));
 
 }

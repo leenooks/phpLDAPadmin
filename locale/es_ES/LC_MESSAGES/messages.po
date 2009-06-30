@@ -1,0 +1,2031 @@
+# : $
+
+
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
+"Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
+"Last-Translator: Miguelanxo Otero Salgueiro <miguelanxo@telefonica.net>\n"
+"POT-Creation-Date: 2005-11-29 17:45+0100\n"
+"PO-Revision-Date: 2005-11-29 18:22+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+
+msgid "Simple Search Form"
+msgstr "Formulario de búsqueda sencilla"
+
+
+msgid "Advanced Search Form"
+msgstr "Formulario de búsqueda avanzada"
+
+
+msgid "Server"
+msgstr "Servidor"
+
+
+msgid "Search for entries whose"
+msgstr "Buscar entradas en las que"
+
+
+msgid "Base DN"
+msgstr "DN base"
+
+
+msgid "Search Scope"
+msgstr "Ámbito de búsqueda"
+
+
+msgid "Show Attributtes"
+msgstr "Mostrar atributos"
+
+
+msgid "Search"
+msgstr "Buscar"
+
+
+msgid "Select a predefined search"
+msgstr "Seleccionar una búsqueda predefinida"
+
+
+msgid "Predefined Searches"
+msgstr "Búsquedas predefinidas"
+
+
+msgid "No queries have been defined in config.php."
+msgstr "No hay ninguna búsqueda predefinida en config.php."
+
+
+msgid "export results"
+msgstr "exportar resultados"
+
+
+msgid "Unrecognized search result format: %s"
+msgstr "Formato de resultado de búsqueda no reconocido: %s"
+
+
+msgid "Format"
+msgstr "Formato"
+
+
+msgid "list"
+msgstr "lista"
+
+
+msgid "table"
+msgstr "tabla"
+
+
+msgid "Your config.php specifies an invalid value for $default_search_display: %s. Please fix it"
+msgstr "Su config.php especifica un valor no válido para $default_search_display: %s. Por favor, arréglelo"
+
+
+msgid "Page %d"
+msgstr "Página %d"
+
+
+msgid "The search found no results."
+msgstr "La búsqueda no ha encontrado resultados."
+
+
+msgid "Request feature"
+msgstr "Solicitar una nueva funcionalidad"
+
+
+msgid "Report a bug"
+msgstr "Informar de un error"
+
+
+msgid "schema"
+msgstr "esquema"
+
+
+msgid "search"
+msgstr "buscar"
+
+
+msgid "create"
+msgstr "crear"
+
+
+msgid "info"
+msgstr "info"
+
+
+msgid "import"
+msgstr "importar"
+
+
+msgid "refresh"
+msgstr "refrescar"
+
+
+msgid "logout"
+msgstr "salir"
+
+
+msgid "Create new entry here"
+msgstr "Crear nuevo objeto"
+
+
+msgid "View schema for"
+msgstr "Ver el esquema del"
+
+
+msgid "Refresh all expanded containers for"
+msgstr "Refrescar todos los contenedores extendidos del"
+
+
+msgid "Create a new entry on"
+msgstr "Crear un nuevo objeto en el"
+
+
+msgid "new"
+msgstr "nuevo"
+
+
+msgid "View server-supplied information"
+msgstr "Ver la información enviada por el servidor"
+
+
+msgid "Import entries from an LDIF file"
+msgstr "Importar desde un fichero LDIF"
+
+
+msgid "Logout of this server"
+msgstr "Desconectar del servidor"
+
+
+msgid "Logged in as: "
+msgstr "Conectado como: "
+
+
+msgid "This is not a valid DN."
+msgstr "Esta DN base no es válida."
+
+
+msgid "This entry does not exist."
+msgstr "Este objeto no existe."
+
+
+msgid "read only"
+msgstr "sólo lectura"
+
+
+msgid "This attribute has been flagged as read only by the phpLDAPadmin administrator"
+msgstr "Este atributo ha sido marcado como de sólo lectura por el administrador de phpLDAPadmin"
+
+
+msgid "Could not determine the root of your LDAP tree."
+msgstr "No se ha podido determinar la raíz de su árbol LDAP."
+
+
+msgid "It appears that the LDAP server has been configured to not reveal its root."
+msgstr "Parece que el servidor LDAP ha sido configurado para no revelar su raíz."
+
+
+msgid "Please specify it in config.php"
+msgstr "Por favór, especifíquela en config.php"
+
+
+msgid "Create a new entry in"
+msgstr "Crear nuevo objeto en"
+
+
+msgid "Login..."
+msgstr "Autentificación"
+
+
+msgid "login"
+msgstr "conectar"
+
+
+msgid "This base entry does not exist."
+msgstr "Este objeto base no existe."
+
+
+msgid "Create it?"
+msgstr "¿Crearlo?"
+
+
+msgid "Delete this entry"
+msgstr "Borrar este objeto"
+
+
+msgid "You will be prompted to confirm this decision"
+msgstr "Se le pedirá confirmación"
+
+
+msgid "Copy or move this entry"
+msgstr "Copiar este objeto"
+
+
+msgid "Copy this object to another location, a new DN, or another server"
+msgstr "Copiar este objeto en otro sitio: un nuevo DN u otro servidor"
+
+
+msgid "Export"
+msgstr "Exportar"
+
+
+msgid "export"
+msgstr "exportar"
+
+
+msgid "Save a dump of this object"
+msgstr "Exportar este objeto"
+
+
+msgid "Save a dump of this object and all of its children"
+msgstr "Exportar este objeto y todos sus hijos"
+
+
+msgid "Export subtree"
+msgstr "Exportar subárbol"
+
+
+msgid "Create a child entry"
+msgstr "Crear un objeto hijo"
+
+
+msgid "Rename Entry"
+msgstr "Renombrar objeto"
+
+
+msgid "Rename"
+msgstr "Renombrar"
+
+
+msgid "Add"
+msgstr "Añadir"
+
+
+msgid "View"
+msgstr "Ver"
+
+
+msgid "View 1 child"
+msgstr "Ver 1 hijo"
+
+
+msgid "View %s children"
+msgstr "Ver %s hijos"
+
+
+msgid "Add new attribute"
+msgstr "Añadir atributo"
+
+
+msgid "Add new ObjectClass"
+msgstr "Añadir ObjectClass"
+
+
+msgid "Hide internal attributes"
+msgstr "Ocultar atributos internos"
+
+
+msgid "Show internal attributes"
+msgstr "Mostrar atributos internos"
+
+
+msgid "Click to view the schema defintion for attribute type '%s'"
+msgstr "Haga click para ver el esquema del atributo de tipo '%s'"
+
+
+msgid "none"
+msgstr "ninguno"
+
+
+msgid "No internal attributes"
+msgstr "No hay atributos internos"
+
+
+msgid "This entry has no attributes"
+msgstr "Este objeto no tiene atributos"
+
+
+msgid "Save Changes"
+msgstr "Guardar cambios"
+
+
+msgid "add value"
+msgstr "añadir valor"
+
+
+msgid "Add an additional value to attribute '%s'"
+msgstr "Añadir un valor al atributo '%s'"
+
+
+msgid "Refresh"
+msgstr "Refrescar"
+
+
+msgid "Refresh this entry"
+msgstr "Refrescar este objeto"
+
+
+msgid "Hint: To delete an attribute, empty the text field and click save."
+msgstr "Nota: para borrar un atributo, borre su atributo y haga click en guardar."
+
+
+msgid "Hint: To view the schema for an attribute, click the attribute name."
+msgstr "Nota: Para ver el esquema de un atributo, haga click en su nombre."
+
+
+msgid "Some attributes (%s) were modified and are highlighted below."
+msgstr "Se han modificado algunos atributos (%s) que se encuentran destacados mas abajo."
+
+
+msgid "An attribute (%s) was modified and is highlighted below."
+msgstr "Se ha modificado algún atributo (%s) que se encuentra destacado más abajo."
+
+
+msgid "Viewing entry in read-only mode."
+msgstr "Nota: Modo de sólo lectura."
+
+
+msgid "no new attributes available for this entry"
+msgstr "no hay nuevos atributos en este objeto"
+
+
+msgid "no new binary attributes available for this entry"
+msgstr "no hay nuevos atributos binarios en este objeto"
+
+
+msgid "Binary value"
+msgstr "Valor binario"
+
+
+msgid "Add new binary attribute"
+msgstr "Añadir atributo binario"
+
+
+msgid "Note: '%s' is an alias for '%s'"
+msgstr "Nota: '%s' es un alias de '%s'"
+
+
+msgid "Required attribute for objectClass(es) %s"
+msgstr "Atributo requerido para la(s) clase(s) de objeto %s"
+
+
+msgid "download value"
+msgstr "descargar valor"
+
+
+msgid "delete attribute"
+msgstr "borrar atributo"
+
+
+msgid "true"
+msgstr "verdadero"
+
+
+msgid "false"
+msgstr "falso"
+
+
+msgid "none, remove value"
+msgstr "ninguno, borrar valor"
+
+
+msgid "Really delete attribute"
+msgstr "¿Borrar realmente el atributo"
+
+
+msgid "Add New Value"
+msgstr "Añadir valor"
+
+
+msgid "The server does not fully support the LDAP protocol."
+msgstr "El servidor LDAP no soporta el protocolo LDAP en su totalidad."
+
+
+msgid "Your version of PHP does not correctly perform the query."
+msgstr "Su versión de PHP no realiza la petición correctamente."
+
+
+msgid "phpLDAPadmin doesn't know how to fetch the schema for your server."
+msgstr "O el phpLDAPadmin no sabe como obtener el esquema del servidor."
+
+
+msgid "Jump to an objectClass"
+msgstr "Ir a la clase de objeto"
+
+
+msgid "View the schema description for this objectClass"
+msgstr "Ver la descripción del esquema para esta clase de objeto."
+
+
+msgid "Jump to an attribute type"
+msgstr "Ir al tipo de atributo"
+
+
+msgid "Jump to a matching rule"
+msgstr "Ir a la regla de coincidencia"
+
+
+msgid "Schema for server"
+msgstr "Esquema del servidor"
+
+
+msgid "Required Attributes"
+msgstr "Atributos requeridos"
+
+
+msgid "required"
+msgstr "requerido"
+
+
+msgid "Optional Attributes"
+msgstr "Atributos opcionales"
+
+
+msgid "Optional Binary Attributes"
+msgstr "Atributos binarios opcionales"
+
+
+msgid "OID"
+msgstr "OID"
+
+
+msgid "Aliases"
+msgstr "Alias"
+
+
+msgid "Description"
+msgstr "Descripción"
+
+
+msgid "no description"
+msgstr "sin descripción"
+
+
+msgid "Name"
+msgstr "Nombre"
+
+
+msgid "Equality"
+msgstr "Igualdad"
+
+
+msgid "This objectClass is obsolete."
+msgstr "Esta clase de objeto es obsoleta."
+
+
+msgid "Inherits from"
+msgstr "Hereda de"
+
+
+msgid "Inherited from"
+msgstr "Heredado de"
+
+
+msgid "Parent to"
+msgstr "Padre de"
+
+
+msgid "Jump to this objectClass definition"
+msgstr "Ir a la definición de esta clase de objeto"
+
+
+msgid "Matching Rule OID"
+msgstr "OID de la regla de coincidencia"
+
+
+msgid "Syntax OID"
+msgstr "OID de sintaxis"
+
+
+msgid "not applicable"
+msgstr "no aplicable"
+
+
+msgid "not specified"
+msgstr "no especificado"
+
+
+msgid "character"
+msgstr "carácter"
+
+
+msgid "characters"
+msgstr "caracteres"
+
+
+msgid "Used by objectClasses"
+msgstr "Usado por la clase de objeto"
+
+
+msgid "Used by Attributes"
+msgstr "Usado por los atributos"
+
+
+msgid "Maximum Length"
+msgstr "Longitud máxima"
+
+
+msgid "Attribute Types"
+msgstr "Tipos de atributo"
+
+
+msgid "Syntaxes"
+msgstr "Sintaxis"
+
+
+msgid "Matching Rules"
+msgstr "Reglas de coincidencia"
+
+
+msgid "Obsolete"
+msgstr "Obsoleto"
+
+
+msgid "Ordering"
+msgstr "Ordenación"
+
+
+msgid "Substring Rule"
+msgstr "Regla de subcadena"
+
+
+msgid "Single Valued"
+msgstr "Univaludado"
+
+
+msgid "Collective"
+msgstr "Colectivo"
+
+
+msgid "User Modification"
+msgstr "Modificado por el usuario"
+
+
+msgid "Usage"
+msgstr "Uso"
+
+
+msgid "Could not retrieve schema from"
+msgstr "No se ha podido obtener el esquema de"
+
+
+msgid "Type"
+msgstr "Tipo"
+
+
+msgid "No such schema item: \"%s\""
+msgstr "No hay tal ítem en el esquema: \"%s\""
+
+
+msgid "Entry %s deleted successfully."
+msgstr "Objeto %s borrado correctamente."
+
+
+msgid "You must specify a DN"
+msgstr "Debe especificar un DN"
+
+
+msgid "Could not delete the entry: %s"
+msgstr "No se ha podido borrar el objeto %s"
+
+
+msgid "No such entry: %s"
+msgstr "No hay tal objeto %s"
+
+
+msgid "Delete %s"
+msgstr "Borrar %s"
+
+
+msgid "Permanently delete all children also?"
+msgstr "¿Borrar también todos los hijos?"
+
+
+msgid "This entry is the root of a sub-tree containing %s entries."
+msgstr "Este objeto es la raíz de un subárbol que contiene %s objetos."
+
+
+msgid "view entries"
+msgstr "ver objetos"
+
+
+msgid "phpLDAPadmin can recursively delete this entry and all %s of its children. See below for a list of all the entries that this action will delete. Do you want to do this?"
+msgstr "phpLDAPadmin puede borrar recursivamente este objeto y sus %s hijos. Vea más abajo la lista de objetos que se borrarán ahora. ¿Todavía quiere hacerlo?"
+
+
+msgid "Note: this is potentially very dangerous and you do this at your own risk. This operation cannot be undone. Take into consideration aliases, referrals, and other things that may cause problems."
+msgstr "Nota: es potencialmente peligroso y debe hacerlo a su cuenta y riesgo. Esta operación NO puede deshacerse. Tome en consideración alias, referencias y otras cosas que puedan causar problemas."
+
+
+msgid "Delete all %s objects"
+msgstr "Borrar los %s objetos"
+
+
+msgid "Recursive delete progress"
+msgstr "Progreso de la borración recursiva"
+
+
+msgid "Entry %s and sub-tree deleted successfully."
+msgstr "Objeto %s y su subárbol borrado correctamente."
+
+
+msgid "Failed to delete entry %s"
+msgstr "Error al borrar el objeto %s"
+
+
+msgid "List of entries to be deleted:"
+msgstr "Lista de objetos a borrar:"
+
+
+msgid "Are you sure you want to permanently delete this object?"
+msgstr "¿Está seguro de querer borrar este objeto?"
+
+
+msgid "DN"
+msgstr "DN"
+
+
+msgid "The attribute \"%s\" is flagged as read-only in the phpLDAPadmin configuration."
+msgstr "El atributo \"%s\" está marcado como de sólo lectura en la configuración de phpLDAPadmin."
+
+
+msgid "No attribute name specified."
+msgstr "No se ha especificado ningún nombre de atributo."
+
+
+msgid "No DN specified"
+msgstr "No se ha especificado ningún DN"
+
+
+msgid "You left the attribute value blank. Please go back and try again."
+msgstr "Ha dejado en blanco el valor del atributo. Por favor, vuelva atrás e inténtelo de nuevo."
+
+
+msgid "Failed to add the attribute."
+msgstr "Error al añadir atributo."
+
+
+msgid "The file you chose is either empty or does not exist. Please go back and try again."
+msgstr "El fichero que ha escogido no existe o está vacío. Por favor vuelva atrás e inténtelo de nuevo."
+
+
+msgid "Security error: The file being uploaded may be malicious."
+msgstr "Error de seguridad: El fichero que está enviando puede ser malicioso."
+
+
+msgid "Your PHP configuration has disabled file uploads. Please check php.ini before proceeding."
+msgstr "Su configuración del PHP ha desactivado la recepción de ficheros. Por favor revise php.ini antes de continuar."
+
+
+msgid "The file you uploaded is too large. Please check php.ini, upload_max_size setting"
+msgstr "El fichero que está enviando es demasiado grande. Por favor revise el ajuste \"upload_max_size\" en php.ini."
+
+
+msgid "The file you selected was only partially uploaded, likley due to a network error."
+msgstr "El fichero que ha seleccionado sólo se ha recibido parcialmente debido a un error de red."
+
+
+msgid "Maximum file size: %s"
+msgstr "Tamaño máximo de fichero: %s"
+
+
+msgid "Modification successful!"
+msgstr "¡Modificación realizada correctamente!"
+
+
+msgid "Since you changed your password, you must now login again with your new password."
+msgstr "Como ha cambiado su contraseña, debe conectarse de nuevo empleando la nueva."
+
+
+msgid "New Required Attributes"
+msgstr "Nuevos atributos requeridos"
+
+
+msgid "This action requires you to add"
+msgstr "Esta acción requiere que añada"
+
+
+msgid "new attributes"
+msgstr "nuevos atributos"
+
+
+msgid "Instructions: In order to add these objectClass(es) to this entry, you must specify"
+msgstr "Instrucciones: Para poder añadir esta clase a este objeto, debe especificar"
+
+
+msgid "that this objectClass requires. You can do so in this form."
+msgstr "que esta clase requiere. Puede hacerlo en este formulario."
+
+
+msgid "Add ObjectClass and Attributes"
+msgstr "Añadir clase de objeto y atributos"
+
+
+msgid "ObjectClasses"
+msgstr "Clases de objeto"
+
+
+msgid "Click to popup a dialog to select an entry (DN) graphically"
+msgstr "Haga click en el diálogo emergente para seleccionar un DN de forma gráfica"
+
+
+msgid "You cannot perform updates while server is in read-only mode"
+msgstr "No puede realizar cambios cuando el servidor está funcionando en modo de sólo lectura"
+
+
+msgid "Bad server id"
+msgstr "Identificador de servidor no válido"
+
+
+msgid "Not enough information to login to server. Please check your configuration."
+msgstr "No hay información suficiente para conectar con el servidor. Por favor, revise su configuración."
+
+
+msgid "Could not connect to LDAP server."
+msgstr "No se ha podido conectar con el servidor LDAP."
+
+
+msgid "Could not connect to \"%s\" on port \"%s\""
+msgstr "No se ha podido conectar con \"%s\" en el puerto \"%s\""
+
+
+msgid "Could not perform ldap_mod_add operation."
+msgstr "No se ha podido realizar la operación \"ldap_mod_add\"."
+
+
+msgid "Success"
+msgstr "Éxito"
+
+
+msgid "Home"
+msgstr "Inicio"
+
+
+msgid "Help"
+msgstr "Ayuda"
+
+
+msgid "Server: "
+msgstr "Servidor: "
+
+
+msgid "Looking in: "
+msgstr "Buscando en: "
+
+
+msgid "No DN specified in query string!"
+msgstr "¡No se ha especificado ningún DN en la petición!"
+
+
+msgid "Back Up..."
+msgstr "Volver"
+
+
+msgid "no entries"
+msgstr "no hay objetos"
+
+
+msgid "Could not determine base DN"
+msgstr "No se puede determinar el DN base"
+
+
+msgid "This could happen for several reasons, the most probable of which are:"
+msgstr "Esto puede suceder por varias razones, las más probables son:"
+
+
+msgid "Yes"
+msgstr "Sí"
+
+
+msgid "No"
+msgstr "No"
+
+
+msgid "Go"
+msgstr "Ir"
+
+
+msgid "Delete"
+msgstr "Borrar"
+
+
+msgid "Back"
+msgstr "Atrás"
+
+
+msgid "object"
+msgstr "objeto"
+
+
+msgid "Delete all"
+msgstr "Borrar todo"
+
+
+msgid "hint"
+msgstr "nota"
+
+
+msgid "bug"
+msgstr "error"
+
+
+msgid "warning"
+msgstr "aviso"
+
+
+msgid "light"
+msgstr "bombilla"
+
+
+msgid "Proceed &gt;&gt;"
+msgstr "Proceder &gt;&gt;"
+
+
+msgid "value to"
+msgstr "valor de"
+
+
+msgid "Distinguished Name"
+msgstr "Nombre distinguido"
+
+
+msgid "Current list of"
+msgstr "Lista actual de"
+
+
+msgid "values for attribute"
+msgstr "valores del atributo"
+
+
+msgid "Note: You will get an \"inappropriate matching\" error if you have not setup an EQUALITY rule on your LDAP server for this attribute."
+msgstr "Nota: Si no ha creado una regla de igualdad en el servidor LDAP para este atributo, obtendrá un error de coincidencia inapropiada (\"inappropriate matching\")."
+
+
+msgid "Enter the value you would like to add:"
+msgstr "Introduzca el valor a añadir:"
+
+
+msgid "Note: You may be required to enter new attributes that these objectClass(es) require"
+msgstr "Nota: puede que tenga que introducir nuevos atributos que esta clase de objeto requiera"
+
+
+msgid "You left the destination DN blank."
+msgstr "Ha dejado el campo DN en blanco."
+
+
+msgid "The destination entry (%s) already exists."
+msgstr "El objeto destino (%s) ya existe."
+
+
+msgid "The destination container (%s) does not exist."
+msgstr "El contenedor destino (%s) no existe."
+
+
+msgid "The source and destination DN are the same."
+msgstr "El DN origen y destino son iguales."
+
+
+msgid "Copying "
+msgstr "Copiando "
+
+
+msgid "Recursive copy progress"
+msgstr "Progreso de la copia recursiva"
+
+
+msgid "Building snapshot of tree to copy... "
+msgstr "Creando imagen del árbol a copiar... "
+
+
+msgid "Copy successful! Would you like to "
+msgstr "¡Copia correcta! ¿Le gustaría "
+
+
+msgid "view the new entry"
+msgstr "ver el nuevo objeto"
+
+
+msgid "Failed to copy DN: "
+msgstr "Error al copiar el DN: "
+
+
+msgid "Template"
+msgstr "plantilla"
+
+
+msgid "using template"
+msgstr "usando plantilla"
+
+
+msgid "Go to %s"
+msgstr "Ir a %s"
+
+
+msgid "This is a structural ObjectClass and cannot be removed."
+msgstr "Esta es una clase de objeto estructural y no se puede eliminar."
+
+
+msgid "structural"
+msgstr "estructural"
+
+
+msgid "Copy "
+msgstr "Copiar "
+
+
+msgid "to a new object"
+msgstr "a un objeto nuevo"
+
+
+msgid "Destination DN"
+msgstr "DN destino"
+
+
+msgid "The full DN of the new entry to be created when copying the source entry"
+msgstr "El DN completo del objeto a crear"
+
+
+msgid "Destination Server"
+msgstr "Servidor destino"
+
+
+msgid "Hint: Copying between different servers only works if there are no schema violations"
+msgstr "Nota: Sólo se puede copiar entre servidores diferentes cuando no hay violaciones de esquema"
+
+
+msgid "Recursively copy all children of this object as well."
+msgstr "También copiar recursivamente todos los hijos de este objeto."
+
+
+msgid "Recursive copy"
+msgstr "Copia recursiva"
+
+
+msgid "Filter"
+msgstr "Filtro"
+
+
+msgid "Search Filter"
+msgstr "Filtro de búsqueda"
+
+
+msgid "When performing a recursive copy, only copy those entries which match this filter"
+msgstr "Cuando se realice una copia recursiva, copiar sólo los objetos que superen el filtrado"
+
+
+msgid "You left the value blank for required attribute (%s)."
+msgstr "Ha dejado el valor del atributo requerido (%s) en blanco."
+
+
+msgid "Redirecting..."
+msgstr "Redirigiendo..."
+
+
+msgid "here"
+msgstr "aquí"
+
+
+msgid "Could not add the object to the LDAP server."
+msgstr "No se ha podido añadir el objeto al servidor LDAP."
+
+
+msgid "Create Object"
+msgstr "Crear objeto"
+
+
+msgid "Choose a template"
+msgstr "Escoja una plantilla"
+
+
+msgid "Select a template for the creation process"
+msgstr "Seleccione una plantilla para el proceso de creación"
+
+
+msgid "Save as file"
+msgstr "Guardar como fichero"
+
+
+msgid "You left the RDN field blank."
+msgstr "Ha dejado el campo RDN en blanco."
+
+
+msgid "The container you specified (%s) does not exist. Please try again."
+msgstr "El contenedor que ha especificado (%s) no existe. Por favor inténtelo de nuevo."
+
+
+msgid "You did not select any ObjectClasses for this object. Please go back and do so."
+msgstr "No ha seleccionado ninguna clase para este objeto. Por favor, vuelva atrás y hágalo ahora."
+
+
+msgid "Hint: You must choose exactly one structural objectClass (shown in bold above)"
+msgstr "Nota: Debe escoger al menos una clase de objeto estructural"
+
+
+msgid "Your config specifies a handler of \"%s\" for this template but this file is not readable because the permissions are too strict."
+msgstr "Su configuración especifica un fichero \"%s\" para esta plantilla pero dicho fichero no se puede leer debido a que sus permisos son demasiado restrictivos."
+
+
+msgid "Step 1 of 2: Name and ObjectClass(es)"
+msgstr "Paso 1 de 2: Nombre y clase(s) de objeto"
+
+
+msgid "Step 2 of 2: Specify attributes and values"
+msgstr "Paso 2 de 2: Especifique attributos y valores"
+
+
+msgid "Relative Distinguished Name"
+msgstr "Nombre Distinguido Relativo (RDN)"
+
+
+msgid "RDN"
+msgstr "RDN"
+
+
+msgid "(example: cn=MyNewPerson)"
+msgstr "(ejemplo: cn=nuevaPersona)"
+
+
+msgid "Container"
+msgstr "Contenedor"
+
+
+msgid "You have not logged into the selected server yet, so you cannot perform searches on it."
+msgstr "Todavía no ha conectado con el servidor, así que no puede realizar búsquedas."
+
+
+msgid "Click here to go to the login form"
+msgstr "Pulse aquí para ir al formulario de conexión"
+
+
+msgid "Unrecognized criteria option: "
+msgstr "Criterio no reconocido: "
+
+
+msgid "If you want to add your own criteria to the list. Be sure to edit search.php to handle them. Quitting."
+msgstr "Si quiere puede añadir su propios criterios a la lista. Asegúrese de editar search.php para manejarlos. Saliendo..."
+
+
+msgid "Entries found: "
+msgstr "Objetos encontrados: "
+
+
+msgid "Filter performed: "
+msgstr "Filtrado realizado: "
+
+
+msgid "Search performed by phpLDAPadmin in"
+msgstr "Búsqueda realizada por phpLDAPadmin en"
+
+
+msgid "seconds"
+msgstr "segundos"
+
+
+msgid "Sub (entire subtree)"
+msgstr "Sub (subárbol completo)"
+
+
+msgid "One (one level beneath base)"
+msgstr "One (un nivel bajo la base)"
+
+
+msgid "Base (base dn only)"
+msgstr "Base (sólo la base)"
+
+
+msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))"
+msgstr "Filtro de búsqueda LDAP estándar. Ejemplo: (&(sn=Picapiedra)(givenname=Pedro))"
+
+
+msgid "A list of attributes to display in the results (comma-separated)"
+msgstr "Lista de atributos para mostrar en los resultados (separados por comas)"
+
+
+msgid "equals"
+msgstr "sea igual a"
+
+
+msgid "starts with"
+msgstr "comience por"
+
+
+msgid "contains"
+msgstr "contenga"
+
+
+msgid "ends with"
+msgstr "acabe en"
+
+
+msgid "sounds like"
+msgstr "suene como"
+
+
+msgid "Could not retrieve LDAP information from the server. This may be due to a <a href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version of PHP or perhaps your LDAP server has access control specified that prevents LDAP clients from accessing the RootDSE."
+msgstr "No se ha podido obtener ninguna información del servidor LDAP. Esto puede deberse a este <a href=\"http://bugs.php.net/bug.php?id=29587\">error</a> es su versión de PHP o quizás su servidor LDAP posee controles de acceso que privan a los clientes de acceso al RootDSE."
+
+
+msgid "Server info for: "
+msgstr "Información sobre el servidor: "
+
+
+msgid "Server reports the following information about itself"
+msgstr "El servidor LDAP envía la siguiente información:"
+
+
+msgid "This server has nothing to report."
+msgstr "Este servidor no tiene nada sobre lo que informar."
+
+
+msgid "update_array is malformed. This might be a phpLDAPadmin bug. Please report it."
+msgstr "El array update_array no está bien formado. Esto puede indicar un error de phpLDAPadmin. Por favor, informe de ello."
+
+
+msgid "Could not perform ldap_modify operation."
+msgstr "No se ha podido realizar la operación \"ldap_modify\"."
+
+
+msgid "Do you want to make these changes?"
+msgstr "¿Quiere realizar estos cambios?"
+
+
+msgid "Attribute"
+msgstr "Atributo"
+
+
+msgid "Old Value"
+msgstr "Valor anterior"
+
+
+msgid "New Value"
+msgstr "Nuevo valor"
+
+
+msgid "[attribute deleted]"
+msgstr "[atributo borrado]"
+
+
+msgid "Commit"
+msgstr "Cometer"
+
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+
+msgid "You made no changes"
+msgstr "No ha realizado cambios"
+
+
+msgid "Go back"
+msgstr "Volver atrás"
+
+
+msgid "Use the menu to the left to navigate"
+msgstr "Use el menú de la izquierda para navegar"
+
+
+msgid "Credits"
+msgstr "Creditos"
+
+
+msgid "ChangeLog"
+msgstr "Lista de cambios"
+
+
+msgid "Donate"
+msgstr "Donar"
+
+
+msgid "phpLDAPadmin logo"
+msgstr "logotipo de phpLDAPadmin"
+
+
+msgid "Purge caches"
+msgstr "Borrar cachés"
+
+
+msgid "No cache to purge."
+msgstr "No hay que borrar ningún caché."
+
+
+msgid "Purged %s bytes of cache."
+msgstr "Se han borrado %s bytes de caché."
+
+
+msgid "Purge all cached data in phpLDAPadmin, including server schemas."
+msgstr "Se han borrado todos los datos en el caché de phpLDAPadmin, incluyendo los esquemas del servidor."
+
+
+msgid "Unsafe file name: "
+msgstr "Nombre de fichero no seguro: "
+
+
+msgid "No such file: "
+msgstr "No hay tal fichero: "
+
+
+msgid "You have enabled auto_uid_numbers for <b>%s</b> in your configuration,"
+"                                  but you have not specified the auto_uid_number_mechanism. Please correct"
+"                                  this problem."
+msgstr "Ha activado \"auto_uid_numbers\" para <b>%s</b> en su configuración,"
+"                                  pero no ha especificado el mecanismo \"auto_uid_number_mechanism\". Por favor, corrija este problema"
+
+
+msgid "You specified the \"auto_uid_number_mechanism\" as \"uidpool\""
+"                            in your configuration for server <b>%s</b>, but you did not specify the"
+"                            audo_uid_number_uid_pool_dn. Please specify it before proceeding."
+msgstr "Ha especificado el mecanismo \"auto_uid_number_mechanism\" como \"uidpool\""
+"                            en su configuración para el servidor <b>%s</b>, pero no ha especificado"
+"                            \"audo_uid_number_uid_pool_dn\". Por favor, verifiquelo antes de continuar."
+
+
+msgid "It appears that the uidPool you specified in your configuration (\"%s\")"
+"                              does not exist."
+msgstr "Parece ser que el \"uidPool\" que ha especificado en su configuración (\"%s\")"
+"                              no existe."
+
+
+msgid "You specified the \"auto_uid_number_mechanism\" as \"search\" in your"
+"                              configuration for server <b>%s</b>, but you did not specify the"
+"                              \"auto_uid_number_search_base\". Please specify it before proceeding."
+msgstr "Ha especificado \"auto_uid_number_mechanism\" como \"search\" en la"
+"                              configuración del servidor <b>%s</b>, pero no ha especificado"
+"                              \"auto_uid_number_search_base\". Por favor, especifíquelo antes de continuar."
+
+
+msgid "Unable to bind to <b>%s</b> with your with auto_uid credentials. Please check your configuration file."
+msgstr "Imposible conectar con <b>%s</b> con sus credenciales \"auto_uid\". Por favor, verifique su fichero de configuración."
+
+
+msgid "Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base for server %s"
+msgstr "Su configuración de phpLDAPadmin especifica \"auto_uid_search_base\" como no válida para el servidor %s"
+
+
+msgid "You specified an invalid value for auto_uid_number_mechanism (\"%s\")"
+"                                   in your configration. Only \"uidpool\" and \"search\" are valid."
+"                                   Please correct this problem."
+msgstr "Ha especificado un valor no válido para el mecanismo \"auto_uid_number_mechanism\" (\"%s\")"
+"                                   en su configuración. Sólo son válidos \"uidpool\" y \"search\". Por favor, corrija este problema."
+
+
+msgid "Error: You have an error in your config file. The only three allowed values"
+"                                    for auth_type in the $servers section are 'session', 'cookie', and 'config'. You entered '%s',"
+"                                    which is not allowed. "
+msgstr "Error: Tiene un error en su fichero de configurción. Los tres únicos valores para \"auth_type\""
+"                                    en la sección $servers son 'session', 'cookie', y 'config'. Usted ha introducido '%s',"
+"                                    que no está permitido. "
+
+
+msgid "Unable to bind to <b>%s</b> with your with unique_attrs credentials. Please check your configuration file."
+msgstr "Imposible conectarse a <b>%s</b> con sus credenciales unique_attr. Por favor, revise su fichero de configuración."
+
+
+msgid "Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href='%s'>search</a> for that entry."
+msgstr "Su intento de añadir <b>%s</b> (<i>%s</i>) a <br><b>%s</b><br> NO se ha permitido. Tal atributo/valor pertenece a otro objeto.<p>Probablemente desee <a href='%s'>buscar</a> tal objeto."
+
+
+msgid "Your PHP install does not support TLS."
+msgstr "Su instalación de PHP no soporta TLS."
+
+
+msgid "Could not start TLS. Please check your LDAP server configuration."
+msgstr "No se ha podido iniciar TLS. Por favor, revise su configuración LDAP."
+
+
+msgid "Could not bind anonymously to server."
+msgstr "No se ha podido conectar con el servidor de forma anónima."
+
+
+msgid "Anonymous Bind"
+msgstr "Conexión anónima"
+
+
+msgid "Bad username or password. Please try again."
+msgstr "Nombre de usuario o contraseña incorrectos. Por favor, inténtelo de nuevo."
+
+
+msgid "Successfully logged into server <b>%s</b>"
+msgstr "Ha conectado con el servidor <b>%s</b>."
+
+
+msgid "Could not set cookie."
+msgstr "No se ha podido guardar la cookie."
+
+
+msgid "LDAP said: %s"
+msgstr "LDAP ha dicho: %s"
+
+
+msgid "Error"
+msgstr "Error"
+
+
+msgid "browse"
+msgstr "seleccionar"
+
+
+msgid "Delete Photo"
+msgstr "Borrar foto"
+
+
+msgid "Your system crypt library does not support blowfish encryption."
+msgstr "Su instalación de PHP no soporta encriptación blowfish."
+
+
+msgid "Your system crypt library does not support md5crypt encryption."
+msgstr "Su instalación de PHP no soporta encriptación md5crypt."
+
+
+msgid "Your PHP install does not have the mhash() function. Cannot do SHA hashes."
+msgstr "Su instalación de PHP no posee la función mhash(). No se pueden realizar hashes SHA."
+
+
+msgid "jpegPhoto contains errors<br />"
+msgstr "La foto jpegPhoto contiene errores<br />"
+
+
+msgid "Error number: %s (%s)"
+msgstr "Error número: %s (%s)"
+
+
+msgid "Description: %s <br /><br />"
+msgstr "Descripción: %s <br /><br />"
+
+
+msgid "Error number: %s<br /><br />"
+msgstr "Error número: %s<br /><br />"
+
+
+msgid "Description: (no description available)<br />"
+msgstr "Descripción: (no existe descripción disponible)<br />"
+
+
+msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
+msgstr "¿Es éste un error de phpLDAPadmin? Si es así, por favor <a href='%s'>informe sobre ello</a>."
+
+
+msgid "Unrecognized error number: "
+msgstr "Número de error no reconocido: "
+
+
+msgid "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
+"             <b>You found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>"
+"             <td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
+"             </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	<tr><td colspan='2'><center><a target='new' href='%s'>Please check and see if this bug has been reported here</a>.</center></td></tr>"
+"	<tr><td colspan='2'><center><a target='new' href='%s'>If it hasnt been reported, you may report this bug by clicking here</a>.</center></td></tr>"
+"	</table></center><br />"
+msgstr "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
+"             <b>¡Ha encontrado un error no fatal en phpLDAPadmin!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Fichero:</td>"
+"             <td><b>%s</b> línea <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versiones:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
+"             </td></tr><tr><td>Servidor web:</td><td><b>%s</b></td></tr><tr><td colspan='2'><center><a target='new' href='%s'>"
+"             Por favor, informe de este error pulsando aquí</a>.</center></td></tr></table></center><br />"
+
+
+msgid "Congratulations! You found a bug in phpLDAPadmin.<br /><br />"
+"	     <table class='bug'>"
+"	     <tr><td>Error:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Level:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>File:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Line:</td><td><b>%s</b></td></tr>"
+"		 <tr><td>Caller:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PLA Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	     </table>"
+"	     <br />"
+"	     Please report this bug by clicking below!"
+msgstr "¡Felicidades! Ha encontrado un error en phpLDAPadmin.<br /><br />"
+"	     <table class='bug'>"
+"	     <tr><td>Error:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Nivel:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Fichero:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Línea:</td><td><b>%s</b></td></tr>"
+"		 <tr><td>Caller:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Verisón PLA:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Versión PHP:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Servidor web:</td><td><b>%s</b></td></tr>"
+"	     </table>"
+"	     <br />"
+"	     Por favor, informe sobre este error haciendo click más abajo!"
+
+
+msgid "Import LDIF File"
+msgstr "Importar fichero LDIF"
+
+
+msgid "Select an LDIF file:"
+msgstr "Seleccione un fichero LDIF:"
+
+
+msgid "Don't stop on errors"
+msgstr "Ignorar errores"
+
+
+msgid "Adding..."
+msgstr "Añadiendo..."
+
+
+msgid "Deleting..."
+msgstr "Borrando..."
+
+
+msgid "Renaming..."
+msgstr "Renombrando..."
+
+
+msgid "Modifying..."
+msgstr "Modificando..."
+
+
+msgid "No version found. Assuming 1."
+msgstr "No se ha encontrado versión. Asumiendo 1."
+
+
+msgid "A valid dn line is required."
+msgstr "Se requiere una línea válida."
+
+
+msgid "Missing uploaded file."
+msgstr "Falta el fichero enviado."
+
+
+msgid "Uploaded LDIF file is empty."
+msgstr "El fichero LDIF enviado está vacío."
+
+
+msgid "empty"
+msgstr "vacío"
+
+
+msgid "File"
+msgstr "Fichero"
+
+
+msgid "%s bytes"
+msgstr "%s bytes"
+
+
+msgid "LDIF Parse Error"
+msgstr "Error al parsear LDIF"
+
+
+msgid "Could not add object:"
+msgstr "No se ha podido añadir objeto:"
+
+
+msgid "Could not rename object:"
+msgstr "No se ha podido renombrar el objeto:"
+
+
+msgid "Could not delete object:"
+msgstr "No se ha podido borrar el objeto:"
+
+
+msgid "Could not modify object:"
+msgstr "No se ha podido modificar el objeto:"
+
+
+msgid "Line Number:"
+msgstr "Número de línea:"
+
+
+msgid "Line:"
+msgstr "Línea:"
+
+
+msgid "Export format"
+msgstr "Formato de exportación"
+
+
+msgid "Line ends"
+msgstr "Fin de línea"
+
+
+msgid "You must choose an export format."
+msgstr "Debe escoger un formato de exportación."
+
+
+msgid "Invalid export format"
+msgstr "Formato de exportación no válido"
+
+
+msgid "No available exporter found."
+msgstr "No se ha encontrado ningún exportador válido."
+
+
+msgid "Encountered an error while performing search."
+msgstr "Se ha encontrado un error al realizar la búsqueda."
+
+
+msgid "Showing results %s through %s."
+msgstr "Mostrando los resultados de %s a %s."
+
+
+msgid "Searching..."
+msgstr "Buscando..."
+
+
+msgid "Notice, search size limit exceeded."
+msgstr "Nota: se ha excedido el tiempo de búsqueda."
+
+
+msgid "Entry"
+msgstr "Objeto"
+
+
+msgid "LDIF Export for: %s"
+msgstr "Exportación LDIF de: %s"
+
+
+msgid "Generated by phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) on %s"
+msgstr "Generado por phpLDAPadmin el %s"
+
+
+msgid "Total Entries"
+msgstr "Entradas totales"
+
+
+msgid "DSLM Export for: %s"
+msgstr "Exportación DSLM de: %s"
+
+
+msgid "Include system attributes"
+msgstr "Incluir atributos de sistema"
+
+
+msgid "CSV (Spreadsheet)"
+msgstr "CSV (Hoja de cálculo)"
+
+
+msgid "You left the password blank."
+msgstr "Ha dejado la contraseña en blanco."
+
+
+msgid "No one is logged in to that server."
+msgstr "No hay nadie conectado con el servidor."
+
+
+msgid "Could not logout."
+msgstr "No se ha podido desconectar."
+
+
+msgid "Unknown auth_type: %s"
+msgstr "Tipo de autentificación \"auth_type\" desconocido: %s"
+
+
+msgid "Logged out successfully from server <b>%s</b>"
+msgstr "Se ha desconectado del servidor <b>%s</b>"
+
+
+msgid "Authenticate to server %s"
+msgstr "Autentificación del servidor %s"
+
+
+msgid "Warning: This web connection is unencrypted."
+msgstr "Aviso: Esta conexión no está encriptada."
+
+
+msgid "You are not using 'https'. Web browser will transmit login information in clear text."
+msgstr "No está usando 'https'. El navegador web enviará su información sin encriptar."
+
+
+msgid "Login DN"
+msgstr "Login"
+
+
+msgid "User name"
+msgstr "Nombre de usuario"
+
+
+msgid "Password"
+msgstr "Contraseña"
+
+
+msgid "Authenticate"
+msgstr "Entrar"
+
+
+msgid "Entry Chooser"
+msgstr "Selector de objetos"
+
+
+msgid "You need to configure phpLDAPadmin. Edit the file 'config/config.php' to do so. An example config file is provided in 'config/config.php.example'"
+msgstr "Debe configurar phpLDAPadmin, editando el fichero 'config.php'. Se proporciona un fichero de configuración de ejemplo en 'config.php.example'"
+
+
+msgid "Deletes not allowed in read only mode."
+msgstr "No se permiten borrados en modo de sólo lectura."
+
+
+msgid "Error calling mass_delete.php. Missing mass_delete in POST vars."
+msgstr "Error al llamar a \"mass_delete.php\". Falta la variable POST \"mass_delete\"."
+
+
+msgid "mass_delete POST var is not an array."
+msgstr "La variable POST \"mass_delete\" no es un array."
+
+
+msgid "Mass deletion is not enabled. Please enable it in config.php before proceeding."
+msgstr "No está activado el borrado masivo. Por favor, actívelo en config.php antes de continuar."
+
+
+msgid "Mass Deleting"
+msgstr "Efectuando borrado masivo"
+
+
+msgid "Deletion progress on server \"%s\""
+msgstr "Borrado en progreso en el servidor \"%s\""
+
+
+msgid "Malformed mass_delete array."
+msgstr "Array de borrado masivo mal formado."
+
+
+msgid "You did not select any entries to delete."
+msgstr "No ha seleccionado objetos para borrar."
+
+
+msgid "Deleting %s"
+msgstr "Borrando %s"
+
+
+msgid "%s of %s entries failed to be deleted."
+msgstr "No han podido borrarse %s de %s objetos."
+
+
+msgid "All entries deleted successfully."
+msgstr "Todos los objetos han sido borrados."
+
+
+msgid "Confirm mass delete of %s entries on server %s"
+msgstr "Confirmar borrado masivo de %s objetos en el servidor %s"
+
+
+msgid "Yes, delete!"
+msgstr "¡Sí, borrar!"
+
+
+msgid "You cannot rename an entry which has children entries (eg, the rename operation is not allowed on non-leaf entries)"
+msgstr "No puede renombrar un objeto que tenga hijos"
+
+
+msgid "You did not change the RDN"
+msgstr "No ha cambiado el RDN"
+
+
+msgid "Invalid RDN value"
+msgstr "Valor RDN no válido"
+
+
+msgid "Could not rename the entry"
+msgstr "No se ha podido renombrar el objeto"
+
+
+msgid "Passwords match!"
+msgstr "¡Las contraseñas coinciden!"
+
+
+msgid "Passwords do not match!"
+msgstr "¡Las contraseñas no coinciden!"
+
+
+msgid "Password Checker Tool"
+msgstr "Herramienta de comprobación de contraseñas"
+
+
+msgid "Compare"
+msgstr "Comparar"
+
+
+msgid "To"
+msgstr "con"
+
+
+msgid "Using the"
+msgstr "Usando la"
+
+
+msgid "You may switch to the "
+msgstr "Puede cambair a la "
+
+
+msgid "default template"
+msgstr "plantilla por defecto"
+
+
+msgid "User Account (posixAccount)"
+msgstr "Cuenta de Usuario (posixAccount)"
+
+
+msgid "Address Book Entry (inetOrgPerson)"
+msgstr "Entrada del libro de direcciones (inetOrgPerson)"
+
+
+msgid "Address Book Entry (mozillaOrgPerson)"
+msgstr "Entrada del libro de direcciones (mozillaOrgPerson)"
+
+
+msgid "Kolab User Entry"
+msgstr "Entrada de Usuario Kolab"
+
+
+msgid "Organisational Unit"
+msgstr "Unidad Organizativa"
+
+
+msgid "Organisational Role"
+msgstr "Rol Organizativo"
+
+
+msgid "Posix Group"
+msgstr "Grupo Posix"
+
+
+msgid "Samba NT Machine"
+msgstr "Ordenador con Samba NT"
+
+
+msgid "Samba 3 NT Machine"
+msgstr "Ordenador con Samba 3 NT"
+
+
+msgid "Samba User"
+msgstr "Usuario de Samba"
+
+
+msgid "Samba 3 User"
+msgstr "Usuario de Samba 3"
+
+
+msgid "Samba 3 Group Mapping"
+msgstr "Mapeo de Grupo de Samba 3"
+
+
+msgid "DNS Entry"
+msgstr "Entrada DNS"
+
+
+msgid "Simple Security Object"
+msgstr "Objeto de Seguridad Simple"
+
+
+msgid "Courier Mail Account"
+msgstr "Cuenta de Correo Courier"
+
+
+msgid "Courier Mail Alias"
+msgstr "Alias de Correo Courier"
+
+
+msgid "LDAP Alias"
+msgstr "Alias de LDAP"
+
+
+msgid "Sendmail Cluster"
+msgstr "Cluster de Sendmail"
+
+
+msgid "Sendmail Domain"
+msgstr "Dominio de Sendmail"
+
+
+msgid "Sendmail Alias"
+msgstr "Alias de Sendmail"
+
+
+msgid "Sendmail Virtual Domain"
+msgstr "Dominio Virtual de Sendmail"
+
+
+msgid "Sendmail Virtual Users"
+msgstr "Usuarios Virtuales de Sendmail"
+
+
+msgid "Sendmail Relays"
+msgstr "Relés de Sendmail"
+
+
+msgid "Custom"
+msgstr "A medida"
+
+
+msgid "My Samba domain Name"
+msgstr "Mi Nombre de Dominio de Samba"
+
+
+msgid "Administrators"
+msgstr "Administradores"
+
+
+msgid "Users"
+msgstr "Usuarios"
+
+
+msgid "Guests"
+msgstr "Invitados"
+
+
+msgid "Power Users"
+msgstr "Usuarios Privilegiados"
+
+
+msgid "Account Operators"
+msgstr "Administradores de Cuentas"
+
+
+msgid "Server Operators"
+msgstr "Administradores de Servidor"
+
+
+msgid "Print Operators"
+msgstr "Administradores de Impresión"
+
+
+msgid "Backup Operators"
+msgstr "Administradores de Copias de Seguridad"
+
+
+msgid "Replicator"
+msgstr "Replicador"
+
+
+msgid " Unable to create the Samba passwords. Please, check the configuration in template_config.php"
+msgstr " Imposible crear las contraseñas de Samba. Por favor, revise la configuración en template_config.php"
+
+
+msgid "Error: You have an error in your samba confguration."
+msgstr "Error: Tiene un error en su configuración de Samba."
+
+
+msgid "Error: A name and a sid for your samba domain need to be provided."
+msgstr "Error: Necesita indicar el nombre y el sid de su dominio Samba."
+
+
+msgid "Error: No name provided for samba domain."
+msgstr "Error: No se ha indicado el nombre del dominio Samba."
+
+
+msgid "Error: No sid provided for samba domain."
+msgstr "Error: No se ha indicado el sid del dominio Samba."
+
+
+msgid "Samba Account"
+msgstr "Cuenta Samba"
+
+
+msgid "samba account"
+msgstr "cuenta samba"
+
+
+msgid "New User Account"
+msgstr "Nueva cuenta de usuario"
+
+
+msgid "Hint: To customize this template, edit the file templates/creation/new_user_template.php"
+msgstr "Nota: Para modificar esta plantilla, edite el fichero templates/creation/new_user_template.php"
+
+
+msgid "First name"
+msgstr "Nombre propio"
+
+
+msgid "Last name"
+msgstr "Apellido"
+
+
+msgid "first"
+msgstr "nombre propio"
+
+
+msgid "last"
+msgstr "apellido"
+
+
+msgid "Common name"
+msgstr "Nombre común"
+
+
+msgid "User Name"
+msgstr "Nombre de Usuario"
+
+
+msgid "Encryption"
+msgstr "Encriptación"
+
+
+msgid "Login Shell"
+msgstr "Shell de entrada"
+
+
+msgid "Home Directory"
+msgstr "Directorio de usuario"
+
+
+msgid "UID Number"
+msgstr "Número UID"
+
+
+msgid "(automatically determined)"
+msgstr "(determinado automáticamente)"
+
+
+msgid "Group"
+msgstr "Grupo"
+
+
+msgid "GID Number"
+msgstr "Número GID"
+
+
+msgid "Your passwords don't match. Please go back and try again."
+msgstr "Sus contraseñas no coinciden. Por favor, vuelva atrás e inténtelo de nuevon."
+
+
+msgid "You cannot leave the %s blank. Please go back and try again."
+msgstr "No puede dejar en blanco el %s. Por favor, vuelva atrás e inténtelo de nuevo."
+
+
+msgid "You can only enter numeric values for the %s field. Please go back and try again."
+msgstr "Sólo puede introducir valores numéricos en el campo %s. Por favor, vuelva atrás e inténtelo de nuevo."
+
+
+msgid "The container you specified (%s) does not exist. Please go back and try again."
+msgstr "El contenedor que ha especificado (%s) no existe. Por favor, vuelva atrás e inténtelo de nuevo."
+
+
+msgid "Confirm account creation"
+msgstr "Confirmar creación de cuenta"
+
+
+msgid "[secret]"
+msgstr "[secreta]"
+
+
+msgid "Create Account"
+msgstr "Crear cuenta"
+
+
+msgid "New Address Book Entry"
+msgstr "Nueva entrada en el libro de direcciones"
+
+
+msgid "Organisation"
+msgstr "Organización"
+
+
+msgid "Address"
+msgstr "Dirección"
+
+
+msgid "City"
+msgstr "Ciudad"
+
+
+msgid "Postal code"
+msgstr "Código postal"
+
+
+msgid "Street"
+msgstr "Calle"
+
+
+msgid "Work phone"
+msgstr "Teléfono de trabajo"
+
+
+msgid "Fax"
+msgstr "Fax"
+
+
+msgid "Mobile"
+msgstr "Móvil"
+
+
+msgid "Email"
+msgstr "Email"
+
+
+msgid "You cannot leave the Common Name blank. Please go back and try again."
+msgstr "No puede dejar el campo \"Nombre Común\" en blanco. Por favor, vuelva atrás e inténtelo de nuevo."
+
+
+msgid "Confirm entry creation:"
+msgstr "Confirmar creación de entrada:"
+
+
+msgid "Create Address"
+msgstr "Crear dirección"
+
+
+msgid "Check password..."
+msgstr "Compruebe la contraseña..."
+
+

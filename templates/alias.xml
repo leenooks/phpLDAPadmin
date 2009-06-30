@@ -2,7 +2,7 @@
 <!DOCTYPE template SYSTEM "template.dtd">
 <!--This template doesnt work needs modification to the Engine.-->
 <template>
-<title>ldap_alias</title>
+<title>LDAP Alias</title>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
 <icon>images/mail_alias.png</icon>
 <description>New LDAP Alias</description>

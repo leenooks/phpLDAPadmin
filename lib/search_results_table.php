@@ -1,9 +1,9 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_table.php,v 1.7 2005/04/29 11:24:15 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_table.php,v 1.7.4.5 2005/12/09 14:31:27 wurley Exp $
 
 /**
  * Incoming variables (among others)
- *  $results: The result of ldap_search(), ldap_list(), or ldap_read().
+ *  $results: The result from the ldapsearch.
  *  $ldapserver: LDAP Server Object.
  *  $start_entry: The index of the entry at which to begin displaying
  *  $end_entry: The index of the entry at which to end displaying
@@ -11,123 +11,105 @@
  */
 
 $friendly_attrs = process_friendly_attr_table();
-$entry_id = ldap_first_entry( $ldapserver->connect(), $results );
-$all_attrs = array( '' => 1, 'dn' => 1 );
-
-// Iterate over each entry and store the whole dang thing in memory (necessary to extract
-// all attribute names and display in table format in a single pass)
-$i = 0;
-$entries = array();
+$all_attrs = array('' =>1,'dn'=>1);
 $entries_display = array();
-while( $entry_id ) {
-    $i++;
-    if( $i <= $start_entry ) {
-        $entry_id = ldap_next_entry( $ldapserver->connect(), $entry_id );
-        continue;
-    }
-    if( $i >= $end_entry )
-        break;
-    $dn = ldap_get_dn( $ldapserver->connect(), $entry_id );
-    $dn_display = strlen( $dn ) > 40 ? "<acronym title=\"" . htmlspecialchars( $dn ) . "\">" .
-                                            htmlspecialchars( substr( $dn, 0, 40 ) . '...' ) .
-                                            "</acronym>"
-                                     : htmlspecialchars( $dn );
-    $encoded_dn = rawurlencode( $dn );
-    $rdn = get_rdn( $dn );
-    $icon = get_icon_use_cache( $ldapserver, $dn );
-    $attrs = ldap_get_attributes( $ldapserver->connect(), $entry_id );
-    $attr = ldap_first_attribute( $ldapserver->connect(), $entry_id, $attrs );
-    $attrs_display = array();
-    $edit_url = sprintf("edit.php?server_id=%s&amp;dn=%s",$ldapserver->server_id,$encoded_dn);
-    $attrs_display[''] = "<center><a href=\"$edit_url\"><img src=\"images/$icon\" /></a><center>";
-    $attrs_display['dn'] = "<a href=\"$edit_url\">$dn_display</a>";
 
-    // Iterate over each attribute for this entry and store in associative array $attrs_display
-    while( $attr ) {
-        //echo "getting values for dn $dn, attr $attr\n";
+/* Iterate over each entry and store the whole dang thing in memory (necessary to extract
+   all attribute names and display in table format in a single pass) */
+$i=0;
 
-        // Clean up the attr name
-        if( isset( $friendly_attrs[ strtolower( $attr ) ] ) )
-            $attr_display = "<acronym title=\"Alias for $attr\">" .
-                htmlspecialchars( $friendly_attrs[ strtolower($attr) ] ) .
-                "</acronym>";
-        else
-            $attr_display = htmlspecialchars( $attr );
+foreach ($results as $dn => $dndetails) {
+	$i++;
+	if ($i <= $start_entry)
+		continue;
 
-        if( ! isset( $all_attrs[ $attr_display ] ) )
-            $all_attrs[ $attr_display ] = 1;
+	if ($i >= $end_entry)
+		break;
 
-        // Get the values
-        $display = '';
-        if( is_jpeg_photo( $ldapserver, $attr ) ) {
-            ob_start();
-            draw_jpeg_photos( $ldapserver, $dn, $attr, false, false, 'align="center"' );
-            $display = ob_get_contents();
-            ob_end_clean();
-        } elseif( is_attr_binary( $ldapserver, $attr ) ) {
-            $display = array( "(binary)" );
-        } else {
-            $values = @ldap_get_values( $ldapserver->connect(), $entry_id, $attr );
-            if( ! is_array( $values ) ) {
-                $display = 'Error';
-            } else {
-                if( isset( $values['count'] ) )
-                    unset( $values['count'] );
-                foreach( $values as $value )
-                    $display .= str_replace( ' ', '&nbsp;',
-                            htmlspecialchars( $value ) ) . "<br />\n";
-            }
-        }
-        $attrs_display[ $attr_display ] = $display;
-        $attr = ldap_next_attribute( $ldapserver->connect(), $entry_id, $attrs );
-    } // end while( $attr )
+	$dn_display = strlen($dn) > 40 ?
+		sprintf('<acronym title="%s">%s...</acronym>',htmlspecialchars($dn),htmlspecialchars(substr($dn,0,40))) :
+		htmlspecialchars($dn);
 
-    $entries_display[] = $attrs_display;
+	$edit_url = sprintf('template_engine.php?server_id=%s&amp;dn=%s',$ldapserver->server_id,rawurlencode($dn));
+	$attrs_display = array();
+	$attrs_display[''] = sprintf('<center><a href="%s"><img src="images/%s" /></a></center>',$edit_url,get_icon($ldapserver,$dn));
+	$attrs_display['dn'] = sprintf('<a href="%s">%s</a>',$edit_url,$dn_display);
 
-    //echo '<pre>';
-    //print_r( $attrs_display );
-    //echo "\n\n";
-    $entry_id = ldap_next_entry( $ldapserver->connect(), $entry_id );
+	# Iterate over each attribute for this entry and store in associative array $attrs_display
+	foreach ($dndetails as $attr => $values) {
+		# Ignore DN, we've already displayed it.
+		if ($attr == 'dn')
+			continue;
 
-} // end while( $entry_id )
+		# Clean up the attr name
+		if (isset($friendly_attrs[strtolower($attr)]))
+			$attr_display = sprintf('<acronym title="Alias for %s">%s</acronym>',
+				$attr,htmlspecialchars($friendly_attrs[strtolower($attr)]));
+		else
+			$attr_display = htmlspecialchars($attr);
 
-$all_attrs = array_keys( $all_attrs );
+		if (! isset($all_attrs[$attr_display]))
+			$all_attrs[$attr_display] = 1;
 
-/*
-echo "<pre>";
-print_r( $all_attrs );
-print_r( $entries_display );
-echo "</pre>";
-*/
+		# Get the values
+		$display = '';
 
-// Store the header row so it can be repeated later
-$header_row = "<tr>";
-foreach( $all_attrs as $attr )
-    $header_row .= "<th>$attr</th>";
-$header_row .= "</tr>\n";
+		if ($ldapserver->isJpegPhoto($attr)) {
+			ob_start();
+			draw_jpeg_photos($ldapserver,$dn,$attr,false,false,'align="center"');
+			$display = ob_get_contents();
+			ob_end_clean();
 
-// begin drawing table
-echo "<br />";
-echo "<center>";
-echo "<table class=\"search_result_table\">\n";
+		} elseif ($ldapserver->isAttrBinary($attr)) {
+			$display = array('(binary)');
 
-for( $i=0; $i<count($entries_display); $i++ ) {
-    $entry = $entries_display[$i];
-    if( $i %10 == 0 )
-        echo $header_row;
-    if( $i % 2 == 0 )
-        echo "<tr class=\"highlight\">";
-    else
-        echo "<tr>";
-    foreach( $all_attrs as $attr ) {
-        echo "<td>";
-        if( isset( $entry[ $attr ] ) )
-            echo $entry[ $attr ];
-        echo "</td>\n";
-    }
-    echo "</tr>\n";
+		} else {
+			if (! is_array($values))
+				$display .= str_replace(' ','&nbsp;',htmlspecialchars($values)).'<br />';
+			else
+				foreach ($values as $value )
+					$display .= str_replace(' ','&nbsp;',htmlspecialchars($value)).'<br />';
+		}
+
+		$attrs_display[$attr_display] = $display;
+	}
+
+	$entries_display[] = $attrs_display;
 }
 
-echo "</table>";
-echo "</center>";
+$all_attrs = array_keys($all_attrs);
+
+# Store the header row so it can be repeated later
+$header_row = '<tr>';
+foreach ($all_attrs as $attr)
+	$header_row .= sprintf('<th>%s</th>',$attr);
+$header_row .= '</tr>';
+
+# Begin drawing table
+echo '<br />';
+echo '<center>';
+echo '<table class="search_result_table">';
+
+for ($i=0;$i<count($entries_display);$i++) {
+	$entry = $entries_display[$i];
+
+	if ($i %10 == 0)
+		echo $header_row;
+
+	if ($i % 2 == 0 )
+		echo '<tr class="highlight">';
+	else
+		echo '<tr>';
+
+	foreach ($all_attrs as $attr) {
+		echo '<td>';
+		if (isset($entry[$attr]))
+			echo $entry[$attr];
+		echo '</td>';
+	}
+	echo '</tr>';
+}
+
+echo '</table>';
+echo '</center>';
 ?>

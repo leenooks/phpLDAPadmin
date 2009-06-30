@@ -1,49 +1,59 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/header.php,v 1.19.2.2 2005/10/25 20:21:15 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/header.php,v 1.21.2.3 2005/12/11 04:00:23 wurley Exp $
 
 /**
  * @package phpLDAPadmin
  */
 
-// We want to get $language into scope in case we were included
-// from within a function
+/* We want to get $language into scope in case we were included
+   from within a function */
 global $config;
-$language = isset($config) ? $language =  $config->GetValue('appearance','language') : 'auto';
+$language = isset($config) ? $language = $config->GetValue('appearance','language') : 'auto';
 
-// text/xml won't work with MSIE, but is very useful for debugging xhtml code.
-//@header( "Content-type: text/xml; charset=\"UTF-8\"" );
-@header( "Content-type: text/html; charset=\"UTF-8\"" );
+# text/xml won't work with MSIE, but is very useful for debugging xhtml code.
+# header('Content-type: text/xml; charset="UTF-8"');
+@header('Content-type: text/html; charset="UTF-8"');
 
-// XML version and encoding for well-behaved browsers
-echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
+# XML version and encoding for well-behaved browsers
+echo '<?xml version="1.0" encoding="utf-8"?>'."\n";
+
+echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"';
+echo '  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'."\n";
+
+printf('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="%s" lang="%s" dir="ltr">',$language,$language);
+echo "\n\n";
+
+echo '<head>';
+
+if (isset($config) && $pagetitle = $config->GetValue('appearance','page_title'))
+	printf('<title>phpLDAPadmin - %s</title>',$pagetitle);
+else
+	echo '<title>phpLDAPadmin</title>';
+
+printf('<link type="text/css" rel="stylesheet" href="%sstyle.css" media="screen" />',CSSDIR);
+
+if (isset($server_id)) {
+	$custom_file = get_custom_file($server_id,'style.css',CSSDIR);
+
+	if (strcmp($custom_file,'style.css') != 0)
+		printf('<link type="text/css" rel="stylesheet" href="%s" media="screen" />',$custom_file);
+}
+
+printf('<script type="text/javascript" src="%sentry_chooser.js"></script>',JSDIR);
+printf('<script type="text/javascript" src="%sie_png_work_around.js"></script>',JSDIR);
+printf('<script type="text/javascript" src="%ssearch_util.js"></script>',JSDIR);
+printf('<script type="text/javascript" src="%sgeneric_utils.js"></script>',JSDIR);
+printf('<link type="text/css" rel="stylesheet" media="all" href="%s/jscalendar/calendar-blue.css" title="blue" />',JSDIR);
+printf('<script type="text/javascript" src="%sjscalendar/calendar.js"></script>',JSDIR);
+printf('<script type="text/javascript" src="%sjscalendar/lang/calendar-en.js"></script>',JSDIR);
+printf('<script type="text/javascript" src="%sjscalendar/calendar-setup.js"></script>',JSDIR);
+printf('<script type="text/javascript" src="%sdate_selector.js"></script>',JSDIR);
+printf('<link type="text/css" rel="stylesheet" href="%s/phplayersmenu/layerstreemenu.css"></link>',JSDIR);
+
+if (isset($meta_refresh_variable))
+	printf('<meta http-equiv="refresh" content="%s" />',$meta_refresh_variable);
+
+echo '<meta http-equiv="content-type" content="text/html; charset=utf-8" />';
+echo '</head>';
+echo "\n\n";
 ?>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $language; ?>" lang="<?php echo $language; ?>" dir="ltr">
-<head>
-<?php if (isset($config) && $pagetitle = $config->GetValue('appearance','page_title')) { ?>
-	<title>phpLDAPadmin - <?php echo $pagetitle; ?></title>
-<?php } else { ?>
-	<title>phpLDAPadmin</title>
-<?php } ?>
-	<link rel="stylesheet" href="<?php echo CSSDIR ?>style.css" media="screen" />
-
-<?php if( isset( $server_id ) ) {
-	$custom_file = get_custom_file( $server_id, 'style.css',CSSDIR );
-
-	if( strcmp( $custom_file, 'style.css' ) != 0 ) { ?>
-	<link rel="stylesheet" href="<?php echo $custom_file ?>" media="screen" />
-<?php }
-} ?>
-	<script src="<?php echo JSDIR; ?>entry_chooser.js" type="text/javascript"></script>
-	<script src="<?php echo JSDIR; ?>ie_png_work_around.js" type="text/javascript"></script>
-	<script src="<?php echo JSDIR; ?>search_util.js" type="text/javascript"></script>
-	<script src="<?php echo JSDIR; ?>generic_utils.js" type="text/javascript"></script>
-	<link rel="stylesheet" type="text/css" media="all" href="js/jscalendar/calendar-blue.css" title="blue" />
-	<script type="text/javascript" src="js/jscalendar/calendar.js"></script>
-	<script type="text/javascript" src="js/jscalendar/lang/calendar-en.js"></script>
-	<script type="text/javascript" src="js/jscalendar/calendar-setup.js"></script>
-	<script type="text/javascript" src="<?php echo JSDIR; ?>date_selector.js"></script>
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-</head>

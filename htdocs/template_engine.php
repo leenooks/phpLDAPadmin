@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.22.2.11 2005/10/25 12:50:29 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.26.2.26 2006/01/12 22:07:54 wurley Exp $
 
 /**
  * Template render engine.
@@ -13,31 +13,39 @@
 /**
  */
 
-require "./common.php";
+require './common.php';
+
+if (! $ldapserver->haveAuthInfo())
+	pla_error(_('Not enough information to login to server. Please check your configuration.'));
 
 $friendly_attrs = process_friendly_attr_table(); // @todo might not need this.
+$pjs = array();
 
 # REMOVE THSE @todo
 $today = date('U');
 $shadow_before_today_attrs = arrayLower(array('shadowLastChange','shadowMin'));
 $shadow_after_today_attrs = arrayLower(array('shadowMax','shadowExpire','shadowWarning','shadowInactive'));
-$shadow_format_attrs = array_merge($shadow_before_today_attrs, $shadow_after_today_attrs);
+$shadow_format_attrs = array_merge($shadow_before_today_attrs,$shadow_after_today_attrs);
 # END REMOVE
 
 # If we have a DN, then this is to edit the entry.
 if (isset($_REQUEST['dn'])) {
 
-	if( ! $ldapserver->haveAuthInfo())
-		pla_error( $lang['not_enough_login_info'] );
+	$dn = $_GET['dn'];
+	$decoded_dn = rawurldecode($dn);
+	$encoded_dn = rawurlencode($decoded_dn);
 
-	dn_exists( $ldapserver, $dn )
-		or pla_error( sprintf( $lang['no_such_entry'], pretty_print_dn( $dn ) ) );
+	if (! $ldapserver->haveAuthInfo())
+		pla_error(_('Not enough information to login to server. Please check your configuration.'));
+
+	$ldapserver->dnExists($dn)
+		or pla_error(sprintf(_('No such entry: %s'),pretty_print_dn($dn)));
 
 	$rdn = get_rdn($dn);
-	$attrs = get_object_attrs( $ldapserver, $dn, false, $config->GetValue('deref','view'));
+	$attrs = $ldapserver->getDNAttrs($dn,false,$config->GetValue('deref','view'));
 
-	$modified_attrs = isset( $_REQUEST['modified_attrs'] ) ? $_REQUEST['modified_attrs'] : false;
-	$show_internal_attrs = isset( $_REQUEST['show_internal_attrs'] ) ? true : false;
+	$modified_attrs = isset($_REQUEST['modified_attrs']) ? $_REQUEST['modified_attrs'] : false;
+	$show_internal_attrs = isset($_REQUEST['show_internal_attrs']) ? true : false;
 
 	# If an entry has more children than this, stop searching and display this amount with a '+'
 	$max_children = 100;
@@ -48,10 +56,7 @@ if (isset($_REQUEST['dn'])) {
 	$rdn = '';
 	$encoded_dn = '';
 
-	isset($_REQUEST['template']) or die(); // pla_error( $lang['must_choose_template'] );
-
 	if ($_REQUEST['template'] == 'custom') {
-
 		include TMPLDIR.'template_header.php';
 		require TMPLDIR.'creation/custom.php';
 		die();
@@ -64,370 +69,390 @@ if (isset($_REQUEST['dn'])) {
 
 include TMPLDIR.'template_header.php';
 
-	/*
-	 * When we get here, (either a new entry, or modifying an existing entry), if the
-	 * empty_attrs array has content, then we need to ask the user for this information.
-	 */
+/*
+ * When we get here, (either a new entry, or modifying an existing entry), if the
+ * empty_attrs array has content, then we need to ask the user for this information.
+ */
 
-	if (isset($template['empty_attrs'])) {
-		masort($template['empty_attrs'],'page,order',1);
+if (isset($template['empty_attrs'])) {
+	masort($template['empty_attrs'],'page,order',1);
 
-		# What page are we working on.
-		$page = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
-?>
+	# What page are we working on.
+	$page = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
 
-	<center><h2><?php echo $template['description']; ?></h2></center>
-	<center>
-	<table class="confirm" border=0>
+	printf('<center><h2>%s</h2></center>',$template['description']);
+	echo "\n\n";
 
-<?php if (isset($_REQUEST['nextpage']) && ! $_REQUEST['nextpage']) {
-		$new_dn = sprintf('%s=%s,%s',$template['rdn'],$_REQUEST['form'][$template['rdn']],$_REQUEST['container']); ?>
+	if (isset($_REQUEST['nextpage']) && ! $_REQUEST['nextpage']) {
+		$new_dn = sprintf('%s=%s,%s',$template['rdn'],$_REQUEST['form'][$template['rdn']],$_REQUEST['container']);
 
-	<form action="create.php" method="post">
-	<input type="hidden" name="new_dn" value="<?php echo $new_dn; ?>" />
+		echo '<form action="create.php" method="post">';
+		printf('<input type="hidden" name="new_dn" value="%s" />',$new_dn);
 
-<?php } else { ?>
-	<form action="template_engine.php" method="post" id="template_form" name="template_form">
-<?php } ?>
+	} else {
+		echo '<form action="template_engine.php" method="post" id="template_form" name="template_form">';
+	}
 
-<?php
-if (isset($_REQUEST['form']))
-	foreach ($_REQUEST['form'] as $attr => $value) {
+	if (isset($_REQUEST['form']))
+		foreach ($_REQUEST['form'] as $attr => $value) {
 
-		# Check for any with post actions.
-		if (isset($template['attribute'][$attr]['post']) && $_REQUEST['page'] == $template['attribute'][$attr]['page']+1) {
-			if (preg_match('/^=php\.(\w+)\((.*)\)$/',$template['attribute'][$attr]['post'],$matches)) {
-				switch ($matches[1]) {
-					case 'Password' : 
-						preg_match_all('/%(\w+)(\|.+)?(\/[lU])?%/U',$matches[2],$matchall);
+			# Check for any with post actions.
+			if (isset($template['attribute'][$attr]['post']) && $_REQUEST['page'] == $template['attribute'][$attr]['page']+1) {
+				if (preg_match('/^=php\.(\w+)\((.*)\)$/',$template['attribute'][$attr]['post'],$matches)) {
+					switch ($matches[1]) {
+						case 'Password' :
+							preg_match_all('/%(\w+)(\|.+)?(\/[lU])?%/U',$matches[2],$matchall);
 
-						$value = password_hash( $_REQUEST['form'][$matchall[1][1]], $_REQUEST[$matchall[1][0]] );
-						$_REQUEST['form'][$attr] = $value;
-						break;
+							$enc = $_REQUEST[$matchall[1][0]];
+							$password = $_REQUEST['form'][$matchall[1][1]];
+							if (trim($password)) {
+								$value = password_hash($password,$enc);
+								$_REQUEST['form'][$attr] = $value;
+							}
+							break;
 
-					case 'SambaPassword' : 
-						$matchall = explode(',',$matches[2]);
-						$attr = preg_replace('/%/','',$matchall[1]);
-						$sambapassword = new smbHash;
+						case 'SambaPassword' :
+							$matchall = explode(',',$matches[2]);
+							$attr = preg_replace('/%/','',$matchall[1]);
 
-						switch ($matchall[0]) {
-							case 'LM' : $value = $sambapassword->lmhash($_REQUEST['form'][$attr]);
+							# If we have no password, then dont hash nothing!
+							if (! trim($_REQUEST['form'][$attr]))
 								break;
-							case 'NT' : $value = $sambapassword->nthash($_REQUEST['form'][$attr]);
-								break;
-							default :
-								$value = null;
-						}
 
-						$_REQUEST['form'][$attr] = $value;
-						break;
+							$sambapassword = new smbHash;
 
-					case 'Join' :
-						preg_match_all('/%(\w+)(\|.+)?(\/[lU])?%/U',$matches[2],$matchall);
-						$matchattrs = explode(',',$matches[2]);
-						$char = $matchattrs[0];
+							switch ($matchall[0]) {
+								case 'LM' : $value = $sambapassword->lmhash($_REQUEST['form'][$attr]);
+									break;
+								case 'NT' : $value = $sambapassword->nthash($_REQUEST['form'][$attr]);
+									break;
+								default :
+									$value = null;
+							}
 
-						$values = array();
-						foreach ($matchall[1] as $joinattr) {
-							if (isset($_REQUEST['form'][$joinattr]))
-								$values[] = $_REQUEST['form'][$joinattr];
+							$_REQUEST['form'][$attr] = $value;
+							break;
 
-							else if (isset($_REQUEST[$joinattr]))
-								$values[] = $_REQUEST[$joinattr];
+						case 'Join' :
+							preg_match_all('/%(\w+)(\|.+)?(\/[lU])?%/U',$matches[2],$matchall);
+							$matchattrs = explode(',',$matches[2]);
+							$char = $matchattrs[0];
 
-							else
-								pla_error($lang['template_post_join']);
-							
-						}
-						$value = implode($char,$values);
-						$_REQUEST['form'][$attr] = $value;
-						break;
+							$values = array();
+							foreach ($matchall[1] as $joinattr) {
+								if (isset($_REQUEST['form'][$joinattr]))
+									$values[] = $_REQUEST['form'][$joinattr];
 
-					default:
-						#@todo: Error, unknown post funciton.
+								else if (isset($_REQUEST[$joinattr]))
+									$values[] = $_REQUEST[$joinattr];
+
+								else
+									pla_error(sprintf(_('Your template is missing variable (%s)'),$joinattr));
+							}
+
+							$value = implode($char,$values);
+							$_REQUEST['form'][$attr] = $value;
+							break;
+
+						default:
+							pla_error(sprintf(_('Your template has an unknown post function (%s).'),$matches[1]));
+					}
 				}
 			}
+
+			if (is_array($value))
+				foreach ($value as $item)
+					printf('<input type="hidden" name="form[%s][]" value="%s" />',$attr,$item);
+			else
+				printf('<input type="hidden" name="form[%s]" value="%s" />',$attr,$value);
 		}
 
-		if (is_array($value))
-			foreach ($value as $item)
-				printf('<input type="hidden" name="form[%s][]" value="%s" />',$attr,$item);
-		else 
-			printf('<input type="hidden" name="form[%s]" value="%s" />',$attr,$value);
-	}
-?>
-	<input type="hidden" name="server_id" value="<?php echo $ldapserver->server_id; ?>" />
-	<input type="hidden" name="template" value="<?php echo $_REQUEST['template']; ?>" />
+	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
+	printf('<input type="hidden" name="template" value="%s" />',$_REQUEST['template']);
+	printf('<input type="hidden" name="object_classes" value="%s" />',rawurlencode(serialize(array_values($template['objectclass']))));
+	printf('<input type="hidden" name="page" value="%s" />',$page+1);
 
-	<input type="hidden" name="object_classes" value="<?php echo rawurlencode(serialize(array_values($template['objectclass']))); ?>" />
+	echo "\n\n";
+	echo '<center>';
+	echo '<table class="confirm" border="0">';
 
-	<input type="hidden" name="page" value="<?php echo $page + 1; ?>" />
+	echo '<tr class="spacer"><td colspan="3">&nbsp;</td></tr>';
+	echo "\n\n";
+	echo '<tr>';
 
-	<tr class="spacer"><td colspan="3"></td></tr>
-	<tr>
-
-<?php
 	if (isset($template['askcontainer']) && $template['askcontainer'] && $page == 1) {
 		if (! (isset($template['regexp']) && isset($template['regexp']))) {
-?>
-		<td></td>
-		<td class="heading">Container <acronym title="Distinguished Name">DN</acronym>:</td>
-		<td><input type="text" name="container" size="40" value="<?php echo htmlspecialchars( $_REQUEST['container'] ); ?>" />
-			<?php draw_chooser_link( 'template_form.container' ); ?>
-		</td>
-		<tr class="spacer"><td colspan="3"></td></tr>
 
-		<?php } else { ?>
-		<td></td>
-		<td class="heading">Container <acronym title="Distinguished Name">DN</acronym>:</td>
-		<td><input type="text" name="container" size="40" value="<?php echo htmlspecialchars( $_REQUEST['container'] ); ?>" disabled />
-		</td>
-		<input type="hidden" name="container" value="<?php echo $_REQUEST['container']; ?>" />
-		<tr class="spacer"><td colspan="3"></td></tr>
-		<?php } ?>
+			echo '<td>&nbsp;</td>';
+			echo '<td class="heading">Container <acronym title="Distinguished Name">DN</acronym>:</td>';
+			printf('<td><input type="text" name="container" size="40" value="%s" />&nbsp;',
+				htmlspecialchars($_REQUEST['container']));
+			draw_chooser_link('template_form.container');
+			echo '</td></tr>';
 
-	<?php } else { ?>
-		<input type="hidden" name="container" value="<?php echo $_REQUEST['container']; ?>" />
-	<?php }
+			echo '<tr class="spacer"><td colspan="3"></td></tr>';
 
-		$count = 0;
-		$nextpage = 0;
-		$mustitems = 0;
-		foreach ($template['empty_attrs'] as $attr => $detail) {
+		} else {
+			echo '<td>&nbsp;</td>';
+			echo '<td class="heading">Container <acronym title="Distinguished Name">DN</acronym>:</td>';
+			printf('<td><input type="text" name="container" size="40" value="%s" disabled /></td></tr>',
+				htmlspecialchars($_REQUEST['container']));
+			printf('<input type="hidden" name="container" value="%s" />',$_REQUEST['container']);
+			echo '<tr class="spacer"><td colspan="3"></td></tr>';
+		}
 
-				$mustitem = false;
-				$verifyitem = false;
-				$onChange = '';
-				$onBlur = '';
-				$type = isset($detail['type']) ? $detail['type'] : 'text';
+	} else {
+		printf('<input type="hidden" name="container" value="%s" />',$_REQUEST['container']);
+	}
 
-				if (! isset($detail['page'])) $detail['page'] = 1;
-				$size = isset($detail['size']) ? $detail['size'] : 20;
-				$maxlength = isset($detail['maxlength']) ? $detail['maxlength'] : null;
+	$count = 0;
+	$nextpage = 0;
+	$mustitems = 0;
 
-				# Check that the page number is correct.
-				if ($detail['page'] < $page && ! isset($attr[$attr])) {
-					# ERROR: This attribute should be set by now.
-					print "We should have set [$attr] by now.<BR>";
+	foreach ($template['empty_attrs'] as $attr => $detail) {
 
-				} elseif ($detail['page'] == $page) {
+		$mustitem = false;
+		$verifyitem = false;
+		$type = isset($detail['type']) ? $detail['type'] : 'text';
 
-					$count++;
-					print '</tr>';
+		if (! isset($detail['page']))
+			$detail['page'] = 1;
 
-					# Some conditional checking.
-					# $detail['must'] & $detail['disable'] cannot be set at the same time.
-					if (isset($detail['must']) && $detail['must'] && isset($detail['disable']) && $detail['disable']) {
-						pla_error(printf($lang['template_mustattr'],$attr));
+		$size = isset($detail['size']) ? $detail['size'] : 20;
+		$maxlength = isset($detail['maxlength']) ? $detail['maxlength'] : null;
+		$rows = isset($detail['rows']) ? $detail['rows'] : null;
+		$cols = isset($detail['cols']) ? $detail['cols'] : null;
+
+		# Check that the page number is correct.
+		if ($detail['page'] < $page && ! isset($attr[$attr])) {
+			# ERROR: This attribute should be set by now.
+			print "We should have set [$attr] by now.<BR>";
+
+		} elseif ($detail['page'] == $page) {
+
+			$count++;
+			echo '<tr>';
+
+			# Some conditional checking.
+			# $detail['must'] & $detail['disable'] cannot be set at the same time.
+			if (isset($detail['must']) && $detail['must'] && isset($detail['disable']) && $detail['disable'])
+				pla_error(printf(_('Attribute [%s] is a MUST attribute, so it cannot be disabled.'),$attr));
+
+			# If this attribute is disabled, go to the next one.
+			if (isset($detail['disable']) && $detail['disable'])
+				continue;
+
+			# Evaluate our Default Value, if its a function call result.
+			if (isset($detail['value'])) {
+
+				if (is_array($detail['value'])) {
+
+					# If value is an array, then it must a select list.
+					$type = 'select';
+					$defaultresult = sprintf('<select name="form[%s]" id="%%s" %%s %%s>',$attr);
+
+					foreach ($detail['value'] as $key => $value) {
+						if (preg_match('/^_KEY:/',$key))
+							$key = preg_replace('/^_KEY:/','',$key);
+						else
+							$key = $value;
+
+						$defaultresult .= sprintf('<option name="%s" value="%s" %s>%s</option>',$value,$key,
+							((isset($detail['default']) && $detail['default'] == $key) ? 'selected' : ''),$value);
 					}
 
-					# If this attribute is disabled, go to the next one.
-					if (isset($detail['disable']) && $detail['disable'])
-						continue;
+					$defaultresult .= '</select>';
+					$detail['value'] = $defaultresult;
 
-					# Evaluate our Default Value, if its a function call result.
-					if (isset($detail['value'])) {
+				} else {
+					$detail['value'] = $templates->EvaluateDefault($ldapserver,$detail['value'],$_REQUEST['container'],null,
+						(isset($detail['default']) ? $detail['default'] : null));
+				}
 
-						if (is_array($detail['value'])) {
+				#if the default has a select list, then change the type to select
+				if (preg_match('/<select .*>/i',$detail['value']))
+					$type = 'select';
+			}
 
-							# If value is an array, then it must a select list.
-							$type = 'select';
-							$defaultresult = sprintf('<select name="form[%s]" id="%%s" %%s %%s/>',$attr);
-							foreach ($detail['value'] as $key => $value) {
-								if (preg_match('/^_KEY:/',$key))
-									$key = preg_replace('/^_KEY:/','',$key);
-								else
-									$key = $value;
+			# @todo: $detail['must'] && $detail['hidden'] must have $detail['value'] (with a value).
+			# @todo: if value is a select list, then it cannot be hidden.
 
-								$defaultresult .= sprintf('<option name="%s" value="%s" %s>%s</option>',
-									$value,$key,
-									((isset($detail['default']) && $detail['default'] == $key) ? 'selected' : ''),
-									$value);
-							}
-							$defaultresult .= '</select>';
-							$detail['value'] = $defaultresult;
+			# If this is a hidden attribute, then set its value.
+			if (isset($detail['hidden']) && $detail['hidden']) {
+				printf('<input type="%s" name="form[%s]" id="%s" value="%s"/>','hidden',$attr,$attr,$detail['value']);
+				continue;
+			}
 
-						} else {
-							$detail['value'] = $templates->EvaluateDefault($ldapserver,$detail['value'],$_REQUEST['container'],null,(isset($detail['default']) ? $detail['default'] : null));
-						}
+			# This is a displayed attribute.
+			# Flag it as a must attribute so that we do get a value.
+			if (isset($detail['must']) && $detail['must'] &&
+				! isset($detail['presubmit']) &&
+				$type != 'select') {
 
-						#if the default has a select list, then change the type to select
-						if (preg_match('/<select .*>/i',$detail['value']))
-							$type = 'select';
-					}
+				$mustitems++;
+				$mustitem = true;
+			}
 
-					# @todo: $detail['must'] && $detail['hidden'] must have $detail['value'] (with a value).
-					# @todo: if value is a select list, then it cannot be hidden.
+			# Display the icon if one is required.
+			if (isset($detail['icon']) && trim($detail['icon']))
+				printf('<td><img src="%s" /></td>',$detail['icon']);
+			else
+				printf('<td>&nbsp;</td>');
 
-					# If this is a hidden attribute, then set its value.
-					if (isset($detail['hidden']) && $detail['hidden']) {
-						printf('<input type="%s" name="form[%s]" id="%s" value="%s"/>','hidden',$attr,$attr,$detail['value']);
-						continue;
-					}
+			echo '<td class="heading">';
 
-					# This is a displayed attribute.
-					# Flag it as a must attribute so that we do get a value.
-					if (isset($detail['must']) && $detail['must'] && ! isset($detail['presubmit'])) {
-						$mustitems++;
-						$mustitem = true;
-						$onBlur .= sprintf("reduceMust(this.form,%s,'%s');",$attr,$attr);
-					}
+			# Display the label.
+			if (isset($detail['description']) && (trim($detail['description'])))
+				printf('<acronym title="%s">%s</acronym>:',$detail['description'],$detail['display']);
+			else
+				printf('%s:',$detail['display']);
 
-					# Display the icon if one is required.
-					if (isset($detail['icon']) && trim($detail['icon']))
-						printf('<td><img src="%s"></td>',$detail['icon']);
-					else
-						printf('<td></td>');
+			echo '</td>';
 
-					print '<td class="heading">';
+			# Calculate the events.
+			# @todo: Need to change js so that if a must attr is auto populated, it decrements the total and enables the submit.
+			if (isset($detail['onchange'])) {
+				if (is_array($detail['onchange'])) {
+					foreach ($detail['onchange'] as $value)
+						$templates->OnChangeAdd($ldapserver,$attr,$value);
+				} else {
+					$templates->OnChangeAdd($ldapserver,$attr,$detail['onchange']);
+				}
+			}
 
-					# Display the label.
-					if (isset($detail['description']) && (trim($detail['description'])))
-						printf('<acronym title="%s">%s</acronym>:',$detail['description'],$detail['display']);
-					else
-						printf('%s:',$detail['display']);
+			# Display the input box.
+			echo '<td>';
 
-					print '</td>';
+			if (in_array($type,array('text','password'))) {
+				printf('<input type="%s" size="%s" name="form[%s]%s" id="%s" value="%s" %s%s%s />',
+					$type,$size,$attr,(isset($detail['array']) && ($detail['array'] > 1) ? '[]' : ''),$attr,
+					(isset($detail['value']) ? $detail['value'] : ''),
+					"onBlur=\"fill('$attr', this.value);\"",
+					(isset($detail['disable']) ? 'disabled' : ''),
+					($maxlength ? sprintf(' maxlength="%s" ',$maxlength) : ''));
 
-					# Calculate the events.
-					# @todo: Need to change js so that if a must attr is auto populated, it decrements the total and enables the submit.
-					if (isset($detail['onchange'])) {
-						if (is_array($detail['onchange'])) {
-							foreach ($detail['onchange'] as $value) {
-								$onChange .= sprintf('%s;',$templates->OnChangeAdd($value));
-							}
-						} else {
-							$onChange .= sprintf('%s;',$templates->OnChangeAdd($detail['onchange']));
-						}
-					}
+			} elseif ($type == 'textarea') {
+				printf('<textarea size="%s" name="form[%s]%s" id="%s" value="%s" cols="%s" rows="%s" %s%s ></textarea>',
+					$size,$attr,(isset($detail['array']) && ($detail['array'] > 1) ? '[]' : ''),$attr,
+					(isset($detail['value']) ? $detail['value'] : ''),
+					($cols ? $cols : 35),
+					($rows ? $rows : 4),
+					"onBlur=\"fill('$attr', this.value);\"",
+					(isset($detail['disable']) ? 'disabled' : ''));
 
-					# Display the input box.
-					print '<td>';
+			} elseif ($type == 'select') {
+				printf($detail['value'],$attr,
+					"onBlur=\"fill('$attr', this.value);\"",
+					(isset($detail['disable']) ? 'disabled' : ' '));
+			}
 
-					if (in_array($type,array('text','password'))) {
-						printf('<input type="%s" size="%s" name="form[%s]%s" id="%s" value="%s" %s %s %s/>',
-							$type,$size,$attr,(isset($detail['array']) && ($detail['array'] > 1) ? '[]' : ''),$attr,
-							(isset($detail['value']) ? $detail['value'] : ''),
-							($onChange ? sprintf('onChange="%s"',$onChange) : '').($onBlur ? sprintf(' onBlur="%s"',$onBlur) : ''),
-							(isset($detail['disable']) ? 'disabled' : ''),
-							(isset($detail['maxlength']) ? sprintf(' maxlength="%s" ',$maxlength) : ''));
+			# Disabled items dont get submitted.
+			# @todo need to add some js to enable them on submit, or add them as hidden items.
 
-					} else if ($type == 'select') {
-						printf($detail['value'],$attr,
-							($onChange ? sprintf('onChange="%s"',$onChange) : '').($onBlur ? sprintf(' onBlur="%s"',$onBlur) : ''),
-							(isset($detail['disable']) ? 'disabled' : ''));
-					}
+			if ($mustitem)
+				echo '&nbsp;*';
 
-					# Disabled items dont get submitted.
-					# @todo need to add some js to enable them on submit, or add them as hidden items.
+			# Do we have a helper, and is it configured for the side.
+			if (isset($detail['helper']) && isset($detail['helper']['location'])
+				&& $detail['helper']['location'] == 'side' && isset($detail['helper']['value'])) {
 
-					if ($mustitem) {
-						print '&nbsp;*';
-					}
+				printf('&nbsp;%s',$templates->HelperValue($detail['helper']['value'],
+					(isset($detail['helper']['id']) ? $detail['helper']['id'] : ''),$_REQUEST['container'],$ldapserver,null,
+					isset($detail['helper']['default']) ? $detail['helper']['default'] : ''));
+			}
 
-					# Do we have a helper, and is it configured for the side.
+			if (isset($detail['hint']) && (trim($detail['hint'])))
+				printf('&nbsp;<span class="hint">(hint: %s)</span></td>',$detail['hint']);
+			else
+				echo '</td>';
+
+			echo '</tr>'."\n";
+
+			# Do we have a verify attribute?
+			if (isset($detail['verify']) && ($detail['verify'])) {
+
+				$verifyitems = true;
+
+				echo '<tr><td>&nbsp;</td><td class="heading">';
+
+				# Display the label.
+				if (isset($detail['description']) && (trim($detail['description'])))
+					printf('<acronym title="%s">%s %s</acronym>:',_('Verify'),$detail['description'],$detail['display']);
+				else
+					printf('%s %s:',_('Verify'),$detail['display']);
+
+				echo '</td><td>';
+
+				if (in_array($type,array('text','password'))) {
+					printf('<input type="%s" name="%s" id="%s" value="%s" %s/>',
+						$type,$attr."V",$attr."V",(isset($detail['value']) ? $detail['value'] : ''),
+						sprintf('onBlur="check(form.%s,form.%sV)"',$attr,$attr));
+				}
+
+				echo '</td></tr>'."\n";
+			}
+
+			# Is this a multiarray input?
+			if (isset($detail['array']) && ($detail['array'])) {
+				for ($i=2; $i <= $detail['array']; $i++) {
+					echo '<tr><td>&nbsp;</td><td>&nbsp;</td>';
+
+					printf('<td><input type="%s" name="form[%s][]" id="%s" value="%s" %s %s />',
+						$type,$attr,$attr.$i,(isset($detail['value']) ? $detail['value'] : ''),
+						"onBlur=\"fill('$attr', this.value);\"",
+						isset($detail['disable']) ? 'disabled' : '');
+
 					if (isset($detail['helper']) && isset($detail['helper']['location'])
 						&& $detail['helper']['location'] == 'side' && isset($detail['helper']['value'])) {
 
 						printf('&nbsp;%s',$templates->HelperValue($detail['helper']['value'],
-							(isset($detail['helper']['id']) ? $detail['helper']['id'] : ''),
-							$_REQUEST['container'],$ldapserver,null,
-							isset($detail['helper']['default']) ? $detail['helper']['default'] : ''));
+							(isset($detail['helper']['id']) ? $detail['helper']['id'] : ''),$_REQUEST['container'],$ldapserver,$i));
 					}
-
-					if (isset($detail['hint']) && (trim($detail['hint'])))
-						printf('&nbsp;<span class="hint">(hint: %s)</span></td>',$detail['hint']);
-					else
-						print '</td>';
-
-					print '</tr>';
-
-					# Do we have a verify attribute?
-					if (isset($detail['verify']) && ($detail['verify'])) {
-
-						$verifyitems = true;
-
-						print '<tr><td>&nbsp;</td><td class="heading">';
-
-						# Display the label.
-						if (isset($detail['description']) && (trim($detail['description'])))
-							printf('<acronym title="%s">%s %s</acronym>:',$lang['t_verify'],$detail['description'],$detail['display']);
-						else
-							printf('%s %s:',$lang['t_verify'],$detail['display']);
-
-						print '</td><td>';
-
-						if (in_array($type,array('text','password'))) {
-							printf('<input type="%s" name="%s" id="%s" value="%s" %s/>',
-								$type,$attr."V",$attr."V",(isset($detail['value']) ? $detail['value'] : ''),
-								sprintf('onBlur="check(form.%s,form.%sV)"',$attr,$attr));
-						}
-
-						print '</td></tr>';
-					}
-
-					# Is this a multiarray input?
-					if (isset($detail['array']) && ($detail['array'])) {
-						for ($i=2; $i <= $detail['array']; $i++) {
-							print '<tr><td>&nbsp;</td><td>&nbsp;</td>';
-
-							printf('<td><input type="%s" name="form[%s][]" id="%s" value="%s" %s %s/>',
-								$type,$attr,$attr.$i,
-								(isset($detail['value']) ? $detail['value'] : ''),
-								($onChange ? sprintf('onChange="%s"',$onChange) : '').($onBlur ? sprintf(' onBlur="%s"',$onBlur) : ''),
-								isset($detail['disable']) ? 'disabled' : '');
-
-							if (isset($detail['helper']) && isset($detail['helper']['location'])
-								&& $detail['helper']['location'] == 'side' && isset($detail['helper']['value'])) {
-
-								printf('&nbsp;%s',$templates->HelperValue($detail['helper']['value'],
-									(isset($detail['helper']['id']) ? $detail['helper']['id'] : ''),$_REQUEST['container'],$ldapserver,$i));
-							}
-							print '</td></tr>';
-						}
-					}
-
-					# Do we have a helper.
-					# Side helpers are handled above.
-					# @todo: Helpers must have an onchange or onsubmit.
-					# @todo: Helpers must have an id field.
-					# @todo: Helpers must have an post field.
-
-					if (isset($detail['helper']) && (! isset($detail['helper']['location']) || $detail['helper']['location'] != 'side')) {
-
-						print '<tr><td>&nbsp;</td>';
-						print '<td class="heading">';
-
-						# Display the label.
-						if (isset($detail['helper']['description']) && (trim($detail['helper']['description'])))
-							printf('<acronym title="%s">%s</acronym>:',$detail['helper']['description'],$detail['helper']['display']);
-						else
-							printf('%s:',$detail['helper']['display']);
-
-						print '</td>';
-
-						printf('<td>%s</td>',$templates->HelperValue($detail['helper']['value'],$detail['helper']['id']));
-					}
-
-					if (isset($detail['spacer']) && $detail['spacer'])
-						print '<tr class="spacer"><td colspan="3"></td></tr>';
-
-				# See if there are any future ones - if there are and we dont ask any this round, then thats an error.
-				} elseif ($detail['page'] > $page) {
-					$nextpage++;
+					echo '</td></tr>'."\n";
 				}
+			}
+
+			# Do we have a helper.
+			# Side helpers are handled above.
+			# @todo: Helpers must have an onchange or onsubmit.
+			# @todo: Helpers must have an id field.
+			# @todo: Helpers must have an post field.
+
+			if (isset($detail['helper']) && (! isset($detail['helper']['location']) || $detail['helper']['location'] != 'side')) {
+
+				echo '<tr><td>&nbsp;</td>';
+				echo '<td class="heading">';
+
+				# Display the label.
+				if (isset($detail['helper']['description']) && (trim($detail['helper']['description'])))
+					printf('<acronym title="%s">%s</acronym>:',$detail['helper']['description'],$detail['helper']['display']);
+				else
+					printf('%s:',$detail['helper']['display']);
+
+				echo '</td>';
+
+				printf('<td>%s</td>',$templates->HelperValue($detail['helper']['value'],$detail['helper']['id']));
+			}
+
+			if (isset($detail['spacer']) && $detail['spacer'])
+				echo '<tr class="spacer"><td colspan="3"></td></tr>';
+
+		# See if there are any future ones - if there are and we dont ask any this round, then thats an error.
+		} elseif ($detail['page'] > $page) {
+			$nextpage++;
 		}
+	}
 
-		# @todo: Proper error message required.
-		if ($nextpage && ! $count)
-			pla_error(sprintf($lang['template_nextpage'],$nextpage));
+	# @todo: Proper error message required.
+	if ($nextpage && ! $count)
+		pla_error(sprintf(_('We are missing a page for [%s] attributes.'),$nextpage));
 
-		# If there is no count, display the summary
-		if (! $count) {
-			printf('<tr><td><img src="%s"></td><td><span class="x-small">%s :</span></td><td><b>%s</b></td></tr>',
-				$template['icon'],$lang['createf_create_object'],htmlspecialchars($new_dn));
+	# If there is no count, display the summary
+	if (! $count) {
+			printf('<tr><td><img src="%s" /></td><td><span class="x-small">%s :</span></td><td><b>%s</b></td></tr>',
+				$template['icon'],_('Create Object'),htmlspecialchars($new_dn));
 
-			print '<tr class="spacer"><td colspan="3"></td></tr>';
+			echo '<tr class="spacer"><td colspan="3"></td></tr>';
 
 			$counter = 0;
 			foreach ($_REQUEST['form'] as $attr => $value) {
@@ -463,224 +488,246 @@ if (isset($_REQUEST['form']))
 
 			}
 
-		} ?>
+	}
 
-	<input type="hidden" name="nextpage" value="<?php echo $nextpage; ?>" />
+	echo '<tr class="spacer"><td colspan="3"></td></tr>';
 
-	<tr class="spacer"><td colspan="3"></td></tr>
-	<tr>
+	if (! $nextpage && isset($_REQUEST['nextpage']) && ! $_REQUEST['nextpage']) {
 
-<?php
-if (! $nextpage && isset($_REQUEST['nextpage']) && ! $_REQUEST['nextpage']) {
+		# Look for any presubmit functions.
+		foreach ($template['empty_attrs'] as $attr => $detail) {
+			if (isset($template['attribute'][$attr]['presubmit']) && ! isset($_REQUEST['form'][$attr])) {
+				printf('<tr class="%s"><td colspan=2>%s</td><td><b>%s</b></td></tr>',
+					($counter++%2==0?'even':'odd'),$attr,htmlspecialchars(_('(Auto evaluated on submission.)')));
+				printf('<input type="hidden" name="presubmit[]" value="%s" />',$attr);
+			}
+		}
 
-	# Look for any presubmit functions.
-	foreach ($template['empty_attrs'] as $attr => $detail) {
-		if (isset($template['attribute'][$attr]['presubmit']) && ! isset($_REQUEST['form'][$attr])) {
-			printf('<tr class="%s"><td colspan=2>%s</td><td><b>%s</b></td></tr>',
-				($counter++%2==0?'even':'odd'),$attr,htmlspecialchars($lang['t_auto_submit']));
-			printf('<input type="hidden" name="presubmit[]" value="%s" />',$attr);
+		printf('<tr><td colspan="3"><center><br /><input type="submit" name="submit" value="%s" %s /></center></td></tr>',
+			_('Create Object'),$mustitems ? 'disabled' : '');
+
+	} elseif ($nextpage) {
+		printf('<tr><td colspan="3"><center><br /><input type="submit" name="submit" value="%s" %s /></center></td></tr>',
+			_('Next Page'),$mustitems ? 'disabled' : '');
+
+	} else {
+		printf('<tr><td colspan="3"><center><br /><input type="submit" name="submit" value="%s" %s /></center></td></tr>',
+			_('Proceed >>'),$mustitems ? 'disabled' : '');
+	}
+
+	echo '</table>';
+	echo '</center>';
+
+	if ($mustitems)
+		printf('<input type="hidden" name="mustitems" value="%s" />',$mustitems);
+
+	printf('<input type="hidden" name="nextpage" value="%s" />',$nextpage);
+	echo '</form>'."\n\n";
+	printf('<span class="hint">'._('Page %d').'</span>',$page);
+	echo "\n\n";
+
+	if ($mustitems) {
+		$jstext = '
+<script type="text/javascript" language="javascript">
+	var reduced = new Array();
+	var form = document.getElementById("template_form");
+
+	function reduceMust(attrname){
+		attr = document.getElementById(attrname);
+		if (attr.value.length > 0) {
+			if (! reduced[attrname]) {
+				reduced[attrname] = 1;
+				form.mustitems.value--;
+			}
+			if (form.mustitems.value < 0) {
+				form.mustitems.value = 0;
+			}
+
+			if (form.mustitems.value == 0) {
+				form.submit.disabled = false;
+			}
+		} else {
+			if (reduced[attrname]) {
+				reduced[attrname] = 0;
+				form.mustitems.value++;
+			}
+			if (form.mustitems.value > 0) {
+				form.submit.disabled = true;
+			}
 		}
 	}
-?>
-		<td colspan="3"><center><br /><input type="submit" name='submit' value="<?php echo $lang['createf_create_object']; ?>" <?php echo $mustitems ? 'disabled' : '' ?>/></center></td>
 
-<?php } elseif ($nextpage) { ?>
-		<td colspan="3"><center><br /><input type="submit" name='submit' value="<?php echo $lang['next_page']; ?>" <?php echo $mustitems ? 'disabled' : '' ?>/></center></td>
+	var attrTrace;
 
-<?php } else { ?>
-		<td colspan="3"><center><br /><input type="submit" name='submit' value="<?php echo $lang['proceed_gt']; ?>" <?php echo $mustitems ? 'disabled' : '' ?>/></center></td>
-<?php } ?>
-
-<?php if ($mustitems) { ?>
-	<input type="hidden" name="mustitems" value="<?php echo $mustitems; ?>" />
-<?php } ?>
-
-	</tr>
-	</form>
-	</table>
-	</center>
-	<span class="hint">This is the template engine.</span><br>
-	<span class="hint"><?php printf($lang['page_n'], $page); ?>.</span>
-
-<?php
-		if ($mustitems) {
-			print '<script language="javascript">';
-			print '	var reduced = new Array();';
-			print 'function reduceMust(form,attr,attrname){';
-			print '	if (attr.value.length > 0) {';
-			print '		if (! reduced[attrname]) {';
-			print '			reduced[attrname] = 1;';
-			print '			form.mustitems.value--;';
-			print '		}';
-			print '';		
-			print '		if (form.mustitems.value < 0) {';
-			print '			form.mustitems.value = 0;';
-			print '		}';
-			print '';		
-			print '		if (form.mustitems.value == 0) {';
-			print '			form.submit.disabled = false;';
-			print '		}';
-			print '	} else {';
-			print '		if (reduced[attrname]) {';
-			print '			reduced[attrname] = 0;';
-			print '			form.mustitems.value++;';
-			print '		}';
-			print '		if (form.mustitems.value > 0) {';
-			print '			form.submit.disabled = true;';
-			print '		}';
-			print '	}';
-			print '}';
-			print '</script>';
-		}
-
-		if (isset($verifyitems) && $verifyitems) {
-			//@todo: Return focus to the first item.
-			print '<script language="javascript">';
-			print 'function check(a,b){';
-			print '	if (a.value != b.value){';
-			print '		alert(\'Values dont compare\')';
-			print '	}';
-			print '}';
-			print '</script>';
-		}
-
-		if ($templates->OnChangeDisplay()) {
-			print '<script language="javascript">';
-			print $templates->OnChangeDisplay();
-			print '</script>';
-		}
-
-		# User needs to submit form to continue.
-		die();
+	function fill(id, value) {
+		attrTrace = new Array();
+		fillRec(id, value);
 	}
+
+	function fillRec(id, value) {
+	if (attrTrace[id] == 1)
+		return;
+	else {
+		attrTrace[id] = 1;
+		document.getElementById(id).value = value;
+		// here comes template-specific implementation, generated by php
+		if (false) {}';
+
+		foreach ($template['empty_attrs'] as $attr => $detail) {
+			$jstext .= "\t\t\telse if (id == '$attr') {\n";
+			if (isset($detail['must']))
+				$jstext .= "\t\t\t\treduceMust('$attr');\n";
+			$hash =& $templates->getJsHash();
+			if (isset($hash['autoFill'.$attr])) {
+				$jstext .= $hash['autoFill'.$attr];
+			}
+			$jstext .= "\t\t\t}\n";
+		}
+		$jstext .= '}}</script>';
+		$pjs[] = $jstext;
+	}
+
+	if (isset($verifyitems) && $verifyitems) {
+		//@todo: Return focus to the first item.
+		$pjs[] = '
+<script type="text/javascript" language="javascript">
+function check(a,b){
+	if (a.value != b.value){
+		alert(\'Values dont compare\')
+	}
+}
+</script>';
+	}
+
+	# User needs to submit form to continue.
+	foreach ($pjs as $script)
+		echo $script;
+
+	die();
+}
 
 if (! isset($template))
 	$template['attrs'] = $attrs;
 
 # If we get here - we are displaying/editing the entry.
 # Sort these entries.
-uksort( $template['attrs'], 'sortAttrs' );
+uksort($template['attrs'],'sortAttrs');
 
 $js_date_attrs = $config->GetValue('appearance','date_attrs');
-printf('<script language="javascript">var defaults = new Array();var default_date_format = "%s";</script>',$config->GetValue('appearance','date')); 
+$js[] = sprintf('<script type="text/javascript" language="javascript">var defaults = new Array();var default_date_format = "%s";</script>',$config->GetValue('appearance','date'));
 
-foreach( $template['attrs'] as $attr => $vals ) {
+foreach ($template['attrs'] as $attr => $vals) {
+	if (! is_array($vals))
+		$vals = array($vals);
 
 	flush();
 
 	$schema_attr = $ldapserver->getSchemaAttribute($attr,$dn);
-	if( $schema_attr )
+	if ($schema_attr)
 		$attr_syntax = $schema_attr->getSyntaxOID();
 	else
 		$attr_syntax = null;
 
-	if( ! strcasecmp( $attr, 'dn' ) )
+	if (! strcasecmp($attr,'dn'))
 		continue;
 
-	// has the config.php specified that this attribute is to be hidden or shown?
-	if( is_attr_hidden( $ldapserver, $attr))
+	# has the config.php specified that this attribute is to be hidden or shown?
+	if ($ldapserver->isAttrHidden($attr))
 		continue;
 
-	// Setup the $attr_note, which will be displayed to the right of the attr name (if any)
+	# Setup the $attr_note, which will be displayed to the right of the attr name (if any)
 	$attr_note = '';
 
-	// is there a user-friendly translation available for this attribute?
-	if( isset( $friendly_attrs[ strtolower( $attr ) ] ) ) {
-		$attr_display = $friendly_attrs[ strtolower( $attr ) ];
-		$attr_note = "<acronym title=\"" . sprintf( $lang['alias_for'], $attr_display, $attr ) . "\">alias</acronym>";
+	# is there a user-friendly translation available for this attribute?
+	if (isset($friendly_attrs[ strtolower($attr) ])) {
+		$attr_display = $friendly_attrs[ strtolower($attr) ];
+		$attr_note = "<acronym title=\"" . sprintf(_('Note: \'%s\' is an alias for \'%s\''),$attr_display,$attr) . "\">alias</acronym>";
 
 	} else {
 		$attr_display = $attr;
 	}
 
-	// is this attribute required by an objectClass?
+	# is this attribute required by an objectClass?
 	$required_by = '';
-	if( $schema_attr )
-		foreach( $schema_attr->getRequiredByObjectClasses() as $required )
-			if( isset($attrs['objectClass']) && in_array( strtolower( $required ), arrayLower( $attrs['objectClass'] ) ) )
+	if ($schema_attr)
+		foreach ($schema_attr->getRequiredByObjectClasses() as $required) {
+			if (isset($attrs['objectClass']) && ! is_array($attrs['objectClass']))
+				$attrs['objectClass'] = array($attrs['objectClass']);
+
+			if (isset($attrs['objectClass']) && in_array(strtolower($required),arrayLower($attrs['objectClass'])))
 				$required_by .= $required . ' ';
 
-			// It seems that some LDAP servers (Domino) returns attributes in lower case?
-			elseif( isset($attrs['objectclass']) && in_array( strtolower( $required ), arrayLower( $attrs['objectclass'] ) ) )
+			# It seems that some LDAP servers (Domino) returns attributes in lower case?
+			elseif (isset($attrs['objectclass']) && in_array(strtolower($required),arrayLower($attrs['objectclass'])))
 				$required_by .= $required . ' ';
+		}
 
-	if( $required_by ) {
-		if( trim( $attr_note ) )
+	if ($required_by) {
+		if (trim($attr_note))
 			$attr_note .= ', ';
 
-		$attr_note .= "<acronym title=\"" . sprintf( $lang['required_for'], $required_by ) . "\">" . $lang['required'] . "</acronym>&nbsp;";
+		$attr_note .= "<acronym title=\"" . sprintf(_('Required attribute for objectClass(es) %s'),$required_by) . "\">" . _('required') . "</acronym>&nbsp;";
 	}
 
-	// is this attribute required because its the RDN
+	# is this attribute required because its the RDN
 	if (preg_match("/^${attr}=/",$rdn)) {
-		if( trim( $attr_note ) )
+		if (trim($attr_note))
 			$attr_note .= ', ';
 
-		$attr_note .= "&nbsp;<acronym title=\"" . $lang['required_by_entry'] . "\">" . 'rdn' . "</acronym>&nbsp;";
+		$attr_note .= "&nbsp;<acronym title=\"" . _('This attribute is required for the RDN.') . "\">" . 'rdn' . "</acronym>&nbsp;";
 	}
 
-	if( is_array( $modified_attrs ) && in_array( strtolower($attr), $modified_attrs ) )
+	if (is_array($modified_attrs) && in_array($attr,$modified_attrs))
 		$is_modified_attr = true;
 	else
 		$is_modified_attr = false;
 
-	if( $is_modified_attr ) { ?>
-	<tr class="updated_attr">
+	if ($is_modified_attr)
+		echo '<tr class="updated_attr">';
+	else
+		echo '<tr>';
 
-	<?php } else { ?>
+	echo '<td class="attr">';
 
-	<tr>
+	$schema_href = sprintf('schema.php?server_id=%s&amp;view=attributes&amp;viewvalue=%s',
+		$ldapserver->server_id,real_attr_name($attr));
 
-	<?php } ?>
+	printf('<b><a title="'._('Click to view the schema defintion for attribute type \'%s\'').'" href="%s">%s</a></b>',$attr,$schema_href,$attr_display);
+	echo '</td>';
 
-		<td class="attr">
+	echo '<td class="attr_note">';
+	if ($attr_note)
+		printf('<sup><small>%s</small></sup>',$attr_note);
 
-	<?php $schema_href = sprintf("schema.php?server_id=%s&view=attributes&viewvalue=%s",
-		$ldapserver->server_id,real_attr_name($attr)); ?>
+	if ($ldapserver->isAttrReadOnly($attr))
+		printf('<small>(<acronym title="%s">%s</acronym>)</small>',_('This attribute has been flagged as read only by the phpLDAPadmin administrator'),_('read only'));
 
-			<b><a title="<?php echo sprintf( $lang['attr_name_tooltip'], $attr ) ?>" href="<?php echo $schema_href; ?>"><?php echo $attr_display; ?></a></b>
-		</td>
+	echo '</td>';
+	echo '</tr>';
 
-		<td class="attr_note">
-			<sup><small><?php echo $attr_note; ?></small></sup>
+	if ($is_modified_attr)
+		echo '<tr class="updated_attr">';
+	else
+		echo '<tr>';
 
-	<?php if( is_attr_read_only( $ldapserver, $attr ) ) { ?>
-
-			<small>(<acronym title="<?php echo $lang['read_only_tooltip']; ?>"><?php echo $lang['read_only']; ?></acronym>)</small>
-
-	<?php } ?>
-		</td>
-	</tr>
-
-	<?php if( $is_modified_attr ) { ?>
-
-	<tr class="updated_attr">
-
-	<?php } else { ?>
-
-	<tr>
-	<?php } ?>
-
-		<td class="val" colspan="2">
-
-	<?php
+	echo '<td class="val" colspan="2">';
 
 	/*
 	 * Is this attribute a jpegPhoto?
 	 */
-	if( is_jpeg_photo( $ldapserver, $attr ) ) {
+	if ($ldapserver->isJpegPhoto($attr)) {
 
-		// Don't draw the delete buttons if there is more than one jpegPhoto
-		// 	(phpLDAPadmin can't handle this case yet)
-		if( $ldapserver->isReadOnly() || is_attr_read_only( $ldapserver, $attr ) )
-			draw_jpeg_photos( $ldapserver, $dn, $attr, false );
+		/* Don't draw the delete buttons if there is more than one jpegPhoto
+		   (phpLDAPadmin can't handle this case yet) */
+		if ($ldapserver->isReadOnly() || $ldapserver->isAttrReadOnly($attr))
+			draw_jpeg_photos($ldapserver,$dn,$attr,false);
 		else
-			draw_jpeg_photos( $ldapserver, $dn, $attr, true );
+			draw_jpeg_photos($ldapserver,$dn,$attr,true);
 
-		// proceed to the next attribute
-		echo "</td></tr>\n";
+		# proceed to the next attribute
+		echo '</td></tr>';
 
-		if( $is_modified_attr )
+		if ($is_modified_attr)
 			echo '<tr class="updated_attr"><td class="bottom" colspan="2"></td></tr>';
 
 		continue;
@@ -689,127 +736,111 @@ foreach( $template['attrs'] as $attr => $vals ) {
 	/*
 	 * Is this attribute binary?
 	 */
-	if( is_attr_binary( $ldapserver, $attr ) ) {
-
+	if ($ldapserver->isAttrBinary($attr)) {
 		$href = sprintf('download_binary_attr.php?server_id=%s&amp;dn=%s&amp;attr=%s',
 			$ldapserver->server_id,$encoded_dn,$attr);
-?>
 
-			<small>
+		echo '<small>';
+		echo _('Binary value');
 
-		<?php echo $lang['binary_value'];
-
-		if (! strcasecmp( $attr, 'objectSid' ) ) {
+		if (! strcasecmp($attr,'objectSid'))
 			printf(' (%s)',binSIDtoText($vals[0]));
-		} ?>
 
-		<br />
+		echo '<br />';
 
-		<?php if( count( $vals ) > 1 ) {
-			for( $i=1; $i<=count($vals); $i++ ) { ?>
+		if (count($vals) > 1) {
+			for ($i=1; $i<=count($vals); $i++)
+				printf('<a href="%s&amp;value_num=%s"><img src="images/save.png" /> %s(%s)</a><br />',
+					$href,$i,_('download value'),$i);
 
-			<a href="<?php echo $href . "&amp;value_num=$i"; ?>"><img src="images/save.png" /> <?php echo $lang['download_value']; ?>(<?php echo $i; ?>)</a><br />
+		} else {
+			printf('<a href="%s"><img src="images/save.png" /> %s</a><br />',$href,_('download value'));
+		}
 
-			<?php }
+		if (! $ldapserver->isReadOnly() && ! $ldapserver->isAttrReadOnly($attr))
+			printf('<a href="javascript:deleteAttribute(\'%s\');" style="color:red;"><img src="images/trash.png" /> %s</a>',
+				$attr,_('delete attribute'));
 
-		} else { ?>
+		echo '</small>';
+		echo '</td>';
+		echo '</tr>';
 
-			<a href="<?php echo $href; ?>"><img src="images/save.png" /> <?php echo $lang['download_value']; ?></a><br />
-
-		<?php } ?>
-
-		<?php if( ! $ldapserver->isReadOnly() && ! is_attr_read_only( $ldapserver, $attr ) ) { ?>
-
-		<a href="javascript:deleteAttribute( '<?php echo $attr; ?>' );" style="color:red;"><img src="images/trash.png" /> <?php echo $lang['delete_attribute']; ?></a>
-
-		<?php } ?>
-
-			</small>
-		</td>
-	</tr>
-
-		<?php if( $is_modified_attr )
-
+		if ($is_modified_attr)
 			echo '<tr class="updated_attr"><td class="bottom" colspan="2"></td></tr>';
 
 		continue;
 	}
 
 	/*
-	 * Note: at this point, the attribute must be text-based (not binary or jpeg)
+	 * Note: at this point,the attribute must be text-based (not binary or jpeg)
 	 */
 
-	// If this is the userPassword attribute, add the javascript so we can call check password later.
-	if (! strcasecmp( $attr, 'userPassword' ) ) {
-		$user_password = $vals[0]; ?>
-
-	<script language="javascript">
+	# If this is the userPassword attribute, add the javascript so we can call check password later.
+	if (! strcasecmp($attr,'userPassword')) {
+		$js[] = '
+	<script type="text/javascript" language="javascript">
 	<!--
-		function passwordComparePopup() {
-			mywindow = open( 'password_checker.php', 'myname', 'resizable=no,width=450,height=200,scrollbars=1' );
-			mywindow.location.href = 'password_checker.php?hash=<?php echo base64_encode($user_password); ?>&base64=true';
-			if( mywindow.opener == null ) mywindow.opener = self;
+		function passwordComparePopup(hash) {
+			mywindow = open(\'password_checker.php\',\'myname\',\'resizable=no,width=450,height=200,scrollbars=1\');
+			mywindow.location.href = \'password_checker.php?hash=\'+hash+\'&base64=true\';
+			if (mywindow.opener == null) mywindow.opener = self;
 		}
 	-->
-	</script>
+	</script>';
 
-	<?php }
+	 }
 
 	/*
 	 * If this server is in read-only mode or this attribute is configured as read_only,
 	 * simply draw the attribute values and continue.
 	 */
-	if( $ldapserver->isReadOnly() || is_attr_read_only( $ldapserver, $attr ) || (preg_match("/^${attr}=/",$rdn)) ) {
-		if( is_array( $vals ) ) {
-			foreach( $vals as $i => $val ) {
-				if( trim( $val ) == "" )
-					echo "<span style=\"color:red\">[" . $lang['empty'] . "]</span><br />\n";
+	if ($ldapserver->isReadOnly() || $ldapserver->isAttrReadOnly($attr) || (preg_match("/^${attr}=/",$rdn))) {
+		if (is_array($vals)) {
+			foreach ($vals as $i => $val) {
+				if (trim($val) == '')
+					printf('<span style="color:red">[%s]</span><br />',_('empty'));
 
-				elseif( ! strcasecmp( $attr, 'userPassword' ) && $config->GetValue('appearance','obfuscate_password_display'))
-					echo preg_replace( '/./', '*', $val ) . "<br />";
+				elseif (! strcasecmp($attr,'userPassword') && $config->GetValue('appearance','obfuscate_password_display'))
+					echo preg_replace('/./','*',$val).'<br />';
 
-				elseif( in_array(strtolower($attr), $shadow_format_attrs) ) {
-					$shadow_date = shadow_date( $attrs, $attr);
-					echo htmlspecialchars($val)."&nbsp;";
-					echo "<small>";
+				elseif (in_array(strtolower($attr),$shadow_format_attrs)) {
+					$shadow_date = shadow_date($attrs,$attr);
+					echo htmlspecialchars($val).'&nbsp;';
+					echo '<small>';
 
-					if( ($today < $shadow_date) && in_array(strtolower($attr), $shadow_before_today_attrs) )
+					if (($today < $shadow_date) && in_array(strtolower($attr),$shadow_before_today_attrs))
 						echo '<span style="color:red">'.htmlspecialchars("(".strftime($config->GetValue('appearance','date'),$shadow_date).")").'</span>';
-					elseif( $today > $shadow_date && in_array(strtolower($attr), $shadow_after_today_attrs) )
+					elseif ($today > $shadow_date && in_array(strtolower($attr),$shadow_after_today_attrs))
 						echo '<span style="color:red">'.htmlspecialchars("(".strftime($config->GetValue('appearance','date'),$shadow_date).")").'</span>';
 					else
-						echo htmlspecialchars("(".strftime($config->GetValue('appearance','date'),shadow_date( $attrs, $attr)).")");
+						echo htmlspecialchars("(".strftime($config->GetValue('appearance','date'),shadow_date($attrs,$attr)).")");
 
-					echo "</small>";
+					echo '</small>';
 
 				} else
-					echo htmlspecialchars( $val ) . "<br />";
+					echo htmlspecialchars($val).'<br />';
 			}
 
+//@todo: redundant?
 		} else {
 
-			if( ! strcasecmp( $attr, 'userPassword' ) && obfuscate_password_display())
-				echo preg_replace( '/./', '*', $vals ) . "<br />";
+			if (! strcasecmp($attr,'userPassword') && obfuscate_password_display())
+				echo preg_replace('/./','*',$vals).'<br />';
 			else
-				echo $vals . "<br />";
+				echo $vals.'<br />';
 
 		}
 
-		if (! strcasecmp( $attr, 'userPassword' ) ) {?>
+		if (! strcasecmp($attr,'userPassword'))
+			printf('<small><a href="javascript:passwordComparePopup(\'%s\')">%s</a></small>',base64_encode($user_password),_('Check password...'));
 
-			<small><a href="javascript:passwordComparePopup()"><?php echo $lang['t_check_pass']; ?></a></small>
+		if (preg_match("/^${attr}=/",$rdn))
+			printf('<small>(<a href="%s">%s</a>)</small>',$rename_href,_('rename'));
 
-		<?php }
+		echo '</td>';
+		echo '</tr>';
 
-		if( preg_match("/^${attr}=/",$rdn) ) {?>
-			<small>(<a href="<?php echo $rename_href; ?>"><?php echo $lang['rename_lower']; ?></a>)</small>
-
-		<?php } ?>
-
-		</td>
-	</tr>
-
-		<?php if( $is_modified_attr )
+		if ($is_modified_attr)
 			echo '<tr class="updated_attr"><td class="bottom" colspan="2"></td></tr>';
 
 		continue;
@@ -818,46 +849,50 @@ foreach( $template['attrs'] as $attr => $vals ) {
 	/*
 	 * Is this a userPassword attribute?
 	 */
-	if( 0 == strcasecmp( $attr, 'userpassword' ) ) {
-		$user_password = $vals[0];
+	if (0 == strcasecmp($attr,'userpassword')) {
+		foreach ($vals as $user_password) {
+			$enc_type = get_enc_type($user_password);
 
-	$enc_type = get_enc_type( $user_password );
+			# Set the default hashing type if the password is blank (must be newly created)
+			if ($user_password == '')
+				$enc_type = get_default_hash($ldapserver->server_id);
 
-	// Set the default hashing type if the password is blank (must be newly created)
-	if( $user_password == '' )
-		$enc_type = get_default_hash( $ldapserver->server_id ); ?>
+				printf('<input type="hidden" name="old_values[userpassword][]" value="%s" />',htmlspecialchars($user_password));
+				echo '<!-- Special case of enc_type to detect changes when user changes enc_type but not the password value -->';
+				printf('<input size="38" type="hidden" name="old_enc_type[]" value="%s" />',($enc_type == '' ? 'clear' : $enc_type));
 
-			<input type="hidden" name="old_values[userpassword]" value="<?php echo htmlspecialchars($user_password); ?>" />
+			if (obfuscate_password_display($enc_type))
+				echo htmlspecialchars(preg_replace('/./','*',$user_password));
+			else
+				echo htmlspecialchars($user_password);
 
-			<!-- Special case of enc_type to detect changes when user changes enc_type but not the password value -->
-			<input size="38" type="hidden" name="old_enc_type" value="<?php echo ($enc_type==''?'clear':$enc_type); ?>" />
+			echo '<br />';
+			printf('<input style="width: 260px" type="%s" name="new_values[userpassword][]" value="" />',
+				(obfuscate_password_display($enc_type) ? 'password' : 'text'));
 
-	<?php if (obfuscate_password_display($enc_type)) {
-		echo htmlspecialchars(preg_replace("/./","*",$user_password));
+			echo enc_type_select_list($enc_type);
 
-	} else {
-		echo htmlspecialchars($user_password);
-	} ?>
+			echo '<br />';
+			printf('<small><a href="javascript:passwordComparePopup(\'%s\')">%s</a></small>',base64_encode($user_password),_('Check password...'));
+			echo '<br />';
+		}
 
-			<br />
-			<input style="width: 260px" type="
-	<?php if (obfuscate_password_display($enc_type))
-		echo "password";
-	else
-		echo "text";
-	?>" name="new_values[userpassword]" value="<?php echo htmlspecialchars( $user_password ); ?>" />
+		/* Draw the "add value" link under the list of values for this attributes */
+		if (! $ldapserver->isReadOnly() && ($schema_attr = $ldapserver->getSchemaAttribute($attr,$dn)) &&
+			! $schema_attr->getIsSingleValue()) {
 
-	<?php echo enc_type_select_list($enc_type); ?>
+			$add_href = sprintf('add_value_form.php?server_id=%s&amp;dn=%s&amp;attr=%s',
+				$ldapserver->server_id,$encoded_dn,rawurlencode($attr));
 
-			<br />
+			printf('<div class="add_value">(<a href="%s" title="%s">%s</a>)</div>',
+				$add_href,sprintf(_('Add an additional value to attribute \'%s\''),$attr),_('add value'));
+		}
 
-			<small><a href="javascript:passwordComparePopup()"><?php echo $lang['t_check_pass']; ?></a></small>
+		echo '</td>';
+		echo '</tr>';
 
-		</td>
-	</tr>
-
-	<?php if( $is_modified_attr )
-		echo '<tr class="updated_attr"><td class="bottom" colspan="2"></td></tr>';
+		if ($is_modified_attr)
+			echo '<tr class="updated_attr"><td class="bottom" colspan="2"></td></tr>';
 
 		continue;
 	}
@@ -865,46 +900,40 @@ foreach( $template['attrs'] as $attr => $vals ) {
 	/*
 	 * Is this a boolean attribute?
 	 */
-	if( is_attr_boolean( $ldapserver, $attr) ) {
-		$val = $vals[0]; ?>
+	if ($ldapserver->isAttrBoolean($attr)) {
+		$val = $vals[0];
 
-			<input type="hidden" name="old_values[<?php echo htmlspecialchars( $attr ); ?>][]" value="<?php echo htmlspecialchars($val); ?>" />
+		printf('<input type="hidden" name="old_values[%s][]" value="%s" />',htmlspecialchars($attr),htmlspecialchars($val));
 
-			<select name="new_values[<?php echo htmlspecialchars( $attr ); ?>]">
-				<option value="TRUE"<?php echo ($val=='TRUE' ? ' selected' : ''); ?>>
-					<?php echo $lang['true']; ?></option>
-				<option value="FALSE"<?php echo ($val=='FALSE' ? ' selected' : ''); ?>>
-					<?php echo $lang['false']; ?></option>
-				<option value="">(<?php echo $lang['none_remove_value']; ?>)</option>
-			</select>
-		</td>
-	</tr>
+		printf('<select name="new_values[%s][]">',htmlspecialchars($attr));
+		printf('<option value="TRUE" %s>%s</option>',($val=='TRUE' ? ' selected' : ''),_('true'));
+		printf('<option value="FALSE" %s>%s</option>',($val=='FALSE' ? ' selected' : ''),_('false'));
+		printf('<option value="">(%s)</option>',_('none, remove value'));
+		echo '</select>';
+		echo '</td>';
+		echo '</tr>';
 
-		<?php if( $is_modified_attr )
+		if ($is_modified_attr)
 			echo '<tr class="updated_attr"><td class="bottom" colspan="2"></td></tr>';
 
 		continue;
 	}
-	
+
 	/*
 	 * Is this a date type attribute?
 	 */
-	if (in_array_ignore_case($attr, array_keys($js_date_attrs))) {
-		$val = $vals[0]; ?>
+	if (in_array_ignore_case($attr,array_keys($js_date_attrs))) {
+		$val = $vals[0];
 
-			<input type="hidden" name="old_values[<?php echo htmlspecialchars( $attr ); ?>][]" value="<?php echo htmlspecialchars($val); ?>" />
-			<input type="text"
-                        size="30" id="f_date_<?php echo $attr; ?>"
-                        name="new_values[<?php echo htmlspecialchars( $attr ); ?>][0]"
-                        value="<?php echo htmlspecialchars($val); ?>" /></nobr>
-			<?php draw_date_selector_link( $attr ); ?>
-		</td>
-	</tr>
-	<script language="javascript">
-		defaults['f_date_<?php echo $attr; ?>'] = '<?php echo $js_date_attrs[$attr]; ?>';
-	</script>
+		printf('<input type="hidden" name="old_values[%s][]" value="%s" />',htmlspecialchars($attr),htmlspecialchars($val));
+		printf('<nobr><input type="text" size="30" id="f_date_%s" name="new_values[%s][0]" value="%s" />&nbsp;',
+			$attr,htmlspecialchars($attr),htmlspecialchars($val));
+		draw_date_selector_link($attr);
+		echo '</nobr></td>';
+		echo '</tr>';
+		$js[] = sprintf('<script type="text/javascript" language="javascript">defaults[\'f_date_%s\'] = \'%s\';</script>',$attr,$js_date_attrs[$attr]);
 
-		<?php if( $is_modified_attr )
+		if ($is_modified_attr)
 			echo '<tr class="updated_attr"><td class="bottom" colspan="2"></td></tr>';
 
 		continue;
@@ -914,161 +943,143 @@ foreach( $template['attrs'] as $attr => $vals ) {
 	 * End of special case attributes (non plain text).
 	 */
 
-
 	/*
 	 * This is a plain text attribute, to be displayed and edited in plain text.
 	 */
-	foreach( $vals as $i => $val ) {
+	foreach ($vals as $i => $val) {
 
-		$input_name = "new_values[" . htmlspecialchars( $attr ) . "][$i]";
-		// We smack an id="..." tag in here that doesn't have [][] in it to allow the
-		// draw_chooser_link() to identify it after the user clicks.
-		$input_id = "new_values_" . htmlspecialchars($attr) . "_" . $i; ?>
+		$input_name = sprintf('new_values[%s][%s]',htmlspecialchars($attr),$i);
+		/* We smack an id="..." tag in here that doesn't have [][] in it to allow the
+		   draw_chooser_link() to identify it after the user clicks. */
+		$input_id = sprintf('new_values_%s_%s',htmlspecialchars($attr),$i);
 
-		<!-- The old_values array will let update.php know if the entry contents changed
-		     between the time the user loaded this page and saved their changes. -->
-		<input type="hidden" name="old_values[<?php echo htmlspecialchars( $attr ); ?>][<?php echo $i; ?>]" value="<?php echo htmlspecialchars($val); ?>" />
+		/* The old_values array will let update.php know if the entry contents changed
+		   between the time the user loaded this page and saved their changes. */
 
-		<?php // Is this value is a structural objectClass, make it read-only
-		if( ! strcasecmp( $attr, 'objectClass' ) ) { ?>
+		printf('<input type="hidden" name="old_values[%s][%s]" value="%s" />',
+			htmlspecialchars($attr),$i,htmlspecialchars($val));
 
-		<a title="<?php echo $lang['view_schema_for_oclass']; ?>" href="schema.php?server_id=<?php echo $ldapserver->server_id; ?>&amp;view=objectClasses&amp;viewvalue=<?php echo htmlspecialchars( $val ); ?>"><img src="images/info.png" /></a>
+		# Is this value is a structural objectClass, make it read-only
+		if (! strcasecmp($attr,'objectClass')) {
 
-			<?php $schema_object = $ldapserver->getSchemaObjectClass($val);
+			printf('<a title="%s" href="schema.php?server_id=%s&amp;view=objectClasses&amp;viewvalue=%s"><img src="images/info.png" /></a>&nbsp;',
+				_('View the schema description for this objectClass'),$ldapserver->server_id,htmlspecialchars($val));
 
-			      if ($schema_object->getType() == 'structural') {
-				echo "$val <small>(<acronym title=\"" .
-				sprintf( $lang['structural_object_class_cannot_remove'] ) . "\">" .
-				$lang['structural'] . "</acronym>)</small><br />"; ?>
+			$schema_object = $ldapserver->getSchemaObjectClass($val);
 
-		<input type="hidden" name="<?php echo $input_name; ?>" id="<?php echo $input_id; ?>" value="<?php echo htmlspecialchars($val); ?>" />
+			if ($schema_object->getType() == 'structural') {
+				printf(' %s <small>(<acronym title="%s">%s</acronym>)</small><br />',
+					$val,_('This is a structural ObjectClass and cannot be removed.'),_('structural'));
+				printf('<input type="hidden" name="%s" id="%s" value="%s" />',$input_name,$input_id,htmlspecialchars($val));
 
-				<?php continue;
+				continue;
 			}
 		}
 
-		if( is_dn_string( $val ) || is_dn_attr( $ldapserver, $attr ) ) { ?>
+		if (is_dn_string($val) || $ldapserver->isDNAttr($attr))
 
-		<a title="<?php echo sprintf( $lang['go_to_dn'], htmlspecialchars($val) ); ?>" href="edit.php?server_id=<?php echo $ldapserver->server_id; ?>&amp;dn=<?php echo rawurlencode($val); ?>"><img style="vertical-align: top" src="images/go.png" /></a>
+			if ($ldapserver->dnExists($val)) {
+				printf('<a title="'._('Go to %s').'" href="template_engine.php?server_id=%s&amp;dn=%s"><img style="vertical-align: top" src="images/go.png" /></a>&nbsp;',
+					htmlspecialchars($val),$ldapserver->server_id,rawurlencode($val));
+			} else {
+				printf('<a title="'._('DN not available %s').'"><img style="vertical-align: top" src="images/nogo.png" /></a>&nbsp;',
+					htmlspecialchars($val),$ldapserver->server_id,rawurlencode($val));
+			}
 
-		<?php } elseif( is_mail_string( $val ) ) { ?>
+		elseif (is_mail_string($val))
+			printf('<a href="mailto:%s"><img style="vertical-align: center" src="images/mail.png" /></a>&nbsp;',htmlspecialchars($val));
 
-		<a href="mailto:<?php echo htmlspecialchars($val); ?>"><img style="vertical-align: center" src="images/mail.png" /></a>
+		elseif (is_url_string($val))
+			printf('<a href="%s" target="new"><img style="vertical-align: center" src="images/dc.png" /></a>&nbsp;',htmlspecialchars($val));
 
-		<?php } elseif( is_url_string( $val ) ) { ?>
+		if ($ldapserver->isMultiLineAttr($attr,$val))
+			printf('<textarea class="val" rows="3" cols="50" name="%s" id="%s">%s</textarea>',$input_name,$input_id,htmlspecialchars($val));
+		else
+			printf('<input type="text" class="val" name="%s" id="%s" value="%s" />&nbsp;',$input_name,$input_id,htmlspecialchars($val));
 
-		<a href="<?php echo htmlspecialchars($val); ?>" target="new"><img style="vertical-align: center" src="images/dc.png" /></a>
-
-		<?php }
-
-		if (is_multi_line_attr($attr,$val,$ldapserver->server_id)) { ?>
-
-		<textarea class="val" rows="3" cols="50" name="<?php echo $input_name; ?>" id="<?php echo $input_id; ?>"><?php echo htmlspecialchars($val); ?></textarea>
-
-		<?php } else { ?>
-
-		<input type="text" class="val" name="<?php echo $input_name; ?>" id="<?php echo $input_id; ?>" value="<?php echo htmlspecialchars($val); ?>" />
-
-		<?php }
-
-
-		// draw a link for popping up the entry browser if this is the type of attribute
-		// that houses DNs.
-		if( is_dn_attr( $ldapserver, $attr ) )
-			draw_chooser_link( "edit_form.$input_id", false );
+		/* draw a link for popping up the entry browser if this is the type of attribute
+		   that houses DNs. */
+		if ($ldapserver->isDNAttr($attr))
+			draw_chooser_link("edit_form.$input_id",false);
 
 		echo '<br />';
 
-		// If this is a gidNumber on a non-PosixGroup entry, lookup its name and description for convenience
-		if( ! strcasecmp( $attr, 'gidNumber' ) &&
-			! in_array_ignore_case( 'posixGroup', get_object_attr( $ldapserver, $dn, 'objectClass' ) ) ) {
+		# If this is a gidNumber on a non-PosixGroup entry, lookup its name and description for convenience
+		if (! strcasecmp($attr,'gidNumber') &&
+			! in_array_ignore_case('posixGroup',$ldapserver->getDNAttr($dn,'objectClass'))) {
 
 			$gid_number = $val;
 			$search_group_filter = "(&(objectClass=posixGroup)(gidNumber=$val))";
-			$group = pla_ldap_search( $ldapserver, $search_group_filter, null, array( 'dn', 'description' ) );
+			$group = $ldapserver->search(null,null,$search_group_filter,array('dn','description'));
 
-			if( count( $group ) > 0 ) {
-				echo "<br />";
-				$group = array_pop( $group );
+			if (count($group) > 0) {
+				echo '<br />';
+
+				$group = array_pop($group);
 				$group_dn = $group['dn'];
-				$group_name = explode( '=', get_rdn( $group_dn ) );
+				$group_name = explode('=',get_rdn($group_dn));
 				$group_name = $group_name[1];
-				$href = sprintf('edit.php?server_id=%s&amp;dn=%s',$ldapserver->server_id,urlencode($group_dn));
-				echo "<small>";
-				echo "<a href=\"$href\">" . htmlspecialchars($group_name) . "</a>";
-				$description = isset( $group['description'] ) ? $group['description'] : null;
+				$href = sprintf('template_engine.php?server_id=%s&amp;dn=%s',$ldapserver->server_id,urlencode($group_dn));
 
-				if( $description ) echo " (" . htmlspecialchars( $description ) . ")";
-				echo "</small>";
+				echo '<small>';
+				printf('<a href="%s">%s</a>',$href,htmlspecialchars($group_name));
+
+				$description = isset($group['description']) ? $group['description'] : null;
+
+				if ($description)
+					printf(' (%s)',htmlspecialchars($description));
+
+				echo '</small>';
 			}
 		}
 
-		// Show the dates for all the shadow attributes.
-		if( in_array(strtolower($attr), $shadow_format_attrs) ) {
-			if( ( $shadow_date = shadow_date( $attrs, $attr) ) !== false ) {
-				echo "<br />";
-				echo "<small>";
+		# Show the dates for all the shadow attributes.
+		if (in_array(strtolower($attr),$shadow_format_attrs)) {
+			if (($shadow_date = shadow_date($attrs,$attr)) !== false) {
+				echo '<br />';
+				echo '<small>';
 
-				if( ($today < $shadow_date) && in_array(strtolower($attr), $shadow_before_today_attrs) )
+				if (($today < $shadow_date) && in_array(strtolower($attr),$shadow_before_today_attrs))
 					echo '<span style="color:red">'.htmlspecialchars(strftime($config->GetValue('appearance','date'),$shadow_date)).'</span>';
-				elseif( $today > $shadow_date && in_array(strtolower($attr), $shadow_after_today_attrs) )
+				elseif ($today > $shadow_date && in_array(strtolower($attr),$shadow_after_today_attrs))
 					echo '<span style="color:red">'.htmlspecialchars(strftime($config->GetValue('appearance','date'),$shadow_date)).'</span>';
 				else
 					echo htmlspecialchars(strftime($config->GetValue('appearance','date'),$shadow_date));
 
-				echo "</small>";
+				echo '</small>';
 			}
 		}
 
 	} /* end foreach value */
 
 	/* Draw the "add value" link under the list of values for this attributes */
-
-	if(	! $ldapserver->isReadOnly() &&
-		( $schema_attr = $ldapserver->getSchemaAttribute($attr,$dn)) &&
-		! $schema_attr->getIsSingleValue() ) {
+	if (! $ldapserver->isReadOnly() && ($schema_attr = $ldapserver->getSchemaAttribute($attr,$dn)) &&
+		! $schema_attr->getIsSingleValue()) {
 
 		$add_href = sprintf('add_value_form.php?server_id=%s&amp;dn=%s&amp;attr=%s',
 			$ldapserver->server_id,$encoded_dn,rawurlencode($attr));
 
 		printf('<div class="add_value">(<a href="%s" title="%s">%s</a>)</div>',
-			$add_href,sprintf( $lang['add_value_tooltip'], $attr ),$lang['add_value']);
-	} ?>
+			$add_href,sprintf(_('Add an additional value to attribute \'%s\''),$attr),_('add value'));
+	}
 
-	</td>
-	</tr>
+	echo '</td>';
+	echo '</tr>';
 
-	<?php if( $is_modified_attr ) { ?>
+	if ($is_modified_attr)
+		echo '<tr class="updated_attr"><td class="bottom" colspan="2"></td></tr>';
 
-		<tr class="updated_attr"><td class="bottom" colspan="2"></td></tr>
-
-	<?php }
-
+	echo "\n";
 	flush();
 
-} /* End foreach( $attrs as $attr => $vals ) */
+} /* End foreach ($attrs as $attr => $vals) */
 
-if (! $ldapserver->isReadOnly()) { ?>
-
-	<tr><td colspan="2"><center><input type="submit" value="<?php echo $lang['save_changes']; ?>" /></center></td></tr></form>
-
-<?php } ?>
-
-</table>
-
-<?php /* If this entry has a binary attribute, we need to provide a form for it to submit when deleting it. */ ?>
-
-<script language="javascript">
-<!--
-function deleteAttribute( attrName )
-{
-	if( confirm( "<?php echo $lang['really_delete_attribute']; ?> '" + attrName + "'?" ) ) {
-		document.delete_attribute_form.attr.value = attrName;
-		document.delete_attribute_form.submit();
-	}
-}
--->
-</script>
+if (! $ldapserver->isReadOnly())
+	printf('<tr><td colspan="2"><center><input type="submit" value="%s" /></center></td></tr></table></form>',
+		_('Save Changes'));
+else
+	printf('</table>');
+?>
 
 <!-- This form is submitted by JavaScript when the user clicks "Delete attribute" on a binary attribute -->
 <form name="delete_attribute_form" action="delete_attr.php" method="post">
@@ -1077,6 +1088,23 @@ function deleteAttribute( attrName )
 	<input type="hidden" name="attr" value="FILLED IN BY JAVASCRIPT" />
 </form>
 
+
 <?php
-echo "</body>\n</html>";
+	foreach ($js as $script)
+		echo $script;
 ?>
+<!-- If this entry has a binary attribute, we need to provide a form for it to submit when deleting it. -->
+
+<script type="text/javascript" language="javascript">
+<!--
+function deleteAttribute(attrName)
+{
+	if (confirm("<?php echo _('Really delete attribute'); ?> '" + attrName + "'?")) {
+		document.delete_attribute_form.attr.value = attrName;
+		document.delete_attribute_form.submit();
+	}
+}
+-->
+</script>
+</body>
+</html>

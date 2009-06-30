@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.25.2.9 2005/11/12 02:46:18 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.29.2.15 2005/12/31 04:26:34 wurley Exp $ */
 
 /**
  * Classes and functions for the template engine.ation and capability
@@ -33,16 +33,16 @@ class xml2array {
 
 		$this->resParser = xml_parser_create();
 		xml_set_object($this->resParser,$this);
-		xml_set_element_handler($this->resParser,"tagOpen","tagClosed");
+		xml_set_element_handler($this->resParser,'tagOpen','tagClosed');
 
-		xml_set_character_data_handler($this->resParser,"tagData");
+		xml_set_character_data_handler($this->resParser,'tagData');
 
 		$this->push_pos($this->arrOutput);
 
 		$this->strXmlData = xml_parse($this->resParser,$strInputXML);
 
 		if (! $this->strXmlData)
-			die(sprintf("XML error: %s at line %d",
+			die(sprintf('XML error: %s at line %d',
 				xml_error_string(xml_get_error_code($this->resParser)),
 				xml_get_current_line_number($this->resParser)));
 
@@ -95,14 +95,15 @@ class xml2array {
 
 class Templates {
 	var $_template = array();
+	var $_js_hash = array();
 
 	function Templates($server_id) {
 		if (DEBUG_ENABLED)
-			debug_log('%s::__construct(): Entered with ()',2,get_class($this));
+			debug_log('%s::__construct(): Entered with ()',5,get_class($this));
 
 		if ($this->_template = get_cached_item($server_id,'template','all')) {
 			if (DEBUG_ENABLED)
-				debug_log('%s::init(): Using CACHED [%s]',3,get_class($this),'templates');
+				debug_log('%s::init(): Using CACHED [%s]',5,get_class($this),'templates');
 
 		} else {
 			$dir = opendir(TMPLDIR);
@@ -125,33 +126,50 @@ class Templates {
 
 	function storeTemplate($template,$xmldata) {
 		if (DEBUG_ENABLED)
-			debug_log('%s::storeTemplate(): Entered with (%s,%s)',2,
-				get_class($this),$template,serialize($xmldata));
+			debug_log('%s::storeTemplate(): Entered with (%s,%s)',5,
+				get_class($this),$template,$xmldata);
 
-		global $ldapserver, $lang;
+		global $ldapserver;
 
+		$this->_template[$template]['objectclass'] = array();
 		foreach ($xmldata['template'] as $xml_key => $xml_value) {
 			if (DEBUG_ENABLED)
-				debug_log('%s::storeTemplate(): Foreach loop Key [%s] Value [%s]',9,
+				debug_log('%s::storeTemplate(): Foreach loop Key [%s] Value [%s]',4,
 					get_class($this),$xml_key,is_array($xml_value));
 
 			switch ($xml_key) {
+
 				# Build our object Classes from the DN and Template.
 				case ('objectclasses') :
 					if (isset($xmldata['template']['objectclasses']) && is_array($xmldata['template']['objectclasses'])) {
 						foreach ($xmldata['template']['objectclasses']['objectclass'] as $index => $details) {
 
+							# XML files with only 1 objectClass dont have a numeric index.
 							if (is_numeric($index)) {
-								if (! isset($this->_template[$template]['objectclass']) ||
-									! in_array($details['ID'],$this->_template[$template]['objectclass']))
+								if ($schema = $ldapserver->getSchemaObjectClass($details['ID'])) {
 
-									$this->_template[$template]['objectclass'][] = $details['ID'];
+									# If we havent recorded this objectclass already, do so now.
+									if (! isset($this->_template[$template]['objectclass']) ||
+										! in_array($schema->getName(),$this->_template[$template]['objectclass'])) {
+
+										$this->_template[$template]['objectclass'][] = $schema->getName();
+									}
+
+								# This objectClass doesnt exist.
+								} else {
+								}
 
 							} else {
-								if (! isset($this->_template[$template]['objectclass']) ||
-									! in_array($xmldata['template']['objectclasses']['objectclass']['ID'],$this->_template[$template]['objectclass']))
+								if ($schema = $ldapserver->getSchemaObjectClass($details)) {
+									if (! isset($this->_template[$template]['objectclass']) ||
+										! in_array($details,$this->_template[$template]['objectclass'])) {
+	
+										$this->_template[$template]['objectclass'][] = $schema->getName();
+									}
 
-									$this->_template[$template]['objectclass'][] = $xmldata['template']['objectclasses']['objectclass']['ID'];
+								# This objectClass doesnt exist.
+								} else {
+								}
 							}
 						}
 					}
@@ -161,7 +179,7 @@ class Templates {
 				# Build our attribute list from the DN and Template.
 				case ('attributes') :
 					if (DEBUG_ENABLED)
-						debug_log('%s::storeTemplate(): Case [%s]',8,get_class($this),'attributes');
+						debug_log('%s::storeTemplate(): Case [%s]',4,get_class($this),'attributes');
 
 					if (isset($xmldata['template']['attributes']) && is_array($xmldata['template']['attributes'])) {
 						$this->_template[$template]['attribute'] = array();
@@ -170,27 +188,28 @@ class Templates {
 							foreach ($tattrs as $index => $attr_details) {
 
 								if (DEBUG_ENABLED)
-									debug_log('%s::storeTemplate(): Foreach tattrs Key [%s] Value [%s]',9,
-										get_class($this),$index,is_array($attr_details));
+									debug_log('%s::storeTemplate(): Foreach tattrs Key [%s] Value [%s]',4,
+										get_class($this),$index,serialize($attr_details));
 
 								# Single attribute XML files are not indexed.
 								if (is_numeric($index)) {
-									$this->_template[$template]['attribute'][$attr_details['ID']] = $this->_parseXML($index,$attr_details);
+									if ($attr = $ldapserver->getSchemaAttribute($attr_details['ID']))
+										$this->_template[$template]['attribute'][$attr->getName()] = $this->_parseXML($index,$attr_details);
 
 								} else {
-
 									if (! strcmp($index,'ID'))
 										continue;
 
-									foreach ($attr_details as $key => $values) {
-
-										if (is_array($values) && isset($values['ID'])) {
-											$this->_template[$template]['attribute'][$tattrs['ID']][$index]['_KEY:'.$values['ID']] = $this->_parseXML($key,$values);
-										} elseif (is_array($values) && isset($values['#text'])) {
-											$this->_template[$template]['attribute'][$tattrs['ID']][$index][] = $values['#text'];
-
-										} else {
-											$this->_template[$template]['attribute'][$tattrs['ID']][$index] = $this->_parseXML($key,$values);
+									if ($attr = $ldapserver->getSchemaAttribute($tattrs['ID'])) {
+										foreach ($attr_details as $key => $values) {
+											if (is_array($values) && isset($values['ID'])) {
+												$this->_template[$template]['attribute'][$attr->getName()][$index]['_KEY:'.$values['ID']] = $this->_parseXML($key,$values);
+											} elseif (is_array($values) && isset($values['#text'])) {
+												$this->_template[$template]['attribute'][$attr->getName()][$index][] = $values['#text'];
+	
+											} else {
+												$this->_template[$template]['attribute'][$attr->getName()][$index] = $this->_parseXML($key,$values);
+											}
 										}
 									}
 								}
@@ -214,6 +233,12 @@ class Templates {
 			}
 		}
 
+		if (! count($this->_template[$template]['objectclass'])) {
+			$this->_template[$template]['invalid'] = 1;
+			$this->_template[$template]['invalid_reason'] = _('ObjectClasses in XML dont exist in LDAP server.');
+			return;
+		}
+			
 		# Collect our structural, must & may attributes.
 		$this->_template[$template]['must'] = array();
 		$this->_template[$template]['may'] = array();
@@ -228,24 +253,29 @@ class Templates {
 			while ($supclass == true) {
 				$schema_object = $ldapserver->getSchemaObjectClass($oclass);
 
+				/*
+				 * Shouldnt be required now...
 				# Test that this is a valid objectclass - disable if an invalid one found.
 				if (! $schema_object) {
 					$this->_template[$template]['invalid'] = 1;
 					$supclass = false;
 					continue;
 				}
+				*/
 
 				if ($schema_object->getType() == 'structural' && (! $enherited))
 					$this->_template[$template]['structural'][] = $oclass;
 
 				if ($schema_object->getMustAttrs() )
 					foreach ($schema_object->getMustAttrs() as $index => $detail) {
+						$objectclassattr = $detail->getName();
 
-						if (! in_array($detail->getName(),$this->_template[$template]['must']) && $detail->getName() != 'objectClass') {
+						if (! in_array($objectclassattr,$this->_template[$template]['must']) &&
+							strcasecmp('objectClass',$objectclassattr) != 0) {
 
 							# Go through the aliases, and ignore any that are already defined.
 							$ignore = false;
-							$attr = $ldapserver->getSchemaAttribute($detail->GetName());
+							$attr = $ldapserver->getSchemaAttribute($objectclassattr);
 							foreach ($attr->aliases as $alias) {
 								if (in_array($alias,$this->_template[$template]['must'])) {
 									$ignore = true;
@@ -256,27 +286,30 @@ class Templates {
 							if ($ignore)
 								continue;
 
-			        if (isset($this->_template[$template]['attribute'][$detail->getName()]) &&
-						    ! is_array($this->_template[$template]['attribute'][$detail->getName()]))
+							if (isset($this->_template[$template]['attribute'][$objectclassattr]) &&
+								! is_array($this->_template[$template]['attribute'][$objectclassattr]))
 
-								$this->_template[$template]['must'][] = 
-								  $this->_template[$template]['attribute'][$detail->getName()];
+								$this->_template[$template]['must'][] =
+									$this->_template[$template]['attribute'][$objectclassattr];
 
 							else
-				        $this->_template[$template]['must'][] = $detail->getName();
+								$this->_template[$template]['must'][] = $objectclassattr;
 						}
 				}
 
-				if ($schema_object->getMayAttrs() )
-				        foreach ($schema_object->getMayAttrs() as $index => $detail)
-					        if (! in_array($detail->getName(),$this->_template[$template]['may']))
-						        $this->_template[$template]['may'][] = $detail->getName();
+				if ($schema_object->getMayAttrs())
+					foreach ($schema_object->getMayAttrs() as $index => $detail) {
+						$objectclassattr = $detail->getName();
+
+						if (! in_array($objectclassattr,$this->_template[$template]['may']))
+							$this->_template[$template]['may'][] = $objectclassattr;
+					}
 
 				# Keep a list to objectclasses we have processed, so we dont get into a loop.
 				$oclass_processed[] = $oclass;
 
 				if ((count($schema_object->getSupClasses())) || count($superclasslist)) {
-				        foreach ($schema_object->getSupClasses() as $supoclass) {
+					foreach ($schema_object->getSupClasses() as $supoclass) {
 						if (! in_array($supoclass,$oclass_processed))
 							$supoclasslist[] = $supoclass;
 					}
@@ -290,20 +323,6 @@ class Templates {
 				} else {
 					$supclass = false;
 				}
-			}
-		}
-
-		# Translate anything.
-		foreach (array('title','description','display','hint') as $transkey) {
-			if (isset($this->_template[$template][$transkey]) && isset($lang[$this->_template[$template][$transkey]]))
-				$this->_template[$template][$transkey] = $lang[$this->_template[$template][$transkey]];
-
-			foreach ($this->_template[$template]['attribute'] as $key => $value) {
-				if (isset($value[$transkey]) && isset($lang[$value[$transkey]]))
-					$this->_template[$template]['attribute'][$key][$transkey] = $lang[$value[$transkey]];
-
-				if (isset($value['helper'][$transkey]) && isset($lang[$value['helper'][$transkey]]))
-					$this->_template[$template]['attribute'][$key]['helper'][$transkey] = $lang[$value['helper'][$transkey]];
 			}
 		}
 
@@ -363,6 +382,7 @@ class Templates {
 
 				//unset($this->_template[$template]);
 				$this->_template[$template]['invalid'] = 1;
+				$this->_template[$template]['invalid_reason'] = sprintf(_('Missing %s in the XML file.'),$key);
 				break;
 			}
 		}
@@ -370,8 +390,8 @@ class Templates {
 
 	function _parseXML($index,$attr_details) {
 		if (DEBUG_ENABLED)
-			debug_log('%s::_parseXML(): Entered with (%s,%s)',2,
-				get_class($this),$index,serialize($attr_details));
+			debug_log('%s::_parseXML(): Entered with (%s,%s)',5,
+				get_class($this),$index,$attr_details);
 
 		if (! $attr_details) {
 			return '';
@@ -408,16 +428,17 @@ class Templates {
 	}
 
 	function getTemplates() {
-	        return $this->_template;
+		return $this->_template;
 	}
 
-	function OnChangeAdd($function) {
+	function OnChangeAdd($ldapserver,$origin,$value) {
 		if (DEBUG_ENABLED)
-			debug_log('%s::OnChangeAdd(): Entered with (%s)',2,get_class($this),$function);
+			debug_log('%s::OnChangeAdd(): Entered with (%s,%s,%s)',5,
+				get_class($this),$ldapserver->server_id,$origin,$value);
 
-		global $js;
+		global $_js_hash;
 
-		list($command,$arg) = split(':',$function);
+		list($command,$arg) = split(':',$value);
 
 		switch ($command) {
 			#autoFill:attr,string (with %attr%)
@@ -427,90 +448,112 @@ class Templates {
 				preg_match_all('/%(\w+)(\|[0-9]*-[0-9]*)?(\/[lTU])?%/U',$string,$matchall);
 				//print"<PRE>";print_r($matchall); //0 = highlevel match, 1 = attr, 2 = subst, 3 = mod
 
-				$html = sprintf('autoFill%s(this.form)',$attr);
+				if (! isset($_js_hash['autoFill'.$origin]))
+					$_js_hash['autoFill'.$origin] = '';
 
-				if (! isset($js["autoFill".$attr]) ) {
+				$formula = $string;
+				$formula = preg_replace('/^([^%])/','\'$1',$formula);
+				$formula = preg_replace('/([^%])$/','$1\'',$formula);
 
-					$js["autoFill".$attr] = sprintf("\nfunction autoFill%s( form ) {\n",$attr);
-					$formula = $string;
-					$formula = preg_replace('/^([^%])/','\'$1',$formula);
-					$formula = preg_replace('/([^%])$/','$1\'',$formula);
+				# Check that our attributes match our schema attributes.
+				foreach ($matchall[1] as $index => $checkattr) {
+					$matchattr = $ldapserver->getSchemaAttribute($checkattr);
 
-					foreach ($matchall[0] as $index => $null) {
-						$substrarray = array();
+					# If the attribute is the same as in the XML file, then dont need to do anything.
+					if ($matchattr->getName() == $checkattr)
+						continue;
 
-						$js["autoFill".$attr] .= sprintf("	var %s;\n",$matchall[1][$index]);
-
-						if (trim($matchall[2][$index])) {
-							preg_match_all('/([0-9]*)-([0-9]*)/',$matchall[2][$index],$substrarray);
-						}
-
-						if ($matchall[3][$index] == "/T") {
-							$js["autoFill".$attr] .= sprintf("	%s = form.%s.options[form.%s.selectedIndex].text;\n",
-								$matchall[1][$index],$matchall[1][$index],$matchall[1][$index]);
-
-						} else {
-
-							if ((isset($substrarray[1][0]) && $substrarray[1][0]) || (isset($substrarray[2][0]) && $substrarray[2][0])) {
-								$js["autoFill".$attr] .= sprintf('	%s = form.%s.value.substr(%s,%s)',
-									$matchall[1][$index],$matchall[1][$index],
-									$substrarray[1][0] ? $substrarray[1][0] : '0',
-									$substrarray[2][0] ? $substrarray[2][0] : sprintf('form.%s.value.length',$matchall[1][$index]));
-
-							} else {
-								$js["autoFill".$attr] .= sprintf('	%s = form.%s.value',$matchall[1][$index],$matchall[1][$index]);
-							}
-
-							switch ($matchall[3][$index]) {
-								case '/l':
-									$js["autoFill".$attr] .= ".toLowerCase()";
-									break;
-							}
-							$js["autoFill".$attr] .= ";\n";
-						}
-
-						$formula = preg_replace('/^%('.$matchall[1][$index].')%$/U','$1 + \'\'',$formula);
-						$formula = preg_replace('/^%('.$matchall[1][$index].')(\|[0-9]*-[0-9]*)?(\/[lTU])?%/U','$1 + \'',$formula);
-						$formula = preg_replace('/%('.$matchall[1][$index].')(\|[0-9]*-[0-9]*)?(\/[lTU])?%$/U','\' + $1 ',$formula);
-						$formula = preg_replace('/%('.$matchall[1][$index].')(\|[0-9]*-[0-9]*)?(\/[lTU])?%/U','\' + $1 + \'',$formula);
-					}
-
-					$js["autoFill".$attr] .= sprintf("	form.%s.value = %s;\n",$attr,$formula);
-					$js["autoFill".$attr] .= "}\n";
+					$formula = preg_replace("/$checkattr/",$matchattr->getName(),$formula);
+					$matchall[1][$index] = $matchattr->getName();
 				}
 
+				foreach ($matchall[0] as $index => $null) {
+					$match_attr = $matchall[1][$index];
+					$match_subst = $matchall[2][$index];
+					$match_mod = $matchall[3][$index];
+
+					$substrarray = array();
+
+					$_js_hash['autoFill'.$origin] .= sprintf("  var %s;\n",$match_attr);
+
+					if (trim($match_subst)) {
+						preg_match_all('/([0-9]*)-([0-9]*)/',$match_subst,$substrarray);
+					}
+
+					if ($match_mod == '/T') {
+						$_js_hash['autoFill'.$origin] .= sprintf(
+							"   %s = document.getElementById('%s').options[document.getElementById('%s').selectedIndex].text;\n",
+							$match_attr,$match_attr,$match_attr);
+
+					} else {
+						if ((isset($substrarray[1][0]) && $substrarray[1][0]) || (isset($substrarray[2][0]) && $substrarray[2][0])) {
+							$_js_hash['autoFill'.$origin] .= sprintf('   %s = document.getElementById("%s").value.substr(%s,%s)',
+								$match_attr,$match_attr,
+								$substrarray[1][0] ? $substrarray[1][0] : '0',
+								$substrarray[2][0] ? $substrarray[2][0] : sprintf('document.getElementById("%s").value.length',$match_attr));
+						} else {
+							$_js_hash['autoFill'.$origin] .= sprintf(' %s = document.getElementById(\'%s\').value',
+								$match_attr,$match_attr);
+						}
+
+						switch ($match_mod) {
+							case '/l':
+								$_js_hash['autoFill'.$origin] .= '.toLowerCase()';
+								break;
+						}
+						$_js_hash['autoFill'.$origin] .= ";\n";
+					}
+
+					# Matchfor only entry without modifiers.
+					$formula = preg_replace('/^%('.$match_attr.')%$/U','$1 + \'\'',$formula);
+					# Matchfor only entry with modifiers.
+					$formula = preg_replace('/^%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[lTU])?%$/U','$1 + \'\'',$formula);
+					# Matchfor begining entry.
+					$formula = preg_replace('/^%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[lTU])?%/U','$1 + \'',$formula);
+					# Matchfor ending entry.
+					$formula = preg_replace('/%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[lTU])?%$/U','\' + $1 ',$formula);
+					# Match for entries not at begin/end.
+					$formula = preg_replace('/%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[lTU])?%/U','\' + $1 + \'',$formula);
+				}
+
+				$_js_hash['autoFill'.$origin] .= sprintf(" fillRec('%s', %s);\n",$attr,$formula);
+				$_js_hash['autoFill'.$origin] .= "\n";
 				break;
 
-			default: $html = '';
+			default: $return = '';
 		}
-		return $html;
+		return '1';
 	}
 
-	function OnChangeDisplay() {
-		global $js;
-
-		return (isset($js) ? implode("\n",$js) : '');
+	function getJsHash() {
+		global $_js_hash;
+		return $_js_hash;
 	}
 
-	function EvaluateDefault($ldapserver,$value,$container,$counter='',$default=null) {
+	// @todo: The XML files need to change the field seperater to something else (ie: not comma)
+	// as it is clashing when a DN is used as an argument.
+	function EvaluateDefault(&$ldapserver,$value,$container,$counter='',$default=null) {
 		if (DEBUG_ENABLED)
-			debug_log('%s::EvaluateDefault(): Entered with (%s,%s,%s,%s)',2,
+			debug_log('%s::EvaluateDefault(): Entered with (%s,%s,%s,%s)',5,
 				get_class($this),$ldapserver->server_id,$value,$container,$counter);
 
-		global $lang;
+		global $ldapservers;
 
 		if (preg_match('/^=php\.(\w+)\((.*)\)$/',$value,$matches)) {
 			$args = preg_split('/,/',$matches[2]);
 
 			switch($matches[1]) {
 				case 'GetNextNumber' :
-					$container = get_container_parent($ldapserver,$container,$args[0]);
+					if ($args[0] == '$')
+						$args[0] = $ldapservers->GetValue($ldapserver->server_id,'auto_number','search_base');
 
-					$detail['value'] = get_next_uid_number($ldapserver,$container,$args[1]);
+					$container = $ldapserver->getContainerParent($container,$args[0]);
+
+					$detail['value'] = get_next_number($ldapserver,$container,$args[1]);
 					break;
 
 				case 'PickList' :
-					$container = get_container_parent($ldapserver,$container,$args[0]);
+					$container = $ldapserver->getContainerParent($container,$args[0]);
 					preg_match_all('/%(\w+)(\|.+)?(\/[lU])?%/U',$args[3],$matchall);
 					//print_r($matchall); // -1 = highlevel match, 1 = attr, 2 = subst, 3 = mod
 
@@ -518,7 +561,7 @@ class Templates {
 					array_push($ldap_attrs,$args[2]);
 					$picklistvalues = return_ldap_hash($ldapserver,$container,$args[1],$args[2],$ldap_attrs);
 
-					$detail['value'] = sprintf('<select name="form[%s]" id="%%s" %%s %%s/>',(isset($args[4]) ? $args[4] : $args[2]));
+					$detail['value'] = sprintf('<select name="form[%s]" id="%%s" %%s %%s>',(isset($args[4]) ? $args[4] : $args[2]));
 					foreach ($picklistvalues as $key => $values) {
 						$display = $args[3];
 
@@ -527,7 +570,7 @@ class Templates {
 						}
 
 						if (! isset($picklist[$display])) {
-							$detail['value'] .= sprintf('<option name="%s" value="%s" %s>%s</option>',
+							$detail['value'] .= sprintf('<option id="%s" value="%s" %s>%s</option>',
 								$display,$values[$args[2]],
 								($default == $display ? 'selected' : ''),
 								$display);
@@ -540,18 +583,34 @@ class Templates {
 
 				case 'RandomPassword' :
 					$detail['value'] = password_generate();
-					printf('<script language="javascript">alert(\'%s:\n%s\')</script>',
-						$lang['random_password'],$detail['value']);
+					printf('<script type="text/javascript" language="javascript">alert(\'%s:\n%s\')</script>',
+						_('A random password was generated for you'),$detail['value']);
 					break;
 
 				case 'DrawChooserLink' :
-					$detail['value'] = draw_chooser_link(sprintf("template_form.%s%s",$args[0],$counter),$args[1]);
+					$detail['value'] = draw_chooser_link(sprintf('template_form.%s%s',$args[0],$counter),$args[1]);
 
 					break;
 
 				case 'Function' :
 					# Capture the function name and remove function name from $args
 					$function_name = array_shift($args);
+
+					$function_args = array();
+					foreach ($args as $arg) {
+						if (preg_match('/^%(\w+)(\|.+)?(\/[lU])?%/U',$arg,$matches)) {
+
+							$varname = $matches[1];
+
+							if (isset($_POST['form']['post'][$varname]))
+								$function_args[] = $_POST['form']['post'][$varname];
+							else
+								pla_error(sprintf(_('Your template calls php.Function for a default value, however (%s) is NOT available in the POST FORM variables. The following variables are available [%s].'),$varname,
+									(isset($_POST['form']) ? implode('|',array_keys($_POST['form'])) : 'NONE')));
+						} else {
+							$function_args[] = $arg;
+						}
+					}
 
 					# Call the PHP function if exists (PHP 4 >= 4.0.4, PHP 5)
 					if (function_exists($function_name))
@@ -569,14 +628,14 @@ class Templates {
 		}
 
 		if (DEBUG_ENABLED)
-			debug_log('%s::EvaluateDefault(): Returning (%s)',1,get_class($this),serialize($return));
+			debug_log('%s::EvaluateDefault(): Returning (%s)',5,get_class($this),$return);
 		return $return;
 	}
 
 	function HelperValue($helper,$id='',$container='',$ldapserver='',$counter='',$default='') {
 		if (DEBUG_ENABLED)
-			debug_log('%s::HelperValue(): Entered with (%s,%s,%s,%s,%s,%s)',2,
-				get_class($this),serialize($helper),$id,$container,$ldapserver->server_id,$counter,$default);
+			debug_log('%s::HelperValue(): Entered with (%s,%s,%s,%s,%s,%s)',5,
+				get_class($this),$helper,$id,$container,$ldapserver->server_id,$counter,$default);
 
 		if ($container && $ldapserver && ! is_array($helper)) {
 			if (preg_match('/^=php./',$helper))
@@ -589,9 +648,9 @@ class Templates {
 		} else {
 			if (is_array($helper)) {
 
-				$html = sprintf('<select name="%s" id="%s" />',$id,$id);
+				$html = sprintf('<select name="%s" id="%s">',$id,$id);
 				foreach ($helper as $value) {
-					$html .= sprintf('<option name="%s" value="%s" %s>%s</option>',
+					$html .= sprintf('<option id="%s" value="%s" %s>%s</option>',
 						$value,$value,($default == $value ? 'selected' : ''),$value);
 				}
 				$html .= '</select>';

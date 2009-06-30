@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/password_checker.php,v 1.8 2005/07/23 17:02:54 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/password_checker.php,v 1.8.4.1 2005/12/08 11:54:00 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -23,17 +23,17 @@ if( isset( $_REQUEST['base64'] ) ) {
 $enc_type = get_enc_type( $hash );
 ?>
 
-<h3 class="subtitle"><?php echo $lang['password_checker_tool']; ?></h3>
+<h3 class="subtitle"><?php echo _('Password Checker Tool'); ?></h3>
 
 <form style="margin: 0" action="password_checker.php" method="post">
     <input type="hidden" name="action" value="compare" />
     <table style="border-spacing: 10px">
     <tr>
-        <td><?php echo $lang['compare']; ?></td>
+        <td><?php echo _('Compare'); ?></td>
         <td><input type="<?php echo ( $enc_type ? 'text' : 'password' ); ?>" name="hash" style="width: 300px" value="<?php echo htmlspecialchars($hash); ?>" /></td>
     </tr>
     <tr>
-        <td><?php echo $lang['to']; ?></td>
+        <td><?php echo _('To'); ?></td>
         <td><input type="password" style="width: 300px" name="check_password" value="<?php echo htmlspecialchars($check_password); ?>" /></td>
     </tr>
     <tr>
@@ -42,9 +42,9 @@ $enc_type = get_enc_type( $hash );
         <?php if( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'compare' ) {
             echo "&nbsp;&nbsp;&nbsp;&nbsp;<b>";
             if( password_check( $hash, $check_password) )
-                echo "<span style=\"color: green\">" . $lang['passwords_match'] . "</span>";
+                echo "<span style=\"color: green\">" . _('Passwords match!') . "</span>";
             else
-                echo "<span style=\"color: red\">" . $lang['passwords_do_not_match'] . "</span>";
+                echo "<span style=\"color: red\">" . _('Passwords do not match!') . "</span>";
             echo "</b>";
         } ?>
         </td>

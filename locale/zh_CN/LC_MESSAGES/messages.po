@@ -1,0 +1,2117 @@
+# : $
+
+
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
+"Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
+"Last-Translator: Unknown <nobody@nodomain.org>\n"
+"POT-Creation-Date: 2005-11-29 17:45+0100\n"
+"PO-Revision-Date: 2005-11-29 18:22+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+
+msgid "Simple Search Form"
+msgstr "简单搜索表格"
+
+
+msgid "Server"
+msgstr "服务器"
+
+
+msgid "Search for entries whose"
+msgstr "搜索条目的所属"
+
+
+msgid "Base DN"
+msgstr "基本DN"
+
+
+msgid "Search Scope"
+msgstr "搜索范围"
+
+
+msgid "Show Attributtes"
+msgstr "显示属性"
+
+
+msgid "Search"
+msgstr "搜索"
+
+
+msgid "Select a predefined search"
+msgstr "选择一个预定义的搜索"
+
+
+msgid "Predefined Searches"
+msgstr "预定义的搜索"
+
+
+msgid "No queries have been defined in config.php."
+msgstr "在config.php里没有条目定义。"
+
+
+msgid "export results"
+msgstr "导出结果"
+
+
+msgid "Unrecognized search result format: %s"
+msgstr "不能识别的搜索结果格式： %s"
+
+
+msgid "Format"
+msgstr "格式"
+
+
+msgid "list"
+msgstr "列表"
+
+
+msgid "table"
+msgstr "表格"
+
+
+msgid "Your config.php specifies an invalid value for $default_search_display: %s. Please fix it"
+msgstr "你的config.php 给$default_search_display指定了一个非法的值： %s，请更正"
+
+
+msgid "Page %d"
+msgstr "第%d页"
+
+
+msgid "The search found no results."
+msgstr "这次搜索没找到结果。"
+
+
+msgid "Request feature"
+msgstr "功能需求"
+
+
+msgid "Report a bug"
+msgstr "报告错漏"
+
+
+msgid "create"
+msgstr "创建"
+
+
+msgid "info"
+msgstr "信息"
+
+
+msgid "import"
+msgstr "导入"
+
+
+msgid "refresh"
+msgstr "刷新"
+
+
+msgid "logout"
+msgstr "退出"
+
+
+msgid "Create new entry here"
+msgstr "创建新条目"
+
+
+msgid "View schema for"
+msgstr "查看格式"
+
+
+msgid "Refresh all expanded containers for"
+msgstr "刷新所有展开的容器，来自"
+
+
+msgid "Create a new entry on"
+msgstr "创建新条目到"
+
+
+msgid "new"
+msgstr "新建"
+
+
+msgid "View server-supplied information"
+msgstr "查看附加的服务器信息"
+
+
+msgid "Import entries from an LDIF file"
+msgstr "从LDIF文件导入条目"
+
+
+msgid "Logout of this server"
+msgstr "退出这个服务器"
+
+
+msgid "Logged in as: "
+msgstr "登录为： "
+
+
+msgid "This is not a valid DN."
+msgstr "该DN是无效。"
+
+
+msgid "This entry does not exist."
+msgstr "该条目不存在。"
+
+
+msgid "read only"
+msgstr "只读"
+
+
+msgid "This attribute has been flagged as read only by the phpLDAPadmin administrator"
+msgstr "该属性已经被phpLDAPadmin 管理员标识为只读"
+
+
+msgid "Could not determine the root of your LDAP tree."
+msgstr "检测不到你的LDAP树的根。"
+
+
+msgid "It appears that the LDAP server has been configured to not reveal its root."
+msgstr "好像你的LDAP服务器配置来限制了不要显露它的根。"
+
+
+msgid "Please specify it in config.php"
+msgstr "请在config.php里指定它"
+
+
+msgid "Create a new entry in"
+msgstr "创建新条目于"
+
+
+msgid "Login..."
+msgstr "登录…"
+
+
+msgid "login"
+msgstr "登录"
+
+
+msgid "This base entry does not exist."
+msgstr "该基准条目不存在。"
+
+
+msgid "Create it?"
+msgstr "要创建它吗？"
+
+
+msgid "Delete this entry"
+msgstr "删除该条目"
+
+
+msgid "You will be prompted to confirm this decision"
+msgstr "你会得到提示要求确认该选择"
+
+
+msgid "Copy or move this entry"
+msgstr "复制和移动该条目"
+
+
+msgid "Copy this object to another location, a new DN, or another server"
+msgstr "把这个对象复制到另一个位置，一个新DN或另一个服务器。"
+
+
+msgid "Export"
+msgstr "导出"
+
+
+msgid "Save a dump of this object"
+msgstr "保存一个该对象的导出"
+
+
+msgid "Save a dump of this object and all of its children"
+msgstr "保存一个该对象及其所有孩子的导出"
+
+
+msgid "Export subtree"
+msgstr "导出子树"
+
+
+msgid "Create a child entry"
+msgstr "创建一个子条目"
+
+
+msgid "Rename Entry"
+msgstr "条目更名"
+
+
+msgid "Rename"
+msgstr "更名"
+
+
+msgid "Add"
+msgstr "增加"
+
+
+msgid "View"
+msgstr "查看"
+
+
+msgid "View 1 child"
+msgstr "查看1个子条目"
+
+
+msgid "View %s children"
+msgstr "查看%s个子条目"
+
+
+msgid "Add new attribute"
+msgstr "增加新的属性"
+
+
+msgid "Add new ObjectClass"
+msgstr "增加新的ObjectClass"
+
+
+msgid "Hide internal attributes"
+msgstr "隐藏内部属性"
+
+
+msgid "Show internal attributes"
+msgstr "显示内部属性"
+
+
+msgid "Click to view the schema defintion for attribute type '%s'"
+msgstr "点击查看属性类型'%s'的格式定义"
+
+
+msgid "none"
+msgstr "什么都没有"
+
+
+msgid "No internal attributes"
+msgstr "没有内部属性"
+
+
+msgid "This entry has no attributes"
+msgstr "这个条目没有属性"
+
+
+msgid "Save Changes"
+msgstr "保存更改"
+
+
+msgid "add value"
+msgstr "赋值"
+
+
+msgid "Add an additional value to attribute '%s'"
+msgstr "给属性'%s'赋一个附加的值"
+
+
+msgid "Refresh this entry"
+msgstr "刷新这个条目"
+
+
+msgid "Hint: To delete an attribute, empty the text field and click save."
+msgstr "提示： 想要删除一个属性，请将文本字段清空，然后点击保存。"
+
+
+msgid "Hint: To view the schema for an attribute, click the attribute name."
+msgstr "提示： 要查看一个属性的格式，请点击属性的名称。"
+
+
+msgid "Some attributes (%s) were modified and are highlighted below."
+msgstr "下面有一些属性(%s) 被修改了，而且被标识为高亮。"
+
+
+msgid "An attribute (%s) was modified and is highlighted below."
+msgstr "下面一个属性(%s) 被修改了，而且被标识为高亮"
+
+
+msgid "Viewing entry in read-only mode."
+msgstr "以只读模式查看条目。"
+
+
+msgid "no new attributes available for this entry"
+msgstr "这个条目没有提供新的属性"
+
+
+msgid "no new binary attributes available for this entry"
+msgstr "这个条目没有提供新的二进制属性"
+
+
+msgid "Binary value"
+msgstr "二进制值"
+
+
+msgid "Add new binary attribute"
+msgstr "增加新的二进制值"
+
+
+msgid "Note: '%s' is an alias for '%s'"
+msgstr "注意： '%s'是'%s'的一个别名"
+
+
+msgid "Required attribute for objectClass(es) %s"
+msgstr "objectClass(es) %s所必需的属性"
+
+
+msgid "download value"
+msgstr "下载值"
+
+
+msgid "delete attribute"
+msgstr "删除属性"
+
+
+msgid "true"
+msgstr "真的"
+
+
+msgid "false"
+msgstr "假的"
+
+
+msgid "none, remove value"
+msgstr "什么都没有，将值移除"
+
+
+msgid "Really delete attribute"
+msgstr "真的删除属性"
+
+
+msgid "Add New Value"
+msgstr "增加新的值"
+
+
+msgid "The server does not fully support the LDAP protocol."
+msgstr "这个服务器并不完全支持LDAP 协议。"
+
+
+msgid "Your version of PHP does not correctly perform the query."
+msgstr "你的PHP版本不能正确地完成查询。"
+
+
+msgid "phpLDAPadmin doesn't know how to fetch the schema for your server."
+msgstr "phpLDAPadmin不知道如果获取你的服务器的格式。"
+
+
+msgid "Or lastly, your LDAP server doesnt provide this information."
+msgstr "或者最后，你的LDAP服务器没有提供该信息。"
+
+
+msgid "Jump to an objectClass"
+msgstr "跳转到一个objectClass"
+
+
+msgid "View the schema description for this objectClass"
+msgstr "查看该objectClass的格式描述"
+
+
+msgid "Jump to an attribute type"
+msgstr "跳转到一个属性类型"
+
+
+msgid "Jump to a matching rule"
+msgstr "跳转到一个匹配的规则"
+
+
+msgid "Schema for server"
+msgstr "服务器的格式"
+
+
+msgid "Required Attributes"
+msgstr "必需的属性"
+
+
+msgid "required"
+msgstr "必需的"
+
+
+msgid "Optional Attributes"
+msgstr "可选的属性"
+
+
+msgid "Optional Binary Attributes"
+msgstr "可选的二进制属性"
+
+
+msgid "OID"
+msgstr "OID"
+
+
+msgid "Aliases"
+msgstr "别名"
+
+
+msgid "Description"
+msgstr "描述"
+
+
+msgid "no description"
+msgstr "没有描述"
+
+
+msgid "Name"
+msgstr "名称"
+
+
+msgid "Equality"
+msgstr "相等"
+
+
+msgid "This objectClass is obsolete."
+msgstr "该objectClass过久了。"
+
+
+msgid "Inherits from"
+msgstr "继承于"
+
+
+msgid "Inherited from"
+msgstr "被继承于"
+
+
+msgid "Parent to"
+msgstr "双亲指向"
+
+
+msgid "Jump to this objectClass definition"
+msgstr "跳转到该objectClass的定义处"
+
+
+msgid "Matching Rule OID"
+msgstr "匹配规则 OID"
+
+
+msgid "Syntax OID"
+msgstr "语法规则OID"
+
+
+msgid "not applicable"
+msgstr "不可应用"
+
+
+msgid "not specified"
+msgstr "未指定的"
+
+
+msgid "character"
+msgstr "单个字符"
+
+
+msgid "characters"
+msgstr "多个字符"
+
+
+msgid "Used by objectClasses"
+msgstr "被objectClasses所使用的"
+
+
+msgid "Used by Attributes"
+msgstr "被属性所使用的"
+
+
+msgid "Maximum Length"
+msgstr "最大长度"
+
+
+msgid "Attribute Types"
+msgstr "属性类型"
+
+
+msgid "Syntaxes"
+msgstr "语法规则"
+
+
+msgid "Matching Rules"
+msgstr "匹配规则"
+
+
+msgid "Obsolete"
+msgstr "作废的"
+
+
+msgid "Ordering"
+msgstr "排序"
+
+
+msgid "Substring Rule"
+msgstr "子串规则"
+
+
+msgid "Single Valued"
+msgstr "单个赋值的"
+
+
+msgid "Collective"
+msgstr "集体的"
+
+
+msgid "User Modification"
+msgstr "用户修改"
+
+
+msgid "Usage"
+msgstr "使用格式"
+
+
+msgid "Could not retrieve schema from"
+msgstr "不能找回格式的地方"
+
+
+msgid "Type"
+msgstr "类型"
+
+
+msgid "No such schema item: \"%s\""
+msgstr "没有这样的格式项目： \"%s\""
+
+
+msgid "Entry %s deleted successfully."
+msgstr "成功删除条目：%s。"
+
+
+msgid "You must specify a DN"
+msgstr "你必须指定一个DN"
+
+
+msgid "Could not delete the entry: %s"
+msgstr "不能删除该条目： %s"
+
+
+msgid "No such entry: %s"
+msgstr "没有这样的条目： %s"
+
+
+msgid "Delete %s"
+msgstr "删除：%s"
+
+
+msgid "Permanently delete all children also?"
+msgstr "也要永久删除所的子条目吗？"
+
+
+msgid "This entry is the root of a sub-tree containing %s entries."
+msgstr "该条目是根，其子树中包含有条目：%s。"
+
+
+msgid "view entries"
+msgstr "查看条目"
+
+
+msgid "phpLDAPadmin can recursively delete this entry and all %s of its children. See below for a list of all the entries that this action will delete. Do you want to do this?"
+msgstr "phpLDAPadmin可以递归地删除该条目及其所有子条目中的：%s。 关于这个动作可能会删除的所有条目列表，请查看下面。 你真的想这样做吗？"
+
+
+msgid "Note: this is potentially very dangerous and you do this at your own risk. This operation cannot be undone. Take into consideration aliases, referrals, and other things that may cause problems."
+msgstr "注释： 这个可能潜在危险，后果自负。 这个操作不可恢复。 一定要考虑到aliases（别名）、 referrals（提名）以及其它可能引起问题的事情。"
+
+
+msgid "Delete all %s objects"
+msgstr "删除所有的对象：%s "
+
+
+msgid "Recursive delete progress"
+msgstr "递归式删除过程"
+
+
+msgid "Entry %s and sub-tree deleted successfully."
+msgstr "成功删除条目%s 和子树。"
+
+
+msgid "Failed to delete entry %s"
+msgstr "删除条目：%s 失败"
+
+
+msgid "List of entries to be deleted:"
+msgstr "将被删除的条目列表："
+
+
+msgid "Are you sure you want to permanently delete this object?"
+msgstr "确认你想永久删除这个对象吗？"
+
+
+msgid "DN"
+msgstr "DN"
+
+
+msgid "The attribute \"%s\" is flagged as read-only in the phpLDAPadmin configuration."
+msgstr " 在phpLDAPadmin的配置中，属性\"%s\"被标识为只读。"
+
+
+msgid "No attribute name specified."
+msgstr "没有指定属性名称。"
+
+
+msgid "No DN specified"
+msgstr "没有指定DN "
+
+
+msgid "You left the attribute value blank. Please go back and try again."
+msgstr "属性值为空白。 请返回再试。"
+
+
+msgid "Failed to add the attribute."
+msgstr "增加属性失败。"
+
+
+msgid "The file you chose is either empty or does not exist. Please go back and try again."
+msgstr "你选择的文件为空或不存在。 请返回再试。"
+
+
+msgid "Security error: The file being uploaded may be malicious."
+msgstr "安全错误： 上传的这个文件可能存在安全危险。"
+
+
+msgid "Your PHP configuration has disabled file uploads. Please check php.ini before proceeding."
+msgstr "你的PHP配置不允许上传文件。 请在进行下步之前检查一下php.ini。"
+
+
+msgid "The file you uploaded is too large. Please check php.ini, upload_max_size setting"
+msgstr "你上传的文件太大。 请检查php.ini中的upload_max_size 设置"
+
+
+msgid "The file you selected was only partially uploaded, likley due to a network error."
+msgstr "你选择的文件上传不完整，可能是因为网络的缘故。"
+
+
+msgid "Maximum file size: %s"
+msgstr "最大文件尺寸： %s"
+
+
+msgid "Modification successful!"
+msgstr "成功修改！"
+
+
+msgid "Since you changed your password, you must now login again with your new password."
+msgstr "因为你更改了密码，你现在必须使用新的密码重新登录。"
+
+
+msgid "New Required Attributes"
+msgstr "新增必需的属性"
+
+
+msgid "This action requires you to add"
+msgstr "这个动作要求你增加"
+
+
+msgid "new attributes"
+msgstr "新增属性"
+
+
+msgid "Instructions: In order to add these objectClass(es) to this entry, you must specify"
+msgstr "指导： 为了增加这个objectClass 到该条目，你必须指定"
+
+
+msgid "that this objectClass requires. You can do so in this form."
+msgstr "这该objectClass所必需的。 你可以在这个表里完成。"
+
+
+msgid "Add ObjectClass and Attributes"
+msgstr "增加ObjectClass 和属性"
+
+
+msgid "ObjectClasses"
+msgstr "ObjectClasses"
+
+
+msgid "Click to popup a dialog to select an entry (DN) graphically"
+msgstr "点击弹出一个对话框来以图形方式选择一个条目(DN) "
+
+
+msgid "You cannot perform updates while server is in read-only mode"
+msgstr "服务器是以只读方式运行，你不能完成更新"
+
+
+msgid "Bad server id"
+msgstr "错误的服务器id"
+
+
+msgid "Not enough information to login to server. Please check your configuration."
+msgstr "没有足够的信息来登录服务器。 请检查你的配置。"
+
+
+msgid "Could not connect to LDAP server."
+msgstr "不能连接到LDAP服务器。"
+
+
+msgid "Could not connect to \"%s\" on port \"%s\""
+msgstr "不能连接到\"%s\" 的\"%s\"端口"
+
+
+msgid "Could not perform ldap_mod_add operation."
+msgstr "不能完成ldap_mod_add 操作。"
+
+
+msgid "Home"
+msgstr "主页"
+
+
+msgid "Help"
+msgstr "帮助"
+
+
+msgid "Success"
+msgstr "成功"
+
+
+msgid "Server: "
+msgstr "服务器："
+
+
+msgid "Looking in: "
+msgstr "正在查看："
+
+
+msgid "No DN specified in query string!"
+msgstr "在查询串中没有指定DN！"
+
+
+msgid "Back Up..."
+msgstr "后退..."
+
+
+msgid "no entries"
+msgstr "没有条目"
+
+
+msgid "Could not determine base DN"
+msgstr "不能确定base DN（基DN）"
+
+
+msgid "This could happen for several reasons, the most probable of which are:"
+msgstr "出现这种情况可能有几个原因，其中最有可能的是："
+
+
+msgid "Yes"
+msgstr "是"
+
+
+msgid "No"
+msgstr "不"
+
+
+msgid "Go"
+msgstr "开始"
+
+
+msgid "Delete"
+msgstr "删除"
+
+
+msgid "Back"
+msgstr "后退"
+
+
+msgid "object"
+msgstr "对象"
+
+
+msgid "Delete all"
+msgstr "删除所有的"
+
+
+msgid "hint"
+msgstr "提示"
+
+
+msgid "bug"
+msgstr "错漏"
+
+
+msgid "warning"
+msgstr "警告"
+
+
+msgid "light"
+msgstr "light"
+
+
+msgid "Proceed &gt;&gt;"
+msgstr "继续 &gt;&gt;"
+
+
+msgid "Please set $jpeg_temp_dir to a writable directory in the phpLDAPadmin config.php"
+msgstr "请在phpLDAPadmin的config.php里，将$jpeg_temp_dir设置到一个可写的目录"
+
+
+msgid "Could not write to the $jpeg_temp_dir directory %s. Please verify that your web server can write files there."
+msgstr "不能将%s写入$jpeg_temp_dir目录。请确定你的web服务器能够在那里写文件。"
+
+
+msgid "Could not fetch jpeg data from LDAP server for attribute %s."
+msgstr "不能从LDAP服务器为属性%s获得jpeg数据。"
+
+
+msgid "Delete photo"
+msgstr "删除图片"
+
+
+msgid "Add new"
+msgstr "新增"
+
+
+msgid "value to"
+msgstr "赋值给"
+
+
+msgid "Distinguished Name"
+msgstr "识别名（DN）"
+
+
+msgid "Current list of"
+msgstr "当前列表"
+
+
+msgid "values for attribute"
+msgstr "属性值"
+
+
+msgid "Note: You will get an \"inappropriate matching\" error if you have not setup an EQUALITY rule on your LDAP server for this attribute."
+msgstr "注释： 如果在你的LDAP服务器上没有为这个属性设置EQUALITY 规则的话，你可能会碰到\"inappropriate matching（不正确的匹配）\"这样的错误。"
+
+
+msgid "Enter the value you would like to add:"
+msgstr "输入你想增加的值："
+
+
+msgid "Note: You may be required to enter new attributes that these objectClass(es) require"
+msgstr "注释： 可能会要求你输入该objectClass所必需的新属性。"
+
+
+msgid "Syntax"
+msgstr "规则"
+
+
+msgid "You left the destination DN blank."
+msgstr " 目标DN项为空。"
+
+
+msgid "The destination entry (%s) already exists."
+msgstr "目标条目 (%s) 已经存在。"
+
+
+msgid "The destination container (%s) does not exist."
+msgstr "目标容器 (%s) 不存在。"
+
+
+msgid "The source and destination DN are the same."
+msgstr "源和目标DN 相同。"
+
+
+msgid "Copying "
+msgstr "正在复制 "
+
+
+msgid "Recursive copy progress"
+msgstr "递归手复制过程"
+
+
+msgid "Building snapshot of tree to copy... "
+msgstr "正在建立用于复制的树的快照… "
+
+
+msgid "Copy successful! Would you like to "
+msgstr "复制成功！ 你还想要 "
+
+
+msgid "view the new entry"
+msgstr "查看新条目"
+
+
+msgid "Failed to copy DN: "
+msgstr "复制DN不成功： "
+
+
+msgid "Template"
+msgstr "样板"
+
+
+msgid "using template"
+msgstr "使用样板"
+
+
+msgid "Go to %s"
+msgstr "转到 %s"
+
+
+msgid "This is a structural ObjectClass and cannot be removed."
+msgstr "这是个结构化的ObjectClass，因此不能移除。"
+
+
+msgid "structural"
+msgstr "结构化"
+
+
+msgid "Copy "
+msgstr "复制"
+
+
+msgid "to a new object"
+msgstr "成为一个新的对象"
+
+
+msgid "Destination DN"
+msgstr "目标DN"
+
+
+msgid "The full DN of the new entry to be created when copying the source entry"
+msgstr "在复制该源条目时，将被建立的新条目的完整DN "
+
+
+msgid "Destination Server"
+msgstr "目标服务器"
+
+
+msgid "Hint: Copying between different servers only works if there are no schema violations"
+msgstr "提示： 在两个不同的服务器之间复制时，要求它们没有\"schema（格式）冲突\""
+
+
+msgid "Recursively copy all children of this object as well."
+msgstr "另外还要递归复制此对象的所有子内容。"
+
+
+msgid "Recursive copy"
+msgstr "递归复制"
+
+
+msgid "Filter"
+msgstr "过滤器"
+
+
+msgid "When performing a recursive copy, only copy those entries which match this filter"
+msgstr "在完成一个递归复制时，只会复制哪些匹配这个过滤器的条目。"
+
+
+msgid "Delete after copy (move):"
+msgstr "复制后删除（即移动）："
+
+
+msgid "Make sure your filter (above) will select all child records."
+msgstr "确认你的过滤器（见上面）会选择所有的子记录。"
+
+
+msgid "You left the value blank for required attribute (%s)."
+msgstr "必需属性(%s)的值为空白。"
+
+
+msgid "Redirecting..."
+msgstr "重定向..."
+
+
+msgid "here"
+msgstr "这里"
+
+
+msgid "Could not add the object to the LDAP server."
+msgstr "不能增加该对象到LDAP服务器。"
+
+
+msgid "Create Object"
+msgstr "创建对象"
+
+
+msgid "Choose a template"
+msgstr "选择样板"
+
+
+msgid "Select a template for the creation process"
+msgstr "选择用于创建过程的样板"
+
+
+msgid "Save as file"
+msgstr "另存为文件"
+
+
+msgid "You left the RDN field blank."
+msgstr "RDN段为空白。"
+
+
+msgid "The container you specified (%s) does not exist. Please try again."
+msgstr "你指定的(%s)容器不存在。 请再试试。"
+
+
+msgid "You did not select any ObjectClasses for this object. Please go back and do so."
+msgstr "你没有为该对象选择任何ObjectClasses。 请返回照做。"
+
+
+msgid "Hint: You must choose exactly one structural objectClass (shown in bold above)"
+msgstr "提示： 你必有选择一个结构化的objectClass (如上面粗体所显示的)"
+
+
+msgid "Your config specifies a handler of \"%s\" for this template but this file is not readable because the permissions are too strict."
+msgstr "你在配置中指定了用于该样板的\"%s\"的手柄，但是这个文件因为禁止权限太严格而不可读。"
+
+
+msgid "Step 1 of 2: Name and ObjectClass(es)"
+msgstr "第一步： Name 和 ObjectClass(es)"
+
+
+msgid "Step 2 of 2: Specify attributes and values"
+msgstr "第二步： 指定属性和值"
+
+
+msgid "Relative Distinguished Name"
+msgstr "Relative Distinguished Name（相对标识名）"
+
+
+msgid "RDN"
+msgstr "RDN"
+
+
+msgid "(example: cn=MyNewPerson)"
+msgstr "(例如： cn=MyNewPerson)"
+
+
+msgid "Container"
+msgstr "Container（容器）"
+
+
+msgid "You have not logged into the selected server yet, so you cannot perform searches on it."
+msgstr "你还没有登入所选择的服务器，因此你不能在它上面完成搜索。"
+
+
+msgid "Click here to go to the login form"
+msgstr "点击这里转到登录表格"
+
+
+msgid "Unrecognized criteria option: "
+msgstr "不认识的criteria（标准）选项： "
+
+
+msgid "If you want to add your own criteria to the list. Be sure to edit search.php to handle them. Quitting."
+msgstr "如果你想增加自己的criteria 到列表里。 记得编辑search.php 来处理它们。 退出。"
+
+
+msgid "Entries found: "
+msgstr "找到的条目： "
+
+
+msgid "Filter performed: "
+msgstr "应用了的过滤器： "
+
+
+msgid "Search performed by phpLDAPadmin in"
+msgstr "phpLDAPadmin完成搜索，用时"
+
+
+msgid "seconds"
+msgstr "秒"
+
+
+msgid "The scope in which to search"
+msgstr "搜索的范围"
+
+
+msgid "Sub (entire subtree)"
+msgstr "Sub (整个子树)"
+
+
+msgid "One (one level beneath base)"
+msgstr "One (base之下的一级)"
+
+
+msgid "Base (base dn only)"
+msgstr "Base (仅限于base dn)"
+
+
+msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))"
+msgstr "标准的LDAP搜索过滤器。 例如： (&(sn=Smith)(givenname=David))"
+
+
+msgid "Search Filter"
+msgstr "搜索过滤器"
+
+
+msgid "A list of attributes to display in the results (comma-separated)"
+msgstr "用于显示在结果中的属性列表(以逗号隔开)"
+
+
+msgid "equals"
+msgstr "等于"
+
+
+msgid "starts with"
+msgstr "开始于"
+
+
+msgid "contains"
+msgstr "包含"
+
+
+msgid "ends with"
+msgstr "结束于"
+
+
+msgid "sounds like"
+msgstr "看起来象"
+
+
+msgid "Could not retrieve LDAP information from the server. This may be due to a <a href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version of PHP or perhaps your LDAP server has access control specified that prevents LDAP clients from accessing the RootDSE."
+msgstr "不能从服务器上取得LDAP信息。 可能是因为你的PHP存在这个<a href=\"http://bugs.php.net/bug.php?id=29587\">错漏</a>，或者是你的LDAP服务器里指定的\"访问控制\"禁止LDAP客户端访问RootDSE。"
+
+
+msgid "Server info for: "
+msgstr "服务器信息： "
+
+
+msgid "Server reports the following information about itself"
+msgstr "下列信息是服务器报告的关于它自己的信息"
+
+
+msgid "This server has nothing to report."
+msgstr "该服务器没有报告任何信息。"
+
+
+msgid "update_array is malformed. This might be a phpLDAPadmin bug. Please report it."
+msgstr "看不懂update_array。 这可能是phpLDAPadmin的错漏。 请报告。"
+
+
+msgid "Could not perform ldap_modify operation."
+msgstr "不能完成ldap_modify 操作。"
+
+
+msgid "Do you want to make these changes?"
+msgstr "你想应用这些变化吗？"
+
+
+msgid "Attribute"
+msgstr "属性"
+
+
+msgid "Old Value"
+msgstr "旧值"
+
+
+msgid "New Value"
+msgstr "新值"
+
+
+msgid "[attribute deleted]"
+msgstr "[删除的属性]"
+
+
+msgid "Commit"
+msgstr "提交"
+
+
+msgid "Cancel"
+msgstr "取消"
+
+
+msgid "You made no changes"
+msgstr "你没有进行更改"
+
+
+msgid "Go back"
+msgstr "返回"
+
+
+msgid "Use the menu to the left to navigate"
+msgstr "使用左边菜单来导航"
+
+
+msgid "Credits"
+msgstr "荣誉"
+
+
+msgid "ChangeLog"
+msgstr "变更记录"
+
+
+msgid "Donate"
+msgstr "捐赠"
+
+
+msgid "phpLDAPadmin logo"
+msgstr "phpLDAPadmin 标识"
+
+
+msgid "Purge caches"
+msgstr "清空缓存"
+
+
+msgid "No cache to purge."
+msgstr "没有缓存可清空。"
+
+
+msgid "Purged %s bytes of cache."
+msgstr "清空缓存%s 个字节。"
+
+
+msgid "Purge all cached data in phpLDAPadmin, including server schemas."
+msgstr "清空所有在phpLDAPadmin中缓存的数据，包括服务器schema（格式）。"
+
+
+msgid "Unsafe file name: "
+msgstr "不安全的文件名： "
+
+
+msgid "No such file: "
+msgstr "没有这样的文件： "
+
+
+msgid "You have enabled auto_uid_numbers for <b>%s</b> in your configuration,"
+"                                  but you have not specified the auto_uid_number_mechanism. Please correct"
+"                                  this problem."
+msgstr "在你的配置中为 <b>%s</b> 启用了auto_uid_numbers，"
+"                                  但是你没有指定auto_uid_number_mechanism。 请更正"
+"                                  这个问题"
+
+
+msgid "You specified the \"auto_uid_number_mechanism\" as \"uidpool\""
+"                            in your configuration for server <b>%s</b>, but you did not specify the"
+"                            audo_uid_number_uid_pool_dn. Please specify it before proceeding."
+msgstr "你在服务<b>%s</b>的配置中指定\"auto_uid_number_mechanism\" 为 \"uidpool\"，"
+"                            但是你没有指定"
+"                            audo_uid_number_uid_pool_dn。 请在进行下步前指定它。"
+
+
+msgid "It appears that the uidPool you specified in your configuration (\"%s\")"
+"                              does not exist."
+msgstr "好像你在配置(\"%s\")中指定的uidPool"
+"                              不存在。"
+
+
+msgid "You specified the \"auto_uid_number_mechanism\" as \"search\" in your"
+"                              configuration for server <b>%s</b>, but you did not specify the"
+"                              \"auto_uid_number_search_base\". Please specify it before proceeding."
+msgstr "你在服务器<b>%s<b>的配置文件中指定了\"auto_uid_number_mechanism\" 为 \"search\"，"
+"                              但是你没有指定"
+"                              \"auto_uid_number_search_base\"。 请在进行下步前指定它。"
+
+
+msgid "Unable to bind to <b>%s</b> with your with auto_uid credentials. Please check your configuration file."
+msgstr "使用auto_uid credentials不能绑定到<b>%s</b>。 请检查你的配置文件。"
+
+
+msgid "Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base for server %s"
+msgstr "你的phpLDAPadmin配置为服务器%s指定了一个非法的auto_uid_search_base "
+
+
+msgid "You specified an invalid value for auto_uid_number_mechanism (\"%s\")"
+"                                   in your configration. Only \"uidpool\" and \"search\" are valid."
+"                                   Please correct this problem."
+msgstr "你在配置文件中为auto_uid_number_mechanism (\"%s\")指定了一个非法的值"
+"                                   。 只有\"uidpool\" 和 \"search\" 是合法的。"
+"                                   请更正这个问题。"
+
+
+msgid "Error: You have an error in your config file. The only three allowed values"
+"                                    for auth_type in the $servers section are 'session', 'cookie', and 'config'. You entered '%s',"
+"                                    which is not allowed. "
+msgstr "错误： 在你的配置文件中有个错误。 仅允许用于"
+"                                    $servers部分的auth_type的值为 'session', 'cookie', and 'config'。 输入'%s'，"
+"                                    这是不允许的。 "
+
+
+msgid "Unable to bind to <b>%s</b> with your with unique_attrs credentials. Please check your configuration file."
+msgstr "不能使用unique_attrs 绑定到<b>%s</b>。 请检查你的配置文件。"
+
+
+msgid "Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href='%s'>search</a> for that entry."
+msgstr "你企图增加<b>%s</b> (<i>%s</i>) 到 <br><b>%s</b><br>，这是不允许的。 该属性/值属于任何条目。<p>你可能想<a href='%s'>搜索</a> 该条条目。"
+
+
+msgid "Your PHP install does not support TLS."
+msgstr "你安装的PHP 不支持TLS。"
+
+
+msgid "Could not start TLS. Please check your LDAP server configuration."
+msgstr "不能启用TLS。 请检查你的LDAP 服务器配置。"
+
+
+msgid "Could not bind anonymously to server."
+msgstr "不能匿名绑定到服务器。"
+
+
+msgid "Could not bind to the LDAP server."
+msgstr "不能绑定到该LDAP服务器。"
+
+
+msgid "Anonymous Bind"
+msgstr "匿名绑定"
+
+
+msgid "Bad username or password. Please try again."
+msgstr "错误的用户名或密码。 请再试试。"
+
+
+msgid "Successfully logged into server <b>%s</b>"
+msgstr "成功登录到服务器<b>%s</b>"
+
+
+msgid "Could not set cookie."
+msgstr "不能设置cookie。"
+
+
+msgid "LDAP said: %s"
+msgstr "LDAP说： %s"
+
+
+msgid "Error"
+msgstr "出错"
+
+
+msgid "browse"
+msgstr "浏览"
+
+
+msgid "Your system crypt library does not support extended DES encryption."
+msgstr "你的系统加密库不支持扩展的DES加密。"
+
+
+msgid "Your system crypt library does not support blowfish encryption."
+msgstr "你的系统加密库不支持blowfish加密。"
+
+
+msgid "Your system crypt library does not support md5crypt encryption."
+msgstr "你的系统加密库不支持md5crypt加密。"
+
+
+msgid "jpegPhoto contains errors<br />"
+msgstr "jpegPhoto 包含有错<br />"
+
+
+msgid "Error number: %s (%s)"
+msgstr "错误代号 %s"
+
+
+msgid "Description: %s <br /><br />"
+msgstr "描述： %s <br /><br />"
+
+
+msgid "Error number: %s<br /><br />"
+msgstr "错误代号： %s <br /><br />"
+
+
+msgid "Description: (no description available)<br />"
+msgstr "描述： (没有描述可提供)<br />"
+
+
+msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
+msgstr "这是个phpLDAPadmin 错漏吗？ 如果是，就请<a href='%s'>报告一个</a>。"
+
+
+msgid "Unrecognized error number: "
+msgstr "不认识的错误代号： "
+
+
+msgid "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
+"             <b>You found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>"
+"             <td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
+"             </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	<tr><td colspan='2'><center><a target='new' href='%s'>Please check and see if this bug has been reported here</a>.</center></td></tr>"
+"	<tr><td colspan='2'><center><a target='new' href='%s'>If it hasnt been reported, you may report this bug by clicking here</a>.</center></td></tr>"
+"	</table></center><br />"
+msgstr "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
+"             <b>你发现了一个非致使的phpLDAPadmin 错漏！</b></td></tr><tr><td>错误：</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>文件：</td>"
+"             <td><b>%s</b> 行 <b>%s</b>，调用函数 <b>%s</b></td></tr><tr><td>版本：</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
+"             </td></tr><tr><td>Web 服务器：</td><td><b>%s</b></td></tr><tr><td colspan='2'><center><a target='new' href='%s'>"
+"             请点击这里报告该错漏</a>。</center></td></tr></table></center><br />"
+
+
+msgid "Congratulations! You found a bug in phpLDAPadmin.<br /><br />"
+"	     <table class='bug'>"
+"	     <tr><td>Error:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Level:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>File:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Line:</td><td><b>%s</b></td></tr>"
+"		 <tr><td>Caller:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PLA Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	     </table>"
+"	     <br />"
+"	     Please report this bug by clicking below!"
+msgstr "恭喜你！ 你发现了phpLDAPadmin的一个错漏。<br /><br />"
+"	     <table class='bug'>"
+"	     <tr><td>错误：</td><td><b>%s</b></td></tr>"
+"	     <tr><td>级别:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>文件：</td><td><b>%s</b></td></tr>"
+"	     <tr><td>行：</td><td><b>%s</b></td></tr>"
+"		 <tr><td>调用者：</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PLA 版本：</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP 版本：</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP 服务器：</td><td><b>%s</b></td></tr>"
+"	     </table>"
+"	     <br />"
+"	     请通过点击下面来报告这个错漏！"
+
+
+msgid "Import LDIF File"
+msgstr "导入LDIF文件"
+
+
+msgid "Select an LDIF file:"
+msgstr "选择一个LDIF文件："
+
+
+msgid "Don't stop on errors"
+msgstr "发生错误时不停止"
+
+
+msgid "Adding..."
+msgstr "增加..."
+
+
+msgid "Deleting..."
+msgstr "删除..."
+
+
+msgid "Renaming..."
+msgstr "更名..."
+
+
+msgid "Modifying..."
+msgstr "修改..."
+
+
+msgid "No version found. Assuming 1."
+msgstr "没有找到版本号。 假设 1。"
+
+
+msgid "A valid dn line is required."
+msgstr "要求一个合法的dn行。"
+
+
+msgid "Missing uploaded file."
+msgstr "丢失上传的文件。"
+
+
+msgid "No LDIF file specified. Please try again."
+msgstr "没有指定LDIF文件。 请再试试。"
+
+
+msgid "Uploaded LDIF file is empty."
+msgstr "上传的LDIF 文件为空。"
+
+
+msgid "empty"
+msgstr "空的"
+
+
+msgid "File"
+msgstr "文件"
+
+
+msgid "%s bytes"
+msgstr "%s 字节"
+
+
+msgid "Failed"
+msgstr "失败"
+
+
+msgid "LDIF Parse Error"
+msgstr "LDIF解析错误"
+
+
+msgid "Could not add object:"
+msgstr "不能增加对象："
+
+
+msgid "Could not rename object:"
+msgstr "不能更名对象："
+
+
+msgid "Could not delete object:"
+msgstr "不能删除对象："
+
+
+msgid "Could not modify object:"
+msgstr "不能修改对象："
+
+
+msgid "Line Number:"
+msgstr "行号："
+
+
+msgid "Line:"
+msgstr "行数:"
+
+
+msgid "Export format"
+msgstr "导出格式"
+
+
+msgid "Line ends"
+msgstr "行结束"
+
+
+msgid "You must choose an export format."
+msgstr "不必须选择一个导出格式。"
+
+
+msgid "Invalid export format"
+msgstr "非法的导出格式"
+
+
+msgid "No available exporter found."
+msgstr "没有找到可用导出器。"
+
+
+msgid "Encountered an error while performing search."
+msgstr "在执行搜索时碰到一个错误。"
+
+
+msgid "Showing results %s through %s."
+msgstr "显示结果%s，它是通过%s来完成的。"
+
+
+msgid "Searching..."
+msgstr "搜索..."
+
+
+msgid "Notice, search size limit exceeded."
+msgstr "注意，超出搜索大小限制。"
+
+
+msgid "Entry"
+msgstr "条目"
+
+
+msgid "LDIF Export for: %s"
+msgstr "为： %s，导出LDIF"
+
+
+msgid "Generated by phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) on %s"
+msgstr "由phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) 在 %s上生成的"
+
+
+msgid "Total Entries"
+msgstr "条目总数"
+
+
+msgid "DSLM Export for: %s"
+msgstr "为： %s，导出DSLM"
+
+
+msgid "Include system attributes"
+msgstr "包含系统属性"
+
+
+msgid "CSV (Spreadsheet)"
+msgstr "CSV (Spreadsheet)"
+
+
+msgid "You left the password blank."
+msgstr "你的密码为空。"
+
+
+msgid "No one is logged in to that server."
+msgstr "没人登录到该服务器。"
+
+
+msgid "Could not logout."
+msgstr "不能退出。"
+
+
+msgid "Unknown auth_type: %s"
+msgstr "不能识别的auth_type： %s"
+
+
+msgid "Logged out successfully from server <b>%s</b>"
+msgstr "成功从<b>%s</b>服务器退出"
+
+
+msgid "Authenticate to server %s"
+msgstr "认证到服务器%s"
+
+
+msgid "Warning: This web connection is unencrypted."
+msgstr "警告： 此web连接没有加密。"
+
+
+msgid "You are not using 'https'. Web browser will transmit login information in clear text."
+msgstr "你没有使用'https'。 Web浏览器将会以明文传输登录信息。"
+
+
+msgid "Login DN"
+msgstr "登录DN"
+
+
+msgid "User name"
+msgstr "用户名"
+
+
+msgid "Password"
+msgstr "密码"
+
+
+msgid "Authenticate"
+msgstr "认证"
+
+
+msgid "Sorry, you are not allowed to use phpLDAPadmin with this LDAP server."
+msgstr "对不起，这台LDAP服务器不允许你使用phpLDAPadmin。"
+
+
+msgid "Entry Chooser"
+msgstr "条目选择器"
+
+
+msgid "You need to configure phpLDAPadmin. Edit the file 'config/config.php' to do so. An example config file is provided in 'config/config.php.example'"
+msgstr "你需要配置phpLDAPadmin。 编辑文件'config.php'就可以。 有个样例配置文件提供在 'config.php.example'里"
+
+
+msgid "Deletes not allowed in read only mode."
+msgstr "在只读模式下不允许删除。"
+
+
+msgid "Error calling mass_delete.php. Missing mass_delete in POST vars."
+msgstr "错误调用mass_delete.php。在POST变量中丢失 mass_delete。"
+
+
+msgid "mass_delete POST var is not an array."
+msgstr "mass_delete POST 变量不是个数组。"
+
+
+msgid "Mass deletion is not enabled. Please enable it in config.php before proceeding."
+msgstr "Mass deletion(大量删除)没有启用。 请在进行下一步前在config.php中启用它。"
+
+
+msgid "Mass Deleting"
+msgstr "正在大量删除"
+
+
+msgid "Deletion progress on server \"%s\""
+msgstr "服务器\"%s\"上的删除过程"
+
+
+msgid "Malformed mass_delete array."
+msgstr "不规则的mass_delete 数组。"
+
+
+msgid "You did not select any entries to delete."
+msgstr "你没有选择任何要删除的条目。"
+
+
+msgid "Deleting %s"
+msgstr "正在删除 %s"
+
+
+msgid "%s of %s entries failed to be deleted."
+msgstr "删除条目%s（属于%s）失败。"
+
+
+msgid "All entries deleted successfully."
+msgstr "所有条目删除成功。"
+
+
+msgid "Confirm mass delete of %s entries on server %s"
+msgstr "确认大量删除条目%s（在服务器%s上）"
+
+
+msgid "Yes, delete!"
+msgstr "是的，删除！"
+
+
+msgid "You cannot rename an entry which has children entries (eg, the rename operation is not allowed on non-leaf entries)"
+msgstr "你不能更名一个带有子条目的条目，举例，更名操作允许在非叶子条目上完成"
+
+
+msgid "You did not change the RDN"
+msgstr "你不能更改RDN"
+
+
+msgid "Invalid RDN value"
+msgstr "无效的RDN值"
+
+
+msgid "Could not rename the entry"
+msgstr "不能更名该条目"
+
+
+msgid "Passwords match!"
+msgstr "密码匹配！"
+
+
+msgid "Passwords do not match!"
+msgstr "密码不匹配！"
+
+
+msgid "Password Checker Tool"
+msgstr "密码检查工具"
+
+
+msgid "Compare"
+msgstr "比较"
+
+
+msgid "To"
+msgstr "与"
+
+
+msgid "Using the"
+msgstr "使用该"
+
+
+msgid "You may switch to the "
+msgstr "你可以转换到"
+
+
+msgid "default template"
+msgstr "默认模板"
+
+
+msgid "User Account (posixAccount)"
+msgstr "用户账号(posixAccount)"
+
+
+msgid "Address Book Entry (inetOrgPerson)"
+msgstr "地址簿条目(inetOrgPerson)"
+
+
+msgid "Address Book Entry (mozillaOrgPerson)"
+msgstr "地址簿条目(mozillaOrgPerson)"
+
+
+msgid "Kolab User Entry"
+msgstr "Kolab用户条目"
+
+
+msgid "Organisational Unit"
+msgstr "组织化单元(Organizational Unit)"
+
+
+msgid "Organisational Role"
+msgstr "组织化角色"
+
+
+msgid "Posix Group"
+msgstr "Posix组"
+
+
+msgid "Samba NT Machine"
+msgstr "Samba NT 主机"
+
+
+msgid "Samba 3 NT Machine"
+msgstr "Samba 3 NT 主机"
+
+
+msgid "Samba User"
+msgstr "Samba 用户"
+
+
+msgid "Samba 3 User"
+msgstr "Samba 3 用户"
+
+
+msgid "Samba 3 Group Mapping"
+msgstr "Samba 3 组映像(Mapping)"
+
+
+msgid "DNS Entry"
+msgstr "DNS 条目"
+
+
+msgid "Simple Security Object"
+msgstr "简单安全对象(Simple Security Object)"
+
+
+msgid "Courier Mail Account"
+msgstr "Courier 邮件账号"
+
+
+msgid "Courier Mail Alias"
+msgstr "Courier 邮件别名"
+
+
+msgid "LDAP Alias"
+msgstr "LDAP 别名"
+
+
+msgid "Sendmail Cluster"
+msgstr "Sendmail 集群"
+
+
+msgid "Sendmail Domain"
+msgstr "Sendmail 域"
+
+
+msgid "Sendmail Alias"
+msgstr "Sendmail 别名"
+
+
+msgid "Sendmail Virtual Domain"
+msgstr "Sendmail 虚拟域"
+
+
+msgid "Sendmail Virtual Users"
+msgstr "Sendmail 虚拟用户"
+
+
+msgid "Sendmail Relays"
+msgstr "Sendmail 回复"
+
+
+msgid "Custom"
+msgstr "自定义"
+
+
+msgid "My Samba domain Name"
+msgstr "我的Samba域名"
+
+
+msgid "Administrators"
+msgstr "管理员"
+
+
+msgid "Users"
+msgstr "用户"
+
+
+msgid "Guests"
+msgstr "一般用户(Guests)"
+
+
+msgid "Power Users"
+msgstr "增强用户(Power Users)"
+
+
+msgid "Account Operators"
+msgstr "账号管理员"
+
+
+msgid "Server Operators"
+msgstr "服务器管理员"
+
+
+msgid "Print Operators"
+msgstr "打印管理员"
+
+
+msgid "Backup Operators"
+msgstr "备份管理员"
+
+
+msgid "Replicator"
+msgstr "复制器(Replicator)"
+
+
+msgid " Unable to create the Samba passwords. Please, check the configuration in template_config.php"
+msgstr "不能建立Samba密码。请检查文件template_config.php里的配置。"
+
+
+msgid "Error: You have an error in your samba confguration."
+msgstr "错误：在你的samba配置里有个错误。"
+
+
+msgid "Error: A name and a sid for your samba domain need to be provided."
+msgstr "错误：需要为你的samba域提供一个名字(name)和一个sid。"
+
+
+msgid "Error: No name provided for samba domain."
+msgstr "错误：没有为samba域提供名字。"
+
+
+msgid "Error: No sid provided for samba domain."
+msgstr "错误：没有为samba域提供sid。"
+
+
+msgid "Samba Account"
+msgstr "Samba 账号"
+
+
+msgid "samba account"
+msgstr "samba 账号"
+
+
+msgid "New User Account"
+msgstr "新建用户账号"
+
+
+msgid "Hint: To customize this template, edit the file templates/creation/new_user_template.php"
+msgstr "提示：想要定制模板的话，你可以编辑文件templates/creation/new_user_template.php"
+
+
+msgid "First name"
+msgstr "第一个名字"
+
+
+msgid "Last name"
+msgstr "最后一个名字"
+
+
+msgid "first"
+msgstr "第一个"
+
+
+msgid "last"
+msgstr "最后一个"
+
+
+msgid "Common name"
+msgstr "公有名字(Common name)"
+
+
+msgid "Encryption"
+msgstr "加密方法"
+
+
+msgid "Login Shell"
+msgstr "登录Shell"
+
+
+msgid "Home Directory"
+msgstr "主目录"
+
+
+msgid "UID Number"
+msgstr "UID号"
+
+
+msgid "(automatically determined)"
+msgstr "（自动检测到的）"
+
+
+msgid "Group"
+msgstr "组"
+
+
+msgid "GID Number"
+msgstr "GID号"
+
+
+msgid "Your passwords don't match. Please go back and try again."
+msgstr "你的密码不匹配。请返回再试试。"
+
+
+msgid "You cannot leave the %s blank. Please go back and try again."
+msgstr "%s处不能为空。请返回再试试。"
+
+
+msgid "You can only enter numeric values for the %s field. Please go back and try again."
+msgstr "%s字段不能只输入数字。请返回再试试。"
+
+
+msgid "The container you specified (%s) does not exist. Please go back and try again."
+msgstr "你指定的容器(%s)不存在。请返回再试试。"
+
+
+msgid "Confirm account creation"
+msgstr "确认创建账号"
+
+
+msgid "[secret]"
+msgstr "[隐秘]"
+
+
+msgid "Create Account"
+msgstr "创建账号"
+
+
+msgid "New Address Book Entry"
+msgstr "新建地址簿条目"
+
+
+msgid "Organisation"
+msgstr "组织"
+
+
+msgid "Address"
+msgstr "地址"
+
+
+msgid "City"
+msgstr "城市"
+
+
+msgid "Postal code"
+msgstr "邮政编码"
+
+
+msgid "Street"
+msgstr "街道"
+
+
+msgid "Work phone"
+msgstr "工作电话"
+
+
+msgid "Fax"
+msgstr "传真(Fax)"
+
+
+msgid "Mobile"
+msgstr "移动电话(Mobile)"
+
+
+msgid "Email"
+msgstr "电子邮件"
+
+
+msgid "You cannot leave the Common Name blank. Please go back and try again."
+msgstr "公有名字(Common Name)不能为空。请返回再试试。"
+
+
+msgid "Confirm entry creation:"
+msgstr "确认创建条目："
+
+
+msgid "Create Address"
+msgstr "创建地址簿"
+
+
+msgid "Check password..."
+msgstr "正在检查密码……"
+
+
+msgid "Comparing the following DNs"
+msgstr "比较紧跟着的DN"
+
+
+msgid "Compare another DN with"
+msgstr "比较另一个DN跟"
+
+
+msgid "with "
+msgstr "同 "
+
+
+msgid "Source DN"
+msgstr "源DN"
+
+
+msgid "Compare this DN with another"
+msgstr "将该DN与另一个比较"
+
+
+msgid "Switch Entry"
+msgstr "切换条目"
+
+
+msgid "No Value"
+msgstr "没有值"
+
+
+msgid "Compare with another entry"
+msgstr "同另一个条目进行比较"
+
+
+msgid "You need one of the following ObjectClass(es) to add this attribute %s."
+msgstr "要新增属性%s，你需要下面的ObjectClass(es)——对象类。"
+
+
+msgid "Your Session timed out after"
+msgstr "你的会话期将在无活动的"
+
+
+msgid "min. of inactivity. You have been automatically logged out."
+msgstr "分钟后过期。你将自动退出。"
+
+
+msgid "To log back in please click on the following link:"
+msgstr "想登录回来，请点击下面的链接："
+
+
+msgid "(Session timed out. Automatically logged out.)"
+msgstr "(会话超时，自动退出。)"
+
+
+msgid "Inactivity will log you off at %s"
+msgstr "在%s如果活动，你将被登出。"
+
+

@@ -23,9 +23,9 @@
 
 <!-- Attributes Definition -->
 <!ELEMENT attributes (attribute*)>
-<!ELEMENT attribute (array?, default?, description?, display?, helper?, hidden?, hint?,
+<!ELEMENT attribute (array?, default?, cols?, description?, display?, helper?, hidden?, hint?,
 			icon?, onchange*, order?, override?, page?, post?,
-			presubmit?, spacer*, type?, value*, verify?)>
+			presubmit?, rows?, spacer*, type?, value*, verify?)>
 <!ATTLIST attribute id CDATA #REQUIRED>
 
 <!-- helper -->
@@ -49,6 +49,7 @@
 
 <!-- Attribute Parameters -->
 <!ELEMENT array (#PCDATA)>
+<!ELEMENT cols (#PCDATA)>
 <!ELEMENT default (#PCDATA)>
 <!ELEMENT hidden (#PCDATA)>
 <!ELEMENT onchange (#PCDATA)>
@@ -57,6 +58,7 @@
 <!ELEMENT page (#PCDATA)>
 <!ELEMENT post (#PCDATA)>
 <!ELEMENT presubmit (#PCDATA)>
+<!ELEMENT rows (#PCDATA)>
 <!ELEMENT spacer (#PCDATA)>
 <!ELEMENT type (#PCDATA)>
 <!ELEMENT verify (#PCDATA)>

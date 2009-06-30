@@ -22,7 +22,7 @@
  *
  * NOTE: Commented out values in this file prefixed by //, represent the
  * defaults that have been defined in config_default.php.
- * Commented out values prefixed by #, dont refelct their default value, you can
+ * Commented out values prefixed by #, dont reflect their default value, you can
  * check config_default.php if you want to see what the default is.
  *
  * DONT change config_default.php, you changes will be lost by the next release
@@ -35,7 +35,7 @@
 /*********************************************/
 
 /* If you are asked to put pla in debug mode, this is how you do it: */
-#  $config->custom->debug['level'] = 2;
+#  $config->custom->debug['level'] = 255;
 #  $config->custom->debug['syslog'] = true;
 #  $config->custom->debug['file'] = '/tmp/pla_debug.log';
 
@@ -239,7 +239,7 @@ $ldapservers->SetValue($i,'login','pass','');
 $ldapservers->SetValue($i,'server','tls',false);
 $ldapservers->SetValue($i,'server','low_bandwidth',false);
 $ldapservers->SetValue($i,'appearance','password_hash','md5');
-$ldapservers->SetValue($i,'login','attr','uid');
+$ldapservers->SetValue($i,'login','attr','dn');
 $ldapservers->SetValue($i,'login','string','');
 $ldapservers->SetValue($i,'login','class','');
 $ldapservers->SetValue($i,'server','read_only',false);

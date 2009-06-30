@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr.php,v 1.15.2.4 2005/10/22 14:22:47 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr.php,v 1.18.2.7 2005/12/09 23:32:37 wurley Exp $
 
 /**
  * Adds an attribute/value pair to an object
@@ -19,12 +19,11 @@
  */
 
 require './common.php';
-require TMPLDIR.'template_config.php';
 
 if( $ldapserver->isReadOnly() )
-	pla_error( $lang['no_updates_in_read_only_mode'] );
+	pla_error( _('You cannot perform updates while server is in read-only mode') );
 if( ! $ldapserver->haveAuthInfo())
-	pla_error( $lang['not_enough_login_info'] );
+	pla_error( _('Not enough information to login to server. Please check your configuration.') );
 
 $attr = $_POST['attr'];
 $val  = isset( $_POST['val'] ) ? $_POST['val'] : false;;
@@ -35,7 +34,7 @@ $encoded_dn = rawurlencode( $dn );
 $encoded_attr = rawurlencode( $attr );
 
 if( ! $is_binary_val && $val == "" ) {
-	pla_error( $lang['left_attr_blank'] );
+	pla_error( _('You left the attribute value blank. Please go back and try again.') );
 }
 
 // special case for binary attributes (like jpegPhoto and userCertificate):
@@ -44,14 +43,14 @@ if( ! $is_binary_val && $val == "" ) {
 // of the attribute.
 
 // Check to see if this is a unique Attribute
-if( $badattr = checkUniqueAttr( $ldapserver, $dn, $attr, array($val) ) ) {
+if ($badattr = $ldapserver->checkUniqueAttr($dn,$attr,array($val))) {
 	$search_href = sprintf('search.php?search=true&form=advanced&server_id=%s&filter=%s=%s',$ldapserver->server_id,$attr,$badattr);
-	pla_error(sprintf( $lang['unique_attr_failed'],$attr,$badattr,$dn,$search_href ) );
+	pla_error(sprintf( _('Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href=\'%s\'>search</a> for that entry.'),$attr,$badattr,$dn,$search_href ) );
 }
 
 if( $is_binary_val ) {
 	if( 0 == $_FILES['val']['size'] )
-		pla_error( $lang['file_empty'] );
+		pla_error( _('The file you chose is either empty or does not exist. Please go back and try again.') );
 
 	if( ! is_uploaded_file( $_FILES['val']['tmp_name'] ) ) {
 
@@ -59,32 +58,32 @@ if( $is_binary_val ) {
 
 			switch($_FILES['val']['error']) {
 				case 0: //no error; possible file attack!
-					pla_error( $lang['invalid_file'] );
+					pla_error( _('Security error: The file being uploaded may be malicious.') );
 					break;
 
 				case 1: //uploaded file exceeds the upload_max_filesize directive in php.ini
-					pla_error( $lang['uploaded_file_too_big'] );
+					pla_error( _('The file you uploaded is too large. Please check php.ini, upload_max_size setting') );
 					break;
 
 				case 2: //uploaded file exceeds the MAX_FILE_SIZE directive specified in the html form
-					pla_error( $lang['uploaded_file_too_big'] );
+					pla_error( _('The file you uploaded is too large. Please check php.ini, upload_max_size setting') );
 					break;
 
 				case 3: //uploaded file was only partially uploaded
-					pla_error( $lang['uploaded_file_partial'] );
+					pla_error( _('The file you selected was only partially uploaded, likley due to a network error.') );
 					break;
 
 				case 4: //no file was uploaded
-					pla_error( $lang['left_attr_blank'] );
+					pla_error( _('You left the attribute value blank. Please go back and try again.') );
 					break;
 
 				default: //a default error, just in case!  :)
-					pla_error( $lang['invalid_file'] );
+					pla_error( _('Security error: The file being uploaded may be malicious.') );
 					break;
 			}
 
 		else
-			pla_error( $lang['invalid_file'] );
+			pla_error( _('Security error: The file being uploaded may be malicious.') );
 	}
 
 	$file = $_FILES['val']['tmp_name'];
@@ -118,14 +117,14 @@ elseif (strcasecmp($attr,'sambaLMPassword') == 0) {
 }
 
 $new_entry = array( $attr => $val );
-$result = @ldap_mod_add( $ldapserver->connect(), $dn, $new_entry );
+$result = $ldapserver->attrModify($dn,$new_entry);
 
 if ($result)
-	header(sprintf('Location: edit.php?server_id=%s&dn=%s&modified_attrs[]=%s',
+	header(sprintf('Location: template_engine.php?server_id=%s&dn=%s&modified_attrs[]=%s',
 		$ldapserver->server_id,$encoded_dn,$encoded_attr));
 
 else
-	pla_error( $lang['failed_to_add_attr'],$ldapserver->error(),$ldapserver->errno() );
+	pla_error( _('Failed to add the attribute.'),$ldapserver->error(),$ldapserver->errno() );
 
 /**
  * Check if we need to append the ;binary option to the name

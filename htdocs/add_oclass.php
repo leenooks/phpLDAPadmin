@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass.php,v 1.16.2.1 2005/10/09 09:07:21 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass.php,v 1.17.2.5 2005/12/09 23:32:37 wurley Exp $
 
 /**
  * Adds an objectClass to the specified dn.
@@ -22,9 +22,9 @@
 require './common.php';
 
 if( $ldapserver->isReadOnly() )
-	pla_error( $lang['no_updates_in_read_only_mode'] );
+	pla_error( _('You cannot perform updates while server is in read-only mode') );
 if( ! $ldapserver->haveAuthInfo())
-	pla_error( $lang['not_enough_login_info'] );
+	pla_error( _('Not enough information to login to server. Please check your configuration.') );
 
 $dn = rawurldecode( $_POST['dn'] );
 $new_oclass = unserialize( rawurldecode( $_POST['new_oclass'] ) );
@@ -32,7 +32,7 @@ $new_attrs = $_POST['new_attrs'];
 
 $encoded_dn = rawurlencode( $dn );
 
-if( is_attr_read_only( $ldapserver, 'objectClass' ) )
+if ($ldapserver->isAttrReadOnly('objectClass'))
 	pla_error( "ObjectClasses are flagged as read only in the phpLDAPadmin configuration." );
 
 $new_entry = array();
@@ -45,20 +45,20 @@ if( is_array( $new_attrs ) && count( $new_attrs ) > 0 )
 	foreach( $new_attrs as $attr => $val ) {
 
 		// Check to see if this is a unique Attribute
-		if( $badattr = checkUniqueAttr( $ldapserver, $dn, $attr, array($val) ) ) {
+		if ($badattr = $ldapserver->checkUniqueAttr($dn,$attr,array($val))) {
 			$search_href = sprintf('search.php?search=true&form=advanced&server_id=%s&filter=%s=%s',
 				$ldapserver->server_id,$attr,$badattr);
-			pla_error(sprintf( $lang['unique_attr_failed'],$attr,$badattr,$dn,$search_href ) );
+			pla_error(sprintf( _('Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href=\'%s\'>search</a> for that entry.'),$attr,$badattr,$dn,$search_href ) );
 		}
 
 		$new_entry[ $attr ] = $val;
 	}
 
-$add_res = @ldap_mod_add( $ldapserver->connect(), $dn, $new_entry );
+$add_res = $ldapserver->attrModify($dn,$new_entry);
 
 if (! $add_res)
-	pla_error($lang['could_not_perform_ldap_mod_add'],$ldapserver->error(),$ldapserver->errno());
+	pla_error(_('Could not perform ldap_mod_add operation.'),$ldapserver->error(),$ldapserver->errno());
 
 else
-	header(sprintf('Location: edit.php?server_id=%s&dn=%s&modified_attrs[]=objectclass',$ldapserver->server_id,$encoded_dn));
+	header(sprintf('Location: template_engine.php?server_id=%s&dn=%s&modified_attrs[]=objectclass',$ldapserver->server_id,$encoded_dn));
 ?>

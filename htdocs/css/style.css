@@ -1,4 +1,4 @@
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/css/style.css,v 1.44 2005/03/12 14:03:36 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/css/style.css,v 1.44.4.2 2005/12/06 22:00:54 wurley Exp $ */
 span.hint {
 	font-size: small;
 	font-weight: normal;
@@ -594,6 +594,11 @@ table.create td.heading {
 	padding: 10px;
 }
 
+table.create td.name {
+	font-size: 13px;
+	width: 350px; 
+}
+
 div.add_value {
 	font-size: 10pt;
 	margin: 0px;
@@ -632,11 +637,12 @@ p.doc {
 table.export_form {
 	font-size: 75%;
 	width: 400px;
-    border-spacing: 10px;
-    border-collapse: separate;
+	border-spacing: 10px;
+	border-collapse: separate;
 }
 
 table.export_form tr td {
+	font-size: 13px;
 	text-align: left;
 	vertical-align: top;
 	padding: 4px;

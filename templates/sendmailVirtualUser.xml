@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE template SYSTEM "template.dtd">
 <template>
-<title>sendmail_virt_users</title>
+<title>Sendmail Virtual Users</title>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
 <icon>images/mail.png</icon>
 <description>New Sendmail Virtual User</description>

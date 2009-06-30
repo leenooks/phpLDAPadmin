@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/server_info.php,v 1.21.2.1 2005/10/09 09:07:21 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/server_info.php,v 1.22.2.3 2005/12/08 11:55:57 wurley Exp $
 
 /**
  * Fetches and displays all information that it can from the specified server
@@ -47,118 +47,83 @@ $root_dse_attributes = array(
 	);
 
 if (! $ldapserver->haveAuthInfo())
-	pla_error( $lang['not_enough_login_info'] );
+	pla_error( _('Not enough information to login to server. Please check your configuration.') );
 
 # Fetch basic RootDSE attributes using the + and *.
-$r = @ldap_read($ldapserver->connect(),'','objectClass=*',array('+','*'));
-if (! $r)
-	pla_error($lang['could_not_fetch_server_info'],
-		  $ldapserver->error(),$ldapserver->errno());
-
-$entry = @ldap_first_entry($ldapserver->connect(),$r);
-if (! $entry)
-	pla_error($lang['could_not_fetch_server_info'],
-		  $ldapserver->error(),$ldapserver->errno());
-
-$attrs = @ldap_get_attributes($ldapserver->connect(),$entry);
-$count = @ldap_count_entries($ldapserver->connect(),$r);
+$attrs = array_pop($ldapserver->search(null,'','objectClass=*',array('+','*'),'base'));
 
 /* After fetching the "basic" attributes from the RootDSE, try fetching the
    more advanced ones (from ths list). Add them to the list of attrs to display
    if they weren't already fetched. (this was added as a work-around for OpenLDAP
    on RHEL 3. */
-$r2 = @ldap_read($ldapserver->connect(),'','objectClass=*',$root_dse_attributes);
-if ($r2) {
-	$entry2 = @ldap_first_entry($ldapserver->connect(),$r);
-	$attrs2 = @ldap_get_attributes($ldapserver->connect(),$entry);
+$attrs2 = array_pop($ldapserver->search(null,'','objectClass=*',$root_dse_attributes,'base'));
 
-	for ($i = 0; $i < $attrs2['count']; $i++) {
-		$attr = $attrs2[$i];
-
-		if (! isset($attrs[$attr])) {
-			$attrs[$attr] = $attrs2[$attr];
-			$attrs['count']++;
-			$attrs[] = $attr;
-		}
-	}
-}
-unset($attrs2,$entry,$entry2);
+foreach ($attrs2 as $attr => $values)
+	if (! isset($attrs[$attr]))
+		$attrs[$attr] = $attrs2[$attr];
 
 include './header.php';
-?>
 
-<body>
-	<h3 class="title"><?php echo $lang['server_info_for'] . htmlspecialchars($ldapserver->name); ?></h3>
-	<h3 class="subtitle"><?php echo $lang['server_reports_following']; ?></h3>
+echo '<body>';
+printf('<h3 class="title">%s%s</h3>',_('Server info for: '),htmlspecialchars($ldapserver->name));
+printf('<h3 class="subtitle">%s</h3>',_('Server reports the following information about itself'));
 
-<?php if ($count == 0 || $attrs['count'] == 0) { ?>
-	<br />
-	<br />
-	<center><?php echo $lang['nothing_to_report']; ?></center>
-
-<?php
+if (count($attrs) == 0) {
+	echo '<br /><br />';
+	printf('<center>%s</center>',_('This server has nothing to report.'));
 	exit;
 }
-?>
 
-	<table class="edit_dn">
+echo '<table class="edit_dn">';
+foreach ($attrs as $attr => $values) {
+	if ($attr == 'dn')
+		continue;
 
-<?php
-for ($i = 0; $i < $attrs['count']; $i++ ) {
-	$attr = $attrs[$i];
 	$schema_href = sprintf('schema.php?server_id=%s&amp;view=attributes&amp;viewvalue=%s',$ldapserver->server_id,$attr);
-?>
 
-		<tr>
-			<td class="attr">
-				<b>
-				<a title="<?php echo sprintf($lang['attr_name_tooltip'],$attr); ?>"
-					href="<?php echo $schema_href; ?>"><?php echo htmlspecialchars($attr); ?></a>
-				</b>
-			</td>
-		</tr>
+	echo '<tr><td class="attr">';
+	printf('<b><a title="'._('Click to view the schema defintion for attribute type \'%s\'').'" href="%s">%s</a></b>',
+		$attr,$schema_href,htmlspecialchars($attr));
+	echo '</td></tr>';
 
-		<tr>
-			<td class="val">
-				<table class="edit_dn">
+	echo '<tr><td class="val">';
+	echo '<table class="edit_dn">';
 
-<?php
-	for ($j = 0; $j < $attrs[$attr]['count']; $j++) {
+	if (is_array($values))
+		foreach ($values as $value) {
 
 		$oidtext = '';
 		print '<tr>';
 
-		if (preg_match('/^[0-9]+\.[0-9]+/',$attrs[$attr][$j])) {
-			printf('<td width=5%%><acronym title="%s"><img src="images/rfc.png"></acronym></td>',
-				htmlspecialchars($attrs[$attr][$j]));
+		if (preg_match('/^[0-9]+\.[0-9]+/',$value)) {
+			printf('<td width=5%%><acronym title="%s"><img src="images/rfc.png" /></acronym></td>',
+				htmlspecialchars($value));
 
-			if ($oidtext = support_oid_to_text($attrs[$attr][$j]))
+			if ($oidtext = support_oid_to_text($value))
 				if (isset($oidtext['ref']))
 					printf('<td><acronym title="%s">%s</acronym></td>',$oidtext['ref'],$oidtext['title']);
-
 				else
 					printf('<td>%s</td>',$oidtext['title']);
 
 			else
-				printf('<td><small>%s</small></td>',$attrs[$attr][$j]);
+				if ($value)
+					printf('<td><small>%s</small></td>',$value);
 
 		} else {
-			printf('<td>%s</td>',htmlspecialchars($attrs[$attr][$j]));
+			printf('<td>%s</td>',htmlspecialchars($value));
 		}
 
 		print '</tr>';
 
-		if (isset($oidtext['desc']))
+		if (isset($oidtext['desc']) && trim($oidtext['desc']))
 			printf('<tr><td colspan=2><small>%s</small></td></tr>',$oidtext['desc']);
-	}
+		}
+
+	else
+		printf('<tr><td>%s</td></tr>',htmlspecialchars($values));
+
+	echo '</table>';
+	echo '</td></tr>';
+}
+echo '</table></body></html>';
 ?>
-
-				</table>
-			</td>
-		</tr>
-
-<?php } ?>
-
-	</table>
-</body>
-</html>

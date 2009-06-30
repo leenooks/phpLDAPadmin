@@ -1,0 +1,1554 @@
+# : $
+
+
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
+"Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
+"Last-Translator: Radek Senfeld <rush@logic.cz>\n"
+"POT-Creation-Date: 2005-11-29 17:45+0100\n"
+"PO-Revision-Date: 2005-11-29 18:22+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+
+msgid "Simple Search Form"
+msgstr "Rychlé vyhledávání"
+
+
+msgid "Advanced Search Form"
+msgstr "Rozšířené vyhledávání"
+
+
+msgid "Server"
+msgstr "Server"
+
+
+msgid "Search for entries whose"
+msgstr "Vyhledat objekty kde"
+
+
+msgid "Base DN"
+msgstr "Výchozí <acronym title=\"Distinguished Name\">DN</acronym>"
+
+
+msgid "Search Scope"
+msgstr "Oblast prohledávání"
+
+
+msgid "Show Attributtes"
+msgstr "Zobrazit atributy"
+
+
+msgid "Search"
+msgstr "Vyhledat"
+
+
+msgid "Select a predefined search"
+msgstr "Zvolte předdefinované vyhledávání"
+
+
+msgid "Predefined Searches"
+msgstr "Předdefinovaná vyhledávání"
+
+
+msgid "No queries have been defined in config.php."
+msgstr "V config.php nejsou definovány žádné dotazy."
+
+
+msgid "Request feature"
+msgstr "Napište si o novou funkci"
+
+
+msgid "Report a bug"
+msgstr "Nahlásit chybu"
+
+
+msgid "schema"
+msgstr "schéma"
+
+
+msgid "search"
+msgstr "vyhledat"
+
+
+msgid "create"
+msgstr "vytvořit"
+
+
+msgid "info"
+msgstr "info"
+
+
+msgid "import"
+msgstr "import"
+
+
+msgid "refresh"
+msgstr "obnovit"
+
+
+msgid "logout"
+msgstr "odhlásit se"
+
+
+msgid "Create new entry here"
+msgstr "Vytvořit nový"
+
+
+msgid "View schema for"
+msgstr "Zobrazit schéma pro"
+
+
+msgid "Refresh all expanded containers for"
+msgstr "Obnovit všechny otevřené složky"
+
+
+msgid "Create a new entry on"
+msgstr "Vytvořit nový objekt v"
+
+
+msgid "new"
+msgstr "nový"
+
+
+msgid "View server-supplied information"
+msgstr "Zobrazit serverem poskytované informace"
+
+
+msgid "Import entries from an LDIF file"
+msgstr "Importovat data ze souboru LDIF"
+
+
+msgid "Logout of this server"
+msgstr "Odhlásit se od tohoto serveru"
+
+
+msgid "Logged in as: "
+msgstr "Přihlášen jako: "
+
+
+msgid "read only"
+msgstr "jen pro čtení"
+
+
+msgid "This attribute has been flagged as read only by the phpLDAPadmin administrator"
+msgstr "Tento atribut byl administrátorem phpLDAPadminu označen jako \"jen pro čtení\"."
+
+
+msgid "Could not determine the root of your LDAP tree."
+msgstr "Nepodařilo se zjistit kořen Vašeho LDAP stromu."
+
+
+msgid "It appears that the LDAP server has been configured to not reveal its root."
+msgstr "Zdá se, že LDAP server je nastavený tak, že nezobrazuje svůj kořen."
+
+
+msgid "Please specify it in config.php"
+msgstr "Nastavte ho prosím v souboru config.php"
+
+
+msgid "Login..."
+msgstr "Přihlásit se..."
+
+
+msgid "login"
+msgstr "přihlásit"
+
+
+msgid "Delete this entry"
+msgstr "Smazat tento objekt"
+
+
+msgid "You will be prompted to confirm this decision"
+msgstr "Budete požádáni o potvrzení tohoto rozhodnutí"
+
+
+msgid "Copy or move this entry"
+msgstr "Kopírovat tento objekt"
+
+
+msgid "Copy this object to another location, a new DN, or another server"
+msgstr "Okopíruje tento objekt do jiného umístění, nového DN, nebo na jiný server"
+
+
+msgid "Export"
+msgstr "Export"
+
+
+msgid "Save a dump of this object"
+msgstr "Uložit přepis objektu"
+
+
+msgid "Save a dump of this object and all of its children"
+msgstr "Uloží přepis tohoto objektu a všech jeho potomků"
+
+
+msgid "Export subtree"
+msgstr "Exportovat podstrom"
+
+
+msgid "Create a child entry"
+msgstr "Vytvořit nového potomka"
+
+
+msgid "Rename Entry"
+msgstr "Přejmenovat objekt"
+
+
+msgid "Rename"
+msgstr "Přejmenovat"
+
+
+msgid "Add"
+msgstr "Přidat"
+
+
+msgid "View"
+msgstr "Zobrazit"
+
+
+msgid "View 1 child"
+msgstr "Zobrazit potomka"
+
+
+msgid "View %s children"
+msgstr "Zobrazit potomky (%s)"
+
+
+msgid "Add new attribute"
+msgstr "Přidat nový atribut"
+
+
+msgid "Add new ObjectClass"
+msgstr "Přidat objectClass"
+
+
+msgid "Hide internal attributes"
+msgstr "Schovat interní atributy"
+
+
+msgid "Show internal attributes"
+msgstr "Zobrazit interní atributy"
+
+
+msgid "Click to view the schema defintion for attribute type '%s'"
+msgstr "Klepnutím zobrazíte definiční schéma pro atribut typu '%s'"
+
+
+msgid "none"
+msgstr "žádný"
+
+
+msgid "No internal attributes"
+msgstr "Žádné interní atributy"
+
+
+msgid "This entry has no attributes"
+msgstr "Tento objekt nemá atributy"
+
+
+msgid "Save Changes"
+msgstr "Uložit změny"
+
+
+msgid "add value"
+msgstr "přidat hodnotu"
+
+
+msgid "Add an additional value to attribute '%s'"
+msgstr "Přidá další hodnotu k atributu '%s'"
+
+
+msgid "Refresh"
+msgstr "Obnovit"
+
+
+msgid "Refresh this entry"
+msgstr "Obnovit tento objekt"
+
+
+msgid "Hint: To delete an attribute, empty the text field and click save."
+msgstr "Rada: <b>Pro smazání atributu</b> vyprázděte textové políčko a klepněte na Uložit."
+
+
+msgid "Hint: To view the schema for an attribute, click the attribute name."
+msgstr "Rada: <b>K zobrazení schémata pro atribut</b> klepněte na název atributu."
+
+
+msgid "Some attributes (%s) were modified and are highlighted below."
+msgstr "Některé atributy (%s) byly modifikováný a jsou zvýrazněny dole."
+
+
+msgid "An attribute (%s) was modified and is highlighted below."
+msgstr "Atribut (%s) byl změněn a je zvýrazněn dole."
+
+
+msgid "Viewing entry in read-only mode."
+msgstr "Prohlížení objekt v módu \"pouze pro čtení\"."
+
+
+msgid "no new attributes available for this entry"
+msgstr "nejsou dostupné žádné nové atributy pro tento objekt"
+
+
+msgid "no new binary attributes available for this entry"
+msgstr "nejsou dostupné žádné nové binární atributy pro tento objekt"
+
+
+msgid "Binary value"
+msgstr "Binarní hodnota"
+
+
+msgid "Add new binary attribute"
+msgstr "Přidat nový binarní atribut"
+
+
+msgid "Note: '%s' is an alias for '%s'"
+msgstr "Alias k %s"
+
+
+msgid "download value"
+msgstr "stáhnout data"
+
+
+msgid "delete attribute"
+msgstr "smazat atribut"
+
+
+msgid "true"
+msgstr "true"
+
+
+msgid "false"
+msgstr "false"
+
+
+msgid "none, remove value"
+msgstr "žádný, odebrat hodnotu"
+
+
+msgid "Really delete attribute"
+msgstr "Skutečně smazat atribut"
+
+
+msgid "Add New Value"
+msgstr "Přidat novou hodnotu"
+
+
+msgid "The server does not fully support the LDAP protocol."
+msgstr "Server plně nepodporuje LDAP protocol."
+
+
+msgid "Your version of PHP does not correctly perform the query."
+msgstr "Vaše verze PHP korektně neprovede tento dotaz."
+
+
+msgid "phpLDAPadmin doesn't know how to fetch the schema for your server."
+msgstr "Nebo možná phpLDAPadmin neví jak získat schéma pro Váš server."
+
+
+msgid "Jump to an objectClass"
+msgstr "Jdi na objectClass"
+
+
+msgid "Jump to an attribute type"
+msgstr "Jdi na typ atributu"
+
+
+msgid "Jump to a matching rule"
+msgstr "Jdi na Matching Rule"
+
+
+msgid "Schema for server"
+msgstr "Schéma serveru"
+
+
+msgid "Required Attributes"
+msgstr "Vyžadované atributy"
+
+
+msgid "Optional Attributes"
+msgstr "Volitelné atributy"
+
+
+msgid "Optional Binary Attributes"
+msgstr "Volitelné binární atributy"
+
+
+msgid "OID"
+msgstr "OID"
+
+
+msgid "Aliases"
+msgstr "Aliasy"
+
+
+msgid "Description"
+msgstr "Popis"
+
+
+msgid "no description"
+msgstr "žádný popis"
+
+
+msgid "Name"
+msgstr "Název"
+
+
+msgid "Equality"
+msgstr "Equality"
+
+
+msgid "This objectClass is obsolete."
+msgstr "Tato objectClass je <b>zastaralá</b>"
+
+
+msgid "Inherits from"
+msgstr "Odvozeno od objectClass"
+
+
+msgid "Parent to"
+msgstr "Rodičovská objectClass"
+
+
+msgid "Jump to this objectClass definition"
+msgstr "Jdi na definici této objectClass"
+
+
+msgid "Matching Rule OID"
+msgstr "Výběrové kritérium OID"
+
+
+msgid "Syntax OID"
+msgstr "Syntaxe OID"
+
+
+msgid "not applicable"
+msgstr "nepoužitelný"
+
+
+msgid "not specified"
+msgstr "nespecifikovaný"
+
+
+msgid "character"
+msgstr "znak"
+
+
+msgid "characters"
+msgstr "znaků"
+
+
+msgid "Used by objectClasses"
+msgstr "Používáno těmito objectClass"
+
+
+msgid "Used by Attributes"
+msgstr "Používají atributy"
+
+
+msgid "Maximum Length"
+msgstr "Maximální délka"
+
+
+msgid "Syntaxes"
+msgstr "Syntaxe"
+
+
+msgid "Matching Rules"
+msgstr "Matching Rules"
+
+
+msgid "Obsolete"
+msgstr "Zastaralé"
+
+
+msgid "Ordering"
+msgstr "Řazení"
+
+
+msgid "Substring Rule"
+msgstr "Substring Rule"
+
+
+msgid "Single Valued"
+msgstr "Single Valued"
+
+
+msgid "Collective"
+msgstr "Collective"
+
+
+msgid "User Modification"
+msgstr "User Modification"
+
+
+msgid "Usage"
+msgstr "Použití"
+
+
+msgid "Could not retrieve schema from"
+msgstr "Nelze získat schéma z"
+
+
+msgid "Type"
+msgstr "Typ"
+
+
+msgid "Entry %s deleted successfully."
+msgstr "Objekt '%s' byl úspěšně odstraněn."
+
+
+msgid "You must specify a DN"
+msgstr "Musíte zadat DN"
+
+
+msgid "Could not delete the entry: %s"
+msgstr "Nebylo možné odstranit objekt: %s"
+
+
+msgid "No such entry: %s"
+msgstr "Objekt neexistuje: %s"
+
+
+msgid "Delete %s"
+msgstr "Smazat %s"
+
+
+msgid "Permanently delete all children also?"
+msgstr "Odstranit také všechny potomky?"
+
+
+msgid "This entry is the root of a sub-tree containing %s entries."
+msgstr "Tento objekt je kořenem podstromu, který obsahuje %s objektů."
+
+
+msgid "view entries"
+msgstr "zobrazit objekty"
+
+
+msgid "phpLDAPadmin can recursively delete this entry and all %s of its children. See below for a list of all the entries that this action will delete. Do you want to do this?"
+msgstr "phpLDAPadmin rekurzivně odstraní tento objekt a všech jeho %s potomků. Pozorně si prohlédněte seznam objektů, které tato operace odstraní. Přejete si pokračovat?"
+
+
+msgid "Note: this is potentially very dangerous and you do this at your own risk. This operation cannot be undone. Take into consideration aliases, referrals, and other things that may cause problems."
+msgstr "Poznámka: tato operace může mít fatální následky a nelze ji vrátit zpět. Speciální pozornost věnujte aliasům, odkazům a ostatním věcem, které můžou způsobit problémy."
+
+
+msgid "Delete all %s objects"
+msgstr "Smazat všech %s objektů"
+
+
+msgid "Recursive delete progress"
+msgstr "Průběh rekurzivního odstranění"
+
+
+msgid "Entry %s and sub-tree deleted successfully."
+msgstr "Objekt %s a jeho podstrom byly úspěšně odstraněny."
+
+
+msgid "Failed to delete entry %s"
+msgstr "Nepodařilo se odstranit objekt %s"
+
+
+msgid "List of entries to be deleted:"
+msgstr "Seznam objektů k odstranění:"
+
+
+msgid "Are you sure you want to permanently delete this object?"
+msgstr "Jste si skutečně jisti, že chcete odstranit tento objekt?"
+
+
+msgid "DN"
+msgstr "DN"
+
+
+msgid "The attribute \"%s\" is flagged as read-only in the phpLDAPadmin configuration."
+msgstr "Atribut \"%s\" je v konfiguraci phpLDAPadminu označen jako \"jen pro čtení\"."
+
+
+msgid "No attribute name specified."
+msgstr "Nebylo zadáno jméno atributu."
+
+
+msgid "No DN specified"
+msgstr "Nebylo zadáno DN"
+
+
+msgid "You left the attribute value blank. Please go back and try again."
+msgstr "Nevyplnili jste hodnotu atributu. Vraťte se zpět a akci opakujte."
+
+
+msgid "Failed to add the attribute."
+msgstr "Přidání atributu selhalo."
+
+
+msgid "The file you chose is either empty or does not exist. Please go back and try again."
+msgstr "Soubor, který jste zvolili je buď prázdný nebo neexistuje. Vraťte se prosím zpět a akci opakujte."
+
+
+msgid "Security error: The file being uploaded may be malicious."
+msgstr "Bezpečnostní chyba: Soubor, který uploadujete může být závadný."
+
+
+msgid "Your PHP configuration has disabled file uploads. Please check php.ini before proceeding."
+msgstr "V konfiguraci PHP jsou zakázány uploady souborů. Pro pokračování upravte prosím php.ini."
+
+
+msgid "The file you uploaded is too large. Please check php.ini, upload_max_size setting"
+msgstr "Soubor, který se pokoušeli uložit je příliš veliký. Upravte prosím hodnotu upload_max_size v php.ini."
+
+
+msgid "The file you selected was only partially uploaded, likley due to a network error."
+msgstr "Při uploadu souboru došlo zřejmě k selhání sítě, neboť se podařilo získat jen část souboru."
+
+
+msgid "Maximum file size: %s"
+msgstr "Maximální velikost souboru: %s"
+
+
+msgid "Modification successful!"
+msgstr "Úprava proběhla úspěšně!"
+
+
+msgid "Since you changed your password, you must now login again with your new password."
+msgstr "Kvůli změně svého hesla se nyní musíte přihlásit znova - s novým heslem."
+
+
+msgid "New Required Attributes"
+msgstr "Nový vyžadovaný atribut"
+
+
+msgid "This action requires you to add"
+msgstr "K provedení této akce musíte přidat"
+
+
+msgid "new attributes"
+msgstr "nové atributy"
+
+
+msgid "Instructions: In order to add these objectClass(es) to this entry, you must specify"
+msgstr "Návod: K přiřazení této objectClass k vybranému objektu musíte zadat"
+
+
+msgid "that this objectClass requires. You can do so in this form."
+msgstr "atributy, které jsou touto objectClass vyžadovány. Můžete tak učinit v tomto formuláři."
+
+
+msgid "Add ObjectClass and Attributes"
+msgstr "Přidat objectClass a atributy"
+
+
+msgid "ObjectClasses"
+msgstr "objectClassy"
+
+
+msgid "Click to popup a dialog to select an entry (DN) graphically"
+msgstr "Otevře popup okno, ve kterém zvolíte DN"
+
+
+msgid "You cannot perform updates while server is in read-only mode"
+msgstr "Nelze provádět úpravy dokud je server v módu \"pouze pro čtení\""
+
+
+msgid "Bad server id"
+msgstr "Špatné ID serveru"
+
+
+msgid "Not enough information to login to server. Please check your configuration."
+msgstr "Nedostatek informací pro přihlášení k serveru. Ověřte prosím nastavení."
+
+
+msgid "Could not connect to LDAP server."
+msgstr "Nelze se připojit k LDAP serveru."
+
+
+msgid "Could not connect to \"%s\" on port \"%s\""
+msgstr "Nelze se připojit k \"%s\" na portu \"%s\""
+
+
+msgid "Could not perform ldap_mod_add operation."
+msgstr "Nelze provést ldap_mod_add operaci."
+
+
+msgid "Success"
+msgstr "Hotovo"
+
+
+msgid "Server: "
+msgstr "Server: "
+
+
+msgid "Looking in: "
+msgstr "Prohlížení: "
+
+
+msgid "No DN specified in query string!"
+msgstr "V požadavku nebyl uveden žádný DN!"
+
+
+msgid "Back Up..."
+msgstr "O úroveň výš..."
+
+
+msgid "no entries"
+msgstr "žádné objekty"
+
+
+msgid "Could not determine base DN"
+msgstr "Nelze zjistit výchozí DN"
+
+
+msgid "This could happen for several reasons, the most probable of which are:"
+msgstr "Toto se může přihodit z několika příčin. Nejpravděpodobnější jsou:"
+
+
+msgid "Yes"
+msgstr "Ano"
+
+
+msgid "No"
+msgstr "Ne"
+
+
+msgid "Go"
+msgstr "Jdi"
+
+
+msgid "Delete"
+msgstr "Odstranit"
+
+
+msgid "Back"
+msgstr "Zpět"
+
+
+msgid "object"
+msgstr "objekt"
+
+
+msgid "Delete all"
+msgstr "Odstranit vše"
+
+
+msgid "hint"
+msgstr "rada"
+
+
+msgid "bug"
+msgstr "chyba"
+
+
+msgid "warning"
+msgstr "upozornění"
+
+
+msgid "light"
+msgstr "light"
+
+
+msgid "Proceed &gt;&gt;"
+msgstr "Proveď &gt;&gt;"
+
+
+msgid "Add new"
+msgstr "Přidat nový"
+
+
+msgid "value to"
+msgstr "hodnota pro"
+
+
+msgid "Distinguished Name"
+msgstr "Distinguished Name"
+
+
+msgid "Current list of"
+msgstr "Současný výpis"
+
+
+msgid "values for attribute"
+msgstr "hodnoty pro atribut"
+
+
+msgid "Note: You will get an \"inappropriate matching\" error if you have not setup an EQUALITY rule on your LDAP server for this attribute."
+msgstr "Poznámka: Pokud nenastavíte na tomto LDAP serveru pravidlo<br /><tt>EQUALITY</tt> pro tento atribut, dojde k chybě při výběru objektů."
+
+
+msgid "Enter the value you would like to add:"
+msgstr "Zadejte hodnotu, kterou chcete přidat:"
+
+
+msgid "Note: You may be required to enter new attributes that these objectClass(es) require"
+msgstr "Poznámka: Není vyloučené, že budete vyzváni k zadání nových atributů vyžadovaných touto objectClass"
+
+
+msgid "You left the destination DN blank."
+msgstr "Ponechali jste kolonku cílové DN prázdnou."
+
+
+msgid "The destination entry (%s) already exists."
+msgstr "Objekt (%s) již v cílovém DN existuje."
+
+
+msgid "The destination container (%s) does not exist."
+msgstr "Cílová složka (%s) neexistuje."
+
+
+msgid "The source and destination DN are the same."
+msgstr "Zdrojové a cílové DN se shodují."
+
+
+msgid "Copying "
+msgstr "Kopíruji "
+
+
+msgid "Recursive copy progress"
+msgstr "Průběh rekurzivního kopírování"
+
+
+msgid "Building snapshot of tree to copy... "
+msgstr "Sestavuji obraz stromu ke kopírování... "
+
+
+msgid "Copy successful! Would you like to "
+msgstr "Kopie úspěšně dokončena! Přejete si "
+
+
+msgid "view the new entry"
+msgstr "zobrazit nový objekt"
+
+
+msgid "Failed to copy DN: "
+msgstr "Nepodařilo se okopírovat DN: "
+
+
+msgid "Template"
+msgstr "Šablona"
+
+
+msgid "using template"
+msgstr "použítím šablony"
+
+
+msgid "Go to %s"
+msgstr "Jdi na %s"
+
+
+msgid "Copy "
+msgstr "Kopírovat "
+
+
+msgid "to a new object"
+msgstr "jako nový objekt"
+
+
+msgid "Destination DN"
+msgstr "Cílové DN"
+
+
+msgid "The full DN of the new entry to be created when copying the source entry"
+msgstr "Celé DN nového objektu bude vytvořeno kopií zdrojového objektu"
+
+
+msgid "Destination Server"
+msgstr "Cílový server"
+
+
+msgid "Hint: Copying between different servers only works if there are no schema violations"
+msgstr "Rada: Kopírování mezi servery funguje jedině za předpokladu, že nedojde k neshodě schémat"
+
+
+msgid "Recursively copy all children of this object as well."
+msgstr "Při kopírování zahrnout všechny potomky tohoto objektu."
+
+
+msgid "Recursive copy"
+msgstr "Rekurzivní kopie"
+
+
+msgid "Filter"
+msgstr "Filtr"
+
+
+msgid "When performing a recursive copy, only copy those entries which match this filter"
+msgstr "Při rekurzivní kopii pracovat pouze s objekty, které splňují zvolený filtr"
+
+
+msgid "You left the value blank for required attribute (%s)."
+msgstr "Nevyplnili jste pole pro vyžadovaný atribut <b>%s</b>."
+
+
+msgid "Redirecting..."
+msgstr "Přesměrovávám"
+
+
+msgid "here"
+msgstr "zde"
+
+
+msgid "Could not add the object to the LDAP server."
+msgstr "Nelze objekt do LDAP serveru přidat."
+
+
+msgid "Create Object"
+msgstr "Vytvořit objekt"
+
+
+msgid "Choose a template"
+msgstr "Vyberte šablonu"
+
+
+msgid "Select a template for the creation process"
+msgstr "Zvolte šablonu pro vytvoření objektu"
+
+
+msgid "You left the RDN field blank."
+msgstr "Ponechali jste pole RDN nevyplněné."
+
+
+msgid "The container you specified (%s) does not exist. Please try again."
+msgstr "Složka (%s) neexistuje. Opakujte prosím akci."
+
+
+msgid "You did not select any ObjectClasses for this object. Please go back and do so."
+msgstr "Nepřiřadili jste žádné objectClass k tomuto objektu. Vraťte se prosím zpět a akci opakujte."
+
+
+msgid "Hint: You must choose exactly one structural objectClass (shown in bold above)"
+msgstr "Nápověda: Musíte zvolit alespoň jednu structural objectClass."
+
+
+msgid "Step 1 of 2: Name and ObjectClass(es)"
+msgstr "Krok 1 ze 2: Jméno a objectClass(y)"
+
+
+msgid "Step 2 of 2: Specify attributes and values"
+msgstr "Krok 2 ze 2: Atributy a hodnoty"
+
+
+msgid "Relative Distinguished Name"
+msgstr "Relativní Distinguished Name"
+
+
+msgid "RDN"
+msgstr "RDN"
+
+
+msgid "(example: cn=MyNewPerson)"
+msgstr "(příklad: cn=MujNovyUzivatel)"
+
+
+msgid "Container"
+msgstr "Složka"
+
+
+msgid "You have not logged into the selected server yet, so you cannot perform searches on it."
+msgstr "Nelze provádět vyhledávání na serveru bez předchozího přihlášení."
+
+
+msgid "Click here to go to the login form"
+msgstr "Klepnutím budete přesměrováni na formulář k přihlášení"
+
+
+msgid "Unrecognized criteria option: "
+msgstr "Neznámá vyhledávací kritéria: "
+
+
+msgid "If you want to add your own criteria to the list. Be sure to edit search.php to handle them. Quitting."
+msgstr "Pokud si přejete přidat svoje vlastní vyhledávací kritéria, ujistěte se, že jste je přidali do search.php."
+
+
+msgid "Entries found: "
+msgstr "Nalezené objekty: "
+
+
+msgid "Filter performed: "
+msgstr "Uplatněný filtr: "
+
+
+msgid "Search performed by phpLDAPadmin in"
+msgstr "Vyhledávání dokončeno za"
+
+
+msgid "seconds"
+msgstr "sekund"
+
+
+msgid "The scope in which to search"
+msgstr "Oblast vyhledávání"
+
+
+msgid "Sub (entire subtree)"
+msgstr "Celý podstrom"
+
+
+msgid "One (one level beneath base)"
+msgstr "O jednu úroveň níž"
+
+
+msgid "Base (base dn only)"
+msgstr "Pouze výchozí DN"
+
+
+msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))"
+msgstr "Standardní LDAP vyhledávací filtr. Přiklad: (&(sn=Smith)(givenname=David))"
+
+
+msgid "Search Filter"
+msgstr "Vyhledávací filtr"
+
+
+msgid "A list of attributes to display in the results (comma-separated)"
+msgstr "Seznam atributů zobrazených ve výsledku hledání (oddělené čárkou)"
+
+
+msgid "equals"
+msgstr "je"
+
+
+msgid "starts with"
+msgstr "začíná na"
+
+
+msgid "contains"
+msgstr "obsahuje"
+
+
+msgid "ends with"
+msgstr "končí na"
+
+
+msgid "sounds like"
+msgstr "zní jako"
+
+
+msgid "Could not retrieve LDAP information from the server. This may be due to a <a href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version of PHP or perhaps your LDAP server has access control specified that prevents LDAP clients from accessing the RootDSE."
+msgstr "Nelze získat informace ze serveru LDAP"
+
+
+msgid "Server info for: "
+msgstr "Server info pro: "
+
+
+msgid "Server reports the following information about itself"
+msgstr "Server o sobě poskytuje následující informace"
+
+
+msgid "This server has nothing to report."
+msgstr "Server neposkytuje žádné informace."
+
+
+msgid "update_array is malformed. This might be a phpLDAPadmin bug. Please report it."
+msgstr "update_array je poškozené. Může se jednat o chybu v phpLDAPadmin. Prosíme Vás, abyste chybu nahlásili."
+
+
+msgid "Could not perform ldap_modify operation."
+msgstr "Nelze provést operaci ldap_modify."
+
+
+msgid "Do you want to make these changes?"
+msgstr "Přejete si provést tyto změny?"
+
+
+msgid "Attribute"
+msgstr "Atribut"
+
+
+msgid "Old Value"
+msgstr "Původní hodnota"
+
+
+msgid "New Value"
+msgstr "Nová hodnota"
+
+
+msgid "[attribute deleted]"
+msgstr "[atribut odstraněn]"
+
+
+msgid "Commit"
+msgstr "Odeslat"
+
+
+msgid "Cancel"
+msgstr "Storno"
+
+
+msgid "You made no changes"
+msgstr "Neprovedli jste žádné změny"
+
+
+msgid "Use the menu to the left to navigate"
+msgstr "K navigaci použijte prosím menu v levé části obrazovky"
+
+
+msgid "Credits"
+msgstr "Autoři"
+
+
+msgid "ChangeLog"
+msgstr "ChangeLog"
+
+
+msgid "Donate"
+msgstr "Podpořit projekt"
+
+
+msgid "Unsafe file name: "
+msgstr "Nebezpečný název souboru: "
+
+
+msgid "No such file: "
+msgstr "Soubor nelze nalézt: "
+
+
+msgid "You have enabled auto_uid_numbers for <b>%s</b> in your configuration,"
+"                                  but you have not specified the auto_uid_number_mechanism. Please correct"
+"                                  this problem."
+msgstr "V konfiguraci jste zapnuli podporu auto_uid_numbers pro <b>%s</b>, ale nespecifikovali jste auto_uid_number_mechanism. Napravte prosím nejprve tento problém."
+
+
+msgid "You specified the \"auto_uid_number_mechanism\" as \"uidpool\""
+"                            in your configuration for server <b>%s</b>, but you did not specify the"
+"                            audo_uid_number_uid_pool_dn. Please specify it before proceeding."
+msgstr "V konfiguraci serveru <b>%s</b> jste specifikovali <tt>auto_uid_number_mechanism</tt> jako <tt>uidpool</tt>, ale neuvedli jste audo_uid_number_uid_pool_dn. Napravte prosím nejprve tento problém."
+
+
+msgid "It appears that the uidPool you specified in your configuration (\"%s\")"
+"                              does not exist."
+msgstr "Zdá se, že uidPool uvedený v konfiguraci (<tt>%s</tt>) neexistuje."
+
+
+msgid "You specified the \"auto_uid_number_mechanism\" as \"search\" in your"
+"                              configuration for server <b>%s</b>, but you did not specify the"
+"                              \"auto_uid_number_search_base\". Please specify it before proceeding."
+msgstr "V konfiguraci serveru <b>%s</b> jste specifikovali <tt>auto_uid_number_mechanism</tt> jako <tt>search</tt>, ale neuvedli jste <tt>auto_uid_number_search_base</tt>. Napravte prosím nejprve tento problém."
+
+
+msgid "Unable to bind to <b>%s</b> with your with auto_uid credentials. Please check your configuration file."
+msgstr "Se zadanými přístupovými oprávněními se nelze připojit k <b>%s</b> a získat auto_uid. Zkontrolujte prosím konfiguraci."
+
+
+msgid "Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base for server %s"
+msgstr "V konfiguraci phpLDAPadminu je uveden neplatný parametr auto_uid_search_base pro server %s"
+
+
+msgid "You specified an invalid value for auto_uid_number_mechanism (\"%s\")"
+"                                   in your configration. Only \"uidpool\" and \"search\" are valid."
+"                                   Please correct this problem."
+msgstr "V konfiguraci je uvedena neplatná hodnota auto_uid_number_mechanism (<tt>%s</tt>). Platné hodnoty jsou pouze <tt>uidpool</tt> a <tt>search</tt>. Napravte prosím nejprve tento problém."
+
+
+msgid "Error: You have an error in your config file. The only three allowed values"
+"                                    for auth_type in the $servers section are 'session', 'cookie', and 'config'. You entered '%s',"
+"                                    which is not allowed. "
+msgstr "Chyba: Ve svém konfiguračním souboru jste u položky $servers['auth_type'] uvedli chybnou hodnotu '%s'. Platné hodnoty jsou pouze 'config' a 'form'."
+
+
+msgid "Your PHP install does not support TLS."
+msgstr "Tato instalace PHP neobsahuje podporu pro TLS"
+
+
+msgid "Could not start TLS. Please check your LDAP server configuration."
+msgstr "Nelze inicializovat TLS.<br />Zkontolujte prosím konfiguraci svého LDAP serveru."
+
+
+msgid "Could not bind anonymously to server."
+msgstr "K serveru se nelze připojit anonymně."
+
+
+msgid "Could not bind to the LDAP server."
+msgstr "Nelze se připojit k serveru LDAP."
+
+
+msgid "Anonymous Bind"
+msgstr "Připojit anonymně"
+
+
+msgid "Bad username or password. Please try again."
+msgstr "Nesprávné jméno nebo heslo. Opakujte přihlášení."
+
+
+msgid "Successfully logged into server <b>%s</b>"
+msgstr "Úspěšně jste se přihlásili k serveru <b>%s</b>"
+
+
+msgid "Could not set cookie."
+msgstr "Cookie nemohla být uložena."
+
+
+msgid "LDAP said: %s"
+msgstr "<b>Odpověď LDAP serveru</b>: %s<br /><br />"
+
+
+msgid "Error"
+msgstr "Chyba"
+
+
+msgid "browse"
+msgstr "procházet"
+
+
+msgid "Delete Photo"
+msgstr "Odstranit fotografii"
+
+
+msgid "Your system crypt library does not support blowfish encryption."
+msgstr "Tato instalace PHP neobsahuje podporu pro šifru Blowfish."
+
+
+msgid "Your system crypt library does not support md5crypt encryption."
+msgstr "Tato instalace PHP neobsahuje podporu pro šifru md5crypt."
+
+
+msgid "Your PHP install does not have the mhash() function. Cannot do SHA hashes."
+msgstr "Tato instalace PHP nepodporuje funkci mhash(). Nelze aplikovat SHA hash."
+
+
+msgid "jpegPhoto contains errors<br />"
+msgstr "jpegPhoto obsahuje chyby<br />"
+
+
+msgid "Error number: %s (%s)"
+msgstr "<b>Číslo chyby</b>: %s <small>(%s)</small><br /><br />"
+
+
+msgid "Description: %s <br /><br />"
+msgstr "<b>Popis</b>: %s <br /><br />"
+
+
+msgid "Error number: %s<br /><br />"
+msgstr "<b>Číslo chyby</b>: %s<br /><br />"
+
+
+msgid "Description: (no description available)<br />"
+msgstr "<b>Popis</b>: (popis není k dispozici)<br />"
+
+
+msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
+msgstr "Pokud je toto chyba v phpLDAPadmin, <a href='%s'>napište nám</a> o tom."
+
+
+msgid "Unrecognized error number: "
+msgstr "Neznámé číslo chyby: "
+
+
+msgid "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
+"             <b>You found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>"
+"             <td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
+"             </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	<tr><td colspan='2'><center><a target='new' href='%s'>Please check and see if this bug has been reported here</a>.</center></td></tr>"
+"	<tr><td colspan='2'><center><a target='new' href='%s'>If it hasnt been reported, you may report this bug by clicking here</a>.</center></td></tr>"
+"	</table></center><br />"
+msgstr "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
+"             <b>Narazili jste na nezávažnou, droubnou až zanedbatelnou chybu v phpLDAPadmin!</b></td></tr><tr><td>Chyba:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Soubor:</td>"
+"             <td><b>%s</b> řádka <b>%s</b>, voláno z <b>%s</b></td></tr><tr><td>Verze:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
+"             </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr><tr><td colspan='2'><center><a target='new' href='%s'>"
+"             Klepnutím prosím ohlášte chybu</a>.</center></td></tr></table></center><br />"
+
+
+msgid "Congratulations! You found a bug in phpLDAPadmin.<br /><br />"
+"	     <table class='bug'>"
+"	     <tr><td>Error:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Level:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>File:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Line:</td><td><b>%s</b></td></tr>"
+"		 <tr><td>Caller:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PLA Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	     </table>"
+"	     <br />"
+"	     Please report this bug by clicking below!"
+msgstr "Blahopřejeme! Nalezli jste chybu v phpLDAPadmin. :-)<br /><br />"
+"	     <table class='bug'>"
+"	     <tr><td>Chyba:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Vážnost:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Soubor:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Řádka:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Voláno z:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Verze PLA:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Verze PHP:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	     </table>"
+"	     <br />"
+"	     Klepnutím dole prosím ohlašte chybu!"
+
+
+msgid "Import LDIF File"
+msgstr "Importovat soubor LDIF"
+
+
+msgid "Select an LDIF file:"
+msgstr "Zvolte soubor LDIF:"
+
+
+msgid "Don't stop on errors"
+msgstr "Ignorovat chyby"
+
+
+msgid "Adding..."
+msgstr "Přidávání..."
+
+
+msgid "Deleting..."
+msgstr "Odstraňování..."
+
+
+msgid "Renaming..."
+msgstr "Přejmenovávání..."
+
+
+msgid "Modifying..."
+msgstr "Upravování..."
+
+
+msgid "No version found. Assuming 1."
+msgstr "Nebyla nalezena verze. Předpokládám 1."
+
+
+msgid "A valid dn line is required."
+msgstr "Je vyžadován platný řádek s DN."
+
+
+msgid "Missing uploaded file."
+msgstr "Soubor LDIF nebyl nalezen."
+
+
+msgid "Uploaded LDIF file is empty."
+msgstr "Soubor LDIF je prázdný."
+
+
+msgid "empty"
+msgstr "prázdný"
+
+
+msgid "File"
+msgstr "Soubor"
+
+
+msgid "%s bytes"
+msgstr "%s bajtů"
+
+
+msgid "Failed"
+msgstr "selhal"
+
+
+msgid "LDIF Parse Error"
+msgstr "Chyba v souboru LDIF"
+
+
+msgid "Could not add object:"
+msgstr "Nelze přidat objekt:"
+
+
+msgid "Could not rename object:"
+msgstr "Nelze přejmenovat objekt:"
+
+
+msgid "Could not delete object:"
+msgstr "Nelze odstranit objekt:"
+
+
+msgid "Could not modify object:"
+msgstr "Nelze upravit objekt:"
+
+
+msgid "Line Number:"
+msgstr "Číslo řádku:"
+
+
+msgid "Line:"
+msgstr "Řádek:"
+
+
+msgid "Export format"
+msgstr "Formát exportu"
+
+
+msgid "Line ends"
+msgstr "Konce řádků"
+
+
+msgid "You must choose an export format."
+msgstr "Musíte zvolit exportní formát."
+
+
+msgid "Invalid export format"
+msgstr "Neplatný exportní formát"
+
+
+msgid "No available exporter found."
+msgstr "Nebyla nalezena žádná aplikace pro export."
+
+
+msgid "Encountered an error while performing search."
+msgstr "Během vyhledávání došlo k chybě."
+
+
+msgid "Showing results %s through %s."
+msgstr "Výsledky od %s do %s."
+
+
+msgid "Searching..."
+msgstr "Vyhledávám..."
+
+
+msgid "Notice, search size limit exceeded."
+msgstr "Byl překročen limitní parametr pro vyhledávání."
+
+
+msgid "Entry"
+msgstr "Objekt"
+
+
+msgid "LDIF Export for: %s"
+msgstr "LDIF Export objektu: %s"
+
+
+msgid "Generated by phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) on %s"
+msgstr "Generováno phpLDAPadminem dne %s"
+
+
+msgid "Total Entries"
+msgstr "Celkem objektů"
+
+
+msgid "DSLM Export for: %s"
+msgstr "DSLM Export objektu: %s"
+
+
+msgid "You left the password blank."
+msgstr "Nezadali jste uživatelské heslo."
+
+
+msgid "No one is logged in to that server."
+msgstr "Nikdo není přihlášen k tomuto serveru."
+
+
+msgid "Could not logout."
+msgstr "Nelze se odhlásit."
+
+
+msgid "Unknown auth_type: %s"
+msgstr "Neznámý auth_type: %s"
+
+
+msgid "Logged out successfully from server <b>%s</b>"
+msgstr "Odhlášení od serveru <b>%s</b> proběhlo úspěšně."
+
+
+msgid "Authenticate to server %s"
+msgstr "Ověření vůči serveru %s"
+
+
+msgid "Warning: This web connection is unencrypted."
+msgstr "Upozornění: Toto spojení není šifrováné."
+
+
+msgid "You are not using 'https'. Web browser will transmit login information in clear text."
+msgstr "Nepřipojujete se pomocí 'https'. Prohlížeč odešle Vaše přihlášení v nešifrované podobě."
+
+
+msgid "Login DN"
+msgstr "Přihlašovací DN"
+
+
+msgid "User name"
+msgstr "Uživatel"
+
+
+msgid "Password"
+msgstr "Heslo"
+
+
+msgid "Authenticate"
+msgstr "Přihlásit"
+
+
+msgid "Entry Chooser"
+msgstr "Zvolit objekt"
+
+
+msgid "You need to configure phpLDAPadmin. Edit the file 'config/config.php' to do so. An example config file is provided in 'config/config.php.example'"
+msgstr "Nejprve je třeba phpLDAPadmin nakonfigurovat. Toho docílíte upravou souboru 'config.php'. Ukázková konfigurace je k nalezení v souboru 'config.php.example'"
+
+
+msgid "Deletes not allowed in read only mode."
+msgstr "Mazání je v režimu \"jen pro čtení\" zakázáno."
+
+
+msgid "Error calling mass_delete.php. Missing mass_delete in POST vars."
+msgstr "Chyba při volání mass_delete.php. V POSTu chybí proměnná mass_delete."
+
+
+msgid "mass_delete POST var is not an array."
+msgstr "mass_delete v POSTu není pole."
+
+
+msgid "Mass deletion is not enabled. Please enable it in config.php before proceeding."
+msgstr "Hromadý výmaz není umožněn. Můžete ho povolit v souboru config.php."
+
+
+msgid "Mass Deleting"
+msgstr "Hromadný výmaz"
+
+
+msgid "Deletion progress on server \"%s\""
+msgstr "Průběh odstraňování na serveru \"%s\""
+
+
+msgid "Malformed mass_delete array."
+msgstr "Zdeformované pole mass_delete."
+
+
+msgid "You did not select any entries to delete."
+msgstr "Nevybrali jste žádné objekty k odstranění."
+
+
+msgid "Deleting %s"
+msgstr "Odstraňuji %s"
+
+
+msgid "%s of %s entries failed to be deleted."
+msgstr "%s z %s objektů se nepodařilo odstranit."
+
+
+msgid "All entries deleted successfully."
+msgstr "Všechny objekty byly úspěšně odstraněny."
+
+
+msgid "Confirm mass delete of %s entries on server %s"
+msgstr "Potvďte hromadný výmaz v počtu %s objektů na serveru %s"
+
+
+msgid "Yes, delete!"
+msgstr "Ano, odstranit!"
+
+
+msgid "You cannot rename an entry which has children entries (eg, the rename operation is not allowed on non-leaf entries)"
+msgstr "Nelze přejmenovat objekt, který má potomky. Toto se například vztahuje na všechny objekty, které nejsou typu \"list\"."
+
+
+msgid "You did not change the RDN"
+msgstr "Nezměnili jste RDN"
+
+
+msgid "Invalid RDN value"
+msgstr "Neplatná hodnota RDN"
+
+
+msgid "Could not rename the entry"
+msgstr "Objekt nelze přejmenovat"
+
+

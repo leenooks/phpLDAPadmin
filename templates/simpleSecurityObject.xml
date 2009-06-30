@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE template SYSTEM "template.dtd">
 <template>
-<title>simple_sec_object</title>
+<title>Simple Security Object</title>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
 <icon>images/user.png</icon>
 <description>New Simple Security Object</description>
@@ -16,17 +16,17 @@
 
 <attributes>
 <attribute id="userid">
-	<display>t_user_name</display>
+	<display>User Name</display>
 	<icon>images/uid.png</icon>
 	<order>1</order>
 	<page>1</page>
 	<spacer>1</spacer>
 </attribute>
 <attribute id="userPassword">
-	<display>t_password</display>
+	<display>Password</display>
 	<helper>
 		<default>md5</default>
-		<display>t_encryption</display>
+		<display>Encryption</display>
 		<id>enc</id>
 		<location>side</location>
 		<value>blowfish</value>

@@ -1,0 +1,917 @@
+# : $
+
+
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
+"Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
+"Last-Translator: Unknown <nobody@nodomain.org>\n"
+"POT-Creation-Date: 2005-11-29 17:45+0100\n"
+"PO-Revision-Date: 2005-11-29 18:22+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+
+msgid "Simple Search Form"
+msgstr "Formulari de recerca sencilla"
+
+
+msgid "Advanced Search Form"
+msgstr "Formulari de recerca avançada"
+
+
+msgid "Server"
+msgstr "Servidor"
+
+
+msgid "Search for entries whose"
+msgstr "Buscar entrades les quals:"
+
+
+msgid "Base DN"
+msgstr "Base DN"
+
+
+msgid "Search Scope"
+msgstr "Abast de la recerca"
+
+
+msgid "Show Attributtes"
+msgstr "Mostrar atributs"
+
+
+msgid "Search"
+msgstr "Buscar"
+
+
+msgid "equals"
+msgstr "sigui igual"
+
+
+msgid "contains"
+msgstr "contingui"
+
+
+msgid "Request feature"
+msgstr "Demanar funcionalitat"
+
+
+msgid "Report a bug"
+msgstr "Reportar una errada"
+
+
+msgid "schema"
+msgstr "esquema"
+
+
+msgid "search"
+msgstr "buscar"
+
+
+msgid "create"
+msgstr "crear"
+
+
+msgid "info"
+msgstr "info"
+
+
+msgid "import"
+msgstr "importar"
+
+
+msgid "refresh"
+msgstr "refrescar"
+
+
+msgid "logout"
+msgstr "sortir"
+
+
+msgid "Create new entry here"
+msgstr "Crear Nou Objecte"
+
+
+msgid "View schema for"
+msgstr "Veure esquema per a"
+
+
+msgid "Refresh all expanded containers for"
+msgstr "Refrescar tots els contenidors extés per a"
+
+
+msgid "Create a new entry on"
+msgstr "Crear nou objecte a"
+
+
+msgid "View server-supplied information"
+msgstr "Veure informació del servidor"
+
+
+msgid "Import entries from an LDIF file"
+msgstr "Importar objectes d'arxiu LDIF"
+
+
+msgid "Logout of this server"
+msgstr "Sortiu d'aquest servidor"
+
+
+msgid "Logged in as: "
+msgstr "Conectat com: "
+
+
+msgid "read only"
+msgstr "inalterable"
+
+
+msgid "Could not determine the root of your LDAP tree."
+msgstr "No s'ha pogut determinar l'arrel del servidor LDAP."
+
+
+msgid "It appears that the LDAP server has been configured to not reveal its root."
+msgstr "Sembla que el servidor LDAP s'ha configurat per no revelar la seva arrel."
+
+
+msgid "Please specify it in config.php"
+msgstr "Si us plau especifícala a l'arxiu config.php"
+
+
+msgid "Create a new entry in"
+msgstr "Crear un nou objecte a"
+
+
+msgid "Login..."
+msgstr "Autenticació..."
+
+
+msgid "Delete this entry"
+msgstr "Esborrar aquest objecte"
+
+
+msgid "You will be prompted to confirm this decision"
+msgstr "Es tindrá que confirmar aquesta decisió"
+
+
+msgid "Copy or move this entry"
+msgstr "Copiar aquest objecte"
+
+
+msgid "Copy this object to another location, a new DN, or another server"
+msgstr "Copiar aquest objecte per una altra localització, DN nou, o per un altre servidor."
+
+
+msgid "Create a child entry"
+msgstr "Crear objecte com a fill"
+
+
+msgid "Rename Entry"
+msgstr "Renombrar objecte"
+
+
+msgid "Rename"
+msgstr "Renombrar"
+
+
+msgid "Add"
+msgstr "Afegir"
+
+
+msgid "View"
+msgstr "Veure"
+
+
+msgid "Add new attribute"
+msgstr "Afegir nou atribut"
+
+
+msgid "Hide internal attributes"
+msgstr "ocultar els atributs interns"
+
+
+msgid "Show internal attributes"
+msgstr "mostrar els atributs interns"
+
+
+msgid "Click to view the schema defintion for attribute type '%s'"
+msgstr "Fes click per veure la definició de l'esquema per tipus d'atribut '%s'"
+
+
+msgid "none"
+msgstr "cap"
+
+
+msgid "Save Changes"
+msgstr "Desar els canvis"
+
+
+msgid "add value"
+msgstr "afegir valor"
+
+
+msgid "Add an additional value to attribute '%s'"
+msgstr "Afegir valor adicional a aquest atribut"
+
+
+msgid "Refresh"
+msgstr "Refrescar"
+
+
+msgid "Refresh this entry"
+msgstr "Refrescar aquest objecte"
+
+
+msgid "Hint: To delete an attribute, empty the text field and click save."
+msgstr "Pista: <b>Per a borrar un atribut</b>, buida el formulari de texte i fes click a Desar."
+
+
+msgid "Hint: To view the schema for an attribute, click the attribute name."
+msgstr "Pista: <b>Per veure l'esquema d'un atribut</b>, fes click al nom de l'atribut."
+
+
+msgid "Some attributes (%s) were modified and are highlighted below."
+msgstr "Alguns atributs (%s) foren modificats i estan remarcats més abaix."
+
+
+msgid "An attribute (%s) was modified and is highlighted below."
+msgstr "Un atribut (%s) fore modificat i està remarcat més abaix."
+
+
+msgid "Viewing entry in read-only mode."
+msgstr "Mostrant l'objecte en el mode de no alterar."
+
+
+msgid "no new attributes available for this entry"
+msgstr "No hi han atributs nous disponibles per aquest objecte"
+
+
+msgid "Binary value"
+msgstr "Valor binari"
+
+
+msgid "Add new binary attribute"
+msgstr "Afegir valor binari"
+
+
+msgid "Note: '%s' is an alias for '%s'"
+msgstr "Sinònim per a"
+
+
+msgid "download value"
+msgstr "Descarregar valor"
+
+
+msgid "delete attribute"
+msgstr "Esborrar atribut"
+
+
+msgid "true"
+msgstr "veritat"
+
+
+msgid "false"
+msgstr "fals"
+
+
+msgid "none, remove value"
+msgstr "cap, esborrar valor"
+
+
+msgid "Really delete attribute"
+msgstr "Esborrar realment l'atribut?"
+
+
+msgid "Jump to an objectClass"
+msgstr "Saltar a una ObjectClass"
+
+
+msgid "Jump to an attribute type"
+msgstr "Saltar a un atribut"
+
+
+msgid "Schema for server"
+msgstr "Esquema del servidor "
+
+
+msgid "Required Attributes"
+msgstr "Atributs Requerits (MUST)"
+
+
+msgid "Optional Attributes"
+msgstr "Atributs Opcionals (MAY)"
+
+
+msgid "OID"
+msgstr "OID"
+
+
+msgid "Description"
+msgstr "Descripció"
+
+
+msgid "Name"
+msgstr "Nom"
+
+
+msgid "This objectClass is obsolete."
+msgstr "Aquesta ObjectClass és <b>obsoleta</b>"
+
+
+msgid "Inherits from"
+msgstr "Hereda"
+
+
+msgid "Jump to this objectClass definition"
+msgstr "Saltar a aquesta ObjectClass"
+
+
+msgid "Matching Rule OID"
+msgstr "OID de Matching Rule"
+
+
+msgid "Syntax OID"
+msgstr "OID de Sintaxi"
+
+
+msgid "not applicable"
+msgstr "no es aplicable"
+
+
+msgid "not specified"
+msgstr "no especificada"
+
+
+msgid "Entry %s deleted successfully."
+msgstr "Entrada '%s' esborrada correctament."
+
+
+msgid "You must specify a DN"
+msgstr "Has d'especificar un DN"
+
+
+msgid "Could not delete the entry: %s"
+msgstr "No he pogut esborrar l'entrada: %s"
+
+
+msgid "New Required Attributes"
+msgstr "Nous atributs requerits"
+
+
+msgid "This action requires you to add"
+msgstr "Aquesta acció exigeix que s'afegeixin"
+
+
+msgid "new attributes"
+msgstr "nous atributs"
+
+
+msgid "Instructions: In order to add these objectClass(es) to this entry, you must specify"
+msgstr "Instruccions: Per afegir aquesta ObjectClass a aquest objecte, s'ha d'especificar"
+
+
+msgid "that this objectClass requires. You can do so in this form."
+msgstr "que aquest ObjectClass requereix. Es pot fer amb aquest formulari."
+
+
+msgid "Add ObjectClass and Attributes"
+msgstr "Afegir ObjectClass i Atributs"
+
+
+msgid "Click to popup a dialog to select an entry (DN) graphically"
+msgstr "Fer click per seleccionar un objecte gràficament"
+
+
+msgid "You cannot perform updates while server is in read-only mode"
+msgstr "No es pot modificar l'objecte si el servidor està operant en mode inalterable."
+
+
+msgid "Bad server id"
+msgstr "L'identificador de servidor està malament"
+
+
+msgid "Not enough information to login to server. Please check your configuration."
+msgstr "No tinc suficient informació per conectar al servidor. Si us plau configurar correctament l'arxiu config.php"
+
+
+msgid "Could not connect to LDAP server."
+msgstr "No s'ha pogut conectar al servidor LDAP"
+
+
+msgid "Could not perform ldap_mod_add operation."
+msgstr "No s'ha pogut fer l'operació del ldap_mod_add."
+
+
+msgid "Success"
+msgstr "Exit"
+
+
+msgid "Server: "
+msgstr "Servidor: "
+
+
+msgid "Looking in: "
+msgstr "Buscant a: "
+
+
+msgid "No DN specified in query string!"
+msgstr "No està present el DN a la URL"
+
+
+msgid "Back Up..."
+msgstr "Tornar a..."
+
+
+msgid "no entries"
+msgstr "no hi han entrades"
+
+
+msgid "Could not determine base DN"
+msgstr "No he pogut determinar la base DN"
+
+
+msgid "value to"
+msgstr "valor a"
+
+
+msgid "Distinguished Name"
+msgstr "Nom distinguit"
+
+
+msgid "Current list of"
+msgstr "La llista actual de"
+
+
+msgid "values for attribute"
+msgstr "valors per a l'atribut"
+
+
+msgid "Note: You will get an \"inappropriate matching\" error if you have not setup an EQUALITY rule on your LDAP server for this attribute."
+msgstr "Nota: Sino has configurat una regla 'EQUALITY' al servidor LDAP, rebràs un error 'inappropriate matching'"
+
+
+msgid "Enter the value you would like to add:"
+msgstr "Proveïr el valor per afegir: "
+
+
+msgid "Note: You may be required to enter new attributes that these objectClass(es) require"
+msgstr "Nota: Es posible que es requereixi afegir nous atributs per satisfer els requisits d'aquesta ObjectClass"
+
+
+msgid "Syntax"
+msgstr "Sintaxi"
+
+
+msgid "You left the destination DN blank."
+msgstr "No se emplenat el formulari de DN."
+
+
+msgid "The destination entry (%s) already exists."
+msgstr "L'entrada de destí (%s) encara existeix."
+
+
+msgid "The destination container (%s) does not exist."
+msgstr "El contenidor de destí (%s) no existeix."
+
+
+msgid "The source and destination DN are the same."
+msgstr "El DN de la font i el DN de destí son els mateixos."
+
+
+msgid "Copying "
+msgstr "Copiant "
+
+
+msgid "Recursive copy progress"
+msgstr "El progrés de la còpia recurrent"
+
+
+msgid "Building snapshot of tree to copy... "
+msgstr "Construïnt la 'foto' de l'arbre per a copiar... "
+
+
+msgid "Copy successful! Would you like to "
+msgstr "Exit! Desitges "
+
+
+msgid "view the new entry"
+msgstr "Veure el nou objecte?"
+
+
+msgid "Failed to copy DN: "
+msgstr "Fallida al copiar DN: "
+
+
+msgid "Copy "
+msgstr "Copiar "
+
+
+msgid "to a new object"
+msgstr "a un objecte nou"
+
+
+msgid "Destination DN"
+msgstr "DN de destí"
+
+
+msgid "The full DN of the new entry to be created when copying the source entry"
+msgstr "El DN sencer de la nova entrada a ser creada quan es copii l'entrada font"
+
+
+msgid "Destination Server"
+msgstr "Servidor de destí"
+
+
+msgid "Hint: Copying between different servers only works if there are no schema violations"
+msgstr "Nota: Copiar entre dos servidor funciona solsament si no hi han violacions de l'esquema."
+
+
+msgid "Recursively copy all children of this object as well."
+msgstr "Esborrar tots els fills recurrentment també?"
+
+
+msgid "You left the value blank for required attribute (%s)."
+msgstr "T'has deixar el valor en blanc de l'atribut requerit <b>%s</b>."
+
+
+msgid "Could not add the object to the LDAP server."
+msgstr "No he pogut afegir l'objecte al servidor LDAP."
+
+
+msgid "Create Object"
+msgstr "Crear Objecte"
+
+
+msgid "Choose a template"
+msgstr "Escull una plantilla"
+
+
+msgid "Select a template for the creation process"
+msgstr "Selecciona una plantilla per al procès de creació"
+
+
+msgid "You have not logged into the selected server yet, so you cannot perform searches on it."
+msgstr "Encara no t'has autenticat al servidor selectionat, no pots fer cap recerca."
+
+
+msgid "Click here to go to the login form"
+msgstr "Clica aquí per anar al formulari d'autenticació"
+
+
+msgid "Unrecognized criteria option: "
+msgstr "Opció de criteri desconeguda: "
+
+
+msgid "If you want to add your own criteria to the list. Be sure to edit search.php to handle them. Quitting."
+msgstr "Si vols afegir el teu propi criteri a la llista. Estigues segur d'editar search.php per manejar-lo. Sortint."
+
+
+msgid "Entries found: "
+msgstr "Entrades trobades: "
+
+
+msgid "Filter performed: "
+msgstr "Filtre realitzat: "
+
+
+msgid "Search performed by phpLDAPadmin in"
+msgstr "Recerca realitzada per phpLDAPadmin a"
+
+
+msgid "seconds"
+msgstr "segons"
+
+
+msgid "The scope in which to search"
+msgstr "L'abast en el que buscar"
+
+
+msgid "Sub (entire subtree)"
+msgstr "Sub (tot el sub-arbre)"
+
+
+msgid "One (one level beneath base)"
+msgstr "Un (un nivell per d'avall de la base)"
+
+
+msgid "Base (base dn only)"
+msgstr "Base (sols base dn)"
+
+
+msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))"
+msgstr "Filtre de recerca estàndar de LDAP. Exemple: (&(sn=Smith)(givenname=David))"
+
+
+msgid "Search Filter"
+msgstr "Filtre de recerca"
+
+
+msgid "A list of attributes to display in the results (comma-separated)"
+msgstr "Una llista d'atributs per mostrar als resultats (separats per comes)"
+
+
+msgid "starts with"
+msgstr "comenci amb"
+
+
+msgid "ends with"
+msgstr "acabi amb"
+
+
+msgid "sounds like"
+msgstr "soni com"
+
+
+msgid "Could not retrieve LDAP information from the server. This may be due to a <a href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version of PHP or perhaps your LDAP server has access control specified that prevents LDAP clients from accessing the RootDSE."
+msgstr "No s'ha pogut treure informació LDAP del servidor"
+
+
+msgid "Server info for: "
+msgstr "Informació del servidor per a: "
+
+
+msgid "Server reports the following information about itself"
+msgstr "El servidor mostra la següent informació sobre ell mateix"
+
+
+msgid "This server has nothing to report."
+msgstr "Aquest servidor no té res a mostrar."
+
+
+msgid "update_array is malformed. This might be a phpLDAPadmin bug. Please report it."
+msgstr "l'update_array està malformat. Aixó podria ser una errada del phpLDAPadmin. Si us plau reportala."
+
+
+msgid "Could not perform ldap_modify operation."
+msgstr "No he pogut executar l'operació ldap_modify."
+
+
+msgid "Do you want to make these changes?"
+msgstr "Vols fer aquests canvis?"
+
+
+msgid "Attribute"
+msgstr "Atribut"
+
+
+msgid "Old Value"
+msgstr "Valor vell"
+
+
+msgid "New Value"
+msgstr "Valor nou"
+
+
+msgid "[attribute deleted]"
+msgstr "[atribut esborrat]"
+
+
+msgid "Commit"
+msgstr "Cometre"
+
+
+msgid "Cancel"
+msgstr "Cancel.lar"
+
+
+msgid "You made no changes"
+msgstr "No has fet cap canvi"
+
+
+msgid "Go back"
+msgstr "Tornar enrera"
+
+
+msgid "Use the menu to the left to navigate"
+msgstr "Fes anar el menú de l'esquerra per a navegar"
+
+
+msgid "Credits"
+msgstr "Crèdits"
+
+
+msgid "ChangeLog"
+msgstr "Històric de canvis"
+
+
+msgid "Documentation"
+msgstr "Documentació"
+
+
+msgid "Unsafe file name: "
+msgstr "Nom d'arxiu insegur: "
+
+
+msgid "No such file: "
+msgstr "Arxiu no existent: "
+
+
+msgid "You have enabled auto_uid_numbers for <b>%s</b> in your configuration,"
+"                                  but you have not specified the auto_uid_number_mechanism. Please correct"
+"                                  this problem."
+msgstr "Has activat els auto_uid_numbers per <b>%s</b> a la teva configuració,"
+"                                  pero no has especificat l'auto_uid_number_mechanism. Si us plau soluciona"
+"                                  aquest problema."
+
+
+msgid "You specified the \"auto_uid_number_mechanism\" as \"uidpool\""
+"                            in your configuration for server <b>%s</b>, but you did not specify the"
+"                            audo_uid_number_uid_pool_dn. Please specify it before proceeding."
+msgstr "Has especificat l'<tt>auto_uid_number_mechanism</tt> com <tt>uidpool</tt>"
+"                            a la teva configuració per al servidor <b>%s</b>, pero no has especificat el"
+"                            audo_uid_number_uid_pool_dn. Si us plau especifica'l avans de procedir."
+
+
+msgid "It appears that the uidPool you specified in your configuration (\"%s\")"
+"                              does not exist."
+msgstr "Sembla ser que el uidPool que has especificat a la teva configuració (<tt>%s</tt>)"
+"                              no existeix."
+
+
+msgid "You specified the \"auto_uid_number_mechanism\" as \"search\" in your"
+"                              configuration for server <b>%s</b>, but you did not specify the"
+"                              \"auto_uid_number_search_base\". Please specify it before proceeding."
+msgstr "Has especificat l'<tt>auto_uid_number_mechanism</tt> com <tt>search</tt> a la teva"
+"                              configuració per al servidor <b>%s</b>, pero no has especificat el"
+"                              <tt>auto_uid_number_search_base</tt>. Si us plau especifica'l avans de procedir."
+
+
+msgid "You specified an invalid value for auto_uid_number_mechanism (\"%s\")"
+"                                   in your configration. Only \"uidpool\" and \"search\" are valid."
+"                                   Please correct this problem."
+msgstr "Has especificat un valor no vàlid per a l'auto_uid_number_mechanism (<tt>%s</tt>)"
+"                                   a la teva configuració. Sols <tt>uidpool</tt> i <tt>search</tt> son vàlids."
+"                                   Si us plau soluciona aquest problema."
+
+
+msgid "Error: You have an error in your config file. The only three allowed values"
+"                                    for auth_type in the $servers section are 'session', 'cookie', and 'config'. You entered '%s',"
+"                                    which is not allowed. "
+msgstr "Error: Tens un error al teu arxiu de configuració. Els dos únics valors acceptats per"
+"                                    'auth_type' a la secció $servers son 'config' i 'form'. Tu has ficat '%s',"
+"                                    el qual no està acceptat. "
+
+
+msgid "Your PHP install does not support TLS."
+msgstr "La teva instalació de PHP no soporta TLS"
+
+
+msgid "Could not start TLS. Please check your LDAP server configuration."
+msgstr "No he pogut iniciar el TLS.<br />Revisa la teva configuració del servidor LDAP."
+
+
+msgid "LDAP said: %s"
+msgstr "<b>LDAP diguè</b>: %s<br /><br />"
+
+
+msgid "Error"
+msgstr "Error"
+
+
+msgid "browse"
+msgstr "mostrar"
+
+
+msgid "Delete Photo"
+msgstr "Esborrar foto"
+
+
+msgid "Your system crypt library does not support blowfish encryption."
+msgstr "La teva instalació de PHP no soporta el tipus d'encriptació blowfish."
+
+
+msgid "Your PHP install does not have the mhash() function. Cannot do SHA hashes."
+msgstr "La teva instalació de PHP no té la funció mhash(). No puc fer hash SHA."
+
+
+msgid "jpegPhoto contains errors<br />"
+msgstr "jpegPhoto conté errors<br />"
+
+
+msgid "Error number: %s (%s)"
+msgstr "<b>Error número</b>: %s <small>(%s)</small><br /><br />"
+
+
+msgid "Description: %s <br /><br />"
+msgstr "<b>Descripció</b>: %s <br /><br />"
+
+
+msgid "Error number: %s<br /><br />"
+msgstr "<b>Error número</b>: %s<br /><br />"
+
+
+msgid "Description: (no description available)<br />"
+msgstr "<b>Descripció</b>: (no hi ha descripció)<br />"
+
+
+msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
+msgstr "Es una errada del phpLDAPadmin? Si ho és, si us plau <a href='%s'>diguen's-ho</a>."
+
+
+msgid "Unrecognized error number: "
+msgstr "Número d'error desconegut: "
+
+
+msgid "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
+"             <b>You found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>"
+"             <td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
+"             </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	<tr><td colspan='2'><center><a target='new' href='%s'>Please check and see if this bug has been reported here</a>.</center></td></tr>"
+"	<tr><td colspan='2'><center><a target='new' href='%s'>If it hasnt been reported, you may report this bug by clicking here</a>.</center></td></tr>"
+"	</table></center><br />"
+msgstr "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
+"             <b>Has trobat un error fatal del phpLDAPadmin!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Arxiu:</td>"
+"             <td><b>%s</b> línia <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
+"             </td></tr><tr><td>Servidor Web:</td><td><b>%s</b></td></tr><tr><td colspan='2'><center><a target='new' href='%s'>"
+"             Envía aquesta errada fent click aquí</a>.</center></td></tr></table></center><br />"
+
+
+msgid "Congratulations! You found a bug in phpLDAPadmin.<br /><br />"
+"	     <table class='bug'>"
+"	     <tr><td>Error:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Level:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>File:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Line:</td><td><b>%s</b></td></tr>"
+"		 <tr><td>Caller:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PLA Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	     </table>"
+"	     <br />"
+"	     Please report this bug by clicking below!"
+msgstr "Felicitats! Has trobat una errada al phpLDAPadmin.<br /><br />"
+"	     <table class='bug'>"
+"	     <tr><td>Error:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Nivell:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Arxiu:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Línia:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Caller:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Versió PLA:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Versió PHP:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Servidor Web:</td><td><b>%s</b></td></tr>"
+"	     </table>"
+"	     <br />"
+"	     Si us plau envía aquesta errada fent click abaix!"
+
+
+msgid "Import LDIF File"
+msgstr "Importar arxiu LDIF"
+
+
+msgid "Select an LDIF file:"
+msgstr "Selecciona un arxiu LDIF:"
+
+
+msgid "Adding..."
+msgstr "Afegint..."
+
+
+msgid "Deleting..."
+msgstr "Esborrant..."
+
+
+msgid "Renaming..."
+msgstr "Renombrant..."
+
+
+msgid "Modifying..."
+msgstr "Modificant..."
+
+
+msgid "Failed"
+msgstr "fallat"
+
+
+msgid "LDIF Parse Error"
+msgstr "Error de parsejat LDIF"
+
+
+msgid "Could not add object:"
+msgstr "No he pogut afegir l'objecte:"
+
+
+msgid "Could not rename object:"
+msgstr "No he pogut renombrar l'objecte:"
+
+
+msgid "Could not delete object:"
+msgstr "No he pogut esborrar l'objecte:"
+
+
+msgid "Could not modify object:"
+msgstr "No he pogut modificar l'objecte:"
+
+
+msgid "Line Number:"
+msgstr "Línia Número:"
+
+
+msgid "Line:"
+msgstr "Línia:"
+
+

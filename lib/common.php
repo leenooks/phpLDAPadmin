@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.68.2.6 2005/10/22 04:42:40 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.76.2.6 2005/12/30 02:32:41 wurley Exp $
 
 /**
  * Contains code to be executed at the top of each phpLDAPadmin page.
@@ -16,13 +16,15 @@
  * @package phpLDAPadmin
  */
 
+$timer = stopwatch();
+
 @define('LIBDIR','../lib/');
 
 # For PHP5 backward/forward compatibility
 if (! defined('E_STRICT'))
 	define('E_STRICT',2048);
 
-# General functions needed to proceed (pla_ldap_search(), pla_error(), get_object_attrs(), etc.)
+# General functions needed to proceed.
 ob_start();
 require_once realpath(LIBDIR.'functions.php');
 ob_end_clean();
@@ -32,10 +34,6 @@ ob_end_clean();
 set_error_handler('pla_error_handler');
 # Disable error reporting until all our required functions are loaded.
 error_reporting(0);
-
-/* Creates the language array which will be populated with localized strings
-   based on the user-configured language. */
-$lang = array();
 
 /*
  * functions.php should have defined our pla_function_files array, listing all our
@@ -54,15 +52,15 @@ ob_end_clean();
 
 # We are now ready for error reporting.
 # Turn on all notices and warnings. This helps us write cleaner code (we hope at least)
-if (phpversion() >= "5") {
+if (phpversion() >= '5') {
 	# Work-around to get PLA to work in PHP5
-	ini_set( "zend.ze1_compatibility_mode", 1 );
+	ini_set('zend.ze1_compatibility_mode',1);
 
 	# E_DEBUG is PHP5 specific and prevents warnings about using 'var' to declare class members
-	error_reporting( E_DEBUG );
+	error_reporting(E_DEBUG);
 } else
 	# For PHP4
-	error_reporting( E_ALL );
+	error_reporting(E_ALL);
 
 /**
  * At this point we have read all our additional function PHP files and our configuration.
@@ -80,53 +78,63 @@ if (pla_session_start())
  */
 
 $language = $config->GetValue('appearance','language');
-# Get english by default, in case there are tags that are missing.
-ob_start();
-include LANGDIR."recoded/en.php";
-ob_end_clean();
 
-if ($language == "auto") {
+if ($language == 'auto') {
 
 	# Make sure their browser correctly reports language. If not, skip this.
-	if( isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) ) {
+	if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 
-		# get the languages which are spetcified in the HTTP header
-		$HTTP_LANGS1 = preg_split ("/[;,]+/", $_SERVER['HTTP_ACCEPT_LANGUAGE'] );
-		$HTTP_LANGS2 = preg_split ("/[;,]+/", $_SERVER['HTTP_ACCEPT_LANGUAGE'] );
-		foreach( $HTTP_LANGS2 as $key => $value ) {
-				$value=preg_split ("/[-]+/", $value );
-				$HTTP_LANGS2[$key]=$value[0];
+		# Get the languages which are spetcified in the HTTP header
+		$HTTP_LANGS = preg_split ('/[;,]+/',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
+		foreach ($HTTP_LANGS as $key => $value) {
+			if (substr($value,0,2) == 'q=') {
+				unset($HTTP_LANGS[$key]);
+				continue;
+			}
+
+			$value = preg_split('/[-]+/',$value);
+			if (sizeof($value) == 2)
+				$HTTP_LANGS[$key] = strtolower($value[0]).'_'.strtoupper($value[1]);
+			else
+				$HTTP_LANGS[$key] = auto_lang(strtolower($value[0]));
 		}
 
-		$HTTP_LANGS = array_merge ($HTTP_LANGS1, $HTTP_LANGS2);
-		foreach( $HTTP_LANGS as $HTTP_LANG) {
-			# try to grab one after the other the language file
-			$language_file = LANGDIR."recoded/$HTTP_LANG.php";
-			if( file_exists($language_file) &&
-				is_readable($language_file)) {
-				ob_start();
-				include $language_file;
-				ob_end_clean();
+		$HTTP_LANGS = array_unique($HTTP_LANGS);
+
+		foreach ($HTTP_LANGS as $HTTP_LANG) {
+			# Try to grab one after the other the language file
+			$language_file = LANGDIR.$HTTP_LANG;
+
+			if ((substr($HTTP_LANG,0,2) == 'en') ||
+				(file_exists($language_file) && is_readable($language_file))) {
+
+				# Set language
+				putenv('LANG='.$HTTP_LANG); # e.g. LANG=de_DE
+				setlocale(LC_ALL,$HTTP_LANG); # set LC_ALL to de_DE
+				bindtextdomain('messages',LANGDIR);
+				bind_textdomain_codeset('messages','UTF-8');
+				textdomain('messages');
+				header('Content-type: text/html; charset=UTF-8',true);
 				break;
 			}
 		}
 	}
 
 } else {
-	# grab the language file configured in config.php
-	if( $language != null ) {
-		if( 0 == strcmp( $language, 'english' ) )
-			$language = 'en';
+	# Grab the language file configured in config.php
+	if ($language != null) {
+		if (strcmp($language,'english') == 0)
+			$language = 'en_GB';
 
-		$language_file = LANGDIR."recoded/$language.php";
-		if( file_exists($language_file) &&
-			is_readable($language_file)) {
-			ob_start();
-			include $language_file;
-			ob_end_clean();
-		} else {
-			pla_error(sprintf('Could not read language file "%s". Either the file does not exist, or its permissions do not allow phpLDAPadmin to read it.',$language_file));
-		}
+		$language_file = LANGDIR.$language;
+
+		# Set language
+		putenv('LANG='.$language); # e.g. LANG=de_DE
+		setlocale(LC_ALL,$language); # set LC_ALL to de_DE
+		bindtextdomain('messages',LANGDIR);
+		bind_textdomain_codeset('messages','UTF-8');
+		textdomain('messages');
+		header('Content-type: text/html; charset=UTF-8', true);
 	}
 }
 
@@ -138,7 +146,7 @@ if (! isset($templates) || ! is_array($templates))
 $templates['custom'] =
 	array('desc' => 'Custom',
 		'icon' => 'images/object.png',
-		'handler' => 'custom.php' );
+		'handler' => 'custom.php');
 
 /*
  * Strip slashes from GET, POST, and COOKIE variables if this
@@ -149,7 +157,6 @@ if (get_magic_quotes_gpc() && (! isset($slashes_stripped) || ! $slashes_stripped
 	array_stripslashes($_GET);
 	array_stripslashes($_POST);
 	array_stripslashes($_COOKIE);
-	array_stripslashes($_FILES);
 	$slashes_stripped = true;
 }
 
@@ -161,5 +168,37 @@ if (isset($_REQUEST['server_id'])) {
 	$ldapserver = $ldapservers->Instance($_REQUEST['server_id']);
 	if ($ldapserver->haveAuthInfo())
 		set_lastactivity($ldapserver);
+}
+
+/**
+ * Timer stopwatch, used to instrument PLA
+ */
+function stopwatch() {
+	static $mt_previous = 0;
+
+	list($usec, $sec) = explode(' ',microtime());
+	$mt_current = (float)$usec + (float)$sec;
+
+	if (! $mt_previous) {
+		$mt_previous = $mt_current;
+		return 0;
+
+	} else {
+		$mt_diff = ($mt_current - $mt_previous);
+		$mt_previous = $mt_current;
+		return sprintf('%.5f',$mt_diff);
+	}
+}
+
+/**
+ * This function will convert the browser two character language into the
+ * default 5 character language, where the country portion should NOT be
+ * assumed to be upper case characters of the first two characters.
+ */
+function auto_lang($lang) {
+	switch ($lang) {
+		case 'ja': return 'ja_JP';
+		default: return sprintf('%s_%s',$lang,strtoupper($lang));
+	}
 }
 ?>

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/expand.php,v 1.22 2005/07/22 05:47:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/expand.php,v 1.22.4.2 2005/12/08 11:50:06 wurley Exp $
 
 /**
  * This script alters the session variable 'tree', expanding it
@@ -18,52 +18,34 @@
  */
 
 require './common.php';
+no_expire_header();
 
 if (! $ldapserver->haveAuthInfo())
-	pla_error($lang['not_enough_login_info']);
-
-# no expire header stuff
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-header("Cache-Control: no-store, no-cache, must-revalidate");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
+	pla_error(_('Not enough information to login to server. Please check your configuration.'));
 
 # This allows us to display large sub-trees without running out of time.
-@set_time_limit( 0 );
+@set_time_limit(0);
 
 $dn = $_GET['dn'];
-$encoded_dn = rawurlencode( $dn );
 
-initialize_session_tree();
+# We dont need this result, as we'll use the SESSION value when we call tree.php
+$ldapserver->getContainerContents($dn,0,'(objectClass=*)',$config->GetValue('deref','tree'));
 
-$tree = $_SESSION['tree'];
-$tree_icons = $_SESSION['tree_icons'];
+$tree = get_cached_item($ldapserver->server_id,'tree');
+$tree['browser'][$dn]['open'] = true;
+set_cached_item($ldapserver->server_id,'tree','null',$tree);
 
-$contents = get_container_contents( $ldapserver, $dn, 0, '(objectClass=*)', $config->GetValue('deref','tree'));
-
-usort( $contents, 'pla_compare_dns' );
-$tree[$ldapserver->server_id][$dn] = $contents;
-
-foreach( $contents as $dn )
-	$tree_icons[$ldapserver->server_id][$dn] = get_icon( $ldapserver, $dn );
-
-$_SESSION['tree'] = $tree;
-$_SESSION['tree_icons'] = $tree_icons;
-
-// This is for Opera. By putting "random junk" in the query string, it thinks
-// that it does not have a cached version of the page, and will thus
-// fetch the page rather than display the cached version
+/* This is for Opera. By putting "random junk" in the query string, it thinks
+   that it does not have a cached version of the page, and will thus
+   fetch the page rather than display the cached version */
 $time = gettimeofday();
-$random_junk = md5( strtotime( 'now' ) . $time['usec'] );
+$random_junk = md5(strtotime('now').$time['usec']);
 
-// If cookies were disabled, build the url parameter for the session id.
-// It will be append to the url to be redirect
-$id_session_param="";
-if( SID != "" )
-	$id_session_param = "&".session_name()."=".session_id();
+/* If cookies were disabled, build the url parameter for the session id.
+   It will be append to the url to be redirect */
+$id_session_param = '';
+if (SID != '')
+	$id_session_param = sprintf('&%s=%s',session_name(),session_id());
 
-session_write_close();
-
-header(sprintf('Location:tree.php?foo=%s#%s_%s%s',$random_junk,$ldapserver->server_id,$encoded_dn,$id_session_param));
+header(sprintf('Location:tree.php?foo=%s#%s_%s%s',$random_junk,$ldapserver->server_id,rawurlencode($dn),$id_session_param));
 ?>

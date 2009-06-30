@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/syslog.php,v 1.11 2005/08/10 06:07:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/syslog.php,v 1.11.4.1 2005/12/09 14:32:13 wurley Exp $
 
 /**
  * Functions related to syslog logging.
@@ -47,7 +47,7 @@ function syslog_msg ( $emergency, $log_string, $ldapserver=null ) {
 	if (isset($config) && $config->GetValue('debug','syslog')) {
 
 		if (isset($ldapserver->server_id))
-			$log_string = sprintf('(%s) %s',get_logged_in_dn($ldapserver->server_id),$log_string);
+			$log_string = sprintf('(%s) %s',$ldapserver->getLoggedInDN(),$log_string);
 
 		syslog ( $emergency, $log_string );
 	}

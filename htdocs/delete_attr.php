@@ -1,13 +1,13 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete_attr.php,v 1.13.2.1 2005/10/09 09:07:21 wurley Exp $
- 
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete_attr.php,v 1.14.2.5 2005/12/09 14:29:37 wurley Exp $
+
 /**
  *  Deletes an attribute from an entry with NO confirmation.
  *
  * Variables that come in via common.php
  * - server_id
  *
- *  On success, redirect to edit.php
+ *  On success, redirect to template_engine.php
  *  On failure, echo an error.
  *
  * @package phpLDAPadmin
@@ -18,30 +18,30 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error($lang['no_updates_in_read_only_mode']);
+	pla_error(_('You cannot perform updates while server is in read-only mode'));
 if (! $ldapserver->haveAuthInfo())
-	pla_error($lang['not_enough_login_info']);
+	pla_error(_('Not enough information to login to server. Please check your configuration.'));
 
 $dn = isset($_POST['dn']) ? $_POST['dn'] : null;
 $attr = isset($_POST['attr']) ? $_POST['attr'] : null;
 
 if (! $dn)
-	pla_error($lang['no_dn_specified']);
+	pla_error(_('No DN specified'));
 
 if (! $attr)
-	pla_error($lang['no_attr_specified']);
+	pla_error(_('No attribute name specified.'));
 
 $encoded_dn = rawurlencode($dn);
 
-if (is_attr_read_only($ldapserver,$attr))
-	pla_error(sprintf($lang['attr_is_read_only'],htmlspecialchars($attr)));
+if ($ldapserver->isAttrReadOnly($attr))
+	pla_error(sprintf(_('The attribute "%s" is flagged as read-only in the phpLDAPadmin configuration.'),htmlspecialchars($attr)));
 
 $update_array = array();
 $update_array[$attr] = array();
 
-$res = @ldap_modify($ldapserver->connect(),$dn,$update_array);
+$res = $ldapserver->modify($dn,$update_array);
 if ($res) {
-	$redirect_url = sprintf("edit.php?server_id=%s&dn=%s",$ldapserver->server_id,$encoded_dn);
+	$redirect_url = sprintf('template_engine.php?server_id=%s&dn=%s',$ldapserver->server_id,$encoded_dn);
 
 	foreach($update_array as $attr => $junk)
 		$redirect_url .= "&modified_attrs[]=$attr";
@@ -49,6 +49,6 @@ if ($res) {
 	header("Location: $redirect_url");
 
 } else {
-	pla_error($lang['could_not_perform_ldap_modify'],$ldapserver->error(),$ldapserver->errno());
+	pla_error(_('Could not perform ldap_modify operation.'),$ldapserver->error(),$ldapserver->errno());
 }
 ?>

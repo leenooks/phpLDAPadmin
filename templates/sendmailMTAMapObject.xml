@@ -2,14 +2,13 @@
 <!DOCTYPE template SYSTEM "template.dtd">
 <!--This template doesnt work needs modification to the Engine.-->
 <template>
-<title>sendmail_relays</title>
+<title>Sendmail Relays</title>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
 <icon>images/mail.png</icon>
 <description>New Sendmail Relays</description>
 <askcontainer>1</askcontainer>
 <rdn>sendmailMTACluster</rdn>
 <visible>1</visible>
-<invalid>1</invalid>
 
 <objectClasses>
 <objectClass id="sendmailMTAClass"></objectClass>

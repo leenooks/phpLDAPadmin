@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/download_binary_attr.php,v 1.12.2.1 2005/10/09 09:07:21 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/download_binary_attr.php,v 1.13.2.3 2005/12/08 11:49:28 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -12,33 +12,28 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error($lang['no_updates_in_read_only_mode']);
+	pla_error(_('You cannot perform updates while server is in read-only mode'));
 if (! $ldapserver->haveAuthInfo())
-	pla_error($lang['not_enough_login_info']);
+	pla_error(_('Not enough information to login to server. Please check your configuration.'));
 
 $dn = rawurldecode($_GET['dn']);
 $attr = $_GET['attr'];
 
 # if there are multiple values in this attribute, which one do you want to see?
-$value_num = isset($_GET['value_num']) ? $_GET['value_num'] : 0;
+$value_num = isset($_GET['value_num']) ? $_GET['value_num'] : null;
 
-dn_exists($ldapserver,$dn) or
-	pla_error(sprintf($lang['no_such_entry'],pretty_print_dn($dn)));
+if (! $ldapserver->dnExists($dn))
+	pla_error(sprintf(_('No such entry: %s'),pretty_print_dn($dn)));
 
-$search = @ldap_read($ldapserver->connect(),$dn,"(objectClass=*)",array($attr),0,0,0,$config->GetValue('deref','view'));
-if (! $search)
-	pla_error($lang['error_performing_search'],$ldapserver->error(),$ldapserver->errno());
+$search = $ldapserver->search(null,$dn,'(objectClass=*)',array($attr),'base',false,$config->GetValue('deref','view'));
 
-$entry = ldap_first_entry($ldapserver->connect(),$search);
-$attrs = ldap_get_attributes($ldapserver->connect(),$entry);
-$attr = ldap_first_attribute($ldapserver->connect(),$entry,$attrs);
-$values = ldap_get_values_len($ldapserver->connect(),$entry,$attr);
-$count = $values['count'];
-
-// Dump the binary data to the browser
-header("Content-type: octet-stream");
+# Dump the binary data to the browser
+header('Content-type: octet-stream');
 header("Content-disposition: attachment; filename=$attr");
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-echo $values[$value_num];
+header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
+if ($value_num && is_array($search[$attr][$dn]))
+	echo $search[$dn][$attr][$value_num];
+else
+	echo $search[$dn][$attr];
 ?>

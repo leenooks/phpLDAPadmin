@@ -17,14 +17,14 @@
 
 <attributes>
 <attribute id="givenName">
-	<display>t_first_name</display>
+	<display>First name</display>
 	<icon>images/uid.png</icon>
 	<onchange>autoFill:cn,%givenName% %sn%</onchange>
 	<order>1</order>
 	<page>1</page>
 </attribute>
 <attribute id="sn">
-	<display>t_last_name</display>
+	<display>Last name</display>
 	<onchange>autoFill:cn,%givenName% %sn%</onchange>
 	<onchange>autoFill:uid,%gidNumber|0-0/T%-%givenName|0-1/l%%sn/l%</onchange>
 	<onchange>autoFill:homeDirectory,/home/users/%gidNumber|0-0/T%/%uid|3-%</onchange>
@@ -38,15 +38,15 @@
 	<spacer>1</spacer>
 </attribute>
 <attribute id="uid">
-	<display>t_uid</display>
+	<display>User ID</display>
 	<onchange>autoFill:homeDirectory,/home/users/%gidNumber|0-0/T%/%uid|3-%</onchange>
 	<order>4</order>
 	<page>1</page>
 	<spacer>1</spacer>
 </attribute>
 <attribute id="uidNumber">
-	<display>t_uid_number</display>
-	<hint>t_auto_det</hint>
+	<display>UID Number</display>
+	<hint>Automatically determined</hint>
 	<order>5</order>
 	<page>1</page>
 	<presubmit>=php.GetNextNumber(/,uid)</presubmit>
@@ -65,10 +65,10 @@
 	<value>=php.PickList(/,(objectClass=sambaDomain),sambaSID,%sambaSID% (%sambaDomainName%))</value>
 </attribute>
 <attribute id="userPassword">
-	<display>t_password</display>
+	<display>Password</display>
 	<helper>
 		<default>md5</default>
-		<display>t_encryption</display>
+		<display>Encryption</display>
 		<id>enc</id>
 		<location>side</location>
 		<value>blowfish</value>
@@ -106,23 +106,16 @@
 	<type>password</type>
 </attribute>
 <attribute id="loginShell">
-	<display>t_login_shell</display>
+	<display>Login shell</display>
 	<icon>images/terminal.png</icon>
 	<order>10</order>
 	<page>1</page>
 	<value>=php.PickList(/,(objectClass=posixAccount),loginShell,%loginShell%)</value>
 </attribute>
 <attribute id="gidNumber">
-	<display>t_gid_number</display>
+	<display>GID Number</display>
 	<onchange>autoFill:homeDirectory,/home/users/%gidNumber|0-0/T%/%uid|3-%</onchange>
 	<order>11</order>
-	<page>1</page>
-	<value>=php.PickList(/,(objectClass=posixGroup),gidNumber,%cn%)</value>
-</attribute>
-<attribute id="gidNumber">
-	<display>t_gid_number</display>
-	<onchange>autoFill:homeDirectory,/home/users/%gidNumber|0-0/T%/%uid|3-%</onchange>
-	<order>12</order>
 	<page>1</page>
 	<value>=php.PickList(/,(objectClass=posixGroup),gidNumber,%cn%)</value>
 </attribute>
@@ -140,7 +133,7 @@
 	<value>=php.PickList(/,(objectClass=sambaGroupMapping),sambaSID,%sambaSID% (%cn%),sambaPrimaryGroupSID)</value>
 </attribute>
 <attribute id="homeDirectory">
-	<display>t_home_dir</display>
+	<display>Home directory</display>
 	<order>14</order>
 	<page>1</page>
 </attribute>

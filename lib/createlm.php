@@ -1,6 +1,6 @@
 <?php
 /*
-$Id: createlm.php,v 1.1.2.1 2005/10/22 14:22:48 wurley Exp $
+$Id: createlm.php,v 1.2 2005/10/23 01:05:41 wurley Exp $
 
   This code is part of LDAP Account Manager (http://www.sourceforge.net/projects/lam)
   Copyright (C) 2004 Roland Gruber

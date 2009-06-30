@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE template SYSTEM "template.dtd">
 <template>
-<title>organizational_unit</title>
+<title>Organisational Unit</title>
 <!-- <regexp>^o=.*,</regexp> -->
 <icon>images/ou.png</icon>
-<description>new_organizational_unit</description>
+<description>New Organisational Unit</description>
 <askcontainer>1</askcontainer>
 <rdn>ou</rdn>
 <visible>1</visible>
@@ -15,8 +15,8 @@
 
 <attributes>
 <attribute id="ou">
-	<description>organizational_unit</description>
-	<display>organizational_unit</display>
+	<description>Organisational Unit</description>
+	<display>Organisational Unit</display>
 	<hint>don't include "ou="</hint>
 	<order>1</order>
 	<page>1</page>

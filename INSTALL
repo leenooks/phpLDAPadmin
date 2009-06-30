@@ -1,5 +1,5 @@
-For install instructions in non-English languages, see the files
-in the "doc" directory.
+For install instructions in non-English languages, see the wiki:
+    http://wiki.pldapadmin.com
 
 * Requirements
 
@@ -11,27 +11,13 @@ in the "doc" directory.
 
   1. Unpack the archive (if you're reading this, you already did that).
   2. Put the resulting 'phpldapadmin' directory somewhere in your webroot.
-  3. Copy 'config.php.example' to 'config.php' and edit to taste.
+  3. Copy 'config.php.example' to 'config.php' and edit to taste (this is in the config/ directory).
   4. Then, point your browser to the phpldapadmin directory.
 
 * For additional help
 
-  See the files in the "doc" directory.
+  See the wiki:
+    http://wiki.pldapadmin.com
+
   Join our mailing list: 
     https://lists.sourceforge.net/lists/listinfo/phpldapadmin-devel
-
-* Platform specific notes
-
-    * OpenBSD with chroot'ed Apache:
-
-       For jpeg photos to work properly, you must do this:
-       # mkdir /var/www/tmp, and then
-       # chown root:daemon /var/www/tmp
-       # chmod 1755 /var/www/tmp
-       Where tmp is the $config->custom->tmpdir['jpeg'] configured in config.php
-
-    * Windows 
-
-       For jpeg photos to work properly, be sure to change $config->custom->tmpdir['jpeg']
-       from "/tmp" to "c:\\temp" or similar.
-

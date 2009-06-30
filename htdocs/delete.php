@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete.php,v 1.23.2.1 2005/10/09 09:07:21 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete.php,v 1.24.2.3 2005/12/11 08:21:03 wurley Exp $
 
 /**
  * Deletes a DN and presents a "job's done" message.
@@ -17,65 +17,39 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error($lang['no_updates_in_read_only_mode']);
+	pla_error(_('You cannot perform updates while server is in read-only mode'));
 if (! $ldapserver->haveAuthInfo())
-	pla_error($lang['not_enough_login_info']);
+	pla_error(_('Not enough information to login to server. Please check your configuration.'));
 
 $dn = $_POST['dn'];
-$encoded_dn = rawurlencode($dn);
 
 if (is_null($dn))
-	pla_error($lang['you_must_specify_a_dn']);
+	pla_error(_('You must specify a DN'));
 
-dn_exists($ldapserver,$dn) or pla_error(sprintf($lang['no_such_entry'], '<b>' . pretty_print_dn($dn) . '</b>'));
+if (! $ldapserver->dnExists($dn))
+	pla_error(sprintf(_('No such entry: %s'),'<b>'.pretty_print_dn($dn).'</b>'));
 
-// Check the user-defined custom callback first.
-if (run_hook('pre_entry_delete',array('server_id' => $ldapserver->server_id,'dn' => $dn)))
-	$del_result = @ldap_delete($ldapserver->connect(), $dn);
-
+# Check the user-defined custom callback first.
+if (run_hook('pre_entry_delete',array('server_id'=>$ldapserver->server_id,'dn'=>$dn)))
+	$del_result = $ldapserver->delete($dn);
 else
-	pla_error(sprintf($lang['could_not_delete_entry'],'<b>'.pretty_print_dn($dn).'</b>'));
+	pla_error(sprintf(_('Could not delete the entry: %s'),'<b>'.pretty_print_dn($dn).'</b>'));
 
 if ($del_result) {
-
 	# Custom callback
-	run_hook('post_entry_delete',array('server_id' => $ldapserver->server_id,'dn' => $dn));
+	run_hook('post_entry_delete',array('server_id'=>$ldapserver->server_id,'dn'=>$dn));
 
-	# kill the DN from the tree browser session variable and
-	# refresh the tree viewer frame (left_frame)
-	if (array_key_exists('tree', $_SESSION)) {
-		$tree = $_SESSION['tree'];
+	include './header.php';
+	echo '<body>';
 
-		if (isset($tree[$ldapserver->server_id]) && is_array($tree[$ldapserver->server_id])) {
+	echo '<script type="text/javascript" language="javascript">parent.left_frame.location.reload();</script>';
+	echo '<br /><br />';
+	printf('<center>'._('Entry %s deleted successfully.').'</center>','<b>'.pretty_print_dn($dn).'</b>');
+	echo '</body>';
 
-			# does it have children? (it shouldn't, but hey, you never know)
-			if (isset($tree[$ldapserver->server_id][$dn]))
-				unset($tree[$ldapserver->server_id][$dn]);
-
-			# search and destroy
-			foreach ($tree[$ldapserver->server_id] as $tree_dn => $subtree)
-				foreach ($subtree as $key => $sub_tree_dn)
-					if (0 == strcasecmp($sub_tree_dn, $dn))
-						unset($tree[$ldapserver->server_id][$tree_dn][$key]);
-
-			$_SESSION['tree'] = $tree;
-		}
-		session_write_close();
-	}
-
-	include './header.php'; ?>
-
-	<script language="javascript">
-		parent.left_frame.location.reload();
-	</script>
-
-	<br />
-	<br />
-	<center><?php echo sprintf($lang['entry_deleted_successfully'],'<b>'.pretty_print_dn($dn).'</b>'); ?></center>
-
-<?php
 } else {
-	pla_error(sprintf($lang['could_not_delete_entry'], '<b>' . pretty_print_dn($dn) . '</b>'),
-		  $ldapserver->error(), $ldapserver->errno());
+	pla_error(sprintf(_('Could not delete the entry: %s'),'<b>'.pretty_print_dn($dn).'</b>'),
+		  $ldapserver->error(),$ldapserver->errno());
 }
+echo '</html>';
 ?>

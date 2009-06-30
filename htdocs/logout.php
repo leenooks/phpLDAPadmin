@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/logout.php,v 1.17 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/logout.php,v 1.17.4.4 2005/12/16 11:33:07 wurley Exp $
 
 /**
  * For servers whose auth_type is set to 'cookie' or 'session'. Pass me
@@ -16,27 +16,33 @@
 require './common.php';
 
 if (! $ldapserver->haveAuthInfo())
-	pla_error($lang['no_one_logged_in']);
+	pla_error(_('No one is logged in to that server.'));
 
 if (in_array($ldapserver->auth_type, array('cookie','session'))) {
-	syslog_notice (sprintf("Logout for %s",get_logged_in_dn($ldapserver)));
-	unset_login_dn($ldapserver) or pla_error($lang['could_not_logout']);
+	syslog_notice (sprintf('Logout for %s',$ldapserver->getLoggedInDN()));
+	$ldapserver->unsetLoginDN() or pla_error(_('Could not logout.'));
 	unset_lastactivity($ldapserver);
 
+	if (isset($_SESSION['cache'][$ldapserver->server_id]['tree'])) {
+		unset($_SESSION['cache'][$ldapserver->server_id]['tree']);
+	}
+	pla_session_close();
+
 } else
-	pla_error(sprintf($lang['unknown_auth_type'], htmlspecialchars($ldapserver->auth_type)));
+	pla_error(sprintf(_('Unknown auth_type: %s'), htmlspecialchars($ldapserver->auth_type)));
 
 include './header.php';
 ?>
 
-<script language="javascript">
+<body>
+<script type="text/javascript" language="javascript">
 	parent.left_frame.location.reload();
 </script>
 
 	<center>
 	<br />
 	<br />
-	<?php echo sprintf($lang['logged_out_successfully'],htmlspecialchars($ldapserver->name)); ?><br />
+	<?php echo sprintf(_('Logged out successfully from server <b>%s</b>'),htmlspecialchars($ldapserver->name)); ?><br />
 	</center>
 
 </body>

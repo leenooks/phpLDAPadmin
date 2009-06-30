@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE template SYSTEM "template.dtd">
 <template>
-<title>courier_mail_account</title>
+<title>Courier Mail Account</title>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
 <icon>images/mail_account.png</icon>
 <description>New Courier Mail Account</description>
@@ -17,14 +17,14 @@
 
 <attributes>
 <attribute id="uid">
-	<display>t_uid</display>
+	<display>User ID</display>
 	<icon>images/uid.png</icon>
 	<onchange>autoFill:homeDirectory,/home/users/%uid%</onchange>
 	<order>1</order>
 	<page>1</page>
 </attribute>
 <attribute id="mail">
-        <display>t_email</display>
+        <display>Email</display>
 	<icon>images/mail.png</icon>
         <order>2</order>
         <page>1</page>
@@ -37,7 +37,7 @@
 	<spacer>1</spacer>
 </attribute>
 <attribute id="sn">
-	<display>t_last_name</display>
+	<display>Last name</display>
 	<onchange>autoFill:cn,%givenName% %sn%</onchange>
 	<onchange>autoFill:uid,%gidNumber|0-0/T%-%givenName|0-1/l%%sn/l%</onchange>
 	<onchange>autoFill:homeDirectory,/home/users/%gidNumber|0-0/T%/%uid|3-%</onchange>
@@ -50,31 +50,31 @@
 	<page>1</page>
 </attribute>
 <attribute id="uidNumber">
-	<display>t_uid_number</display>
-	<hint>t_auto_det</hint>
+	<display>UID Number</display>
+	<hint>Automatically determined</hint>
 	<icon>images/terminal.png</icon>
 	<order>6</order>
 	<page>1</page>
 	<presubmit>=php.GetNextNumber(/,uid)</presubmit>
 </attribute>
 <attribute id="gidNumber">
-	<display>t_gid_number</display>
+	<display>GID Number</display>
 	<onchange>autoFill:homeDirectory,/home/users/%gidNumber|0-0/T%/%uid|3-%</onchange>
 	<order>7</order>
 	<page>1</page>
 	<value>=php.PickList(/,(objectClass=posixGroup),gidNumber,%cn%)</value>
 </attribute>
 <attribute id="homeDirectory">
-	<display>t_home_dir</display>
+	<display>Home Directory</display>
 	<order>8</order>
 	<page>1</page>
 	<spacer>1</spacer>
 </attribute>
 <attribute id="userPassword">
-	<display>t_password</display>
+	<display>Password</display>
 	<helper>
 		<default>md5</default>
-		<display>t_encryption</display>
+		<display>Encryption</display>
 		<id>enc</id>
 		<location>side</location>
 		<value>blowfish</value>

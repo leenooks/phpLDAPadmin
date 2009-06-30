@@ -1,92 +1,73 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_list.php,v 1.5 2005/04/29 11:24:15 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_list.php,v 1.5.4.4 2005/12/09 14:31:27 wurley Exp $
 
 /**
  * @package phpLDAPadmin
  */
 
 $friendly_attrs = process_friendly_attr_table();
-$entry_id = ldap_first_entry( $ldapserver->connect(), $results );
 
-// Iterate over each entry
+# Iterate over each entry
 $i = 0;
-while( $entry_id ) {
+
+foreach ($results as $dn => $dndetails) {
 	$i++;
 
-	if( $i <= $start_entry ) {
-		$entry_id = ldap_next_entry( $ldapserver->connect(), $entry_id );
+	if ($i <= $start_entry)
 		continue;
-	}
 
-	if( $i >= $end_entry )
+	if ($i >= $end_entry)
 		break;
 
-	$dn = ldap_get_dn( $ldapserver->connect(), $entry_id );
-	$encoded_dn = rawurlencode( $dn );
-	$rdn = get_rdn( $dn ); ?>
+	echo '<div class="search_result">';
+	echo '<table><tr>';
+	printf('<td><img src="images/%s" /></td>',get_icon($ldapserver,$dn));
+	printf('<td><a href="template_engine.php?server_id=%s&amp;dn=%s">%s</a></td>',
+		$ldapserver->server_id,rawurlencode(dn_unescape($dn)),htmlspecialchars(get_rdn($dn)));
+	echo '</tr></table>';
+	echo '</div>';
 
-<div class="search_result">
-	<table>
-		<tr>
-			<td><img src="images/<?php echo get_icon_use_cache( $ldapserver, $dn ); ?>" /></td>
-			<td><a href="edit.php?server_id=<?php echo $ldapserver->server_id; ?>&amp;dn=<?php echo $encoded_dn; ?>"><?php echo htmlspecialchars($rdn); ?></a></td>
-		</tr>
-	</table>
-</div>
+	echo '<table class="attrs">';
+	printf('<tr><td class="attr" valign="top">dn</td><td>%s</td></tr>',htmlspecialchars(dn_unescape($dn)));
 
-<table class="attrs">
+	# Iterate over each attribute for this entry
+	foreach ($dndetails as $attr => $values) {
+		# Ignore DN, we've already displayed it.
+		if ($attr == 'dn')
+			continue;
 
-	<?php $attrs = ldap_get_attributes( $ldapserver->connect(), $entry_id );
-	$attr = ldap_first_attribute( $ldapserver->connect(), $entry_id, $attrs );
+		if ($ldapserver->isAttrBinary($attr))
+			$values = array('(binary)');
 
-	// Always print out the DN in the attribute list
-	echo "<tr><td class=\"attr\" valign=\"top\">dn</td>";
-	echo "<td>" . htmlspecialchars($dn) . "</td></tr>\n";
+		if (isset($friendly_attrs[strtolower($attr)]))
+			$attr = sprintf('<acronym title="Alias for $attr">%s</acronym>',
+				htmlspecialchars($friendly_attrs[strtolower($attr)]));
+		else
+			$attr = htmlspecialchars($attr);
 
-	// Iterate over each attribute for this entry
-	while( $attr ) {
+		echo '<tr>';
+		printf('<td class="attr" valign="top">%s</td>',$attr);
+		echo '<td class="val">';
 
-		if( is_attr_binary( $ldapserver, $attr ) )
-			$values = array( "(binary)" );
+		if ($ldapserver->isJpegPhoto($attr))
+			draw_jpeg_photos($ldapserver,$dn,$attr,false,false,'align="left"');
 
 		else
-			$values = ldap_get_values( $ldapserver->connect(), $entry_id, $attr );
+			if (is_array($values))
+				foreach ($values as $value)
+					echo str_replace(' ','&nbsp;',htmlspecialchars($value)).'<br />'; 
 
-		if( isset( $values['count'] ) )
-			unset( $values['count'] );
+			else
+				echo str_replace(' ','&nbsp;',htmlspecialchars($values)).'<br />';
 
-		if( isset( $friendly_attrs[ strtolower( $attr ) ] ) )
-			$attr = "<acronym title=\"Alias for $attr\">".htmlspecialchars( $friendly_attrs[ strtolower($attr) ] ) .
-		                "</acronym>";
+		echo '</td>';
+		echo '</tr>';
+	}
 
-		else
-			$attr = htmlspecialchars( $attr ); ?>
+	echo '</table>';
 
-	<tr>
-		<td class="attr" valign="top"><?php echo $attr; ?></td>
-		<td class="val">
-
-		<?php if( is_jpeg_photo( $ldapserver, $attr ) )
-			draw_jpeg_photos( $ldapserver, $dn, $attr, false, false, 'align="left"' );
-
-		else
-			foreach( $values as $value )
-				echo str_replace( ' ', '&nbsp;', htmlspecialchars( $value ) ) . "<br />\n"; ?>
-
-		</td>
-	</tr>
-
-		<?php $attr = ldap_next_attribute( $ldapserver->connect(), $entry_id, $attrs );
-
-	} // end while( $attr ) ?>
-
-        </table>
-
-        <?php $entry_id = ldap_next_entry( $ldapserver->connect(), $entry_id );
-
-	// flush every 5th entry (speeds things up a bit)
-	if( 0 == $i % 5 )
+	# Flush every 5th entry (speeds things up a bit)
+	if ($i % 5 == 0)
 		flush();
-
-} // end while( $entry_id )
+}
 ?>

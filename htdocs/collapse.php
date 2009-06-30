@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/collapse.php,v 1.13 2005/07/22 05:55:19 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/collapse.php,v 1.13.4.1 2005/11/26 05:17:06 wurley Exp $
 
 /**
  * This script alters the session variable 'tree', collapsing it
@@ -19,24 +19,21 @@
 require './common.php';
 
 $dn = $_GET['dn'];
-$encoded_dn = rawurlencode($dn);
-
-initialize_session_tree();
-
-if (array_key_exists($dn,$_SESSION['tree'][$ldapserver->server_id]))
-	unset($_SESSION['tree'][$ldapserver->server_id][$dn]);
+$tree = get_cached_item($ldapserver->server_id,'tree');
+$tree['browser'][$dn]['open'] = false;
+set_cached_item($ldapserver->server_id,'tree','null',$tree);
 
 /* This is for Opera. By putting "random junk" in the query string, it thinks
    that it does not have a cached version of the page, and will thus
    fetch the page rather than display the cached version */
 $time = gettimeofday();
-$random_junk = md5(strtotime('now') . $time['usec']);
+$random_junk = md5(strtotime('now').$time['usec']);
 
 /* If cookies were disabled, build the url parameter for the session id.
    It will be append to the url to be redirect */
-$id_session_param = "";
-if (SID != "")
-	$id_session_param = "&".session_name()."=".session_id();
+$id_session_param = '';
+if (SID != '')
+	$id_session_param = sprintf('&%s=%s',session_name(),session_id());
 
-header(sprintf('Location:tree.php?foo=%s#%s_%s%s',$random_junk,$ldapserver->server_id,$encoded_dn,$id_session_param));
+header(sprintf('Location:tree.php?foo=%s#%s_%s%s',$random_junk,$ldapserver->server_id,rawurlencode($dn),$id_session_param));
 ?>

@@ -1,0 +1,2618 @@
+# : $Id: messages.po,v 1.1.2.2 2005/12/20 19:32:52 wurley Exp $
+#
+# Tadashi Jokagi <elf2000@users.sourceforge.net>, 2004.
+# Tadashi Jokagi <elf2000@users.sourceforge.net>, 2005.
+msgid ""
+msgstr ""
+"Project-Id-Version: phpLDAPadmin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-12-15 19:00+0900\n"
+"PO-Revision-Date: 2005-12-15 19:25+0900\n"
+"Last-Translator: Tadashi Jokagi <elf2000@users.sourceforge.net>\n"
+"Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+#: templates/creation/custom.php:9 htdocs/add_attr.php:26
+#: htdocs/add_attr_form.php:22 htdocs/add_oclass.php:27
+#: htdocs/add_oclass_form.php:28 htdocs/add_value.php:27
+#: htdocs/add_value_form.php:24 htdocs/compare.php:24 htdocs/compare.php:28
+#: htdocs/compare_form.php:18 htdocs/copy.php:29 htdocs/copy_form.php:22
+#: htdocs/create.php:28 htdocs/create_form.php:23 htdocs/delete.php:22
+#: htdocs/delete_attr.php:23 htdocs/delete_form.php:23
+#: htdocs/download_binary_attr.php:17 htdocs/entry_chooser.php:43
+#: htdocs/expand.php:24 htdocs/export.php:17 htdocs/ldif_import.php:19
+#: htdocs/ldif_import_form.php:24 htdocs/mass_delete.php:26
+#: htdocs/rdelete.php:22 htdocs/rename.php:23 htdocs/rename_form.php:22
+#: htdocs/schema.php:22 htdocs/search.php:25 htdocs/server_info.php:50
+#: htdocs/template_engine.php:19 htdocs/template_engine.php:39
+#: htdocs/update.php:33
+msgid ""
+"Not enough information to login to server. Please check your configuration."
+msgstr "サーバーにログインする情報が不足しています。設定を確認してください。"
+
+#: templates/creation/custom.php:17
+msgid "Step 1 of 2: Name and ObjectClass(es)"
+msgstr "ステップ 1/2: 名前と ObjectClass"
+
+#: templates/creation/custom.php:25
+msgid "Relative Distinguished Name"
+msgstr "関連識別名"
+
+#: templates/creation/custom.php:25
+msgid "RDN"
+msgstr "RDN"
+
+#: templates/creation/custom.php:26
+msgid "(example: cn=MyNewPerson)"
+msgstr "(例: cn=MyNewPerson)"
+
+#: templates/creation/custom.php:29
+msgid "Container"
+msgstr "コンテナー"
+
+#: templates/creation/custom.php:35 htdocs/schema.php:50 htdocs/schema.php:52
+msgid "ObjectClasses"
+msgstr "ObjectClass 一覧"
+
+#: templates/creation/custom.php:53
+msgid ""
+"Hint: You must choose exactly one structural objectClass (shown in bold "
+"above)"
+msgstr ""
+"ヒント: ひとつの構造 objectClass を選択しなければなりません (上で強調表示され"
+"ています)"
+
+#: templates/creation/custom.php:55
+msgid "Proceed &gt;&gt;"
+msgstr "進む &gt;&gt;"
+
+#: templates/creation/custom.php:61
+msgid "You left the RDN field blank."
+msgstr "RDN フィールドが空です。"
+
+#: templates/creation/custom.php:65
+#, php-format
+msgid "The container you specified (%s) does not exist. Please try again."
+msgstr "指定したコンテナー(%s)が存在しません。もう一度行ってください。"
+
+#: templates/creation/custom.php:70 htdocs/add_oclass_form.php:31
+msgid ""
+"You did not select any ObjectClasses for this object. Please go back and do "
+"so."
+msgstr ""
+"このオブジェクトのためのいくつかの ObjectClass を選択しませんでした。戻ってそ"
+"のように実行してください。"
+
+#: templates/creation/custom.php:128
+msgid "Step 2 of 2: Specify attributes and values"
+msgstr "Step 2 of 2: 属性と値を指定"
+
+#: templates/creation/custom.php:139 htdocs/schema.php:480
+msgid "Required Attributes"
+msgstr "必須属性"
+
+#: templates/creation/custom.php:142 templates/creation/custom.php:166
+#: htdocs/schema.php:178 htdocs/schema.php:264 htdocs/schema.php:279
+#: htdocs/schema.php:354 htdocs/schema.php:440 htdocs/schema.php:463
+#: htdocs/schema.php:508 htdocs/schema.php:537
+msgid "none"
+msgstr "なし"
+
+#: templates/creation/custom.php:149 htdocs/compare.php:126
+#: htdocs/template_engine.php:621
+#, php-format
+msgid "Note: '%s' is an alias for '%s'"
+msgstr "注: '%s' は '%s' のエイリアスです。"
+
+#: templates/creation/custom.php:163 htdocs/schema.php:481
+msgid "Optional Attributes"
+msgstr "オプション属性"
+
+#: templates/creation/custom.php:178
+msgid "Optional Binary Attributes"
+msgstr "オプションバイナリ属性"
+
+#: templates/creation/custom.php:189 templates/template_header.php:171
+#: htdocs/create_form.php:34 htdocs/template_engine.php:454
+#: htdocs/template_engine.php:510
+msgid "Create Object"
+msgstr "オブジェクト作成"
+
+#: templates/template_header.php:35 templates/template_header.php:173
+#: htdocs/add_attr_form.php:35 htdocs/add_value_form.php:63
+#: htdocs/compare.php:61 htdocs/compare.php:64 htdocs/compare_form.php:34
+#: htdocs/copy_form.php:57 htdocs/create_form.php:42 htdocs/delete_form.php:34
+#: htdocs/delete_form.php:112 htdocs/export_form.php:51
+#: htdocs/ldif_import.php:46 htdocs/ldif_import_form.php:31
+#: htdocs/rename_form.php:32 lib/export_functions.php:198
+#: lib/search_form_advanced.php:36 lib/search_form_simple.php:30
+#: lib/tree_functions.php:40
+msgid "Server"
+msgstr "サーバー"
+
+#: templates/template_header.php:35 htdocs/add_attr_form.php:35
+#: htdocs/add_value_form.php:65 htdocs/compare.php:61 htdocs/compare.php:64
+#: htdocs/compare_form.php:36 htdocs/copy_form.php:57
+#: htdocs/delete_form.php:34 htdocs/delete_form.php:111
+#: htdocs/rename_form.php:32 htdocs/update_confirm.php:32
+msgid "Distinguished Name"
+msgstr "関連名"
+
+#: templates/template_header.php:40
+msgid "Refresh this entry"
+msgstr "このエントリを再描画する"
+
+#: templates/template_header.php:40
+#, fuzzy
+msgid "Refresh"
+msgstr "再描画"
+
+#: templates/template_header.php:41
+msgid "Save a dump of this object"
+msgstr "このオブジェクトのダンプ保存"
+
+#: templates/template_header.php:41 htdocs/export_form.php:39
+#: htdocs/export_form.php:48
+msgid "Export"
+msgstr "エクスポート"
+
+#: templates/template_header.php:44
+msgid "Copy this object to another location, a new DN, or another server"
+msgstr ""
+"このオブジェクトを異なるロケーション、新しい DNもしくは別のサーバーにコピーす"
+"る"
+
+#: templates/template_header.php:44
+msgid "Copy or move this entry"
+msgstr "このエントリをコピー"
+
+#: templates/template_header.php:47
+msgid "Hide internal attributes"
+msgstr "内部属性を隠す"
+
+#: templates/template_header.php:50
+msgid "Show internal attributes"
+msgstr "内部属性を表示"
+
+#: templates/template_header.php:56
+msgid "You will be prompted to confirm this decision"
+msgstr "この判断を確認するように促されるでしょう。"
+
+#: templates/template_header.php:56
+msgid "Delete this entry"
+msgstr "このエントリを削除"
+
+#: templates/template_header.php:57 htdocs/rename_form.php:38
+msgid "Rename"
+msgstr "名称変更"
+
+#: templates/template_header.php:62
+msgid "Hint: To delete an attribute, empty the text field and click save."
+msgstr ""
+"ヒント: 属性を削除するにはテキストフィールドを空にして保存をクリックします。"
+
+#: templates/template_header.php:67
+msgid "Compare with another entry"
+msgstr "別のエントリと比較"
+
+#: templates/template_header.php:71
+msgid "Create a child entry"
+msgstr "子エントリ作成"
+
+#: templates/template_header.php:72 htdocs/add_attr_form.php:34
+#: htdocs/add_attr_form.php:73
+#, php-format
+msgid "Add new attribute"
+msgstr "新規属性を追加"
+
+#: templates/template_header.php:87
+msgid "View 1 child"
+msgstr "ひとつの子を閲覧"
+
+#: templates/template_header.php:87
+#, php-format
+msgid "View %s children"
+msgstr "%s 個の子を閲覧"
+
+#: templates/template_header.php:88
+msgid "Save a dump of this object and all of its children"
+msgstr "このオブジェクトと子の全てをダンプ保存する"
+
+#: templates/template_header.php:88
+msgid "Export subtree"
+msgstr "サブツリーをエクスポート"
+
+#: templates/template_header.php:94
+msgid "Hint: To view the schema for an attribute, click the attribute name."
+msgstr "ヒント: 属性のスキーマを閲覧するには、属性名をクリックします。"
+
+#: templates/template_header.php:100
+msgid "Viewing entry in read-only mode."
+msgstr "読み込みモードでエントリを閲覧中。"
+
+#: templates/template_header.php:107
+#, php-format
+msgid "An attribute (%s) was modified and is highlighted below."
+msgstr "ひとつの属性 (%s) は修正され、下記でハイライトされました。"
+
+#: templates/template_header.php:108
+#, php-format
+msgid "Some attributes (%s) were modified and are highlighted below."
+msgstr "いくつかの属性 (%s) は修正され、下記でハイライトされました。"
+
+#: templates/template_header.php:133 htdocs/compare.php:165
+#: htdocs/server_info.php:85 htdocs/template_engine.php:672
+#, php-format
+msgid "Click to view the schema defintion for attribute type '%s'"
+msgstr "属性タイプ '%s' のためのスキーマ定義を見るためにクリックしてください。"
+
+#: templates/template_header.php:141 htdocs/compare.php:277
+#: htdocs/template_engine.php:721
+msgid "Binary value"
+msgstr "バイナリ値"
+
+#: templates/template_header.php:147 templates/template_header.php:151
+#: htdocs/add_value_form.php:93 htdocs/add_value_form.php:98
+#: htdocs/compare.php:281 htdocs/compare.php:284
+#: htdocs/template_engine.php:731 htdocs/template_engine.php:734
+msgid "download value"
+msgstr "ダウンロード値"
+
+#: templates/template_header.php:163
+msgid "No internal attributes"
+msgstr "内部属性がありません"
+
+#: templates/template_header.php:173
+msgid "using template"
+msgstr "使用中のテンプレート"
+
+#: htdocs/add_attr.php:24 htdocs/add_attr_form.php:20 htdocs/add_oclass.php:25
+#: htdocs/add_oclass_form.php:26 htdocs/add_value.php:25
+#: htdocs/add_value_form.php:22 htdocs/copy_form.php:20 htdocs/create.php:26
+#: htdocs/create_form.php:21 htdocs/delete.php:20 htdocs/delete_attr.php:21
+#: htdocs/delete_form.php:21 htdocs/download_binary_attr.php:15
+#: htdocs/ldif_import_form.php:22 htdocs/rdelete.php:20 htdocs/rename.php:21
+#: htdocs/rename_form.php:20 htdocs/update.php:31 htdocs/update_confirm.php:20
+msgid "You cannot perform updates while server is in read-only mode"
+msgstr "サーバーは読み込みモードなので､更新を実行できません。"
+
+#: htdocs/add_attr.php:37 htdocs/add_attr.php:77
+msgid "You left the attribute value blank. Please go back and try again."
+msgstr "属性値が空です。戻ってからもう一度試してください。"
+
+#: htdocs/add_attr.php:48 htdocs/add_oclass.php:51 htdocs/add_value.php:57
+#: htdocs/create.php:114 htdocs/update.php:75
+#, php-format
+msgid ""
+"Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT "
+"allowed. That attribute/value belongs to another entry.<p>You might like to "
+"<a href='%s'>search</a> for that entry."
+msgstr ""
+"<b>%s</b> (<i>%s</i>) の <b>%s</b> への追加の試みは許可<b>されていません</"
+"b>。<br />その属性/値は別のエントリが所有しています。<p>そのエントリを<a "
+"href='%s'>検索</a>などするしょう。"
+
+#: htdocs/add_attr.php:53
+msgid ""
+"The file you chose is either empty or does not exist. Please go back and try "
+"again."
+msgstr ""
+"あなたの選んだファイルは空か存在しないかのいずれかです。戻ってからもう一度試"
+"してください。"
+
+#: htdocs/add_attr.php:61 htdocs/add_attr.php:81 htdocs/add_attr.php:86
+msgid "Security error: The file being uploaded may be malicious."
+msgstr ""
+"セキュリティエラー: アップロードされたファイルは悪意のあるものかもしれませ"
+"ん。"
+
+#: htdocs/add_attr.php:65 htdocs/add_attr.php:69
+msgid ""
+"The file you uploaded is too large. Please check php.ini, upload_max_size "
+"setting"
+msgstr ""
+"アップロードされたファイルが大きすぎます。php.ini の upload_max_size 設定を確"
+"認してください。"
+
+#: htdocs/add_attr.php:73
+msgid ""
+"The file you selected was only partially uploaded, likley due to a network "
+"error."
+msgstr ""
+"選択したファイルは、部分的なアップロードでした。likley due to a network "
+"error."
+
+#: htdocs/add_attr.php:127
+msgid "Failed to add the attribute."
+msgstr "属性の追加に失敗しました。"
+
+#: htdocs/add_attr_form.php:107 htdocs/add_attr_form.php:155
+msgid "Add"
+msgstr "追加"
+
+#: htdocs/add_attr_form.php:114
+msgid "no new attributes available for this entry"
+msgstr "このエントリに利用可能な新規属性はありません。"
+
+#: htdocs/add_attr_form.php:120
+msgid "Add new binary attribute"
+msgstr "新規バイナリ属性を追加"
+
+#: htdocs/add_attr_form.php:158
+msgid ""
+"Your PHP configuration has disabled file uploads. Please check php.ini "
+"before proceeding."
+msgstr ""
+"PHP の設定でファイルのアップロードが無効です。続行する前に、php.ini を確認し"
+"てください。"
+
+#: htdocs/add_attr_form.php:161
+#, php-format
+msgid "Maximum file size: %s"
+msgstr "最大ファイルサイズ: %s"
+
+#: htdocs/add_attr_form.php:170
+msgid "no new binary attributes available for this entry"
+msgstr "このエントリに利用可能な新規バイナリ属性はありません。"
+
+#: htdocs/add_oclass.php:60 htdocs/add_value.php:68
+msgid "Could not perform ldap_mod_add operation."
+msgstr "ldap_mod_add 操作を実行できませんでした。"
+
+#: htdocs/add_oclass_form.php:88 htdocs/add_oclass_form.php:109
+msgid "New Required Attributes"
+msgstr "新規必須属性"
+
+#: htdocs/add_oclass_form.php:89
+msgid "This action requires you to add"
+msgstr ""
+
+#: htdocs/add_oclass_form.php:90 htdocs/add_oclass_form.php:95
+msgid "new attributes"
+msgstr "新規属性"
+
+#: htdocs/add_oclass_form.php:94
+msgid ""
+"Instructions: In order to add these objectClass(es) to this entry, you must "
+"specify"
+msgstr ""
+
+#: htdocs/add_oclass_form.php:96
+msgid "that this objectClass requires. You can do so in this form."
+msgstr "それは objectClass に必要です。このフォームでそうすることができます。"
+
+#: htdocs/add_oclass_form.php:120 htdocs/compare.php:529
+msgid "Add ObjectClass and Attributes"
+msgstr "ObjectClass と属性を追加"
+
+#: htdocs/add_value.php:38 htdocs/delete_attr.php:37 htdocs/update.php:86
+#, php-format
+msgid ""
+"The attribute \"%s\" is flagged as read-only in the phpLDAPadmin "
+"configuration."
+msgstr "phpLDAPadmin の設定で属性 \"%s\" は読み込み専用に設定されています。"
+
+#: htdocs/add_value_form.php:57
+msgid "Add new"
+msgstr "新規追加"
+
+#: htdocs/add_value_form.php:59
+msgid "value to"
+msgstr ""
+
+#: htdocs/add_value_form.php:67
+msgid "Current list of"
+msgstr "現在の一覧:"
+
+#: htdocs/add_value_form.php:68
+msgid "values for attribute"
+msgstr "属性の値"
+
+#: htdocs/add_value_form.php:79 htdocs/add_value_form.php:104
+msgid ""
+"Note: You will get an \"inappropriate matching\" error if you have not setup "
+"an EQUALITY rule on your LDAP server for this attribute."
+msgstr ""
+"注: LDAP サーバーでこの属性の EQUALITY ルールをセットアップしていなかった場"
+"合、\"inappropriate matching\" エラーを取得するでしょう。"
+
+#: htdocs/add_value_form.php:130
+msgid "Enter the value you would like to add:"
+msgstr "追加したい値を入力する:"
+
+#: htdocs/add_value_form.php:152 htdocs/compare.php:531
+msgid "Add new ObjectClass"
+msgstr "新規 ObjectClass を追加する"
+
+#: htdocs/add_value_form.php:158
+msgid ""
+"Note: You may be required to enter new attributes that these objectClass(es) "
+"require"
+msgstr ""
+"注: この objectClass が要求する新しい属性を入力することが要求かもしれません"
+
+#: htdocs/add_value_form.php:190
+msgid "Add New Value"
+msgstr "新規値を追加する"
+
+#: htdocs/add_value_form.php:194 htdocs/ldif_import.php:103
+#: htdocs/ldif_import.php:113 htdocs/ldif_import.php:189 htdocs/schema.php:79
+#: htdocs/schema.php:156 htdocs/schema.php:426
+msgid "Description"
+msgstr "説明"
+
+#: htdocs/add_value_form.php:198 htdocs/schema.php:209
+msgid "Syntax"
+msgstr "文法"
+
+#: htdocs/add_value_form.php:202 htdocs/schema.php:246
+msgid "Maximum Length"
+msgstr "最大長"
+
+#: htdocs/add_value_form.php:202 htdocs/schema.php:254
+msgid "characters"
+msgstr "文字"
+
+#: htdocs/compare.php:31 htdocs/compare.php:33 htdocs/delete.php:30
+#: htdocs/download_binary_attr.php:26 htdocs/rdelete.php:29
+#: htdocs/template_engine.php:42
+#, php-format
+msgid "No such entry: %s"
+msgstr "エントリがありません: %s"
+
+#: htdocs/compare.php:53
+msgid "Comparing the following DNs"
+msgstr "次の DN と比較中"
+
+#: htdocs/compare.php:58 htdocs/update_confirm.php:121
+msgid "Attribute"
+msgstr "属性"
+
+#: htdocs/compare.php:74
+msgid "Switch Entry"
+msgstr "エントリの切り替え"
+
+#: htdocs/compare.php:81
+msgid "This entry has no attributes"
+msgstr "このエントリは属性を持っていません"
+
+#: htdocs/compare.php:174 htdocs/template_engine.php:646
+#, php-format
+msgid "Required attribute for objectClass(es) %s"
+msgstr "objectClass %s の必須属性"
+
+#: htdocs/compare.php:174 htdocs/template_engine.php:646
+msgid "required"
+msgstr "必須"
+
+#: htdocs/compare.php:184 htdocs/template_engine.php:680
+msgid ""
+"This attribute has been flagged as read only by the phpLDAPadmin "
+"administrator"
+msgstr "この属性は phpLDAP 管理者により、読み込み専用で設定されています。"
+
+#: htdocs/compare.php:184 htdocs/template_engine.php:680
+#: lib/tree_functions.php:115
+msgid "read only"
+msgstr "読み込み専用"
+
+#: htdocs/compare.php:209 htdocs/compare.php:222
+msgid "No Value"
+msgstr "値がありません"
+
+#: htdocs/compare.php:290 htdocs/template_engine.php:739
+msgid "delete attribute"
+msgstr "属性削除"
+
+#: htdocs/compare.php:313 htdocs/template_engine.php:780
+msgid "empty"
+msgstr "空"
+
+#: htdocs/compare.php:383
+msgid "Check password"
+msgstr "パスワード確認"
+
+#: htdocs/compare.php:401 htdocs/template_engine.php:875
+msgid "true"
+msgstr "true"
+
+#: htdocs/compare.php:402 htdocs/template_engine.php:876
+msgid "false"
+msgstr "false"
+
+#: htdocs/compare.php:403 htdocs/template_engine.php:877
+msgid "none, remove value"
+msgstr "いいえ、値を削除します"
+
+#: htdocs/compare.php:433 htdocs/template_engine.php:932
+msgid "View the schema description for this objectClass"
+msgstr "この objectClass のスキーマ説明を閲覧"
+
+#: htdocs/compare.php:438 htdocs/template_engine.php:938
+#, php-format
+msgid "This is a structural ObjectClass and cannot be removed."
+msgstr "これは構造 ObjectClass なので削除できませんでした。"
+
+#: htdocs/compare.php:438 htdocs/template_engine.php:938
+msgid "structural"
+msgstr "構造"
+
+#: htdocs/compare.php:451 htdocs/template_engine.php:947
+#, php-format
+msgid "Go to %s"
+msgstr "%s に移動"
+
+#: htdocs/compare.php:529 htdocs/compare.php:540
+#: htdocs/template_engine.php:1025
+msgid "add value"
+msgstr "値追加"
+
+#: htdocs/compare.php:531
+#, php-format
+msgid "You need one of the following ObjectClass(es) to add this attribute %s."
+msgstr ""
+"この属性 %s を追加するには次の ObjectClass のうちひとつを必要とします。"
+
+#: htdocs/compare.php:540 htdocs/template_engine.php:1025
+#, php-format
+msgid "Add an additional value to attribute '%s'"
+msgstr "追加値を属性「%s」に追加する"
+
+#: htdocs/compare.php:557 htdocs/template_engine.php:1041
+msgid "Save Changes"
+msgstr "変更を保存"
+
+#: htdocs/compare.php:568 htdocs/template_engine.php:1064
+msgid "Really delete attribute"
+msgstr "本当に属性を削除する"
+
+#: htdocs/compare_form.php:33
+msgid "Compare another DN with"
+msgstr "次の DN と別の DN を比較:"
+
+#: htdocs/compare_form.php:41 htdocs/compare_form.php:73
+#: htdocs/password_checker.php:32
+msgid "Compare"
+msgstr "比較"
+
+#: htdocs/compare_form.php:41
+msgid "with "
+msgstr "と"
+
+#: htdocs/compare_form.php:50 htdocs/compare_form.php:60
+msgid "Compare this DN with another"
+msgstr "この DN と別のものを比較"
+
+#: htdocs/compare_form.php:50
+msgid "Source DN"
+msgstr "元の DN"
+
+#: htdocs/compare_form.php:60 htdocs/copy_form.php:68
+msgid "Destination DN"
+msgstr "対象 DN"
+
+#: htdocs/compare_form.php:68 htdocs/copy_form.php:73
+msgid "Destination Server"
+msgstr "対象サーバー"
+
+#: htdocs/copy.php:26
+msgid "Destination server is currently READ-ONLY."
+msgstr "対象サーバーは現在読み込み専用です。"
+
+#: htdocs/copy.php:40
+msgid "You left the destination DN blank."
+msgstr "対象 DN がブランクで残されました。"
+
+#: htdocs/copy.php:43
+msgid "The source and destination DN are the same."
+msgstr "対象元と対象先 DN が同じです。"
+
+#: htdocs/copy.php:46
+#, php-format
+msgid "The destination entry (%s) already exists."
+msgstr "対象エントリ (%s) は既に存在します。"
+
+#: htdocs/copy.php:49
+#, php-format
+msgid "The destination container (%s) does not exist."
+msgstr "対象先コンテナー (%s) は存在しません。"
+
+#: htdocs/copy.php:57 htdocs/copy.php:103
+msgid "Copying "
+msgstr "Copying "
+
+#: htdocs/copy.php:58
+msgid "Recursive copy progress"
+msgstr "再帰コピー進行"
+
+#: htdocs/copy.php:61
+msgid "Building snapshot of tree to copy... "
+msgstr "コピーするツリーのスナップショットを構築中... "
+
+#: htdocs/copy.php:66 htdocs/copy.php:111 htdocs/ldif_import.php:107
+#: htdocs/ldif_import.php:132 htdocs/mass_delete.php:73 htdocs/rdelete.php:66
+#: htdocs/rdelete.php:83
+msgid "Success"
+msgstr "成功"
+
+#: htdocs/copy.php:84
+msgid "Copy successful! Would you like to "
+msgstr "コピー成功! Would you like to "
+
+#: htdocs/copy.php:84
+msgid "view the new entry"
+msgstr "新規エントリ閲覧"
+
+#: htdocs/copy.php:155
+msgid "Failed to copy DN: "
+msgstr "DN のコピーに失敗しました: "
+
+#: htdocs/copy_form.php:56 htdocs/copy_form.php:60 htdocs/copy_form.php:93
+msgid "Copy "
+msgstr "コピー "
+
+#: htdocs/copy_form.php:60
+msgid "to a new object"
+msgstr ""
+
+#: htdocs/copy_form.php:68
+msgid ""
+"The full DN of the new entry to be created when copying the source entry"
+msgstr ""
+
+#: htdocs/copy_form.php:77
+msgid "Recursive copy"
+msgstr "再帰コピー"
+
+#: htdocs/copy_form.php:79
+msgid "Recursively copy all children of this object as well."
+msgstr "同様にこのオブジェクトのすべての子を再帰コピーします。"
+
+#: htdocs/copy_form.php:81
+msgid ""
+"When performing a recursive copy, only copy those entries which match this "
+"filter"
+msgstr ""
+"再帰的なコピーを行なう場合、このフィルタと一致するエントリのみコピーしてくだ"
+"さい。"
+
+#: htdocs/copy_form.php:81
+msgid "Filter"
+msgstr "フィルター"
+
+#: htdocs/copy_form.php:84 htdocs/copy_form.php:90
+msgid "Delete after copy (move):"
+msgstr "コピーの後に削除 (移動):"
+
+#: htdocs/copy_form.php:86
+msgid "Make sure your filter (above) will select all child records."
+msgstr ""
+
+#: htdocs/copy_form.php:104
+msgid ""
+"Hint: Copying between different servers only works if there are no schema "
+"violations"
+msgstr ""
+"Hint: スキーマ違反がなければ、異なるサーバー間のコピー処理のみ行います。"
+
+#: htdocs/create.php:64
+#, php-format
+msgid "You left the value blank for required attribute (%s)."
+msgstr "要求された属性(%s)には空の値を残しました。"
+
+#: htdocs/create.php:150 htdocs/rename.php:74
+msgid "Redirecting..."
+msgstr "リダイレクト中..."
+
+#: htdocs/create.php:150 htdocs/rename.php:74
+msgid "here"
+msgstr "ここ"
+
+#: htdocs/create.php:154
+msgid "Could not add the object to the LDAP server."
+msgstr "LDAP サーバーにオブジェクトを追加できませんでした。"
+
+#: htdocs/create_form.php:35
+msgid "Choose a template"
+msgstr "テンプレート選択"
+
+#: htdocs/create_form.php:36
+msgid "Select a template for the creation process"
+msgstr "作成処理のテンプレートを選択"
+
+#: htdocs/create_form.php:47
+msgid "Template"
+msgstr "テンプレート"
+
+#: htdocs/create_form.php:136
+msgid ""
+"This template has been disabled, possibly due to missing schema or missing "
+"template XML fields."
+msgstr ""
+"このテンプレートは、恐らくスキーマか見当たらないか、"
+"テンプレート XML 項目が見当たらないため、無効になりました。"
+
+#: htdocs/create_form.php:138
+msgid "This template is not allowed in this container."
+msgstr "個のテンプレートはこのコンテナーを許可していません。"
+
+#: htdocs/create_form.php:159 htdocs/export_form.php:128
+#: htdocs/ldif_import_form.php:41 htdocs/ldif_import_form.php:51
+#: htdocs/template_engine.php:518
+msgid "Proceed >>"
+msgstr "進む >>"
+
+#: htdocs/delete.php:27 htdocs/rdelete.php:26
+msgid "You must specify a DN"
+msgstr "DN を指定しなければなりません"
+
+#: htdocs/delete.php:36 htdocs/delete.php:49 htdocs/rdelete.php:52
+#, php-format
+msgid "Could not delete the entry: %s"
+msgstr "エントリを削除できませんでした: %s"
+
+#: htdocs/delete.php:46
+#, php-format
+msgid "Entry %s deleted successfully."
+msgstr "%s エントリを削除しました。"
+
+#: htdocs/delete_attr.php:29
+msgid "No DN specified"
+msgstr "DN が指定されていません"
+
+#: htdocs/delete_attr.php:32
+msgid "No attribute name specified."
+msgstr "属性名が指定されていません。"
+
+#: htdocs/delete_attr.php:52 htdocs/update.php:141
+msgid "Could not perform ldap_modify operation."
+msgstr "ldap_modify 操作が実行できませんでした。"
+
+#: htdocs/delete_form.php:32
+#, php-format
+msgid "Delete %s"
+msgstr "%s 削除"
+
+#: htdocs/delete_form.php:37
+msgid "Permanently delete all children also?"
+msgstr "さらに永久にすべての子を削除しますか?"
+
+#: htdocs/delete_form.php:49
+#, php-format
+msgid "This entry is the root of a sub-tree containing %s entries."
+msgstr "このエントリは %s エントリを含むサブツリーのルートです。"
+
+#: htdocs/delete_form.php:50
+msgid "view entries"
+msgstr "エントリ閲覧"
+
+#: htdocs/delete_form.php:54
+#, php-format
+msgid ""
+"phpLDAPadmin can recursively delete this entry and all %s of its children. "
+"See below for a list of all the entries that this action will delete. Do you "
+"want to do this?"
+msgstr ""
+"phpLDAPadmin は再帰的に、このエントリとその子のすべての %s を削除できます。こ"
+"のアクションが削除するすべてのエントリの一覧は、下記を参照してください。本当"
+"に本当に削除しますか?"
+
+#: htdocs/delete_form.php:56
+msgid ""
+"Note: this is potentially very dangerous and you do this at your own risk. "
+"This operation cannot be undone. Take into consideration aliases, referrals, "
+"and other things that may cause problems."
+msgstr ""
+"注: これは潜在的に非常に危険です。また、自己責任でこれをします。このオペレー"
+"ションは取り消せません。エイリアス・referralとその他の問題を考察を持ってくだ"
+"さい。"
+
+#: htdocs/delete_form.php:67
+#, php-format
+msgid "Delete all %s objects"
+msgstr "%s オブジェクトをすべて削除"
+
+#: htdocs/delete_form.php:77 htdocs/delete_form.php:132
+#: htdocs/update_confirm.php:233
+msgid "Cancel"
+msgstr "取り消し"
+
+#: htdocs/delete_form.php:90
+msgid "List of entries to be deleted:"
+msgstr "エントリの一覧を削除しました:"
+
+#: htdocs/delete_form.php:109
+msgid "Are you sure you want to permanently delete this object?"
+msgstr "本当にこのオブジェクトを永続的に削除しますか?"
+
+#: htdocs/delete_form.php:111
+msgid "DN"
+msgstr "DN"
+
+#: htdocs/delete_form.php:122
+msgid "Delete"
+msgstr "削除"
+
+#: htdocs/entry_chooser.php:20
+msgid "Entry Chooser"
+msgstr "エントリ選択"
+
+#: htdocs/entry_chooser.php:33
+msgid "Server: "
+msgstr "サーバー: "
+
+#: htdocs/entry_chooser.php:35
+msgid "Looking in: "
+msgstr "Looking in: "
+
+#: htdocs/entry_chooser.php:65
+msgid "Back Up..."
+msgstr "バックアップ..."
+
+#: htdocs/entry_chooser.php:69
+msgid "no entries"
+msgstr "エントリがありません"
+
+#: htdocs/entry_chooser.php:98
+msgid "Could not determine base DN"
+msgstr "ベース DN を決定することが出来ませんでした"
+
+#: htdocs/export.php:40
+msgid "You must choose an export format."
+msgstr "エクスポート書式を選ばなければなりません。"
+
+#: htdocs/export.php:42
+msgid "Invalid export format"
+msgstr "無効なエクスポート書式"
+
+#: htdocs/export.php:86
+msgid "No available exporter found."
+msgstr "利用できるエクスポートツールが見つかりません"
+
+#: htdocs/export_form.php:30 lib/search_form_advanced.php:66
+msgid "Base (base dn only)"
+msgstr "ベース (ベース dn のみ)"
+
+#: htdocs/export_form.php:31 lib/search_form_advanced.php:63
+msgid "One (one level beneath base)"
+msgstr "ひとつ (基準の下の 1 レベル)"
+
+#: htdocs/export_form.php:32 lib/search_form_advanced.php:60
+msgid "Sub (entire subtree)"
+msgstr "サブ (入力されたサブツリー)"
+
+#: htdocs/export_form.php:54 lib/search_form_advanced.php:41
+msgid "Base DN"
+msgstr "ベース DN"
+
+#: htdocs/export_form.php:61 lib/export_functions.php:199
+#: lib/search_form_advanced.php:56
+msgid "Search Scope"
+msgstr "検索スコープ"
+
+#: htdocs/export_form.php:74 lib/export_functions.php:200
+#: lib/search_form_advanced.php:75
+msgid "Search Filter"
+msgstr "検索フィルター"
+
+#: htdocs/export_form.php:77 lib/search_form_advanced.php:82
+msgid "Show Attributtes"
+msgstr "属性表示"
+
+#: htdocs/export_form.php:80
+msgid "Include system attributes"
+msgstr "システム属性を含む"
+
+#: htdocs/export_form.php:83
+msgid "Save as file"
+msgstr "ファイルに保存"
+
+#: htdocs/export_form.php:86
+msgid "Compress"
+msgstr "圧縮"
+
+#: htdocs/export_form.php:99
+msgid "Export format"
+msgstr "エクスポート書式"
+
+#: htdocs/export_form.php:113
+msgid "Line ends"
+msgstr "行末"
+
+#: htdocs/index.php:71
+msgid ""
+"You need to configure phpLDAPadmin. Edit the file 'config/config.php' to do "
+"so. An example config file is provided in 'config/config.php.example'"
+msgstr ""
+"phpLDAPadmin の設定をする必要があります。"
+"ファイル「config/config.php」の変更をしてください。"
+"サンプル設定ファイルとして「config.php.example」を提供しています。"
+
+#: htdocs/ldif_import.php:33
+msgid "Missing uploaded file."
+msgstr "アップロードファイルが見当たりません。"
+
+#: htdocs/ldif_import.php:34
+msgid "No LDIF file specified. Please try again."
+msgstr "LDIF ファイルが指定されていません。もう一度行ってください。"
+
+#: htdocs/ldif_import.php:35
+msgid "Uploaded LDIF file is empty."
+msgstr "アップロードされた LDIF ファイルが空です。"
+
+#: htdocs/ldif_import.php:38
+msgid "You must either upload a file or provide an LDIF in the text box."
+msgstr ""
+"ファイルをアップロードするか、"
+"テキストボックスに LDIF を提供しなければなりません。"
+
+#: htdocs/ldif_import.php:44 htdocs/ldif_import_form.php:30
+msgid "Import LDIF File"
+msgstr "LDIF ファイルインポート"
+
+#: htdocs/ldif_import.php:47
+msgid "File"
+msgstr "ファイル"
+
+#: htdocs/ldif_import.php:47
+msgid "bytes"
+msgstr "バイト"
+
+#: htdocs/ldif_import.php:55
+msgid "Adding..."
+msgstr "追加中..."
+
+#: htdocs/ldif_import.php:56
+msgid "Deleting..."
+msgstr "削除中..."
+
+#: htdocs/ldif_import.php:57 htdocs/ldif_import.php:58
+msgid "Renaming..."
+msgstr "名称変更中..."
+
+#: htdocs/ldif_import.php:59
+msgid "Modifying..."
+msgstr "修正中..."
+
+#: htdocs/ldif_import.php:63
+msgid "Could not add object:"
+msgstr "オブジェクトを追加できませんでした:"
+
+#: htdocs/ldif_import.php:64
+msgid "Could not delete object:"
+msgstr "オブジェクトを削除できませんでした:"
+
+#: htdocs/ldif_import.php:65 htdocs/ldif_import.php:66
+msgid "Could not rename object:"
+msgstr "オブジェクトを名称変更できませんでした:"
+
+#: htdocs/ldif_import.php:67
+msgid "Could not modify object:"
+msgstr "オブジェクトを修正できませんでした:"
+
+#: htdocs/ldif_import.php:96 htdocs/ldif_import.php:109
+#: htdocs/ldif_import.php:138 htdocs/ldif_import.php:152
+#: htdocs/mass_delete.php:77
+msgid "Failed"
+msgstr "失敗しました"
+
+#: htdocs/ldif_import.php:99 htdocs/ldif_import.php:191
+msgid "Line Number"
+msgstr "行番号"
+
+#: htdocs/ldif_import.php:101 htdocs/ldif_import.php:190
+msgid "Line"
+msgstr "行"
+
+#: htdocs/ldif_import.php:111
+msgid "Error code"
+msgstr "エラーコード"
+
+#: htdocs/ldif_import.php:186
+msgid "LDIF Parse Error"
+msgstr "LDIF 解析エラー"
+
+#: htdocs/ldif_import.php:194
+msgid "Is this a phpLDAPadmin bug?"
+msgstr "これは phpLDAPadmin のバグですか?"
+
+#: htdocs/ldif_import.php:194
+#, php-format
+msgid "If so, please <a href=\"%s\">report it</a>."
+msgstr "もしそうなら、それを<a href=\"%s\">報告してください</a>。"
+
+#: htdocs/ldif_import_form.php:19
+msgid ""
+"Your PHP.INI does not have file_uploads = ON. Please enable file uploads in "
+"PHP."
+msgstr ""
+"PHP.INI は「file_uploads = ON」ではありません。PHP のファイルアップロードを有"
+"効にしてください。"
+
+#: htdocs/ldif_import_form.php:34
+msgid "Select an LDIF file"
+msgstr "LDIF ファイルを選択する"
+
+#: htdocs/ldif_import_form.php:40 htdocs/ldif_import_form.php:50
+msgid "Don't stop on errors"
+msgstr "エラーで停止しない"
+
+#: htdocs/ldif_import_form.php:42
+msgid "Maximum file size"
+msgstr "最大ファイルサイズ"
+
+#: htdocs/ldif_import_form.php:46
+msgid "Paste your LDIF here"
+msgstr "ここに LDIF を貼り付ける"
+
+#: htdocs/login.php:36
+msgid "You left the password blank."
+msgstr "パスワードが空です。"
+
+#: htdocs/login.php:97 htdocs/login.php:133 lib/server_functions.php:347
+msgid "Bad username or password. Please try again."
+msgstr "ユーザー名かパスワードがおかしいです。もう一度行ってください。"
+
+#: htdocs/login.php:115
+msgid "Sorry, you are not allowed to use phpLDAPadmin with this LDAP server."
+msgstr ""
+"すみません、この LDAP サーバーと phpLDAPadmin を使用することを許可していませ"
+"ん。"
+
+#: htdocs/login.php:131
+msgid "Could not bind anonymously to server."
+msgstr "サーバーに匿名接続できませんでした。"
+
+#: htdocs/login.php:139
+msgid "Could not set cookie."
+msgstr "Cookie を設定できませんでした。"
+
+#: htdocs/login.php:159
+#, php-format
+msgid "Successfully logged into server <b>%s</b>"
+msgstr "サーバー <b>%s</b> へのログインに成功しました"
+
+#: htdocs/login.php:162 htdocs/login_form.php:74
+msgid "Anonymous Bind"
+msgstr "匿名接続"
+
+#: htdocs/login.php:174 lib/tree_functions.php:263
+msgid "Could not connect to LDAP server."
+msgstr "LDAP サーバーに接続できませんでした。"
+
+#: htdocs/login_form.php:20
+#, fuzzy, php-format
+msgid ""
+"Error: You have an error in your config file. The only three allowed values\n"
+"                                    for auth_type in the $servers section "
+"are 'session', 'cookie', and 'config'. You entered '%s',\n"
+"                                    which is not allowed. "
+msgstr ""
+"エラー: 設定ファイルのにエラーがあります。$servers セクションの auth_type "
+"は                                    「session」「cookie」「config」のみっつ"
+"の値のみ許可されていますが、                                    許可されない"
+"「%s」が入力されました。"
+
+#: htdocs/login_form.php:24 htdocs/logout.php:27 lib/server_functions.php:1993
+#: lib/server_functions.php:2066 lib/server_functions.php:2348
+#: lib/server_functions.php:2396
+#, php-format
+msgid "Unknown auth_type: %s"
+msgstr "未知の auth_type: %s"
+
+#: htdocs/login_form.php:46
+#, php-format
+msgid "Authenticate to server %s"
+msgstr "サーバー %s へ認証"
+
+#: htdocs/login_form.php:52
+msgid ""
+"You are not using 'https'. Web browser will transmit login information in "
+"clear text."
+msgstr ""
+"あなたは 'https' を使っていません。ログイン情報はブラウザからクリアテキストで"
+"送信されます、"
+
+#: htdocs/login_form.php:53
+msgid "Warning: This web connection is unencrypted."
+msgstr "警告: このウェブ接続は暗号化されていません。"
+
+#: htdocs/login_form.php:82
+msgid "User name"
+msgstr "ユーザー名"
+
+#: htdocs/login_form.php:84
+msgid "Login DN"
+msgstr "ログイン DN"
+
+#: htdocs/login_form.php:92
+msgid "Password"
+msgstr "パスワード"
+
+#: htdocs/login_form.php:97
+msgid "Authenticate"
+msgstr "認証"
+
+#: htdocs/logout.php:19
+msgid "No one is logged in to that server."
+msgstr "誰もそのサーバーにログインしていません。"
+
+#: htdocs/logout.php:23 lib/timeout_functions.php:77
+msgid "Could not logout."
+msgstr "ログアウトできませんでした。"
+
+#: htdocs/logout.php:39
+#, php-format
+msgid "Logged out successfully from server <b>%s</b>"
+msgstr "サーバー <b>%s</b> からログアウトに成功しました"
+
+#: htdocs/mass_delete.php:24
+msgid "Unable to delete, server is in READY-ONLY mode."
+msgstr "削除できません。サーバーは読み込み専用モードです。"
+
+#: htdocs/mass_delete.php:30
+msgid "Error calling mass_delete.php. Missing mass_delete in POST vars."
+msgstr ""
+"mass_delete.php 呼び出し中のエラーです。POST 値から mass_delete が見かりませ"
+"ん。"
+
+#: htdocs/mass_delete.php:35
+msgid "mass_delete POST var is not an array."
+msgstr "mass_delete POST 辺りが配列ではありません。"
+
+#: htdocs/mass_delete.php:38
+msgid ""
+"Mass deletion is not enabled. Please enable it in config.php before "
+"proceeding."
+msgstr ""
+"一括削除が有効ではありません。次に進む前に config.php でそれを有効にしてくだ"
+"さい。"
+
+#: htdocs/mass_delete.php:43
+msgid "Mass Deleting"
+msgstr "一括削除中"
+
+#: htdocs/mass_delete.php:46
+#, php-format
+msgid "Deletion progress on server \"%s\""
+msgstr "サーバー \"%s\" から削除中"
+
+#: htdocs/mass_delete.php:54
+msgid "Malformed mass_delete array."
+msgstr "おかしい mass_delete 配列です。"
+
+#: htdocs/mass_delete.php:58
+msgid "You did not select any entries to delete."
+msgstr "削除するエントリが選択されていません。"
+
+#: htdocs/mass_delete.php:64 htdocs/rdelete.php:34 htdocs/rdelete.php:60
+#: htdocs/rdelete.php:77
+#, php-format
+msgid "Deleting %s"
+msgstr "%s 削除中"
+
+#: htdocs/mass_delete.php:92
+#, php-format
+msgid "%s of %s entries failed to be deleted."
+msgstr "%s 個のエントリが %s 個のエントリ中で削除できませんでした。"
+
+#: htdocs/mass_delete.php:94
+msgid "All entries deleted successfully."
+msgstr "すべてのエントリの削除に成功しました。"
+
+#: htdocs/mass_delete.php:100
+#, php-format
+msgid "Confirm mass delete of %s entries on server %s"
+msgstr "%s エントリをサーバー %s から一括削除の確認"
+
+#: htdocs/mass_delete.php:103
+#, php-format
+msgid "Do you really want to delete %s %s %s"
+msgstr "本当に%s %s %sを削除しますか"
+
+#: htdocs/mass_delete.php:114
+msgid "Yes, delete!"
+msgstr "はい、削除します!"
+
+#: htdocs/password_checker.php:26
+msgid "Password Checker Tool"
+msgstr "パスワードチェックツール"
+
+#: htdocs/password_checker.php:36
+msgid "To"
+msgstr ""
+
+#: htdocs/password_checker.php:45
+msgid "Passwords match!"
+msgstr "パスワードが一致しました!"
+
+#: htdocs/password_checker.php:47
+msgid "Passwords do not match!"
+msgstr "パスワードが一致しません!"
+
+#: htdocs/purge_cache.php:29
+msgid "No cache to purge."
+msgstr "破棄するキャッシュはありませんでした。"
+
+#: htdocs/purge_cache.php:31
+#, php-format
+msgid "Purged %s bytes of cache."
+msgstr "%s バイトのキャッシュを破棄しました。"
+
+#: htdocs/rdelete.php:35
+msgid "Recursive delete progress"
+msgstr "再帰削除進行"
+
+#: htdocs/rdelete.php:49
+#, php-format
+msgid "Entry %s and sub-tree deleted successfully."
+msgstr "エントリ %s とサブツリーの削除に成功しました。"
+
+#: htdocs/rdelete.php:70 htdocs/rdelete.php:87
+#, php-format
+msgid "Failed to delete entry %s"
+msgstr "エントリ %s の削除に失敗しました"
+
+#: htdocs/rename.php:29
+msgid ""
+"You cannot rename an entry which has children entries (eg, the rename "
+"operation is not allowed on non-leaf entries)"
+msgstr ""
+"子エントリを持つエントリは名称変更できません (eg, the rename operation is "
+"not allowed on non-leaf entries)"
+
+#: htdocs/rename.php:37
+msgid "You did not change the RDN"
+msgstr "RDN を変更しませんでした"
+
+#: htdocs/rename.php:45
+msgid "Invalid RDN value"
+msgstr "無効な RDN 値"
+
+#: htdocs/rename.php:59 lib/server_functions.php:1529
+msgid "Could not rename the entry"
+msgstr "エントリの名称変更が出来ませんでした"
+
+#: htdocs/rename_form.php:30
+msgid "Rename Entry"
+msgstr "エントリ名称変更"
+
+#: htdocs/schema.php:35
+msgid "Could not retrieve schema from"
+msgstr "次のスキーマを取得できません:"
+
+#: htdocs/schema.php:36
+msgid "This could happen for several reasons, the most probable of which are:"
+msgstr ""
+
+#: htdocs/schema.php:36
+msgid "The server does not fully support the LDAP protocol."
+msgstr "このサーバーはすべての LDAP プロトコルをサポートしていません。"
+
+#: htdocs/schema.php:37
+msgid "Your version of PHP does not correctly perform the query."
+msgstr "この PHP のバージョンは正確に照会を行えません。"
+
+#: htdocs/schema.php:37
+msgid "phpLDAPadmin doesn't know how to fetch the schema for your server."
+msgstr ""
+"あるいは、phpLDAPadmin は、あなたのサーバーからスキーマを取得する方法を知りま"
+"せん。"
+
+#: htdocs/schema.php:38
+msgid "Or lastly, your LDAP server doesnt provide this information."
+msgstr "Or lastly, LDAP サーバーはこの情報を提供していません。"
+
+#: htdocs/schema.php:43
+msgid "Schema for server"
+msgstr "サーバーのスキーマ"
+
+#: htdocs/schema.php:55 htdocs/schema.php:57
+msgid "Attribute Types"
+msgstr "属性タイプ"
+
+#: htdocs/schema.php:60 htdocs/schema.php:62
+msgid "Syntaxes"
+msgstr "文法一覧"
+
+#: htdocs/schema.php:65 htdocs/schema.php:67
+msgid "Matching Rules"
+msgstr "一致ルール"
+
+#: htdocs/schema.php:79
+msgid "Syntax OID"
+msgstr "文法 OID"
+
+#: htdocs/schema.php:112
+msgid "Jump to an attribute type"
+msgstr "属性タイプに移動"
+
+#: htdocs/schema.php:128 htdocs/schema.php:322 htdocs/schema.php:367
+#: htdocs/schema.php:403
+msgid "Go"
+msgstr "Go"
+
+#: htdocs/schema.php:159
+msgid "no description"
+msgstr "説明がありません"
+
+#: htdocs/schema.php:169 htdocs/schema.php:345
+msgid "Obsolete"
+msgstr "旧式"
+
+#: htdocs/schema.php:170 htdocs/schema.php:227 htdocs/schema.php:232
+#: htdocs/schema.php:237
+msgid "Yes"
+msgstr "はい"
+
+#: htdocs/schema.php:170 htdocs/schema.php:227 htdocs/schema.php:232
+#: htdocs/schema.php:237
+msgid "No"
+msgstr "いいえ"
+
+#: htdocs/schema.php:174 htdocs/schema.php:435
+msgid "Inherits from"
+msgstr "継承元"
+
+#: htdocs/schema.php:189
+msgid "Equality"
+msgstr "等価"
+
+#: htdocs/schema.php:191 htdocs/schema.php:199 htdocs/schema.php:205
+#: htdocs/schema.php:242
+msgid "not specified"
+msgstr "指定されていません"
+
+#: htdocs/schema.php:197
+msgid "Ordering"
+msgstr "Ordering"
+
+#: htdocs/schema.php:203
+msgid "Substring Rule"
+msgstr "副文字列ルール"
+
+#: htdocs/schema.php:226
+msgid "Single Valued"
+msgstr "単一の値"
+
+#: htdocs/schema.php:231
+msgid "Collective"
+msgstr "集合"
+
+#: htdocs/schema.php:236
+msgid "User Modification"
+msgstr "ユーザー修正"
+
+#: htdocs/schema.php:241
+msgid "Usage"
+msgstr "使用法"
+
+#: htdocs/schema.php:250
+msgid "not applicable"
+msgstr "適用可能ではありません"
+
+#: htdocs/schema.php:254
+msgid "character"
+msgstr "文字"
+
+#: htdocs/schema.php:260
+msgid "Aliases"
+msgstr "別名"
+
+#: htdocs/schema.php:275
+msgid "Used by objectClasses"
+msgstr "objectClass を使する"
+
+#: htdocs/schema.php:305
+msgid "Jump to a matching rule"
+msgstr "一致ルールにジャンプ"
+
+#: htdocs/schema.php:327
+msgid "Matching Rule OID"
+msgstr "適用ルール OID"
+
+#: htdocs/schema.php:327
+msgid "Name"
+msgstr "名前"
+
+#: htdocs/schema.php:327
+msgid "Used by Attributes"
+msgstr "属性で使する"
+
+#: htdocs/schema.php:385
+msgid "Jump to an objectClass"
+msgstr "objectClass に移動"
+
+#: htdocs/schema.php:423
+msgid "OID"
+msgstr "OID"
+
+#: htdocs/schema.php:429
+msgid "Type"
+msgstr "種類"
+
+#: htdocs/schema.php:432
+msgid "This objectClass is obsolete."
+msgstr "この objectClass は旧式です。"
+
+#: htdocs/schema.php:445 htdocs/schema.php:468
+msgid "Jump to this objectClass definition"
+msgstr "この objectClass 定義に移動"
+
+#: htdocs/schema.php:455
+msgid "Parent to"
+msgstr "派生先"
+
+#: htdocs/schema.php:496 htdocs/schema.php:525
+msgid "Inherited from"
+msgstr "派生元"
+
+#: htdocs/schema.php:552
+#, php-format
+msgid "No such schema item: \"%s\""
+msgstr "スキーマ項目がありません: \"%s\""
+
+#: htdocs/search.php:109
+msgid ""
+"You have not logged into the selected server yet, so you cannot perform "
+"searches on it."
+msgstr ""
+
+#: htdocs/search.php:109
+msgid "Click here to go to the login form"
+msgstr "ここをクリックするとログインフォームに移動します"
+
+#: htdocs/search.php:176
+msgid "Unrecognized criteria option: "
+msgstr "未承認の基準オプション: "
+
+#: htdocs/search.php:176
+msgid ""
+"If you want to add your own criteria to the list. Be sure to edit search.php "
+"to handle them. Quitting."
+msgstr ""
+
+#: htdocs/search.php:180
+msgid "Searching..."
+msgstr "検索中..."
+
+#: htdocs/search.php:213 lib/export_functions.php:256
+msgid "Encountered an error while performing search."
+msgstr "検索実行中にエラーに遭遇しました。"
+
+#: htdocs/search.php:228
+msgid "Entries found: "
+msgstr "エントリ発見: "
+
+#: htdocs/search.php:229 htdocs/search.php:357
+msgid "seconds"
+msgstr "秒"
+
+#: htdocs/search.php:238
+msgid "export results"
+msgstr "結果エクスポート"
+
+#: htdocs/search.php:240
+msgid "Format"
+msgstr "書式"
+
+#: htdocs/search.php:260
+msgid "Base DN: "
+msgstr "ベース DN: "
+
+#: htdocs/search.php:262
+msgid "Filter performed: "
+msgstr "検索実行: "
+
+#: htdocs/search.php:274
+msgid "Notice, search size limit exceeded."
+msgstr "通知です。検索サイズが制限を越えました。"
+
+#: htdocs/search.php:282
+#, php-format
+msgid "Showing results %s through %s."
+msgstr ""
+
+#: htdocs/search.php:288 htdocs/search.php:326 htdocs/template_engine.php:527
+#, php-format
+msgid "Page %d"
+msgstr "ページ %d"
+
+#: htdocs/search.php:335
+msgid "The search found no results."
+msgstr "検索結果がありませんでした。"
+
+#: htdocs/search.php:348
+#, php-format
+msgid "Unrecognized search result format: %s"
+msgstr "認識できない書式の検索結果です: %s"
+
+#: htdocs/search.php:357
+msgid "Search performed by phpLDAPadmin in"
+msgstr "phpLDadmin で検索を実行"
+
+#: htdocs/server_info.php:68
+msgid "Server info for: "
+msgstr "サーバー情報: "
+
+#: htdocs/server_info.php:69
+msgid "Server reports the following information about itself"
+msgstr "サーバーは自分自身で次の情報を報告しました。"
+
+#: htdocs/server_info.php:73
+msgid "This server has nothing to report."
+msgstr "このサーバーはなにも報告するものはありません。"
+
+#: htdocs/template_engine.php:150
+#, fuzzy, php-format
+msgid "Your template is missing variable (%s)"
+msgstr "テンプレートは値(%s)が見つかりません"
+
+#: htdocs/template_engine.php:158
+#, php-format
+msgid "Your template has an unknown post function (%s)."
+msgstr ""
+
+#: htdocs/template_engine.php:241
+#, php-format
+msgid "Attribute [%s] is a MUST attribute, so it cannot be disabled."
+msgstr ""
+
+#: htdocs/template_engine.php:381 htdocs/template_engine.php:383
+msgid "Verify"
+msgstr "確認"
+
+#: htdocs/template_engine.php:449
+#, php-format
+msgid "We are missing a page for [%s] attributes."
+msgstr ""
+
+#: htdocs/template_engine.php:504
+msgid "(Auto evaluated on submission.)"
+msgstr ""
+
+#: htdocs/template_engine.php:514
+msgid "Next Page"
+msgstr "次のページ"
+
+#: htdocs/template_engine.php:654
+msgid "This attribute is required for the RDN."
+msgstr "この属性は RDN に必要です。"
+
+#: htdocs/template_engine.php:814 htdocs/template_engine.php:856
+msgid "Check password..."
+msgstr "パスワード検査..."
+
+#: htdocs/template_engine.php:817
+msgid "rename"
+msgstr "名称変更"
+
+#: htdocs/timeout.php:29
+msgid "Your Session timed out after"
+msgstr "セッションは"
+
+#: htdocs/timeout.php:29
+msgid "min. of inactivity. You have been automatically logged out."
+msgstr "分活動しなかったのでタイムアウトです。自動でログアウトしました。"
+
+#: htdocs/timeout.php:32
+msgid "To log back in please click on the following link:"
+msgstr "再ログインするには次のリンクをクリックしてください:"
+
+#: htdocs/timeout.php:33 htdocs/update.php:117 lib/tree_functions.php:281
+msgid "Login..."
+msgstr "ログイン..."
+
+#: htdocs/tree.php:72 htdocs/tree.php:73
+msgid "Home"
+msgstr "ホーム"
+
+#: htdocs/tree.php:74 htdocs/tree.php:75
+msgid "Purge caches"
+msgstr "キャッシュ破棄"
+
+#: htdocs/tree.php:75
+msgid "Purge all cached data in phpLDAPadmin, including server schemas."
+msgstr ""
+"サーバースキーマを含む、phpLDAPadmin のすべてのキャッシュを破棄しました。"
+
+#: htdocs/tree.php:79
+msgid "light"
+msgstr ""
+
+#: htdocs/tree.php:80
+msgid "Request feature"
+msgstr "機能リクエスト"
+
+#: htdocs/tree.php:81
+msgid "bug"
+msgstr "不都合"
+
+#: htdocs/tree.php:82
+msgid "Report a bug"
+msgstr "不都合報告"
+
+#: htdocs/tree.php:85 htdocs/tree.php:86 htdocs/welcome.php:33
+msgid "Donate"
+msgstr "寄附"
+
+#: htdocs/tree.php:89 htdocs/tree.php:90
+msgid "Help"
+msgstr "ヘルプ"
+
+#: htdocs/update.php:38
+msgid ""
+"update_array is malformed. This might be a phpLDAPadmin bug. Please report "
+"it."
+msgstr ""
+"update_array がおかしいです。これは phpLDAPadmin のバグかもしれませんので、報"
+"告してください。"
+
+#: htdocs/update.php:114
+msgid "Modification successful!"
+msgstr "修正に成功しました!"
+
+#: htdocs/update.php:116
+msgid ""
+"Since you changed your password, you must now login again with your new "
+"password."
+msgstr ""
+"パスワードを変更したので、今から新しいパスワードで再ログインしなければなりま"
+"せん。"
+
+#: htdocs/update_confirm.php:112
+msgid "Do you want to make these changes?"
+msgstr "変更をしたいですか?"
+
+#: htdocs/update_confirm.php:122
+msgid "Old Value"
+msgstr "古い値"
+
+#: htdocs/update_confirm.php:123
+msgid "New Value"
+msgstr "新しい値"
+
+#: htdocs/update_confirm.php:124
+msgid "Skip"
+msgstr "飛ばす"
+
+#: htdocs/update_confirm.php:177 htdocs/update_confirm.php:191
+msgid "[attribute deleted]"
+msgstr "[属性を削除しました]"
+
+#: htdocs/update_confirm.php:225
+msgid "Commit"
+msgstr "コミット"
+
+#: htdocs/update_confirm.php:246
+msgid "You made no changes"
+msgstr "変更はありません"
+
+#: htdocs/update_confirm.php:247
+msgid "Go back"
+msgstr "戻る"
+
+#: htdocs/view_jpeg_photo.php:17
+msgid "Unsafe file name: "
+msgstr "安全でないファイル名: "
+
+#: htdocs/view_jpeg_photo.php:24
+msgid "No such file: "
+msgstr "ファイルがありません: "
+
+#: htdocs/welcome.php:21
+msgid "phpLDAPadmin logo"
+msgstr "phpLDAPadmin ロゴ"
+
+#: htdocs/welcome.php:24
+msgid "Use the menu to the left to navigate"
+msgstr "左へのメニューを使用して操作します"
+
+#: htdocs/welcome.php:31
+msgid "Credits"
+msgstr "クレジット"
+
+#: htdocs/welcome.php:32
+msgid "Documentation"
+msgstr "ドキュメント"
+
+#: lib/export_functions.php:38
+msgid "CSV (Spreadsheet)"
+msgstr "CSV (スプレッドシート)"
+
+#: lib/export_functions.php:197
+#, php-format
+msgid ""
+"Generated by phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) on %s"
+msgstr "%s に phpLDAPadmin ( http://www.phpldapadmin.com/ ) で生成しました。"
+
+#: lib/export_functions.php:201
+msgid "Total Entries"
+msgstr "総エントリ"
+
+#: lib/export_functions.php:312
+#, php-format
+msgid "LDIF Export for: %s"
+msgstr "LDIF エクスポート: %s"
+
+#: lib/export_functions.php:319
+msgid "Entry"
+msgstr "エントリ"
+
+#: lib/export_functions.php:414
+#, php-format
+msgid "DSLM Export for: %s"
+msgstr "DSLM エクスポート: %s"
+
+#: lib/functions.php:412
+#, fuzzy, php-format
+msgid ""
+"You specified the \"auto_uid_number_mechanism\" as \"search\" in your\n"
+"                              configuration for server <b>%s</b>, but you "
+"did not specify the\n"
+"                              \"auto_uid_number_search_base\". Please "
+"specify it before proceeding."
+msgstr ""
+"サーバー <b>%s</b> の設定で「search」に「auto_uid_number_mechanism」を指定し"
+"ました。                              しかし「auto_uid_number_search_base」が"
+"指定されていません。                              これを実行前に指定してくだ"
+"さい。"
+
+#: lib/functions.php:421
+#, php-format
+msgid ""
+"Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base "
+"for server %s"
+msgstr ""
+"phpLDAPadmin の設定で、サーバー %s に無効な auto_uid_search_base が指定されま"
+"した"
+
+#: lib/functions.php:432
+#, php-format
+msgid ""
+"Unable to bind to <b>%s</b> with your with auto_uid credentials. Please "
+"check your configuration file."
+msgstr ""
+"Unable to bind to <b>%s</b> with your with auto_uid credentials. 設定ファイル"
+"を確認してください。"
+
+#: lib/functions.php:492
+#, fuzzy, php-format
+msgid ""
+"You specified an invalid value for auto_uid_number_mechanism (\"%s\")\n"
+"                                   in your configration. Only \"uidpool\" "
+"and \"search\" are valid.\n"
+"                                   Please correct this problem."
+msgstr ""
+"設定ファイルの auto_uid_number_mechanism の指定が間違った値(\"%s\")で"
+"す。                                   \"uidpool\" と \"search\" のみ有効で"
+"す。                                   この問題を修正してください。"
+
+#: lib/functions.php:1007
+msgid "Error"
+msgstr "エラー"
+
+#: lib/functions.php:1017
+#, php-format
+msgid "LDAP said: %s"
+msgstr "LDAP の回答: %s"
+
+#: lib/functions.php:1026
+#, php-format
+msgid "Error number: %s (%s)"
+msgstr "エラー番号: %s (%s)"
+
+#: lib/functions.php:1028
+#, php-format
+msgid "Description: %s <br /><br />"
+msgstr "説明: %s <br /><br />"
+
+#: lib/functions.php:1030 lib/functions.php:1036
+#, php-format
+msgid "Error number: %s<br /><br />"
+msgstr "エラー番号: %s<br /><br />"
+
+#: lib/functions.php:1032
+msgid "Description: (no description available)<br />"
+msgstr "説明: (利用可能な説明がありませんでした)<br />"
+
+#: lib/functions.php:1044
+#, php-format
+msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
+msgstr ""
+"これは phpLDAPadmin の不都合ですか? もしそうなら <a href='%s'>報告</a> してく"
+"ださい。"
+
+#: lib/functions.php:1107
+msgid "Unrecognized error number: "
+msgstr "未承認のエラー番号: "
+
+#: lib/functions.php:1112
+#, fuzzy, php-format
+msgid ""
+"<center><table class='notice'><tr><td colspan='2'><center><img src='images/"
+"warning.png' height='12' width='13' />\n"
+"             <b>You found a non-fatal phpLDAPadmin bug!</b></td></"
+"tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>\n"
+"             <td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></"
+"tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</"
+"b>\n"
+"             </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>\n"
+"\t<tr><td colspan='2'><center><a target='new' href='%s'>Please check and see "
+"if this bug has been reported here</a>.</center></td></tr>\n"
+"\t<tr><td colspan='2'><center><a target='new' href='%s'>If it hasnt been "
+"reported, you may report this bug by clicking here</a>.</center></td></tr>\n"
+"\t</table></center><br />"
+msgstr ""
+"<center><table class='notice'><tr><td colspan='2'><center><img src='images/"
+"warning.png' height='12' width='13' />             <b>致命的でない "
+"phpLDAPadmin の不都合を発見しました!</b></td></tr><tr><td>エラー:</td><td><b>"
+"%s</b> (<b>%s</b>)</td></tr><tr><td>ファイル:</td>             <td><b>%s</b> "
+"行 <b>%s</b>, caller <b>%s</b></td></tr><tr><td>バージョン:</td><td>PLA: <b>%"
+"s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>             </td></tr><tr><td>ウェブ"
+"サーバー:</td><td><b>%s</b></td></tr><tr><td colspan='2'><center><a "
+"target='new' href='%s'>\t<tr><td colspan='2'><center><a target='new' href='%"
+"s'>Please check and see if this bug has been reported here</a>.</center></"
+"td></tr>\t<tr><td colspan='2'><center><a target='new' href='%s'>If it hasnt "
+"been reported, you may report this bug by clicking here</a>.</center></td></"
+"tr>\t</table></center><br />"
+
+#: lib/functions.php:1126
+#, fuzzy, php-format
+msgid ""
+"Congratulations! You found a bug in phpLDAPadmin.<br /><br />\n"
+"\t     <table class='bug'>\n"
+"\t     <tr><td>Error:</td><td><b>%s</b></td></tr>\n"
+"\t     <tr><td>Level:</td><td><b>%s</b></td></tr>\n"
+"\t     <tr><td>File:</td><td><b>%s</b></td></tr>\n"
+"\t     <tr><td>Line:</td><td><b>%s</b></td></tr>\n"
+"\t\t <tr><td>Caller:</td><td><b>%s</b></td></tr>\n"
+"\t     <tr><td>PLA Version:</td><td><b>%s</b></td></tr>\n"
+"\t     <tr><td>PHP Version:</td><td><b>%s</b></td></tr>\n"
+"\t     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>\n"
+"\t     <tr><td>Web server:</td><td><b>%s</b></td></tr>\n"
+"\t     </table>\n"
+"\t     <br />\n"
+"\t     Please report this bug by clicking below!"
+msgstr ""
+"おめでとうございます! phpLDAPadmin で不都合を発見しました。<br /><br />"
+"\t     <table class='bug'>\n"
+"\t     <tr><td>エラー:</td><td><b>%s</b></td></tr>\n"
+"\t     <tr><td>レベル:</td><td><b>%s</b></td></tr>\n"
+"\t     <tr><td>ファイル:</td><td><b>%s</b></td></tr>\n"
+"\t     <tr><td>行:</td><td><b>%s</b></td></tr>\n"
+"\t\t <tr><td>Caller:</td><td><b>%s</b></td></tr>\n"
+"\t     <tr><td>PLA バージョン:</td><td><b>%s</b></td></tr>\n"
+"\t     <tr><td>PHP バージョン:</td><td><b>%s</b></td></tr>\n"
+"\t     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>\n"
+"\t     <tr><td>ウェブサーバー:</td><td><b>%s</b></td></tr>\n"
+"\t     </table>\n"
+"\t     <br />\n"
+"\t     下記をクリックしてこの不都合を報告してください!"
+
+#: lib/functions.php:1209
+#, php-format
+msgid "Could not fetch jpeg data from LDAP server for attribute %s."
+msgstr "属性 %s 用に LDAP サーバーから jpeg データを取得できませんでした。"
+
+#: lib/functions.php:1215
+msgid ""
+"Please set $jpeg_temp_dir to a writable directory in the phpLDAPadmin config."
+"php"
+msgstr ""
+"phpLDAPadmin の設定ファイル config.php で、書き込み可能なディレクトリを "
+"$jpeg_temp_dir に設定してください。"
+
+#: lib/functions.php:1224
+#, php-format
+msgid ""
+"Could not write to the $jpeg_temp_dir directory %s. Please verify that your "
+"web server can write files there."
+msgstr ""
+"$jpeg_temp_dir で指定したディレクトリ %s に書き込みできません。ウェブサーバー"
+"がそこにファイルを書き込みできることを確認してください。"
+
+#: lib/functions.php:1230
+msgid "jpegPhoto contains errors<br />"
+msgstr "エラーを含む jpeg 写真<br />"
+
+#: lib/functions.php:1232
+msgid "Delete Photo"
+msgstr "写真削除"
+
+#: lib/functions.php:1267
+msgid "Delete photo"
+msgstr "写真を削除する"
+
+#: lib/functions.php:1308 lib/functions.php:1486
+msgid "Your system crypt library does not support extended DES encryption."
+msgstr "システムの暗号化ライブラリは拡張 DES 暗号化をサポートしていません。"
+
+#: lib/functions.php:1315 lib/functions.php:1471
+msgid "Your system crypt library does not support md5crypt encryption."
+msgstr "システムの暗号化ライブラリは md5crypt 暗号化をサポートしていません。"
+
+#: lib/functions.php:1322 lib/functions.php:1456
+msgid "Your system crypt library does not support blowfish encryption."
+msgstr "システムの暗号化ライブラリは blowfish 暗号化をサポートしていません。"
+
+#: lib/functions.php:1341 lib/functions.php:1352 lib/functions.php:1363
+#: lib/functions.php:1411 lib/functions.php:1429
+msgid ""
+"Your PHP install does not have the mhash() function. Cannot do SHA hashes."
+msgstr ""
+"インストールされた PHP は mhash() をサポートしていません。SHA ハッシュをする"
+"ことができません。"
+
+#: lib/functions.php:1629
+msgid "Click to popup a dialog to select an entry (DN) graphically"
+msgstr ""
+
+#: lib/functions.php:1633
+msgid "browse"
+msgstr "閲覧"
+
+#: lib/functions.php:2026
+#, php-format
+msgid ""
+"Your config.php specifies an invalid value for $default_search_display: %s. "
+"Please fix it"
+msgstr ""
+"config.php にて $default_search_display: %s の無効な値が指定されています。そ"
+"れを修正してください。"
+
+#: lib/functions.php:2752
+msgid "Click to popup a dialog to select a date graphically"
+msgstr ""
+
+#: lib/ldif_functions.php:169
+msgid "Missing attibutes or changetype attribute for entry"
+msgstr ""
+
+#: lib/ldif_functions.php:243
+msgid "A valid dn line is required."
+msgstr "有効な dn 行が必要です。"
+
+#: lib/ldif_functions.php:320
+msgid "Unable to read file"
+msgstr "ファイルを読み込めません"
+
+#: lib/ldif_functions.php:327
+msgid "Unable to open file"
+msgstr "ファイルを開けません"
+
+#: lib/ldif_functions.php:333
+msgid "The url attribute value should begin with file:///"
+msgstr "URL 属性値は file:/// で始まっていなければなりません。"
+
+#: lib/ldif_functions.php:352 lib/ldif_functions.php:390
+msgid "Missing attributes for the entry"
+msgstr "エントリの属性が見当たりません"
+
+#: lib/ldif_functions.php:375
+msgid "Attribute not well formed"
+msgstr "属性は整形されていません"
+
+#: lib/ldif_functions.php:410
+msgid "The attribute name should be add, delete or replace"
+msgstr "追加、削除もしくは置換には属性名がなければなりません。"
+
+#: lib/ldif_functions.php:448
+#, php-format
+msgid ""
+"The attribute to modify doesnt match the one specified by the %s attribute."
+msgstr ""
+
+#: lib/ldif_functions.php:455
+msgid "Attribute is not valid"
+msgstr "有効な DN ではありません。"
+
+#: lib/ldif_functions.php:483
+msgid "The entry is not valid"
+msgstr "エントリは有効ではありません。"
+
+#: lib/ldif_functions.php:514
+msgid "The attribute name should be newsuperior"
+msgstr ""
+
+#: lib/ldif_functions.php:525
+msgid "Container is null"
+msgstr "コンテナーが NULL です。"
+
+#: lib/ldif_functions.php:532
+msgid "A valid deleteoldrdn attribute should be specified"
+msgstr ""
+
+#: lib/ldif_functions.php:538
+#, fuzzy
+msgid "A valid newrdn attribute  should be specified"
+msgstr "属性名が指定されていません。"
+
+#: lib/ldif_functions.php:621
+msgid "No version found. Assuming 1."
+msgstr "バージョンが見つかりません。1 と仮定します。"
+
+#: lib/search_form_advanced.php:29 lib/search_form_predefined.php:23
+#: lib/search_form_simple.php:25
+msgid "Advanced Search Form"
+msgstr "高度な検索フォーム"
+
+#: lib/search_form_advanced.php:30 lib/search_form_predefined.php:22
+#: lib/search_form_simple.php:24
+msgid "Simple Search Form"
+msgstr "簡易検索フォーム"
+
+#: lib/search_form_advanced.php:31 lib/search_form_predefined.php:20
+#: lib/search_form_simple.php:26
+msgid "Predefined Searches"
+msgstr "事前定義検索"
+
+#: lib/search_form_advanced.php:47
+msgid "This is not a valid DN."
+msgstr "これは有効な DN ではありません。"
+
+#: lib/search_form_advanced.php:50
+msgid "This entry does not exist."
+msgstr "このエントリは存在しません。"
+
+#: lib/search_form_advanced.php:56
+msgid "The scope in which to search"
+msgstr ""
+
+#: lib/search_form_advanced.php:74
+msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))"
+msgstr "標準 LDAP 検索フィルター。例: (&(sn=Smith)(givenname=David))"
+
+#: lib/search_form_advanced.php:81
+msgid "A list of attributes to display in the results (comma-separated)"
+msgstr "結果から属性の一覧を表示 (カンマ区切り)"
+
+#: lib/search_form_advanced.php:91 lib/search_form_predefined.php:57
+#: lib/search_form_simple.php:57
+msgid "Search"
+msgstr "検索"
+
+#: lib/search_form_predefined.php:29
+msgid "No queries have been defined in config.php."
+msgstr "config.php で定義された照会はありません。"
+
+#: lib/search_form_predefined.php:38
+msgid "Select a predefined search"
+msgstr "事前定義された検索を選択"
+
+#: lib/search_form_simple.php:32
+msgid "Search for entries whose"
+msgstr "どのエントリを検索"
+
+#: lib/server_functions.php:121
+#, fuzzy, php-format
+msgid ""
+"Error: You have an error in your config file. The only three allowed values "
+"for auth_type in the $servers section are 'session', 'cookie', and 'config'. "
+"You entered '%s', which is not allowed."
+msgstr ""
+"エラー: 設定ファイルのにエラーがあります。$servers セクションの auth_type "
+"は                                    「session」「cookie」「config」のみっつ"
+"の値のみ許可されていますが、                                    許可されない"
+"「%s」が入力されました。"
+
+#: lib/server_functions.php:270
+msgid "Your PHP install does not support TLS."
+msgstr "インストールされている PHP は TLS をサポートしていません。"
+
+#: lib/server_functions.php:271
+msgid "Could not start TLS. Please check your LDAP server configuration."
+msgstr "TLS を開始できません。LDAP サーバーの設定を確認してください。"
+
+#: lib/server_functions.php:285
+msgid ""
+"Your PHP installation does not support ldap_sasl_bind() function. This "
+"function is present in PHP 5.x when compiled with --with-ldap-sasl."
+msgstr ""
+
+#: lib/server_functions.php:318
+#, php-format
+msgid ""
+"It seems that sasl_authz_id_regex \"%s\".\" contains invalid PCRE regular "
+"expression."
+msgstr ""
+
+#: lib/server_functions.php:350
+msgid "Insufficient access rights."
+msgstr "不適当なアクセス権限です。"
+
+#: lib/server_functions.php:353
+#, php-format
+msgid "Could not connect to \"%s\" on port \"%s\""
+msgstr "\"%s\" のポート \"%s\" に接続できませんでした"
+
+#: lib/server_functions.php:356
+msgid "Could not bind to the LDAP server."
+msgstr "LDAP サーバーに接続できませんでした。"
+
+#: lib/server_functions.php:2683
+#, php-format
+msgid ""
+"Unable to bind to <b>%s</b> with your with unique_attrs credentials. Please "
+"check your configuration file."
+msgstr ""
+"Unable to bind to <b>%s</b> with your with unique_attrs credentials. 設定ファ"
+"イルを確認してください。"
+
+#: lib/template_functions.php:541
+msgid "A random password was generated for you"
+msgstr "ランダムなパスワードが生成されました。"
+
+#: lib/template_functions.php:562
+#, php-format
+msgid ""
+"Your template calls php.Function for a default value, however (%s) is NOT "
+"available in the POST FORM variables. The following variables are available "
+"[%s]."
+msgstr ""
+
+#: lib/tree_functions.php:46
+#, php-format
+msgid "Inactivity will log you off at %s"
+msgstr "%s は活動的でなかったのでログアウトしました。"
+
+#: lib/tree_functions.php:67
+msgid "View schema for"
+msgstr "スキーマを閲覧 対象:"
+
+#: lib/tree_functions.php:67
+msgid "schema"
+msgstr "スキーマ"
+
+#: lib/tree_functions.php:68
+msgid "search"
+msgstr "検索"
+
+#: lib/tree_functions.php:69
+msgid "Refresh all expanded containers for"
+msgstr "展開済みの内容を再描画 対象:"
+
+#: lib/tree_functions.php:69
+msgid "refresh"
+msgstr "再描画"
+
+#: lib/tree_functions.php:70
+msgid "View server-supplied information"
+msgstr "サーバーが提供する情報を閲覧"
+
+#: lib/tree_functions.php:70
+msgid "info"
+msgstr "情報"
+
+#: lib/tree_functions.php:71
+msgid "Import entries from an LDIF file"
+msgstr "LDIF ファイルからのインポートエントリ"
+
+#: lib/tree_functions.php:71
+msgid "import"
+msgstr "インポート"
+
+#: lib/tree_functions.php:72
+msgid "export"
+msgstr "エクスポート"
+
+#: lib/tree_functions.php:75
+msgid "Logout of this server"
+msgstr "このサーバーのログアウト"
+
+#: lib/tree_functions.php:75 lib/tree_functions.php:269
+msgid "logout"
+msgstr "ログアウト"
+
+#: lib/tree_functions.php:81
+msgid "Logged in as: "
+msgstr "次のコンテナでログイン: "
+
+#: lib/tree_functions.php:163
+msgid "This base entry does not exist."
+msgstr "ベースエントリが存在しません。"
+
+#: lib/tree_functions.php:163
+msgid "Create it?"
+msgstr "作成しますか?"
+
+#: lib/tree_functions.php:219
+msgid "Could not determine the root of your LDAP tree."
+msgstr "LDAP ツリーのルートが決定できません。"
+
+#: lib/tree_functions.php:219
+msgid ""
+"It appears that the LDAP server has been configured to not reveal its root."
+msgstr "LDAP サーバーが root を見えないように設定しているように見えます。"
+
+#: lib/tree_functions.php:219
+msgid "Please specify it in config.php"
+msgstr "config.php でそれを指定してください。"
+
+#: lib/tree_functions.php:263
+msgid "warning"
+msgstr "警告"
+
+#: lib/tree_functions.php:281
+msgid "login"
+msgstr "ログイン"
+
+#: lib/tree_functions.php:285
+msgid "(Session timed out. Automatically logged out.)"
+msgstr "(セッションはタイムアウトです。自動でログアウトしました)"
+
+#: lib/tree_functions.php:289
+msgid "Delete Checked Entries"
+msgstr "チェックされたエントリを削除する"
+
+#: lib/tree_functions.php:429
+msgid "Click to expand this branch."
+msgstr "クリックするとこの枝を展開します。"
+
+#: lib/tree_functions.php:463
+msgid "new"
+msgstr "新規"
+
+#: lib/tree_functions.php:465
+msgid "Create a new entry in"
+msgstr ""
+
+#: lib/tree_functions.php:465
+msgid "Create new entry here"
+msgstr "ここに新規エントリを追加"
+
+#~ msgid "list"
+#~ msgstr "一覧"
+
+#~ msgid "table"
+#~ msgstr "テーブル"
+
+#~ msgid "create"
+#~ msgstr "作成"
+
+#~ msgid "Create a new entry on"
+#~ msgstr "エントリを新規作成 対象:"
+
+#~ msgid "View"
+#~ msgstr "閲覧"
+
+#~ msgid "Bad server id"
+#~ msgstr "間違ったサーバー ID"
+
+#~ msgid "No DN specified in query string!"
+#~ msgstr "照会文字列に DN が指定されていません!"
+
+#~ msgid "Back"
+#~ msgstr "戻る"
+
+#~ msgid "object"
+#~ msgstr "オブジェクト"
+
+#~ msgid "Delete all"
+#~ msgstr "すべて削除"
+
+#~ msgid "hint"
+#~ msgstr "ヒント"
+
+#~ msgid "Warning: missing template file, "
+#~ msgstr "警告: テンプレートファイルがありません。 "
+
+#~ msgid "Using default."
+#~ msgstr "デフォルトを使います。"
+
+#~ msgid "You must choose a template"
+#~ msgstr "テンプレートを選ばなければなりません"
+
+#~ msgid "%s is an invalid template"
+#~ msgstr "%s は無効なテンプレート"
+
+#~ msgid "equals"
+#~ msgstr "に一致"
+
+#~ msgid "starts with"
+#~ msgstr "で始まる"
+
+#~ msgid "contains"
+#~ msgstr "を含む"
+
+#~ msgid "ends with"
+#~ msgstr "で終わる"
+
+#~ msgid "sounds like"
+#~ msgstr "に近い"
+
+#~ msgid ""
+#~ "Could not retrieve LDAP information from the server. This may be due to a "
+#~ "<a href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version "
+#~ "of PHP or perhaps your LDAP server has access control specified that "
+#~ "prevents LDAP clients from accessing the RootDSE."
+#~ msgstr ""
+#~ "サーバーから LDAP 情報を取得できませんでした。これはあなたの PHP バージョ"
+#~ "ンの<a href=\"http://bugs.php.net/bug.php?id=29587\">不都合</a>によるかも"
+#~ "しれません。あるいは、あなたの LDAP サーバーは、LDAP クライアントが "
+#~ "RootDSE にアクセスするのを防ぐアクセス制御指定をしています。"
+
+#~ msgid "ChangeLog"
+#~ msgstr "変更履歴"
+
+#~ msgid ""
+#~ "To donate funds to the phpLDAPadmin project, use one of the PayPal "
+#~ "buttons below."
+#~ msgstr ""
+#~ "phpLDAPadmin プロジェクトに資金を寄贈するためには、PayPal ボタンのうちの "
+#~ "1 つを下に使用してください。"
+
+#~ msgid "Donate %s"
+#~ msgstr "%s を寄贈"
+
+#~ msgid ""
+#~ "You have enabled auto_uid_numbers for <b>%s</b> in your "
+#~ "configuration,                                  but you have not "
+#~ "specified the auto_uid_number_mechanism. Please "
+#~ "correct                                  this problem."
+#~ msgstr ""
+#~ "設定ファイルの <b>%s</b>You の auto_uid_numbers が有効です"
+#~ "が、                                  auto_uid_number_mechanism が指定され"
+#~ "ていません。                                  この問題を修正してくださ"
+#~ "い。."
+
+#~ msgid ""
+#~ "You specified the \"auto_uid_number_mechanism\" as \"uidpool"
+#~ "\"                            in your configuration for server <b>%s</b>, "
+#~ "but you did not specify the                            "
+#~ "audo_uid_number_uid_pool_dn. Please specify it before proceeding."
+#~ msgstr ""
+#~ "サーバー <b>%s</b> の設定で、\"auto_uid_number_mechanism\" を \"uidpool\" "
+#~ "に指定していますが、                            "
+#~ "audo_uid_number_uid_pool_dn を指定していませ"
+#~ "ん。                            続行する前にそれを指定してください"
+
+#~ msgid "Deletes not allowed in read only mode."
+#~ msgstr "読み込み専用モードでは削除は許可されていません。"
+
+#~ msgid "default template"
+#~ msgstr "デフォルトテンプレート"
+
+#~ msgid "User Account (posixAccount)"
+#~ msgstr "ユーザーアカウント (posixAccount)"
+
+#~ msgid "Address Book Entry (inetOrgPerson)"
+#~ msgstr "アドレス帳エントリ (inetOrgPerson)"
+
+#~ msgid "Address Book Entry (mozillaOrgPerson)"
+#~ msgstr "アドレス帳エントリ (mozillaOrgPerson)"
+
+#~ msgid "Kolab User Entry"
+#~ msgstr "Kolab ユーザーエントリ"
+
+#~ msgid "Organisational Unit"
+#~ msgstr "所属組織"
+
+#~ msgid "New Organisational Unit"
+#~ msgstr "新規所属組織"
+
+#~ msgid "Organisational Role"
+#~ msgstr "所属職務"
+
+#~ msgid "Posix Group"
+#~ msgstr "Posix グループ"
+
+#~ msgid "Samba NT Machine"
+#~ msgstr "Samba NT マシン"
+
+#~ msgid "Samba 3 NT Machine"
+#~ msgstr "Samba 3 NT マシン"
+
+#~ msgid "Samba User"
+#~ msgstr "Samba ユーザー"
+
+#~ msgid "Samba 3 User"
+#~ msgstr "Samba 3 ユーザー"
+
+#~ msgid "Samba 3 Group Mapping"
+#~ msgstr "Samba 3 グループマップ"
+
+#~ msgid "DNS Entry"
+#~ msgstr "DNS エントリ"
+
+#~ msgid "Simple Security Object"
+#~ msgstr "簡易セキュリティオブジェクト"
+
+#~ msgid "Courier Mail Account"
+#~ msgstr "Courier メールアカウント"
+
+#~ msgid "Courier Mail Alias"
+#~ msgstr "Courier メール別名"
+
+#~ msgid "LDAP Alias"
+#~ msgstr "LDAP 別名"
+
+#~ msgid "Sendmail Cluster"
+#~ msgstr "Sendmail クラスター"
+
+#~ msgid "Sendmail Domain"
+#~ msgstr "Sendmail ドメイン"
+
+#~ msgid "Sendmail Alias"
+#~ msgstr "Sendmail エイリアス"
+
+#~ msgid "Sendmail Virtual Domain"
+#~ msgstr "Sendmail 仮想ドメイン"
+
+#~ msgid "Sendmail Virtual Users"
+#~ msgstr "Sendmail 仮想ユーザー"
+
+#~ msgid "Sendmail Relays"
+#~ msgstr "Sendmail リレー"
+
+#~ msgid "Custom"
+#~ msgstr "カスタム"
+
+#~ msgid "My Samba domain Name"
+#~ msgstr "自分の Samba ドメイン名"
+
+#~ msgid "Administrators"
+#~ msgstr "Administrators"
+
+#~ msgid "Users"
+#~ msgstr "Users"
+
+#~ msgid "Guests"
+#~ msgstr "Guests"
+
+#~ msgid "Power Users"
+#~ msgstr "Power Users"
+
+#~ msgid "Account Operators"
+#~ msgstr "Account Operators"
+
+#~ msgid "Server Operators"
+#~ msgstr "Server Operators"
+
+#~ msgid "Print Operators"
+#~ msgstr "Print Operators"
+
+#~ msgid "Backup Operators"
+#~ msgstr "Backup Operators"
+
+#~ msgid "Replicator"
+#~ msgstr "Replicator"
+
+#~ msgid ""
+#~ " Unable to create the Samba passwords. Please, check the configuration in "
+#~ "template_config.php"
+#~ msgstr ""
+#~ " Samba のパスワードを作成できませんでした。template_config.php の設定を確"
+#~ "認してください。"
+
+#~ msgid "Error: You have an error in your samba confguration."
+#~ msgstr "エラー: samba の設定にエラーがあります。"
+
+#~ msgid "Error: A name and a sid for your samba domain need to be provided."
+#~ msgstr "エラー: samba ドメインの名前および sid を提供する必要があります。"
+
+#~ msgid "Error: No name provided for samba domain."
+#~ msgstr "エラー: 名前は samba ドメインに提供されませんでした。"
+
+#~ msgid "Error: No sid provided for samba domain."
+#~ msgstr "エラー: sid は samba ドメインに提供されませんでした。"
+
+#~ msgid "Samba Account"
+#~ msgstr "Samba アカウント"
+
+#~ msgid "samba account"
+#~ msgstr "samba アカウント"
+
+#~ msgid "New User Account"
+#~ msgstr "新規ユーザーアカウント"
+
+#~ msgid ""
+#~ "Hint: To customize this template, edit the file templates/creation/"
+#~ "new_user_template.php"
+#~ msgstr ""
+#~ "ヒント: このテンプレートをカスタマイズする場合、ファイル templates/"
+#~ "creation/new_user_template.php を編集します。"
+
+#~ msgid "Last name"
+#~ msgstr "苗字"
+
+#~ msgid "State"
+#~ msgstr "地域"
+
+#~ msgid "Common name"
+#~ msgstr "共通名"
+
+#~ msgid "Encryption"
+#~ msgstr "暗号化"
+
+#~ msgid "Login Shell"
+#~ msgstr "ログインシェル"
+
+#~ msgid "Home Directory"
+#~ msgstr "ホームディレクトリ"
+
+#~ msgid "UID Number"
+#~ msgstr "UID 番号"
+
+#~ msgid "(automatically determined)"
+#~ msgstr "(自動採決)"
+
+#~ msgid "Group"
+#~ msgstr "グループ"
+
+#~ msgid "GID Number"
+#~ msgstr "GID 番号"
+
+#~ msgid "User ID"
+#~ msgstr "ユーザー ID"
+
+#~ msgid "Your passwords don't match. Please go back and try again."
+#~ msgstr "パスワードが一致しません。戻ってからもう一度試してください。"
+
+#~ msgid "You cannot leave the %s blank. Please go back and try again."
+#~ msgstr ""
+#~ "%s ブランクを残すことはできません。戻ってからもう一度試してください。"
+
+#~ msgid ""
+#~ "You can only enter numeric values for the %s field. Please go back and "
+#~ "try again."
+#~ msgstr ""
+#~ "フィールド %s は数値のみ入力で出来ます。戻ってからもう一度試してください。"
+
+#~ msgid ""
+#~ "The container you specified (%s) does not exist. Please go back and try "
+#~ "again."
+#~ msgstr "指定した内容(%s)は存在しません。戻ってからもう一度試してください。"
+
+#~ msgid "Confirm account creation"
+#~ msgstr "アカウント作成確認"
+
+#~ msgid "Create Account"
+#~ msgstr "アカウント作成"
+
+#~ msgid "New Posix Group"
+#~ msgstr "新規 Posix グループ"
+
+#~ msgid "New Address Book Entry"
+#~ msgstr "新規アドレス帳エントリ"
+
+#~ msgid "Organisation"
+#~ msgstr "組織"
+
+#~ msgid "Address"
+#~ msgstr "住所"
+
+#~ msgid "City"
+#~ msgstr "都市"
+
+#~ msgid "Postal code"
+#~ msgstr "郵便番号"
+
+#~ msgid "Street"
+#~ msgstr "築町村"
+
+#~ msgid "Work phone"
+#~ msgstr "業務電話"
+
+#~ msgid "Fax"
+#~ msgstr "Fax"
+
+#~ msgid "Mobile"
+#~ msgstr "携帯電話"
+
+#~ msgid "Email"
+#~ msgstr "電子メール"
+
+#~ msgid ""
+#~ "You cannot leave the Common Name blank. Please go back and try again."
+#~ msgstr ""
+#~ "一般名を空にすることは出来ません。戻ってからもう一度試してください。"
+
+#~ msgid "Confirm entry creation:"
+#~ msgstr "エントリ作成の確認:"
+
+#~ msgid "Create Address"
+#~ msgstr "アドレス作成"

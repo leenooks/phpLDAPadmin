@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE template SYSTEM "template.dtd">
 <template>
-<title>sendmail_alias</title>
+<title>Sendmail Alias</title>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
 <icon>images/mail.png</icon>
 <description>New Sendmail Alias</description>

@@ -1,0 +1,867 @@
+# : $
+
+
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
+"Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
+"Last-Translator: Richard Lucassen <spamtrap@lucassen.org>\n"
+"POT-Creation-Date: 2005-11-29 17:45+0100\n"
+"PO-Revision-Date: 2005-11-29 18:22+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+
+msgid "Simple Search Form"
+msgstr "eenvoudig zoeken"
+
+
+msgid "Advanced Search Form"
+msgstr "uitgebreid zoeken"
+
+
+msgid "Server"
+msgstr "server"
+
+
+msgid "Search for entries whose"
+msgstr "zoek naar velden waarvoor:"
+
+
+msgid "Base DN"
+msgstr "base DN"
+
+
+msgid "Search Scope"
+msgstr "zoekbereik"
+
+
+msgid "Show Attributtes"
+msgstr "attributen laten zien"
+
+
+msgid "Search"
+msgstr "zoeken"
+
+
+msgid "equals"
+msgstr "gelijk is aan"
+
+
+msgid "contains"
+msgstr "bevat"
+
+
+msgid "Request feature"
+msgstr "verzoek nieuwe feature"
+
+
+msgid "Report a bug"
+msgstr "rapporteer een bug"
+
+
+msgid "schema"
+msgstr "schema"
+
+
+msgid "refresh"
+msgstr "vernieuwen"
+
+
+msgid "create"
+msgstr "aanmaken"
+
+
+msgid "info"
+msgstr "info"
+
+
+msgid "import"
+msgstr "importeer"
+
+
+msgid "logout"
+msgstr "uitloggen"
+
+
+msgid "View schema for"
+msgstr "schema inzien voor"
+
+
+msgid "Refresh all expanded containers for"
+msgstr "vernieuw alle uitgeklapte containers voor"
+
+
+msgid "Create a new entry on"
+msgstr "nieuw veld aanmaken in"
+
+
+msgid "View server-supplied information"
+msgstr "server informatie inzien"
+
+
+msgid "Import entries from an LDIF file"
+msgstr "importeer LDIF bestand"
+
+
+msgid "Logout of this server"
+msgstr "bij deze server uitloggen"
+
+
+msgid "Logged in as: "
+msgstr "ingelogd als: "
+
+
+msgid "read only"
+msgstr "alleen lezen"
+
+
+msgid "Could not determine the root of your LDAP tree."
+msgstr "kan de root van LDAP structuur niet bepalen."
+
+
+msgid "It appears that the LDAP server has been configured to not reveal its root."
+msgstr "kan de root van LDAP structuur niet bepalen"
+
+
+msgid "Please specify it in config.php"
+msgstr "in config.php aangeven a.u.b."
+
+
+msgid "Delete this entry"
+msgstr "veld verwijderen"
+
+
+msgid "You will be prompted to confirm this decision"
+msgstr "bevestiging zal worden gevraagd voor deze beslissing"
+
+
+msgid "Copy or move this entry"
+msgstr "dit veld kopieren"
+
+
+msgid "Copy this object to another location, a new DN, or another server"
+msgstr "kopieer dit object naar een andere plaats, een niuewe DN of naar een andere server"
+
+
+msgid "Create a child entry"
+msgstr "subveld aanmaken"
+
+
+msgid "Rename Entry"
+msgstr "veld hernoemen"
+
+
+msgid "Rename"
+msgstr "hernoemen"
+
+
+msgid "Add"
+msgstr "toevoegen"
+
+
+msgid "View"
+msgstr "inzien"
+
+
+msgid "Add new attribute"
+msgstr "attribuut toevoegen"
+
+
+msgid "Hide internal attributes"
+msgstr "interne attributen verbergen"
+
+
+msgid "Show internal attributes"
+msgstr "interne attributen laten zien"
+
+
+msgid "Click to view the schema defintion for attribute type '%s'"
+msgstr "klik hier om de schemadefinitie van attribuuttype '%s' te bekijken"
+
+
+msgid "none"
+msgstr "geen"
+
+
+msgid "Save Changes"
+msgstr "veranderingen opslaan"
+
+
+msgid "add value"
+msgstr "waarde toevoegen"
+
+
+msgid "Add an additional value to attribute '%s'"
+msgstr "voeg een extra waarde toe aan dit attribuut"
+
+
+msgid "Refresh this entry"
+msgstr "dit veld vernieuwen"
+
+
+msgid "Hint: To delete an attribute, empty the text field and click save."
+msgstr "tip: <b>om een attribuut te verwijderen</b>, maak deze leeg en sla hem op"
+
+
+msgid "Hint: To view the schema for an attribute, click the attribute name."
+msgstr "Tip: <b>om het schema voor een attribuut te bekijken,</b> klik op de attribuutnaam"
+
+
+msgid "Some attributes (%s) were modified and are highlighted below."
+msgstr "sommige attributen (%s) zijn gewijzigd en worden ge-highlight weergegeven."
+
+
+msgid "An attribute (%s) was modified and is highlighted below."
+msgstr "een attribuut (%s) is gewijzigd en wordt ge-highlight weergegeven"
+
+
+msgid "Viewing entry in read-only mode."
+msgstr "veld bekijken (alleen-lezen)"
+
+
+msgid "no new attributes available for this entry"
+msgstr "geen nieuwe attributen beschikbaar voor dit veld"
+
+
+msgid "Binary value"
+msgstr "binaire waarde"
+
+
+msgid "Add new binary attribute"
+msgstr "nieuwe binair attribuut toevoegen"
+
+
+msgid "Note: '%s' is an alias for '%s'"
+msgstr "alias voor"
+
+
+msgid "download value"
+msgstr "waarde downloaden"
+
+
+msgid "delete attribute"
+msgstr "attribuut verwijderen"
+
+
+msgid "true"
+msgstr "waar"
+
+
+msgid "false"
+msgstr "onwaar"
+
+
+msgid "none, remove value"
+msgstr "niets, verwijder waarde"
+
+
+msgid "Really delete attribute"
+msgstr "dit attribuut echt verwijderen"
+
+
+msgid "Jump to an objectClass"
+msgstr "ga naar objectClass"
+
+
+msgid "Jump to an attribute type"
+msgstr "ga naar een attribuut"
+
+
+msgid "Schema for server"
+msgstr "schema voor server"
+
+
+msgid "Required Attributes"
+msgstr "vereiste attributen"
+
+
+msgid "Optional Attributes"
+msgstr "niet vereiste attributen"
+
+
+msgid "OID"
+msgstr "OID"
+
+
+msgid "Description"
+msgstr "omschrijving"
+
+
+msgid "Name"
+msgstr "naam"
+
+
+msgid "This objectClass is obsolete."
+msgstr "deze objectClass is <b>verouderd</b>"
+
+
+msgid "Inherits from"
+msgstr "afgeleid van"
+
+
+msgid "Jump to this objectClass definition"
+msgstr "ga naar objectClass definitie"
+
+
+msgid "Matching Rule OID"
+msgstr "overeenkomen met OID regel"
+
+
+msgid "Syntax OID"
+msgstr "Syntax OID"
+
+
+msgid "not applicable"
+msgstr "niet van toepassing"
+
+
+msgid "not specified"
+msgstr "niet gespecificeerd"
+
+
+msgid "Entry %s deleted successfully."
+msgstr "dit veld '%s' succesvol verwijderd"
+
+
+msgid "You must specify a DN"
+msgstr "U moet een DN aangeven."
+
+
+msgid "Could not delete the entry: %s"
+msgstr "kan dit veld niet verwijderen: %s"
+
+
+msgid "New Required Attributes"
+msgstr "nieuwe benodigde attributen"
+
+
+msgid "This action requires you to add"
+msgstr "voor deze actie moet worden toegevoegd:"
+
+
+msgid "new attributes"
+msgstr "nieuw attribuut"
+
+
+msgid "Instructions: In order to add these objectClass(es) to this entry, you must specify"
+msgstr "Instructies: om deze objectClass toe te voegen, moet u nog specificeren "
+
+
+msgid "that this objectClass requires. You can do so in this form."
+msgstr "dat deze objectClass nodig heeft. U kunt dit in dit formulier doen."
+
+
+msgid "Add ObjectClass and Attributes"
+msgstr "objectClass en attributen toevoegen"
+
+
+msgid "Click to popup a dialog to select an entry (DN) graphically"
+msgstr "klik om grafisch een veld te kiezen (DN)"
+
+
+msgid "You cannot perform updates while server is in read-only mode"
+msgstr "U kunt niet opslaan als de server alleen lezen is"
+
+
+msgid "Bad server id"
+msgstr "ongeldig server ID"
+
+
+msgid "Not enough information to login to server. Please check your configuration."
+msgstr "Onvoldoende informatie om in te kunnen loggen. Controleer de configuratie."
+
+
+msgid "Could not connect to LDAP server."
+msgstr "Kan LDAP server niet vinden."
+
+
+msgid "Could not perform ldap_mod_add operation."
+msgstr "Kan geen ldap_mod_add uitvoeren."
+
+
+msgid "Success"
+msgstr "succes"
+
+
+msgid "Server: "
+msgstr "server: "
+
+
+msgid "Looking in: "
+msgstr "bekijken: "
+
+
+msgid "No DN specified in query string!"
+msgstr "geen DN meegeven"
+
+
+msgid "Back Up..."
+msgstr "backup..."
+
+
+msgid "no entries"
+msgstr "geen velden"
+
+
+msgid "Could not determine base DN"
+msgstr "kan de basis-DN niet bepalen"
+
+
+msgid "Add new"
+msgstr "nieuw toevoegen"
+
+
+msgid "value to"
+msgstr "waarde"
+
+
+msgid "Distinguished Name"
+msgstr "Distinguished Name"
+
+
+msgid "Current list of"
+msgstr "huidige lijst van"
+
+
+msgid "values for attribute"
+msgstr "waarden voor attributen"
+
+
+msgid "Note: You will get an \"inappropriate matching\" error if you have not setup an EQUALITY rule on your LDAP server for this attribute."
+msgstr "Info: U zult een \"inappropriate matching\" melding krijgen, indien u niet<br />een <tt>EQUALITY</tt> regel op de LDAP Server voor dit attribuut ingesteld heeft."
+
+
+msgid "Enter the value you would like to add:"
+msgstr "geef de waarde die u wilt toevoegen:"
+
+
+msgid "Note: You may be required to enter new attributes that these objectClass(es) require"
+msgstr "Info: U kunt verzocht worden nieuwe attributen, die voor deze objectClass verplicht zijn, in te voeren."
+
+
+msgid "Syntax"
+msgstr "syntax"
+
+
+msgid "You left the destination DN blank."
+msgstr "de bestemmings DN is leeg"
+
+
+msgid "The destination entry (%s) already exists."
+msgstr "het veld (%s) bestaat al."
+
+
+msgid "The destination container (%s) does not exist."
+msgstr "het doel-veld (%s) bestaat niet."
+
+
+msgid "The source and destination DN are the same."
+msgstr "origineel DN en doel DN zijn hetzelfde"
+
+
+msgid "Copying "
+msgstr "kopieren"
+
+
+msgid "Recursive copy progress"
+msgstr "bezig met recursief kopieren"
+
+
+msgid "Building snapshot of tree to copy... "
+msgstr "bezig met het aanmaken van een snapshot van de boomstructuur... "
+
+
+msgid "Copy successful! Would you like to "
+msgstr "Kopieren succesvol! Wit u dan"
+
+
+msgid "view the new entry"
+msgstr "het nieuwe veld bekijken"
+
+
+msgid "Failed to copy DN: "
+msgstr "Kopieren van DN mislukt: "
+
+
+msgid "Copy "
+msgstr "Kopieren"
+
+
+msgid "to a new object"
+msgstr "naar een nieuw Objekt"
+
+
+msgid "Destination DN"
+msgstr "doel DN"
+
+
+msgid "The full DN of the new entry to be created when copying the source entry"
+msgstr "De complete DN die aangemaakt wordt bij het kopieren van het bron-veld."
+
+
+msgid "Destination Server"
+msgstr "bestemmings server"
+
+
+msgid "Hint: Copying between different servers only works if there are no schema violations"
+msgstr "Info: kopieren tussen twee servers gaat alleen maar goped als er geen schema problemen zijn"
+
+
+msgid "Recursively copy all children of this object as well."
+msgstr "Recursief kopieren van alle sub-velden"
+
+
+msgid "You left the value blank for required attribute (%s)."
+msgstr "Fout. U heeft een verplicht veld leeggelaten."
+
+
+msgid "Could not add the object to the LDAP server."
+msgstr "kan het object niet toevoegen op de LDAP server."
+
+
+msgid "Create Object"
+msgstr "object aanmaken"
+
+
+msgid "Choose a template"
+msgstr "kies een template"
+
+
+msgid "Select a template for the creation process"
+msgstr "kies een template voor dit object"
+
+
+msgid "You have not logged into the selected server yet, so you cannot perform searches on it."
+msgstr "u bent nog niet ingelogd op de geselecteerde server, dus u kunt geen zoekopdrachten geven."
+
+
+msgid "Click here to go to the login form"
+msgstr "Klik hier om in te loggen"
+
+
+msgid "Unrecognized criteria option: "
+msgstr "Unrecognized criteria option: "
+
+
+msgid "If you want to add your own criteria to the list. Be sure to edit search.php to handle them. Quitting."
+msgstr "Als u uw eigen crteria toe wilt voegen aan de lijst, dient u search.php te bewerken. Sluiten."
+
+
+msgid "Entries found: "
+msgstr "gevonden velden: "
+
+
+msgid "Filter performed: "
+msgstr "toegepast filter: "
+
+
+msgid "Search performed by phpLDAPadmin in"
+msgstr "zoeken door phpLDAPadmin duurde"
+
+
+msgid "seconds"
+msgstr "seconden"
+
+
+msgid "Sub (entire subtree)"
+msgstr "Sub (de hele tak)"
+
+
+msgid "One (one level beneath base)"
+msgstr "One (een laag diep)"
+
+
+msgid "Base (base dn only)"
+msgstr "Base (alleen de basis)"
+
+
+msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))"
+msgstr "Standard LDAP zoekfilter. Voorbeeld.: (&(sn=Smith)(givenname=David))"
+
+
+msgid "A list of attributes to display in the results (comma-separated)"
+msgstr "komma gescheiden lijst van de attributen."
+
+
+msgid "Select a predefined search"
+msgstr "of een van deze lijst uitlezen"
+
+
+msgid "Could not retrieve LDAP information from the server. This may be due to a <a href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version of PHP or perhaps your LDAP server has access control specified that prevents LDAP clients from accessing the RootDSE."
+msgstr "kan geen LDAP van de server krijgen"
+
+
+msgid "Server info for: "
+msgstr "Server info voor: "
+
+
+msgid "Server reports the following information about itself"
+msgstr "De server geeft de volgende informatie over zichzelf"
+
+
+msgid "This server has nothing to report."
+msgstr "De server heeft niets te melden"
+
+
+msgid "update_array is malformed. This might be a phpLDAPadmin bug. Please report it."
+msgstr "De update_array is niet goed. Dat kan een phpLDAPadmin bug zijn. Laat het ons weten!"
+
+
+msgid "Could not perform ldap_modify operation."
+msgstr "Kan ldap_modify niet uitvoeren."
+
+
+msgid "Do you want to make these changes?"
+msgstr "Deze veranderingen doorvoeren?"
+
+
+msgid "Attribute"
+msgstr "attribuut"
+
+
+msgid "Old Value"
+msgstr "oude waarde"
+
+
+msgid "New Value"
+msgstr "nieuwe waarde"
+
+
+msgid "[attribute deleted]"
+msgstr "[attribuut verwijderd]"
+
+
+msgid "Commit"
+msgstr "uitvoeren"
+
+
+msgid "Cancel"
+msgstr "annuleren"
+
+
+msgid "You made no changes"
+msgstr "U heeft geen veranderingen gemaakt."
+
+
+msgid "Go back"
+msgstr "terug"
+
+
+msgid "Use the menu to the left to navigate"
+msgstr "Gebruik het linkermenu om te navigeren."
+
+
+msgid "Unsafe file name: "
+msgstr "onveilige bestandsnaam: "
+
+
+msgid "No such file: "
+msgstr "Bestand bestaat niet: "
+
+
+msgid "You have enabled auto_uid_numbers for <b>%s</b> in your configuration,"
+"                                  but you have not specified the auto_uid_number_mechanism. Please correct"
+"                                  this problem."
+msgstr "<tt>auto_uid_numbers</tt> is geactiveerd (<b>%s</b>, maar niet het mechanisme (auto_uid_number_mechanism). U dient dit alsnog te doen."
+
+
+msgid "You specified the \"auto_uid_number_mechanism\" as \"uidpool\""
+"                            in your configuration for server <b>%s</b>, but you did not specify the"
+"                            audo_uid_number_uid_pool_dn. Please specify it before proceeding."
+msgstr "Het mechanisme <tt>auto_uid_number_mechanism</tt> is als <tt>uidpool</tt> voor server <b>%s</b> vastgelegd, maar niet de <tt>auto_uid_number_uid_pool_dn</tt>. U dient dit alsnog te doen."
+
+
+msgid "It appears that the uidPool you specified in your configuration (\"%s\")"
+"                              does not exist."
+msgstr "De <tt>uidPool</tt> die gespecificeerd is in de configuratie bestaat niet."
+
+
+msgid "You specified the \"auto_uid_number_mechanism\" as \"search\" in your"
+"                              configuration for server <b>%s</b>, but you did not specify the"
+"                              \"auto_uid_number_search_base\". Please specify it before proceeding."
+msgstr "De <tt>auto_uid_number_mechanism</tt> is als <tt>search</tt> in de configuratie voor de server <b>%s</b> bepaald, maar de waarde <tt>auto_uid_number_search_base</tt> niet. U dient dit alsnog te doen."
+
+
+msgid "You specified an invalid value for auto_uid_number_mechanism (\"%s\")"
+"                                   in your configration. Only \"uidpool\" and \"search\" are valid."
+"                                   Please correct this problem."
+msgstr "Ongeldige waarde voor <tt>auto_uid_number_mechanism</tt>(%s). Alleen <tt>uidpool</tt> und <tt>search</tt> zijn geldig. Gaarne de fout herstellen "
+
+
+msgid "Error: You have an error in your config file. The only three allowed values"
+"                                    for auth_type in the $servers section are 'session', 'cookie', and 'config'. You entered '%s',"
+"                                    which is not allowed. "
+msgstr "Fout: Er zit een fout inde configuratiefile (config.php). De enige twee waarden voor 'auth_type' in de $servers sectie zijn: <b>'config'</b> of <b>'form'</b>. U heeft er nu <b>%s</b> in staan en dat kan niet."
+
+
+msgid "Your PHP install does not support TLS."
+msgstr "Uw installatie ondersteunt geen TLS."
+
+
+msgid "Could not start TLS. Please check your LDAP server configuration."
+msgstr "Kan TLS niet starten.<br/>Controleer de LDAP-Server-configuratie."
+
+
+msgid "LDAP said: %s"
+msgstr "<b>LDAP zegt</b>: %s<br/><br/>"
+
+
+msgid "Error"
+msgstr "Fout"
+
+
+msgid "browse"
+msgstr "navigeer"
+
+
+msgid "Delete Photo"
+msgstr "Foto verwijderen"
+
+
+msgid "Your system crypt library does not support blowfish encryption."
+msgstr "Uw PHP-Versie ondersteunt geen Blowfish versleuteling."
+
+
+msgid "Your PHP install does not have the mhash() function. Cannot do SHA hashes."
+msgstr "Uw PHP-Versie ondersteunt de functie mhash() niet, dus de SHA-hash is niet mogelijk."
+
+
+msgid "jpegPhoto contains errors<br />"
+msgstr "Foto (jpg) bevat fouten"
+
+
+msgid "Error number: %s (%s)"
+msgstr "<b>Foutnummer:</b> %s<small>(%s)</small><br/><br/>"
+
+
+msgid "Description: %s <br /><br />"
+msgstr "<b>Omschrijving:</b> %s<br/><br/>"
+
+
+msgid "Error number: %s<br /><br />"
+msgstr "<b>Foutnummer:</b>%s<br/><br/>"
+
+
+msgid "Description: (no description available)<br />"
+msgstr "<b>Omschrijving:</b> (geen omschrijving beschikbaar)<br/>"
+
+
+msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
+msgstr "Is het een phpLDAPadmin fout? Als dat zo is, dan gaarne een <a href='%s'>bugreport</a> invullen"
+
+
+msgid "Unrecognized error number: "
+msgstr "Onbekend foutnummer:"
+
+
+msgid "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
+"             <b>You found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>"
+"             <td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
+"             </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	<tr><td colspan='2'><center><a target='new' href='%s'>Please check and see if this bug has been reported here</a>.</center></td></tr>"
+"	<tr><td colspan='2'><center><a target='new' href='%s'>If it hasnt been reported, you may report this bug by clicking here</a>.</center></td></tr>"
+"	</table></center><br />"
+msgstr "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' /><b>Een niet fatale fout in phpLDAPadmin gevonden!</b></td></tr><tr><td>Fout:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Bestand:</td><td><b>%s</b>Regel:<b>%s</b>, aangeroepen door <b>%s</b></td></tr><tr><td>Versie:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b></td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr><tr><td colspan='2'><center>Graag een <a target='new' href='%s'>bugreport</a> invullen.</center></td></tr></table></center><br />"
+
+
+msgid "Congratulations! You found a bug in phpLDAPadmin.<br /><br />"
+"	     <table class='bug'>"
+"	     <tr><td>Error:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Level:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>File:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Line:</td><td><b>%s</b></td></tr>"
+"		 <tr><td>Caller:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PLA Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	     </table>"
+"	     <br />"
+"	     Please report this bug by clicking below!"
+msgstr "<center><table class='notice'>"
+"			<tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' /><b>Gefeliciteerd! Een fout in phpLDAPadmin gevonden!</b></td></tr>"
+"			<tr><td>Fout:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Bestand:</td><td><b>%s</b>, aangeroepen door <b>%s</b></td></tr>"
+"			<tr><td>Versie:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b></td></tr>"
+"			<tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"			<tr><td colspan='2'><center>Graag een bugreport invullen.</center></td></tr>"
+"			</table></center><br />"
+
+
+msgid "Login..."
+msgstr "Login..."
+
+
+msgid "Import LDIF File"
+msgstr "Import file from LDIF"
+
+
+msgid "Select an LDIF file:"
+msgstr "Selecteer een LDIF file:"
+
+
+msgid "Adding..."
+msgstr "Toevoegen..."
+
+
+msgid "Deleting..."
+msgstr "Verwijderen..."
+
+
+msgid "Renaming..."
+msgstr "Hernoemen..."
+
+
+msgid "Modifying..."
+msgstr "Veranderen..."
+
+
+msgid "Failed"
+msgstr "mislukt"
+
+
+msgid "LDIF Parse Error"
+msgstr "LDIF inleesfout"
+
+
+msgid "Could not add object:"
+msgstr "Kan object niet toevoegen:"
+
+
+msgid "Could not rename object:"
+msgstr "Kan object niet hernoemen"
+
+
+msgid "Could not delete object:"
+msgstr "Kan object niet verwijderen"
+
+
+msgid "Could not modify object:"
+msgstr "Kan object niet wijzigen"
+
+
+msgid "Line Number:"
+msgstr "regelnummer: "
+
+
+msgid "Line:"
+msgstr "regel: "
+
+
+msgid "Credits"
+msgstr "Credits"
+
+
+msgid "ChangeLog"
+msgstr "Changelog"
+
+
+msgid "Documentation"
+msgstr "Documentatie"
+
+

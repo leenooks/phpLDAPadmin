@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE template SYSTEM "template.dtd">
 <template>
-<title>courier_mail_alias</title>
+<title>Courier Mail Alias</title>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
 <icon>images/mail_alias.png</icon>
 <description>New Courier Mail Alias</description>
@@ -17,17 +17,17 @@
 
 <attributes>
 <attribute id="cn">
-	<display>t_common_name</display>
+	<display>Common Name</display>
 	<order>1</order>
 	<page>1</page>
 </attribute>
 <attribute id="sn">
-	<display>t_last_name</display>
+	<display>Last name</display>
 	<order>2</order>
 	<page>1</page>
 </attribute>
 <attribute id="mail">
-	<display>t_email</display>
+	<display>Email</display>
 	<order>3</order>
 	<page>1</page>
 </attribute>

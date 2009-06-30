@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/session_functions.php,v 1.14.2.2 2005/10/17 10:03:39 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/session_functions.php,v 1.16.2.1 2005/12/31 03:06:15 wurley Exp $
 
 /**
  * A collection of functions to handle sessions throughout phpLDAPadmin.
@@ -25,7 +25,7 @@ define('pla_session_id_ses_max', 36);
  */
 function pla_session_get_id() {
 	if (DEBUG_ENABLED)
-		debug_log('pla_session_get_id(): Entered with ()',2);
+		debug_log('pla_session_get_id(): Entered with ()',1);
 
 	$id_md5 = md5(rand(1,1000000));
 	$ip_md5 = md5($_SERVER['REMOTE_ADDR']);
@@ -50,7 +50,7 @@ function pla_session_get_id() {
  */
 function pla_session_verify_id() {
 	if (DEBUG_ENABLED)
-		debug_log('pla_session_verify_id(): Entered with ()',2);
+		debug_log('pla_session_verify_id(): Entered with ()',1);
 
 	$check_id = session_id();
 	$ip_md5 = md5($_SERVER['REMOTE_ADDR']);
@@ -76,7 +76,7 @@ function pla_session_verify_id() {
  */
 function pla_session_start() {
 	if (DEBUG_ENABLED)
-		debug_log('pla_session_start(): Entered with ()',2);
+		debug_log('pla_session_start(): Entered with ()',1);
 
     // If session.auto_start is on in the server's PHP configuration (php.ini), then
     // we will have problems loading our schema cache since the session will have started

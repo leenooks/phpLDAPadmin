@@ -16,7 +16,7 @@
 
 <attributes>
 <attribute id="cn">
-	<display>t_group</display>
+	<display>Group</display>
 	<order>1</order>
 	<page>1</page>
 </attribute>
@@ -26,8 +26,8 @@
 	<page>1</page>
 </attribute>
 <attribute id="gidNumber">
-	<display>t_gid_number</display>
-	<hint>t_auto_det</hint>
+	<display>GID Number</display>
+	<hint>Automatically determined</hint>
 	<order>3</order>
 	<page>1</page>
 	<presubmit>=php.GetNextNumber(/,gid)</presubmit>
@@ -57,7 +57,7 @@
 </attribute>
 <attribute id="memberUid">
 	<array>10</array>
-	<display>users</display>
+	<display>Users</display>
 	<helper>
 		<location>side</location>
 <!--		<value>=php.DrawChooserLink(memberUid,0)</value> -->

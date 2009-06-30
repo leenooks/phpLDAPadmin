@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr_form.php,v 1.12.2.1 2005/10/16 20:19:16 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr_form.php,v 1.13.2.2 2005/12/09 14:27:32 wurley Exp $
 
 /**
  * Displays a form for adding an attribute/value to an LDAP entry.
@@ -17,9 +17,9 @@
 require './common.php';
 
 if( $ldapserver->isReadOnly() )
-	pla_error( $lang['no_updates_in_read_only_mode'] );
+	pla_error( _('You cannot perform updates while server is in read-only mode') );
 if( ! $ldapserver->haveAuthInfo())
-	pla_error( $lang['not_enough_login_info'] );
+	pla_error( _('Not enough information to login to server. Please check your configuration.') );
 
 $dn = $_GET['dn'];
 $encoded_dn = rawurlencode( $dn );
@@ -31,12 +31,12 @@ include './header.php'; ?>
 
 <body>
 
-<h3 class="title"><?php echo sprintf( $lang['add_new_attribute'], htmlspecialchars( $rdn ) ); ?></b></h3>
-<h3 class="subtitle"><?php echo $lang['server']; ?>: <b><?php echo $ldapserver->name; ?></b> &nbsp;&nbsp;&nbsp; <?php echo $lang['distinguished_name']; ?>: <b><?php echo htmlspecialchars( ( $dn ) ); ?></b></h3>
+<h3 class="title"><?php echo sprintf( _('Add new attribute'), htmlspecialchars( $rdn ) ); ?></b></h3>
+<h3 class="subtitle"><?php echo _('Server'); ?>: <b><?php echo $ldapserver->name; ?></b> &nbsp;&nbsp;&nbsp; <?php echo _('Distinguished Name'); ?>: <b><?php echo htmlspecialchars( ( $dn ) ); ?></b></h3>
 
-<?php $attrs = get_object_attrs( $ldapserver, $dn );
+<?php $attrs = $ldapserver->getDNAttrs($dn);
 
-$oclasses = get_object_attr( $ldapserver, $dn, 'objectClass' );
+$oclasses = $ldapserver->getDNAttr($dn,'objectClass');
 if( ! is_array( $oclasses ) )
 	$oclasses = array( $oclasses );
 
@@ -59,7 +59,7 @@ sort( $avail_attrs );
 $avail_binary_attrs = array();
 foreach( $avail_attrs as $i => $attr ) {
 
-	if( is_attr_binary( $ldapserver, $attr ) ) {
+	if ($ldapserver->isAttrBinary($attr)) {
 		$avail_binary_attrs[] = $attr;
 		unset( $avail_attrs[ $i ] );
 	}
@@ -70,7 +70,7 @@ foreach( $avail_attrs as $i => $attr ) {
 
 <center>
 
-<?php echo $lang['add_new_attribute'];
+<?php echo _('Add new attribute');
 
 if( is_array( $avail_attrs ) && count( $avail_attrs ) > 0 ) { ?>
 
@@ -104,20 +104,20 @@ if( is_array( $avail_attrs ) && count( $avail_attrs ) > 0 ) { ?>
 	</select>
 
 	<input type="text" name="val" size="20" />
-	<input type="submit" name="submit" value="<?php echo $lang['add']; ?>" class="update_dn" />
+	<input type="submit" name="submit" value="<?php echo _('Add'); ?>" class="update_dn" />
 	</form>
 
 <?php } else { ?>
 
 	<br />
 	<br />
-	<small>(<?php echo $lang['no_new_attrs_available']; ?>)</small>
+	<small>(<?php echo _('no new attributes available for this entry'); ?>)</small>
 	<br />
 	<br />
 
 <?php } ?>
 
-<?php echo $lang['add_new_binary_attr'];
+<?php echo _('Add new binary attribute');
 if( count( $avail_binary_attrs ) > 0 ) { ?>
 
 	<!-- Form to add a new BINARY attribute to this entry -->
@@ -152,13 +152,13 @@ if( count( $avail_binary_attrs ) > 0 ) { ?>
 	</select>
 
 	<input type="file" name="val" size="20" />
-	<input type="submit" name="submit" value="<?php echo $lang['add']; ?>" class="update_dn" />
+	<input type="submit" name="submit" value="<?php echo _('Add'); ?>" class="update_dn" />
 
 	<?php if( ! ini_get( 'file_uploads' ) )
-		echo "<br><small><b>" . $lang['warning_file_uploads_disabled'] . "</b></small><br>";
+		echo "<br><small><b>" . _('Your PHP configuration has disabled file uploads. Please check php.ini before proceeding.') . "</b></small><br>";
 
 	else
-		echo "<br><small><b>" . sprintf( $lang['max_file_size'], ini_get( 'upload_max_filesize' ) ) . "</b></small><br>";
+		echo "<br><small><b>" . sprintf( _('Maximum file size: %s'), ini_get( 'upload_max_filesize' ) ) . "</b></small><br>";
 	?>
 
 	</form>
@@ -167,7 +167,7 @@ if( count( $avail_binary_attrs ) > 0 ) { ?>
 
 	<br />
 	<br />
-	<small>(<?php echo $lang['no_new_binary_attrs_available']; ?>)</small>
+	<small>(<?php echo _('no new binary attributes available for this entry'); ?>)</small>
 
 <?php } ?>
 

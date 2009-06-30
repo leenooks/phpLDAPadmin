@@ -1,0 +1,1576 @@
+# : $
+
+
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
+"Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
+"Last-Translator: Sergey Saukh\n"
+"POT-Creation-Date: 2005-11-29 17:45+0100\n"
+"PO-Revision-Date: 2005-11-29 18:22+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+
+msgid "Simple Search Form"
+msgstr "Простая форма поиска"
+
+
+msgid "Advanced Search Form"
+msgstr "Расширенная форма поиска"
+
+
+msgid "Server"
+msgstr "Сервер"
+
+
+msgid "Search for entries whose"
+msgstr "Искать записи, которые:"
+
+
+msgid "Base DN"
+msgstr "Базовый DN"
+
+
+msgid "Search Scope"
+msgstr "Область поиска"
+
+
+msgid "Show Attributtes"
+msgstr "Показать атрибуты"
+
+
+msgid "Search"
+msgstr "Поиск"
+
+
+msgid "Select a predefined search"
+msgstr "Выбрать предопределенный поиск"
+
+
+msgid "Predefined Searches"
+msgstr "Предопределенные поиски"
+
+
+msgid "No queries have been defined in config.php."
+msgstr "Не определено ни одного запроса в config.php."
+
+
+msgid "Request feature"
+msgstr "Запросить фичу"
+
+
+msgid "Report a bug"
+msgstr "Сообщить об ошибке"
+
+
+msgid "schema"
+msgstr "схема"
+
+
+msgid "search"
+msgstr "поиск"
+
+
+msgid "create"
+msgstr "создать"
+
+
+msgid "info"
+msgstr "инфо"
+
+
+msgid "import"
+msgstr "импорт"
+
+
+msgid "refresh"
+msgstr "обновить"
+
+
+msgid "logout"
+msgstr "выйти"
+
+
+msgid "Create new entry here"
+msgstr "Создать новый"
+
+
+msgid "View schema for"
+msgstr "Просмотреть схему для"
+
+
+msgid "Refresh all expanded containers for"
+msgstr "Обновить все открытые контейнеры для"
+
+
+msgid "Create a new entry on"
+msgstr "Создать новую запись на"
+
+
+msgid "new"
+msgstr "новая"
+
+
+msgid "View server-supplied information"
+msgstr "Просмотреть информацию с сервера"
+
+
+msgid "Import entries from an LDIF file"
+msgstr "Импортировать записи из LDIF-файла"
+
+
+msgid "Logout of this server"
+msgstr "Выйти из этого сервера"
+
+
+msgid "Logged in as: "
+msgstr "Вошли как: "
+
+
+msgid "read only"
+msgstr "только для чтения"
+
+
+msgid "This attribute has been flagged as read only by the phpLDAPadmin administrator"
+msgstr "Этот атрибут установлен администратором только для чтения"
+
+
+msgid "Could not determine the root of your LDAP tree."
+msgstr "Не могу найти корень вашего LDAP дерева."
+
+
+msgid "It appears that the LDAP server has been configured to not reveal its root."
+msgstr "Похоже что ваш LDAP сервер сконфигурирован не показывать свой корень."
+
+
+msgid "Please specify it in config.php"
+msgstr "Укажите это в config.php"
+
+
+msgid "Create a new entry in"
+msgstr "Создать новую запись в"
+
+
+msgid "Login..."
+msgstr "Вход..."
+
+
+msgid "login"
+msgstr "войти"
+
+
+msgid "Delete this entry"
+msgstr "Удалить эту запись"
+
+
+msgid "You will be prompted to confirm this decision"
+msgstr "Вас попросят подтвердить Ваше решение"
+
+
+msgid "Copy or move this entry"
+msgstr "Скопировать эту запись"
+
+
+msgid "Copy this object to another location, a new DN, or another server"
+msgstr "Скопировать этот объект в другое место, в новый DN или на другой сервер"
+
+
+msgid "Export"
+msgstr "Экспорт"
+
+
+msgid "Save a dump of this object"
+msgstr "Сохранить дамп этого объекта"
+
+
+msgid "Save a dump of this object and all of its children"
+msgstr "Сохранить дамп этого объекта и всех его потомков"
+
+
+msgid "Export subtree"
+msgstr "Экспортировать ветвь"
+
+
+msgid "Create a child entry"
+msgstr "Создать потомка"
+
+
+msgid "Rename Entry"
+msgstr "Переименовать запись"
+
+
+msgid "Rename"
+msgstr "Переименовать"
+
+
+msgid "Add"
+msgstr "Добавить"
+
+
+msgid "View"
+msgstr "Просмотреть"
+
+
+msgid "View 1 child"
+msgstr "Просмотреть 1 потомка"
+
+
+msgid "View %s children"
+msgstr "Просмотреть %s потомков"
+
+
+msgid "Add new attribute"
+msgstr "Добавить новый атрибут"
+
+
+msgid "Add new ObjectClass"
+msgstr "Добавить новый объект"
+
+
+msgid "Hide internal attributes"
+msgstr "Скрыть внутренние атрибуты"
+
+
+msgid "Show internal attributes"
+msgstr "Показать внутренние атрибуты"
+
+
+msgid "Click to view the schema defintion for attribute type '%s'"
+msgstr "Нажмите чтобы просмотреть описание схемы для атрибута '%s'"
+
+
+msgid "none"
+msgstr "нет"
+
+
+msgid "No internal attributes"
+msgstr "Нет внутренних атрибутов"
+
+
+msgid "This entry has no attributes"
+msgstr "Эта запись не имеет атрибутов"
+
+
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+
+msgid "add value"
+msgstr "добавить значение"
+
+
+msgid "Add an additional value to attribute '%s'"
+msgstr "Добавить дополнительное значение для атрибута '%s'"
+
+
+msgid "Refresh"
+msgstr "Обновить"
+
+
+msgid "Refresh this entry"
+msgstr "Обновить эту запись"
+
+
+msgid "Hint: To delete an attribute, empty the text field and click save."
+msgstr "Подсказка: Чтобы удалить атрибут - очистите текстовое поле и нажмите \"сохранить\""
+
+
+msgid "Hint: To view the schema for an attribute, click the attribute name."
+msgstr "Подсказка: Чтобы просмотреть схему атрибута - нажмите на его названии."
+
+
+msgid "Some attributes (%s) were modified and are highlighted below."
+msgstr "Некоторые атрибуты (%s) были модифицированы и теперь подсвечены ниже."
+
+
+msgid "An attribute (%s) was modified and is highlighted below."
+msgstr "Атрибут (%s) был модифицирован и теперь подсвечен ниже."
+
+
+msgid "Viewing entry in read-only mode."
+msgstr "Просмотр записи в режиме \"только для чтения\"."
+
+
+msgid "no new attributes available for this entry"
+msgstr "для этой записи нет доступных новых атрибутов"
+
+
+msgid "no new binary attributes available for this entry"
+msgstr "для этой записи нет доступных новых бинарных атрибутов"
+
+
+msgid "Binary value"
+msgstr "Бинарное значение"
+
+
+msgid "Add new binary attribute"
+msgstr "Добавить новый бинарный атрибут"
+
+
+msgid "Note: '%s' is an alias for '%s'"
+msgstr "Алиас для %s"
+
+
+msgid "download value"
+msgstr "загрузить значение"
+
+
+msgid "delete attribute"
+msgstr "удалить атрибут"
+
+
+msgid "true"
+msgstr "правда"
+
+
+msgid "false"
+msgstr "ложь"
+
+
+msgid "none, remove value"
+msgstr "пусто, удалите значение"
+
+
+msgid "Really delete attribute"
+msgstr "Действительно удалить значение"
+
+
+msgid "Add New Value"
+msgstr "Добавить новое значение"
+
+
+msgid "The server does not fully support the LDAP protocol."
+msgstr "Этот сервер не полностью поддерживает LDAP протокол."
+
+
+msgid "Your version of PHP does not correctly perform the query."
+msgstr "Ваша версия PHP неправильно обработала запрос."
+
+
+msgid "phpLDAPadmin doesn't know how to fetch the schema for your server."
+msgstr "Или phpLDAPadmin не знает как получить схему для вашего сервера."
+
+
+msgid "Jump to an objectClass"
+msgstr "Перейти к объекту"
+
+
+msgid "Jump to an attribute type"
+msgstr "Перейти к типам атрибутов"
+
+
+msgid "Jump to a matching rule"
+msgstr "Перейти к правилам соответствия"
+
+
+msgid "Schema for server"
+msgstr "Схема для сервера"
+
+
+msgid "Required Attributes"
+msgstr "Требуемые атрибуты"
+
+
+msgid "Optional Attributes"
+msgstr "Необязательные атрибуты"
+
+
+msgid "Optional Binary Attributes"
+msgstr "Необязательные бинарные атрибуты"
+
+
+msgid "OID"
+msgstr "OID"
+
+
+msgid "Aliases"
+msgstr "Алиасы"
+
+
+msgid "Description"
+msgstr "Описание"
+
+
+msgid "no description"
+msgstr "нет описания"
+
+
+msgid "Name"
+msgstr "Имя"
+
+
+msgid "Equality"
+msgstr "Равенство"
+
+
+msgid "This objectClass is obsolete."
+msgstr "Этот объект устарел."
+
+
+msgid "Inherits from"
+msgstr "Заимствует из"
+
+
+msgid "Inherited from"
+msgstr "Заимствован из"
+
+
+msgid "Parent to"
+msgstr "Родитель для"
+
+
+msgid "Jump to this objectClass definition"
+msgstr "Перейти к определению этого объекта"
+
+
+msgid "Matching Rule OID"
+msgstr "OID правила соответствия"
+
+
+msgid "Syntax OID"
+msgstr "OID синтаксиса"
+
+
+msgid "not applicable"
+msgstr "неприменимый"
+
+
+msgid "not specified"
+msgstr "не указано"
+
+
+msgid "character"
+msgstr "символ"
+
+
+msgid "characters"
+msgstr "символы"
+
+
+msgid "Used by objectClasses"
+msgstr "Используется объектами"
+
+
+msgid "Used by Attributes"
+msgstr "Использован атрибутами"
+
+
+msgid "Maximum Length"
+msgstr "Максимальная длина"
+
+
+msgid "Syntaxes"
+msgstr "Синтаксисы"
+
+
+msgid "Matching Rules"
+msgstr "Правила соответствия"
+
+
+msgid "Obsolete"
+msgstr "Устаревший"
+
+
+msgid "Ordering"
+msgstr "Сортировка"
+
+
+msgid "Substring Rule"
+msgstr "Правило подстроки"
+
+
+msgid "Single Valued"
+msgstr "Однозначный"
+
+
+msgid "Collective"
+msgstr "Совместный"
+
+
+msgid "User Modification"
+msgstr "Изменение пользователем"
+
+
+msgid "Usage"
+msgstr "Использование"
+
+
+msgid "Could not retrieve schema from"
+msgstr "Не могу получить схему из"
+
+
+msgid "Type"
+msgstr "Тип"
+
+
+msgid "Entry %s deleted successfully."
+msgstr "Запись %s успешно удалена."
+
+
+msgid "You must specify a DN"
+msgstr "Вы должны указать DN"
+
+
+msgid "Could not delete the entry: %s"
+msgstr "Не удалось удалить запись: %s"
+
+
+msgid "No such entry: %s"
+msgstr "Нет такой записи: %s"
+
+
+msgid "Delete %s"
+msgstr "Удалить %s"
+
+
+msgid "Permanently delete all children also?"
+msgstr "Также окончательно удалить всех потомков?"
+
+
+msgid "This entry is the root of a sub-tree containing %s entries."
+msgstr "Эта запись является корнем дерева содержащего %s записей."
+
+
+msgid "view entries"
+msgstr "просмотреть записи"
+
+
+msgid "phpLDAPadmin can recursively delete this entry and all %s of its children. See below for a list of all the entries that this action will delete. Do you want to do this?"
+msgstr "phpLDAPadmin может рекурсивно удалить эту запись и %s его потомков. Ниже список всех записей, которые будут удалены. Вы действительно хотите это сделать?"
+
+
+msgid "Note: this is potentially very dangerous and you do this at your own risk. This operation cannot be undone. Take into consideration aliases, referrals, and other things that may cause problems."
+msgstr "Внимание: это потенциально очень опасно и вы делаете это на свой собственный риск. Эта операция не может быть отменена. Примите во внимание алиасы, ссылки и другие вещи, которые могум вызвать проблемы."
+
+
+msgid "Delete all %s objects"
+msgstr "Удалить все %s объектов"
+
+
+msgid "Recursive delete progress"
+msgstr "Прогресс рекурсивного удаления"
+
+
+msgid "Entry %s and sub-tree deleted successfully."
+msgstr "Запись %s и ее потомки успешно удалены."
+
+
+msgid "Failed to delete entry %s"
+msgstr "Не удалось удалить запись %s"
+
+
+msgid "List of entries to be deleted:"
+msgstr "Список записей на удаление:"
+
+
+msgid "Are you sure you want to permanently delete this object?"
+msgstr "Вы уверены, что хотите окончательно удалить этот объект?"
+
+
+msgid "DN"
+msgstr "DN"
+
+
+msgid "The attribute \"%s\" is flagged as read-only in the phpLDAPadmin configuration."
+msgstr "Этот атрибут \"%s\" установлен \"только для чтения\" в конфигурации phpLDAPadmin."
+
+
+msgid "No attribute name specified."
+msgstr "Не указано имя атрибута."
+
+
+msgid "No DN specified"
+msgstr "Не указан DN"
+
+
+msgid "You left the attribute value blank. Please go back and try again."
+msgstr "Вы оставили значение атрибута пустым. Вернитесь и попробуйте еще раз."
+
+
+msgid "Failed to add the attribute."
+msgstr "Не удалось добавить атрибут."
+
+
+msgid "The file you chose is either empty or does not exist. Please go back and try again."
+msgstr "Файл, который Вы выбрали или не существует или пуст. Пожалуйста вернитесь и попробуйте еще раз."
+
+
+msgid "Security error: The file being uploaded may be malicious."
+msgstr "Ошибка безопасности: Файл который Вы загрузили может иметь вредоносный код."
+
+
+msgid "Your PHP configuration has disabled file uploads. Please check php.ini before proceeding."
+msgstr "Ваша конфигурация PHP запрещает загрузку файлов. Проверьте php.ini перед тем как продолжить."
+
+
+msgid "The file you uploaded is too large. Please check php.ini, upload_max_size setting"
+msgstr "Файл, который Вы загрузили слишком велик. Проверьте php.ini, опцию upload_max_size"
+
+
+msgid "The file you selected was only partially uploaded, likley due to a network error."
+msgstr "Файл, который Вы выбрали был загружен только частично, вероятно из-за ошибки в сети."
+
+
+msgid "Maximum file size: %s"
+msgstr "Максимальный размер файла: %s"
+
+
+msgid "Modification successful!"
+msgstr "Изменения успешно произведены!"
+
+
+msgid "Since you changed your password, you must now login again with your new password."
+msgstr "Т.к. Вы изменили свой пароль, Вы должны войти заново, используя свой новый пароль."
+
+
+msgid "New Required Attributes"
+msgstr "Новые требуемые атрибуты"
+
+
+msgid "This action requires you to add"
+msgstr "Это действие требует добавить"
+
+
+msgid "new attributes"
+msgstr "новые атрибуты"
+
+
+msgid "Instructions: In order to add these objectClass(es) to this entry, you must specify"
+msgstr "Инструкция: Чтобы добавить этот объект к этой записи, Вы должны указать"
+
+
+msgid "that this objectClass requires. You can do so in this form."
+msgstr "что требует этот объект. Вы можете это сделать в этой форме."
+
+
+msgid "Add ObjectClass and Attributes"
+msgstr "Добавить объект и атрибуты"
+
+
+msgid "ObjectClasses"
+msgstr "Объекты"
+
+
+msgid "Click to popup a dialog to select an entry (DN) graphically"
+msgstr "Нажмите чтобы вызвать диалог для визуального выбора записи(DN)"
+
+
+msgid "You cannot perform updates while server is in read-only mode"
+msgstr "Вы не можете производить обновления до тех пор, пока сервер находится в режиме \"только для чтения\""
+
+
+msgid "Bad server id"
+msgstr "Неправильный id сервера"
+
+
+msgid "Not enough information to login to server. Please check your configuration."
+msgstr "Недостаточно информации чтобы подключиться к серверу. Проверьте Вашу конфигурацию."
+
+
+msgid "Could not connect to LDAP server."
+msgstr "Не могу подключиться к LDAP-серверу."
+
+
+msgid "Could not connect to \"%s\" on port \"%s\""
+msgstr "Не могу подключиться к \"%s\" на порт \"%s\""
+
+
+msgid "Could not perform ldap_mod_add operation."
+msgstr "Не удалось произвести операцию ldap_mod_add."
+
+
+msgid "Success"
+msgstr "Успешно"
+
+
+msgid "Server: "
+msgstr "Сервер: "
+
+
+msgid "Looking in: "
+msgstr "Ищу в: "
+
+
+msgid "No DN specified in query string!"
+msgstr "Не указан DN в строке запроса!"
+
+
+msgid "Back Up..."
+msgstr "Back Up..."
+
+
+msgid "no entries"
+msgstr "нет записей"
+
+
+msgid "Could not determine base DN"
+msgstr "Не могу выяснить основной DN"
+
+
+msgid "This could happen for several reasons, the most probable of which are:"
+msgstr "Это могло случится по нескольким причинам, наиболее вероятные это:"
+
+
+msgid "Yes"
+msgstr "Да"
+
+
+msgid "No"
+msgstr "Нет"
+
+
+msgid "Go"
+msgstr "Перейти"
+
+
+msgid "Delete"
+msgstr "Удалить"
+
+
+msgid "Back"
+msgstr "Назад"
+
+
+msgid "object"
+msgstr "объект"
+
+
+msgid "Delete all"
+msgstr "Удалить все"
+
+
+msgid "hint"
+msgstr "подсказка"
+
+
+msgid "bug"
+msgstr "ошибка"
+
+
+msgid "warning"
+msgstr "предупреждение"
+
+
+msgid "light"
+msgstr "свет"
+
+
+msgid "Proceed &gt;&gt;"
+msgstr "Далее &gt;&gt;"
+
+
+msgid "Add new"
+msgstr "Добавить новый"
+
+
+msgid "value to"
+msgstr "значение для"
+
+
+msgid "Distinguished Name"
+msgstr "Отличительное имя"
+
+
+msgid "Current list of"
+msgstr "Текущий список"
+
+
+msgid "values for attribute"
+msgstr "значений атрибутов"
+
+
+msgid "Note: You will get an \"inappropriate matching\" error if you have not setup an EQUALITY rule on your LDAP server for this attribute."
+msgstr "Внимание: Вы получите ошибку \"неподходящее соответствие\", если Вы выставили правило \"равенство\"(EQUALITY) на Вашем LDAP-сервере для этого атрибута."
+
+
+msgid "Enter the value you would like to add:"
+msgstr "Введите значение, которое Вы хотите добавить:"
+
+
+msgid "Note: You may be required to enter new attributes that these objectClass(es) require"
+msgstr "Внимание: Вам может потребоваться ввести новые атрибуты, которые требует этот объект"
+
+
+msgid "Syntax"
+msgstr "Синтакс"
+
+
+msgid "You left the destination DN blank."
+msgstr "Вы не заполнили конечный DN."
+
+
+msgid "The destination entry (%s) already exists."
+msgstr "Конечная запись (%s) уже сужествует."
+
+
+msgid "The destination container (%s) does not exist."
+msgstr "Конечный контейнер (%s) не существует."
+
+
+msgid "The source and destination DN are the same."
+msgstr "Исходный и конечный DN одинаковы."
+
+
+msgid "Copying "
+msgstr "Сопирую "
+
+
+msgid "Recursive copy progress"
+msgstr "Прогресс рекурсивного копирования"
+
+
+msgid "Building snapshot of tree to copy... "
+msgstr "Создаю копию состояния дерева для копирования... "
+
+
+msgid "Copy successful! Would you like to "
+msgstr "Копирование прошло успешно! Вы хотите "
+
+
+msgid "view the new entry"
+msgstr "просмотреть новую запись"
+
+
+msgid "Failed to copy DN: "
+msgstr "Не удалось скопировать DN: "
+
+
+msgid "Template"
+msgstr "Шаблон"
+
+
+msgid "using template"
+msgstr "использую шаблон"
+
+
+msgid "Go to %s"
+msgstr "Перейти к %s"
+
+
+msgid "Copy "
+msgstr "Копировать "
+
+
+msgid "to a new object"
+msgstr "в новый объект"
+
+
+msgid "Destination DN"
+msgstr "Конечный DN"
+
+
+msgid "The full DN of the new entry to be created when copying the source entry"
+msgstr "Полный DN новой записи будет создан при копировании исходной"
+
+
+msgid "Destination Server"
+msgstr "Конечный сервер"
+
+
+msgid "Hint: Copying between different servers only works if there are no schema violations"
+msgstr "Подсказка: Копирование между различными серверами сработает, если между ними нет противоречий в схемах"
+
+
+msgid "Recursively copy all children of this object as well."
+msgstr "Рекурсивно скопировать и всех потомков этого объекта."
+
+
+msgid "Recursive copy"
+msgstr "Рекурсивное копирование"
+
+
+msgid "Filter"
+msgstr "Фильтр"
+
+
+msgid "When performing a recursive copy, only copy those entries which match this filter"
+msgstr "Если производите рекурсивное копирование - копируйте только те записи, которые соответствуют этому фильтру"
+
+
+msgid "You left the value blank for required attribute (%s)."
+msgstr "Вы оставили пустым значение для требуемого атрибута (%s)."
+
+
+msgid "Redirecting..."
+msgstr "Переназначаю..."
+
+
+msgid "here"
+msgstr "сюда"
+
+
+msgid "Could not add the object to the LDAP server."
+msgstr "Не удалось добавить объект на LDAP-сервер."
+
+
+msgid "Create Object"
+msgstr "Создать объект"
+
+
+msgid "Choose a template"
+msgstr "Выберите шаблон"
+
+
+msgid "Select a template for the creation process"
+msgstr "Выберите шаблон для создания объекта"
+
+
+msgid "You left the RDN field blank."
+msgstr "Вы оставили RDN поле пустым."
+
+
+msgid "The container you specified (%s) does not exist. Please try again."
+msgstr "Контейнер, который Вы указали (%s) не существует. Попробуйте еще раз."
+
+
+msgid "You did not select any ObjectClasses for this object. Please go back and do so."
+msgstr "Вы не выбрали ни одного класса для этого объекта. Вернитесь и сделайте это."
+
+
+msgid "Hint: You must choose exactly one structural objectClass (shown in bold above)"
+msgstr "Подсказка: Вы должны выбрать как минимум один структурный класс"
+
+
+msgid "Step 1 of 2: Name and ObjectClass(es)"
+msgstr "Шаг 1 из 2: Имя и класс(ы) объекта"
+
+
+msgid "Step 2 of 2: Specify attributes and values"
+msgstr "Шаг 2 из 2: Определение атрибутов и значений"
+
+
+msgid "Relative Distinguished Name"
+msgstr "Относительное оттличительное имя"
+
+
+msgid "RDN"
+msgstr "RDN"
+
+
+msgid "(example: cn=MyNewPerson)"
+msgstr "(пример: cn=MyNewPerson)"
+
+
+msgid "Container"
+msgstr "Контейнер"
+
+
+msgid "You have not logged into the selected server yet, so you cannot perform searches on it."
+msgstr "Вы еще на вошли на выбранный сервер, поэтому Вы не можете производить на нем поиск."
+
+
+msgid "Click here to go to the login form"
+msgstr "Нажмите здесь чтобы перейти на форму входа на сервер"
+
+
+msgid "Unrecognized criteria option: "
+msgstr "Нераспознанный критерий поиска: "
+
+
+msgid "If you want to add your own criteria to the list. Be sure to edit search.php to handle them. Quitting."
+msgstr "Если Вы хотите добавить свои критерии поиска в список, отредактируйте search.php, чтобы они поддерживались. Выхожу."
+
+
+msgid "Entries found: "
+msgstr "Найдено записей: "
+
+
+msgid "Filter performed: "
+msgstr "Применен фильтр: "
+
+
+msgid "Search performed by phpLDAPadmin in"
+msgstr "phpLDAPadmin произвел поиск за"
+
+
+msgid "seconds"
+msgstr "секунд"
+
+
+msgid "Sub (entire subtree)"
+msgstr "Все (все поддерево)"
+
+
+msgid "One (one level beneath base)"
+msgstr "Один (один уровень под базовым)"
+
+
+msgid "Base (base dn only)"
+msgstr "База (только базовый dn)"
+
+
+msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))"
+msgstr "Стандартный фильтр поиска LDAP. Пример: (&(sn=Smith)(givenname=David))"
+
+
+msgid "Search Filter"
+msgstr "Фильтр поиска"
+
+
+msgid "A list of attributes to display in the results (comma-separated)"
+msgstr "Список атрибутов, которые отображать в результатах (разделенные запятыми)"
+
+
+msgid "equals"
+msgstr "равны"
+
+
+msgid "starts with"
+msgstr "начинаются с"
+
+
+msgid "contains"
+msgstr "содержат"
+
+
+msgid "ends with"
+msgstr "заканчиваются на"
+
+
+msgid "sounds like"
+msgstr "похожи на"
+
+
+msgid "Could not retrieve LDAP information from the server. This may be due to a <a href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version of PHP or perhaps your LDAP server has access control specified that prevents LDAP clients from accessing the RootDSE."
+msgstr "Не могу получить LDAP-информацию с сервера"
+
+
+msgid "Server info for: "
+msgstr "Информация о сервере: "
+
+
+msgid "Server reports the following information about itself"
+msgstr "Сервер сообщил о себе следующую информацию"
+
+
+msgid "This server has nothing to report."
+msgstr "Этому серверу нечего о себе сообщить."
+
+
+msgid "update_array is malformed. This might be a phpLDAPadmin bug. Please report it."
+msgstr "неправильно сформирован update_array. Возможно это ошибка phpLDAPadmin. Сообщите о ней."
+
+
+msgid "Could not perform ldap_modify operation."
+msgstr "Не удалось произвести операцию ldap_modify."
+
+
+msgid "Do you want to make these changes?"
+msgstr "Вы действительно хотите произвести эти изменения?"
+
+
+msgid "Attribute"
+msgstr "Атрибут"
+
+
+msgid "Old Value"
+msgstr "Старое значение"
+
+
+msgid "New Value"
+msgstr "Новое значение"
+
+
+msgid "[attribute deleted]"
+msgstr "[атрибут удален]"
+
+
+msgid "Commit"
+msgstr "Подтвердить"
+
+
+msgid "Cancel"
+msgstr "Отменить"
+
+
+msgid "You made no changes"
+msgstr "Вы не сделали никаких изменений"
+
+
+msgid "Go back"
+msgstr "Вернуться"
+
+
+msgid "Use the menu to the left to navigate"
+msgstr "Используйте меню слева для навигации"
+
+
+msgid "Credits"
+msgstr "Создатели"
+
+
+msgid "ChangeLog"
+msgstr "Список изменений"
+
+
+msgid "Donate"
+msgstr "Спонсировать"
+
+
+msgid "Unsafe file name: "
+msgstr "Небезопастное имя файла: "
+
+
+msgid "No such file: "
+msgstr "Нет такого файла: "
+
+
+msgid "You have enabled auto_uid_numbers for <b>%s</b> in your configuration,"
+"                                  but you have not specified the auto_uid_number_mechanism. Please correct"
+"                                  this problem."
+msgstr "Вы разрешили auto_uid_numbers для <b>%s</b> в Вашей конфигурации,"
+"                                  но Вы не указали auto_uid_number_mechanism. Пожалуйста исправьте эту проблему."
+
+
+msgid "You specified the \"auto_uid_number_mechanism\" as \"uidpool\""
+"                            in your configuration for server <b>%s</b>, but you did not specify the"
+"                            audo_uid_number_uid_pool_dn. Please specify it before proceeding."
+msgstr "Вы указали \"auto_uid_number_mechanism\" как \"uidpool\""
+"                            в Вашей конфигурации для сервера <b>%s</b>, но не указали"
+"                            audo_uid_number_uid_pool_dn. Исправьте это перед тем как продолжить."
+
+
+msgid "It appears that the uidPool you specified in your configuration (\"%s\")"
+"                              does not exist."
+msgstr "Похоже что uidPool, который Вы указали в Вашей конфигурации (\"%s\")"
+"                              не существует."
+
+
+msgid "You specified the \"auto_uid_number_mechanism\" as \"search\" in your"
+"                              configuration for server <b>%s</b>, but you did not specify the"
+"                              \"auto_uid_number_search_base\". Please specify it before proceeding."
+msgstr "Вы указали \"auto_uid_number_mechanism\" как \"search\" в Вашей кофигурации"
+"                              для сервера <b>%s</b>, но не указали"
+"                              \"auto_uid_number_search_base\". Исправьте это перед тем как продолжить."
+
+
+msgid "Unable to bind to <b>%s</b> with your with auto_uid credentials. Please check your configuration file."
+msgstr "Не могу привязаться к <b>%s</b> с Вашими auto_uid данными. Проверьте Ваш файл конфигурации."
+
+
+msgid "Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base for server %s"
+msgstr "В Вашей конфигурации phpLDAPadmin указано неверное значение для auto_uid_search_base для сервера %s"
+
+
+msgid "You specified an invalid value for auto_uid_number_mechanism (\"%s\")"
+"                                   in your configration. Only \"uidpool\" and \"search\" are valid."
+"                                   Please correct this problem."
+msgstr "Вы указали неверное значение для auto_uid_number_mechanism (\"%s\")"
+"                                   в Вашей конфигурации. Возможны только \"uidpool\" и \"search\"."
+"                                   Пожалуйста исправьте эту проблему."
+
+
+msgid "Error: You have an error in your config file. The only three allowed values"
+"                                    for auth_type in the $servers section are 'session', 'cookie', and 'config'. You entered '%s',"
+"                                    which is not allowed. "
+msgstr "Ошибка: В Вашем конфигурационном файле ошибка. Единственные три допустимых значения"
+"                                    для auth_type в секции $servers - 'session', 'cookie', и 'config'. Вы ввели '%s',"
+"                                    что недопустимо. "
+
+
+msgid "Your PHP install does not support TLS."
+msgstr "Ваша установленная версия PHP не поддерживает TLS."
+
+
+msgid "Could not start TLS. Please check your LDAP server configuration."
+msgstr "Не могу запустить TLS. Проверьте конфигурацию Вашего LDAP-сервера."
+
+
+msgid "Could not bind anonymously to server."
+msgstr "Не могу анонимно привязаться к серверу."
+
+
+msgid "Could not bind to the LDAP server."
+msgstr "Не удалось привязаться к LDAP-серверу."
+
+
+msgid "Anonymous Bind"
+msgstr "Анонимная привязка"
+
+
+msgid "Bad username or password. Please try again."
+msgstr "Неверное имя или пароль. Попробуйте еще раз."
+
+
+msgid "Successfully logged into server <b>%s</b>"
+msgstr "Успешно вошли на сервер <b>%s</b>"
+
+
+msgid "Could not set cookie."
+msgstr "Не удалось установить cookie."
+
+
+msgid "LDAP said: %s"
+msgstr "LDAP ответил: %s"
+
+
+msgid "Error"
+msgstr "Ошибка"
+
+
+msgid "browse"
+msgstr "просмотр"
+
+
+msgid "Delete Photo"
+msgstr "Удалить фотографию"
+
+
+msgid "Your system crypt library does not support blowfish encryption."
+msgstr "Ваша установленная версия PHP не поддерживает шифрование blowfish."
+
+
+msgid "Your system crypt library does not support md5crypt encryption."
+msgstr "Ваша установленная версия PHP не поддерживает шифрование md5crypt."
+
+
+msgid "Your PHP install does not have the mhash() function. Cannot do SHA hashes."
+msgstr "Ваша установленная версия PHP не имеет функцию mhash(). Не могу создать хэши SHA."
+
+
+msgid "jpegPhoto contains errors<br />"
+msgstr "jpegPhoto содержит ошибки<br />"
+
+
+msgid "Error number: %s (%s)"
+msgstr "Номер ошибки: %s (%s)"
+
+
+msgid "Description: %s <br /><br />"
+msgstr "Описание: %s <br /><br />"
+
+
+msgid "Error number: %s<br /><br />"
+msgstr "Номер ошибки: %s<br /><br />"
+
+
+msgid "Description: (no description available)<br />"
+msgstr "Описание: (нет описания)<br />"
+
+
+msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
+msgstr "Если это ошибка phpLDAPadmin - пожалуйста, <a href='%s'>сообщите о ней</a>."
+
+
+msgid "Unrecognized error number: "
+msgstr "Нераспознанная ошибка: "
+
+
+msgid "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
+"             <b>You found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>"
+"             <td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
+"             </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	<tr><td colspan='2'><center><a target='new' href='%s'>Please check and see if this bug has been reported here</a>.</center></td></tr>"
+"	<tr><td colspan='2'><center><a target='new' href='%s'>If it hasnt been reported, you may report this bug by clicking here</a>.</center></td></tr>"
+"	</table></center><br />"
+msgstr "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
+"             <b>Вы нашли нефатальную ошибку phpLDAPadmin!</b></td></tr><tr><td>Ошибка:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Файл:</td>"
+"             <td><b>%s</b> строка <b>%s</b>, вызвано <b>%s</b></td></tr><tr><td>Версии:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
+"             </td></tr><tr><td>Web сервер:</td><td><b>%s</b></td></tr><tr><td colspan='2'><center><a target='new' href='%s'>"
+"             Сообщите об этой ошибке нажав здесь</a>.</center></td></tr></table></center><br />"
+
+
+msgid "Congratulations! You found a bug in phpLDAPadmin.<br /><br />"
+"	     <table class='bug'>"
+"	     <tr><td>Error:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Level:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>File:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Line:</td><td><b>%s</b></td></tr>"
+"		 <tr><td>Caller:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PLA Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	     </table>"
+"	     <br />"
+"	     Please report this bug by clicking below!"
+msgstr "Поздравляем! Вы нашли ошибку в phpLDAPadmin.<br /><br />"
+"	     <table class='bug'>"
+"	     <tr><td>Ошибка:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Уровень:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Файл:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Строка:</td><td><b>%s</b></td></tr>"
+"		 <tr><td>Вызвано:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PLA Версия:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP Версия:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Web сервер:</td><td><b>%s</b></td></tr>"
+"	     </table>"
+"	     <br />"
+"	     Сообщите об этой ошибке нажав ниже!"
+
+
+msgid "Import LDIF File"
+msgstr "Иморт LDIF файла"
+
+
+msgid "Select an LDIF file:"
+msgstr "Выберите LDIF файл:"
+
+
+msgid "Don't stop on errors"
+msgstr "Не останавливаться на ошибках"
+
+
+msgid "Adding..."
+msgstr "Добавляю..."
+
+
+msgid "Deleting..."
+msgstr "Удаляю..."
+
+
+msgid "Renaming..."
+msgstr "Переименовываю..."
+
+
+msgid "Modifying..."
+msgstr "Изменяю..."
+
+
+msgid "No version found. Assuming 1."
+msgstr "Не найдено номера версии. Предполагаю 1."
+
+
+msgid "A valid dn line is required."
+msgstr "Требуется правильная строка с dn."
+
+
+msgid "Missing uploaded file."
+msgstr "Отсутствует загруженный файл."
+
+
+msgid "Uploaded LDIF file is empty."
+msgstr "Загруженный LDIF файл пуст."
+
+
+msgid "empty"
+msgstr "пуст"
+
+
+msgid "File"
+msgstr "Файл"
+
+
+msgid "%s bytes"
+msgstr "%s байт"
+
+
+msgid "Failed"
+msgstr "Не удалось"
+
+
+msgid "LDIF Parse Error"
+msgstr "Ошибка интерпретации LDIF файла"
+
+
+msgid "Could not add object:"
+msgstr "Не удалось добавить объект:"
+
+
+msgid "Could not rename object:"
+msgstr "Не удалось переименовать объект:"
+
+
+msgid "Could not delete object:"
+msgstr "Не удалось удалить объект:"
+
+
+msgid "Could not modify object:"
+msgstr "Не удалось изменить объект:"
+
+
+msgid "Line Number:"
+msgstr "Номер строки:"
+
+
+msgid "Line:"
+msgstr "Строка:"
+
+
+msgid "Export format"
+msgstr "Формат экспорта"
+
+
+msgid "Line ends"
+msgstr "Конец строки"
+
+
+msgid "You must choose an export format."
+msgstr "Вы должны выбрать формат экспорта."
+
+
+msgid "Invalid export format"
+msgstr "Неверный формат экспорта"
+
+
+msgid "No available exporter found."
+msgstr "Нет доступных экспортеров."
+
+
+msgid "Encountered an error while performing search."
+msgstr "Произошла ошибка во время поиска."
+
+
+msgid "Showing results %s through %s."
+msgstr "Показываю результаты с %s по %s."
+
+
+msgid "Searching..."
+msgstr "Поиск..."
+
+
+msgid "Notice, search size limit exceeded."
+msgstr "Внимание, превышен размер поиска."
+
+
+msgid "Entry"
+msgstr "Запись"
+
+
+msgid "LDIF Export for: %s"
+msgstr "LDIF экспорт для: %s"
+
+
+msgid "Generated by phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) on %s"
+msgstr "Сгенерировано phpLDAPadmin %s"
+
+
+msgid "Total Entries"
+msgstr "Всего записей"
+
+
+msgid "DSLM Export for: %s"
+msgstr "DSLM экспорт для: %s"
+
+
+msgid "You left the password blank."
+msgstr "Вы не ввели пароль."
+
+
+msgid "No one is logged in to that server."
+msgstr "На этом сервере сейчас никого нет."
+
+
+msgid "Could not logout."
+msgstr "Не удалось выйти."
+
+
+msgid "Unknown auth_type: %s"
+msgstr "Неизвестный auth_type: %s"
+
+
+msgid "Logged out successfully from server <b>%s</b>"
+msgstr "Успешно вышли с сервера <b>%s</b>"
+
+
+msgid "Authenticate to server %s"
+msgstr "Авторизация на сервере %s"
+
+
+msgid "Warning: This web connection is unencrypted."
+msgstr "Предупреждение: Это web-соединение нешифровано."
+
+
+msgid "You are not using 'https'. Web browser will transmit login information in clear text."
+msgstr "Вы не используете 'https'. Web-браузер передает авторизационные данные открытым текстом."
+
+
+msgid "Login DN"
+msgstr "Login DN"
+
+
+msgid "User name"
+msgstr "Имя пользователя"
+
+
+msgid "Password"
+msgstr "Пароль"
+
+
+msgid "Authenticate"
+msgstr "Авторизация"
+
+
+msgid "Entry Chooser"
+msgstr "Выбор записи"
+
+
+msgid "You need to configure phpLDAPadmin. Edit the file 'config/config.php' to do so. An example config file is provided in 'config/config.php.example'"
+msgstr "Вам надо сконфигурировать phpLDAPadmin. Отредактируйте файл 'config.php'. Примерный файл настроек - 'config.php.example'"
+
+
+msgid "Deletes not allowed in read only mode."
+msgstr "Удаление невозможно в режиме \"только для чтения\"."
+
+
+msgid "Error calling mass_delete.php. Missing mass_delete in POST vars."
+msgstr "Ошибка вызова mass_delete.php. Отсутствует mass_delete в POST переменных."
+
+
+msgid "mass_delete POST var is not an array."
+msgstr "POST переменная mass_delete не в массиве."
+
+
+msgid "Mass deletion is not enabled. Please enable it in config.php before proceeding."
+msgstr "Массовое удаление не разрешено. Испровьте это в config.php перед тем как продолжить."
+
+
+msgid "Mass Deleting"
+msgstr "Массовое удаление"
+
+
+msgid "Deletion progress on server \"%s\""
+msgstr "Прогресс удаления на сервере \"%s\""
+
+
+msgid "Malformed mass_delete array."
+msgstr "Неправильно сформированный массив mass_delete."
+
+
+msgid "You did not select any entries to delete."
+msgstr "Вы не выбрали ни одной записи для удаления."
+
+
+msgid "Deleting %s"
+msgstr "Удаляю %s"
+
+
+msgid "%s of %s entries failed to be deleted."
+msgstr "Не удалось удалить %s из %s записей."
+
+
+msgid "All entries deleted successfully."
+msgstr "Все записи успешно удалены."
+
+
+msgid "Confirm mass delete of %s entries on server %s"
+msgstr "Подтвердите массовое удаление %s записей на сервере %s"
+
+
+msgid "Yes, delete!"
+msgstr "Да, удалить!"
+
+
+msgid "You cannot rename an entry which has children entries (eg, the rename operation is not allowed on non-leaf entries)"
+msgstr "Вы не можете переименовать запись, которая имеет потомков (т.е., операция переименования не допустима для дерева)"
+
+
+msgid "You did not change the RDN"
+msgstr "Вы не изменили RDN"
+
+
+msgid "Invalid RDN value"
+msgstr "Неверное значение RDN"
+
+
+msgid "Could not rename the entry"
+msgstr "Не удалось переименовать запись"
+
+

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.11.2.5 2005/10/22 11:34:07 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.16.2.5 2005/12/08 19:54:38 wurley Exp $
 
 /**
  * Configuration processing and defaults.
@@ -28,7 +28,6 @@ class Config {
 		$this->default->appearance['anonymous_bind_implies_read_only'] = array(
 			'desc'=>'Display as read only if user logs in with anonymous bind',
 			'default'=>true);
-//$anonymous_bind_implies_read_only = true;
 
 		/* Anonymous redirect
 		 * Set to true if you want phpLDAPadmin to redirect anonymous
@@ -38,21 +37,18 @@ class Config {
 		$this->default->appearance['anonymous_bind_redirect_no_tree'] = array(
 			'desc'=>'Redirect user to search form if anonymous',
 			'default'=>false);
-//$anonymous_bind_redirect_no_tree = false;
 
 		$this->default->appearance['date'] = array(
 			'desc'=>'Date format whenever dates are shown',
 			'default'=>'%A %e %B %Y');
-//$date_format = "%A %e %B %Y";
 
 		$this->default->appearance['date_attrs'] = array(
 			'desc'=>'Array of attributes that should show a jscalendar',
-			'default'=>array('shadowExpire'=>'%es','shadowInactive'=>'%es','shadowLastChange'=>'%es'));
+			'default'=>array('shadowExpire'=>'%es','shadowLastChange'=>'%es'));
 
 		$this->default->appearance['hide_configuration_management'] = array(
 			'desc'=>'Hide the Sourceforge related links',
 			'default'=>false);
-//$hide_configuration_management = false;
 
 		/** Language
 		 * The language setting. If you set this to 'auto', phpLDAPadmin will
@@ -64,7 +60,6 @@ class Config {
 		$this->default->appearance['language'] = array(
 			'desc'=>'Language',
 			'default'=>'auto');
-//$language = 'auto';
 
 		/** Mass Delete
 		 * Set to true if you want to draw a checkbox next to each entry in the tree viewer
@@ -73,7 +68,6 @@ class Config {
 		$this->default->appearance['mass_delete'] = array(
 			'desc'=>'Enable mass delete in tree viewer',
 			'default'=>false);
-//$enable_mass_delete = false;
 
 		/**
 		 * If you want certain attributes to be editable as multi-line, include them in this list
@@ -82,7 +76,6 @@ class Config {
 		$this->default->appearance['multi_line_attributes'] = array(
 			'desc'=>'Attributes to show as multiline attributes',
 			'default'=>array("postalAddress","homePostalAddress","personalSignature"));
-//$multi_line_attributes = array( "postalAddress", "homePostalAddress", "personalSignature" );
 
 		/**
 		 * A list of syntax OIDs which support multi-line attribute values:
@@ -94,7 +87,6 @@ class Config {
 				"1.3.6.1.4.1.1466.115.121.1.40",
 				// postal address syntax OID:
 				"1.3.6.1.4.1.1466.115.121.1.41"));
-//$multi_line_syntax_oids ...
 
 		/** Obfuscate Password
 		 * If true, display all password hash values as "******". Note that clear-text
@@ -103,7 +95,6 @@ class Config {
 		$this->default->appearance['obfuscate_password_display'] = array(
 			'desc'=>'Obfuscate the display of passwords',
 			'default'=>false);
-//$obfuscate_password_display = false;
 
 		$this->default->appearance['show_clear_password'] = array(
 			'desc'=>'Whether to show clear passwords if we dont obfuscate them',
@@ -116,7 +107,6 @@ class Config {
 		$this->default->appearance['show_hints'] = array(
 			'desc'=>'Show helpful hints',
 			'default'=>true);
-//$show_hints = true; // set to false to disable hints
 
 		/** Tree display
 		 * A format string used to display enties in the tree viewer (left-hand side)
@@ -142,12 +132,14 @@ class Config {
 		$this->default->appearance['tree_display_format'] = array(
 			'desc'=>'LDAP attribute to show in the tree',
 			'default'=>'%rdn');
-//$tree_display_format = '%rdn';
 
 		$this->default->appearance['tree_width'] = array(
 			'desc'=>'Pixel width of the left frame view (tree browser)',
 			'default'=>320);
-//$tree_width = 320; // pixels
+
+		$this->default->appearance['tree_plm'] = array(
+			'desc'=>'Whether to enable the PHPLayersMenu for the tree',
+			'default'=>false);
 
 		/** Caching
 		 */
@@ -157,6 +149,10 @@ class Config {
 
 		$this->default->cache['template'] = array(
 			'desc'=>'Cache Template configuration',
+			'default'=>true);
+
+		$this->default->cache['tree'] = array(
+			'desc'=>'Cache Browser Tree',
 			'default'=>true);
 
 		/** Aliases and Referrrals
@@ -173,31 +169,26 @@ class Config {
 		 *    LDAP_DEREF_ALWAYS    - aliases should be dereferenced always (eg, the contents
 		 *                           of the referenced entry is shown and not the aliasing entry)
 		 */
-		$this->default->deref['export'] = array(
+		@$this->default->deref['export'] = array(
 			'desc'=>'',
 			'default'=>LDAP_DEREF_NEVER);
-//$export_deref = LDAP_DEREF_NEVER;
 
-		$this->default->deref['search'] = array(
+		@$this->default->deref['search'] = array(
 			'desc'=>'',
 			'default'=>LDAP_DEREF_ALWAYS);
-//$search_deref = LDAP_DEREF_ALWAYS;
 
-		$this->default->deref['tree'] = array(
+		@$this->default->deref['tree'] = array(
 			'desc'=>'',
 			'default'=>LDAP_DEREF_NEVER);
-//$tree_deref = LDAP_DEREF_NEVER;
 
-		$this->default->deref['view'] = array(
+		@$this->default->deref['view'] = array(
 			'desc'=>'',
 			'default'=>LDAP_DEREF_NEVER);
-//$view_deref = LDAP_DEREF_NEVER;
 
 		## Debug Attributes
 		$this->default->debug['level'] = array(
 			'desc'=>'Debug level verbosity',
 			'default'=>0);
-//$debug_level
 
 		$this->default->debug['syslog'] = array(
 			'desc'=>'Whether to send debug messages to syslog',
@@ -206,7 +197,6 @@ class Config {
 		$this->default->debug['file'] = array(
 			'desc'=>'Name of file to send debug output to',
 			'default'=>null);
-//$use_syslog
 
 		/** Temp Directories
 		 * This directory must be readable and writable by your web server
@@ -214,12 +204,10 @@ class Config {
 		$this->default->jpeg['tmpdir'] = array(
 			'desc'=>'Temporary directory for jpegPhoto data',
 			'default'=>'/tmp');
-//$jpeg_temp_dir = "/tmp";
 
 		$this->default->jpeg['tmp_keep_time'] = array(
 			'desc'=>'Time in seconds to keep jpegPhoto temporary files in the temp directory',
 			'default'=>120);
-//$jpeg_tmp_keep_time = 120; // seconds
 
 		## Session Attributes
 		/** Cookie Encryption
@@ -228,7 +216,6 @@ class Config {
 		$this->default->session['blowfish'] = array(
 			'desc'=>'Blowfish key to encrypt cookie details',
 			'default'=>null);
-//$blowfish_secret = '';
 
 		/** Cookie Time
 		 * If you used auth_type 'form' in the servers list, you can adjust how long the cookie will last
@@ -237,7 +224,6 @@ class Config {
 		$this->default->session['cookie_time'] = array(
 			'desc'=>'Time in seconds for the life of cookies',
 			'default'=>0);
-//$cookie_time = 0;
 
 		## Password Generation
 		$this->default->password['length'] = array(
@@ -264,15 +250,6 @@ class Config {
 			'desc'=>'Whether to use similiar characters',
 			'default'=>true);
 
-		## Template Engine Configuration
-		$this->default->template_engine['enable'] = array(
-			'desc'=>'Use templates from parsed by the template engine',
-			'default'=>true);
-
-		$this->default->template_engine['disable_old'] = array(
-			'desc'=>'Disable access to old templates',
-			'default'=>true);
-
 		/** Search display
 		 * By default, when searching you may display a list or a table of results.
 		 * Set this to 'table' to see table formatted results.
@@ -281,12 +258,10 @@ class Config {
 		$this->default->search['display'] = array(
 			'desc'=>'Display a list or table of search results',
 			'default'=>'list');
-//$default_search_display = 'list';
 
 		$this->default->search['size_limit'] = array(
 			'desc'=>'Limit the size of searchs on the search page',
 			'default'=>50);
-//$search_result_size_limit = 50;
 
 		/**
 		 * Which attributes to include in the drop-down menu of the simple search form (comma-separated)
@@ -296,7 +271,6 @@ class Config {
 		$this->default->search['attributes'] = array(
 			'desc'=>'Attributes to include in the drop down menu of the simple search form (comma separated)',
 			'default'=>array('uid','cn','gidNumber','objectClass','telephoneNumber','mail','street'));
-//$search_attributes ...
 
 		/**
 		 * You can re-arrange the order of the search criteria on the simple search form by modifying this array
@@ -304,8 +278,7 @@ class Config {
 		 */
 		$this->default->search['criteria_options'] = array(
 			'desc'=>'Rearrange the order of the search criteria',
-			'default'=>array("equals","starts with","contains","ends with","sounds like"));
-//$search_criteria_options ...
+			'default'=>array('equals','starts with','contains','ends with','sounds like'));
 
 		/**
 		 * The list of attributes to display in each search result entry.
@@ -314,7 +287,6 @@ class Config {
 		$this->default->search['result_attributes'] = array(
 			'desc'=>'List of attributes to display in each search result entry',
 			'default'=>array('cn','sn','uid','postalAddress','telephoneNumber'));
-//$search_result_attributes ...
 	}
 
 	function GetValue($key,$index) {

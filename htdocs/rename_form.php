@@ -1,6 +1,6 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename_form.php,v 1.8 2005/07/22 05:51:57 wurley Exp $
- 
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename_form.php,v 1.8.4.2 2005/12/08 11:55:06 wurley Exp $
+
 /**
  * Displays a form for renaming an LDAP entry.
  *
@@ -17,29 +17,25 @@
 require './common.php';
 
 if ($ldapserver->isReadOnly())
-	pla_error($lang['no_updates_in_read_only_mode']);
+	pla_error(_('You cannot perform updates while server is in read-only mode'));
 if (! $ldapserver->haveAuthInfo())
-	pla_error($lang['not_enough_login_info']);
+	pla_error(_('Not enough information to login to server. Please check your configuration.'));
 
 $dn = $_GET['dn'];
-$encoded_dn = rawurlencode( $dn );
-$rdn = get_rdn( $dn );
+$rdn = get_rdn($dn);
 
-include './header.php'; ?>
+include './header.php';
 
-<body>
+echo '<body>';
+printf('<h3 class="title">%s <b>%s</b></h3>',_('Rename Entry'),htmlspecialchars($rdn));
+printf('<h3 class="subtitle">%s: <b>%s</b> &nbsp;&nbsp;&nbsp; %s: <b>%s</b></h3>',
+	_('Server'),$ldapserver->name,_('Distinguished Name'),htmlspecialchars($dn));
 
-<h3 class="title"><?php echo sprintf( $lang['rename_entry'], htmlspecialchars( $rdn ) ); ?></b></h3>
-<h3 class="subtitle"><?php echo $lang['server']; ?>: <b><?php echo $ldapserver->name; ?></b> &nbsp;&nbsp;&nbsp; <?php echo $lang['distinguished_name']; ?>: <b><?php echo htmlspecialchars( ( $dn ) ); ?></b></h3>
-
-<br />
-<center>
-<form action="rename.php" method="post" class="edit_dn" />
-<input type="hidden" name="server_id" value="<?php echo $ldapserver->server_id; ?>" />
-<input type="hidden" name="dn" value="<?php echo $dn; ?>" />
-<input type="text" name="new_rdn" size="30" value="<?php echo htmlspecialchars( ( $rdn ) ); ?>" />
-<input class="update_dn" type="submit" value="<?php echo $lang['rename']; ?>" />
-</form>
-</center>
-</body>
-</html>
+echo '<br /><center><form action="rename.php" method="post" class="edit_dn" />';
+printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
+printf('<input type="hidden" name="dn" value="%s" />',$dn);
+printf('<input type="text" name="new_rdn" size="30" value="%s" />',htmlspecialchars($rdn));
+printf('<input class="update_dn" type="submit" value="%s" />',_('Rename'));
+echo '</form></center>';
+echo '</body></html>';
+?>

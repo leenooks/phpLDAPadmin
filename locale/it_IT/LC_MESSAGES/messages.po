@@ -1,0 +1,395 @@
+# : $
+
+
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
+"Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
+"Last-Translator: Unknown <nobody@nodomain.org>\n"
+"POT-Creation-Date: 2005-11-29 17:45+0100\n"
+"PO-Revision-Date: 2005-11-29 18:22+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+
+msgid "Simple Search Form"
+msgstr "Modulo di Ricerca Semplice"
+
+
+msgid "Advanced Search Form"
+msgstr "Modulo di Ricerca Avanzato"
+
+
+msgid "Server"
+msgstr "Server"
+
+
+msgid "Search for entries whose"
+msgstr "Cerca per voci che"
+
+
+msgid "Base DN"
+msgstr "DN Base"
+
+
+msgid "Search Scope"
+msgstr "Campo di Ricerca"
+
+
+msgid "Show Attributtes"
+msgstr "Mostra gli Attributi"
+
+
+msgid "Search"
+msgstr "Cerca"
+
+
+msgid "equals"
+msgstr "equivale"
+
+
+msgid "contains"
+msgstr "contiene"
+
+
+msgid "Request feature"
+msgstr "Richiedi una nuova funzionalità"
+
+
+msgid "Report a bug"
+msgstr "Riporta un baco"
+
+
+msgid "schema"
+msgstr "schema"
+
+
+msgid "search"
+msgstr "cerca"
+
+
+msgid "refresh"
+msgstr "aggiorna"
+
+
+msgid "create"
+msgstr "crea"
+
+
+msgid "info"
+msgstr "info"
+
+
+msgid "import"
+msgstr "importa"
+
+
+msgid "logout"
+msgstr "esci"
+
+
+msgid "Create new entry here"
+msgstr "Crea Nuovo"
+
+
+msgid "View schema for"
+msgstr "Guarda schema per"
+
+
+msgid "Refresh all expanded containers for"
+msgstr "Aggiorna tutti i contenitori aperti per"
+
+
+msgid "Create a new entry on"
+msgstr "Crea una nuova voce su"
+
+
+msgid "View server-supplied information"
+msgstr "Guarda le informazioni fornite dal Server"
+
+
+msgid "Import entries from an LDIF file"
+msgstr "Importa voci da un file LDIF"
+
+
+msgid "Logout of this server"
+msgstr "Esci da questo Server"
+
+
+msgid "Logged in as: "
+msgstr "Collegato come: "
+
+
+msgid "read only"
+msgstr "sola lettura"
+
+
+msgid "Could not determine the root of your LDAP tree."
+msgstr "Non posso determinare la radice del tuo albero LDAP."
+
+
+msgid "It appears that the LDAP server has been configured to not reveal its root."
+msgstr "Sembra che il server LDAP sia stato configurato per non rivelare la sua radice."
+
+
+msgid "Please specify it in config.php"
+msgstr "Per piacere specificare nel config.php"
+
+
+msgid "Create a new entry in"
+msgstr "Crea una nuova voce in"
+
+
+msgid "Delete this entry"
+msgstr "Cancella questa voce"
+
+
+msgid "You will be prompted to confirm this decision"
+msgstr "Ti sarà richiesto di confermare questa decisione"
+
+
+msgid "Copy or move this entry"
+msgstr "Copia questa voce"
+
+
+msgid "Copy this object to another location, a new DN, or another server"
+msgstr "Copia questo oggetto in un'altra posizione, un nuovo DN od un altro server"
+
+
+msgid "Create a child entry"
+msgstr "Crea una voce figlia"
+
+
+msgid "Rename Entry"
+msgstr "Rinomina la Voce"
+
+
+msgid "Rename"
+msgstr "Rinomina"
+
+
+msgid "Add"
+msgstr "Aggiungi"
+
+
+msgid "View"
+msgstr "Guarda"
+
+
+msgid "Add new attribute"
+msgstr "Aggiungi un nuovo attributo"
+
+
+msgid "Hide internal attributes"
+msgstr "Nascondi gli attributi interni"
+
+
+msgid "Show internal attributes"
+msgstr "Mostra gli attributi interni"
+
+
+msgid "none"
+msgstr "nessuno"
+
+
+msgid "Save Changes"
+msgstr "Salva i Cambiamenti"
+
+
+msgid "add value"
+msgstr "aggiungi un valore"
+
+
+msgid "Add an additional value to attribute '%s'"
+msgstr "Aggiungi un'altrovalore a questo attributo"
+
+
+msgid "Refresh this entry"
+msgstr "Aggiorna questa voce"
+
+
+msgid "Hint: To delete an attribute, empty the text field and click save."
+msgstr "Consiglio: <b>Per cancellare un attributo</b>, svuota il campo testo e clicca salva."
+
+
+msgid "Viewing entry in read-only mode."
+msgstr "Stai guardando la voce in modalità sola-lettura."
+
+
+msgid "no new attributes available for this entry"
+msgstr "nessun nuovo attributo disponibile per questa voce"
+
+
+msgid "Binary value"
+msgstr "Valore binario"
+
+
+msgid "Add new binary attribute"
+msgstr "Aggiungi un Nuovo Attributo Binario"
+
+
+msgid "Note: '%s' is an alias for '%s'"
+msgstr "Alias per"
+
+
+msgid "download value"
+msgstr "valore del download"
+
+
+msgid "delete attribute"
+msgstr "cancella l'attributo"
+
+
+msgid "true"
+msgstr "vero"
+
+
+msgid "false"
+msgstr "falso"
+
+
+msgid "none, remove value"
+msgstr "nessuno, rimuovi il valore"
+
+
+msgid "Really delete attribute"
+msgstr "Cancella definitivamente il valore"
+
+
+msgid "Jump to an objectClass"
+msgstr "Vai a una objectClass"
+
+
+msgid "Jump to an attribute type"
+msgstr "Vai a un attributo"
+
+
+msgid "Schema for server"
+msgstr "Schema per il server"
+
+
+msgid "Required Attributes"
+msgstr "Attributi Richiesti"
+
+
+msgid "Optional Attributes"
+msgstr "Attributi Opzionali"
+
+
+msgid "OID"
+msgstr "OID"
+
+
+msgid "Description"
+msgstr "Descrizione"
+
+
+msgid "This objectClass is obsolete."
+msgstr "Questa objectClass è <b>obsoleta</b>"
+
+
+msgid "Inherits from"
+msgstr "Eredita da"
+
+
+msgid "Jump to this objectClass definition"
+msgstr "Vai a questa definizione della objectClass"
+
+
+msgid "Matching Rule OID"
+msgstr "Regola Corrispondente OID"
+
+
+msgid "Syntax OID"
+msgstr "Sintassi OID"
+
+
+msgid "New Required Attributes"
+msgstr "Nuovi Attributi Richiesti"
+
+
+msgid "This action requires you to add"
+msgstr "Questa azione richiede che tu aggiunga"
+
+
+msgid "new attributes"
+msgstr "nuovi attributi"
+
+
+msgid "Instructions: In order to add these objectClass(es) to this entry, you must specify"
+msgstr "Istruzioni: Per aggiungere questa objectClass a questa voce, devi specificare:"
+
+
+msgid "that this objectClass requires. You can do so in this form."
+msgstr "che questa objectClass richiede. Puoi farlo in questo modulo."
+
+
+msgid "Add ObjectClass and Attributes"
+msgstr "Aggiungi ObjectClass e Attributi"
+
+
+msgid "Click to popup a dialog to select an entry (DN) graphically"
+msgstr "Clicca per aprire una finestra di dialogo per la selezione grafica di una voce (DN)"
+
+
+msgid "You cannot perform updates while server is in read-only mode"
+msgstr "Non puoi operare aggiornamenti mentre il server è in modalità sola-lettura"
+
+
+msgid "Bad server id"
+msgstr "Server id errata"
+
+
+msgid "Not enough information to login to server. Please check your configuration."
+msgstr "Non abbastanza informazioni per collegarsi al server. Per piacere controlla la tua configurazione."
+
+
+msgid "Could not connect to LDAP server."
+msgstr "Non ho potuto collegarmi al server LDAP."
+
+
+msgid "Could not perform ldap_mod_add operation."
+msgstr "Non ho potuto eseguire l'operazione ldap_mod_add."
+
+
+msgid "Add new"
+msgstr "Aggiungi nuovo"
+
+
+msgid "value to"
+msgstr "valore a"
+
+
+msgid "Distinguished Name"
+msgstr "Distinguished Name"
+
+
+msgid "Current list of"
+msgstr "Lista corrente di"
+
+
+msgid "values for attribute"
+msgstr "valori per l'attributo"
+
+
+msgid "Note: You will get an \"inappropriate matching\" error if you have not setup an EQUALITY rule on your LDAP server for this attribute."
+msgstr "Nota: Tu riceverai un errore \"corrispondenza inappropiata\" se non hai<br />una regola <tt>EQUALITY</tt> per questo attributo sul tuo server LDAP."
+
+
+msgid "Enter the value you would like to add:"
+msgstr "Inserisci il valore che vorresti aggiungere:"
+
+
+msgid "Note: You may be required to enter new attributes that these objectClass(es) require"
+msgstr "Nota: ti potrebbe essere chiesto di inserire nuovi attributi<br />che questa objectClass richiede."
+
+
+msgid "Syntax"
+msgstr "Sintassi"
+
+

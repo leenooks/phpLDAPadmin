@@ -25,14 +25,14 @@
 	<page>1</page>
 </attribute>
 <attribute id="uidNumber">
-        <display>t_uid_number</display>
-        <hint>t_auto_det</hint>
+        <display>UID Number</display>
+        <hint>Automatically determined</hint>
         <order>2</order>
         <page>1</page>
         <presubmit>=php.GetNextNumber(/,uid)</presubmit>
 </attribute>
 <attribute id="gidNumber">
-        <display>t_gid_number</display>
+        <display>GID Number</display>
         <order>3</order>
         <page>1</page>
         <value>=php.PickList(/,(objectClass=posixGroup),gidNumber,%cn%)</value>

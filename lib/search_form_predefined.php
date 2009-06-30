@@ -1,69 +1,60 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_predefined.php,v 1.8 2005/07/16 03:13:54 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_predefined.php,v 1.8.4.2 2005/12/08 12:06:58 wurley Exp $
 
 /**
  * @package phpLDAPadmin
  */
 
-?>
+echo '<form action="search.php" method="get" class="search">';
+echo '<input type="hidden" name="search" value="true" />';
+echo '<input type="hidden" name="form" value="predefined" />';
+printf('<input type="hidden" name="format" value="%s" />',$format);
 
-<form action="search.php" method="get" class="search">
-<input type="hidden" name="search" value="true" />
-<input type="hidden" name="form" value="predefined" />
-<input type="hidden" name="format" value="<?php echo $format; ?>" />
+echo '<table><tr><td>';
 
-<table>
-<tr>
-	<td>
-
-<?php if( isset( $_GET['predefined'] ) )
-	$selected_q_number = intval( $_GET['predefined'] );
-
+if (isset($_GET['predefined']))
+	$selected_q_number = intval($_GET['predefined']);
 else
-	$selected_q_number = null; ?>
+	$selected_q_number = null;
 
-	<center><b><?php echo $lang['predefined_searches']; ?></b><br />
-	<small>(<a href="search.php?server_id=<?php echo $ldapserver->server_id; ?>&amp;form=simple"><?php echo $lang['simple_search_form_str']; ?></a> |
-	<a href="search.php?server_id=<?php echo $ldapserver->server_id; ?>&amp;form=advanced"><?php echo $lang['advanced_search_form_str']; ?></a>)</small><br />
-	<br />
+printf('<center><b>%s</b><br />',_('Predefined Searches'));
+printf('<small>(<a href="search.php?server_id=%s&amp;form=simple">%s</a> | <a href="search.php?server_id=%s&amp;form=advanced">%s</a>)</small>',
+	$ldapserver->server_id,_('Simple Search Form'),
+	$ldapserver->server_id,_('Advanced Search Form'));
 
-<?php if( ! isset( $queries ) || ! is_array( $queries ) || 0 == count( $queries ) ) {
-        echo "<br />\n";
-	echo $lang['no_predefined_queries'];
-        echo "<br />\n";
-        echo "<br />\n";
-        echo "<br />\n";
-        echo "</td></tr></table>\n";
-        echo "</body>\n";
-        echo "</html>\n";
-        die();
+echo '<br /><br />';
 
-} else { ?>
+if (! isset($queries) || ! is_array($queries) || count($queries) == 0) {
+	echo '<br />';
+	echo _('No queries have been defined in config.php.');
+	echo '<br /><br /><br />';
+	echo '</center>';
+	echo '</td></tr></table>';
+	echo '</body></html>';
+	die();
 
-<small><?php echo $lang['predefined_search_str']; ?>: </small>
-<select name="predefined">
+} else {
 
-<?php foreach( $queries as $q_number => $q ) {
+	printf('<small>%s: </small>',_('Select a predefined search'));
+	echo '<select name="predefined">';
 
-	if ($selected_q_number === $q_number)
-		$selected = " selected";
+	foreach ($queries as $q_number => $q) {
 
-	else
-		$selected = "";
+		if ($selected_q_number === $q_number)
+			$selected = ' selected';
+		else
+			$selected = '';
 
-	print("\t<option value=\"" . $q_number . "\"" . $selected . ">\n");
-	print("\t" . htmlspecialchars( $q['name'] ) . "\n");
-	print("\t</option>\n");
-} ?>
+		printf('<option value="%s"%s>%s</option>',$q_number,$selected,htmlspecialchars($q['name']));
+	}
 
-</select>
+	echo '</select>';
 
-<?php } ?>
+}
 
-<br />
-<br />
-<center><input type="hidden" name="server_id" value="<?php echo $ldapserver->server_id; ?>" /></center>
-<center><input type="submit" value="<?php echo $lang['Search']; ?>" /></center>
-</td>
-</table>
-</form>
+echo '<br /><br />';
+printf('<center><input type="hidden" name="server_id" value="%s" /></center>',$ldapserver->server_id);
+printf('<center><input type="submit" value="%s" /></center>',_('Search'));
+echo '</center>';
+echo '</td></tr></table></form>';
+?>

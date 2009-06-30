@@ -1,0 +1,905 @@
+# : $
+
+
+msgid ""
+msgstr ""
+"Project-Id-Version: messages\n"
+"Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
+"Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
+"Last-Translator: Gunnar Nystrom\n"
+"POT-Creation-Date: 2005-11-29 17:45+0100\n"
+"PO-Revision-Date: 2005-11-29 18:22+0100\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+
+
+msgid "Simple Search Form"
+msgstr "Enkel sökning"
+
+
+msgid "Advanced Search Form"
+msgstr "Expertsökning"
+
+
+msgid "Server"
+msgstr "Server"
+
+
+msgid "Search for entries whose"
+msgstr "Sök efter poster som:"
+
+
+msgid "Base DN"
+msgstr "Base DN"
+
+
+msgid "Search Scope"
+msgstr "Sökomfång"
+
+
+msgid "Show Attributtes"
+msgstr "Visa attribut"
+
+
+msgid "Search"
+msgstr "Sök"
+
+
+msgid "equals"
+msgstr "är lika med"
+
+
+msgid "contains"
+msgstr "innehåller"
+
+
+msgid "Request feature"
+msgstr "Begär en ny funktion"
+
+
+msgid "Report a bug"
+msgstr "Rapportera ett fel"
+
+
+msgid "schema"
+msgstr "schema"
+
+
+msgid "search"
+msgstr "sökning"
+
+
+msgid "create"
+msgstr "skapa"
+
+
+msgid "info"
+msgstr "information"
+
+
+msgid "import"
+msgstr "importera"
+
+
+msgid "refresh"
+msgstr "uppdatera"
+
+
+msgid "logout"
+msgstr "logga ut"
+
+
+msgid "Create new entry here"
+msgstr "Skapa ny"
+
+
+msgid "View schema for"
+msgstr "Titta på schema för"
+
+
+msgid "Refresh all expanded containers for"
+msgstr "Uppdatera alla öpnna behållare för"
+
+
+msgid "Create a new entry on"
+msgstr "Skapa en ny post för"
+
+
+msgid "View server-supplied information"
+msgstr "Titta på information som servern tillhandahållit"
+
+
+msgid "Import entries from an LDIF file"
+msgstr "Importera rader från LDIF file"
+
+
+msgid "Logout of this server"
+msgstr "Logga ut från den här servern"
+
+
+msgid "Logged in as: "
+msgstr "/Inloggad som"
+
+
+msgid "read only"
+msgstr "Enbart läsning"
+
+
+msgid "Could not determine the root of your LDAP tree."
+msgstr "Kan inte bestämma roten för ditt LDAP träd"
+
+
+msgid "It appears that the LDAP server has been configured to not reveal its root."
+msgstr "Det ser ut som om LDAP-servern har konfigurerats att inte avslöja sin rot."
+
+
+msgid "Please specify it in config.php"
+msgstr "Var snäll och specificera i config.php"
+
+
+msgid "Create a new entry in"
+msgstr "Skapa en ny post i"
+
+
+msgid "Login..."
+msgstr "Logga in..."
+
+
+msgid "Delete this entry"
+msgstr "Ta bort den här posten"
+
+
+msgid "You will be prompted to confirm this decision"
+msgstr "Du kommer att bli tillfrågad för att konfirmera det här beslutet"
+
+
+msgid "Copy or move this entry"
+msgstr "Kopiera den här posten"
+
+
+msgid "Copy this object to another location, a new DN, or another server"
+msgstr "Kopiera det här objektet till en annan plats, ett nytt DN, eller en annan server"
+
+
+msgid "Create a child entry"
+msgstr "Skapa en subpost"
+
+
+msgid "Rename Entry"
+msgstr "Döp om posten"
+
+
+msgid "Rename"
+msgstr "Döp om "
+
+
+msgid "Add"
+msgstr "Lägg till"
+
+
+msgid "View"
+msgstr "Titta"
+
+
+msgid "Add new attribute"
+msgstr "Lägg till ett nytt attribut"
+
+
+msgid "Hide internal attributes"
+msgstr "Göm interna attribut"
+
+
+msgid "Show internal attributes"
+msgstr "Visa interna attribut"
+
+
+msgid "Click to view the schema defintion for attribute type '%s'"
+msgstr "Klicka för att titta på schemadefinitionen för attributtyp '%s'"
+
+
+msgid "none"
+msgstr "inget"
+
+
+msgid "Save Changes"
+msgstr "Spara ändringar"
+
+
+msgid "add value"
+msgstr "lägg till värde"
+
+
+msgid "Add an additional value to attribute '%s'"
+msgstr "Lägg till ett ytterligare värde till attribut '%s'"
+
+
+msgid "Refresh"
+msgstr "Uppdatera"
+
+
+msgid "Refresh this entry"
+msgstr "Uppdatera denna post"
+
+
+msgid "Hint: To delete an attribute, empty the text field and click save."
+msgstr "Tips: <b>För att ta bort ett attribut</b>, ta bort all text i textfältet och klicka 'Spara ändringar'."
+
+
+msgid "Hint: To view the schema for an attribute, click the attribute name."
+msgstr "Tips: <b>För att titta på ett attributs schema</b>, klicka på attributnamnet"
+
+
+msgid "Some attributes (%s) were modified and are highlighted below."
+msgstr "Några attribut var ändrade och är markerade nedan."
+
+
+msgid "An attribute (%s) was modified and is highlighted below."
+msgstr "Ett attribut var ändrat och är markerat nedan."
+
+
+msgid "Viewing entry in read-only mode."
+msgstr "Titta på en post med enbart lästiilstånd"
+
+
+msgid "no new attributes available for this entry"
+msgstr "inga nya attribut tillgängliga för denna post"
+
+
+msgid "Binary value"
+msgstr "Binärt värde"
+
+
+msgid "Add new binary attribute"
+msgstr "Lägg till nytt binärt attribut"
+
+
+msgid "Note: '%s' is an alias for '%s'"
+msgstr "Observera: '%s' är ett alias for '%s'"
+
+
+msgid "download value"
+msgstr "ladda ner värde"
+
+
+msgid "delete attribute"
+msgstr "ta bort attribut"
+
+
+msgid "true"
+msgstr "Sant"
+
+
+msgid "false"
+msgstr "Falskt"
+
+
+msgid "none, remove value"
+msgstr "inget, ta bort värdet"
+
+
+msgid "Really delete attribute"
+msgstr "Ta definitivt bort värdet"
+
+
+msgid "Jump to an objectClass"
+msgstr "Välj en objectClass"
+
+
+msgid "Jump to an attribute type"
+msgstr "Välj en attributtyp"
+
+
+msgid "Schema for server"
+msgstr "Schema för servern"
+
+
+msgid "Required Attributes"
+msgstr "Nödvändiga attribut"
+
+
+msgid "Optional Attributes"
+msgstr "Valfria attribut"
+
+
+msgid "OID"
+msgstr "OID"
+
+
+msgid "Description"
+msgstr "Beskrivning"
+
+
+msgid "Name"
+msgstr "Namn"
+
+
+msgid "This objectClass is obsolete."
+msgstr "Denna objectClass är <b>föråldrad</b>"
+
+
+msgid "Inherits from"
+msgstr "ärver"
+
+
+msgid "Jump to this objectClass definition"
+msgstr "Gå till definitionen av denna objectClass"
+
+
+msgid "Matching Rule OID"
+msgstr "Matchande regel-OID"
+
+
+msgid "Syntax OID"
+msgstr "Syntax-OID"
+
+
+msgid "not applicable"
+msgstr "inte tillämplig"
+
+
+msgid "not specified"
+msgstr "inte specificerad"
+
+
+msgid "Entry %s deleted successfully."
+msgstr "Borttagning av posten  '%s' lyckades"
+
+
+msgid "You must specify a DN"
+msgstr "Du måste specificera ett DN"
+
+
+msgid "Could not delete the entry: %s"
+msgstr "Det gick inte att ta bort posten"
+
+
+msgid "New Required Attributes"
+msgstr "Nya nödvändiga attribut"
+
+
+msgid "This action requires you to add"
+msgstr "Den här åtgärden kräver att du lägger till"
+
+
+msgid "new attributes"
+msgstr "nya attribut"
+
+
+msgid "Instructions: In order to add these objectClass(es) to this entry, you must specify"
+msgstr "Instruktioner: För att kunna lägga till objektklassen till denna post, måste du specificera"
+
+
+msgid "that this objectClass requires. You can do so in this form."
+msgstr "att objektklassen kräver. Det kan göras i detta formulär."
+
+
+msgid "Add ObjectClass and Attributes"
+msgstr "Lägg till objektklass och attribut"
+
+
+msgid "Click to popup a dialog to select an entry (DN) graphically"
+msgstr "Klicka för att öppna ett fönster för att välja ett <DN> grafiskt."
+
+
+msgid "You cannot perform updates while server is in read-only mode"
+msgstr "Du kan inte göra uppdateringar medan servern är i lästillstånd"
+
+
+msgid "Bad server id"
+msgstr "Felaktigt server-id"
+
+
+msgid "Not enough information to login to server. Please check your configuration."
+msgstr "Det saknas information för att logga in på servern. Var vänlig och kontrollera din konfiguration."
+
+
+msgid "Could not connect to LDAP server."
+msgstr "Det gick inte att ansluta till LDAP-servern."
+
+
+msgid "Could not perform ldap_mod_add operation."
+msgstr "Det gick inte att utföra ldap_mod_add operationen."
+
+
+msgid "Success"
+msgstr "Det lyckades"
+
+
+msgid "Looking in: "
+msgstr "Tittar in"
+
+
+msgid "No DN specified in query string!"
+msgstr "Inget DN specificerat i frågesträgen!"
+
+
+msgid "Back Up..."
+msgstr "Tillbaka"
+
+
+msgid "no entries"
+msgstr "inga poster"
+
+
+msgid "Could not determine base DN"
+msgstr "Det gick inte att bestämma 'base DN'"
+
+
+msgid "Add new"
+msgstr "Lägg till nytt"
+
+
+msgid "value to"
+msgstr "värde till"
+
+
+msgid "Distinguished Name"
+msgstr "Distinguished Name"
+
+
+msgid "Current list of"
+msgstr "Aktuell lista av"
+
+
+msgid "values for attribute"
+msgstr "attributvärden"
+
+
+msgid "Note: You will get an \"inappropriate matching\" error if you have not setup an EQUALITY rule on your LDAP server for this attribute."
+msgstr "Observera: Du kommer att få ett 'inappropriate matching'-fel om du inte har<br />satt upp en <tt>EQUALITY</tt>-regel på din LDAP-server för detta attribut."
+
+
+msgid "Enter the value you would like to add:"
+msgstr "Skriv in värdet du vill lägga till"
+
+
+msgid "Note: You may be required to enter new attributes that these objectClass(es) require"
+msgstr "Observera: Du kan bli tvungen att skriva in de nya attribut som denna objectClass behöver"
+
+
+msgid "Syntax"
+msgstr "Syntax"
+
+
+msgid "You left the destination DN blank."
+msgstr "Du lämnade destinations-DN tomt"
+
+
+msgid "The destination entry (%s) already exists."
+msgstr "Destinationen finns redan"
+
+
+msgid "The destination container (%s) does not exist."
+msgstr "Destinations-behållaren (%s) finns inte"
+
+
+msgid "The source and destination DN are the same."
+msgstr "Käll- och destinations-DN är samma."
+
+
+msgid "Copying "
+msgstr "Kopierar"
+
+
+msgid "Recursive copy progress"
+msgstr "Rekursiv kopiering pågår"
+
+
+msgid "Building snapshot of tree to copy... "
+msgstr "Bygger en ögonblicksbild av det träd som ska kopieras"
+
+
+msgid "Copy successful! Would you like to "
+msgstr "Kopieringen lyckades! Vill du"
+
+
+msgid "view the new entry"
+msgstr "titta på den nya posten"
+
+
+msgid "Failed to copy DN: "
+msgstr "Kopiering av DN misslyckades"
+
+
+msgid "Copy "
+msgstr "Kopiera"
+
+
+msgid "to a new object"
+msgstr "till ett nytt objekt"
+
+
+msgid "Destination DN"
+msgstr "Destinations-DN"
+
+
+msgid "The full DN of the new entry to be created when copying the source entry"
+msgstr "Den nya postens fullständiga DN skapas när källposten kopieras"
+
+
+msgid "Destination Server"
+msgstr "Destinations-server"
+
+
+msgid "Hint: Copying between different servers only works if there are no schema violations"
+msgstr "Tips: Kopiering mellan olika servrar fungerar bara om det inte finns några brott mot schemorna."
+
+
+msgid "Recursively copy all children of this object as well."
+msgstr "Kopiera även rekursivt alla underobjekt till detta objekt."
+
+
+msgid "You left the value blank for required attribute (%s)."
+msgstr "Du lämnade ett värde tomt för ett nödvändigt attribut <b>%s</b>."
+
+
+msgid "Could not add the object to the LDAP server."
+msgstr "Det gick inte att lägga till objektet till LDAP-servern."
+
+
+msgid "Create Object"
+msgstr "Skapa objekt"
+
+
+msgid "Choose a template"
+msgstr "Välj en mall"
+
+
+msgid "Select a template for the creation process"
+msgstr "Välj en mall för att skapa objekt"
+
+
+msgid "You have not logged into the selected server yet, so you cannot perform searches on it."
+msgstr "Du har inte loggat in till den valda servern ännu, så du kan inte göra sökningar på den."
+
+
+msgid "Click here to go to the login form"
+msgstr "Klicka här för att komma till login-formuläret"
+
+
+msgid "Unrecognized criteria option: "
+msgstr "Känner inte till detta urvals-kriterium"
+
+
+msgid "If you want to add your own criteria to the list. Be sure to edit search.php to handle them. Quitting."
+msgstr "Om du vill lägga till ditt eget kriterium till listan, kom ihåg att ändra search.php för att hantera det. Avslutar."
+
+
+msgid "Entries found: "
+msgstr "Poster funna:"
+
+
+msgid "Filter performed: "
+msgstr "Filtrering utförd: "
+
+
+msgid "Search performed by phpLDAPadmin in"
+msgstr "Sökning utförd av phpLDAPadmin på"
+
+
+msgid "seconds"
+msgstr "sekunder"
+
+
+msgid "The scope in which to search"
+msgstr "Sökomfattning"
+
+
+msgid "Sub (entire subtree)"
+msgstr "Sub (Base DN och hela trädet under)"
+
+
+msgid "One (one level beneath base)"
+msgstr "One (en nivå under Base DN)"
+
+
+msgid "Base (base dn only)"
+msgstr "Base (endast Base DN)"
+
+
+msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))"
+msgstr "Standard LDAP sökfilter. Exempel: (&(sn=Smith)(givenname=David))"
+
+
+msgid "A list of attributes to display in the results (comma-separated)"
+msgstr "En lista med attribut att visa i resultatet (komma-separerad)"
+
+
+msgid "starts with"
+msgstr "börjar med"
+
+
+msgid "Could not retrieve LDAP information from the server. This may be due to a <a href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version of PHP or perhaps your LDAP server has access control specified that prevents LDAP clients from accessing the RootDSE."
+msgstr "Det gick inte att hämta LDAP information från servern."
+
+
+msgid "Server info for: "
+msgstr "Serverinformation för"
+
+
+msgid "Server reports the following information about itself"
+msgstr "Servern rapporterar följande information om sig själv"
+
+
+msgid "This server has nothing to report."
+msgstr "Servern har inget att rapportera"
+
+
+msgid "update_array is malformed. This might be a phpLDAPadmin bug. Please report it."
+msgstr "update_array är felaktig. Detta kan vara ett phpLDAPadmin-fel. Var vänlig och rapportera det."
+
+
+msgid "Could not perform ldap_modify operation."
+msgstr "Det gick inte att utföra operationen ldap_modify."
+
+
+msgid "Do you want to make these changes?"
+msgstr "Vill du göra dessa ändringar?"
+
+
+msgid "Attribute"
+msgstr "Attribut"
+
+
+msgid "Old Value"
+msgstr "Föregående värde"
+
+
+msgid "New Value"
+msgstr "Nytt värde"
+
+
+msgid "[attribute deleted]"
+msgstr "[attributet borttaget]"
+
+
+msgid "Commit"
+msgstr "Bekräfta"
+
+
+msgid "Cancel"
+msgstr "ångra"
+
+
+msgid "You made no changes"
+msgstr "Du gjorde inga ändringar"
+
+
+msgid "Go back"
+msgstr "Gå tillbaka"
+
+
+msgid "Use the menu to the left to navigate"
+msgstr "Navigera med hjälp av menyn till vänster"
+
+
+msgid "Credits"
+msgstr "Tack till"
+
+
+msgid "ChangeLog"
+msgstr "ändringslogg"
+
+
+msgid "Documentation"
+msgstr "Dokumentation"
+
+
+msgid "Unsafe file name: "
+msgstr "Osäkert filnamn"
+
+
+msgid "No such file: "
+msgstr "Filen finns inte"
+
+
+msgid "You have enabled auto_uid_numbers for <b>%s</b> in your configuration,"
+"                                  but you have not specified the auto_uid_number_mechanism. Please correct"
+"                                  this problem."
+msgstr "Du har slagit på auto_uid_numbers för <b>%s</b> i din konfiguration, "
+"                                  men du har inte specificerat auto_uid_number_mechanism. Var vänlig och rätta till "
+"                                  detta problem."
+
+
+msgid "You specified the \"auto_uid_number_mechanism\" as \"uidpool\""
+"                            in your configuration for server <b>%s</b>, but you did not specify the"
+"                            audo_uid_number_uid_pool_dn. Please specify it before proceeding."
+msgstr "Du har specificerat <tt>auto_uid_number_mechanism</tt> som <tt>uidpool</tt> "
+"                            i din konfiguration för server<b>%s</b>, men du specificerade inte "
+"                            audo_uid_number_uid_pool_dn. Var vänlig och specificera den innan du fortsätter."
+
+
+msgid "It appears that the uidPool you specified in your configuration (\"%s\")"
+"                              does not exist."
+msgstr "Det ser ut som om den uidPool du specificerade i din konfiguration (<tt>%s</tt>) "
+"                             inte existerar."
+
+
+msgid "You specified the \"auto_uid_number_mechanism\" as \"search\" in your"
+"                              configuration for server <b>%s</b>, but you did not specify the"
+"                              \"auto_uid_number_search_base\". Please specify it before proceeding."
+msgstr "Du specificerade <tt>auto_uid_number_mechanism</tt> som <tt>search</tt> i din "
+"                             konfiguration för server<b>%s</b>, men du specificerade inte "
+"                             <tt>auto_uid_number_search_base</tt>. Var vänlig och specificera den innan du fortsätter."
+
+
+msgid "You specified an invalid value for auto_uid_number_mechanism (\"%s\")"
+"                                   in your configration. Only \"uidpool\" and \"search\" are valid."
+"                                   Please correct this problem."
+msgstr "Du specificerade ett ogiltigt värde för auto_uid_number_mechanism (<tt>%s</tt>) "
+"                                   i din konfiguration. Endast <tt>uidpool</tt> och <tt>search</tt> are giltiga. "
+"                                   Var vänlig och rätta till detta problem."
+
+
+msgid "Error: You have an error in your config file. The only three allowed values"
+"                                    for auth_type in the $servers section are 'session', 'cookie', and 'config'. You entered '%s',"
+"                                    which is not allowed. "
+msgstr "Fel: Du har ett fel i din konfigurationsfil. De enda tillåtna värdena "
+"                                   för auth_type i $servers-sektionen är 'config' and 'form'. Du skrev in '%s', "
+"                                   vilket inte är tillåtet. "
+
+
+msgid "Your PHP install does not support TLS."
+msgstr "Din PHP-installation stödjer inte TLS"
+
+
+msgid "Could not start TLS. Please check your LDAP server configuration."
+msgstr "Det gick inte att starta TLS.<br />Var vänlig och kontrollera din LDAP-serverkonfiguration."
+
+
+msgid "LDAP said: %s"
+msgstr "<b>LDAP sa</b>: %s<br /><br />"
+
+
+msgid "Error"
+msgstr "Fel"
+
+
+msgid "browse"
+msgstr "titta"
+
+
+msgid "Delete Photo"
+msgstr "Ta bort foto"
+
+
+msgid "Your system crypt library does not support blowfish encryption."
+msgstr "Din PHP-installation stödjer inte blowfish-kryptering."
+
+
+msgid "Your PHP install does not have the mhash() function. Cannot do SHA hashes."
+msgstr "Din PHP-installation har inte funktionen mash(). Det går inte att göra SHA hashes."
+
+
+msgid "jpegPhoto contains errors<br />"
+msgstr "JPEG-fotot innehåller fel<br />"
+
+
+msgid "Error number: %s (%s)"
+msgstr "<b>Felnummer</b>: %s <small>(%s)</small><br /><br />"
+
+
+msgid "Description: %s <br /><br />"
+msgstr "<b>Beskrivning</b>: %s <br /><br />"
+
+
+msgid "Error number: %s<br /><br />"
+msgstr "<b>Felnummer</b>: %s<br /><br />"
+
+
+msgid "Description: (no description available)<br />"
+msgstr "<b>Beskrivning</b>: (ingen beskrivning tillgänglig)<br />"
+
+
+msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
+msgstr "är det här ett phpLDAPadmin-fel? Om så är fallet, var vänlig och <a href='%s'>rapportera det</a>."
+
+
+msgid "Unrecognized error number: "
+msgstr "Okänt felnummer"
+
+
+msgid "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
+"             <b>You found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>"
+"             <td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
+"             </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	<tr><td colspan='2'><center><a target='new' href='%s'>Please check and see if this bug has been reported here</a>.</center></td></tr>"
+"	<tr><td colspan='2'><center><a target='new' href='%s'>If it hasnt been reported, you may report this bug by clicking here</a>.</center></td></tr>"
+"	</table></center><br />"
+msgstr "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
+"             <b>Du har hittat en icke-kritisk phpLDAPadmin bug!</b></td></tr><tr><td>Fel:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Fil:</td>"
+"             <td><b>%s</b> rad <b>%s</b>, anropande <b>%s</b></td></tr><tr><td>Versioner:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
+"             </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr><tr><td colspan='2'><center><a target='new' href='%s'>"
+"             Var vänlig och rapportera felet genom att klicka här</a>.</center></td></tr></table></center><br />"
+
+
+msgid "Congratulations! You found a bug in phpLDAPadmin.<br /><br />"
+"	     <table class='bug'>"
+"	     <tr><td>Error:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Level:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>File:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Line:</td><td><b>%s</b></td></tr>"
+"		 <tr><td>Caller:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PLA Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	     </table>"
+"	     <br />"
+"	     Please report this bug by clicking below!"
+msgstr "Gratulerar! Du har hittat en bug i phpLDAPadmin.<br /><br />"
+"	     <table class='bug'>"
+"	     <tr><td>Fel:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Nivå:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Fil:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Rad:</td><td><b>%s</b></td></tr>"
+"		 <tr><td>Anropare:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PLA Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	     </table>"
+"	     <br />"
+"	     Var vänlig och rapportera den här buggen genom att klicak här nedan!"
+
+
+msgid "Import LDIF File"
+msgstr "Importera LDIF-fil"
+
+
+msgid "Select an LDIF file:"
+msgstr "Välj en LDIF-fil:"
+
+
+msgid "Adding..."
+msgstr "Lägger till..."
+
+
+msgid "Deleting..."
+msgstr "Tar bort..."
+
+
+msgid "Renaming..."
+msgstr "Döper om..."
+
+
+msgid "Modifying..."
+msgstr "ändrar..."
+
+
+msgid "Failed"
+msgstr "misslyckades"
+
+
+msgid "LDIF Parse Error"
+msgstr "LDIF parsningsfel"
+
+
+msgid "Could not add object:"
+msgstr "Det gick inte att lägga till objekt"
+
+
+msgid "Could not rename object:"
+msgstr "Det gick inte att lägga döpa om objekt"
+
+
+msgid "Could not delete object:"
+msgstr "Det gick inte att ta bort objekt"
+
+
+msgid "Could not modify object:"
+msgstr "Det gick inte att ändra objekt"
+
+
+msgid "Line Number:"
+msgstr "Radnummer"
+
+
+msgid "Line:"
+msgstr "Rad:"
+
+

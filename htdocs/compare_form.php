@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/compare_form.php,v 1.2 2005/07/22 05:47:43 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/compare_form.php,v 1.2.4.2 2005/12/09 14:29:15 wurley Exp $
 
 /**
  * Compares to DN entries side by side.
@@ -15,7 +15,7 @@
 require './common.php';
 
 if( ! $ldapserver->haveAuthInfo())
-	pla_error( $lang['not_enough_login_info'] );
+	pla_error( _('Not enough information to login to server. Please check your configuration.') );
 
 $dn = (isset($_GET['dn']) ? $_GET['dn'] : '');
 
@@ -23,22 +23,22 @@ $encoded_dn = rawurlencode( $dn );
 $rdn = get_rdn( $dn );
 $container = get_container( $dn );
 
-$attrs = get_object_attrs( $ldapserver, $dn );
+$attrs = $ldapserver->getDNAttrs($dn);
 $select_server_html = server_select_list($ldapserver->server_id,true,'server_id_dst');
 
 include './header.php'; ?>
 
 <body>
 
-<h3 class="title"><?php echo $lang['compare_dn']. '&nbsp;' . $rdn; ?></h3>
-<h3 class="subtitle"><?php echo $lang['server']; ?>: <b><?php echo $ldapserver->name; ?></b>
+<h3 class="title"><?php echo _('Compare another DN with'). '&nbsp;' . $rdn; ?></h3>
+<h3 class="subtitle"><?php echo _('Server'); ?>: <b><?php echo $ldapserver->name; ?></b>
 <?php if ($dn) { ?>
-	 &nbsp;&nbsp;&nbsp; <?php echo $lang['distinguished_name']?>: <b><?php echo $dn; ?></b>
+	 &nbsp;&nbsp;&nbsp; <?php echo _('Distinguished Name')?>: <b><?php echo $dn; ?></b>
 <?php } ?>
 </h3>
 
 <center>
-<?php echo $lang['compare']; ?> <b><?php echo htmlspecialchars( $rdn ); ?></b> <?php echo $lang['with']; ?>:<br />
+<?php echo _('Compare'); ?> <b><?php echo htmlspecialchars( $rdn ); ?></b> <?php echo _('with '); ?>:<br />
 <br />
 
 <form action="compare.php" method="post" name="compare_form">
@@ -47,7 +47,7 @@ include './header.php'; ?>
 <table style="border-spacing: 10px">
 <tr>
 	<?php if (! $dn) { ?>
-	<td><acronym title="<?php echo $lang['compf_dn_tooltip']; ?>"><?php echo $lang['compf_source_dn']; ?></acronym>:</td>
+	<td><acronym title="<?php echo _('Compare this DN with another'); ?>"><?php echo _('Source DN'); ?></acronym>:</td>
 	<td>
 	<input type="text" name="dn_src" size="45" value="<?php echo htmlspecialchars( $dn ); ?>" />
 		<?php draw_chooser_link( 'compare_form.dn_src', 'true', $rdn ); ?></td>
@@ -57,7 +57,7 @@ include './header.php'; ?>
 	<?php } ?>
 </tr>
 <tr>
-	<td><acronym title="<?php echo $lang['compf_dn_tooltip']; ?>"><?php echo $lang['copyf_dest_dn']; ?></acronym>:</td>
+	<td><acronym title="<?php echo _('Compare this DN with another'); ?>"><?php echo _('Destination DN'); ?></acronym>:</td>
 	<td>
 		<input type="text" name="dn_dst" size="45" value="" />
 		<?php draw_chooser_link( 'compare_form.dn_dst', 'true', '' ); ?></td>
@@ -65,12 +65,12 @@ include './header.php'; ?>
 </tr>
 
 <tr>
-	<td><?php echo $lang['copyf_dest_server']?>:</td>
+	<td><?php echo _('Destination Server')?>:</td>
 	<td><?php echo $select_server_html; ?></td>
 </tr>
 
 <tr>
-	<td colspan="2" align="right"><input type="submit" value="<?php echo $lang['compare']; ?>" /></td>
+	<td colspan="2" align="right"><input type="submit" value="<?php echo _('Compare'); ?>" /></td>
 </tr>
 </table>
 </form>

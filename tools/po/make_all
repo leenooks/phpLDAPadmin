@@ -1,0 +1,25 @@
+#!/bin/bash
+echo "Generating Catalan translation template"
+./make_po_ca
+tar -czf messages.po_ca.tar.gz messages.po  
+echo " "
+echo "Generating Spanish translation template"
+./make_po_es
+tar -czf messages.po_es.tar.gz messages.po  
+echo " "
+echo "Generating French translation template"
+./make_po_fr
+tar -czf messages.po_fr.tar.gz messages.po  
+echo " "
+echo "Generating Hungarian translation template"
+./make_po_hu
+tar -czf messages.po_hu.tar.gz messages.po  
+echo " "
+echo "Generating Italian translation template"
+./make_po_it
+tar -czf messages.po_it.tar.gz messages.po  
+echo " "
+echo "Generating Japanese translation template"
+./make_po_jp
+tar -czf messages.po_jp.tar.gz messages.po  
+

@@ -1,8 +1,8 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.40.2.3 2005/10/22 14:22:47 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.43.2.8 2006/01/12 22:04:51 wurley Exp $
 
 /**
- * Takes the results of clicking "Save" in edit.php and determines which
+ * Takes the results of clicking "Save" in template_engine.php and determines which
  * attributes need to be updated (ie, which ones actually changed). Then,
  * we present a confirmation table to the user outlining the changes they
  * are about to make. That form submits directly to update.php, which
@@ -15,236 +15,229 @@
 
 require './common.php';
 include './header.php';
-include TMPLDIR.'template_config.php';
 
-if( $ldapserver->isReadOnly() )
-	pla_error( $lang['no_updates_in_read_only_mode'] );
+if ($ldapserver->isReadOnly())
+	pla_error(_('You cannot perform updates while server is in read-only mode'));
 
 $dn = $_POST['dn'];
 $old_values = $_POST['old_values'];
 $new_values = $_POST['new_values'];
-$encoded_dn = rawurlencode( $dn );
-$rdn = get_rdn( $dn );
+$encoded_dn = rawurlencode($dn);
+$rdn = get_rdn($dn);
 
-?>
+echo '<body>';
+printf('<h3 class="title">%s</h3>',htmlspecialchars($rdn));
+printf('<h3 class="subtitle">%s: <b>%s</b> &nbsp;&nbsp;&nbsp; %s: <b>%s</b></h3>',
+	_('Server'),$ldapserver->name,_('Distinguished Name'),htmlspecialchars($dn));
+echo "\n\n";
 
-<body>
-<h3 class="title"><?php echo htmlspecialchars( ( $rdn ) ); ?></h3>
-<h3 class="subtitle">Server: <b><?php echo $ldapserver->name; ?></b> &nbsp;&nbsp;&nbsp; <?php echo $lang['distinguished_name']; ?>: <b><?php echo htmlspecialchars( ( $dn ) ); ?></b></h3>
-<?php
-
-run_hook ( 'pre_update_array_processing', array ( 'server_id' => $ldapserver->server_id,
-	'dn' => $dn, 'old_values' => $old_values, 'new_values' => $new_values ) );
+run_hook('pre_update_array_processing',array('server_id'=>$ldapserver->server_id,
+	'dn'=>$dn,'old_values'=>$old_values,'new_values'=>$new_values));
 
 $update_array = array();
-foreach( $old_values as $attr => $old_val ) {
-	// Did the user delete the field?
-	if( ! isset( $new_values[ $attr ] ) )
-		$update_array[ $attr ] = '';
+foreach ($old_values as $attr => $old_val) {
+	# Did the user delete the field?
+	if (! isset($new_values[$attr]))
+		$update_array[$attr] = '';
 
-	// did the user change the field?
-	elseif( $old_val != $new_values[ $attr ] ) {
+	# Did the user change the field?
+	elseif ($old_val !== $new_values[$attr]) {
+		$new_val = $new_values[$attr];
 
-		$new_val = $new_values[ $attr ];
+		# Special case for userPassword attributes
+		if (strcasecmp($attr,'userPassword') == 0) {
+			foreach ($new_val as $key => $userpassword) {
+				if (trim($userpassword))
+					$new_val[$key] = password_hash($userpassword,$_POST['enc_type'][$key]);
+				else
+					unset($new_val[$key]);
+			}
 
-		// special case for userPassword attributes
-		if( 0 == strcasecmp( $attr, 'userPassword' ) && $new_val != '' ) {
-			$new_val = password_hash( $new_val, $_POST['enc_type'] );
 			$password_already_hashed = true;
 
-		// special case for samba password
-		} else if (( 0 == strcasecmp($attr,'sambaNTPassword')) && trim($new_val[0]) != '' ) {
-
+		# Special case for samba password
+		} elseif (strcasecmp($attr,'sambaNTPassword') == 0 && trim($new_val[0])) {
 			$sambapassword = new smbHash;
 			$new_val[0] = $sambapassword->nthash($new_val[0]);
 
-		// special case for samba password
-		} else if ((0 == strcasecmp($attr,'sambaLMPassword')) && trim($new_val[0]) != '' ) {
-
+		# Special case for samba password
+		} elseif (strcasecmp($attr,'sambaLMPassword') == 0 && trim($new_val[0])) {
 			$sambapassword = new smbHash;
 			$new_val[0] = $sambapassword->lmhash($new_val[0]);
 		}
 
-		if ($new_val == $old_val)
+		# Retest in case our now encoded password is the same.
+		if ($new_val === $old_val)
 			continue;
 
-		$update_array[ $attr ] = $new_val;
+		if ($new_val)
+			$update_array[$attr] = $new_val;
 	}
 }
 
-// special case check for a new enc_type for userPassword (not otherwise detected)
-if( isset( $_POST['enc_type'] ) &&
-	! isset( $password_already_hashed ) &&
-	$_POST['enc_type'] != $_POST['old_enc_type'] &&
-	$_POST['enc_type'] != 'clear' &&
-	array_key_exists ( 'userpassword', $_POST['new_values'] ) &&
-	$_POST['new_values']['userpassword'] != '' ) {
+# Check user password with new encoding.
+if (isset($new_values['userpassword']) && is_array($new_values['userpassword']))
+	foreach ($new_values['userpassword'] as $key => $userpassword) {
+		if ($userpassword) {
+			$new_val[$key] = password_hash($userpassword,$_POST['enc_type'][$key]);
 
-	$new_password = password_hash( $_POST['new_values']['userpassword'], $_POST['enc_type'] );
-	$update_array[ 'userpassword' ] = $new_password;
-}
+			if ($new_val[$key] != $old_values['userpassword'][$key])
+				$update_array['userpassword'][$key] = $new_val[$key];
+		}
+	}
 
-// strip empty vals from update_array and ensure consecutive indices for each attribute
-foreach( $update_array as $attr => $val ) {
-	if( is_array( $val ) ) {
-		foreach( $val as $i => $v )
-			if( null == $v || 0 == strlen( $v ) )
-				unset( $update_array[$attr][$i] );
-		$update_array[$attr] = array_values( $update_array[$attr] );
+# strip empty vals from update_array and ensure consecutive indices for each attribute
+foreach ($update_array as $attr => $val) {
+	if (is_array($val)) {
+		foreach($val as $i => $v)
+			if (null == $v || 0 == strlen($v))
+				unset($update_array[$attr][$i]);
+
+		$update_array[$attr] = array_values($update_array[$attr]);
 	}
 }
 
-// at this point, the update_array should look like this (example):
-// Array (
-//    cn => Array(
-//           [0] => 'Dave',
-//           [1] => 'Bob' )
-//    sn => 'Smith',
-//    telephoneNumber => '555-1234' )
-//  This array should be ready to be passed to ldap_modify()
+/* At this point, the update_array should look like this (example):
+  Array(
+	cn => Array(
+		[0] => 'Dave',
+		[1] => 'Bob')
+	sn => 'Smith',
+	telephoneNumber => '555-1234')
+  This array should be ready to be passed to ldap_modify() */
 
-run_hook ( 'post_update_array_processing', array ( 'server_id' => $ldapserver->server_id,
-	'dn' => $dn, 'update_array' => $update_array ) );
+run_hook('post_update_array_processing',array('server_id'=>$ldapserver->server_id,
+	'dn'=>$dn,'update_array'=>$update_array));
 
-if( count( $update_array ) > 0 ) { ?>
+if (count($update_array) > 0) {
+	echo '<br />';
+	echo '<center>';
+	echo _('Do you want to make these changes?');
+	echo '<br /><br />';
 
-	<br />
-	<center>
-	<?php echo $lang['do_you_want_to_make_these_changes']; ?>
-	<br />
-	<br />
+	# <!-- Commit button and acompanying form -->
+	echo "\n\n";
+	echo '<form action="update.php" method="post">';
+	echo "\n";
+	echo '<table class="confirm">';
+	echo "\n";
 
-	<!-- Commit button and acompanying form -->
-	<form action="update.php" method="post">
+	printf('<tr><th>%s</th><th>%s</th><th>%s</th><th>%s</th></tr>',
+		_('Attribute'),_('Old Value'),_('New Value'),_('Skip'));
 
-	<table class="confirm">
-	<tr>
-		<th><?php echo $lang['attribute']; ?></th>
-		<th><?php echo $lang['old_value']; ?></th>
-		<th><?php echo $lang['new_value']; ?></th>
-	</tr>
+	echo "\n\n";
+	$counter = 0;
 
-	<?php
-	$counter=0;
+	run_hook('pre_display_update_array',array('server_id'=>$ldapserver->server_id,'dn'=>$dn,
+		'update_array'=>$update_array));
 
-	run_hook ( 'pre_display_update_array', array ( 'server_id' => $ldapserver->server_id, 'dn' => $dn,
-		'update_array' => $update_array ) );
-
-	foreach( $update_array as $attr => $new_val ) {
+	foreach ($update_array as $attr => $new_val) {
 		$counter++;
 
-		if ( ! array_key_exists ( $attr, $old_values ) or ! array_key_exists ( $attr, $new_values ) )
+		if (! array_key_exists($attr,$old_values) or ! array_key_exists($attr,$new_values))
 			continue;
-		?>
 
-		<tr class="<?php echo $counter%2 ? 'even' : 'odd'; ?>">
-		<td><b><?php echo htmlspecialchars( $attr ); ?></b></td>
-		<td><nobr>
+		printf('<tr class="%s">',$counter%2 ? 'even' : 'odd');
+		printf('<td><b>%s</b></td>',htmlspecialchars($attr));
+		echo '<td><nobr>';
 
-		<?php
-		if( is_array( $old_values[ $attr ] ) )
-			foreach( $old_values[ $attr ] as $v )
-				echo nl2br( htmlspecialchars( $v ) ) . "<br />";
+		if (strcasecmp($attr,'userPassword') == 0) {
+			foreach ($old_values[$attr] as $key => $value) {
+				if (obfuscate_password_display(get_enc_type($old_values[$attr][$key])))
+					echo preg_replace('/./','*',$old_values[$attr][$key]).'<br />';
+				else
+					echo nl2br(htmlspecialchars($old_values[$attr][$key])).'<br />';
+			}
+
+		} elseif (is_array($old_values[$attr]))
+			foreach ($old_values[$attr] as $v)
+				echo nl2br(htmlspecialchars($v)).'<br />';
+
 		else
-			if( 0 == strcasecmp( $attr, 'userPassword' )
-				&& obfuscate_password_display( get_enc_type( $old_values[ $attr ] ) ) )
+			echo nl2br(htmlspecialchars($old_values[$attr])).'<br />';
 
-				echo preg_replace( '/./', '*', $old_values[ $attr ] ) . "<br />";
+		echo '</nobr></td>';
+		echo '<td><nobr>';
 
-			else
-				echo nl2br( htmlspecialchars( $old_values[ $attr ] ) ) . "<br />";
+		# Is this a multi-valued attribute?
+		if (is_array($new_val)) {
+			if (strcasecmp($attr,'userPassword') == 0) {
+				foreach ($new_values[$attr] as $key => $value) {
+					if (isset($new_val[$key])) {
+						if (obfuscate_password_display(get_enc_type($new_val[$key])))
+							echo preg_replace('/./','*',$new_val[$key]).'<br />';
+						else
+							echo htmlspecialchars($new_val[$key]).'<br />';
+					}
+				}
 
-		echo "</nobr></td><td><nobr>";
+			} else {
 
-		// is this a multi-valued attribute?
-		if( is_array( $new_val ) ) {
-			foreach( $new_val as $i => $v ) {
-				if( $v == '' ) {
-					// remove it from the update array if it's empty
-					unset( $update_array[ $attr ][ $i ] );
-					$update_array[ $attr ] = array_values( $update_array[ $attr ] );
+				foreach ($new_val as $i => $v) {
+					if ($v == '') {
+						# Remove it from the update array if it's empty
+						unset($update_array[$attr][$i]);
+						$update_array[$attr] = array_values($update_array[$attr]);
 
-				} else {
-					echo nl2br( htmlspecialchars( $v ) ) . "<br />";
+					} else {
+						echo nl2br(htmlspecialchars($v)).'<br />';
+					}
 				}
 			}
 
-			// was this a multi-valued attribute deletion? If so,
-			// fix the $update_array to reflect that per update_confirm.php's
-			// expectations
-			if( $update_array[ $attr ] == array( 0 => '' ) || $update_array[ $attr ] == array() ) {
-				$update_array[ $attr ] = '';
-				echo '<span style="color: red">' . $lang['attr_deleted'] . '</span>';
+			/* was this a multi-valued attribute deletion? If so,
+			   fix the $update_array to reflect that per update_confirm.php's
+			   expectations */
+			if ($update_array[$attr] == array(0=>'') || $update_array[$attr] == array()) {
+				$update_array[$attr] = '';
+				printf('<span style="color: red">%s</span>',_('[attribute deleted]'));
 			}
-		}
 
-		elseif( $new_val != '' )
-			if( 0 == strcasecmp( $attr, 'userPassword' ) &&
-				obfuscate_password_display( get_enc_type( $new_values[ $attr ] ) ) )
+		} elseif ($new_val != '')
+				printf('<span style="color: red">%s</span>',_('[attribute deleted]'));
 
-				echo preg_replace( '/./', '*', $new_val ) . "<br />";
+		echo '</nobr></td>';
 
-				else
-					echo htmlspecialchars( $new_val ) . "<br />";
+ 		printf('<td><input name="skip_array[%s]" type="checkbox" /></td>',htmlspecialchars($attr));
+		echo '</tr>'."\n\n";
+	}
 
-			else
-				echo '<span style="color: red">' . $lang['attr_deleted'] . '</span>';
+	run_hook('post_display_update_array',array('server_id'=>$ldapserver->server_id,'dn'=>$dn,
+		'update_array'=>$update_array,'index'=>$counter));
 
-			echo "</nobr></td></tr>\n\n";
-		}
+	echo '</table><table class="form">';
+	echo '<tr>';
+	echo '<td>';
+	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
+	printf('<input type="hidden" name="dn" value="%s" />',$dn);
 
-		run_hook ( 'post_display_update_array', array ( 'server_id' => $ldapserver->server_id, 'dn' => $dn,
-			'update_array' => $update_array, 'index' => $counter ) );
-	?>
+	foreach ($update_array as $attr => $val) {
+		if (is_array($val))
+			foreach($val as $i => $v)
+				printf('<input type="hidden" name="update_array[%s][%s]" value="%s" />',
+					htmlspecialchars($attr),$i,htmlspecialchars($v)); 
+		else
+			printf('<input type="hidden" name="update_array[%s]" value="%s" />',
+				htmlspecialchars($attr),htmlspecialchars($val));
+	}
 
-	</table>
-	<br />
+	printf('<input type="submit" value="%s" class="happy" />',_('Commit'));
+	echo '</td>';
+	echo '<td>';
+	printf('<input type="submit" name="cancel" value="%s" class="scary" />',_('Cancel'));
+	echo '</td>';
+	echo '</tr>';
+	echo '</table>';
+	echo '</form>';
+	echo '</center>';
 
-	<table class="form">
-	<tr>
-		<td>
-			<input type="hidden" name="server_id" value="<?php echo $ldapserver->server_id; ?>" />
-			<input type="hidden" name="dn" value="<?php echo $dn; ?>" />
+} else {
+	echo '<center>';
+	echo _('You made no changes');
+	printf(' <a href="template_engine.php?server_id=%s&amp;dn=%s">%s</a>.',
+		$ldapserver->server_id,$encoded_dn,_('Go back'));
+	echo '</center>';
+}
 
-		<?php foreach( $update_array as $attr => $val ) {
-			if( is_array( $val ) ) {
-				foreach( $val as $i => $v ) { ?>
-
-			<input type="hidden" name="update_array[<?php echo htmlspecialchars( $attr ); ?>][<?php echo $i; ?>]" value="<?php echo htmlspecialchars( $v ); ?>" />
-				<?php }
-
-			} else { ?>
-
-			<input type="hidden" name="update_array[<?php echo htmlspecialchars( $attr ); ?>]" value="<?php echo htmlspecialchars( $val ); ?>" />
-
-			<?php }
-		} ?>
-
-			<input type="submit" value="<?php echo $lang['commit']; ?>" class="happy" />
-			</form>
-		</td>
-		<td>
-			<!-- Cancel button -->
-			<form action="edit.php" method="get">
-			<input type="hidden" name="server_id" value="<?php echo $ldapserver->server_id; ?>" />
-			<input type="hidden" name="dn" value="<?php echo $dn; ?>" />
-			<input type="submit" value="<?php echo $lang['cancel']; ?>" class="scary" />
-			</form>
-		</td>
-	</tr>
-	</table>
-	</center>
-	</body>
-
-	<?php
-
-} else { ?>
-
-	<center>
-	<?php echo $lang['you_made_no_changes']; ?>
-	<a href="edit.php?server_id=<?php echo $ldapserver->server_id; ?>&amp;dn=<?php echo $encoded_dn; ?>"><?php echo $lang['go_back']; ?></a>.
-	</center>
-
-<?php } ?>
-
-</form>
+echo '</body>';
+?>
