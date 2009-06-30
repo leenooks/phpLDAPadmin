@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/tree_functions.php,v 1.23 2006/01/03 20:39:59 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/tree_functions.php,v 1.25 2006/05/13 12:52:27 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -89,7 +89,9 @@ function draw_server_tree() {
 					$logged_in_dn_array = explode(',',$logged_in_branch);
 				}
 
-				$logged_in_dn_array[] = $ldapserver->getDNBase($logged_in_dn);
+				$bases = $ldapserver->getDNBase($logged_in_dn);
+				if (is_array($bases) && count($bases))
+					$logged_in_dn_array[] = $bases;
 
 				$rdn = $logged_in_dn;
 
@@ -190,9 +192,6 @@ function draw_server_tree() {
 
 					$icon = isset($tree['browser'][$base_dn]['icon']) ? $tree['browser'][$base_dn]['icon'] : get_icon($ldapserver,$base_dn);
 
-					# Shall we draw the "mass-delete" checkbox?
-					if ($ldapserver->isMassDeleteEnabled())
-						printf('<td><input type="checkbox" name="mass_delete[%s]" /></td>',htmlspecialchars($base_dn));
 
 					if ($config->GetValue('appearance','tree_plm')) {
 						$tree_plm .= sprintf(".|%s|%s|%s|%s|%s|%s\n",
@@ -200,6 +199,11 @@ function draw_server_tree() {
 
 					} else {
 						echo '<tr>';
+
+						# Shall we draw the "mass-delete" checkbox?
+						if ($ldapserver->isMassDeleteEnabled())
+							printf('<td><input type="checkbox" name="mass_delete[%s]" /></td>',htmlspecialchars($base_dn));
+
 						printf('<td class="expander"><a href="%s"><img src="%s" alt="%s" /></a></td>',$expand_href,$expand_img,$expand_alt);
 						printf('<td class="icon"><a href="%s" target="right_frame"><img src="images/%s" alt="img" /></a></td>',$edit_href,$icon);
 						printf('<td class="rdn" colspan="98"><nobr><a href="%s" target="right_frame">%s</a>',$edit_href,pretty_print_dn($base_dn));

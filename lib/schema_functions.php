@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/schema_functions.php,v 1.90 2006/01/03 20:39:59 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/schema_functions.php,v 1.91 2006/04/29 06:49:32 wurley Exp $
 
 /**
  * Classes and functions for fetching and parsing schema from an LDAP server.
@@ -145,6 +145,7 @@ class ObjectClass extends SchemaItem {
 
 	/**
 	 * Creates a new ObjectClass object given a raw LDAP objectClass string.
+	 * @todo: Unfortunately, some schemas are not well defined - eg: dNSDomain. Where the schema definition is not case consistent with the attribute definitions. This causes us some problems, which we need to resolve.
 	 */
 	function ObjectClass($raw_ldap_schema_string,$ldapserver) {
 	        if (DEBUG_ENABLED)

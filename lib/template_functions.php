@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.34 2006/02/25 12:47:57 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.35 2006/04/29 06:49:32 wurley Exp $ */
 
 /**
  * Classes and functions for the template engine.ation and capability
@@ -464,7 +464,7 @@ class Templates {
 			U:    Make the result upper case.
 			*/
 			case 'autoFill' :
-				list($attr,$string) = split(',',$arg);
+				list($attr,$string) = preg_split('(([^,]+),(.*))',$arg,-1,PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 				preg_match_all('/%(\w+)(\|[0-9]*-[0-9]*)?(\/[klTU]+)?%/U',$string,$matchall);
 				//print"<PRE>";print_r($matchall); //0 = highlevel match, 1 = attr, 2 = subst, 3 = mod
 

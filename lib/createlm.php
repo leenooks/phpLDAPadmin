@@ -1,6 +1,6 @@
 <?php
 /*
-$Id: createlm.php,v 1.2 2005/10/23 01:05:41 wurley Exp $
+$Id: createlm.php,v 1.3 2006/04/29 07:29:10 wurley Exp $
 
   This code is part of LDAP Account Manager (http://www.sourceforge.net/projects/lam)
   Copyright (C) 2004 Roland Gruber
@@ -132,6 +132,14 @@ var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5
 		array( 1, 15, 13,  8, 10,  3,  7,  4, 12,  5,  6, 11,  0, 14,  9,  2),
 		array( 7, 11,  4,  1,  9, 12, 14,  2,  0,  6, 10, 13, 15,  3,  5,  8),
 		array( 2,  1, 14,  7,  4, 10,  8, 13, 15, 12,  9,  0,  3,  5,  6, 11)));
+
+	/**
+	* Fixes too large numbers
+	*/
+	function x($i) {
+		if ($i < 0) return 4294967296 - $i;
+		else return $i;
+	}
 
 	/**
 	* @param integer count
@@ -335,7 +343,11 @@ var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5
 	# Support functions
 	# Ported from SAMBA/source/lib/md4.c:F,G and H respectfully
 	function F($X, $Y, $Z) {
-		return ($X&$Y) | ((~$X)&$Z);
+		$ret = (($X&$Y) | ((~((int)$X))&$Z));
+		if ($this->x($ret) > 4294967296) {
+			$ret = (2*4294967296) - $this->x($ret);
+		}
+		return $ret;
 	}
 
 	function G($X, $Y, $Z) {
@@ -468,6 +480,9 @@ var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5
 		$sum[1] &= 0xffff;
 		$sum[0] &= 0xffff;
 		$ret = ($sum[0]<<16) | $sum[1];
+		if ($this->x($ret) > 4294967296) {
+			$ret = (2*4294967296) - $this->x($ret);
+		}
 		return $ret;
 	}
 
@@ -493,7 +508,14 @@ var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5
 	# Renamed to prevent clash with SAMBA/source/libsmb/smbdes.c:lshift
 	function md4lshift($x, $s) {
 		$x &= 0xFFFFFFFF;
-		return ((($x<<$s)&0xFFFFFFFF) | $this->unsigned_shift_r($x, (32-$s)));
+		if ($this->x($x) > 4294967296) {
+			$x = (2*4294967296) - $this->x($x);
+		}
+		$ret = ((($x<<$s)&0xFFFFFFFF) | $this->unsigned_shift_r($x, (32-$s)));
+		if ($this->x($ret) > 4294967296) {
+			$ret = (2*4294967296) - $this->x($ret);
+		}
+		return $ret;
 	}
 
 	/**
