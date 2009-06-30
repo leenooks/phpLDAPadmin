@@ -45,17 +45,19 @@ if( $del_result )
 	if( session_is_registered( 'tree' ) )
 	{
 		$tree = $_SESSION['tree'];
+		if( isset( $tree[$server_id] ) && is_array( $tree[$server_id] ) ) {
 
-		// does it have children? (it shouldn't, but hey, you never know)	
-		if( isset( $tree[$server_id][$dn] ) )
-			unset( $tree[$server_id][$dn] );
-		
-		// search and destroy
-		foreach( $tree[$server_id] as $tree_dn => $subtree )
-			foreach( $subtree as $key => $sub_tree_dn )
-				if( 0 == strcasecmp( $sub_tree_dn, $dn ) ) 
-					unset( $tree[$server_id][$tree_dn][$key] );
-		$_SESSION['tree'] = $tree;
+			// does it have children? (it shouldn't, but hey, you never know)	
+			if( isset( $tree[$server_id][$dn] ) )
+				unset( $tree[$server_id][$dn] );
+			
+			// search and destroy
+			foreach( $tree[$server_id] as $tree_dn => $subtree )
+				foreach( $subtree as $key => $sub_tree_dn )
+					if( 0 == strcasecmp( $sub_tree_dn, $dn ) ) 
+						unset( $tree[$server_id][$tree_dn][$key] );
+			$_SESSION['tree'] = $tree;
+		}
 		session_write_close();
 	}
 

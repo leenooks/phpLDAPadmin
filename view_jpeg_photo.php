@@ -5,7 +5,7 @@ require 'common.php';
 $file = $_GET['file'];
 
 // Security check (we don't want anyone tryting to get at /etc/passwd or something)
-preg_match( "/^djp/", $file ) or 
+preg_match( "/^pla/", $file ) or 
 	pla_error( $lang['unsafe_file_name'] . htmlspecialchars( $file ) );
 
 $file = $jpeg_temp_dir . '/' . $file;

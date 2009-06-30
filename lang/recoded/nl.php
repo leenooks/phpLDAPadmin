@@ -1,7 +1,7 @@
 <?php
 
 /*
- * &Uuml;bersetzung von Marius Rieder <marius.rieder@bluewin.ch>
+ * Übersetzung von Marius Rieder <marius.rieder@bluewin.ch>
  *                 Uwe Ebel
  */
 
@@ -135,22 +135,22 @@ $lang['that_this_oclass_requires'] = 'dat deze objectClass nodig heeft. U kunt d
 $lang['add_oclass_and_attrs'] = 'objectClass en attributen toevoegen';//'Add ObjectClass and Attributes';
 
 // General
-$lang['chooser_link_tooltip'] = 'klik om grafisch een veld te kiezen (DN)';//&quot;Click to popup a dialog to select an entry (DN) graphically';
+$lang['chooser_link_tooltip'] = 'klik om grafisch een veld te kiezen (DN)';//"Click to popup a dialog to select an entry (DN) graphically';
 $lang['no_updates_in_read_only_mode'] = 'U kunt niet opslaan als de server alleen lezen is';//'You cannot perform updates while server is in read-only mode';
 $lang['bad_server_id'] = 'ongeldig server ID';//'Bad server id';
 $lang['not_enough_login_info'] = 'Onvoldoende informatie om in te kunnen loggen. Controleer de configuratie.';//'Not enough information to login to server. Please check your configuration.';
 $lang['could_not_connect'] = 'Kan LDAP server niet vinden.';//'Could not connect to LDAP server.';
 $lang['could_not_perform_ldap_mod_add'] = 'Kan geen ldap_mod_add uitvoeren.';//'Could not perform ldap_mod_add operation.';
-$lang['bad_server_id_underline'] = 'ongeldig server_ID:';//&quot;Bad server_id: ';
-$lang['success'] = 'succes';//&quot;Success';
-$lang['server_colon_pare'] = 'server: ';//&quot;Server: ';
-$lang['look_in'] = 'bekijken: ';//&quot;Looking in: ';
+$lang['bad_server_id_underline'] = 'ongeldig server_ID:';//"Bad server_id: ';
+$lang['success'] = 'succes';//"Success';
+$lang['server_colon_pare'] = 'server: ';//"Server: ';
+$lang['look_in'] = 'bekijken: ';//"Looking in: ';
 $lang['missing_server_id_in_query_string'] = 'geen server ID meegegeven';//'No server ID specified in query string!';
 $lang['missing_dn_in_query_string'] = 'geen DN meegeven';//'No DN specified in query string!';
-$lang['back_up_p'] = 'backup...';//&quot;Back Up...';
-$lang['no_entries'] = 'geen velden';//&quot;no entries';
-$lang['not_logged_in'] = 'niet ingelogd';//&quot;Not logged in';
-$lang['could_not_det_base_dn'] = 'kan de basis-DN niet bepalen';//&quot;Could not determine base DN';
+$lang['back_up_p'] = 'backup...';//"Back Up...';
+$lang['no_entries'] = 'geen velden';//"no entries';
+$lang['not_logged_in'] = 'niet ingelogd';//"Not logged in';
+$lang['could_not_det_base_dn'] = 'kan de basis-DN niet bepalen';//"Could not determine base DN';
 
 
 // Add value form
@@ -161,23 +161,23 @@ $lang['server'] = 'server';//'Server';
 $lang['distinguished_name'] = 'Distinguished Name';// 'Distinguished Name';
 $lang['current_list_of'] = 'huidige lijst van';//'Current list of';
 $lang['values_for_attribute'] = 'waarden voor attributen';//'values for attribute';
-$lang['inappropriate_matching_note'] = 'Info: U zult een &quot;inappropriate matching&quot; melding krijgen, indien u niet<br />' . //'Note: You will get an &quot;inappropriate matching&quot; error if you have not<br />' .
+$lang['inappropriate_matching_note'] = 'Info: U zult een "inappropriate matching" melding krijgen, indien u niet<br />' . //'Note: You will get an "inappropriate matching" error if you have not<br />' .
 'een <tt>EQUALITY</tt> regel op de LDAP Server voor dit attribuut ingesteld heeft.';//'setup an <tt>EQUALITY</tt> rule on your LDAP server for this attribute.';
 $lang['enter_value_to_add'] = 'geef de waarde die u wilt toevoegen:';//'Enter the value you would like to add:';
 $lang['new_required_attrs_note'] = 'Info: U kunt verzocht worden nieuwe attributen, die voor deze objectClass verplicht zijn, in te voeren.';//'Note: you may be required to enter new attributes<br />that this objectClass requires.';
 $lang['syntax'] = 'syntax';//'Syntax';
 
 //Copy.php
-$lang['copy_server_read_only'] = 'U kunt niet opslaan als de server alleen lezen is';//&quot;You cannot perform updates while server is in read-only mode';
-$lang['copy_dest_dn_blank'] = 'de bestemmings DN is leeg';//&quot;You left the destination DN blank.';
-$lang['copy_dest_already_exists'] = 'het veld (%s) bestaat al.';//&quot;The destination entry (%s) already exists.';
+$lang['copy_server_read_only'] = 'U kunt niet opslaan als de server alleen lezen is';//"You cannot perform updates while server is in read-only mode';
+$lang['copy_dest_dn_blank'] = 'de bestemmings DN is leeg';//"You left the destination DN blank.';
+$lang['copy_dest_already_exists'] = 'het veld (%s) bestaat al.';//"The destination entry (%s) already exists.';
 $lang['copy_dest_container_does_not_exist'] = 'het doel-veld (%s) bestaat niet.';//'The destination container (%s) does not exist.';
-$lang['copy_source_dest_dn_same'] = 'origineel DN en doel DN zijn hetzelfde';//&quot;The source and destination DN are the same.';
-$lang['copy_copying'] = 'kopieren';//&quot;Copying ';
-$lang['copy_recursive_copy_progress'] = 'bezig met recursief kopieren';//&quot;Recursive copy progress';
-$lang['copy_building_snapshot'] = 'bezig met het aanmaken van een snapshot van de boomstructuur... ';//&quot;Building snapshot of tree to copy... ';
-$lang['copy_successful_like_to'] = 'Kopieren succesvol! Wit u dan';//&quot;Copy successful! Would you like to ';
-$lang['copy_view_new_entry'] = 'het nieuwe veld bekijken';//&quot;view the new entry';
+$lang['copy_source_dest_dn_same'] = 'origineel DN en doel DN zijn hetzelfde';//"The source and destination DN are the same.';
+$lang['copy_copying'] = 'kopieren';//"Copying ';
+$lang['copy_recursive_copy_progress'] = 'bezig met recursief kopieren';//"Recursive copy progress';
+$lang['copy_building_snapshot'] = 'bezig met het aanmaken van een snapshot van de boomstructuur... ';//"Building snapshot of tree to copy... ';
+$lang['copy_successful_like_to'] = 'Kopieren succesvol! Wit u dan';//"Copy successful! Would you like to ';
+$lang['copy_view_new_entry'] = 'het nieuwe veld bekijken';//"view the new entry';
 $lang['copy_failed'] = 'Kopieren van DN mislukt: ';//'Failed to copy DN: ';
 
 
@@ -186,31 +186,31 @@ $lang['missing_template_file'] = 'Waarschuwing: kan de template file niet vinden
 $lang['using_default'] = 'standaardinstelling gebruiken';//'Using default.';
 
 //copy_form.php
-$lang['copyf_title_copy'] = 'Kopieren';//&quot;Copy ';
-$lang['copyf_to_new_object'] = 'naar een nieuw Objekt';//&quot;to a new object';
-$lang['copyf_dest_dn'] = 'doel DN';//&quot;Destination DN';
+$lang['copyf_title_copy'] = 'Kopieren';//"Copy ';
+$lang['copyf_to_new_object'] = 'naar een nieuw Objekt';//"to a new object';
+$lang['copyf_dest_dn'] = 'doel DN';//"Destination DN';
 $lang['copyf_dest_dn_tooltip'] = 'De complete DN die aangemaakt wordt bij het kopieren van het bron-veld.';//'The full DN of the new entry to be created when copying the source entry';
-$lang['copyf_dest_server'] = 'bestemmings server';//&quot;Destination Server';
-$lang['copyf_note'] = 'Info: kopieren tussen twee servers gaat alleen maar goped als er geen schema problemen zijn';//&quot;Note: Copying between different servers only works if there are no schema violations';
-$lang['copyf_recursive_copy'] = 'Recursief kopieren van alle sub-velden';//&quot;Recursively copy all children of this object as well.';
+$lang['copyf_dest_server'] = 'bestemmings server';//"Destination Server';
+$lang['copyf_note'] = 'Info: kopieren tussen twee servers gaat alleen maar goped als er geen schema problemen zijn';//"Note: Copying between different servers only works if there are no schema violations';
+$lang['copyf_recursive_copy'] = 'Recursief kopieren van alle sub-velden';//"Recursively copy all children of this object as well.';
 
 //create.php
-$lang['create_required_attribute'] = 'Fout. U heeft een verplicht veld leeggelaten.';//&quot;Error, you left the value blank for required attribute ';
-$lang['create_redirecting'] = 'omleiden';//&quot;Redirecting';
-$lang['create_here'] = 'hier';//&quot;here';
-$lang['create_could_not_add'] = 'kan het object niet toevoegen op de LDAP server.';//&quot;Could not add the object to the LDAP server.';
+$lang['create_required_attribute'] = 'Fout. U heeft een verplicht veld leeggelaten.';//"Error, you left the value blank for required attribute ';
+$lang['create_redirecting'] = 'omleiden';//"Redirecting';
+$lang['create_here'] = 'hier';//"here';
+$lang['create_could_not_add'] = 'kan het object niet toevoegen op de LDAP server.';//"Could not add the object to the LDAP server.';
 
 //create_form.php
-$lang['createf_create_object'] = 'object aanmaken';//&quot;Create Object';
-$lang['createf_choose_temp'] = 'kies een template';//&quot;Choose a template';
-$lang['createf_select_temp'] = 'kies een template voor dit object';//&quot;Select a template for the creation process';
-$lang['createf_proceed'] = 'verder';//&quot;Proceed';
+$lang['createf_create_object'] = 'object aanmaken';//"Create Object';
+$lang['createf_choose_temp'] = 'kies een template';//"Choose a template';
+$lang['createf_select_temp'] = 'kies een template voor dit object';//"Select a template for the creation process';
+$lang['createf_proceed'] = 'verder';//"Proceed';
 
 //creation_template.php
-$lang['ctemplate_on_server'] = 'op server';//&quot;On server';
-$lang['ctemplate_no_template'] = 'geen template gespecifieerd in de POST variabelen';//&quot;No template specified in POST variables.';
-$lang['ctemplate_config_handler'] = 'uw configuratie specificeert een routine';//&quot;Your config specifies a handler of';
-$lang['ctemplate_handler_does_not_exist'] = 'in deze template. Maar deze routine bestaat niet in de \'templates/creation\' directory.';//&quot;for this template. But, this handler does not exist in the 'templates/creation' directory.';
+$lang['ctemplate_on_server'] = 'op server';//"On server';
+$lang['ctemplate_no_template'] = 'geen template gespecifieerd in de POST variabelen';//"No template specified in POST variables.';
+$lang['ctemplate_config_handler'] = 'uw configuratie specificeert een routine';//"Your config specifies a handler of';
+$lang['ctemplate_handler_does_not_exist'] = 'in deze template. Maar deze routine bestaat niet in de \'templates/creation\' directory.';//"for this template. But, this handler does not exist in the 'templates/creation' directory.';
 
 // search.php
 $lang['you_have_not_logged_into_server'] = 'u bent nog niet ingelogd op de geselecteerde server, dus u kunt geen zoekopdrachten geven.';//'You have not logged into the selected server yet, so you cannot perform searches on it.';
@@ -227,7 +227,7 @@ $lang['scope_in_which_to_search'] = 'zoekbereik';//'The scope in which to search
 $lang['scope_sub'] = 'Sub (de hele tak)';//'Sub (entire subtree)';
 $lang['scope_one'] = 'One (een laag diep)';//'One (one level beneath base)';
 $lang['scope_base'] = 'Base (alleen de basis)';//'Base (base dn only)';
-$lang['standard_ldap_search_filter'] = 'Standard LDAP zoekfilter. Voorbeeld.: (&amp;(sn=Smith)(givenname=David))';//'Standard LDAP search filter. Example: (&amp;(sn=Smith)(givenname=David))';
+$lang['standard_ldap_search_filter'] = 'Standard LDAP zoekfilter. Voorbeeld.: (&(sn=Smith)(givenname=David))';//'Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))';
 $lang['search_filter'] = 'zoekfilter';//'Search Filter';
 $lang['list_of_attrs_to_display_in_results'] = 'komma gescheiden lijst van de attributen.';//'A list of attributes to display in the results (comma-separated)';
 $lang['show_attributes'] = 'attributen laten zien';//'Show Attributes';
@@ -269,35 +269,35 @@ $lang['unsafe_file_name'] = 'onveilige bestandsnaam: ';//'Unsafe file name: ';
 $lang['no_such_file'] = 'Bestand bestaat niet: ';//'No such file: ';
 
 //function.php
-$lang['auto_update_not_setup'] = '<tt>auto_uid_numbers</tt> is geactiveerd (<b>%s</b>, maar niet het mechanisme (auto_uid_number_mechanism). U dient dit alsnog te doen.';//&quot;You have enabled auto_uid_numbers for <b>%s</b> in your configuration, but you have not specified the auto_uid_number_mechanism. Please correct this problem.';
-$lang['uidpool_not_set'] = 'Het mechanisme <tt>auto_uid_number_mechanism</tt> is als <tt>uidpool</tt> voor server <b>%s</b> vastgelegd, maar niet de <tt>auto_uid_number_uid_pool_dn</tt>. U dient dit alsnog te doen.';//&quot;You specified the <tt>auto_uid_number_mechanism</tt> as <tt>uidpool</tt> in your configuration for server <b>%s</b>, but you did not specify the audo_uid_number_uid_pool_dn. Please specify it before proceeding.';
+$lang['auto_update_not_setup'] = '<tt>auto_uid_numbers</tt> is geactiveerd (<b>%s</b>, maar niet het mechanisme (auto_uid_number_mechanism). U dient dit alsnog te doen.';//"You have enabled auto_uid_numbers for <b>%s</b> in your configuration, but you have not specified the auto_uid_number_mechanism. Please correct this problem.';
+$lang['uidpool_not_set'] = 'Het mechanisme <tt>auto_uid_number_mechanism</tt> is als <tt>uidpool</tt> voor server <b>%s</b> vastgelegd, maar niet de <tt>auto_uid_number_uid_pool_dn</tt>. U dient dit alsnog te doen.';//"You specified the <tt>auto_uid_number_mechanism</tt> as <tt>uidpool</tt> in your configuration for server <b>%s</b>, but you did not specify the audo_uid_number_uid_pool_dn. Please specify it before proceeding.';
 
-$lang['uidpool_not_exist'] = 'De <tt>uidPool</tt> die gespecificeerd is in de configuratie bestaat niet.';//&quot;It appears that the uidPool you specified in your configuration (<tt>%s</tt>) does not exist.';
+$lang['uidpool_not_exist'] = 'De <tt>uidPool</tt> die gespecificeerd is in de configuratie bestaat niet.';//"It appears that the uidPool you specified in your configuration (<tt>%s</tt>) does not exist.';
 
-$lang['specified_uidpool'] = 'De <tt>auto_uid_number_mechanism</tt> is als <tt>search</tt> in de configuratie voor de server <b>%s</b> bepaald, maar de waarde <tt>auto_uid_number_search_base</tt> niet. U dient dit alsnog te doen.';//&quot;You specified the <tt>auto_uid_number_mechanism</tt> as <tt>search</tt> in your configuration for server <b>%s</b>, but you did not specify the <tt>auto_uid_number_search_base</tt>. Please specify it before proceeding.';
+$lang['specified_uidpool'] = 'De <tt>auto_uid_number_mechanism</tt> is als <tt>search</tt> in de configuratie voor de server <b>%s</b> bepaald, maar de waarde <tt>auto_uid_number_search_base</tt> niet. U dient dit alsnog te doen.';//"You specified the <tt>auto_uid_number_mechanism</tt> as <tt>search</tt> in your configuration for server <b>%s</b>, but you did not specify the <tt>auto_uid_number_search_base</tt>. Please specify it before proceeding.';
 
-$lang['auto_uid_invalid_value'] = 'Ongeldige waarde voor <tt>auto_uid_number_mechanism</tt>(%s). Alleen <tt>uidpool</tt> und <tt>search</tt> zijn geldig. Gaarne de fout herstellen ';//&quot;You specified an invalid value for auto_uid_number_mechanism (<tt>%s</tt>) in your configration. Only <tt>uidpool</tt> and <tt>search</tt> are valid. Please correct this problem.';
+$lang['auto_uid_invalid_value'] = 'Ongeldige waarde voor <tt>auto_uid_number_mechanism</tt>(%s). Alleen <tt>uidpool</tt> und <tt>search</tt> zijn geldig. Gaarne de fout herstellen ';//"You specified an invalid value for auto_uid_number_mechanism (<tt>%s</tt>) in your configration. Only <tt>uidpool</tt> and <tt>search</tt> are valid. Please correct this problem.';
 
-$lang['error_auth_type_config'] = 'Fout: Er zit een fout inde configuratiefile (config.php). De enige twee waarden voor \'auth_type\' in de $servers sectie zijn: <b>\'config\'</b> of <b>\'form\'</b>. U heeft er nu <b>%s</b> in staan en dat kan niet.';//&quot;Error: You have an error in your config file. The only two allowed values for 'auth_type' in the $servers section are 'config' and 'form'. You entered '%s', which is not allowed. ';
+$lang['error_auth_type_config'] = 'Fout: Er zit een fout inde configuratiefile (config.php). De enige twee waarden voor \'auth_type\' in de $servers sectie zijn: <b>\'config\'</b> of <b>\'form\'</b>. U heeft er nu <b>%s</b> in staan en dat kan niet.';//"Error: You have an error in your config file. The only two allowed values for 'auth_type' in the $servers section are 'config' and 'form'. You entered '%s', which is not allowed. ';
 
-$lang['php_install_not_supports_tls'] = 'Uw installatie ondersteunt geen TLS.';//&quot;Your PHP install does not support TLS';
-$lang['could_not_start_tls'] = 'Kan TLS niet starten.<br/>Controleer de LDAP-Server-configuratie.';//&quot;Could not start TLS.<br />Please check your LDAP server configuration.';
-$lang['auth_type_not_valid'] = 'Fout in de configuratiefile: auth_type %s is niet geldig'; //&quot;You have an error in your config file. auth_type of %s is not valid.';
-$lang['ldap_said'] = '<b>LDAP zegt</b>: %s<br/><br/>';//&quot;<b>LDAP said</b>: %s<br /><br />';
-$lang['ferror_error'] = 'Fout';//&quot;Error';
-$lang['fbrowse'] = 'navigeer';//&quot;browse';
-$lang['delete_photo'] = 'Foto verwijderen';//&quot;Delete Photo';
-$lang['install_not_support_blowfish'] = 'Uw PHP-Versie ondersteunt geen Blowfish versleuteling.';//&quot;Your PHP install does not support blowfish encryption.';
-$lang['install_no_mash'] = 'Uw PHP-Versie ondersteunt de functie mhash() niet, dus de SHA-hash is niet mogelijk.';// &quot;Your PHP install does not have the mhash() function. Cannot do SHA hashes.';
-$lang['jpeg_contains_errors'] = 'Foto (jpg) bevat fouten';//&quot;jpegPhoto contains errors<br />';
-$lang['ferror_number'] = '<b>Foutnummer:</b> %s<small>(%s)</small><br/><br/>';//&quot;<b>Error number</b>: %s <small>(%s)</small><br /><br />';
-$lang['ferror_discription'] ='<b>Omschrijving:</b> %s<br/><br/>';// &quot;<b>Description</b>: %s <br /><br />';
-$lang['ferror_number_short'] = '<b>Foutnummer:</b>%s<br/><br/>';//&quot;<b>Error number</b>: %s<br /><br />';
-$lang['ferror_discription_short'] = '<b>Omschrijving:</b> (geen omschrijving beschikbaar)<br/>';//&quot;<b>Description</b>: (no description available)<br />';
-$lang['ferror_submit_bug'] = 'Is het een phpLDAPadmin fout? Als dat zo is, dan gaarne een <a href=\'%s\'>bugreport</a> invullen';//&quot;Is this a phpLDAPadmin bug? If so, please <a href=\'%s\'>report it</a>.';
-$lang['ferror_unrecognized_num'] = 'Onbekend foutnummer:';//&quot;Unrecognized error number: ';
+$lang['php_install_not_supports_tls'] = 'Uw installatie ondersteunt geen TLS.';//"Your PHP install does not support TLS';
+$lang['could_not_start_tls'] = 'Kan TLS niet starten.<br/>Controleer de LDAP-Server-configuratie.';//"Could not start TLS.<br />Please check your LDAP server configuration.';
+$lang['auth_type_not_valid'] = 'Fout in de configuratiefile: auth_type %s is niet geldig'; //"You have an error in your config file. auth_type of %s is not valid.';
+$lang['ldap_said'] = '<b>LDAP zegt</b>: %s<br/><br/>';//"<b>LDAP said</b>: %s<br /><br />';
+$lang['ferror_error'] = 'Fout';//"Error';
+$lang['fbrowse'] = 'navigeer';//"browse';
+$lang['delete_photo'] = 'Foto verwijderen';//"Delete Photo';
+$lang['install_not_support_blowfish'] = 'Uw PHP-Versie ondersteunt geen Blowfish versleuteling.';//"Your PHP install does not support blowfish encryption.';
+$lang['install_no_mash'] = 'Uw PHP-Versie ondersteunt de functie mhash() niet, dus de SHA-hash is niet mogelijk.';// "Your PHP install does not have the mhash() function. Cannot do SHA hashes.';
+$lang['jpeg_contains_errors'] = 'Foto (jpg) bevat fouten';//"jpegPhoto contains errors<br />';
+$lang['ferror_number'] = '<b>Foutnummer:</b> %s<small>(%s)</small><br/><br/>';//"<b>Error number</b>: %s <small>(%s)</small><br /><br />';
+$lang['ferror_discription'] ='<b>Omschrijving:</b> %s<br/><br/>';// "<b>Description</b>: %s <br /><br />';
+$lang['ferror_number_short'] = '<b>Foutnummer:</b>%s<br/><br/>';//"<b>Error number</b>: %s<br /><br />';
+$lang['ferror_discription_short'] = '<b>Omschrijving:</b> (geen omschrijving beschikbaar)<br/>';//"<b>Description</b>: (no description available)<br />';
+$lang['ferror_submit_bug'] = 'Is het een phpLDAPadmin fout? Als dat zo is, dan gaarne een <a href=\'%s\'>bugreport</a> invullen';//"Is this a phpLDAPadmin bug? If so, please <a href=\'%s\'>report it</a>.';
+$lang['ferror_unrecognized_num'] = 'Onbekend foutnummer:';//"Unrecognized error number: ';
 
-$lang['ferror_nonfatil_bug'] = '<center><table class=\'notice\'><tr><td colspan=\'2\'><center><img src=\'images/warning.png\' height=\'12\' width=\'13\' /><b>Een niet fatale fout in phpLDAPadmin gevonden!</b></td></tr><tr><td>Fout:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Bestand:</td><td><b>%s</b>Regel:<b>%s</b>, aangeroepen door <b>%s</b></td></tr><tr><td>Versie:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b></td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr><tr><td colspan=\'2\'><center>Graag een <a target=\'new\' href=\'%s\'>bugreport</a> invullen.</center></td></tr></table></center><br />';//&quot;<center><table class=\'notice\'><tr><td colspan=\'2\'><center><img src=\'images/warning.png\' height=\'12\' width=\'13\' /><b>You found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td><td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b></td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr><tr><td colspan=\'2\'><center><a target=\'new\' href=\'%s\'>Please report this bug by clicking here</a>.</center></td></tr></table></center><br />';
+$lang['ferror_nonfatil_bug'] = '<center><table class=\'notice\'><tr><td colspan=\'2\'><center><img src=\'images/warning.png\' height=\'12\' width=\'13\' /><b>Een niet fatale fout in phpLDAPadmin gevonden!</b></td></tr><tr><td>Fout:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Bestand:</td><td><b>%s</b>Regel:<b>%s</b>, aangeroepen door <b>%s</b></td></tr><tr><td>Versie:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b></td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr><tr><td colspan=\'2\'><center>Graag een <a target=\'new\' href=\'%s\'>bugreport</a> invullen.</center></td></tr></table></center><br />';//"<center><table class=\'notice\'><tr><td colspan=\'2\'><center><img src=\'images/warning.png\' height=\'12\' width=\'13\' /><b>You found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td><td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b></td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr><tr><td colspan=\'2\'><center><a target=\'new\' href=\'%s\'>Please report this bug by clicking here</a>.</center></td></tr></table></center><br />';
 
 $lang['ferror_congrats_found_bug'] = '<center><table class=\'notice\'>
 			<tr><td colspan=\'2\'><center><img src=\'images/warning.png\' height=\'12\' width=\'13\' /><b>Gefeliciteerd! Een fout in phpLDAPadmin gevonden!</b></td></tr>
@@ -305,14 +305,14 @@ $lang['ferror_congrats_found_bug'] = '<center><table class=\'notice\'>
 			<tr><td>Versie:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b></td></tr>
 			<tr><td>Web server:</td><td><b>%s</b></td></tr>
 			<tr><td colspan=\'2\'><center>Graag een bugreport invullen.</center></td></tr>
-			</table></center><br />';//&quot;Congratulations! You found a bug in phpLDAPadmin.<br /><br /><table class=\'bug\'><tr><td>Error:</td><td><b>%s</b></td></tr><tr><td>Level:</td><td><b>%s</b></td></tr><tr><td>File:</td><td><b>%s</b></td></tr><tr><td>Line:</td><td><b>%s</b></td></tr><tr><td>Caller:</td><td><b>%s</b></td></tr><tr><td>PLA Version:</td><td><b>%s</b></td></tr><tr><td>PHP Version:</td><td><b>%s</b></td></tr><tr><td>PHP SAPI:</td><td><b>%s</b></td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr></table><br /> Please report this bug by clicking below!';
+			</table></center><br />';//"Congratulations! You found a bug in phpLDAPadmin.<br /><br /><table class=\'bug\'><tr><td>Error:</td><td><b>%s</b></td></tr><tr><td>Level:</td><td><b>%s</b></td></tr><tr><td>File:</td><td><b>%s</b></td></tr><tr><td>Line:</td><td><b>%s</b></td></tr><tr><td>Caller:</td><td><b>%s</b></td></tr><tr><td>PLA Version:</td><td><b>%s</b></td></tr><tr><td>PHP Version:</td><td><b>%s</b></td></tr><tr><td>PHP SAPI:</td><td><b>%s</b></td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr></table><br /> Please report this bug by clicking below!';
 
 // extra strings:
 
 $lang['login_link'] = 'Login...';
 $lang['import_ldif_file_title'] = 'Import file from LDIF';
 $lang['select_ldif_file'] = 'Selecteer een LDIF file:';
-$lang['select_ldif_file_proceed']= 'Ga door &amp;gt;&amp;gt;';
+$lang['select_ldif_file_proceed']= 'Ga door &gt;&gt;';
 $lang['add_action'] =  'Toevoegen...';
 $lang['delete_action'] = 'Verwijderen...';
 $lang['rename_action'] = 'Hernoemen...';

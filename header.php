@@ -2,7 +2,7 @@
 	// We want to get $language into scope in case we were included
 	// from within a function
 	global $language; 
-	header( "Content-type: text/html; charset=\"UTF-8\"" );
+	@header( "Content-type: text/html; charset=\"UTF-8\"" );
 
 	// XML version and encoding for well-behaved browsers
 	echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"; 

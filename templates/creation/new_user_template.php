@@ -169,6 +169,11 @@ function autoFillHomeDir( form )
 		<?php draw_chooser_link( 'user_form.container' ); ?></td>
 	</td>
 </tr>
+<tr>
+	<td></td>
+	<td class="heading">Home Directory:</td>
+	<td><input type="text" name="home_dir" value="/home/" id="home_dir" /></td>
+</tr>
 <?php 
 	// determining the next available uidNumber may take a moment. 
 	// give them something to look at in the mean time
@@ -191,11 +196,6 @@ function autoFillHomeDir( form )
 		<option value="3000">staff (3000)</option>
 		<option value="5000">guest (5000)</option>
 	    </select></td>
-</tr>
-<tr>
-	<td></td>
-	<td class="heading">Home Directory:</td>
-	<td><input type="text" name="home_dir" value="/home/" id="home_dir" /></td>
 </tr>
 <tr>
 	<td colspan="3"><center><br /><input type="submit" value="Proceed" /></td>

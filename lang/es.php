@@ -72,7 +72,7 @@ $lang['attr_name_tooltip'] = 'Haz click para ver la definicion del esquema para 
 $lang['click_to_display'] = 'Haz click para mostrar';
 $lang['hidden'] = 'ocultado';
 $lang['none'] = 'ninguno';
-$lang['save_changes'] = 'Guardar los canvios';
+$lang['save_changes'] = 'Guardar los cambios';
 $lang['add_value'] = 'agregar valor';
 $lang['add_value_tooltip'] = 'Agregar valor adicional a este atributo';
 $lang['refresh_entry'] = 'Refrescar';
@@ -242,7 +242,7 @@ $lang['update_array_malformed'] = 'el update_array está mal formado. Esto podría
 $lang['could_not_perform_ldap_modify'] = 'No he podido ejecutar la operación ldap_modify.';
 
 // update_confirm.php
-$lang['do_you_want_to_make_these_changes'] = 'Quieres hacer estos canvios?';
+$lang['do_you_want_to_make_these_changes'] = 'Quieres hacer estos cambios?';
 $lang['attribute'] = 'Atributo';
 $lang['old_value'] = 'Valor viejo';
 $lang['new_value'] = 'Valor nuevo';
@@ -254,6 +254,10 @@ $lang['go_back'] = 'Volver atrás';
 
 // welcome.php
 $lang['welcome_note'] = 'Usa el menú de la izquierda para navegar';
+$lang['credits'] = "Créditos";
+$lang['changelog'] = "Histórico de canvios";
+$lang['documentation'] = "Documentación";
+
 
 // view_jpeg_photo.php
 $lang['unsafe_file_name'] = 'Nombre de archivo inseguro: ';

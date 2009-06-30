@@ -1,6 +1,9 @@
-<?php
 
-echo "<center><h1>Incomplete or Erroneous Language Files</h1></center>\n\n";
+<?php
+// phpldapadmin/check_lang_files.php, $Revision: 1.4 $
+
+echo "<html><head><title>phpldapadmin - check of translation</title></head><body>";
+echo "<h1>Incomplete or Erroneous Language Files</h1>\n\n";
 
 include realpath( 'lang/en.php' );
 $english_lang = $lang;
@@ -11,7 +14,9 @@ $dir = opendir( $lang_dir );
 while( ( $file = readdir( $dir ) ) !== false ) {
 	if( ! preg_match( "/\.php$/", $file ) )
 		continue;
-	if( $file == 'en.php' )
+	if( $file == 'en.php'  // is the mother of all language-files
+	    || $file == 'auto.php' // and ignore auto.php
+	    ) 
 		continue;
 	echo "<h2>$file</h2>";
 	echo "<ol>";
@@ -36,6 +41,6 @@ while( ( $file = readdir( $dir ) ) !== false ) {
 
 
 
-
+echo "</body></html>";
 
 ?>

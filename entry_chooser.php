@@ -4,7 +4,7 @@ require 'common.php';
 
 $container = isset( $_GET['container'] ) ? rawurldecode( $_GET['container'] ) : false;
 $server_id = isset( $_GET['server_id'] ) ? $_GET['server_id'] : false;
-$return_form_element = htmlspecialchars( $_GET['form_element'] );
+$return_form_element = isset( $_GET['form_element'] ) ? htmlspecialchars( $_GET['form_element'] ) : null;
 
 include "header.php";
 

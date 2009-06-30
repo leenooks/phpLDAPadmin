@@ -14,6 +14,7 @@ require 'common.php';
 
 $server_id = $_GET['server_id'];
 $view = isset( $_GET['view'] ) ? $_GET['view'] : 'objectClasses';
+$viewvalue = isset( $_GET['viewvalue'] ) ? $_GET['viewvalue'] : null; 
 
 check_server_id( $server_id ) or 
 	pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
@@ -23,6 +24,9 @@ pla_ldap_connect( $server_id ) or
 	pla_error( "Coult not connect to LDAP server." );
 
 include 'header.php';
+
+$viewsep="#";// OK separation for links is # // the view separator
+if ($viewvalue!=null) $viewsep="&viewvalue="; // ok we want a view to point "ashort"
 
 $schema_error_str = "Could not retrieve schema from <b>" . htmlspecialchars($servers[$server_id]['name']) . "</b>.<br />
 		<br />
@@ -47,19 +51,19 @@ $schema_error_str = "Could not retrieve schema from <b>" . htmlspecialchars($ser
 <center>
 	<?php echo ( $view=='objectClasses' ?
 		'objectClasses' :
-		'<a href="schema.php?server_id=' . $server_id . '&amp;view=objectClasses">objectClasses</a>' ); ?>
+		'<a href="?server_id=' . $server_id . '&amp;view=objectClasses">objectClasses</a>' ); ?>
 		|
 	<?php echo ( $view=='attributes' ?
-		'Attributes' :
-		'<a href="schema.php?server_id=' . $server_id . '&amp;view=attributes">Attributes</a>' ); ?>
+		'Attribute Types' :
+		'<a href="?server_id=' . $server_id . '&amp;view=attributes">Attributes</a>' ); ?>
 		|
 	<?php echo ( $view=='syntaxes' ?
 		'Syntaxes' :
-		'<a href="schema.php?server_id=' . $server_id . '&amp;view=syntaxes">Syntaxes</a>' ); ?>
+		'<a href="?server_id=' . $server_id . '&amp;view=syntaxes">Syntaxes</a>' ); ?>
 		|
 	<?php echo ( $view=='matching_rules' ?
 		'Matching Rules' :
-		'<a href="schema.php?server_id=' . $server_id . '&amp;view=matching_rules">Matching Rules</a>' ); ?>
+		'<a href="?server_id=' . $server_id . '&amp;view=matching_rules">Matching Rules</a>' ); ?>
 </center>
 <br />
 
@@ -69,7 +73,7 @@ $schema_error_str = "Could not retrieve schema from <b>" . htmlspecialchars($ser
 
 if( $view == 'syntaxes' ) {
 	$highlight_oid = isset( $_GET['highlight_oid'] ) ? $_GET['highlight_oid'] : false;
-	echo "<center>" . $lang['the_following_syntaxes'] . "</center><br />\n\n";
+	//echo "<center>" . $lang['the_following_syntaxes'] . "</center><br />\n\n";
 	echo "\n\n<table class=\"schema_attr\" width=\"100%\">\n";
 	echo "<tr><th>" . $lang['syntax_oid'] . "</th><th>" . $lang['desc'] . "</th></tr>\n";
 	flush();
@@ -89,7 +93,7 @@ if( $view == 'syntaxes' ) {
 	echo "</table>\n";
 
 } elseif( $view == 'attributes' ) {
-	echo "<center>" . $lang['the_following_attributes'] . "</center><br />\n";
+	//echo "<center>" . $lang['the_following_attributes'] . "</center><br />\n";
 	flush();
 	$schema_attrs = get_schema_attributes( $server_id );
 	$schema_object_classes = get_schema_objectclasses( $server_id );
@@ -118,17 +122,20 @@ if( $view == 'syntaxes' ) {
 
 	?>
 	<small><?php echo $lang['jump_to_attr']; ?>:</small>
-	<select name="oclass_jumper"
-	onChange="window.location.href='schema.php?server_id=<?php echo $server_id; ?>&amp;view=attributes#'+this.value">
+	<form><input type="hidden" name="view" value="<?php echo $view; ?>">
+        <input type="hidden" name="server_id" value="<?php echo $server_id; ?>">						<select name="viewvalue"
+	onChange="submit()">
+	<option value=""> - all -</option>
 
 	<?php foreach( $schema_attrs as $attr ) { ?>
-		<option value="<?php echo strtolower( $attr->getName() ); ?>"><?php echo $attr->getName(); ?></option>
+		<option value="<?php echo $attr->getName() ; ?>"><?php echo $attr->getName(); ?></option>
 	<?php } ?>
-	</select>
+	</select><input type="submit" value="go"></form>
 
 	<br />
 	<table class="schema_attr" width="100%">
 	<?php foreach( $schema_attrs  as $attr ) {
+	  if ( $viewvalue==null || $viewvalue==($attr->getName())){
 		flush();
 		echo "<tr><th colspan=\"2\"><a name=\"" . strtolower( $attr->getName() ) . "\">";
 		echo $attr->getName() . "</a></th></tr>\n\n";
@@ -150,13 +157,12 @@ if( $view == 'syntaxes' ) {
 		echo "</tr>\n\n";
 
 		echo "<tr class=\"" . (++$counter%2==0?'even':'odd') . "\">\n";
-		echo "<td>Inherits</td>\n";
+		echo "<td>".$lang['inherits']."</td>\n";
 		echo "<td>";
 		if( $attr->getSupAttribute()==null )
 			echo '(none)';
 		else
-			echo "<a href=\"#" . strtolower( $attr->getSupAttribute() ) . "\">" . 
-					$attr->getSupAttribute()  . "</a></td>\n";
+			echo "<a href=\"?server_id=".$server_id."&view=$view" .$viewsep. strtolower( $attr->getSupAttribute() ) . "\">" . $attr->getSupAttribute()  . "</a></td>\n";
 		echo "</tr>\n\n";
 
 		echo "<tr class=\"" . (++$counter%2==0?'even':'odd') . "\">\n";
@@ -178,7 +184,7 @@ if( $view == 'syntaxes' ) {
 		echo "<td>Syntax</td>\n";
 		echo "<td>";
 		if( null != $attr->getType() ) {
-			echo "<a href=\"schema.php?server_id=$server_id&amp;view=syntaxes&amp;highlight_oid=";
+			echo "<a href=\"?server_id=$server_id&amp;view=syntaxes&amp;highlight_oid=";
 			echo $attr->getSyntaxOID() . "#" .  $attr->getSyntaxOID();
 			echo "\">" . $attr->getType() . " (" . $attr->getSyntaxOID() . ")</a>";
 		} else {
@@ -221,7 +227,7 @@ if( $view == 'syntaxes' ) {
 			echo "(none)";
 		else
 			foreach( $attr->getAliases() as $alias_attr_name )
-				echo "<a href=\"#" . strtolower($alias_attr_name) . "\">$alias_attr_name</a> ";
+				echo "<a href=\"?server_id=$server_id&view=attributes".$viewsep .$alias_attr_name. "\">$alias_attr_name</a> ";
 		echo "</td>";
 		echo "</tr>\n\n";
 
@@ -232,17 +238,18 @@ if( $view == 'syntaxes' ) {
 			echo "(none)";
 		else
 			foreach( $attr->getUsedInObjectClasses() as $used_in_oclass)
-				echo "<a href=\"schema.php?server_id=$server_id&amp;view=objectClasses#" .
-					strtolower($used_in_oclass) . "\">$used_in_oclass</a> ";
+				echo "<a href=\"?server_id=$server_id&amp;view=objectClasses".$viewsep .
+					$used_in_oclass. "\">$used_in_oclass</a> ";
 		echo "</td>";
 		echo "</tr>\n\n";
 
 		flush();
+	  }
 	}
 	echo "</table>\n";
 
 } elseif( $view == 'matching_rules' ) {
-	echo "<center>" . $lang['the_following_matching'] . "</center><br />\n\n";
+	//echo "<center>" . $lang['the_following_matching'] . "</center><br />\n\n";
 	echo "\n\n<table class=\"schema_attr\" width=\"100%\">\n";
 	echo "<tr><th>" . $lang['matching_rule_oid'] . "</th><th>" . $lang['name'] . "</th><th>Used by Attributes</th></tr>\n";
 	flush();
@@ -274,21 +281,27 @@ if( $view == 'syntaxes' ) {
 	}
 	echo "</table>\n";
 
-} else { 
-	echo "<center>" . $lang['the_following_objectclasses'] . "</center><br />\n";
+} elseif( $view == 'objectClasses' ) { 
+	//echo "<center>" . $lang['the_following_objectclasses'] . "</center><br />\n";
 	flush();
 	$schema_oclasses = get_schema_objectclasses( $server_id );
 	if( ! $schema_oclasses ) pla_error( $schema_error_str );
 	?>
 	<small><?php echo $lang['jump_to_objectclass']; ?>:</small>
-	<select name="oclass_jumper"
-	onChange="window.location.href='schema.php?server_id=<?php echo $server_id; ?>#'+this.value">
+	<form><input type="hidden" name="view" value="<?php echo $view; ?>">
+        <input type="hidden" name="server_id" value="<?php echo $server_id; ?>">
+	<select name="viewvalue"
+	onChange="submit()">
+        <option value=""> - all - </option>
 	<?php foreach( $schema_oclasses as $name => $oclass ) { ?>
-		<option value="<?php echo $name; ?>"><?php echo $oclass->getName(); ?></option>
+		<option value="<?php echo $oclass->getName();  ?>"><?php echo $oclass->getName(); ?></option>
 	<?php } ?>
-	</select>
+        </select><input type="submit" value="go">
+        </form>
 	<br />
-	<?php foreach( $schema_oclasses as $name => $oclass ) { ?>
+	<?php foreach( $schema_oclasses as $name => $oclass ) {
+	  if ( $viewvalue==null ||  $viewvalue==$oclass->getName()){
+ ?>
 		<!--<small>[<a name="<?php echo $name; ?>" href="#" title="Head on up to the top.">top</a>]</small>-->
 		<h4 class="oclass"><a name="<?php echo $name; ?>"><?php echo $oclass->getName(); ?></a></h4>
 		<h4 class="oclass_sub"><?php echo $lang['OID']; ?>: <b><?php echo $oclass->getOID(); ?></b></h4>
@@ -306,7 +319,7 @@ if( $view == 'syntaxes' ) {
 		else
 			foreach( $oclass->getSupClasses() as $i => $object_class ) {
 				echo '<a title="' . $lang['jump_to_this_oclass'] . ' " 
-					href="#' . strtolower( htmlspecialchars( $object_class ) );
+					href="?server_id='.$server_id.'&view='.$view.$viewsep . htmlspecialchars( $object_class ) ;
 				echo '">' . htmlspecialchars( $object_class ) . '</a>';
 				if( $i < count( $oclass->getSupClasses() ) - 1 )
 					echo ', ';
@@ -323,13 +336,13 @@ if( $view == 'syntaxes' ) {
 			<?php if( count( $oclass->getMustAttrs($schema_oclasses) ) > 0 ) {
 				echo '<ul class="schema">';
 				foreach( $oclass->getMustAttrs($schema_oclasses) as $attr ) {
-					echo "<li><a href=\"schema.php?server_id=$server_id&amp;view=attributes#";
-					echo strtolower( rawurlencode( $attr->getName() ) ). "\">" . htmlspecialchars($attr->getName());
+					echo "<li><a href=\"?server_id=$server_id&amp;view=attributes".$viewsep;
+					echo rawurlencode( $attr->getName()  ). "\">" . htmlspecialchars($attr->getName());
 					echo "</a>";
 					if( $attr->getSource() != $oclass->getName() )
 					{
-						echo "<br /><small>&nbsp;&nbsp; (inherited from ";
-						echo "<a href=\"#" . strtolower( $attr->getSource() ) . "\">" . $attr->getSource() . "</a>";
+						echo "<br /><small>&nbsp;&nbsp;(inherited from ";
+						echo "<a href=\"?server_id=$server_id&amp;view=objectClasses".$viewsep .  $attr->getSource()  . "\">" . $attr->getSource() . "</a>";
 						echo ")</small>";
 					}
 					echo "</li>\n";
@@ -344,13 +357,13 @@ if( $view == 'syntaxes' ) {
 		if( count( $oclass->getMayAttrs($schema_oclasses) ) > 0 ) {
 			echo '<ul class="schema">';
 			foreach( $oclass->getMayAttrs($schema_oclasses) as $attr ) {
-				echo "<li><a href=\"schema.php?server_id=$server_id&amp;view=attributes#";
-				echo strtolower( rawurlencode( $attr->getName() ) ) . "\">" . htmlspecialchars($attr->getName() );
+				echo "<li><a href=\"?server_id=$server_id&amp;view=attributes".$viewsep;
+				echo rawurlencode( $attr->getName() ) . "\">" . htmlspecialchars($attr->getName() );
 				echo "</a>\n";
 				if( $attr->getSource() != $oclass->getName() )
 				{
 					echo "<br /><small>&nbsp;&nbsp; (inherited from ";
-					echo "<a href=\"#" . strtolower( $attr->getSource() ) . "\">" . $attr->getSource() . "</a>";
+					echo "<a href=\"?server_id=$server_id&amp;view=objectClasses".$viewsep .  $attr->getSource()  . "\">" . $attr->getSource() . "</a>";
 					echo ")</small>";
 				}
 				echo "</li>";
@@ -365,7 +378,7 @@ if( $view == 'syntaxes' ) {
 	</tr>
 	</table>
 
-	<?php  } /* End foreach objectClass */ ?>
+	<?php }  } /* End foreach objectClass */ ?>
 <?php } /* End else (displaying objectClasses */ ?>
 
 </body>

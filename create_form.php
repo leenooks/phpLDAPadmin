@@ -11,6 +11,7 @@
  */
 
 require 'common.php';
+require 'templates/template_config.php';
 
 $server_id = $_REQUEST['server_id'];
 $step = isset( $_REQUEST['step'] ) ? $_REQUEST['step'] : 1; // defaults to 1
@@ -53,18 +54,40 @@ include 'header.php'; ?>
 		<td>
 			<table class="templates">
 
-			<?php foreach( $templates as $name => $template ) { ?>
-			<tr>
-				<td><input type="radio"
-					   name="template"
-					   value="<?php echo htmlspecialchars($name);?>"
-					   id="<?php echo htmlspecialchars($name); ?>" /></td>
-				<td><label for="<?php echo htmlspecialchars($name);?>">
-					<img src="<?php echo $template['icon']; ?>" /></label></td>
-				<td><label for="<?php echo htmlspecialchars($name);?>">
-					<?php echo htmlspecialchars( $template['desc'] ); ?></label></td>
-			</tr>
-			<?php } ?>
+			<?php foreach( $templates as $name => $template ) {
+
+				// Check and see if this template should be shown in the list
+				$isValid = false;
+				if (isset($template['regexp'])) {
+					if (@preg_match("/".$template['regexp']."/i", $container)) {
+						$isValid = true;
+					}
+				} else {
+					$isValid = true;
+				}
+
+				if ($isValid) {
+				?>
+				<tr>
+					<td><input type="radio"
+						   name="template"
+						   value="<?php echo htmlspecialchars($name);?>"
+						   id="<?php echo htmlspecialchars($name); ?>" 
+						   <?php if( 0 == strcasecmp( 'Custom', $name ) ) { ?>
+							checked
+						   <?php } ?>
+						   /></td>
+					<td><label for="<?php echo htmlspecialchars($name);?>">
+						<img src="<?php echo $template['icon']; ?>" /></label></td>
+					<td><label for="<?php echo htmlspecialchars($name);?>">
+						<?php echo htmlspecialchars( $template['desc'] ); ?></label></td>
+				</tr>
+				<?php 
+			
+				} // end if
+			
+			} // end foreach ?>
+
 			</table>
 		</td>
 	</tr>

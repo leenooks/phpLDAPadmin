@@ -37,21 +37,36 @@ if( $anon_bind ) {
 $host = $servers[$server_id]['host'];
 $port = $servers[$server_id]['port'];
 
-if ( 	isset( $servers[$server_id]['login_attr'] ) &&
-	$servers[$server_id]['login_attr'] != "dn" && 
-	$servers[$server_id]['login_attr'] != "") {
+// Checks if the logni_attr option is enabled for this host,
+// which allows users to login with a simple username like 'jdoe' rather
+// than the fully qualified DN, 'uid=jdoe,ou=people,,dc=example,dc=com'.
+// We don't do this, of course, for anonymous binds.
+if ( login_attr_enabled( $server_id ) && ! $anon_bind ) {
 
 	// search for the "uid" first
 	$ds = ldap_connect ( $host, $port );
 	$ds or pla_error( "Could not contact '" . htmlspecialchars( $host ) . "' on port '" . htmlentities( $port ) . "'" );
 	@ldap_set_option( $ds, LDAP_OPT_PROTOCOL_VERSION, 3 );
+	// try to fire up TLS if specified in the config
+	if( isset( $servers[ $server_id ][ 'tls' ] ) && $servers[ $server_id ][ 'tls' ] == true ) {
+		function_exists( 'ldap_start_tls' ) or pla_error(
+				"Your PHP install does not support TLS" );
+		@ldap_start_tls( $ds ) or pla_error( "Could not start
+				TLS. Please check your ".
+				"LDAP server configuration.", ldap_error( $ds ), ldap_errno( $ds ) );
+	}
 	@ldap_bind ($ds) or pla_error( "Could not bind anonymously to server. " .
 				"Unless your server accepts anonymous binds, " .
 				"the login_attr feature will not work properly.");
-	$sr=@ldap_search($ds,$servers[$server_id]['base'],$servers[$server_id]['login_attr'] ."=". $uid, array("dn"), 0, 1);
+	$search_base = isset( $servers[$server_id]['base'] ) && '' != trim( $servers[$server_id]['base'] ) ?
+		$servers[$server_id]['base'] :
+		try_to_get_root_dn( $server_id );
+	$sr = @ldap_search($ds,$search_base,$servers[$server_id]['login_attr'] ."=". $uid, array("dn"), 0, 1);
 	$result = @ldap_get_entries($ds,$sr);
-	$dn = $result[0]["dn"];
-	@ldap_unbind ($ds);
+	$dn = isset( $result[0]['dn'] ) ? $result[0]['dn'] : false;
+	@ldap_unbind( $ds );
+	if( false === $dn )
+		pla_error( "Could not find a user '" . htmlspecialchars( $uid ) . "'" );
 }
 
 // verify that the login is good 
@@ -60,11 +75,25 @@ $ds or pla_error( "Could not connect to '" . htmlspecialchars( $host ) . "' on p
 
 // go with LDAP version 3 if possible 
 @ldap_set_option( $ds, LDAP_OPT_PROTOCOL_VERSION, 3 );
+if( isset( $servers[ $server_id ][ 'tls' ] ) && $servers[ $server_id ][ 'tls' ] == true ) {
+                function_exists( 'ldap_start_tls' ) or pla_error(
+                                "Your PHP install does not support TLS" );
+                ldap_start_tls( $ds ) or pla_error( "Could not start
+                                TLS. Please check your ".
+                                "LDAP server configuration.", ldap_error( $ds ), ldap_errno( $ds ) );
+}
 
-$bind_result = @ldap_bind( $ds, $dn, $pass );
+if( $anon_bind )
+	$bind_result = @ldap_bind( $ds );
+else
+	$bind_result = @ldap_bind( $ds, $dn, $pass );
 
-if( ! $bind_result )
-	pla_error( "Bad username/password. Try again" );
+if( ! $bind_result ) {
+	if( $anon_bind )
+		pla_error( "Could not bind anonymously to LDAP server.", ldap_error( $ds ), ldap_errno( $ds ) );
+	else
+		pla_error( "Bad username/password. Try again" );
+} 
 
 set_cookie_login_dn( $server_id, $dn, $pass, $anon_bind ) or pla_error( "Could not set cookie!" );
 

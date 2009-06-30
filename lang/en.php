@@ -120,7 +120,7 @@ $lang['the_following_attributes'] = 'The following <b>attributeTypes</b> are sup
 $lang['the_following_matching'] = 'The following <b>matching rules</b> are supported by this LDAP server.';
 $lang['the_following_syntaxes'] = 'The following <b>syntaxes</b> are supported by this LDAP server.';
 $lang['jump_to_objectclass'] = 'Jump to an objectClass';
-$lang['jump_to_attr'] = 'Jump to an attribute';
+$lang['jump_to_attr'] = 'Jump to an attribute type';
 $lang['schema_for_server'] = 'Schema for server';
 $lang['required_attrs'] = 'Required Attributes';
 $lang['optional_attrs'] = 'Optional Attributes';
@@ -273,6 +273,9 @@ $lang['go_back'] = 'Go back';
 
 // welcome.php
 $lang['welcome_note'] = 'Use the menu to the left to navigate';
+$lang['credits'] = 'Credits';
+$lang['changelog'] = 'ChangeLog';
+$lang['documentation'] = 'Documentation';
 
 // view_jpeg_photo.php
 $lang['unsafe_file_name'] = 'Unsafe file name: ';

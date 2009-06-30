@@ -7,6 +7,40 @@
 
 @include 'config.php';
 
+function login_attr_enabled( $server_id )
+{
+	global $servers;
+	if( 	isset( $servers[$server_id]['login_attr'] ) && 
+		0 != strcasecmp( $servers[$server_id]['login_attr'], "dn" ) && 
+		$servers[$server_id]['login_attr'] != "" )
+		return true;
+	else
+		return false;
+}
+
+/* 
+ * Returns an HTML-beautified version of a DN.
+ */
+function pretty_print_dn( $dn )
+{
+	$dn = pla_explode_dn( $dn );
+	if( isset( $dn['count'] ) )
+		unset( $dn['count'] );
+	foreach( $dn as $i => $element ) {
+		$element = htmlspecialchars( $element );
+		$element = explode( '=', $element, 2 );
+		$element = implode( '<span style="color: blue; font-family: courier; font-weight: bold">=</span>', $element );
+		$dn[$i] = $element;
+	}
+	$dn = implode( '<span style="color:red; font-family:courier; font-weight: bold;">,</span>', $dn );
+
+	return $dn;
+}
+
+
+/*
+ * Responsible for setting the cookie to indicate that a user has logged in.
+ */
 function set_cookie_login_dn( $server_id, $dn, $password, $anon_bind )
 {
 		// cookie_time comes from config.php
@@ -26,6 +60,10 @@ function set_cookie_login_dn( $server_id, $dn, $password, $anon_bind )
 			return true;
 }
 
+/*
+ * PLA-only wrapper for setting cookies, which takes into consideration
+ * configuration values.
+ */
 function pla_set_cookie( $name, $val, $expire=null, $dir=null )
 {
 	if( $expire == null ) {
@@ -49,6 +87,9 @@ function pla_set_cookie( $name, $val, $expire=null, $dir=null )
 	}
 }
 
+/*
+ * Responsible for removing a cookie after a user logs out.
+ */
 function unset_cookie_login_dn( $server_id )
 {
 	global $_SERVER;
@@ -164,43 +205,6 @@ function show_hints()
 }
 
 /*
- * Returns the name of the template to use based on the DN and
- * objectClasses of an entry. If no specific modification
- * template is available, simply return 'default'. The caller
- * should append '.php' and prepend 'templates/modification/'
- * to the returned string to get the file name.
- */
-function get_template( $server_id, $dn )
-{
-
-	// For now, just use default. We will add more templates for 0.9.2.
-	// If you have custom modification templates, just modify this.
-	return 'default';
-
-        // fetch and lowercase all the objectClasses in an array
-        $object_classes = get_object_attr( $server_id, $dn, 'objectClass', true );
-
-        if( $object_classes === null || $object_classes === false)
-                return 'default';
-
-        foreach( $object_classes as $i => $class )
-                $object_classes[$i] = strtolower( $class );
-
-        $rdn = get_rdn( $dn );
-        if( in_array( 'person', $object_classes ) &&
-            in_array( 'posixaccount', $object_classes ) )
-                return 'user';
-	// TODO: Write other templates and criteria therefor
-	// else if ...
-	//    return 'some other template';
-	// else if ...
-	//    return 'some other template';
-	// etc.
-
-	return 'default';
-}
-
-/*
  * For hosts who have 'enable_auto_uid_numbers' set to true, this function will
  * get the next available uidNumber using the host's preferred  mechanism
  * (uidpool or search). The uidpool mechanism uses a user-configured entry in
@@ -274,7 +278,11 @@ function get_next_uid_number( $server_id )
 		foreach( $uids as $uid )
 			$uid_hash[ $uid ] = 1;
 		// start with the least existing uidNumber and add 1
-		$uidNumber = intval( $uids[0] ) + 1;
+		if (isset($servers[$server_id]['auto_uid_number_min'])) {
+			$uidNumber = $servers[$server_id]['auto_uid_number_min'];
+		} else {
+			$uidNumber = intval( $uids[0] ) + 1;
+		}
 		// this loop terminates as soon as we encounter the next available uidNumber
 		while( isset( $uid_hash[ $uidNumber ] ) )
 			$uidNumber++;
@@ -395,7 +403,10 @@ function get_icon( $server_id, $dn )
 	// Is it a samba NT machine (is sambaAccount and ends with '$')
 	if( in_array( 'sambaaccount', $object_classes ) &&
 		'$' == $rdn{ strlen($rdn) - 1 } )
-		return 'nt.png';
+		return 'nt_machine.png';
+	// Is it a samba user account?
+	if( in_array( 'sambaaccount', $object_classes ) )
+		return 'nt_user.png';
 	// Is it a person or some type of account/user?
 	elseif( in_array( 'person', $object_classes ) ||
 	    in_array( 'organizationalperson', $object_classes ) ||
@@ -665,12 +676,16 @@ function get_entry_system_attrs( $server_id, $dn )
 			'structuralObjectClass', 'entryUUID',  'modifytimestamp', 
 			'subschemaSubentry', 'hasSubordinates', '+' );
 	$search = @ldap_read( $conn, $dn, '(objectClass=*)', $attrs, 0, 0, 0, LDAP_DEREF_ALWAYS );
-
 	if( ! $search )
 		return false;
-
 	$entry = ldap_first_entry( $conn, $search );
+	if( ! $entry)
+	    return false;
 	$attrs = ldap_get_attributes( $conn, $entry );
+	if( ! $attrs )
+		return false;
+	if( ! isset( $attrs['count'] ) )
+		return false;
 	$count = $attrs['count'];
 	unset( $attrs['count'] );
 	$return_attrs = array();
@@ -966,7 +981,7 @@ function get_rdn( $dn, $include_attrs=0 )
 function get_container( $dn )
 {
 	$rdn = pla_explode_dn( $dn );
-	$container = $rdn[ 1 ];
+	$container = @$rdn[ 1 ];
 	for( $i=2; $i<count($rdn)-1; $i++ )
 		$container .= ',' . $rdn[$i];
 	return $container;
@@ -1175,7 +1190,7 @@ function draw_jpeg_photos( $server_id, $dn, $draw_delete_buttons=false )
 	{
 		// ensures that the photo is written to the specified jpeg_temp_dir
 		$jpeg_temp_dir = realpath($jpeg_temp_dir.'/');
-		$jpeg_filename = tempnam($jpeg_temp_dir.'/', 'djp');
+		$jpeg_filename = tempnam($jpeg_temp_dir.'/', 'pla');
 		$outjpeg = fopen($jpeg_filename, "wb");
 		fwrite($outjpeg, $jpeg_data[$i]);
 		fclose ($outjpeg);
@@ -1218,7 +1233,7 @@ function draw_jpeg_photos( $server_id, $dn, $draw_delete_buttons=false )
 		$jpeg_tmp_keep_time = 10;
 
 	// delete old jpeg files.
-	$jpegtmp_wildcard = "djp.*";
+	$jpegtmp_wildcard = "pla.*";
 	$handle = opendir($jpeg_temp_dir);
 	while (($file = readdir($handle)) != false)
 		if (eregi($jpegtmp_wildcard, $file))
@@ -1394,8 +1409,14 @@ function pla_echo( $str )
  */
 function pla_explode_dn( $dn, $with_attributes=0 )
 {
-	$dn = addcslashes( $dn, "<>" );
+	// This is a work-around for broken imeplementations of ldap_explode_dn()
+	// that ships with some versions of PHP. It has been known to seg-fault
+	// when passed the '<' and the '>' characters.
+	if( '4.2.2' != phpversion() )
+		$dn = addcslashes( $dn, "<>" );
+
 	$result = ldap_explode_dn( $dn, $with_attributes );
+
 	//translate hex code into ascii again
 	foreach( $result as $key => $value )
 		$result[$key] = preg_replace("/\\\([0-9A-Fa-f]{2})/e", "''.chr(hexdec('\\1')).''", $value);

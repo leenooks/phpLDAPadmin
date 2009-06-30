@@ -1252,6 +1252,13 @@ function get_schema_attributes( $server_id, $dn = null )
 	// build the array of attribueTypes
 	$syntaxes = get_schema_syntaxes( $server_id, $dn );
 	$attrs = array();
+	/* 
+     * bug 856832: create two arrays - one indexed by name (the standard
+	 * $attrs array above) and one indexed by oid (the new $attrs_oid array
+	 * below). This will help for directory servers, like IBM's, that use OIDs
+	 * in their attribute definitions of SUP, etc
+	 */
+	$attrs_oid = array();
 	foreach( $raw_attrs as $attr_string ) {
 		if( $attr_string == null || 0 == strlen( $attr_string ) )
 			continue;
@@ -1263,10 +1270,22 @@ function get_schema_attributes( $server_id, $dn = null )
 		$name = $attr->getName();
 		$key = strtolower( $name );
 		$attrs[ $key ] = $attr;
+		
+		/* 
+		 * bug 856832: create an entry in the $attrs_oid array too. This
+		 * will be a ref to the $attrs entry for maintenance and performance
+		 * reasons 
+		 */
+		$oid = $attr->getOID();
+		$attrs_oid[ $oid ] = &$attrs[ $key ];
 	}
 
 	add_aliases_to_attrs( $attrs );
-	add_sup_to_attrs( $attrs );
+	/* 
+	 * bug 856832: pass the $attrs_oid array as a second (new) parameter
+	 * to add_sup_to_attrs. This will allow lookups by either name or oid.
+	 */
+	add_sup_to_attrs( $attrs, $attrs_oid );
 
 	ksort( $attrs );
 
@@ -1303,8 +1322,9 @@ function add_aliases_to_attrs( &$attrs )
 /*
  * Adds inherited values to each attributeType specified by the SUP directive. 
  * Supports infinite levels of inheritance.
+ * Bug 856832: require a second paramter that has all attributes indexed by OID
  */
-function add_sup_to_attrs( &$attrs )
+function add_sup_to_attrs( &$attrs, &$attrs_oid )
 {
 	$debug = false;
 	if( $debug ) echo "<pre>";
@@ -1327,6 +1347,18 @@ function add_sup_to_attrs( &$attrs )
 			while( $i++ < 100 /* 100 == INFINITY ;) */ ) {
 				if( $debug ) echo "Top of loop.\n";
 
+				/*
+				 * Bug 856832: check if sup is indexed by OID. If it is,
+				 * replace the OID with the appropriate name. Then reset
+				 * $sup_attr_name to the name instead of the OID. This will
+				 * make all the remaining code in this function work as
+				 * expected.
+				 */
+				if( isset( $attrs_oid[$sup_attr_name] ) ) {
+					$attr->setSupAttribute( $attrs_oid[$sup_attr_name]->getName() );
+					$sup_attr_name = $attr->getSupAttribute();
+				}
+				
 				if( ! isset( $attrs[ strtolower( $sup_attr_name ) ] ) ){ 
 					pla_error( "Schema error: attributeType '" . $attr->getName() . "' inherits from 
 								'" . $sup_attr_name . "', but attributeType '" . $sup_attr_name . "' does not

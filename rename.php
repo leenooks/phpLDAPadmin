@@ -33,14 +33,7 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 
 $ds = pla_ldap_connect( $server_id ) or pla_error( "Could not connect to LDAP sever" );
  
-// build the container string
-$old_rdn = pla_explode_dn( $dn );
-$container = $old_rdn[ 1 ];
-for( $i=2; $i<count($old_rdn)-1; $i++ )
-	$container .= ',' . $old_rdn[$i];
-if( ! $container )
-	pla_error( "Container is null!" );
-
+$container = get_container( $dn );
 $new_dn = $new_rdn . ',' . $container;
 
 if( $new_dn  == $dn )

@@ -17,7 +17,7 @@ $lang['ends_with'] = 'finisce con';
 $lang['sounds_like'] = 'suona come';
 
 // Tree browser
-$lang['request_new_feature'] = 'Richiedi una nuova funzionalit&#341;';
+$lang['request_new_feature'] = 'Richiedi una nuova funzionalità';
 $lang['see_open_requests'] = 'guarda le richieste pendenti';
 $lang['report_bug'] = 'Riporta un baco';
 $lang['see_open_bugs'] = 'guarda i bachi pendenti';
@@ -44,7 +44,7 @@ $lang['create_new_entry_in'] = 'Crea una nuova voce in';
 
 // Entry display
 $lang['delete_this_entry'] = 'Cancella questa voce';
-$lang['delete_this_entry_tooltip'] = 'Ti sar&#341; richiesto di confermare questa decisione';
+$lang['delete_this_entry_tooltip'] = 'Ti sarà richiesto di confermare questa decisione';
 $lang['copy_this_entry'] = 'Copia questa voce';
 $lang['copy_this_entry_tooltip'] = 'Copia questo oggetto in un\'altra posizione, un nuovo DN od un altro server';
 $lang['export_to_ldif'] = 'Esporta in un LDIF';
@@ -76,7 +76,7 @@ $lang['add_value_tooltip'] = 'Aggiungi un\'altrovalore a questo attributo';
 $lang['refresh'] = 'aggiorna';
 $lang['refresh_this_entry'] = 'Aggiorna questa voce';
 $lang['delete_hint'] = 'Consiglio: <b>Per cancellare un attributo</b>, svuota il campo testo e clicca salva.';
-$lang['viewing_read_only'] = 'Stai guardando la voce in modalit&#341; sola-lettura.';
+$lang['viewing_read_only'] = 'Stai guardando la voce in modalità sola-lettura.';
 $lang['change_entry_rdn'] = 'Cambia l\' RDN di questa voce';
 $lang['no_new_attrs_available'] = 'nessun nuovo attributo disponibile per questa voce';
 $lang['binary_value'] = 'Valore binario';
@@ -102,7 +102,7 @@ $lang['required_attrs'] = 'Attributi Richiesti';
 $lang['optional_attrs'] = 'Attributi Opzionali';
 $lang['OID'] = 'OID';
 $lang['desc'] = 'Descrizione';
-$lang['is_obsolete'] = 'Questa objectClass &#269; <b>obsoleta</b>';
+$lang['is_obsolete'] = 'Questa objectClass è <b>obsoleta</b>';
 $lang['inherits'] = 'Eredita da';
 $lang['jump_to_this_oclass'] = 'Vai a questa definizione della objectClass';
 $lang['matching_rule_oid'] = 'Regola Corrispondente OID';
@@ -118,7 +118,7 @@ $lang['add_oclass_and_attrs'] = 'Aggiungi ObjectClass e Attributi';
 
 // General
 $lang['chooser_link_tooltip'] = 'Clicca per aprire una finestra di dialogo per la selezione grafica di una voce (DN)';
-$lang['no_updates_in_read_only_mode'] = 'Non puoi operare aggiornamenti mentre il server &#269; in modalit&#341; sola-lettura';
+$lang['no_updates_in_read_only_mode'] = 'Non puoi operare aggiornamenti mentre il server è in modalità sola-lettura';
 $lang['bad_server_id'] = 'Server id errata';
 $lang['not_enough_login_info'] = 'Non abbastanza informazioni per collegarsi al server. Per piacere controlla la tua configurazione.';
 $lang['could_not_connect'] = 'Non ho potuto collegarmi al server LDAP.';
@@ -131,7 +131,7 @@ $lang['server'] = 'Server';
 $lang['distinguished_name'] = 'Distinguished Name';
 $lang['current_list_of'] = 'Lista corrente di';
 $lang['values_for_attribute'] = 'valori per l\'attributo';
-$lang['inappropriate_matching_note'] = 'Nota: Tu riceverai un errore &quot;corrispondenza inappropiata&quot; se non hai<br />una regola <tt>EQUALITY</tt> per questo attributo sul tuo server LDAP.';
+$lang['inappropriate_matching_note'] = 'Nota: Tu riceverai un errore "corrispondenza inappropiata" se non hai<br />una regola <tt>EQUALITY</tt> per questo attributo sul tuo server LDAP.';
 $lang['enter_value_to_add'] = 'Inserisci il valore che vorresti aggiungere:';
 $lang['new_required_attrs_note'] = 'Nota: ti potrebbe essere chiesto di inserire nuovi attributi<br />che questa objectClass richiede.'; 
 $lang['syntax'] = 'Sintassi';

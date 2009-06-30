@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Übersetzung von Marius Rieder <marius.rieder@bluewin.ch>
+ * Ãœbersetzung von Marius Rieder <marius.rieder@bluewin.ch>
  *                 Uwe Ebel
  * Modifikationen von Dieter Kluenter <hdk@dkluenter.de>
  */
@@ -206,7 +206,7 @@ $lang['create_could_not_add'] = 'Konnte das Objekt dem LDAP-Server nicht hinzuf&
 $lang['createf_create_object'] = 'Erzeuge einen neuen Eintag';//"Create Object';
 $lang['createf_choose_temp'] = 'Vorlage w&auml;hlen';//"Choose a template';
 $lang['createf_select_temp'] = 'W&auml;hlen sie eine Vorlage f&uuml;r das Objekt';//"Select a template for the creation process';
-$lang['createf_proceed'] = 'Weiter';//"Proceed >>';
+$lang['createf_proceed'] = 'Weiter';//"Proceed &gt;&gt;';
 
 //creation_template.php
 $lang['ctemplate_on_server'] = 'Auf dem Server';//"On server';
@@ -265,6 +265,9 @@ $lang['go_back'] = 'Zur&uuml;ck';//'Go back';
 
 // welcome.php
 $lang['welcome_note'] = 'Ben&uuml;tzen sie das Menu auf der linken Seite zur Navigation.';//'Use the menu to the left to navigate';
+$lang['credits'] = 'Vorspann';//'Credits';
+$lang['changelog'] = '&Auml;nderungsdatei';//'ChangeLog';
+$lang['documentation'] = 'Dokumentation';// 'Documentation';
 
 // view_jpeg_photo.php
 $lang['unsafe_file_name'] = 'Unsicherer Dateiname:';//'Unsafe file name: ';
@@ -306,7 +309,7 @@ $lang['ferror_congrats_found_bug'] = '<center><table class=\'notice\'><tr><td co
 //ldif_import_form
 $lang['import_ldif_file_title'] = 'Importiere LDIF Datei';//'Import LDIF File';
 $lang['select_ldif_file'] = 'LDIF Datei ausw&auml;hlen';//'Select an LDIF file:';
-$lang['select_ldif_file_proceed'] = 'Ausf&uuml;hren >>';//'Proceed >>';
+$lang['select_ldif_file_proceed'] = 'Ausf&uuml;hren &gt;&gt;';//'Proceed &gt;&gt;';
 
 //ldif_import
 $lang['add_action'] = 'Hinzuf&uuml;gen...';//'Adding...';

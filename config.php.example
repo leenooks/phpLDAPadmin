@@ -14,42 +14,44 @@
 // Your LDAP servers
 $i=0;
 $servers = array();
-$servers[$i]['name'] = 'My LDAP Server';   /*  A convenient name that will appear in 
-                                               the tree viewer */
-$servers[$i]['host'] = 'ldap.example.com'; /*  Examples: 'ldap.example.com', 
-                                               'ldaps://ldap.example.com/'
-                                               Note: Leave blank to remove it from the list 
-                                               of servers in the tree viewer*/
-$servers[$i]['base'] = 'dc=example,dc=com';/*  The base DN of your LDAP server. Leave this 
-                                               blank to have phpLDAPadmin
-                                               auto-detect it for you. */
-$servers[$i]['port'] = 389;                /*  The port your LDAP server listens on 
-                                              (no quotes) */
-$servers[$i]['auth_type'] = 'config';      /*  2 options: 'form': you will be prompted, and 
-                                               a cookie stored with your login dn and 
-                                               password. 'config': specify your login dn 
-                                               and password here. In both cases, use caution! */
-$servers[$i]['login_dn'] = 'cn=Manager,dc=example,dc=com'; /* For anonymous binds, leave the 
-                                                              login_dn and login_pass blank */
-$servers[$i]['login_pass'] = 'secret';     /*  Your password (only if you specified 'config' 
-                                               for 'auth_type' */ 
-$servers[$i]['tls'] = false;               /*  Use TLS to connect. Requires PHP 4.2 or newer */
-$servers[$i]['default_hash'] = 'crypt';    /*  Default password hashing algorith;
-                                               One of md5, ssha, sha, md5crpyt, blowfish or 
-                                               leave blank for now default algorithm. */
-$servers[$i]['login_attr'] = 'dn';         /*  If you specified 'form' as the auth_type above, 
-                                               you can optionally specify here an attribute 
-                                               to use when logging in. If you enter 'uid',
-                                               then login as 'dsmith', phpLDAPadmin will 
-                                               search for uid=dsmith and log in as such. Leave
-                                               blank or specify 'dn' to use full DN for 
-                                               logging in .*/
-$servers[$i]['read_only'] = false;         /*  Specify true If you want phpLDAPadmin to not
-                                               display or permit any modification to the 
-                                               LDAP server. */
-$servers[$i]['enable_auto_uid_numbers'] = false;  /* This feature allows phpLDAPadmin to 
-                                                     automatically determine the next
-                                                     available uidNumber for a new entry. */
+$servers[$i]['name'] = 'My LDAP Server';    /*  A convenient name that will appear in 
+                                                the tree viewer */
+$servers[$i]['host'] = 'ldap.example.com';  /*  Examples: 'ldap.example.com', 
+                                                'ldaps://ldap.example.com/'
+                                                Note: Leave blank to remove it from the list 
+                                                of servers in the tree viewer*/
+$servers[$i]['base'] = 'dc=example,dc=com'; /*  The base DN of your LDAP server. Leave this 
+                                                blank to have phpLDAPadmin
+                                                auto-detect it for you. */
+$servers[$i]['port'] = 389;                 /*  The port your LDAP server listens on 
+                                                (no quotes) */
+$servers[$i]['auth_type'] = 'config';       /*  2 options: 'form': you will be prompted, and 
+                                                a cookie stored with your login dn and 
+                                                password. 'config': specify your login dn 
+                                                and password here. In both cases, use caution! */
+$servers[$i]['login_dn'] = 'cn=Manager,dc=example,dc=com';
+                                            /*  For anonymous binds, leave the 
+                                                login_dn and login_pass blank */
+$servers[$i]['login_pass'] = 'secret';      /*  Your password (only if you specified 'config' 
+                                                for 'auth_type' */ 
+$servers[$i]['tls'] = false;                /*  Use TLS to connect. Requires PHP 4.2 or newer */
+$servers[$i]['default_hash'] = 'crypt';     /*  Default password hashing algorith;
+                                                One of md5, ssha, sha, md5crpyt, smd5, blowfish or 
+                                                leave blank for now default algorithm. */
+$servers[$i]['login_attr'] = 'dn';          /*  If you specified 'form' as the auth_type above, 
+                                                you can optionally specify here an attribute 
+                                                to use when logging in. If you enter 'uid',
+                                                then login as 'dsmith', phpLDAPadmin will 
+                                                search for uid=dsmith and log in as such. Leave
+                                                blank or specify 'dn' to use full DN for 
+                                                logging in .*/
+$servers[$i]['read_only'] = false;          /*  Specify true If you want phpLDAPadmin to not
+                                                display or permit any modification to the 
+                                                LDAP server. */
+$servers[$i]['enable_auto_uid_numbers'] = false;  
+                                            /*  This feature allows phpLDAPadmin to 
+                                                automatically determine the next
+                                                available uidNumber for a new entry. */
 $servers[$i]['auto_uid_number_mechanism'] = 'search'; 
                           /* The mechanism to use when finding the next available uidNumber.
                              Two possible values: 'uidpool' or 'search'. The 'uidpool'
@@ -60,6 +62,10 @@ $servers[$i]['auto_uid_number_mechanism'] = 'search';
 $servers[$i]['auto_uid_number_search_base'] = 'ou=People,dc=example,dc=com'; 
                          /* The DN of the search base when the 'search'
                             mechanism is used above. */
+$servers[$i]['auto_uid_number_min'] = 1000;
+                         /* The minimum number to use when searching for the next
+                            available UID number (only when 'search' is used for 
+                            auto_uid_number_mechanism' */
 $servers[$i]['auto_uid_number_uid_pool_dn'] = 'cn=uidPool,dc=example,dc=com'; 
                          /* The DN of the uidPool entry when 'uidpool'
                             mechanism is used above. */
@@ -81,6 +87,7 @@ $servers[$i]['read_only'] = false;
 $servers[$i]['enable_auto_uid_numbers'] = false;
 $servers[$i]['auto_uid_number_mechanism'] = 'search'; 
 $servers[$i]['auto_uid_number_search_base'] = 'ou=People,dc=example,dc=com'; 
+$servers[$i]['auto_uid_number_min'] = 1000;
 $servers[$i]['auto_uid_number_uid_pool_dn'] = 'cn=uidPool,dc=example,dc=com';
 
 // If you want to configure more LDAP servers, copy and paste the above (including the "$i++;")
@@ -140,52 +147,6 @@ $search_attributes_display = "User Name, Common Name, Group ID, Object Class, Ph
 
 // The list of attributes to display in each search result entry summary
 $search_result_attributes = "dn, cn"; 
-
-/**                              **/
-/** Templates for entry creation **/
-/**                              **/
-
-$templates = array();
-
-// Fill in this array with templates that you can create to suit your needs.
-// Each entry defines a description (to be displayed in the template list) and
-// a handler, which is a file that will be executed with certain POST vars set.
-// See the templates provided here for examples of how to make your own template.
-
-$templates[] =
-        array(  'desc'    => 'User Account',
-                'icon'    => 'images/user.png',
-                'handler' => 'new_user_template.php' );
-
-$templates[] =
-        array(  'desc'    => 'Address Book Entry (inetOrgPerson)',
-                'icon'    => 'images/user.png',
-                'handler' => 'new_address_template.php' );
-
-$templates[] =
-        array(  'desc'    => 'Organizational Unit',
-                'icon'    => 'images/ou.png',
-                'handler' => 'new_ou_template.php' );
-
-$templates[] =
-        array(  'desc'    => 'Posix Group',
-                'icon'    => 'images/ou.png',
-                'handler' => 'new_posix_group_template.php' );
-
-$templates[] =
-        array(  'desc'    => 'Samba NT Machine',
-                'icon'    => 'images/nt.png',
-                'handler' => 'new_nt_machine.php' );
-
-$templates[] =
-        array(  'desc'    => 'Samba User',
-                'icon'    => 'images/user.png',
-                'handler' => 'new_smbuser_template.php' );
-
-$templates[] =
-        array(  'desc'    => 'DNS Entry',
-                'icon'    => 'images/dc.png',
-                'handler' => 'new_dns_entry.php' );
 
 /**                                         **/
 /** User-friendly attribute translation     **/

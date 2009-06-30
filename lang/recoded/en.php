@@ -273,6 +273,9 @@ $lang['go_back'] = 'Go back';
 
 // welcome.php
 $lang['welcome_note'] = 'Use the menu to the left to navigate';
+$lang['credits'] = 'Credits';
+$lang['changelog'] = 'ChangeLog';
+$lang['documentation'] = 'Documentation';
 
 // view_jpeg_photo.php
 $lang['unsafe_file_name'] = 'Unsafe file name: ';
@@ -335,7 +338,7 @@ $lang['ferror_congrats_found_bug'] = 'Congratulations! You found a bug in phpLDA
 //ldif_import_form
 $lang['import_ldif_file_title'] = 'Import LDIF File';
 $lang['select_ldif_file'] = 'Select an LDIF file:';
-$lang['select_ldif_file_proceed'] = 'Proceed >>';
+$lang['select_ldif_file_proceed'] = 'Proceed &gt;&gt;';
 
 //ldif_import
 $lang['add_action'] = 'Adding...';

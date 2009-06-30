@@ -11,28 +11,37 @@ error_reporting( E_ALL );
 
 // We require this version or newer (use @ to surpress errors if we are included twice)
 @define( 'REQUIRED_PHP_VERSION', '4.1.0' );
+@define( 'HTTPS_PORT', 443 );
 
 // config.php might not exist (if the user hasn't configured PLA yet)
 // Only include it if it does exist.
 if( file_exists( realpath( 'config.php' ) ) ) {
+	ob_start();
 	is_readable( realpath( 'config.php' ) ) or pla_error( "Could not read config.php, its permissions are too strict." );
 	require realpath( 'config.php' );
+	ob_end_clean();
 }
 
 // General functions (pla_ldap_search(), pla_error(), get_object_attrs(), etc.)
 is_readable( realpath( 'functions.php' ) ) 
 	or pla_error( "Cannot read the file 'functions.php' its permissions are too strict." );
+ob_start();
 require_once realpath( 'functions.php' );
+ob_end_clean();
 
 // Functions for reading the server schema (get_schema_object_classes(), etc.)
 is_readable( realpath( 'schema_functions.php' ) ) 
 	or pla_error( "Cannot read the file 'schema_functions.php' its permissions are too strict." );
+ob_start();
 require_once realpath( 'schema_functions.php' );
+ob_end_clean();
 
 // Functions that can be defined by the user (preEntryDelete(), postEntryDelete(), etc.)
 is_readable( realpath( 'custom_functions.php' ) ) 
 	or pla_error( "Cannot read the file 'custom_functions.php' its permissions are too strict." );
+ob_start();
 require_once realpath( 'custom_functions.php' );
+ob_end_clean();
 
 // Our custom error handler receives all error notices that pass the error_reporting()
 // level set above.
@@ -57,21 +66,26 @@ else
 // Shall we attempt to auto-determine the language?
 if( isset( $language ) ) {
 	if( 0 == strcasecmp( $language, "auto" ) ) {
-		// get the languages which are spetcified in the HTTP header
-		$HTTP_LANGS1 = preg_split ("/[;,]+/", $_SERVER['HTTP_ACCEPT_LANGUAGE'] );
-		$HTTP_LANGS2 = preg_split ("/[;,]+/", $_SERVER['HTTP_ACCEPT_LANGUAGE'] );
-		foreach( $HTTP_LANGS2 as $key => $value ) {
-				$value=preg_split ("/[-]+/", $value );
-				$HTTP_LANGS2[$key]=$value[0];
-		}
-	
-		$HTTP_LANGS = array_merge ($HTTP_LANGS1, $HTTP_LANGS2);
-		foreach( $HTTP_LANGS as $HTTP_LANG) {
-			// try to grab one after the other the language file
-			if( file_exists( realpath( "lang/recoded/$HTTP_LANG.php" ) ) &&
-				is_readable( realpath( "lang/recoded/$HTTP_LANG.php" ) ) ) {
-				include realpath( "lang/recoded/$HTTP_LANG.php" );
-				break;
+
+		// Make sure their browser correctly reports language. If not, skip this.
+		if( isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) ) {
+
+			// get the languages which are spetcified in the HTTP header
+			$HTTP_LANGS1 = preg_split ("/[;,]+/", $_SERVER['HTTP_ACCEPT_LANGUAGE'] );
+			$HTTP_LANGS2 = preg_split ("/[;,]+/", $_SERVER['HTTP_ACCEPT_LANGUAGE'] );
+			foreach( $HTTP_LANGS2 as $key => $value ) {
+					$value=preg_split ("/[-]+/", $value );
+					$HTTP_LANGS2[$key]=$value[0];
+			}
+		
+			$HTTP_LANGS = array_merge ($HTTP_LANGS1, $HTTP_LANGS2);
+			foreach( $HTTP_LANGS as $HTTP_LANG) {
+				// try to grab one after the other the language file
+				if( file_exists( realpath( "lang/recoded/$HTTP_LANG.php" ) ) &&
+					is_readable( realpath( "lang/recoded/$HTTP_LANG.php" ) ) ) {
+					include realpath( "lang/recoded/$HTTP_LANG.php" );
+					break;
+				}
 			}
 		}
 	} else {

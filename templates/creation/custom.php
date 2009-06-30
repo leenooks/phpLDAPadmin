@@ -8,9 +8,7 @@ $container = $_POST['container'];
 $server_id = $_POST['server_id'];
 
 // Unique to this template
-$step = isset( $_POST['step'] ) ? $_POST['step'] : null;
-if( ! $step )
-	$step = 1;
+$step = isset( $_POST['step'] ) ? $_POST['step'] : 1;
 
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
@@ -76,7 +74,7 @@ if( $step == 2 )
 	strlen( trim( $rdn ) ) != 0 or
 		pla_error( "You left the RDN field blank" );
 
-	strlen( $container ) == 0 or dn_exists( $server_id, $container ) or
+	strlen( trim( $container ) ) == 0 or dn_exists( $server_id, $container ) or
 		pla_error( "The container you specified (" . htmlspecialchars( $container ) . ") does not exist. " .
 	       		       "Please go back and try again." );
 
@@ -84,19 +82,21 @@ if( $step == 2 )
 	$oclasses = $_POST['object_classes'];
 	if( count( $oclasses ) == 0 )
 		pla_error( "You did not select any ObjectClasses for this object. Please go back and do so." );
-
-	// build a list of required attributes:
 	$dn = $rdn . ',' . $container;
+
+	// incrementally build up the all_attrs and required_attrs arrays
 	$schema_oclasses = get_schema_objectclasses( $server_id );
 	$required_attrs = array();
 	$all_attrs = array();
 	foreach( $oclasses as $oclass_name ) {
-		if( isset( $schema_oclasses[ strtolower( $oclass_name ) ] ) )
-			$oclass = $schema_oclasses[ strtolower( $oclass_name ) ];
-		else
-			continue;
-		$required_attrs = array_merge( $required_attrs, $oclass->getMustAttrNames( $oclasses ) );
-		$all_attrs = array_merge( $oclass->getMustAttrNames(), $oclass->getMayAttrNames( $oclasses ) );
+		$oclass = get_schema_objectclass( $server_id, $oclass_name  );
+		if( $oclass ) {
+			$required_attrs = array_merge( $required_attrs, 
+						$oclass->getMustAttrNames( $schema_oclasses ) );
+			$all_attrs = array_merge( $all_attrs, 
+						$oclass->getMustAttrNames( $schema_oclasses ), 
+						$oclass->getMayAttrNames( $schema_oclasses ) );
+		} 
 	}
 
 	$required_attrs = array_unique( $required_attrs );

@@ -55,7 +55,7 @@ if( isset( $vals ) && is_array( $vals ) ) {
 				$new_entry[ $attr ][] = $val;
 			}
 		} else {
-			if( trim($val) )
+			if( '' !== trim($val) )
 				$new_entry[ $attr ][] = utf8_encode( $val );
 		}
 	}

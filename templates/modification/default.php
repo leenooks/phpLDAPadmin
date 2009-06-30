@@ -315,7 +315,7 @@ if( $show_internal_attrs ) {
 	$counter = 0;
 	foreach( get_entry_system_attrs( $server_id, $dn ) as $attr => $vals ) {
 		$counter++;
-		$schema_href = "schema.php?server_id=$server_id&amp;view=attributes#" . strtolower(real_attr_name($attr));
+		$schema_href = "schema.php?server_id=$server_id&amp;view=attributes&viewvalue=" . real_attr_name($attr);
 		?>
 
 		<tr class="<?php echo ($counter%2==0?'row1':'row2');?>">
@@ -401,7 +401,7 @@ if( $show_internal_attrs ) {
 	<?php  } ?>
 
 	<td class="attr">
-		<?php $schema_href="schema.php?server_id=$server_id&amp;view=attributes#" . strtolower(real_attr_name($attr)); ?>
+		<?php $schema_href="schema.php?server_id=$server_id&view=attributes&viewvalue=" . real_attr_name($attr); ?>
 		<b><a	title="<?php echo sprintf( $lang['attr_name_tooltip'], $attr ) ?>"
 			href="<?php echo $schema_href; ?>"><?php echo $attr_display; ?></a></b>
 		<sup><small><?php echo $attr_note; ?></small></sup>

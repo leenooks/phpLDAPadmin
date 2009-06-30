@@ -468,3 +468,32 @@ div.add_value {
 	font-size: 10pt;
 	margin: 0px;
 }
+
+a.logged_in_dn {
+	text-decoration: none;
+	color: black;
+}
+
+a.logged_in_dn:hover {
+	text-decoration: underline;
+	color: blue;
+}
+
+a:hover {
+	color: red;
+}
+
+
+/* Styles for formatting the documentation page */
+
+h3.doc {
+	margin-left: 60px;
+}
+
+h2.doc {
+	margin-left: 20px;
+}
+
+p.doc {
+	margin-left: 100px;
+}

@@ -11,12 +11,16 @@
  */
 
 require 'common.php';
+require 'templates/template_config.php';
 
+isset( $_POST['template'] ) or pla_error( 'You must choose a template' );
 $template = $_POST['template'];
-$template = $templates[$template];
+isset( $templates[$template] ) or pla_error( 'Invalid template: ' . htmlspecialchars( $template ) );
+$template = isset( $templates[$template] ) ? $templates[$template] : null;
 $server_id = $_POST['server_id'];
 check_server_id( $server_id ) or pla_error( $lang['bad_server_id_underline'] . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
+pla_ldap_connect( $server_id ) or pla_error( $lang['could_not_connect'] );
 $server_name = $servers[ $server_id ][ 'name' ];
 
 if( is_server_read_only( $server_id ) )

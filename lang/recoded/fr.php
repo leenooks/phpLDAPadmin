@@ -56,7 +56,7 @@ $lang['import_from_ldif'] = 'Importer des entr&eacute;es &agrave; partir d\'un f
 $lang['logout_of_this_server'] = 'Se d&eacute;connecter de ce serveur';
 $lang['logged_in_as'] = 'Se connecter en tant que: ';
 $lang['read_only'] = 'Lecture seule';
-$lang['could_not_determine_root'] = 'La racine de l\'arborescence Ldap n\'a pu être d&eacute;termin&eacute;e.';
+$lang['could_not_determine_root'] = 'La racine de l\'arborescence Ldap n\'a pu Ãªtre d&eacute;termin&eacute;e.';
 $lang['ldap_refuses_to_give_root'] = 'Il semble que le serveur LDAP a &eacute;t&eacute; configur&eacute; de telle sorte que la racine ne soit pas r&eacute;vel&eacute;e.';
 $lang['please_specify_in_config'] = 'Veuillez le sp&eacute;cifier dans le fichier config.php';
 $lang['create_new_entry_in'] = 'Cr&eacute;er une nouvelle entr&eacute;e dans';
@@ -138,7 +138,7 @@ $lang['not_specified'] = 'non sp&eacute;cifi&eacute;';
 
 // Deleting entries
 $lang['entry_deleted_successfully'] = 'Suppression de l\'entr&eacute;e \'%s\' r&eacute;ussie.';
-$lang['you_must_specify_a_dn'] = 'Un DN doit être sp&eacute;cifi&eacute;';
+$lang['you_must_specify_a_dn'] = 'Un DN doit Ãªtre sp&eacute;cifi&eacute;';
 $lang['could_not_delete_entry'] = 'Impossible de supprimer l\'entr&eacute;e: %s';
 
 // Adding objectClass form
@@ -180,7 +180,7 @@ $lang['new_required_attrs_note'] = 'Note: vous aurez peut-&ecirc;tre besoin d\'i
 $lang['syntax'] = 'Syntaxe';
 
 //Copy.php
-$lang['copy_server_read_only'] = 'Des mises &agrave; jours ne peuvent pas  être effectu&eacute;es si le serveur est en lecture seule';
+$lang['copy_server_read_only'] = 'Des mises &agrave; jours ne peuvent pas  Ãªtre effectu&eacute;es si le serveur est en lecture seule';
 $lang['copy_dest_dn_blank'] = 'Vous avez laiss&eacute; le DN de destination vide.';
 $lang['copy_dest_already_exists'] = 'L\'entr&eacute;e de destination (%s) existe d&eacute;j&agrave;.';
 $lang['copy_dest_container_does_not_exist'] = 'Le conteneur de destination (%s) n\'existe pas.';
@@ -209,7 +209,7 @@ $lang['copyf_recursive_copy'] = 'Copier r&eacute;cursivement les sous-entr&eacut
 $lang['create_required_attribute'] = 'Une valeur n\'a pas &eacute;t&eacute; sp&eacute;cifi&eacute;e pour l\'attribut requis <b>%s</b>.';
 $lang['create_redirecting'] = 'Redirection';
 $lang['create_here'] = 'ici';
-$lang['create_could_not_add'] = 'L\'ajout de l\'objet au serveur LDAP n\'a pu être effectu&eacute;e.';
+$lang['create_could_not_add'] = 'L\'ajout de l\'objet au serveur LDAP n\'a pu Ãªtre effectu&eacute;e.';
 
 //create_form.php
 $lang['createf_create_object'] = 'Creation d\'un objet';
@@ -224,7 +224,7 @@ $lang['ctemplate_config_handler'] = 'Votre configuration sc&eacute;cifie un gest
 $lang['ctemplate_handler_does_not_exist'] = 'pour ce mod&egrave;le. Cependant, ce gestionnaire n\'existe pas dans le r&eacute;pertoire \'templates/creation\'.';
 
 //search.php
-$lang['you_have_not_logged_into_server'] = 'Vous ne vous êtes pas encore logg&eacute; aupr&egrave;s du serveur s&eacute;lectionn&eacute;. Vous ne pouvez y effectuer des recherches.';
+$lang['you_have_not_logged_into_server'] = 'Vous ne vous Ãªtes pas encore logg&eacute; aupr&egrave;s du serveur s&eacute;lectionn&eacute;. Vous ne pouvez y effectuer des recherches.';
 $lang['click_to_go_to_login_form'] = 'Cliquer ici pour vous rendre au formulaire de login';
 $lang['unrecognized_criteria_option'] = 'Crit&egrave;re non reconnu: ';
 $lang['if_you_want_to_add_criteria'] = 'Si vous voulez ajouter vos propres crit&egrave;re &agrave; la liste, soyez cetain d\'&eacute;diter search.php afin de pouvoir les g&eacute;rer.';
@@ -245,7 +245,7 @@ $lang['show_attributes'] = 'Attributs &agrave; afficher';
 
 // search_form_simple.php
 $lang['search_for_entries_whose'] = 'Chercher les entr&eacute;es dont:';
-$lang['equals'] = 'est egal à;';
+$lang['equals'] = 'est egal Ã ;';
 $lang['starts with'] = 'commence par';
 $lang['contains'] = 'contient';
 $lang['ends with'] = 'se termine par';
@@ -259,7 +259,7 @@ $lang['nothing_to_report'] = 'Ce serveur n\'a aucunes informations a rapporter.'
 
 //update.php
 $lang['update_array_malformed'] = 'update_array n\'est pas bien form&eacute;. Ceci est peut-&ecirc;tre un bogue de phpLDAPadmin. Pourriez-vous effectuer un rapport de bogue, s\'il vous pla&icirc;t.';
-$lang['could_not_perform_ldap_modify'] = 'L\'op&eacute;ration ldap_modify n\'a pu être effectu&eacute;e.';
+$lang['could_not_perform_ldap_modify'] = 'L\'op&eacute;ration ldap_modify n\'a pu Ãªtre effectu&eacute;e.';
 
 // update_confirm.php
 $lang['do_you_want_to_make_these_changes'] = 'Voulez-vous effectuer ces changements?';
@@ -276,7 +276,7 @@ $lang['go_back'] = 'Retour';
 $lang['welcome_note'] = 'Utilisez le menu de gauche pour la navigation';
 
 // view_jpeg_photo.php
-$lang['unsafe_file_name'] = 'Nom de fichier non sûr: ';
+$lang['unsafe_file_name'] = 'Nom de fichier non sÃ»r: ';
 $lang['no_such_file'] = 'Aucun fichier trouv&eacute;: ';
 
 //function.php
@@ -336,7 +336,7 @@ $lang['ferror_congrats_found_bug'] = 'F&eacute;licitations! Vous avez trouv&eacu
 //ldif_import_form
 $lang['import_ldif_file_title'] = 'Import de fichier LDIF';
 $lang['select_ldif_file'] = 'S&eacute;lectionner un fichier LDIF:';
-$lang['select_ldif_file_proceed'] = 'Continuer >>';
+$lang['select_ldif_file_proceed'] = 'Continuer &gt;&gt;';
 
 //lldif_import
 $lang['add_action'] = 'Ajout de...';

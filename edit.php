@@ -15,6 +15,7 @@
  */
 
 require realpath( 'common.php' );
+require realpath( 'templates/template_config.php' );
 
 $dn = isset( $_GET['dn'] ) ? $_GET['dn'] : false;
 $dn !== false or pla_error( $lang['missing_dn_in_query_string'] );

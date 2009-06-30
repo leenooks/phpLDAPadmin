@@ -265,6 +265,9 @@ $lang['go_back'] = 'Zur&uuml;ck';//'Go back';
 
 // welcome.php
 $lang['welcome_note'] = 'Ben&uuml;tzen sie das Menu auf der linken Seite zur Navigation.';//'Use the menu to the left to navigate';
+$lang['credits'] = 'Vorspann';//'Credits';
+$lang['changelog'] = '&Auml;nderungsdatei';//'ChangeLog';
+$lang['documentation'] = 'Dokumentation';// 'Documentation';
 
 // view_jpeg_photo.php
 $lang['unsafe_file_name'] = 'Unsicherer Dateiname:';//'Unsafe file name: ';

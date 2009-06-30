@@ -27,6 +27,9 @@ session_start();
 if( ! session_is_registered( 'tree' ) || ! isset( $_SESSION['tree'] ) ) {
 	session_register( 'tree' );
 	$_SESSION['tree'] = build_initial_tree(); 
+}
+// do we not have any tree icons cached yet? Build a new one.
+if( ! session_is_registered( 'tree_icons' ) || ! isset( $_SESSION['tree_icons'] ) ) {
 	session_register( 'tree_icons' );
 	$_SESSION['tree_icons'] = build_initial_tree_icons();
 }
@@ -41,9 +44,9 @@ include 'header.php'; ?>
 
 <?php 
 	$bug_href = get_href( 'add_bug' );
-	$open_bugs_href = get_href( 'open_bugs' );
+	//$open_bugs_href = get_href( 'open_bugs' );
 	$feature_href = get_href( 'add_rfe' );
-	$open_features_href = get_href( 'open_rfes' );
+	//$open_features_href = get_href( 'open_rfes' );
 ?>
 
 <h3 class="subtitle" style="margin:0px">phpLDAPadmin - <?php echo pla_version(); ?></h3>
@@ -51,12 +54,12 @@ include 'header.php'; ?>
 <tr>
 	<td><img src="images/light.png" /></td>
 	<td><nobr><a href="<?php echo $feature_href; ?>" target="new"><?php echo $lang['request_new_feature']; ?></a>
-		(<a href="<?php echo $open_features_href; ?>" target="new"><?php echo $lang['see_open_requests']; ?></a>)</nobr></td>
+		<!--(<a href="<?php echo $open_features_href; ?>" target="new"><?php echo $lang['see_open_requests']; ?></a>)--></nobr></td>
 </tr>
 <tr>	
 	<td><img src="images/bug.png" /></td>
 	<td><nobr><a href="<?php echo $bug_href; ?>" target="new"><?php echo $lang['report_bug']; ?></a>
-		(<a href="<?php echo $open_bugs_href; ?>" target="new"><?php echo $lang['see_open_bugs']; ?></a>)</nobr></td>
+		<!--(<a href="<?php echo $open_bugs_href; ?>" target="new"><?php echo $lang['see_open_bugs']; ?></a>)--></nobr></td>
 </tr>
 </table>
 
@@ -119,14 +122,15 @@ foreach( $servers as $server_id => $server_tree ) {
 				
 				if( $servers[$server_id]['auth_type'] == 'form' && have_auth_info( $server_id ) )
 					echo "<tr><td class=\"links\" colspan=\"100\"><nobr>" .
-						$lang['logged_in_as'] . htmlspecialchars(get_logged_in_dn($server_id)) . 
+						$lang['logged_in_as'] . "<a class=\"logged_in_dn\" href=\"edit.php?server_id=$server_id&amp;dn=" . 
+						rawurlencode(get_logged_in_dn($server_id)) . "\" target=\"right_frame\">" . 
+						htmlspecialchars(get_logged_in_dn($server_id)) . "</a>" .
 						"</nobr></td></tr>";
 				if( is_server_read_only( $server_id ) ) 
 					echo "<tr><td class=\"links\" colspan=\"100\"><nobr>" .
 						"(" . $lang['read_only'] . ")</nobr></td></tr>";
 	
 				// Fetch and display the base DN for this server
-				//$rdn = utf8_decode( $dn );
 				if( null == $servers[ $server_id ]['base'] ) {
 					$base_dn = try_to_get_root_dn( $server_id );
 				} else {
@@ -165,7 +169,7 @@ foreach( $servers as $server_id => $server_tree ) {
 					echo "<td class=\"icon\"><a href=\"$edit_href\" target=\"right_frame\">";
 					echo "<img src=\"images/$icon\" /></a></td>\n";
 					echo "<td class=\"rdn\" colspan=\"98\"><nobr><a href=\"$edit_href\" ";
-					echo " target=\"right_frame\">$base_dn</nobr></td>\n";
+					echo " target=\"right_frame\">" . pretty_print_dn( $base_dn ) . "</nobr></td>\n";
 					echo "</tr>\n<!-- end of base DN row -->";
 
 				} else { // end if( $base_dn )
@@ -285,9 +289,7 @@ function draw_tree_html( $dn, $server_id, $level=0 )
 		$tree_icons[ $server_id ][ $dn ] = get_icon( $server_id, $dn );
 	$img_src = 'images/' . $tree_icons[ $server_id ][ $dn ];
 
-	$rdn = pla_explode_dn( $dn );
-	if( isset( $rdn[0] ) )
-		$rdn = $rdn[0];
+	$rdn = get_rdn( $dn );
 
 	echo '<tr>';
 
@@ -329,7 +331,7 @@ function draw_tree_html( $dn, $server_id, $level=0 )
 	<td class="rdn" colspan="<?php echo (97-$level); ?>">
 		<nobr>
 			<a href="<?php echo $edit_href; ?>"
-				target="right_frame"><?php echo ( $rdn ); ?></a>
+				target="right_frame"><?php echo ( pretty_print_dn( $rdn ) ); ?></a>
 				<?php echo $object_count; ?>
 		</nobr>
 	</td>

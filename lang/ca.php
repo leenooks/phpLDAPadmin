@@ -1,6 +1,8 @@
 <?php
 
 // Search form
+// phpldapadmin/lang/ca.php $Revision: 1.2 $
+//encoding: ISO-8859-1,ca.php instalació de PHP no té
 $lang['simple_search_form_str'] = 'Formulari de recerca sencilla';
 $lang['advanced_search_form_str'] = 'Formulari de recerca avançada';
 $lang['server'] = 'Servidor';
@@ -255,6 +257,10 @@ $lang['go_back'] = 'Tornar enrera';
 
 // welcome.php
 $lang['welcome_note'] = 'Fes anar el menú de l\'esquerra per a navegar';
+$lang['credits'] = "Crèdits";
+$lang['changelog'] = "Històric de canvis";
+$lang['documentation'] = "Documentació";
+
 
 // view_jpeg_photo.php
 $lang['unsafe_file_name'] = 'Nom d\'arxiu insegur: ';

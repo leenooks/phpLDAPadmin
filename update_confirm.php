@@ -51,10 +51,16 @@ foreach( $new_values as $attr => $vals )
 
 <?php
 $update_array = array();
-foreach( $new_values as $attr => $new_val )
+foreach( $old_values as $attr => $old_val )
 {
+	// Did the user delete the field?
+	if( ! isset( $new_values[ $attr ] ) ) {
+		$update_array[ $attr ] = '';
+	}
 	// did the user change the field?
-	if( $new_val != $old_values[ $attr ] ) {
+	elseif( $old_val != $new_values[ $attr ] ) {
+
+		$new_val = $new_values[ $attr ];
 
 		// special case for userPassword attributes
 		if( 0 == strcasecmp( $attr, 'userPassword' ) && $new_val != '' )
