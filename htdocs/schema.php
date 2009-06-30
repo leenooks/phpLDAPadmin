@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/schema.php,v 1.60 2005/07/22 06:09:50 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/schema.php,v 1.60.2.1 2005/10/16 20:19:16 wurley Exp $
 
 /**
  * Displays the schema for the specified server_id
@@ -80,7 +80,7 @@ switch($view) {
 
 		$counter = 1;
 
-		$schema_syntaxes = get_schema_syntaxes($ldapserver,null,true);
+		$schema_syntaxes = $ldapserver->SchemaSyntaxes(null,true);
 		if (! $schema_syntaxes)
 			pla_error($schema_error_str);
 
@@ -102,8 +102,8 @@ switch($view) {
 		break;
 
 	case 'attributes':
-		$schema_attrs = get_schema_attributes($ldapserver,null,true);
-		$schema_object_classes = get_schema_objectclasses($ldapserver,null,true);
+		$schema_attrs = $ldapserver->SchemaAttributes(null,true);
+		$schema_object_classes = $ldapserver->SchemaObjectClasses(null,true);
 
 		if (! $schema_attrs || ! $schema_object_classes)
 			pla_error($schema_error_str);
@@ -284,7 +284,7 @@ switch($view) {
 		break;
 
 	case 'matching_rules':
-		$schema_matching_rules = get_schema_matching_rules($ldapserver,null,true);
+		$schema_matching_rules = $ldapserver->MatchingRules(null,true);
 		if (! $schema_matching_rules)
 			pla_error($schema_error_str);
 
@@ -363,7 +363,7 @@ switch($view) {
 		break;
 
 	case 'objectClasses':
-		$schema_oclasses = get_schema_objectclasses($ldapserver,null,true);
+		$schema_oclasses = $ldapserver->SchemaObjectClasses(null,true);
 		if (! $schema_oclasses)
 			pla_error($schema_error_str);
 ?>

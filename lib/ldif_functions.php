@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/ldif_functions.php,v 1.26 2005/02/25 13:44:06 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/ldif_functions.php,v 1.26.2.1 2005/10/09 09:07:22 wurley Exp $
 
 /**
  * @todo put the display_parse_error method in ldif_import here 
@@ -541,7 +541,7 @@ class LdifReaderException{
    * @param String currentLine the line wich raised an exception
    * @param String the message associated the exception
    */
-  function LdifReaderException($lineNumber,$currentLine,$message){
+  function  LdifReaderException($lineNumber,$currentLine,$message){
     $this->lineNumber = $lineNumber;
     $this->currentLine =$currentLine;
     $this->message = $message;
@@ -675,7 +675,7 @@ class LdifReader extends FileReader{
    * @param String $path2File path of the ldif file to read
    * @param boolean $continuous_mode 1 if continuous mode operation, 0 otherwise
    */
-  function  LdifReader( $path2File , $continuous_mode = 0 ){
+  function LdifReader( $path2File , $continuous_mode = 0 ){
     parent::FileReader( $path2File );
     $this->continuous_mode = $continuous_mode;
     $this->_LdifReader();

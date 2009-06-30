@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/password_checker.php,v 1.8 2005/07/23 17:02:54 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/password_checker.php,v 1.8 2005/07/23 17:02:54 wurley Exp $
 
 /**
  * @package phpLDAPadmin

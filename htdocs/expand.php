@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/expand.php,v 1.22 2005/07/22 05:47:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/expand.php,v 1.22 2005/07/22 05:47:44 wurley Exp $
 
 /**
  * This script alters the session variable 'tree', expanding it

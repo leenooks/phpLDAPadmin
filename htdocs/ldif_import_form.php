@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/ldif_import_form.php,v 1.19 2005/08/16 09:02:50 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import_form.php,v 1.19.2.1 2005/10/19 13:26:21 wurley Exp $
  
 /**
  * Displays a form to allow the user to upload and import
@@ -14,6 +14,9 @@
  */
 
 require './common.php';
+
+if (! ini_get('file_uploads'))
+	pla_error($lang['php_upload']);
 
 $server_id = (isset($_GET['server_id']) ? $_GET['server_id'] : '');
 $ldapserver = $ldapservers->Instance($server_id);

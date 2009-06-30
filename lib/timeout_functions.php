@@ -17,7 +17,8 @@
  * @return bool
  */
 function set_lastactivity( $ldapserver ) {
-	debug_log(sprintf('set_lastactivity(): Entered with (%s)',$ldapserver->server_id),2);
+	if (DEBUG_ENABLED)
+		debug_log('set_lastactivity(): Entered with (%s)',2,$ldapserver->server_id);
 
 	$_SESSION['activity']['server'][$ldapserver->server_id] = time();
 	$_SESSION['activity']['rightframe_server_id'] = $ldapserver->server_id;
@@ -31,7 +32,8 @@ function set_lastactivity( $ldapserver ) {
  * @param object $ldapserver The LDAPServer object of the server which the user has logged in.
  */
 function unset_lastactivity( $ldapserver ) {
-	debug_log(sprintf('unset_lastactivity(): Entered with (%s)',$ldapserver->server_id),2);
+	if (DEBUG_ENABLED)
+		debug_log('unset_lastactivity(): Entered with (%s)',2,$ldapserver->server_id);
 
 	if (isset($_SESSION['activity']['server'][$ldapserver->server_id])) {
        		unset($_SESSION['activity']['server'][$ldapserver->server_id]);
@@ -51,7 +53,8 @@ function unset_lastactivity( $ldapserver ) {
  * @return bool true on success, false on failure.
  */
 function session_timed_out( $ldapserver ) {
-	debug_log(sprintf('session_timed_out(): Entered with (%s)',$ldapserver->server_id),2);
+	if (DEBUG_ENABLED)
+		debug_log('session_timed_out(): Entered with (%s)',2,$ldapserver->server_id);
 
 	global $lang;
 

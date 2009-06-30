@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_smbuser_template.php,v 1.18 2005/03/05 06:27:07 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/Attic/new_smbuser_template.php,v 1.18 2005/03/05 06:27:07 wurley Exp $
 
 	$default_container = "ou=Users";
 	$default_home = "/home";

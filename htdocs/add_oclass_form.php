@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_oclass_form.php,v 1.20 2005/07/22 06:34:55 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass_form.php,v 1.20.2.3 2005/10/22 11:55:31 wurley Exp $
 
 /**
  * This page may simply add the objectClass and take you back to the edit page,
@@ -16,6 +16,7 @@
  *  - new_oclass
  *
  * @package phpLDAPadmin
+ * @todo If an attribute expects a DN, show the dn browser.
  */
 /**
  */
@@ -25,6 +26,9 @@ if( $ldapserver->isReadOnly() )
 	pla_error( $lang['no_updates_in_read_only_mode'] );
 if( ! $ldapserver->haveAuthInfo())
 	pla_error( $lang['not_enough_login_info'] );
+
+if (! isset($_POST['new_oclass']))
+        pla_error( $lang['no_objectclasses_selected']);
 
 $new_oclass = $_REQUEST['new_oclass'];
 $dn = rawurldecode( $_REQUEST['dn'] );
@@ -41,10 +45,10 @@ foreach( $entry as $attr => $junk )
 	$current_attrs[] = strtolower($attr);
 
 // grab the required attributes for the new objectClass
-$schema_oclasses = get_schema_objectclasses( $ldapserver );
+$schema_oclasses = $ldapserver->SchemaObjectClasses();
 $must_attrs = array();
 foreach( $new_oclass as $oclass_name ) {
-	$oclass = get_schema_objectclass( $ldapserver, $oclass_name  );
+	$oclass = $ldapserver->getSchemaObjectClass($oclass_name);
 	if( $oclass )
 		$must_attrs = array_merge( $must_attrs, $oclass->getMustAttrNames( $schema_oclasses ) );
 }
@@ -58,7 +62,7 @@ $must_attrs = array_unique( $must_attrs );
 // but that the object does not currently contain
 $needed_attrs = array();
 foreach( $must_attrs as $attr ) {
-	$attr = get_schema_attribute( $ldapserver, $attr );
+	$attr = $ldapserver->getSchemaAttribute($attr);
 
 	//echo "<pre>"; var_dump( $attr ); echo "</pre>";
 
@@ -124,7 +128,7 @@ if( count( $needed_attrs ) > 0 ) {
 	$add_res = @ldap_mod_add( $ldapserver->connect(), $dn, array( 'objectClass' => $new_oclass ) );
 	if (! $add_res)
 		pla_error("Could not perform ldap_mod_add operation.",
-			ldap_error($ldapserver->connect()),ldap_errno($ldapserver->connect()));
+			  $ldapserver->error(),$ldapserver->errno());
 	else
 		header(sprintf('Location: edit.php?server_id=%s&dn=%s&modified_attrs[]=objectClass',
 			$ldapserver->server_id,$encoded_dn));

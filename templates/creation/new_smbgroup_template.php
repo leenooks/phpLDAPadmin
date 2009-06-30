@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_smbgroup_template.php,v 1.14 2005/03/05 06:27:07 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/Attic/new_smbgroup_template.php,v 1.14 2005/03/05 06:27:07 wurley Exp $
 
 // Common to all templates
 $rdn = isset( $_POST['rdn'] ) ? $_POST['rdn'] : null;

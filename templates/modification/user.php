@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/modification/user.php,v 1.5 2005/02/26 12:33:49 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/modification/Attic/user.php,v 1.5 2005/02/26 12:33:49 wurley Exp $
  
 
 /*

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_value.php,v 1.18 2005/07/22 05:42:18 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_value.php,v 1.18.2.1 2005/10/09 09:07:21 wurley Exp $
 
 /**
  * Adds a value to an attribute for a given dn.
@@ -66,7 +66,7 @@ if( run_hook ( 'pre_attr_add', array ( 'server_id' => $ldapserver->server_id, 'd
 
 	if (! $add_result)
 		pla_error($lang['could_not_perform_ldap_mod_add'],
-			ldap_error($ldapserver->connect()),ldap_errno($ldapserver->connect()));
+			  $ldapserver->error(),$ldapserver->errno());
 }
 
 header(sprintf('Location: edit.php?server_id=%s&dn=%s&modified_attrs[]=%s',

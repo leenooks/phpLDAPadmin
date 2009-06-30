@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/custom_functions.php,v 1.8 2005/03/05 06:27:06 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/custom_functions.php,v 1.8 2005/03/05 06:27:06 wurley Exp $
 
 /**
  * CUSTOM_FUCTIONS has been DEPRECIATED, please use the hooks functions now.

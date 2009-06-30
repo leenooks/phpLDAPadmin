@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/compare.php,v 1.10 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/compare.php,v 1.10.2.3 2005/10/16 20:19:16 wurley Exp $
 
 /**
  * Compare two DNs - the destination DN is editable.
@@ -111,8 +111,8 @@ foreach ($attrs_all as $attr) {
 
 		<?php }
 
-		$schema_attr_src = get_schema_attribute($ldapserver_src,$attr,$dn_src);
-		$schema_attr_dst = get_schema_attribute($ldapserver_dst,$attr,$dn_dst);
+		$schema_attr_src = $ldapserver_src->getSchemaAttribute($attr,$dn_src);
+		$schema_attr_dst = $ldapserver_dst->getSchemaAttribute($attr,$dn_dst);
 
 		# Setup the $attr_note, which will be displayed to the right of the attr name (if any)
 		$attr_note = '';
@@ -348,7 +348,7 @@ foreach ($attrs_all as $attr) {
 
 			<?php }
 
-			if( $config->GetValue('appearance','obfuscate_password_display') || is_null( $enc_type ) )  {
+			if( obfuscate_password_display( $enc_type ) )  {
 				echo htmlspecialchars( preg_replace( "/./", "*", $user_password ) );
 			} else {
 				echo htmlspecialchars( $user_password );
@@ -430,9 +430,9 @@ foreach ($attrs_all as $attr) {
 
 				<a title="<?php echo $lang['view_schema_for_oclass']; ?>" href="schema.php?server_id=<?php echo $ldapserver->server_id; ?>&amp;view=objectClasses&amp;viewvalue=<?php echo htmlspecialchars( $val ); ?>"><img src="images/info.png" /></a>
 
-				<?php $schema_object = get_schema_objectclass( $ldapserver, $val);
+				<?php $schema_object = $ldapserver->getSchemaObjectClass($val);
 
-				if ($schema_object->type == 'structural') {
+			        if ($schema_object->getType() == 'structural') {
 					echo "$val <small>(<acronym title=\"" . sprintf( $lang['structural_object_class_cannot_remove'] ) . "\">" . $lang['structural'] . "</acronym>)</small><br />";
 
 					if ($side == 'dst') {?>
@@ -500,7 +500,7 @@ foreach ($attrs_all as $attr) {
 			// First check if the required objectClass is in this DN
 			$isOK = 0;
 			$src_oclass = array();
-			$attr_object = get_schema_attribute( $ldapserver_dst, $attr, $dn_dst );
+			$attr_object = $ldapserver_dst->getSchemaAttribute($attr,$dn_dst);
 			foreach ($attr_object->used_in_object_classes as $oclass) {
 				if (in_array(strtolower($oclass),arrayLower($attrs_dst['objectClass']))) {
 					$isOK = 1;

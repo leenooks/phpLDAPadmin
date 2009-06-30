@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/entry_chooser.php,v 1.26 2005/08/24 15:14:39 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/entry_chooser.php,v 1.26.2.1 2005/10/09 09:07:21 wurley Exp $
 
 /**
  * Display a selection (popup window) to pick a DN.
@@ -46,7 +46,8 @@ if (isset($ldapserver) && $container !== false) {
 	sort($dn_list);
 
 	foreach ($ldapserver->getBaseDN() as $base_dn) {
-		debug_log(sprintf('%s: Comparing BaseDN [%s] with container [%s]','entry_chooser.php',$base_dn,$container),9);
+	        if (DEBUG_ENABLED)
+			debug_log('entry_chooser.php: Comparing BaseDN [%s] with container [%s]',9,$base_dn,$container);
 
 		if (! pla_compare_dns($container,$base_dn)) {
 			$parent_container = false;

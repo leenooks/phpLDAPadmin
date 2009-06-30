@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/logout.php,v 1.17 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/logout.php,v 1.17 2005/09/25 16:11:44 wurley Exp $
 
 /**
  * For servers whose auth_type is set to 'cookie' or 'session'. Pass me

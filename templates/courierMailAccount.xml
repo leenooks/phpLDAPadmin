@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE template SYSTEM "template.dtd">
 <template>
 <title>courier_mail_account</title>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
@@ -17,8 +19,6 @@
 <attribute id="uid">
 	<display>t_uid</display>
 	<icon>images/uid.png</icon>
-	<description></description>
-	<hint></hint>
 	<onchange>autoFill:homeDirectory,/home/users/%uid%</onchange>
 	<order>1</order>
 	<page>1</page>
@@ -26,8 +26,6 @@
 <attribute id="mail">
         <display>t_email</display>
 	<icon>images/mail.png</icon>
-        <description></description>
-        <hint></hint>
         <order>2</order>
         <page>1</page>
 </attribute>
@@ -40,9 +38,6 @@
 </attribute>
 <attribute id="sn">
 	<display>t_last_name</display>
-	<description></description>
-	<hint></hint>
-	<icon></icon>
 	<onchange>autoFill:cn,%givenName% %sn%</onchange>
 	<onchange>autoFill:uid,%gidNumber|0-0/T%-%givenName|0-1/l%%sn/l%</onchange>
 	<onchange>autoFill:homeDirectory,/home/users/%gidNumber|0-0/T%/%uid|3-%</onchange>
@@ -51,61 +46,53 @@
 </attribute>
 <attribute id="cn">
 	<display>Common Name</display>
-	<description></description>
-	<hint></hint>
-	<icon></icon>
 	<order>5</order>
 	<page>1</page>
 </attribute>
 <attribute id="uidNumber">
-	<icon>images/terminal.png</icon>
 	<display>t_uid_number</display>
-	<description></description>
 	<hint>t_auto_det</hint>
-	<default></default>
-	<presubmit>=php.GetNextNumber(/,uid)</presubmit>
+	<icon>images/terminal.png</icon>
 	<order>6</order>
 	<page>1</page>
-	<hidden>0</hidden>
+	<presubmit>=php.GetNextNumber(/,uid)</presubmit>
 </attribute>
 <attribute id="gidNumber">
 	<display>t_gid_number</display>
-	<description></description>
-	<hint></hint>
-	<default>=php.PickList(/,(objectClass=posixGroup),gidNumber,%cn%)</default>
 	<onchange>autoFill:homeDirectory,/home/users/%gidNumber|0-0/T%/%uid|3-%</onchange>
 	<order>7</order>
 	<page>1</page>
+	<value>=php.PickList(/,(objectClass=posixGroup),gidNumber,%cn%)</value>
 </attribute>
 <attribute id="homeDirectory">
 	<display>t_home_dir</display>
-	<description></description>
-	<hint></hint>
 	<order>8</order>
 	<page>1</page>
 	<spacer>1</spacer>
 </attribute>
 <attribute id="userPassword">
 	<display>t_password</display>
+	<helper>
+		<default>md5</default>
+		<display>t_encryption</display>
+		<id>enc</id>
+		<location>side</location>
+		<value>blowfish</value>
+		<value>clear</value>
+		<value>crypt</value>
+		<value>ext_des</value>
+		<value>md5</value>
+		<value>md5crypt</value>
+		<value>sha</value>
+		<value>smd5</value>
+		<value>ssha</value>
+	</helper>
 	<icon>images/lock.png</icon>
-	<description></description>
-	<hint></hint>
-	<default></default>
 	<order>9</order>
 	<page>1</page>
+	<post>=php.Password(%enc%,%userPassword%)</post>
 	<type>password</type>
 	<verify>1</verify>
-	<helper>
-		<id>enc</id>
-		<display>t_encryption</display>
-		<location>side</location>
-		<description></description>
-		<hint></hint>
-		<value>clear</value>
-		<value>md5</value>
-	</helper>
-	<post>=php.Password(%enc%,%userPassword%)</post>
 </attribute>
 </attributes>
 </template>
-

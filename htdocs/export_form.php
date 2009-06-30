@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/export_form.php,v 1.22 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/export_form.php,v 1.22 2005/09/25 16:11:44 wurley Exp $
 
 /**
  * export_form.php

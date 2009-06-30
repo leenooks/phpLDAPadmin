@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/delete.php,v 1.23 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete.php,v 1.23.2.1 2005/10/09 09:07:21 wurley Exp $
 
 /**
  * Deletes a DN and presents a "job's done" message.
@@ -76,6 +76,6 @@ if ($del_result) {
 <?php
 } else {
 	pla_error(sprintf($lang['could_not_delete_entry'], '<b>' . pretty_print_dn($dn) . '</b>'),
-		ldap_error($ldapserver->connect()), ldap_errno($ldapserver->connect()));
+		  $ldapserver->error(), $ldapserver->errno());
 }
 ?>

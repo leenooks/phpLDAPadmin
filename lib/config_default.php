@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/config_default.php,v 1.11 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.11.2.5 2005/10/22 11:34:07 wurley Exp $
 
 /**
  * Configuration processing and defaults.
@@ -9,7 +9,7 @@
  */
 
 # The minimum version of PHP required to run phpLDAPadmin.
-@define( 'REQUIRED_PHP_VERSION', '4.1.0' );
+define('REQUIRED_PHP_VERSION','4.1.0');
 
 class Config {
 	var $custom;
@@ -44,6 +44,10 @@ class Config {
 			'desc'=>'Date format whenever dates are shown',
 			'default'=>'%A %e %B %Y');
 //$date_format = "%A %e %B %Y";
+
+		$this->default->appearance['date_attrs'] = array(
+			'desc'=>'Array of attributes that should show a jscalendar',
+			'default'=>array('shadowExpire'=>'%es','shadowInactive'=>'%es','shadowLastChange'=>'%es'));
 
 		$this->default->appearance['hide_configuration_management'] = array(
 			'desc'=>'Hide the Sourceforge related links',
@@ -198,6 +202,10 @@ class Config {
 		$this->default->debug['syslog'] = array(
 			'desc'=>'Whether to send debug messages to syslog',
 			'default'=>false);
+
+		$this->default->debug['file'] = array(
+			'desc'=>'Name of file to send debug output to',
+			'default'=>null);
 //$use_syslog
 
 		/** Temp Directories
@@ -314,7 +322,8 @@ class Config {
 		$value = null;
 
 		if (! isset($this->default->$key))
-			pla_error("A call was made to GetValue requesting [$key] that isnt predefined.");
+			pla_error(sprintf('A call was made in [%s] to GetValue requesting [%s] that isnt predefined.',
+				basename($_SERVER['PHP_SELF']),$key));
 		else
 			$default = $this->default->$key;
 
@@ -373,4 +382,9 @@ class Config {
 # Define our configuration variable.
 $config = new Config;
 require (CONFDIR.'config.php');
+
+if (($config->GetValue('debug','syslog') || $config->GetValue('debug','file')) && $config->GetValue('debug','level'))
+	define('DEBUG_ENABLED',1);
+else
+	define('DEBUG_ENABLED',0);
 ?>

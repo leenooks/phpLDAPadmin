@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/update.php,v 1.24 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update.php,v 1.24.2.1 2005/10/09 09:07:21 wurley Exp $
 
 /**
  *  Updates or deletes a value from a specified attribute for a specified dn.
@@ -74,13 +74,13 @@ foreach ($update_array as $attr_name => $val) {
 		pla_error(sprintf($lang['attr_is_read_only'],htmlspecialchars($attr_name)));
 }
 
-$res = @ldap_modify($ldapserver->connect(),$dn,$update_array);
+$res = $ldapserver->modify($dn,$update_array);
 if ($res) {
 	// Fire the post modification event to the user's custom
 	// callback function.
 	foreach ($update_array as $attr_name => $val) {
 		run_hook ('post_attr_modify',array('server_id' => $ldapserver->server_id,
-		     'dn' => $dn,'attr_name' => $attr_name,'new_value' => $val));
+			'dn' => $dn,'attr_name' => $attr_name,'new_value' => $val));
 
 		// Was this a user's password modification who is currently
 		// logged in? If so, they need to logout and log back in
@@ -126,6 +126,7 @@ if ($res) {
 	header("Location: $redirect_url");
 
 } else {
-	pla_error($lang['could_not_perform_ldap_modify'],ldap_error($ldapserver->connect()),ldap_errno($ldapserver->connect()));
+	pla_error($lang['could_not_perform_ldap_modify'],
+		  $ldapserver->error(),$ldapserver->errno());
 }
 ?>

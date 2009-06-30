@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_value_form.php,v 1.32 2005/07/22 06:34:55 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_value_form.php,v 1.32.2.2 2005/10/16 20:19:16 wurley Exp $
 
 /**
  * Displays a form to allow the user to enter a new value to add
@@ -41,13 +41,13 @@ $is_jpeg_photo = is_jpeg_photo( $ldapserver, $attr ); //( 0 == strcasecmp( $attr
 
 if( $is_object_class ) {
 	// fetch all available objectClasses and remove those from the list that are already defined in the entry
-	$schema_oclasses = get_schema_objectclasses( $ldapserver );
+	$schema_oclasses = $ldapserver->SchemaObjectClasses();
 
 	foreach( $current_values as $oclass )
 		unset( $schema_oclasses[ strtolower( $oclass ) ] );
 
 } else {
-	$schema_attr = get_schema_attribute( $ldapserver, $attr );
+	$schema_attr = $ldapserver->getSchemaAttribute($attr);
 }
 
 include './header.php'; ?>
@@ -142,7 +142,7 @@ include './header.php'; ?>
 	<?php foreach( $schema_oclasses as $name => $oclass ) {
 
 		// exclude any structural ones, as they'll only generate an LDAP_OBJECT_CLASS_VIOLATION
-		if ($oclass->type == "structural") continue; ?>
+	        if ($oclass->getType() == "structural") continue; ?>
 
 		<option value="<?php echo $oclass->getName(); ?>"><?php echo $oclass->getName(); ?></option>
 

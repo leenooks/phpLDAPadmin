@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_oclass.php,v 1.16 2005/07/22 06:34:55 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass.php,v 1.16.2.1 2005/10/09 09:07:21 wurley Exp $
 
 /**
  * Adds an objectClass to the specified dn.
@@ -57,7 +57,7 @@ if( is_array( $new_attrs ) && count( $new_attrs ) > 0 )
 $add_res = @ldap_mod_add( $ldapserver->connect(), $dn, $new_entry );
 
 if (! $add_res)
-	pla_error($lang['could_not_perform_ldap_mod_add'],ldap_error($ldapserver->connect()),ldap_errno($ldapserver->connect()));
+	pla_error($lang['could_not_perform_ldap_mod_add'],$ldapserver->error(),$ldapserver->errno());
 
 else
 	header(sprintf('Location: edit.php?server_id=%s&dn=%s&modified_attrs[]=objectclass',$ldapserver->server_id,$encoded_dn));

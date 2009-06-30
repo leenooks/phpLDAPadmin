@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/mass_delete.php,v 1.13 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/mass_delete.php,v 1.13.2.1 2005/10/09 09:07:21 wurley Exp $
 
 /**
  * Enables user to mass delete multiple entries using checkboxes.
@@ -73,7 +73,7 @@ if( $confirmed == true ) {
 
 			} else {
 				echo " <span style=\"color:red\">" . $lang['failed'] . "</span>.\n";
-				echo "(" . ldap_error( $ldapserver->connect() ) . ")<br />\n";
+				echo "(" . $ldapserver->error() . ")<br />\n";
 				$failed_dns[] = $dn;
 			}
 		}

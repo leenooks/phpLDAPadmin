@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE template SYSTEM "template.dtd">
 <!--This template doesnt work needs modification to the Engine.-->
 <template>
 <title>ldap_alias</title>
@@ -17,13 +19,13 @@
 <attributes>
 <attribute id="aliasedObjectName">
 	<display>Alias To</display>
-	<order>1</order>
-	<page>1</page>
 	<helper>
 		<display></display>
 		<location>side</location>
 		<value>=php.DrawChooserLink(aliasedObjectName,0)</value>
 	</helper>
+	<order>1</order>
+	<page>1</page>
 </attribute>
 </attributes>
 </template>

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/session_functions.php,v 1.14 2005/07/16 03:13:54 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/session_functions.php,v 1.14.2.2 2005/10/17 10:03:39 wurley Exp $
 
 /**
  * A collection of functions to handle sessions throughout phpLDAPadmin.
@@ -8,7 +8,7 @@
  */
 
 /** The session ID that phpLDAPadmin will use for all sessions */
-@define( 'PLA_SESSION_ID', 'PLASESSID' );
+define('PLA_SESSION_ID','PLASESSID');
 /** Enables session paranoia, which causes SIDs to change each page load (EXPERIMENTAL!) */
 define('pla_session_id_paranoid', false);
 /** Flag to indicate whether the session has already been initialized (this constant gets stored in $_SESSION) */
@@ -24,7 +24,8 @@ define('pla_session_id_ses_max', 36);
  * @return string the new session ID string
  */
 function pla_session_get_id() {
-	debug_log(sprintf('pla_session_get_id(): Entered with ()'),2);
+	if (DEBUG_ENABLED)
+		debug_log('pla_session_get_id(): Entered with ()',2);
 
 	$id_md5 = md5(rand(1,1000000));
 	$ip_md5 = md5($_SERVER['REMOTE_ADDR']);
@@ -48,7 +49,8 @@ function pla_session_get_id() {
  * @return bool True, if the session is valid
  */
 function pla_session_verify_id() {
-	debug_log(sprintf('pla_session_verify_id(): Entered with ()'),2);
+	if (DEBUG_ENABLED)
+		debug_log('pla_session_verify_id(): Entered with ()',2);
 
 	$check_id = session_id();
 	$ip_md5 = md5($_SERVER['REMOTE_ADDR']);
@@ -73,7 +75,8 @@ function pla_session_verify_id() {
  * @return bool Returns true if the session was started the first time
  */
 function pla_session_start() {
-	debug_log(sprintf('pla_session_start(): Entered with ()'),2);
+	if (DEBUG_ENABLED)
+		debug_log('pla_session_start(): Entered with ()',2);
 
     // If session.auto_start is on in the server's PHP configuration (php.ini), then
     // we will have problems loading our schema cache since the session will have started

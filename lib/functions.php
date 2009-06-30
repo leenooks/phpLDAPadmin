@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/functions.php,v 1.275 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.275.2.16 2005/11/01 10:06:53 wurley Exp $
 
 /**
  * A collection of functions used throughout phpLDAPadmin.
@@ -7,12 +7,13 @@
  * @package phpLDAPadmin
  */
 
-@DEFINE(LANGDIR,sprintf('%s/',realpath(LIBDIR.'./lang/')));
-@DEFINE(CONFDIR,sprintf('%s/',realpath(LIBDIR.'./')));
-@DEFINE(TMPLDIR,sprintf('%s/',realpath(LIBDIR.'./templates/')));
-@DEFINE(DOCDIR,sprintf('%s/',realpath(LIBDIR.'./doc/')));
-@DEFINE(CSSDIR,'./');
-@DEFINE(JSDIR,'./');
+define('HTDOCDIR',sprintf('%s/',realpath(LIBDIR.'../htdocs/')));
+define('LANGDIR',sprintf('%s/',realpath(LIBDIR.'../lang/')));
+define('CONFDIR',sprintf('%s/',realpath(LIBDIR.'../config')));
+define('TMPLDIR',sprintf('%s/',realpath(LIBDIR.'../templates/')));
+define('DOCDIR',sprintf('%s/',realpath(LIBDIR.'../doc/')));
+define('CSSDIR','css/');
+define('JSDIR','js/');
 
 /* Supplimental functions
  * This list is a list of supplimental functions that are used throughout PLA. The
@@ -27,7 +28,7 @@ $pla_function_files = array(
 	LANGDIR.'recoded/en.php',
 	# Functions for managing the session (pla_session_start(), etc.)
 	LIBDIR.'session_functions.php',
-	# Functions for reading the server schema (get_schema_object_classes(), etc.)
+	# Functions for reading the server schema
 	LIBDIR.'schema_functions.php',
 	# Functions that can be defined by the user (preEntryDelete(), postEntryDelete(), etc.)
 	LIBDIR.'custom_functions.php',
@@ -37,6 +38,8 @@ $pla_function_files = array(
 	LIBDIR.'emuhash_functions.php',
 	# Functions for running various hooks
 	LIBDIR.'hooks.php',
+	# Functions for creating Samba passwords
+	LIBDIR.'createlm.php',
 	# Functions for timeout and automatic logout feature
 	LIBDIR.'timeout_functions.php'
 );
@@ -65,9 +68,8 @@ $pla_function_files = array(
  * @todo Move this to an LDAPServer object method.
  */
 function is_multi_line_attr( $attr_name, $val=null, $server_id=null ) {
-	debug_log(sprintf('is_multi_line_attr(): Entered with (%s,%s,%s)',$attr_name,$val,$server_id),2);
-
 	global $config, $ldapservers;
+
 	$multi_line_attributes = $config->GetValue('appearance','multi_line_attributes');
 	$multi_line_syntax_oids = $config->GetValue('appearance','multi_line_syntax_oids');
 
@@ -90,20 +92,22 @@ function is_multi_line_attr( $attr_name, $val=null, $server_id=null ) {
 	if (! $return && ! is_null($server_id)) {
 		$ldapserver = $ldapservers->Instance($server_id);
 
-		$schema_attr = get_schema_attribute($ldapserver,$attr_name);
+		$schema_attr = $ldapserver->getSchemaAttribute($attr_name);
 		if ($schema_attr) {
-            $syntax_oid = $schema_attr->getSyntaxOID();
+			$syntax_oid = $schema_attr->getSyntaxOID();
 
-            if ($syntax_oid)
+			if ($syntax_oid)
 				foreach($multi_line_syntax_oids as $multi_line_syntax_oid)
 					if ($multi_line_syntax_oid == $syntax_oid) {
 						$return = true;
 						break;
 					}
 		}
-    }
+	}
 
-	debug_log(sprintf('is_multi_line_attr(): Returning (%s)',$return),1);
+	if (DEBUG_ENABLED)
+		debug_log('is_multi_line_attr(): Entered with (%s,%s,%s), Returning (%s)',1,$attr_name,$val,$server_id,$return);
+
 	return $return;
 }
 
@@ -117,7 +121,7 @@ function is_multi_line_attr( $attr_name, $val=null, $server_id=null ) {
  * @deprecated
  */
 function get_view_deref_setting() {
-    global $config;
+        global $config;
 	return $config->GetValue('deref','view');
 }
 
@@ -134,7 +138,6 @@ function get_view_deref_setting() {
  * @return bool
  */
 function obfuscate_password_display($enc=null) {
-	debug_log(sprintf('obfuscate_password_display(): Entered with ()'),2);
 	global $config;
 
 	if ($config->GetValue('appearance','obfuscate_password_display'))
@@ -146,7 +149,9 @@ function obfuscate_password_display($enc=null) {
 	else
 		$return = false;
 
-	debug_log(sprintf('obfuscate_password_display(): Returning (%s)',$return),1);
+	if (DEBUG_ENABLED)
+		debug_log('obfuscate_password_display(): Entered with (%s), Returning (%s)',1,$enc,$return);
+
 	return $return;
 }
 
@@ -161,16 +166,17 @@ function obfuscate_password_display($enc=null) {
  * @return string
  */
 function pretty_print_dn( $dn ) {
-	debug_log(sprintf('pretty_print_dn(): Entered with (%s)',$dn),2);
+	if (DEBUG_ENABLED)
+		debug_log('pretty_print_dn(): Entered with (%s)',2,$dn);
 
 	$dn = pla_explode_dn( $dn );
 	foreach( $dn as $i => $element ) {
-		$element = htmlspecialchars( $element );
-		$element = explode( '=', $element, 2 );
-		$element = implode( '<span style="color: blue; font-family: courier; font-weight: bold">=</span>', $element );
+		$element = htmlspecialchars($element);
+		$element = explode('=',$element,2);
+		$element = implode('<span style="color: blue; font-family: courier; font-weight: bold">=</span>',$element);
 		$dn[$i] = $element;
 	}
-	$dn = implode( '<span style="color:red; font-family:courier; font-weight: bold;">,</span>', $dn );
+	$dn = implode('<span style="color:red; font-family:courier; font-weight: bold;">,</span>',$dn);
 
 	return $dn;
 }
@@ -185,7 +191,8 @@ function pretty_print_dn( $dn ) {
  * @todo Move this to an LDAPServer object method.
  */
 function is_dn_attr( $ldapserver, $attr_name ) {
-	debug_log(sprintf('is_dn_attr(): Entered with (%s,%s)',$ldapserver->server_id,$attr_name),2);
+	if (DEBUG_ENABLED)
+		debug_log('is_dn_attr(): Entered with (%s,%s)',2,$ldapserver->server_id,$attr_name);
 
 	// Simple test first
 	$dn_attrs = array( "aliasedObjectName" );
@@ -194,7 +201,7 @@ function is_dn_attr( $ldapserver, $attr_name ) {
 			return true;
 
 	// Now look at the schema OID
-	$attr_schema = get_schema_attribute( $ldapserver, $attr_name );
+	$attr_schema = $ldapserver->getSchemaAttribute($attr_name);
 	if( ! $attr_schema )
 		return false;
 
@@ -204,8 +211,8 @@ function is_dn_attr( $ldapserver, $attr_name ) {
 	if( '1.3.6.1.4.1.1466.115.121.1.34' == $syntax_oid )
 		return true;
 
-	$syntaxes = get_schema_syntaxes( $ldapserver );
-	if( ! isset( $syntaxes[ $syntax_oid ] ) )
+	$syntaxes = $ldapserver->SchemaSyntaxes();
+	if (! isset($syntaxes[$syntax_oid]))
 		return false;
 
 	$syntax_desc = $syntaxes[ $syntax_oid ]->getDescription();
@@ -226,33 +233,35 @@ function is_dn_attr( $ldapserver, $attr_name ) {
  * @see unit_test.php
  * @return bool
  */
-function is_dn_string( $str ) {
-	debug_log(sprintf('is_dn_string(): Entered with (%s)',$str),2);
+function is_dn_string($str) {
+	if (DEBUG_ENABLED)
+		debug_log('is_dn_string(): Entered with (%s)',2,$str);
 
-    // Try to break the string into its component parts if it can be done
-    // ie, "uid=Manager" "dc=example" and "dc=com"
-    $parts = pla_explode_dn( $str );
-    if( ! is_array( $parts ) )
-        return false;
-    if( 0 == count( $parts ) )
-        return false;
+	/* Try to break the string into its component parts if it can be done
+	   ie, "uid=Manager" "dc=example" and "dc=com" */
+	$parts = pla_explode_dn($str);
+	if (! is_array($parts) || ! count($parts))
+		return false;
 
-    // Foreach of the "parts", look for an "=" character,
-    // and make sure neither the left nor the right is empty
-    foreach( $parts as $part ) {
-        if( false === strpos( $part, "=" ) )
-            return false;
-        $sub_parts = explode( "=", $part, 2 );
-        $left = $sub_parts[0];
-        $right = $sub_parts[1];
-        if( 0 == strlen( trim( $left ) ) || 0 == strlen( trim( $right ) ) )
-            return false;
-        if( false !== strpos( $left, '#' ) )
-            return false;
-    }
+	/* Foreach of the "parts", look for an "=" character,
+	   and make sure neither the left nor the right is empty */
+	foreach ($parts as $part) {
+		if (! strpos($part,"="))
+			return false;
 
-    // We survived the above rigor. This is a bonified DN string.
-    return true;
+		$sub_parts = explode("=",$part,2);
+		$left = $sub_parts[0];
+		$right = $sub_parts[1];
+
+		if ( ! strlen(trim($left)) || ! strlen(trim($right)))
+			return false;
+
+		if (strpos($left,'#') !== false)
+			return false;
+	}
+
+	# We survived the above rigor. This is a bonified DN string.
+	return true;
 }
 
 /**
@@ -262,14 +271,16 @@ function is_dn_string( $str ) {
  * @return bool Returns true if the specified string looks like
  *   an email address or false otherwise.
  */
-function is_mail_string( $str ) {
-	debug_log(sprintf('is_mail_string(): Entered with (%s)',$str),2);
+function is_mail_string($str) {
+	if (DEBUG_ENABLED)
+		debug_log('is_mail_string(): Entered with (%s)',2,$str);
 
-    $mail_regex = "/^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*$/";
-    if( preg_match( $mail_regex, $str ) )
-        return true;
-    else
-        return false;
+	$mail_regex = "/^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*$/";
+
+	if (preg_match($mail_regex,$str))
+		return true;
+	else
+		return false;
 }
 
 /**
@@ -279,14 +290,16 @@ function is_mail_string( $str ) {
  * @return bool Returns true if the specified string looks like
  *   a web URL or false otherwise.
  */
-function is_url_string( $str ) {
-	debug_log(sprintf('is_url_string(): Entered with (%s)',$str),2);
+function is_url_string($str) {
+	if (DEBUG_ENABLED)
+		debug_log('is_url_string(): Entered with (%s)',2,$str);
 
-    $url_regex = '/(ftp|https?):\/\/+[\w\.\-\/\?\=\&]*\w+/';
-    if( preg_match( $url_regex, $str ) )
-        return true;
-    else
-        return false;
+	$url_regex = '/(ftp|https?):\/\/+[\w\.\-\/\?\=\&]*\w+/';
+
+	if (preg_match($url_regex,$str))
+		return true;
+	else
+		return false;
 }
 
 /**
@@ -304,8 +317,6 @@ function is_url_string( $str ) {
  * @return bool
  */
 function pla_set_cookie( $name, $val, $expire=null, $dir=null ) {
-	debug_log(sprintf('pla_set_cookie(): Entered with (%s,%s,%s,%s)',$name,$val,$expire,$dir),2);
-
 	global $config;
 
 	# Set default return
@@ -324,7 +335,9 @@ function pla_set_cookie( $name, $val, $expire=null, $dir=null ) {
 		$return = true;
 	}
 
-	debug_log(sprintf('pla_set_cookie(): Returning (%s)',$return),1);
+	if (DEBUG_ENABLED)
+		debug_log('pla_set_cookie(): Entered with (%s,%s,%s,%s), Returning (%s)',1,$name,$val,$expire,$dir,$return);
+
 	return $return;
 }
 
@@ -350,49 +363,51 @@ function pla_set_cookie( $name, $val, $expire=null, $dir=null ) {
  * @see unset_login_dn
  */
 function set_login_dn($ldapserver,$dn,$password,$anon_bind) {
-	debug_log(sprintf('set_login_dn(): Entered with (%s,%s,%s,%s)',
-		$ldapserver->server_id,$dn,$password,$anon_bind),2);
+	if (DEBUG_ENABLED)
+		debug_log('set_login_dn(): Entered with (%s,%s,%s,%s)',2,$ldapserver->server_id,$dn,$password,$anon_bind);
 
 	if (! $ldapserver->auth_type)
 		return false;
 
-	switch( $ldapserver->auth_type )
-	{
+	switch ($ldapserver->auth_type) {
 		case 'cookie':
 			$cookie_dn_name = sprintf("pla_login_dn_%s",$ldapserver->server_id);
 			$cookie_pass_name = sprintf("pla_login_pass_%s",$ldapserver->server_id);
 
-			// we set the cookie password to 0 for anonymous binds.
-			if( $anon_bind ) {
+			# we set the cookie password to 0 for anonymous binds.
+			if ($anon_bind) {
 				$dn = 'anonymous';
 				$password = '0';
 			}
 
-			$res1 = pla_set_cookie( $cookie_dn_name, pla_blowfish_encrypt( $dn ) );
-			$res2 = pla_set_cookie( $cookie_pass_name, pla_blowfish_encrypt( $password ) );
-			if( $res1 && $res2 )
+			$res1 = pla_set_cookie($cookie_dn_name,pla_blowfish_encrypt($dn));
+			$res2 = pla_set_cookie($cookie_pass_name,pla_blowfish_encrypt($password));
+			if ($res1 && $res2)
 				return true;
 			else
 				return false;
+
 			break;
 
 		case 'session':
 			$sess_var_dn_name = sprintf("pla_login_dn_%s",$ldapserver->server_id);
 			$sess_var_pass_name = sprintf("pla_login_pass_%s",$ldapserver->server_id);
 
-			// we set the cookie password to 0 for anonymous binds.
-			if( $anon_bind ) {
+			# we set the cookie password to 0 for anonymous binds.
+			if ($anon_bind) {
 				$dn = 'anonymous';
 				$password = '0';
 			}
 
-			$_SESSION[ $sess_var_dn_name ] = pla_blowfish_encrypt( $dn );
-			$_SESSION[ $sess_var_pass_name ] = pla_blowfish_encrypt ( $password );
+			$_SESSION[$sess_var_dn_name] = pla_blowfish_encrypt($dn);
+			$_SESSION[$sess_var_pass_name] = pla_blowfish_encrypt($password);
 			return true;
+
 			break;
+
 		default:
 			global $lang;
-			pla_error( sprintf( $lang['unknown_auth_type'], htmlspecialchars( $ldapserver->auth_type ) ) );
+			pla_error(sprintf($lang['unknown_auth_type'],htmlspecialchars($ldapserver->auth_type)));
 			break;
 	}
 }
@@ -409,62 +424,65 @@ function set_login_dn($ldapserver,$dn,$password,$anon_bind) {
  * @see set_login_dn
  */
 function unset_login_dn( $ldapserver ) {
-	debug_log(sprintf('unset_login_dn(): Entered with (%s)',$ldapserver->server_id),2);
+	if (DEBUG_ENABLED)
+		debug_log('unset_login_dn(): Entered with (%s)',2,$ldapserver->server_id);
 
 	if (! $ldapserver->auth_type)
 		return false;
 
-	switch( $ldapserver->auth_type )
-	{
+	switch ($ldapserver->auth_type) {
 		case 'cookie':
-			$logged_in_dn = get_logged_in_dn( $ldapserver );
-			if( ! $logged_in_dn )
+			$logged_in_dn = get_logged_in_dn($ldapserver);
+			if (! $logged_in_dn)
 				return false;
 
-			$logged_in_pass = get_logged_in_pass( $ldapserver );
+			$logged_in_pass = get_logged_in_pass($ldapserver);
 			$anon_bind = $logged_in_dn == 'anonymous' ? true : false;
 
-			// set cookie with expire time already passed to erase cookie from client
+			# set cookie with expire time already passed to erase cookie from client
 			$expire = time()-3600;
 			$cookie_dn_name = sprintf("pla_login_dn_%s",$ldapserver->server_id);
 			$cookie_pass_name = sprintf("pla_login_pass_%s",$ldapserver->server_id);
 
-			if( $anon_bind ) {
-				$res1 = pla_set_cookie( $cookie_dn_name, 'anonymous', $expire );
-				$res2 = pla_set_cookie( $cookie_pass_name, '0', $expire );
+			if ($anon_bind) {
+				$res1 = pla_set_cookie($cookie_dn_name,'anonymous',$expire);
+				$res2 = pla_set_cookie($cookie_pass_name,'0',$expire);
+
 			} else {
-				$res1 = pla_set_cookie( $cookie_dn_name, pla_blowfish_encrypt( $logged_in_dn ), $expire );
-				$res2 = pla_set_cookie( $cookie_pass_name, pla_blowfish_encrypt( $logged_in_pass ), $expire );
+				$res1 = pla_set_cookie($cookie_dn_name,pla_blowfish_encrypt($logged_in_dn),$expire);
+				$res2 = pla_set_cookie($cookie_pass_name,pla_blowfish_encrypt($logged_in_pass),$expire);
 			}
 
 			# Need to unset the cookies too, since they are still set if further processing occurs (eg: Timeout)
 			unset($_COOKIE[$cookie_dn_name]);
 			unset($_COOKIE[$cookie_pass_name]);
 
-			if( ! $res1 || ! $res2 )
+			if (! $res1 || ! $res2)
 				return false;
 			else
 				return true;
+
 			break;
 
 		case 'session':
-			// unset session variables
+			# unset session variables
 			$session_var_dn_name = sprintf("pla_login_dn_%s",$ldapserver->server_id);
 			$session_var_pass_name = sprintf("pla_login_pass_%s",$ldapserver->server_id);
 
-			if( array_key_exists( $session_var_dn_name, $_SESSION ) )
-				unset( $_SESSION[ $session_var_dn_name ] );
+			if (array_key_exists($session_var_dn_name,$_SESSION))
+				unset($_SESSION[$session_var_dn_name]);
 
-			if( array_key_exists( $session_var_pass_name, $_SESSION ) )
-				unset( $_SESSION[ "$session_var_pass_name" ] );
+			if (array_key_exists($session_var_pass_name,$_SESSION))
+				unset($_SESSION[$session_var_pass_name]);
 
 			session_write_close();
 			return true;
+
 			break;
 
 		default:
 			global $lang;
-			pla_error( sprintf( $lang['unknown_auth_type'], htmlspecialchars( $auth_type ) ) );
+			pla_error(sprintf($lang['unknown_auth_type'],htmlspecialchars($auth_type)));
 			break;
 	}
 }
@@ -479,8 +497,6 @@ function unset_login_dn( $ldapserver ) {
  * @return string The customized filename, if exists, or the standard one
  */
 function get_custom_file($server_id,$filename,$path) {
-	debug_log(sprintf('get_custom_file(): Entered with (%s,%s,%s)',$server_id,$filename,$path),2);
-
 	global $ldapservers;
 
 	# Set default return
@@ -490,7 +506,9 @@ function get_custom_file($server_id,$filename,$path) {
 	if (! is_null($custom) && is_file(realpath($path.$custom.$filename)))
 		$return = $path.$custom.$filename;
 
-	debug_log(sprintf('get_custom_file(): Returning (%s)',$return),1);
+	if (DEBUG_ENABLED)
+		debug_log('get_custom_file(): Entered with (%s,%s,%s), Returning (%s)',1,$server_id,$filename,$path,$return);
+
 	return $return;
 }
 
@@ -503,8 +521,6 @@ function get_custom_file($server_id,$filename,$path) {
  * @return any The result of the called function
  */
 function call_custom_function( $server_id, $function ) {
-	debug_log(sprintf('call_custom_function(): Entered with (%s,%s)',$server_id,$function),2);
-
 	global $ldapservers;
 
 	# Set default return
@@ -514,7 +530,9 @@ function call_custom_function( $server_id, $function ) {
 	if (! is_null($custom) && function_exists($custom.$function))
 		$return = $custom.$filename;
 
-	debug_log(sprintf('get_custom_file(): Returning (%s)',$return),1);
+	if (DEBUG_ENABLED)
+		debug_log('get_custom_file(): Entered with (%s,%s), Returning (%s)',1,$server_id,$function,$return);
+
 	return call_user_func($return );
 }
 
@@ -549,53 +567,56 @@ function call_custom_function( $server_id, $function ) {
  * @param string $dn2 The second of two DNs to compare
  * @return int
  */
-function pla_compare_dns( $dn1, $dn2 ) {
-	debug_log(sprintf('pla_compare_dns(): Entered with (%s,%s)',$dn1,$dn2),2);
+function pla_compare_dns($dn1,$dn2) {
+	if (DEBUG_ENABLED)
+		debug_log('pla_compare_dns(): Entered with (%s,%s)',2,$dn1,$dn2);
 
-	// If they are obviously the same, return immediately
-	if( 0 === strcasecmp( $dn1, $dn2 ) )
+	# If they are obviously the same, return immediately
+	if (! strcasecmp($dn1,$dn2))
 		return 0;
 
-	$dn1_parts = pla_explode_dn( pla_reverse_dn($dn1) );
-	$dn2_parts = pla_explode_dn( pla_reverse_dn($dn2) );
-	assert( is_array( $dn1_parts ) );
-	assert( is_array( $dn2_parts ) );
+	$dn1_parts = pla_explode_dn(pla_reverse_dn($dn1));
+	$dn2_parts = pla_explode_dn(pla_reverse_dn($dn2));
+	assert(is_array($dn1_parts));
+	assert(is_array($dn2_parts));
 
-	// Foreach of the "parts" of the smaller DN
-	for( $i=0; $i<count( $dn1_parts ) && $i<count( $dn2_parts ); $i++ )
-	{
-		// dnX_part is of the form: "cn=joe" or "cn = joe" or "dc=example"
-		// ie, one part of a multi-part DN.
+	# Foreach of the "parts" of the smaller DN
+	for ($i=0; $i < count($dn1_parts) && $i < count($dn2_parts); $i++) {
+		/* dnX_part is of the form: "cn=joe" or "cn = joe" or "dc=example"
+		   ie, one part of a multi-part DN. */
 		$dn1_part = $dn1_parts[$i];
 		$dn2_part = $dn2_parts[$i];
 
-		// Each "part" consists of two sub-parts:
-		//   1. the attribute (ie, "cn" or "o")
-		//   2. the value (ie, "joe" or "example")
-		$dn1_sub_parts = explode( '=', $dn1_part, 2 );
-		$dn2_sub_parts = explode( '=', $dn2_part, 2 );
+		/* Each "part" consists of two sub-parts:
+		   1. the attribute (ie, "cn" or "o")
+		   2. the value (ie, "joe" or "example") */
+		$dn1_sub_parts = explode('=',$dn1_part,2);
+		$dn2_sub_parts = explode('=',$dn2_part,2);
 
-		$dn1_sub_part_attr = trim( $dn1_sub_parts[0] );
-		$dn2_sub_part_attr = trim( $dn2_sub_parts[0] );
-		if( 0 != ( $cmp = strcasecmp( $dn1_sub_part_attr, $dn2_sub_part_attr ) ) )
+		$dn1_sub_part_attr = trim($dn1_sub_parts[0]);
+		$dn2_sub_part_attr = trim($dn2_sub_parts[0]);
+
+		if (0 != ($cmp = strcasecmp($dn1_sub_part_attr,$dn2_sub_part_attr)))
 			return $cmp;
 
-		$dn1_sub_part_val = trim( $dn1_sub_parts[1] );
-		$dn2_sub_part_val = trim( $dn2_sub_parts[1] );
-		if( 0 != ( $cmp = strcasecmp( $dn1_sub_part_val, $dn2_sub_part_val ) ) )
+		$dn1_sub_part_val = trim($dn1_sub_parts[1]);
+		$dn2_sub_part_val = trim($dn2_sub_parts[1]);
+		if (0 != ($cmp = strcasecmp($dn1_sub_part_val,$dn2_sub_part_val)))
 			return $cmp;
 	}
 
-    // If we iterated through all entries in the smaller of the two DNs
-    // (ie, the one with fewer parts), and the entries are different sized,
-    // then, the smaller of the two must be "less than" than the larger.
-    if( count($dn1_parts) > count($dn2_parts) ) {
-        return 1;
-    } elseif( count( $dn2_parts ) > count( $dn1_parts ) ) {
-        return -1;
-    } else {
-        return 0;
-    }
+	/* If we iterated through all entries in the smaller of the two DNs
+	   (ie, the one with fewer parts), and the entries are different sized,
+	   then, the smaller of the two must be "less than" than the larger. */
+	if (count($dn1_parts) > count($dn2_parts)) {
+		return 1;
+
+	} elseif (count($dn2_parts) > count($dn1_parts)) {
+		return -1;
+
+	} else {
+		return 0;
+	}
 }
 
 /**
@@ -607,10 +628,11 @@ function pla_compare_dns( $dn1, $dn2 ) {
  * @param string $attr_name The name of the attribute to examine.
  * @return string
  */
-function real_attr_name( $attr_name ) {
-	debug_log(sprintf('real_attr_name(): Entered with (%s)',$attr_name),2);
+function real_attr_name($attr_name) {
+	if (DEBUG_ENABLED)
+		debug_log('real_attr_name(): Entered with (%s)',2,$attr_name);
 
-	$attr_name = preg_replace( "/;.*$/U", "", $attr_name );
+	$attr_name = preg_replace('/;.*$/U','',$attr_name);
 	return $attr_name;
 }
 
@@ -637,7 +659,8 @@ function show_hints() {
  * @return bool True if auto uidNumbers are enabled, false otherwise.
  */
 function auto_uid_numbers_enabled($server_id) {
-	debug_log(sprintf('auto_uid_numbers_enabled(): Entered with (%s)',$server_id),2);
+	if (DEBUG_ENABLED)
+		debug_log('auto_uid_numbers_enabled(): Entered with (%s)',2,$server_id);
 
 	global $ldapservers;
 	return $ldapservers->GetValue($server_id,'auto_number','enable');
@@ -671,12 +694,12 @@ function auto_uid_numbers_enabled($server_id) {
  * @todo Must turn off auto_uid|gid in template if config is disabled.
  */
 function get_next_uid_number($ldapserver,$startbase='',$type='uid') {
-	global $config; $config->custom->debug['level'] = 9; $config->custom->debug['syslog'] = true;
-	debug_log(sprintf('get_next_uid_number(): Entered with (%s,%s,%s)',$ldapserver->server_id,$startbase,$type),2);
+	if (DEBUG_ENABLED)
+		debug_log('get_next_uid_number(): Entered with (%s,%s,%s)',2,$ldapserver->server_id,$startbase,$type);
 
-	global $ldapservers,$servers,$lang;
+	global $config,$ldapservers,$lang;
 
-	if (! auto_uid_numbers_enabled($ldapserver->server_id))
+	if (! $ldapservers->GetValue($ldapserver->server_id,'auto_number','enable'))
 		return false;
 
 	# Based on the configured mechanism, go get the next available uidNumber!
@@ -826,26 +849,23 @@ function get_next_uid_number($ldapserver,$startbase='',$type='uid') {
  * @see draw_jpeg_photos
  * @todo Move this to an LDAPServer object method.
  */
-function is_jpeg_photo( $ldapserver, $attr_name ) {
-	debug_log(sprintf('is_jpeg_photo(): Entered with (%s,%s)',$ldapserver->server_id,$attr_name),2);
+function is_jpeg_photo($ldapserver,$attr_name) {
+	if (DEBUG_ENABLED)
+		debug_log('is_jpeg_photo(): Entered with (%s,%s)',2,$ldapserver->server_id,$attr_name);
 
-	// easy quick check
-	if( 0 == strcasecmp( $attr_name, 'jpegPhoto' ) ||
-	    0 == strcasecmp( $attr_name, 'photo' ) )
-	    return true;
+	# easy quick check
+	if (! strcasecmp($attr_name,'jpegPhoto') || ! strcasecmp($attr_name,'photo'))
+		return true;
 
-	// go to the schema and get the Syntax OID
-	// require_once realpath( 'schema_functions.php' );
-	$schema_attr = get_schema_attribute( $ldapserver, $attr_name );
-	if( ! $schema_attr )
+	# go to the schema and get the Syntax OID
+	$schema_attr = $ldapserver->getSchemaAttribute($attr_name);
+	if (! $schema_attr)
 		return false;
 
 	$oid = $schema_attr->getSyntaxOID();
 	$type = $schema_attr->getType();
 
-	if( 0 == strcasecmp( $type, 'JPEG' ) )
-		return true;
-	if( $oid == '1.3.6.1.4.1.1466.115.121.1.28' )
+	if (! strcasecmp($type,'JPEG') || ($oid == '1.3.6.1.4.1.1466.115.121.1.28'))
 		return true;
 
 	return false;
@@ -863,15 +883,15 @@ function is_jpeg_photo( $ldapserver, $attr_name ) {
  * @return bool
  * @todo Move this to an LDAPServer object method.
  */
-function is_attr_boolean( $ldapserver, $attr_name ) {
-	debug_log(sprintf('is_attr_boolean(): Entered with (%s,%s)',$ldapserver->server_id,$attr_name),2);
+function is_attr_boolean($ldapserver,$attr_name) {
+	if (DEBUG_ENABLED)
+		debug_log('is_attr_boolean(): Entered with (%s,%s)',2,$ldapserver->server_id,$attr_name);
 
-	$type = ( $schema_attr = get_schema_attribute( $ldapserver, $attr_name ) ) ?
-		$schema_attr->getType() : null;
+	$type = ($schema_attr = $ldapserver->getSchemaAttribute($attr_name)) ? $schema_attr->getType() : null;
 
-	if( 0 == strcasecmp( 'boolean', $type ) ||
-		0 == strcasecmp( 'isCriticalSystemObject', $attr_name ) ||
-		0 == strcasecmp( 'showInAdvancedViewOnly', $attr_name ) )
+	if (! strcasecmp('boolean',$type ) ||
+		! strcasecmp('isCriticalSystemObject',$attr_name) ||
+		! strcasecmp('showInAdvancedViewOnly',$attr_name))
 		return true;
 
 	else
@@ -892,10 +912,11 @@ function is_attr_boolean( $ldapserver, $attr_name ) {
  * @see is_jpeg_photo
  * @todo Move this to an LDAPServer object method.
  */
-function is_attr_binary( $ldapserver, $attr_name ) {
-	debug_log(sprintf('is_attr_binary(): Entered with (%s,%s)',$ldapserver->server_id,$attr_name),2);
+function is_attr_binary($ldapserver,$attr_name) {
+	if (DEBUG_ENABLED)
+		debug_log('is_attr_binary(): Entered with (%s,%s)',2,$ldapserver->server_id,$attr_name);
 
-	$attr_name = strtolower( $attr_name );
+	$attr_name = strtolower($attr_name);
 	/**
 	 * Determining if an attribute is binary can be an expensive operation.
 	 * We cache the results for each attr name on each server in the $attr_cache
@@ -927,7 +948,7 @@ function is_attr_binary( $ldapserver, $attr_name ) {
 	}
 
 	// See what the server schema says about this attribute
-	$schema_attr = get_schema_attribute( $ldapserver, $attr_name );
+	$schema_attr = $ldapserver->getSchemaAttribute($attr_name);
 	if( ! $schema_attr ) {
 
 		// Strangely, some attributeTypes may not show up in the server
@@ -975,7 +996,8 @@ function is_attr_binary( $ldapserver, $attr_name ) {
  * @todo Move this to an LDAPServer object method.
  */
 function is_attr_read_only( $ldapserver, $attr ) {
-	debug_log(sprintf('is_attr_read_only(): Entered with (%s,%s)',$ldapserver->server_id,$attr),2);
+	if (DEBUG_ENABLED)
+		debug_log('is_attr_read_only(): Entered with (%s,%s)',2,$ldapserver->server_id,$attr);
 
 	global $read_only_attrs, $read_only_except_dn;
 
@@ -1016,7 +1038,8 @@ function is_attr_read_only( $ldapserver, $attr ) {
  * @return bool
  */
 function is_attr_hidden( $ldapserver, $attr ) {
-	debug_log(sprintf('is_attr_hidden(): Entered with (%s,%s)',$ldapserver->server_id,$attr),2);
+	if (DEBUG_ENABLED)
+		debug_log('is_attr_hidden(): Entered with (%s,%s)',2,$ldapserver->server_id,$attr);
 
 	global $hidden_attrs, $hidden_attrs_ro, $hidden_except_dn;
 
@@ -1103,7 +1126,8 @@ function is_server_read_only( $server_id ) {
  * @return string
  */
 function get_icon( $ldapserver, $dn ) {
-	debug_log(sprintf('get_icon(): Entered with (%s,%s)',$ldapserver->server_id,$dn),2);
+	if (DEBUG_ENABLED)
+		debug_log('get_icon(): Entered with (%s,%s)',2,$ldapserver->server_id,$dn);
 
 	// fetch and lowercase all the objectClasses in an array
 	$object_classes = get_object_attr( $ldapserver, $dn, 'objectClass', true );
@@ -1132,7 +1156,7 @@ function get_icon( $ldapserver, $dn ) {
 		in_array( 'organizationalperson', $object_classes ) ||
 		in_array( 'inetorgperson', $object_classes ) ||
 		in_array( 'account', $object_classes ) ||
-		in_array( 'posixaccount', $object_classes )  )
+		in_array( 'posixaccount', $object_classes ) )
 
 		return 'user.png';
 
@@ -1288,7 +1312,8 @@ function get_icon( $ldapserver, $dn ) {
  * @see get_icon
  */
 function get_icon_use_cache( $ldapserver, $dn ) {
-	debug_log(sprintf('get_icon_use_cache(): Entered with (%s,%s)',$ldapserver->server_id,$dn),2);
+	if (DEBUG_ENABLED)
+		debug_log('get_icon_use_cache(): Entered with (%s,%s)',2,$ldapserver->server_id,$dn);
 
 	initialize_session_tree();
 
@@ -1362,7 +1387,8 @@ function have_auth_info( $server_id )
  * @see get_logged_in_dn
  */
 function get_logged_in_pass( $ldapserver ) {
-	debug_log(sprintf('get_logged_in_pass(): Entered with (%s)',$ldapserver->server_id),2);
+	if (DEBUG_ENABLED)
+		debug_log('get_logged_in_pass(): Entered with (%s)',2,$ldapserver->server_id);
 
 	if (! $ldapserver->auth_type)
 		return false;
@@ -1414,8 +1440,6 @@ function get_logged_in_pass( $ldapserver ) {
  * @see get_logged_in_pass
  */
 function get_logged_in_dn($ldapserver) {
-	debug_log(sprintf('get_logged_in_dn(): Entered with (%s)',$ldapserver->server_id),2);
-
 	# Set default return
 	$return = false;
 
@@ -1451,37 +1475,34 @@ function get_logged_in_dn($ldapserver) {
 		}
 	}
 
-	debug_log(sprintf('get_logged_in_dn(): Returning (%s)',$return),1);
+	if (DEBUG_ENABLED)
+		debug_log('get_logged_in_dn(): Entered with (%s), Returning (%s)',1,$ldapserver->server_id,$return);
+
 	return $return;
 }
 
 /**
  * Appends a servers base to a "sub" dn or returns the base.
  *
- * If $get_base is true, return at least the base, otherwise null.
- * @param object $ldapserver The LDAPServer object of the server which the user hsa logged in.
- * @return string|null
- * @todo This function no longer return the base, since the LDAP server could have multiple bases.
+ * @param string $base    The baseDN to be added if the DN is relative
+ * @param string $sub_dn  The DN to be made absolute
+ * @return string|null    Returns null if both base is null and sub_dn is null or empty
  */
-function expand_dn_with_base( $ldapserver,$sub_dn,$get_base=true ) {
-	debug_log(sprintf('expand_dn_with_base(): Entered with (%s,%s,%s)',$ldapserver->server_id,$sub_dn,$get_base),2);
+function expand_dn_with_base( $base,$sub_dn ) {
+	if (DEBUG_ENABLED)
+		debug_log('expand_dn_with_base(): Entered with (%s,%s)',2,$base,$sub_dn);
 
 	$empty_str = ( is_null($sub_dn) || ( ( $len = strlen( trim( $sub_dn ) ) ) == 0 ) );
 
 	if ( $empty_str ) {
-		// If we have no string and want not base
-		if ( ! $get_base )
-			return null;
+		return $base;
 
-	} elseif ( $sub_dn[$len - 1] != ',' )
+	} elseif ( $sub_dn[$len - 1] != ',' ) {
 		// If we have a string which doesn't need a base
 		return $sub_dn;
-
-	if( ( $empty_str && $get_base ) || ! $empty_str ) {
-		if ( $ldapserver->getBaseDN() )
-			return ( ! $empty_str ) ? $sub_dn . $ldapserver->getBaseDN() : $ldapserver->getBaseDN();
+	} else {
+		return $sub_dn . $base;
 	}
-	return null;
 }
 
 /**
@@ -1518,8 +1539,9 @@ function expand_dn_with_base( $ldapserver,$sub_dn,$get_base=true ) {
  * @todo Move this to an LDAPServer object method.
  */
 function get_container_contents( $ldapserver, $dn, $size_limit=0, $filter='(objectClass=*)', $deref=LDAP_DEREF_ALWAYS ) {
-	debug_log(sprintf('get_container_contents(): Entered with (%s,%s,%s,%s,%s)',
-		$ldapserver->server_id,$dn,$size_limit,$filter,$deref),2);
+	if (DEBUG_ENABLED)
+		debug_log('get_container_contents(): Entered with (%s,%s,%s,%s,%s)',2,
+			$ldapserver->server_id,$dn,$size_limit,$filter,$deref);
 
 	$search = @ldap_list( $ldapserver->connect(), $dn, $filter, array( 'dn' ), 1, $size_limit, 0, $deref );
 	if( ! $search )
@@ -1552,7 +1574,8 @@ function get_container_contents( $ldapserver, $dn, $size_limit=0, $filter='(obje
  * automated method for setting up the initial structure for the tree viewer.
  */
 function build_initial_tree() {
-	debug_log(sprintf('build_initial_tree(): Entered with ()'),2);
+	if (DEBUG_ENABLED)
+		debug_log('build_initial_tree(): Entered with ()',2);
 
 	global $ldapservers;
 	$return = array();
@@ -1564,7 +1587,9 @@ function build_initial_tree() {
 		$return[$id] = array();
 	}
 
-	debug_log(sprintf('build_initial_tree(): Returning (%s)',serialize($return)),1);
+	if (DEBUG_ENABLED)
+		debug_log('build_initial_tree(): Returning (%s)',1,serialize($return));
+
 	return $return;
 }
 
@@ -1589,9 +1614,8 @@ function build_initial_tree() {
  * setting up the initial data structure for the tree viewer's icon cache.
  */
 function build_initial_tree_icons() {
-	debug_log(sprintf('build_initial_tree_icons(): Entered with ()'),2);
-
 	global $ldapservers;
+
 	$return = array();
 
 	# initialize an empty array for each server
@@ -1606,7 +1630,9 @@ function build_initial_tree_icons() {
 			$return[$id][$base_dn] = get_icon($ldapserver,$base_dn);
 	}
 
-	debug_log(sprintf('build_initial_tree_icons(): Returning (%s)',serialize($return)),1);
+	if (DEBUG_ENABLED)
+		debug_log('build_initial_tree_icons(): Entered with (), Returning (%s)',1,serialize($return));
+
 	return $return;
 }
 
@@ -1617,11 +1643,12 @@ function build_initial_tree_icons() {
  * automated method for checking the initial data structure of the session.
  */
 function initialize_session_tree() {
-	debug_log(sprintf('initialize_session_tree(): Entered with ()'),2);
+	if (DEBUG_ENABLED)
+		debug_log('initialize_session_tree(): Entered with ()',2);
 
 	// From the PHP manual: If you use $_SESSION don't use
 	// session_register(), session_is_registered() or session_unregister()!
-	if( ! array_key_exists( 'tree',  $_SESSION ) )
+	if( ! array_key_exists( 'tree', $_SESSION ) )
 		$_SESSION['tree'] = build_initial_tree();
 	if( ! array_key_exists( 'tree_icons', $_SESSION ) )
 		$_SESSION['tree_icons'] = build_initial_tree_icons();
@@ -1667,10 +1694,11 @@ function initialize_session_tree() {
  * @todo Move this to an LDAPServer object method.
  */
 function get_entry_system_attrs( $ldapserver, $dn, $deref=LDAP_DEREF_NEVER ) {
-	debug_log(sprintf('get_entry_system_attrs(): Entered with (%s,%s,%s)',$ldapserver->server_id,$dn,$deref),2);
+	if (DEBUG_ENABLED)
+		debug_log('get_entry_system_attrs(): Entered with (%s,%s,%s)',2,$ldapserver->server_id,$dn,$deref);
 
 	$attrs = array( 'creatorsname', 'createtimestamp', 'modifiersname',
-			'structuralObjectClass', 'entryUUID',  'modifytimestamp',
+			'structuralObjectClass', 'entryUUID', 'modifytimestamp',
 			'subschemaSubentry', 'hasSubordinates', '+' );
 
 	$search = @ldap_read( $ldapserver->connect(), $dn, '(objectClass=*)', $attrs, 0, 0, 0, $deref );
@@ -1678,8 +1706,8 @@ function get_entry_system_attrs( $ldapserver, $dn, $deref=LDAP_DEREF_NEVER ) {
 		return false;
 
 	$entry = ldap_first_entry( $ldapserver->connect(), $search );
-	if( ! $entry)
-	    return false;
+	if (! $entry)
+		return false;
 
 	$attrs = ldap_get_attributes( $ldapserver->connect(), $entry );
 	if( ! $attrs )
@@ -1748,8 +1776,9 @@ function get_entry_system_attrs( $ldapserver, $dn, $deref=LDAP_DEREF_NEVER ) {
  * @todo Move this to an LDAPServer object method.
  */
 function get_object_attrs( $ldapserver, $dn, $lower_case_attr_names=false, $deref=LDAP_DEREF_NEVER ) {
-	debug_log(sprintf('get_object_attrs(): Entered with (%s,%s,%s,%s)',
-		$ldapserver->server_id,$dn,$lower_case_attr_names,$deref),2);
+	if (DEBUG_ENABLED)
+		debug_log('get_object_attrs(): Entered with (%s,%s,%s,%s)',2,
+			$ldapserver->server_id,$dn,$lower_case_attr_names,$deref);
 
 	$search = @ldap_read( $ldapserver->connect(), $dn, '(objectClass=*)', array( ), 0, 0, 0, $deref );
 	if( ! $search )
@@ -1792,7 +1821,8 @@ function get_object_attrs( $ldapserver, $dn, $lower_case_attr_names=false, $dere
  * returns false.
  */
 function is_printable_str($temp) {
-	debug_log(sprintf('is_printable_str(): Entered with (%s)',$temp),2);
+	if (DEBUG_ENABLED)
+		debug_log('is_printable_str(): Entered with (%s)',2,$temp);
 
 	$len = strlen($temp);
 
@@ -1840,8 +1870,9 @@ function is_printable_str($temp) {
  * @todo Move this to an LDAPServer object method.
  */
 function get_object_attr( $ldapserver, $dn, $attr, $lower_case_attr_names=false, $deref=LDAP_DEREF_NEVER ) {
-	debug_log(sprintf('get_object_attr(): Entered with (%s,%s,%s,%s,%s)',
-		$ldapserver->server_id,$dn,$attr,$lower_case_attr_names,$deref),2);
+	if (DEBUG_ENABLED)
+		debug_log('get_object_attr(): Entered with (%s,%s,%s,%s,%s)',2,
+			$ldapserver->server_id,$dn,$attr,$lower_case_attr_names,$deref);
 
 	if ($lower_case_attr_names)
 		$attr = strtolower( $attr );
@@ -1920,11 +1951,16 @@ function get_object_attr( $ldapserver, $dn, $attr, $lower_case_attr_names=false,
  * @todo Move this to an LDAPServer object method.
  */
 function pla_ldap_search( $ldapserver, $filter, $base_dn=null, $attrs=array(), $scope='sub', $sort_results=true, $deref=LDAP_DEREF_ALWAYS ) {
-	debug_log(sprintf('pla_ldap_search(): Entered with (%s,%s,%s,%s,%s,%s,%s)',
-		$ldapserver->server_id,$filter,$base_dn,count($attrs),$scope,$sort_results,$deref),2);
+	if (DEBUG_ENABLED)
+		debug_log('pla_ldap_search(): Entered with (%s,%s,%s,%s,%s,%s,%s)',2,
+			$ldapserver->server_id,$filter,$base_dn,count($attrs),$scope,$sort_results,$deref);
 
-	if( is_null($base_dn))
-		$base_dn = $ldapserver->getBaseDN();
+	if( is_null($base_dn)) {
+		foreach ($ldapserver->getBaseDN() as $baseDN) {
+			$base_dn = $baseDN;
+			break;
+		}
+	}
 
 	switch( $scope ) {
 		case 'base':
@@ -1997,7 +2033,8 @@ function pla_ldap_search( $ldapserver, $filter, $base_dn=null, $attrs=array(), $
  * @todo expand_dn_with_base no longer knows what the base_dn is, so you need to pass it the base, need to fix this function.
  */
 function get_cleaned_up_predefined_search( $query_id ) {
-	debug_log(sprintf('get_cleaned_up_predefined_search(): Entered with (%s)',$query_id),2);
+	if (DEBUG_ENABLED)
+		debug_log('get_cleaned_up_predefined_search(): Entered with (%s)',2,$query_id);
 
 	global $ldapservers,$queries;
 
@@ -2013,7 +2050,10 @@ function get_cleaned_up_predefined_search( $query_id ) {
 	$ldapserver = $ldapservers->Instance($server_id);
 
 	$base = ( isset( $query['base'] ) ) ? $query['base'] : null;
-	$base = expand_dn_with_base( $ldapserver, $base );
+	// Multiple base strings mean we can't do this properly
+	// Could just take the first entry or return an array rather than a string
+	// Ignore for now
+	// $base = expand_dn_with_base( $ldapserver, $base );
 
 	if( isset( $query['filter'] ) && strlen( trim( $query['filter'] ) ) > 0 )
 		$filter = $query['filter'];
@@ -2063,7 +2103,8 @@ function check_server_id( $server_id ) {
  * @return string The generated salt string.
  */
 function random_salt( $length ) {
-	debug_log(sprintf('random_salt(): Entered with (%s)',$length),2);
+	if (DEBUG_ENABLED)
+		debug_log('random_salt(): Entered with (%s)',2,$length);
 
 	$possible = '0123456789'.
 		'abcdefghijklmnopqrstuvwxyz'.
@@ -2072,8 +2113,8 @@ function random_salt( $length ) {
 	$str = "";
 	mt_srand((double)microtime() * 1000000);
 
-        while( strlen( $str ) < $length )
-                $str .= substr( $possible, ( rand() % strlen( $possible ) ), 1 );
+	while( strlen( $str ) < $length )
+		$str .= substr( $possible, ( rand() % strlen( $possible ) ), 1 );
 
 	/**
 	 * Commented out following line because of problem
@@ -2097,7 +2138,8 @@ function random_salt( $length ) {
  * @see get_container
  */
 function get_rdn( $dn, $include_attrs=0 ) {
-	debug_log(sprintf('get_rdn(): Entered with (%s,%s)',$dn,$include_attrs),2);
+	if (DEBUG_ENABLED)
+		debug_log('get_rdn(): Entered with (%s,%s)',2,$dn,$include_attrs);
 
 	if( $dn == null )
 		return null;
@@ -2121,7 +2163,8 @@ function get_rdn( $dn, $include_attrs=0 ) {
  * @see get_rdn
  */
 function get_container( $dn ) {
-	debug_log(sprintf('get_container(): Entered with (%s)',$dn),2);
+	if (DEBUG_ENABLED)
+		debug_log('get_container(): Entered with (%s)',2,$dn);
 
 	$parts = pla_explode_dn( $dn );
 	if( count( $parts ) <= 1 )
@@ -2134,35 +2177,43 @@ function get_container( $dn ) {
 
 /**
  * Given a DN string, this returns the top container portion of the string.
+ * @param object $ldapserver The LDAPserver being used.
  * @param string $dn The DN whose container string to return.
  * @return string The container
  * @see get_rdn
  * @see get_container
  * @todo: need to fix this, it should just produce the base_dn for the DN entered, not the top .
  */
-function get_container_top ( $dn ) {
-	debug_log(sprintf('get_container_top(): Entered with (%s)',$dn),2);
+function get_container_top($ldapserver,$dn) {
+	# First determine which base this DN belongs to.
+	foreach ($ldapserver->getBaseDN() as $base_dn) {
+		if (preg_match("/${base_dn}$/",$dn)) {
+			$return = $base_dn;
+			break;
+		}
+	}
 
-	$parts = pla_explode_dn( $dn );
-	if( count( $parts ) <= 1 )
-		return $dn;
-	$container = $parts[count($parts)-1];
-	return $container;
+	debug_log(sprintf('get_container_top(): Entered with (%s), Returning (%s)',$dn,$return),1);
+	return $return;
 }
 
 /**
  * Given a DN string and a path like syntax, this returns the parent container portion of the string.
+ * @param object $ldapserver The LDAPserver being used.
  * @param string $dn The DN whose container string to return.
  * @param string $path Either '/', '.' or a series of '../'
  * @return string The container
  * @see get_rdn
  * @see get_container
  */
-function get_container_parent ( $container, $path ) {
-	debug_log(sprintf('get_container_parent(): Entered with (%s,%s)',$container,$path),2);
+function get_container_parent($ldapserver,$container,$path) {
+	if (DEBUG_ENABLED)
+		debug_log('get_container_parent(): Entered with (%s,%s)',2,$container,$path);
+
+	$top = get_container_top($ldapserver,$container);
 
 	if ($path == '/') {
-		return get_container_top($container);
+		return $top;
 
 	} elseif ($path == '.') {
 		return $container;
@@ -2174,6 +2225,9 @@ function get_container_parent ( $container, $path ) {
 			if ($value == '..') {
 				if (get_container($container))
 					$container = get_container($container);
+
+				if ($container == $top)
+					break;
 
 			} else {
 				break;
@@ -2200,88 +2254,72 @@ function get_container_parent ( $container, $path ) {
  *   </code>
  */
 function pla_verbose_error( $err_no ) {
-	debug_log(sprintf('pla_verbose_error(): Entered with (%s)',$err_no),2);
+	if (DEBUG_ENABLED)
+		debug_log('pla_verbose_error(): Entered with (%s)',2,$err_no);
 
 	static $err_codes;
-	if( count($err_codes) > 0 ) {
-        if( isset( $err_codes[ $err_no ] ) )
-            return $err_codes[ $err_no ];
-        else
-            return array( 'title' => null, 'desc' => null );
+
+	if( count($err_codes) <= 0 ) {
+		$err_codes_file = LIBDIR.'ldap_error_codes.txt';
+
+		if (! file_exists($err_codes_file) || ! is_readable($err_codes_file) || ! ($f = fopen($err_codes_file,'r')))
+			return false;
+
+		$contents = fread( $f, filesize( $err_codes_file ) );
+		fclose( $f );
+		$entries = array();
+		preg_match_all( "/0x[A-Fa-f0-9][A-Za-z0-9]\s+[0-9A-Za-z_]+\s+\"[^\"]*\"\n/",
+				$contents, $entries );
+		$err_codes = array();
+		foreach( $entries[0] as $e ) {
+			$entry = array();
+			preg_match( "/(0x[A-Za-z0-9][A-Za-z0-9])\s+([0-9A-Za-z_]+)\s+\"([^\"]*)\"/", $e, $entry );
+			$hex_code = isset( $entry[1] ) ? $entry[1] : null;
+			$title    = isset( $entry[2] ) ? $entry[2] : null;
+			$desc     = isset( $entry[3] ) ? $entry[3] : null;
+			$desc     = preg_replace( "/\s+/", " ", $desc );
+			$err_codes[ "$hex_code" ] = array( 'title' => $title, 'desc' => $desc );
+		}
 	}
 
-	$err_codes_file = LIBDIR.'ldap_error_codes.txt';
-
-	if( ! file_exists($err_codes_file))
-		return false;
-	if( ! is_readable($err_codes_file))
-		return false;
-	if( ! ($f = fopen($err_codes_file,'r')))
-		return false;
-
-	$contents = fread( $f, filesize( $err_codes_file ) );
-    fclose( $f );
-	$entries = array();
-	preg_match_all( "/0x[A-Fa-f0-9][A-Za-z0-9]\s+[0-9A-Za-z_]+\s+\"[^\"]*\"\n/", $contents, $entries );
-	$err_codes = array();
-	foreach( $entries[0] as $e ) {
-		$entry = array();
-		preg_match( "/(0x[A-Za-z0-9][A-Za-z0-9])\s+([0-9A-Za-z_]+)\s+\"([^\"]*)\"/", $e, $entry );
-		$hex_code = isset( $entry[1] ) ? $entry[1] : null;
-		$title    = isset( $entry[2] ) ? $entry[2] : null;
-		$desc     = isset( $entry[3] ) ? $entry[3] : null;
-		$desc     = preg_replace( "/\s+/", " ", $desc );
-		$err_codes[ "$hex_code" ] = array( 'title' => $title, 'desc' => $desc );
-	}
-
-    // Sanity check
-    if( isset( $err_codes[ $err_no ] ) )
-    	return $err_codes[ $err_no ];
-    else
-        return array( 'title' => null, 'desc' => null );
+	if( isset( $err_codes[ $err_no ] ) )
+		return $err_codes[ $err_no ];
+	else
+		return array( 'title' => null, 'desc' => null );
 }
 
 // @todo: describe this function
 function support_oid_to_text($oid_id) {
-	debug_log(sprintf('support_oid_to_text(): Entered with (%s)',$oid_id),2);
+	if (DEBUG_ENABLED)
+		debug_log('support_oid_to_text(): Entered with (%s)',2,$oid_id);
 
 	static $oid;
-	if( count($oid) > 0 ) {
-		if( isset( $oid[ $oid_id ] ) )
-			return $oid[ $oid_id ];
 
-		else
-			return null;
-	}
+	if( count($oid) <= 0 ) {
+		$oid_codes_file = LIBDIR.'ldap_supported_oids.txt';
 
-	$oid_codes_file = LIBDIR.'ldap_supported_oids.txt';
+		if(! file_exists($oid_codes_file) || ! is_readable($oid_codes_file) || ! ($f = fopen($oid_codes_file,'r')))
+			return false;
 
-	if( ! file_exists($oid_codes_file))
-		return false;
-	if( ! is_readable($oid_codes_file))
-		return false;
-	if( ! ($f = fopen($oid_codes_file,'r')))
-		return false;
+		$contents = fread( $f, filesize( $oid_codes_file ) );
+		fclose( $f );
+		$entries = array();
+		preg_match_all( "/[0-9]\..+\s+\"[^\"]*\"\n/", $contents, $entries );
+		$err_codes = array();
+		foreach( $entries[0] as $e ) {
+			$entry = array();
+			preg_match( "/([0-9]\.([0-9]+\.)*[0-9]+)(\s+\"([^\"]*)\")?(\s+\"([^\"]*)\")?(\s+\"([^\"]*)\")?/", $e, $entry );
+			$oid_id_a = isset( $entry[1] ) ? $entry[1] : null;
 
-	$contents = fread( $f, filesize( $oid_codes_file ) );
-	fclose( $f );
-	$entries = array();
-	preg_match_all( "/[0-9]\..+\s+\"[^\"]*\"\n/", $contents, $entries );
-	$err_codes = array();
-	foreach( $entries[0] as $e ) {
-		$entry = array();
-		preg_match( "/([0-9]\.([0-9]+\.)*[0-9]+)(\s+\"([^\"]*)\")?(\s+\"([^\"]*)\")?(\s+\"([^\"]*)\")?/", $e, $entry );
-		$oid_id_a = isset( $entry[1] ) ? $entry[1] : null;
-
-		if ($oid_id_a) {
-			$oid[$oid_id_a]['title'] = isset( $entry[4] ) ? $entry[4] : null;
-			$oid[$oid_id_a]['ref'] = isset( $entry[6] ) ? $entry[6] : null;
-			$desc = isset( $entry[8] ) ? $entry[8] : null;
-			$oid[$oid_id_a]['desc'] = preg_replace( "/\s+/", " ", $desc );
+			if ($oid_id_a) {
+				$oid[$oid_id_a]['title'] = isset( $entry[4] ) ? $entry[4] : null;
+				$oid[$oid_id_a]['ref'] = isset( $entry[6] ) ? $entry[6] : null;
+				$desc = isset( $entry[8] ) ? $entry[8] : null;
+				$oid[$oid_id_a]['desc'] = preg_replace( "/\s+/", " ", $desc );
+			}
 		}
 	}
 
-	// Sanity check
 	if( isset( $oid[ $oid_id ] ) )
 		return $oid[ $oid_id ];
 	else
@@ -2304,9 +2342,10 @@ function support_oid_to_text($oid_id) {
  * @see pla_verbose_error
  */
 function pla_error( $msg, $ldap_err_msg=null, $ldap_err_no=-1, $fatal=true ) {
-	debug_log(sprintf('pla_error(): Entered with (%s,%s,%s,%s)',$msg,$ldap_err_msg,$ldap_err_no,$fatal),2);
+	if (defined('DEBUG_ENABLED') && (DEBUG_ENABLED))
+		debug_log('pla_error(): Entered with (%s,%s,%s,%s)',2,$msg,$ldap_err_msg,$ldap_err_no,$fatal);
 
-	@include_once './header.php';
+	@include_once HTDOCDIR.'header.php';
 	global $lang, $config;
 
 	?>
@@ -2318,7 +2357,8 @@ function pla_error( $msg, $ldap_err_msg=null, $ldap_err_no=-1, $fatal=true ) {
 	<br />
 	<?php
 
-	syslog_err ( $msg );
+	if (function_exists('syslog_err'))
+		syslog_err($msg);
 
 	if( $ldap_err_msg ) {
 		echo sprintf($lang['ldap_said'], htmlspecialchars( $ldap_err_msg ));
@@ -2339,7 +2379,8 @@ function pla_error( $msg, $ldap_err_msg=null, $ldap_err_no=-1, $fatal=true ) {
 			echo $lang['ferror_discription_short'];
 		}
 
-		syslog_err ( sprintf($lang['ferror_number_short'], $ldap_err_no) );
+		if (function_exists('syslog_err'))
+			syslog_err(sprintf($lang['ferror_number_short'],$ldap_err_no));
 	}
 	?>
 	<br />
@@ -2383,7 +2424,8 @@ function pla_error( $msg, $ldap_err_msg=null, $ldap_err_no=-1, $fatal=true ) {
  * @see set_error_handler
  */
 function pla_error_handler( $errno, $errstr, $file, $lineno ) {
-	debug_log(sprintf('pla_error_handler(): Entered with (%s,%s,%s,%s)',$errno,$errstr,$file,$lineno),2);
+	if (DEBUG_ENABLED)
+		debug_log('pla_error_handler(): Entered with (%s,%s,%s,%s)',2,$errno,$errstr,$file,$lineno);
 
 	global $lang;
 
@@ -2398,7 +2440,7 @@ function pla_error_handler( $errno, $errstr, $file, $lineno ) {
 	$caller = basename( $_SERVER['PHP_SELF'] );
 	$errtype = "";
 	switch( $errno ) {
-        case E_STRICT: $errtype = "E_STRICT"; break;
+		case E_STRICT: $errtype = "E_STRICT"; break;
 		case E_ERROR: $errtype = "E_ERROR"; break;
 		case E_WARNING: $errtype = "E_WARNING"; break;
 		case E_PARSE: $errtype = "E_PARSE"; break;
@@ -2435,8 +2477,9 @@ function pla_error_handler( $errno, $errstr, $file, $lineno ) {
  * in config.php. This is simply used so we can more easily lookup user-friendly
  * attributes configured by the admin.
  */
-function process_friendly_attr_table() {
-	debug_log(sprintf('process_friendly_attr_table(): Entered with ()'),2);
+function process_friendly_attr_table() { 
+	if (DEBUG_ENABLED)
+		debug_log('process_friendly_attr_table(): Entered with ()',2);
 
 	// require 'config.php';
 	global $friendly_attrs;
@@ -2454,7 +2497,8 @@ function process_friendly_attr_table() {
  * Show friendly attribute.
  */
 function show_friendly_attribute($attr) {
-	debug_log(sprintf('show_friendly_attribute(): Entered with (%s)',$attr),2);
+	if (DEBUG_ENABLED)
+		debug_log('show_friendly_attribute(): Entered with (%s)',2,$attr);
 
 	$friendly_attrs = process_friendly_attr_table();
 
@@ -2463,7 +2507,8 @@ function show_friendly_attribute($attr) {
 	else
 		$return = $attr;
 
-	debug_log(sprintf('show_friendly_attribute(): Returning (%s)',$return),1);
+	if (DEBUG_ENABLED)
+		debug_log('show_friendly_attribute(): Returning (%s)',1,$return);
 	return $return;
 }
 
@@ -2478,12 +2523,10 @@ function show_friendly_attribute($attr) {
  * @todo Move this to an LDAPServer object method.
  */
 function dn_exists($ldapserver,$dn) {
-	debug_log(sprintf('dn_exists(): Entered with (%s,%s)',$ldapserver->server_id,$dn),2);
-
-	$search_result = @ldap_read($ldapserver->connect(false),$dn,'objectClass=*',array('dn'));
-
 	# Set default return
 	$return = false;
+
+	$search_result = @ldap_read($ldapserver->connect(false),$dn,'objectClass=*',array('dn'));
 
 	if ($search_result) {
 		$num_entries = ldap_count_entries($ldapserver->connect(false),$search_result);
@@ -2494,7 +2537,9 @@ function dn_exists($ldapserver,$dn) {
 			$return = false;
 	}
 
-	debug_log(sprintf('dn_exists(): Returning (%s)',$return),1);
+	if (DEBUG_ENABLED)
+		debug_log('dn_exists(): Entered with (%s,%s), Returning (%s)',1,$ldapserver->server_id,$dn,$return);
+
 	return $return;
 }
 
@@ -2521,9 +2566,11 @@ function dn_exists($ldapserver,$dn) {
  */
 function draw_jpeg_photos( $ldapserver, $dn, $attr_name='jpegPhoto', $draw_delete_buttons=false,
 				$draw_bytes_and_size=true, $table_html_attrs='align="left"', $img_html_attrs='' ) {
-	debug_log(sprintf('draw_jpeg_photos(): Entered with (%s,%s,%s,%s,%s,%s,%s)',
-		$ldapserver->server_id,$dn,$attr_name,$draw_delete_buttons,$draw_bytes_and_size,
-		$table_html_attrs,$img_html_attrs),2);
+
+	if (DEBUG_ENABLED)
+		debug_log('draw_jpeg_photos(): Entered with (%s,%s,%s,%s,%s,%s,%s)',2,
+			$ldapserver->server_id,$dn,$attr_name,$draw_delete_buttons,
+			$draw_bytes_and_size,$table_html_attrs,$img_html_attrs);
 
 	global $config, $lang;
 
@@ -2628,7 +2675,8 @@ function draw_jpeg_photos( $ldapserver, $dn, $attr_name='jpegPhoto', $draw_delet
  * @return string The hashed password.
  */
 function password_hash( $password_clear, $enc_type ) {
-	debug_log(sprintf('password_hash(): Entered with (%s,%s)',$password_clear,$enc_type),2);
+	if (DEBUG_ENABLED)
+		debug_log('password_hash(): Entered with (%s,%s)',2,$password_clear,$enc_type);
 
 	global $lang;
 
@@ -2718,7 +2766,8 @@ function password_hash( $password_clear, $enc_type ) {
  * @return Boolean True if the clear password matches the hash, and false otherwise.
  */
 function password_check( $cryptedpassword, $plainpassword ) {
-	debug_log(sprintf('password_check(): Entered with (%s,%s)',$cryptedpassword,$plainpassword),2);
+	if (DEBUG_ENABLED)
+		debug_log('password_check(): Entered with (%s,%s)',2,$cryptedpassword,$plainpassword);
 
 	global $lang;
 
@@ -2727,7 +2776,7 @@ function password_check( $cryptedpassword, $plainpassword ) {
 		$cryptedpassword = $cypher[2];
 		$_cypher = strtolower($cypher[1]);
 
-	} else  {
+	} else {
 		$_cypher = NULL;
 	}
 
@@ -2861,7 +2910,8 @@ function password_check( $cryptedpassword, $plainpassword ) {
  * @return string
  */
 function get_enc_type( $user_password ) {
-	debug_log(sprintf('get_enc_type(): Entered with (%s)',$user_password),2);
+	if (DEBUG_ENABLED)
+		debug_log('get_enc_type(): Entered with (%s)',2,$user_password);
 
 	/* Capture the stuff in the { } to determine if this is crypt, md5, etc. */
 	$enc_type = null;
@@ -2898,7 +2948,8 @@ function get_enc_type( $user_password ) {
  * @return String The enc_type, like 'sha', 'md5', 'ssha', 'md5crypt', for example.
  */
 function get_default_hash($server_id) {
-	debug_log(sprintf('get_default_hash(): Entered with (%s)',$server_id),2);
+	if (DEBUG_ENABLED)
+		debug_log('get_default_hash(): Entered with (%s)',2,$server_id);
 
 	global $ldapservers;
 	return $ldapservers->GetValue($server_id,'appearance','password_hash');
@@ -2911,9 +2962,10 @@ function get_default_hash($server_id) {
  * @return string The current version as read from the VERSION file.
  */
 function pla_version() {
-	debug_log(sprintf('pla_version(): Entered with ()'),2);
+	if (DEBUG_ENABLED)
+		debug_log('pla_version(): Entered with ()',2);
 
-	$version_file = realpath('./VERSION');
+	$version_file = realpath('../VERSION');
 	if (! file_exists($version_file))
 		return 'unknown version';
 
@@ -2934,7 +2986,8 @@ function pla_version() {
  * @param bool $include_choose_text (optional) If true, the function draws the localized text "choose" to the right of the button.
  */
 function draw_chooser_link( $form_element, $include_choose_text=true, $rdn="none" ) {
-	debug_log(sprintf('draw_chooser_link(): Entered with (%s,%s,%s)',$form_element,$include_choose_text,$rdn),2);
+	if (DEBUG_ENABLED)
+		debug_log('draw_chooser_link(): Entered with (%s,%s,%s)',2,$form_element,$include_choose_text,$rdn);
 
 	global $lang;
 
@@ -2964,7 +3017,7 @@ function draw_chooser_link( $form_element, $include_choose_text=true, $rdn="none
  *
  * @return array An array of RDN parts of this format:
  * <code>
- *   Array
+ *  Array
  *    (
  *       [0] => uid=ppratt
  *       [1] => ou=People
@@ -2974,19 +3027,20 @@ function draw_chooser_link( $form_element, $include_choose_text=true, $rdn="none
  * </code>
  */
 function pla_explode_dn( $dn, $with_attributes=0 ) {
-	debug_log(sprintf('pla_explode_dn(): Entered with (%s,%s)',$dn,$with_attributes),2);
+	# replace "\," with the hexadecimal value for safe split
+	$var = preg_replace("/\\\,/","\\\\\\\\2C",$dn);
 
-  // replace "\," with the hexadecimal value for safe split
-  $var = preg_replace("/\\\,/","\\\\\\\\2C",$dn);
+	# split the dn
+	$result = explode(",",$var);
 
-  // split the dn
-  $result = explode(",",$var);
+	# translate hex code into ascii for display
+	foreach( $result as $key => $value )
+		$result[$key] = preg_replace("/\\\([0-9A-Fa-f]{2})/e", "''.chr(hexdec('\\1')).''", $value);
 
-  //translate hex code into ascii for display
-  foreach( $result as $key => $value )
-    $result[$key] = preg_replace("/\\\([0-9A-Fa-f]{2})/e", "''.chr(hexdec('\\1')).''", $value);
+	if (DEBUG_ENABLED)
+		debug_log('pla_explode_dn(): Entered with (%s,%s), Returning (%s)',1,$dn,$with_attributes,serialize($result));
 
-  return $result;
+	return $result;
 }
 
 /**
@@ -2998,12 +3052,11 @@ function pla_explode_dn( $dn, $with_attributes=0 ) {
  * @return string The URL to the requested item.
  */
 function get_href( $type, $extra_info='' ) {
-	debug_log(sprintf('get_href(): Entered with (%s,%s)',$type,$extra_info),2);
-
 	$group_id = "61828";
 	$bug_atid = "498546";
 	$rfe_atid = "498549";
 	$forum_id = "34809";
+
 	switch( $type ) {
         case 'open_bugs': return "https://sourceforge.net/tracker/?group_id=$group_id&atid=$bug_atid";
         case 'add_bug': return "https://sourceforge.net/tracker/?func=add&group_id=$group_id&atid=$bug_atid";
@@ -3022,9 +3075,7 @@ function get_href( $type, $extra_info='' ) {
  * @return double The current time in seconds since the beginning of the UNIX epoch (Midnight Jan. 1, 1970)
  */
 function utime () {
-	debug_log(sprintf('utime(): Entered with ()'),2);
-
-	$time = explode( " ", microtime());
+	$time = explode(' ',microtime());
  	$usec = (double)$time[0];
  	$sec = (double)$time[1];
  	return $sec + $usec;
@@ -3055,8 +3106,9 @@ function utime () {
  * @return string The string created from the array.
  */
 function array_to_query_string( $array, $exclude_vars=array(), $url_encode_ampersands=true ) {
-	debug_log(sprintf('array_to_query_string(): Entered with (%s,%s,%s)',
-		count($array),count($exclude_vars),$url_encode_ampersands),2);
+	if (DEBUG_ENABLED)
+		debug_log('array_to_query_string(): Entered with (%s,%s,%s)',2,	
+			count($array),count($exclude_vars),$url_encode_ampersands);
 
 	if( ! is_array( $array ) )
 		return '';
@@ -3097,7 +3149,8 @@ function array_to_query_string( $array, $exclude_vars=array(), $url_encode_amper
  * @see pla_compare_dns
  */
 function pla_reverse_dn($dn) {
-	debug_log(sprintf('pla_reverse_dn(): Entered with (%s)',$dn),2);
+	if (DEBUG_ENABLED)
+		debug_log('pla_reverse_dn(): Entered with (%s)',2,$dn);
 
 	foreach (pla_explode_dn($dn) as $key => $branch) {
 
@@ -3120,7 +3173,8 @@ function pla_reverse_dn($dn) {
  *                  otherwise.
  */
 function is_unique_attr( $attr_name ) {
-	debug_log(sprintf('is_unique_attr(): Entered with (%s)',$attr_name),2);
+	if (DEBUG_ENABLED)
+		debug_log('is_unique_attr(): Entered with (%s)',2,$attr_name);
 
     global $unique_attrs;
     if( isset( $unique_attrs ) && is_array( $unique_attrs ) ) {
@@ -3146,8 +3200,9 @@ function is_unique_attr( $attr_name ) {
  * @todo Move this to an LDAPServer object method.
  */
 function checkUniqueAttr( $ldapserver, $dn, $attr_name, $new_value ) {
-	debug_log(sprintf('checkUniqueAttr(): Entered with (%s,%s,%s,%s)',
-		$ldapserver->server_id,$dn,$attr_name,count($new_value)),2);
+	if (DEBUG_ENABLED)
+		debug_log('checkUniqueAttr(): Entered with (%s,%s,%s,%s)',2,
+			$ldapserver->server_id,$dn,$attr_name,count($new_value));
 
 	global $ldapservers,$lang;
 
@@ -3238,7 +3293,8 @@ function checkUniqueAttr( $ldapserver, $dn, $attr_name, $new_value ) {
  */
 
 function sortAttrs($a,$b) {
-	debug_log(sprintf('sortAttrs(): Entered with (%s,%s)',$a,$b),2);
+	if (DEBUG_ENABLED)
+		debug_log('sortAttrs(): Entered with (%s,%s)',2,$a,$b);
 
 	global $friendly_attrs, $attrs_display_order;
 
@@ -3290,7 +3346,8 @@ function sortAttrs($a,$b) {
  * @todo Move this to an LDAPServer object method.
  */
 function userIsMember($ldapserver,$user,$group) {
-	debug_log(sprintf('userIsMember(): Entered with (%s,%s,%s)',$ldapserver->server_id,$user,$group),2);
+	if (DEBUG_ENABLED)
+		debug_log('userIsMember(): Entered with (%s,%s,%s)',2,$ldapserver->server_id,$user,$group);
 
 	$group = get_object_attrs( $ldapserver, $group, false, $deref=LDAP_DEREF_NEVER );
 
@@ -3310,7 +3367,8 @@ function userIsMember($ldapserver,$user,$group) {
  * @todo Move this to an LDAPServer object method.
  */
 function userIsAllowedLogin($ldapserver,$user) {
-	debug_log(sprintf('userIsAllowedLogin(): Entered with (%s,%s)',$ldapserver->server_id,$user),2);
+	if (DEBUG_ENABLED)
+		debug_log('userIsAllowedLogin(): Entered with (%s,%s)',2,$ldapserver->server_id,$user);
 
 	global $ldapservers;
 
@@ -3320,18 +3378,22 @@ function userIsAllowedLogin($ldapserver,$user) {
 		return true;
 
 	foreach ($ldapservers->GetValue($ldapserver->server_id,'login','allowed_dns') as $login_allowed_dn) {
-		debug_log(sprintf('userIsAllowedLogin: Working through (%s)',$login_allowed_dn),9);
+		if (DEBUG_ENABLED)
+			debug_log('userIsAllowedLogin: Working through (%s)',9,$login_allowed_dn);
 
 		// Check if $login_allowed_dn is an ldap search filter
 		// Is first occurence of 'filter=' (case ensitive) at position 0 ?
 		if ( preg_match('/^\([&|]\(/',$login_allowed_dn) ) {
 			$filter = $login_allowed_dn;
 
-				foreach($ldapserver->getBaseDN() as $base_dn) {
+			foreach($ldapserver->getBaseDN() as $base_dn) {
 				$results = array();
 				$results = pla_ldap_search( $ldapserver, $filter, $base_dn, array('dn') );
-				debug_log(sprintf('userIsAllowedLogin: Search, Filter [%s], BaseDN [%s] Results [%s]',
-					$filter, $base_dn, is_array($results)),9);
+
+				if (DEBUG_ENABLED)
+					debug_log('userIsAllowedLogin: Search, Filter [%s], BaseDN [%s] Results [%s]',9,
+						$filter, $base_dn, is_array($results));
+
 				$dn_array = array();
 
 				if ($results) {
@@ -3341,8 +3403,8 @@ function userIsAllowedLogin($ldapserver,$user) {
 
 					if( count( $dn_array ) !== 0 )
 						foreach($dn_array as $result_dn) {
-							debug_log(sprintf('userIsAllowedLogin: Comparing with [%s]',
-								$result_dn),9);
+							if (DEBUG_ENABLED)
+								debug_log('userIsAllowedLogin: Comparing with [%s]',9,$result_dn);
 
 							// Check if $result_dn is a user DN
 							if ( 0 == strcasecmp( trim($user), trim(strtolower($result_dn)) ) )
@@ -3373,7 +3435,8 @@ function userIsAllowedLogin($ldapserver,$user) {
  * @returns array Array with values converted to lowercase.
  */
 function arrayLower($array) {
-	debug_log(sprintf('arrayLower(): Entered with (%s)',serialize($array)),2);
+	if (DEBUG_ENABLED)
+		debug_log('arrayLower(): Entered with (%s)',2,serialize($array));
 
 	if (! is_array($array))
 		return $array;
@@ -3392,7 +3455,8 @@ function arrayLower($array) {
  *             $_GET, $_POST, or $_COOKIE.
  */
 function array_stripslashes(&$array) {
-	debug_log(sprintf('array_stripslashes(): Entered with (%s)',serialize($array)),2);
+	if (DEBUG_ENABLED)
+		debug_log('array_stripslashes(): Entered with (%s)',2,serialize($array));
 
 	if (is_array($array))
 		while (list($key) = each($array))
@@ -3408,14 +3472,14 @@ function array_stripslashes(&$array) {
  * @return string|false The user agent string as reported by the browser.
  */
 function get_user_agent_string() {
-	debug_log(sprintf('get_user_agent_string(): Entered with ()'),2);
+	if( isset( $_SERVER['HTTP_USER_AGENT'] ) )
+		$return = strtolower( $_SERVER['HTTP_USER_AGENT'] );
+	else
+		$return = false;
 
-    if( isset( $_SERVER['HTTP_USER_AGENT'] ) )
-        $return = strtolower( $_SERVER['HTTP_USER_AGENT'] );
-    else
-        $return = false;
+	if (DEBUG_ENABLED)
+		debug_log('get_user_agent_string(): Entered with (), Returning (%s)',1,$return);
 
-	debug_log(sprintf('get_user_agent_string(): Returning (%s)',$return),1);
 	return $return;
 }
 
@@ -3424,8 +3488,6 @@ function get_user_agent_string() {
  * @return boolean True if the brower's OS is UNIX, false otherwise.
  */
 function is_browser_os_unix() {
-	debug_log(sprintf('is_browser_os_unix(): Entered with ()'),2);
-
 	$agent_strs = array(
 		'sunos','sunos 4','sunos 5',
 		'i86',
@@ -3443,7 +3505,9 @@ function is_browser_os_unix() {
 
 	$return = string_in_array_value(get_user_agent_string(),$agent_strs);
 
-	debug_log(sprintf('is_browser_os_unix(): Returning (%s)',$return),1);
+	if (DEBUG_ENABLED)
+		debug_log('is_browser_os_unix(): Entered with (), Returning (%s)',1,$return);
+
 	return $return;
 }
 
@@ -3452,12 +3516,10 @@ function is_browser_os_unix() {
  * @return boolean True if the brower's OS is Windows, false otherwise.
  */
 function is_browser_os_windows() {
-	debug_log(sprintf('is_browser_os_windows(): Entered with ()'),2);
-
 	$agent_strs = array(
 		'win','win95','windows 95',
 		'win16','windows 3.1','windows 16-bit','windows','win31','win16','winme',
-   		'win2k','winxp',
+		'win2k','winxp',
 		'win98','windows 98','win9x',
 		'winnt','windows nt','win32',
 		'32bit'
@@ -3465,7 +3527,9 @@ function is_browser_os_windows() {
 
 	$return = string_in_array_value(get_user_agent_string(),$agent_strs);
 
-	debug_log(sprintf('is_browser_os_windows(): Returning (%s)',$return),1);
+	if (DEBUG_ENABLED)
+		debug_log('is_browser_os_windows(): Entered with (), Returning (%s)',1,$return);
+
 	return $return;
 }
 
@@ -3474,15 +3538,15 @@ function is_browser_os_windows() {
  * @return boolean True if the brower's OS is mac, false otherwise.
  */
 function is_browser_os_mac() {
-	debug_log(sprintf('is_browser_os_mac(): Entered with ()'),2);
-
 	$agent_strs = array(
 		'mac','68000','ppc','powerpc'
-   	);
+	);
 
 	$return = string_in_array_value(get_user_agent_string(),$agent_strs);
 
-	debug_log(sprintf('is_browser_os_windows(): Returning (%s)',$return),1);
+	if (DEBUG_ENABLED)
+		debug_log('is_browser_os_windows(): Entered with (), Returning (%s)',1,$return);
+
 	return $return;
 }
 
@@ -3494,10 +3558,8 @@ function is_browser_os_mac() {
  * @deprecated
  */
 function get_posix_groups($ldapserver,$base_dn=null) {
-	debug_log(sprintf('get_posix_groups(): Entered with (%s,%s)',$ldapserver->server_id,$base_dn),2);
-
-	if (is_null($base_dn))
-		$base_dn = $ldapserver->getBaseDN();
+	if (DEBUG_ENABLED)
+		debug_log('get_posix_groups(): Entered with (%s,%s)',2,$ldapserver->server_id,$base_dn);
 
 	$results = pla_ldap_search($ldapserver,"objectclass=posixGroup",$base_dn,array());
 
@@ -3513,7 +3575,8 @@ function get_posix_groups($ldapserver,$base_dn=null) {
  * @return string The format to use.
  */
 function get_default_search_display() {
-	debug_log(sprintf('get_default_search_display(): Entered with ()'),2);
+	if (DEBUG_ENABLED)
+		debug_log('get_default_search_display(): Entered with ()',2);
 
 	global $default_search_display, $lang;
 
@@ -3538,7 +3601,8 @@ function get_default_search_display() {
  * @return bool True if its there, false if its not.
  */
 function in_array_ignore_case( $needle, $haystack ) {
-	debug_log(sprintf('in_array_ignore_case(): Entered with (%s,%s)',$needle,serialize($haystack)),2);
+	if (DEBUG_ENABLED)
+		debug_log('in_array_ignore_case(): Entered with (%s,%s)',2,$needle,serialize($haystack));
 
 	if( ! is_array( $haystack ) )
 		return false;
@@ -3560,8 +3624,6 @@ function in_array_ignore_case( $needle, $haystack ) {
  * @return bool True if its there, false if its not.
  */
 function string_in_array_value( $needle, $haystack ) {
-	debug_log(sprintf('string_in_array_value(): Entered with (%s,%s)',$needle,serialize($haystack)),2);
-
 	# Set default return
 	$return = false;
 
@@ -3574,7 +3636,9 @@ function string_in_array_value( $needle, $haystack ) {
 			break;
 		}
 
-	debug_log(sprintf('string_in_array_value(): Returning (%s)',$return),1);
+	if (DEBUG_ENABLED)
+		debug_log('string_in_array_value(): Entered with (%s,%s), Returning (%s)',1,$needle,serialize($haystack),$return);
+
 	return $return;
 }
 
@@ -3589,44 +3653,27 @@ function string_in_array_value( $needle, $haystack ) {
  * @return string the padded string
  */
 function full_str_pad($input, $pad_length, $pad_string = '', $pad_type = 0) {
-	debug_log(sprintf('full_str_pad(): Entered with (%s,%s,%s,%s)',$input,$pad_length,$pad_string,$pad_type),2);
+	if (DEBUG_ENABLED)
+		debug_log('full_str_pad(): Entered with (%s,%s,%s,%s)',2,$input,$pad_length,$pad_string,$pad_type);
 
-    $str = '';
-    $length = $pad_length - strlen($input);
-    if ($length > 0) { // str_repeat doesn't like negatives
-        if ($pad_type == STR_PAD_RIGHT) { // STR_PAD_RIGHT == 1
-            $str = $input.str_repeat($pad_string, $length);
-        } elseif ($pad_type == STR_PAD_BOTH) { // STR_PAD_BOTH == 2
-            $str = str_repeat($pad_string, floor($length/2));
-            $str .= $input;
-            $str .= str_repeat($pad_string, ceil($length/2));
-        } else { // defaults to STR_PAD_LEFT == 0
-            $str = str_repeat($pad_string, $length).$input;
-        }
-    } else { // if $length is negative or zero we don't need to do anything
-        $str = $input;
-    }
-    return $str;
-}
+	$str = '';
+	$length = $pad_length - strlen($input);
 
-/**
- * Gets the user configured session blowfish secret from config.php.
- *
- * @return string|error Return the blowfish secret, or jump to an error.
- */
-function get_blowfish_secret() {
-	debug_log(sprintf('get_blowfish_secret(): Entered with ()'),2);
+	if ($length > 0) { // str_repeat doesn't like negatives
+		if ($pad_type == STR_PAD_RIGHT) { // STR_PAD_RIGHT == 1
+			$str = $input.str_repeat($pad_string, $length);
+		} elseif ($pad_type == STR_PAD_BOTH) { // STR_PAD_BOTH == 2
+			$str = str_repeat($pad_string, floor($length/2));
+			$str .= $input;
+			$str .= str_repeat($pad_string, ceil($length/2));
+		} else { // defaults to STR_PAD_LEFT == 0
+			$str = str_repeat($pad_string, $length).$input;
+		}
 
-	global $config, $lang;
-
-	$return = $config->GetValue('session','blowfish');
-
-	# If our default is blank, then generate an error.
-	if (! trim($return))
-		pla_error( $lang['no_blowfish_secret'] );
-
-	debug_log(sprintf('get_blowfish_secret(): Returned (%s)',is_null($return)),2);
-	return $return;
+	} else { // if $length is negative or zero we don't need to do anything
+		$str = $input;
+	}
+	return $str;
 }
 
 /**
@@ -3642,11 +3689,18 @@ function get_blowfish_secret() {
  * @author  lem9 (taken from the phpMyAdmin source)
  */
 function pla_blowfish_encrypt( $data, $secret=null ) {
-	debug_log(sprintf('pla_blowfish_encrypt(): Entered with (%s,%s)',$data,$secret),2);
+	if (DEBUG_ENABLED)
+		debug_log('pla_blowfish_encrypt(): Entered with (%s,%s)',2,$data,$secret);
+
+	global $config;
 
 	# If our secret is null or blank, get the default.
 	if( $secret === null || ! trim($secret))
-		$secret = get_blowfish_secret();
+		$secret = $config->GetValue('session','blowfish');
+
+	# If the secret isnt set, then just return the data.
+	if (! trim($secret))
+		return $data;
 
 	require_once LIBDIR.'blowfish.php';
 
@@ -3677,7 +3731,10 @@ function pla_blowfish_encrypt( $data, $secret=null ) {
  * @author  lem9 (taken from the phpMyAdmin source)
  */
 function pla_blowfish_decrypt( $encdata, $secret=null ) {
-	debug_log(sprintf('pla_blowfish_decrypt(): Entered with (%s,%s)',$encdata,$secret),2);
+	if (DEBUG_ENABLED)
+		debug_log('pla_blowfish_decrypt(): Entered with (%s,%s)',2,$encdata,$secret);
+
+	global $config;
 
 	// This cache gives major speed up for stupid callers :)
 	static $cache = array();
@@ -3687,7 +3744,11 @@ function pla_blowfish_decrypt( $encdata, $secret=null ) {
 
 	# If our secret is null or blank, get the default.
 	if( $secret === null || ! trim($secret))
-		$secret = get_blowfish_secret();
+		$secret = $config->GetValue('session','blowfish');
+
+	# If the secret isnt set, then just return the data.
+	if (! trim($secret))
+		return $encdata;
 
 	require_once LIBDIR.'blowfish.php';
 
@@ -3708,36 +3769,44 @@ function pla_blowfish_decrypt( $encdata, $secret=null ) {
  * Gets a DN string using the user-configured tree_display_format string to format it.
  */
 function draw_formatted_dn( $ldapserver, $dn ) {
-	debug_log(sprintf('draw_formatted_dn(): Entered with (%s,%s)',$ldapserver->server_id,$dn),2);
+	if (DEBUG_ENABLED)
+		debug_log('draw_formatted_dn(): Entered with (%s,%s)',2,$ldapserver->server_id,$dn);
 
 	global $config;
 
-    $format = $config->GetValue('appearance','tree_display_format');
-    preg_match_all( "/%[a-zA-Z_0-9]+/", $format, $tokens );
-    $tokens = $tokens[0];
-    foreach( $tokens as $token ) {
-        if( 0 == strcasecmp( $token, '%dn' ) )
-            $format = str_replace( $token, pretty_print_dn( $dn ), $format );
-        elseif( 0 == strcasecmp( $token, '%rdn' ) )
-            $format = str_replace( $token, pretty_print_dn( get_rdn( $dn ) ), $format );
-        elseif( 0 == strcasecmp( $token, '%rdnvalue' ) ) {
-            $rdn = get_rdn( $dn );
-            $rdn_value = explode( '=', $rdn, 2 );
-            $rdn_value = $rdn_value[1];
-            $format = str_replace( $token, $rdn_value, $format );
-        } else {
-            $attr_name = str_replace( '%', '', $token );
-            $attr_values = get_object_attr( $ldapserver, $dn, $attr_name );
-            if( null == $attr_values )
-                $display = 'none';
-            elseif( is_array( $attr_values ) )
-                $display = htmlspecialchars( implode( ', ',  $attr_values ) );
-            else
-                $display = htmlspecialchars( $attr_values );
-            $format = str_replace( $token, $display, $format );
-        }
-    }
-    echo $format;
+	$format = $config->GetValue('appearance','tree_display_format');
+	preg_match_all( "/%[a-zA-Z_0-9]+/", $format, $tokens );
+	$tokens = $tokens[0];
+	foreach( $tokens as $token ) {
+		if( 0 == strcasecmp( $token, '%dn' ) )
+		        $format = str_replace( $token, pretty_print_dn( $dn ), $format );
+
+		elseif( 0 == strcasecmp( $token, '%rdn' ) )
+		        $format = str_replace( $token, pretty_print_dn( get_rdn( $dn ) ), $format );
+
+		elseif( 0 == strcasecmp( $token, '%rdnvalue' ) ) {
+		        $rdn = get_rdn( $dn );
+			$rdn_value = explode( '=', $rdn, 2 );
+			$rdn_value = $rdn_value[1];
+			$format = str_replace( $token, $rdn_value, $format );
+
+		} else {
+			$attr_name = str_replace( '%', '', $token );
+			$attr_values = get_object_attr( $ldapserver, $dn, $attr_name );
+
+			if( null == $attr_values )
+				$display = 'none';
+
+			elseif( is_array( $attr_values ) )
+				$display = htmlspecialchars( implode( ', ',  $attr_values ) );
+
+			else
+				$display = htmlspecialchars( $attr_values );
+
+			$format = str_replace( $token, $display, $format );
+		}
+	}
+	echo $format;
 }
 
 /**
@@ -3745,7 +3814,8 @@ function draw_formatted_dn( $ldapserver, $dn ) {
  * @deprecated
  */
 function get_date_format() {
-	debug_log(sprintf('get_date_format(): Entered with ()'),2);
+	if (DEBUG_ENABLED)
+		debug_log('get_date_format(): Entered with ()',2);
 
 	global $config;
 
@@ -3756,13 +3826,14 @@ function get_date_format() {
  * Takes a shadow* attribute and returns the date as an integer.
  */
 function shadow_date( $attrs, $attr) {
-	debug_log(sprintf('shadow_date(): Entered with (%s,%s)',serialize($attrs),$attr),2);
+	if (DEBUG_ENABLED)
+		debug_log('shadow_date(): Entered with (%s,%s)',2,serialize($attrs),$attr);
 
 	$shadowLastChange = isset($attrs['shadowLastChange']) ? $attrs['shadowLastChange'][0] : null;
 	$shadowMax = isset($attrs['shadowMax']) ? $attrs['shadowMax'][0] : null;
 
 	if( 0 == strcasecmp( $attr, 'shadowLastChange' ) && $shadowLastChange)
-                $shadow_date = $shadowLastChange;
+		$shadow_date = $shadowLastChange;
 
 	elseif ( 0 == strcasecmp( $attr, 'shadowMax' ) && ($shadowMax > 0) && $shadowLastChange )
 		$shadow_date = $shadowLastChange+$shadowMax;
@@ -3792,7 +3863,8 @@ function shadow_date( $attrs, $attr) {
  * @return string $result String that is ready for the search filter.
  */
 function clean_search_vals( $val ) {
-	debug_log(sprintf('clean_search_vals(): Entered with (%s)',$val),2);
+	if (DEBUG_ENABLED)
+		debug_log('clean_search_vals(): Entered with (%s)',2,$val);
 
 	# Remove any escaped brackets already.
 	$val = preg_replace("/\\\\([\(\)])/","$1",$val);
@@ -3809,8 +3881,8 @@ function clean_search_vals( $val ) {
  * Server html select list
  */
 function server_select_list ($select_id=null,$only_logged_on=true,$select_name='server_id',$js_script=null) {
-	debug_log(sprintf('server_select_list(): Entered with (%s,%s,%s,%s)',
-		$select_id,$only_logged_on,$select_name,$js_script),2);
+	if (DEBUG_ENABLED)
+		debug_log('server_select_list(): Entered with (%s,%s,%s,%s)',2,$select_id,$only_logged_on,$select_name,$js_script);
 
 	global $ldapservers;
 
@@ -3848,8 +3920,6 @@ function server_select_list ($select_id=null,$only_logged_on=true,$select_name='
 }
 
 function server_info_list() {
-	debug_log(sprintf('server_info_list(): Entered with ()'),2);
-
 	global $ldapservers;
 
 	$server_info_list = array();
@@ -3862,10 +3932,12 @@ function server_info_list() {
 
 		$server_info_list[$id]['id'] = $id;
 		$server_info_list[$id]['name'] = $ldapserver->name;
-		$server_info_list[$id]['base_dn'] = $ldapserver->getBaseDN();
+		$server_info_list[$id]['base_dns'] = $ldapserver->getBaseDN();
 	}
 
-	debug_log(sprintf('server_info_list(): Returning (%s)',serialize($server_info_list)),1);
+	if (DEBUG_ENABLED)
+		debug_log('server_info_list(): Entered with (), Returning (%s)',1,serialize($server_info_list));
+
 	return $server_info_list;
 }
 
@@ -3874,6 +3946,11 @@ function server_info_list() {
  *
  * If the log level of the message is less than the log level of the debug setting in the config file
  * then log the message to syslog.
+ *
+ * This has been extended to allow multiple arguments after the level.
+ * If this form is used then the $msg is treated as a sprintf format
+ * and the remaining arguments are passed to this. The advantage of this
+ * is that the string is only composed if the message is going to be logged.
  *
  * Suggested logging level messages:
  *  1 = Return results from function calls.
@@ -3888,24 +3965,47 @@ function server_info_list() {
  */
 
 function debug_log($msg,$level=0) {
-	global $config;
+	global $config,$debug_file;
 
-	# In case we are called before we are fully initialised.
-	if (! isset($config))
+	# In case we are called before we are fully initialised or if debugging is not set.
+	if (! isset($config) || ! ($config->GetValue('debug','file') || $config->GetValue('debug','syslog')))
 		return false;
 
 	$debug_level = $config->GetValue('debug','level');
-
-	$caller = basename( $_SERVER['PHP_SELF'] );
 	if (! $debug_level)
 		$debug_level = -1;
+	if ($level > $debug_level)
+		return false;
+	
+	$caller = basename( $_SERVER['PHP_SELF'] );
 
-	if ($level <= $debug_level)
-		return syslog_notice( sprintf('%s(%s): %s',$caller,$level,$msg) );
+	if (func_num_args() > 2) {
+		$args = func_get_args();
+		unset($args[0]);
+		unset($args[1]);
+		$msg = vsprintf($msg, array_values($args));
+	}
+
+	if ($level <= $debug_level) {
+		$debug_message = sprintf('%s(%s): %s',basename($_SERVER['PHP_SELF']),$level,substr($msg,0,200));
+
+		if ($debug_file || $config->GetValue('debug','file')) {
+			if (! $debug_file)
+				$debug_file = fopen($config->GetValue('debug','file'),'w');
+//@todo: change this to append.
+
+			fwrite($debug_file,$debug_message."\n");
+		}
+
+		if ($config->GetValue('debug','syslog'))
+			syslog_notice($debug_message);
+	}
+	return syslog_notice( sprintf('%s(%s): %s',$caller,$level,$msg) );
 }
 
-function enc_type_select_list($enc_type) {
-	debug_log(sprintf('enc_type_select_list(): Entered with (%s)',$enc_type),2);
+function enc_type_select_list($enc_type) { 
+	if (DEBUG_ENABLED)
+		debug_log('enc_type_select_list(): Entered with (%s)',2,$enc_type);
 
 	$html = '<select name="enc_type">';
 	$html .= '<option>clear</option>';
@@ -3918,9 +4018,10 @@ function enc_type_select_list($enc_type) {
 	return $html;
 }
 
-// Converts a little-endia hex-number to one, that 'hexdec' can convert
+// Converts a little-endian hex-number to one, that 'hexdec' can convert
 function littleEndian($hex) {
-	debug_log(sprintf('littleEndian(): Entered with (%s)',$hex),2);
+	if (DEBUG_ENABLED)
+		debug_log('littleEndian(): Entered with (%s)',2,$hex);
 
 	$result = '';
 
@@ -3931,7 +4032,8 @@ function littleEndian($hex) {
 }
 
 function binSIDtoText($binsid) {
-	debug_log(sprintf('binSIDtoText(): Entered with (%s)',$binsid),2);
+	if (DEBUG_ENABLED)
+		debug_log('binSIDtoText(): Entered with (%s)',2,$binsid);
 
 	$hex_sid=bin2hex($binsid);
 	$rev = hexdec(substr($hex_sid,0,2)); // Get revision-part of SID
@@ -3956,7 +4058,8 @@ if (! function_exists('session_cache_expire')) {
 	 */
 
 	function session_cache_expire() {
-		debug_log(sprintf('session_cache_expire(): Entered with ()'),2);
+		if (defined('DEBUG_ENABLED') && (DEBUG_ENABLED))
+			debug_log('session_cache_expire(): Entered with ()',2);
 
 		return 180;
 	}
@@ -3970,7 +4073,8 @@ if (! function_exists('session_cache_expire')) {
  * @returnn array $data Sorted multi demension array.
  */
 function masort(&$data, $sortby, $rev=0) {
-	debug_log(sprintf('masort(): Entered with (%s,%s,%s)',serialize($data),$sortby,$rev),2);
+	if (DEBUG_ENABLED)
+		debug_log('masort(): Entered with (%s,%s,%s)',2,serialize($data),$sortby,$rev);
 
 	static $sort_funcs = array();
 
@@ -4015,8 +4119,9 @@ function masort(&$data, $sortby, $rev=0) {
  * @return array $results Array of values keyed by $key.
  */
 function return_ldap_hash($ldapserver,$base_dn,$filter,$key,$attrs) {
-	debug_log(sprintf('return_ldap_hash(): Entered with (%s,%s,%s,%s,%s)',
-		$ldapserver->server_id,$base_dn,$filter,$key,count($attrs)),2);
+	if (DEBUG_ENABLED)
+		debug_log('return_ldap_hash(): Entered with (%s,%s,%s,%s,%s)',2,
+			$ldapserver->server_id,$base_dn,$filter,$key,count($attrs));
 
 	$ldapquery = pla_ldap_search($ldapserver,$filter,$base_dn,$attrs);
 
@@ -4044,8 +4149,6 @@ function debug_dump($variable,$die=false) {
  * based on the criteria defined in the array $criteria in config.php
  */
 function password_generate() {
-	debug_log(sprintf('password_generate(): Entered with ()'),2);
-
 	global $config;
 
 	$no_use_similiar = ! $config->GetValue('password','use_similar');
@@ -4112,7 +4215,8 @@ function password_generate() {
 	shuffle($outarray);
 	$return = implode('', $outarray);
 
-	debug_log(sprintf('password_generate(): Returning (%s)',$return),1);
+	if (DEBUG_ENABLED)
+		debug_log('password_generate(): Entered with (), Returning (%s)',1,$return);
 	return $return;
 }
 
@@ -4125,8 +4229,6 @@ function password_generate() {
  * @return string the padded string
  */
 function a_array_rand($input,$num_req) {
-	debug_log(sprintf('a_array_rand(): Entered with (%s,%s)',serialize($input),$num_req),2);
-
 	if (count($input) == 0)
 		return array();
 
@@ -4149,7 +4251,9 @@ function a_array_rand($input,$num_req) {
 			$return[] = $input[$idxlist[$i]];
 	}
 
-	debug_log(sprintf('a_array_rand(): Returning (%s)',serialize($return)),1);
+	if (DEBUG_ENABLED)
+		debug_log('a_array_rand(): Entered with (%s,%s), Returning (%s)',1,serialize($input),$num_req,serialize($return));
+
 	return $return;
 }
 
@@ -4165,8 +4269,6 @@ function a_array_rand($input,$num_req) {
  *         or null if there is nothing cached..
  */
 function get_cached_item($server_id,$item,$subitem='null') {
-	debug_log(sprintf('get_cached_item(): Entered with (%s,%s,%s)',$server_id,$item,$subitem),2);
-
 	global $config;
 
 	# Set default return
@@ -4177,18 +4279,25 @@ function get_cached_item($server_id,$item,$subitem='null') {
 
 		static $cache;
 		if (isset($cache[$server_id][$item][$subitem])) {
-			debug_log(sprintf('get_cached_item(): Returning MEMORY cached [%s] (%s)',$item,$subitem),3);
+			if (DEBUG_ENABLED)
+				debug_log('get_cached_item(): Returning MEMORY cached [%s] (%s)',3,$item,$subitem);
+
 			$return = $cache[$server_id][$item][$subitem];
 
 		} elseif (isset($_SESSION['cache'][$server_id][$item][$subitem])) {
-				debug_log(sprintf('get_cached_item(): Returning SESSION cached [%s] (%s)',$item,$subitem),3);
-				$return = $_SESSION['cache'][$server_id][$item][$subitem];
-				$cache[$server_id][$item][$subitem] = $return;
+			if (DEBUG_ENABLED)
+				debug_log('get_cached_item(): Returning SESSION cached [%s] (%s)',3,$item,$subitem);
 
-   		} 
-    }
+			$return = $_SESSION['cache'][$server_id][$item][$subitem];
+			$cache[$server_id][$item][$subitem] = $return;
 
-	debug_log(sprintf('get_cached_item(): Returning (%s)',serialize($return)),1);
+		} 
+	}
+
+	if (DEBUG_ENABLED)
+		debug_log('get_cached_item(): Entered with (%s,%s,%s), Returning (%s)',1,
+			$server_id,$item,$subitem,serialize($return));
+
 	return $return;
 }
 
@@ -4198,7 +4307,8 @@ function get_cached_item($server_id,$item,$subitem='null') {
  * Returns true on success of false on failure.
  */
 function set_cached_item($server_id,$item,$subitem='null',$data) {
-    debug_log(sprintf('set_cached_item(): Entered with (%s,%s,%s,%s)',$server_id,$item,$subitem,serialize($data)),2);
+	if (DEBUG_ENABLED)
+		debug_log('set_cached_item(): Entered with (%s,%s,%s,%s)',2,$server_id,$item,$subitem,serialize($data));
 
 	global $config;
 
@@ -4207,7 +4317,7 @@ function set_cached_item($server_id,$item,$subitem='null',$data) {
 
 		static $cache;
 		$cache[$server_id][$item][$subitem] = $data;
-	    $_SESSION['cache'][$server_id][$item][$subitem] = $data;
+		$_SESSION['cache'][$server_id][$item][$subitem] = $data;
 		return true;
 
 	} else
@@ -4229,4 +4339,31 @@ function dn_get_base($ldapserver,$dn) {
 
 	return null;
 }
+
+/**
+ * Draws an HTML date selector button which, when clicked, pops up a date selector dialog.
+ * @param string $attr The name of the date type attribute
+ */
+function draw_date_selector_link( $attr ) {
+	debug_log(sprintf('draw_date_selector_link(): Entered with (%s)',$attr),2);
+
+	global $lang;
+
+	$href = "javascript:dateSelector('$attr');";
+
+	$title = $lang['date_selector_link'];
+
+	printf('<nobr><a href="%s" title="%s"><img class="chooser" src="images/calendar.png" id="f_trigger_%s" readonly="1" style="cursor: pointer;" /></a>',$href,$title,$attr);
+	echo "</nobr>";
+}
+
+# @deprecated
+function get_schema_attribute ($object,$attr,$dn) {
+	return $object->getSchemaAttribute($attr,$dn);
+}
+# @deprecated
+function get_schema_objectclass ($object,$oclass) {
+	return $object->getSchemaObjectClass($oclass);
+}
+
 ?>

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/collapse.php,v 1.13 2005/07/22 05:55:19 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/collapse.php,v 1.13 2005/07/22 05:55:19 wurley Exp $
 
 /**
  * This script alters the session variable 'tree', collapsing it

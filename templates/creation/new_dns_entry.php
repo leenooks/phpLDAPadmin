@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_dns_entry.php,v 1.10 2005/03/05 06:27:07 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/Attic/new_dns_entry.php,v 1.10 2005/03/05 06:27:07 wurley Exp $
 
 // Common to all templates
 $container = $_POST['container'];

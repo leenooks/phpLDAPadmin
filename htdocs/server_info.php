@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/server_info.php,v 1.21 2005/07/22 05:51:57 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/server_info.php,v 1.21.2.1 2005/10/09 09:07:21 wurley Exp $
 
 /**
  * Fetches and displays all information that it can from the specified server
@@ -52,11 +52,13 @@ if (! $ldapserver->haveAuthInfo())
 # Fetch basic RootDSE attributes using the + and *.
 $r = @ldap_read($ldapserver->connect(),'','objectClass=*',array('+','*'));
 if (! $r)
-	pla_error($lang['could_not_fetch_server_info'],ldap_error($ldapserver->connect()),ldap_errno($ldapserver->connect()));
+	pla_error($lang['could_not_fetch_server_info'],
+		  $ldapserver->error(),$ldapserver->errno());
 
 $entry = @ldap_first_entry($ldapserver->connect(),$r);
 if (! $entry)
-	pla_error($lang['could_not_fetch_server_info'],ldap_error($ldapserver->connect()),ldap_errno($ldapserver->connect()));
+	pla_error($lang['could_not_fetch_server_info'],
+		  $ldapserver->error(),$ldapserver->errno());
 
 $attrs = @ldap_get_attributes($ldapserver->connect(),$entry);
 $count = @ldap_count_entries($ldapserver->connect(),$r);

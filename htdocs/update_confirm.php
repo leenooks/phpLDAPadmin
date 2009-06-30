@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/update_confirm.php,v 1.40 2005/08/27 16:15:55 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.40.2.3 2005/10/22 14:22:47 wurley Exp $
 
 /**
  * Takes the results of clicking "Save" in edit.php and determines which
@@ -15,7 +15,7 @@
 
 require './common.php';
 include './header.php';
-include 'templates/template_config.php';
+include TMPLDIR.'template_config.php';
 
 if( $ldapserver->isReadOnly() )
 	pla_error( $lang['no_updates_in_read_only_mode'] );
@@ -25,8 +25,6 @@ $old_values = $_POST['old_values'];
 $new_values = $_POST['new_values'];
 $encoded_dn = rawurlencode( $dn );
 $rdn = get_rdn( $dn );
-$mkntPassword = NULL;
-$samba_password_step = 0;
 
 ?>
 
@@ -53,16 +51,22 @@ foreach( $old_values as $attr => $old_val ) {
 		if( 0 == strcasecmp( $attr, 'userPassword' ) && $new_val != '' ) {
 			$new_val = password_hash( $new_val, $_POST['enc_type'] );
 			$password_already_hashed = true;
-		}
 
 		// special case for samba password
-		else if (( 0 == strcasecmp($attr,'sambaNTPassword') || 0 == strcasecmp($attr,'sambaLMPassword'))
-			&& trim($new_val[0]) != '' ) {
+		} else if (( 0 == strcasecmp($attr,'sambaNTPassword')) && trim($new_val[0]) != '' ) {
 
-			$mkntPassword = new MkntPasswdUtil();
-			$mkntPassword->createSambaPasswords( $new_val[0] ) or pla_error($lang['unable_create_samba_pass']);
-			$new_val = $mkntPassword->valueOf($attr);
+			$sambapassword = new smbHash;
+			$new_val[0] = $sambapassword->nthash($new_val[0]);
+
+		// special case for samba password
+		} else if ((0 == strcasecmp($attr,'sambaLMPassword')) && trim($new_val[0]) != '' ) {
+
+			$sambapassword = new smbHash;
+			$new_val[0] = $sambapassword->lmhash($new_val[0]);
 		}
+
+		if ($new_val == $old_val)
+			continue;
 
 		$update_array[ $attr ] = $new_val;
 	}
@@ -143,7 +147,7 @@ if( count( $update_array ) > 0 ) { ?>
 				echo nl2br( htmlspecialchars( $v ) ) . "<br />";
 		else
 			if( 0 == strcasecmp( $attr, 'userPassword' )
-				&& ( $config->GetValue('appearance','obfuscate_password_display') || is_null( get_enc_type( $old_values[ $attr ] ) ) ) )
+				&& obfuscate_password_display( get_enc_type( $old_values[ $attr ] ) ) )
 
 				echo preg_replace( '/./', '*', $old_values[ $attr ] ) . "<br />";
 
@@ -176,7 +180,7 @@ if( count( $update_array ) > 0 ) { ?>
 
 		elseif( $new_val != '' )
 			if( 0 == strcasecmp( $attr, 'userPassword' ) &&
-				( $config->GetValue('appearance','obfuscate_password_display') || is_null( get_enc_type( $new_values[ $attr ] ) ) ) )
+				obfuscate_password_display( get_enc_type( $new_values[ $attr ] ) ) )
 
 				echo preg_replace( '/./', '*', $new_val ) . "<br />";
 

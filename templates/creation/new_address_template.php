@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_address_template.php,v 1.13 2004/12/20 14:12:33 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/Attic/new_address_template.php,v 1.13 2004/12/20 14:12:33 uugdave Exp $
 
 
 // customize this to your needs

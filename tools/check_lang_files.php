@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/check_lang_files.php,v 1.11 2005/02/25 13:44:05 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/tools/check_lang_files.php,v 1.11.2.1 2005/10/09 06:36:36 wurley Exp $
 
 /**
  * Test script to check that $lang variables in each language file.
@@ -11,10 +11,10 @@
 echo "<html><head><title>phpldapadmin - check of translation</title></head><body>";
 $CHECKLANG=$_REQUEST['CHECKLANG'];
 
-include realpath( './lang/en.php' );
+require realpath( '../lang/en.php' );
 $english_lang = $lang;
 unset( $lang );
-$lang_dir = realpath( './lang/recoded' );
+$lang_dir = realpath( '../lang/recoded' );
 $dir = opendir( $lang_dir );
 
 // First, detect any unused strings from the english language:
@@ -31,7 +31,7 @@ $ignore_keys['contains'] = 1;
 foreach( $english_lang as $key => $string ) {
     if( isset( $ignore_keys[$key] ) )
         continue;
-    $grep_cmd = "grep -r \"lang\[['\\\"]$key\" *.php templates/";
+    $grep_cmd = "grep -r \"lang\[['\\\"]$key\" ../*.php ../htdocs/ ../templates/ ../lib/";
     $used = `$grep_cmd`;
     if( ! $used ) {
         $unused_keys = true;

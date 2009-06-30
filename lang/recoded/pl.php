@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/recoded/pl.php,v 1.13 2005/03/25 01:15:27 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/recoded/pl.php,v 1.13.2.1 2005/10/09 06:29:41 wurley Exp $
 
 /*        ---   INSTRUCTIONS FOR TRANSLATORS   ---
  *
@@ -16,10 +16,10 @@
  *
  */
 
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/recoded/pl.php,v 1.13 2005/03/25 01:15:27 wurley Exp $
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/recoded/pl.php,v 1.13.2.1 2005/10/09 06:29:41 wurley Exp $
  * initial translation from Piotr (DrFugazi) Tarnowski on Version 0.9.3
  */
-// Based on en.php version 1.120
+// Based on en.php version 1.133
 
 // Search form
 $lang['simple_search_form_str'] = 'Wyszukiwanie proste';
@@ -42,6 +42,7 @@ $lang['list'] = 'lista';
 $lang['table'] = 'tabela';
 $lang['bad_search_display'] = 'W Twojej konfiguracji (config.php) określona jest nieprawidłowa wartość dla $default_search_display: %s. Proszę to poprawić';
 $lang['page_n'] = 'Strona %d';
+$lang['next_page'] = 'Następna strona'; // 'Next Page';
 $lang['no_results'] = 'Wyszukiwanie nie przyniosło żadnych rezultatów.';
 		      
 // Tree browser
@@ -89,6 +90,7 @@ $lang['export_subtree'] = 'Eksportuj całe poddrzewo';
 $lang['create_a_child_entry'] = 'Utwórz wpis potomny';
 $lang['rename_entry'] = 'Zmień nazwę wpisu';
 $lang['rename'] = 'Zmień nazwę';
+$lang['rename_lower'] = 'zmień nazwę'; // 'rename';
 $lang['add'] = 'Dodaj';
 $lang['view'] = 'Pokaż';
 $lang['view_one_child'] = 'Pokaż 1 wpis potomny';
@@ -175,6 +177,7 @@ $lang['usage']='Użycie';
 $lang['could_not_retrieve_schema_from']='Nie można uzyskać schematu z';
 $lang['type']='Typ';
 $lang['no_such_schema_item'] = 'Nie ma takiej pozycji w schemacie: "%s"';
+$lang['random_password'] = 'Zostało wygenerowane losowe hasło'; // 'A random password was generated for you';
 
 // Deleting entries
 $lang['entry_deleted_successfully'] = 'Wpis %s został pomyślnie usunięty.';
@@ -215,7 +218,7 @@ $lang['change_password_new_login'] = 'Jeśli zmieniłeś/aś hasło, musisz się
 $lang['new_required_attrs'] = 'Nowe atrybuty wymagane';
 $lang['requires_to_add'] = 'Ta akcja wymaga, abyś dodał/a';
 $lang['new_attributes'] = 'nowe atrybuty';
-$lang['new_required_attrs_instructions'] = 'Instrukcja: Aby dodać tę klasę obiektu do tego wpisu, musisz określić';
+$lang['new_required_attrs_instructions'] = 'Instrukcja: Aby dodać tę/e klasę/y obiektu do tego wpisu, musisz określić';
 $lang['that_this_oclass_requires'] = 'co ta klasa obiektu wymaga. Możesz zrobić to w tym formularzu.';
 $lang['add_oclass_and_attrs'] = 'Dodaj klasę obiektu i atrybuty';
 
@@ -263,7 +266,7 @@ $lang['current_list_of'] = 'Aktualna lista';
 $lang['values_for_attribute'] = 'wartości dla atrybutu';
 $lang['inappropriate_matching_note'] = 'Uwaga: Jeśli nie ustawisz reguły EQUALITY dla tego atrybutu na Twoim serwerze LDAP otrzymasz błąd "niewłaściwe dopasowanie (inappropriate matching)"';
 $lang['enter_value_to_add'] = 'Wprowadź wartość, którą chcesz dodać:';
-$lang['new_required_attrs_note'] = 'Uwaga: może być wymagane wprowadzenie nowych atrybutów wymaganych przez tę klasę obiektu';
+$lang['new_required_attrs_note'] = 'Uwaga: może być wymagane wprowadzenie nowych atrybutów wymaganych przez tę/e klasę/y obiektu';
 $lang['syntax'] = 'Składnia';
 
 //copy.php
@@ -319,6 +322,8 @@ $lang['rdn_field_blank'] = 'Pozostawiłeś/aś puste pole RDN.';
 $lang['container_does_not_exist'] = 'Kontener który określiłeś/aś (%s) nie istnieje. Spróbuj ponownie.';
 $lang['no_objectclasses_selected'] = 'Nie wybrałeś/aś żadnych Klas Obiektu dla tego obiektu. Wróć proszę i zrób to.';
 $lang['hint_structural_oclass'] = 'Wskazówka: Musisz wybrać dokładnie jedną strukturalną klasę obiektu (wyróżnioną pogrubieniem)';
+$lang['template_restricted'] = 'Ten szablon nie jest dostępny w tym kontenerze'; // 'This template is not allowed in this container.';
+$lang['template_invalid'] = 'Ten szablon został zablokowany, prawdopodobnie z powodu brakującego schamatu lub brakujących pól szablonu XML.'; // 'This template has been disabled, possibly due to missing schema or missing template XML fields.';
 	      
 //creation_template.php
 $lang['ctemplate_on_server'] = 'Na serwerze';
@@ -382,6 +387,7 @@ $lang['unable_create_samba_pass'] = 'Nie można utworzyć hasła dla samby. Spra
 $lang['welcome_note'] = 'Użyj menu z lewej strony do nawigacji';
 $lang['credits'] = 'Lista płac';
 $lang['changelog'] = 'Historia zmian';
+$lang['documentation'] = 'Dokumentacja'; // 'Documentation';
 $lang['donate'] = 'Wesprzyj projekt';
 $lang['pla_logo'] = 'phpLDAPadmin logo';
      
@@ -436,7 +442,9 @@ $lang['ferror_nonfatil_bug'] = '<center><table class=\'notice\'><tr><td colspan=
              <b>Znalazłeś błąd w phpLDAPadmin (nie krytyczny) !</b></td></tr><tr><td>Błąd:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Plik:</td>
              <td><b>%s</b> linia <b>%s</b>, wywołane z <b>%s</b></td></tr><tr><td>Wersje:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>
              </td></tr><tr><td>Serwer Web:</td><td><b>%s</b></td></tr><tr><td colspan=\'2\'><center><a target=\'new\' href=\'%s\'>
-             Proszę zgłoś ten błąd klikając tutaj</a>.</center></td></tr></table></center><br />';
+             Sprawdź proszę czy ten błąd nie został już zgłoszony tutaj</a>.</center></td></tr>
+	     <tr><td colspan=\'2\'><center><a target=\'new\' href=\'%s\'>Jeśli nie został jeszcze zgłoszony, to możesz go zgłosić tutaj</a>.</center></td></tr>
+	     </table></center><br />';
 $lang['ferror_congrats_found_bug'] = 'Gratulacje ! Znalazłeś błąd w phpLDAPadmin.<br /><br />
 	     <table class=\'bug\'>
 	     <tr><td>Błąd:</td><td><b>%s</b></td></tr>
@@ -529,7 +537,6 @@ $lang['no_deletes_in_read_only'] = 'Usuwanie jest niedozwolone w trybie tylko-do
 $lang['error_calling_mass_delete'] = 'Błąd podczas wywołania mass_delete.php. Brakująca mass_delete w zmiennych POST.';
 $lang['mass_delete_not_array'] = 'zmienna POST mass_delete nie jest w tablicą.';
 $lang['mass_delete_not_enabled'] = 'Masowe usuwanie nie jest dozwolone. Odblokuj to proszę w config.php przed kontynuacją.';
-$lang['search_attrs_wrong_count'] = 'Twój config.php zawiera błąd. Ilość atrybutów w $search_attributes i$search_attributes_display jest różna';
 $lang['mass_deleting'] = 'Masowe usuwanie';
 $lang['mass_delete_progress'] = 'Postęp usuwania na serwerze "%s"';
 $lang['malformed_mass_delete_array'] = 'Zniekształcona tablica mass_delete.';
@@ -546,14 +553,10 @@ $lang['no_rdn_change'] = 'Nie zmieniłeś/aś RDN';
 $lang['invalid_rdn'] = 'Błędna wartość RDN';
 $lang['could_not_rename'] = 'Nie można zmienić nazwy wpisu';
 
-// General errors
-$lang['mismatched_search_attr_config'] = 'Twoja konfiguracja zawiera błąd. $search_attributes musi posiadać tą samą ilość atrybutów co $search_attributes_display.';
-
 // Password checker
 $lang['passwords_match'] = 'Hasła zgodne !';
 $lang['passwords_do_not_match'] = 'Hasła nie zgadzają się !'; 
 $lang['password_checker_tool'] = 'Narzędzie do sprawdzania haseł';
-$lang['compare'] = 'Porównaj';
 $lang['to'] = 'Do';
 				     
 // Templates
@@ -567,6 +570,7 @@ $lang['address_book_inet'] = 'Wpis Książki Adresowej (inetOrgPerson)';
 $lang['address_book_moz'] = 'Wpis Książki Adresowej (mozillaOrgPerson)';
 $lang['kolab_user'] = 'Wpis Użytkownika Kolab';
 $lang['organizational_unit'] = 'Jednostka Organizacyjna';
+$lang['new_organizational_unit'] = 'Nowa Jednostka Organizacyjna';
 $lang['organizational_role'] = 'Rola w Organizacji';
 $lang['posix_group'] = 'Grupa Posix';
 $lang['samba_machine'] = 'Maszyna Samba NT';
@@ -614,6 +618,7 @@ $lang['t_first_name'] = 'Imię';
 $lang['t_last_name'] = 'Nazwisko';
 $lang['t_first'] = 'imię';
 $lang['t_last'] = 'nazwisko';
+$lang['t_state'] = 'Stan';
 $lang['t_common_name'] = 'Nazwa';
 $lang['t_user_name'] = 'Nazwa użytkownika';
 $lang['t_password'] = 'Hasło';
@@ -624,6 +629,7 @@ $lang['t_uid_number'] = 'Numer UID';
 $lang['t_auto_det'] = '(automatycznie określony)';
 $lang['t_group'] = 'Grupa';
 $lang['t_gid_number'] = 'Numer GID';
+$lang['t_uid'] = 'ID Użytkownika';
 $lang['t_err_passwords'] = 'Hasła nie zgadzają się. Wróc i spróbuj ponownie.';
 $lang['t_err_field_blank'] = 'Nie możesz pozostawić pustego pola %s. Wróć i spróbuj ponownie.';
 $lang['t_err_field_num'] = 'Pole %s może zawierać tylko wartości numeryczne. Wróć i spróbuj ponownie.';
@@ -631,6 +637,10 @@ $lang['t_err_bad_container'] = 'Kontener który wybrałeś/aś (%s) nie istnieje
 $lang['t_confirm_account_creation'] = 'Potwierdź utworzenie konta';
 $lang['t_secret'] = '[tajne]';
 $lang['t_create_account'] = 'Utwórz konto';
+$lang['t_verify'] = 'Weryfikuj';
+
+// New Group (Posix)
+$lang['t_new_posixgroup'] = 'Nowa Grupa Posix';
 
 // New Address Template
 $lang['t_new_address'] = 'Nowy wpis w Książce Adresowej';
@@ -650,6 +660,7 @@ $lang['t_create_address'] = 'Utwórz adres';
 
 // default template
 $lang['t_check_pass'] = 'Sprawdź hasło';
+$lang['t_auto_submit'] = '(Automatycznie wyliczane przy wysłaniu)'; // '(Auto evalutated on submission.)';
 
 // compare form
 $lang['compare'] = 'Porównaj';

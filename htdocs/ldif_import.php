@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/ldif_import.php,v 1.31 2005/08/16 09:02:50 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import.php,v 1.31.2.3 2005/10/19 13:26:21 wurley Exp $
  
 /**
  * Imports an LDIF file to the specified server_id.
@@ -14,8 +14,6 @@
  */
 
 require './common.php';
-
-$debug = true;
 
 $server_id = (isset($_POST['server_id']) ? $_POST['server_id'] : '');
 $ldapserver = $ldapservers->Instance($server_id);
@@ -47,7 +45,7 @@ include './header.php'; ?>
 <br />
 
 <?php 
-include("ldif_functions.php");	
+require LIBDIR.'ldif_functions.php';
 @set_time_limit( 0 );
 
 // String associated to the operation on the ldap server
@@ -103,8 +101,8 @@ echo "<small><span style=\"color:red;\">".$lang['desc'].": ".$exception->message
              echo " <span style=\"color:green;\">".$lang['success']."</span></small><br>";
           else{
              echo " <span style=\"color:red;\">".$lang['failed']."</span></small><br>";
-             echo "<small><span style=\"color:red;\">Error Code: ".ldap_errno($ldapserver->connect())."</span></small><br />";
-             echo "<small><span style=\"color:red;\">".$lang['desc'].": ".ldap_error($ldapserver->connect())."</span></small><br />";
+             echo "<small><span style=\"color:red;\">Error Code: ".$ldapserver->error()."</span></small><br />";
+             echo "<small><span style=\"color:red;\">".$lang['desc'].": ".$ldapserver->error()."</span></small><br />";
           }
       }
     if( 0 == $i % 5 )
@@ -126,7 +124,7 @@ while($entry = $ldifReader->readEntry()){
   else{
     echo " <span style=\"color:red;\">".$lang['failed']."</span></small><br><br>";
     reload_left_frame();
-    pla_error( $actionErrorMsg[$changeType]. " " . htmlspecialchars( $entry->dn  ), ldap_error( $ldapserver->connect() ), ldap_errno( $ldapserver->connect() ) );
+    pla_error( $actionErrorMsg[$changeType]. " " . htmlspecialchars( $entry->dn  ), $ldapserver->error(), $ldapserver->errno() );
   }
 }
 

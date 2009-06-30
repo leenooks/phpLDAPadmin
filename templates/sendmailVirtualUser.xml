@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE template SYSTEM "template.dtd">
 <template>
 <title>sendmail_virt_users</title>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
@@ -34,13 +36,13 @@
 <attribute id="sendmailMTAMapValue">
 	<display>Recipient Addresses</display>
 	<hint>use %1 to map user name port of address</hint>
-	<type>textarea</type>
 	<order>4</order>
 	<page>1</page>
+	<type>textarea</type>
 </attribute>
 <attribute id="sendmailMTAMapName">
-	<default>virtuser</default>
 	<hidden>1</hidden>
+	<value>virtuser</value>
 </attribute>
 </attributes>
 </template>

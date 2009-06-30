@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/search_form_simple.php,v 1.14 2005/07/16 03:13:54 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_simple.php,v 1.14 2005/07/16 03:13:54 wurley Exp $
 
 /**
  * @package phpLDAPadmin

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/emuhash_functions.php,v 1.6 2005/03/25 00:59:48 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/emuhash_functions.php,v 1.6 2005/03/25 00:59:48 wurley Exp $
 
 /**
  * @package other

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/header.php,v 1.19 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/header.php,v 1.19.2.2 2005/10/25 20:21:15 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -40,5 +40,10 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
 	<script src="<?php echo JSDIR; ?>ie_png_work_around.js" type="text/javascript"></script>
 	<script src="<?php echo JSDIR; ?>search_util.js" type="text/javascript"></script>
 	<script src="<?php echo JSDIR; ?>generic_utils.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="js/jscalendar/calendar-blue.css" title="blue" />
+	<script type="text/javascript" src="js/jscalendar/calendar.js"></script>
+	<script type="text/javascript" src="js/jscalendar/lang/calendar-en.js"></script>
+	<script type="text/javascript" src="js/jscalendar/calendar-setup.js"></script>
+	<script type="text/javascript" src="<?php echo JSDIR; ?>date_selector.js"></script>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 </head>

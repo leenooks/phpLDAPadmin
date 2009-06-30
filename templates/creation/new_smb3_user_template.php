@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_smb3_user_template.php,v 1.25 2005/09/23 13:43:55 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/Attic/new_smb3_user_template.php,v 1.25 2005/09/23 13:43:55 wurley Exp $
 
 $samba3_domains = get_samba3_domains();
 

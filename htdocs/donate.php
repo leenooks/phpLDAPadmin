@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/donate.php,v 1.7 2005/02/26 12:35:05 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/donate.php,v 1.7 2005/02/26 12:35:05 wurley Exp $
 
 /**
  * @package phpLDAPadmin

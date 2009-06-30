@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/creation_template.php,v 1.29 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/creation_template.php,v 1.29 2005/09/25 16:11:44 wurley Exp $
 
 /**
  * This file simply acts as a plugin grabber for the creator templates in

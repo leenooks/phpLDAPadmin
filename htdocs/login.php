@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/login.php,v 1.49 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login.php,v 1.49.2.2 2005/10/17 10:03:38 wurley Exp $
 
 /**
  * For servers whose auth_type is set to 'cookie' or 'session'. Pass me the login info
@@ -40,7 +40,9 @@ if( ! $anon_bind )
 $save_auth_type = $ldapserver->auth_type;
 
 if ($anon_bind) {
-	debug_log(sprintf('Anonymous Login was posted [%s].',$anon_bind),4);
+        if (DEBUG_ENABLED)
+		debug_log('Anonymous Login was posted [%s].',4,$anon_bind);
+
 	$dn = null;
 	$pass = null;
 
@@ -52,7 +54,9 @@ if ($anon_bind) {
 	# Is this a login string (printf-style)
 	if( $ldapserver->isLoginStringEnabled() ) {
 		$dn = str_replace( '<username>', $uid, $ldapserver->getLoginString() );
-		debug_log(sprintf('LoginStringDN: [%s]',$dn),3);
+
+		if (DEBUG_ENABLED)
+			debug_log('LoginStringDN: [%s]',3,$dn);
 
 	} else {
 		# This is a standard login_attr
@@ -75,14 +79,16 @@ if ($anon_bind) {
 
 		# Got through each of the BASE DNs and test the login.
 		foreach ($ldapserver->getBaseDN() as $base_dn) {
-			debug_log(sprintf('Searching LDAP with base [%s]',$base_dn),9);
+		        if (DEBUG_ENABLED)
+				debug_log('Searching LDAP with base [%s]',9,$base_dn);
 
 			$sr = @ldap_search($ldapserver->connect(false), $base_dn, $filter, array('dn'), 0, 1);
 			$result = @ldap_get_entries($ldapserver->connect(false), $sr);
 			$dn = isset( $result[0]['dn'] ) ? $result[0]['dn'] : false;
 
 			if ($dn) {
-				debug_log(sprintf('Got DN [%s] for user ID [%s]',$dn,$uid),5);
+			        if (DEBUG_ENABLED)
+					debug_log('Got DN [%s] for user ID [%s]',5,$dn,$uid);
 				break;
 			}
 		}
@@ -98,7 +104,8 @@ if ($anon_bind) {
 }
 
 # We fake a 'config' server auth_type to omit duplicated code
-debug_log(sprintf('Setting login type to CONFIG with DN [%s]',$dn),9);
+if (DEBUG_ENABLED)
+	debug_log('Setting login type to CONFIG with DN [%s]',9,$dn);
 
 $save_auth_type = $ldapserver->auth_type;
 $ldapserver->auth_type = 'config';
@@ -109,7 +116,8 @@ $ldapserver->login_pass = $pass;
 if (! userIsAllowedLogin($ldapserver,$dn))
 	pla_error( $lang['login_not_allowed'] );
 
-debug_log(sprintf('User is not prohibited from logging in - now bind with DN [%s]',$dn),9);
+if (DEBUG_ENABLED)
+	debug_log('User is not prohibited from logging in - now bind with DN [%s]',9,$dn);
 
 # verify that the login is good
 if( is_null($dn) && is_null($pass))
@@ -117,7 +125,8 @@ if( is_null($dn) && is_null($pass))
 else
 	$ds = $ldapserver->connect(true,false,true);
 
-debug_log(sprintf('Connection returned [%s]',$ds),9);
+if (DEBUG_ENABLED)
+	debug_log('Connection returned [%s]',9,$ds);
 
 if (! is_resource($ds)) {
 	if ($anon_bind)

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/unit_test.php,v 1.20 2005/07/16 16:23:28 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/tools/unit_test.php,v 1.20 2005/07/16 16:23:28 wurley Exp $
 
 /**
  * @package phpLDAPadmin

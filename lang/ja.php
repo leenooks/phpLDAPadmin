@@ -1,6 +1,6 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/ja.php,v 1.5 2005/06/23 14:38:41 wurley Exp $
-
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/ja.php,v 1.5.2.1 2005/10/09 06:29:41 wurley Exp $
+// EN-Revision: 1.127
 
 /*        ---   INSTRUCTIONS FOR TRANSLATORS   ---
  *
@@ -42,6 +42,7 @@ $lang['list'] = '一覧';
 $lang['table'] = 'テーブル';
 $lang['bad_search_display'] = 'config.php にて $default_search_display: %s の無効な値が指定されています。それを修正してください。';
 $lang['page_n'] = 'ページ %d';
+$lang['next_page'] = '次のページ';
 $lang['no_results'] = '検索結果がありませんでした。';
 
 // Tree browser
@@ -89,6 +90,7 @@ $lang['export_subtree'] = 'サブツリーをエクスポート';
 $lang['create_a_child_entry'] = '子エントリ作成';
 $lang['rename_entry'] = 'エントリ名称変更';
 $lang['rename'] = '名称変更';
+$lang['rename_lower'] = '名称変更';
 $lang['add'] = '追加';
 $lang['view'] = 'View';
 $lang['view_one_child'] = 'ひとつの子を閲覧';
@@ -174,6 +176,7 @@ $lang['usage']='使用法';
 $lang['could_not_retrieve_schema_from']='次のスキーマを取得できません:';
 $lang['type']='種類';
 $lang['no_such_schema_item'] = 'スキーマ項目がありません: "%s"';
+$lang['random_password'] = 'ランダムなパスワードを生成しました';
 
 // Deleting entries
 $lang['entry_deleted_successfully'] = '%s エントリを削除しました。';
@@ -206,7 +209,7 @@ $lang['file_empty'] = 'あなたの選んだファイルは空か存在しない
 $lang['invalid_file'] = 'セキュリティエラー: アップロードされたファイルは悪意のあるものかもしれません。';
 $lang['warning_file_uploads_disabled'] = 'PHP の設定でファイルのアップロードが無効です。続行する前に、php.ini を確認してください。';
 $lang['uploaded_file_too_big'] = 'アップロードされたファイルが大きすぎます。php.ini の upload_max_size 設定を確認してください。';
-$lang['uploaded_file_partial'] = '選択したファイルは、部分的なアップロードでした。likley due to a network error.';
+$lang['uploaded_file_partial'] = '選択したファイルは、部分的なアップロードでした。ネットワークエラーによる可能性が高いです。';
 $lang['max_file_size'] = '最大ファイルサイズ: %s';
 
 // Updating values
@@ -215,15 +218,15 @@ $lang['change_password_new_login'] = 'パスワードを変更したので、今
 
 // Adding objectClass form
 $lang['new_required_attrs'] = '新規必須属性';
-$lang['requires_to_add'] = 'This action requires you to add';
+$lang['requires_to_add'] = 'この操作は追加することを要求します';
 $lang['new_attributes'] = '新規属性';
-$lang['new_required_attrs_instructions'] = 'Instructions: In order to add this objectClass to this entry, you must specify';
+$lang['new_required_attrs_instructions'] = 'インストラクション: これらの objectClass をこのエントリに追加するには指定しなければなりません';
 $lang['that_this_oclass_requires'] = 'それは objectClass に必要です。このフォームでそうすることができます。';
 $lang['add_oclass_and_attrs'] = 'ObjectClass と属性を追加';
 $lang['objectclasses'] = 'ObjectClass 一覧';
 
 // General
-$lang['chooser_link_tooltip'] = 'Click to popup a dialog to select an entry (DN) graphically';
+$lang['chooser_link_tooltip'] = 'エントリ(DN)をグラフィカルに選択するためにポップアップのダイアログをクリックしてください。';
 $lang['no_updates_in_read_only_mode'] = 'サーバーは読み込みモードなので､更新を実行できません。';
 $lang['bad_server_id'] = '間違ったサーバー ID';
 $lang['not_enough_login_info'] = 'サーバーにログインする情報が不足しています。設定を確認してください。';
@@ -238,8 +241,8 @@ $lang['look_in'] = 'Looking in: ';
 $lang['missing_dn_in_query_string'] = '照会文字列に DN が指定されていません!';
 $lang['back_up_p'] = 'バックアップ...';
 $lang['no_entries'] = 'エントリがありません';
-$lang['could_not_det_base_dn'] = 'ベース DN を決定することが出来ませんでした';
-$lang['reasons_for_error']='This could happen for several reasons, the most probable of which are:';
+$lang['could_not_det_base_dn'] = 'ベース DN を決定することができませんでした';
+$lang['reasons_for_error']='これは、いくつかの理由で発生するかもしれません。その最も可能性の高いものは:';
 $lang['yes']='はい';
 $lang['no']='いいえ';
 $lang['go']='Go';
@@ -262,11 +265,11 @@ $lang['jpeg_delete'] = '写真を削除';
 $lang['add_new'] = '新規追加';
 $lang['value_to'] = 'value to';
 $lang['distinguished_name'] = '関連名';
-$lang['current_list_of'] = 'Current list of';
+$lang['current_list_of'] = '次の現在の一覧:';
 $lang['values_for_attribute'] = '属性の値';
 $lang['inappropriate_matching_note'] = '注: LDAP サーバーでこの属性の EQUALITY ルールをセットアップしていなかった場合、"inappropriate matching" エラーを取得するでしょう。';
 $lang['enter_value_to_add'] = '追加したい値を入力する:';
-$lang['new_required_attrs_note'] = '注: この objectClass が要求する新しい属性を入力することが要求かもしれません';
+$lang['new_required_attrs_note'] = '注: この objectClass が要求する新しい属性の入力が必要かもしれません。';
 $lang['syntax'] = '文法';
 
 //copy.php
@@ -295,11 +298,11 @@ $lang['structural'] = '構造';
 
 //copy_form.php
 $lang['copyf_title_copy'] = 'コピー ';
-$lang['copyf_to_new_object'] = 'to a new object';
+$lang['copyf_to_new_object'] = '新規オブジェクトへ';
 $lang['copyf_dest_dn'] = '対象 DN';
-$lang['copyf_dest_dn_tooltip'] = 'The full DN of the new entry to be created when copying the source entry';
+$lang['copyf_dest_dn_tooltip'] = 'ソースエントリをコピー時に作成する新しいエントリのフルDN';
 $lang['copyf_dest_server'] = '対象サーバー';
-$lang['copyf_note'] = 'Hint: スキーマ違反がなければ、異なるサーバー間のコピー処理のみ行います。';
+$lang['copyf_note'] = 'ヒント: スキーマ違反がなければ、異なるサーバー間のコピー処理のみ行います。';
 $lang['copyf_recursive_copy'] = '同様にこのオブジェクトのすべての子を再帰コピーします。';
 $lang['recursive_copy'] = '再帰コピー';
 $lang['filter'] = 'フィルター';
@@ -322,21 +325,23 @@ $lang['rdn_field_blank'] = 'RDN フィールドが空です。';
 $lang['container_does_not_exist'] = '指定したコンテナー(%s)が存在しません。もう一度行ってください。';
 $lang['no_objectclasses_selected'] = 'このオブジェクトのためのいくつかの ObjectClass を選択しませんでした。戻ってそのように実行してください。';
 $lang['hint_structural_oclass'] = 'ヒント: ひとつの構造 objectClass を選択しなければなりません (上で強調表示されています)';
+$lang['template_restricted'] = 'このコンテナーではこのテンプレートは許可されていません';
+$lang['template_invalid'] = 'このテンプレートは、恐らくスキーマかテンプレート XML 項目が見当たらないために無効になりました。';
 
 //creation_template.php
 $lang['ctemplate_on_server'] = 'サーバー';
 $lang['ctemplate_no_template'] = 'POST 値でテンプレートが指定されていません。';
-$lang['template_not_readable'] = 'Your config specifies a handler of "%s" for this template but this file is not readable because the permissions are too strict.';
-$lang['template_does_not_exist'] = 'Your config specifies a handler of "%s" for this template but this handler does not exist in the templates/creation directory.';
+$lang['template_not_readable'] = '設定でこのテンプレート「%s」のハンドラーを指定しています。しかし、権限が厳密すぎるので、このファイルは判読可能ではありません。';
+$lang['template_does_not_exist'] = '設定でこのテンプレート「%s」のハンドラーを指定しています。しかし、このハンドラーはディレクトリ「templates/creation」に存在しません。';
 $lang['create_step1'] = 'ステップ 1/2: 名前と ObjectClass';
-$lang['create_step2'] = 'Step 2 of 2: 属性と値を指定';
+$lang['create_step2'] = 'ステップ 2/2: 属性と値を指定';
 $lang['relative_distinguished_name'] = '関連識別名';
 $lang['rdn'] = 'RDN';
 $lang['rdn_example'] = '(例: cn=MyNewPerson)';
 $lang['container'] = 'コンテナー';
 
 // search.php
-$lang['you_have_not_logged_into_server'] = 'You have not logged into the selected server yet, so you cannot perform searches on it.';
+$lang['you_have_not_logged_into_server'] = '選択されたサーバーにまだログインしていません。したがって、探索を行なうことができません。';
 $lang['click_to_go_to_login_form'] = 'ここをクリックするとログインフォームに移動します';
 $lang['unrecognized_criteria_option'] = '未承認の基準オプション: ';
 $lang['if_you_want_to_add_criteria'] = 'If you want to add your own criteria to the list. Be sure to edit search.php to handle them. Quitting.';
@@ -387,6 +392,7 @@ $lang['unable_create_samba_pass'] = 'samba パスワードを作成できませ�
 $lang['welcome_note'] = '左へのメニューを使用して操作します';
 $lang['credits'] = 'クレジット';
 $lang['changelog'] = '変更履歴';
+$lang['documentation'] = 'ドキュメント';
 $lang['donate'] = '寄附';
 $lang['pla_logo'] = 'phpLDAPadmin ロゴ';
 
@@ -518,7 +524,7 @@ $lang['csv_spreadsheet'] = 'CSV (スプレッドシート)';
 
 // logins
 $lang['password_blank'] = 'パスワードが空です。';
-$lang['no_one_logged_in'] = 'No one is logged in to that server.';
+$lang['no_one_logged_in'] = '誰もそのサーバーにログインしていません。';
 $lang['could_not_logout'] = 'ログアウトできませんでした。';
 $lang['unknown_auth_type'] = '未知の auth_type: %s';
 $lang['logged_out_successfully'] = 'サーバー <b>%s</b> からログアウトに成功しました';
@@ -542,7 +548,6 @@ $lang['no_deletes_in_read_only'] = '読み込み専用モードでは削除は�
 $lang['error_calling_mass_delete'] = 'mass_delete.php 呼び出し中のエラーです。POST 値から mass_delete が見かりません。';
 $lang['mass_delete_not_array'] = 'mass_delete POST 辺りが配列ではありません。';
 $lang['mass_delete_not_enabled'] = '一括削除が有効ではありません。次に進む前に config.php でそれを有効にしてください。';
-$lang['search_attrs_wrong_count'] = 'config.php にエラーがあります。The number of attributes in $search_attributes and $search_attributes_display is different';
 $lang['mass_deleting'] = '一括削除中';
 $lang['mass_delete_progress'] = 'サーバー "%s" から削除中';
 $lang['malformed_mass_delete_array'] = 'おかしい mass_delete 配列です。';
@@ -554,23 +559,19 @@ $lang['confirm_mass_delete'] = '%s エントリをサーバー %s から一括�
 $lang['yes_delete'] = 'はい, 削除します!';
 
 // Renaming entries
-$lang['non_leaf_nodes_cannot_be_renamed'] = '子エントリを持つエントリは名称変更できません (eg, the rename operation is not allowed on non-leaf entries)';
+$lang['non_leaf_nodes_cannot_be_renamed'] = '子エントリを持つエントリは名称変更できません (例えば名称変更の操作は子エントリでなければ許可されていない)';
 $lang['no_rdn_change'] = 'RDN を変更しませんでした';
 $lang['invalid_rdn'] = '無効な RDN 値';
-$lang['could_not_rename'] = 'エントリの名称変更が出来ませんでした';
-
-// General errors
-$lang['mismatched_search_attr_config'] = '設定にエラーがあります。$search_attributes は $search_attributes_display の属性と同じ数を持たなければいけません。';
+$lang['could_not_rename'] = 'エントリの名称変更ができませんでした';
 
 // Password checker
 $lang['passwords_match'] = 'パスワードが一致しました!';
 $lang['passwords_do_not_match'] = 'パスワードが一致しません!';
 $lang['password_checker_tool'] = 'パスワードチェックツール';
-$lang['compare'] = '比較';
 $lang['to'] = 'To';
 
 // Templates
-$lang['using'] = 'Using the';
+$lang['using'] = '次を使用:';
 $lang['switch_to'] = 'You may switch to the ';
 $lang['default_template'] = 'デフォルトテンプレート';
 
@@ -580,6 +581,7 @@ $lang['address_book_inet'] = 'アドレス帳エントリ (inetOrgPerson)';
 $lang['address_book_moz'] = 'アドレス帳エントリ (mozillaOrgPerson)';
 $lang['kolab_user'] = 'Kolab ユーザーエントリ';
 $lang['organizational_unit'] = '所属組織';
+$lang['new_organizational_unit'] = '新規所属組織';
 $lang['organizational_role'] = '所属職務';
 $lang['posix_group'] = 'Posix グループ';
 $lang['samba_machine'] = 'Samba NT マシン';
@@ -627,6 +629,7 @@ $lang['t_first_name'] = '名前';
 $lang['t_last_name'] = '苗字';
 $lang['t_first'] = 'first';
 $lang['t_last'] = 'last';
+$lang['t_state'] = 'State';
 $lang['t_common_name'] = '共通名';
 $lang['t_user_name'] = 'ユーザー名';
 $lang['t_password'] = 'パスワード';
@@ -637,13 +640,18 @@ $lang['t_uid_number'] = 'UID 番号';
 $lang['t_auto_det'] = '(自動採決)';
 $lang['t_group'] = 'グループ';
 $lang['t_gid_number'] = 'GID 番号';
+$lang['t_uid'] = 'ユーザー ID';
 $lang['t_err_passwords'] = 'パスワードが一致しません。戻ってからもう一度試してください。';
 $lang['t_err_field_blank'] = '%s ブランクを残すことはできません。戻ってからもう一度試してください。';
-$lang['t_err_field_num'] = 'フィールド %s は数値のみ入力で出来ます。戻ってからもう一度試してください。';
+$lang['t_err_field_num'] = 'フィールド %s は数値のみ入力でできます。戻ってからもう一度試してください。';
 $lang['t_err_bad_container'] = '指定した内容(%s)は存在しません。戻ってからもう一度試してください。';
 $lang['t_confirm_account_creation'] = 'アカウント作成確認';
 $lang['t_secret'] = '[secret]';
 $lang['t_create_account'] = 'アカウント作成';
+$lang['t_verify'] = '確認';
+
+// New Group (Posix)
+$lang['t_new_posixgroup'] = '新規 Posix グループ';
 
 // New Address Template
 $lang['t_new_address'] = '新規アドレス帳エントリ';
@@ -657,17 +665,18 @@ $lang['t_fax'] = 'Fax';
 $lang['t_mobile'] = '携帯電話';
 $lang['t_email'] = '電子メール';
 $lang['t_container'] = 'コンテナー';
-$lang['t_err_cn_blank'] = '一般名を空にすることは出来ません。戻ってからもう一度試してください。';
+$lang['t_err_cn_blank'] = '一般名を空にすることはできません。戻ってからもう一度試してください。';
 $lang['t_confim_creation'] = 'エントリ作成の確認:';
 $lang['t_create_address'] = 'アドレス作成';
 
 // default template
 $lang['t_check_pass'] = 'パスワード検査...';
+$lang['t_auto_submit'] = '(Auto evalutated on submission.)';
 
 // compare form
 $lang['compare'] = '比較';
 $lang['comparing'] = '次の DN と比較中';
-$lang['compare_dn'] = 'Compare another DN with';
+$lang['compare_dn'] = '次の DN と別の DN を比較する:';
 $lang['with'] = 'with ';
 $lang['compf_source_dn'] = '元の DN';
 $lang['compf_dn_tooltip'] = 'この DN と別のものを比較';

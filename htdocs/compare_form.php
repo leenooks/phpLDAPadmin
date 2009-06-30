@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/compare_form.php,v 1.2 2005/07/22 05:47:43 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/compare_form.php,v 1.2 2005/07/22 05:47:43 wurley Exp $
 
 /**
  * Compares to DN entries side by side.

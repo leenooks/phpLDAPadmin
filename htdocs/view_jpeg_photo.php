@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/view_jpeg_photo.php,v 1.9 2005/07/16 03:13:54 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/view_jpeg_photo.php,v 1.9 2005/07/16 03:13:54 wurley Exp $
 
 /**
  * @package phpLDAPadmin

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/custom.php,v 1.41 2005/09/25 04:48:21 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/custom.php,v 1.41.2.2 2005/10/22 04:49:28 wurley Exp $
 
 // Common to all templates
 $rdn = isset( $_POST['rdn'] ) ? $_POST['rdn'] : null;
@@ -10,12 +10,12 @@ $ldapserver = $ldapservers->Instance($server_id);
 // Unique to this template
 $step = isset( $_POST['step'] ) ? $_POST['step'] : 1;
 
-check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
-have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
+if( ! $ldapserver->haveAuthInfo())
+	pla_error( $lang['not_enough_login_info'] );
 
 if( $step == 1 )
 {
-	$oclasses = get_schema_objectClasses( $ldapserver );
+	$oclasses = $ldapserver->SchemaObjectClasses();
     if( ! $oclasses || ! is_array( $oclasses ) ) 
         pla_error( "Unable to retrieve the schema from your LDAP server. Cannot continue with creation." );
 	?>
@@ -52,7 +52,7 @@ if( $step == 1 )
 		</td>
 	</tr>
 
-	<?php if( show_hints() ) { ?>
+	<?php if ($config->GetValue('appearance','show_hints')) { ?>
 	<tr>
 		<td></td>
 		<td>
@@ -88,11 +88,11 @@ if( $step == 2 )
 	$dn = trim( $container ) ? $rdn . ',' . $container : $rdn;
 
 	// incrementally build up the all_attrs and required_attrs arrays
-	$schema_oclasses = get_schema_objectclasses( $ldapserver );
+	$schema_oclasses = $ldapserver->SchemaObjectClasses();
 	$required_attrs = array();
 	$all_attrs = array();
 	foreach( $oclasses as $oclass_name ) {
-		$oclass = get_schema_objectclass( $ldapserver, $oclass_name  );
+		$oclass = $ldapserver->getSchemaObjectClass($oclass_name);
 		if( $oclass ) {
 			$required_attrs = array_merge( $required_attrs, 
 						$oclass->getMustAttrNames( $schema_oclasses ) );
@@ -287,7 +287,7 @@ function remove_aliases( &$attribute_list, $ldapserver )
                 continue;
             $attr_name2 = $attribute_list[ $k ];
             //echo "Comparing $attr_name1 and $attr_name2<br>";
-            $attr1 = get_schema_attribute( $ldapserver, $attr_name1 );	
+            $attr1 = $ldapserver->getSchemaAttribute($attr_name1);	
             if( null == $attr1 )
                 continue;
             if( $attr1->isAliasFor( $attr_name2 ) ) {

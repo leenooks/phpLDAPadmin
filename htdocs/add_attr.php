@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_attr.php,v 1.15 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr.php,v 1.15.2.4 2005/10/22 14:22:47 wurley Exp $
 
 /**
  * Adds an attribute/value pair to an object
@@ -13,6 +13,7 @@
  *  - binary
  *
  * @package phpLDAPadmin
+ * @todo: For boolean attributes, convert the response to TRUE/FALSE.
  */
 /**
  */
@@ -106,10 +107,14 @@ if( 0 == strcasecmp( $attr, 'userpassword' ) ) {
 	}
 }
 
-elseif( in_array( $attr,array('sambantpassword','sambalmpassword') ) ){
-	$mkntPassword = new MkntPasswdUtil();
-	$mkntPassword->createSambaPasswords( $val );
-	$val = $mkntPassword->valueOf($attr);
+elseif (strcasecmp($attr,'sambaNTPassword') == 0) {
+	$sambapassword = new smbHash;
+	$val = $sambapassword->nthash($val);
+}
+
+elseif (strcasecmp($attr,'sambaLMPassword') == 0) {
+	$sambapassword = new smbHash;
+	$val = $sambapassword->lmhash($val);
 }
 
 $new_entry = array( $attr => $val );
@@ -120,7 +125,7 @@ if ($result)
 		$ldapserver->server_id,$encoded_dn,$encoded_attr));
 
 else
-	pla_error( $lang['failed_to_add_attr'],ldap_error($ldapserver->connect()),ldap_errno($ldapserver->connect()) );
+	pla_error( $lang['failed_to_add_attr'],$ldapserver->error(),$ldapserver->errno() );
 
 /**
  * Check if we need to append the ;binary option to the name
@@ -150,7 +155,7 @@ function is_binary_option_required( $ldapserver, $attr ) {
 	//if( 0 == strcasecmp( $attr, $name ) )
         //return true;
 
-	$schema_attr = get_schema_attribute( $ldapserver, $attr );
+	$schema_attr = $ldapserver->getSchemaAttribute($attr);
 	if( ! $schema_attr )
 		return false;
 

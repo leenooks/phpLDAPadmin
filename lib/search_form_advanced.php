@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/search_form_advanced.php,v 1.22 2005/07/16 03:13:54 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_advanced.php,v 1.22.2.1 2005/10/09 09:07:22 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -9,11 +9,12 @@
 
 <script>
 
-<?php foreach ($server_info_list as $i => $ignore) { ?>
+<?php foreach ($server_info_list as $i => $ignore) { 
+           foreach ($server_info_list[$i]['base_dns'] as $base_dn) { ?>
 
-addToServersList(new server(<?php echo $i; ?>,"<?php echo $server_info_list[$i]['name']; ?>","<?php echo $server_info_list[$i]['base_dn']; ?>"));
+addToServersList(new server(<?php echo $i; ?>,"<?php echo $server_info_list[$i]['name']; ?>","<?php echo $base_dn; ?>"));
 
-<?php } ?>
+<?php } } ?>
 
 function focus_filter() {
     document.advanced_search_form.filter.focus();

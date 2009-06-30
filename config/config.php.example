@@ -337,4 +337,18 @@ $queries[$q]['base'] = 'dc=example,dc=com';
 $queries[$q]['scope'] = 'sub';
 $queries[$q]['filter'] = '(&(objectClass=sambaAccount)(uid=*$))';
 $queries[$q]['attributes'] = 'uid, homeDirectory';
+
+/**                                         **/
+/** Date type attributes                    **/
+/**                                         **/
+/* If you wish to use the jscalendar popup to select a date graphically,
+   define this array of date type attributes.
+   Modify the file htdocs/js/date_selector.js to set up the calendar format.
+   The default format is:
+	ifFormat    : '%m/%e/%Y', // format of the input field
+	showsTime   : false,      // will display a time selector
+	singleClick : false,      // double-click mode
+	align       : 'BR',       // alignement
+	step        : 0           // show all years in drop-down boxes
+*/
 ?>

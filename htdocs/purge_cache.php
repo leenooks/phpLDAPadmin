@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/purge_cache.php,v 1.6 2005/07/22 06:12:51 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/purge_cache.php,v 1.6 2005/07/22 06:12:51 wurley Exp $
 
 /**
  * @package phpLDAPadmin

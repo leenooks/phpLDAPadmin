@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/copy.php,v 1.35 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy.php,v 1.35.2.1 2005/10/09 09:07:21 wurley Exp $
 
 /**
  * Copies a given object to create a new one.
@@ -128,8 +128,9 @@ if ($copy_result) {
 }
 
 function r_copy_dn($ldapserver_src,$ldapserver_dst,$tree,$root_dn,$dn_dst) {
-	debug_log(sprintf('r_copy_dn: Entered with (%s,%s,%s,%s,%s)',
-		$ldapserver_src->server_id,$ldapserver_dst->server_id,serialize($tree),$root_dn,$dn_dst),2);
+        if (DEBUG_ENABLED)
+		debug_log('r_copy_dn: Entered with (%s,%s,%s,%s,%s)',2,
+			$ldapserver_src->server_id,$ldapserver_dst->server_id,serialize($tree),$root_dn,$dn_dst);
 
         global $lang;
 
@@ -160,8 +161,9 @@ function r_copy_dn($ldapserver_src,$ldapserver_dst,$tree,$root_dn,$dn_dst) {
 }
 
 function copy_dn($ldapserver_src,$ldapserver_dst,$dn_src,$dn_dst) {
-	debug_log(sprintf('copy_dn: Entered with (%s,%s,%s,%s)',
-		$ldapserver_src->server_id,$ldapserver_dst->server_id,$dn_src,$dn_dst),2);
+        if (DEBUG_ENABLED)
+	        debug_log('copy_dn: Entered with (%s,%s,%s,%s)',2,
+			$ldapserver_src->server_id,$ldapserver_dst->server_id,$dn_src,$dn_dst);
 
 	global $lang;
 
@@ -186,7 +188,7 @@ function copy_dn($ldapserver_src,$ldapserver_dst,$dn_src,$dn_dst) {
 				'dn'=>$dn_dst,'attrs'=>$new_entry));
 
 			print '</small><br /><br />';
-			pla_error($lang['copy_failed'] . $dn_dst,ldap_error($ldapserver_dst->connect()),ldap_errno($ldapserver_dst->connect()));
+			pla_error($lang['copy_failed'] . $dn_dst,$ldapserver_dst->error(),$ldapserver_dst->errno());
 		}
 
 		return $add_result;
@@ -203,9 +205,6 @@ function copy_dn($ldapserver_src,$ldapserver_dst,$dn_src,$dn_dst) {
  * @param string $filter
  */
 function build_tree($ldapserver,$dn,$tree,$filter='(objectClass=*)') {
-	debug_log(sprintf('build_tree: Entered with (%s,%s,%s,%s)',
-		$ldapserver->server_id,$dn,serialize($tree),$filter),2);
-
 	$children = get_container_contents($ldapserver,$dn,0,$filter);
 
 	if (is_array($children) && count($children) > 0) {
@@ -214,7 +213,10 @@ function build_tree($ldapserver,$dn,$tree,$filter='(objectClass=*)') {
 			$tree = build_tree($ldapserver,$child_dn,$tree,$filter);
 	}
 
-	debug_log(sprintf('build_tree: Returning (%s)',serialize($tree)),1);
+	if (DEBUG_ENABLED)
+		debug_log('build_tree: Entered with (%s,%s,%s,%s), Returning (%s)',1,
+			$ldapserver->server_id,$dn,serialize($tree),$filter,serialize($tree));
+
 	return $tree;
 }
 ?>

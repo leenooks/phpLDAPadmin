@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/blowfish.php,v 1.3 2005/02/25 13:44:05 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/blowfish.php,v 1.3 2005/02/25 13:44:05 wurley Exp $
 
 /**
  * The Cipher_blowfish:: class implements the Cipher interface enryption data

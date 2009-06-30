@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/rename_form.php,v 1.8 2005/07/22 05:51:57 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename_form.php,v 1.8 2005/07/22 05:51:57 wurley Exp $
  
 /**
  * Displays a form for renaming an LDAP entry.

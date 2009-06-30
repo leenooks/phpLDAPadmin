@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/modification/default.php,v 1.84 2005/09/25 04:48:21 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/modification/Attic/default.php,v 1.84.2.1 2005/10/09 06:14:50 wurley Exp $
  
 
 /*
@@ -472,7 +472,7 @@ foreach( $attrs as $attr => $vals ) {
 		       name="old_enc_type"
 		       value="<?php echo ($enc_type==''?'clear':$enc_type); ?>" />
 
-        <?php if( obfuscate_password_display() || is_null( $enc_type ) )  {
+        <?php if( obfuscate_password_display( $enc_type ) )  {
                  echo htmlspecialchars( preg_replace( "/./", "*", $user_password ) );
               } else {
                  echo htmlspecialchars( $user_password );
@@ -480,7 +480,12 @@ foreach( $attrs as $attr => $vals ) {
         ?>
         <br />
 		<input style="width: 260px"
-		       type="password"
+		       type="<?php
+			    if( obfuscate_password_display( $enc_type ) )
+				    echo 'password';
+			    else
+				    echo 'text';
+		       ?>"
 		       name="new_values[userpassword]" 
                value="<?php echo htmlspecialchars( $user_password ); ?>" />
 

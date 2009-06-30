@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/delete_attr.php,v 1.13 2005/09/17 20:04:29 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete_attr.php,v 1.13.2.1 2005/10/09 09:07:21 wurley Exp $
  
 /**
  *  Deletes an attribute from an entry with NO confirmation.
@@ -49,6 +49,6 @@ if ($res) {
 	header("Location: $redirect_url");
 
 } else {
-	pla_error($lang['could_not_perform_ldap_modify'],ldap_error($ldapserver->connect()),ldap_errno($ldapserver->connect()));
+	pla_error($lang['could_not_perform_ldap_modify'],$ldapserver->error(),$ldapserver->errno());
 }
 ?>

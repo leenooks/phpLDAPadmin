@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/hooks.php,v 1.6 2005/04/15 13:16:59 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/hooks.php,v 1.6 2005/04/15 13:16:59 wurley Exp $
 
 /**
  * Functions related to hooks management.

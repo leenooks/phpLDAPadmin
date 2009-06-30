@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_postfix_account_template.php,v 1.2 2004/10/28 13:37:40 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/Attic/new_postfix_account_template.php,v 1.2 2004/10/28 13:37:40 uugdave Exp $
 
 
 // customize this to your needs

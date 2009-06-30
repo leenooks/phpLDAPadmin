@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/search.php,v 1.71 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/search.php,v 1.71.2.1 2005/10/09 09:07:21 wurley Exp $
 
 /**
  * Perform LDAP searches and draw the advanced/simple search forms
@@ -216,19 +216,23 @@ if( isset( $_GET['search'] ) ) {
 
 		foreach ($base_dns as $base_dn) {
 			if (! dn_exists( $ldapserver, $base_dn ) ) {
-				debug_log(sprintf('BaseDN [%s] skipped as it doesnt exist in [%s].',$base_dn,$ldapserver->server_id),1);
+			        if (DEBUG_ENABLED)
+					debug_log('BaseDN [%s] skipped as it doesnt exist in [%s].',1,
+						$base_dn,$ldapserver->server_id);
+
 				continue;
 			} else {
-				debug_log(sprintf('Search with base DN [%s]',$base_dn),9);
+			        if (DEBUG_ENABLED) 
+					debug_log('Search with base DN [%s]',9,$base_dn);
 			}
 
 		if( $scope == 'base' )
 			$results = @ldap_read( $ldapserver->connect(false), $base_dn, $filter, $search_result_attributes,
-				0, 0, 0, $config->GetValue('deref','search') );
+					       0, 0, 0, $config->GetValue('deref','search') );
 
 		elseif( $scope == 'one' )
 			$results = @ldap_list( $ldapserver->connect(false), $base_dn, $filter, $search_result_attributes,
-				0, 0, 0, $config->GetValue('deref','search') );
+					       0, 0, 0, $config->GetValue('deref','search') );
 
 		else // scope == 'sub'
 			$results = @ldap_search( $ldapserver->connect(false), $base_dn, $filter, $search_result_attributes,
@@ -237,7 +241,8 @@ if( isset( $_GET['search'] ) ) {
 		$errno = @ldap_errno( $ldapserver->connect(false) );
 
 		if( ! $results ) {
-			pla_error(  $lang['error_performing_search'], ldap_error( $ldapserver->connect(false) ), ldap_errno( $ldapserver->connect(false) ) );
+			pla_error(  $lang['error_performing_search'],
+				    $ldapserver->error(), $ldapserver->errno() );
 		}
 
 		$time_end = utime();

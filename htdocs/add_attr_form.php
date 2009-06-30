@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_attr_form.php,v 1.12 2005/07/22 05:42:18 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr_form.php,v 1.12.2.1 2005/10/16 20:19:16 wurley Exp $
 
 /**
  * Displays a form for adding an attribute/value to an LDAP entry.
@@ -42,9 +42,9 @@ if( ! is_array( $oclasses ) )
 
 $avail_attrs = array();
 
-$schema_oclasses = get_schema_objectclasses( $ldapserver, $dn );
+$schema_oclasses = $ldapserver->SchemaObjectClasses($dn);
 foreach( $oclasses as $oclass ) {
-	$schema_oclass = get_schema_objectclass( $ldapserver, $oclass, $dn );
+	$schema_oclass = $ldapserver->getSchemaObjectClass($oclass,$dn);
 
 	if( $schema_oclass && 0 == strcasecmp( 'objectclass', get_class( $schema_oclass ) ) )
 		$avail_attrs = array_merge( $schema_oclass->getMustAttrNames( $schema_oclasses ),

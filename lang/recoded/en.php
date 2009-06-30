@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/recoded/en.php,v 1.118 2005/09/12 03:06:57 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/recoded/en.php,v 1.118.2.5 2005/10/22 14:22:48 wurley Exp $
 
 
 /*        ---   INSTRUCTIONS FOR TRANSLATORS   ---
@@ -227,6 +227,7 @@ $lang['objectclasses'] = 'ObjectClasses';
 
 // General
 $lang['chooser_link_tooltip'] = 'Click to popup a dialog to select an entry (DN) graphically';
+$lang['date_selector_link'] = 'Click to popup a dialog to select a date graphically';
 $lang['no_updates_in_read_only_mode'] = 'You cannot perform updates while server is in read-only mode';
 $lang['bad_server_id'] = 'Bad server id';
 $lang['not_enough_login_info'] = 'Not enough information to login to server. Please check your configuration.';
@@ -255,7 +256,6 @@ $lang['bug'] = 'bug';
 $lang['warning'] = 'warning';
 $lang['light'] = 'light'; // the word 'light' from 'light bulb'
 $lang['proceed_gt'] = 'Proceed &gt;&gt;';
-$lang['no_blowfish_secret'] = 'phpLDAPadmin cannot safely encrypt & decrypt your sensitive information, because $blowfish_secret is not set in config.php. You need to edit config.php and set $blowfish_secret to some secret string now.';
 $lang['jpeg_dir_not_writable'] = 'Please set $jpeg_temp_dir to a writable directory in the phpLDAPadmin config.php';
 $lang['jpeg_dir_not_writable_error'] = 'Could not write to the $jpeg_temp_dir directory %s. Please verify that your web server can write files there.';
 $lang['jpeg_unable_toget'] = 'Could not fetch jpeg data from LDAP server for attribute %s.';
@@ -386,7 +386,6 @@ $lang['commit'] = 'Commit';
 $lang['cancel'] = 'Cancel';
 $lang['you_made_no_changes'] = 'You made no changes';
 $lang['go_back'] = 'Go back';
-$lang['unable_create_samba_pass'] = 'Unable to create samba password. Please check your configuration in template_config.php';
 
 // welcome.php
 $lang['welcome_note'] = 'Use the menu to the left to navigate';
@@ -494,6 +493,7 @@ $lang['ldif_file_empty'] = 'Uploaded LDIF file is empty.';
 $lang['empty'] = 'empty';
 $lang['file'] = 'File';
 $lang['number_bytes'] = '%s bytes';
+$lang['php_upload'] = 'Your PHP.INI does not have file_uploads = ON. Please enable file uploads in PHP.';
 
 $lang['failed'] = 'Failed';
 $lang['ldif_parse_error'] = 'LDIF Parse Error';
@@ -691,4 +691,7 @@ $lang['session_timed_out_2'] = 'min. of inactivity. You have been automatically 
 $lang['log_back_in'] = 'To log back in please click on the following link:';
 $lang['session_timed_out_tree'] = '(Session timed out. Automatically logged out.)';
 $lang['timeout_at'] = 'Inactivity will log you off at %s';
+
+$lang['template_mustattr'] = 'Attribute [%s] is a MUST attribute, so it cannot be disabled.';
+$lang['template_nextpage'] = 'We are missing a page for [%s] attributes.';
 ?>

@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/template_functions.php,v 1.25 2005/09/25 16:11:44 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.25.2.8 2005/10/25 12:50:29 wurley Exp $ */
 
 /**
  * Classes and functions for the template engine.ation and capability
@@ -71,7 +71,7 @@ class xml2array {
 		} else {
 			$this->stack_ref[$name]=array();
 
-     			if (isset($attrs))
+			if (isset($attrs))
 				$this->stack_ref[$name]=$attrs;
 
 			$this->push_pos($this->stack_ref[$name]);
@@ -94,16 +94,17 @@ class xml2array {
 }
 
 class Templates {
-
 	var $_template = array();
 
 	function Templates($server_id) {
-		debug_log(sprintf('%s::init(): Entered with ()',get_class($this)),2);
+		if (DEBUG_ENABLED)
+			debug_log('%s::__construct(): Entered with ()',2,get_class($this));
 
 		if ($this->_template = get_cached_item($server_id,'template','all')) {
-			debug_log(sprintf('%s::init(): Using CACHED [%s]',get_class($this),'templates'),3);
-		} else {
+			if (DEBUG_ENABLED)
+				debug_log('%s::init(): Using CACHED [%s]',3,get_class($this),'templates');
 
+		} else {
 			$dir = opendir(TMPLDIR);
 
 			$this->template_num = 0;
@@ -123,12 +124,16 @@ class Templates {
 	}
 
 	function storeTemplate($template,$xmldata) {
-		debug_log(sprintf('%s::storeTemplate(): Entered with (%s,%s)',get_class($this),$template,serialize($xmldata)),2);
+		if (DEBUG_ENABLED)
+			debug_log('%s::storeTemplate(): Entered with (%s,%s)',2,
+				get_class($this),$template,serialize($xmldata));
 
 		global $ldapserver, $lang;
 
 		foreach ($xmldata['template'] as $xml_key => $xml_value) {
-			debug_log(sprintf('%s::storeTemplate(): Foreach loop Key [%s] Value [%s]',get_class($this),$xml_key,is_array($xml_value)),9);
+			if (DEBUG_ENABLED)
+				debug_log('%s::storeTemplate(): Foreach loop Key [%s] Value [%s]',9,
+					get_class($this),$xml_key,is_array($xml_value));
 
 			switch ($xml_key) {
 				# Build our object Classes from the DN and Template.
@@ -155,7 +160,8 @@ class Templates {
 
 				# Build our attribute list from the DN and Template.
 				case ('attributes') :
-					debug_log(sprintf('%s::storeTemplate(): Case [%s]',get_class($this),'attributes'),8);
+					if (DEBUG_ENABLED)
+						debug_log('%s::storeTemplate(): Case [%s]',8,get_class($this),'attributes');
 
 					if (isset($xmldata['template']['attributes']) && is_array($xmldata['template']['attributes'])) {
 						$this->_template[$template]['attribute'] = array();
@@ -163,21 +169,25 @@ class Templates {
 						foreach ($xmldata['template']['attributes'] as $tattrs) {
 							foreach ($tattrs as $index => $attr_details) {
 
-								debug_log(sprintf('%s::storeTemplate(): Foreach tattrs Key [%s] Value [%s]',get_class($this),$index,is_array($attr_details)),9);
+								if (DEBUG_ENABLED)
+									debug_log('%s::storeTemplate(): Foreach tattrs Key [%s] Value [%s]',9,
+										get_class($this),$index,is_array($attr_details));
 
 								# Single attribute XML files are not indexed.
-								if (! is_numeric($index)) {
-									$this->_template[$template]['attribute'][$tattrs['ID']][$index] = $this->_parseXML($index,$attr_details);
+								if (is_numeric($index)) {
+									$this->_template[$template]['attribute'][$attr_details['ID']] = $this->_parseXML($index,$attr_details);
 
 								} else {
 									foreach ($attr_details as $key => $values) {
-										if (preg_match('/^@/',$key))
-											continue;
 
-										if (isset($values['ID']))
-											$key = $values['ID'];
+										if (is_array($values) && isset($values['ID'])) {
+											$this->_template[$template]['attribute'][$tattrs['ID']][$index]['_KEY:'.$values['ID']] = $this->_parseXML($key,$values);
+										} elseif (is_array($values) && isset($values['#text'])) {
+											$this->_template[$template]['attribute'][$tattrs['ID']][$index][] = $values['#text'];
 
-										$this->_template[$template]['attribute'][$attr_details['ID']][$key] = $this->_parseXML($key,$values);
+										} else {
+											$this->_template[$template]['attribute'][$tattrs['ID']][$index] = $this->_parseXML($key,$values);
+										}
 									}
 								}
 							}
@@ -191,7 +201,6 @@ class Templates {
 								$this->_template[$template]['attribute'][$key] = $data['override'];
 							}
 						}
-						#if (isset($this->_template[$template]['attribute']);
 					}
 
 					break;
@@ -213,37 +222,57 @@ class Templates {
 			$supclass = true;
 			$enherited = false;
 			while ($supclass == true) {
-				$schema_object = get_schema_objectclass( $ldapserver, $oclass);
+				$schema_object = $ldapserver->getSchemaObjectClass($oclass);
 
 				# Test that this is a valid objectclass - disable if an invalid one found.
-				if (! $schema_object)
+				if (! $schema_object) {
 					$this->_template[$template]['invalid'] = 1;
+					$supclass = false;
+					continue;
+				}
 
-				if ($schema_object->type == 'structural' && (! $enherited))
+				if ($schema_object->getType() == 'structural' && (! $enherited))
 					$this->_template[$template]['structural'][] = $oclass;
 
-				if ($schema_object->must_attrs )
-					foreach ($schema_object->must_attrs as $index => $detail)
-						if (! in_array($detail->name,$this->_template[$template]['must']) && $detail->name != 'objectClass') {
-							if (isset($this->_template[$template]['attribute'][$detail->name]) &&
-								! is_array($this->_template[$template]['attribute'][$detail->name]))
+				if ($schema_object->getMustAttrs() )
+					foreach ($schema_object->getMustAttrs() as $index => $detail) {
+
+						if (! in_array($detail->getName(),$this->_template[$template]['must']) && $detail->getName() != 'objectClass') {
+
+							# Go through the aliases, and ignore any that are already defined.
+							$ignore = false;
+							$attr = $ldapserver->getSchemaAttribute($detail->GetName());
+							foreach ($attr->aliases as $alias) {
+								if (in_array($alias,$this->_template[$template]['must'])) {
+									$ignore = true;
+									break;
+									}
+							}
+
+							if ($ignore)
+								continue;
+
+			        if (isset($this->_template[$template]['attribute'][$detail->getName()]) &&
+						    ! is_array($this->_template[$template]['attribute'][$detail->getName()]))
 
 								$this->_template[$template]['must'][] = 
-									$this->_template[$template]['attribute'][$detail->name];
-							else
-								$this->_template[$template]['must'][] = $detail->name;
-						}
+								  $this->_template[$template]['attribute'][$detail->getName()];
 
-				if ($schema_object->may_attrs )
-					foreach ($schema_object->may_attrs as $index => $detail)
-						if (! in_array($detail->name,$this->_template[$template]['may']))
-							$this->_template[$template]['may'][] = $detail->name;
+							else
+				        $this->_template[$template]['must'][] = $detail->getName();
+						}
+				}
+
+				if ($schema_object->getMayAttrs() )
+				        foreach ($schema_object->getMayAttrs() as $index => $detail)
+					        if (! in_array($detail->getName(),$this->_template[$template]['may']))
+						        $this->_template[$template]['may'][] = $detail->getName();
 
 				# Keep a list to objectclasses we have processed, so we dont get into a loop.
 				$oclass_processed[] = $oclass;
 
-				if ((count($schema_object->sup_classes)) || count($superclasslist)) {
-					foreach ($schema_object->sup_classes as $supoclass) {
+				if ((count($schema_object->getSupClasses())) || count($superclasslist)) {
+				        foreach ($schema_object->getSupClasses() as $supoclass) {
 						if (! in_array($supoclass,$oclass_processed))
 							$supoclasslist[] = $supoclass;
 					}
@@ -336,16 +365,34 @@ class Templates {
 	}
 
 	function _parseXML($index,$attr_details) {
-		debug_log(sprintf('%s::_parseXML(): Entered with (%s,%s)',get_class($this),$index,serialize($attr_details)),2);
+		if (DEBUG_ENABLED)
+			debug_log('%s::_parseXML(): Entered with (%s,%s)',2,
+				get_class($this),$index,serialize($attr_details));
 
 		if (! $attr_details) {
-			return "";
+			return '';
+
+		} elseif (! is_array($attr_details)) {
+			return $attr_details;
 
 		} elseif (isset($attr_details['#text'])) {
+
+			# If index is numeric, then this is part of an array...
 			return $attr_details['#text'];
 		}
 
 		foreach ($attr_details as $key => $values) {
+			if (($key == 'ID') && ! is_array($values))
+				continue;
+
+			elseif (isset($values['ID']) && (! $key['#text'])) {
+				$key = '_KEY:'.$values['ID'];
+				unset($values['ID']);
+
+			} elseif (isset($values['ID']) && ($values['#text'])) {
+				$key = '_KEY:'.$values['ID'];
+			}
+
 			$parseXML[$key] = $this->_parseXML($index,$values);
 		}
 
@@ -356,8 +403,13 @@ class Templates {
 		return isset($this->_template[$template]) ? $this->_template[$template] : null;
 	}
 
+	function getTemplates() {
+	        return $this->_template;
+	}
+
 	function OnChangeAdd($function) {
-		debug_log(sprintf('%s::OnChangeAdd(): Entered with (%s)',get_class($this),$function),2);
+		if (DEBUG_ENABLED)
+			debug_log('%s::OnChangeAdd(): Entered with (%s)',2,get_class($this),$function);
 
 		global $js;
 
@@ -396,13 +448,13 @@ class Templates {
 						} else {
 
 							if ((isset($substrarray[1][0]) && $substrarray[1][0]) || (isset($substrarray[2][0]) && $substrarray[2][0])) {
-								$js["autoFill".$attr] .= sprintf("	%s = form.%s.value.substr(%s,%s)",
+								$js["autoFill".$attr] .= sprintf('	%s = form.%s.value.substr(%s,%s)',
 									$matchall[1][$index],$matchall[1][$index],
 									$substrarray[1][0] ? $substrarray[1][0] : '0',
 									$substrarray[2][0] ? $substrarray[2][0] : sprintf('form.%s.value.length',$matchall[1][$index]));
 
 							} else {
-								$js["autoFill".$attr] .= sprintf("	%s = form.%s.value",$matchall[1][$index],$matchall[1][$index]);
+								$js["autoFill".$attr] .= sprintf('	%s = form.%s.value',$matchall[1][$index],$matchall[1][$index]);
 							}
 
 							switch ($matchall[3][$index]) {
@@ -413,6 +465,7 @@ class Templates {
 							$js["autoFill".$attr] .= ";\n";
 						}
 
+						$formula = preg_replace('/^%('.$matchall[1][$index].')%$/U','$1 + \'\'',$formula);
 						$formula = preg_replace('/^%('.$matchall[1][$index].')(\|[0-9]*-[0-9]*)?(\/[lTU])?%/U','$1 + \'',$formula);
 						$formula = preg_replace('/%('.$matchall[1][$index].')(\|[0-9]*-[0-9]*)?(\/[lTU])?%$/U','\' + $1 ',$formula);
 						$formula = preg_replace('/%('.$matchall[1][$index].')(\|[0-9]*-[0-9]*)?(\/[lTU])?%/U','\' + $1 + \'',$formula);
@@ -435,24 +488,25 @@ class Templates {
 		return (isset($js) ? implode("\n",$js) : '');
 	}
 
-	function EvaluateDefault($ldapserver,$default,$container,$counter='') {
-		debug_log(sprintf('%s::EvaluateDefault(): Entered with (%s,%s,%s,%s)',
-			get_class($this),$ldapserver->server_id,$default,$container,$counter),2);
+	function EvaluateDefault($ldapserver,$value,$container,$counter='',$default=null) {
+		if (DEBUG_ENABLED)
+			debug_log('%s::EvaluateDefault(): Entered with (%s,%s,%s,%s)',2,
+				get_class($this),$ldapserver->server_id,$value,$container,$counter);
 
 		global $lang;
 
-		if (preg_match('/^=php\.(\w+)\((.*)\)$/',$default,$matches)) {
+		if (preg_match('/^=php\.(\w+)\((.*)\)$/',$value,$matches)) {
 			$args = preg_split('/,/',$matches[2]);
 
 			switch($matches[1]) {
 				case 'GetNextNumber' :
-					$container = get_container_parent ($container, $args[0]);
+					$container = get_container_parent($ldapserver,$container,$args[0]);
 
-					$detail['default'] = get_next_uid_number($ldapserver, $container, $args[1]);
+					$detail['value'] = get_next_uid_number($ldapserver,$container,$args[1]);
 					break;
 
 				case 'PickList' :
-					$container = get_container_parent ($container, $args[0]);
+					$container = get_container_parent($ldapserver,$container,$args[0]);
 					preg_match_all('/%(\w+)(\|.+)?(\/[lU])?%/U',$args[3],$matchall);
 					//print_r($matchall); // -1 = highlevel match, 1 = attr, 2 = subst, 3 = mod
 
@@ -460,7 +514,7 @@ class Templates {
 					array_push($ldap_attrs,$args[2]);
 					$picklistvalues = return_ldap_hash($ldapserver,$container,$args[1],$args[2],$ldap_attrs);
 
-					$detail['default'] = sprintf('<select name="form[%s]" id="%%s" %%s %%s/>',$args[2]);
+					$detail['value'] = sprintf('<select name="form[%s]" id="%%s" %%s %%s/>',(isset($args[4]) ? $args[4] : $args[2]));
 					foreach ($picklistvalues as $key => $values) {
 						$display = $args[3];
 
@@ -469,22 +523,25 @@ class Templates {
 						}
 
 						if (! isset($picklist[$display])) {
-							$detail['default'] .= sprintf('<option name="%s" value="%s">%s</option>',$display,$values[$args[2]],$display);
+							$detail['value'] .= sprintf('<option name="%s" value="%s" %s>%s</option>',
+								$display,$values[$args[2]],
+								($default == $display ? 'selected' : ''),
+								$display);
 							$picklist[$display] = true;
 						}
 					}
-					$detail['default'] .= '</select>';
+					$detail['value'] .= '</select>';
 
 					break;
 
 				case 'RandomPassword' :
-					$detail['default'] = password_generate();
+					$detail['value'] = password_generate();
 					printf('<script language="javascript">alert(\'%s:\n%s\')</script>',
-						$lang['random_password'],$detail['default']);
+						$lang['random_password'],$detail['value']);
 					break;
 
 				case 'DrawChooserLink' :
-					$detail['default'] = draw_chooser_link(sprintf("template_form.%s%s",$args[0],$counter),$args[1]);
+					$detail['value'] = draw_chooser_link(sprintf("template_form.%s%s",$args[0],$counter),$args[1]);
 
 					break;
 
@@ -494,31 +551,36 @@ class Templates {
 
 					# Call the PHP function if exists (PHP 4 >= 4.0.4, PHP 5)
 					if (function_exists($function_name))
-						$detail['default'] = call_user_func_array($function_name,$args);
+						$detail['value'] = call_user_func_array($function_name,$args);
 
 					break;
 
-				default : $detail['default'] = 'UNKNOWN';
+				default : $detail['value'] = 'UNKNOWN';
 			}
 
-			$return = $detail['default'];
+			$return = $detail['value'];
 
 		} else {
-			$return = $default;
+			$return = $value;
 		}
 
-		debug_log(sprintf('%s::EvaluateDefault(): Returning (%s)',get_class($this),serialize($return)),1);
+		if (DEBUG_ENABLED)
+			debug_log('%s::EvaluateDefault(): Returning (%s)',1,get_class($this),serialize($return));
 		return $return;
 	}
 
 	function HelperValue($helper,$id='',$container='',$ldapserver='',$counter='',$default='') {
-		debug_log(sprintf('%s::HelperValue(): Entered with (%s,%s,%s,%s,%s,%s)',
-			get_class($this),count($helper),$id,$container,$ldapserver->server_id,$counter,$default),2);
-
-		$html = '';
+		if (DEBUG_ENABLED)
+			debug_log('%s::HelperValue(): Entered with (%s,%s,%s,%s,%s,%s)',2,
+				get_class($this),serialize($helper),$id,$container,$ldapserver->server_id,$counter,$default);
 
 		if ($container && $ldapserver && ! is_array($helper)) {
-			return $this->EvaluateDefault($ldapserver,$helper,$container,$counter);
+			if (preg_match('/^=php./',$helper))
+				return $this->EvaluateDefault($ldapserver,$helper,$container,$counter);
+
+			else
+				# @todo: Enable size and width configuration in template
+				$html = sprintf('<input type="text" name="%s" size="8">',$id);
 
 		} else {
 			if (is_array($helper)) {

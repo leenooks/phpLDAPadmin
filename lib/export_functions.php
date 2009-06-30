@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/export_functions.php,v 1.30 2005/09/04 16:17:08 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/export_functions.php,v 1.30.2.2 2005/10/23 01:19:27 wurley Exp $
 
 /**
  * Fuctions and classes for exporting ldap entries to others formats
@@ -203,7 +203,7 @@ class PlaExporter extends PlaAbstractExporter{
   }
 
   /**
-   * May be call when the processing is finished
+   * May be called when the processing is finished
    * and to free some ressources.
    * @return bool false if any errors are encountered,false otherwise
    */
@@ -310,7 +310,7 @@ class PlaLdapExporter extends PlaAbstractExporter{
   /**
    * Return the entry as an array
    * @return array  an entry as an array
-   */  
+   */
   function pla_fetch_entry_array(){
     return $this->entry_array;
   }
@@ -355,7 +355,7 @@ class PlaLdapExporter extends PlaAbstractExporter{
 	
 	//iterate over the attributes
 	while( $attr ){
-	  if( is_attr_binary( $this,$attr ) ){
+	  if( is_attr_binary( $this->ldap_info->ldapserver,$attr ) ){
 	    $this->entry_array[$attr] = @ldap_get_values_len( $this->ds,$this->entry_id,$attr );
 	  }
 	  else{
@@ -378,7 +378,7 @@ class PlaLdapExporter extends PlaAbstractExporter{
   }
  
   /**
-   * May be call when the processing is finished
+   * May be called when the processing is finished
    * and to free some ressources.
    * @return bool true or false if any errors is encountered
    * @todo This could break something, so need to add a method to LDAPServer to close connection and reset $connected.
@@ -520,7 +520,7 @@ class PlaDsmlExporter extends PlaExporter{
   /**
    * Export the entries to DSML
    */
-   function export(){
+  function export(){
      global $lang;
      $pla_ldap_info = $this->pla_get_ldap_info();
      // not very elegant, but do the job for the moment as we have just 4 level
@@ -597,18 +597,18 @@ class PlaVcardExporter extends PlaExporter{
 
   // mappping one to one attribute
   var $vcardMapping = array('cn' => 'FN',
-			    'title' => 'TITLE',
-			    'homePhone' => 'TEL;HOME',
-			    'mobile' => 'TEL;CELL',
-			    'mail' => 'EMAIL;Internet',
-			    'labeledURI' =>'URL',
-			    'o' => 'ORG',
-			    'audio' => 'SOUND',
-			    'facsmileTelephoneNumber' =>'TEL;WORK;HOME;VOICE;FAX',
-			    'jpegPhoto' => 'PHOTO;ENCODING=BASE64',
-			    'businessCategory' => 'ROLE',
-			    'description' => 'NOTE'
-			    );
+				'title' => 'TITLE',
+				'homePhone' => 'TEL;HOME',
+				'mobile' => 'TEL;CELL',
+				'mail' => 'EMAIL;Internet',
+				'labeledURI' =>'URL',
+				'o' => 'ORG',
+				'audio' => 'SOUND',
+				'facsmileTelephoneNumber' =>'TEL;WORK;HOME;VOICE;FAX',
+				'jpegPhoto' => 'PHOTO;ENCODING=BASE64',
+				'businessCategory' => 'ROLE',
+				'description' => 'NOTE'
+				);
   
   var $deliveryAddress  = array("postOfficeBox",
 				"street",
@@ -824,7 +824,7 @@ class PlaCSVExporter extends PlaExporter{
 
 class MyCustomExporter extends PlaExporter{
 
-  function MyCutsomExporter($exporter){
+  function MyCustomExporter($exporter){
     $this->exporter = $exporter;
   }
 

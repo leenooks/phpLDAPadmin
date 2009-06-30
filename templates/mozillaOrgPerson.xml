@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE template SYSTEM "template.dtd">
 <template>
 <title>address_book_moz</title>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
@@ -6,7 +8,6 @@
 <askcontainer>1</askcontainer>
 <rdn>cn</rdn>
 <visible>1</visible>
-<invalid>1</invalid>
 
 <objectClasses>
 <objectClass id="inetOrgPerson"></objectClass>
@@ -36,8 +37,8 @@
 </attribute>
 <attribute id="mail">
 	<display>t_email</display>
-	<order>5</order>
 	<icon>images/phone.png</icon>
+	<order>5</order>
 </attribute>
 <attribute id="mozillaSecondEmail">
 	<display>Second email</display>
@@ -46,8 +47,8 @@
 </attribute>
 <attribute id="telephoneNumber">
 	<display>t_work_phone</display>
-	<order>7</order>
 	<icon>images/phone.png</icon>
+	<order>7</order>
 </attribute>
 <attribute id="homePhone">
 	<display>Home</display>
@@ -68,72 +69,72 @@
 </attribute>
 <attribute id="homePostalAddress">
 	<display>Address</display>
-	<order>11</order>
+	<order>12</order>
 </attribute>
 <attribute id="mozillaHomePostalAddress2">
 	<display>Address 2</display>
-	<order>11</order>
+	<order>13</order>
 </attribute>
 <attribute id="mozillaHomeLocalityName">
 	<display>City</display>
-	<order>11</order>
+	<order>14</order>
 </attribute>
 <attribute id="mozillaHomeState">
 	<display>State</display>
-	<order>11</order>
+	<order>15</order>
 </attribute>
 <attribute id="mozillaHomePostalCode">
 	<display>ZIP</display>
-	<order>11</order>
+	<order>16</order>
 </attribute>
 <attribute id="mozillaHomeCountryName">
 	<display>Country</display>
-	<order>11</order>
+	<order>17</order>
 </attribute>
 <attribute id="mozillaHomeUrl">
 	<display>Web page</display>
-	<order>11</order>
+	<order>18</order>
 	<spacer>1</spacer>
 </attribute>
 <attribute id="title">
 	<display>Title</display>
-	<order>12</order>
+	<order>19</order>
 </attribute>
 <attribute id="ou">
 	<display>Department</display>
-	<order>12</order>
+	<order>20</order>
 </attribute>
 <attribute id="o">
 	<display>Organization</display>
-	<order>12</order>
+	<order>21</order>
 </attribute>
 <attribute id="postalAddress">
 	<display>Address</display>
-	<order>12</order>
+	<order>22</order>
 </attribute>
 <attribute id="mozillaPostalAddress2">
 	<display>Address 2</display>
-	<order>12</order>
+	<order>23</order>
 </attribute>
 <attribute id="l">
 	<display>City</display>
-	<order>12</order>
+	<order>24</order>
 </attribute>
 <attribute id="st">
 	<display>State/Province</display>
-	<order>12</order>
+	<order>25</order>
 </attribute>
 <attribute id="postalCode">
 	<display>ZIP</display>
-	<order>12</order>
+	<order>26</order>
 </attribute>
 <attribute id="c">
 	<display>Country</display>
-	<order>12</order>
+	<order>27</order>
 </attribute>
 <attribute id="mozillaWorkUrl">
 	<display>Web page</display>
-	<order>12</order>
+	<order>28</order>
 </attribute>
 </attributes>
 </template>

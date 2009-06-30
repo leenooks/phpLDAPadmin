@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/modification/group_of_names.php,v 1.9 2005/03/05 06:27:08 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/modification/Attic/group_of_names.php,v 1.9 2005/03/05 06:27:08 wurley Exp $
 
 
 /*

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/download_binary_attr.php,v 1.12 2005/07/22 05:47:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/download_binary_attr.php,v 1.12.2.1 2005/10/09 09:07:21 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -27,7 +27,7 @@ dn_exists($ldapserver,$dn) or
 
 $search = @ldap_read($ldapserver->connect(),$dn,"(objectClass=*)",array($attr),0,0,0,$config->GetValue('deref','view'));
 if (! $search)
-	pla_error($lang['error_performing_search'],ldap_error($ldapserver->connect()),ldap_errno($ldapserver->connect()));
+	pla_error($lang['error_performing_search'],$ldapserver->error(),$ldapserver->errno());
 
 $entry = ldap_first_entry($ldapserver->connect(),$search);
 $attrs = ldap_get_attributes($ldapserver->connect(),$entry);

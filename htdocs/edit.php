@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/edit.php,v 1.56 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/edit.php,v 1.56 2005/09/25 16:11:44 wurley Exp $
 
 /**
  * Displays the specified dn from the specified server for editing

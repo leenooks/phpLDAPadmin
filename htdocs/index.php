@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/index.php,v 1.39 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/index.php,v 1.39.2.3 2005/10/17 10:03:38 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -19,7 +19,7 @@ PHP is not installed on your web server!!!
  * We will perform some sanity checking here, since this file is normally loaded first when users
  * first setup PLA.
  */
-@DEFINE(LIBDIR,'./');
+define('LIBDIR','../lib/');
 ini_set('display_errors',1);
 error_reporting(E_ALL);
 

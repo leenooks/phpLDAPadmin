@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/create.php,v 1.43 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/create.php,v 1.43.2.1 2005/10/09 09:07:21 wurley Exp $
 
 /**
  * Creates a new object.
@@ -185,6 +185,6 @@ if( $add_result ) {
 	</html>
 
 <?php } else {
-	pla_error( $lang['create_could_not_add'], ldap_error( $ldapserver->connect() ), ldap_errno( $ldapserver->connect() ) );
+	pla_error( $lang['create_could_not_add'], $ldapserver->error(), $ldapserver->errno() );
 }
 ?>

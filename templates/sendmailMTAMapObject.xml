@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE template SYSTEM "template.dtd">
 <!--This template doesnt work needs modification to the Engine.-->
 <template>
 <title>sendmail_relays</title>
@@ -30,17 +32,16 @@
 	<display>Host/Network/Address</display>
 	<order>3</order>
 	<page>1</page>
-	<default></default>
-	<default>RELAY: Allow host/network/address to relay</default>
-	<default>OK: Accept local mail but disallow relay</default>
-	<default>REJECT: Reject messages</default>
-	<default>DISCARD: Discard messages</default>
-	<default>SKIP: Apply default action to messages</default>
-	<default>ERROR: Reject message with custom error</default>
+	<value>RELAY: Allow host/network/address to relay</value>
+	<value>OK: Accept local mail but disallow relay</value>
+	<value>REJECT: Reject messages</value>
+	<value>DISCARD: Discard messages</value>
+	<value>SKIP: Apply default action to messages</value>
+	<value>ERROR: Reject message with custom error</value>
 </attribute>
 <attribute id="sendmailMTAMapName">
-	<default>access</default>
 	<hidden>1</hidden>
+	<value>access</value>
 </attribute>
 </attributes>
 </template>

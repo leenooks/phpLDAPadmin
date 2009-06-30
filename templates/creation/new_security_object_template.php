@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_security_object_template.php,v 1.5 2005/03/05 06:27:07 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/Attic/new_security_object_template.php,v 1.5 2005/03/05 06:27:07 wurley Exp $
 
 // customize this to your needs
 $default_container = "ou=server";

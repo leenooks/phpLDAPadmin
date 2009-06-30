@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/rdelete.php,v 1.22 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rdelete.php,v 1.22.2.1 2005/10/09 09:07:21 wurley Exp $
 
 /**
  * Recursively deletes the specified DN and all of its children
@@ -81,8 +81,8 @@ if ($del_result) {
 	echo sprintf($lang['entry_and_sub_tree_deleted_successfully'],'<b>'.htmlspecialchars($dn).'</b>');
 
 } else {
-	pla_error(sprintf($lang['could_not_delete_entry'],htmlspecialchars($dn)),
-		ldap_error($ldapserver->connect()),ldap_errno($ldapserver->connect()));
+        pla_error(sprintf($lang['could_not_delete_entry'],htmlspecialchars($dn)),
+		  $ldapserver->error(),$ldapserver->errno());
 }
 
 exit;
@@ -104,8 +104,8 @@ function pla_rdelete($ldapserver,$dn) {
 				return true;
 
 			} else {
-				pla_error(sprintf($lang['failed_to_delete_entry'],htmlspecialchars($dn)),
-					ldap_error($ldapserver->connect()),ldap_errno($ldapserver->connect()));
+			        pla_error(sprintf($lang['failed_to_delete_entry'],htmlspecialchars($dn)),
+					  $ldapserver->error(),$ldapserver->errno());
 			}
 	} else {
 		foreach ($children as $child_dn) {
@@ -124,8 +124,8 @@ function pla_rdelete($ldapserver,$dn) {
 				return true;
 
 			} else {
-				pla_error(sprintf($lang['failed_to_delete_entry'],htmlspecialchars($dn)),
-					ldap_error($ldapserver->connect()),ldap_errno($ldapserver->connect()));
+			        pla_error(sprintf($lang['failed_to_delete_entry'],htmlspecialchars($dn)),
+					  $ldapserver->error(),$ldapserver->errno());
 			}
 	}
 }

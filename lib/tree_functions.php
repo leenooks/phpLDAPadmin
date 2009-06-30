@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/tree_functions.php,v 1.19 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/tree_functions.php,v 1.19.2.1 2005/10/09 09:07:22 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -16,7 +16,8 @@
  *	tree.php#3_dc%3Dexample%2Cdc%3Dcom
  */
 function draw_server_tree() {
-	debug_log(sprintf('draw_server_tree(): Entered with ()'),2);
+	if (DEBUG_ENABLED)
+		debug_log('draw_server_tree(): Entered with ()',2);
 
 	global $lang;
 	global $tree;

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/delete_form.php,v 1.20 2005/07/22 05:47:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete_form.php,v 1.20 2005/07/22 05:47:44 wurley Exp $
 
 /**
  * delete_form.php

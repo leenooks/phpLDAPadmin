@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/rename.php,v 1.27 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename.php,v 1.27.2.2 2005/10/16 21:04:51 wurley Exp $
 
 /**
  * Renames a DN to a different name.
@@ -26,7 +26,7 @@ $dn = ($_POST['dn']);
 $new_rdn = ($_POST['new_rdn']);
 
 if (! $ldapserver->isBranchRenameEnabled()) {
-	$children = get_container_contents($ldapserver,$dn,1);
+	$children = get_container_contents($ldapserver,$dn);
 	if (count($children) > 0)
 		pla_error($lang['non_leaf_nodes_cannot_be_renamed']);
 }
@@ -61,8 +61,9 @@ if ($success) {
 	$deleteoldrdn = $old_dn_attr == $new_dn_attr;
 
 	if (! @ldap_rename($ldapserver->connect(), $dn, $new_rdn, $container, $deleteoldrdn ) ) {
-		pla_error($lang['could_not_rename'], ldap_error($ldapserver->connect() ),
-			ldap_errno($ldapserver->connect() ), false );
+		pla_error($lang['could_not_rename'],
+			  $ldapserver->error(),
+			  $ldapserver->errno(), false );
 
 	} else
 		$success = true;

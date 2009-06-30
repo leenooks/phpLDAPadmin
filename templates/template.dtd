@@ -1,0 +1,67 @@
+<!-- ==========================================================================
+ This is the DTD for phpLDAPAdmin Templates (draft).
+
+ Copyright (c) 2005 <adezorzi AT rhx DOT it>
+
+ temporary URI for the DTD: http://www.phamm.org/DTD/pla-template-strict.dtd
+ Validate your templates here: http://www.stg.brown.edu/service/xmlvalid/
+========================================================================== -->
+
+<!-- Unused -->
+<!ENTITY % Boolean "(0 | 1)">
+
+<!-- ================================================================ -->
+
+<!-- Template Definition -->
+<!ELEMENT template (title,regexp?,icon?,description?,askcontainer?,rdn?,
+			visible?,invalid?,objectClasses,attributes)>
+
+<!-- ObjectClasses Definition -->
+<!ELEMENT objectClasses (objectClass+)>
+<!ELEMENT objectClass EMPTY>
+<!ATTLIST objectClass id CDATA #REQUIRED>
+
+<!-- Attributes Definition -->
+<!ELEMENT attributes (attribute*)>
+<!ELEMENT attribute (array?, default?, description?, display?, helper?, hidden?, hint?,
+			icon?, onchange*, order?, override?, page?, post?,
+			presubmit?, spacer*, type?, value*, verify?)>
+<!ATTLIST attribute id CDATA #REQUIRED>
+
+<!-- helper -->
+<!ELEMENT helper (default?,display?,hint?,id?,location?,value*)>
+
+<!-- ================================================================ -->
+
+<!-- Common Parameters -->
+<!ELEMENT icon (#PCDATA)>
+<!ELEMENT hint (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT display (#PCDATA)>
+
+<!-- Header Parameters -->
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT regexp (#PCDATA)>
+<!ELEMENT askcontainer (#PCDATA)>
+<!ELEMENT rdn (#PCDATA)>
+<!ELEMENT visible (#PCDATA)>
+<!ELEMENT invalid (#PCDATA)>
+
+<!-- Attribute Parameters -->
+<!ELEMENT array (#PCDATA)>
+<!ELEMENT default (#PCDATA)>
+<!ELEMENT hidden (#PCDATA)>
+<!ELEMENT onchange (#PCDATA)>
+<!ELEMENT order (#PCDATA)>
+<!ELEMENT override (#PCDATA)>
+<!ELEMENT page (#PCDATA)>
+<!ELEMENT post (#PCDATA)>
+<!ELEMENT presubmit (#PCDATA)>
+<!ELEMENT spacer (#PCDATA)>
+<!ELEMENT type (#PCDATA)>
+<!ELEMENT verify (#PCDATA)>
+
+<!-- Helper Parameters -->
+<!ELEMENT id (#PCDATA)>
+<!ELEMENT location (#PCDATA)>
+<!ELEMENT value (#PCDATA)>

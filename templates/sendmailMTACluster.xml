@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE template SYSTEM "template.dtd">
 <template>
 <title>sendmail_cluster</title>
 <!--<regexp>^ou=People,o=.*,</regexp>-->

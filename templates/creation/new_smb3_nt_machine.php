@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_smb3_nt_machine.php,v 1.8 2005/03/05 06:27:07 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/Attic/new_smb3_nt_machine.php,v 1.8 2005/03/05 06:27:07 wurley Exp $
 
 // Common to all templates
 $container = $_POST['container'];

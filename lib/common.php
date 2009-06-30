@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/common.php,v 1.68 2005/09/25 16:11:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.68.2.6 2005/10/22 04:42:40 wurley Exp $
 
 /**
  * Contains code to be executed at the top of each phpLDAPadmin page.
@@ -16,18 +16,7 @@
  * @package phpLDAPadmin
  */
 
-@DEFINE(LIBDIR,'./');
-
-# Turn on all notices and warnings. This helps us write cleaner code (we hope at least)
-if (phpversion() >= "5") {
-	# Work-around to get PLA to work in PHP5
-	ini_set( "zend.ze1_compatibility_mode", 1 );
-
-	# E_DEBUG is PHP5 specific and prevents warnings about using 'var' to declar class members
-	error_reporting( 'E_DEBUG' );
-} else
-	# For PHP4
-	error_reporting( E_ALL );
+@define('LIBDIR','../lib/');
 
 # For PHP5 backward/forward compatibility
 if (! defined('E_STRICT'))
@@ -41,6 +30,8 @@ ob_end_clean();
 /* Our custom error handler receives all error notices that pass the error_reporting()
    level set above. */
 set_error_handler('pla_error_handler');
+# Disable error reporting until all our required functions are loaded.
+error_reporting(0);
 
 /* Creates the language array which will be populated with localized strings
    based on the user-configured language. */
@@ -61,6 +52,18 @@ foreach ($pla_function_files as $file_name) {
 require_once realpath(LIBDIR.'config_default.php');
 ob_end_clean();
 
+# We are now ready for error reporting.
+# Turn on all notices and warnings. This helps us write cleaner code (we hope at least)
+if (phpversion() >= "5") {
+	# Work-around to get PLA to work in PHP5
+	ini_set( "zend.ze1_compatibility_mode", 1 );
+
+	# E_DEBUG is PHP5 specific and prevents warnings about using 'var' to declare class members
+	error_reporting( E_DEBUG );
+} else
+	# For PHP4
+	error_reporting( E_ALL );
+
 /**
  * At this point we have read all our additional function PHP files and our configuration.
  */
@@ -75,7 +78,13 @@ if (pla_session_start())
  * Language configuration. Auto or specified?
  * Shall we attempt to auto-determine the language?
  */
+
 $language = $config->GetValue('appearance','language');
+# Get english by default, in case there are tags that are missing.
+ob_start();
+include LANGDIR."recoded/en.php";
+ob_end_clean();
+
 if ($language == "auto") {
 
 	# Make sure their browser correctly reports language. If not, skip this.
@@ -92,10 +101,11 @@ if ($language == "auto") {
 		$HTTP_LANGS = array_merge ($HTTP_LANGS1, $HTTP_LANGS2);
 		foreach( $HTTP_LANGS as $HTTP_LANG) {
 			# try to grab one after the other the language file
-			if( file_exists( realpath( "lang/recoded/$HTTP_LANG.php" ) ) &&
-				is_readable( realpath( "lang/recoded/$HTTP_LANG.php" ) ) ) {
+			$language_file = LANGDIR."recoded/$HTTP_LANG.php";
+			if( file_exists($language_file) &&
+				is_readable($language_file)) {
 				ob_start();
-				include realpath( "lang/recoded/$HTTP_LANG.php" );
+				include $language_file;
 				ob_end_clean();
 				break;
 			}
@@ -107,14 +117,15 @@ if ($language == "auto") {
 	if( $language != null ) {
 		if( 0 == strcmp( $language, 'english' ) )
 			$language = 'en';
-		if( file_exists( realpath( "lang/recoded/$language.php" ) ) &&
-			is_readable( realpath( "lang/recoded/$language.php" ) ) ) {
+
+		$language_file = LANGDIR."recoded/$language.php";
+		if( file_exists($language_file) &&
+			is_readable($language_file)) {
 			ob_start();
-			include realpath( "lang/recoded/$language.php" );
+			include $language_file;
 			ob_end_clean();
 		} else {
-			pla_error( "Could not read language file 'lang/recoded/$language.php'. Either the file
-					does not exist, or its permissions do not allow phpLDAPadmin to read it." );
+			pla_error(sprintf('Could not read language file "%s". Either the file does not exist, or its permissions do not allow phpLDAPadmin to read it.',$language_file));
 		}
 	}
 }

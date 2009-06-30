@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE template SYSTEM "template.dtd">
 <template>
 <title>dns_entry</title>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
@@ -14,10 +16,10 @@
 
 <attributes>
 <attribute id="domainComponent">
-	<display>DC Name</display>
 	<description>Domain Component</description>
-	<override>dc</override>
+	<display>DC Name</display>
 	<order>1</order>
+	<override>dc</override>
 	<page>1</page>
 </attribute>
 <attribute id="associatedDomain">

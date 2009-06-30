@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/login_form.php,v 1.25 2005/07/22 05:47:44 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login_form.php,v 1.25 2005/07/22 05:47:44 wurley Exp $
 
 /**
  * Displays the login form for a server for users who specify 'cookie' or 'session' for their auth_type.
