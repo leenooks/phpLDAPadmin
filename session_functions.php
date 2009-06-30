@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/session_functions.php,v 1.6 2004/03/25 13:01:47 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/session_functions.php,v 1.7 2004/05/10 12:25:58 uugdave Exp $
 
 /**
  * A collection of functions to handle sessions throughout phpLDAPadmin.
@@ -72,6 +72,13 @@ function pla_session_verify_id()
  */
 function pla_session_start()
 {
+    // If session.auto_start is on in the server's PHP configuration (php.ini), then
+    // we will have problems loading our schema cache since the session will have started
+    // prior to loading the SchemaItem (and descedants) class. Destroy the auto-started
+    // session to prevent this problem.
+    if( ini_get( 'session.auto_start' ) )
+        @session_destroy();
+
 	// Do we already have a session?
     if( session_id() ) {
         return;

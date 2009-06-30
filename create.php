@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/create.php,v 1.20 2004/04/11 21:45:47 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/create.php,v 1.21 2004/05/11 12:23:08 uugdave Exp $
 
 
 /*
@@ -43,9 +43,8 @@ if( isset( $required_attrs ) && is_array( $required_attrs ) ) {
 	}
 }
 
-if( isset( $vals ) && is_array( $vals ) ) {
-	foreach( $vals as $i => $val ) {
-		$attr = $attrs[$i];
+if( isset( $attrs ) && is_array( $attrs ) ) {
+	foreach( $attrs as $i => $attr ) {
 		if( is_attr_binary( $server_id, $attr ) ) {
 			if( isset( $_FILES['vals']['name'][$i] ) && $_FILES['vals']['name'][$i] != '' ) {
 				// read in the data from the file
@@ -57,6 +56,7 @@ if( isset( $vals ) && is_array( $vals ) ) {
 				$new_entry[ $attr ][] = $val;
 			}
 		} else {
+            $val = isset( $vals[$i] ) ? $vals[$i] : '';
 			if( '' !== trim($val) )
 			  $new_entry[ $attr ][] = $val;
 		}
@@ -67,8 +67,6 @@ $new_entry['objectClass'] = $object_classes;
 if( ! in_array( 'top', $new_entry['objectClass'] ) )
 	$new_entry['objectClass'][] = 'top';
 
-// UTF-8 magic. Must decode the values that have been passed to us
-// REMOVED ALL UTF8 Functions
 foreach( $new_entry as $attr => $vals )
 	if( ! is_attr_binary( $server_id, $attr ) )
 		if( is_array( $vals ) )

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/recoded/es.php,v 1.11 2004/03/19 20:13:09 i18phpldapadmin Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/recoded/es.php,v 1.12 2004/05/10 12:31:04 uugdave Exp $
 
 
 // Search form
@@ -301,7 +301,7 @@ $lang['ferror_discription_short'] = '<b>Descripción</b>: (no hay descripción)<
 $lang['ferror_submit_bug'] = 'Es un error del phpLDAPadmin? Si así es, por favor <a href=\'%s\'>dínoslo</a>.';
 $lang['ferror_unrecognized_num'] = 'Número de error desconocido: ';
 $lang['ferror_nonfatil_bug'] = '<center><table class=\'notice\'><tr><td colspan=\'2\'><center><img src=\'images/warning.png\' height=\'12\' width=\'13\' />
-             <b>Has encontrado un error fatal del phpLDAPadmin!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Archivo:</td>
+             <b>Has encontrado un error menor del phpLDAPadmin!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Archivo:</td>
              <td><b>%s</b> línea <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versiones:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>
              </td></tr><tr><td>Servidor Web:</td><td><b>%s</b></td></tr><tr><td colspan=\'2\'><center><a target=\'new\' href=\'%s\'>
              Envía este error haciendo click aquí</a>.</center></td></tr></table></center><br />';

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/functions.php,v 1.180 2004/05/08 13:28:56 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/functions.php,v 1.181 2004/05/10 12:30:06 uugdave Exp $
 
 
 /**
@@ -943,8 +943,6 @@ function is_attr_binary( $server_id, $attr_name )
         $attr_cache[ $server_id ][ $attr_name ] = true;
 		return true;
     }
-
-	@require_once realpath( './schema_functions.php' );
 
     // See what the server schema says about this attribute
 	$schema_attr = get_schema_attribute( $server_id, $attr_name );

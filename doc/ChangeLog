@@ -1,6 +1,36 @@
-$Header: /cvsroot/phpldapadmin/phpldapadmin/doc/ChangeLog,v 1.12 2004/04/18 15:54:32 uugdave Exp $
+$Header: /cvsroot/phpldapadmin/phpldapadmin/doc/ChangeLog,v 1.15 2004/05/11 12:25:23 uugdave Exp $
+
+* Version 0.9.4b, 2004-05-11
+
+ * Notes:
+    
+    This follow-on release fixes one critical bug contained in 0.9.4 
+    relating to session.auto_start and schema caching.
+
+ * Changes
+
+   - Fixed bugs (all duplicates of single bug):
+     947981
+     951003
+     951140
+   - Fixed binary attribute creation (create.php)
+
+* Version 0.9.4a, 2004-05-08
+
+ * Notes:
+ 
+    This follow-on release fixes several critical bugs contained in 0.9.4.
+
+ * Changes:
+
+   - Fixed bugs:
+     949500  Error while adding New User Account
+     949500  Creating a new uid under ou=People
+     948695  is_executable() error using phpldapadmin - windows
+     948741  Level: E_WARNING
+     948413  Undefined variable: lang (E_NOTICE) after install   
 	
-* Version 0.9.4, 2004-04-XX
+* Version 0.9.4, 2004-05-04
 
  * Notes:
     

@@ -1,6 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/common.php,v 1.48 2004/04/20 13:29:58 uugdave Exp $
-
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/common.php,v 1.49 2004/05/10 12:28:07 uugdave Exp $
 
 /*
  * common.php
@@ -26,7 +25,7 @@ error_reporting( E_ALL );
 ob_start();
 if( ! file_exists( realpath( './functions.php' ) ) ) {
     ob_end_clean();
-    die( "Fatal error: Required file 'functions.php' dor oes not exist." );
+    die( "Fatal error: Required file 'functions.php' does not exist." );
 } 
 if( ! is_readable( realpath( './functions.php' ) ) ) {
     ob_end_clean();
@@ -42,7 +41,6 @@ set_error_handler( 'pla_error_handler' );
 // Creates the language array which will be populated with localized strings
 // based on the user-configured language.
 $lang = array();
-
 
 // config.php might not exist (if the user hasn't configured PLA yet)
 // Only include it if it does exist.
@@ -71,7 +69,7 @@ foreach( $required_files as $file_name ) {
     file_exists( realpath( $file_name ) )
         or pla_error( "Fatal error: Required file '$file_name' does not exist." );
     is_readable( realpath( $file_name ) ) 
-        or pla_error( "Cannot read the file '$file_name' its permissions are too strict." );
+        or pla_error( "Fatal error: Cannot read the file '$file_name', its permissions are too strict." );
     ob_start();
     require_once realpath( $file_name );
     ob_end_clean();
@@ -141,6 +139,7 @@ if ( get_magic_quotes_gpc() && ( ! isset( $slashes_stripped ) || ! $slashes_stri
 	array_stripslashes($_GET);
 	array_stripslashes($_POST);
 	array_stripslashes($_COOKIE);
+	array_stripslashes($_FILES);
 	$slashes_stripped = true;
 }
 

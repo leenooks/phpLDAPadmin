@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/index.php,v 1.23 2004/05/05 12:30:32 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/index.php,v 1.24 2004/05/10 12:29:06 uugdave Exp $
 
 
 /*******************************************
@@ -82,22 +82,18 @@ function check_config()
 		return false;
 	}
 
-	/* Make sure they have all the functions we will need */
-	$required_functions = array( 'htmlspecialchars' );
-	foreach( $required_functions as $function ) {
-		if( ! function_exists( $function ) ) {
-			pla_error( "Your install of PHP appears to be missing the function '<b>$function()</b>' " .
-				"phpLDAPadmin requires this function to work properly." );
-			return false;
-		}
-	}
-
 	/* Make sure the config file is readable */
 	//if( ! is_readable( 'config.php' ) )
 	if( ! is_readable( realpath( 'config.php' ) ) ) {
 		pla_error( "The config file 'config.php' is not readable. Please check its permissions.", false );
 		return false;
 	}
+
+    if( ! is_writable( realpath( ini_get( 'session.save_path' ) ) ) ) {
+        pla_error( "Your PHP session configuration is incorrect. Please check the value of session.save_path 
+                    in your php.ini to ensure that the directory specified there exists and is writable", false );
+        return false;
+    }
 
 	/* check for syntax errors in config.php */
 	// capture the result of including the file with output buffering
