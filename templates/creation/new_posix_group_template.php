@@ -9,9 +9,9 @@ $server_id = $_POST['server_id'];
 // Change this to suit your needs
 $default_number_of_users = 10;
 
-$step = $_POST['step'];
-if( ! $step )
-	$step = 1;
+$step = 1;
+if( isset($_POST['step']) )
+    $step = $_POST['step'];
 
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
@@ -88,7 +88,7 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 		
 	<!-- The array of attributes/values -->
 	<input type="hidden" name="attrs[]" value="cn" />
-		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($posix_group_name);?>" />
+		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($group_name);?>" />
 	<input type="hidden" name="attrs[]" value="gidNumber" />
 		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($gid_number);?>" />
 	<?php foreach( $member_uids as $uid ) { ?>

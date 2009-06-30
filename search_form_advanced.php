@@ -19,41 +19,49 @@ for($i=0;$i<$num_server;$i++){
 
 <table>
 	<tr>
-		<td><small>Server</small></td>
+		<td><small><?php echo $lang['server']; ?></small></td>
 		<td><?php echo $server_menu_html; ?></td>
 	</tr>
 
 	<tr>
-		<td><small>Base <acronym title="Distinguished Name">DN</acronym></small></td>
+		<td><small><?php echo $lang['base_dn']; ?></small></td>
 		<td><input type="text" name="base_dn" value="<?php echo htmlspecialchars($base_dn); ?>" size="30" id="base_dn" /></td>
 	</tr>
 
 	<tr>
-		<td><small><acronym title="The scope in which to search">Search Scope</acronym></small></td>
+		<td><small><acronym title="<?php echo $lang['scope_in_which_to_search']; ?>"><?php echo $lang['search_scope']; ?></acronym></small></td>
 		<td>
 			<select name="scope">
-			<option<?php echo $scope=='sub'?' selected':''; ?> value="sub">Sub (entire subtree)</option>
-			<option<?php echo $scope=='one'?' selected':''; ?> value="one">One (one level beneath base)</option>
-			<option<?php echo $scope=='base'?' selected':''; ?> value="base">Base (base dn only)</option>
+				<option<?php echo $scope=='sub'?' selected':''; ?> value="sub">
+					<?php echo $lang['scope_sub']; ?>
+				</option>
+				<option<?php echo $scope=='one'?' selected':''; ?> value="one">
+					<?php echo $lang['scope_one']; ?>
+				</option>
+				<option<?php echo $scope=='base'?' selected':''; ?> value="base">
+					<?php echo $lang['scope_base']; ?>
+				</option>
 			</select>
 		</td>
 
 	</tr>
 
 	<tr>
-		<td><small><acronym title="Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))">
-			Search Filter</acronym></small></td>
-		<td><input type="text" name="filter" size="30" value="<?php echo  $filter ? htmlspecialchars(utf8_decode($filter)) : 'objectClass=*'; ?>" /></td>
+		<td><small><acronym title="<?php echo $lang['standard_ldap_search_filter']; ?>">
+			<?php echo $lang['search_filter']; ?></acronym></small></td>
+		<td><input type="text" name="filter" size="30" value="<?php echo  $filter ? htmlspecialchars($filter) : 'objectClass=*'; ?>" /></td>
 	</tr>
 
 	<tr>
-		<td><small><acronym title="A list of attributes to display in the results (comma-separated)">
-			Show Attributes</acronym></small></td>
+		<td><small><acronym title="<?php echo $lang['list_of_attrs_to_display_in_results']; ?>">
+			<?php echo $lang['show_attributes']; ?></acronym></small></td>
 		<td><input type="text" name="display_attrs" size="30" value="<?php
-			echo isset( $_GET['display_attrs'] ) ? $_GET['display_attrs'] : $search_result_attributes; ?>" />
+			echo isset( $_GET['display_attrs'] ) ? 
+					htmlspecialchars( $_GET['display_attrs'] ) : 
+					$search_result_attributes; ?>" />
 
 	<tr>
-		<td colspan="2"><br /><center><input type="submit" value="Search" /></center></td>
+		<td colspan="2"><br /><center><input type="submit" value="<?php echo $lang['Search']; ?>" /></center></td>
 	</tr>
 </table>
 </form>

@@ -16,9 +16,8 @@ $server = $servers[$server_id];
 
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 
-?>
+include 'header.php'; ?>
 
-<?php include 'header.php'; ?>
 <body>
 
 <script language="javascript">
@@ -43,7 +42,7 @@ check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars
 <?php  if( $_SERVER['SERVER_PORT'] != 443 ) { ?>
 
 <center>
-<span style="color:red">Warning: This web connection is <acronym title="Your login and password will be transmitted in clear text">unencrypted</acronym> (not https).<br />
+<span style="color:red">Warning: This web connection is <acronym title="You are not using 'https'. Web browlser will transmit login information in clear text">unencrypted</acronym>.<br />
  </span>
 
 <?php  } ?>
@@ -52,7 +51,7 @@ check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars
 
 <form action="login.php" method="post" name="login_form">
 <input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
-<?php if( $_GET['redirect'] ) { ?>
+<?php if( isset( $_GET['redirect'] ) ) { ?>
 	<input type="hidden" name="redirect" value="<?php echo rawurlencode( $_GET['redirect'] ) ?>" />
 <?php } ?>
 <center>
@@ -63,10 +62,6 @@ check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars
 	<td colspan="2"><small>Anonymous Bind</small> <input type="checkbox" name="anonymous_bind" onclick="toggle_disable_login_fields(this)" /></td>
 </tr>
 <tr>
-<!--
-	<td><small>Login <acronym title="Distinguished Name">DN</acronym></small></td>
-	<td><input type="text" name="login_dn" size="40" value="<?php echo $servers[$server_id]['login_dn']; ?>" name="login_dn" /></td>
--->
 <td><small>Login <?php if ( $servers[$server_id]['login_attr'] == "dn" || $servers[$server_id]['login_attr'] == "") { echo '<acronym title="Distinguished Name">DN</acronym>';} ?></small></td>
 <td><input type="text" name="<?php if ( $servers[$server_id]['login_attr'] == "dn" || $servers[$server_id]['login_attr'] == "" ) {echo 'login_dn';} else {echo 'uid';} ?>" size="40" value="<?php echo $servers[$server_id]['login_dn']; ?>" /></td>
 </tr>

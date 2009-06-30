@@ -51,6 +51,6 @@ $add_result = @ldap_mod_add( $ds, $dn, $new_entry );
 if( ! $add_result )
 	pla_error( $lang['could_not_perform_ldap_mod_add'], ldap_error( $ds ), ldap_errno( $ds ) );
 
-header( "Location: edit.php?server_id=$server_id&dn=$encoded_dn&updated_attr=$encoded_attr" );
+header( "Location: edit.php?server_id=$server_id&dn=$encoded_dn&modified_attrs[]=$encoded_attr" );
 
 ?>

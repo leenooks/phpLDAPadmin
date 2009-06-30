@@ -9,26 +9,35 @@
  *  - server_id
  */
 
-require 'common.php';
+require realpath( 'common.php' );
 
-$encoded_dn = $_POST['dn'];
-$dn = rawurldecode( $encoded_dn );
+$dn = $_POST['dn'];
+$encoded_dn = rawurlencode( $dn );
 $server_id = $_POST['server_id'];
 
 if( $dn === null )
-	pla_error( "You must specify a DN." );
+	pla_error( $lang['you_must_specify_a_dn'] );
 
 if( is_server_read_only( $server_id ) )
-	pla_error( "You cannot perform updates while server is in read-only mode" );
+	pla_error( $lang['no_updates_in_read_only_mode'] );
 
-check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
-have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
+check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
+have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
 
-$ds = pla_ldap_connect( $server_id ) or pla_error( "Could not connect to LDAP server" );
-$del_result = @ldap_delete( $ds, $dn );
+$ds = pla_ldap_connect( $server_id ) or pla_error( $lang['could_not_connect'] );
+
+// Check the user-defined custom callback first.
+if( true === preEntryDelete( $server_id, $dn ) ) {
+	$del_result = @ldap_delete( $ds, $dn );
+} else {
+	exit;
+}
 
 if( $del_result )
 {
+	// Custom callback
+	postEntryDelete( $server_id, $dn );
+
 	// kill the DN from the tree browser session variable and
 	// refresh the tree viewer frame (left_frame)
 
@@ -46,10 +55,11 @@ if( $del_result )
 			foreach( $subtree as $key => $sub_tree_dn )
 				if( 0 == strcasecmp( $sub_tree_dn, $dn ) ) 
 					unset( $tree[$server_id][$tree_dn][$key] );
+		$_SESSION['tree'] = $tree;
+		session_write_close();
 	}
 
-	$_SESSION['tree'] = $tree;
-	session_write_close();
+	include 'header.php';
 
 	?>
 
@@ -57,11 +67,15 @@ if( $del_result )
 		parent.left_frame.location.reload();
 	</script>
 
-	Object deleted successfully.
+	<br />
+	<br />
+	<center><?php echo sprintf( $lang['entry_deleted_successfully'], $dn ); ?></center>
 
 	<?php 
 
 
 } else {
-	pla_error( "Could not delete the object: " . htmlspecialchars( utf8_decode( $dn ) ), ldap_error( $ds ), ldap_errno( $ds ) );
+    pla_error( sprintf( $lang['could_not_delete_entry'], htmlspecialchars( utf8_decode( $dn ) ) ),
+               ldap_error( $ds ), 
+               ldap_errno( $ds ) );
 }

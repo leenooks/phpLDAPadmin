@@ -15,21 +15,18 @@
 
 require 'common.php';
 
-$server_id = $_GET['server_id'];
-
 // try to get an available server_id if one is not provided
-if( ! isset( $server_id ) )
-{
+if( ! isset( $_GET['server_id'] ) )
 	$server_id = get_avail_server_id();
+else {
+	$server_id = $_GET['server_id'];
+	check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
 }
-else
-{
-	check_server_id( $server_id ) or pla_error( "Bad server_id: " . var_dump( htmlspecialchars( $server_id ) ) );
-}
+
 $js_on_change_string ='';
-  if( $_GET['form'] == 'advanced' ) { 
-    $js_on_change_string = 'onChange="document.forms[0].base_dn.value=servers[document.forms[0].server_id.value].getBaseDn()"';
-  }
+if( isset( $_GET['form'] ) && $_GET['form'] == 'advanced' ) 
+	$js_on_change_string = 
+		'onChange="document.forms[0].base_dn.value=servers[document.forms[0].server_id.value].getBaseDn()"';
 
 // build the server drop-down html and JavaScript array (for base_dns)
 $server_menu_html = '<select name="server_id" '.$js_on_change_string.'>';
@@ -50,9 +47,9 @@ foreach( $servers as $id => $server ) {
 
 $server_menu_html .= '</select>';
 
-$filter = $_GET['filter'];
-$filter = utf8_encode($filter);
-$attr = $_GET['attribute'];
+$filter = isset( $_GET['filter'] ) ? $_GET['filter'] : null;
+$filter = $filter;
+$attr = isset( $_GET['attribute'] ) ? $_GET['attribute'] : null;
 
 // grab the base dn for the search
 if( isset( $_GET['base_dn'] ) )
@@ -62,13 +59,12 @@ elseif( '' != $servers[$server_id]['base'] )
 else 
 	$base_dn = try_to_get_root_dn( $server_id );
 	
-$criterion = $_GET['criterion'];
-$form = $_GET['form'];
-$scope = $_GET['scope'] ? $_GET['scope'] : 'sub';
-//echo "<PRE>";print_r( $_GET );echo "</pre>";
-?>
+$criterion = isset( $_GET['criterion'] ) ? $_GET['criterion'] : null;
+$form = isset( $_GET['form'] )   ? $_GET['form']  : null;
+$scope = isset( $_GET['scope'] ) ? $_GET['scope'] : 'sub';
 
-<?php include 'header.php'; ?>
+include 'header.php'; ?>
+
 <body>
 
 <center>
@@ -90,13 +86,15 @@ $scope = $_GET['scope'] ? $_GET['scope'] : 'sub';
 
 <?php 
 
-if( $_GET['search'] )
+if( isset( $_GET['search'] ) )
 {
 
 	if( $form == 'advanced'  ) {
 		$search_result_attributes = isset( $_GET['display_attrs'] ) ? 
-						$_GET['display_attrs'] :
-						$search_result_attributes;
+						rawurldecode( $_GET['display_attrs'] ) :
+						( isset( $search_result_attributes ) ?
+							$search_result_attributes : 
+							"dn, cn" );
 		process_config();
 	} 
 
@@ -107,14 +105,16 @@ if( $_GET['search'] )
 		?>
 		<center>
 		<br />
-		You haven't logged into server <b><?php echo htmlspecialchars( $servers[$server_id]['name'] ); ?></b>
-		yet. Go to the <a href="<?php echo $login_url; ?>">login form</a> to do so.
+		<?php echo $lang['you_have_not_logged_into_server']; ?><br />
+		<a href="<?php echo $login_url; ?>"><?php echo $lang['click_to_go_to_login_form']; ?></a>.
 		</center>
 		<?php
 		exit;
 	}
 
-	pla_ldap_connect( $server_id ) or pla_error( "Could not connect to LDAP server." );
+	$ds = pla_ldap_connect( $server_id );
+	if( ! $ds ) 
+			pla_error( $lang['could_not_connect'] );
 	
 	if( $filter )
 	{
@@ -149,65 +149,164 @@ if( $_GET['search'] )
 					$filter = "($attr~=$filter)";
 					break;
 				default:
-					pla_error( "Unrecognized criteria option: " . htmlspecialchars( $criterion ) .
-						"If you want to add your own criteria to the list. Be sure to edit " .
-						"search.php to handle them. Quitting." );
+					pla_error( $lang['unrecognized_criteria_option'] . 
+							htmlspecialchars( $criterion ) .
+							$lang['if_you_want_to_add_criteria'] );
 			}
 		}
 		
+		echo "<center>Searching...</center>\n";
+		flush();
+
+		// prevent script from bailing early on a long delete
+		@set_time_limit( 0 );
+
+		// grab the time limit set in config.php
+		$size_limit = isset ( $search_result_size_limit ) && is_numeric( $search_result_size_limit ) ? 
+						$search_result_size_limit :
+						0;
+
 		$time_start = utime();
-		$results = pla_ldap_search( $server_id, $filter, $base_dn, $search_result_attributes, $scope );
+		if( $scope == 'base' )
+			$results = @ldap_read( $ds, $base_dn, $filter, $search_result_attributes, 
+										0, 0, 0, LDAP_DEREF_ALWAYS );
+		elseif( $scope == 'one' )
+			$results = @ldap_list( $ds, $base_dn, $filter, $search_result_attributes, 
+										0, 0, 0, LDAP_DEREF_ALWAYS );
+		else // scope == 'sub'
+			$results = @ldap_search( $ds, $base_dn, $filter, $search_result_attributes, 
+										0, 0, 0, LDAP_DEREF_ALWAYS );
+
+		$errno = @ldap_errno( $ds );
 		$time_end = utime();
 		$time_elapsed = round( $time_end - $time_start, 2 );
-		$count = count( $results );
+		$count = @ldap_count_entries( $ds, $results );
 
 		?>
 
-		<br />
-		<center>Found <b><?php echo $count; ?></b> <?php echo $count==1?'entry':'entries'; ?>.
+		<center>
+			<?php echo $lang['entries_found'] . ' ' . number_format( $count ) ?>
+			(in <?php echo $time_elapsed; ?> seconds).
+			<?php 
+
+			// The LDAP error code for the size limit exceeded error.
+			define( 'SIZE_LIMIT_EXCEEDED', 4 );
+			if( $errno && $errno == SIZE_LIMIT_EXCEEDED ) {
+				echo "<br /><small>Notice, search size limit exceeded.</small><br />\n";
+			}
+
+			if( $size_limit > 0 && $count > $size_limit ) {
+				echo "<br /><small>Showing first <b>$size_limit</b> results.</small><br />\n";
+
+			}
+
+			?>
 
 		<?php  if( $form == 'simple' ) { ?>
-			<center><small>Filter performed: <?php echo htmlspecialchars( $filter ); ?></small></center>
+			<center><small><?php echo $lang['filter_performed']; ?>
+				<?php echo htmlspecialchars( $filter ); ?></small></center>
 		<?php  } ?>
 
 		</center>
 
 		<?php flush(); ?>	
 
-		<?php if( $results ) foreach( $results as $dn => $attrs ) { ?>
-			<?php  $encoded_dn = rawurlencode( $dn ); ?>
-			<?php  $rdn = utf8_decode( get_rdn( $dn ) ); ?>
-			<div class="search_result">
-			<a href="edit.php?server_id=<?php echo $server_id; ?>&amp;dn=<?php echo $encoded_dn; ?>">
-				<?php echo htmlspecialchars($rdn); ?>
-			</a>
-			</div>
-			<table class="attrs">
-				<?php foreach( $attrs as $attr => $values ) { ?>
+		<?php 
+			if( ! $results ) {
+				pla_error(  'Encountered an error while performing search.', ldap_error( $ds ), ldap_errno( $ds ) );
+			}
+
+			$friendly_attrs = process_friendly_attr_table();
+			$entry_id = ldap_first_entry( $ds, $results );
+
+			// Iterate over each entry
+			$i = 0;
+			while( $entry_id ) {
+				$i++;
+				// Only display the first $size_limit entries
+				if( $size_limit != 0 && $i > $size_limit ) {
+					break;
+				}
+				
+				$dn = ldap_get_dn( $ds, $entry_id );
+				$encoded_dn = rawurlencode( $dn );
+				$rdn = get_rdn( $dn );
+				?>
+
+				<div class="search_result">
+				<table>
+					<tr>
+					<td><img src="images/<?php echo get_icon_use_cache( $server_id, $dn ); ?>" /></td>
+					<td><a href="edit.php?server_id=<?php 
+						echo $server_id; ?>&amp;dn=<?php echo $encoded_dn; ?>"><?php echo htmlspecialchars($rdn); ?></a>
+					</td>
+				</tr>
+				</table>
+				</div>
+
+				<table class="attrs">
+
+				<?php 
+
+				$attrs = ldap_get_attributes( $ds, $entry_id );
+				$attr = ldap_first_attribute( $ds, $entry_id, $attrs );
+
+				// Always print out the DN in the attribute list
+				echo "<tr><td class=\"attr\" valign=\"top\">dn</td>";
+				echo "<td>" . htmlspecialchars($dn) . "</td></tr>\n";
+
+				// Iterate over each attribute for this entry
+				while( $attr ) {
+
+					if( is_attr_binary( $server_id, $attr ) )
+						$values = array( "(binary)" );
+					else
+						$values = ldap_get_values( $ds, $entry_id, $attr );
+					if( isset( $values['count'] ) )
+						unset( $values['count'] );
+
+					if( isset( $friendly_attrs[ strtolower( $attr ) ] ) )
+						$attr = "<acronym title=\"Alias for $attr\">" . 
+								htmlspecialchars( $friendly_attrs[ strtolower($attr) ] ) .
+								"</acronym>";
+					else
+							$attr = htmlspecialchars( $attr );
+					?>
 
 					<tr>
-						<td class="attr" valign="top"><?php echo htmlspecialchars( $attr ); ?></td>
+						<td class="attr" valign="top"><?php echo $attr; ?></td>
 						<td class="val">
-							<?php  if( is_array( $values ) ) { ?>
-								<?php  foreach( $values as $value ) { ?>
-								<?php echo str_replace( ' ', '&nbsp;',
-								htmlspecialchars( utf8_decode( $value ) ) ); ?><br />
-								<?php  } ?>
-							<?php  } else { ?>
-								<?php echo str_replace( ' ', '&nbsp;',
-								htmlspecialchars( utf8_decode( $values ) ) ); ?>
-							<?php  } ?>
+							<?php 
+							foreach( $values as $value )
+								echo str_replace( ' ', '&nbsp;',
+									htmlspecialchars( $value ) ) . "<br />\n";
+							?>
 						</td>
 					</tr>
+					<?php 
+					$attr = ldap_next_attribute( $ds, $entry_id, $attrs );
+				} // end while( $attr )
 
-				<?php  } ?>
+				?>
+
 			</table>
 
-		<?php  } ?>
+			<?php 
 
-			<br /><br />
-			<div class="search_result"><center><span style="font-weight:normal;font-size:75%;">Search happily performed by phpLDAPadmin in 
-				<b><?php echo $time_elapsed; ?></b> seconds.</small></center></div>
+			$entry_id = ldap_next_entry( $ds, $entry_id );
+
+			// flush every 5th entry (sppeds things up a bit)
+			if( 0 == $i % 5 )
+				flush();
+
+		} // end while( $entry_id )
+
+		?>
+
+		<br /><br />
+		<div class="search_result"><center><span style="font-weight:normal;font-size:75%;">
+			<?php echo $lang['search_duration']; ?>
+			<b><?php echo $time_elapsed; ?></b> <?php echo $lang['seconds'];?>.</small></center></div>
 		<?php 
 	}
 }
@@ -217,14 +316,3 @@ if( $_GET['search'] )
 </body>
 </html>
 
-<?php 
-
-function utime ()
-{
-	$time = explode( " ", microtime());
-	$usec = (double)$time[0];
-	$sec = (double)$time[1];
-	return $sec + $usec;
-}
-
-?>

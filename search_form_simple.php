@@ -10,9 +10,9 @@
 <br />
 </center>
 
-		<small>Server</small><br /> <?php echo $server_menu_html; ?><br />
+		<small><?php echo $lang['server']; ?></small><br /> <?php echo $server_menu_html; ?><br />
 		<br />	
-		<small>Search for entries whose:</small><br />
+		<small><?php echo $lang['search_for_entries_whose']; ?></small><br />
 
 		<nobr>
 		<select name="attribute">
@@ -30,15 +30,15 @@
 			$search_criteria_options = array( "equals", "starts with", "contains", "ends with", "sounds like" );
 			foreach( $search_criteria_options as $c ) { ?>
 			<option value="<?php echo $c; ?>"<?php echo $c==$criterion?' selected':''; ?>>
-				<?php echo htmlspecialchars($c); ?>
+				<?php echo htmlspecialchars( $lang[$c] ); ?>
 			</option>
 		<?php  } ?>
 		</select>
 			
-		<input type="text" name="filter" size="20" value="<?php echo htmlspecialchars(utf8_decode($filter)); ?>" /><br />
+		<input type="text" name="filter" size="20" value="<?php echo htmlspecialchars($filter); ?>" /><br />
 		<br />
 
-		<center><input type="submit" value="Search" /></center>
+		<center><input type="submit" value="<?php echo $lang['Search']; ?>" /></center>
 		</nobr>
 </td>
 </table>

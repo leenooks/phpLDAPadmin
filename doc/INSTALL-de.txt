@@ -1,0 +1,61 @@
+Die Installationsanweisung geht davon aus das:
+    a) Ein Webserver (Apache, IIS, etc.)
+    b) PHP 4.1.0 oder neuer (mit LDAP-Support)
+installiert und funktioniert
+
+
+* Installation von phpLDAPadmin in vier einfachen Schritten:
+
+  1. Entpacken des Archives (wenn man diesen Text lesen kann,
+     dann ist das schon geschechen)
+  2. Das entpackte Verzeichnis phpldapadmin sollte vom webroot
+     aus erreicht werden
+  3. Kopieren der 'config.php.example' nach 'config.php' 
+     und anpassen.
+  4. Mit einem Browser auf das phpldapadmin-Verzeichnis zugreifen
+     (wenn Sie das Verzeichnis sehen, dann bitte noch ein index.php
+      anhaengen)
+
+
+* Browser Hinweise
+
+  phpLDAPadmin wird unter Mozilla entwickelt und sollte auch am
+  Besten darunter laufen. Andere Browser (bspw. Internet Explorer)
+  sollten ebenfalls funktionieren.
+  Keine Tests wurden mit dem Konqueror (oder jeder andere khtml-basierende
+  Browser wie Safari) oder Opera vorgenommen. Falls es zu Browser
+  Inkompatibilitaet kommen sollten, dann bitte einen Fehlerreport senden.
+
+
+* Lizenz
+  Die Verwendete Lizenz ist in der Datei LICENCE zu finden
+
+
+* Mitwirkende: 
+  
+  Projektentwickler: 
+     Bitte in der Datei INSTALL unter 'Project Developers:' nachsehen
+
+  Patches:
+     Bitte in der Datei INSTALL unter 'Patch writers:' nachsehen
+  
+  Uebersetzungen:
+     Bitte in der Datei INSTALL unter 'Translators:' nachsehen
+
+     Wer in der Uebersetzung helfen moechte sollte an der Mailingliste
+     phpldapadmin-devel teilnehmen.
+     https://lists.sourceforge.net/mailman/listinfo/phpldapadmin-devel
+
+
+* Hinweise zur Konfiguration von config.php
+  Wer eine Benuetzerfuehrung auf deutsch haben moechte sollte in der
+  config.php die Zeile 
+
+     $language = 'en';
+
+  mit
+     $language = 'de';
+
+  abaendern. Andere Sprachen sieht man im Unterverzeichnis 'lang'
+
+

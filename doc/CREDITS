@@ -1,0 +1,38 @@
+---------------------------
+phpLDAPadmin - Contributors
+---------------------------
+  
+ * Project Developers:
+
+  - David Smith         Maintainer
+  - Xavier Renard       LDIF master
+  - Marius Rieder       Schema master
+  - Nate Rotschafer     Release manager
+  
+ * Patch writers:
+
+  - Bayu Irawan         userPassword hash, html fixes, ldap_modify fixes
+  - Uwe Ebel         	short_open_tags fix
+  - Andrew Tipton       SUP support in schema parser
+  - Eigil Bj√∏rgum       UTF-8 support
+  - Brandon Lederer     DNS entry template
+    Nathan Rotschafer
+  - Steve Rigler        Password hash patch
+  - Chris Jackson       Blowfish and md5crypt passwords
+  - Marius Rieder       Enhanced schema parser
+  - Nick Burch          Many realpath() fixes
+
+ * Translators:
+
+  - Uwe Ebel & Marius Reider  German
+  - Xavier Renard             French
+  - Dave Smith                English ;)
+  - Richard Lucassen          Dutch
+  - Andreu Sanchez            Spanish and Catal‡
+  - Dmitry Gorpinenko         Russian
+  - Unknown                   Italian
+  
+
+   If you can help translate, please join the phpldapadmin-devel mailing list:
+   https://lists.sourceforge.net/mailman/listinfo/phpldapadmin-devel
+

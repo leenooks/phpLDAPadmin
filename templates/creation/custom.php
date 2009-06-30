@@ -25,7 +25,7 @@ if( $step == 1 )
 	<form action="creation_template.php" method="post" name="creation_form">
 	<input type="hidden" name="step" value="2" />
 	<input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
-	<input type="hidden" name="template" value="<?php echo $_POST['template']; ?>" />
+	<input type="hidden" name="template" value="<?php echo htmlspecialchars( $_POST['template'] ); ?>" />
 
 	<table class="create">
 	<tr>
@@ -41,14 +41,27 @@ if( $step == 1 )
 		<td class="heading">ObjectClass(es):</td>
 		<td>
 			<select name="object_classes[]" multiple size="15">
-			<?php  foreach( $oclasses as $oclass => $attrs ) { ?>
-				<option value="<?php echo htmlspecialchars($oclass); ?>">
-					<?php echo htmlspecialchars($attrs['name']); ?>
+			<?php  foreach( $oclasses as $name => $oclass ) { ?>
+				<option value="<?php echo htmlspecialchars($name); ?>">
+					<?php echo htmlspecialchars($oclass->getName()); ?>
 				</option>
 				<?php  } ?>
 			</select>
 		</td>
 	</tr>
+
+	<?php if( show_hints() ) { ?>
+	<tr>
+		<td></td>
+		<td>
+			<small>
+			<img src="images/light.png" />Hint: You must choose at least one <b>structural</b> objectClass
+			</small>
+			<br />
+		</td>
+	</tr>
+	<?php } ?>
+
 	<tr>
 		<td></td>
 		<td><input type="submit" value="Proceed >>" /></td>
@@ -74,14 +87,16 @@ if( $step == 2 )
 
 	// build a list of required attributes:
 	$dn = $rdn . ',' . $container;
-	//$attrs = get_schema_attributes( $server_id );
 	$schema_oclasses = get_schema_objectclasses( $server_id );
 	$required_attrs = array();
 	$all_attrs = array();
-	foreach( $oclasses as $oclass ) {
-		$required_attrs = array_merge( $required_attrs, $schema_oclasses[strtolower($oclass)]['must_attrs'] );
-		$all_attrs = array_merge( $all_attrs, $schema_oclasses[strtolower($oclass)]['must_attrs'],
-				$schema_oclasses[strtolower($oclass)]['may_attrs'] );
+	foreach( $oclasses as $oclass_name ) {
+		if( isset( $schema_oclasses[ strtolower( $oclass_name ) ] ) )
+			$oclass = $schema_oclasses[ strtolower( $oclass_name ) ];
+		else
+			continue;
+		$required_attrs = array_merge( $required_attrs, $oclass->getMustAttrNames( $oclasses ) );
+		$all_attrs = array_merge( $oclass->getMustAttrNames(), $oclass->getMayAttrNames( $oclasses ) );
 	}
 
 	$required_attrs = array_unique( $required_attrs );
@@ -111,7 +126,7 @@ if( $step == 2 )
 		$attr_select_html .= "<option value=\"$a\">$attr_display</option>\n";
 	}
 	
-	$binary_select_html = "";
+	$binary_attr_select_html = "";
 	if( count( $binary_attrs ) > 0 ) {
 		foreach( $binary_attrs as $a ) {
 			if( isset( $friendly_attrs[ strtolower( $a ) ] ) ) {
@@ -200,8 +215,8 @@ if( $step == 2 )
 	
 	<?php if( count( $binary_attrs ) > 0 ) { ?>
 	<tr><th colspan="2">Optional Binary Attributes</th></tr>
-		<?php for( $k=$i; $k<$i+count($binary_attrs); $k++ ) { $attr = $binary_attrs[$k]; ?>
-		<?php  if( $i % 2 == 0 ) { ?>
+		<?php for( $k=$i; $k<$i+count($binary_attrs); $k++ ) { $attr = $binary_attrs[$k-$i]; ?>
+		<?php  if( $k % 2 == 0 ) { ?>
 			<tr class="row1">
 		<?php  } else { ?>
 			<tr class="row2">

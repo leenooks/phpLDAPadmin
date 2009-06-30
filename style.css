@@ -39,9 +39,22 @@ table.schema_attr tr.highlight{
 	font-weight: Bold;
 }
 
+table.notice tr td {
+	font-size: 9pt;
+	padding: 2px;
+	margin: 0px;
+	background-color: #eee;
+}
+
 table.error {
 	width: 500px;
 	border: 2px solid black;
+}
+
+table.error tr td table.bug tr td{
+	padding: 6px;
+	margin: 0px;
+	background-color: #eee;
 }
 
 table.error tr td {
@@ -257,9 +270,20 @@ table.edit_dn tr td.heading {
 	font-weight: bold;
 }
 
+table.edit_dn tr td.attr a {
+	text-decoration: none;
+	color: black;
+}
+
+table.edit_dn tr td.attr a:hover {
+	text-decoration: underline;
+	color: #016;
+}
+
 table.edit_dn tr td.val {
 	text-align: right;
 	vertical-align: center;
+	padding-bottom: 15px;
 }
 
 /* When an attr is updated, it is displayed in light blue to indicate such */
@@ -331,10 +355,22 @@ h4.oclass_sub {
 
 ul.schema {
 	margin: 5px;
+	margin-left: 0px;
+	padding-left: 20px;
 }
 
 ul.schema li {
-	margin-left: 10px;
+	margin-left: 0px;
+	padding-left: 0px;
+}
+
+ul.schema li small {
+	font-size: 75%;
+	color: #777;
+}
+
+ul.schema li small a {
+	color: #77c;
 }
 
 ul.current_values {
@@ -426,4 +462,9 @@ table.create {
 table.create td.heading {
 	vertical-align: top;
 	padding: 10px;
+}
+
+div.add_value {
+	font-size: 10pt;
+	margin: 0px;
 }

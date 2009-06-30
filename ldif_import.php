@@ -38,56 +38,78 @@ include 'header.php'; ?>
 
 <br />
 <br />
-<center><i>This is an experimental and untested feature. Proceed at your own risk.</i><br />
-<i>The add and delete operations are the only operations currently supported.</i>
-</center>
-<br />
 
 <?php 
 include("ldif_functions.php");	
 @set_time_limit( 0 );
-ldif_open_file($file);
 
+// String associated to the operation on the ldap server
+$actionString = array();
+$actionString['add'] = $lang['add_action'];
+$actionString['delete'] = $lang['delete_action'];
+$actionString['modrdn'] = $lang['rename_action'];
+$actionString['moddn'] = $lang['rename_action'];
+$actionString['modify'] = $lang['modify_action'];
+
+
+// String associated with error
+$actionErrorMsg =array();
+$actionErrorMsg['add'] = $lang['ldif_could_not_add_object'];
+$actionErrorMsg['delete']= $lang['ldif_could_not_delete_object'];
+$actionErrorMsg['modrdn']= $lang['ldif_could_not_rename_object'];
+$actionErrorMsg['moddn']= $lang['ldif_could_not_rename_object'];
+$actionErrorMsg['modify']= $lang['ldif_could_not_modify_object'];
+
+// get the connection
 $ds = pla_ldap_connect( $server_id ) or pla_error( "Could not connect to LDAP server" );
-if(!ldif_check_version()){
-  display_warning(ldif_warning_message());
+
+//instantiate the reader
+$ldifReader = new LdifReader($file);
+
+//instantiate the writer
+$ldapWriter = new LdapWriter($ds);
+
+// if ldif file has no version number, just display a warning
+if(!$ldifReader->hasVersionNumber()){
+  display_warning($ldifReader->getWarningMessage());
 }
-while($dn_entry= ldif_fetch_dn_entry() ){
-   $action = ldif_get_action();
-    if($action=="add"){
-      echo "Adding dn:".utf8_decode($dn_entry) ."... ";
-      flush();
-      if($attributes = ldif_fetch_attributes_for_entry()){
-	if(@ldap_add($ds,$dn_entry,$attributes)){
-	  echo "<span style=\"color:green;\">Success</span><br>";
-	}
-	else{
-	  echo "<span style=\"color:red;\">failed</span><br><br>";
-	  pla_error( "Could not add object: " . htmlspecialchars( utf8_decode( $dn ) ), ldap_error( $ds ), ldap_errno( $ds ) );
-	}
-      }
-      else{
-	echo "<span style=\"color:red;\">failed</span><br><br>";
-	echo "<div style=\"color:red\">".display_error_message(ldif_error_message())."</div>";
-	flush();
-      }
-    }
-    elseif($action=="delete"){
-      echo "Deleting dn: ".$dn_entry." ";
-      if(@ldap_delete($ds,$dn_entry)){
-	echo "<span style=\"color:green;\">Success</span><br>";
-	flush();
-      }
-      else{
-	echo "<span style=\"color:red;\">Failed</span><br><br>";
-	flush();
-	pla_error( "Could not delete object: " . htmlspecialchars( utf8_decode( $dn ) ), ldap_error( $ds ), ldap_errno( $ds ) );
-	
-      }
-    }
 
- }
 
+//while we have a valid entry, 
+while($entry = $ldifReader->readEntry()){
+  $changeType = $entry->getChangeType();
+
+  echo "<small>".$actionString[$changeType]." ".$entry->dn;
+  if($ldapWriter->ldapModify($entry)){
+    echo " <span style=\"color:green;\">".$lang['success']."</span></small><br>";
+    flush();
+  }
+  else{
+    echo " <span style=\"color:red;\">".$lang['failed']."</span></small><br><br>";
+    reload_left_frame();
+    pla_error( $actionErrorMsg[$changeType]. " " . htmlspecialchars( utf8_decode( $entry->dn ) ), ldap_error( $ds ), ldap_errno( $ds ) );
+  }
+}
+// close the file
+$ldifReader->done();
+
+//close the ldap connection
+$ldapWriter->ldapClose();
+
+// if any errors occurs during reading file ,"catch" the exception and display it here.
+  if($ldifReader->hasRaisedException()){
+    //get the entry which raise the exception,quick hack here 
+    $currentEntry = $ldifReader->getCurrentEntry();
+
+    if($currentEntry->dn !=""){
+      echo "<small>".$actionString[$currentEntry->getChangeType()]." ".$currentEntry->dn." <span style=\"color:red;\">".$lang['failed']."</span></small><br>";
+    }
+    //get the exception wich was raised
+    $exception = $ldifReader->getLdapLdifReaderException();
+echo "<br />";
+echo "<br />";
+display_pla_parse_error($exception,$currentEntry);
+  }
 
 reload_left_frame();
 
@@ -101,18 +123,45 @@ function reload_left_frame(){
 }
 
 function display_error_message($error_message){
-  echo "<div style=\"color:red;\">".$error_message."</div>";
+  echo "<div style=\"color:red;\"><small>".$error_message."</small></div>";
 }
 function display_warning($warning){
-  echo "<div style=\"color:orange\">".$warning."</div>";
+  echo "<div style=\"color:orange\"><small>".$warning."</small></div>";
+}
+
+function display_pla_parse_error($exception,$faultyEntry){
+  global $lang;
+  global $actionErrorMsg;
+  $errorMessage =  $actionErrorMsg[$faultyEntry->getChangeType()];
+
+  print("<center>");
+  print("<table class=\"error\"><tr><td class=\"img\"><img src=\"images/warning.png\" /></td>");
+  print("<td><center><h2>".$lang['ldif_parse_error']."</h2></center>");
+  print("<br />");
+  print($errorMessage." ". $faultyEntry->dn);
+  print("<p>");
+  print("<b>".$lang['desc']."</b>: ".$exception->message);
+  print("</p>");
+  print("<p>");
+  print("<b>".$lang['ldif_line']."</b>: ".$exception->currentLine);
+  print("</p>");
+  print("<p>");
+  print("<b>".$lang['ldif_line_number']."</b>: ".$exception->lineNumber);
+  print("</p>");
+  print("<br />");
+  print("<p>\r\n");
+  print("<center>");
+  print("<small>");
+  print(sprintf($lang['ferror_submit_bug'] , get_href( 'add_bug' )));
+
+ print("</small></center></p>");
+ print("<td>");
+ print("</tr>");
+ print("<center>");
+
 }
 
 ?>
-
-
-</script>
-
-
 </body>
 </html>
 

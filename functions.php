@@ -1,11 +1,291 @@
 <?php
 
-/* 
+/*
  * functions.php
  * A collection of functions used throughout phpLDAPadmin.
  */
 
 @include 'config.php';
+
+function set_cookie_login_dn( $server_id, $dn, $password, $anon_bind )
+{
+		// cookie_time comes from config.php
+		if( ! check_server_id( $server_id ) )
+			return false;
+		if( $anon_bind ) {
+				// we set the cookie val to 0 for anonymous binds.
+				$res1 = pla_set_cookie( "pla_login_dn_$server_id", 'anonymous' );
+				$res2 = pla_set_cookie( "pla_login_pass_$server_id", '0' );
+		} else {
+				$res1 = pla_set_cookie( "pla_login_dn_$server_id", $dn );
+				$res2 = pla_set_cookie( "pla_login_pass_$server_id", $password );
+		}
+		if( ! $res1 || ! $res2 )
+			return false;
+		else
+			return true;
+}
+
+function pla_set_cookie( $name, $val, $expire=null, $dir=null )
+{
+	if( $expire == null ) {
+		global $cookie_time;
+		if( ! isset( $cookie_time ) )
+				$cookie_time = 0;
+		$expire = $cookie_time == 0 ? null : time() + $cookie_time;
+	}
+
+	if( $dir == null ) {
+		global $_SERVER;
+		$dir = dirname( $_SERVER['PHP_SELF'] );
+	}
+
+	if( setcookie( $name, $val, $expire, $dir ) ) {
+		global $_COOKIE;
+		$_COOKIE[ $name ] = $val;
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function unset_cookie_login_dn( $server_id )
+{
+	global $_SERVER;
+	if( ! check_server_id( $server_id ) )
+		return false;
+	$logged_in_dn = get_logged_in_dn( $server_id );
+	$logged_in_pass = get_logged_in_pass( $server_id );
+	$anon_bind = $logged_in_dn == 'anonymous' ? true : false;
+
+	$expire = time()-3600;
+	if( $anon_bind ) {
+			$res1 = pla_set_cookie( "pla_login_dn_$server_id", 'anonymous', $expire );
+			$res2 = pla_set_cookie( "pla_login_pass_$server_id", '0', $expire );
+	} else {
+			$res1 = pla_set_cookie( "pla_login_dn_$server_id", $logged_in_dn, $expire );
+			$res2 = pla_set_cookie( "pla_login_pass_$server_id", $logged_in_pass, $expire );
+	}
+
+	if( ! $res1 || ! $res2 )
+		return false;
+	else
+		return true;
+}
+
+/*
+ * Compares 2 DNs. If they are equivelant, returns 0, otherwise,
+ * returns their sorting order (similar to strcmp()).
+ * < 0 if dn1 is less than dn2
+ * > 0 if dn1 is greater than dn2
+ */
+function pla_compare_dns( $dn1, $dn2 )
+{
+	$dn1_parts = pla_explode_dn( $dn1 );
+	$dn2_parts = pla_explode_dn( $dn2 );
+	assert( is_array( $dn1_parts ) );
+	assert( is_array( $dn2_parts ) );
+	
+	// If they are obviously the same, return immediately
+	if( 0 === strcasecmp( $dn1, $dn2 ) )
+		return 0;
+	
+	// If they are obviously different, immediately
+	// do a string comparison rather than continuing
+	if( count( $dn1_parts ) != count( $dn2_parts ) )
+		return strcasecmp( $dn1, $dn2 );
+
+	// Foreach of the "parts" of the DN
+	for( $i=0; $i<count( $dn1_parts ); $i++ )
+	{
+		// dnX_part is of the form: "cn=joe" or "cn = joe" or "dc=example"
+		// ie, one part of a multi-part DN.
+		$dn1_part = $dn1_parts[$i];
+		$dn2_part = $dn2_parts[$i];
+		
+		// Each "part" consists of two sub-parts:
+		//   1. the attribute (ie, "cn" or "o")
+		//   2. the value (ie, "joe" or "example")
+		$dn1_sub_parts = explode( '=', $dn1_part, 2 );
+		$dn2_sub_parts = explode( '=', $dn2_part, 2 );
+
+		$dn1_sub_part_attr = trim( $dn1_sub_parts[0] );
+		$dn2_sub_part_attr = trim( $dn2_sub_parts[0] );
+		if( 0 != ( $cmp = strcasecmp( $dn1_sub_part_attr, $dn2_sub_part_attr ) ) )
+			return $cmp;
+
+		$dn1_sub_part_val = trim( $dn1_sub_parts[1] );
+		$dn2_sub_part_val = trim( $dn2_sub_parts[1] );
+		if( 0 != ( $cmp = strcasecmp( $dn1_sub_part_val, $dn2_sub_part_val ) ) )
+			return $cmp;
+	}
+
+	// If none of the foregoing tests failed, we must have finished
+	// examining two equivelane DNs.
+	return 0;
+}
+
+/** 
+ * Prunes off anything after the ";" in an attr name
+ */
+function real_attr_name( $attr_name )
+{
+	$attr_name = preg_replace( "/;.*$/U", "", $attr_name );
+	return $attr_name;
+}
+
+/*
+ * Returns true if the user has configured the specified
+ * server to enable mass deletion
+ */
+function mass_delete_enabled( $server_id )
+{
+	global $enable_mass_delete;
+	if( check_server_id( $server_id ) && 
+		pla_ldap_connect( $server_id ) &&
+		have_auth_info( $server_id ) && 
+		! is_server_read_only( $server_id ) && 
+		isset( $enable_mass_delete ) && 
+		true === $enable_mass_delete )
+		return true;
+	else
+		return false;
+}
+
+/*
+ * Returns true if the user has configured PLA to show
+ * helpful hints with the $show_hints setting.
+ */
+function show_hints()
+{
+	global $show_hints;
+	if( isset( $show_hints ) && $show_hints === true )
+		return true;
+}
+
+/*
+ * Returns the name of the template to use based on the DN and
+ * objectClasses of an entry. If no specific modification
+ * template is available, simply return 'default'. The caller
+ * should append '.php' and prepend 'templates/modification/'
+ * to the returned string to get the file name.
+ */
+function get_template( $server_id, $dn )
+{
+
+	// For now, just use default. We will add more templates for 0.9.2.
+	// If you have custom modification templates, just modify this.
+	return 'default';
+
+        // fetch and lowercase all the objectClasses in an array
+        $object_classes = get_object_attr( $server_id, $dn, 'objectClass', true );
+
+        if( $object_classes === null || $object_classes === false)
+                return 'default';
+
+        foreach( $object_classes as $i => $class )
+                $object_classes[$i] = strtolower( $class );
+
+        $rdn = get_rdn( $dn );
+        if( in_array( 'person', $object_classes ) &&
+            in_array( 'posixaccount', $object_classes ) )
+                return 'user';
+	// TODO: Write other templates and criteria therefor
+	// else if ...
+	//    return 'some other template';
+	// else if ...
+	//    return 'some other template';
+	// etc.
+
+	return 'default';
+}
+
+/*
+ * For hosts who have 'enable_auto_uid_numbers' set to true, this function will
+ * get the next available uidNumber using the host's preferred  mechanism
+ * (uidpool or search). The uidpool mechanism uses a user-configured entry in
+ * the LDAP server to store the last used uidNumber. This mechanism simply fetches
+ * and increments and returns that value. The search mechanism is more complicated
+ * and slow. It searches all entries that have uidNumber set, finds the smalles and
+ * "fills in the gaps" by incrementing the smallest uidNumber until an unused value
+ * is found. Both mechanisms do NOT prevent race conditions or toe-stomping, so
+ * care must be taken when actually creating the entry to check that the uidNumber
+ * returned here has not been used in the mean time. Note that the two different
+ * mechanisms may (will!) return different values as they use different algorithms
+ * to arrive at their result. Do not be alarmed if (when!) this is the case.
+ */
+function get_next_uid_number( $server_id )
+{
+	global $servers, $lang;
+	// Some error checking
+	if( ! check_server_id( $server_id ) )
+		return false;
+	$server_name = isset( $servers[ $server_id ]['name'] ) ?
+		$servers[$server_id]['name'] :
+		"Server $server_id";
+	if( ! isset( $servers[ $server_id ]['enable_auto_uid_numbers'] ) )
+		return false;
+	if( ! isset( $servers[ $server_id ]['auto_uid_number_mechanism'] ) )
+		pla_error( sprintf($lang['auto_update_not_setup'], $server_name));
+
+	// Based on the configured mechanism, go get the next available uidNumber!
+	$mechanism = $servers[$server_id]['auto_uid_number_mechanism'];
+
+	//
+	// case 1: uidpool mechanism
+	//
+	if( 0 == strcasecmp( $mechanism, 'uidpool' ) ) {
+		if( ! isset( $servers[ $server_id ][ 'auto_uid_number_uid_pool_dn' ] ) )
+			pla_error( sprintf( $lang['uidpool_not_set'], $server_name ) );
+		$uid_pool_dn = $servers[ $server_id ][ 'auto_uid_number_uid_pool_dn' ];
+		if( ! dn_exists( $server_id, $uid_pool_dn ) )
+			pla_error( sprintf( $lang['uidpool_not_exist'] , $uid_pool_dn ) );
+
+		$next_uid_number = get_object_attr( $server_id, $uid_pool_dn, 'uidNumber' );
+		$next_uid_number = intval( $next_uid_number[ 0 ] );
+		$next_uid_number++;
+
+		return $next_uid_number;
+
+	//
+	// case 2: search mechanism
+	//
+	} elseif( 0 == strcasecmp( $mechanism, 'search' ) ) {
+		if( ! isset( $servers[ $server_id ][ 'auto_uid_number_search_base' ] ) )
+			pla_error( sprintf( $lang['specified_uidpool'] , $server_name ) );
+		$base_dn = $servers[ $server_id ][ 'auto_uid_number_search_base' ];
+		$filter = "(uidNumber=*)";
+		$results = pla_ldap_search( $server_id, $filter, $base_dn, array('uidNumber'));
+		// lower-case all the inices so we can access them by name correctly
+		foreach( $results as $dn => $attrs )
+			foreach( $attrs as $attr => $vals ) {
+				unset( $results[$dn][$attr] );
+				$results[$dn][strtolower( $attr )] = $vals;
+			}
+
+		// construct a list of used uidNumbers
+		$uids = array();
+		foreach ($results as $result)
+			$uids[] = $result['uidnumber'];
+		$uids = array_unique( $uids );
+		if( count( $uids ) == 0 )
+			return false;
+		sort( $uids );
+		foreach( $uids as $uid )
+			$uid_hash[ $uid ] = 1;
+		// start with the least existing uidNumber and add 1
+		$uidNumber = intval( $uids[0] ) + 1;
+		// this loop terminates as soon as we encounter the next available uidNumber
+		while( isset( $uid_hash[ $uidNumber ] ) )
+			$uidNumber++;
+		return $uidNumber;
+	//
+	// No other cases allowed. The user has an error in the configuration
+	//
+	} else {
+		pla_error( sprintf( $lang['auto_uid_invalid_value'] , $mechanism) );
+	}
+}
 
 /*
  * Used to determine if the specified attribute is indeed a jpegPhoto
@@ -40,30 +320,32 @@ function is_jpeg_photo( $server_id, $attr_name )
  */
 function is_attr_binary( $server_id, $attr_name )
 {
-	require_once realpath( 'schema_functions.php' );
-	$schema_attrs = get_schema_attributes( $server_id );
+	@require_once realpath( 'schema_functions.php' );
 
 	if( 0 == strcasecmp( substr( $attr_name, strlen( $attr_name ) - 7 ), ";binary" ) )
 		return true;
-	if( isset( $schema_attrs[ strtolower( $attr_name ) ] ) ) {
-		$type = $schema_attrs[ strtolower( $attr_name ) ]->getType();
-		$syntax = $schema_attrs[ strtolower( $attr_name ) ]->getSyntaxOID();
-		if(	0 == strcasecmp( substr( $attr_name, strlen( $attr_name ) - 7 ), ";binary" ) ||		
-			0 == strcasecmp( $type, 'Certificate' ) || 
-			0 == strcasecmp( $type, 'Binary' ) || 
-			0 == strcasecmp( $attr_name, 'networkAddress' ) || 
-			0 == strcasecmp( $attr_name, 'userCertificate' ) || 
-			0 == strcasecmp( $attr_name, 'userSMIMECertificate' ) || 
-			$syntax == '1.3.6.1.4.1.1466.115.121.1.10' ||
-			$syntax == '1.3.6.1.4.1.1466.115.121.1.28' ||
-			$syntax == '1.3.6.1.4.1.1466.115.121.1.5' ||
-			$syntax == '1.3.6.1.4.1.1466.115.121.1.8' ||
-			$syntax == '1.3.6.1.4.1.1466.115.121.1.9' ) 
+
+	$schema_attr = get_schema_attribute( $server_id, $attr_name );
+	if( ! $schema_attr )
+		return false;
+
+	$type = $schema_attr->getType();
+	$syntax = $schema_attr->getSyntaxOID();
+
+	if(	0 == strcasecmp( substr( $attr_name, strlen( $attr_name ) - 7 ), ";binary" ) ||
+		0 == strcasecmp( $type, 'Certificate' ) ||
+		0 == strcasecmp( $type, 'Binary' ) ||
+		0 == strcasecmp( $attr_name, 'networkAddress' ) ||
+		0 == strcasecmp( $attr_name, 'userCertificate' ) ||
+		0 == strcasecmp( $attr_name, 'userSMIMECertificate' ) ||
+		$syntax == '1.3.6.1.4.1.1466.115.121.1.10' ||
+		$syntax == '1.3.6.1.4.1.1466.115.121.1.28' ||
+		$syntax == '1.3.6.1.4.1.1466.115.121.1.5' ||
+		$syntax == '1.3.6.1.4.1.1466.115.121.1.8' ||
+		$syntax == '1.3.6.1.4.1.1466.115.121.1.9' )
 			return true;
-		else
+	else
 			return false;
-	}
-	return false;
 }
 
 /*
@@ -78,9 +360,10 @@ function is_server_read_only( $server_id )
 	if( isset( $servers[$server_id]['read_only'] ) &&
 	    $servers[$server_id]['read_only'] == true )
 		return true;
-		
+
 	global $anonymous_bind_implies_read_only;
-	if( 0 == strcasecmp( "anonymous", get_logged_in_dn( $server_id ) ) &&
+
+	if( "anonymous" == get_logged_in_dn( $server_id ) &&
 	    isset( $anonymous_bind_implies_read_only ) &&
 	    $anonymous_bind_implies_read_only == true )
 		return true;
@@ -89,7 +372,7 @@ function is_server_read_only( $server_id )
 }
 
 /*
- * Given a DN and server ID, this function reads the DN's objectClasses and 
+ * Given a DN and server ID, this function reads the DN's objectClasses and
  * determines which icon best represents the entry. The results of this query
  * are cached in a session variable so it is not run *every* time the tree
  * browser changes, just when exposing new DNs that were not displayed
@@ -114,9 +397,9 @@ function get_icon( $server_id, $dn )
 		'$' == $rdn{ strlen($rdn) - 1 } )
 		return 'nt.png';
 	// Is it a person or some type of account/user?
-	elseif( in_array( 'person', $object_classes ) || 
+	elseif( in_array( 'person', $object_classes ) ||
 	    in_array( 'organizationalperson', $object_classes ) ||
-	    in_array( 'inetorgperson', $object_classes ) || 
+	    in_array( 'inetorgperson', $object_classes ) ||
 	    in_array( 'account', $object_classes ) ||
    	    in_array( 'posixaccount', $object_classes )  )
 		return 'user.png';
@@ -127,7 +410,7 @@ function get_icon( $server_id, $dn )
 	elseif( in_array( 'organizationalunit', $object_classes ) )
 		return 'ou.png';
 	// Is it a domain controler (dc)
-	elseif( in_array( 'dcobject', $object_classes ) || 
+	elseif( in_array( 'dcobject', $object_classes ) ||
 		in_array( 'domainrelatedobject', $object_classes ) )
 		return 'dc.png';
 	elseif( in_array( 'country', $object_classes ) )
@@ -136,11 +419,38 @@ function get_icon( $server_id, $dn )
 		return 'mail.png';
 	elseif( in_array( 'locality', $object_classes ) )
 		return 'locality.png';
-	elseif( in_array( 'posixgroup', $object_classes ) )
+	elseif( in_array( 'posixgroup', $object_classes ) ||
+		in_array( 'groupofnames', $object_classes ) )
 		return 'ou.png';
+	elseif( in_array( 'applicationprocess', $object_classes ) )
+		return 'process.png';
+	elseif( in_array( 'groupofuniquenames', $object_classes ) )
+		return 'uniquegroup.png';
+	elseif( in_array( 'iphost', $object_classes ) )
+		return 'host.png';
 	// Oh well, I don't know what it is. Use a generic icon.
 	else
 		return 'object.png';
+}
+
+/*
+ * Does the same thing as get_icon(), but it tries to fetch the icon name from the
+ * tree_icons session variable first. If not found, resorts to get_icon() and stores
+ * the icon nmae in the tree_icons session before returing the icon.
+ */
+function get_icon_use_cache( $server_id, $dn )
+{
+	@session_start();
+	if( session_is_registered( 'tree_icons' ) ) {
+		global $_SESSION;
+		if( isset( $_SESSION['tree_icons'][ $server_id ][ $dn ] ) ) {
+			return $_SESSION['tree_icons'][ $server_id ][ $dn ];
+		} else {
+			$icon = get_icon( $server_id, $dn );
+			$_SESSION['tree_icons'][ $server_id ][ $dn ] = $icon;
+			return $icon;
+		}
+	}
 }
 
 /*
@@ -158,58 +468,66 @@ function have_auth_info( $server_id )
 
 	$server = $servers[$server_id];
 
-	if( $server['auth_type'] == 'form' )
-	{
-		global $_COOKIE;
-		if( isset( $_COOKIE[ 'pla_login_dn_' . $server_id ] ) &&
-		    isset( $_COOKIE[ 'pla_pass_' . $server_id ] ) )
+	if( isset( $server['auth_type'] ) && $server['auth_type'] == 'form' ) {
+		// we don't look at get_logged_in_pass() cause it may be null for anonymous binds
+		// get_logged_in_dn() will never return null if someone is really logged in.
+		if( get_logged_in_dn( $server_id ) )
 			return true;
 		else
 			return false;
 	}
-	// whether or not the login_dn or pass is specified, we return 
+	// whether or not the login_dn or pass is specified, we return
 	// true here. (if they are blank, we do an anonymous bind anyway)
-	elseif( $server['auth_type'] == 'config' )
-	{
+	elseif( ! isset( $server['auth_type'] ) || $server['auth_type'] == 'config' ) {
 		return true;
 	}
 	else
 	{
-		pla_error( "Error: You have an error in your config file. The only two allowed 
-			values for 'auth_type' in the $servers section are 'config' and
-			'form'. You entered '" . htmlspecialchars($server['auth_type']) . "', which 
-			is not allowed. " );
+		global $lang;
+		pla_error( sprintf( $lang['error_auth_type_config'], htmlspecialchars($server['auth_type'])) );
 	}
 }
 
+/*
+ * Returns the password of the currently logged in DN (auth_type form only)
+ * or false if the current login is anonymous.
+ */
 function get_logged_in_pass( $server_id )
 {
+	if( ! is_numeric( $server_id ) )
+		return false;
+	$cookie_name = 'pla_login_pass_' . $server_id;
 	global $_COOKIE;
-	$pass = $_COOKIE[ 'pla_login_pass_' . $server_id ];
+	$pass = isset( $_COOKIE[ $cookie_name ] ) ? $_COOKIE[ $cookie_name ] : false;
 
 	if( $pass == '0' )
-		return false;
+		return null;
 	else
 		return $pass;
 }
+
+/*
+ * Returns the DN who is logged in currently to the given server, which may 
+ * either be a DN or the string 'anonymous'.
+ */
 function get_logged_in_dn( $server_id )
 {
-	global $_COOKIE;
-	$cookie_name = 'pla_login_dn_' . $server_id; 
-	if( isset( $_COOKIE[ $cookie_name ] ) )
-		$dn = $_COOKIE[ $cookie_name ];
-	else
+	if( ! is_numeric( $server_id ) )
 		return false;
+	$cookie_name = 'pla_login_dn_' . $server_id;
+	global $_COOKIE;
+	if( isset( $_COOKIE[ $cookie_name ] ) ) {
+		$dn = $_COOKIE[ $cookie_name ];
+	} else {
+		return false;
+	}
 
-	if( $dn == '0' )
-		return 'Anonymous';
-	else
-		return $dn;
+	return $dn;
 }
 
-/* 
+/*
  * Specify a $server_id (0,1,2...) based on the order it appears in config.php.
- * The first is 0, the second is 1, etc. You rarely will need to consult 
+ * The first is 0, the second is 1, etc. You rarely will need to consult
  * config.php since those values are usually generated dynamically in hrefs.
  */
 function pla_ldap_connect( $server_id )
@@ -224,7 +542,7 @@ function pla_ldap_connect( $server_id )
 
 	// cache the connection, so if we are called multiple
 	// times, we don't have to reauthenticate with the LDAP server
-	
+
 	static $conns;
 	if( isset( $conns[$server_id] ) && $conns[$server_id] )
 		return $conns[$server_id];
@@ -234,17 +552,17 @@ function pla_ldap_connect( $server_id )
 	if( ! $port ) $port = 389;
 
 	$conn = @ldap_connect( $host, $port );
-	
+
 	if( ! $conn ) return false;
-	
+
 	// go with LDAP version 3 if possible (needed for renaming and Novell schema fetching)
 	@ldap_set_option( $conn, LDAP_OPT_PROTOCOL_VERSION, 3 );
 
 	// try to fire up TLS is specified in the config
 	if( $servers[ $server_id ][ 'tls' ] == true ) {
-		function_exists( 'ldap_start_tls' ) or pla_error( "Your PHP install does not support TLS" );
-		@ldap_start_tls( $conn ) or pla_error( "Could not start TLS.<br />Please check your ".
-							   "LDAP server configuration." );
+		global $lang;
+		function_exists( 'ldap_start_tls' ) or pla_error( $lang['php_install_not_supports_tls'] );
+		@ldap_start_tls( $conn ) or pla_error( $lang['could_not_start_tls']);
 	}
 
 	// grab the auth info based on the auth_type for this server
@@ -252,19 +570,18 @@ function pla_ldap_connect( $server_id )
 		$login_dn = $servers[$server_id]['login_dn'];
 		$login_pass = $servers[$server_id]['login_pass'];
 	} elseif( $servers[ $server_id ][ 'auth_type' ] == 'form' ) {
-		global $_COOKIE;
-		$login_dn = $_COOKIE['pla_login_dn_' . $server_id ];
-		$login_pass = $_COOKIE['pla_pass_' . $server_id ];
+		$login_dn = get_logged_in_dn( $server_id );
+		$login_pass = get_logged_in_pass( $server_id );
 
 		// Was this an anonyous bind (the cookie stores 0 if so)?
-		if( '0' == $login_dn ) {
+		if( 'anonymous' == $login_dn ) {
 			$login_dn = null;
 			$login_pass = null;
 		}
 	} else {
-		pla_error( "You have an error in your config file. auth_type of " .
-				htmlspecialchars( $servers[ $server_id ][ 'auth_type' ] ) .
-				" is not valid." );
+		global $lang;
+		pla_error( sprintf( $lang['auth_type_not_valid'],
+                           htmlspecialchars( $servers[ $server_id ][ 'auth_type' ] )));
 	}
 
 	$res = @ldap_bind( $conn, $login_dn, $login_pass );
@@ -277,14 +594,14 @@ function pla_ldap_connect( $server_id )
 	return $conn;
 }
 
-/* 
+/*
  * Returns an array listing the DNs contained by the specified $dn
  */
 function get_container_contents( $server_id, $dn, $size_limit=0 )
 {
 	$con = pla_ldap_connect( $server_id );
 	if( ! $con ) return false;
-	
+
 	$search = @ldap_list( $con, $dn, 'objectClass=*', array( 'dn' ), 1, $size_limit );
 	if( ! $search )
 		return array();
@@ -300,8 +617,8 @@ function get_container_contents( $server_id, $dn, $size_limit=0 )
 	return $return;
 }
 
-/* 
- * Builds the initial tree that is stored in the session variable 'tree'. 
+/*
+ * Builds the initial tree that is stored in the session variable 'tree'.
  * Simply returns an array with an entry for each active server in
  * config.php
  */
@@ -312,22 +629,15 @@ function build_initial_tree()
 	foreach( $servers as $id => $server ) {
 		if( $server['host'] == '' ) {
 			continue;
-			/*
-			$root_dn = try_to_get_root_dn( $id );
-			echo "Root is $root_dn<br />";
-			if( $root_dn )
-				$tree[$id][$root_dn] = array();
-			*/
 		}
 
-		$dn = $server['base'];		
 		$tree[$id] = array();
 	}
 
 	return $tree;
 }
 
-/* 
+/*
  * Builds the initial array that stores the icon-lookup for each DN in the tree browser
  */
 function build_initial_tree_icons()
@@ -351,7 +661,10 @@ function get_entry_system_attrs( $server_id, $dn )
 	$conn = pla_ldap_connect( $server_id );
 	if( ! $conn ) return false;
 
-	$search = @ldap_read( $conn, $dn, '(objectClass=*)', array("+"), 0, 200, 0, LDAP_DEREF_ALWAYS );
+	$attrs = array( 'creatorsname', 'createtimestamp', 'modifiersname', 
+			'structuralObjectClass', 'entryUUID',  'modifytimestamp', 
+			'subschemaSubentry', 'hasSubordinates', '+' );
+	$search = @ldap_read( $conn, $dn, '(objectClass=*)', $attrs, 0, 0, 0, LDAP_DEREF_ALWAYS );
 
 	if( ! $search )
 		return false;
@@ -360,7 +673,7 @@ function get_entry_system_attrs( $server_id, $dn )
 	$attrs = ldap_get_attributes( $conn, $entry );
 	$count = $attrs['count'];
 	unset( $attrs['count'] );
-	//echo "<pre>"; print_r( $attrs );
+	$return_attrs = array();
 	for( $i=0; $i<$count; $i++ ) {
 		$attr_name = $attrs[$i];
 		unset( $attrs[$attr_name]['count'] );
@@ -369,7 +682,7 @@ function get_entry_system_attrs( $server_id, $dn )
 	return $return_attrs;
 }
 
-/* 
+/*
  * Returns the attribute/value pairs for the given $dn on the given
  * $server_id. If the attribute is single valued, it will return
  * a single value for that attribute. Otherwise, it will return an
@@ -393,17 +706,20 @@ function get_object_attrs( $server_id, $dn, $lower_case_attr_names = false )
 	$conn = pla_ldap_connect( $server_id );
 	if( ! $conn ) return false;
 
-	$search = @ldap_read( $conn, $dn, '(objectClass=*)', array( ), 0, 200, 0, LDAP_DEREF_ALWAYS );
-	
+	$search = @ldap_read( $conn, $dn, '(objectClass=*)', array( ), 0, 0, 0, LDAP_DEREF_ALWAYS );
+
 	if( ! $search )
 		return false;
 
 	$entry = ldap_first_entry( $conn, $search );
+
+	if( ! $entry )
+		return false;
+	
 	$attrs = ldap_get_attributes( $conn, $entry );
 
-	if( ! $attrs || $attrs['count'] == 0 ) {
+	if( ! $attrs || $attrs['count'] == 0 )
 		return false;
-	}
 
 	$num_attrs = $attrs['count'];
 	unset( $attrs['count'] );
@@ -413,10 +729,9 @@ function get_object_attrs( $server_id, $dn, $lower_case_attr_names = false )
 		unset( $attrs[$i] );
 
 	$return_array = array();
-        foreach( $attrs as $attr => $vals ) {
+    foreach( $attrs as $attr => $vals ) {
 		if( $lower_case_attr_names )
 			$attr = strtolower( $attr );
-		$count = $vals['count'];
 		unset( $vals['count'] );
 		$return_array[ $attr ] = $vals;
 	}
@@ -426,8 +741,8 @@ function get_object_attrs( $server_id, $dn, $lower_case_attr_names = false )
 	return $return_array;
 }
 
-/* 
- * Returns true if the passed string $temp contains all printable 
+/*
+ * Returns true if the passed string $temp contains all printable
  * ASCII characters. Otherwise (like if it contains binary data),
  * returns false.
  */
@@ -442,7 +757,7 @@ function is_printable_str($temp) {
 	return true;
 }
 
-/* 
+/*
  * Much like get_object_attrs(), but only returns the entry for
  * one attribute of an object. Again, if the attribute contains
  * multiple values, returns an array of values. Otherwise, it
@@ -463,6 +778,9 @@ function get_object_attr( $server_id, $dn, $attr )
  * A do-it-all ldap_search function. You can even specify the search scope. Other than
  * that, it's pretty much the same as the PHP ldap_search() call, except it returns
  * an array of results, rather than an LDAP result resource.
+ *
+ * NOTE: This function will use a lot of memory on large searches. You should consider 
+ * using the PHP LDAP API directly for large searches (ldap_next_entry(), ldap_next_attribute(), etc)
  */
 function pla_ldap_search( $server_id, $filter, $base_dn=null, $attrs=array(), $scope='sub', $sort_results=true )
 {
@@ -480,20 +798,21 @@ function pla_ldap_search( $server_id, $filter, $base_dn=null, $attrs=array(), $s
 
 	switch( $scope ) {
 		case 'base':
-			$search = @ldap_read( $ds, $base_dn, $filter, $attrs, 0, 200, 0, LDAP_DEREF_ALWAYS );
+			$search = @ldap_read( $ds, $base_dn, $filter, $attrs, 0, 0, 0, LDAP_DEREF_ALWAYS );
 			break;
 		case 'one':
-			$search = @ldap_list( $ds, $base_dn, $filter, $attrs, 0, 200, 0, LDAP_DEREF_ALWAYS );
+			$search = @ldap_list( $ds, $base_dn, $filter, $attrs, 0, 0, 0, LDAP_DEREF_ALWAYS );
 			break;
 		case 'sub':
 		default:
-			$search = @ldap_search( $ds, $base_dn, $filter, $attrs, 0, 200, 0, LDAP_DEREF_ALWAYS );
+			$search = @ldap_search( $ds, $base_dn, $filter, $attrs, 0, 0, 0, LDAP_DEREF_ALWAYS );
 			break;
 	}
 
 	if( ! $search )
 		return array();
 
+	$return = array();
 	//get the first entry identifier
 	if( $entry_id = ldap_first_entry($ds,$search) )
 
@@ -510,7 +829,7 @@ function pla_ldap_search( $server_id, $filter, $base_dn=null, $attrs=array(), $s
 			//get the first attribute of the entry
 			if($attr = ldap_first_attribute($ds,$entry_id,$attrs))
 
-				//iterate over the attributes 
+				//iterate over the attributes
 				while($attr){
 				  if( is_attr_binary($server_id,$attr))
 						$values = ldap_get_values_len($ds,$entry_id,$attr);
@@ -582,7 +901,7 @@ function check_server_id( $server_id )
 
 /*
  * Used to generate a random salt for crypt-style passwords
- * --- added 20021125 by bayu irawan <bayuir@divnet.telkom.co.id> --- 
+ * --- added 20021125 by bayu irawan <bayuir@divnet.telkom.co.id> ---
  * --- ammended 20030625 by S C Rigler <srigler@houston.rr.com> ---
  */
 function random_salt( $length )
@@ -622,7 +941,7 @@ function get_avail_server_id()
 }
 
 /*
- * Given a DN string, this returns the 'RDN' portion of the string. 
+ * Given a DN string, this returns the 'RDN' portion of the string.
  * For example. given 'cn=Manager,dc=example,dc=com', this function returns
  * 'cn=Manager' (it is really the exact opposite of get_container()).
  */
@@ -640,7 +959,7 @@ function get_rdn( $dn, $include_attrs=0 )
 }
 
 /*
- * Given a DN string, this returns the 'container' portion of the string. 
+ * Given a DN string, this returns the 'container' portion of the string.
  * For example. given 'cn=Manager,dc=example,dc=com', this function returns
  * 'dc=example,dc=com'.
  */
@@ -669,16 +988,18 @@ function pla_verbose_error( $err_no )
 
 	if( ! file_exists( realpath( $err_codes_file ) ) )
 		return false;
-	if( ! is_readable( realpath( $err_codes_file ) ) ) 
+	if( ! is_readable( realpath( $err_codes_file ) ) )
 		return false;
 	if( ! ($f = fopen( realpath( $err_codes_file ), 'r' ) ) )
 		return false;
 
 	$contents = fread( $f, filesize( $err_codes_file ) );
+	$entries = array();
 	preg_match_all( "/0x[A-Fa-f0-9][A-Za-z0-9]\s+[0-9A-Za-z_]+\s+\"[^\"]*\"\n/", $contents, $entries );
 	$err_codes = array();
 	foreach( $entries[0] as $e )
 	{
+		$entry = array();
 		preg_match( "/(0x[A-Za-z0-9][A-Za-z0-9])\s+([0-9A-Za-z_]+)\s+\"([^\"]*)\"/", $e, $entry );
 		$hex_code = $entry[1];
 		$title    = $entry[2];
@@ -692,35 +1013,36 @@ function pla_verbose_error( $err_no )
 
 /*
  * Spits out an HTML-formatted error string. If you specify the optional
- * parameters, pla_error will lookup the error number and display a 
+ * parameters, pla_error will lookup the error number and display a
  * verbose message in addition to the message you pass it.
  */
-function pla_error( $msg, $ldap_err_msg=null, $ldap_err_no=-1 )
+function pla_error( $msg, $ldap_err_msg=null, $ldap_err_no=-1, $fatal=true )
 {
 	include_once 'header.php';
+	global $lang;
 
 	?>
 	<center>
 	<table class="error"><tr><td class="img"><img src="images/warning.png" /></td>
-	<td><center><h2>Error</h2></center>
+	<td><center><h2><?php echo $lang['ferror_error'];?></h2></center>
 	<?php echo $msg; ?>
+	<br />
 	<br />
 	<?php
 
 	if( $ldap_err_msg )
-		echo "<b>LDAP said</b>: " . htmlspecialchars( $ldap_err_msg ) . "<br /><br />\n";
+		echo sprintf($lang['ldap_said'], htmlspecialchars( $ldap_err_msg ));
 
 	if( $ldap_err_no != -1 ) {
 		$ldap_err_no = ( '0x' . str_pad( dechex( $ldap_err_no ), 2, 0, STR_PAD_LEFT ) );
 		$verbose_error = pla_verbose_error( $ldap_err_no );
 
 		if( $verbose_error ) {
-			echo "<b>Error number</b>: $ldap_err_no <small>(" .
-				$verbose_error['title'] . ")</small><br /><br />\n";
-			echo "<b>Description</b>: " . $verbose_error['desc'] . "<br /><br />\n\n";
+			echo sprintf( $lang['ferror_number'], $ldap_err_no, $verbose_error['title']);
+			echo sprintf( $lang['ferror_discription'], $verbose_error['desc']);
 		} else {
-			echo "<b>Error number</b>: $ldap_err_no<br /><br />\n";
-			echo "<b>Description</b>: (no description available)<br />\n\n";
+			echo sprintf($lang['ferror_number_short'], $ldap_err_no);
+			echo $lang['ferror_discription_short'];
 		}
 	}
 	?>
@@ -728,14 +1050,62 @@ function pla_error( $msg, $ldap_err_msg=null, $ldap_err_no=-1 )
 	<br />
 	<center>
 	<small>
-		Is this a phpLDAPadmin bug? If so, please 
-		<a href="<?php echo get_href( 'add_bug' ); ?>">report it</a>.
+		<?php echo sprintf($lang['ferror_submit_bug'] , get_href( 'add_bug' ));?>
 	</small>
 	</center>
 	</td></tr></table>
 	</center>
 	<?php
-	die();
+
+	if( $fatal )
+		die();
+}
+
+/*
+ * This is our custom error handling function. When a PHP error occurs,
+ * php will call this so we can give the user a link to the bug submission
+ * page, where they can report it. Whoohoo.
+ */
+function pla_error_handler( $errno, $errstr, $file, $lineno )
+{
+	global $lang;
+
+	// error_reporting will be 0 if the error context occurred
+	// within a function call with '@' preprended (ie, @ldap_bind() );
+	// So, don't report errors if the caller has specifically
+	// disabled them with '@'
+	if( 0 == ini_get( 'error_reporting' ) || 0 == error_reporting() )
+			return;
+
+	$file = basename( $file );
+	$caller = basename( $_SERVER['PHP_SELF'] );
+	$errtype = "";
+	switch( $errno ) {
+		case E_ERROR: $errtype = "E_ERROR"; break;
+		case E_WARNING: $errtype = "E_WARNING"; break;
+		case E_PARSE: $errtype = "E_PARSE"; break;
+		case E_NOTICE: $errtype = "E_NOTICE"; break;
+		case E_CORE_ERROR: $errtype = "E_CORE_ERROR"; break;
+		case E_CORE_WARNING: $errtype = "E_CORE_WARNING"; break;
+		case E_COMPILE_ERROR: $errtype = "E_COMPILE_ERROR"; break;
+		case E_COMPILE_WARNING: $errtype = "E_COMPILE_WARNING"; break;
+		case E_USER_ERROR: $errtype = "E_USER_ERROR"; break;
+		case E_USER_WARNING: $errtype = "E_USER_WARNING"; break;
+		case E_USER_NOTICE: $errtype = "E_USER_NOTICE"; break;
+		case E_ALL: $errtype = "E_ALL"; break;
+		default: $errtype = $lang['ferror_unrecognized_num'] . $errno;
+	}
+
+	if( $errno == E_NOTICE ) {
+		echo sprintf($lang['ferror_nonfatil_bug'], $errstr, $errtype, $file,
+                             $lineno, $caller, pla_version(), phpversion(), php_sapi_name(),
+                             $_SERVER['SERVER_SOFTWARE'], get_href('add_bug'));
+		return;
+	}
+
+	pla_error( sprintf($lang['ferror_congrats_found_bug'], $errstr, $errtype, $file, 
+							$lineno, basename($_SERVER['PHP_SELF']), pla_version(), 
+							phpversion(), php_sapi_name(), $_SERVER['SERVER_SOFTWARE']));
 }
 
 /*
@@ -771,7 +1141,7 @@ function dn_exists( $server_id, $dn )
 		return false;
 
 	$search_result = @ldap_read( $ds, $dn, 'objectClass=*', array('dn') );
-	
+
 	if( ! $search_result )
 		return false;
 
@@ -792,6 +1162,7 @@ function draw_jpeg_photos( $server_id, $dn, $draw_delete_buttons=false )
 {
 	global $jpeg_temp_dir;
 	global $jpeg_tmp_keep_time;
+	global $lang;
 
 	$conn = pla_ldap_connect( $server_id );
 	$search_result = ldap_search( $conn, $dn, 'objectClass=*', array( 'jpegPhoto' ) );
@@ -800,17 +1171,18 @@ function draw_jpeg_photos( $server_id, $dn, $draw_delete_buttons=false )
 	echo "<table align=\"right\"><td><center>\n\n";
 	// for each jpegPhoto in the entry, draw it (there may be only one, and that's okay)
 	$jpeg_data = ldap_get_values_len( $conn, $entry, "jpegphoto");
-	for( $i=0; $i<$jpeg_data['count']; $i++ ) 
+	for( $i=0; $i<$jpeg_data['count']; $i++ )
 	{
-		$jpeg_filename = $jpeg_temp_dir . '/' . basename( tempnam ('.', 'djp') );
-		$jpeg_filename = realpath( $jpeg_filename );
+		// ensures that the photo is written to the specified jpeg_temp_dir
+		$jpeg_temp_dir = realpath($jpeg_temp_dir.'/');
+		$jpeg_filename = tempnam($jpeg_temp_dir.'/', 'djp');
 		$outjpeg = fopen($jpeg_filename, "wb");
 		fwrite($outjpeg, $jpeg_data[$i]);
 		fclose ($outjpeg);
 		$jpeg_data_size = filesize( $jpeg_filename );
 		if( $jpeg_data_size < 6 ) {
-			echo "jpegPhoto contains errors<br />";
-			echo '<a href="javascript:deleteAttribute( \'jpegPhoto\' );" style="color:red; font-size: 75%">Delete Photo</a>';
+			echo $lang['jpeg_contains_errors'];
+			echo '<a href="javascript:deleteAttribute( \'jpegPhoto\' );" style="color:red; font-size: 75%">'. $lang['delete_photo'] .'</a>';
 			continue;
 		}
 
@@ -820,7 +1192,7 @@ function draw_jpeg_photos( $server_id, $dn, $draw_delete_buttons=false )
 		if( $width > 300 ) {
 			$scale_factor = 300 / $width;
 			$img_width = 300;
-			$img_height = $height * $scale_factor; 
+			$img_height = $height * $scale_factor;
 		} else {
 			$img_width = $width;
 			$img_height = $height;
@@ -842,20 +1214,20 @@ function draw_jpeg_photos( $server_id, $dn, $draw_delete_buttons=false )
 	if( ! isset( $jpeg_tmp_keep_time ) )
 		$jpeg_tmp_keep_time = 120;
 
-	if( $jpeg_tmp_keep_time == 0 ) 
+	if( $jpeg_tmp_keep_time == 0 )
 		$jpeg_tmp_keep_time = 10;
 
 	// delete old jpeg files.
 	$jpegtmp_wildcard = "djp.*";
 	$handle = opendir($jpeg_temp_dir);
 	while (($file = readdir($handle)) != false)
-		if (eregi($jpegtmp_wildcard, $file)) 
+		if (eregi($jpegtmp_wildcard, $file))
 		{
 			$file = "$jpeg_temp_dir/$file";
 			if ((time() - filemtime($file)) > $jpeg_tmp_keep_time)
 				unlink ( $file );
 		}
-	closedir($handle); 
+	closedir($handle);
 
 }
 
@@ -867,13 +1239,13 @@ function draw_jpeg_photos( $server_id, $dn, $draw_delete_buttons=false )
  */
 function try_to_get_root_dn( $server_id )
 {
-	if( ! have_auth_info( $server_id ) ) 
+	if( ! have_auth_info( $server_id ) )
 		return false;
 
 	$ds = pla_ldap_connect( $server_id );
-	if( ! $ds ) 
+	if( ! $ds )
 		return false;
-	
+
 	$r = @ldap_read( $ds, '', 'objectClass=*', array( 'namingContexts' ) );
 	if( ! $r )
 		return false;
@@ -888,11 +1260,13 @@ function try_to_get_root_dn( $server_id )
 }
 
 /*
- * Hashes a password and returns the hash based on the enc_type, which can be one of 
- * crypt, md5, sha, or clear.
+ * Hashes a password and returns the hash based on the enc_type, which can be one of
+ * crypt, md5, md5crypt, sha, smd5, ssha, or clear.
  */
 function password_hash( $password_clear, $enc_type )
 {
+	global $lang;
+	$enc_type = strtolower( $enc_type );
 	switch( $enc_type )
 	{
 		case 'crypt':
@@ -903,20 +1277,37 @@ function password_hash( $password_clear, $enc_type )
 			break;
 		case 'md5crypt':
 			if( ! defined( 'CRYPT_MD5' ) || 0 == CRYPT_MD5 )
-				pla_error( "Your PHP install does not support blowfish encryption." );
+				pla_error( $lang['install_not_support_blowfish'] );
 			$new_value = '{crypt}' . crypt( $password_clear , '$1$' . random_salt(9) );
 			break;
 		case 'blowfish':
 			if( ! defined( 'CRYPT_BLOWFISH' ) || 0 == CRYPT_BLOWFISH )
-				pla_error( "Your PHP install does not support blowfish encryption." );
+				pla_error( $lang['install_not_support_blowfish'] );
 			$new_value = '{crypt}' . crypt( $password_clear , '$2$' . random_salt(13) );
 			break;
 		case 'sha':
 			if( function_exists( 'mhash' ) ) {
 				$new_value = '{sha}' . base64_encode( mhash( MHASH_SHA1, $password_clear) );
 			} else {
-				pla_error( "Your PHP install does not have the mhash() function." . 
-				" Cannot do SHA hashes." );
+				pla_error( $lang['install_no_mash'] );
+			}
+			break;
+		case 'ssha':
+			if( function_exists( 'mhash' ) && function_exists( 'mhash_keygen_s2k' ) ) {
+				mt_srand( (double) microtime() * 1000000 );
+				$salt = mhash_keygen_s2k( MHASH_SHA1, $password_clear, substr( pack( "h*", md5( mt_rand() ) ), 0, 8 ), 4 );
+				$new_value = "{ssha}".base64_encode( mhash( MHASH_SHA1, $password_clear.$salt ).$salt );
+			} else {
+				pla_error( $lang['install_no_mash'] );
+			}
+			break;
+		case 'smd5':
+			if( function_exists( 'mhash' ) && function_exists( 'mhash_keygen_s2k' ) ) {
+				mt_srand( (double) microtime() * 1000000 );
+				$salt = mhash_keygen_s2k( MHASH_MD5, $password_clear, substr( pack( "h*", md5( mt_rand() ) ), 0, 8 ), 4 );
+				$new_value = "{smd5}".base64_encode( mhash( MHASH_SHA1, $password_clear.$salt ).$salt );
+			} else {
+				pla_error( $lang['install_no_mash'] );
 			}
 			break;
 		case 'clear':
@@ -947,7 +1338,7 @@ function draw_chooser_link( $form_element )
 	$href = "javascript:dnChooserPopup('$form_element');";
 	$title = $lang['chooser_link_tooltip'];
 	echo "<a href=\"$href\" title=\"$title\"><img src=\"images/find.png\" /></a>";
-	echo "<a href=\"$href\" title=\"$title\">browse</a>\n";
+	echo "<a href=\"$href\" title=\"$title\">". $lang['fbrowse'] ."</a>\n";
 }
 
 function get_values($link_id,$entry_id,$attr){
@@ -959,7 +1350,7 @@ function get_values($link_id,$entry_id,$attr){
 	}
 	return $values;
 }
- 
+
 /*
 function utf8_decode($str)
 {
@@ -1025,6 +1416,17 @@ function get_href( $type ) {
 	case 'add_rfe': return "http://sourceforge.net/tracker/?func=add&amp;group_id=$group_id&amp;atid=$rfe_atid";
 	default: return null;
 	}
+}
+
+/*
+ * Returns the current time as a double (including micro-seconds).
+ */
+function utime ()
+{
+	$time = explode( " ", microtime());
+ 	$usec = (double)$time[0];
+ 	$sec = (double)$time[1];
+ 	return $sec + $usec;
 }
 
 ?>

@@ -27,13 +27,12 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 $children = get_container_contents( $server_id, $dn );
 $has_children = count($children)>0 ? true : false;
 
-?>
+include 'header.php'; ?>
 
-<?php include 'header.php'; ?>
 <body>
 
-<h3 class="title">Delete <b><?php echo htmlspecialchars( utf8_decode( $rdn ) ); ?></b></h3>
-<h3 class="subtitle">Server: <b><?php echo $server_name; ?></b> &nbsp;&nbsp;&nbsp; Distinguished Name: <b><?php echo htmlspecialchars( utf8_decode( $dn ) ); ?></b></h3>
+<h3 class="title">Delete <b><?php echo htmlspecialchars( ( $rdn ) ); ?></b></h3>
+<h3 class="subtitle">Server: <b><?php echo $server_name; ?></b> &nbsp;&nbsp;&nbsp; Distinguished Name: <b><?php echo htmlspecialchars( ( $dn ) ); ?></b></h3>
 
 <?php if( 0 == strcasecmp( $dn, $servers[$server_id]['base'] ) ) { ?>
 
@@ -75,7 +74,7 @@ Take into consideration aliases and other such things that may cause problems.</
 	<td>
 	<center>
 	<form action="rdelete.php" method="post">
-	<input type="hidden" name="dn" value="<?php echo $encoded_dn; ?>" />
+	<input type="hidden" name="dn" value="<?php echo $dn; ?>" />
 	<input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
 	<input type="submit" class="scary" value="Delete all <?php echo ($sub_tree_count); ?> objects" />
 	</form>
@@ -84,7 +83,7 @@ Take into consideration aliases and other such things that may cause problems.</
 	<td>
 	<center>
 	<form action="edit.php" method="get">
-	<input type="hidden" name="dn" value="<?php echo $encoded_dn; ?>" />
+	<input type="hidden" name="dn" value="<?php echo $dn; ?>" />
 	<input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
 	<input type="submit" name="submit" value="Cancel" class="cancel" />
 	</form>
@@ -102,7 +101,7 @@ A list of all the <?php echo ($sub_tree_count); ?> <acronym title="Distinguished
 <?php $i=0; ?>
 <?php foreach( $s as $dn => $junk ) { ?>
 	<?php $i++; ?>
-	<option><?php echo $i; ?>. <?php echo htmlspecialchars( utf8_decode( $dn ) ); ?></option>
+	<option><?php echo $i; ?>. <?php echo htmlspecialchars( ( $dn ) ); ?></option>
 <?php } ?>
 
 </select>
@@ -118,7 +117,7 @@ A list of all the <?php echo ($sub_tree_count); ?> <acronym title="Distinguished
 
 Are you sure you want to permanently delete this object?<br />
 <br />
-<nobr><acronym title="Distinguished Name">DN</acronym>:  <b><?php echo htmlspecialchars(utf8_decode($dn)); ?></b><nobr><br />
+<nobr><acronym title="Distinguished Name">DN</acronym>:  <b><?php echo htmlspecialchars(($dn)); ?></b><nobr><br />
 <nobr>Server: <b><?php echo htmlspecialchars($server_name); ?></b></nobr><br />
 <br />
 <table width="100%">
@@ -126,7 +125,7 @@ Are you sure you want to permanently delete this object?<br />
 	<td>
 	<center>
 	<form action="delete.php" method="post">
-	<input type="hidden" name="dn" value="<?php echo $encoded_dn; ?>" />
+	<input type="hidden" name="dn" value="<?php echo $dn; ?>" />
 	<input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
 	<input type="submit" name="submit" value="Delete It" class="scary" />
 	</center>
@@ -136,7 +135,7 @@ Are you sure you want to permanently delete this object?<br />
 	<td>
 	<center>
 	<form action="edit.php" method="get">
-	<input type="hidden" name="dn" value="<?php echo $encoded_dn; ?>" />
+	<input type="hidden" name="dn" value="<?php echo $dn; ?>" />
 	<input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
 	<input type="submit" name="submit" value="Cancel" class="cancel" />
 	</form>

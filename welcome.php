@@ -1,4 +1,7 @@
-<?php include 'header.php'; ?>
+<?php 
+	include 'common.php'; 
+	include 'header.php'; 
+?>
 
 <center>
 <br />
@@ -6,5 +9,9 @@
 <br />
 <img src="images/logo.jpg" /><br />
 <br />
-Use the menu to the left to navigate.
+<?php echo $lang['welcome_note']; ?>
 </center>
+
+</body>
+
+</html>

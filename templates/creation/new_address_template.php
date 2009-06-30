@@ -10,9 +10,7 @@ $container = $_POST['container'];
 $server_id = $_POST['server_id'];
 
 // Unique to this template
-$step = $_POST['step'];
-if( ! $step )
-	$step = 1;
+$step = isset( $_POST['step'] ) ? $_POST['step'] : 1;
 
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
@@ -56,7 +54,7 @@ function autoFillCommonName( form )
 <form action="creation_template.php" method="post" id="address_form" name="address_form">
 <input type="hidden" name="step" value="2" />
 <input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
-<input type="hidden" name="template" value="<?php echo $_POST['template']; ?>" />
+<input type="hidden" name="template" value="<?php echo htmlspecialchars( $_POST['template'] ); ?>" />
 
 <center>
 <table class="confirm">

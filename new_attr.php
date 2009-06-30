@@ -5,7 +5,7 @@
  * Adds an attribute/value pair to an object
  *
  * Variables that come in as POST vars:
- *  - dn (rawurlencoded)
+ *  - dn
  *  - server_id
  *  - attr
  *  - val
@@ -14,11 +14,12 @@
 
 require 'common.php';
 
-$dn = rawurldecode( $_POST['dn'] );
+
 $server_id = $_POST['server_id'];
 $attr = $_POST['attr'];
-$val  = $_POST['val'];
+$val  = isset( $_POST['val'] ) ? $_POST['val'] : false;;
 $val = utf8_encode( $val );
+$dn = $_POST['dn'] ;
 $encoded_dn = rawurlencode( $dn );
 $encoded_attr = rawurlencode( $attr );
 $is_binary_val = isset( $_POST['binary'] ) ? true : false;
@@ -47,10 +48,11 @@ if( $is_binary_val ) {
 // chosen in config.php. 
 if( 0 == strcasecmp( $attr, 'userpassword' ) )
 {
-	if( $servers[$server_id]['default_hash'] != '' ) {
+	if( isset( $servers[$server_id]['default_hash'] ) &&
+		$servers[$server_id]['default_hash'] != '' )
+	{
 		$enc_type = $servers[$server_id]['default_hash'];
-		$new_val = password_hash( $new_val, $enc_type );
-		$val = $new_val;
+		$val = password_hash( $val, $enc_type );
 	}
 }
 
@@ -60,6 +62,6 @@ $new_entry = array( $attr => $val );
 $result = @ldap_mod_add( $ds, $dn, $new_entry );
 
 if( $result )
-	header( "Location: edit.php?server_id=$server_id&dn=$encoded_dn&updated_attr=$encoded_attr" );
+	header( "Location: edit.php?server_id=$server_id&dn=$encoded_dn&modified_attrs[]=$encoded_attr" );
 else
 	pla_error( "Failed to add the attribute.", ldap_error( $ds ) , ldap_errno( $ds ) );

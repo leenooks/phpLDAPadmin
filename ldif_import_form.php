@@ -21,27 +21,20 @@ include 'header.php'; ?>
 
 <body>
 
-<h3 class="title">Import LDIF File</h3>
-<h3 class="subtitle">Server: <b><?php echo htmlspecialchars( $server_name ); ?></b></h3>
+<h3 class="title"><?php echo $lang['import_ldif_file_title']?></h3>
+<h3 class="subtitle"><?php echo $lang['server']?>: <b><?php echo htmlspecialchars( $server_name ); ?></b></h3>
 
-
-<br />
-<br />
-<center><i>This is an experimental and untested feature. Proceed at your own risk.</i>
-<br />
-<i>The add operation is the only operation currently supported.</i>
-</center>
 <br />
 <br />
 
-Select an LDIF file:<br />
+<?php echo $lang['select_ldif_file']?><br />
 <br />
 
 <form action="ldif_import.php" method="post" class="new_value" enctype="multipart/form-data">
 <input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
 <input type="file" name="ldif_file" /><br />
 <br />
-<input type="submit" value="Proceed &gt;&gt;" />
+<input type="submit" value="<?php echo $lang['select_ldif_file_proceed']?>" />
 </form>
 
 </body>

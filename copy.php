@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /*
  * copy.php
@@ -10,52 +10,54 @@
  *  - server_id
  */
 
-require 'common.php';
+require realpath( 'common.php' );
 
 session_start();
 
-$source_dn = rawurldecode( $_POST['old_dn'] );
-$dest_dn = utf8_encode( $_POST['new_dn'] );
-$encoded_dn = rawurlencode( $old_dn );
+$source_dn =  $_POST['old_dn'];
+$dest_dn = $_POST['new_dn'];
+$encoded_dn = rawurlencode( $source_dn );
 $source_server_id = $_POST['server_id'];
 $dest_server_id = $_POST['dest_server_id'];
 $do_recursive = ( isset( $_POST['recursive'] ) && $_POST['recursive'] == 'on' ) ? true : false;
 
 if( is_server_read_only( $dest_server_id ) )
-	pla_error( "You cannot perform updates while server is in read-only mode" );
+	pla_error( $lang['copy_server_read_only'] );
 
-check_server_id( $source_server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $source_server_id ) );
-have_auth_info( $source_server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
-check_server_id( $dest_server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $dest_server_id ) );
-have_auth_info( $dest_server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
+check_server_id( $source_server_id ) or pla_error( $lang['bad_server_id'] );
+have_auth_info( $source_server_id ) or pla_error( $lang['not_enough_login_info'] );
+check_server_id( $dest_server_id ) or pla_error( $lang['bad_server_id'] );
+have_auth_info( $dest_server_id ) or pla_error( $lang['not_enough_login_info'] );
 
 include 'header.php';
 
 /* Error checking */
 if( 0 == strlen( trim( $dest_dn ) ) )
-	pla_error( "You left the destination DN blank." );
-
-if( strcasecmp( $source_dn,$dest_dn ) == 0 && $source_server_id == $dest_server_id )
-	pla_error( "The source and destination DN are the same." );
+	pla_error( $lang['copy_dest_dn_blank'] );
+if( dn_exists( $dest_server_id, $dest_dn ) )
+	pla_error( sprintf( $lang['copy_dest_already_exists'], $dest_dn ) );
+if( ! dn_exists( $dest_server_id, get_container( $dest_dn ) ) )
+	pla_error( sprintf( $lang['copy_dest_container_does_not_exist'], get_container($dest_dn) ) );
+if( pla_compare_dns( $source_dn,$dest_dn ) == 0 && $source_server_id == $dest_server_id )
+	pla_error( $lang['copy_source_dest_dn_same'] );
 
 if( $do_recursive ) {
 	// build a tree similar to that of the tree browser to give to r_copy_dn
 	$snapshot_tree = array();
-	include 'header.php';
 	echo "<body>\n";
-	echo "<h3 class=\"title\">Copying " . htmlspecialchars( $source_dn ) . "</h3>\n";
-	echo "<h3 class=\"subtitle\">Recursive copy progress</h3>\n";
+	echo "<h3 class=\"title\">". $lang['copy_copying'] . htmlspecialchars( $source_dn ) . "</h3>\n";
+	echo "<h3 class=\"subtitle\">" . $lang['copy_recursive_copy_progress'] ."</h3>\n";
 	echo "<br /><br />";
 	echo "<small>\n";
-	echo "Building snapshot of tree to copy... ";
+	echo $lang['copy_building_snapshot'];
 	flush();
 	build_tree( $source_server_id, $source_dn, $snapshot_tree );
-	echo " <span style=\"color:green\">Success</span><br />\n";
+	echo " <span style=\"color:green\">" . $lang['success'] . "</span><br />\n";
 	flush();
-	
+
 	// prevent script from bailing early on a long delete
 	@set_time_limit( 0 );
-	
+
 	$copy_result = r_copy_dn( $source_server_id, $dest_server_id, $snapshot_tree, $source_dn, $dest_dn );
 	echo "</small>\n";
 } else {
@@ -89,35 +91,37 @@ if( $copy_result )
 			parent.left_frame.location.reload();
 		</script>
 		<br />
-		Copy successful! Would you like to <a href="<?php echo $edit_url; ?>">view the new entry</a>?
-		<br />
+		<center>
+		<?php echo $lang['copy_successful_like_to']. "<a href=\"$edit_url\">" . $lang['copy_view_new_entry'] ."</a>?"?>
+		</center>
+        <br />
 		<br />
 		<br />
 		<br />
 		</body>
 		</html>
-		<?php 
+		<?php
 }
 else
 {
 	exit;
 }
 
-function r_copy_dn( $source_server_id, $dest_server_id, &$tree, $root_dn, $dest_dn )
+function r_copy_dn( $source_server_id, $dest_server_id, $tree, $root_dn, $dest_dn )
 {
-	echo "<nobr>Copying " . htmlspecialchars( $root_dn ) . "...";
+        global $lang;
+	echo "<nobr>". $lang['copy_copying'] . htmlspecialchars( $root_dn ) . "...";
 	flush();
 	$copy_result = copy_dn( $source_server_id, $root_dn, $dest_server_id, $dest_dn );
-	
+
 	if( ! $copy_result ) {
-		global $R_COPY_ERROR;
 		return false;
 	}
 
-	echo "<span style=\"color:green\">Success</span></nobr><br />\n";
+	echo "<span style=\"color:green\">".$lang['success']."</span></nobr><br />\n";
 	flush();
 
-	$children = $tree[ $root_dn ];
+	$children = isset( $tree[ $root_dn ] ) ? $tree[ $root_dn ] : null;
 	if( is_array( $children ) && count( $children ) > 0 )
 	{
 		foreach( $children as $child_dn ) {
@@ -136,8 +140,8 @@ function r_copy_dn( $source_server_id, $dest_server_id, &$tree, $root_dn, $dest_
 
 function copy_dn( $source_server_id, $source_dn, $dest_server_id, $dest_dn )
 {
-	global $ds;
-	$ds = pla_ldap_connect( $dest_server_id ) or pla_error( "Could not connect to LDAP server" );
+	global $ds, $lang;
+	$ds = pla_ldap_connect( $dest_server_id ) or pla_error( $lang['could_not_connect'] );
 	$attrs = get_object_attrs( $source_server_id, $source_dn );
 	$new_entry = $attrs;
 	// modify the prefix-value (ie "bob" in cn=bob) to match the destination DN's value.
@@ -147,14 +151,20 @@ function copy_dn( $source_server_id, $source_dn, $dest_server_id, $dest_dn )
 	$new_entry[ $rdn_attr ] = $rdn_value;
 	// don't need a dn attribute in the new entry
 	unset( $new_entry['dn'] );
-	$add_result = @ldap_add( $ds, $dest_dn, $new_entry );
-	if( ! $add_result ) {
-		echo "</small><br /><br />";
-		pla_error( "Failed to copy $source_dn (server: $source_server_id) to " . 
-				"$dest_dn (server: $dest_server_id)", ldap_error( $ds ), ldap_errno( $ds ) );
-	}
 
-	return $add_result;
+	// Check the user-defined custom call back first
+	if( true === preEntryCreate( $dest_server_id, $dest_dn, $new_entry ) ) {
+			$add_result = @ldap_add( $ds, $dest_dn, $new_entry );
+			if( ! $add_result ) {
+					postEntryCreate( $dest_server_id, $dest_dn, $new_entry );
+					echo "</small><br /><br />";
+					pla_error( $lang['copy_failed'] . $dest_dn, ldap_error( $ds ), ldap_errno( $ds ) );
+			}
+
+			return $add_result;
+	} else {
+			return false;
+	}
 }
 
 function build_tree( $source_server_id, $root_dn, &$tree )

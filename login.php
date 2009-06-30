@@ -18,11 +18,11 @@
 require 'common.php';
 
 $server_id = $_POST['server_id'];
-$dn = $_POST['login_dn'];
-$uid = $_POST['uid'];
-$pass = $_POST['login_pass'];
-$redirect = rawurldecode( $_POST['redirect'] );
-$anon_bind = $_POST['anonymous_bind'] == 'on' ? true : false;
+$dn = isset( $_POST['login_dn'] ) ? $_POST['login_dn'] : null;
+$uid = isset( $_POST['uid'] ) ? $_POST['uid'] : null;
+$pass = isset( $_POST['login_pass'] ) ? $_POST['login_pass'] : null;
+$redirect = isset( $_POST['redirect'] ) ? rawurldecode( $_POST['redirect'] ) : null;
+$anon_bind = isset( $_POST['anonymous_bind'] ) && $_POST['anonymous_bind'] == 'on' ? true : false;
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 
 if( ! $anon_bind ) {
@@ -44,6 +44,7 @@ if ( 	isset( $servers[$server_id]['login_attr'] ) &&
 	// search for the "uid" first
 	$ds = ldap_connect ( $host, $port );
 	$ds or pla_error( "Could not contact '" . htmlspecialchars( $host ) . "' on port '" . htmlentities( $port ) . "'" );
+	@ldap_set_option( $ds, LDAP_OPT_PROTOCOL_VERSION, 3 );
 	@ldap_bind ($ds) or pla_error( "Could not bind anonymously to server. " .
 				"Unless your server accepts anonymous binds, " .
 				"the login_attr feature will not work properly.");
@@ -57,7 +58,7 @@ if ( 	isset( $servers[$server_id]['login_attr'] ) &&
 $ds = @ldap_connect( $host, $port );
 $ds or pla_error( "Could not connect to '" . htmlspecialchars( $host ) . "' on port '" . htmlentities( $port ) . "'" );
 
-// go with LDAP version 3 if possible (needed for renaming and Novell schema fetching)
+// go with LDAP version 3 if possible 
 @ldap_set_option( $ds, LDAP_OPT_PROTOCOL_VERSION, 3 );
 
 $bind_result = @ldap_bind( $ds, $dn, $pass );
@@ -65,19 +66,18 @@ $bind_result = @ldap_bind( $ds, $dn, $pass );
 if( ! $bind_result )
 	pla_error( "Bad username/password. Try again" );
 
-if( ! isset( $cookie_time ) )
-	$cookie_time = 0;
-$expire = $cookie_time == 0 ? null : time()+$cookie_time;
-if( $anon_bind ) {
-	// we set the cookie val to 0 for anonymous binds.
-	$res1 = setcookie( "pla_login_dn_$server_id", '0', $expire, dirname( $_SERVER['PHP_SELF'] ) );
-	$res2 = setcookie( "pla_pass_$server_id", '0', $expire, dirname( $_SERVER['PHP_SELF'] ) );
-} else {
-	$res1 = setcookie( "pla_login_dn_$server_id", $dn, $expire, dirname( $_SERVER['PHP_SELF'] ) );
-	$res2 = setcookie( "pla_pass_$server_id", $pass, $expire, dirname( $_SERVER['PHP_SELF'] ) );
-}
-if( ! $res1 || ! $res2 )
-	pla_error( "Could not set cookie!" );
+set_cookie_login_dn( $server_id, $dn, $pass, $anon_bind ) or pla_error( "Could not set cookie!" );
+
+// Clear out any pre-existing tree data in the session for this server
+session_start();
+if( session_is_registered( 'tree' ) )
+	if( isset( $_SESSION['tree'][$server_id] ) )
+		unset( $_SESSION['tree'][$server_id] );
+if( session_is_registered( 'tree_icons' ) )
+	if( isset( $_SESSION['tree_icons'][$server_id] ) )
+		unset( $_SESSION['tree_icons'][$server_id] );
+session_write_close();
+
 ?>
 
 <html>
@@ -108,14 +108,12 @@ if( ! $res1 || ! $res2 )
 	<center>
 	<br />
 	<br />
-	Logged in to <b><?php echo htmlspecialchars($servers[$server_id]['name']); ?></b><br />
+	<br />
+	Successfully logged in to server <b><?php echo htmlspecialchars($servers[$server_id]['name']); ?></b><br />
 	<?php if( $anon_bind ) { ?>
 		(anonymous bind)	
 	<?php } ?>
 	<br />
-	<br />
-	<br />
-	Click <a href="search.php?server_id=<?php echo $server_id?>">here</a> to go to the search form.
 	</center>
 
 <?php } ?>

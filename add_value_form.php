@@ -12,8 +12,6 @@
  */
 
 require 'common.php';
-require 'config.php';
-require_once 'functions.php';
 
 $dn = $_GET['dn'];
 $encoded_dn = rawurlencode( $dn );
@@ -43,9 +41,7 @@ if( $is_object_class ) {
 	$schema_attr = get_schema_attribute( $server_id, $attr );
 }
 
-?>
-
-<?php include 'header.php'; ?>
+include 'header.php'; ?>
 
 <body>
 
@@ -96,12 +92,12 @@ if( $is_object_class ) {
 	<?php  if( is_array( $current_values ) ) /*$num_current_values > 1 )*/  {
 		 foreach( $current_values as $val ) { ?>
 
-			<li><nobr><?php echo htmlspecialchars(utf8_decode($val)); ?></nobr></li>
+			<li><nobr><?php echo htmlspecialchars(($val)); ?></nobr></li>
 
 		<?php  } ?>
 	<?php  } else { ?>
 
-		<li><nobr><?php echo htmlspecialchars(utf8_decode($current_values)); ?></nobr></li>
+		<li><nobr><?php echo htmlspecialchars(($current_values)); ?></nobr></li>
 
 	<?php  } ?>
 </ul>
@@ -119,15 +115,21 @@ if( $is_object_class ) {
 	<input type="hidden" name="dn" value="<?php echo $encoded_dn; ?>" />
 	<select name="new_oclass">
 
-	<?php foreach( $schema_oclasses as $oclass => $desc ) { ?>
+	<?php foreach( $schema_oclasses as $name => $oclass ) { ?>
 
-		<option value="<?php echo $desc['name']; ?>"><?php echo $desc['name']; ?></option>
+		<option value="<?php echo $oclass->getName(); ?>"><?php echo $oclass->getName(); ?></option>
 
 	<?php } ?>
 
 	</select> <input type="submit" value="Add new objectClass" />
 		
-	<br /><small><?php echo $lang['new_required_attrs_note']; ?></small>
+	<br />
+	<?php if( show_hints() ) { ?>
+	<small>
+		<br />
+		<img src="images/light.png" /><?php echo $lang['new_required_attrs_note']; ?>
+	</small>
+	<?php } ?>
 
 <?php } else { ?>
 
@@ -141,15 +143,25 @@ if( $is_object_class ) {
 		<input type="file" name="new_value" />
 		<input type="hidden" name="binary" value="true" />
 	<?php } else { ?>
-		<input type="text" name="new_value" size="40" value="" />
+		<input type="text" <?php 
+				if( $schema_attr->getMaxLength() ) 
+					echo "maxlength=\"" . $schema_attr->getMaxLength() . "\" "; 
+				?>name="new_value" size="40" value="" />
 	<?php } ?>
 
 	<input type="submit" name="submit" value="Add New Value" />
 	<br />
-	<small><?php echo $lang['syntax']; ?>: <?php echo $schema_attr->getType(); ?></small><br />
+
+	<?php if( $schema_attr->getDescription() ) { ?>
+		<small><b>Description:</b> <?php echo $schema_attr->getDescription(); ?></small><br />
+	<?php } ?>
+
+	<?php if( $schema_attr->getType() ) { ?>
+		<small><b><?php echo $lang['syntax']; ?>:</b> <?php echo $schema_attr->getType(); ?></small><br />
+	<?php } ?>
+
 	<?php if( $schema_attr->getMaxLength() ) { ?>
-		<small>Max length: <?php echo number_format( $schema_attr->getMaxLength() ); ?>
-			characters</small>
+		<small><b>Max length:</b> <?php echo number_format( $schema_attr->getMaxLength() ); ?>	characters</small><br />
 	<?php } ?>
 
 	</form>

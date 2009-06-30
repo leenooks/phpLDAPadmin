@@ -9,27 +9,16 @@
  *  - server_id
  */
 
-require 'common.php';
+require realpath( 'common.php' );
 
 $server_id = $_GET['server_id'];
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( "No one is logged in to that server." );
 
-$logged_in_dn = get_logged_in_dn( $server_id );
-$logged_in_pass = get_logged_in_pass( $server_id );
-$anon_bind = $logged_in_dn == 'Anonymous' ? true : false;
+unset_cookie_login_dn( $server_id ) or pla_error( "Could not delete cookie!" );
 
-$expire = time()-3600;
-if( $anon_bind ) {
-	$res1 = setcookie( "pla_login_dn_$server_id", '0', $expire, dirname( $_SERVER['PHP_SELF'] ) );
-	$res2 = setcookie( "pla_pass_$server_id", '0', $expire, dirname( $_SERVER['PHP_SELF'] ) );
-} else {
-	$res1 = setcookie( "pla_login_dn_$server_id", $logged_in_dn, $expire, dirname( $_SERVER['PHP_SELF'] ) );
-	$res2 = setcookie( "pla_pass_$server_id", $logged_in_pass, $expire, dirname( $_SERVER['PHP_SELF'] ) );
-}
+include realpath( 'header.php' );
 
-if( ! $res1 || ! $res2 )
-	pla_error( "Could not delete cookie!" );
 ?>
 
 <html>

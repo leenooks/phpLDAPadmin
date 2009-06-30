@@ -28,14 +28,16 @@ $base_dn = $servers[ $server_id ][ 'base' ];
 $tree_icons[$server_id][ $base_dn ] = get_icon( $server_id, $base_dn );
 
 // get all the icons and container contents for all expanded entries
-if( $tree[$server_id] && is_array( $tree[$server_id] ) ) 
+if( isset($tree[$server_id]) && is_array( $tree[$server_id] ) ) 
 {
 	foreach( $tree[$server_id] as $dn => $children )
 	{
 		$tree[$server_id][$dn] = get_container_contents( $server_id, $dn );
-		foreach( $tree[$server_id][$dn] as $child_dn )
-			$tree_icons[$server_id][$child_dn] = get_icon( $server_id, $child_dn );
-		sort( $tree[ $server_id ][ $dn ] );
+		if( is_array( $tree[$server_id][$dn] ) ) {
+			foreach( $tree[$server_id][$dn] as $child_dn )
+				$tree_icons[$server_id][$child_dn] = get_icon( $server_id, $child_dn );
+			sort( $tree[ $server_id ][ $dn ] );	
+		}
 	}
 }
 else

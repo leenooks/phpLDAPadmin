@@ -15,33 +15,33 @@ require 'common.php';
 $template = $_POST['template'];
 $template = $templates[$template];
 $server_id = $_POST['server_id'];
-check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
-have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
+check_server_id( $server_id ) or pla_error( $lang['bad_server_id_underline'] . htmlspecialchars( $server_id ) );
+have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
 $server_name = $servers[ $server_id ][ 'name' ];
 
 if( is_server_read_only( $server_id ) )
-	pla_error( "You cannot perform updates while server is in read-only mode" );
+	pla_error( $lang['no_updates_in_read_only_mode'] );
 
 include 'header.php';
 
 ?>
 
 <body>
-<h3 class="title">Create Object</h3>
-<h3 class="subtitle">On server '<?php echo htmlspecialchars( $server_name ); ?>',
+<h3 class="title"><?php echo $lang['createf_create_object']?></h3>
+<h3 class="subtitle"><?php echo $lang['ctemplate_on_server']?> '<?php echo htmlspecialchars( $server_name ); ?>',
 	using template '<?php echo htmlspecialchars( $template['desc'] ); ?>'</h3>
 
 <?php
 
 if( ! isset( $_POST['template'] ) )
-	pla_error( "No template specified in POST variables.\n" );
+	pla_error( $lang['ctemplate_no_template'] );
 
 $handler = 'templates/creation/' . $template['handler'];
 $handler = realpath( $handler );
 if( file_exists( $handler ) )
 	include $handler;
 else
-	pla_error( "Your config specifies a handler of <b>" . htmlspecialchars( $template['handler'] ) .
-		"</b> for this template. But, this handler does not exist in the 'templates/creation' directory." );
+	pla_error( $lang['ctemplate_config_handler'] . " <b>" . htmlspecialchars( $template['handler'] ) .
+		"</b> " . $lang['ctemplate_handler_does_not_exist']);
 
 

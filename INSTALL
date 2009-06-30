@@ -1,49 +1,21 @@
-These instructions assume that you have a working install of:
-        a. A web server (Apache, IIS, etc).
-        b. PHP (with LDAP support)
+For install instructions in non-English languages, see the files
+in the "doc" directory.
 
-* Installing phpLDAPadmin in 4 easy steps:
+* Requirements
 
-  1. Untar the archive (if you're reading this, you already did that).
+  phpLDAPadmin requires the following:
+      a. A web server (Apache, IIS, etc).
+      b. PHP 4.1.0 or newer (with LDAP support)
+
+* To install
+
+  1. Unpack the archive (if you're reading this, you already did that).
   2. Put the resulting 'phpldapadmin' directory somewhere in your webroot.
   3. Copy 'config.php.example' to 'config.php' and edit to taste.
   4. Then, point your browser to the phpldapadmin directory.
 
-* Browser Notes
+* For help
 
-  phpLDAPadmin was developed on Mozilla, and will most likely run best thereon.
-  However, testing has been done on Internet Explorer, and it should work
-  well also. No testing has been done on either Konqueror (or any khtml-based
-  browser like Safari) or Opera. If you find a browser incompatibility,
-  please report it.
-
-* Contributors (thank you!)
-  
-  Project Developers:
-
-  - David Smith         Maintainer
-  - Xavier Renard       LDIF master
-  - Nate Rotschafer     Release manager
-  
-  Patch writers:
-
-  - Bayu Irawan         userPassword hash, html fixes, ldap_modify fixes
-  - Uwe Ebel         	short_open_tags fix
-  - Andrew Tipton       SUP support in schema parser
-  - Eigil Bjørgum       UTF-8 support
-  - Brandon Lederer     DNS entry template
-    Nathan Rotschafer
-  - Steve Rigler        Password hash patch
-  - Chric Jackson       Blowfish and md5crypt passwords
-  - Marius Rieder       Enhanced schema parser
-  - Nick Burch          Many realpath() fixes
-
-  Translators:
-
-  - Uwe Ebel            German
-  - Xavier Renard       French
-  - Dave Smith          English ;)
-  
-    If you can help translate, please join the phpldapadmin-devel mailing list:
-    https://lists.sourceforge.net/mailman/listinfo/phpldapadmin-devel
-
+  See the files in the "doc" directory.
+  Join our mailing list: 
+    https://lists.sourceforge.net/lists/listinfo/phpldapadmin-devel

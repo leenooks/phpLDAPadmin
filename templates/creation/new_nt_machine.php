@@ -8,9 +8,9 @@ $server_id = $_POST['server_id'];
 
 
 // Unique to this template
-$step = $_POST['step'];
-if( ! $step )
-	$step = 1;
+$step = 1;
+if( isset($_POST['step']) )
+    $step = $_POST['step'];
 
 // A little config for this template
 $default_gid_number = 30000;
@@ -30,7 +30,7 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 <form action="creation_template.php" method="post" name="machine_form">
 <input type="hidden" name="step" value="2" />
 <input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
-<input type="hidden" name="template" value="<?php echo $_POST['template']; ?>" />
+<input type="hidden" name="template" value="<?php echo htmlspecialchars( $_POST['template'] ); ?>" />
 
 <center>
 <table class="confirm">

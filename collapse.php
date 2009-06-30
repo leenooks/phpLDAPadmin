@@ -47,5 +47,5 @@ if(SID != ""){
   $id_session_param = "&".session_name()."=".session_id();
 }
 
-header( "Location:tree.php?foo=$random_junk%23{$server_id}_{$encoded_dn}$id_session_param" );
+header( "Location:tree.php?foo=$random_junk#{$server_id}_{$encoded_dn}$id_session_param" );
 ?>

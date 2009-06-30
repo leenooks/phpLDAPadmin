@@ -9,10 +9,10 @@
  *  - server_id
  */
 
-require 'common.php';
+require realpath( 'common.php' );
 
-$encoded_dn = $_POST['dn'];
-$dn = rawurldecode( $encoded_dn );
+$dn = $_POST['dn'];
+$encoded_dn = rawurlencode( $dn );
 $server_id = $_POST['server_id'];
 
 if( ! $dn )
@@ -74,7 +74,7 @@ if( $del_result )
 
 
 } else {
-	pla_error( "Could not delete the object: " . htmlspecialchars( utf8_decode( $dn ) ), ldap_error( $ds ), ldap_errno( $ds ) );
+	pla_error( "Could not delete the object: " . htmlspecialchars( $dn ), ldap_error( $ds ), ldap_errno( $ds ) );
 }
 
 
@@ -90,26 +90,30 @@ function pla_rdelete( $server_id, $dn )
 	if( ! is_array( $children ) || count( $children ) == 0 ) {
 		echo "<nobr>Deleting " . htmlspecialchars( $dn ) . "...";
 		flush();
-		if( ldap_delete( $ds, $dn ) ) {
-			echo " <span style=\"color:green\">Success</span></nobr><br />\n";
-			return true;
-		} else {
-			pla_error( "Failed to delete dn: " . htmlspecialchars( utf8_decode( $dn ) ),
-	       				ldap_error( $ds ), ldap_errno( $ds ) );
-		}
+		if( true === preEntryDelete( $server_id, $dn ) )
+				if( @ldap_delete( $ds, $dn ) ) {
+						postEntryDelete( $server_id, $dn );
+						echo " <span style=\"color:green\">Success</span></nobr><br />\n";
+						return true;
+				} else {
+						pla_error( "Failed to delete dn: " . htmlspecialchars( $dn ),
+										ldap_error( $ds ), ldap_errno( $ds ) );
+				}
 	} else {
 		foreach( $children as $child_dn ) {
 			pla_rdelete( $server_id, $child_dn );
 		}
 		echo "<nobr>Deleting " . htmlspecialchars( $dn ) . "...";
 		flush();
-		if( ldap_delete( $ds, $dn ) ) {
-			echo " <span style=\"color:green\">Success</span></nobr><br />\n";
-			return true;
-		} else {
-			pla_errror( "Failed to delete dn: " . htmlspecialchars( utf8_decode( $dn ) ),
-	       				ldap_error( $ds ), ldap_errno( $ds ) );
-		}
+		if( true === preEntryDelete( $server_id, $dn ) )
+				if( @ldap_delete( $ds, $dn ) ) {
+						postEntryDelete( $server_id, $dn );
+						echo " <span style=\"color:green\">Success</span></nobr><br />\n";
+						return true;
+				} else {
+						pla_error( "Failed to delete dn: " . htmlspecialchars( ( $dn ) ),
+										ldap_error( $ds ), ldap_errno( $ds ) );
+				}
 	}
 
 }

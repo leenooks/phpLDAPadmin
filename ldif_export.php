@@ -13,9 +13,9 @@
 
 require 'common.php';
 
-$dn = rawurldecode( $_GET['dn'] );
+$dn = $_GET['dn'];
 $server_id = $_GET['server_id'];
-$format = $_GET['format'];
+$format = isset( $_GET['format'] ) ? $_GET['format'] : null;
 $scope = $_GET['scope'] ? $_GET['scope'] : 'base';
 
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );

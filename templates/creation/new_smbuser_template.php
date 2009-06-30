@@ -10,10 +10,9 @@
 	// Common to all templates
 	$server_id = $_POST['server_id'];
 
-	// Unique to this template
-	$step = $_POST['step'];
-	if( ! $step )
-		$step = 1;
+	$step = 1;
+	if( isset($_POST['step']) )
+		$step = $_POST['step'];
 
 	check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 	have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
@@ -68,7 +67,7 @@
 <form action="creation_template.php" method="post" id="user_form" name="user_form">
 <input type="hidden" name="step" value="2" />
 <input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
-<input type="hidden" name="template" value="<?php echo $_POST['template']; ?>" />
+<input type="hidden" name="template" value="<?php echo htmlspecialchars( $_POST['template'] ); ?>" />
 
 <center>
 <table class="confirm">
@@ -174,17 +173,17 @@
 
 <?php } elseif( $step == 2 ) {
 
-	$user_name = trim( stripslashes( $_POST['user_name'] ) );
-	$first_name = trim( stripslashes( $_POST['first_name'] ) );
-	$last_name = trim( stripslashes( $_POST['last_name'] ) );
-	$password1 = stripslashes( $_POST['user_pass1'] );
-	$password2 = stripslashes( $_POST['user_pass2'] );
-	$encryption = stripslashes( $_POST['encryption'] );
-	$login_shell = trim( stripslashes( $_POST['login_shell'] ) );
-	$uid_number = trim( stripslashes( $_POST['uid_number'] ) );
-	$gid_number = trim( stripslashes( $_POST['group'] ) );
-	$container = trim( stripslashes( $_POST['container'] ) );
-	$home_dir = trim( stripslashes( $_POST['home_dir'] ) );
+	$user_name = trim( $_POST['user_name'] );
+	$first_name = trim( $_POST['first_name'] );
+	$last_name = trim( $_POST['last_name'] );
+	$password1 = $_POST['user_pass1'];
+	$password2 = $_POST['user_pass2'];
+	$encryption = $_POST['encryption'];
+	$login_shell = trim( $_POST['login_shell'] );
+	$uid_number = trim( $_POST['uid_number'] );
+	$gid_number = trim( $_POST['group'] );
+	$container = trim( $_POST['container'] );
+	$home_dir = trim( $_POST['home_dir'] );
 
 	$samba_sid = trim( stripslashes( $_POST['samba_sid'] ) );
 

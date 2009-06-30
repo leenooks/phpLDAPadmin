@@ -9,11 +9,11 @@ PHP is not installed on your web server!!!
 </pre>
 *******************************************/
 
-@require 'common.php';
+require 'common.php';
+
+if( ! file_exists(realpath( 'config.php' )) ) {
 
 ?>
-
-<?php if( ! file_exists(realpath( 'config.php' )) ) { ?>
 
 <html>
 <head>
@@ -35,6 +35,7 @@ An example config file is provided in 'config.php.example'
 </html>
 
 <?php  } elseif( check_config() )  { 
+
 require 'config.php';
 echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
 
@@ -68,6 +69,11 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
  */
 function check_config()
 {
+	/* Make sure their PHP version is current enough */
+	if( strcmp( phpversion(), REQUIRED_PHP_VERSION ) < 0 ) {
+		pla_error( "phpLDAPadmin requires PHP version 4.1.0 or greater. You are using " . phpversion() );
+	}
+
 	/* Make sure this PHP install has LDAP support */
 	if( ! extension_loaded( 'ldap' ) )
 	{
@@ -88,16 +94,8 @@ function check_config()
 
 	/* Make sure the config file is readable */
 	//if( ! is_readable( 'config.php' ) )
-	if( ! is_readable(realpath( 'config.php' )) )
-	{
+	if( ! is_readable( realpath( 'config.php' ) ) ) {
 		echo "The config file 'config.php' is not readable. Please check its permissions.";
-		return false;
-	}
-
-	/* Make sure their PHP install is up to snuff */
-	if( version_compare( phpversion(), "4.1.0" ) < 0 )
-	{
-		echo "You are using php version " . phpversion() . ". phpLDAPadmin requires version 4.1 or greater.";
 		return false;
 	}
 
@@ -107,10 +105,10 @@ function check_config()
 	include 'config.php';
 	$str = ob_get_contents();
 	ob_end_clean();
-	if( $str && false !== strpos( $str, 'error' ) ) 
-	{
+	if( $str && false !== strpos( $str, 'error' ) )  {
 		$str = strip_tags( $str );
-		$parse_error = preg_match( "/on line (\d+)/", $str, $matches );
+		$matches = array();
+		preg_match( "/on line (\d+)/", $str, $matches );
 		$line_num = $matches[1];
 		$file = file( 'config.php' );
 		?>
@@ -153,15 +151,9 @@ function check_config()
 		return false;
 	}
 
-	if( $str && false !== strpos( $str, 'Warning' ) )
-	{
-
-	}
-
 	/* check the existence of the servers array */
 	require 'config.php';
-	if( ! is_array( $servers ) || count( $servers ) == 0 ) 
-	{
+	if( ! is_array( $servers ) || count( $servers ) == 0 ) {
 		echo "Your config.php is missing the servers array or the array is empty. ";
 		echo " Please see the sample file config.php.example ";
 		return false;
@@ -172,11 +164,30 @@ function check_config()
 	foreach( $servers as $i => $server )
 		if( $server['host'] )
 			$count++;
-	if( $count == 0 )
-	{
+	if( $count == 0 ) {
 		echo "None of the " . count($servers) . " servers in your \$servers array is ";
 		echo "active in config.php. phpLDAPadmin cannot proceed util you correct this.";
 		return false;
+	}
+
+	// Check each of the servers in the servers array
+	foreach( $servers as $id => $server ) {
+		if( isset( $server['host'] ) ) {
+
+			// Make sure they specified an auth_type
+			if( ! isset( $server['auth_type'] ) ) {
+				echo "Your configuratoin has an error. You omitted the 'auth_type' directive on server number $id";
+				echo "'auth_type' must be set, and it must be one of 'config' or 'form'.";
+				return false;
+			}
+
+			// Make sure they specified a correct auth_type
+			if( $server['auth_type'] != 'config' && $server['auth_type'] != 'form' ) {
+				echo "You specified an invalid 'auth_type' (" . htmlspecialchars( $server['auth_type'] ) . ") ";
+				echo "for server number $id in your configuration.";
+				return false;
+			}
+		}
 	}
 
 	return true;

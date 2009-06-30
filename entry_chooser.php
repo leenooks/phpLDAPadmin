@@ -4,25 +4,25 @@ require 'common.php';
 
 $container = isset( $_GET['container'] ) ? rawurldecode( $_GET['container'] ) : false;
 $server_id = isset( $_GET['server_id'] ) ? $_GET['server_id'] : false;
-$return_form_element = $_GET['form_element'];
+$return_form_element = htmlspecialchars( $_GET['form_element'] );
 
 include "header.php";
 
 echo "<h3 class=\"subtitle\">Automagic Entry Chooser</h3>\n";
 
 if( $container ) {
-	echo "Server: <b>" . htmlspecialchars( $servers[ $server_id ][ 'name' ] ) .  "</b><br />\n";
-	echo "Looking in: <b>" . htmlspecialchars( $container ) . "</b><br />\n"; 
+	echo $lang['server_colon_pare'] . "<b>" . htmlspecialchars( $servers[ $server_id ][ 'name' ] ) .  "</b><br />\n";
+	echo $lang['look_in'] . "<b>" . htmlspecialchars( $container ) . "</b><br />\n";
 }
 
 /* Has the use already begun to descend into a specific server tree? */
 if( $server_id !== false && $container !== false )
 {
-	check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
-	have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. ".
-							"Please check your configuration." );
-	pla_ldap_connect( $server_id ) or pla_error( "Coult not connect to LDAP server." );
+	check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
+	have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
+	pla_ldap_connect( $server_id ) or pla_error( $lang['could_not_connect'] );
 	$dn_list = get_container_contents( $server_id, $container );
+	sort( $dn_list );
 
 	$base_dn = $servers[ $server_id ][ 'base' ];
 	if( ! $base_dn )
@@ -36,11 +36,11 @@ if( $server_id !== false && $container !== false )
 		$up_href = "entry_chooser.php?form_element=$return_form_element&amp;server_id=$server_id&amp;container=" .
 				rawurlencode( $parent_container );
 	}
-	echo "&nbsp;<a href=\"$up_href\" style=\"text-decoration:none\">" . 
-		"<img src=\"images/up.png\"> Back Up...</a><br />\n";
+	echo "&nbsp;<a href=\"$up_href\" style=\"text-decoration:none\">" .
+		"<img src=\"images/up.png\"> ". $lang['back_up_p'] ."</a><br />\n";
 
 	if( count( $dn_list ) == 0 )
-		echo "&nbsp;&nbsp;&nbsp;(no entries)<br />\n";
+		echo "&nbsp;&nbsp;&nbsp;(". $lang['no_entries'] .")<br />\n";
 	else
 		foreach( $dn_list as $dn ) {
 			$href = "javascript:returnDN( '$dn' )";
@@ -56,15 +56,15 @@ else
 	foreach( $servers as $id => $server ) {
 		if( $server['host'] ) {
 			echo "<b>" . htmlspecialchars( $server['name'] ) . "</b><br />\n";
-			if( ! have_auth_info( $id ) ) 
-				echo "<small>&nbsp;&nbsp;&nbsp;(Not logged in)</small><br />";
+			if( ! have_auth_info( $id ) )
+				echo "<small>&nbsp;&nbsp;&nbsp;(" . $lang['not_logged_in'] . ")</small><br />";
 			else {
-				$dn = ( $server['base'] ? $server['base'] : try_to_get_root_dn( $id ) ); 
+				$dn = ( $server['base'] ? $server['base'] : try_to_get_root_dn( $id ) );
 				if( ! $dn ) {
-					echo "<small>&nbsp;&nbsp;&nbsp;(Could not determine base DN)</small><br />";
+					echo "<small>&nbsp;&nbsp;&nbsp;(". $lang['could_not_det_base_dn'] .")</small><br />";
 				} else {
 					$href = "javascript:returnDN( '$dn' )";
-					echo "&nbsp;&nbsp;&nbsp;<a href=\"entry_chooser.php?form_element=" . 
+					echo "&nbsp;&nbsp;&nbsp;<a href=\"entry_chooser.php?form_element=" .
 						"$return_form_element&amp;server_id=$id&amp;container=" .
 						rawurlencode( $dn ) . "\"><img src=\"images/plus.png\" /></a> " .
 						"<a href=\"$href\">" . htmlspecialchars( $dn ) . "</a><br />\n";

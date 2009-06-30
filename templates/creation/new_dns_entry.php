@@ -7,9 +7,9 @@ $container = $_POST['container'];
 $server_id = $_POST['server_id'];
 
 // Unique to this template
-$step = $_POST['step'];
-if( ! $step )
-	$step = 1;
+$step = 1;
+if( isset($_POST['step']) )
+    $step = $_POST['step'];
 
 	check_server_id( $server_id ) or die( "Bad server_id: " . htmlspecialchars( $server_id ) );
 	have_auth_info( $server_id ) or die( "Not enough information to login to server. Please check your configuration." );
@@ -23,7 +23,7 @@ if( ! $step )
 	<form action="creation_template.php" method="post" name="dns_form">
 	<input type="hidden" name="step" value="2" />
 	<input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
-	<input type="hidden" name="template" value="<?php echo $_POST['template']; ?>" />
+	<input type="hidden" name="template" value="<?php echo htmlspecialchars( $_POST['template'] ); ?>" />
 
 	<center>
 	<table class="confirm">

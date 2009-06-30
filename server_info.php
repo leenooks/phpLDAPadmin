@@ -10,26 +10,48 @@
  
 require 'common.php';
 
+// The attributes we'll examine when searching the LDAP server's RootDSE
+$root_dse_attributes = array( 	'namingContexts', 
+				'subschemaSubentry', 
+				'altServer',
+				'supportedExtension',
+				'supportedControl',
+				'supportedSASLMechanisms',
+				'supportedLDAPVersion',
+				'currentTime',
+				'dsServiceName',
+				'defaultNamingContext',
+				'schemaNamingContext',
+				'configurationNamingContext',
+				'rootDomainNamingContext',
+				'supportedLDAPPolicies',
+				'highestCommittedUSN',
+				'dnsHostName',
+				'ldapServiceName',
+				'serverName',
+				'supportedCapabilities',
+				'changeLog',
+				'+' );
+
 $server_id = $_GET['server_id'];
 $server_name = $servers[$server_id]['name'];
-$ds = pla_ldap_connect( $server_id ) or pla_error( "Could not connect or authenticate to LDAP server" );
-$r = @ldap_read( $ds, '', 'objectClass=*', array( '+' ) );
+$ds = pla_ldap_connect( $server_id ) or pla_error( $lang['could_not_connect'] );
+$r = @ldap_read( $ds, '', 'objectClass=*', $root_dse_attributes );
 if( ! $r )
-	pla_error( "Could not fetch any information from the server" );
+	pla_error( $lang['could_not_fetch_server_info'] );
 $entry = @ldap_first_entry( $ds, $r );
 $attrs = @ldap_get_attributes( $ds, $entry );
 $count = @ldap_count_entries( $ds, $r );
-//echo "<pre>"; print_r( $attrs ); echo "</pre>";
 	
 include 'header.php';
 ?>
 
-<h3 class="title">Server info for <?php echo htmlspecialchars( $server_name ); ?></h3>
-<h3 class="subtitle">Server reports the following information about itself</h3>
+<h3 class="title"><?php echo $lang['server_info_for'] . htmlspecialchars( $server_name ); ?></h3>
+<h3 class="subtitle"><?php echo $lang['server_reports_following']; ?></h3>
 
 <?php if( $count == 0 || $attrs['count'] == 0 ) { ?>
 
-	<br /><br /><center>This server has nothing to report.</center>
+	<br /><br /><center><?php echo $lang['nothing_to_report']; ?></center>
 	<?php exit; ?>
 
 <?php } ?>
@@ -38,11 +60,25 @@ include 'header.php';
 <?php
 for( $i=0; $i<$attrs['count']; $i++ ) {
 	$attr = $attrs[$i];
-	echo "<tr class=\"row" . ($i%2!=0?"1":"2") . "\"><td class=\"attr\"><b>"; 
-	echo htmlspecialchars($attr) . "</b></td><td class=\"val\">";
-	for( $j=0; $j<$attrs[ $attr ][ 'count' ]; $j++ )
-		echo htmlspecialchars( $attrs[ $attr ][ $j ] ) . "<br />\n";
+	$schema_href = "schema.php?server_id=$server_id&amp;view=attributes#" . strtolower($attr);
+	?>
+
+	<tr class="row<?php echo ($i%2!=0?"1":"2"); ?>">
+		<td class="attr">
+			<b>
+			<a title="<?php echo sprintf( $lang['attr_name_tooltip'], $attr ); ?>" 
+			   href="<?php echo $schema_href; ?>"><?php echo htmlspecialchars( $attr ); ?>
+			</b>
+		</td>
+		<td class="val">
+		<?php for( $j=0; $j<$attrs[ $attr ][ 'count' ]; $j++ )
+			echo htmlspecialchars( $attrs[ $attr ][ $j ] ) . "<br />\n"; ?>
+		</td>
+		</tr>
+		
+<?php
 }
 ?>
+
 
 </table>

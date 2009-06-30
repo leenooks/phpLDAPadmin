@@ -36,10 +36,18 @@ $entry = get_object_attrs( $server_id, $dn, true );
 $current_attrs = array();
 foreach( $entry as $attr => $junk )
 	$current_attrs[] = strtolower($attr);
+
 // grab the required attributes for the new objectClass
-$must_attrs = get_schema_objectclasses( $server_id );
-$must_attrs = $must_attrs[ strtolower($new_oclass) ]['must_attrs'];
-sort( $must_attrs );
+$oclass = get_schema_objectclass( $server_id, $new_oclass );
+if( $oclass )
+	$must_attrs = $oclass->getMustAttrs();
+else
+	$must_attrs = array();
+
+// We don't want any of the attr meta-data, just the string
+foreach( $must_attrs as $i => $attr )
+	$must_attrs[$i] = $attr->getName();
+
 // build a list of the attributes that this new objectClass requires,
 // but that the object does not currently contain
 $needed_attrs = array();
@@ -54,7 +62,7 @@ if( count( $needed_attrs ) > 0 )
 	
 	<h3 class="title"><?php echo $lang['new_required_attrs']; ?></h3>
 	<h3 class="subtitle"><?php echo $lang['requires_to_add'] . ' ' . count($needed_attrs) . 
-					' ' . $lang['new attributes']; ?></h3>
+					' ' . $lang['new_attributes']; ?></h3>
 
 	<small>
 	<?php 

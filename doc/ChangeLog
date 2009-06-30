@@ -1,0 +1,107 @@
+------------------------
+phpLDAPadmin - ChangeLog 
+------------------------
+
+* Version 0.9.2, 2003-11-14
+
+  * Notes:
+    This release has undergone major code hardening as we've subjected it to 
+    the most stringent standard of PHP error reporting. The result is 
+    fewer unhandled errors, improved usability, and better performance.
+    We've given more attention to internationalization as well, 
+    and that effort is nearly 80% complete. Translators and coders are still 
+    needed to help complete the localization effort. We've added a whole new
+    custom callback infrastructure that is event driven. Users can write their 
+    own custom code to be executed as the result of LDAP events. Events include
+    entry creation, entry deletion, and entry modification. Users can define
+    custom code to execute automatically before and after each of these events.
+    See "custom_functions.php" for details and documentation. Lots of other new
+   features and bug fixes are outlined in the ChangeLog. phpLDAPadmin finally
+    has a roadmap included with each release. Find it in the file called "ROADMAP"
+    in the root of the install. This roadmap will be constantly updated to 
+    list our goals for each release. Enjoy 0.9.2! As always, your feedback
+    is most welcome on the development mailing list and on the SourceForge
+    bug tracker.
+  
+  * Changes:
+    - Localization work continues. About 80% complete.
+    - New languages: Ialian, German, Catala
+    - Fixed major encoding bugs. All pages are now true UTF-8 encoded
+    - Support for auto-determining user's language based on the browser
+    - Custom event callbacks infrastructure (see custom_functions.php). Users can now 
+        define custom code to execute as a result of LDAP events (ie, new entries, 
+        modifications, etc).
+    - Major code cleanup. Removed all E_NOTICE messages and enabled E_ALL error_reporting.
+    - Added support for smd5 and ssha passwords
+    - Added configurable hints throughout the application
+    - Added template-based entry editing. The infrastructure is now in place to use custom 
+        templates for editing LDAP entries. No templates are being shipped with 0.9.2, but 
+        they are on the way for 0.9.3.
+    - Added photo display support for non-jpegPhoto photo attributes.
+    - Added mass deletion. If enabled in the configuration, users can mass-delete multiple 
+        entries from the tree browser with checkboxes.
+    - Much improved schema retrieval code. Now PLA uses the Root DSE (or any relevant DN) 
+        to fetch the schema based on the RFC-complian subSchemaSubEntry value.
+    - Added support for viewing schema for attributes with ";" in their names (like 
+        userCertificate;binary or sn;lang-fr)
+    - Schema code is 100% object oriented.
+    - Enhanced search code can handle large searches without running out of memory.
+    - Fixed minor XSS vulnerabilities in several creation templates.
+    - Enhanced the server information viewer to actively retrieve attributes that the server 
+        may not give voluntarily.
+    - Made the tree viewer more intelligent for failed binds.
+    - Added better caching of the base DN for the tree viewer, which speeds up page loads 
+        considerably with multiple servers all configured to auto-determine the base DN.
+    - Added intelligence around password updates on the currently logged-in user entry.
+
+* Version 0.9.1, 2003-09-24
+
+  * Notes:
+    We fixed a mountain of bugs for this release and implemented the 
+    most popular feature requests.  The result is a much more robust LDAP
+    management tool that supports a wider range of harsh environments and spoken
+    languages. This release was over a month in the making and it shows. We've
+    had great feed back from users.  Special thanks to Nick Burch, Xavier
+    Renard, Uwe Ebel, Schuller Tom, and Marius Reider for their code
+    contributions. Thanks to everyone who contributed code and bug reports! 
+
+  * Changes:
+    - Preliminary support for LDIF imports.
+    - Binary attribute support for viewing, deleting, and adding.
+    - Users can specify attributes to hide while editing entries.
+    - Schema browser now displays which objectClasses each attribute is used in.
+    - Preliminary multi-language support (some localization, infrastructure in place).
+    - New template for creating posixGroup entries.
+    - Optional read-only mode of operation.
+    - Error dialog beautified.
+    - Localization effort begun, now available in German and French.  
+    - New samba user template.
+
+  * Bugs fixed:
+    - I18n support was made more robust (UTF-8 problems fixed in *many* places).
+    - Improved LDIF exports with better LDIF comments and cleaner IE support.
+    - Cleaned up code in edit.php.
+    - After updates, modified attribute(s) now highlighted properly.
+    - Many realpath() fixes to allow symlink installs with multiple configs.
+    - Simple search form 'Starts with' '*' searches produced PHP error.
+    - Entry creation now adds the new entry to the tree browser in sorted order.  
+    - Complete re-work of schema browser, much more efficient parser.
+    - Began effort to remove all E_NOTICE notices. 
+
+* Version 0.9.0, 2003-08-12
+
+  * Notes:
+    This is the first release of phpLDAPAdmin. It should be stable enough and
+    ready for use on your production LDAP servers. This is still a beta release
+    and the paranoid may want to wait.  phpLDAPAdmin is based on an improved
+    version of DaveDAP 0.8.4.
+
+  * Changes:
+    phpLDAPAdmin was DaveDAP. Changes since DaveDAP 0.8.4 include:
+
+    - Better LDAP compliance when copying entries.
+    - Fixed boolean attribute support.
+    - jpegPhoto scaling when necessary.
+    - More robust schema browser.
+    - Added internal attributes support.
+    - Slightly improved look and feel.

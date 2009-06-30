@@ -1,0 +1,31 @@
+phpLDAPadmin roadmap
+
+0.9.3 planned features:
+	Complete i18n. All strings localized.
+	Add mass-update feature (user provides filter and set of attrs/vals to modify)
+	No-schema mode of operation (some servers simply won't give us schema. This becomes a problem for normal operation)
+	Search filter builder for simple search form (just select AND or OR for a group of criteria)
+	Modification templates 
+		user
+		oragnizationalUnit
+		posixGroup (view full DNs and browse buttons)
+		sambaUser
+		sambaMachine
+	Samba 3.0 support in samba user and machine creation templates
+	http auth_type (a la phpMyAdmin)
+	read-only attributes (similar to hidden attributes) in config
+	Support and test ActiveDirectory and iMail LDAP schema.
+	Support for modifying replica entries (using ldap_set_rebind_proc())
+	Add blowfish encryption to encrypt cookie-stored passwords and DNs.
+	Default mod template: Add a "browse" button for attributes that store DNs.
+	Add output buffering when including lang files so no output is sent to the browser (which could cause problems for sessions and cookies)
+	Add a random hint on the welcome page
+	Paging search results.
+	Anonymous binds redirect to search page with no tree viewer (as an option in config)
+	Move template config to a new config file: template_config.php (or something)
+
+0.9.4 planned features:
+	Hidden/read-only attrs on a filter-basis (ie, different users have different viewable, writable	attributes)
+	Seious compatibility testing for additional LDAP servers.
+	Configuration for templates.
+	Template instances with unique config.

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /* 
  * tree.php
@@ -24,7 +24,7 @@ header("Pragma: no-cache");
 session_start();
 
 // do we not have a tree yet? Build a new one.
-if( ! session_is_registered( 'tree' ) ) {
+if( ! session_is_registered( 'tree' ) || ! isset( $_SESSION['tree'] ) ) {
 	session_register( 'tree' );
 	$_SESSION['tree'] = build_initial_tree(); 
 	session_register( 'tree_icons' );
@@ -34,9 +34,8 @@ if( ! session_is_registered( 'tree' ) ) {
 // grab the tree out of the session variable
 $tree = $_SESSION['tree'];
 $tree_icons = $_SESSION['tree_icons'];
-?>
 
-<?php include 'header.php'; ?>
+include 'header.php'; ?>
 
 <body>
 
@@ -69,6 +68,12 @@ foreach( $servers as $server_id => $server_tree ) {
 
 	if( $servers[$server_id]['host'] != '' ) { 
 
+		// Does this server want mass deletion availble?
+		if( mass_delete_enabled( $server_id ) ) {
+			echo "<form action=\"mass_delete.php\" method=\"post\" target=\"right_frame\">\n";
+			echo "<input type=\"hidden\" name=\"server_id\" value=\"$server_id\" />\n";
+		}
+
 		$server_name = $servers[$server_id]['name'];
 		echo '<tr class="server">';
 		echo '<td class="icon"><img src="images/server.png" alt="server"/></td>';
@@ -78,128 +83,172 @@ foreach( $servers as $server_id => $server_tree ) {
 
 		// do we have what it takes to authenticate here, or do we need to
 		// present the user with a login link (for 'form' auth_types)?
-		if( have_auth_info( $server_id ) )
-		{
-			$schema_href =  'schema.php?server_id=' . $server_id  . '" target="right_frame';
-			$search_href=   'search.php?server_id=' . $server_id  . '" target="right_frame';
-			$refresh_href = 'refresh.php?server_id=' . $server_id;
-			$create_href =  'create_form.php?server_id=' . $server_id . '&amp;container=' .
-					 rawurlencode( $servers[$server_id]['base'] );
-			$logout_href = 'logout.php?server_id=' . $server_id;
-			$info_href = 'server_info.php?server_id=' . $server_id;
-			$import_href = 'ldif_import_form.php?server_id=' . $server_id;
+		if( have_auth_info( $server_id ) ) {
 
-			// Draw the quick-links below the server name: 
-			// ( schema | search | refresh | create )
-			echo '<tr><td colspan="100" class="links">';
-			echo '<nobr>';
-			echo '( ';
-			echo '<a title="' . $lang['view_schema_for'] . ' ' . $server_name . '"'.
-			     ' href="' . $schema_href . '">' . $lang['schema'] . '</a> | ';
-			echo '<a title="' . $lang['search'] . ' ' . $server_name . '"' .
-			     ' href="' . $search_href . '">' . $lang['search'] . '</a> | ';
-			echo '<a title="' . $lang['refresh_expanded_containers'] . ' ' . $server_name . '"'.
-			     ' href="' . $refresh_href . '">' . $lang['refresh'] . '</a> | ';
-			echo '<a title="' . $lang['create_new_entry_on'] . ' ' . $server_name . '"'.
-			     ' href="' . $create_href . '" target="right_frame">create</a> | ';
-			echo '<a title="' . $lang['view_server_info'] . '" target="right_frame"'.
-			     'href="' . $info_href . '">' . $lang['info'] . '</a> | ';
-			echo '<a title="' . $lang['import_from_ldif'] . '" target="right_frame"' .
-			     'href="' . $import_href .'">' . $lang['import'] . '</a>';
-			if( $servers[ $server_id ][ 'auth_type' ] == 'form' )
-				echo ' | <a title="' . $lang['logout_of_this_server'] . '" href="' . $logout_href . 
-					'" target="right_frame">' . $lang['logout'] . '</a>';
-			echo ' )</nobr></td></tr>';
-			
-			if( $servers[$server_id]['auth_type'] == 'form' && have_auth_info( $server_id ) )
-				echo "<tr><td class=\"links\" colspan=\"100\"><nobr>" .
-					$lang['logged_in_as'] . htmlspecialchars(get_logged_in_dn($server_id)) . 
-					"</nobr></td></tr>";
-			if( is_server_read_only( $server_id ) ) 
-				echo "<tr><td class=\"links\" colspan=\"100\"><nobr>" .
-					"(" . $lang['read_only'] . ")</nobr></td></tr>";
-
-			// Fetch and display the base DN for this server
-			//$rdn = utf8_decode( $dn );
-			if( null == $servers[ $server_id ]['base'] ) {
-				$base_dn = try_to_get_root_dn( $server_id );
-			} else {
-				$base_dn = $servers[ $server_id ]['base'];
-			}
-
-			// Did we get a base_dn for this server somehow?
-			if( $base_dn ) {
-				// is the root of the tree expanded already?
-				if( isset( $tree[$server_id][$base_dn] ) ) {
-					$expand_href =  "collapse.php?server_id=$server_id&amp;" .
-					"dn=" . rawurlencode( $base_dn );
-					$expand_img = "images/minus.png";
+			if( pla_ldap_connect( $server_id ) ) {
+				$schema_href =  'schema.php?server_id=' . $server_id  . '" target="right_frame';
+				$search_href=   'search.php?server_id=' . $server_id  . '" target="right_frame';
+				$refresh_href = 'refresh.php?server_id=' . $server_id;
+				$create_href =  'create_form.php?server_id=' . $server_id . '&amp;container=' .
+						rawurlencode( $servers[$server_id]['base'] );
+				$logout_href =  'logout.php?server_id=' . $server_id;
+				$info_href =    'server_info.php?server_id=' . $server_id;
+				$import_href =  'ldif_import_form.php?server_id=' . $server_id;
+	
+				// Draw the quick-links below the server name: 
+				// ( schema | search | refresh | create )
+				echo '<tr><td colspan="100" class="links">';
+				echo '<nobr>';
+				echo '( ';
+				echo '<a title="' . $lang['view_schema_for'] . ' ' . $server_name . '"'.
+				     ' href="' . $schema_href . '">' . $lang['schema'] . '</a> | ';
+				echo '<a title="' . $lang['search'] . ' ' . $server_name . '"' .
+				     ' href="' . $search_href . '">' . $lang['search'] . '</a> | ';
+				echo '<a title="' . $lang['refresh_expanded_containers'] . ' ' . $server_name . '"'.
+				     ' href="' . $refresh_href . '">' . $lang['refresh'] . '</a> | ';
+				echo '<a title="' . $lang['create_new_entry_on'] . ' ' . $server_name . '"'.
+				     ' href="' . $create_href . '" target="right_frame">' . $lang['create'] . '</a> | ';
+				echo '<a title="' . $lang['view_server_info'] . '" target="right_frame"'.
+				     'href="' . $info_href . '">' . $lang['info'] . '</a> | ';
+				echo '<a title="' . $lang['import_from_ldif'] . '" target="right_frame"' .
+				     'href="' . $import_href .'">' . $lang['import'] . '</a>';
+				if( $servers[ $server_id ][ 'auth_type' ] == 'form' )
+					echo ' | <a title="' . $lang['logout_of_this_server'] . '" href="' . $logout_href . 
+						'" target="right_frame">' . $lang['logout'] . '</a>';
+				echo ' )</nobr></td></tr>';
+				
+				if( $servers[$server_id]['auth_type'] == 'form' && have_auth_info( $server_id ) )
+					echo "<tr><td class=\"links\" colspan=\"100\"><nobr>" .
+						$lang['logged_in_as'] . htmlspecialchars(get_logged_in_dn($server_id)) . 
+						"</nobr></td></tr>";
+				if( is_server_read_only( $server_id ) ) 
+					echo "<tr><td class=\"links\" colspan=\"100\"><nobr>" .
+						"(" . $lang['read_only'] . ")</nobr></td></tr>";
+	
+				// Fetch and display the base DN for this server
+				//$rdn = utf8_decode( $dn );
+				if( null == $servers[ $server_id ]['base'] ) {
+					$base_dn = try_to_get_root_dn( $server_id );
 				} else {
-					$expand_href =  "expand.php?server_id=$server_id&amp;" .
-					"dn=" . rawurlencode( $base_dn );
-					$expand_img = "images/plus.png";
+					$base_dn = $servers[ $server_id ]['base'];
+				}
+	
+				// Did we get a base_dn for this server somehow?
+				if( $base_dn ) {
+
+					echo "\n\n<!-- base DN row -->\n<tr>\n";
+				
+					// is the root of the tree expanded already?
+					if( isset( $tree[$server_id][$base_dn] ) ) {
+						$expand_href =  "collapse.php?server_id=$server_id&amp;" .
+						"dn=" . rawurlencode( $base_dn );
+						$expand_img = "images/minus.png";
+					} else {
+						$expand_href =  "expand.php?server_id=$server_id&amp;" .
+						"dn=" . rawurlencode( $base_dn );
+						$expand_img = "images/plus.png";
+					}
+	
+					$edit_href = "edit.php?server_id=$server_id&amp;dn=" . rawurlencode( $base_dn );
+	
+					$icon = isset( $tree_icons[ $server_id ][ $base_dn ] ) ?
+							$tree_icons[ $server_id ][ $base_dn ] :
+							get_icon( $server_id, $base_dn );
+	
+					// Shall we draw the "mass-delete" checkbox?
+					if( mass_delete_enabled( $server_id ) ) {
+						echo "<td><input type=\"checkbox\" name=\"mass_delete[" . htmlspecialchars($base_dn) . "]\" /></td>\n";
+					}
+					
+					echo "<td class=\"expander\">";
+					echo "<a href=\"$expand_href\"><img src=\"$expand_img\" /></td>";
+					echo "<td class=\"icon\"><a href=\"$edit_href\" target=\"right_frame\">";
+					echo "<img src=\"images/$icon\" /></a></td>\n";
+					echo "<td class=\"rdn\" colspan=\"98\"><nobr><a href=\"$edit_href\" ";
+					echo " target=\"right_frame\">$base_dn</nobr></td>\n";
+					echo "</tr>\n<!-- end of base DN row -->";
+
+				} else { // end if( $base_dn )
+
+					if( "" === $base_dn || null === $base_dn ) {
+						// The server refuses to give out the base dn
+						echo "<tr><td class=\"spacer\"></td><td colspan=\"98\"><small><nobr>";
+						echo $lang['could_not_determine_root'];
+						echo '<br />';
+						echo $lang['ldap_refuses_to_give_root'];
+						echo '<br />';
+						echo $lang['please_specify_in_config'];
+						echo "</small></nobr></td></tr>";
+						// Proceed to the next server. We cannot draw anything else for this server.
+						continue;
+					} else {
+						// For some unknown reason, we couldn't determine the base dn
+						echo "<tr><td class=\"spacer\"></td><td colspan=\"99\"><small><nobr>";
+						echo $lang['could_not_determine_root'];
+						echo '<br />';
+						echo $lang['please_specify_in_config'];
+						echo "</small></nobr></td></tr>";
+						// Proceed to the next server. We cannot draw anything else for this server.
+						continue;
+					}
+				}
+	
+				flush();
+	
+				// Is the root of the tree expanded already?
+				if( isset( $tree[$server_id][$base_dn] ) && is_array( $tree[$server_id][$base_dn] ) ) {
+					foreach( $tree[ $server_id ][ $base_dn ] as $child_dn )
+						draw_tree_html( $child_dn, $server_id, 0 );
+						if( ! is_server_read_only( $server_id ) ) {
+						echo '<td class="spacer"></td>';
+						echo '<td class="icon"><a href="' . $create_href .
+							'" target="right_frame"><img src="images/star.png" /></a></td>';
+						echo '<td class="create" colspan="100"><a href="' . $create_href . 
+							'" target="right_frame" title="' . $lang['create_new_entry_in'] . ' ' . 
+							$base_dn.'">' . $lang['create_new'] . '</a></td></tr>';
+					}
 				}
 
-				$edit_href = "edit.php?server_id=$server_id&amp;dn=" . rawurlencode( $base_dn );
-
-				$icon = get_icon( $server_id, $base_dn );
-				echo "<td class=\"expander\" style=\"text-align: right\">";
-				echo "<a href=\"$expand_href\"><img src=\"$expand_img\" /></td>";
-				echo "<td class=\"icon\"><a href=\"$edit_href\" target=\"right_frame\">";
-				echo "<img src=\"images/$icon\" /></a></td>\n";
-				echo "<td class=\"rdn\" colspan=\"98\"><nobr><a href=\"$edit_href\" ";
-				echo " target=\"right_frame\">$base_dn</nobr></td>\n";
+			} else { // end if( pla_ldap_connect( $ds ) )
+				// could not connect to LDAP server
+				echo "<tr>\n";
+				echo "<td class=\"spacer\"></td>\n";
+				echo "<td><img src=\"images/warning_small.png\" /></td>\n";
+				echo "<td colspan=\"99\"><small><span style=\"color:red\">" . $lang['could_not_connect'] . "</span></small></td>\n";
 				echo "</tr>\n";
-			} else {
-				if( "" === $base_dn || null === $base_dn ) {
-					// The server refuses to give out the base dn
-					echo "<tr><td class=\"spacer\"></td><td colspan=\"98\"><small><nobr>";
-					echo $lang['could_not_determine_root'];
-					echo '<br />';
-					echo $lang['ldap_refuses_to_give_root'];
-					echo '<br />';
-					echo $lang['please_specify_in_config'];
-					echo "</small></nobr></td></tr>";
-					// Proceed to the next server. We cannot draw anything else for this server.
-					continue;
-				} else {
-					// For some unknown reason, we couldn't determine the base dn
-					echo "<tr><td class=\"spacer\"></td><td colspan=\"99\"><small><nobr>";
-					echo $lang['could_not_determine_root'];
-					echo '<br />';
-					echo $lang['please_specify_in_config'];
-					echo "</small></nobr></td></tr>";
-					// Proceed to the next server. We cannot draw anything else for this server.
-					continue;
+
+				if( $servers[ $server_id ][ 'auth_type' ] == 'form' ) {
+					$logout_href =  'logout.php?server_id=' . $server_id;
+					echo "<tr>\n";
+					echo "<td class=\"spacer\"></td>\n";
+					echo "<td class=\"spacer\"></td>\n";
+					echo "<td colspan=\"99\"><small>";
+					echo "<a target=\"right_frame\" href=\"$logout_href\">" . $lang['logout'] . "</a></small></td>\n";
+					echo "</tr>\n";
 				}
+				
+
+				// Proceed to the next server in the list. We cannot do anything mroe here.
+				continue;
 			}
 
-			flush();
+		} else { // end if have_auth_info( $server_id )
 
-			// Is the root of the tree expanded already?
-			if( isset( $tree[$server_id][$base_dn] ) ) {
-				foreach( $tree[ $server_id ][ $base_dn ] as $child_dn )
-					draw_tree_html( $child_dn, $server_id, 0 );
-				if( ! is_server_read_only( $server_id ) ) {
-					echo '<td class="spacer"></td>';
-					echo '<td class="icon"><a href="' . $create_href .
-						'" target="right_frame"><img src="images/star.png" /></a></td>';
-					echo '<td class="create" colspan="100"><a href="' . $create_href . 
-						'" target="right_frame" title="' . $lang['create_new_entry_in'] . ' ' . 
-						$base_dn.'">' . $lang['create_new'] . '</a></td></tr>';
-				}
-			}
-		}
-		else // have_auth_info() returned false.
-		{
 			// We don't have enough information to login to this server
 			// Draw the "login..." link
 			$login_href = "login_form.php?server_id=$server_id";
-			echo '<tr class="login"><td colspan="100">';
-			echo '&nbsp;&nbsp;&nbsp;<a href="' . $login_href . '" target="right_frame">';
-			echo '<img src="images/uid.png" align="top" alt="login"/></a> ';
-			echo '<a href="' . $login_href . '" target="right_frame">login...</a>';
+			echo '<tr class="login">';
+			echo '<td class="spacer"></td>';
+			echo '<td><a href="' . $login_href . '" target="right_frame">';
+			echo '<img src="images/uid.png" align="top" alt="login"/></a></td>';
+			echo '<td colspan="99"><a href="' . $login_href . '" target="right_frame">' . $lang['login_link'] . '</a>';
 			echo '</td></tr>';
+		}
+		
+		if( mass_delete_enabled( $server_id ) ) {
+			echo "<tr><td colspan=\"99\"><input type=\"submit\" value=\"Delete Checked Entries\" \></td></tr>\n";
+			echo "<!-- The end of the mass deletion form -->\n";
+			echo "</form>\n";
 		}
 	}
 }
@@ -237,14 +286,24 @@ function draw_tree_html( $dn, $server_id, $level=0 )
 	$img_src = 'images/' . $tree_icons[ $server_id ][ $dn ];
 
 	$rdn = pla_explode_dn( $dn );
-	$rdn = $rdn[0];
+	if( isset( $rdn[0] ) )
+		$rdn = $rdn[0];
 
 	echo '<tr>';
 
 	for( $i=0; $i<=$level; $i++ ) {
 		echo '<td class="spacer"></td>' . "\n";
 	}
-		
+
+	// Shall we draw the "mass-delete" checkbox?
+	if( mass_delete_enabled( $server_id ) ) {
+		echo "<td>
+			<input 
+			type=\"checkbox\" 
+			name=\"mass_delete[" . htmlspecialchars($dn) . "]\" />
+			</td>\n";
+	}
+
 	// is this node expanded? (deciding whether to draw "+" or "-")
 	if( isset( $tree[$server_id][$dn] ) ) { ?>
 		<td class="expander">
@@ -270,7 +329,7 @@ function draw_tree_html( $dn, $server_id, $level=0 )
 	<td class="rdn" colspan="<?php echo (97-$level); ?>">
 		<nobr>
 			<a href="<?php echo $edit_href; ?>"
-				target="right_frame"><?php echo htmlspecialchars( utf8_decode( $rdn ) ); ?></a>
+				target="right_frame"><?php echo ( $rdn ); ?></a>
 				<?php echo $object_count; ?>
 		</nobr>
 	</td>

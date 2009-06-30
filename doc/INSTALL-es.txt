@@ -1,0 +1,55 @@
+Estas instrucciones dejan por sentado que tienes una instalación
+funcionando de:
+    a. Servidor Web (Apache, IIS, etc).
+    b. PHP 4.1.0 o mas nuevo (con soporte LDAP)
+        
+* Instalando phpLDAPadmin en 4 pasos muy simples:
+
+  1. Desempaqueta el archivo (si estás leyendo esto, ya lo has hecho).
+  2. Pon el directorio resultante 'phpldapadmin' en algún lugar de tu
+  directorio web raiz.
+  3. Copia 'config.php.example' a 'config.php' y edítalo para que se
+  acomode a tu configuración y tu gusto.
+  4. Entonces, con el navegador ve a la dirección que contiene los archivos
+  del directorio phpldapadmin.
+  
+* Notas del navegador
+
+  phpLDAP se desarrolló bajo Mozilla, y será donde seguramente corra mejor.
+  Aún así, las pruebas se han hecho bajo Internet Explorer, y tendría que funcionar
+  bien también. No se ha hecho ninguna prueba con Konqueror (o cualquier navegador
+  basado en kthml como Safari) o Opera. Si encuentras alguna incompatibilidad, por favor
+  háznoslo saber.
+  
+* Contribuidores
+
+  Desarrolladores del proyecto:
+  
+  - David Smith         Mantenedor
+  - Xavier Renard       Master de LDIF
+  - Marius Rieder       Master de los Esquemas
+  - Nate Rotschafer     Encargado de los lanzamientos
+  
+  Escribidores de los parches:
+
+  - Bayu Irawan         userPassword hash, arreglos html, arreglos ldap_modify
+  - Uwe Ebel         	arreglo short_open_tags
+  - Andrew Tipton       soporte SUP en el parseador del esquema
+  - Eigil Bjørgum       soporte UTF-8
+  - Brandon Lederer     plantilla de entrada de DNS
+    Nathan Rotschafer
+  - Steve Rigler        Parche para Password hash
+  - Chris Jackson       Contraseñas Blowfish y md5crypt
+  - Marius Rieder       Parseador avanzado de esquema
+  - Nick Burch          Un montón de arreglos de realpath()
+
+  Traductores:
+
+  - Uwe Ebel            Alemán
+  - Xavier Renard       Francés
+  - Dave Smith          Inglés ;)
+  
+    Si puedes ayudar a traducir, por favor apúntate a la lista de correo phpldapadmin:
+    https://lists.sourceforge.net/mailman/listinfo/phpldapadmin-devel
+
+

@@ -10,15 +10,15 @@
 
 require 'common.php';
 
-if( is_server_read_only( $server_id ) )
-	pla_error( "You cannot perform updates while server is in read-only mode" );
-
 $server_id = $_POST['server_id'];
-$dn = rawurldecode( $_POST['dn'] );
+
+$dn = $_POST['dn'] ;
 $encoded_dn = rawurlencode( $dn );
 $attr = $_POST['attr'];
 
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
+if( is_server_read_only( $server_id ) )
+	pla_error( "You cannot perform updates while server is in read-only mode" );
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
 if( ! $attr ) pla_error( "No attribute name specified in POST variables" );
 if( ! $dn ) pla_error( "No DN name specified in POST variables" );

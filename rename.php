@@ -10,18 +10,23 @@
  *  - new_rdn
  */
 
-require 'common.php';
+require realpath( 'common.php' );
 
-$dn = rawurldecode( $_POST['dn'] );
+$dn = ( $_POST['dn'] );
 $server_id = $_POST['server_id'];
-$new_rdn = $_POST['new_rdn'];
-$new_rdn = utf8_encode($new_rdn);
+$new_rdn = ( $_POST['new_rdn'] );
+
 
 if( is_server_read_only( $server_id ) )
 	pla_error( "You cannot perform updates while server is in read-only mode" );
 
 if( is_server_read_only( $server_id ) )
 	pla_error( "You cannot perform updates while server is in read-only mode" );
+
+$children = get_container_contents( $server_id, $dn, 1 );
+if( count( $children ) > 0 )
+	pla_error( "You cannot rename an entry which has children entries 
+			(eg, the rename operation is not allowed on non-leaf entries)" );
 
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
@@ -33,23 +38,48 @@ $old_rdn = pla_explode_dn( $dn );
 $container = $old_rdn[ 1 ];
 for( $i=2; $i<count($old_rdn)-1; $i++ )
 	$container .= ',' . $old_rdn[$i];
-
 if( ! $container )
-	pla_error( "Error: Container is null!" );
+	pla_error( "Container is null!" );
 
-if( ! ldap_rename( $ds, $dn, $new_rdn, $container, false ) )
+$new_dn = $new_rdn . ',' . $container;
+
+if( $new_dn  == $dn )
+	pla_error( "You did not change the RDN" );
+
+$dn_attr = explode( '=', $dn );
+$dn_attr = $dn_attr[0];
+$old_dn_value = pla_explode_dn( $dn );
+$old_dn_value = explode( '=', $old_dn_value[0], 2 );
+$old_dn_value = $old_dn_value[1];
+$new_dn_value = explode( '=', $new_rdn, 2 );
+$new_dn_value = $new_dn_value[1];
+
+// Add the new DN attr value to the DN attr (ie, add newName to cn)
+$add_new_dn_attr = array( $dn_attr => $new_dn_value );
+// Remove the old DN attr value
+$remove_old_dn_attr = array( $dn_attr => $old_dn_value );
+
+// attempt to add the new DN attr value (if we can't, die a silent death)
+$add_dn_attr_success = @ldap_mod_add( $ds, $dn, $add_new_dn_attr );
+if( ! @ldap_rename( $ds, $dn, $new_rdn, $container, false ) )
 {
-	pla_error( "Error: Could not rename the object.", ldap_error( $ds ), ldap_errno( $ds ) );
+	pla_error( "Could not rename the object.", ldap_error( $ds ), ldap_errno( $ds ), false );
+
+	// attempt to undo our changes to the DN attr
+	if( $add_dn_attr_success )
+		@ldap_mod_del( $ds, $dn, $add_new_dn_attr );
 }
 else
 {
+	// attempt to remove the old DN attr value (if we can't, die a silent death)
+	@ldap_mod_del( $ds, $new_dn, $remove_old_dn_attr );
+
 	// update the session tree to reflect the name change
 	session_start();
 	if( session_is_registered( 'tree' ) )
 	{
 		$tree = $_SESSION['tree'];
 		$tree_icons = $_SESSION['tree_icons'];
-		$new_dn = $new_rdn . ',' . $container;
 		$old_dn = $dn;
 
 		// gotta search the whole tree for the entry (must be a leaf node since RDN changes
