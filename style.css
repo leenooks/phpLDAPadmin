@@ -1,0 +1,360 @@
+table.schema_oclasses td {
+	vertical-align: top;
+	text-align: left;
+}
+
+table.schema_attr th {
+	background-color: #016;
+	padding: 5px;
+	color: white;
+	font-weight: normal;
+}
+
+table.schema_attr td {
+	padding: 5px;
+}
+
+table.schema_attr tr.even {
+	background-color: #eee;
+}
+
+table.schema_attr tr.odd {
+	background-color: #ccc;
+}
+
+div.error {
+	background-color: #eec;
+	border: solid black 1px;
+	padding: 15px;
+	padding-top: 0px;
+	width: 380px;
+	text-align: left;
+}
+
+table.confirm th {
+	background-color: #016;
+	padding: 5px;
+	color: white;
+	font-weight: normal;
+}
+
+table.confirm tr.spacer {
+	background-color: #ddd;
+}
+
+table.confirm tr.even {
+	background-color: #ccc;
+}
+
+table.confirm tr.odd{
+	background-color: #eee;
+}
+
+table.confirm tr td {
+	padding: 4px;
+	vertical-align: top;
+}
+
+table.confirm tr td.heading {
+	font-size: 75%;
+}
+
+table.templates tr td {
+	text-align: left;
+	vertical-align: center;
+}
+
+table.templates tr {
+	height: 25px;
+}
+
+
+a img {
+	border: 0px;
+}
+
+body {
+	font-family: arial, helvetica, sans-serif;
+	background-color: white;
+	font-size: 12pt;
+}
+
+table.tree {
+	border: 0px;
+}
+
+table.tree img {
+	border: 0px;
+}
+
+table.tree td {
+	padding: 2px;
+	border: 0px solid black;
+}
+
+table.tree tr {
+}
+
+table.tree tr.server {
+	vertical-align: top;
+}
+
+table.tree td.icon {
+	text-align: center;
+	padding: 0px;
+	width: 22px;
+}
+
+table.tree td.rdn a {
+	text-decoration: none;
+	color: black;
+}
+
+table.tree td.rdn a:hover {
+	text-decoration: underline;
+	color: blue;
+}
+
+table.tree td.create a {
+	text-decoration: none;
+	color: black;
+}
+
+table.tree td.create a:hover {
+	text-decoration: underline;
+	color: blue;
+}
+
+
+table.tree td.spacer {
+	width: 22px;
+}
+
+table.tree td.expander {
+	text-align: center;
+	width: 22px;
+	min-width: 22px;
+}
+
+table.tree td span.count {
+	color: gray;
+	font-size: 85%;
+}
+
+h3.title {
+	text-align: center;
+	margin: 0px;
+	padding: 10px;
+	color: white;
+	background-color: #018;
+	border: 1px solid black;
+	font-weight: normal;
+	font-size: 150%;
+}
+
+h3.subtitle {
+	text-align: center;
+	margin: 0px;
+	margin-bottom: 15px;
+	font-size: 75%;
+	color: white;
+	border-bottom: 1px solid black;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	background: #018;
+	padding: 4px;
+	font-weight: normal;
+}
+
+table.edit_dn tr.spacer td {
+	height: 20px;
+}
+
+table.edit_dn {
+	width: 100%;
+}
+
+table.edit_dn th {
+	background: #777;
+	color: white;
+	font-weight: normal;
+	font-size: 125%;
+	padding: 5px;
+}
+
+table.edit_dn tr td {
+	padding: 4px;
+}
+
+table.edit_dn tr td.attr {
+	vertical-align: top;
+}
+
+table.edit_dn tr td.heading {
+	border-top: 3px solid #ccc;
+	font-weight: bold;
+}
+
+table.edit_dn tr td.val {
+	text-align: right;
+	vertical-align: center;
+}
+
+table.edit_dn tr.updated_attr {
+	background: #def;
+}
+
+table.edit_dn tr.updated_attr td {
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	color: #005;
+}
+
+table.edit_dn tr.updated_attr a {
+}
+
+table.edit_dn tr.mod_dn {
+	background: #def;
+}
+
+table.edit_dn tr.row1 {
+	background: #eee;
+}
+
+table.edit_dn tr.row2 {
+	background: #ccc;
+}
+
+input.update_dn {
+	font-size: 65%;
+}
+
+small {
+	font-size: 10pt;
+}
+
+form.edit_dn {
+	margin: 0px;
+	padding: 0px;
+}
+
+h4.oclass {
+	background: #88b;
+	padding: 5px;
+	margin: 0px;
+	margin-top: 8px;
+	font-weight: normal;
+	border: 1px solid black;
+	font-size: 140%;
+	color: white;
+}
+
+h4.oclass_sub {
+	background: #dde;
+	border: 1px solid black;
+	border-top: 0px;
+	font-weight: normal;
+	margin: 0px;
+	padding: 2px;
+	padding-left: 5px;
+	font-size: 80%;
+}
+
+ul.schema {
+	margin: 5px;
+}
+
+ul.schema li {
+	margin-left: 10px;
+}
+
+ul.current_values {
+	padding: 5px;
+	padding-left: 25px;
+	width: 200px;
+	margin-left: 50px;
+}
+
+form.new_value {
+	margin-left: 70px;
+}
+
+ul.search {
+	font-weight: bold;
+}
+
+div.search_result {
+	list-style-type: none;
+	background: #ffb;
+	padding: 6px;
+	padding-left: 10px;
+	margin-right: 40px;
+}
+
+table.attrs {
+	font-weight: normal;
+	font-size: 75%;
+	margin: 0px;
+}
+
+table.attrs td {
+	padding-right: 10px;
+}
+
+table.attrs td.attr {
+	color: #aaa;
+	padding-left: 15px;
+}
+
+form.search {
+	width: 500px;
+	background-color: #ddf;
+	padding: 5px;
+}
+
+table.edit_dn_menu {
+	font-size: 75%;
+}
+
+input.scary {
+	background: red;
+	font-weight: bold;
+	color: white;
+}
+
+input.cancel {
+	padding-left: 10px;
+	padding-right: 10px;
+	font-weight: bold;
+}
+
+input.happy {
+	background: green;
+	font-weight: bold;
+	color: white;
+}
+
+table.delete_confirm {
+	width: 76%;
+	background-color: #ddf;
+	padding: 20px;
+	text-align: left;
+}
+
+table.login {
+	background-color: #ddf;
+	padding: 10px;
+}
+
+table.login td {
+	padding: 5px;
+}
+
+table.create {
+	font-size: 75%;
+}
+
+table.create td.heading {
+	vertical-align: top;
+	padding: 10px;
+}

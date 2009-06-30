@@ -1,0 +1,163 @@
+<?php
+
+/*
+ * The phpLDAPAdmin config file
+ * This is where you customize phpLDAPAdmin. The most important
+ * part is immediately below: The "LDAP Servers" section.
+ * You must specify at least one LDAP server there.
+ */
+
+// Required Configuration
+
+// Your LDAP servers
+$i=0;
+$servers = array();
+$servers[$i]['name'] = 'My LDAP Server';   /* A convenient name that will appear in the tree viewer */
+$servers[$i]['host'] = 'ldap.example.com'; /* Examples: 'ldap.example.com', 'ldaps://ldap.example.com/'
+                                              Note: Leave blank to remove it from the list of servers in the
+                                              tree viewer*/
+$servers[$i]['base'] = 'dc=example,dc=com';/*  The base DN of your LDAP server. Leave this blank to have phpLDAPAdmin
+                                               auto-detect it for you. */
+$servers[$i]['port'] = 389;                /*  The port your LDAP server listens on (no quotes) */
+$servers[$i]['auth_type'] = 'config';      /*  2 options: 'form': you will be prompted, and a cookie stored 
+                                               with your login dn and password. 'config': specify your login dn 
+                                               and password here. In both cases, use caution! */
+$servers[$i]['login_dn'] = 'cn=Manager,dc=example,dc=com'; /* For anonymous binds, leave the login_dn and
+                                                              login_pass blank */
+$servers[$i]['login_pass'] = 'secret';     /*  Your password (only if you specified 'config' for 'auth_type' */ 
+$servers[$i]['tls'] = false;               /*  Use TLS to connect. Requires PHP 4.2 or greater */
+
+/* If you want to configure an additional LDAP server, do so below. */
+$i++;
+$servers[$i]['name'] = 'Another server';
+$servers[$i]['host'] = '';
+$servers[$i]['base'] = 'dc=example,dc=com';
+$servers[$i]['port'] = 389;
+$servers[$i]['auth_type'] = 'config';
+$servers[$i]['login_dn'] = '';
+$servers[$i]['login_pass'] = '';
+$servers[$i]['tls'] = false;
+
+$i++;
+$servers[$i]['name'] = 'Another server';
+$servers[$i]['host'] = '';
+$servers[$i]['base'] = 'dc=example,dc=com';
+$servers[$i]['port'] = 389;
+$servers[$i]['auth_type'] = 'config';
+$servers[$i]['login_dn'] = '';
+$servers[$i]['login_pass'] = '';
+$servers[$i]['tls'] = false;
+
+/* If you want to configure more LDAP servers, copy and paste the sections above (including the "$i++;") */
+
+
+// The temporary storage directory where we will put jpegPhoto data
+// This directory must be readable and writable by your web server
+$jpeg_temp_dir = "/tmp"; // for Unix systems
+//$jpeg_temp_dir = "c:\\temp"; // for Windows systems
+
+
+// Optional Configuration Below
+
+/**                            **/
+/** Appearance and Behavior **/
+/**                            **/
+
+// If you used auth_type 'form' in the servers list, you can adjust how long the cookie will last 
+// (default is 0 seconds, which expires when you close the browser)
+$cookie_time = 0; 
+
+// How many pixels wide do you want your left frame view (for the tree browser)
+$tree_width = 300;
+
+// Do you want phpLDAPAdmin to check the schema of the server when you edit a DN and draw
+// specialized for elements based on that schema (ie, for booleans, draw a true/false 
+// drop-down instead of a text box). This may cause a performance slow-down.
+// Note:
+// This will have problems with non-LDAP compliant servers that do not properly represent 
+// their schema.
+$edit_dn_schema_lookup = true;
+
+// How long to keep jpegPhoto temporary files around (in seconds)
+$jpeg_tmp_keep_time = 120;
+
+/**                              **/
+/** Simple Search Form Config **/
+/**                              **/
+
+// Which attributes to include in the drop-down menu of the simple search form (comma-separated)
+$search_attributes = "uid, cn, gidNumber";
+
+// This list correlates to the list directly above. If you want to present more readable names
+// for your search attributes, do so here. Both lists must have the same number of entries.
+$search_attributes_display = "User Name, Full Name, Group ID";
+
+// The list of attributes to display in each search result entry summary
+$search_result_attributes = "dn, cn"; 
+
+// Search methods in the drop down box for the simple search form
+// (if you change this, you will also have to edit search.php to properly handle the new option)
+$search_criteria_options = "equals, starts with, contains, ends with, sounds like";
+
+/**                              **/
+/** Templates for entry creation **/
+/**                              **/
+
+$templates = array();
+
+// Fill in this array with templates that you can create to suit your needs.
+// Each entry defines a description (for display in the template list) and
+// a handler, which is a file that will be executed with certain POST vars set.
+// See the templates provided here for an example of how to make your own template.
+
+$templates[] =
+        array(  'desc'    => 'User',
+                'icon'    => 'images/user.png',
+                'handler' => 'new_user_template.php' );
+
+$templates[] =
+        array(  'desc'    => 'inetOrgPerson',
+                'icon'    => 'images/user.png',
+                'handler' => 'new_address_template.php' );
+
+$templates[] =
+        array(  'desc'    => 'Organizational Unit',
+                'icon'    => 'images/ou.png',
+                'handler' => 'new_ou_template.php' );
+
+$templates[] =
+        array(  'desc'    => 'Samba NT Machine',
+                'icon'    => 'images/terminal.png',
+                'handler' => 'new_nt_machine.php' );
+
+$templates[] =
+        array(  'desc'    => 'DNS Entry',
+                'icon'    => 'images/dc.png',
+                'handler' => 'new_dns_entry.php' );
+
+/**                                         **/
+/** User-friendly attribute translation     **/
+/**                                         **/
+
+$friendly_attrs = array();
+
+// Use this array to map attribute names to user friendly names. For example, if you
+// don't want to see "facsimileTelephoneNumber" but rather "Fax".
+
+$friendly_attrs[ 'facsimileTelephoneNumber' ] =         'Fax';
+$friendly_attrs[ 'telephoneNumber' ]  =                 'Phone';
+
+/**                                                   **/
+/** Some phpLDAPAdmin code to be executed. No touchy. **/
+/**                                                   **/
+
+// Turn off notices about referencing arrays and such, but leave everything else on.
+error_reporting( E_ALL ^ E_NOTICE );
+
+// Always including the 'custom' template (the most generic and flexible)
+$templates['custom'] = 
+        array(  'desc'    => 'Custom',
+                'icon'    => 'images/object.png',
+                'handler' => 'custom.php' );
+
+?>
