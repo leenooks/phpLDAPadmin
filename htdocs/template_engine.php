@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.44 2007/01/18 21:03:58 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.44.2.1 2007/03/22 21:32:33 wurley Exp $
 
 /**
  * Template render engine.
@@ -1109,8 +1109,12 @@ foreach ($template['attrs'] as $attr => $vals) {
 
 				$description = isset($group['description']) ? $group['description'] : null;
 
-				if ($description)
+				if (is_array($description)) {
+					foreach ($description as $item)
+						printf(' (%s)',htmlspecialchars($item));
+				} else {
 					printf(' (%s)',htmlspecialchars($description));
+				}
 
 				echo '</small>';
 			}
