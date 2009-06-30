@@ -1,22 +1,23 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/page.php,v 1.3 2007/12/15 13:17:43 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/page.php,v 1.3.2.5 2007/12/21 12:51:28 wurley Exp $
 
 /**
  * Page Rendering Functions
+ * @package phpLDAPadmin
  */
 
 class page {
 	# pre-HTML headers
-	private $_pageheader;
+	protected $_pageheader;
 
 	# Items to get into the <head>
-	private $_head;
+	protected $_head;
 
 	# Settings for this application
-	private $_app;
+	protected $_app;
 
 	# Default values array.
-	private $_default;
+	protected $_default;
 
 	public function __construct($server_id=null) {
 		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
@@ -34,21 +35,31 @@ class page {
 
 		# Capture any output so far (in case we send some headers below) - there shouldnt be any output anyway.
 		$preOutput = '';
-		if (ob_get_level()) {
+
+		# Try and work around if php compression is on, or the user has set compression in the config.
+		# type = 1 for user gzip, 0 for php.ini gzip.
+		$obStatus = ob_get_status();
+		if ($obStatus['type'] && $obStatus['status']) {
 			$preOutput = ob_get_contents();
 			ob_end_clean();
 		}
 
-		//header('Content-type: text/html; charset="UTF-8"'); @todo: Something is sending output to the browser.
+		header('Content-type: text/html; charset="UTF-8"');
 		if (isset($_SESSION['plaConfig'])
 			&& $_SESSION['plaConfig']->GetValue('appearance','compress')
-			&& eregi('gzip',$_SERVER['HTTP_ACCEPT_ENCODING'])) {
+			&& eregi('gzip',$_SERVER['HTTP_ACCEPT_ENCODING'])
+			&& ! ini_get('zlib.output_compression')) {
 
 			header('Content-Encoding: gzip');
 
 			if (DEBUG_ENABLED)
 				debug_log('Sent COMPRESSED header to browser and discarded (%s)',129,__FILE__,__LINE__,__METHOD__,$preOutput);
 		}
+
+		if (isset($_SESSION['plaConfig'])
+			&& $_SESSION['plaConfig']->GetValue('appearance','compress')
+			&& ini_get('zlib.output_compression'))
+				$this->setsysmsg(array(array('title'=>_('Warning'),'body'=>_('WARNING: You cannot have PHP compression and phpLDAPadmin compression enabled at the same time. Please unset zlib.output_compression or set $config->custom->appearance[\'compress\']=false'),'type'=>'warn')));
 
 		# Turn back on output buffering.
 		ob_start();
@@ -321,6 +332,7 @@ class page {
 
 		if ($compress && ob_get_level() && isset($_SESSION['plaConfig'])
 			&& $_SESSION['plaConfig']->GetValue('appearance','compress')
+			&& ! ini_get('zlib.output_compression')
 			&& eregi('gzip',$_SERVER['HTTP_ACCEPT_ENCODING'])) {
 
 			$output = ob_get_contents();
@@ -400,6 +412,7 @@ class page {
 		# compress output
 		if (ob_get_level() && isset($_SESSION['plaConfig'])
 			&& $_SESSION['plaConfig']->GetValue('appearance','compress')
+			&& ! ini_get('zlib.output_compression')
 			&& eregi('gzip',$_SERVER['HTTP_ACCEPT_ENCODING'])) {
 
 			$output = ob_get_contents();

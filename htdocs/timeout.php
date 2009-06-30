@@ -1,4 +1,6 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/timeout.php,v 1.5.2.1 2007/12/21 12:11:55 wurley Exp $
+
 /**
  * Time out page to be displayed on the right frame
  *

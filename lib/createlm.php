@@ -1,6 +1,6 @@
 <?php
 /*
-$Id: createlm.php,v 1.4 2007/12/15 07:50:32 wurley Exp $
+$Id: createlm.php,v 1.4.2.1 2007/12/21 12:11:55 wurley Exp $
 
   This code is part of LDAP Account Manager (http://www.sourceforge.net/projects/lam)
   Copyright (C) 2004 - 2006 Roland Gruber
@@ -27,8 +27,6 @@ $Id: createlm.php,v 1.4 2007/12/15 07:50:32 wurley Exp $
 * The code is a conversion from createntlm.pl (Benjamin Kuit) and smbdes.c/md4.c (Andrew Tridgell).
 *
 * @author Roland Gruber
-*
-* @package modules
 */
 
 /**
@@ -36,7 +34,7 @@ $Id: createlm.php,v 1.4 2007/12/15 07:50:32 wurley Exp $
 *
 * The important functions are lmhash($password) and nthash($password).
 *
-* @package modules
+* @package lam
 */
 class smbHash {
 

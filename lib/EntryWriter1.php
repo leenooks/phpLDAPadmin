@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter1.php,v 1.3 2007/12/15 09:01:35 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter1.php,v 1.3.2.1 2007/12/21 11:32:59 wurley Exp $
 
 define('IdEntryRefreshMenuItem', '0');
 define('IdEntryExportBaseMenuItem', '1');
@@ -1777,7 +1777,19 @@ class EntryWriter1 extends EntryWriter {
 	}
 
 	protected function getAttributeDefaultValueHelper($attribute, $i) {
-		return '';
+		$params = $attribute->getProperty('helper');
+
+		# Should only return 1 default entry.
+		if (isset($params['value']) && ! is_array($params['value']))
+			return $params['value'];
+
+		# If there are multiple values, return the first one.
+		else if (isset($params['value']) && is_array($params['value']))
+			return array_shift($params['value']);
+
+		# No default values, return a blank.
+		else
+			return '';
 	}
 
 	protected function getAttributeRenameMenuItem($attribute) {

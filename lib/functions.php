@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.303 2007/12/15 07:50:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.303.2.1 2007/12/16 11:02:40 wurley Exp $
 
 /**
  * A collection of functions used throughout phpLDAPadmin.
@@ -1869,7 +1869,7 @@ function dn_unescape($dn) {
  */
 function get_href($type,$extra_info='') {
 	$sf = 'https://sourceforge.net';
-	$pla = 'http://wiki.phpldapadmin.info';
+	$pla = 'http://phpldapadmin.wiki.sourceforge.net';
 	$group_id = '61828';
 	$bug_atid = '498546';
 	$rfe_atid = '498549';

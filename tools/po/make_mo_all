@@ -1,6 +1,6 @@
 #!/bin/sh
 
-HOME=$PWD
+HOME=$PWD/$(dirname $0)
 cd ../../locale
 
 for i in $(ls -1); do

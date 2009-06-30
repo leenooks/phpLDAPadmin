@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.27 2007/12/15 11:38:59 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.27.2.1 2007/12/20 10:47:20 wurley Exp $
 
 /**
  * Configuration processing and defaults.
@@ -186,7 +186,7 @@ class Config {
 
 		$this->default->appearance['tree'] = array(
 			'desc'=>'Class name which inherits from Tree class and implements the draw() method',
-			'default'=>'HTMLTree');
+			'default'=>'AJAXTree');
 
 		$this->default->appearance['entry_factory'] = array(
 			'desc'=>'Class name which inherits from EntryFactory class',

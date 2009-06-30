@@ -1,4 +1,10 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/draw_tree_node.php,v 1.2.2.1 2007/12/21 12:11:55 wurley Exp $
+
+/**
+ * @package phpLDAPadmin
+ */
+
 	$entry['dn'] = get_request('dn','REQUEST');
 	$entry['server_id'] = get_request('server_id','REQUEST');
 	$entry['code'] = get_request('code','REQUEST');

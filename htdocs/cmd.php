@@ -1,7 +1,8 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/cmd.php,v 1.3 2007/12/15 13:17:43 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/cmd.php,v 1.3.2.1 2007/12/21 12:11:55 wurley Exp $
 
 /**
+ * @package phpLDAPadmin
  */
 
 require_once './common.php';

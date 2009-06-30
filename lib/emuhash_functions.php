@@ -1,9 +1,6 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/emuhash_functions.php,v 1.6 2005/03/25 00:59:48 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/emuhash_functions.php,v 1.6.10.1 2007/12/21 12:11:55 wurley Exp $
 
-/**
- * @package other
- */
 /*******************************************************************************
  * emuhash - partly emulates the php mhash functions
  * version: 2004040701

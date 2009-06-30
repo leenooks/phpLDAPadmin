@@ -1,7 +1,7 @@
 # : $
 msgid ""
 msgstr ""
-"Project-Id-Version: phpldapadmin $Name: RELEASE-1_1_0 $\n"
+"Project-Id-Version: phpldapadmin messages\n"
 "Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sf.net\n"
 "POT-Creation-Date: 2007-12-03 11:45+0200\n"
 "PO-Revision-Date: 2007-12-04 18:22+0100\n"
