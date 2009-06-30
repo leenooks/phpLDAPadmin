@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/modify_member_form.php,v 1.5 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/modify_member_form.php,v 1.5.2.1 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * Displays a form to allow the user to modify group members.
@@ -46,14 +46,14 @@ foreach ($ldapserver->getBaseDN() as $base_dn) {
 
 	# Get all entries that can be added to the group
 
-	if (preg_match("/^$attr$/i",$_SESSION['plaConfig']->GetValue('modify_member','posixgroupattr')))
+	if (preg_match("/^$attr$/i",$_SESSION[APPCONFIG]->GetValue('modify_member','posixgroupattr')))
 		$possible_values = array_merge($ldapserver->search(null,$base_dn,
-			$_SESSION['plaConfig']->GetValue('modify_member','posixfilter'),
-			array($_SESSION['plaConfig']->GetValue('modify_member','posixattr'))));
+			$_SESSION[APPCONFIG]->GetValue('modify_member','posixfilter'),
+			array($_SESSION[APPCONFIG]->GetValue('modify_member','posixattr'))));
 	else
 		$possible_values = array_merge($ldapserver->search(null,$base_dn,
-			$_SESSION['plaConfig']->GetValue('modify_member','filter'),
-			array($_SESSION['plaConfig']->GetValue('modify_member','attr'))));
+			$_SESSION[APPCONFIG]->GetValue('modify_member','filter'),
+			array($_SESSION[APPCONFIG]->GetValue('modify_member','attr'))));
 }
 
 if ($possible_values)
@@ -75,10 +75,10 @@ printf('%s <b>%s</b> %s <b>%s</b>:',
 	_('There are'),$num_current_members,_('members in group'),htmlspecialchars($rdn));
 
 for ($i=0; $i<count($possible_values); $i++) {
-	if (preg_match("/^$attr$/i",$_SESSION['plaConfig']->GetValue('modify_member','posixgroupattr')))
-		$possible_members[$i] = $possible_values[$i][$_SESSION['plaConfig']->GetValue('modify_member','posixattr')];
+	if (preg_match("/^$attr$/i",$_SESSION[APPCONFIG]->GetValue('modify_member','posixgroupattr')))
+		$possible_members[$i] = $possible_values[$i][$_SESSION[APPCONFIG]->GetValue('modify_member','posixattr')];
 	else
-		$possible_members[$i] = $possible_values[$i][$_SESSION['plaConfig']->GetValue('modify_member','attr')];
+		$possible_members[$i] = $possible_values[$i][$_SESSION[APPCONFIG]->GetValue('modify_member','attr')];
 }
 
 sort($possible_members);

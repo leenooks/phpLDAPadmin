@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/show_cache.php,v 1.3 2007/12/15 11:33:27 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/show_cache.php,v 1.3.2.1 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * This script shows the contents of the cache for debugging purposes
@@ -21,7 +21,7 @@ if (isset($entry['index']) && isset($entry['key'])) {
 if ($entry['key'])
 	debug_dump($_SESSION[$entry['key']],1);
 
-if (! $_SESSION['plaConfig']->GetValue('appearance','hide_debug_info')) {
+if (! $_SESSION[APPCONFIG]->GetValue('appearance','hide_debug_info')) {
 	echo '<div style="font-size: 11px"><ul>';
 	foreach (array_keys($_SESSION) as $key) {
 		if (($key == 'cache') && is_array($_SESSION[$key]))

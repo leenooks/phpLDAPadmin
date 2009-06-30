@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/search.php,v 1.78 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/search.php,v 1.78.2.4 2007/12/29 08:24:10 wurley Exp $
 
 /**
  * Perform LDAP searches and draw the advanced/simple search forms
@@ -24,7 +24,7 @@ define('SIZE_LIMIT_EXCEEDED',4);
 $result_formats = array('list','table');
 
 # Our incoming variables
-$entry['format'] = get_request('format','GET','false',$_SESSION['plaConfig']->GetValue('search','display'));
+$entry['format'] = get_request('format','GET','false',$_SESSION[APPCONFIG]->GetValue('search','display'));
 $entry['form'] = get_request('form','GET',false,get_request('form','SESSION'));
 
 $entry['orderby']['raw'] = get_request('orderby','GET');
@@ -81,9 +81,9 @@ if ($entry['base_dn']['string']) {
 printf('<script type="text/javascript" src="%ssearch_util.js"></script>','../htdocs/'.JSDIR);
 echo '<center>';
 
-$entry['command']['as'] = $_SESSION['plaConfig']->isCommandAvailable('search','advanced_search');
-$entry['command']['ps'] = $_SESSION['plaConfig']->isCommandAvailable('search','predefined_search');
-$entry['command']['ss'] = $_SESSION['plaConfig']->isCommandAvailable('search','simple_search');
+$entry['command']['as'] = $_SESSION[APPCONFIG]->isCommandAvailable('search','advanced_search');
+$entry['command']['ps'] = $_SESSION[APPCONFIG]->isCommandAvailable('search','predefined_search');
+$entry['command']['ss'] = $_SESSION[APPCONFIG]->isCommandAvailable('search','simple_search');
 
 if ($entry['form'] == 'advanced') {
 	if ($entry['command']['as'])
@@ -116,15 +116,15 @@ echo '<br />';
 
 if ($entry['search']) {
 	if ($entry['form'] == 'advanced') {
-		if (! $_SESSION['plaConfig']->isCommandAvailable('search','advanced_search'))
+		if (! $_SESSION[APPCONFIG]->isCommandAvailable('search','advanced_search'))
 			pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('advanced search')));
 
 	} elseif ($entry['form'] == 'predefined') {
-		if (! $_SESSION['plaConfig']->isCommandAvailable('search','predefined_search'))
+		if (! $_SESSION[APPCONFIG]->isCommandAvailable('search','predefined_search'))
 			pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('predefined search')));
 
 	} elseif ($entry['form'] == 'simple') {
-		if (! $_SESSION['plaConfig']->isCommandAvailable('search','simple_search'))
+		if (! $_SESSION[APPCONFIG]->isCommandAvailable('search','simple_search'))
 			pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('simple search')));
 	}
 
@@ -132,10 +132,10 @@ if ($entry['search']) {
 		if ($entry['display'])
 			$search_result_attributes = $entry['display']['array'];
 		else
-			$search_result_attributes = $_SESSION['plaConfig']->GetValue('search','result_attributes');
+			$search_result_attributes = $_SESSION[APPCONFIG]->GetValue('search','result_attributes');
 
 	} else {
-		$search_result_attributes = $_SESSION['plaConfig']->GetValue('search','result_attributes');
+		$search_result_attributes = $_SESSION[APPCONFIG]->GetValue('search','result_attributes');
 	}
 
 	# do we have enough authentication information for the specified server_id
@@ -148,7 +148,7 @@ if ($entry['search']) {
 			'title'=>_('Search'),
 			'body'=>_('You have not logged into the selected server yet, so you cannot perform searches on it.'),
 			'type'=>'warn'),
-			'cmd.php?cmd=login_form');
+			$login_url);
 	}
 
 	if (is_numeric($entry['predefined'])) {
@@ -214,14 +214,14 @@ if ($entry['search']) {
 						'title'=>_('Unrecognized criteria option: ').htmlspecialchars($entry['criterion']),
 						'body'=>_('If you want to add your own criteria to the list. Be sure to edit search.php to handle them. Quitting.'),
 						'type'=>'warn'),
-						'cmd.php?cmd=search');
+						sprintf('cmd.php?cmd=search&server_id=%s',$ldapserver->server_id));
 			}
 		}
 
 		# prevent script from bailing early on a long delete
 		@set_time_limit(0);
 
-		$size_limit = $_SESSION['plaConfig']->GetValue('search','size_limit');
+		$size_limit = $_SESSION[APPCONFIG]->GetValue('search','size_limit');
 
 		# Sanity check
 		if ($size_limit < 1)
@@ -233,18 +233,18 @@ if ($entry['search']) {
 		foreach ($base_dns as $base_dn) {
 			if (! $ldapserver->dnExists($base_dn)) {
 				if (DEBUG_ENABLED)
-					debug_log('BaseDN [%s] skipped as it doesnt exist in [%s].',64,
+					debug_log('BaseDN [%s] skipped as it doesnt exist in [%s].',64,__FILE__,__LINE__,__METHOD__,
 						$base_dn,$ldapserver->server_id);
 
 				continue;
 
 			} else {
 				if (DEBUG_ENABLED)
-					debug_log('Search with base DN [%s]',64,$base_dn);
+					debug_log('Search with base DN [%s]',64,__FILE__,__LINE__,__METHOD__,$base_dn);
 			}
 
 			$results = $ldapserver->search(null,dn_escape($base_dn),$entry['filter']['clean'],$search_result_attributes,
-				$entry['scope'],$entry['orderby']['array'],$_SESSION['plaConfig']->GetValue('deref','search'));
+				$entry['scope'],$entry['orderby']['array'],$_SESSION[APPCONFIG]->GetValue('deref','search'));
 
 			if ((! $results) && $ldapserver->errno())
 				pla_error(_('Encountered an error while performing search.'),$ldapserver->error(),$ldapserver->errno());
@@ -265,7 +265,7 @@ if ($entry['search']) {
 			printf('<td>%s%s <b>%s</b> <small>(%s %s)</small></td>',_('Entries found'),_(':'),
 				number_format($count),$time_elapsed,_('seconds'));
 
-			if ($_SESSION['plaConfig']->isCommandAvailable('export')) {
+			if ($_SESSION[APPCONFIG]->isCommandAvailable('export')) {
 				$href = htmlspecialchars(sprintf('cmd.php?cmd=export_form&server_id=%s&scope=%s&dn=%s&filter=%s&attributes=%s',
 					$ldapserver->server_id,$entry['scope'],$base_dn,rawurlencode($entry['filter']['clean']),rawurlencode(join(', ',$search_result_attributes))));
 
@@ -290,7 +290,7 @@ if ($entry['search']) {
 
 			echo ' ]</small>';
 
-			if ($_SESSION['plaConfig']->isCommandAvailable('schema')) {
+			if ($_SESSION[APPCONFIG]->isCommandAvailable('schema')) {
 				echo '<br />';
 				printf('<small>%s%s <b>%s</b></small>',_('Base DN'),_(':'),htmlspecialchars($base_dn));
 

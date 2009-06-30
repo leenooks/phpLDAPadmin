@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/syslog.php,v 1.13 2007/12/15 07:50:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/syslog.php,v 1.13.2.1 2007/12/26 09:26:33 wurley Exp $
 
 /**
  * Functions related to syslog logging.
@@ -24,11 +24,11 @@
  */
 
 # If config_default.php hasnt been called yet, then return.
-if (! isset($_SESSION['plaConfig']))
+if (! defined('APPCONFIG') || ! isset($_SESSION[APPCONFIG]))
 	return;
 
 /* Initialize syslog */
-if ($_SESSION['plaConfig']->GetValue('debug','syslog')) {
+if ($_SESSION[APPCONFIG]->GetValue('debug','syslog')) {
 	define_syslog_variables();
 	openlog('phpldapadmin', LOG_ODELAY, LOG_DAEMON );
 }
@@ -42,7 +42,7 @@ if ($_SESSION['plaConfig']->GetValue('debug','syslog')) {
  * @param log_string	String to log.
  */
 function syslog_msg ( $emergency, $log_string, $ldapserver=null ) {
-	if (isset($_SESSION['plaConfig']) && $_SESSION['plaConfig']->GetValue('debug','syslog')) {
+	if (isset($_SESSION[APPCONFIG]) && $_SESSION[APPCONFIG]->GetValue('debug','syslog')) {
 
 		if (isset($ldapserver->server_id))
 			$log_string = sprintf('(%s) %s',$ldapserver->getLoggedInDN(),$log_string);

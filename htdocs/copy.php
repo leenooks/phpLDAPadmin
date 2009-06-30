@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy.php,v 1.44 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy.php,v 1.44.2.1 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * Copies a given object to create a new one.
@@ -16,14 +16,14 @@
 
 require './common.php';
 
-if (! $_SESSION['plaConfig']->isCommandAvailable('entry_move'))
+if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_move'))
 	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('copy entry')));
 
 $entry['src']['id'] = get_request('server_id');
 $entry['dst']['id'] = get_request('dest_server_id');
 
-$entry['src']['ldapserver'] = $_SESSION['plaConfig']->ldapservers->Instance($entry['src']['id']);
-$entry['dst']['ldapserver'] = $_SESSION['plaConfig']->ldapservers->Instance($entry['dst']['id']);
+$entry['src']['ldapserver'] = $_SESSION[APPCONFIG]->ldapservers->Instance($entry['src']['id']);
+$entry['dst']['ldapserver'] = $_SESSION[APPCONFIG]->ldapservers->Instance($entry['dst']['id']);
 
 if ($entry['dst']['ldapserver']->isReadOnly())
 	pla_error(_('Destination server is currently READ-ONLY.'));

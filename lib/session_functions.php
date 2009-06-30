@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/session_functions.php,v 1.18 2007/12/15 07:50:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/session_functions.php,v 1.18.2.3 2007/12/29 08:24:11 wurley Exp $
 
 /**
  * A collection of functions to handle sessions throughout phpLDAPadmin.
@@ -25,7 +25,7 @@ define('pla_session_id_ses_max', 36);
  */
 function pla_session_get_id() {
 	if (DEBUG_ENABLED)
-		debug_log('pla_session_get_id(): Entered with ()',1);
+		debug_log('Entered with ()',1,__FILE__,__LINE__,__METHOD__);
 
 	$id_md5 = md5(rand(1,1000000));
 	$ip_md5 = md5($_SERVER['REMOTE_ADDR']);
@@ -50,7 +50,7 @@ function pla_session_get_id() {
  */
 function pla_session_verify_id() {
 	if (DEBUG_ENABLED)
-		debug_log('pla_session_verify_id(): Entered with ()',1);
+		debug_log('Entered with ()',1,__FILE__,__LINE__,__METHOD__);
 
 	$check_id = session_id();
 	$ip_md5 = md5($_SERVER['REMOTE_ADDR']);
@@ -81,6 +81,8 @@ function pla_session_param() {
  * @return bool Returns true if the session was started the first time
  */
 function pla_session_start() {
+	global $config;
+
 	/* If session.auto_start is on in the server's PHP configuration (php.ini), then
 	 * we will have problems loading our schema cache since the session will have started
 	 * prior to loading the SchemaItem (and descedants) class. Destroy the auto-started
@@ -117,7 +119,41 @@ function pla_session_start() {
 	if (pla_session_id_paranoid && ! pla_session_verify_id())
 		pla_error('Session inconsistent or session timeout');
 
-	return (! $is_initialized) ? true : false;
+	# Check we have the correct version of the SESSION cache
+	if (isset($_SESSION['cache']) || isset($_SESSION[pla_session_id_init])) {
+		if (!is_array($_SESSION[pla_session_id_init])) $_SESSION[pla_session_id_init] = array();
+
+		if (!isset($_SESSION[pla_session_id_init]['version']) || !isset($_SESSION[pla_session_id_init]['config'])
+			|| $_SESSION[pla_session_id_init]['version'] !== pla_version()
+			|| $_SESSION[pla_session_id_init]['config'] != filemtime(CONFDIR.'config.php')) {
+        
+			$_SESSION[pla_session_id_init]['version'] = pla_version();
+			$_SESSION[pla_session_id_init]['config'] = filemtime(CONFDIR.'config.php');
+
+			unset($_SESSION['cache']);
+			unset($_SESSION[APPCONFIG]);
+
+			# Our configuration information has changed, so we'll redirect to index.php to get it reloaded again.
+			system_message(array(
+				'title'=>_('Configuration cache stale.'),
+				'body'=>_('Your configuration has been automatically refreshed.'),
+				'type'=>'info'));
+
+			$config_file = CONFDIR.'config.php';
+			check_config($config_file);
+
+		} else {
+			# Sanity check, specially when upgrading from a previous release.
+			if (isset($_SESSION['cache']))
+				foreach (array_keys($_SESSION['cache']) as $id)
+					if (isset($_SESSION['cache'][$id]['tree']['null']) && ! is_object($_SESSION['cache'][$id]['tree']['null']))
+						unset($_SESSION['cache'][$id]);
+		}
+	}
+
+	# If we came via index.php, then set our $config.
+	if (! isset($_SESSION[APPCONFIG]) && isset($config))
+		$_SESSION[APPCONFIG] = $config;
 }
 
 /**

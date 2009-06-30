@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/logout.php,v 1.20 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/logout.php,v 1.20.2.1 2007/12/26 03:25:38 wurley Exp $
 
 /**
  * For servers whose auth_type is set to 'cookie' or 'session'. Pass me
@@ -33,5 +33,5 @@ system_message(array(
 	'title'=>_('Logout'),
 	'body'=>('Logged out successfully from server.'),
 	'type'=>'info'),
-	'index.php');
+	sprintf('index.php?server_id=%s',$ldapserver->server_id));
 ?>

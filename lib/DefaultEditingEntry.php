@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/DefaultEditingEntry.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/DefaultEditingEntry.php,v 1.2.2.2 2007/12/29 08:25:24 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -19,19 +19,20 @@ class DefaultEditingEntry extends Entry {
 		static $attrs = array();
 		$dn = $this->getDn();
 
-		if (DEBUG_ENABLED) debug_log('%s[%s]::getAttributes()',1,get_class($this),$dn);
+		if (DEBUG_ENABLED)
+			debug_log('Entered with () for dn (%s)',1,__FILE__,__LINE__,__METHOD__,$dn);
 
 		if (! isset($attrs[$dn])) {
 			$attrs[$dn] = array();
 
-			$attributefactoryclass = $_SESSION['plaConfig']->GetValue('appearance','attribute_factory');
+			$attributefactoryclass = $_SESSION[APPCONFIG]->GetValue('appearance','attribute_factory');
 			eval('$attribute_factory = new '.$attributefactoryclass.'();');
 
 			$int_attrs_vals = $ldapserver->getDNSysAttrs($this->getDn());
 			if (!$int_attrs_vals) $int_attrs_vals = array();
 			elseif (!is_array($int_attrs_vals)) $int_attrs_vals = array($int_attrs_vals);
 
-			$attrs_vals = $ldapserver->getDNAttrs($this->getDn(),false,$_SESSION['plaConfig']->GetValue('deref','view'));
+			$attrs_vals = $ldapserver->getDNAttrs($this->getDn(),false,$_SESSION[APPCONFIG]->GetValue('deref','view'));
 			if (! $attrs_vals) $attrs_vals = array();
 			elseif (! is_array($attrs_vals)) $attrs_vals = array($attrs_vals);
 

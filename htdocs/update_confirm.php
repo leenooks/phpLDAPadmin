@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.49 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.49.2.2 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * Takes the results of clicking "Save" in template_engine.php and determines which
@@ -61,7 +61,7 @@ foreach ($entry['ldap']->getAttributes() as $old_attr) {
 /* new values  */ 
 /***************/
 
-eval('$reader = new '.$_SESSION['plaConfig']->GetValue('appearance','entry_reader').'($ldapserver);');
+eval('$reader = new '.$_SESSION[APPCONFIG]->GetValue('appearance','entry_reader').'($ldapserver);');
 $entry['ldap']->accept($reader);
 
 $entry['values']['new'] = array();
@@ -171,7 +171,7 @@ if (isset($entry['values']['new']['objectClass'])) {
 /* update array */ 
 /****************/
 
-eval('$writer = new '.$_SESSION['plaConfig']->GetValue('appearance','entry_writer').'($ldapserver);');
+eval('$writer = new '.$_SESSION[APPCONFIG]->GetValue('appearance','entry_writer').'($ldapserver);');
 $writer->draw('Title',$entry['ldap']);
 $writer->draw('Subtitle',$entry['ldap']);
 
@@ -204,18 +204,12 @@ if (count($entry['values']['new']) > 0) {
 	echo "\n\n";
 	$counter = 0;
 
-	$friendly_attrs = $_SESSION['plaConfig']->friendly_attrs;
 	foreach ($entry['values']['new'] as $attr => $new_val) {
 		$counter++;
 
 		printf('<tr class="%s">',$counter%2 ? 'even' : 'odd');
 		echo '<td><b>';
-		$attr_display = isset($friendly_attrs[strtolower($attr)]) ? $friendly_attrs[strtolower($attr)] : $attr;
-		if (strcmp($attr,$attr_display) && $_SESSION['plaConfig']->isCommandAvailable('schema')) {
-			printf('<acronym title="Alias for %s">%s</acronym>',$attr,htmlspecialchars($attr_display));
-		} else {
-			echo htmlspecialchars($attr_display);
-		}
+		echo $_SESSION[APPCONFIG]->getFriendlyHTML($attr);
 		echo '</b></td>';
 		echo '<td><span style="white-space: nowrap;">';
 
@@ -329,12 +323,7 @@ if (count($entry['values']['new']) > 0) {
 		$i = 0;
 		foreach ($attr_to_delete as $attr) {
 			if ($i++ != 0) echo '</b>, <b>';
-			$attr_display = isset($friendly_attrs[strtolower($attr)]) ? $friendly_attrs[strtolower($attr)] : $attr;
-			if (strcmp($attr,$attr_display) && $_SESSION['plaConfig']->isCommandAvailable('schema')) {
-				printf('<acronym title="Alias for %s">%s</acronym>',$attr,htmlspecialchars($attr_display));
-			} else {
-				echo htmlspecialchars($attr_display);
-			}
+			echo $_SESSION[APPCONFIG]->getFriendlyHTML($attr);
 		}
 		echo '</b></td></tr></table>';
 	}

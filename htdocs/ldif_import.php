@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import.php,v 1.35 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import.php,v 1.35.2.1 2007/12/26 09:26:32 wurley Exp $
  
 /**
  * Imports an LDIF file to the specified server_id.
@@ -15,7 +15,7 @@
 
 require './common.php';
 
-if (! $_SESSION['plaConfig']->isCommandAvailable('import'))
+if (! $_SESSION[APPCONFIG]->isCommandAvailable('import'))
 	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('import')));
 
 $entry['continuous_mode'] = get_request('continuous_mode') ? true : false;

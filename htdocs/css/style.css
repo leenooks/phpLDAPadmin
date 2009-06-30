@@ -1,4 +1,4 @@
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/css/style.css,v 1.48 2007/12/15 07:50:30 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/css/style.css,v 1.48.2.1 2007/12/24 06:41:51 wurley Exp $ */
 
 /* Global Page */
 table.page {
@@ -82,9 +82,13 @@ table.page table.control a:hover {
 	text-decoration: none;
 }
 
+table.page table.control tr td.spacer {
+	width: 20%;
+}
+
 table.page table.control tr td.logo {
 	text-align: right;
-	width: 20%;
+	width: 10%;
 }
 
 table.control td.logo img.logo {
@@ -705,6 +709,19 @@ table.login {
 #pla_pass:disabled {
 	background-color: #ddddff;
 }
+
+#generic {
+	background-color: #fafaff;
+	padding-left: 17px;
+}
+#generic:focus {
+	background-color: #ffffba;
+}
+
+#generic:disabled {
+	background-color: #ddddff;
+}
+
 
 /* Search Box */
 table.search {

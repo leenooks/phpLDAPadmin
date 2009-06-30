@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr_form.php,v 1.16 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr_form.php,v 1.16.2.2 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * Displays a form for adding an attribute/value to an LDAP entry.
@@ -85,9 +85,9 @@ if (is_array($ldap['attrs']['avail']) && count($ldap['attrs']['avail']) > 0) {
 	foreach ($ldap['attrs']['avail'] as $a) {
 
 		# is there a user-friendly translation available for this attribute?
-		if (isset($_SESSION['plaConfig']->friendly_attrs[strtolower($a)])) {
+		if ($_SESSION[APPCONFIG]->haveFriendlyName($a)) {
 			$attr_display = sprintf('%s (%s)',
-				htmlspecialchars($_SESSION['plaConfig']->friendly_attrs[strtolower($a)]),
+				htmlspecialchars($_SESSION[APPCONFIG]->getFriendlyName($a)),
 				htmlspecialchars($a));
 
 		} else {
@@ -129,9 +129,9 @@ if (count($ldap['binattrs']['avail']) > 0) {
 	foreach ($ldap['binattrs']['avail'] as $a) {
 
 		# is there a user-friendly translation available for this attribute?
-		if (isset($_SESSION['plaConfig']->friendly_attrs[strtolower($a)])) {
+		if ($_SESSION[APPCONFIG]->haveFriendlyName($a)) {
 			$attr_display = sprintf('%s (%s)',
-				htmlspecialchars($_SESSION['plaConfig']->friendly_attrs[strtolower($a)]),
+				htmlspecialchars($_SESSION[APPCONFIG]->getFriendlyName($a)),
 				htmlspecialchars($a));
 
 		} else {

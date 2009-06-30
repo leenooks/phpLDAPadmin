@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login_form.php,v 1.29 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login_form.php,v 1.29.2.2 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * Displays the login form for a server for users who specify 'cookie' or 'session' for their auth_type.
@@ -42,11 +42,12 @@ if (isset($_GET['redirect']))
 echo '<center>';
 echo '<table class="login">';
 
-printf('<tr><td><b>%s:</b></td></tr>',$ldapserver->isLoginAttrEnabled() ? _('Login Name') : _('Login DN'));
+printf('<tr><td><b>%s:</b></td></tr>',
+	$ldapserver->login_attr == 'dn' ? _('Login DN') : $_SESSION[APPCONFIG]->getFriendlyName($ldapserver->login_attr));
 
 printf('<tr><td><input type="text" id="pla_login" name="%s" size="40" value="%s" /></td></tr>',
-	$ldapserver->isLoginAttrEnabled() ? 'uid' : 'login_dn',
-	$ldapserver->isLoginAttrEnabled() ? '' : $ldapserver->login_dn);
+	$ldapserver->login_attr,
+	$ldapserver->login_attr == 'dn' ? $ldapserver->login_dn : '');
 
 echo '<tr><td colspan=2>&nbsp;</td></tr>';
 printf('<tr><td><b>%s:</b></td></tr>',_('Password'));

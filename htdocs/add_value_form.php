@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_value_form.php,v 1.39 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_value_form.php,v 1.39.2.1 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * Displays a form to allow the user to enter a new value to add
@@ -48,7 +48,7 @@ if ($tree) {
 }
 
 // define the template of the entry if possible
-eval('$reader = new '.$_SESSION['plaConfig']->GetValue('appearance','entry_reader').'($ldapserver);');
+eval('$reader = new '.$_SESSION[APPCONFIG]->GetValue('appearance','entry_reader').'($ldapserver);');
 $reader->visit('Start', $entry['ldap']);
 
 if (! $entry['ldap'] || $entry['ldap']->isReadOnly())
@@ -58,12 +58,12 @@ if (! $entry['ldap'] || $entry['ldap']->isReadOnly())
 /* attribute values  */ 
 /*********************/
 
-eval('$writer = new '.$_SESSION['plaConfig']->GetValue('appearance','entry_writer').'($ldapserver);');
+eval('$writer = new '.$_SESSION[APPCONFIG]->GetValue('appearance','entry_writer').'($ldapserver);');
 
 $ldap['attr'] = $entry['ldap']->getAttribute($entry['attr']['string']);
 if (!$ldap['attr']) {
 	// define a new attribute for the entry
-	$attributefactoryclass = $_SESSION['plaConfig']->GetValue('appearance','attribute_factory');
+	$attributefactoryclass = $_SESSION[APPCONFIG]->GetValue('appearance','attribute_factory');
 	eval('$attribute_factory = new '.$attributefactoryclass.'();');
 	$ldap['attr'] = $attribute_factory->newAttribute($entry['attr']['string'], array());
 	$ldap['attr']->setEntry($entry['ldap']);
@@ -72,9 +72,9 @@ $ldap['count'] = $ldap['attr']->getValueCount();
 
 if ($ldap['attr']->isReadOnly())
 	pla_error(sprintf(_('The attribute (%s) is in readonly mode.'),$entry['attr']['html']),null,-1,true);
-if (! $_SESSION['plaConfig']->isCommandAvailable('attribute_add_value'))
+if (! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value'))
 	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('add attribute value')));
-if (($ldap['attr']->getValueCount() == 0) && ! $_SESSION['plaConfig']->isCommandAvailable('attribute_add'))
+if (($ldap['attr']->getValueCount() == 0) && ! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add'))
 	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('add attribute')));
 
 /*
@@ -197,7 +197,7 @@ if ($entry['attr']['oclass']) {
 	echo '</td></tr></table>';
 	echo '<br />';
 
-	if ($_SESSION['plaConfig']->GetValue('appearance','show_hints'))
+	if ($_SESSION[APPCONFIG]->GetValue('appearance','show_hints'))
 		printf('<small><br /><img src="images/light.png" alt="Hint" /><span class="hint">%s</span></small>',
 			_('Note: You may be required to enter new attributes that these objectClass(es) require'));
 	echo '</form>';

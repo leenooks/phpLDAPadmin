@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr.php,v 1.20 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_attr.php,v 1.20.2.1 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * Adds an attribute/value pair to an object
@@ -21,7 +21,7 @@ require './common.php';
 if ($ldapserver->isReadOnly())
 	pla_error(_('You cannot perform updates while server is in read-only mode'));
 
-if (! $_SESSION['plaConfig']->isCommandAvailable('attribute_add'))
+if (! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add'))
 	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('add attribute')));
 
 $entry['val'] = get_request('val','POST');

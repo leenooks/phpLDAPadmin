@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/TemplateCreatingEntry.php,v 1.3 2007/12/15 11:27:04 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/TemplateCreatingEntry.php,v 1.3.2.1 2007/12/26 09:26:33 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -104,7 +104,7 @@ class TemplateCreatingEntry extends DefaultCreatingEntry {
 				: array();
 			masort($template_attrs,'page,order',1);
 
-			$attributefactoryclass = $_SESSION['plaConfig']->GetValue('appearance','attribute_factory');
+			$attributefactoryclass = $_SESSION[APPCONFIG]->GetValue('appearance','attribute_factory');
 			eval('$attribute_factory = new '.$attributefactoryclass.'();');
 
 			if ($this->objectClasses) {

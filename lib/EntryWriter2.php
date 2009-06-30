@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter2.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter2.php,v 1.2.2.1 2007/12/26 09:26:33 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -175,7 +175,7 @@ class EntryWriter2 extends EntryWriter1 {
 		echo _(':');
 
 		echo '<br/>';
-		if ($_SESSION['plaConfig']->GetValue('appearance', 'show_attribute_notes')) {
+		if ($_SESSION[APPCONFIG]->GetValue('appearance', 'show_attribute_notes')) {
 			$this->draw('Notes', $attribute);
 		}
 
@@ -246,7 +246,7 @@ class EntryWriter2 extends EntryWriter1 {
 	}
 
 	protected function drawAttributeMenu($attribute) {
-		if ($attribute->getHint() /*&& $_SESSION['plaConfig']->GetValue('appearance', 'show_hints')*/) {
+		if ($attribute->getHint() /*&& $_SESSION[APPCONFIG]->GetValue('appearance', 'show_hints')*/) {
 			echo '<img src="images/light.png" alt="Hint" /> <span class="hint">'.$attribute->getHint().'</span>';
 		}
 		parent::drawAttributeMenu($attribute);

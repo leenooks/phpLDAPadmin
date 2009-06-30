@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename.php,v 1.33 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename.php,v 1.33.2.1 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * Renames a DN to a different name.
@@ -20,7 +20,7 @@ require './common.php';
 if ($ldapserver->isReadOnly())
 	pla_error(_('You cannot perform updates while server is in read-only mode'));
 
-if (! $_SESSION['plaConfig']->isCommandAvailable('entry_rename'))
+if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_rename'))
 	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('rename entry')));
 
 $dn = ($_POST['dn']);

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy_form.php,v 1.30 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy_form.php,v 1.30.2.1 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * Copies a given object to create a new one.
@@ -98,7 +98,7 @@ echo "\n";
 echo '</table></form>';
 echo "\n";
 
-if ($_SESSION['plaConfig']->GetValue('appearance','show_hints'))
+if ($_SESSION[APPCONFIG]->GetValue('appearance','show_hints'))
 	printf('<small><img src="images/light.png" alt="Light" /><span class="hint">%s</span></small>',_('Hint: Copying between different servers only works if there are no schema violations'));
 
 echo '</center>';

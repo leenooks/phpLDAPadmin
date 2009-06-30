@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete.php,v 1.27 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete.php,v 1.27.2.2 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * Deletes a DN and presents a "job's done" message.
@@ -17,7 +17,7 @@ require './common.php';
 if ($ldapserver->isReadOnly())
 	pla_error(_('You cannot perform updates while server is in read-only mode'));
 
-if (! $_SESSION['plaConfig']->isCommandAvailable('entry_delete', 'simple_delete'))
+if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_delete', 'simple_delete'))
 	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('delete entry')));
 
 $entry['dn'] = get_request('dn');
@@ -43,7 +43,7 @@ if ($result) {
 		'title'=>_('Delete DN'),
 		'body'=>_('Successfully deleted DN ').sprintf('<b>%s</b>',$entry['dn']),
 		'type'=>'info'),
-		'index.php');
+		sprintf('index.php?server_id=%s',$ldapserver->server_id));
 
 } else {
 	pla_error(sprintf(_('Could not delete the entry: %s'),'<b>'.pretty_print_dn($entry['dn']).'</b>'),

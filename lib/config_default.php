@@ -1,22 +1,35 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.27.2.1 2007/12/20 10:47:20 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.27.2.3 2007/12/26 01:47:20 wurley Exp $
 
 /**
  * Configuration processing and defaults.
+ *
  * @author The phpLDAPadmin development team
  * @package phpLDAPadmin
+ *
  * @todo Add validation of set variables to enforce limits or particular values.
  */
 
 # The minimum version of PHP required to run phpLDAPadmin.
 define('REQUIRED_PHP_VERSION','5.0.0');
 
+/**
+ * The config class contains all our configuration settings for a session.
+ * 
+ * An instance of this class should be stored in $_SESSION to maintain state, and to avoid
+ * rebuilding/rereading it at the state of each page output.
+ *
+ * @package phpLDAPadmin
+ *
+ * @author The phpLDAPadmin development team
+ * @author Deon George
+ */
 class Config {
 	public $custom;
 	protected $default;
 
 	public $ldapservers = array();
-	public $friendly_attrs = array();
+	protected $friendly_attrs = array();
 	public $queries = array();
 	public $attrs_display_order = array();
 	public $hidden_attrs = array();
@@ -58,6 +71,10 @@ class Config {
 		$this->default->appearance['date'] = array(
 			'desc'=>'Date format whenever dates are shown',
 			'default'=>'%A %e %B %Y');
+
+		$this->default->appearance['custom_templates_only'] = array(
+			'desc'=>'Only display the custom templates.',
+			'default'=>false);
 
 		$this->default->appearance['date_attrs'] = array(
 			'desc'=>'Array of attributes that should show a jscalendar',
@@ -555,6 +572,64 @@ class Config {
 				return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Reads the friendly_attrs array as defined in config.php and lower-cases all
+	 * the keys. Will return an empty array if the friendly_attrs array is not defined
+	 * in config.php. This is simply used so we can more easily lookup user-friendly
+	 * attributes configured by the admin.
+	 */
+	function getFriendlyAttrs($friendly_attrs) {
+		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
+			debug_log('Entered with ()',1,__FILE__,__LINE__,__METHOD__);
+
+		# If friendly_attrs is not an array, then set to an empty array.
+		if (! is_array($friendly_attrs))
+			$this->friendly_attrs =  array();
+
+		else
+			foreach ($friendly_attrs as $old_name => $new_name)
+				$this->friendly_attrs[strtolower($old_name)] = $new_name;
+		}
+
+	/**
+	 * This function will return the friendly name of an attribute, if it exists.
+	 * If the friendly name doesnt exist, the attribute name will be returned.
+ 	 *
+	 * @param attribute
+	 * @return string friendly name|attribute
+	 */
+	public function getFriendlyName($attr) {
+		if ($this->haveFriendlyName($attr))
+			return $this->friendly_attrs[strtolower($attr)];
+		else
+			return $attr;
+	}
+
+	/**
+	 * This function will return true if a friendly name exists for an attribute.
+	 * If the friendly name doesnt exist, it will return false.
+ 	 *
+	 * @param attribute
+	 * @return boolean true|false
+	 */
+	public function haveFriendlyName($attr) {
+		return isset($this->friendly_attrs[strtolower($attr)]);
+
+	}
+
+	/**
+	 * This function will return the <ancronym> html for a friendly name attribute.
+ 	 *
+	 * @param attribute
+	 * @return string html for the friendly name.
+	 */
+	public function getFriendlyHTML($attr) {
+		if ($this->haveFriendlyName($attr))
+			return sprintf('<acronym title="%s %s">%s</acronym>',_('Alias for'),$attr,htmlspecialchars($this->getFriendlyName($attr)));
+		else
+			return $attr;
 	}
 }
 ?>

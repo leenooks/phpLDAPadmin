@@ -111,8 +111,8 @@ $config->custom->commands['all'] = array(
 
 /* If you want to choose the appearance of the tree, specify a class name which
    inherits from the Tree class. */
-// $config->custom->appearance['tree'] = "HTMLTree";
-#  $config->custom->appearance['tree'] = "PLMTree";
+// $config->custom->appearance['tree'] = "AJAXTree";
+#  $config->custom->appearance['tree'] = "HTMLTree";
 
 /* If you want to customise the entry view/edition, specify your factory name which
    inherits from the EntryFactory class.
@@ -404,6 +404,7 @@ $friendly_attrs = array();
 
 $friendly_attrs['facsimileTelephoneNumber'] = 'Fax';
 $friendly_attrs['telephoneNumber']          = 'Phone';
+$friendly_attrs['uid']                      = 'User Name';
 
 /*********************************************/
 /* Support for attrs display order           */

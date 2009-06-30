@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/timeout_functions.php,v 1.10 2007/12/15 07:50:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/timeout_functions.php,v 1.10.2.1 2007/12/29 08:24:11 wurley Exp $
 
 /**
  * A collection of functions used throughout phpLDAPadmin for the timeout and automatic logout feature
@@ -19,7 +19,7 @@
  */
 function set_lastactivity($ldapserver) {
 	if (DEBUG_ENABLED)
-		debug_log('set_lastactivity(): Entered with (%s)',1,$ldapserver->server_id);
+		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$ldapserver->server_id);
 
 	$_SESSION['activity']['server'][$ldapserver->server_id] = time();
 	$_SESSION['activity']['rightframe_server_id'] = $ldapserver->server_id;
@@ -34,7 +34,7 @@ function set_lastactivity($ldapserver) {
  */
 function unset_lastactivity($ldapserver) {
 	if (DEBUG_ENABLED)
-		debug_log('unset_lastactivity(): Entered with (%s)',1,$ldapserver->server_id);
+		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$ldapserver->server_id);
 
 	if (isset($_SESSION['activity']['server'][$ldapserver->server_id]))
 		unset($_SESSION['activity']['server'][$ldapserver->server_id]);
@@ -52,7 +52,7 @@ function unset_lastactivity($ldapserver) {
  */
 function session_timed_out($ldapserver) {
 	if (DEBUG_ENABLED)
-		debug_log('session_timed_out(): Entered with (%s)',1,$ldapserver->server_id);
+		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$ldapserver->server_id);
 
 	# If session hasn't expired yet
 	if (isset($_SESSION['activity']['server'][$ldapserver->server_id])) {

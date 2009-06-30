@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.51 2007/12/15 07:50:33 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.51.2.5 2007/12/26 09:26:33 wurley Exp $ */
 
 /**
  * Classes and functions for LDAP server configuration and capability
@@ -45,24 +45,6 @@ class LDAPserver {
 			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$server_id);
 
 		$this->server_id = $server_id;
-	}
-
-	/**
-	 * Checks the specified server id for sanity. Ensures that the server is indeed in the configured
-	 * list and active. This is used by many many scripts to ensure that valid server ID values
-	 * are passed in POST and GET.
-	 *
-	 * @param int $server_id the server_id of the LDAP server as defined in config.php
-	 * @return bool
-	 */
-	function isValidServer() {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with ()',17,__FILE__,__LINE__,__METHOD__);
-
-		if (trim($this->host))
-			return true;
-		else
-			return false;
 	}
 
 	/**
@@ -413,8 +395,8 @@ class LDAPserver {
 			debug_log('Checking config for BaseDN',80,__FILE__,__LINE__,__METHOD__);
 
 		# If the base is set in the configuration file, then just return that.
-		if (count($_SESSION['plaConfig']->ldapservers->GetValue($this->server_id,'server','base')) > 0) {
-			$this->_baseDN = $_SESSION['plaConfig']->ldapservers->GetValue($this->server_id,'server','base');
+		if (count($_SESSION[APPCONFIG]->ldapservers->GetValue($this->server_id,'server','base')) > 0) {
+			$this->_baseDN = $_SESSION[APPCONFIG]->ldapservers->GetValue($this->server_id,'server','base');
 
 			if (DEBUG_ENABLED)
 				debug_log('Return BaseDN from Config [%s]',17,__FILE__,__LINE__,__METHOD__,implode('|',$this->_baseDN));
@@ -478,7 +460,7 @@ class LDAPserver {
 			$return = true;
 
 		elseif ($this->getLoggedInDN() === 'anonymous' &&
-			($_SESSION['plaConfig']->GetValue('appearance','anonymous_bind_implies_read_only') === true))
+			($_SESSION[APPCONFIG]->GetValue('appearance','anonymous_bind_implies_read_only') === true))
 
 			$return = true;
 
@@ -505,7 +487,7 @@ class LDAPserver {
 			debug_log('Entered with ()',17,__FILE__,__LINE__,__METHOD__);
 
 		if ($this->connect(false) && $this->haveAuthInfo() && ! $this->isReadOnly() &&
-			$_SESSION['plaConfig']->isCommandAvailable('entry_delete', 'mass_delete'))
+			$_SESSION[APPCONFIG]->isCommandAvailable('entry_delete', 'mass_delete'))
 
 			return true;
 
@@ -533,7 +515,7 @@ class LDAPserver {
 		if (DEBUG_ENABLED)
 			debug_log('Entered with ()',17,__FILE__,__LINE__,__METHOD__);
 
-		if (! $_SESSION['plaConfig']->isCommandAvailable('entry_create')) return false;
+		if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_create')) return false;
 		else return $this->show_create;
 	}
 
@@ -566,7 +548,7 @@ class LDAPserver {
 	 * @return bool True if the feature is enabled and false otherwise.
 	 */
 	function isVisible() {
-		if ($this->isValidServer() && $this->visible)
+		if ($this->visible)
 			$return = true;
 		else
 			$return = false;
@@ -925,6 +907,13 @@ class LDAPserver {
 	}
 
 	/**
+	 * Return the attribute used for login
+	 */
+	function getLoginAttr() {
+		return $this->login_attr;
+	}
+
+	/**
 	 * Fetches whether the login_attr feature is enabled for a specified server.
 	 *
 	 * This is configured in config.php thus:
@@ -939,7 +928,7 @@ class LDAPserver {
 	 * @return bool
 	 */
 	function isLoginAttrEnabled() {
-		if ((strcasecmp($this->login_attr,'dn') != 0) && trim($this->login_attr))
+		if ((strcasecmp($this->getLoginAttr(),'dn') != 0) && trim($this->getLoginAttr()))
 			$return = true;
 		else
 			$return = false;
@@ -962,9 +951,9 @@ class LDAPserver {
 	 */
 	function isLoginStringEnabled() {
 		if (DEBUG_ENABLED)
-			debug_log('login_attr is [%s]',80,__FILE__,__LINE__,__METHOD__,$this->login_attr);
+			debug_log('login_attr is [%s]',80,__FILE__,__LINE__,__METHOD__,$this->getLoginAttr());
 
-		if (! strcasecmp($this->login_attr,'string'))
+		if (! strcasecmp($this->getLoginAttr(),'string'))
 			$return = true;
 		else
 			$return = false;
@@ -1004,10 +993,10 @@ class LDAPserver {
 	 */
 	function isAnonBindAllowed() {
 		# If only_login_allowed_dns is set, then we cant have anonymous.
-		if (count($_SESSION['plaConfig']->ldapservers->GetValue($this->server_id,'login','allowed_dns')) > 0)
+		if (count($_SESSION[APPCONFIG]->ldapservers->GetValue($this->server_id,'login','allowed_dns')) > 0)
 			$return = false;
 		else
-			$return = $_SESSION['plaConfig']->ldapservers->GetValue($this->server_id,'login','anon_bind');
+			$return = $_SESSION[APPCONFIG]->ldapservers->GetValue($this->server_id,'login','anon_bind');
 
 		if (DEBUG_ENABLED)
 			debug_log('Entered with (), Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$return);
@@ -1826,7 +1815,7 @@ class LDAPserver {
 	/**
 	 * Determines if an attribute's value can contain multiple lines. Attributes that fall
 	 * in this multi-line category may be configured in config.php. Hence, this function
-	 * accesses the global variable $_SESSION['plaConfig']->custom->appearance['multi_line_attributes'];
+	 * accesses the global variable $_SESSION[APPCONFIG]->custom->appearance['multi_line_attributes'];
 	 *
 	 * Usage example:
 	 * <code>
@@ -1851,7 +1840,7 @@ class LDAPserver {
 
 		# Next, compare strictly by name first
 		else
-			foreach ($_SESSION['plaConfig']->GetValue('appearance','multi_line_attributes') as $multi_line_attr_name)
+			foreach ($_SESSION[APPCONFIG]->GetValue('appearance','multi_line_attributes') as $multi_line_attr_name)
 				if (strcasecmp($multi_line_attr_name,$attr_name) == 0) {
 					$return = true;
 					break;
@@ -1865,7 +1854,7 @@ class LDAPserver {
 				$syntax_oid = $schema_attr->getSyntaxOID();
 
 				if ($syntax_oid)
-					foreach ($_SESSION['plaConfig']->GetValue('appearance','multi_line_syntax_oids') as $multi_line_syntax_oid)
+					foreach ($_SESSION[APPCONFIG]->GetValue('appearance','multi_line_syntax_oids') as $multi_line_syntax_oid)
 						if ($multi_line_syntax_oid == $syntax_oid) {
 							$return = true;
 							break;
@@ -2212,8 +2201,8 @@ class LDAPserver {
 		if (DEBUG_ENABLED)
 			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$attr);
 
-		$read_only_attrs = isset($_SESSION['plaConfig']->read_only_attrs) ? $_SESSION['plaConfig']->read_only_attrs : array();
-		$read_only_except_dn = isset($_SESSION['plaConfig']->read_only_except_dn) ? $_SESSION['plaConfig']->read_only_except_dn : '';
+		$read_only_attrs = isset($_SESSION[APPCONFIG]->read_only_attrs) ? $_SESSION[APPCONFIG]->read_only_attrs : array();
+		$read_only_except_dn = isset($_SESSION[APPCONFIG]->read_only_except_dn) ? $_SESSION[APPCONFIG]->read_only_except_dn : '';
 
 		$attr = trim($attr);
 		if (! $attr)
@@ -2258,9 +2247,9 @@ class LDAPserver {
 		if (DEBUG_ENABLED)
 			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$attr);
 
-		$hidden_attrs = isset($_SESSION['plaConfig']->hidden_attrs) ? $_SESSION['plaConfig']->hidden_attrs : array();
-		$hidden_attrs_ro = isset($_SESSION['plaConfig']->hidden_attrs_ro) ? $_SESSION['plaConfig']->hidden_attrs_ro : array();
-		$hidden_except_dn = isset($_SESSION['plaConfig']->hidden_except_dn) ? $_SESSION['plaConfig']->hidden_except_dn : '';
+		$hidden_attrs = isset($_SESSION[APPCONFIG]->hidden_attrs) ? $_SESSION[APPCONFIG]->hidden_attrs : array();
+		$hidden_attrs_ro = isset($_SESSION[APPCONFIG]->hidden_attrs_ro) ? $_SESSION[APPCONFIG]->hidden_attrs_ro : array();
+		$hidden_except_dn = isset($_SESSION[APPCONFIG]->hidden_except_dn) ? $_SESSION[APPCONFIG]->hidden_except_dn : '';
 
 		$attr = trim($attr);
 		if (! $attr)
@@ -2407,9 +2396,9 @@ class LDAPserver {
 
 								if (! empty($this->login_class))
 									$filter = sprintf('(&(objectClass=%s)(%s=%s))',
-									                  $this->login_class,$this->login_attr,$_SERVER['PHP_AUTH_USER']);
+									                  $this->login_class,$this->getLoginAttr(),$_SERVER['PHP_AUTH_USER']);
 								else
-									$filter = sprintf('%s=%s',$this->login_attr,$_SERVER['PHP_AUTH_USER']);
+									$filter = sprintf('%s=%s',$this->getLoginAttr(),$_SERVER['PHP_AUTH_USER']);
 
 								foreach ($this->getBaseDN() as $base_dn) {
 									$result = $this->search(null,$base_dn,$filter,array('dn'));
@@ -2437,20 +2426,15 @@ class LDAPserver {
 									'title'=>_('Authenticate to server'),
 									'body'=>_('Bad username or password. Please try again.'),
 									'type'=>'error'),
-									'cmd.php?cmd=login_form');
+									sprintf('cmd.php?cmd=login_form&server_id=%s',$this->server_id));
 								syslog_notice("Authentification FAILED for $dn");
 							}
 
 							$this->auth_type = 'config';
 							$this->login_dn = $dn;
 							$this->login_pass = $pass;
+
 						} else {
-							//system_message(array(
-							//	'title'=>_('Authenticate to server'),
-							//	'body'=>_('Sorry, you are not allowed to use phpLDAPadmin with this LDAP server.'),
-							//	'type'=>'error'),
-							//	'cmd.php?cmd=login_form');
-							//pla_error(_('Sorry, you are not allowed to use phpLDAPadmin with this LDAP server.'));
 							$this->auth_type = 'session';
 							$return = false;
 						}
@@ -2704,25 +2688,6 @@ class LDAPserver {
 	}
 
 	/**
-	 * Show friendly attribute.
-	 */
-	function showFriendlyAttr($attr) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$attr);
-
-		$_SESSION['plaConfig']->friendly_attrs = process_friendly_attr_table();
-
-		if (isset($_SESSION['plaConfig']->friendly_attrs[strtolower($attr)]))
-			$return = $_SESSION['plaConfig']->friendly_attrs[strtolower($attr)];
-		else
-			$return = $attr;
-
-		if (DEBUG_ENABLED)
-			debug_log('Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$return);
-		return $return;
-	}
-
-	/**
 	 * Determins if the specified attribute is contained in the $unique_attrs list
 	 * configured in config.php.
 	 * @return bool True if the specified attribute is in the $unique_attrs list and false
@@ -2732,7 +2697,7 @@ class LDAPserver {
 		if (DEBUG_ENABLED)
 			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$attr_name);
 
-		$unique_attrs = isset($_SESSION['plaConfig']->unique_attrs) ? $_SESSION['plaConfig']->unique_attrs : array();
+		$unique_attrs = isset($_SESSION[APPCONFIG]->unique_attrs) ? $_SESSION[APPCONFIG]->unique_attrs : array();
 
 		if (isset($unique_attrs) && is_array($unique_attrs))
 			foreach ($unique_attrs as $attr)
@@ -2762,8 +2727,8 @@ class LDAPserver {
 		if ($this->isUniqueAttr($attr_name)) {
 
 			$con = $this->connect(false,'unique_attr',false,true,
-				$_SESSION['plaConfig']->ldapservers->GetValue($this->server_id,'unique_attrs','dn'),
-				$_SESSION['plaConfig']->ldapservers->GetValue($this->server_id,'unique_attrs','pass'));
+				$_SESSION[APPCONFIG]->ldapservers->GetValue($this->server_id,'unique_attrs','dn'),
+				$_SESSION[APPCONFIG]->ldapservers->GetValue($this->server_id,'unique_attrs','pass'));
 
 			if (! $con)
 				pla_error(sprintf(_('Unable to bind to <b>%s</b> with your with unique_attrs credentials. Please check your configuration file.'),$this->name));
@@ -2859,10 +2824,10 @@ class LDAPserver {
 
 		$user = trim(strtolower($user));
 
-		if (! $_SESSION['plaConfig']->ldapservers->GetValue($this->server_id,'login','allowed_dns'))
+		if (! $_SESSION[APPCONFIG]->ldapservers->GetValue($this->server_id,'login','allowed_dns'))
 			return true;
 
-		foreach ($_SESSION['plaConfig']->ldapservers->GetValue($this->server_id,'login','allowed_dns') as $login_allowed_dn) {
+		foreach ($_SESSION[APPCONFIG]->ldapservers->GetValue($this->server_id,'login','allowed_dns') as $login_allowed_dn) {
 			if (DEBUG_ENABLED)
 				debug_log('Working through (%s)',80,__FILE__,__LINE__,__METHOD__,$login_allowed_dn);
 

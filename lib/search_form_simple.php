@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_simple.php,v 1.16 2007/12/15 07:50:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_simple.php,v 1.16.2.2 2007/12/26 09:26:33 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -23,8 +23,8 @@
 <tr><td class="title"><?php echo _('Simple Search Form'); ?></td></tr>
 
 <?php
-	$as = $_SESSION['plaConfig']->isCommandAvailable('search', 'advanced_search');
-	$ps = $_SESSION['plaConfig']->isCommandAvailable('search', 'predefined_search');
+	$as = $_SESSION[APPCONFIG]->isCommandAvailable('search', 'advanced_search');
+	$ps = $_SESSION[APPCONFIG]->isCommandAvailable('search', 'predefined_search');
 	if ($as | $ps) {
 		echo '<tr><td class="subtitle">(';
 		if ($as) {
@@ -52,16 +52,16 @@
 <tr><td><small><b><?php echo _('Search for entries whose'); ?></b></small></td></tr>
 <tr><td>
 	<select name="attribute">
-<?php foreach ($_SESSION['plaConfig']->GetValue('search','attributes') as $id => $attribute) { ?>
+<?php foreach ($_SESSION[APPCONFIG]->GetValue('search','attributes') as $id => $attribute) { ?>
 	<option value="<?php echo rawurlencode($attribute); ?>"<?php echo $attribute==$entry['attr']?' selected="true"':''; ?>>
-<?php echo htmlspecialchars($ldapserver->showFriendlyAttr($attribute)); ?>
+<?php echo htmlspecialchars($_SESSION[APPCONFIG]->getFriendlyName($attribute)); ?>
 	</option>
 <?php } ?>
 	</select>
 
 	<select name="criterion">
 <?php
-foreach ($_SESSION['plaConfig']->GetValue('search','criteria_options') as $c) { ?>
+foreach ($_SESSION[APPCONFIG]->GetValue('search','criteria_options') as $c) { ?>
 	<option value="<?php echo $c; ?>"<?php echo $c==$entry['criterion']?' selected="true"':''; ?>>
 	<?php echo htmlspecialchars(_($c)); ?>
 	</option>

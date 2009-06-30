@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/entry_chooser.php,v 1.31 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/entry_chooser.php,v 1.31.2.2 2007/12/29 08:24:10 wurley Exp $
 
 /**
  * Display a selection (popup window) to pick a DN.
@@ -40,12 +40,12 @@ if (isset($ldapserver) && ! is_null($entry['container'])) {
 	if (! $ldapserver->haveAuthInfo())
 		pla_error(_('Not enough information to login to server. Please check your configuration.'));
 
-	$entry['children'] = $ldapserver->getContainerContents($entry['container'],0,'(objectClass=*)',$_SESSION['plaConfig']->GetValue('deref','tree'));
+	$entry['children'] = $ldapserver->getContainerContents($entry['container'],0,'(objectClass=*)',$_SESSION[APPCONFIG]->GetValue('deref','tree'));
 	sort($entry['children']);
 
 	foreach ($ldapserver->getBaseDN() as $base_dn) {
 		if (DEBUG_ENABLED)
-			debug_log('entry_chooser.php: Comparing BaseDN [%s] with container [%s]',64,$base_dn,$entry['container']);
+			debug_log('Comparing BaseDN [%s] with container [%s]',64,__FILE__,__LINE__,__METHOD__,$base_dn,$entry['container']);
 
 		if (! pla_compare_dns($entry['container'],$base_dn)) {
 			$parent_container = false;
@@ -85,9 +85,9 @@ if (isset($ldapserver) && ! is_null($entry['container'])) {
 
 /* draw the root of the selection tree (ie, list all the servers) */
 } else {
-	foreach ($_SESSION['plaConfig']->ldapservers->GetServerList() as $id) {
+	foreach ($_SESSION[APPCONFIG]->ldapservers->GetServerList() as $id) {
 
-		$ldapserver = $_SESSION['plaConfig']->ldapservers->Instance($id);
+		$ldapserver = $_SESSION[APPCONFIG]->ldapservers->Instance($id);
 
 		if ($ldapserver->isVisible()) {
 

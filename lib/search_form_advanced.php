@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_advanced.php,v 1.26 2007/12/15 07:50:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_advanced.php,v 1.26.2.1 2007/12/26 09:26:33 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -32,8 +32,8 @@ function focus_filter() {
 	<tr><td class="title" colspan=2><?php echo _('Advanced Search Form'); ?></td></tr>
 
 <?php
-	$ss = $_SESSION['plaConfig']->isCommandAvailable('search', 'simple_search');
-	$ps = $_SESSION['plaConfig']->isCommandAvailable('search', 'predefined_search');
+	$ss = $_SESSION[APPCONFIG]->isCommandAvailable('search', 'simple_search');
+	$ps = $_SESSION[APPCONFIG]->isCommandAvailable('search', 'predefined_search');
 	if ($ss | $ps) {
 		echo '<tr><td class="subtitle" colspan=2>(';
 		if ($ss) {
@@ -104,7 +104,7 @@ if (isset($entry['base_dn']['exist']) && $entry['base_dn']['exist'])
 
 		 <td><input type="text" name="display_attrs" style="width: 200px" value="<?php
 			echo $entry['display']['string'] ? htmlspecialchars($entry['display']['string']) :
-					join(', ',$_SESSION['plaConfig']->GetValue('search','result_attributes')); ?>" /></td>
+					join(', ',$_SESSION[APPCONFIG]->GetValue('search','result_attributes')); ?>" /></td>
 	</tr>
 
 	<tr>

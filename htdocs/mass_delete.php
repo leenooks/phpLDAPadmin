@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/mass_delete.php,v 1.17 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/mass_delete.php,v 1.17.2.1 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * Enables user to mass delete multiple entries using checkboxes.
@@ -22,7 +22,7 @@ require './common.php';
 if( $ldapserver->isReadOnly() )
 	pla_error(_('Unable to delete, server is in READY-ONLY mode.'));
 
-if (! $_SESSION['plaConfig']->isCommandAvailable('entry_delete', 'mass_delete'))
+if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_delete', 'mass_delete'))
 	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('delete mass entries')));
 
 $confirmed = isset($_POST['confirmed']) ? true : false;

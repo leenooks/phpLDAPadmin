@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/page.php,v 1.3.2.5 2007/12/21 12:51:28 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/page.php,v 1.3.2.11 2007/12/30 02:05:46 wurley Exp $
 
 /**
  * Page Rendering Functions
@@ -39,14 +39,14 @@ class page {
 		# Try and work around if php compression is on, or the user has set compression in the config.
 		# type = 1 for user gzip, 0 for php.ini gzip.
 		$obStatus = ob_get_status();
-		if ($obStatus['type'] && $obStatus['status']) {
+		if (isset($obStatus['type']) && $obStatus['type'] && $obStatus['status']) {
 			$preOutput = ob_get_contents();
 			ob_end_clean();
 		}
 
 		header('Content-type: text/html; charset="UTF-8"');
-		if (isset($_SESSION['plaConfig'])
-			&& $_SESSION['plaConfig']->GetValue('appearance','compress')
+		if (isset($_SESSION[APPCONFIG])
+			&& $_SESSION[APPCONFIG]->GetValue('appearance','compress')
 			&& eregi('gzip',$_SERVER['HTTP_ACCEPT_ENCODING'])
 			&& ! ini_get('zlib.output_compression')) {
 
@@ -56,10 +56,10 @@ class page {
 				debug_log('Sent COMPRESSED header to browser and discarded (%s)',129,__FILE__,__LINE__,__METHOD__,$preOutput);
 		}
 
-		if (isset($_SESSION['plaConfig'])
-			&& $_SESSION['plaConfig']->GetValue('appearance','compress')
+		if (isset($_SESSION[APPCONFIG])
+			&& $_SESSION[APPCONFIG]->GetValue('appearance','compress')
 			&& ini_get('zlib.output_compression'))
-				$this->setsysmsg(array(array('title'=>_('Warning'),'body'=>_('WARNING: You cannot have PHP compression and phpLDAPadmin compression enabled at the same time. Please unset zlib.output_compression or set $config->custom->appearance[\'compress\']=false'),'type'=>'warn')));
+				$this->setsysmsg(array('title'=>_('Warning'),'body'=>_('WARNING: You cannot have PHP compression and phpLDAPadmin compression enabled at the same time. Please unset zlib.output_compression or set $config->custom->appearance[\'compress\']=false'),'type'=>'warn'));
 
 		# Turn back on output buffering.
 		ob_start();
@@ -75,7 +75,7 @@ class page {
 		$this->_app['logo'] = $this->_default['logo'];
 
 		if (! is_null($server_id))
-			$this->_app['urlcss'] = sprintf('%s%s',CSSDIR,$_SESSION['plaConfig']->GetValue('appearance','stylesheet'));
+			$this->_app['urlcss'] = sprintf('%s%s',CSSDIR,$_SESSION[APPCONFIG]->GetValue('appearance','stylesheet'));
 		else
 			$this->_app['urlcss'] = sprintf('%s%s',CSSDIR,'style.css');
 
@@ -99,24 +99,27 @@ class page {
 		# Page Title
 		echo '<head>';
 
-		if (isset($_SESSION['plaConfig']))
+		if (isset($_SESSION[APPCONFIG]))
 			printf('<title>%s (%s) - %s</title>',
-				$this->_app['title'],pla_version(),$_SESSION['plaConfig']->GetValue('appearance','page_title'));
+				$this->_app['title'],pla_version(),$_SESSION[APPCONFIG]->GetValue('appearance','page_title'));
 		else
 			printf('<title>%s - %s</title>',$this->_app['title'],pla_version());
 
 		# Style sheet.
 		printf('<link type="text/css" rel="stylesheet" href="%s" />',$this->_app['urlcss']);
-		printf('<link type="text/css" rel="stylesheet" media="all" href="%sjscalendar/calendar-blue.css" title="blue" />',JSDIR);
-		printf('<link type="text/css" rel="stylesheet" href="%s/phplayersmenu/layerstreemenu.css" />','../htdocs/'.JSDIR);
 		printf('<link rel="shortcut icon" href="%s/images/favicon.ico" type="image/vnd.microsoft.icon" />','../htdocs/');
-		echo "\n";
-		printf('<script type="text/javascript" src="%spla_ajax.js"></script>',JSDIR);
-		printf('<script type="text/javascript" src="%stree_hide.js"></script>',JSDIR);
-		printf('<script type="text/javascript" src="%sentry_chooser.js"></script>',JSDIR);
-		printf('<script type="text/javascript" src="%sto_ascii.js"></script>','../htdocs/'.JSDIR);
-		printf('<script type="text/javascript" src="%sjscalendar/calendar.js"></script>','../htdocs/'.JSDIR);
-		echo "\n";
+
+		if (defined('JSDIR')) {
+			printf('<link type="text/css" rel="stylesheet" media="all" href="%sjscalendar/calendar-blue.css" title="blue" />',JSDIR);
+			printf('<link type="text/css" rel="stylesheet" href="%s/phplayersmenu/layerstreemenu.css" />','../htdocs/'.JSDIR);
+			echo "\n";
+			printf('<script type="text/javascript" src="%spla_ajax.js"></script>',JSDIR);
+			printf('<script type="text/javascript" src="%stree_hide.js"></script>',JSDIR);
+			printf('<script type="text/javascript" src="%sentry_chooser.js"></script>',JSDIR);
+			printf('<script type="text/javascript" src="%sto_ascii.js"></script>','../htdocs/'.JSDIR);
+			printf('<script type="text/javascript" src="%sjscalendar/calendar.js"></script>','../htdocs/'.JSDIR);
+			echo "\n";
+		}
 
 		# HTML head requirements.
 		if (is_array($this->_head) && count ($this->_head))
@@ -131,14 +134,14 @@ class page {
 		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
 			debug_log('Entered with ()',129,__FILE__,__LINE__,__METHOD__);
 
-		if (isset($_SESSION['plaConfig']))
-			$pagetitle = $_SESSION['plaConfig']->GetValue('appearance','page_title') ? ' - '.$_SESSION['plaConfig']->GetValue('appearance','page_title') : '';
+		if (isset($_SESSION[APPCONFIG]))
+			$pagetitle = $_SESSION[APPCONFIG]->GetValue('appearance','page_title') ? ' - '.$_SESSION[APPCONFIG]->GetValue('appearance','page_title') : '';
 		else
 			$pagetitle = '';
 
 		echo '<tr class="head">';
 
-		if (is_null($this->server_id))
+		if (! isset($this->server_id) || is_null($this->server_id))
 			printf('<td colspan=0>%s</td>','&nbsp;');
 		else
 			printf('<td colspan=0>%s %s</td>',$this->_app['title'],$pagetitle);
@@ -150,63 +153,31 @@ class page {
 		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
 			debug_log('Entered with ()',129,__FILE__,__LINE__,__METHOD__);
 
-		if (! isset($this->server_id) || is_null($this->server_id)) {
-			echo '&nbsp;';
-			return;
-		}
-
 		echo '<table class="control" border=0>';
 		echo '<tr>';
 
 		$empty = true;
 
-		if ($_SESSION['plaConfig']->isCommandAvailable('home')) {
-			printf('<td><a href="cmd.php?cmd=welcome" title="%s"><img src="images/home-big.png" alt="%s" /><br />%s</a></td>',
-				_('Home'),_('Home'),_('Home'));
-			$empty = false;
-		}
+		if (function_exists('cmd_control_pane'))
+			foreach (cmd_control_pane() as $cmd => $cmddetails) {
+				$cmds = preg_split('/:/',$cmd);
 
-		if ($_SESSION['plaConfig']->isCommandAvailable('purge')) {
-			printf('<td><a href="cmd.php?cmd=purge_cache" title="%s"><img src="images/trash-big.png" alt="%s" /><br />%s</a></td>',
-				_('Purge caches'),_('Purge all cached data in phpLDAPadmin, including server schemas.'),_('Purge caches'));
-			$empty = false;
-		}
+				if ($_SESSION[APPCONFIG]->isCommandAvailable($cmds)) {
+					if ((isset($cmddetails['enable']) && trim($cmddetails['enable'])) || ! isset($cmddetails['enable'])) {
+						printf('<td>%s</td>',$cmddetails['link']);
 
-		if ($_SESSION['plaConfig']->isCommandAvailable('external_links', 'feature')) {
-			printf('<td><a href="%s" target="new" title="%s"><img src="images/request-feature.png" alt="%s" /><br />%s</a></td>',
-				get_href('add_rfe'),_('Request feature'),_('light'),_('Request feature'));
-			$empty = false;
-		}
+						$empty = false;
+					}
+				}
+			}
 
-		if ($_SESSION['plaConfig']->isCommandAvailable('external_links', 'bug')) {
-			printf('<td><a href="%s" target="new" title="%s"><img src="images/bug-big.png" alt="%s" /><br />%s</a></td>',
-				get_href('add_bug'),_('Report a bug'),_('bug'),_('Report a bug'));
-			$empty = false;
-		}
-
-		if ($_SESSION['plaConfig']->isCommandAvailable('external_links', 'donation')) {
-			printf('<td><a href="%s" target="new" title="%s"><img src="images/smile-big.png" alt="%s" /><br />%s</a></td>',
-				get_href('donate'),_('Donate'),_('Donate'),_('Donate'));
-			$empty = false;
-		}
-
-		if (! $_SESSION['plaConfig']->GetValue('appearance','hide_debug_info')) {
-			printf('<td><a href="cmd.php?cmd=show_cache" title="%s"><img src="images/debug-cache.png" alt="%s" /><br />%s</a></td>',
-				_('Show Cache'),_('Show Cache'),_('Show Cache'));
-			$empty = false;
-		}
-
-		if ($_SESSION['plaConfig']->isCommandAvailable('external_links', 'help')) {
-			printf('<td><a href="%s" target="new" title="%s"><img src="images/help-big.png" alt="%s" /><br />%s</a></td>',
-				get_href('documentation'),_('Help'),_('Help'),_('Help'));
-			$empty = false;
-		}
-
-		if ($empty) {
+		if ($empty)
 			echo '<td></td>';
-		}
 
-		printf('<td>&nbsp;</td><td class="logo"><img src="%s" alt="Logo" class="logo" /></td>',$this->_app['logo']);
+		if (isset($this->_app['logo']))
+			printf('<td class="spacer">&nbsp;</td><td class="logo"><img src="%s" alt="Logo" class="logo" /></td>',$this->_app['logo']);
+		else
+			echo '<td class="spacer" colspan=2>&nbsp;</td>';
 
 		echo '</tr>';
 		echo '</table>';
@@ -216,10 +187,10 @@ class page {
 		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
 			debug_log('Entered with ()',129,__FILE__,__LINE__,__METHOD__);
 
-		if (! isset($_SESSION['plaConfig']))
+		if (! isset($_SESSION[APPCONFIG]))
 			return;
 
-		$server_id = is_null($this->server_id) ? min($_SESSION['plaConfig']->ldapservers->GetServerList()) : $this->server_id;
+		$server_id = is_null($this->server_id) ? min($_SESSION[APPCONFIG]->ldapservers->GetServerList()) : $this->server_id;
 
 		echo '<td class="tree" colspan=2>';
 		if (count(server_info_list(true)) > 1) {
@@ -232,9 +203,9 @@ class page {
 			echo "\n\n";
 		}
 
-		foreach ($_SESSION['plaConfig']->ldapservers->GetServerList() as $server_id) {
+		foreach ($_SESSION[APPCONFIG]->ldapservers->GetServerList() as $server_id) {
 			printf('<div id="SID_%s" style="display: %s">',$server_id,($server_id == $this->server_id) ? 'block': 'none');
-			$ldapserver = $_SESSION['plaConfig']->ldapservers->Instance($server_id);
+			$ldapserver = $_SESSION[APPCONFIG]->ldapservers->Instance($server_id);
 
 			$tree = Tree::getInstance($ldapserver->server_id);
 
@@ -246,7 +217,7 @@ class page {
 
 	public function block_add($side,$object) {
 		if (! is_object($object))
-			error('not an object');
+			error(sprintf('block_add called with [%s], but it is not an object',serialize($object)));
 
 		$this->_block[$side][] = $object;
 	}
@@ -312,9 +283,11 @@ class page {
 			ob_start();
 		}
 
-		# System Message
-		if (isset($_SESSION['sysmsg']) && $_SESSION['sysmsg']) {
-			$this->setsysmsg($_SESSION['sysmsg']);
+		# Add the Session System Messages
+		if (isset($_SESSION['sysmsg']) && is_array($_SESSION['sysmsg'])) {
+			foreach ($_SESSION['sysmsg'] as $msg) 
+				$this->setsysmsg($msg);
+
 			unset($_SESSION['sysmsg']);
 		}
 
@@ -330,8 +303,8 @@ class page {
 				echo $object->draw('body');
 		}
 
-		if ($compress && ob_get_level() && isset($_SESSION['plaConfig'])
-			&& $_SESSION['plaConfig']->GetValue('appearance','compress')
+		if ($compress && ob_get_level() && isset($_SESSION[APPCONFIG])
+			&& $_SESSION[APPCONFIG]->GetValue('appearance','compress')
 			&& ! ini_get('zlib.output_compression')
 			&& eregi('gzip',$_SERVER['HTTP_ACCEPT_ENCODING'])) {
 
@@ -410,8 +383,8 @@ class page {
 		echo '</html>';
 
 		# compress output
-		if (ob_get_level() && isset($_SESSION['plaConfig'])
-			&& $_SESSION['plaConfig']->GetValue('appearance','compress')
+		if (ob_get_level() && isset($_SESSION[APPCONFIG])
+			&& $_SESSION[APPCONFIG]->GetValue('appearance','compress')
 			&& ! ini_get('zlib.output_compression')
 			&& eregi('gzip',$_SERVER['HTTP_ACCEPT_ENCODING'])) {
 
@@ -434,17 +407,13 @@ class page {
 			return;
 
 		if (isset($this->sysmsg))
-			$nummsg = count($this->sysmsg);
+			$msgnum = count($this->sysmsg) + 1;
 		else
-			$nummsg = 1;
+			$msgnum = 1;
 
-		foreach ($data as $msgno => $msgarray) {
-			$msgindex = $msgno + $nummsg;
-
-			foreach (array('title','body','type') as $index)
-				if (isset($msgarray[$index]))
-					$this->sysmsg[$msgindex][$index] = $msgarray[$index];
-		}
+		foreach (array('title','body','type') as $index)
+			if (isset($data[$index]))
+				$this->sysmsg[$msgnum][$index] = $data[$index];
 	}
 }
 

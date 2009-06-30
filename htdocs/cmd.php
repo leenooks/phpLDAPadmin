@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/cmd.php,v 1.3.2.1 2007/12/21 12:11:55 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/cmd.php,v 1.3.2.2 2007/12/24 10:45:57 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -7,47 +7,48 @@
 
 require_once './common.php';
 
-$body = new block();
-$file = '';
-$cmd = get_request('cmd','REQUEST');
-$meth = get_request('meth','REQUEST');
+$www['cmd'] = get_request('cmd','REQUEST');
+$www['meth'] = get_request('meth','REQUEST');
 
 ob_start();
 
-if (is_null($cmd)) {
-	$cmd = 'welcome';
-}
+if (is_null($www['cmd']))
+	$www['cmd'] = 'welcome';
 
-switch ($cmd) {
+switch ($www['cmd']) {
 	case '_debug' :
 		debug_dump($_REQUEST,1);
 		$file = '';
 		break;
 
 	default :
-		if (file_exists(HOOKSDIR.$cmd.'.php'))
-			$file = HOOKSDIR.$cmd.'.php';
-		elseif (file_exists(HTDOCDIR.$cmd.'.php'))
-			$file = HTDOCDIR.$cmd.'.php';
+		if (defined('HOOKSDIR') && file_exists(HOOKSDIR.$www['cmd'].'.php'))
+			$file = HOOKSDIR.$www['cmd'].'.php';
+
+		elseif (defined('HTDOCDIR') && file_exists(HTDOCDIR.$www['cmd'].'.php'))
+			$file = HTDOCDIR.$www['cmd'].'.php';
+
 		else
 			$file = 'welcome.php';
 }
 
-if ($file) {
-	include $file;
-}
+if (DEBUG_ENABLED)
+   debug_log('Ready to render page for command [%s,%s].',128,__FILE__,__LINE__,__METHOD__,$www['cmd'],$file);
 
-$body->SetBody(ob_get_contents());
+# Create page.
+$www['page'] = new page($ldapserver->server_id);
+
+if ($file)
+	include $file;
+
+# Capture the output and put into the body of the page.
+$www['body'] = new block();
+$www['body']->SetBody(ob_get_contents());
+$www['page']->block_add('body',$www['body']);
 ob_end_clean();
 
-if (DEBUG_ENABLED)
-   debug_log('Ready to render page for command [%s,%s].',128,__FILE__,__LINE__,__METHOD__,$cmd,$file);
-
-$www = new page($ldapserver->server_id);
-$www->block_add('body',$body);
-
-if ($meth == 'get_body')
-	$www->body(true);
+if ($www['meth'] == 'get_body')
+	$www['page']->body(true);
 else
-	$www->display();
+	$www['page']->display();
 ?>

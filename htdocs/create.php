@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/create.php,v 1.48 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/create.php,v 1.48.2.1 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * Creates a new object.
@@ -21,16 +21,16 @@ require './common.php';
 if ($ldapserver->isReadOnly())
 	pla_error(_('You cannot perform updates while server is in read-only mode'), null, -1, true);
 
-if (! $_SESSION['plaConfig']->isCommandAvailable('entry_create'))
+if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_create'))
 	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('create entry')));
 
 $rdn_attr = isset($_POST['rdn_attribute']) ? $_POST['rdn_attribute'] : null;
 
-$entryfactoryclass = $_SESSION['plaConfig']->GetValue('appearance','entry_factory');
+$entryfactoryclass = $_SESSION[APPCONFIG]->GetValue('appearance','entry_factory');
 eval('$entry_factory = new '.$entryfactoryclass.'();');
 $entry = $entry_factory->newCreatingEntry('');
 
-eval('$reader = new '.$_SESSION['plaConfig']->GetValue('appearance', 'entry_reader').'($ldapserver);');
+eval('$reader = new '.$_SESSION[APPCONFIG]->GetValue('appearance', 'entry_reader').'($ldapserver);');
 $entry->accept($reader);
 
 $container = $entry->getContainer();
@@ -94,7 +94,7 @@ if (run_hook('pre_entry_create',array('server_id'=>$ldapserver->server_id,'dn'=>
 if ($add_result) {
 	run_hook('post_entry_create',array('server_id'=>$ldapserver->server_id,'dn'=>$new_dn,'attrs'=>$new_entry));
 
-	$action_number = $_SESSION['plaConfig']->GetValue('appearance', 'action_after_creation');
+	$action_number = $_SESSION[APPCONFIG]->GetValue('appearance', 'action_after_creation');
 
 	$container = get_container($new_dn,false);
 	//$container_container = get_container($container);

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update.php,v 1.29 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update.php,v 1.29.2.1 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * Updates or deletes a value from a specified attribute for a specified dn.
@@ -57,13 +57,13 @@ foreach ($entry['update'] as $attr => $val) {
 		} elseif ($val == '') {
 			$entry['update'][$attr] = array();
 
-			if (! $_SESSION['plaConfig']->isCommandAvailable('attribute_delete'))
+			if (! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete'))
 				pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('delete attribute')));
 		} else { # Skip change
 			$entry['update'][$attr] = $val;
 
-			if (! $_SESSION['plaConfig']->isCommandAvailable('attribute_add_value')
-			    && ! $_SESSION['plaConfig']->isCommandAvailable('attribute_delete_value'))
+			if (! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value')
+			    && ! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete_value'))
 				pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('modify attribute values')));
 		}
 
@@ -75,8 +75,8 @@ foreach ($entry['update'] as $attr => $val) {
 			foreach ($val as $i => $v)
 				$entry['update'][$attr][$i] = $v;
 
-			if (! $_SESSION['plaConfig']->isCommandAvailable('attribute_add_value')
-			    && ! $_SESSION['plaConfig']->isCommandAvailable('attribute_delete_value'))
+			if (! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value')
+			    && ! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete_value'))
 				pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('modify attribute values')));
 		}
 	}

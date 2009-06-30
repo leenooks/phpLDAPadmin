@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_predefined.php,v 1.10 2007/12/15 07:50:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_predefined.php,v 1.10.2.1 2007/12/26 09:26:33 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -21,8 +21,8 @@ else
 
 printf('<tr><td class="title" colspan=2>%s</td></tr>',_('Predefined Searches'));
 
-$ss = $_SESSION['plaConfig']->isCommandAvailable('search', 'simple_search');
-$as = $_SESSION['plaConfig']->isCommandAvailable('search', 'advanced_search');
+$ss = $_SESSION[APPCONFIG]->isCommandAvailable('search', 'simple_search');
+$as = $_SESSION[APPCONFIG]->isCommandAvailable('search', 'advanced_search');
 if ($ss | $as) {
 	echo '<tr><td class="subtitle" colspan=2>(';
 	if ($ss) {
@@ -37,7 +37,7 @@ if ($ss | $as) {
 
 echo '<tr><td colspan=2>&nbsp;</td></tr>';
 
-if (! isset($_SESSION['plaConfig']->queries) || ! is_array($_SESSION['plaConfig']->queries) || count($_SESSION['plaConfig']->queries) == 0) {
+if (! isset($_SESSION[APPCONFIG]->queries) || ! is_array($_SESSION[APPCONFIG]->queries) || count($_SESSION[APPCONFIG]->queries) == 0) {
 	printf('<tr><td>%s</td></tr>',_('No queries have been defined in config.php.'));
 
 } else {
@@ -47,7 +47,7 @@ if (! isset($_SESSION['plaConfig']->queries) || ! is_array($_SESSION['plaConfig'
 	echo '<td>';
 	echo '<select name="predefined">';
 
-	foreach ($_SESSION['plaConfig']->queries as $q_number => $q) {
+	foreach ($_SESSION[APPCONFIG]->queries as $q_number => $q) {
 		if ($selected_q_number === $q_number)
 			$selected = ' selected';
 		else

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/header.php,v 1.27 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/header.php,v 1.27.2.1 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -9,7 +9,7 @@ require_once LIBDIR.'./common.php';
 
 /* We want to get $language into scope in case we were included
    from within a function */
-$language = isset($_SESSION['plaConfig']) ? $language = $_SESSION['plaConfig']->GetValue('appearance','language') : 'auto';
+$language = isset($_SESSION[APPCONFIG]) ? $language = $_SESSION[APPCONFIG]->GetValue('appearance','language') : 'auto';
 
 # text/xml won't work with MSIE, but is very useful for debugging xhtml code.
 # header('Content-type: text/xml; charset="UTF-8"');
@@ -26,13 +26,13 @@ echo "\n\n";
 
 echo '<head>';
 
-if (isset($_SESSION['plaConfig']) && $pagetitle = $_SESSION['plaConfig']->GetValue('appearance','page_title'))
+if (isset($_SESSION[APPCONFIG]) && $pagetitle = $_SESSION[APPCONFIG]->GetValue('appearance','page_title'))
 	printf('<title>phpLDAPadmin - %s</title>',$pagetitle);
 else
 	echo '<title>phpLDAPadmin</title>';
 
-if (isset($_SESSION['plaConfig']))
-	$css = $_SESSION['plaConfig']->GetValue('appearance','stylesheet');
+if (isset($_SESSION[APPCONFIG]))
+	$css = $_SESSION[APPCONFIG]->GetValue('appearance','stylesheet');
 else
 	$css = 'style.css';
 printf('<link type="text/css" rel="stylesheet" href="%s%s" media="screen" />','../htdocs/'.CSSDIR,$css);

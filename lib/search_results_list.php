@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_list.php,v 1.7 2007/12/15 07:50:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_list.php,v 1.7.2.2 2007/12/26 09:26:33 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -23,7 +23,7 @@ foreach ($results as $dn => $dndetails) {
 	printf('<td class="icon"><img src="images/%s" alt="icon" /></td>',get_icon($ldapserver,$dn));
 
 	$formatted_dn = get_rdn($dn);
-	if (!$_SESSION['plaConfig']->isCommandAvailable('schema')) {
+	if (!$_SESSION[APPCONFIG]->isCommandAvailable('schema')) {
 		$formatted_dn = explode('=', $formatted_dn, 2);
 		$formatted_dn = $formatted_dn[1];
 	}
@@ -32,7 +32,7 @@ foreach ($results as $dn => $dndetails) {
 		$ldapserver->server_id,rawurlencode(dn_unescape($dn)),htmlspecialchars($formatted_dn));
 	echo '</tr>';
 
-	if ($_SESSION['plaConfig']->isCommandAvailable('schema')) {
+	if ($_SESSION[APPCONFIG]->isCommandAvailable('schema')) {
 		printf('<tr class="list_attr"><td class="blank">&nbsp;</td><td class="attr">dn</td><td class="val">%s</td></tr>',htmlspecialchars(dn_unescape($dn)));
 	}
 
@@ -45,18 +45,9 @@ foreach ($results as $dn => $dndetails) {
 		if ($ldapserver->isAttrBinary($attr))
 			$values = array('(binary)');
 
-		if (isset($_SESSION['plaConfig']->friendly_attrs[strtolower($attr)])) {
-			$a = $attr;
-			$attr = htmlspecialchars($_SESSION['plaConfig']->friendly_attrs[strtolower($attr)]);
-			if ($_SESSION['plaConfig']->isCommandAvailable('schema')) {
-				$attr = sprintf('<acronym title="Alias for %s">%s</acronym>', $a, $attr);
-			}
-		} else
-			$attr = htmlspecialchars($attr);
-
 		echo '<tr class="list_attr">';
 		echo '<td class="blank">&nbsp;</td>';
-		printf('<td class="attr" valign="top">%s</td>',$attr);
+		printf('<td class="attr" valign="top">%s</td>',$_SESSION[APPCONFIG]->getFriendlyHTML($attr));
 
 		echo '<td class="val">';
 

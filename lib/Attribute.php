@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Attribute.php,v 1.2 2007/12/15 07:50:31 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Attribute.php,v 1.2.2.2 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -188,18 +188,10 @@ class Attribute {
 	}
 
 	public function getFriendlyName() {
-		$friendly_attrs = $_SESSION['plaConfig']->friendly_attrs;
-		$name = real_attr_name($this->name);
-
-		if ($this->friendly_name) {
+		if ($this->friendly_name)
 			return $this->friendly_name;
-		} elseif (isset($friendly_attrs[$name])) {
-			return $friendly_attrs[$name];
-		} elseif (isset($friendly_attrs[strtolower($name)])) {
-			return $friendly_attrs[strtolower($name)];
-		} else {
-			return $name;
-		}
+		else
+			return $_SESSION[APPCONFIG]->getFriendlyName(real_attr_name($this->name));
 	}
 
 	public function setDescription($description) {

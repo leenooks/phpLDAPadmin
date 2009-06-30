@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/hooks.php,v 1.10 2007/12/15 11:30:24 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/hooks.php,v 1.10.2.1 2007/12/26 09:26:33 wurley Exp $
 
 /**
  * Functions related to hooks management.
@@ -50,7 +50,7 @@ function sort_array_by_priority($a,$b) {
  * @return true if all procedures returned true, false otherwise.
  */
 function run_hook($hook_name,$args) {
-	$hooks = isset($_SESSION['plaConfig']) ? $_SESSION['plaConfig']->hooks : array();
+	$hooks = isset($_SESSION[APPCONFIG]) ? $_SESSION[APPCONFIG]->hooks : array();
 
 	$debug = 0;
 	syslog_debug("Running hook $hook_name.");
@@ -161,8 +161,8 @@ function remove_hook($hook_name,$priority,$hook_function,$rollback_function) {
  */
 function clear_hooks($hook_name) {
 	global $config;
-	if (!isset($config) && isset($_SESSION['plaConfig']))
-		$config = $_SESSION['plaConfig'];
+	if (!isset($config) && isset($_SESSION[APPCONFIG]))
+		$config = $_SESSION[APPCONFIG];
 
 	if (array_key_exists($hook_name,$config->hooks))
 		unset($config->hooks[$hook_name]);

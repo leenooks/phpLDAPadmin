@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/server_info.php,v 1.27 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/server_info.php,v 1.27.2.1 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * Fetches and displays all information that it can from the specified server
@@ -12,7 +12,7 @@
 /**
  */
 
-if (! $_SESSION['plaConfig']->isCommandAvailable('server_info'))
+if (! $_SESSION[APPCONFIG]->isCommandAvailable('server_info'))
 	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('view server informations')));
 
 # The attributes we'll examine when searching the LDAP server's RootDSE

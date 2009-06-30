@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/AttributeFactory.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/AttributeFactory.php,v 1.2.2.1 2007/12/26 09:26:33 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -26,7 +26,7 @@ class AttributeFactory {
 		} else if (! strcasecmp($name,'sambaLMPassword') || ! strcasecmp($name,'sambaNTPassword')) {
 			return $this->newSambaPasswordAttribute($name,$values);
 
-		} elseif (in_array_ignore_case($name,array_keys($_SESSION['plaConfig']->GetValue('appearance','date_attrs')))) {
+		} elseif (in_array_ignore_case($name,array_keys($_SESSION[APPCONFIG]->GetValue('appearance','date_attrs')))) {
 			return $this->newDateAttribute($name,$values);
 
 		} elseif (in_array(strtolower($name),array('shadowlastchange','shadowmin',

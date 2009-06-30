@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.43 2007/12/15 11:15:24 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.43.2.2 2007/12/26 09:26:33 wurley Exp $ */
 
 /**
  * Classes and functions for the template engine.ation and capability
@@ -112,6 +112,10 @@ class Templates {
 			$this->template_num = 0;
 			while( ( $file = readdir( $dir ) ) !== false ) {
 				if (! preg_match('/.xml$/',$file)) continue;
+
+				if ($_SESSION['plaConfig']->GetValue('appearance','custom_templates_only')
+					&& ! preg_match('/^custom_/',$file))
+					continue;
 
 				$objXML = new xml2array();
 				$xmldata = $objXML->parse(TMPLDIR.'creation/'.$file);
@@ -671,7 +675,7 @@ class Templates {
 					 */
 
 					if ($args[0] == '$')
-						$args[0] = $_SESSION['plaConfig']->ldapservers->GetValue($ldapserver->server_id,'auto_number','search_base');
+						$args[0] = $_SESSION[APPCONFIG]->ldapservers->GetValue($ldapserver->server_id,'auto_number','search_base');
 
 					$container = $ldapserver->getContainerParent($container,$args[0]);
 					$vals = get_next_number($ldapserver,$container,$args[1],(!empty($args[2]) && ($args[2] == 'true')) ? true : false,(!empty($args[3])) ? $args[3] : false);

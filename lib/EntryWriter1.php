@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter1.php,v 1.3.2.1 2007/12/21 11:32:59 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter1.php,v 1.3.2.4 2007/12/26 09:26:33 wurley Exp $
 
 define('IdEntryRefreshMenuItem', '0');
 define('IdEntryExportBaseMenuItem', '1');
@@ -56,10 +56,10 @@ class EntryWriter1 extends EntryWriter {
 	protected function drawEntryMenu($entry) {}
 
 	protected function drawEntryJavascript($entry) {
-		if (isset($_SESSION['plaConfig'])) {
+		if (isset($_SESSION[APPCONFIG])) {
 			echo '<script type="text/javascript" language="javascript">';
 			echo 'var defaults = new Array();var default_date_format = "';
-			echo $_SESSION['plaConfig']->GetValue('appearance', 'date');
+			echo $_SESSION[APPCONFIG]->GetValue('appearance', 'date');
 			echo '";</script>';
 		}
 
@@ -352,7 +352,7 @@ class EntryWriter1 extends EntryWriter {
 		echo '</td>';
 		echo '</tr>';
 
-		if ($_SESSION['plaConfig']->GetValue('appearance', 'show_hints')) {
+		if ($_SESSION[APPCONFIG]->GetValue('appearance', 'show_hints')) {
 			echo '<tr><td>&nbsp;</td><td><small><img src="images/light.png" alt="Hint" /><span class="hint">';
 			echo _('Hint: You must choose exactly one structural objectClass (shown in bold above)');
 			echo '</span></small><br /></td></tr>';
@@ -587,7 +587,7 @@ class EntryWriter1 extends EntryWriter {
 	}
 
 	protected function getDefaultEditingEntryMenuItem($entry, $i) {
-		$config = $_SESSION['plaConfig'];
+		$config = $_SESSION[APPCONFIG];
 
 		switch ($i) {
 			case IdEntryRefreshMenuItem :
@@ -791,7 +791,7 @@ class EntryWriter1 extends EntryWriter {
 	}
 
 	protected function getDefaultEditingEntryDeleteAttributeMessage($entry) {
-		if ($_SESSION['plaConfig']->isCommandAvailable('attribute_delete_value'))
+		if ($_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete_value'))
 			return sprintf($this->hint_layout,_('Hint: To delete an attribute, empty the text field and click save.'));
 		else
 			return '';
@@ -1464,7 +1464,7 @@ class EntryWriter1 extends EntryWriter {
 		echo '<td class="attr_note">';
 
 		# Setup the $attr_note, which will be displayed to the right of the attr name (if any)
-		if ($_SESSION['plaConfig']->GetValue('appearance', 'show_attribute_notes')) {
+		if ($_SESSION[APPCONFIG]->GetValue('appearance', 'show_attribute_notes')) {
 			$this->draw('Notes', $attribute);
 		}
 
@@ -1547,7 +1547,7 @@ class EntryWriter1 extends EntryWriter {
 		switch ($i) {
 			case IdAttributeAddValueMenuItem :
 				if ($attribute->isVisible() && !$attribute->isReadOnly()
-					&& !$attribute->isRdn() && $_SESSION['plaConfig']->isCommandAvailable('attribute_add_value')) {
+					&& !$attribute->isRdn() && $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value')) {
 					if ($attribute->getMaxValueCount() < 0 || $attribute->getValueCount() < $attribute->getMaxValueCount()) {
 						return $this->get('AddValueMenuItem', $attribute);
 					}
@@ -1555,10 +1555,10 @@ class EntryWriter1 extends EntryWriter {
 				return '';
 
 			case IdAttributeModifyMemberMenuItem :
-				if (in_array($attribute->getName(), $_SESSION['plaConfig']->GetValue('modify_member','groupattr'))) {
+				if (in_array($attribute->getName(), $_SESSION[APPCONFIG]->GetValue('modify_member','groupattr'))) {
 					if ($attribute->isVisible() && !$attribute->isReadOnly() && !$attribute->isRdn()
-						&& ($_SESSION['plaConfig']->isCommandAvailable('attribute_add_value')
-						|| $_SESSION['plaConfig']->isCommandAvailable('attribute_delete_value'))) {
+						&& ($_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value')
+						|| $_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete_value'))) {
 						return $this->get('ModifyMemberMenuItem', $attribute);
 					}
 				}
@@ -1566,7 +1566,7 @@ class EntryWriter1 extends EntryWriter {
 
 			case IdAttributeRenameMenuItem :
 				if ($attribute->isVisible() && $attribute->isRdn() && !$attribute->isReadOnly()
-					&& $_SESSION['plaConfig']->isCommandAvailable('entry_rename')) {
+					&& $_SESSION[APPCONFIG]->isCommandAvailable('entry_rename')) {
 					return $this->get('RenameMenuItem', $attribute);
 				}
 				return '';
@@ -1742,8 +1742,8 @@ class EntryWriter1 extends EntryWriter {
 		$opts = $arr1;
 
 		$default = (count($vals) > 0 ? $vals[0] : '');
-		if (!is_string($default)) $default = '';
-		if (!is_null($attribute->getValue($i)) || (strlen($default) <= 0)) {
+		if (!is_scalar($default)) $default = '';
+		if (!is_null($attribute->getValue($i)) && (strlen($default) <= 0)) {
 			$default = $this->get('DefaultValueHelper', $attribute, $i);
 		}
 
@@ -1876,7 +1876,7 @@ class EntryWriter1 extends EntryWriter {
 	}
 
 	protected function drawAttributeName($attribute) {
-		$config = $_SESSION['plaConfig'];
+		$config = $_SESSION[APPCONFIG];
 
 		$attr_display = $attribute->getFriendlyName();
 
@@ -1896,7 +1896,7 @@ class EntryWriter1 extends EntryWriter {
 		$friendly_name = $attribute->getFriendlyName();
 
 		if ($friendly_name != $attribute->getName()) {
-			return "<acronym title=\"" . sprintf(_('Note: \'%s\' is an alias for \'%s\''), $friendly_name, $attribute->getName()) . "\">alias</acronym>";
+			return sprintf('<acronym title="%s: \'%s\' %s \'%s\'">%s</acronym>',_('Note'),$friendly_name,_('is an alias for'),$attribute->getName(),_('alias'));
 		} else {
 			return '';
 		}
@@ -1989,12 +1989,12 @@ class EntryWriter1 extends EntryWriter {
 					}
 				}
 
-				if (! $attribute->isReadOnly() && $_SESSION['plaConfig']->isCommandAvailable('attribute_delete')) {
+				if (! $attribute->isReadOnly() && $_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete')) {
 					printf('<a href="javascript:deleteAttribute(\'%s\', \'%s\');" style="color:red;">'.
 						'<img src="images/trash.png" alt="Trash" /> %s</a>',
 						$attribute->getName(), $attribute->getFriendlyName(), _('delete attribute'));
 				}
-			} elseif ($attribute->isReadOnly() || ! $_SESSION['plaConfig']->isCommandAvailable('attribute_add_value')) {
+			} elseif ($attribute->isReadOnly() || ! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value')) {
 				printf('<input type="text" class="roval" value="%s" readonly /><br />',
 					_("[no value]"));
 			} else {
@@ -2081,9 +2081,9 @@ class EntryWriter1 extends EntryWriter {
 	protected function drawDateAttributeJavascript($attribute) {
 		$this->draw('Attribute::Javascript', $attribute);
 
-		$entry['date'] = $_SESSION['plaConfig']->GetValue('appearance','date_attrs');
-		$entry['time'] = $_SESSION['plaConfig']->GetValue('appearance','date_attrs_showtime');
-		$entry['format'] = $_SESSION['plaConfig']->GetValue('appearance', 'date');
+		$entry['date'] = $_SESSION[APPCONFIG]->GetValue('appearance','date_attrs');
+		$entry['time'] = $_SESSION[APPCONFIG]->GetValue('appearance','date_attrs_showtime');
+		$entry['format'] = $_SESSION[APPCONFIG]->GetValue('appearance', 'date');
 
 		if (isset($entry['date'][$attribute->getName()]))
 			$entry['format'] = $entry['date'][$attribute->getName()];
@@ -2202,9 +2202,9 @@ class EntryWriter1 extends EntryWriter {
 				if ($attribute->getEntry() && $attribute->getEntry()->getDn()) {
 					draw_jpeg_photos($this->ldapserver, $attribute->getEntry()->getDn(),
 						$attribute->getName(), ! $attribute->isReadOnly()
-						&& $_SESSION['plaConfig']->isCommandAvailable('attribute_delete'));
+						&& $_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete'));
 				}
-			} elseif ($attribute->isReadOnly() || ! $_SESSION['plaConfig']->isCommandAvailable('attribute_add_value')) {
+			} elseif ($attribute->isReadOnly() || ! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value')) {
 				printf('<input type="text" class="roval" value="%s" readonly /><br />',_('[no value]'));
 			} else {
 				$i = 0;
@@ -2633,7 +2633,7 @@ class EntryWriter1 extends EntryWriter {
 	}
 
 	protected function drawShadowAttributeShadowDate($attribute, $shadow_date) {
-		$config = $_SESSION['plaConfig'];
+		$config = $_SESSION[APPCONFIG];
 
 		//$shadow_format_attrs = array_merge($shadow_before_today_attrs,$shadow_after_today_attrs);
 		$shadow_before_today_attrs = arrayLower($attribute->shadow_before_today_attrs);

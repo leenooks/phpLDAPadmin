@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Entry.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Entry.php,v 1.2.2.1 2007/12/26 09:26:33 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -78,9 +78,9 @@ abstract class Entry {
 		if (DEBUG_ENABLED)
 			debug_log('LdapServer (%s)',1,__FILE__,__LINE__,__METHOD__, $ldapserver ? $ldapserver->server_id : -1);
 
-		$ldap['child_limit'] = $nolimit ? 0 : $_SESSION['plaConfig']->GetValue('search','size_limit');
-		$ldap['filter'] = $_SESSION['plaConfig']->GetValue('appearance','tree_filter');
-		$ldap['deref'] = $_SESSION['plaConfig']->GetValue('deref','view');
+		$ldap['child_limit'] = $nolimit ? 0 : $_SESSION[APPCONFIG]->GetValue('search','size_limit');
+		$ldap['filter'] = $_SESSION[APPCONFIG]->GetValue('appearance','tree_filter');
+		$ldap['deref'] = $_SESSION[APPCONFIG]->GetValue('deref','view');
 		$ldap['children'] = $ldapserver->getContainerContents($this->getDn(),$ldap['child_limit'],$ldap['filter'],$ldap['deref']);
 
 		if (DEBUG_ENABLED)

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Tree.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Tree.php,v 1.2.2.1 2007/12/26 09:26:33 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -29,10 +29,10 @@ abstract class Tree {
 	static public function getInstance($server_id) {
 		$tree = get_cached_item($server_id,'tree');
 		if (!$tree) {
-			$ldapserver = $_SESSION['plaConfig']->ldapservers->Instance($server_id);
+			$ldapserver = $_SESSION[APPCONFIG]->ldapservers->Instance($server_id);
 			if (!$ldapserver) return null;
 
-			$treeclass = $_SESSION['plaConfig']->GetValue('appearance','tree');
+			$treeclass = $_SESSION[APPCONFIG]->GetValue('appearance','tree');
 			eval('$tree = new '.$treeclass.'($server_id);');
 
 			foreach ($ldapserver->getBaseDN() as $baseDn)
@@ -45,7 +45,7 @@ abstract class Tree {
 	}
 
 	public function getLdapServer() {
-		return $_SESSION['plaConfig']->ldapservers->Instance($this->server_id);
+		return $_SESSION[APPCONFIG]->ldapservers->Instance($this->server_id);
 	}
 
 	/**
@@ -71,7 +71,7 @@ abstract class Tree {
 	 * children array of its parent
 	 *
 	 * The added entry is created using the factory class defined
-	 * in $_SESSION['plaConfig']->custom->appearance['entry_factory']
+	 * in $_SESSION[APPCONFIG]->custom->appearance['entry_factory']
 	 *
 	 * @param $dn the dn of the entry to create
 	 */
@@ -79,7 +79,7 @@ abstract class Tree {
 		if (DEBUG_ENABLED)
 			debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$dn);
 
-		$ldapserver = $_SESSION['plaConfig']->ldapservers->Instance($this->server_id);
+		$ldapserver = $_SESSION[APPCONFIG]->ldapservers->Instance($this->server_id);
 
 		# We need to convert the DN to lower case, to avoid any case problems and strip any unnessary spaces after commas.
 		$dnlower = $this->indexDN($dn);
@@ -121,7 +121,7 @@ abstract class Tree {
 		if (isset($this->misses[$dnlower]))
 			unset($this->misses[$dnlower]);
 
-		$entryfactoryclass = $_SESSION['plaConfig']->GetValue('appearance','entry_factory');
+		$entryfactoryclass = $_SESSION[APPCONFIG]->GetValue('appearance','entry_factory');
 		eval('$entry_factory = new '.$entryfactoryclass.'();');
 		if (DEBUG_ENABLED)
 			debug_log('New ENTRY (%s) for (%s).',64,__FILE__,__LINE__,__METHOD__,$dnlower,$dn);

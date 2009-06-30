@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/export_functions.php,v 1.36 2007/12/15 11:42:01 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/export_functions.php,v 1.36.2.1 2007/12/26 09:26:33 wurley Exp $
 
 /**
  * Fuctions and classes for exporting ldap entries to others formats
@@ -70,7 +70,7 @@ class LdapExportInfo {
 	 */
 
 	function LdapExportInfo($server_id,$base_dn=null,$query_filter=null,$scope=null) {
-		$this->ldapserver = $_SESSION['plaConfig']->ldapservers->Instance($server_id);
+		$this->ldapserver = $_SESSION[APPCONFIG]->ldapservers->Instance($server_id);
 		$this->ldapserver->base_dn = $base_dn;
 		$this->ldapserver->query_filter = $query_filter;
 		$this->ldapserver->scope = $scope;
@@ -245,7 +245,7 @@ class PlaLdapExporter extends PlaAbstractExporter {
 
 		# get the data to be exported
 		$this->results = $this->ldap_info->ldapserver->search(null,$this->base_dn,$this->queryFilter,$this->attributes,
-			$this->scope,true,$_SESSION['plaConfig']->GetValue('deref','export'));
+			$this->scope,true,$_SESSION[APPCONFIG]->GetValue('deref','export'));
 
 		# if no result, there is a something wrong
 		if (! $this->results && $this->ldap_info->ldapserver->errno())

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/TemplateEditingEntry.php,v 1.3 2007/12/15 11:18:38 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/TemplateEditingEntry.php,v 1.3.2.2 2007/12/29 08:24:11 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -27,11 +27,11 @@ class TemplateEditingEntry extends DefaultEditingEntry {
 		global $ldapserver;
 
 		if (DEBUG_ENABLED)
-			debug_log('TemplateEditingEntry::readEditingTemplates()',1);
+			debug_log('Entered with ()',1,__FILE__,__LINE__,__METHOD__);
 
 		if ($this->valid) {
 			if (DEBUG_ENABLED)
-				debug_log('TemplateEditingEntry::readEditingTemplates() : all templates [%s] are valid',1,count($this->templates));
+				debug_log('All templates [%s] are valid',1,__FILE__,__LINE__,__METHOD__,count($this->templates));
 			return;
 		}
 
@@ -46,24 +46,28 @@ class TemplateEditingEntry extends DefaultEditingEntry {
 		foreach ($all_templates as $template_name => $template_attrs) {
 			# don't select hidden templates
 			if (isset($template_attrs['visible']) && (! $template_attrs['visible'])) {
-				if (DEBUG_ENABLED) debug_log('TemplateEditingEntry::readEditingTemplates() : the template %s is not visible',1,$template_name);
+				if (DEBUG_ENABLED)
+					debug_log('The template %s is not visible',1,__FILE__,__LINE__,__METHOD__,$template_name);
 				continue;
 			}
 			# don't select invalid templates
 			if (isset($template_attrs['invalid']) && $template_attrs['invalid']) {
-				if (DEBUG_ENABLED) debug_log('TemplateEditingEntry::readEditingTemplates() : the template %s is invalid [%s]',1,$template_name,isset($template_attrs['invalid_reason']) ? $template_attrs['invalid_reason'] : '');
+				if (DEBUG_ENABLED)
+					debug_log('The template %s is invalid [%s]',1,__FILE__,__LINE__,__METHOD__,$template_name,isset($template_attrs['invalid_reason']) ? $template_attrs['invalid_reason'] : '');
 				$this->valid = false;
 				continue;
 			}
 			# check the template filter
 			if (isset($template_attrs['regexp'])) {
 				if (! @preg_match('/'.$template_attrs['regexp'].'/i',$this->getDn())) {
-					if (DEBUG_ENABLED) debug_log('TemplateEditingEntry::readEditingTemplates() : the entry dn doesn\'t match the template %s regexp',1,$template_name);
+					if (DEBUG_ENABLED)
+						debug_log('The entry dn doesn\'t match the template %s regexp',1,__FILE__,__LINE__,__METHOD__,$template_name);
 					continue;
 				}
 			}
 			# finally add the template to the list
-			if (DEBUG_ENABLED) debug_log('TemplateEditingEntry::readEditingTemplates() : the template %s is available for the entry',1,$template_name);
+			if (DEBUG_ENABLED)
+				debug_log('The template %s is available for the entry',1,__FILE__,__LINE__,__METHOD__,$template_name);
 			$this->templates[$template_name] = $template_attrs;
 		}
 	}
@@ -87,7 +91,8 @@ class TemplateEditingEntry extends DefaultEditingEntry {
 		static $attrs = array();
 		$dn = $this->getDn();
 
-		if (DEBUG_ENABLED) debug_log('%s[%s]::getAttributes()',1,get_class($this),$dn);
+		if (DEBUG_ENABLED)
+			debug_log('Entered with () for dn [%s]',1,__FILE__,__LINE__,__METHOD__,$dn);
 
 		if (!$this->selected_template) {
 			return parent::getAttributes();
@@ -95,14 +100,14 @@ class TemplateEditingEntry extends DefaultEditingEntry {
 			$attrs[$dn] = array();
 			$tmpl[$dn] = $this->selected_template;
 
-			$attributefactoryclass = $_SESSION['plaConfig']->GetValue('appearance','attribute_factory');
+			$attributefactoryclass = $_SESSION[APPCONFIG]->GetValue('appearance','attribute_factory');
 			eval('$attribute_factory = new '.$attributefactoryclass.'();');
 
 			$int_attrs_vals = $ldapserver->getDNSysAttrs($this->getDn());
 			if (! $int_attrs_vals) $attrs_vals = array();
 			elseif (! is_array($int_attrs_vals)) $int_attrs_vals = array($attrs_vals);
 
-			$attrs_vals = $ldapserver->getDNAttrs($this->getDn(),false,$_SESSION['plaConfig']->GetValue('deref','view'));
+			$attrs_vals = $ldapserver->getDNAttrs($this->getDn(),false,$_SESSION[APPCONFIG]->GetValue('deref','view'));
 			if (! $attrs_vals) $attrs_vals = array();
 			elseif (! is_array($attrs_vals)) $attrs_vals = array($attrs_vals);
 

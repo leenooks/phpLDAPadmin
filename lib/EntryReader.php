@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryReader.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryReader.php,v 1.2.2.1 2007/12/29 08:24:10 wurley Exp $
 
 define('ENTRY_READER_CREATION_CONTEXT', '1');
 define('ENTRY_READER_EDITING_CONTEXT', '2');
@@ -25,11 +25,13 @@ class EntryReader extends Visitor {
 	/**************************/
 
 	public function visitEntryStart($entry) {
-		if (DEBUG_ENABLED) debug_log('%s::visitEntryStart(%s)',1,get_class($this),$entry->getDn());
+		if (DEBUG_ENABLED)
+			debug_log('Enter with (%s) for dn (%s)',1,__FILE__,__LINE__,__METHOD__,$entry,$entry->getDn());
 	}
 
 	public function visitEntryEnd($entry) {
-		if (DEBUG_ENABLED) debug_log('%s::visitEntryEnd(%s)',1,get_class($this),$entry->getDn());
+		if (DEBUG_ENABLED)
+			debug_log('Enter with (%s) for dn (%s)',1,__FILE__,__LINE__,__METHOD__,$entry,$entry->getDn());
 	}
 
 	/**************************/
@@ -37,14 +39,16 @@ class EntryReader extends Visitor {
 	/**************************/
 
 	public function visitDefaultEditingEntryStart($entry) {
-		if (DEBUG_ENABLED) debug_log('%s::visitDefaultEditingEntryStart()',1,get_class($this));
+		if (DEBUG_ENABLED)
+			debug_log('Enter with (%s) for dn (%s)',1,__FILE__,__LINE__,__METHOD__,$entry,$entry->getDn());
 
 		$this->context = ENTRY_READER_EDITING_CONTEXT;
 		$this->visit('Entry::Start', $entry);
 	}
 
 	public function visitTemplateEditingEntryStart($entry) {
-		if (DEBUG_ENABLED) debug_log('%s::visitTemplateEditingEntryStart()',1,get_class($this));
+		if (DEBUG_ENABLED)
+			debug_log('Enter with (%s) for dn (%s)',1,__FILE__,__LINE__,__METHOD__,$entry,$entry->getDn());
 
 		$this->visit('DefaultEditingEntry::Start', $entry);
 
@@ -62,7 +66,8 @@ class EntryReader extends Visitor {
 	/**************************/
 
 	public function visitDefaultCreatingEntryStart($entry) {
-		if (DEBUG_ENABLED) debug_log('%s::visitDefaultCreatingEntryStart()',1,get_class($this));
+		if (DEBUG_ENABLED)
+			debug_log('Enter with (%s) for dn (%s)',1,__FILE__,__LINE__,__METHOD__,$entry,$entry->getDn());
 
 		$this->context = ENTRY_READER_CREATION_CONTEXT;
 		$this->visit('Entry::Start', $entry);
@@ -81,7 +86,8 @@ class EntryReader extends Visitor {
 	}
 
 	public function visitTemplateCreatingEntryStart($entry) {
-		if (DEBUG_ENABLED) debug_log('%s::visitTemplateCreatingEntryStart()',1,get_class($this));
+		if (DEBUG_ENABLED)
+			debug_log('Enter with (%s) for dn (%s)',1,__FILE__,__LINE__,__METHOD__,$entry,$entry->getDn());
 
 		$this->visit('DefaultCreatingEntry::Start', $entry);
 
@@ -99,7 +105,8 @@ class EntryReader extends Visitor {
 	/**************************/
 
 	public function visitAttribute($attribute) {
-		if (DEBUG_ENABLED) debug_log('%s::visitAttribute(%s)',1,get_class($this),$attribute->getName());
+		if (DEBUG_ENABLED)
+			debug_log('Enter with (%s) for attribute (%s)',1,__FILE__,__LINE__,__METHOD__,$attribute,$attribute->getName());
 
 		$name = $attribute->getName();
 		// @todo editing objectclasses

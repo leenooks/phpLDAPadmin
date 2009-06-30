@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_table.php,v 1.9 2007/12/15 07:50:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_table.php,v 1.9.2.2 2007/12/26 09:26:33 wurley Exp $
 
 /**
  * Incoming variables (among others)
@@ -10,7 +10,7 @@
  * @package phpLDAPadmin
  */
 
-if ($_SESSION['plaConfig']->isCommandAvailable('schema')) {
+if ($_SESSION[APPCONFIG]->isCommandAvailable('schema')) {
 	$all_attrs = array('' =>1, 'dn'=>1);
 } else {
 	$all_attrs = array('' =>1);
@@ -33,7 +33,7 @@ foreach ($results as $dn => $dndetails) {
 	$attrs_display = array();
 	$attrs_display[''] = sprintf('<center><a href="%s"><img src="images/%s" alt="icon" /></a></center>',$edit_url,get_icon($ldapserver,$dn));
 
-	if ($_SESSION['plaConfig']->isCommandAvailable('schema')) {
+	if ($_SESSION[APPCONFIG]->isCommandAvailable('schema')) {
 		$dn_display = strlen($dn) > 40
 		              ? sprintf('<acronym title="%s">%s...</acronym>',htmlspecialchars($dn),htmlspecialchars(substr($dn,0,40)))
 		              : htmlspecialchars($dn);
@@ -47,14 +47,7 @@ foreach ($results as $dn => $dndetails) {
 		if ($attr == 'dn')
 			continue;
 
-		# Clean up the attr name
-		if (isset($_SESSION['plaConfig']->friendly_attrs[strtolower($attr)])) {
-			$attr_display = htmlspecialchars($_SESSION['plaConfig']->friendly_attrs[strtolower($attr)]);
-			if ($_SESSION['plaConfig']->isCommandAvailable('schema')) {
-				$attr_display = sprintf('<acronym title="Alias for %s">%s</acronym>', $attr, $attr_display);
-			}
-		} else
-			$attr_display = htmlspecialchars($attr);
+		$attr_display = $_SESSION[APPCONFIG]->getFriendlyHTML($attr);
 
 		if (! isset($all_attrs[$attr_display]))
 			$all_attrs[$attr_display] = 1;

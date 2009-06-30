@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/HTMLTree.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/HTMLTree.php,v 1.2.2.2 2007/12/29 07:23:45 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -186,22 +186,22 @@ class HTMLTree extends Tree {
 
 		switch($i) {
 			case 0 :
-				if ($_SESSION['plaConfig']->isCommandAvailable('schema')) return $this->get_schema_menu_item();
+				if ($_SESSION[APPCONFIG]->isCommandAvailable('schema')) return $this->get_schema_menu_item();
 				else return '';
 			case 1 :
-				if ($_SESSION['plaConfig']->isCommandAvailable('search')) return $this->get_search_menu_item();
+				if ($_SESSION[APPCONFIG]->isCommandAvailable('search')) return $this->get_search_menu_item();
 				else return '';
 			case 2 :
-				if ($_SESSION['plaConfig']->isCommandAvailable('server_refresh')) return $this->get_refresh_menu_item();
+				if ($_SESSION[APPCONFIG]->isCommandAvailable('server_refresh')) return $this->get_refresh_menu_item();
 				else return '';
 			case 3 :
-				if ($_SESSION['plaConfig']->isCommandAvailable('server_info')) return $this->get_info_menu_item();
+				if ($_SESSION[APPCONFIG]->isCommandAvailable('server_info')) return $this->get_info_menu_item();
 				else return '';
 			case 4 :
-				if (!$ldapserver->isReadOnly() && $_SESSION['plaConfig']->isCommandAvailable('import')) return $this->get_import_menu_item();
+				if (!$ldapserver->isReadOnly() && $_SESSION[APPCONFIG]->isCommandAvailable('import')) return $this->get_import_menu_item();
 				else return '';
 			case 5 :
-				if ($_SESSION['plaConfig']->isCommandAvailable('export')) return $this->get_export_menu_item();
+				if ($_SESSION[APPCONFIG]->isCommandAvailable('export')) return $this->get_export_menu_item();
 				else return '';
 			case 6 :
 				if ($ldapserver->auth_type != 'config') return $this->get_logout_menu_item();
@@ -221,7 +221,7 @@ class HTMLTree extends Tree {
 
 	protected function get_search_menu_item() {
 		$ldapserver = $this->getLdapServer();
-		$href = sprintf('cmd.php?cmd=search&server_id=%s&form=undefined"',$ldapserver->server_id);
+		$href = sprintf('cmd.php?cmd=search&server_id=%s&form=undefined',$ldapserver->server_id);
 
 		return sprintf('<a title="%s %s" href="%s"><img src="%s" alt="%s" /><br />%s</a>',
 			_('search'),$ldapserver->name,htmlspecialchars($href),'images/search.png',_('search'),_('search'));

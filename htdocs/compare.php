@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/compare.php,v 1.16 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/compare.php,v 1.16.2.2 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * Compare two DNs - the destination DN is editable.
@@ -20,11 +20,11 @@ $encoded_dn_dst = rawurlencode($dn_dst);
 $server_id_src = (isset($_POST['server_id_src']) ? $_POST['server_id_src'] : '');
 $server_id_dst = (isset($_POST['server_id_dst']) ? $_POST['server_id_dst'] : '');
 
-$ldapserver_src = $_SESSION['plaConfig']->ldapservers->Instance($server_id_src);
+$ldapserver_src = $_SESSION[APPCONFIG]->ldapservers->Instance($server_id_src);
 if (! $ldapserver_src->haveAuthInfo())
 	pla_error(_('Not enough information to login to server. Please check your configuration.'));
 
-$ldapserver_dst = $_SESSION['plaConfig']->ldapservers->Instance($server_id_dst);
+$ldapserver_dst = $_SESSION[APPCONFIG]->ldapservers->Instance($server_id_dst);
 if (! $ldapserver_src->haveAuthInfo())
 	pla_error(_('Not enough information to login to server. Please check your configuration.'));
 
@@ -33,10 +33,8 @@ if (! $ldapserver_src->dnExists($dn_src))
 if (! $ldapserver_dst->dnExists($dn_dst))
 	pla_error(sprintf(_('No such entry: %s'),pretty_print_dn($dn_dst)));
 
-$_SESSION['plaConfig']->friendly_attrs = process_friendly_attr_table();
-
-$attrs_src = $ldapserver_src->getDNAttrs($dn_src,false,$_SESSION['plaConfig']->GetValue('deref','view'));
-$attrs_dst = $ldapserver_dst->getDNAttrs($dn_dst,false,$_SESSION['plaConfig']->GetValue('deref','view'));
+$attrs_src = $ldapserver_src->getDNAttrs($dn_src,false,$_SESSION[APPCONFIG]->GetValue('deref','view'));
+$attrs_dst = $ldapserver_dst->getDNAttrs($dn_dst,false,$_SESSION[APPCONFIG]->GetValue('deref','view'));
 
 # Get a list of all attributes.
 $attrs_all = array_keys($attrs_src);
@@ -118,13 +116,13 @@ foreach ($attrs_all as $attr) {
 		$required_note = '';
 
 		# is there a user-friendly translation available for this attribute?
-		if (isset($_SESSION['plaConfig']->friendly_attrs[strtolower($attr)])) {
-			$attr_display = $_SESSION['plaConfig']->friendly_attrs[strtolower($attr)];
-			$attr_note = sprintf('<acronym title="%s">alias</acronym>',sprintf(_('Note: \'%s\' is an alias for \'%s\''),$attr_display,$attr));
+		if ($_SESSION[APPCONFIG]->haveFriendlyName($attr)) {
+			$attr_display = $_SESSION[APPCONFIG]->getFriendlyName($attr);
+			$attr_note = sprintf('<acronym title="%s: \'%s\' %s \'%s\'">%s</acronym>',_('Note'),$attr_display,_('is an alias for'),$attr,_('alias'));
 
 		} else {
-			$attr_note = '';
 			$attr_display = $attr;
+			$attr_note = '';
 		}
 
 		# is this attribute required by an objectClass?
@@ -311,7 +309,7 @@ foreach ($attrs_all as $attr) {
 					if (trim($val) == "")
 						echo "<span style=\"color:red\">[" . _('empty') . "]</span><br />\n";
 
-					elseif (0 == strcasecmp($attr,'userPassword') && $_SESSION['plaConfig']->GetValue('appearance','obfuscate_password_display'))
+					elseif (0 == strcasecmp($attr,'userPassword') && $_SESSION[APPCONFIG]->GetValue('appearance','obfuscate_password_display'))
 						echo preg_replace('/./','*',$val) . "<br />";
 
 					else
@@ -320,7 +318,7 @@ foreach ($attrs_all as $attr) {
 
 			// @todo: redundant - $vals is always an array.
 			} else {
-				if (0 == strcasecmp($attr,'userPassword') && $_SESSION['plaConfig']->GetValue('appearance','obfuscate_password_display'))
+				if (0 == strcasecmp($attr,'userPassword') && $_SESSION[APPCONFIG]->GetValue('appearance','obfuscate_password_display'))
 					echo preg_replace('/./','*',$vals) . "<br />";
 				else
 					echo $vals . "<br />";

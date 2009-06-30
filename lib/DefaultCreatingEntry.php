@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/DefaultCreatingEntry.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/DefaultCreatingEntry.php,v 1.2.2.2 2007/12/29 08:24:10 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -167,12 +167,13 @@ class DefaultCreatingEntry extends Entry {
 		# we can use a static variable if there is only one instance of this class
 		static $attrs = null;
 
-		if (DEBUG_ENABLED) debug_log('%s[%s]::getAttributes()',1,get_class($this),$this->getDn());
+		if (DEBUG_ENABLED)
+			debug_log('Entered with () for dn (%s)',1,__FILE__,__LINE__,__METHOD__,$this->getDn());
 
 		if (! $attrs) {
 			$attrs = array();
 
-			$attributefactoryclass = $_SESSION['plaConfig']->GetValue('appearance','attribute_factory');
+			$attributefactoryclass = $_SESSION[APPCONFIG]->GetValue('appearance','attribute_factory');
 			eval('$attribute_factory = new '.$attributefactoryclass.'();');
 
 			if ($this->objectClasses) {

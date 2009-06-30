@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.45 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.45.2.1 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * Template render engine.
@@ -41,10 +41,10 @@ if ($entry['dn']['string']) {
 		}
 
 		if ($entry['dn']['tree']) {
-			eval('$reader = new '.$_SESSION['plaConfig']->GetValue('appearance', 'entry_reader').'($ldapserver);');
+			eval('$reader = new '.$_SESSION[APPCONFIG]->GetValue('appearance', 'entry_reader').'($ldapserver);');
 			$entry['dn']['tree']->accept($reader);
 
-			eval('$writer = new '.$_SESSION['plaConfig']->GetValue('appearance', 'entry_writer').'($ldapserver);');
+			eval('$writer = new '.$_SESSION[APPCONFIG]->GetValue('appearance', 'entry_writer').'($ldapserver);');
 			$entry['dn']['tree']->accept($writer);
 		}
 	}
@@ -54,16 +54,16 @@ if ($entry['dn']['string']) {
 		pla_error(_('You cannot perform updates while server is in read-only mode'));
 
 	# Create a new empty entry
-	$entryfactoryclass = $_SESSION['plaConfig']->GetValue('appearance','entry_factory');
+	$entryfactoryclass = $_SESSION[APPCONFIG]->GetValue('appearance','entry_factory');
 	eval('$entry_factory = new '.$entryfactoryclass.'();');
 	$entry['dn']['tree'] = $entry_factory->newCreatingEntry('');
 
 	# Init the entry with incoming data
-	eval('$reader = new '.$_SESSION['plaConfig']->GetValue('appearance', 'entry_reader').'($ldapserver);');
+	eval('$reader = new '.$_SESSION[APPCONFIG]->GetValue('appearance', 'entry_reader').'($ldapserver);');
 	$entry['dn']['tree']->accept($reader);
 
 	# Display the creating entry
-	eval('$writer = new '.$_SESSION['plaConfig']->GetValue('appearance', 'entry_writer').'($ldapserver);');
+	eval('$writer = new '.$_SESSION[APPCONFIG]->GetValue('appearance', 'entry_writer').'($ldapserver);');
 	$entry['dn']['tree']->accept($writer);
 }
 ?>

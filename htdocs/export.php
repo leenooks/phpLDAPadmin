@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/export.php,v 1.18 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/export.php,v 1.18.2.1 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -14,7 +14,7 @@ ini_set('session.cache_limiter','');
 
 require LIBDIR.'export_functions.php';
 
-if (! $_SESSION['plaConfig']->isCommandAvailable('export'))
+if (! $_SESSION[APPCONFIG]->isCommandAvailable('export'))
 	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('export')));
 
 $entry['base_dn'] = get_request('dn');

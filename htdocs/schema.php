@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/schema.php,v 1.67 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/schema.php,v 1.67.2.1 2007/12/26 09:26:32 wurley Exp $
 
 /**
  * Displays the schema for the specified server_id
@@ -16,7 +16,7 @@
 
 require './common.php';
 
-if (! $_SESSION['plaConfig']->isCommandAvailable('schema'))
+if (! $_SESSION[APPCONFIG]->isCommandAvailable('schema'))
 	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('view schema')));
 
 $entry['view'] = get_request('view','GET','false','objectClasses');
