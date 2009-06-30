@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.51.2.20 2009/03/20 07:48:45 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.51.2.21 2009/06/20 07:14:20 wurley Exp $
 
 /**
  * Classes and functions for LDAP server configuration and capability
@@ -1683,7 +1683,7 @@ class LDAPserver {
 	 * @return array An array of DN strings listing the immediate children of the specified entry.
 	 */
 
-	function getContainerContents($dn,$size_limit=0,$filter='(objectClass=*)',$deref=LDAP_DEREF_ALWAYS) {
+	function getContainerContents($dn,$size_limit=0,$filter='(objectClass=*)',$deref=LDAP_DEREF_NEVER) {
 		if (DEBUG_ENABLED)
 			debug_log('Entered with (%s,%s,%s,%s)',17,__FILE__,__LINE__,__METHOD__,$dn,$size_limit,$filter,$deref);
 

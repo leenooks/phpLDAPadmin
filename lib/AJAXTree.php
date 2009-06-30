@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/AJAXTree.php,v 1.2.2.2 2008/12/12 06:46:15 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/AJAXTree.php,v 1.2.2.3 2009/06/28 05:30:12 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -13,7 +13,7 @@ class AJAXTree extends PLMTree {
 	 * @param $first_child is this the first child ?
 	 * @param $last_child is this the last child ?
 	 */
-	protected function draw_dn($dn,$level=0,$first_child=true,$last_child=true) {
+	protected function draw_dn($dn,$level,$first_child=true,$last_child=true) {
 		if (DEBUG_ENABLED)
 			debug_log('Entered with (%s,%s)',33,__FILE__,__LINE__,__METHOD__,$dn,$level);
 

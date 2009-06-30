@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rdelete.php,v 1.28.2.3 2008/12/12 12:20:22 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rdelete.php,v 1.28.2.4 2009/06/20 07:14:20 wurley Exp $
 
 /**
  * Recursively deletes the specified DN and all of its children
@@ -51,7 +51,7 @@ if ($result) {
 
 function pla_rdelete($ldapserver,$dn) {
 	# we delete all children, not only the visible children in the tree
-	$children = $ldapserver->getContainerContents($dn);
+	$children = $ldapserver->getContainerContents($dn,0,'(objectclass=*)',LDAP_DEREF_NEVER);
 
 	if (! is_array($children) || count($children) == 0) {
 		printf('<span style="white-space: nowrap;">%s %s...',_('Deleting'),htmlspecialchars($dn));

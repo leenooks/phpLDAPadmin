@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.43.2.9 2009/01/09 06:08:21 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.43.2.10 2009/06/12 01:36:39 wurley Exp $
 
 /**
  * Classes and functions for the template engine.ation and capability
@@ -774,7 +774,8 @@ class Templates {
 						$display = $args[3];
 
 						foreach ($matchall[1] as $arg)
-							$display = preg_replace('/%('.$arg.')(\|.+)?(\/[lU])?%/U',$values[$arg],$display);
+							if (isset($values[$arg]))
+								$display = preg_replace('/%('.$arg.')(\|.+)?(\/[lU])?%/U',$values[$arg],$display);
 
 						if (! isset($picklist[$values[$args[2]]])) {
 							$vals['_KEY:'.$values[$args[2]]] = $display;

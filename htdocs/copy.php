@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy.php,v 1.44.2.3 2008/12/12 12:20:22 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy.php,v 1.44.2.4 2009/05/19 22:56:38 wurley Exp $
 
 /**
  * Copies a given object to create a new one.
@@ -144,7 +144,7 @@ function copy_dn($ldapserver_src,$ldapserver_dst,$dn_src,$dn_dst) {
 			echo '</small><br /><br />';
 			system_message(array(
 				'title'=>_('Failed to copy DN.').sprintf(' (%s)',$dn_dst),
-				'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
+				'body'=>ldap_error_msg($ldapserver_dst->error(),$ldapserver_dst->errno()),
 				'type'=>'error'));
 
 		} else {
