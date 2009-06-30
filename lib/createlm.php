@@ -1,6 +1,6 @@
 <?php
 /*
-$Id: createlm.php,v 1.4.2.1 2007/12/21 12:11:55 wurley Exp $
+$Id: createlm.php,v 1.4.2.2 2009/01/05 14:35:23 wurley Exp $
 
   This code is part of LDAP Account Manager (http://www.sourceforge.net/projects/lam)
   Copyright (C) 2004 - 2006 Roland Gruber
@@ -327,7 +327,7 @@ var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5
 	* @return string hash value
 	*/
 	function nthash($password = "") {
-		return strtoupper(bin2hex(hash('md4', iconv("UTF-8","UTF-16LE",$password),true)));
+		return strtoupper(bin2hex(mhash(MHASH_MD4,iconv('UTF-8','UTF-16LE',$password))));
 	}
 
 	/**

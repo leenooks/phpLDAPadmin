@@ -169,7 +169,7 @@ $ldapservers->SetValue($i,'server','name','My LDAP Server');
 // $ldapservers->SetValue($i,'server','host','127.0.0.1');
 
 /* The port your LDAP server listens on (no quotes). 389 is standard. */
-// $ldapservers->SetValue($i,'server','port','389');
+// $ldapservers->SetValue($i,'server','port',389);
 
 /* Array of base DNs of your LDAP server. Leave this blank to have phpLDAPadmin
    auto-detect it for you. */
@@ -318,7 +318,7 @@ $ldapservers->SetValue($i,'server','name','My LDAP Server');
 
 /* The minimum number to use when searching for the next available UID number
    (only when 'search' is used for auto_uid_number_mechanism' */
-// $ldapservers->SetValue($i,'auto_number','min','1000');
+// $ldapservers->SetValue($i,'auto_number','min',1000);
 
 /* The DN of the uidPool entry when 'uidpool' mechanism is used above. */
 // $ldapservers->SetValue($i,'auto_number','uidpool_dn','cn=uidPool,dc=example,dc=com');
@@ -400,7 +400,7 @@ $ldapservers->SetValue($i,'server','name','My LDAP Server');
 $i++;
 $ldapservers->SetValue($i,'server','name','LDAP Server');
 $ldapservers->SetValue($i,'server','host','127.0.0.1');
-$ldapservers->SetValue($i,'server','port','389');
+$ldapservers->SetValue($i,'server','port',389);
 $ldapservers->SetValue($i,'server','base',array(''));
 $ldapservers->SetValue($i,'server','auth_type','cookie');
 $ldapservers->SetValue($i,'login','dn','');
@@ -416,7 +416,7 @@ $ldapservers->SetValue($i,'appearance','show_create',true);
 $ldapservers->SetValue($i,'auto_number','enable',true);
 $ldapservers->SetValue($i,'auto_number','mechanism','search');
 $ldapservers->SetValue($i,'auto_number','search_base',null);
-$ldapservers->SetValue($i,'auto_number','min','1000');
+$ldapservers->SetValue($i,'auto_number','min',1000);
 $ldapservers->SetValue($i,'auto_number','dn',null);
 $ldapservers->SetValue($i,'auto_number','pass',null);
 $ldapservers->SetValue($i,'login','anon_bind',true);

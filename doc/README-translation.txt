@@ -1,2 +1,2 @@
-Please see http://wiki.phpldapadmin.info/Translating now for information on
+Please see http://phpldapadmin.sourceforge.net/Translate now for information on
 translating PLA.

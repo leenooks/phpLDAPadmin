@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.43.2.8 2008/12/12 12:20:23 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/template_functions.php,v 1.43.2.9 2009/01/09 06:08:21 wurley Exp $
 
 /**
  * Classes and functions for the template engine.ation and capability
@@ -265,7 +265,10 @@ class Templates {
 					break;
 
 				default :
-					$template[$xml_key] = $xml_value['#text'];
+					if (isset($xml_value['#text']))
+						$template[$xml_key] = $xml_value['#text'];
+					else
+						$template[$xml_key] = $xml_value;
 			}
 		}
 

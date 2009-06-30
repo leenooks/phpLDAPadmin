@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter1.php,v 1.3.2.30 2008/12/19 00:35:09 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter1.php,v 1.3.2.31 2009/01/30 04:40:03 wurley Exp $
 
 define('IdEntryRefreshMenuItem', '0');
 define('IdEntryExportBaseMenuItem', '1');
@@ -2501,7 +2501,7 @@ class EntryWriter1 extends EntryWriter {
 			$this->draw('Attribute::Values',$attribute,$entry);
 		} else {
 			$this->draw('StartValueLine', $attribute);
-			$this->draw('Value', $attribute, 0);
+			$this->draw('Value', $attribute, 0,$entry);
 			$this->draw('Menu', $attribute);
 			$this->draw('EndValueLine', $attribute);
 		}

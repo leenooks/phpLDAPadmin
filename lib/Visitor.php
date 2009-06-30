@@ -12,12 +12,15 @@
  */
 class Visitor {
 	public function __call($method,$args) {
+		$methods = array();
 		$class = '';
 		$fnct = '';
 		$a0 = isset($args[0]) ? $args[0] : '';
+
 		for ($i = 0; $i < strlen($a0); $i++) {
 			if ($class) {
 				if ($a0[$i] != ':') $fnct .= $a0[$i];
+
 			} else {
 				if ($a0[$i] != ':') {
 					$fnct .= $a0[$i];
@@ -42,10 +45,19 @@ class Visitor {
 			$c = $class;
 
 		$call = "$method$class$fnct";
-		while ($class && !method_exists($this,$call)) {
+		array_push($methods,$call);
+
+		while ($class && ! method_exists($this,$call)) {
 			$class = get_parent_class($class);
 			$call = "$method$class$fnct";
+			array_push($methods,$call);
 		}
+
+		if (defined('TMPDEBUG') && TMPDEBUG)
+			printf('<font size=-2><i>Calling Methods: %s</i></font><br >',join('|',$methods));
+
+		if (defined('TMPDEBUG') && TMPDEBUG && method_exists($this,$call))
+			printf('<font size=-2><b>Invoking Method: %s::%s</b></font><br >',get_class($this),$call);
 
 		if ($class) {
 			$call .= '($obj';

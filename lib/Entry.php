@@ -1,5 +1,7 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Entry.php,v 1.2.2.4 2008/11/28 23:26:51 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Entry.php,v 1.2.2.5 2009/03/20 07:33:34 wurley Exp $
+
+define('TMPDEBUG',0);
 
 /**
  * @package phpLDAPadmin

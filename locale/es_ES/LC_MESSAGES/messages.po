@@ -4,13 +4,13 @@ msgstr ""
 "Project-Id-Version: messages\n"
 "Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2004-01-14 17:45+0200\n"
-"PO-Revision-Date: 2008-11-29 01:48+0000\n"
-"Last-Translator: maraboli <Unknown>\n"
+"PO-Revision-Date: 2009-02-05 23:25+0000\n"
+"Last-Translator: DiegoJ <diegojromerolopez@gmail.com>\n"
 "Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2008-11-29 23:48+0000\n"
+"X-Launchpad-Export-Date: 2009-03-20 08:04+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../../htdocs/mass_delete.php:86
@@ -64,7 +64,7 @@ msgstr ""
 
 #: ../../lib/functions.php:1292
 msgid "A query on the uidpool_dn did return a valid uidNumber."
-msgstr ""
+msgstr "Una consulta en el uidpool_dn devolvió un uidNumber válido."
 
 #: ../../lib/EntryWriter1.php:2463 ../../lib/template_functions.php:962
 msgid "A random password was generated for you"
@@ -744,7 +744,7 @@ msgstr "Filtro aplicado"
 
 #: ../../htdocs/schema.php:112
 msgid "Force as MAY by config"
-msgstr ""
+msgstr "Forzar a MAY por configuración"
 
 #: ../../htdocs/search.php:276
 msgid "Format"
@@ -1618,7 +1618,7 @@ msgstr "plantilla"
 
 #: ../../lib/EntryWriter1.php:2570
 msgid "Template Value Error"
-msgstr ""
+msgstr "Error de valor de plantilla"
 
 #: ../../lib/EntryWriter1.php:1036 ../../lib/EntryWriter1.php:1255
 msgid "Templates"
@@ -1777,7 +1777,7 @@ msgstr ""
 #: ../../htdocs/schema.php:496
 msgid ""
 "This attribute has been forced as a MAY attribute by the configuration"
-msgstr ""
+msgstr "El atributo ha sido forzado a MAY por la configuración."
 
 #: ../../lib/EntryWriter1.php:1418
 msgid "This attribute is required"
@@ -1915,7 +1915,7 @@ msgstr "Tipo de autentificación \"auth_type\" desconocido: %s"
 
 #: ../../lib/functions.php:1285
 msgid "Unknown uidpool type."
-msgstr ""
+msgstr "Tipo desconocido de uidpool."
 
 #: ../../htdocs/search.php:214
 msgid "Unrecognized criteria option: "

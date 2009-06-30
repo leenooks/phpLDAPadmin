@@ -1,0 +1,63 @@
+#!/bin/bash
+#
+# Makefile Utility to manipulate PO and POT files
+# Copyright (c) 2009 Alessandro De Zorzi - <lota@nonlontano.it>
+#
+# This code is part of phpLDAPadmin
+# http://phpldapadmin.wiki.sourceforge.net
+# Released under the same licence of phpldapadmin
+#
+# Current target list:
+#
+# all		display target
+# all-mo	compile .mo files from .po translation available
+# pot		create a update main POT file
+# all-merge	merge last POT with each current translations
+# xml-pot	create a update POT template file (XML files)
+
+
+LOCALEDIR = ../../locale
+TEMPLATEFILES=`find ../../templates -iname *xml -exec echo -m {} \;`
+EXPORTFILE = $(shell echo $${EXPORTFILE:-/tmp/launchpad-export.tgz})
+
+all:
+	@echo Please, specify a target [pot, xml-pot, all-mo, all-merge, launchpad-export]
+
+all-mo:
+	@for i in `ls -1 $(LOCALEDIR)` ; \
+	do \
+	    if [ -f $(LOCALEDIR)/$$i/LC_MESSAGES/messages.po ]; then \
+	    echo Processing: $$i ; \
+	    msgfmt -v -c --statistics $(LOCALEDIR)/$$i/LC_MESSAGES/messages.po -o $(LOCALEDIR)/$$i/LC_MESSAGES/messages.mo; \
+	    fi \
+	done
+
+
+pot:
+	@cp messages.header messages.pot
+	@find ../../ -name *.php -exec xgettext --keyword=_ -L PHP -j --omit-header -o messages.pot -s {} \;
+	@find ../../ -name *.inc -exec xgettext --keyword=_ -L PHP -j --omit-header -o messages.pot -s {} \;
+	@echo messages.pot created
+
+all-merge: pot
+	@for i in `ls -1 $(LOCALEDIR)` ; \
+	do \
+	    if [ -f $(LOCALEDIR)/$$i/LC_MESSAGES/messages.po ]; then \
+	    echo Processing: $$i ; \
+	    msgmerge -v $(LOCALEDIR)/$$i/LC_MESSAGES/messages.po messages.pot -o $$i.po; \
+	    fi \
+	done
+
+xml-pot:
+	@po4a-gettextize -o tags="<display>" -o tagsonly=1 -f xml $(TEMPLATEFILES) -p template.pot
+	@echo template.pot created
+
+launchpad-extract:
+	@[ ! -r $(EXPORTFILE) ] && echo "No export file [$(EXPORTFILE)] found?" && exit 1 || true
+	@cd $(LOCALEDIR); tar xzf $(EXPORTFILE)
+	@rm -f $(LOCALEDIR)/phpldapadmin-uk.po
+	@rm -f $(LOCALEDIR)/phpldapadmin/phpldapadmin.pot
+	@rmdir $(LOCALEDIR)/phpldapadmin
+	@find $(LOCALEDIR) -name phpldapadmin-\*.po | while read i; do newi=$$(echo $$i| sed -e 's/phpldapadmin-.*/messages.po/'); mv $$i $$newi; done
+
+launchpad-export: launchpad-extract all-mo

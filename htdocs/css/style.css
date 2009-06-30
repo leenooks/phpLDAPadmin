@@ -1,4 +1,4 @@
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/css/style.css,v 1.48.2.8 2008/12/19 00:38:31 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/css/style.css,v 1.48.2.9 2009/03/20 07:33:04 wurley Exp $ */
 
 /* Global Page */
 table.page {
@@ -7,7 +7,7 @@ table.page {
 
 	font-family: bitstream vera sans,luxi sans,verdana,geneva,arial,helvetica,sans-serif;
 	background-color: #FFFFFF;
-	font-size: 11pt;
+	font-size: 13px;
 	empty-cells: hide;
 }
 
@@ -187,7 +187,7 @@ table.page table.body td.foot {
 table.page tr.foot td {
 	border-top: 1px solid #AAAACC;
 	font-weight: bold;
-	font-size: 10pt;
+	font-size: 12px;
 	text-align: right;
 }
 
@@ -415,7 +415,7 @@ table.menu td.icon {
 
 /* Edit DN */
 div.add_value {
-	font-size: 10pt;
+	font-size: 12px;
 	margin: 0px;
 	padding: 0px;
 }
@@ -825,7 +825,7 @@ table.error th {
 	background-color: #AA0000;
 	border: 0px;
 	color: #FFFFFF;
-	font-size: 12pt;
+	font-size: 14px;
 	font-weight: bold;
 	text-align: center;
 	vertical-align: middle;

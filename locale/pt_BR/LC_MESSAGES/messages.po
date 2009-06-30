@@ -4,13 +4,13 @@ msgstr ""
 "Project-Id-Version: messages\n"
 "Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2004-01-14 17:45+0200\n"
-"PO-Revision-Date: 2008-09-01 10:37+0000\n"
+"PO-Revision-Date: 2009-01-12 13:30+0000\n"
 "Last-Translator: Rafael Porto Rodrigues <rafporto@gmail.com>\n"
 "Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2008-11-29 23:48+0000\n"
+"X-Launchpad-Export-Date: 2009-03-20 08:04+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../../htdocs/mass_delete.php:86
@@ -60,8 +60,7 @@ msgstr ":"
 #: ../../lib/search_form_advanced.php:103
 msgid "A list of attributes to display in the results (comma-separated)"
 msgstr ""
-"A lista de atributos que devem ser mostrados nos resultados (separados por "
-"vírgula)"
+"Uma lista de atributos para exibir nos resultados (separados por vírgula)"
 
 #: ../../lib/functions.php:1292
 msgid "A query on the uidpool_dn did return a valid uidNumber."
@@ -69,45 +68,45 @@ msgstr ""
 
 #: ../../lib/EntryWriter1.php:2463 ../../lib/template_functions.php:962
 msgid "A random password was generated for you"
-msgstr "Uma senha aleatória foi gerada automaticamente para você"
+msgstr "Uma senha aleatória foi gerada para você"
 
 #: ../../lib/ldif_functions.php:532
 msgid "A valid deleteoldrdn attribute should be specified"
-msgstr ""
+msgstr "Um atributo válido deleteoldrdn deve ser especificado"
 
 #: ../../lib/ldif_functions.php:243
 msgid "A valid dn line is required."
-msgstr "Uma linha dn válida é obrigatória."
+msgstr "Uma linha dn válida é solicitada."
 
 #: ../../lib/ldif_functions.php:538
 msgid "A valid newrdn attribute  should be specified"
-msgstr ""
+msgstr "Um atributo válido newrd deve ser especificado"
 
 #: ../../lib/EntryWriter1.php:789 ../../htdocs/add_attr_form.php:104
 #: ../../htdocs/add_attr_form.php:148
 msgid "Add"
-msgstr "Inserir"
+msgstr "Adicionar"
 
 #: ../../htdocs/add_value_form.php:182
 msgid "Add New Value"
-msgstr "Inserir novo valor"
+msgstr "Adicionar novo valor"
 
 #: ../../htdocs/compare.php:466 ../../htdocs/add_oclass_form.php:104
 msgid "Add ObjectClass and Attributes"
-msgstr "Inserir Classe de Objetos e Atributos"
+msgstr "Adicionar Classe de Objetos e Atributos"
 
 #: ../../htdocs/modify_member_form.php:145
 msgid "Add all"
-msgstr "Inserir todos"
+msgstr "Adicionar todos"
 
 #: ../../lib/EntryWriter1.php:1847 ../../htdocs/compare.php:479
 #, php-format
 msgid "Add an additional value to attribute '%s'"
-msgstr "Insere um novo valor para o atributo '%s'"
+msgstr "Insere um valor adicional para o atributo '%s'"
 
 #: ../../htdocs/add_value_form.php:93
 msgid "Add new"
-msgstr "Inserir novo"
+msgstr "Adicionar novo"
 
 #: ../../htdocs/add_value_form.php:153 ../../htdocs/compare.php:470
 msgid "Add new ObjectClass"
@@ -116,19 +115,19 @@ msgstr "Inserir nova ObjectClass"
 #: ../../lib/EntryWriter1.php:789 ../../htdocs/add_attr_form.php:23
 #: ../../htdocs/add_attr_form.php:72
 msgid "Add new attribute"
-msgstr "Inserir Novo Atributo"
+msgstr "Adicionar Novo Atributo"
 
 #: ../../htdocs/add_attr_form.php:114
 msgid "Add new binary attribute"
-msgstr "Inserir novo atributo binário"
+msgstr "Adicionar novo atributo binário"
 
 #: ../../htdocs/modify_member_form.php:145
 msgid "Add selected"
-msgstr "Inserir selecionado"
+msgstr "Adicionar selecionado"
 
 #: ../../htdocs/ldif_import.php:62
 msgid "Adding..."
-msgstr "Inserindo..."
+msgstr "Adicionando..."
 
 #: ../../lib/search_form_predefined.php:34
 #: ../../lib/search_form_advanced.php:25 ../../lib/search_form_simple.php:35
@@ -228,7 +227,7 @@ msgstr "Construindo a imagem da árvore a ser copiada... "
 
 #: ../../lib/export_functions.php:38
 msgid "CSV (Spreadsheet)"
-msgstr ""
+msgstr "CSV (Planilha Eletrônica)"
 
 #: ../../lib/functions.php:63
 msgid "Called to load a class that cant be found"
@@ -1023,7 +1022,7 @@ msgstr "Baixo Limite de Memória"
 #: ../../lib/template_functions.php:419
 #, php-format
 msgid "Missing %s in the XML file."
-msgstr ""
+msgstr "Perdido %s no arquivo XML."
 
 #: ../../lib/ldif_functions.php:169
 msgid "Missing attibutes or changetype attribute for entry"
@@ -1086,11 +1085,11 @@ msgstr "DN não especificado"
 
 #: ../../htdocs/ldif_import.php:38
 msgid "No LDIF file specified. Please try again."
-msgstr ""
+msgstr "Nenhum arquivo LDIF especificado. Favor tentar novamente."
 
 #: ../../lib/Entry.php:282
 msgid "No Template"
-msgstr ""
+msgstr "Nenhum Modelo"
 
 #: ../../htdocs/compare.php:186 ../../htdocs/compare.php:199
 msgid "No Value"
@@ -1266,7 +1265,7 @@ msgstr "Exluir permanentemente todos os objetos filho também?"
 
 #: ../../lib/functions.php:140
 msgid "Please check and see if this bug has been reported"
-msgstr ""
+msgstr "Favor verificar e olhar se o erro já foi relatado"
 
 #: ../../lib/functions.php:1855
 msgid ""
@@ -1494,7 +1493,7 @@ msgstr "Exibir Atributos"
 
 #: ../../lib/functions.php:357
 msgid "Show Cache"
-msgstr ""
+msgstr "Mostrar cache"
 
 #: ../../lib/EntryWriter1.php:755
 msgid "Show internal attributes"
@@ -1575,7 +1574,7 @@ msgstr "Logado com sucesso no servidor."
 
 #: ../../htdocs/compare.php:64
 msgid "Switch Entry"
-msgstr ""
+msgstr "Escolher Entradas"
 
 #: ../../htdocs/add_value_form.php:175 ../../htdocs/schema.php:104
 msgid "Syntax"
@@ -1623,7 +1622,7 @@ msgstr "O atributo (%s) está em modo somente leitura"
 
 #: ../../lib/ldif_functions.php:410
 msgid "The attribute name should be add, delete or replace"
-msgstr ""
+msgstr "O atributo nome deve ser adicionado, apagado ou substituído"
 
 #: ../../lib/ldif_functions.php:514
 msgid "The attribute name should be newsuperior"
@@ -1889,7 +1888,7 @@ msgstr "auth_type desconhecido: %s"
 
 #: ../../lib/functions.php:1285
 msgid "Unknown uidpool type."
-msgstr ""
+msgstr "Tipo uidpool desconhecido"
 
 #: ../../htdocs/search.php:214
 msgid "Unrecognized criteria option: "
@@ -2186,7 +2185,7 @@ msgstr ""
 
 #: ../../lib/session_functions.php:139
 msgid "Your configuration has been automatically refreshed."
-msgstr ""
+msgstr "Sua configuração foi automaticamente atualizada"
 
 #: ../../lib/functions.php:1172
 #, php-format

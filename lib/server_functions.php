@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.51.2.15 2008/12/13 08:57:41 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.51.2.20 2009/03/20 07:48:45 wurley Exp $
 
 /**
  * Classes and functions for LDAP server configuration and capability
@@ -111,7 +111,7 @@ class LDAPserver {
 			$return = true;
 
 		} else {
-			error(sprintf(_('Error: You have an error in your config file. The only three allowed values for auth_type in the $servers section are \'session\', \'cookie\', and \'config\'. You entered \'%s\', which is not allowed.'),htmlspecialchars($this->auth_type)),'error',null,true);
+			error(sprintf(_('Error: You have an error in your config file. The only four allowed values for auth_type in the $servers section are \'http\', \'session\', \'cookie\', and \'config\'. You entered \'%s\', which is not allowed.'),htmlspecialchars($this->auth_type)),'error',null,true);
 		}
 
 		if (DEBUG_ENABLED)
@@ -375,7 +375,7 @@ class LDAPserver {
 						error(sprintf(_('Could not connect to "%s" on port "%s"'),$host,$port),'error');
 						break;
 					default:
-						error(_('Could not bind to the LDAP server (%s).',ldap_err2str($resource),$resource),'error');
+						error(sprintf(_('Could not bind to the LDAP server (%s).'),ldap_err2str($resource)),'error');
  				}
 
  			} else {
@@ -394,7 +394,10 @@ class LDAPserver {
 			debug_log('Leaving with Connect [%s], Resource [%s]',16,__FILE__,__LINE__,__METHOD__,
 				$connect_id,$this->connection[$connect_id]['resource']);
 
- 		return $this->connection[$connect_id]['resource'];
+		if (isset($this->connection[$connect_id]['resource']))
+	 		return $this->connection[$connect_id]['resource'];
+		else
+			return false;
  	}
 
 	/**
@@ -1822,6 +1825,12 @@ class LDAPserver {
 
 					# Iterate over the attributes
 					while ($attr) {
+						/* It seems that OpenDS complains when you do a ldap_get_values on these attributes - we'll skip them as a workaround */
+						if (in_array($attr,array('isMemberOf'))) {
+							$attr = ldap_next_attribute($resource,$entry_id,$attrs);
+							continue;
+						}
+
 						if ($this->isAttrBinary($attr))
 							$values = ldap_get_values_len($resource,$entry_id,$attr);
 						else
@@ -2785,7 +2794,7 @@ class LDAPserver {
 		$return = $dn;
 
 		foreach ($this->getBaseDN() as $base_dn) {
-			if (preg_match("/${base_dn}$/",$dn)) {
+			if (preg_match("/${base_dn}$/i",$dn)) {
 				$return = $base_dn;
 				break;
 			}
@@ -3084,7 +3093,7 @@ class LDAPservers {
 		$this->default->server['port'] = array(
 			'desc'=>'Port Number',
 			'var'=>'port',
-			'default'=>'389');
+			'default'=>389);
 
 		/* Normally PLA will direct all read/write operations to host/port above. However,
 		 * if you specify hostwr/portwr, then write operations will be directed to that host/port.
@@ -3097,7 +3106,7 @@ class LDAPservers {
 		$this->default->server['portwr'] = array(
 			'desc'=>'Port Number for write replica',
 			'var'=>'portwr',
-			'default'=>'389');
+			'default'=>389);
 
 		$this->default->server['base'] = array(
 			'desc'=>'Base DN',

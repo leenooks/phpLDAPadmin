@@ -1,9 +1,0 @@
-#!/bin/bash
-# $Header $
-#
-# This code is part of LDAP Account Manager (http://www.sourceforge.net/projects/lam)
-
-# This script is run after make_po to merge the existing German translations to messages.po
-
-./make_po
-msgmerge -v ../../locale/fr_FR/LC_MESSAGES/messages.po messages.po -o messages.po

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update.php,v 1.29.2.3 2008/12/12 12:20:22 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update.php,v 1.29.2.4 2009/01/05 14:25:48 wurley Exp $
 
 /**
  * Updates or deletes a value from a specified attribute for a specified dn.
@@ -91,7 +91,7 @@ foreach ($entry['update'] as $attr_name => $val) {
 		$href['search'] = sprintf('cmd.php?cmd=search&search=true&form=advanced&server_id=%s&filter=%s=%s',
 			$ldapserver->server_id,$attr_name,$badattr);
 
-		error(sprintf(_('Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href="%s">search</a> for that entry.'),
+		error(sprintf(_('Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT allowed. That attribute/value belongs to another entry.<p>You might like to <a href=\'%s\'>search</a> for that entry.'),
 			$attr_name,$badattr,$entry['dn']['string'],$href['search']),'error','index.php');
 	}
 
