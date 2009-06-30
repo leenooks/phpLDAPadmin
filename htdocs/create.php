@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/create.php,v 1.46 2006/02/19 05:44:34 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/create.php,v 1.47 2006/10/28 16:37:59 wurley Exp $
 
 /**
  * Creates a new object.
@@ -35,7 +35,7 @@ $redirect = isset($_POST['redirect']) ? $_POST['redirect'] : false;
 # See if there are any presubmit values to work out.
 if (isset($_POST['presubmit']) && count($_POST['presubmit']) && isset($_POST['template'])) {
 	$templates = new Templates($ldapserver->server_id);
-	$template = $templates->GetTemplate($_POST['template']);
+	$template = $templates->getCreationTemplate($_POST['template']);
 
 	foreach ($_POST['presubmit'] as $attr) {
 		$_POST['attrs'][] = $attr;

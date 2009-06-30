@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/tree.php,v 1.91 2006/01/03 20:39:58 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/tree.php,v 1.92 2006/10/29 12:49:24 wurley Exp $
 
 /**
  * This script displays the LDAP tree for all the servers that you have
@@ -77,24 +77,24 @@ echo "\n\n";
 echo '<!-- Links at the top of the tree viewer -->';
 echo '<table class="edit_dn_menu" width=100%><tr>';
 printf('<td><img src="images/home.png" alt="%s" /></td>',_('Home'));
-printf('<td width=50%%><nobr><a href="welcome.php" target="right_frame">%s</a></nobr></td>',_('Home'));
+printf('<td width=50%%><span style="white-space: nowrap;"><a href="welcome.php" target="right_frame">%s</a></span></td>',_('Home'));
 printf('<td><img src="images/trash.png" alt="%s" /></td>',_('Purge caches'));
-printf('<td width=50%%><nobr><a href="purge_cache.php" target="right_frame" title="%s">%s</a></nobr></td>',_('Purge all cached data in phpLDAPadmin, including server schemas.'),_('Purge caches'));
+printf('<td width=50%%><span style="white-space: nowrap;"><a href="purge_cache.php" target="right_frame" title="%s">%s</a></span></td>',_('Purge all cached data in phpLDAPadmin, including server schemas.'),_('Purge caches'));
 echo '</tr><tr>';
 
 if (! $config->GetValue('appearance','hide_configuration_management')) {
 	printf('<td><img src="images/light.png" alt="%s" /></td>',_('light'));
-	printf('<td width=50%%><nobr><a href="%s" target="new">%s</a></nobr></td>',get_href('add_rfe'),_('Request feature'));
+	printf('<td width=50%%><span style="white-space: nowrap;"><a href="%s" target="new">%s</a></span></td>',get_href('add_rfe'),_('Request feature'));
 	printf('<td><img src="images/bug.png" alt="%s" /></td>',_('bug'));
-	printf('<td width=50%%><nobr><a href="%s" target="new">%s</a></nobr></td>',get_href('add_bug'),_('Report a bug'));
+	printf('<td width=50%%><span style="white-space: nowrap;"><a href="%s" target="new">%s</a></span></td>',get_href('add_bug'),_('Report a bug'));
 	echo '</tr><tr>';
 
 	printf('<td><img src="images/smile.png" alt="%s" /></td>',_('Donate'));
-	printf('<td width=50%%><nobr><a href="%s" target="right_frame">%s</a></nobr></td>',get_href('donate'),_('Donate'));
+	printf('<td width=50%%><span style="white-space: nowrap;"><a href="%s" target="right_frame">%s</a></span></td>',get_href('donate'),_('Donate'));
 }
 
 printf('<td><img src="images/help.png" alt="%s" /></td>',_('Help'));
-printf('<td><nobr><a href="help.php" target="right_frame">%s</a></nobr></td>',_('Help'));
+printf('<td><span style="white-space: nowrap;"><a href="help.php" target="right_frame">%s</a></span></td>',_('Help'));
 echo '</tr></table>';
 
 echo "\n\n";

@@ -6,4 +6,4 @@
 # This script is run to update the existing Spanish translations in messages.po
 
 ./make_po
-msgmerge -v ../locale/es_ES/LC_MESSAGES/messages.po messages.po -o messages.po
+msgmerge -v ../../locale/es_ES/LC_MESSAGES/messages.po messages.po -o messages.po

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/create_form.php,v 1.33 2006/01/03 20:39:58 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/create_form.php,v 1.34 2006/10/28 16:37:59 wurley Exp $
 
 /**
  * The menu where the user chooses an RDN, Container, and Template for creating a new entry.
@@ -51,7 +51,7 @@ echo '<table class="templates">';
 $i = -1;
 
 $template_xml = new Templates($ldapserver->server_id);
-$templates = $template_xml->_template;
+$templates = $template_xml->getCreationTemplates();
 
 # Remove non-visable templates.
 foreach ($templates as $index => $template)

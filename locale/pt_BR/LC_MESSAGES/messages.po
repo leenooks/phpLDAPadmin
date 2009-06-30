@@ -213,6 +213,10 @@ msgid "Rename"
 msgstr "Renomear"
 
 
+msgid "rename"
+msgstr "renomear"
+
+
 msgid "Add"
 msgstr "Inserir"
 

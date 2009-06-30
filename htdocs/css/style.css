@@ -1,4 +1,4 @@
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/css/style.css,v 1.45 2005/12/10 10:34:54 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/css/style.css,v 1.47 2006/10/29 11:44:36 wurley Exp $ */
 span.hint {
 	font-size: small;
 	font-weight: normal;
@@ -56,40 +56,89 @@ table.schema_attr tr.highlight{
 	font-weight: Bold;
 }
 
+table.modify_members {
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+	border-top: 1px solid black;
+	margin-bottom: 10px;
+	background-color: #eee;
+	width: 80%;
+}
+
+table.modify_members td {
+	vertical-align: top;
+	text-align: left;
+	padding-left: 5px;
+}
+
+table.modify_members th {
+	background-color: #016;
+	padding: 5px;
+	color: white;
+	font-weight: bold;
+	font-size: 125%;
+}
+
+table.modify_members td {
+	padding: 5px;
+	vertical-align: top;
+}
+
+table.modify_members tr.even {
+	background-color: #eee;
+}
+
+table.modify_members tr.odd {
+	background-color: #ccc;
+}
+
+table.modify_members tr.highlight {
+	background-color: #bcd;
+	font-weight: Bold;
+}
+
+table.modify_members select {
+	width: 100%;
+}
+
+/* Bug Notice */
 table.notice tr td {
 	font-size: 9pt;
 	padding: 2px;
 	margin: 0px;
-	background-color: #eee;
+	background-color: #eeeeee;
 }
 
+/* Error Dialog Box */
 table.error {
 	width: 500px;
-	border: 2px solid black;
+	border: 1px solid #aa0000;
+	background-color: #fff0f0;
 }
 
-table.error tr td table.bug tr td{
-	padding: 6px;
-	margin: 0px;
-	background-color: #eee;
-}
-
-table.error tr td {
-	vertical-align: top;
-	text-align: left;
-	padding: 15px;
+table.error th {
+	background-color: #aa0000;
 	border: 0px;
+	color: #ffffff;
+	font-size: 12pt;
+	font-weight: bold;
+	text-align: center;
+	vertical-align: middle;
+	width: 100%;
 }
 
-table.error tr td h2 {
-	margin: 5px;
-	margin-bottom: 20px;
-}
-
-table.error tr td.img {
+table.error th.img {
 	vertical-align: middle;
 	text-align: center;
-	width: 20px;
+}
+
+table.error td {
+	border: 0px;
+	background-color: #fff0f0;
+	padding: 2px;
+	text-align: left;
+	vertical-align: top;
 }
 
 table.confirm th {
@@ -131,7 +180,7 @@ table.browse tr td {
 }
 
 table.template_display tr td {
-    vertical-align: top;
+	vertical-align: top;
 }
 
 table.templates tr td {
@@ -346,7 +395,7 @@ table.edit_dn tr td.heading {
 }
 
 table.edit_dn tr td.attr_note {
-    text-align: right;
+	text-align: right;
 	background-color: #eee;
 }
 
@@ -480,26 +529,26 @@ form.new_value {
 }
 
 table.search_result_table {
-    border-spacing: 0;
-    border-collapse: collapse;
-    empty-cells: show;
+	border-spacing: 0;
+	border-collapse: collapse;
+	empty-cells: show;
 }
 
 table.search_result_table td {
-    vertical-align: top;
-    border: 1px solid gray;
-    padding: 4px;
+	vertical-align: top;
+	border: 1px solid gray;
+	padding: 4px;
 }
 
 table.search_result_table th {
-    border: 1px solid gray;
-    padding: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
+	border: 1px solid gray;
+	padding: 10px;
+	padding-left: 20px;
+	padding-right: 20px;
 }
 
 table.search_result_table tr.highlight {
-    background-color: #eee;
+	background-color: #eee;
 }
 
 
@@ -509,8 +558,8 @@ ul.search {
 
 table.search_header {
 	background-color: #ddf;
-    width: 100%;
-    vertical-align: top;
+	width: 100%;
+	vertical-align: top;
 }
 
 div.search_result {
@@ -576,13 +625,39 @@ table.delete_confirm {
 	text-align: left;
 }
 
-table.login {
-	background-color: #ddf;
-	padding: 10px;
+/* Login  Box */
+#pla_login {
+	background: url('../images/uid.png') no-repeat 0 1px;
+	background-color: #fafaff;
+	padding-left: 17px;
 }
 
-table.login td {
-	padding: 5px;
+#pla_login:focus {
+	background-color: #ffffba;
+}
+
+#pla_login:disabled {
+	background-color: #ddddff;
+}
+
+#pla_pass {
+	background: url('../images/key.png') no-repeat 0 1px;
+	background-color: #fafaff;
+	padding-left: 17px;
+}
+
+#pla_pass:focus {
+	background-color: #ffffba;
+}
+
+#pla_pass:disabled {
+	background-color: #ddddff;
+}
+
+table.login {
+	background-color: #eeeeff;
+	padding: 10px;
+	border: 1px solid #aaaacc;
 }
 
 table.create {
@@ -602,7 +677,7 @@ table.create td.name {
 div.add_value {
 	font-size: 10pt;
 	margin: 0px;
-    padding: 0px;
+	padding: 0px;
 }
 
 a.logged_in_dn {
@@ -659,6 +734,6 @@ table.form tr td {
 }
 
 img.chooser {
-        /* This makes the chooser image line up properly when placed next to a form element in a table cell*/
-        vertical-align: bottom;
+	/* This makes the chooser image line up properly when placed next to a form element in a table cell*/
+	vertical-align: bottom;
 }

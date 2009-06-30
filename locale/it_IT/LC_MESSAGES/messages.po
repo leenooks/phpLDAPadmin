@@ -169,8 +169,8 @@ msgid "Rename Entry"
 msgstr "Rinomina la Voce"
 
 
-msgid "Rename"
-msgstr "Rinomina"
+msgid "rename"
+msgstr "rinomina"
 
 
 msgid "Add"
@@ -234,7 +234,7 @@ msgstr "Aggiungi un Nuovo Attributo Binario"
 
 
 msgid "Note: '%s' is an alias for '%s'"
-msgstr "Alias per"
+msgstr "Nota: '%s' Ãš un alias per '%s'"
 
 
 msgid "download value"
@@ -392,4 +392,24 @@ msgstr "Nota: ti potrebbe essere chiesto di inserire nuovi attributi<br />che qu
 msgid "Syntax"
 msgstr "Sintassi"
 
+msgid "Use the menu to the left to navigate"
+msgstr "Usa il menu sulla sinistra per esplorare l'albero LDAP"
+
+msgid "Check password..."
+msgstr "Verifica password..."
+
+msgid "Password Checker Tool"
+msgstr "Strumento di verifica password"
+
+msgid "Compare"
+msgstr "Confronta"
+
+msgid "To"
+msgstr "A"
+
+msgid "Passwords match!"
+msgstr "La password corrisponde!"
+
+msgid "Passwords do not match!"
+msgstr "La password non corrisponde!"
 

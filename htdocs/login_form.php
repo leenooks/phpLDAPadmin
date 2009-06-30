@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login_form.php,v 1.27 2005/12/17 00:00:11 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login_form.php,v 1.28 2006/10/29 11:44:36 wurley Exp $
 
 /**
  * Displays the login form for a server for users who specify 'cookie' or 'session' for their auth_type.
@@ -16,22 +16,65 @@
 
 require './common.php';
 
-if (! $ldapserver->auth_type)
-	pla_error(_('Error: You have an error in your config file. The only three allowed values
-                                    for auth_type in the $servers section are \'session\', \'cookie\', and \'config\'. You entered \'%s\',
-                                    which is not allowed. '));
 if (! in_array($ldapserver->auth_type, array('cookie','session')))
 	pla_error(sprintf(_('Unknown auth_type: %s'),htmlspecialchars($ldapserver->auth_type)));
 
-include './header.php'; ?>
+include './header.php';
 
-<body>
-<?php if( $ldapserver->isAnonBindAllowed() ) { ?>
+echo '<body>';
+printf('<h3 class="title">%s %s</h3>',_('Authenticate to server'),$ldapserver->name);
+
+# Check for a secure connection
+if (! isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on') {
+	echo '<br />';
+	echo '<center>';
+	echo '<span style="color:red">';
+	printf('<acronym title="%s"><b>%s: %s.</b></acronym>',
+		_('You are not using \'https\'. Web browser will transmit login information in clear text.'),
+		_('Warning'),_('This web connection is unencrypted'));
+	echo '</span>';
+	echo '</center>';
+	echo '<br />';
+}
+
+# Login form.
+echo '<form action="login.php" method="post" name="login_form">';
+printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
+
+if (isset($_GET['redirect']))
+	printf('<input type="hidden" name="redirect" value="%s" />',rawurlencode($_GET['redirect']));
+
+echo '<center>';
+echo '<table class="login">';
+
+printf('<tr><td><b>%s</b></td></tr>',$ldapserver->isLoginAttrEnabled() ? _('Login Name') : _('Login DN'));
+
+printf('<tr><td><input type="text" id="pla_login" name="%s" size="40" value="%s" /></td></tr>',
+	$ldapserver->isLoginAttrEnabled() ? 'uid' : 'login_dn',
+	$ldapserver->isLoginAttrEnabled() ? '' : $ldapserver->login_dn);
+
+echo '<tr><td colspan=2>&nbsp;</td></tr>';
+printf('<tr><td><b>%s</b></td></tr>',_('Password'));
+echo '<tr><td><input type="password" id="pla_pass" size="40" value="" name="login_pass" /></td></tr>';
+echo '<tr><td colspan=2>&nbsp;</td></tr>';
+
+# If Anon bind allowed, then disable the form if the user choose to bind anonymously.
+if ($ldapserver->isAnonBindAllowed())
+	printf('<tr><td colspan="2"><small><b>%s</b></small> <input type="checkbox" name="anonymous_bind" onclick="toggle_disable_login_fields(this)" id="anonymous_bind_checkbox" /></td></tr>',
+		_('Anonymous'));
+
+printf('<tr><td colspan="2"><center><input type="submit" name="submit" value="%s" /></center></td></tr>',
+	_('Authenticate'));
+
+echo '</table>';
+echo '</center>';
+echo '</form>';
+
+if( $ldapserver->isAnonBindAllowed() ) { ?>
 <script type="text/javascript" language="javascript">
 <!--
-	function toggle_disable_login_fields( anon_checkbox )
-	{
-		if( anon_checkbox.checked ) {
+	function toggle_disable_login_fields(anon_checkbox) {
+		if (anon_checkbox.checked) {
 			anon_checkbox.form.<?php echo $ldapserver->isLoginAttrEnabled() ? 'uid' : 'login_dn'; ?>.disabled = true;
 			anon_checkbox.form.login_pass.disabled = true;
 		} else {
@@ -41,63 +84,8 @@ include './header.php'; ?>
 	}
 -->
 </script>
-<?php } ?>
+<?php }
 
-<h3 class="title"><?php printf(_('Authenticate to server %s'),$ldapserver->name); ?></h3>
-<br />
-
-<?php if (! isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on') { ?>
-<center>
-<span style="color:red">
-	<acronym title="<?php echo _('You are not using \'https\'. Web browser will transmit login information in clear text.'); ?>">
-		<?php echo _('Warning: This web connection is unencrypted.'); ?>
-	</acronym>
-</span>
-<br />
-</center>
-<?php } ?>
-
-<br />
-
-<form action="login.php" method="post" name="login_form">
-<input type="hidden" name="server_id" value="<?php echo $ldapserver->server_id; ?>" />
-
-<?php if( isset( $_GET['redirect'] ) ) { ?>
-<input type="hidden" name="redirect" value="<?php echo rawurlencode( $_GET['redirect'] ) ?>" />
-<?php } ?>
-
-<center>
-<table class="login">
-
-<?php if( $ldapserver->isAnonBindAllowed() ) { ?>
-<tr>
-	<td colspan="2"><small><label for="anonymous_bind_checkbox"><?php echo _('Anonymous Bind'); ?></label></small> <input type="checkbox" name="anonymous_bind" onclick="toggle_disable_login_fields(this)" id="anonymous_bind_checkbox"/></td>
-</tr>
-<?php } ?>
-
-<tr>
-<td><small>
-<?php
-if ($ldapserver->isLoginAttrEnabled())
-	echo _('User name');
-else
-	echo _('Login DN');
+echo '</body>';
+echo '</html>';
 ?>
-</small></td>
-
-<td><input type="text" name="<?php echo $ldapserver->isLoginAttrEnabled() ? 'uid' : 'login_dn'; ?>" size="40" value="<?php echo $ldapserver->isLoginAttrEnabled() ? '' : $ldapserver->login_dn; ?>" /></td>
-</tr>
-
-<tr>
-	<td><small><?php echo _('Password'); ?></small></td>
-	<td><input type="password" size="40" value="" name="login_pass" /></td>
-</tr>
-
-<tr>
-	<td colspan="2"><center><input type="submit" name="submit" value="<?php echo _('Authenticate'); ?>" /></center></td>
-</tr>
-</table>
-</center>
-</form>
-</body>
-</html>

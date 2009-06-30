@@ -261,6 +261,10 @@ msgid "Rename"
 msgstr "Renombrar"
 
 
+msgid "rename"
+msgstr "renombrar"
+
+
 msgid "Add"
 msgstr "Añadir"
 
@@ -293,7 +297,7 @@ msgid "Show internal attributes"
 msgstr "Mostrar atributos internos"
 
 
-msgid "Click to view the schema defintion for attribute type '%s'"
+msgid "Click to view the schema definition for attribute type '%s'"
 msgstr "Haga click para ver el esquema del atributo de tipo '%s'"
 
 

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename.php,v 1.30 2005/12/10 10:34:54 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename.php,v 1.32 2007/03/18 02:06:20 wurley Exp $
 
 /**
  * Renames a DN to a different name.

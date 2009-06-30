@@ -82,7 +82,6 @@
 		<value>ssha</value>
 	</helper>
 	<icon>images/lock.png</icon>
-	<onchange>autoFill:sambaLMPassword,%userPassword%</onchange>
 	<onchange>autoFill:sambaNTPassword,%userPassword%</onchange>
 	<order>7</order>
 	<page>1</page>
@@ -90,16 +89,9 @@
 	<type>password</type>
 	<verify>1</verify>
 </attribute>
-<attribute id="sambaLMPassword">
-	<display>LM Password</display>
-	<order>8</order>
-	<page>1</page>
-	<post>=php.SambaPassword(LM,%sambaLMPassword%)</post>
-	<type>password</type>
-</attribute>
 <attribute id="sambaNTPassword">
 	<display>NT Password</display>
-	<order>9</order>
+	<order>8</order>
 	<page>1</page>
 	<post>=php.SambaPassword(NT,%sambaNTPassword%)</post>
 	<spacer>1</spacer>
@@ -108,14 +100,14 @@
 <attribute id="loginShell">
 	<display>Login shell</display>
 	<icon>images/terminal.png</icon>
-	<order>10</order>
+	<order>9</order>
 	<page>1</page>
 	<value>=php.PickList(/,(objectClass=posixAccount),loginShell,%loginShell%)</value>
 </attribute>
 <attribute id="gidNumber">
 	<display>GID Number</display>
 	<onchange>autoFill:homeDirectory,/home/users/%gidNumber|0-0/T%/%uid|3-%</onchange>
-	<order>11</order>
+	<order>10</order>
 	<page>1</page>
 	<value>=php.PickList(/,(objectClass=posixGroup),gidNumber,%cn%)</value>
 </attribute>
@@ -126,7 +118,7 @@
 		<location>side</location>
 		<value></value>
 	</helper>
-	<order>13</order>
+	<order>11</order>
 	<page>1</page>
 	<post>=php.Join(-,(%sambaPrimaryGroupSID%,%sidpgsuffix%))</post>
 	<spacer>1</spacer>
@@ -134,7 +126,7 @@
 </attribute>
 <attribute id="homeDirectory">
 	<display>Home directory</display>
-	<order>14</order>
+	<order>12</order>
 	<page>1</page>
 </attribute>
 <attribute id="sambaAcctFlags">

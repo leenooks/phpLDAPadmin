@@ -8,7 +8,7 @@
 //          Bjoern Schotte <bjoern@rent-a-phpwizard.de> (PEARification)                
 //          Martin Jansen <mj@php.net> (PEAR conformance)            
 //
-// $Id: PHPLIB.php,v 1.2 2005/12/10 10:34:54 wurley Exp $
+// $Id: PHPLIB.php,v 1.3 2006/09/17 06:22:04 wurley Exp $
 //
 
 //require_once "PEAR.php";
@@ -31,37 +31,37 @@ class Template_PHPLIB
      * If set, echo assignments
      * @var bool
      */
-    var $debug     = false;
+    public $debug     = false;
 
     /**
      * $file[handle] = "filename";
      * @var array
      */
-    var $file  = array();
+    public $file  = array();
 
     /**
      * fallback paths that should be defined in a child class
      * @var array
      */
-    var $file_fallbacks = array();
+    public $file_fallbacks = array();
 
     /**
      * Relative filenames are relative to this pathname
      * @var string
      */
-    var $root   = "";
+    public $root   = "";
 
     /*
      * $_varKeys[key] = "key"
      * @var array
      */
-    var $_varKeys = array();
+    public $_varKeys = array();
     
     /**
      * $_varVals[key] = "value";
      * @var array
      */
-    var $_varVals = array();
+    public $_varVals = array();
 
     /**
      * "remove"  => remove undefined variables
@@ -69,20 +69,20 @@ class Template_PHPLIB
      * "keep"    => keep undefined variables
      * @var string
      */
-    var $unknowns = "remove";
+    public $unknowns = "remove";
   
     /**
      * "yes" => halt, "report" => report error, continue, "no" => ignore error quietly
      * @var string
      */
-    var $haltOnError  = "report";
+    public $haltOnError  = "report";
   
     /**
      * The last error message is retained here
      * @var string
      * @see halt
      */
-    var $_lastError     = "";
+    public $_lastError     = "";
 
 
     /**

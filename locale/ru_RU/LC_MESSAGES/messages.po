@@ -209,6 +209,10 @@ msgid "Rename"
 msgstr "Переименовать"
 
 
+msgid "rename"
+msgstr "ÐÐµÑÐµÐžÐŒÐµÐœÐŸÐ²Ð°ÑÑ"
+
+
 msgid "Add"
 msgstr "Добавить"
 

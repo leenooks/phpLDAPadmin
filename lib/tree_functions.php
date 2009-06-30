@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/tree_functions.php,v 1.25 2006/05/13 12:52:27 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/tree_functions.php,v 1.29 2007/03/18 00:45:24 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -39,13 +39,13 @@ function draw_server_tree() {
 	echo '<tr class="server">';
 	printf('<td class="icon"><img src="images/server.png" alt="%s" /></td>',_('Server'));
 	printf('<td colspan="99"><a name="%s"></a>',$ldapserver->server_id);
-	printf('<nobr>%s ',htmlspecialchars($ldapserver->name));
+	printf('<span style="white-space: nowrap;">%s ',htmlspecialchars($ldapserver->name));
 
 	if ($ldapserver->haveAuthInfo() && $ldapserver->auth_type != 'config')
 		printf('<acronym title="%s"><img width=14 height=14 src="images/timeout.png" alt="timeout" /></acronym>',
 			sprintf(_('Inactivity will log you off at %s'),strftime('%H:%M',time()+($ldapserver->session_timeout*60))));
 
-	echo '</nobr></td></tr>';
+	echo '</span></td></tr>';
 
 	/* do we have what it takes to authenticate here, or do we need to
 	   present the user with a login link (for 'cookie' and 'session' auth_types)? */
@@ -62,7 +62,7 @@ function draw_server_tree() {
 
 			# Draw the quick-links below the server name:
 			echo '<tr><td colspan="100" class="links">';
-			echo '<nobr>';
+			echo '<span style="white-space: nowrap;">';
 			echo '( ';
 			printf('<a title="%s %s" href="%s">%s</a> | ',_('View schema for'),$ldapserver->name,$schema_href,_('schema'));
 			printf('<a title="%s %s" href="%s">%s</a> | ',_('search'),$ldapserver->name,$search_href,_('search'));
@@ -74,11 +74,11 @@ function draw_server_tree() {
 			if ($ldapserver->auth_type != 'config')
 				printf(' | <a title="%s" href="%s" target="right_frame">%s</a>',_('Logout of this server'),$logout_href,_('logout'));
 
-			echo ' )</nobr></td></tr>';
+			echo ' )</span></td></tr>';
 
 			if ($ldapserver->auth_type != 'config') {
 				$logged_in_dn = $ldapserver->getLoggedInDN();
-				echo '<tr><td class="links" colspan="100"><nobr>'._('Logged in as: ');
+				echo '<tr><td class="links" colspan="100"><span style="white-space: nowrap;">'._('Logged in as: ');
 
 				if ($ldapserver->getDNBase($logged_in_dn) == $logged_in_dn) {
 					$logged_in_branch = '';
@@ -86,7 +86,7 @@ function draw_server_tree() {
 
 				} else {
 					$logged_in_branch = preg_replace('/,'.$ldapserver->getDNBase($logged_in_dn).'$/','',$logged_in_dn);
-					$logged_in_dn_array = explode(',',$logged_in_branch);
+					$logged_in_dn_array = pla_explode_dn($logged_in_branch);
 				}
 
 				$bases = $ldapserver->getDNBase($logged_in_dn);
@@ -110,11 +110,11 @@ function draw_server_tree() {
 				} else
 					echo 'Anonymous';
 
-				echo '</nobr></td></tr>';
+				echo '</span></td></tr>';
 			}
 
 			if ($ldapserver->isReadOnly())
-				printf('<tr><td class="links" colspan="100"><nobr>(%s)</nobr></td></tr>',_('read only'));
+				printf('<tr><td class="links" colspan="100"><span style="white-space: nowrap;">(%s)</span></td></tr>',_('read only'));
 
 			$javascript_forms = '';
 			$javascript_id = 0;
@@ -176,7 +176,8 @@ function draw_server_tree() {
 								$child_count = null;
 
 							} else {
-								$children = $ldapserver->getContainerContents($base_dn,$size_limit+1,'(objectClass=*)',
+								$children = $ldapserver->getContainerContents($base_dn,$size_limit+1,
+									$config->GetValue('appearance','tree_filter'),
 									$config->GetValue('deref','tree'));
 
 								$child_count = count($children);
@@ -206,12 +207,12 @@ function draw_server_tree() {
 
 						printf('<td class="expander"><a href="%s"><img src="%s" alt="%s" /></a></td>',$expand_href,$expand_img,$expand_alt);
 						printf('<td class="icon"><a href="%s" target="right_frame"><img src="images/%s" alt="img" /></a></td>',$edit_href,$icon);
-						printf('<td class="rdn" colspan="98"><nobr><a href="%s" target="right_frame">%s</a>',$edit_href,pretty_print_dn($base_dn));
+						printf('<td class="rdn" colspan="98"><span style="white-space: nowrap;"><a href="%s" target="right_frame">%s</a>',$edit_href,pretty_print_dn($base_dn));
 
 						if ($child_count)
 							printf(' <span class="count">(%s)</span>',$child_count);
 
-						echo '</nobr></td>';
+						echo '</span></td>';
 						echo '</tr>';
 					}
 
@@ -235,8 +236,9 @@ function draw_server_tree() {
 					# Is the root of the tree expanded already?
 					if (isset($tree['browser'][$base_dn]['open'] ) && $tree['browser'][$base_dn]['open']) {
 
-						if ($ldapserver->isShowCreateEnabled() && count($tree['browser'][$base_dn]['children']) > 10 )
-							draw_create_link($ldapserver->server_id,$base_dn,-1,urlencode($base_dn));
+						if ($config->GetValue('appearance', 'show_top_create'))
+							if ($ldapserver->isShowCreateEnabled() && count($tree['browser'][$base_dn]['children']) > 10 )
+								draw_create_link($ldapserver->server_id,$base_dn,-1,urlencode($base_dn));
 
 						foreach ($tree['browser'][$base_dn]['children'] as $child_dn)
 							draw_tree_html($child_dn,$ldapserver,0);
@@ -336,9 +338,9 @@ function draw_tree_html($dn,$ldapserver,$level=0) {
 		$child_count = number_format(count($tree['browser'][$dn]['children']));
 
 		if ((! $child_count) && (! $ldapserver->isShowCreateEnabled()))
-			echo '<td class="expander"><nobr><img src="images/minus.png" alt="-" /></nobr></td>';
+			echo '<td class="expander"><span style="white-space: nowrap;"><img src="images/minus.png" alt="-" /></span></td>';
 		else
-			printf('<td class="expander"><nobr><a href="%s"><img src="images/minus.png" alt="-" /></a></nobr></td>',$collapse_href);
+			printf('<td class="expander"><span style="white-space: nowrap;"><a href="%s"><img src="images/minus.png" alt="-" /></a></span></td>',$collapse_href);
 
 	} else {
 		$size_limit = $config->GetValue('search','size_limit');
@@ -354,28 +356,27 @@ function draw_tree_html($dn,$ldapserver,$level=0) {
 		}
 
 		if ((! $child_count) && (! $ldapserver->isShowCreateEnabled()))
-			echo '<td class="expander"><nobr><img src="images/minus.png" alt="-" /></nobr></td>';
+			echo '<td class="expander"><span style="white-space: nowrap;"><img src="images/minus.png" alt="-" /></span></td>';
 		else
-			printf('<td class="expander"><nobr><a href="%s"><img src="images/plus.png" alt="+" /></a></nobr></td>',$expand_href);
+			printf('<td class="expander"><span style="white-space: nowrap;"><a href="%s"><img src="images/plus.png" alt="+" /></a></span></td>',$expand_href);
 	}
 
 	printf('<td class="icon"><a href="%s" target="right_frame" name="%s_%s"><img src="%s" alt="img" /></a></td>',
 		$edit_href,$ldapserver->server_id,$encoded_dn,$img_src);
 
-	printf('<td class="rdn" colspan="%s"><nobr>',97-$level);
+	printf('<td class="rdn" colspan="%s"><span style="white-space: nowrap;">',97-$level);
 	printf('<a href="%s" target="right_frame">%s</a>',$edit_href,draw_formatted_dn($ldapserver,$dn));
 
 	if ($child_count)
 		printf(' <span class="count">(%s)</span>',$child_count);
 
-	echo '</nobr></td></tr>';
+	echo '</span></td></tr>';
 
 	if (isset($tree['browser'][$dn]['open']) && $tree['browser'][$dn]['open']) {
-		/* Draw the "create new" link at the top of the tree list if there are more than 10
-		   entries in the listing for this node. */
-
-		if ((count($tree['browser'][$dn]['children']) > 10) && ($ldapserver->isShowCreateEnabled()))
-			draw_create_link($ldapserver->server_id,$rdn,$level,$encoded_dn);
+		
+		if ($config->GetValue('appearance', 'show_top_create'))
+			if ((count($tree['browser'][$dn]['children']) > 10) && ($ldapserver->isShowCreateEnabled()))
+				draw_create_link($ldapserver->server_id,$rdn,$level,$encoded_dn);
 
 		foreach ($tree['browser'][$dn]['children'] as $dn)
 			draw_tree_html($dn,$ldapserver,$level+1);

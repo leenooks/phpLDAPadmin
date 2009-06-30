@@ -177,6 +177,10 @@ msgid "Rename"
 msgstr "Renombrar"
 
 
+msgid "rename"
+msgstr "renombrar"
+
+
 msgid "Add"
 msgstr "Afegir"
 

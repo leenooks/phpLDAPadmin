@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/header.php,v 1.24 2006/04/29 06:49:31 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/header.php,v 1.26 2006/09/17 04:51:56 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -42,12 +42,14 @@ printf('<script type="text/javascript" src="%sentry_chooser.js"></script>',JSDIR
 printf('<script type="text/javascript" src="%sie_png_work_around.js"></script>',JSDIR);
 printf('<script type="text/javascript" src="%ssearch_util.js"></script>',JSDIR);
 printf('<script type="text/javascript" src="%sgeneric_utils.js"></script>',JSDIR);
+printf('<script type="text/javascript" src="%sto_ascii.js"></script>',JSDIR);
 printf('<link type="text/css" rel="stylesheet" media="all" href="%s/jscalendar/calendar-blue.css" title="blue" />',JSDIR);
 printf('<script type="text/javascript" src="%sjscalendar/calendar.js"></script>',JSDIR);
 printf('<script type="text/javascript" src="%sjscalendar/lang/calendar-en.js"></script>',JSDIR);
 printf('<script type="text/javascript" src="%sjscalendar/calendar-setup.js"></script>',JSDIR);
 printf('<script type="text/javascript" src="%sdate_selector.js"></script>',JSDIR);
 printf('<link type="text/css" rel="stylesheet" href="%s/phplayersmenu/layerstreemenu.css"></link>',JSDIR);
+printf('<script type="text/javascript" src="%smodify_member.js"></script>',JSDIR);
 
 if (isset($meta_refresh_variable))
 	printf('<meta http-equiv="refresh" content="%s" />',$meta_refresh_variable);

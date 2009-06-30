@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy_form.php,v 1.27 2006/04/29 06:49:31 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy_form.php,v 1.29 2007/03/18 02:18:14 wurley Exp $
 
 /**
  * Copies a given object to create a new one.

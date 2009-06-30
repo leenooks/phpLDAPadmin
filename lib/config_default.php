@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.17 2005/12/10 10:34:55 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.25 2007/01/18 21:03:58 wurley Exp $
 
 /**
  * Configuration processing and defaults.
@@ -9,11 +9,11 @@
  */
 
 # The minimum version of PHP required to run phpLDAPadmin.
-define('REQUIRED_PHP_VERSION','4.1.0');
+define('REQUIRED_PHP_VERSION','5.0.0');
 
 class Config {
-	var $custom;
-	var $default;
+	public $custom;
+	protected $default;
 
 	function Config() {
 
@@ -45,6 +45,10 @@ class Config {
 		$this->default->appearance['date_attrs'] = array(
 			'desc'=>'Array of attributes that should show a jscalendar',
 			'default'=>array('shadowExpire'=>'%es','shadowLastChange'=>'%es'));
+
+		$this->default->appearance['date_attrs_showtime'] = array(
+			'desc'=>'Array of attributes that should show a the time when showing the jscalendar',
+			'default'=>array(''));
 
 		$this->default->appearance['hide_configuration_management'] = array(
 			'desc'=>'Hide the Sourceforge related links',
@@ -94,7 +98,7 @@ class Config {
 		 */
 		$this->default->appearance['obfuscate_password_display'] = array(
 			'desc'=>'Obfuscate the display of passwords',
-			'default'=>false);
+			'default'=>true);
 
 		$this->default->appearance['show_clear_password'] = array(
 			'desc'=>'Whether to show clear passwords if we dont obfuscate them',
@@ -107,6 +111,18 @@ class Config {
 		$this->default->appearance['show_hints'] = array(
 			'desc'=>'Show helpful hints',
 			'default'=>true);
+
+		$this->default->appearance['show_top_create'] = array(
+			'desc'=>'Show a additional create link on the top of the list if there are more than 10 entries',
+			'default'=>true);
+
+		$this->default->appearance['show_schema_link'] = array(
+			'desc'=>'Show the schema link for each attribute',
+			'default'=>true);
+
+		$this->default->appearance['show_attribute_notes'] = array(
+			'desc'=>'Show notes for each attribute',
+			'default'=>true);		
 
 		/** Tree display
 		 * A format string used to display enties in the tree viewer (left-hand side)
@@ -140,6 +156,14 @@ class Config {
 		$this->default->appearance['tree_plm'] = array(
 			'desc'=>'Whether to enable the PHPLayersMenu for the tree',
 			'default'=>false);
+
+		/**
+		 * Tree display filter
+		 * LDAP filter used to search entries for the tree viewer (left-hand side)
+		 */
+		$this->default->appearance['tree_filter'] = array(
+			'desc'=>'LDAP search filter for the tree entries',
+			'default'=>'(objectClass=*)');
 
 		/** Caching
 		 */
@@ -209,6 +233,56 @@ class Config {
 			'desc'=>'Time in seconds to keep jpegPhoto temporary files in the temp directory',
 			'default'=>120);
 
+		## Modify members feature
+		/**
+		 * Search filter setting for new members. This is used to search possible members that can be added
+		 * to the group. See modify_member_form.php
+		 */
+		$this->default->modify_member['filter'] = array(
+			'desc'=>'Search filter for member searches',
+			'default'=>'(objectclass=Person)');
+
+		/**
+		 * Group attributes. When these attributes are seen in template_engine.php, add "modify group members"
+		 * link to the attribute
+		 * See template_engine.php
+		 */
+		$this->default->modify_member['groupattr'] = array(
+			'desc'=>'Group member attributes',
+			'default'=>array('member','uniqueMember','memberUid'));
+
+		/**
+		 * Attribute that is added to the group member attribute. For groupOfNames or groupOfUniqueNames this is dn,
+		 * for posixGroup it's uid. See modify_member_form.php
+		 */
+		$this->default->modify_member['attr'] = array(
+			'desc'=>'Default attribute that is added to the group member attribute',
+			'default'=>'dn');
+
+		/**
+		 * Attribute that is added to the group member attribute.
+		 * For posixGroup it's uid. See modify_member_form.php
+		 */
+		$this->default->modify_member['posixattr'] = array(
+			'desc'=>'Contents of the group member attribute',
+			'default'=>'uid');
+
+		/**
+		 * Search filter setting for new members to group. This is used to search possible members that can be added
+		 * to the posixGroup. See modify_member_form.php
+		 */
+		$this->default->modify_member['posixfilter'] = array(
+			'desc'=>'Search filter for posixmember searches',
+			'default'=>'(uid=*)');
+
+		/**
+		 * posixGroup attribute. When this attribute are seen in modify_member_form.php, only posixGroup members are shown
+		 * See modify_member_form.php
+		 */
+		$this->default->modify_member['posixgroupattr'] = array(
+			'desc'=>'posixGroup member attribute',
+			'default'=>'memberUid');
+
 		## Session Attributes
 		/** Cookie Encryption
 		 * phpLDAPadmin can encrypt the content of sensitive cookies if you set this to a big random string.
@@ -250,6 +324,10 @@ class Config {
 			'desc'=>'Whether to use similiar characters',
 			'default'=>true);
 
+		$this->default->password['no_random_crypt_salt'] = array(
+			'descr'=>'Disable random salt for crypt()',
+			'default'=>false);
+
 		/** Search display
 		 * By default, when searching you may display a list or a table of results.
 		 * Set this to 'table' to see table formatted results.
@@ -289,7 +367,7 @@ class Config {
 			'default'=>array('cn','sn','uid','postalAddress','telephoneNumber'));
 	}
 
-	function GetValue($key,$index) {
+	public function GetValue($key,$index) {
 
 		$value = null;
 
@@ -321,7 +399,7 @@ class Config {
 	/**
 	 * Function to check and warn about any unusual defined variables.
 	 */
-	function CheckCustom() {
+	public function CheckCustom() {
 		if (isset($this->custom)) {
 			foreach ($this->custom as $masterkey => $masterdetails) {
 

@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.45 2006/05/13 12:52:27 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.50 2006/10/28 16:33:32 wurley Exp $ */
 
 /**
  * Classes and functions for LDAP server configuration and capability
@@ -158,7 +158,7 @@ class LDAPserver {
 
 		# Quick return if we have already connected.
 		$resource = $this->_connect($connect_id);
-		if ($resource && ! $reconnect)
+		if (is_resource($resource) && ! $reconnect)
 			return $resource;
 
 		if (DEBUG_ENABLED)
@@ -243,7 +243,7 @@ class LDAPserver {
 
 		# Now that we have worked out the connect_id, lets just check and see if we have already connected.
 		$resource = $this->_connect($connect_id);
-		if ($resource && ! $reconnect)
+		if (is_resource($resource) && ! $reconnect)
 			return $resource;
 
 		run_hook('pre_connect',array('server_id'=>$this->server_id,'connect_id'=>$connect_id));
@@ -419,7 +419,8 @@ class LDAPserver {
 				debug_log('%s::getBaseDN(): Connect to LDAP to find BaseDN',80,get_class($this));
 
 			if ($this->connect()) {
-				$r = array_pop($this->search(null,'','objectClass=*',array('namingContexts'),'base'));
+				$r = $this->search(null,'','objectClass=*',array('namingContexts'),'base');
+				$r = array_pop($r);
 				if (is_array($r))
 						$r = array_change_key_case($r);
 
@@ -1219,11 +1220,7 @@ class LDAPserver {
 					/* foreach of the attribute's aliases, create a new entry in the attrs array
 					   with its name set to the alias name, and all other data copied.*/
 					foreach ($aliases as $alias_attr_name) {
-						# clone is a PHP5 function and must be used.
-						if (version_compare(PHP_VERSION,'5.0') > 0 )
-							$new_attr = clone($attr);
-						else
-							$new_attr = $attr;
+						$new_attr = clone $attr;
 
 						$new_attr->setName($alias_attr_name);
 						$new_attr->addAlias($attr->getName());
@@ -1276,11 +1273,7 @@ class LDAPserver {
 
 							/* clone the SUP attributeType and populate those values
 							   that were set by the child attributeType */
-							# clone is a PHP5 function and must be used.
-							if (function_exists('clone'))
-								$attr = clone($sup_attr);
-							else
-								$attr = $sup_attr;
+							$attr = clone $sup_attr;
 
 							$attr->setOID($tmp_oid);
 							$attr->setName($tmp_name);
@@ -1754,13 +1747,13 @@ class LDAPserver {
 	 * @param array $attrs An array of attributes to include in the search result (example: array( "objectClass", "uid", "sn" )).
 	 * @param string $scope The LDAP search scope. Must be one of "base", "one", or "sub". Standard LDAP search scope.
 	 * @param bool $sort_results Specify false to not sort results by DN or true to have the
-	 *                  returned array sorted by DN (uses ksort)
+	 *  returned array sorted by DN (uses ksort)
 	 * @param int $deref When handling aliases or referrals, this specifies whether to follow referrals. Must be one of
-	 *                  LDAP_DEREF_ALWAYS, LDAP_DEREF_NEVER, LDAP_DEREF_SEARCHING, or LDAP_DEREF_FINDING. See the PHP LDAP API for details.
+	 *  LDAP_DEREF_ALWAYS, LDAP_DEREF_NEVER, LDAP_DEREF_SEARCHING, or LDAP_DEREF_FINDING. See the PHP LDAP API for details.
 	 * @param int $size_limit Size limit for search
 	 * @todo: Add entries to tree cache.
 	 */
-	function search($resource=null,$base_dn=null,$filter,$attrs=array(),$scope='sub',$sort_results=true,$deref=LDAP_DEREF_NEVER,$size_limit=0) {
+	function search($resource=null,$base_dn=null,$filter,$attrs=array(),$scope='sub',$sort_results=true,$deref=LDAP_DEREF_NEVER,$size_limit=0,$sort_by=null) {
 		if (DEBUG_ENABLED)
 			debug_log('%s::search(): Entered with (%s,%s,%s,%s,%s,%s,%s)',17,
 				get_class($this),is_resource($this),$base_dn,$filter,$attrs,$scope,$sort_results,$deref);
@@ -1802,6 +1795,10 @@ class LDAPserver {
 			return array();
 
 		$return = array();
+		if (is_array($sort_by))
+			foreach ($sort_by as $sort)
+				if (in_array($sort,$attrs))
+					ldap_sort($resource,$search,$sort);
 
 		# Get the first entry identifier
 		if ($entry_id = ldap_first_entry($resource,$search))
@@ -2524,7 +2521,8 @@ class LDAPserver {
 			debug_log('%s:getDNAttrs(): Entered with (%s,%s,%s)',17,
 				get_class($this),$dn,$lower_case_attr_names,$deref);
 
-		$attrs = array_pop($this->search(null,dn_escape($dn),'(objectClass=*)',array(),'base',false,$deref));
+		$attrs = $this->search(null,dn_escape($dn),'(objectClass=*)',array(),'base',false,$deref);
+		$attrs = array_pop($attrs);
 
 		if (is_array($attrs)) {
 			if ($lower_case_attr_names)

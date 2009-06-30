@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/search.php,v 1.76 2006/04/29 06:49:31 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/search.php,v 1.77 2007/03/18 01:42:05 wurley Exp $
 
 /**
  * Perform LDAP searches and draw the advanced/simple search forms
@@ -43,6 +43,7 @@ if (isset($ldapserver)) {
 }
 
 $filter = isset($_GET['filter']) ? clean_search_vals($_GET['filter']) : null;
+$orderby = isset($_GET['orderby']) ? clean_search_vals($_GET['orderby']) : null;
 $attr = isset($_GET['attribute']) ? $_GET['attribute'] : null;
 
 # grab the base dn for the search
@@ -207,7 +208,8 @@ if (isset($_GET['search'])) {
 					debug_log('Search with base DN [%s]',64,$base_dn);
 			}
 
-			$results = $ldapserver->search(null,dn_escape($base_dn),$filter,$search_result_attributes,$scope,true,$config->GetValue('deref','search'));
+			$results = $ldapserver->search(null,dn_escape($base_dn),$filter,
+				$search_result_attributes,$scope,$orderby,$config->GetValue('deref','search'));
 
 			if ((! $results) && $ldapserver->errno())
 				pla_error(_('Encountered an error while performing search.'),$ldapserver->error(),$ldapserver->errno());

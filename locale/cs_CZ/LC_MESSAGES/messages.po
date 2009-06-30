@@ -205,6 +205,10 @@ msgid "Rename"
 msgstr "Přejmenovat"
 
 
+msgid "rename"
+msgstr "pÅejmenovat"
+
+
 msgid "Add"
 msgstr "Přidat"
 

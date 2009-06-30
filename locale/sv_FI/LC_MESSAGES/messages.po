@@ -177,6 +177,10 @@ msgid "Rename"
 msgstr "Döp om "
 
 
+msgid "rename"
+msgstr "DÃ¶p om "
+
+
 msgid "Add"
 msgstr "Lägg till"
 

@@ -1,4 +1,9 @@
 <?php
+/** NOTE **
+ ** Make sure that <?php is the FIRST line of this file!
+ ** IE: There should NOT be any blank lines or spaces BEFORE <?php
+ **/
+
 /**
  * The phpLDAPadmin config file
  *
@@ -9,8 +14,8 @@
  * For example, the default for defining the language in config_default.php
  *
  * $this->default->appearance['lang'] = array(
- *	'desc'=>'Language',
- *	'default'=>'auto');
+ *  'desc'=>'Language',
+ *  'default'=>'auto');
  *
  * to override this, use $config->custom->appearance['lang'] = 'en';
  *
@@ -54,6 +59,15 @@ $config->custom->session['blowfish'] = '';
    This directory must be readable and writable by your web server. */
 // $config->custom->jpeg['tmpdir'] = "/tmp";     // Example for Unix systems
 #  $config->custom->jpeg['tmpdir'] = "c:\\temp"; // Example for Windows systems
+
+/* Set this to (bool)true if you do NOT want a random salt used when
+   calling crypt().  Instead, use the first two letters of the user's
+   password.  This is insecure but unfortunately needed for some older
+   environments. */
+#  $config->custom->password['no_random_crypt_salt'] = true;
+
+/* Configure what objects are shown in left hand tree */
+// $config->custom->appearance['tree_filter'] = '(objectclass=*)';
 
 /*********************************************/
 /* Define your LDAP servers in this section  */
@@ -117,10 +131,10 @@ $ldapservers->SetValue($i,'server','name','My LDAP Server');
 /* Enable SASL authentication LDAP SASL authentication requires PHP 5.x
    configured with --with-ldap-sasl=DIR. If this option is disabled (ie, set to
    false), then all other sasl options are ignored. */
-// $ldapservers->SetValue($i,'server','sasl_auth', false);
+// $ldapservers->SetValue($i,'server','sasl_auth',false);
 
 /* SASL auth mechanism */
-// $ldapservers->SetValue($i,'server','sasl_mech', "PLAIN");
+// $ldapservers->SetValue($i,'server','sasl_mech','PLAIN');
 
 /* SASL authentication realm name */
 // $ldapservers->SetValue($i,'server','sasl_realm','');
@@ -134,13 +148,13 @@ $ldapservers->SetValue($i,'server','name','My LDAP Server');
 /* SASL authorization id regex and replacement
    When sasl_authz_id property is not set (default), phpLDAPAdmin will try to
    figure out authorization id by itself from bind distinguished name (DN).
-   
+
    This procedure is done by calling preg_replace() php function in the
    following way:
-   
+
    $authz_id = preg_replace($sasl_authz_id_regex,$sasl_authz_id_replacement,
-	$bind_dn);
-   
+    $bind_dn);
+
    For info about pcre regexes, see:
    - pcre(3), perlre(3)
    - http://www.php.net/preg_replace */
@@ -185,7 +199,7 @@ $ldapservers->SetValue($i,'server','name','My LDAP Server');
 /* If 'login_attr' is used above such that phpLDAPadmin will search for your DN
    at login, you may restrict the search to a specific objectClass. EG, set this
    to 'posixAccount' or 'inetOrgPerson', depending upon your setup. */
-// $ldapservers->SetValue($i,'login','class','');
+// $ldapservers->SetValue($i,'login','class',null);
 
 /* Specify true If you want phpLDAPadmin to not display or permit any
    modification to the LDAP server. */
@@ -208,50 +222,50 @@ $ldapservers->SetValue($i,'server','name','My LDAP Server');
 // $ldapservers->SetValue($i,'auto_number','mechanism','search');
 
 /* The DN of the search base when the 'search' mechanism is used above. */
-// $ldapservers->SetValue($i,'auto_number','search_base','ou=People,dc=example,dc=com');
+#  $ldapservers->SetValue($i,'auto_number','search_base','ou=People,dc=example,dc=com');
 
 /* The minimum number to use when searching for the next available UID number
    (only when 'search' is used for auto_uid_number_mechanism' */
 // $ldapservers->SetValue($i,'auto_number','min','1000');
 
 /* The DN of the uidPool entry when 'uidpool' mechanism is used above. */
-// $servers[$i]['auto_uid_number_uid_pool_dn'] = 'cn=uidPool,dc=example,dc=com';
+#  $servers[$i]['auto_uid_number_uid_pool_dn'] = 'cn=uidPool,dc=example,dc=com';
 
 /* If you set this, then phpldapadmin will bind to LDAP with this user ID when
    searching for the uidnumber. The idea is, this user id would have full
    (readonly) access to uidnumber in your ldap directory (the logged in user
    may not), so that you can be guaranteed to get a unique uidnumber for your
    directory. */
-// $ldapservers->SetValue($i,'auto_number','dn','');
+// $ldapservers->SetValue($i,'auto_number','dn',null);
 
 /* The password for the dn above. */
-// $ldapservers->SetValue($i,'auto_number','pass','');
+// $ldapservers->SetValue($i,'auto_number','pass',null);
 
 /* Enable anonymous bind login. */
 // $ldapservers->SetValue($i,'login','anon_bind',true);
 
 /* Use customized page with prefix when available. */
-// $ldapservers->SetValue($i,'custom','pages_prefix','custom_');
+#  $ldapservers->SetValue($i,'custom','pages_prefix','custom_');
 
 /* If you set this, then phpldapadmin will bind to LDAP with this user when
    testing for unique attributes (as set in unique_attrs array). If you want to
    enforce unique attributes, than this id should have full (readonly) access
    to the attributes in question (the logged in user may not have enough access)
 */
-// $ldapservers->SetValue($i,'unique_attrs','dn','');
+// $ldapservers->SetValue($i,'unique_attrs','dn',null);
 
 /* The password for the dn above */
-// $ldapservers->SetValue($i,'unique_attrs','pass','');
+// $ldapservers->SetValue($i,'unique_attrs','pass',null);
 
 /* If you set this, then only these DNs are allowed to log in. This array can
    contain individual users, groups or ldap search filter(s). Keep in mind that
    the user has not authenticated yet, so this will be an anonymous search to
    the LDAP server, so make your ACLs allow these searches to return results! */
-# $ldapservers->SetValue($i,'login','allowed_dns',array(
-#	'uid=stran,ou=People,dc=example,dc=com',
-# 	'(&(gidNumber=811)(objectClass=groupOfNames))',
-# 	'(|(uidNumber=200)(uidNumber=201))',
-# 	'cn=callcenter,ou=Group,dc=example,dc=com'));
+#  $ldapservers->SetValue($i,'login','allowed_dns',array(
+#   'uid=stran,ou=People,dc=example,dc=com',
+#   '(&(gidNumber=811)(objectClass=groupOfNames))',
+#   '(|(uidNumber=200)(uidNumber=201))',
+#   'cn=callcenter,ou=Group,dc=example,dc=com'));
 
 /* Set this if you dont want this LDAP server to show in the tree */
 // $ldapservers->SetValue($i,'appearance','visible',true);
@@ -284,29 +298,29 @@ $ldapservers->SetValue($i,'server','tls',false);
 $ldapservers->SetValue($i,'server','low_bandwidth',false);
 $ldapservers->SetValue($i,'appearance','password_hash','md5');
 $ldapservers->SetValue($i,'login','attr','dn');
-$ldapservers->SetValue($i,'login','string','');
-$ldapservers->SetValue($i,'login','class','');
+$ldapservers->SetValue($i,'login','string',null);
+$ldapservers->SetValue($i,'login','class',null);
 $ldapservers->SetValue($i,'server','read_only',false);
 $ldapservers->SetValue($i,'appearance','show_create',true);
 $ldapservers->SetValue($i,'auto_number','enable',true);
 $ldapservers->SetValue($i,'auto_number','mechanism','search');
-$ldapservers->SetValue($i,'auto_number','search_base','');
+$ldapservers->SetValue($i,'auto_number','search_base',null);
 $ldapservers->SetValue($i,'auto_number','min','1000');
-$ldapservers->SetValue($i,'auto_number','dn','');
-$ldapservers->SetValue($i,'auto_number','pass','');
+$ldapservers->SetValue($i,'auto_number','dn',null);
+$ldapservers->SetValue($i,'auto_number','pass',null);
 $ldapservers->SetValue($i,'login','anon_bind',true);
 $ldapservers->SetValue($i,'custom','pages_prefix','custom_');
-$ldapservers->SetValue($i,'unique_attrs','dn','');
-$ldapservers->SetValue($i,'unique_attrs','pass','');
+$ldapservers->SetValue($i,'unique_attrs','dn',null);
+$ldapservers->SetValue($i,'unique_attrs','pass',null);
 
 # SASL auth
-$ldapservers->SetValue($i,'server','sasl_auth', true);
-$ldapservers->SetValue($i,'server','sasl_mech', "PLAIN");
-$ldapservers->SetValue($i,'server','sasl_realm', "EXAMPLE.COM");
-$ldapservers->SetValue($i,'server','sasl_authz_id', null);
-$ldapservers->SetValue($i,'server','sasl_authz_id_regex', '/^uid=([^,]+)(.+)/i');
-$ldapservers->SetValue($i,'server','sasl_authz_id_replacement', '$1');
-$ldapservers->SetValue($i,'server','sasl_props', null);
+$ldapservers->SetValue($i,'server','sasl_auth',true);
+$ldapservers->SetValue($i,'server','sasl_mech','PLAIN');
+$ldapservers->SetValue($i,'server','sasl_realm','EXAMPLE.COM');
+$ldapservers->SetValue($i,'server','sasl_authz_id',null);
+$ldapservers->SetValue($i,'server','sasl_authz_id_regex','/^uid=([^,]+)(.+)/i');
+$ldapservers->SetValue($i,'server','sasl_authz_id_replacement','$1');
+$ldapservers->SetValue($i,'server','sasl_props',null);
 */
 
 /*********************************************/
@@ -318,7 +332,7 @@ $ldapservers->SetValue($i,'server','sasl_props', null);
 $friendly_attrs = array();
 
 $friendly_attrs['facsimileTelephoneNumber'] = 'Fax';
-$friendly_attrs['telephoneNumber']			= 'Phone';
+$friendly_attrs['telephoneNumber']          = 'Phone';
 
 /*********************************************/
 /* Support for attrs display order           */
@@ -330,16 +344,16 @@ $friendly_attrs['telephoneNumber']			= 'Phone';
    attributes that are not specified in this array will be displayed after in
    alphabetical order. */
 #  $attrs_display_order = array(
-#	'givenName',
-# 	'sn',
-# 	'cn',
-# 	'displayName',
-# 	'uid',
-# 	'uidNumber',
-# 	'gidNumber',
-# 	'homeDirectory',
-# 	'mail',
-# 	'userPassword'
+#   'givenName',
+#   'sn',
+#   'cn',
+#   'displayName',
+#   'uid',
+#   'uidNumber',
+#   'gidNumber',
+#   'homeDirectory',
+#   'mail',
+#   'userPassword'
 #  );
 
 /*********************************************/
@@ -358,8 +372,8 @@ $friendly_attrs['telephoneNumber']			= 'Phone';
 /* Hidden attributes in read-only mode. If undefined, it will be equal to
    $hidden_attrs. */
 #  $hidden_attrs_ro = array(
-#	'objectClass','shadowWarning', 'shadowLastChange', 'shadowMax',
-#	'shadowFlag', 'shadowInactive', 'shadowMin', 'shadowExpire');
+#   'objectClass','shadowWarning', 'shadowLastChange', 'shadowMax',
+#   'shadowFlag', 'shadowInactive', 'shadowMin', 'shadowExpire');
 
 /**                                         **/
 /** Read-only attributes                    **/
@@ -390,6 +404,19 @@ $friendly_attrs['telephoneNumber']			= 'Phone';
 #  $unique_attrs = array('uid','uidNumber','mail');
 
 /*********************************************/
+/* Group attributes                          */
+/*********************************************/
+
+/* Add "modify group members" link to the attribute. */
+// $config->custom->modify_member['groupattr'] = array('member','uniqueMember','memberUid')
+
+/* Configure filter for member search. This only applies to "modify group members" feature */
+// $config->custom->modify_member['filter'] = '(objectclass=Person)';
+
+/* Attribute that is added to the group member attribute. */
+// $config->custom->modify_member['attr'] = 'dn';
+
+/*********************************************/
 /* Predefined Queries (canned views)         */
 /*********************************************/
 
@@ -410,7 +437,7 @@ $queries[$q]['scope'] = 'sub';
 $queries[$q]['filter'] = '(&(objectClass=posixAccount)(uid=*))';
 
 /* The attributes to return */
-$queries[$q]['attributes'] = 'cn, uid, homeDirectory';
+$queries[$q]['attributes'] = 'cn, uid, homeDirectory, telephonenumber, jpegphoto';
 
 /* If you want to configure more pre-defined queries, copy and paste the above (including the "$q++;") */
 $q++;

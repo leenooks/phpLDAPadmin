@@ -197,6 +197,10 @@ msgid "Rename"
 msgstr "更名"
 
 
+msgid "rename"
+msgstr "æŽå"
+
+
 msgid "Add"
 msgstr "新增"
 

@@ -14,6 +14,7 @@
 
 <!-- Template Definition -->
 <!ELEMENT template (title,regexp?,icon?,description?,askcontainer?,rdn?,
+			destinationcontainer?,action?,
 			visible?,invalid?,objectClasses,attributes)>
 
 <!-- ObjectClasses Definition -->
@@ -46,6 +47,8 @@
 <!ELEMENT rdn (#PCDATA)>
 <!ELEMENT visible (#PCDATA)>
 <!ELEMENT invalid (#PCDATA)>
+<!ELEMENT destinationcontainer (#PCDATA)>
+<!ELEMENT action (#PCDATA)>
 
 <!-- Attribute Parameters -->
 <!ELEMENT array (#PCDATA)>

@@ -30,15 +30,15 @@
 	<hint>Automatically determined</hint>
 	<order>3</order>
 	<page>1</page>
-	<presubmit>=php.GetNextNumber(/,gid)</presubmit>
+	<presubmit>=php.GetNextNumber(/,gid,true,(&amp;(objectClass=sambaDomain)(sambaDomainName=mysambadomain))</presubmit>
 	<spacer>1</spacer>
 </attribute>
 <attribute id="sambaSID">
 	<display>Samba SID</display>
 	<helper>
 		<id>sidsuffix</id>
+	    <value>=php.GetNextNumber(/,gid,false,(&amp;(objectClass=sambaDomain)(sambaDomainName=mysambadomain)),*2;+1000)</value>
 		<location>side</location>
-		<value></value>
 	</helper>
 	<order>4</order>
 	<page>1</page>
@@ -56,12 +56,8 @@
 	<value id="5">Well-known Group</value>
 </attribute>
 <attribute id="memberUid">
-	<array>10</array>
 	<display>Users</display>
-	<helper>
-		<location>side</location>
-<!--		<value>=php.DrawChooserLink(memberUid,0)</value> -->
-	</helper>
+    <value>=php.MultiList(/,(objectClass=posixAccount),uid,%cn% %uid|-4/U%,memberUid,dmdName=users:::dc=localdomain,root => cn=root; nobody => cn=nobody,cn,10,(&amp;(objectClass=posixAccount)(gidNumber=29999)),uid)</value>
 	<hidden>0</hidden>
 	<order>10</order>
 	<page>1</page>

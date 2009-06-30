@@ -161,6 +161,10 @@ msgid "Rename"
 msgstr "hernoemen"
 
 
+msgid "rename"
+msgstr "hernoemen"
+
+
 msgid "Add"
 msgstr "toevoegen"
 
@@ -181,7 +185,7 @@ msgid "Show internal attributes"
 msgstr "interne attributen laten zien"
 
 
-msgid "Click to view the schema defintion for attribute type '%s'"
+msgid "Click to view the schema definition for attribute type '%s'"
 msgstr "klik hier om de schemadefinitie van attribuuttype '%s' te bekijken"
 
 

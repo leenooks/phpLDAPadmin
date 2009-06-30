@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.292 2006/05/13 12:52:27 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.302 2006/10/29 11:44:36 wurley Exp $
 
 /**
  * A collection of functions used throughout phpLDAPadmin.
@@ -400,9 +400,10 @@ function real_attr_name($attr_name) {
  *
  * @todo Must turn off auto_uid|gid in template if config is disabled.
  */
-function get_next_number(&$ldapserver,$startbase='',$type='uid') {
+function get_next_number(&$ldapserver,$startbase='',$type='uid',$increment=false,$filter=false) {
 	if (DEBUG_ENABLED)
-		debug_log('get_next_number(): Entered with (%s,%s,%s)',1,$ldapserver->server_id,$startbase,$type);
+		debug_log('get_next_number(): Entered with (%s,%s,%s,%s)',1,
+			$ldapserver->server_id,$startbase,$type,$filter);
 
 	global $config,$ldapservers;
 
@@ -420,15 +421,16 @@ function get_next_number(&$ldapserver,$startbase='',$type='uid') {
 
 				if (is_null($base_dn))
 					pla_error(sprintf(_('You specified the "auto_uid_number_mechanism" as "search" in your
-                              configuration for server <b>%s</b>, but you did not specify the
-                              "auto_uid_number_search_base". Please specify it before proceeding.'),$ldapserver->name));
+						configuration for server <b>%s</b>, but you did not specify the
+						"auto_uid_number_search_base". Please specify it before proceeding.'),$ldapserver->name));
 
 			} else {
 				$base_dn = $startbase;
 			}
 
 			if (! $ldapserver->dnExists($base_dn))
-				pla_error(sprintf(_('Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base for server %s'),$ldapserver->name));
+				pla_error(sprintf(_('Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base for server %s'),
+					$ldapserver->name));
 
 			$filter = '(|(uidNumber=*)(gidNumber=*))';
 			$results = array();
@@ -497,11 +499,80 @@ function get_next_number(&$ldapserver,$startbase='',$type='uid') {
 
 			break;
 
+		case 'uidpool':
+			$con = $ldapserver->connect(false,'auto_search',false,
+				$ldapservers->GetValue($ldapserver->server_id,'auto_number','dn'),
+				$ldapservers->GetValue($ldapserver->server_id,'auto_number','pass'));
+
+			if (! $con)
+				pla_error(sprintf(_('Unable to bind to <b>%s</b> with your with auto_uid credentials. Please check your configuration file.'),$ldapserver->name));
+
+			# assume that uidpool dn is set in config file if no filter given
+			if (empty($filter))
+				$uidpool_dn = $ldapservers->GetValue($ldapserver->server_id,'auto_number','uidpool_dn');
+
+			else {
+				$filter = str_replace(array('&amp;',':::'),array('&',','),$filter);
+				$dns = $ldapserver->search($con,$startbase,$filter,array('dn'),'sub');
+
+				switch (count($dns)) {
+					case '1':
+						break;
+
+					case '0':
+						pla_error(_('Uidpool dn not found, please change filter parameter'));
+
+					default:
+						pla_error(_('There is more than one dn for uidpool,please change filter parameter'));
+				}
+
+				list ($key,$attrs) = each($dns);
+				$attrs = array_change_key_case($attrs);
+				$uidpool_dn = $attrs['dn'];
+			}
+
+			if (empty($uidpool_dn))
+				pla_error(_('uidpool_dn not found. Please check filter (arg 3) or set up uidpool_dn in config file'));
+
+			switch ($type) {
+				case 'uid':
+					$attrs = array('sambaNextUserRid');
+					$key = 'sambanextuserrid';
+					$realkey = 'sambaNextUserRid';
+					break;
+
+				case 'gid':
+					$attrs = array('sambaNextGroupRid');
+					$key = 'sambanextgrouprid';
+					$realkey = 'sambaNextGroupRid';
+					break;
+
+				default:
+					// It might exists other attributes types...
+					$attrs = array($type);
+					$key = strtolower($type);
+					$realkey = $type;
+					break;
+			}
+
+			$number = $ldapserver->search($con,$uidpool_dn,$filter,$attrs,'base');
+			list($rkey,$number) = each($number);
+			$number = array_change_key_case($number);
+			$number = $number[$key];
+
+			if (isset($increment) && ($increment == 'true')) {
+				$updatedattr = array ($key => $number + 1);
+				$ldapserver->modify($uidpool_dn,$updatedattr);
+			}
+
+			return $number;
+			break;
+
 		# No other cases allowed. The user has an error in the configuration
 		default :
 			pla_error( sprintf( _('You specified an invalid value for auto_uid_number_mechanism ("%s")
-                                   in your configration. Only "uidpool" and "search" are valid.
-                                   Please correct this problem.') , $mechanism) );
+				in your configration. Only "uidpool" and "search" are valid.
+				Please correct this problem.') , $mechanism) );
 	}
 }
 
@@ -1006,67 +1077,91 @@ function support_oid_to_text($oid_id) {
  * @see ldap_errno
  * @see pla_verbose_error
  */
-function pla_error( $msg, $ldap_err_msg=null, $ldap_err_no=-1, $fatal=true ) {
+function pla_error($msg,$ldap_err_msg=null,$ldap_err_no=-1,$fatal=true,$backtrace=null) {
 	if (defined('DEBUG_ENABLED') && (DEBUG_ENABLED))
 		debug_log('pla_error(): Entered with (%s,%s,%s,%s)',1,$msg,$ldap_err_msg,$ldap_err_no,$fatal);
 
-	@include_once HTDOCDIR.'header.php';
+	include_once HTDOCDIR.'header.php';
+	$server = isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : 'undefined';
 	global $config;
 
-	?>
-	<center>
-	<table class="error"><tr><td class="img"><img src="images/warning.png" alt="Warning" /></td>
-	<td><center><h2><?php echo _('Error');?></h2></center>
-	<?php echo $msg; ?>
-	<br />
-	<br />
-	<?php
+	echo '<center>';
+	echo '<table class="error">';
+
+	printf('<tr><th colspan="4">%s</th></tr>',_('Error'));
+
+	echo '<tr>';
+	echo '<td rowspan="99" width="10%"><img src="images/warning.png" alt="Warning" /></td>';
+	printf('<td colspan="3"><b>%s</b></td>',$msg);
+	echo '</tr>';
+
+	echo '<tr><td colspan="3">&nbsp;</td></tr>';
 
 	if (function_exists('syslog_err'))
 		syslog_err($msg);
 
-	if( $ldap_err_msg ) {
-		echo sprintf(_('LDAP said: %s'), htmlspecialchars( $ldap_err_msg ));
-		echo '<br />';
-		}
+	if ($ldap_err_msg)
+		printf('<tr><td colspan="3"><b>%s</b>: %s</td></tr>',_('LDAP said'),htmlspecialchars($ldap_err_msg));
 
-	if( $ldap_err_no != -1 ) {
-		$ldap_err_no = ( '0x' . str_pad( dechex( $ldap_err_no ), 2, 0, STR_PAD_LEFT ) );
-		$verbose_error = pla_verbose_error( $ldap_err_no );
+	if ($ldap_err_no != -1) {
+		$ldap_err_no = ('0x'.str_pad(dechex($ldap_err_no),2,0,STR_PAD_LEFT));
+		$verbose_error = pla_verbose_error($ldap_err_no);
 
-		if( $verbose_error ) {
-			echo sprintf( _('Error number: %s (%s)'), $ldap_err_no, $verbose_error['title']);
-			echo '<br />';
-			echo sprintf( _('Description: %s <br /><br />'), $verbose_error['desc']);
+		if ($verbose_error) {
+			printf('<tr><td colspan="2"><b>%s</b>: %s (%s)</td></tr>',_('Error number'),$ldap_err_no,$verbose_error['title']);
+			printf('<tr><td colspan="2"><b>%s</b>: %s</td></tr>',_('Description'),$verbose_error['desc']);
 		} else {
-			echo sprintf(_('Error number: %s<br /><br />'), $ldap_err_no);
-			echo '<br />';
-			echo _('Description: (no description available)<br />');
+			printf('<tr><td colspan="2"><b>%s</b>: %s</td></tr>',_('Error number'),$ldap_err_no);
+			printf('<tr><td colspan="2"><b>%s</b>: (%s)</td></tr>',_('Description'),_('no description available'));
 		}
+
+		echo '<tr><td colspan="3">&nbsp;</td></tr>';
 
 		if (function_exists('syslog_err'))
-			syslog_err(sprintf(_('Error number: %s<br /><br />'),$ldap_err_no));
-	}
-	?>
-	<br />
-	<!-- Commented out due to too many false bug reports. :)
-	<br />
-	<center>
-	<small>
-		<?php echo sprintf(_('Is this a phpLDAPadmin bug? If so, please <a href=\'%s\'>report it</a>.') , get_href( 'add_bug' ));?>
-        <?php
-            if( function_exists( "debug_print_backtrace" ) )
-                debug_print_backtrace();
-        ?>
-	</small>
-	</center>
-	-->
-	</td></tr></table>
-	</center>
-	<?php
+			syslog_err(sprintf('%s %s',_('Error number'),$ldap_err_no));
 
-	if( $fatal ) {
-		echo "</body>\n</html>";
+	} elseif ((defined('DEBUG_ENABLED') && DEBUG_ENABLED && function_exists('debug_backtrace')) || $backtrace) {
+		printf('<tr><td colspan="3"><b>%s</b></td></tr>',_('Backtrace'));
+
+		if (is_null($backtrace))
+			$backtrace = debug_backtrace();
+
+			printf('<tr><td>&nbsp;</td><td><b><small><span style="white-space: nowrap;">%s</span></small></b></td><td>%s</td></tr>',
+				'PHP Version',phpversion());
+			printf('<tr><td>&nbsp;</td><td><b><small><span style="white-space: nowrap;">%s</span></small></b></td><td>%s</td></tr>',
+				'PLA Version',pla_version());
+			printf('<tr><td>&nbsp;</td><td><b><small><span style="white-space: nowrap;">%s</span></small></b></td><td>%s</td></tr>',
+				'PHP SAPI',php_sapi_name());
+			printf('<tr><td>&nbsp;</td><td><b><small><span style="white-space: nowrap;">%s</span></small></b></td><td>%s</td></tr>',
+				'Web Server',$server);
+
+			echo '<tr><td colspan="3">&nbsp;</td></tr>';
+
+		foreach ($backtrace as $error => $line) {
+			printf('<tr><td rowspan="2">&nbsp;</td><td><b><small>%s</small></b></td><td>%s (%s)</td></tr>',_('File'),$line['file'],$line['line']);
+			printf('<tr><td><b><small>%s</small></b></td><td><small>%s<br /><pre>',_('Function'),$line['function']);
+			print_r($line['args']);
+			echo '</pre></small></td></tr>';
+		}
+
+		/*
+			<br />
+			<!-- Commented out due to too many false bug reports. :)
+			<br />
+			<center>
+			<small>
+			<?php printf(_('Is this a phpLDAPadmin bug? If so, please <a href=\'%s\'>report it</a>.'),get_href('add_bug'));?>
+			</small>
+			</center>
+			-->
+		*/
+	}
+	echo '</table>';
+	echo '</center>';
+
+	if ($fatal) {
+		echo '</body>';
+		echo '</html>';
 		die();
 	}
 }
@@ -1088,69 +1183,66 @@ function pla_error( $msg, $ldap_err_msg=null, $ldap_err_no=-1, $fatal=true ) {
  *
  * @see set_error_handler
  */
-function pla_error_handler( $errno, $errstr, $file, $lineno ) {
+function pla_error_handler($errno,$errstr,$file,$lineno) {
 	if (DEBUG_ENABLED)
 		debug_log('pla_error_handler(): Entered with (%s,%s,%s,%s)',1,$errno,$errstr,$file,$lineno);
 
-	// error_reporting will be 0 if the error context occurred
-	// within a function call with '@' preprended (ie, @ldap_bind() );
-	// So, don't report errors if the caller has specifically
-	// disabled them with '@'
-	if( 0 == ini_get( 'error_reporting' ) || 0 == error_reporting() )
+	/* error_reporting will be 0 if the error context occurred
+	 * within a function call with '@' preprended (ie, @ldap_bind() );
+	 * So, don't report errors if the caller has specifically
+	 * disabled them with '@'
+	 */
+	if (ini_get('error_reporting') == 0 || error_reporting() == 0)
 		return;
 
-	$file = basename( $file );
-	$caller = basename( $_SERVER['PHP_SELF'] );
-	$errtype = "";
-	switch( $errno ) {
-		case E_STRICT: $errtype = "E_STRICT"; break;
-		case E_ERROR: $errtype = "E_ERROR"; break;
-		case E_WARNING: $errtype = "E_WARNING"; break;
-		case E_PARSE: $errtype = "E_PARSE"; break;
-		case E_NOTICE: $errtype = "E_NOTICE"; break;
-		case E_CORE_ERROR: $errtype = "E_CORE_ERROR"; break;
-		case E_CORE_WARNING: $errtype = "E_CORE_WARNING"; break;
-		case E_COMPILE_ERROR: $errtype = "E_COMPILE_ERROR"; break;
-		case E_COMPILE_WARNING: $errtype = "E_COMPILE_WARNING"; break;
-		case E_USER_ERROR: $errtype = "E_USER_ERROR"; break;
-		case E_USER_WARNING: $errtype = "E_USER_WARNING"; break;
-		case E_USER_NOTICE: $errtype = "E_USER_NOTICE"; break;
-		case E_ALL: $errtype = "E_ALL"; break;
-		default: $errtype = _('Unrecognized error number: ') . $errno;
+	$file = basename($file);
+	$caller = basename($_SERVER['PHP_SELF']);
+	$errtype = '';
+
+	switch ($errno) {
+		case E_STRICT: $errtype = 'E_STRICT'; break;
+		case E_ERROR: $errtype = 'E_ERROR'; break;
+		case E_WARNING: $errtype = 'E_WARNING'; break;
+		case E_PARSE: $errtype = 'E_PARSE'; break;
+		case E_NOTICE: $errtype = 'E_NOTICE'; break;
+		case E_CORE_ERROR: $errtype = 'E_CORE_ERROR'; break;
+		case E_CORE_WARNING: $errtype = 'E_CORE_WARNING'; break;
+		case E_COMPILE_ERROR: $errtype = 'E_COMPILE_ERROR'; break;
+		case E_COMPILE_WARNING: $errtype = 'E_COMPILE_WARNING'; break;
+		case E_USER_ERROR: $errtype = 'E_USER_ERROR'; break;
+		case E_USER_WARNING: $errtype = 'E_USER_WARNING'; break;
+		case E_USER_NOTICE: $errtype = 'E_USER_NOTICE'; break;
+		case E_ALL: $errtype = 'E_ALL'; break;
+
+		default: $errtype = sprintf('%s: %s',_('Unrecognized error number'),$errno);
 	}
 
-	$errstr = preg_replace("/\s+/"," ",$errstr);
-	if( $errno == E_NOTICE ) {
-		echo sprintf(_('<center><table class=\'notice\'><tr><td colspan=\'2\'><center><img src=\'images/warning.png\' height=\'12\' width=\'13\' alt="Warning" />
-             <b>You found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>
-             <td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>
-             </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>
-	<tr><td colspan=\'2\'><center><a target=\'new\' href=\'%s\'>Please check and see if this bug has been reported here</a>.</center></td></tr>
-	<tr><td colspan=\'2\'><center><a target=\'new\' href=\'%s\'>If it hasnt been reported, you may report this bug by clicking here</a>.</center></td></tr>
-	</table></center><br />'), $errstr, $errtype, $file,
-		$lineno, $caller, pla_version(), phpversion(), php_sapi_name(),
-		$_SERVER['SERVER_SOFTWARE'], get_href('search_bug',"&summary_keyword=".htmlspecialchars($errstr)),get_href('add_bug'));
+	$errstr = preg_replace('/\s+/',' ',$errstr);
+
+	if ($errno == E_NOTICE) {
+		echo '<center>';
+
+		echo '<table class="notice">';
+		printf('<tr><td colspan="2"><center><img src="images/warning.png" height="12" width="13" alt="Warning" />&nbsp;<b>%s</b></center></td></tr>',
+			_('You found a non-fatal phpLDAPadmin bug!'));
+
+		printf('<tr><td>%s:</td><td><b>%s</b> (<b>%s</b>)</td></tr>',_('Error'),$errstr,$errtype);
+		printf('<tr><td>%s:</td><td><b>%s</b> %s <b>%s</b>, %s <b>%s</b></td></tr>',_('File'),$file,_('line'),$lineno,_('caller'),$caller);
+		printf('<tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b></td></tr>',
+			pla_version(),phpversion(),php_sapi_name());
+		printf('<tr><td>Web server:</td><td><b>%s</b></td></tr>',$_SERVER['SERVER_SOFTWARE']);
+
+		printf('<tr><td colspan="2"><a target="new" href="%s"><center>%s.</center></a></td></tr>',
+			get_href('search_bug',"&summary_keyword=".htmlspecialchars($errstr)),
+			_('Please check and see if this bug has been reported'));
+		echo '</table>';
+
+		echo '</center>';
+
 		return;
 	}
 
-	$server = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : 'undefined';
-	$phpself = isset( $_SERVER['PHP_SELF'] ) ? basename( $_SERVER['PHP_SELF'] ) : 'undefined';
-	pla_error( sprintf(_('Congratulations! You found a bug in phpLDAPadmin.<br /><br />
-	     <table class=\'bug\'>
-	     <tr><td>Error:</td><td><b>%s</b></td></tr>
-	     <tr><td>Level:</td><td><b>%s</b></td></tr>
-	     <tr><td>File:</td><td><b>%s</b></td></tr>
-	     <tr><td>Line:</td><td><b>%s</b></td></tr>
-		 <tr><td>Caller:</td><td><b>%s</b></td></tr>
-	     <tr><td>PLA Version:</td><td><b>%s</b></td></tr>
-	     <tr><td>PHP Version:</td><td><b>%s</b></td></tr>
-	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>
-	     <tr><td>Web server:</td><td><b>%s</b></td></tr>
-	     </table>
-	     <br />
-	     Please report this bug by clicking below!'), $errstr, $errtype, $file,
-		$lineno, $phpself, pla_version(),
-		phpversion(), php_sapi_name(), $server ));
+	pla_error(sprintf('%s: %s',$errtype,$errstr),null,-1,true,debug_backtrace());
 }
 
 /**
@@ -1216,7 +1308,8 @@ function draw_jpeg_photos($ldapserver,$dn,$attr_name='jpegPhoto',$draw_delete_bu
 	if (isset($table_html_attrs) && trim($table_html_attrs) )
 		printf('<table %s><tr><td><center>',$table_html_attrs);
 
-	$jpeg_data = array_pop($ldapserver->search(null,$dn,'objectClass=*',array($attr_name),'base'));
+	$jpeg_data = $ldapserver->search(null,$dn,'objectClass=*',array($attr_name),'base');
+	$jpeg_data = array_pop($jpeg_data);
 	if (! $jpeg_data) {
 		printf(_('Could not fetch jpeg data from LDAP server for attribute %s.'),htmlspecialchars($attr_name));
 		return;
@@ -1311,7 +1404,13 @@ function password_hash( $password_clear, $enc_type ) {
 
 	switch( $enc_type ) {
 		case 'crypt':
-			$new_value = '{CRYPT}' . crypt( $password_clear, random_salt(2) );
+			global $config;
+
+			if ($config->GetValue('password','no_random_crypt_salt') == true)
+				$new_value = '{CRYPT}' . crypt($password_clear,substr($password_clear,0,2));
+			else
+				$new_value = '{CRYPT}' . crypt($password_clear,random_salt(2));
+
 			break;
 
 		case 'ext_des':
@@ -1719,7 +1818,7 @@ function dn_unescape($dn) {
  */
 function get_href($type,$extra_info='') {
 	$sf = 'https://sourceforge.net';
-	$pla = 'http://wiki.pldapadmin.com';
+	$pla = 'http://wiki.phpldapadmin.info';
 	$group_id = '61828';
 	$bug_atid = '498546';
 	$rfe_atid = '498549';
@@ -2575,12 +2674,15 @@ function masort(&$data,$sortby,$rev=0) {
  * @param array $attrs LDAP attributes to use as values.
  * @return array $results Array of values keyed by $key.
  */
-function return_ldap_hash($ldapserver,$base_dn,$filter,$key,$attrs) {
+function return_ldap_hash($ldapserver,$base_dn,$filter,$key,$attrs,$sort=null) {
 	if (DEBUG_ENABLED)
 		debug_log('return_ldap_hash(): Entered with (%s,%s,%s,%s,%s)',0,
 			$ldapserver->server_id,$base_dn,$filter,$key,count($attrs));
 
-	$ldapquery = $ldapserver->search(null,$base_dn,$filter,$attrs);
+	if (is_array($sort))
+		$ldapquery = $ldapserver->search(null,$base_dn,$filter,$attrs,'sub',false,LDAP_DEREF_NEVER,0,$sort);
+	else
+		$ldapquery = $ldapserver->search(null,$base_dn,$filter,$attrs);
 
 	$results = array();
 
@@ -2666,7 +2768,7 @@ function password_generate() {
 			$leftover = array_merge($leftover,$llower,$lupper,$numbers,$punc);
 
 		shuffle($leftover);
-		$outarray = array_merge($outarray, a_array_rand($leftover, $criteria['num'] - $num_spec));
+		$outarray = array_merge($outarray, a_array_rand($leftover,$length-$num_spec));
 	}
 
 	shuffle($outarray);
@@ -2799,5 +2901,15 @@ function no_expire_header() {
 	header('Cache-Control: no-store, no-cache, must-revalidate');
 	header('Cache-Control: post-check=0, pre-check=0', false);
 	header('Pragma: no-cache');
+}
+
+/**
+ * This is for Opera. By putting "random junk" in the query string, it thinks
+ * that it does not have a cached version of the page, and will thus
+ * fetch the page rather than display the cached version
+ */
+function random_junk() {
+	$time = gettimeofday();
+	return md5(strtotime('now').$time['usec']);
 }
 ?>

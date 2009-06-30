@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy.php,v 1.39 2006/01/03 20:39:58 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy.php,v 1.43 2007/03/18 01:30:33 wurley Exp $
 
 /**
  * Copies a given object to create a new one.
@@ -88,7 +88,7 @@ if ($copy_result) {
 
 	if ($do_remove) {
 		sleep(2);
-		$delete_url = sprintf('delete_form.php?server_id=%s&dn=%s',$server_id_dst,rawurlencode($dn_src));
+		$delete_url = sprintf('delete_form.php?server_id=%s&dn=%s',$server_id_src,rawurlencode($dn_src));
 		echo '<!-- redirect to the delete form -->';
 		printf('<script type="text/javascript" language="javascript">parent.right_frame.location="%s" </script>',$delete_url);
 	}
@@ -99,7 +99,7 @@ function r_copy_dn($ldapserver_src,$ldapserver_dst,$snapshottree,$root_dn,$dn_ds
 		debug_log('r_copy_dn: Entered with (%s,%s,%s,%s,%s)',1,
 			$ldapserver_src->server_id,$ldapserver_dst->server_id,$snapshottree,$root_dn,$dn_dst);
 
-	printf('<nobr>%s %s...',_('Copying '),htmlspecialchars($root_dn));
+	printf('<span style="white-space: nowrap;">%s %s...',_('Copying'),htmlspecialchars($root_dn));
 	flush();
 
 	$copy_result = copy_dn($ldapserver_src,$ldapserver_dst,$root_dn,$dn_dst);
@@ -107,7 +107,7 @@ function r_copy_dn($ldapserver_src,$ldapserver_dst,$snapshottree,$root_dn,$dn_ds
 	if (! $copy_result)
 		return false;
 
-	printf('<span style="color:green">%s</span></nobr><br />',_('Success'));
+	printf('<span style="color:green">%s</span><br />',_('Success'));
 	flush();
 
 	$children = isset($snapshottree[$root_dn]) ? $snapshottree[$root_dn] : null;
@@ -172,6 +172,7 @@ function build_tree($ldapserver,$dn,$buildtree) {
 		debug_log('build_tree: Entered with (%s,%s,%s)',1,
 			$ldapserver->server_id,$dn,$buildtree);
 
+	# we search all children, not only the visible children in the tree
 	$children = $ldapserver->getContainerContents($dn,0);
 
 	if (is_array($children) && count($children) > 0) {

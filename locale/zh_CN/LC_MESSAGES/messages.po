@@ -245,6 +245,10 @@ msgid "Rename"
 msgstr "更名"
 
 
+msgid "rename"
+msgstr "啪眉脙没"
+
+
 msgid "Add"
 msgstr "增加"
 

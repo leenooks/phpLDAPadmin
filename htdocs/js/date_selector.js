@@ -5,7 +5,11 @@ function dateSelector(id) {
 	var parse = false;
 
     	var cal = new Calendar(0, null, onSelect, onClose);
-	cal.showsTime = false;
+	if (defaults['f_time_'+id]) {
+		cal.showsTime = true;
+	} else {
+		cal.showsTime = false;
+	}
 	cal.weekNumbers = true;
 	cal.showsOtherMonths = true;
 	cal.create();

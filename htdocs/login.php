@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login.php,v 1.54 2006/01/03 20:39:58 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login.php,v 1.55 2006/09/12 13:09:08 wurley Exp $
 
 /**
  * For servers whose auth_type is set to 'cookie' or 'session'. Pass me the
@@ -38,7 +38,7 @@ if (! $anon_bind)
 $save_auth_type = $ldapserver->auth_type;
 
 if ($anon_bind) {
-        if (DEBUG_ENABLED)
+	if (DEBUG_ENABLED)
 		debug_log('Anonymous Login was posted [%s].',64,$anon_bind);
 
 	$dn = null;
@@ -78,14 +78,15 @@ if ($anon_bind) {
 
 		# Got through each of the BASE DNs and test the login.
 		foreach ($ldapserver->getBaseDN() as $base_dn) {
-		        if (DEBUG_ENABLED)
+			if (DEBUG_ENABLED)
 				debug_log('Searching LDAP with base [%s]',64,$base_dn);
 
-			$result = array_pop($ldapserver->search(null,$base_dn,$filter,array('dn')));
+			$result = $ldapserver->search(null,$base_dn,$filter,array('dn'));
+			$result = array_pop($result);
 			$dn = $result['dn'];
 
 			if ($dn) {
-			        if (DEBUG_ENABLED)
+				if (DEBUG_ENABLED)
 					debug_log('Got DN [%s] for user ID [%s]',64,$dn,$uid);
 				break;
 			}

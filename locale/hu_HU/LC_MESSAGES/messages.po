@@ -205,6 +205,10 @@ msgid "Rename"
 msgstr "Átnevezés"
 
 
+msgid "rename"
+msgstr "ÃtnevezÃ©s"
+
+
 msgid "Add"
 msgstr "Hozzáadás"
 

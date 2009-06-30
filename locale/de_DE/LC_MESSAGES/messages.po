@@ -245,6 +245,10 @@ msgid "Rename"
 msgstr "Umbenennen"
 
 
+msgid "rename"
+msgstr "umbenennen"
+
+
 msgid "Add"
 msgstr "Hinzufügen"
 

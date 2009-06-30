@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rdelete.php,v 1.24 2005/12/10 10:34:54 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rdelete.php,v 1.27 2007/03/18 03:14:52 wurley Exp $
 
 /**
  * Recursively deletes the specified DN and all of its children
@@ -57,13 +57,13 @@ function pla_rdelete($ldapserver,$dn) {
 	$children = $ldapserver->getContainerContents($dn);
 
 	if (! is_array($children) || count($children) == 0) {
-		printf('<nobr>'._('Deleting %s').'...',htmlspecialchars($dn));
+		printf('<span style="white-space: nowrap;">%s %s...',_('Deleting'),htmlspecialchars($dn));
 		flush();
 
 		if (run_hook('pre_entry_delete',array('server_id'=>$ldapserver->server_id,'dn'=>$dn)))
 			if ($ldapserver->delete($dn)) {
 		                run_hook('post_entry_delete',array('server_id'=>$ldapserver->server_id,'dn'=>$dn));
-				printf(' <span style="color:green">%s</span></nobr><br />',_('Success'));
+				printf(' <span style="color:green">%s</span></span><br />',_('Success'));
 				return true;
 
 			} else {
@@ -74,13 +74,13 @@ function pla_rdelete($ldapserver,$dn) {
 		foreach ($children as $child_dn)
 			pla_rdelete($ldapserver,$child_dn);
 
-		printf('<nobr>'._('Deleting %s').'...',htmlspecialchars($dn));
+		printf('<span style="white-space: nowrap;">%s %s...',_('Deleting'),htmlspecialchars($dn));
 		flush();
 
 		if (run_hook('pre_entry_delete',array('server_id'=>$ldapserver->server_id,'dn'=>$dn)))
 			if ($ldapserver->delete($dn)) {
 		                run_hook('post_entry_delete',array('server_id'=>$ldapserver->server_id,'dn'=>$dn));
-				printf(' <span style="color:green">%s</span></nobr><br />',_('Success'));
+				printf(' <span style="color:green">%s</span></span><br />',_('Success'));
 				return true;
 
 			} else {
