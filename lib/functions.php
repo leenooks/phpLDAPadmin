@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.275.2.17 2005/11/12 04:41:17 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.275.2.19 2005/11/27 06:59:24 wurley Exp $
 
 /**
  * A collection of functions used throughout phpLDAPadmin.
@@ -762,6 +762,7 @@ function get_next_uid_number($ldapserver,$startbase='',$type='uid') {
 
 				for ($i = 0;$i < $search['count']; $i++ ) {
 					$attrs = $search[$i];
+					$entry = array();
 
 					switch ($type) {
 						case 'uid' : 
@@ -777,6 +778,8 @@ function get_next_uid_number($ldapserver,$startbase='',$type='uid') {
 								$entry['uniqnumber'] = $attrs['gidnumber'][0];
 							}
 							break;
+						default :
+							pla_error(sprintf('Unknown type [%s] in search',$type));
 					}
 					$results[] = $entry;
 				}
@@ -785,6 +788,8 @@ function get_next_uid_number($ldapserver,$startbase='',$type='uid') {
 				$search = pla_ldap_search( $ldapserver, $filter, $base_dn, array('uidNumber','gidNumber'));
 
 				foreach ($search as $dn => $attrs) {
+					$entry = array();
+
 					switch ($type) {
 						case 'uid' : 
 							if (isset($attrs['uidNumber'])) {
@@ -799,6 +804,8 @@ function get_next_uid_number($ldapserver,$startbase='',$type='uid') {
 								$entry['uniqnumber'] = $attrs['gidNumber'];
 							}
 							break;
+						default :
+							pla_error(sprintf('Unknown type [%s] in search',$type));
 					}
 					$results[] = $entry;
 				}
@@ -807,7 +814,8 @@ function get_next_uid_number($ldapserver,$startbase='',$type='uid') {
 			# construct a list of used numbers
 			$autonum = array();
 			foreach ($results as $result)
-				$autonum[] = $result['uniqnumber'];
+				if (isset($result['uniqnumber']))
+					$autonum[] = $result['uniqnumber'];
 
 			$autonum = array_unique($autonum);
 			if (count($autonum) == 0)
