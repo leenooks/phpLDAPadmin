@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/export_form.php,v 1.26 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/export_form.php,v 1.26.2.1 2008/01/13 05:37:01 wurley Exp $
 
 /**
  * export_form.php
@@ -38,7 +38,7 @@ echo '<br />';
 echo '<center>';
 echo '<form name="export_form" action="cmd.php" method="post">';
 echo '<input type="hidden" name="cmd" value="export" />';
-echo '<table class="export">';
+echo '<table class="forminput">';
 echo '<tr>';
 echo '<td>';
 

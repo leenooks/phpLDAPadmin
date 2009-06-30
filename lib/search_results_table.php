@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_table.php,v 1.9.2.2 2007/12/26 09:26:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_table.php,v 1.9.2.3 2008/01/13 05:37:02 wurley Exp $
 
 /**
  * Incoming variables (among others)
@@ -91,7 +91,7 @@ $header_row .= '</tr>';
 # Begin drawing table
 echo '<br />';
 echo '<center>';
-echo '<table class="search_result_table">';
+echo '<table class="result_table">';
 
 for ($i=0;$i<count($entries_display);$i++) {
 	$result = $entries_display[$i];
@@ -99,10 +99,7 @@ for ($i=0;$i<count($entries_display);$i++) {
 	if ($i %10 == 0)
 		echo $header_row;
 
-	if ($i % 2 == 0 )
-		echo '<tr class="highlight">';
-	else
-		echo '<tr>';
+	printf('<tr class="%s">',$i%2 ? 'even' : 'odd');
 
 	foreach ($all_attrs as $attr) {
 		echo '<td>';

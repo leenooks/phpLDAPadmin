@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import.php,v 1.35.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/ldif_import.php,v 1.35.2.2 2008/01/28 12:58:43 wurley Exp $
  
 /**
  * Imports an LDIF file to the specified server_id.
@@ -113,10 +113,10 @@ if ($entry['continuous_mode']) {
 			if ($ldapWriter->ldapModify($currentEntry))
 				printf(' <span style="color:green;">%s</span></small><br />',_('Success'));
 			else {
-				printf('<span style="color:red;">%s</span></small><br />',_('Failed'));
-				printf('<small><span style="color:red;">%s: %s</span></small><br />',
+				printf(' <span style="color:red;">%s</span></small><br />',_('Failed'));
+				printf(' <small><span style="color:red;">%s: %s</span></small><br />',
 					_('Error code'),$ldapserver->errno());
-				printf('<small><span style="color:red;">%s: %s</span></small><br />',
+				printf(' <small><span style="color:red;">%s: %s</span></small><br />',
 					_('Description'),$ldapserver->error());
 			}
 		}

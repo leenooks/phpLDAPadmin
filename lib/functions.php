@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.303.2.21 2008/01/10 12:30:13 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/functions.php,v 1.303.2.26 2008/01/30 11:17:00 wurley Exp $
 
 /**
  * A collection of common generic functions used throughout the application.
@@ -151,7 +151,7 @@ function pla_error_handler($errno,$errstr,$file,$lineno) {
 	}
 
 	# If this is a more serious error, call the error call.
-	error(sprintf('%s: %s',$errtype,$errstr),'error',-1,true,true);
+	error(sprintf('%s: %s',$errtype,$errstr),'error',true,true);
 }
 
 /**
@@ -223,34 +223,34 @@ function check_config($config_file) {
 
 	# Make sure their PHP version is current enough
 	if (strcmp(phpversion(),REQUIRED_PHP_VERSION) < 0)
-		pla_error(sprintf('phpLDAPadmin requires PHP version %s or greater.<br /><small>(You are using %s)</small>',
-			REQUIRED_PHP_VERSION,phpversion()));
+		system_message(array(
+			'title'=>_('Incorrect version of PHP'),
+			'body'=>sprintf('phpLDAPadmin requires PHP version %s or greater.<br /><small>(You are using %s)</small>',
+				REQUIRED_PHP_VERSION,phpversion()),
+			'type'=>'error'));
 
 	# Make sure this PHP install has all our required extensions
 	if (! extension_loaded('ldap'))
 		system_message(array(
 			'title'=>_('Missing required extension'),
-			'body'=> 'Your install of PHP appears to be missing LDAP support.<br /><br />Please install LDAP support before using phpLDAPadmin.<br /><small>(Dont forget to restart your web server afterwards)</small>',
+			'body'=>'Your install of PHP appears to be missing LDAP support.<br /><br />Please install LDAP support before using phpLDAPadmin.<br /><small>(Dont forget to restart your web server afterwards)</small>',
 			'type'=>'error'));
 
 	# Make sure that we have php-xml loaded.
 	if (! function_exists('xml_parser_create'))
 		system_message(array(
 			'title'=>_('Missing required extension'),
-			'body'=> 'Your install of PHP appears to be missing XML support.<br /><br />Please install XML support before using phpLDAPadmin.<br /><small>(Dont forget to restart your web server afterwards)</small>',
+			'body'=>'Your install of PHP appears to be missing XML support.<br /><br />Please install XML support before using phpLDAPadmin.<br /><small>(Dont forget to restart your web server afterwards)</small>',
 			'type'=>'error'));
 
 	# Make sure their session save path is writable, if they are using a file system session module, that is.
 	if (! strcasecmp('Files',session_module_name() && ! is_writable(realpath(session_save_path()))))
 		system_message(array(
-			'title'=>_('Missing required extension'),
-			'body'=> 'Your PHP session configuration is incorrect. Please check the value of session.save_path in your php.ini to ensure that the directory specified there exists and is writable.  The current setting of "'.session_save_path().'" is un-writable by the web server.',
+			'title'=>_('PHP session configuration incorrect'),
+			'body'=>sprintf('Your PHP session configuration is incorrect. Please check the value of session.save_path in your php.ini to ensure that the directory specified there exists and is writable.  The current setting of "%s" is un-writable by the web server.',session_save_path()),
 			'type'=>'error'));
 
 	$config = new Config;
-
-	/* Check for syntax errors in config.php
-	   As of php 4.3.5, this NO longer catches fatal errors :( */
 
 	ob_start();
 	require $config_file;
@@ -272,48 +272,41 @@ function check_config($config_file) {
 
 			$file = file($config_file);
 
-			echo '<?xml version="1.0" encoding="utf-8"?>'."\n";
-			echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN"'."\n";
-			echo '  "http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd">'."\n";
-			echo "\n";
+			$body = '<h3 class="title">Config file ERROR</h3>';
+			$body .= sprintf('<h3 class="subtitle">%s (%s) on line %s</h3>',$error_type,$error,$line_num);
 
-			echo '<html>';
-			echo '<head>';
-			echo '<title>phpLDAPadmin Config File Error</title>';
-			echo '<link type="text/css" rel="stylesheet" href="css/style.css" />';
-			echo '</head>';
+			$body .= '<center>';
+			$body .= sprintf('Looks like your config file has an ERROR on line %s.<br />',$line_num);
+			$body .= 'Here is a snippet around that line <br />';
+			$body .= '<br />'."\n";
 
-			echo '<body>';
-			echo '<h3 class="title">Config File ERROR</h3>';
-			printf('<h3 class="subtitle">%s (%s) on line %s</h3>',$error_type,$error,$line_num);
-
-			echo '<center>';
-			printf('Looks like your config file has an ERROR on line %s.<br />',$line_num);
-			echo 'Here is a snippet around that line <br />';
-			echo '<br />'."\n";
-
-			echo '<div style="text-align: left; font-family: monospace; margin-left: 80px; margin-right: 80px; border: 1px solid black; padding: 10px;">';
+			$body .= '<div style="text-align: left; font-family: monospace; margin-left: 80px; margin-right: 80px; border: 1px solid black; padding: 10px;">';
 
 			for ($i = $line_num-9; $i<$line_num+5; $i++) {
 				if ($i+1 == $line_num)
-					echo '<div style="color:red;background:#fdd">';
+					$body .= '<div style="color:red;background:#fdd">';
 
 				if ($i < 0)
 					continue;
 
-				printf('<b>%s</b>: %s<br />',$i+1,htmlspecialchars($file[$i]));
+				$body .= sprintf('<b>%s</b>: %s<br />',$i+1,htmlspecialchars($file[$i]));
+
 				if ($i+1 == $line_num)
-				echo '</div>';
+					$body .= '</div>';
 			}
 
-			echo '</div>';
-			echo '<br />';
-			echo 'Hint: Sometimes these errors are caused by lines <b>preceding</b> the line reported.';
-			echo '</center>';
-			echo '</body>';
-			echo '</html>';
+			$body .= '</div>';
+			$body .= '<br />';
+			$body .= 'Hint: Sometimes these errors are caused by lines <b>preceding</b> the line reported.';
+			$body .= '</center>';
 
-			return false;
+			$block = new block();
+			$block->SetBody($body);
+			$www['page'] = new page();
+			$www['page']->block_add('body',$block);
+			$www['page']->display();
+
+			die();
 		}
 	}
 
@@ -515,7 +508,7 @@ function error($msg,$type='note',$fatal=false,$backtrace=false) {
 
 	# if the error is fatal, we'll need to stop here.
 	if (! isset($www['page']))
-		$www['page'] = new page(null);
+		$www['page'] = new page();
 
 	$www['page']->setsysmsg(array('title'=>_('Error'),'body'=>$msg,'type'=>$type));
 
@@ -530,7 +523,7 @@ function error($msg,$type='note',$fatal=false,$backtrace=false) {
 		$backtraceblock = new block();
 		$backtraceblock->SetTitle('PHP Debug Backtrace');
 
-		$body = '<table class="search_result_table">';
+		$body = '<table class="result_table">';
 		$body .= "\n";
 		foreach (debug_backtrace() as $error => $line) {
 			$body .= sprintf('<tr class="hightlight"><td colspan="2"><b><small>%s</small></b></td><td>%s (%s)</td></tr>',
@@ -1755,8 +1748,8 @@ function support_oid_to_text($oid_id) {
  */
 function pla_error($msg,$ldap_err_msg=null,$ldap_err_no=-1,$fatal=true) {
 	if (defined('DEBUG_ENABLED') && (DEBUG_ENABLED))
-		debug_log('Entered with (%s,%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$msg,$ldap_err_msg,$ldap_err_no,$fatal,$backtrace);
+		debug_log('Entered with (%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
+			$msg,$ldap_err_msg,$ldap_err_no,$fatal);
 
 	$title = '';
 
@@ -2928,13 +2921,15 @@ function server_info_list($visible=false) {
 	return $server_info_list;
 }
 
-function enc_type_select_list($enc_type) {
+function enc_type_select_list($enc_type,$id,$attribute,$i) {
 	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$enc_type);
+		debug_log('Entered with (%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,$enc_type,$id,$attribute,$i);
 
-	$html = '<select name="enc_type[]">';
+	$html = sprintf('<select id="%s_%s_%s" name="%s[%s][%s]">',
+		$id, htmlspecialchars($attribute->getName()), $i,
+		$id, htmlspecialchars($attribute->getName()), $i);
+
 	$html .= '<option>clear</option>';
-
 	foreach (array('crypt','ext_des','md5crypt','blowfish','md5','smd5','sha','ssha') as $option)
 		$html .= sprintf('<option%s>%s</option>',($enc_type == $option ? ' selected="true"' : ''),$option);
 

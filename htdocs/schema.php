@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/schema.php,v 1.67.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/schema.php,v 1.67.2.4 2008/01/28 20:58:08 wurley Exp $
 
 /**
  * Displays the schema for the specified server_id
@@ -38,10 +38,10 @@ printf('<h3 class="title">%s <b>%s</b></h3>',
 	htmlspecialchars($ldapserver->name));
 
 $entry['schema_types'] = array(
-	'objectClasses'=>'ObjectClasses',
-	'attributes'=>'Attribute Types',
-	'syntaxes'=>'Syntaxes',
-	'matching_rules'=>'Matching Rules');
+	'objectClasses'=>_('ObjectClasses'),
+	'attributes'=>_('Attribute Types'),
+	'syntaxes'=>_('Syntaxes'),
+	'matching_rules'=>_('Matching Rules'));
 
 echo '<br />';
 echo '<center>';
@@ -65,8 +65,9 @@ switch($entry['view']) {
 	case 'syntaxes':
 		$highlight_oid = isset($_GET['highlight_oid']) ? $_GET['highlight_oid'] : false;
 
-		print '<table class="schema" border=0>';
-		printf('<tr class="name"><td>%s</td><td>%s</td></tr>',_('Syntax OID'),_('Description'));
+		echo '<center>';
+		print '<table class="result_table" border=0>';
+		printf('<tr class="heading"><td>%s</td><td>%s</td></tr>',_('Syntax OID'),_('Description'));
 
 		$counter = 1;
 
@@ -85,10 +86,11 @@ switch($entry['view']) {
 			else
 				printf('<tr class="%s">',$counter%2==0?'even':'odd');
 
-			printf('<td class="type">%s</td><td class="type">%s</td></tr>',$oid,$desc);
+			printf('<td>%s</td><td>%s</td></tr>',$oid,$desc);
 		}
 
 		print '</table>';
+		echo '</center>';
 		break;
 
 	case 'attributes':
@@ -137,8 +139,8 @@ switch($entry['view']) {
 				if (! is_null($entry['value']))
 					$entry['viewed'] = true;
 
-				echo '<table class="schema" border=0>';
-				printf('<tr class="name"><td colspan=2><a name="%s">%s</a></td></tr>',
+				echo '<table class="result_table" width=100% border=0>';
+				printf('<tr class="heading"><td colspan=2><a name="%s">%s</a></td></tr>',
 					strtolower($attr->getName()),$attr->getName());
 
 				$counter = 0;
@@ -146,7 +148,7 @@ switch($entry['view']) {
 				foreach ($entry['attr_types'] as $item => $value) {
 
 					printf('<tr class="%s">',++$counter%2 ? 'odd' : 'even');
-					printf('<td class="type">%s</td>',$value);
+					printf('<td class="title">%s</td>',$value);
 
 					switch ($item) {
 						case 'desc':
@@ -156,7 +158,7 @@ switch($entry['view']) {
 
 							print '</tr>';
 							printf('<tr class="%s">',++$counter%2 ? 'odd' : 'even');
-							echo '<td class="type"><acronym title="Object Identier">OID</acronym></td>';
+							echo '<td class="title"><acronym title="Object Identier">OID</acronym></td>';
 							printf('<td>%s</td>',$attr->getOID());
 
 							break;
@@ -311,8 +313,8 @@ switch($entry['view']) {
 		printf('<input type="submit" value="%s" />',_('Go'));
 		print '</form>';
 
-		print '<table class="schema" border=0>';
-		printf('<tr class="name"><td>%s</td><td>%s</td><td>%s</td></tr>',
+		print '<table class="result_table" width=100% border=0>';
+		printf('<tr class="heading"><td>%s</td><td>%s</td><td>%s</td></tr>',
 			_('Matching Rule OID'),_('Name'),_('Used by Attributes'));
 
 		$counter = 1;
@@ -334,22 +336,22 @@ switch($entry['view']) {
 					$desc .= sprintf(' <span style="color:red">%s</span>',_('Obsolete'));
 
 				printf('<tr class="%s">',$counter%2 ? 'odd' : 'even');
-				printf('<td class="type">%s</td>',$oid);
-				printf('<td class="type">%s</td>',$desc);
+				printf('<td>%s</td>',$oid);
+				printf('<td>%s</td>',$desc);
 
-				print '<td class="type">';
+				print '<td>';
 
 				if (count($rule->getUsedByAttrs()) == 0) {
 					printf('<center>(%s)</center><br /><br />',_('none'));
 
 				} else {
-					print '<table width=100% border=0><tr><td style="text-align: right">';
+					print '<table width=100% border=0><tr><td>';
 					print '<form action="cmd.php" method="get">';
 					print '<input type="hidden" name="cmd" value="schema" />';
 					printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 					print '<input type="hidden" name="view" value="attributes" />';
 
-					print '<select style="width: 150px; color:black; background-color: #eee" size="4" name="viewvalue">';
+					print '<select size="4" name="viewvalue">';
 					foreach ($rule->getUsedByAttrs() as $attr)
 						printf('<option>%s</option>',$attr);
 					print '</select><br />';
@@ -395,19 +397,19 @@ switch($entry['view']) {
 				if (! is_null($entry['value']))
 					$entry['viewed'] = true;
 
-				echo '<table class="schema_oclass" border=0>';
-				printf('<tr class="name"><td colspan=4><a name="%s">%s</a></td></tr>',$name,$oclass->getName());
-				printf('<tr class="detail"><td colspan=4>%s: <b>%s</b></td></tr>',_('OID'),$oclass->getOID());
+				echo '<table class="result_table" width=100% border=0>';
+				printf('<tr class="heading"><td colspan=4><a name="%s">%s</a></td></tr>',$name,$oclass->getName());
+				printf('<tr class="odd"><td colspan=4>%s: <b>%s</b></td></tr>',_('OID'),$oclass->getOID());
 
 				if ($oclass->getDescription())
-					printf('<tr class="detail"><td colspan=4>%s: <b>%s</b></td></tr>',_('Description'),$oclass->getDescription());
+					printf('<tr class="odd"><td colspan=4>%s: <b>%s</b></td></tr>',_('Description'),$oclass->getDescription());
 
-				printf('<tr class="detail"><td colspan=4>%s: <b>%s</b></td></tr>',_('Type'),$oclass->getType());
+				printf('<tr class="odd"><td colspan=4>%s: <b>%s</b></td></tr>',_('Type'),$oclass->getType());
 
 				if ($oclass->getIsObsolete())
-					printf('<tr class="detail"><td colspan=4>%s</td></tr>',_('This objectClass is obsolete.'));
+					printf('<tr class="odd"><td colspan=4>%s</td></tr>',_('This objectClass is obsolete.'));
 
-				printf('<tr class="detail"><td colspan=4>%s: <b>',_('Inherits from'));
+				printf('<tr class="odd"><td colspan=4>%s: <b>',_('Inherits from'));
 				if (count($oclass->getSupClasses()) == 0)
 					printf('(%s)',_('none'));
 
@@ -423,7 +425,7 @@ switch($entry['view']) {
 					}
 				echo '</b></td></tr>';
 
-				printf('<tr class="detail"><td colspan=4>%s: <b>',_('Parent to'));
+				printf('<tr class="odd"><td colspan=4>%s: <b>',_('Parent to'));
 				if (strcasecmp($oclass->getName(),'top') == 0) {
 					$href = htmlspecialchars(sprintf($entry['href']['objectClasses'],''));
 					printf('(<a href="%s">all</a>)',$href);
@@ -441,16 +443,15 @@ switch($entry['view']) {
 					}
 				echo '</b></td></tr>';
 
-				printf('<tr class="attrshead"><td class="left">&nbsp;</td><td><b>%s</b></td><td><b>%s</b></td><td class="right">&nbsp;</td></tr>',
+				printf('<tr class="even"><td class="blank" rowspan=2>&nbsp;</td><td><b>%s</b></td><td><b>%s</b></td><td class="blank" rowspan=2>&nbsp;</td></tr>',
 					_('Required Attributes'),_('Optional Attributes'));
 
-				echo '<tr class="attrs">';
-				echo '<td class="left">&nbsp;</td>';
+				echo '<tr class="odd">';
 				echo '<td>';
 
 				if (count($oclass->getMustAttrs($schema_oclasses)) > 0) {
 
-					echo '<ul class="schema">';
+					echo '<ul class="list">';
 					foreach ($oclass->getMustAttrs($schema_oclasses) as $attr) {
 						echo '<li>';
 						$href = htmlspecialchars(sprintf($entry['href']['attributes'],strtolower($attr->getName())));
@@ -473,7 +474,7 @@ switch($entry['view']) {
 
 				if (count($oclass->getMayAttrs($schema_oclasses)) > 0) {
 
-					echo '<ul class="schema">';
+					echo '<ul class="list">';
 					foreach ($oclass->getMayAttrs($schema_oclasses) as $attr) {
 						echo '<li>';
 						$href = htmlspecialchars(sprintf($entry['href']['attributes'],strtolower($attr->getName())));
@@ -492,7 +493,6 @@ switch($entry['view']) {
 					printf('(%s)',_('none'));
 
 				echo '</td>';
-				echo '<td class="right">&nbsp;</td>';
 				echo '</tr>';
 				echo '</table>';
 				echo '<br />';

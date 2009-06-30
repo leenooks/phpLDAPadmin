@@ -1,12 +1,9 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/compare.php,v 1.16.2.2 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/compare.php,v 1.16.2.3 2008/01/13 06:33:50 wurley Exp $
 
 /**
  * Compare two DNs - the destination DN is editable.
  * @package phpLDAPadmin
- */
-/**
- * @todo: Must fix dc/domainComponent evaluation.
  */
 
 require_once './common.php';
@@ -41,38 +38,34 @@ $attrs_all = array_keys($attrs_src);
 foreach ($attrs_dst as $key => $val)
 	if (! in_array($key,$attrs_all))
 		$attrs_all[] = $key;
-?>
 
-<table class="comp_dn" border=0>
-	<tr><td colspan=6>
-		<h3 class="title"><?php echo _('Comparing the following DNs'); ?></h3>
-	</td></tr>
+	printf('<h3 class="title">%s</h3>',_('Comparing the following DNs'));
 
-	<tr>
-		<td colspan=2 width=20%>
-			<h3 class="subtitle"><?php echo _('Attribute'); ?><br />&nbsp;</h3>
-		</td>
-		<td colspan=2 width=40%>
-			<h3 class="subtitle"><?php echo _('Server'); ?>: <b><?php echo $ldapserver_src->name; ?></b><br /><?php echo _('Distinguished Name');?>: <b><?php echo htmlspecialchars(($dn_src)); ?></b></h3>
-		</td>
-		<td colspan=2 width=40%>
-			<h3 class="subtitle"><?php echo _('Server'); ?>: <b><?php echo $ldapserver_dst->name; ?></b><br /><?php echo _('Distinguished Name');?>: <b><?php echo htmlspecialchars(($dn_dst)); ?></b></h3>
-		</td>
-	</tr>
-	<tr>
-		<td colspan=6 align=right>
-			<form action="cmd.php?cmd=compare" method="post" name="compare_form">
-			<input type="hidden" name="server_id" value="<?php echo $ldapserver->server_id; ?>" />
-			<input type="hidden" name="server_id_src" value="<?php echo $ldapserver_dst->server_id; ?>" />
-			<input type="hidden" name="server_id_dst" value="<?php echo $ldapserver_src->server_id; ?>" />
-			<input type="hidden" name="dn_src" value="<?php echo htmlspecialchars($dn_dst); ?>" />
-			<input type="hidden" name="dn_dst" value="<?php echo htmlspecialchars($dn_src); ?>" />
-			<input type="submit" value="<?php echo _('Switch Entry'); ?>" />
-			</form>
-		</td>
-	</tr>
+	echo '<table class="entry" width=100% border=0>';
+	echo '<tr>';
+	printf('<td colspan=2 width=20%%><h3 class="subtitle">%s<br />&nbsp;</h3></td>',_('Attribute'));
 
-<?php
+	printf('<td colspan=2 width=40%%><h3 class="subtitle">%s: <b>%s</b><br />%s: <b>%s</b></h3></td>',
+		_('Server'),$ldapserver_src->name,_('Distinguished Name'),htmlspecialchars($dn_src));
+
+	printf('<td colspan=2 width=40%%><h3 class="subtitle">%s: <b>%s</b><br />%s: <b>%s</b></h3></td>',
+		_('Server'),$ldapserver_dst->name,_('Distinguished Name'),htmlspecialchars($dn_dst));
+
+	echo '</tr>';
+
+	echo '<tr>';
+	echo '<td colspan=6 align=right>';
+	echo '<form action="cmd.php?cmd=compare" method="post" name="compare_form">';
+	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
+	printf('<input type="hidden" name="server_id_src" value="%s" />',$ldapserver_dst->server_id);
+	printf('<input type="hidden" name="server_id_dst" value="%s" />',$ldapserver_src->server_id);
+	printf('<input type="hidden" name="dn_src" value="%s" />',htmlspecialchars($dn_dst));
+	printf('<input type="hidden" name="dn_dst" value="%s" />',htmlspecialchars($dn_src));
+	printf('<input type="submit" value="%s" />',_('Switch Entry'));
+	echo '</form>';
+	echo '</td>';
+	echo '</tr>';
+
 if (! $attrs_all || ! is_array($attrs_all)) {
 	printf('<tr><td colspan="2">(%s)</td></tr>',_('This entry has no attributes'));
 	print '</table>';
@@ -80,11 +73,10 @@ if (! $attrs_all || ! is_array($attrs_all)) {
 }
 
 sort($attrs_all);
+$formdisplayed = false;
 
 # Work through each of the attributes.
 foreach ($attrs_all as $attr) {
-	flush();
-
 	# If this is the DN, get the next attribute.
 	if (! strcasecmp($attr,'dn'))
 		continue;
@@ -92,28 +84,20 @@ foreach ($attrs_all as $attr) {
 	# Has the config.php specified that this attribute is to be hidden or shown?
 	if ($ldapserver_src->isAttrHidden($attr) || $ldapserver_dst->isAttrHidden($attr))
 		continue;
-?>
 
-	<!-- Begin Attribute -->
-	<tr>
+	$schema_attr_src = $ldapserver_src->getSchemaAttribute($attr,$dn_src);
+	$schema_attr_dst = $ldapserver_dst->getSchemaAttribute($attr,$dn_dst);
 
-	<?php foreach (array('src','dst') as $side) { ?>
+	# Get the values and see if they are the same.
+	if (isset($attrs_src[$attr]) && isset($attrs_dst[$attr]) && $attrs_src[$attr] === $attrs_dst[$attr])
+		echo '<tr>';
+	else
+		echo '<tr class="updated">';
 
-		<?php
-		if ($side == 'dst' && ! $ldapserver_dst->isReadOnly()) { ?>
-
-	<form action="cmd.php?cmd=update_confirm" method="post" name="edit_form">
-	<input type="hidden" name="server_id" value="<?php echo $ldapserver_dst->server_id; ?>" />
-	<input type="hidden" name="dn" value="<?php echo $dn_dst; ?>" />
-
-		<?php }
-
-		$schema_attr_src = $ldapserver_src->getSchemaAttribute($attr,$dn_src);
-		$schema_attr_dst = $ldapserver_dst->getSchemaAttribute($attr,$dn_dst);
+	foreach (array('src','dst') as $side) {
 
 		# Setup the $attr_note, which will be displayed to the right of the attr name (if any)
-		$attr_note = '';
-		$required_note = '';
+		$attr_note = '&nbsp;';
 
 		# is there a user-friendly translation available for this attribute?
 		if ($_SESSION[APPCONFIG]->haveFriendlyName($attr)) {
@@ -122,7 +106,7 @@ foreach ($attrs_all as $attr) {
 
 		} else {
 			$attr_display = $attr;
-			$attr_note = '';
+			$attr_note = '&nbsp;';
 		}
 
 		# is this attribute required by an objectClass?
@@ -154,51 +138,49 @@ foreach ($attrs_all as $attr) {
 				break;
 		}
 
-		if ($side == 'src') { ?>
-			<td class="attr">
-				<?php $schema_href="cmd.php?cmd=schema&server_id=$server_id_src&amp;view=attributes&amp;viewvalue=".real_attr_name($attr); ?>
-				<a title="<?php echo sprintf(_('Click to view the schema definition for attribute type \'%s\''),$attr) ?>" href="<?php echo $schema_href; ?>"><?php echo $attr_display; ?></a>
-			</td>
+		# If we are on the source side, show the attr
+		if ($side == 'src') {
+			echo '<td class="title">';
+			$schema_href = sprintf('cmd.php?cmd=schema&amp;server_id=%s&amp;view=attributes&amp;viewvalue=%s',$server_id_src,real_attr_name($attr));
+			printf('<a title="%s" href="%s">%s</a>',sprintf(_('Click to view the schema definition for attribute type \'%s\''),$attr),$schema_href,$attr_display);
+			echo '</td>';
 
-			<td class="attr_note">
-				<sup><small><?php echo $attr_note; ?></small></sup>
-			</td>
-		<?php }
+			printf('<td class="note"><sup><small>%s</small></sup></td>',$attr_note);
+		}
 
-		if ($required_by) {
-			$required_note .= sprintf('<acronym title="%s">%s</acronym>',sprintf(_('Required attribute for objectClass(es) %s'),$required_by),_('required'));
-		?>
-			<td colspan=2 class="attr_note">
-				<sup><small><?php echo $required_note; ?></small></sup>
-			</td>
-		<?php } else { ?>
-			<td colspan=2 class="attr_note">&nbsp;</td>
-		<?php } ?>
+		echo '<td colspan=2 class="note">';
 
-		<?php if ($ldapserver->isAttrReadOnly($attr)) { ?>
-				<small>(<acronym title="<?php echo _('This attribute has been flagged as read only by the phpLDAPadmin administrator'); ?>"><?php echo _('read only'); ?></acronym>)</small>
-		<?php } ?>
-			</td>
+		# Create our form if the dst is editable.
+		if ($side == 'dst' && ! $ldapserver_dst->isReadOnly() && ! $formdisplayed) {
+			$formdisplayed = true;
+			echo '<form action="cmd.php?cmd=update_confirm" method="post" name="edit_form">';
+			printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver_dst->server_id);
+			printf('<input type="hidden" name="dn" value="%s" />',$dn_dst);
+		}
 
-	<?php } ?>
+		if ($required_by)
+			printf('<sup><small><acronym title="%s">%s</acronym></small></sup>',sprintf(_('Required attribute for objectClass(es) %s'),$required_by),_('required'));
+		echo '</td>';
 
-	</tr>
-	<!-- End of Attribute -->
+		if ($ldapserver->isAttrReadOnly($attr))
+			printf('<small>(<acronym title="%s">%s</acronym>)</small>',_('This attribute has been flagged as read only by the phpLDAPadmin administrator'),_('read only'));
+	}
 
-	<!-- Begin Values -->
-	<tr>
+	echo '</tr>';
 
-	<?php
+	if (isset($attrs_src[$attr]) && isset($attrs_dst[$attr]) && $attrs_src[$attr] === $attrs_dst[$attr])
+		echo '<tr>';
+	else
+		echo '<tr class="updated">';
+
 	foreach (array('src','dst') as $side) {
-		$vals = null; ?>
+		$vals = null;
 
-
-		<?php
 		# If this attribute isnt set, then show a blank.
 		$toJump = 0;
 		switch ($side) {
 			case 'src':
-				print '<td colspan=2>&nbsp</td><td class="val">';
+				print '<td colspan=2>&nbsp;</td><td class="value">';
 
 				if (! isset($attrs_src[$attr])) {
 					echo "<small>&lt;". _('No Value')."&gt;</small></td>";
@@ -211,7 +193,7 @@ foreach ($attrs_all as $attr) {
 				break;
 
 			case 'dst':
-				print '<td colspan=2>&nbsp</td><td class="val">';
+				print '<td colspan=2>&nbsp;</td><td class="value">';
 
 				if (! isset($attrs_dst[$attr])) {
 					echo "<small>&lt;". _('No Value')."&gt;</small></td>";
@@ -224,19 +206,18 @@ foreach ($attrs_all as $attr) {
 				break;
 		}
 
-		if ($toJump) continue;
+		if ($toJump)
+			continue;
+
 		if (! is_array($vals))
 			$vals = array($vals);
 
-		/*
-		 * Is this attribute a jpegPhoto?
-		 */
+		# Is this attribute a jpegPhoto?
 		if ($ldapserver->isJpegPhoto($attr)) {
 
 			switch ($side) {
 				case 'src':
-					// Don't draw the delete buttons if there is more than one jpegPhoto
-					// 	(phpLDAPadmin can't handle this case yet)
+					# Don't draw the delete buttons if there is more than one jpegPhoto (phpLDAPadmin can't handle this case yet)
 					draw_jpeg_photos($ldapserver,$dn_src,$attr,false);
 					break;
 
@@ -249,14 +230,12 @@ foreach ($attrs_all as $attr) {
 					break;
 			}
 
-			// proceed to the next attribute
-			echo "</td>\n";
+			# proceed to the next attribute
+			echo '</td>'."\n";
 			continue;
 		}
 
-		/*
-		 * Is this attribute binary?
-		 */
+		# Is this attribute binary?
 		if ($ldapserver->isAttrBinary($attr)) {
 			switch ($side) {
 				case 'src':
@@ -267,36 +246,27 @@ foreach ($attrs_all as $attr) {
 					$href = sprintf("download_binary_attr.php?server_id=%s&dn=%s&attr=%s",$ldapserver->server_id,$encoded_dn_dst,$attr);
 					break;
 			}
-			?>
 
-			<small>
+			echo '<small>';
+			echo _('Binary value');
+			echo '<br />';
 
-			<?php echo _('Binary value'); ?><br />
+			if (count($vals) > 1)
+				for ($i=1; $i<=count($vals); $i++)
+					printf('<a href="%s&amp;value_num=%s"><img src="images/save.png" /> %s(%s)</a><br />',$href,$i,_('download value'),$i);
+			else
+				printf('<a href="%s"><img src="images/save.png" /> %s</a><br />',$href,_('download value'));
 
-			<?php if (count($vals) > 1) { for($i=1; $i<=count($vals); $i++) { ?>
-				<a href="<?php echo $href . "&amp;value_num=$i"; ?>"><img
-					src="images/save.png" /> <?php echo _('download value'); ?>(<?php echo $i; ?>)</a><br />
+			if ($side == 'dst' && ! $ldapserver_dst->isReadOnly() && ! $ldapserver->isAttrReadOnly($attr))
+				printf('<a href="javascript:deleteAttribute(\'%s\');" style="color:red;"><img src="images/trash.png" /> %s</a>',$attr,_('delete attribute'));
 
-			<?php } } else { ?>
-				<a href="<?php echo $href; ?>"><img src="images/save.png" /> <?php echo _('download value'); ?></a><br />
+			echo '</small>';
+			echo '</td>';
 
-			<?php }
-
-			if ($side == 'dst' && ! $ldapserver_dst->isReadOnly() && ! $ldapserver->isAttrReadOnly($attr)) { ?>
-
-				<a href="javascript:deleteAttribute('<?php echo $attr; ?>');" style="color:red;"><img src="images/trash.png" /> <?php echo _('delete attribute'); ?></a>
-
-			<?php } ?>
-
-			</small>
-		</td>
-
-			<?php continue;
+			continue;
 		}
 
-		/*
-		 * Note: at this point, the attribute must be text-based (not binary or jpeg)
-		 */
+		# Note: at this point, the attribute must be text-based (not binary or jpeg)
 
 		/*
 		 * If this server is in read-only mode or this attribute is configured as read_only,
@@ -306,67 +276,59 @@ foreach ($attrs_all as $attr) {
 		if ($side == 'dst' && ($ldapserver->isReadOnly() || $ldapserver->isAttrReadOnly($attr))) {
 			if (is_array($vals)) {
 				foreach ($vals as $i => $val) {
-					if (trim($val) == "")
-						echo "<span style=\"color:red\">[" . _('empty') . "]</span><br />\n";
+					if (trim($val) == '')
+						printf('<span style="color:red">[%s]</span><br />',_('empty'));
 
-					elseif (0 == strcasecmp($attr,'userPassword') && $_SESSION[APPCONFIG]->GetValue('appearance','obfuscate_password_display'))
-						echo preg_replace('/./','*',$val) . "<br />";
+					elseif (strcasecmp($attr,'userPassword') == 0 && $_SESSION[APPCONFIG]->GetValue('appearance','obfuscate_password_display'))
+						echo preg_replace('/./','*',$val).'<br />';
 
 					else
-						echo htmlspecialchars($val) . "<br />";
+						echo htmlspecialchars($val).'<br />';
 				}
 
-			// @todo: redundant - $vals is always an array.
+			# @todo: redundant - $vals is always an array.
 			} else {
-				if (0 == strcasecmp($attr,'userPassword') && $_SESSION[APPCONFIG]->GetValue('appearance','obfuscate_password_display'))
-					echo preg_replace('/./','*',$vals) . "<br />";
+				if (strcasecmp($attr,'userPassword') == 0 && $_SESSION[APPCONFIG]->GetValue('appearance','obfuscate_password_display'))
+					echo preg_replace('/./','*',$vals).'<br />';
 				else
-					echo $vals . "<br />";
+					echo $vals.'<br />';
 			}
-			echo "</td>";
+			echo '</td>';
 			continue;
 		}
 
-		/*
-		 * Is this a userPassword attribute?
-		 */
+		# Is this a userPassword attribute?
 		if (! strcasecmp($attr,'userpassword')) {
 			$user_password = $vals[0];
 			$enc_type = get_enc_type($user_password);
 
-			// Set the default hashing type if the password is blank (must be newly created)
+			# Set the default hashing type if the password is blank (must be newly created)
 			if ($user_password == '') {
 				$enc_type = get_default_hash($server_id);
 			}
 
-			if ($side == 'dst') { ?>
+			if ($side == 'dst') {
+				printf('<input type="hidden" name="old_values[userpassword]" value="%s" />',htmlspecialchars($user_password));
+				echo '<!-- Special case of enc_type to detect changes when user changes enc_type but not the password value -->';
+				printf('<input size="38" type="hidden" name="old_enc_type" value="%s" />',$enc_type == '' ? 'clear' : $enc_type);
+			}
 
-				<input type="hidden" name="old_values[userpassword]" value="<?php echo htmlspecialchars($user_password); ?>" />
-
-				<!-- Special case of enc_type to detect changes when user changes enc_type but not the password value -->
-				<input size="38" type="hidden" name="old_enc_type" value="<?php echo ($enc_type==''?'clear':$enc_type); ?>" />
-
-			<?php }
-
-			if (obfuscate_password_display($enc_type))  {
+			if (obfuscate_password_display($enc_type))
 				echo htmlspecialchars(preg_replace('/./','*',$user_password));
-			} else {
+			else
 				echo htmlspecialchars($user_password);
-			} ?>
 
-			<br />
+			echo '<br />';
 
-			<?php if ($side == 'dst') { ?>
+			if ($side == 'dst') {
+				printf('<input style="width: 260px" type="password" name="new_values[userpassword]" value="%s" />',htmlspecialchars($user_password));
+				echo enc_type_select_list($enc_type);
 
-				<input style="width: 260px" type="password" name="new_values[userpassword]" value="<?php echo htmlspecialchars($user_password); ?>" />
+			}
 
-				<?php echo enc_type_select_list($enc_type);
-
-			} ?>
-
-				<br />
-
-				<script language="javascript">
+			echo '<br />';
+			?>
+				<script type="text/javascript" language="javascript">
 				<!--
 				function passwordComparePopup()
 				{
@@ -377,187 +339,168 @@ foreach ($attrs_all as $attr) {
 				}
 				-->
 				</script>
+			<?php
 
-				<small><a href="javascript:passwordComparePopup()"><?php echo _('Check password'); ?></a></small>
+			printf('<small><a href="javascript:passwordComparePopup()">%s</a></small>',_('Check password'));
 
-			</td>
-
-			<?php continue;
+			echo '</td>';
+			continue;
 		}
 
-		/*
-		 * Is this a boolean attribute?
-		 */
+		# Is this a boolean attribute?
 		if ($ldapserver->isAttrBoolean($attr)) {
 			$val = $vals[0];
 
-			if ($side = 'dst') {?>
+			if ($side = 'dst') {
+				printf('<input type="hidden" name="old_values[%s]" value="%s" />',htmlspecialchars($attr),htmlspecialchars($val));
 
-				<input type="hidden" name="old_values[<?php echo htmlspecialchars($attr); ?>]" value="<?php echo htmlspecialchars($val); ?>" />
+				printf('<select name="new_values[%s]">',htmlspecialchars($attr));
+				printf('<option value="TRUE"%s>%s</option>',$val == 'TRUE' ? ' selected' : '',_('true'));
+				printf('<option value="FALSE"%s>%s</option>',$val == 'FALSE' ? ' selected' : '',_('false'));
+				printf('<option value="">(%s)</option>',_('none, remove value'));
+				echo '</select>';
+			}
 
-				<select name="new_values[<?php echo htmlspecialchars($attr); ?>]">
-					<option value="TRUE"<?php echo ($val=='TRUE' ? ' selected' : ''); ?>><?php echo _('true'); ?></option>
-					<option value="FALSE"<?php echo ($val=='FALSE' ? ' selected' : ''); ?>><?php echo _('false'); ?></option>
-					<option value="">(<?php echo _('none, remove value'); ?>)</option>
-				</select>
-
-			<?php } ?>
-
-			</td>
-
-			<?php continue;
+			echo '</td>';
+			continue;
 		}
 
-		/*
-		 * End of special case attributes (non plain text).
-		 */
-
+		# End of special case attributes (non plain text).
 		foreach ($vals as $i => $val) {
 
 			if ($side == 'dst') {
-				$input_name = "new_values[" . htmlspecialchars($attr) . "][$i]";
-				// We smack an id="..." tag in here that doesn't have [][] in it to allow the
-				// draw_chooser_link() to identify it after the user clicks.
-				$input_id = "new_values_" . htmlspecialchars($attr) . "_" . $i; ?>
+				$input_name = sprintf('new_values[%s][%s]',htmlspecialchars($attr),$i);
 
-				<!-- The old_values array will let update.php know if the entry contents changed
-				     between the time the user loaded this page and saved their changes. -->
-				<input type="hidden" name="old_values[<?php echo htmlspecialchars($attr); ?>][<?php echo $i; ?>]" value="<?php echo htmlspecialchars($val); ?>" />
-			<?php }
+				/* We smack an id="..." tag in here that doesn't have [][] in it to allow the
+				* draw_chooser_link() to identify it after the user clicks.*/
+				$input_id = sprintf('"new_values_%s_%s',htmlspecialchars($attr),$i);
 
-			// Is this value is a structural objectClass, make it read-only
-			if (0 == strcasecmp($attr,'objectClass')) { ?>
+				echo '<!-- The old_values array will let update.php know if the entry contents changed
+				     between the time the user loaded this page and saved their changes. -->';
+				printf('<input type="hidden" name="old_values[%s][%s]" value="%s" />',htmlspecialchars($attr),$i,htmlspecialchars($val));
+			}
 
-				<a title="<?php echo _('View the schema description for this objectClass'); ?>" href="cmd.php?cmd=schema&server_id=<?php echo $ldapserver->server_id; ?>&amp;view=objectClasses&amp;viewvalue=<?php echo htmlspecialchars($val); ?>"><img src="images/info.png" /></a>
+			# Is this value is a structural objectClass, make it read-only
+			if (0 == strcasecmp($attr,'objectClass')) {
 
-				<?php $schema_object = $ldapserver->getSchemaObjectClass($val);
+				printf('<a title="%s" href="cmd.php?cmd=schema&amp;server_id=%s&amp;view=objectClasses&amp;viewvalue=%s"><img src="images/info.png" /></a>',
+					_('View the schema description for this objectClass'),$ldapserver->server_id,htmlspecialchars($val));
 
-			        if ($schema_object->getType() == 'structural') {
-					echo "$val <small>(<acronym title=\"" . sprintf(_('This is a structural ObjectClass and cannot be removed.')) . "\">" . _('structural') . "</acronym>)</small><br />";
+				$schema_object = $ldapserver->getSchemaObjectClass($val);
 
-					if ($side == 'dst') {?>
+				if ($schema_object->getType() == 'structural') {
+					printf('%s <small>(<acronym title="%s">%s</acronym>)</small><br />',
+						$val,_('This is a structural ObjectClass and cannot be removed.'),_('structural'));
 
-				<input type="hidden" name="<?php echo $input_name; ?>" id="<?php echo $input_id; ?>" value="<?php echo htmlspecialchars($val); ?>" />
+					if ($side == 'dst')
+						printf('<input type="hidden" name="%s" id="%s" value="%s" />',$input_name,$input_id,htmlspecialchars($val));
 
-					<?php }
-				continue;
+					continue;
 				}
 			}
 
-			if (is_dn_string($val) || $ldapserver->isDNAttr($attr)) { ?>
+			if (is_dn_string($val) || $ldapserver->isDNAttr($attr))
+				printf('<a title="%s" href="cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s"><img style="vertical-align: top" src="images/go.png" /></a>',
+					sprintf(_('Go to %s'),htmlspecialchars($val)),$ldapserver->server_id,rawurlencode($val));
 
-				<a title="<?php echo sprintf(_('Go to %s'),htmlspecialchars($val)); ?>" href="cmd.php?cmd=template_engine&server_id=<?php echo $ldapserver->server_id; ?>&amp;dn=<?php echo rawurlencode($val); ?>"><img style="vertical-align: top" src="images/go.png" /></a>
+			elseif (is_mail_string($val))
+				printf('<a href="mailto:%s><img style="vertical-align: center" src="images/mail.png" /></a>',htmlspecialchars($val));
 
-			<?php } elseif (is_mail_string($val)) { ?>
-
-				<a href="mailto:<?php echo htmlspecialchars($val); ?>"><img style="vertical-align: center" src="images/mail.png" /></a>
-
-			<?php } elseif (is_url_string($val)) { ?>
-
-				<a href="<?php echo htmlspecialchars($val); ?>" target="new"><img style="vertical-align: center" src="images/dc.png" /></a>
-
-			<?php }
+			elseif (is_url_string($val))
+				printf('<a href="%s" target="new"><img style="vertical-align: center" src="images/dc.png" /></a>',htmlspecialchars($val));
 
 			if ($ldapserver->isMultiLineAttr($attr,$val)) {
-
-				if ($side == 'dst') {?>
-				<textarea class="val" rows="3" cols="30" name="<?php echo $input_name; ?>" id="<?php echo $input_id; ?>"><?php echo htmlspecialchars($val); ?></textarea>
-
-				<?php } else {
-					echo htmlspecialchars($val);
-				}
-
-			} else {
-
-				if ($side == 'dst') {?>
-
-				<input type="text" class="val" name="<?php echo $input_name; ?>" id="<?php echo $input_id; ?>" value="<?php echo htmlspecialchars($val); ?>" />
-
-				<?php } else {
-					echo htmlspecialchars($val);
-				}
-			}
-
-			// draw a link for popping up the entry browser if this is the type of attribute
-			// that houses DNs.
-			if ($ldapserver->isDNAttr($attr))
-				draw_chooser_link("edit_form.$input_id",false); ?>
-
-			<br />
-		<?php } ?>
-
-		</td>
-
-	<?php } /* end foreach value */ ?>
-
-	</tr>
-
-		<?php
-		/* Draw the "add value" link under the list of values for this attributes */
-		if (! $ldapserver_dst->isReadOnly()) {
-
-			// First check if the required objectClass is in this DN
-			$isOK = 0;
-			$src_oclass = array();
-			$attr_object = $ldapserver_dst->getSchemaAttribute($attr,$dn_dst);
-			foreach ($attr_object->used_in_object_classes as $oclass) {
-				if (in_array(strtolower($oclass),arrayLower($attrs_dst['objectClass']))) {
-					$isOK = 1;
-					break;
-				} else {
-					// Find oclass that the source has that provides this attribute.
-					if (in_array($oclass,$attrs_src['objectClass']))
-						$src_oclass[] = $oclass;
-				}
-			}
-
-			print "<tr><td colspan=2></td><td colspan=2>&nbsp</td><td>&nbsp;</td><td>";
-			if (! $isOK) {
-
-				if (count($src_oclass) == 1) {
-					$add_href = sprintf('cmd.php?cmd=add_oclass_form&server_id=%s&dn=%s&new_oclass=%s',
-						$ldapserver_dst->server_id,$encoded_dn_dst,$src_oclass[0]);
-				} else {
-					$add_href = sprintf('cmd.php?cmd=add_value_form&server_id=%s&dn=%s&attr=objectClass',
-						$ldapserver_dst->server_id,$encoded_dn_dst);
-				}
-
-				if ($attr == 'objectClass')
-					printf('<div class="add_oclass">(<a href="%s" title="%s">%s</a>)</div>',$add_href,_('Add ObjectClass and Attributes'),_('add value'));
+				if ($side == 'dst')
+					printf('<textarea class="value" rows="3" cols="30" name="%s" id="%s">%s</textarea>',$input_name,$input_id,htmlspecialchars($val));
 				else
-					printf('<div class="add_oclass">(<a href="%s" title="%s">%s</a>)</div>',$add_href,sprintf(_('You need one of the following ObjectClass(es) to add this attribute %s.'),implode(" ",$src_oclass)),_('Add new ObjectClass'));
+					echo htmlspecialchars($val);
 
 			} else {
-				if (! $schema_attr_dst->getIsSingleValue() || (! isset($vals))) {
+				if ($side == 'dst')
+					printf('<input type="text" class="value" name="%s" id="%s" value="%s" />',$input_name,$input_id,htmlspecialchars($val));
+				else
+					echo htmlspecialchars($val);
+			}
 
-					$add_href = sprintf('cmd.php?cmd=add_value_form&server_id=%s&dn=%s&attr=%s',
-						$ldapserver_dst->server_id,$encoded_dn_dst,rawurlencode($attr));
+			# draw a link for popping up the entry browser if this is the type of attribute that houses DNs.
+			if ($ldapserver->isDNAttr($attr))
+				draw_chooser_link("edit_form.$input_id",false);
 
-					printf('<div class="add_value">(<a href="%s" title="%s">%s</a>)</div>',
-						$add_href,sprintf(_('Add an additional value to attribute \'%s\''),$attr),_('add value'));
-				}
+			echo '<br />';
+		}
+
+		echo '</td>';
+	} /* end foreach value */
+
+	echo '</tr>';
+
+	# Draw the "add value" link under the list of values for this attributes
+	if (! $ldapserver_dst->isReadOnly()) {
+
+		# First check if the required objectClass is in this DN
+		$isOK = 0;
+		$src_oclass = array();
+		$attr_object = $ldapserver_dst->getSchemaAttribute($attr,$dn_dst);
+		foreach ($attr_object->used_in_object_classes as $oclass) {
+			if (in_array(strtolower($oclass),arrayLower($attrs_dst['objectClass']))) {
+				$isOK = 1;
+				break;
+
+			} else {
+				# Find oclass that the source has that provides this attribute.
+				if (in_array($oclass,$attrs_src['objectClass']))
+					$src_oclass[] = $oclass;
 			}
 		}
 
-		print "</td></tr>"; ?>
+		echo '<tr><td colspan=2></td><td colspan=2>&nbsp;</td><td>&nbsp;</td><td>';
+		if (! $isOK) {
 
-		</td>
+			if (count($src_oclass) == 1)
+				$add_href = sprintf('cmd.php?cmd=add_oclass_form&amp;server_id=%s&amp;dn=%s&amp;new_oclass=%s',
+					$ldapserver_dst->server_id,$encoded_dn_dst,$src_oclass[0]);
+			else
+				$add_href = sprintf('cmd.php?cmd=add_value_form&amp;server_id=%s&amp;dn=%s&amp;attr=objectClass',
+					$ldapserver_dst->server_id,$encoded_dn_dst);
 
-	</tr>
+			if ($attr == 'objectClass')
+				printf('<div class="add_value">(<a href="%s" title="%s">%s</a>)</div>',$add_href,_('Add ObjectClass and Attributes'),_('add value'));
+			else
+				printf('<div class="add_value">(<a href="%s" title="%s">%s</a>)</div>',
+					$add_href,sprintf(_('You need one of the following ObjectClass(es) to add this attribute %s.'),implode(" ",$src_oclass)),
+					_('Add new ObjectClass'));
 
-<?php } /* End foreach ($attrs as $attr => $vals) */
+		} else {
+			if (! $schema_attr_dst->getIsSingleValue() || (! isset($vals))) {
 
-if (! $ldapserver_dst->isReadOnly()) { ?>
+				$add_href = sprintf('cmd.php?cmd=add_value_form&amp;erver_id=%s&amp;dn=%s&amp;attr=%s',
+					$ldapserver_dst->server_id,$encoded_dn_dst,rawurlencode($attr));
 
-	<td colspan="2">&nbsp</td><td colspan=2><center><input type="submit" value="<?php echo _('Save Changes'); ?>" /></center></td></tr></form>
+			printf('<div class="add_value">(<a href="%s" title="%s">%s</a>)</div>',
+					$add_href,sprintf(_('Add an additional value to attribute \'%s\''),$attr),_('add value'));
+			}
+		}
+	}
 
-<?php } ?>
+	echo '</td></tr>';
 
-</table>
+	# Get the values and see if they are the same.
+	if (isset($attrs_src[$attr]) && isset($attrs_dst[$attr]) && $attrs_src[$attr] === $attrs_dst[$attr])
+		echo '<tr>';
+	else
+		echo '<tr class="updated"><td class="bottom" colspan="0">&nbsp;</td></tr>';
 
-<?php /* If this entry has a binary attribute,we need to provide a form for it to submit when deleting it. */ ?>
+} /* End foreach ($attrs as $attr => $vals) */
 
-<script language="javascript">
+if (! $ldapserver_dst->isReadOnly())
+	printf('<tr><td colspan=3>&nbsp;</td><td colspan=3><center><input type="submit" value="%s" /></center></form></td></tr>',_('Save Changes'));
+
+echo '</table>';
+
+# If this entry has a binary attribute,we need to provide a form for it to submit when deleting it. */
+?>
+
+<script type="text/javascript" language="javascript">
 //<!--
 function deleteAttribute(attrName)
 {

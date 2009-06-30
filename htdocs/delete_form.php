@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete_form.php,v 1.26 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete_form.php,v 1.26.2.1 2008/01/13 05:37:00 wurley Exp $
 
 /**
  * delete_form.php
@@ -40,7 +40,7 @@ if (count($entry['children'])) {
 	$search['href'] = htmlspecialchars(sprintf('cmd.php?cmd=search&search=true&;server_id=%s&filter=%s&base_dn=%s&form=advanced&scope=sub',
 		$ldapserver->server_id,rawurlencode('objectClass=*'),rawurlencode($entry['dn']['string'])));
 
-	echo '<table class="delete" border=0>';
+	echo '<table class="forminput" border=0>';
 	echo '<tr>';
 	echo '<td colspan=2>';
 	printf(_('This entry is the root of a sub-tree containing %s entries.'),$search['count']);
@@ -65,7 +65,7 @@ if (count($entry['children'])) {
 	echo '<input type="hidden" name="cmd" value="rdelete" />';
 	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($entry['dn']['string']));
 	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
-	printf('<input type="submit" class="scary" value="%s" />',sprintf(_('Delete all %s objects'),$search['count']));
+	printf('<input type="submit" value="%s" />',sprintf(_('Delete all %s objects'),$search['count']));
 	echo '</form>';
 	echo '</center></td>';
 
@@ -74,7 +74,7 @@ if (count($entry['children'])) {
 	echo '<input type="hidden" name="cmd" value="template_engine" />';
 	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($entry['dn']['string']));
 	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
-	printf('<input type="submit" name="submit" value="%s" class="cancel" />',_('Cancel'));
+	printf('<input type="submit" name="submit" value="%s" />',_('Cancel'));
 	echo '</form>';
 	echo '</center></td>';
 	echo '</tr>';
@@ -97,7 +97,7 @@ if (count($entry['children'])) {
 	echo "\n";
 
 } else {
-	echo '<table class="delete" border=0>';
+	echo '<table class="forminput" border=0>';
 
 	printf('<tr><td colspan=4>%s</td></tr>',_('Are you sure you want to permanently delete this object?'));
 	echo '<tr><td colspan=4>&nbsp;</td></tr>';
@@ -114,7 +114,7 @@ if (count($entry['children'])) {
 	echo '<input type="hidden" name="cmd" value="delete" />';
 	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($entry['dn']['string']));
 	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
-	printf('<input type="submit" name="submit" value="%s" class="scary" />',_('Delete'));
+	printf('<input type="submit" name="submit" value="%s" />',_('Delete'));
 	echo '</form>';
 
 	echo '</center></td>';
@@ -124,7 +124,7 @@ if (count($entry['children'])) {
 	echo '<input type="hidden" name="cmd" value="template_engine" />';
 	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($entry['dn']['string']));
 	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
-	printf('<input type="submit" name="submit" value="%s" class="cancel" />',_('Cancel'));
+	printf('<input type="submit" name="submit" value="%s" />',_('Cancel'));
 	echo '</form>';
 
 	echo '</center></td>';

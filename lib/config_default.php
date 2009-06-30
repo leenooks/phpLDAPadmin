@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.27.2.5 2008/01/10 12:29:21 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.27.2.7 2008/01/30 11:16:02 wurley Exp $
 
 /**
  * Configuration processing and defaults.
@@ -87,6 +87,10 @@ class Config {
 		$this->default->appearance['hide_debug_info'] = array(
 			'desc'=>'Hide the features that may provide sensitive debugging information to the browser',
 			'default'=>true);
+
+		$this->default->appearance['timezone'] = array(
+			'desc'=>'Define our timezone, if not defined in php.ini',
+			'default'=>null);
 
 		/** Language
 		 * The language setting. If you set this to 'auto', phpLDAPadmin will
@@ -189,9 +193,13 @@ class Config {
 			'desc'=>'LDAP attribute to show in the tree',
 			'default'=>'%rdn');
 
+		$this->default->appearance['tree_height'] = array(
+			'desc'=>'Pixel height of the tree browser',
+			'default'=>null);
+
 		$this->default->appearance['tree_width'] = array(
-			'desc'=>'Pixel width of the left frame view (tree browser)',
-			'default'=>320);
+			'desc'=>'Pixel width of the tree browser',
+			'default'=>null);
 
 		/**
 		 * Tree display filter
@@ -316,7 +324,7 @@ class Config {
 			'default'=>null);
 
 		$this->default->debug['addr'] = array(
-			'desc'=>'IP address of PLA client to provide debugging info.',
+			'desc'=>'IP address of client to provide debugging info.',
 			'default'=>null);
 
 		$this->default->debug['append'] = array(
@@ -500,10 +508,10 @@ class Config {
 
 		if (! isset($config[$key]))
 			error(sprintf('A call was made in [%s] to GetValue requesting [%s] that isnt predefined.',
-				basename($_SERVER['PHP_SELF']),$key));
+				basename($_SERVER['PHP_SELF']),$key),'error',true);
 
 		if (! isset($config[$key][$index]))
-			error("Requesting a index [$index] that isnt predefined.");
+			error(sprintf('Requesting an index [%s] in key [%s] that isnt predefined.',$index,$key),'error',true);
 
 		return isset($config[$key][$index]['value']) ? $config[$key][$index]['value'] : $config[$key][$index]['default'];
 	}
@@ -518,23 +526,23 @@ class Config {
 				if (isset($this->default->$masterkey)) {
 
 					if (! is_array($masterdetails))
-						error("Error in configuration file, [$masterdetails] should be an ARRAY.");
+						error(sprintf('Error in configuration file, [%s] should be an ARRAY.',$masterdetails),'error',true);
 
 					foreach ($masterdetails as $key => $value) {
 						# Test that the key is correct.
 						if (! in_array($key,array_keys($this->default->$masterkey)))
-							error("Error in configuration file, [$key] has not been defined as a PLA configurable variable.");
+							error(sprintf('Error in configuration file, [%s] has not been defined as a configurable variable.',$key),'error',true);
 
 						# Test if its should be an array or not.
 						if (is_array($this->default->{$masterkey}[$key]['default']) && ! is_array($value))
-							error("Error in configuration file, {$masterkey}['$key'] SHOULD be an array of values.");
+							error(sprintf('Error in configuration file, %s[\'%s\'] SHOULD be an array of values.',$masterkey,$key),'error',true);
 
 						if (! is_array($this->default->{$masterkey}[$key]['default']) && is_array($value))
-							error("Error in configuration file, {$masterkey}['$key'] should NOT be an array of values.");
+							error(sprintf('Error in configuration file, %s[\'%s\'] should NOT be an array of values.',$masterkey,$key),'error',true);
 					}
 
 				} else {
-					error("Error in configuration file, [$masterkey] has not been defined as a PLA MASTER configurable variable.");
+					error(sprintf('Error in configuration file, [%s] has not been defined as a MASTER configurable variable.',$masterkey),'error',true);
 				}
 			}
 		}

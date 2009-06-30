@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter1.php,v 1.3.2.6 2008/01/04 14:31:05 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter1.php,v 1.3.2.13 2008/01/28 11:40:16 wurley Exp $
 
 define('IdEntryRefreshMenuItem', '0');
 define('IdEntryExportBaseMenuItem', '1');
@@ -195,7 +195,7 @@ class EntryWriter1 extends EntryWriter {
 		$objectclasses_ok = true;
 
 		if ($this->step != 1) {
-			if (!$container || !$this->ldapserver->dnExists($container)) {
+			if (!$container || !$this->getLDAPServer()->dnExists($container)) {
 				$container_ok = false;
 				$this->step = 1;
 			}
@@ -244,7 +244,7 @@ class EntryWriter1 extends EntryWriter {
 
 	protected function drawDefaultCreatingEntrySubtitle($entry) {
 		printf('<h3 class="subtitle">%s%s <b>%s</b></h3>',
-			_('Server'),_(':'),$this->ldapserver->name);
+			_('Server'),_(':'),$this->getLDAPServer()->name);
 	}
 
 	protected function drawDefaultCreatingEntryStepTitle($entry, $step) {
@@ -277,9 +277,9 @@ class EntryWriter1 extends EntryWriter {
 		$container = $entry->getContainer();
 
 		if ($step == 1) {
-			printf('<input type="hidden" name="server_id" value="%s" />', $this->ldapserver->server_id);
+			printf('<input type="hidden" name="server_id" value="%s" />', $this->index);
 			printf('<input type="hidden" name="step" value="%s" />', $step + 1);
-			echo '<table class="create" align="center">';
+			echo '<table class="forminput" align="center">';
 
 			$this->draw('ContainerChooser', $entry, $container);
 			$this->draw('ObjectClassChooser', $entry);
@@ -288,9 +288,9 @@ class EntryWriter1 extends EntryWriter {
 			echo '</table>';
 		} else {
 			printf('<input type="hidden" name="container" value="%s" />', htmlspecialchars($container));
-			printf('<input type="hidden" name="server_id" value="%s" />', $this->ldapserver->server_id);
+			printf('<input type="hidden" name="server_id" value="%s" />', $this->index);
 			printf('<input type="hidden" name="step" value="%s" />', $step + 1);
-			echo '<table class="edit_dn" cellspacing="0" align="center">';
+			echo '<table class="entry" cellspacing="0" align="center" border=0>';
 
 			$this->draw('RdnChooser', $entry);
 			$this->draw('ShownAttributes', $entry);
@@ -332,7 +332,7 @@ class EntryWriter1 extends EntryWriter {
 	}
 
 	protected function drawDefaultCreatingEntryObjectClassChooser($entry) {
-		$oclasses = $this->ldapserver->SchemaObjectClasses();
+		$oclasses = $this->getLDAPServer()->SchemaObjectClasses();
 		if (!$oclasses) $oclasses = array();
 		elseif (!is_array($oclasses)) $oclasses = array($oclasses);
 
@@ -353,7 +353,7 @@ class EntryWriter1 extends EntryWriter {
 		echo '</tr>';
 
 		if ($_SESSION[APPCONFIG]->GetValue('appearance', 'show_hints')) {
-			echo '<tr><td>&nbsp;</td><td><small><img src="images/light.png" alt="Hint" /><span class="hint">';
+			printf('<tr><td>&nbsp;</td><td><small><img src="%s/light.png" alt="Hint" /><span class="hint">',IMGDIR);
 			echo _('Hint: You must choose exactly one structural objectClass (shown in bold above)');
 			echo '</span></small><br /></td></tr>';
 		}
@@ -364,7 +364,7 @@ class EntryWriter1 extends EntryWriter {
 		$rdn_attr = $entry->getRdnAttribute();
 
 		printf('<tr><th colspan="2">%s</th></tr>', 'RDN');
-		echo '<tr><td class="val" colspan="2"><select name="rdn_attribute">';
+		echo '<tr><td class="value" colspan="2"><select name="rdn_attribute">';
 		printf('<option value="">%s</option>', _('select the rdn attribute'));
 
 		foreach ($attrs as $attr) {
@@ -402,7 +402,7 @@ class EntryWriter1 extends EntryWriter {
 				if (!$has_optional_attrs) {
 					if (!$has_required_attrs) {
 						printf('<tr><th colspan="2">%s</th></tr>', _('Required Attributes'));
-						printf('<tr class="row1"><td colspan="2"><center>(%s)</center></td></tr>', _('none'));
+						printf('<tr class="noinput"><td colspan="2"><center>(%s)</center></td></tr>', _('none'));
 					}
 					printf('<tr><th colspan="2">%s</th></tr>', _('Optional Attributes'));
 					$has_optional_attrs = true;
@@ -415,7 +415,7 @@ class EntryWriter1 extends EntryWriter {
 
 		if (!$has_optional_attrs) {
 			printf('<tr><th colspan="2">%s</th></tr>', _('Optional Attributes'));
-			printf('<tr class="row1"><td colspan="2"><center>(%s)</center></td></tr>', _('none'));
+			printf('<tr class="noinput"><td colspan="2"><center>(%s)</center></td></tr>', _('none'));
 		}
 	}
 
@@ -447,12 +447,12 @@ class EntryWriter1 extends EntryWriter {
 		// form start
 		if (! $entry->isReadOnly()) {
 			echo '<form action="cmd.php?cmd=update_confirm" method="post" enctype="multipart/form-data" name="entry_form" onSubmit="return submitForm(this)">';
-			printf('<input type="hidden" name="server_id" value="%s" />',$this->ldapserver->server_id);
+			printf('<input type="hidden" name="server_id" value="%s" />',$this->index);
 			printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($entry->getDn()));
 		}
 
 		echo '<br />'."\n\n";
-		echo '<table class="edit_dn" align="center">';
+		echo '<table class="entry" align="center" border=0>';
 	}
 
 	public function visitDefaultEditingEntryEnd($entry) {
@@ -489,9 +489,9 @@ class EntryWriter1 extends EntryWriter {
 	protected function initDefaultEditingEntryVisit($entry) {
 		parent::initDefaultEditingEntryVisit($entry);
 
-		$this->url_base = sprintf('cmd.php?server_id=%s&dn=%s', $this->ldapserver->server_id, rawurlencode($entry->getDn()));
-		$this->hint_layout = '<td class="icon"><img src="images/light.png" alt="'._('Hint').'" /></td><td colspan="3"><span class="hint">%s</span></td>';
-		$this->action_layout = '<td class="icon"><img src="images/%s" alt="%s" /></td><td><a href="%s" title="%s">%s</a></td>';
+		$this->url_base = sprintf('cmd.php?server_id=%s&dn=%s', $this->index, rawurlencode($entry->getDn()));
+		$this->hint_layout = sprintf('<td class="icon"><img src="%s/light.png" alt="%s" /></td><td colspan="3"><span class="hint">%%s</span></td>',IMGDIR,_('Hint'));
+		$this->action_layout = '<td class="icon"><img src="%s/%s" alt="%s" /></td><td><a href="%s" title="%s">%s</a></td>';
 	}
 
 	protected function drawDefaultEditingEntryTitle($entry) {
@@ -506,7 +506,7 @@ class EntryWriter1 extends EntryWriter {
 		echo _('Server');
 		echo _(':');
 		echo ' <b>';
-		echo $this->ldapserver->name;
+		echo $this->getLDAPServer()->name;
 		echo '</b> &nbsp;&nbsp;&nbsp; ';
 
 		echo _('Distinguished Name');
@@ -533,7 +533,7 @@ class EntryWriter1 extends EntryWriter {
 		$i = 0;
 		$item = '';
 
-		echo '<table class="edit_dn_menu" width="100%" border=0>';
+		echo '<table class="menu" width="100%" border=0>';
 		echo '<tr>';
 		$menuitem_number = 0;
 
@@ -672,7 +672,7 @@ class EntryWriter1 extends EntryWriter {
 					$more_children = $entry->isSizeLimited();
 					if (!$more_children) {
 						// all children in ldap
-						$all_children = $this->ldapserver->getContainerContents(
+						$all_children = $this->getLDAPServer()->getContainerContents(
 								 $entry->getDn(), $children_count + 1,
 								 '(objectClass=*)', $config->GetValue('deref','view'));
 						$more_children = (count($all_children) > $children_count);
@@ -722,21 +722,21 @@ class EntryWriter1 extends EntryWriter {
 	protected function getDefaultEditingEntryRefreshMenuItem($entry) {
 		$href = $this->url_base.'&cmd=template_engine&junk='.random_junk();
 
-		return sprintf($this->action_layout,'refresh.png',_('Refresh'),
+		return sprintf($this->action_layout,IMGDIR,'refresh.png',_('Refresh'),
 			htmlspecialchars($href),_('Refresh this entry'),_('Refresh'));
 	}
 
 	protected function getDefaultEditingEntryExportBaseMenuItem($entry) {
 		$href = $this->url_base.'&cmd=export_form&scope=base';
 
-		return sprintf($this->action_layout,'save.png',_('Save'),
+		return sprintf($this->action_layout,IMGDIR,'save.png',_('Save'),
 			htmlspecialchars($href),_('Save a dump of this object'),_('Export'));
 	}
 
 	protected function getDefaultEditingEntryMoveMenuItem($entry) {
 		$href = $this->url_base.'&cmd=copy_form';
 
-		return sprintf($this->action_layout,'cut.png',_('Cut'),htmlspecialchars($href),
+		return sprintf($this->action_layout,IMGDIR,'cut.png',_('Cut'),htmlspecialchars($href),
 			_('Copy this object to another location,a new DN, or another server'),
 			_('Copy or move this entry'));
 	}
@@ -745,13 +745,13 @@ class EntryWriter1 extends EntryWriter {
 		if (get_request('show_internal_attrs','REQUEST')) {
 			$href = $this->url_base.'&cmd=template_engine&junk='.random_junk();
 
-			return sprintf($this->action_layout,'tools-no.png',_('Hide'),
+			return sprintf($this->action_layout,IMGDIR,'tools-no.png',_('Hide'),
 				htmlspecialchars($href),'',_('Hide internal attributes'));
 
 		} else {
 			$href = $this->url_base.'&cmd=template_engine&show_internal_attrs=true';
 
-			return sprintf($this->action_layout,'tools.png',_('Show'),
+			return sprintf($this->action_layout,IMGDIR,'tools.png',_('Show'),
 				htmlspecialchars($href),'',_('Show internal attributes'));
 		}
 	}
@@ -759,48 +759,48 @@ class EntryWriter1 extends EntryWriter {
 	protected function getDefaultEditingEntryDeleteMenuItem($entry) {
 		$href = $this->url_base.'&cmd=delete_form';
 
-		return sprintf($this->action_layout,'trash.png',_('Trash'),htmlspecialchars($href),
+		return sprintf($this->action_layout,IMGDIR,'trash.png',_('Trash'),htmlspecialchars($href),
 			_('You will be prompted to confirm this decision'),_('Delete this entry'));
 	}
 
 	protected function getDefaultEditingEntryRenameMenuItem($entry) {
 		$href = $this->url_base.'&cmd=rename_form';
 
-		return sprintf($this->action_layout,'rename.png',_('Rename'),htmlspecialchars($href),'',_('Rename'));
+		return sprintf($this->action_layout,IMGDIR,'rename.png',_('Rename'),htmlspecialchars($href),'',_('Rename'));
 	}
 
 	protected function getDefaultEditingEntryCompareMenuItem($entry) {
 		$href = $this->url_base.'&cmd=compare_form';
 
-		return sprintf($this->action_layout,'compare.png',_('Compare'),
+		return sprintf($this->action_layout,IMGDIR,'compare.png',_('Compare'),
 			htmlspecialchars($href),'',_('Compare with another entry'));
 	}
 
 	protected function getDefaultEditingEntryCreateMenuItem($entry) {
 		$href = sprintf('cmd.php?cmd=template_engine&server_id=%s&container=%s',
-			$this->ldapserver->server_id,rawurlencode($entry->getDn()));
+			$this->index,rawurlencode($entry->getDn()));
 
-		return sprintf($this->action_layout,'star.png',_('Create'),htmlspecialchars($href),'',_('Create a child entry'));
+		return sprintf($this->action_layout,IMGDIR,'star.png',_('Create'),htmlspecialchars($href),'',_('Create a child entry'));
 	}
 
 	protected function getDefaultEditingEntryAddAttributeMenuItem($entry) {
 		$href = $this->url_base.'&cmd=add_attr_form';
 
-		return sprintf($this->action_layout,'add.png',_('Add'),htmlspecialchars($href),'',_('Add new attribute'));
+		return sprintf($this->action_layout,IMGDIR,'add.png',_('Add'),htmlspecialchars($href),'',_('Add new attribute'));
 	}
 
 	protected function getDefaultEditingEntryShowChildrenMenuItem($entry,$children_count) {
 		$href = sprintf('cmd.php?cmd=search&server_id=%s&search=true&filter=%s&base_dn=%s&form=advanced&scope=one',
-			$this->ldapserver->server_id,rawurlencode('objectClass=*'),rawurlencode($entry->getDn()));
+			$this->index,rawurlencode('objectClass=*'),rawurlencode($entry->getDn()));
 
-		return sprintf($this->action_layout,'children.png',_('Children'),htmlspecialchars($href),'',
+		return sprintf($this->action_layout,IMGDIR,'children.png',_('Children'),htmlspecialchars($href),'',
 			($children_count == 1) ? _('View 1 child') : sprintf(_('View %s children'),$children_count));
 	}
 
 	protected function getDefaultEditingEntryExportSubMenuItem($entry) {
 		$href = sprintf('%s&cmd=export_form&scope=%s',$this->url_base,'sub');
 
-		return sprintf($this->action_layout,'save.png',_('Save'),htmlspecialchars($href),
+		return sprintf($this->action_layout,IMGDIR,'save.png',_('Save'),htmlspecialchars($href),
 			_('Save a dump of this object and all of its children'),_('Export subtree'));
 	}
 
@@ -991,10 +991,10 @@ class EntryWriter1 extends EntryWriter {
 		$container = $entry->getContainer();
 
 		printf('<input type="hidden" name="container" value="%s" />', htmlspecialchars($container));
-		printf('<input type="hidden" name="server_id" value="%s" />', $this->ldapserver->server_id);
+		printf('<input type="hidden" name="server_id" value="%s" />', $this->index);
 		printf('<input type="hidden" name="template" value="%s" />', $entry->getSelectedTemplateName());
 		printf('<input type="hidden" name="step" value="%s" />', $step + 1);
-		echo '<table class="edit_dn" cellspacing="0" align="center">';
+		echo '<table class="entry" cellspacing="0" align="center">';
 
 		$this->draw('RdnChooser', $entry);
 
@@ -1027,17 +1027,15 @@ class EntryWriter1 extends EntryWriter {
 			echo "<input type=\"hidden\" name=\"$p\" value=\"$v\">";
 		}
 
-		echo '<table class="create" width="100%">';
+		echo '<table class="forminput" width="100%" border=0>';
 
-		$server_menu_html = server_select_list($this->ldapserver->server_id, true);
-		printf('<tr><td class="heading">%s%s</td><td>%s</td></tr>', _('Server'), _(':'), $server_menu_html);
+		$server_menu_html = server_select_list($this->index, true);
+		printf('<tr><td class="heading">%s%s</td><td colspan=2>%s</td></tr>', _('Server'), _(':'), $server_menu_html);
 
 		echo '<tr>';
 		printf('<td class="heading">%s%s</td>', _('Templates'), _(':'));
 		echo '<td>';
-		echo '<table class="template_display" width="100%">';
-		echo '<tr><td>';
-		echo '<table class="templates">';
+		echo '<table border=0>';
 
 		$i = -1;
 		$templates = &$entry->getTemplates();
@@ -1053,13 +1051,13 @@ class EntryWriter1 extends EntryWriter {
 			# Balance the columns properly
 			if (($nb_templates % 2 == 0 && $i == intval($nb_templates / 2)) ||
 				($nb_templates % 2 == 1 && $i == intval($nb_templates / 2) + 1)) {
-				echo '</table></td><td><table class="templates">';
+				echo '</table></td><td><table>';
 			}
 
 			echo '<tr>';
 
 			if (isset($template_attrs['invalid']) && $template_attrs['invalid']) {
-				echo '<td class="icon"><img src="images/error.png" alt="Error" /></td>';
+				printf('<td class="icon"><img src="%s/error.png" alt="Error" /></td>',IMGDIR);
 			} else {
 				printf('<td><input type="radio" name="template" value="%s" id="%s" onclick="document.forms.template_choice_form.submit()" /></td>',
 				htmlspecialchars($template_name), htmlspecialchars($template_name));
@@ -1067,7 +1065,7 @@ class EntryWriter1 extends EntryWriter {
 
 			printf('<td class="icon"><label for="%s"><img src="%s" alt="" /></label></td>',
 				htmlspecialchars($template_name), $template_attrs['icon']);
-			printf('<td class="name"><label for="%s">',
+			printf('<td class="label"><label for="%s">',
 				htmlspecialchars($template_name));
 
 			if (isset($template_attrs['invalid']) && $template_attrs['invalid']) {
@@ -1088,19 +1086,15 @@ class EntryWriter1 extends EntryWriter {
 			$i++;
 			if (($nb_templates % 2 == 0 && $i == intval($nb_templates / 2)) ||
 				($nb_templates % 2 == 1 && $i == intval($nb_templates / 2) + 1)) {
-				echo '</table></td><td><table class="templates">';
+				echo '</table></td><td><table>';
 			}
-			echo '<tr>'
-				.'<td><input type="radio" name="template" value="none"'
-				.' onclick="document.forms.template_choice_form.submit()" /></td>'
-				.'<td class="icon"><label><img src="images/object.png" alt="" /></label></td>'
-				.'<td class="name"><label>'
-				._('Default')
-				.'</label></td></tr>';
+			echo '<tr>';
+			echo '<td><input type="radio" name="template" value="none" onclick="document.forms.template_choice_form.submit()" /></td>';
+			printf('<td class="icon"><label><img src="%s/object.png" alt="" /></label></td>',IMGDIR);
+			printf('<td class="label"><label>%s</label></td></tr>',_('Default'));
 		}
 
 		echo '</table>';
-		echo '</td></tr></table>';
 		echo '</td></tr>';
 
 		echo '</table>';
@@ -1145,15 +1139,15 @@ class EntryWriter1 extends EntryWriter {
 	protected function drawTemplateCreatingEntryJavascript($entry) {
 		$this->draw('DefaultCreatingEntry::Javascript', $entry);
 
-		$templates = new Templates($this->ldapserver->server_id);
+		$templates = new Templates($this->index);
 		foreach ($entry->getAttributes() as $attribute) {
 			if ($attribute->hasProperty('onchange')) {
 				$onchange = $attribute->getProperty('onchange');
 				if (is_array($onchange)) {
 					foreach ($onchange as $value)
-						$templates->OnChangeAdd($this->ldapserver,$attribute->getName(),$value);
+						$templates->OnChangeAdd($this->getLDAPServer(),$attribute->getName(),$value);
 				} else {
-					$templates->OnChangeAdd($this->ldapserver,$attribute->getName(),$onchange);
+					$templates->OnChangeAdd($this->getLDAPServer(),$attribute->getName(),$onchange);
 				}
 			}
 		}
@@ -1255,13 +1249,11 @@ class EntryWriter1 extends EntryWriter {
 			echo "<input type=\"hidden\" name=\"$p\" value=\"$v\">";
 		}
 
-		echo '<table class="create" width="100%">';
+		echo '<table class="forminput" width="100%" border=0>';
 		echo '<tr>';
 		printf('<td class="heading">%s%s</td>',_('Templates'), _(':'));
 		echo '<td>';
-		echo '<table class="template_display" width="100%">';
-		echo '<tr><td>';
-		echo '<table class="templates">';
+		echo '<table>';
 
 		$i = -1;
 		$templates = &$entry->getTemplates();
@@ -1277,18 +1269,17 @@ class EntryWriter1 extends EntryWriter {
 			# Balance the columns properly
 			if (($nb_templates % 2 == 0 && $i == intval($nb_templates / 2)) ||
 				($nb_templates % 2 == 1 && $i == intval($nb_templates / 2) + 1)) {
-				echo '</table></td><td><table class="templates">';
+				echo '</table></td><td><table>';
 			}
 
 			echo '<tr>';
 
-			printf('<td><input type="radio" name="template" value="%s" id="%s"'
-				.' onclick="document.forms.template_choice_form.submit()" /></td>',
+			printf('<td><input type="radio" name="template" value="%s" id="%s" onclick="document.forms.template_choice_form.submit()" /></td>',
 				htmlspecialchars($template_name), htmlspecialchars($template_name));
 
 			printf('<td class="icon"><label for="%s"><img src="%s" alt="" /></label></td>',
 				htmlspecialchars($template_name), $template_attrs['icon']);
-			printf('<td class="name"><label for="%s">',htmlspecialchars($template_name));
+			printf('<td class="label"><label for="%s">',htmlspecialchars($template_name));
 
 			echo htmlspecialchars($template_attrs['desc']);
 
@@ -1300,19 +1291,15 @@ class EntryWriter1 extends EntryWriter {
 			$i++;
 			if (($nb_templates % 2 == 0 && $i == intval($nb_templates / 2)) ||
 				($nb_templates % 2 == 1 && $i == intval($nb_templates / 2) + 1)) {
-				echo '</table></td><td><table class="templates">';
+				echo '</table></td><td><table>';
 			}
-			echo '<tr>'
-				.'<td><input type="radio" name="template" value="none"'
-				.' onclick="document.forms.template_choice_form.submit()" /></td>'
-				.'<td class="icon"><label><img src="images/object.png" alt="" /></label></td>'
-				.'<td class="name"><label>'
-				._('Default')
-				.'</label></td></tr>';
+			echo '<tr>';
+			echo '<td><input type="radio" name="template" value="none" onclick="document.forms.template_choice_form.submit()" /></td>';
+			printf('<td class="icon"><label><img src="%s/object.png" alt="" /></label></td>',IMGDIR);
+			printf('<td class="label"><label>%s</label></td></tr>',_('Default'));
 		}
 
 		echo '</table>';
-		echo '</td></tr></table>';
 		echo '</td></tr>';
 
 		echo '</table>';
@@ -1335,15 +1322,15 @@ class EntryWriter1 extends EntryWriter {
 	protected function drawTemplateEditingEntryJavascript($entry) {
 		$this->draw('DefaultEditingEntry::Javascript', $entry);
 
-		$templates = new Templates($this->ldapserver->server_id);
+		$templates = new Templates($this->index);
 		foreach ($entry->getAttributes() as $attribute) {
 			if ($attribute->hasProperty('onchange')) {
 				$onchange = $attribute->getProperty('onchange');
 				if (is_array($onchange)) {
 					foreach ($onchange as $value)
-						$templates->OnChangeAdd($this->ldapserver,$attribute->getName(),$value);
+						$templates->OnChangeAdd($this->getLDAPServer(),$attribute->getName(),$value);
 				} else {
-					$templates->OnChangeAdd($this->ldapserver,$attribute->getName(),$onchange);
+					$templates->OnChangeAdd($this->getLDAPServer(),$attribute->getName(),$onchange);
 				}
 			}
 		}
@@ -1401,7 +1388,7 @@ class EntryWriter1 extends EntryWriter {
 		echo '    var valid = true;';
 		$this->draw('ValidateJavascript', $attribute, 'component', 'silence', 'valid');
 		echo '    if (valid) component.style.backgroundColor = "white";';
-		echo '    else component.style.backgroundColor = \'#ffffba\';';
+		echo '    else component.style.backgroundColor = \'#F0F0FF\';';
 		echo '    return valid;';
 		echo '}';
 		echo '</script>';
@@ -1430,7 +1417,7 @@ class EntryWriter1 extends EntryWriter {
 			      }';
 			echo 'var comp = getAttributeComponents("new", "'.$attribute->getName().'");
 			      for (var i = 0; i < comp.length; i++) {
-				   comp[i].style.backgroundColor = '.$var_valid.' ? "white" : \'#ffffba\';
+				   comp[i].style.backgroundColor = '.$var_valid.' ? "white" : \'#F0F0FF\';
 			      }';
 		}
 	}
@@ -1468,14 +1455,14 @@ class EntryWriter1 extends EntryWriter {
 	}
 
 	protected function drawAttributeInformations($attribute) {
-		if (($this->context == ENTRY_WRITER_EDITING_CONTEXT) && $attribute->hasBeenModified()) echo '<tr class="updated_attr">';
+		if (($this->context == ENTRY_WRITER_EDITING_CONTEXT) && $attribute->hasBeenModified()) echo '<tr class="updated">';
 		else echo '<tr>';
 
-		echo '<td class="attr">';
+		echo '<td class="title">';
 		$this->draw('Name', $attribute);
 		echo '</td>';
 
-		echo '<td class="attr_note">';
+		echo '<td class="note">';
 
 		# Setup the $attr_note, which will be displayed to the right of the attr name (if any)
 		if ($_SESSION[APPCONFIG]->GetValue('appearance', 'show_attribute_notes')) {
@@ -1509,7 +1496,7 @@ class EntryWriter1 extends EntryWriter {
 
 		if ($attr_note) printf('<sup><small>%s</small></sup>', $attr_note);
 
-		if ($attribute->isReadOnly() && $this->ldapserver->isAttrReadOnly($attribute->getName())) {
+		if ($attribute->isReadOnly() && $this->getLDAPServer()->isAttrReadOnly($attribute->getName())) {
 			printf('<small>(<acronym title="%s">%s</acronym>)</small>',
 				_('This attribute has been flagged as read only by the phpLDAPadmin administrator'),
 				_('read only'));
@@ -1592,11 +1579,11 @@ class EntryWriter1 extends EntryWriter {
 
 	protected function drawAttributeStartValueLine($attribute) {
 		if (($this->context == ENTRY_WRITER_EDITING_CONTEXT) && $attribute->hasBeenModified()) {
-			echo '<tr class="updated_attr">';
+			echo '<tr class="updated">';
 		} else {
 			echo '<tr>';
 		}
-		echo '<td class="val" colspan="2">';
+		echo '<td class="value" colspan="2">';
 	}
 
 	protected function drawAttributeEndValueLine($attribute) {
@@ -1604,7 +1591,7 @@ class EntryWriter1 extends EntryWriter {
 		echo '</tr>';
 
 		if (($this->context == ENTRY_WRITER_EDITING_CONTEXT) && $attribute->hasBeenModified()) {
-			echo '<tr class="updated_attr"><td class="bottom" colspan="2"></td></tr>';
+			echo '<tr class="updated"><td class="bottom" colspan="2"></td></tr>';
 		}
 	}
 
@@ -1671,7 +1658,7 @@ class EntryWriter1 extends EntryWriter {
 		if (!is_string($val)) $val = '';
 		if ($i < 0) $i = 0;
 
-		printf('<input type="hidden" class="val" name="new_values[%s][%s]" id="new_values_%s_%s" value="%s" />',
+		printf('<input type="hidden" name="new_values[%s][%s]" id="new_values_%s_%s" value="%s" />',
 			htmlspecialchars($attribute->getName()), $i, htmlspecialchars($attribute->getName()), $i,
 			htmlspecialchars($val));
 	}
@@ -1699,7 +1686,7 @@ class EntryWriter1 extends EntryWriter {
 		 * draw_chooser_link() to identify it after the user clicks. */
 		$id = sprintf('new_values_%s_%s', htmlspecialchars($attribute->getName()), $i);
 
-		printf('<input type="text" class="val" name="new_values[%s][%s]"'.
+		printf('<input type="text" class="value" name="new_values[%s][%s]"'.
 			' id="%s" value="%s" onFocus="focus_%s(this);" onBlur="blur_%s(this);" %s %s/>',
 			htmlspecialchars($attribute->getName()), $i, $id,
 			htmlspecialchars($val), $attribute->getName(), $attribute->getName(),
@@ -1739,9 +1726,10 @@ class EntryWriter1 extends EntryWriter {
 			}
 		}
 
+		$ldapserver = $this->getLDAPServer();
 		$arr1 = array();
 		foreach ($vals as $id_parval => $parval) {
-			$arr2 = Templates::EvaluateDefault($this->ldapserver, $parval, $dn, null, null);
+			$arr2 = Templates::EvaluateDefault($ldapserver, $parval, $dn, null, null);
 			if (is_array($arr2)) $arr1 = array_merge($arr1,$arr2);
 			else $arr1[$id_parval] = $arr2;
 		}
@@ -1749,7 +1737,7 @@ class EntryWriter1 extends EntryWriter {
 
 		$arr1 = array();
 		foreach ($opts as $id_parval => $parval) {
-			$arr2 = Templates::EvaluateDefault($this->ldapserver, $parval, $dn, null, null);
+			$arr2 = Templates::EvaluateDefault($ldapserver, $parval, $dn, null, null);
 			if (is_array($arr2)) $arr1 = array_merge($arr1,$arr2);
 			else $arr1[$id_parval] = $arr2;
 		}
@@ -1811,7 +1799,7 @@ class EntryWriter1 extends EntryWriter {
 		if ($attribute->getEntry()) $encoded_dn = rawurlencode($attribute->getEntry()->getDn());
 		if (!$encoded_dn) return; // creating entry
 
-		$url_base = sprintf('cmd.php?server_id=%s&dn=%s', $this->ldapserver->server_id, $encoded_dn);
+		$url_base = sprintf('cmd.php?server_id=%s&dn=%s', $this->index, $encoded_dn);
 		$href = sprintf('%s&cmd=rename_form', $url_base);
 
 		return sprintf('<small>(<a href="%s">%s</a>)</small>', htmlspecialchars($href), _('rename'));
@@ -1829,7 +1817,7 @@ class EntryWriter1 extends EntryWriter {
 		if (!$encoded_dn) return; // creating entry
 
 		$href = sprintf('cmd.php?cmd=add_value_form&server_id=%s&dn=%s%s&attr=%s',
-			$this->ldapserver->server_id, $encoded_dn, $template ? "&template=$template" : '', rawurlencode($attribute->getName()));
+			$this->index, $encoded_dn, $template ? "&template=$template" : '', rawurlencode($attribute->getName()));
 
 		return sprintf('(<a href="%s" title="%s">%s</a>)',
 			htmlspecialchars($href), sprintf(_('Add an additional value to attribute \'%s\''),
@@ -1842,14 +1830,14 @@ class EntryWriter1 extends EntryWriter {
 		if (!$encoded_dn) return; // creating entry
 
 		$href = sprintf('cmd.php?cmd=modify_member_form&server_id=%s&dn=%s&attr=%s',
-			$this->ldapserver->server_id, $encoded_dn, rawurlencode($attribute->getName()));
+			$this->index, $encoded_dn, rawurlencode($attribute->getName()));
 
 		return sprintf('(<a href="%s" title="%s">%s</a>)',
 			htmlspecialchars($href), sprintf(_('Modify members for \'%s\''), $dn), _('modify group members'));
 	}
 
 	protected function drawAttributeIcon($attribute, $val) {
-		if (is_dn_string($val) || $this->ldapserver->isDNAttr($attribute->getName())) {
+		if (is_dn_string($val) || $this->getLDAPServer()->isDNAttr($attribute->getName())) {
 			$this->draw('DnValueIcon', $attribute, $val);
 		} elseif (is_mail_string($val)) {
 			$this->draw('MailValueIcon', $attribute, $val);
@@ -1863,27 +1851,27 @@ class EntryWriter1 extends EntryWriter {
 
 	protected function drawAttributeDnValueIcon($attribute, $val) {
 		if (strlen($val) <= 0) {
-			echo '<img src="images/go.png" alt="Go" align="top" />&nbsp;';
+			printf('<img src="%s/go.png" alt="Go" align="top" />&nbsp;',IMGDIR);
 
-		} elseif ($this->ldapserver->dnExists($val)) {
-			$href = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',$this->ldapserver->server_id,$val);
-			printf('<a title="%s %s" href="%s"><img src="images/go.png" alt="Go" /></a>&nbsp;',_('Go to'),
-				htmlspecialchars($val), htmlspecialchars($href));
+		} elseif ($this->getLDAPServer()->dnExists($val)) {
+			$href = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',$this->index,$val);
+			printf('<a title="%s %s" href="%s"><img src="%s/go.png" alt="Go" /></a>&nbsp;',_('Go to'),
+				htmlspecialchars($val), htmlspecialchars($href),IMGDIR);
 
 		} else {
-			printf('<a title="%s %s"><img src="images/nogo.png" alt="Go" /></a>&nbsp;',_('DN not available'),htmlspecialchars($val));
+			printf('<a title="%s %s"><img src="%s/nogo.png" alt="Go" /></a>&nbsp;',_('DN not available'),htmlspecialchars($val),IMGDIR);
 		}
 	}
 
 	protected function drawAttributeMailValueIcon($attribute, $val) {
-		$img = '<img src="images/mail.png" alt="'._('Mail').'" align="top" />';
+		$img = sprintf('<img src="%s/mail.png" alt="%s" align="top" />',IMGDIR,_('Mail'));
 		if (strlen($val) <= 0) echo $img;
 		else printf('<a href="mailto:%s">'.$img.'</a>', htmlspecialchars($val));
 		echo '&nbsp;';
 	}
 
 	protected function drawAttributeUrlValueIcon($attribute, $val) {
-		$img = '<img src="images/dc.png" alt="'._('URL').'" align="top" />';
+		$img = sprintf('<img src="%s/dc.png" alt="%s" align="top" />',IMGDIR,_('URL'));
 		if (strlen($val) <= 0) echo $img;
 		else printf('<a href="%s" target="new">'.$img.'</a>', htmlspecialchars($val));
 		echo '&nbsp;';
@@ -1897,7 +1885,7 @@ class EntryWriter1 extends EntryWriter {
 		if ($attribute->getEntry() && $attribute->getEntry()->getDn() // if not creating attribute
 			&& $config->isCommandAvailable('schema') ) {
 			$href = sprintf('cmd.php?cmd=schema&server_id=%s&view=attributes&viewvalue=%s',
-				$this->ldapserver->server_id, real_attr_name($attribute->getName()));
+				$this->index, real_attr_name($attribute->getName()));
 			printf('<a title="'._('Click to view the schema definition for attribute type \'%s\'')
 				.'" href="%s">%s</a>', $attribute->getName(), htmlspecialchars($href), $attr_display);
 		} else {
@@ -1921,7 +1909,7 @@ class EntryWriter1 extends EntryWriter {
 		$required_by = '';
 
 		if ($attribute->getEntry()) {
-			$schema_attr = $this->ldapserver->getSchemaAttribute($attribute->getName(),$attribute->getEntry()->getDn());
+			$schema_attr = $this->getLDAPServer()->getSchemaAttribute($attribute->getName(),$attribute->getEntry()->getDn());
 			if ($schema_attr) {
 				$entry_attributes = $attribute->getEntry()->getAttributes();
 				$objectclass_attribute = null;
@@ -1989,24 +1977,24 @@ class EntryWriter1 extends EntryWriter {
 			if ($valcount > 0) {
 				if ($attribute->getEntry() && $attribute->getEntry()->getDn()) {
 					$href = sprintf('download_binary_attr.php?server_id=%s&dn=%s&attr=%s',
-						$this->ldapserver->server_id, rawurlencode($attribute->getEntry()->getDn()),
+						$this->index, rawurlencode($attribute->getEntry()->getDn()),
 							$attribute->getName());
 
 					if ($valcount > 1) {
 						for ($i=1; $i<=$valcount; $i++) {
-							printf('<a href="%s&value_num=%s"><img src="images/save.png" alt="Save" /> %s(%s)</a><br />',
-								htmlspecialchars($href), $i, _('download value'), $i);
+							printf('<a href="%s&value_num=%s"><img src="%s/save.png" alt="Save" /> %s(%s)</a><br />',
+								htmlspecialchars($href), $i,IMGDIR,_('download value'), $i);
 						}
 					} else {
-						printf('<a href="%s"><img src="images/save.png" alt="Save" /> %s</a><br />',
-							htmlspecialchars($href),_('download value'));
+						printf('<a href="%s"><img src="%s/save.png" alt="Save" /> %s</a><br />',
+							htmlspecialchars($href),IMGDIR,_('download value'));
 					}
 				}
 
 				if (! $attribute->isReadOnly() && $_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete')) {
 					printf('<a href="javascript:deleteAttribute(\'%s\', \'%s\');" style="color:red;">'.
-						'<img src="images/trash.png" alt="Trash" /> %s</a>',
-						$attribute->getName(), $attribute->getFriendlyName(), _('delete attribute'));
+						'<img src="%s/trash.png" alt="Trash" /> %s</a>',
+						$attribute->getName(), $attribute->getFriendlyName(),IMGDIR,_('delete attribute'));
 				}
 			} elseif ($attribute->isReadOnly() || ! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value')) {
 				printf('<input type="text" class="roval" value="%s" readonly /><br />',
@@ -2015,7 +2003,7 @@ class EntryWriter1 extends EntryWriter {
 				$i = 0;
 				$val = '';
 				$id = sprintf('new_values_%s_%s', htmlspecialchars($attribute->getName()), $i);
-				printf('<input type="file" class="val" name="new_values[%s][%s]"'.
+				printf('<input type="file" class="value" name="new_values[%s][%s]"'.
 					' id="%s" value="%s" onFocus="focus_%s(this);" onBlur="blur_%s(this);" %s %s/><br />',
 					htmlspecialchars($attribute->getName()), $i, $id,
 					htmlspecialchars($val), $attribute->getName(), $attribute->getName(),
@@ -2054,7 +2042,7 @@ class EntryWriter1 extends EntryWriter {
 		echo '
 	<!-- This form is submitted by JavaScript when the user clicks "Delete attribute" on a binary attribute -->
 	<form name="delete_attribute_form" action="cmd.php?cmd=delete_attr" method="post">
-		<input type="hidden" name="server_id" value="'.$this->ldapserver->server_id.'" />
+		<input type="hidden" name="server_id" value="'.$this->index.'" />
 		<input type="hidden" name="dn" value="'.htmlspecialchars($dn).'" />
 		<input type="hidden" name="attr" value="FILLED IN BY JAVASCRIPT" />
 	</form>';
@@ -2082,7 +2070,7 @@ class EntryWriter1 extends EntryWriter {
 		$val = $attribute->getValue($i);
 		if (!is_string($val)) $val = '';
 
-		printf('<span style="white-space: nowrap;"><input type="text" class="val" id="f_date_%s_%s"'
+		printf('<span style="white-space: nowrap;"><input type="text" class="value" id="f_date_%s_%s"'
 		       .' name="new_values[%s][%s]" value="%s" onFocus="focus_%s(this);" onBlur="blur_%s(this);" %s %s/>&nbsp;',
 			$attribute->getName(), $i, htmlspecialchars($attribute->getName()), $i, htmlspecialchars($val),
 			$attribute->getName(), $attribute->getName(),
@@ -2102,11 +2090,9 @@ class EntryWriter1 extends EntryWriter {
 		if (isset($entry['date'][$attribute->getName()]))
 			$entry['format'] = $entry['date'][$attribute->getName()];
 
-		//included in class page to avoid multiple inclusions
-		//printf('<script type="text/javascript" src="%sjscalendar/calendar.js"></script>','../htdocs/'.JSDIR);
-		printf('<script type="text/javascript" src="%sjscalendar/lang/calendar-en.js"></script>','../htdocs/'.JSDIR);
-		printf('<script type="text/javascript" src="%sjscalendar/calendar-setup.js"></script>','../htdocs/'.JSDIR);
-		printf('<script type="text/javascript" src="%sdate_selector.js"></script>','../htdocs/'.JSDIR);
+		printf('<script type="text/javascript" src="%sjscalendar/lang/calendar-en.js"></script>',JSDIR);
+		printf('<script type="text/javascript" src="%sjscalendar/calendar-setup.js"></script>',JSDIR);
+		printf('<script type="text/javascript" src="%sdate_selector.js"></script>',JSDIR);
 
 		for ($i = 0; $i <= $attribute->getValueCount(); $i++) {
 			printf('<script type="text/javascript" language="javascript">defaults[\'f_date_%s_%s\'] = \'%s\';</script>',$attribute->getName(),$i,$entry['format']);
@@ -2132,7 +2118,7 @@ class EntryWriter1 extends EntryWriter {
 		$input_name = sprintf('new_values[%s][%s]', htmlspecialchars($attribute->getName()), $i);
 		$input_id = sprintf('new_values_%s_%s', htmlspecialchars($attribute->getName()), $i);
 
-		printf('<span style="white-space: nowrap;"><input type="text" class="val" name="%s" id="%s" value="%s"'
+		printf('<span style="white-space: nowrap;"><input type="text" class="value" name="%s" id="%s" value="%s"'
 		       .' onFocus="focus_%s(this);" onBlur="blur_%s(this);" %s %s/>&nbsp;',
 			$input_name, $input_id, htmlspecialchars($val),
 			$attribute->getName(), $attribute->getName(),
@@ -2169,10 +2155,10 @@ class EntryWriter1 extends EntryWriter {
 		if ($attribute->getEntry()) $dn = $attribute->getEntry()->getDn();
 
 		# If this is a gidNumber on a non-PosixGroup entry, lookup its name and description for convenience
-		if (! in_array_ignore_case('posixGroup', $this->ldapserver->getDNAttr($dn, 'objectClass'))) {
+		if (! in_array_ignore_case('posixGroup', $this->getLDAPServer()->getDNAttr($dn, 'objectClass'))) {
 			$gid_number = $val;
 			$search_group_filter = "(&(objectClass=posixGroup)(gidNumber=$val))";
-			$group = $this->ldapserver->search(null, null, $search_group_filter,array('dn','description'));
+			$group = $this->getLDAPServer()->search(null, null, $search_group_filter,array('dn','description'));
 
 			if (count($group) > 0) {
 				echo '<br />';
@@ -2182,7 +2168,7 @@ class EntryWriter1 extends EntryWriter {
 				$group_name = explode('=',get_rdn($group_dn));
 				$group_name = $group_name[1];
 				$href = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',
-					$this->ldapserver->server_id, rawurlencode($group_dn));
+					$this->index, rawurlencode($group_dn));
 
 				echo '<small>';
 				printf('<a href="%s">%s</a>', htmlspecialchars($href), htmlspecialchars($group_name));
@@ -2214,7 +2200,7 @@ class EntryWriter1 extends EntryWriter {
 				/* Don't draw the delete buttons if there is more than one jpegPhoto
 				 * (phpLDAPadmin can't handle this case yet) */
 				if ($attribute->getEntry() && $attribute->getEntry()->getDn()) {
-					draw_jpeg_photos($this->ldapserver, $attribute->getEntry()->getDn(),
+					draw_jpeg_photos($this->getLDAPServer(), $attribute->getEntry()->getDn(),
 						$attribute->getName(), ! $attribute->isReadOnly()
 						&& $_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete'));
 				}
@@ -2224,7 +2210,7 @@ class EntryWriter1 extends EntryWriter {
 				$i = 0;
 				$val = '';
 				$id = sprintf('new_values_%s_%s', htmlspecialchars($attribute->getName()), $i);
-				printf('<input type="file" class="val" name="new_values[%s][%s]"'.
+				printf('<input type="file" class="value" name="new_values[%s][%s]"'.
 					' id="%s" value="%s" onFocus="focus_%s(this);" onBlur="blur_%s(this);" %s %s/><br />',
 					htmlspecialchars($attribute->getName()), $i, $id,
 					htmlspecialchars($val), $attribute->getName(), $attribute->getName(),
@@ -2261,7 +2247,7 @@ class EntryWriter1 extends EntryWriter {
 		if (!is_string($val)) $val = '';
 		if ($i < 0) $i = 0;
 
-		printf('<textarea class="val" %s %s name="new_values[%s][%s]" '.
+		printf('<textarea class="value" %s %s name="new_values[%s][%s]" '.
 			'id="new_values_%s_%s" onFocus="focus_%s(this);" onBlur="blur_%s(this);">%s</textarea>',
 			($attribute->getRows() > 0) ? 'rows="'.$attribute->getRows().'"' : '',
 			($attribute->getCols() > 0) ? 'cols="'.$attribute->getCols().'"' : '',
@@ -2280,7 +2266,7 @@ class EntryWriter1 extends EntryWriter {
 		if (!is_string($val)) $val = '';
 		if ($i < 0) $i = 0;
 
-		$schema_object = ($val) ? $this->ldapserver->getSchemaObjectClass($val) : false;
+		$schema_object = ($val) ? $this->getLDAPServer()->getSchemaObjectClass($val) : false;
 		$structural = (is_object($schema_object) && $schema_object->getType() == 'structural');
 
 		if (!$attribute->isVisible()) {
@@ -2303,9 +2289,9 @@ class EntryWriter1 extends EntryWriter {
 	protected function drawObjectClassAttributeIcon($attribute, $val) {
 		if (strlen($val) > 0) {
 			$href = sprintf('cmd.php?cmd=schema&server_id=%s&view=objectClasses&viewvalue=%s',
-				$this->ldapserver->server_id, $val);
-			printf('<a title="%s" href="%s"><img src="images/info.png" alt="Info" /></a>&nbsp;',
-				_('View the schema description for this objectClass'), htmlspecialchars($href));
+				$this->index, $val);
+			printf('<a title="%s" href="%s"><img src="%s/info.png" alt="Info" /></a>&nbsp;',
+				_('View the schema description for this objectClass'), htmlspecialchars($href),IMGDIR);
 		}
 	}
 
@@ -2331,7 +2317,7 @@ class EntryWriter1 extends EntryWriter {
 		if ($i < 0) $i = 0;
 
 		$enc_type = get_enc_type($val);
-		if ($val == '') $enc_type = get_default_hash($this->ldapserver->server_id);
+		if ($val == '') $enc_type = get_default_hash($this->index);
 		$obfuscate_password = obfuscate_password_display($enc_type);
 
 		printf('<input type="%s" class="roval" name="new_values[%s][%s]" id="new_values_%s_%s" value="%s" %s readonly /><br />',
@@ -2350,25 +2336,14 @@ class EntryWriter1 extends EntryWriter {
 
 		# Set the default hashing type if the password is blank (must be newly created)
 		if ($val == '') {
-			$enc_type = get_default_hash($this->ldapserver->server_id);
+			$enc_type = get_default_hash($this->index);
 		}
-
-		//printf('<input type="hidden" name="old_values[%s][%s]" value="%s" />', $attribute->getName(), $i, htmlspecialchars($val));
-
-		//if (strlen($val) > 0) {
-		//	if (obfuscate_password_display($enc_type)) {
-		//		echo htmlspecialchars(preg_replace('/./','*', $val));
-		//	} else {
-		//		echo htmlspecialchars($val);
-		//	}
-		//	echo '<br />';
-		//}
 
 		echo '<table cellspacing="0" cellpadding="0"><tr><td valign="top">';
 
 		$obfuscate_password = obfuscate_password_display($enc_type);
 		$id = sprintf('new_values_%s_%s', htmlspecialchars($attribute->getName()), $i);
-		printf('<input type="%s" class="val" name="new_values[%s][%s]" id="%s" value="%s"'
+		printf('<input type="%s" class="value" name="new_values[%s][%s]" id="%s" value="%s"'
 		       .' onFocus="focus_%s(this);" onBlur="blur_%s(this);" %s %s/>',
 			($obfuscate_password ? 'password' : 'text'),
 			htmlspecialchars($attribute->getName()), $i, $id,
@@ -2380,12 +2355,14 @@ class EntryWriter1 extends EntryWriter {
 		echo '</td><td valign="top">';
 		if ($attribute->hasProperty('helper')) {
 			$this->draw('Helper', $attribute, $i);
+		} else {
+			echo enc_type_select_list($enc_type,'enc',$attribute,$i);
 		}
 		echo '</td></tr><tr><td valign="top">';
 
 		if ($attribute->hasProperty('verify') && $attribute->getProperty('verify') && $obfuscate_password) {
 			$id_v = sprintf('new_values_verify_%s_%s', htmlspecialchars($attribute->getName()), $i);
-			printf('<input type="password" class="val" name="new_values_verify[%s][%s]" id="%s" value="" %s %s/>',
+			printf('<input type="password" class="value" name="new_values_verify[%s][%s]" id="%s" value="" %s %s/>',
 			       htmlspecialchars($attribute->getName()), $i, $id_v,
 			       ($attribute->getSize() > 0) ? 'size="'.$attribute->getSize().'"' : '',
 			       ($attribute->getMaxLength() > 0) ? 'maxlength="'.$attribute->getMaxLength().'"' : '');
@@ -2405,7 +2382,7 @@ class EntryWriter1 extends EntryWriter {
 
 		# Set the default hashing type if the password is blank (must be newly created)
 		if ($val == '') {
-			$enc_type = get_default_hash($this->ldapserver->server_id);
+			$enc_type = get_default_hash($this->index);
 		}
 
 		return $enc_type;
@@ -2474,7 +2451,7 @@ class EntryWriter1 extends EntryWriter {
 		if (!is_string($val)) $val = '';
 		if ($i < 0) $i = 0;
 
-		printf('<input type="hidden" class="val" name="new_values[%s][%s]" id="new_values_%s_%s" value="%s" />',
+		printf('<input type="hidden" name="new_values[%s][%s]" id="new_values_%s_%s" value="%s" />',
 			htmlspecialchars($attribute->getName()), $i,
 			htmlspecialchars($attribute->getName()), $i,
 			htmlspecialchars($val));
@@ -2608,7 +2585,7 @@ class EntryWriter1 extends EntryWriter {
 		if (!is_string($val)) $val = '';
 		if ($i < 0) $i = 0;
 
-		printf('<input type="hidden" class="val" name="new_values[%s][%s]" id="new_values_%s_%s" value="%s" />',
+		printf('<input type="hidden" name="new_values[%s][%s]" id="new_values_%s_%s" value="%s" />',
 			htmlspecialchars($attribute->getName()), $i,
 			htmlspecialchars($attribute->getName()), $i,
 			htmlspecialchars($val));

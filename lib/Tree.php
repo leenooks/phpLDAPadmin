@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Tree.php,v 1.2.2.1 2007/12/26 09:26:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Tree.php,v 1.2.2.2 2008/01/27 07:23:43 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -127,7 +127,7 @@ abstract class Tree {
 			debug_log('New ENTRY (%s) for (%s).',64,__FILE__,__LINE__,__METHOD__,$dnlower,$dn);
 		$this->entries[$dnlower] = $entry_factory->newEditingEntry($dn);
 
-		$this->entries[$dnlower]->setTree($this);
+		$this->entries[$dnlower]->setTree($ldapserver->server_id);
 		if ($ldapserver->isReadOnly())
 			$this->entries[$dnlower]->setReadOnly();
 

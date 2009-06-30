@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/HTMLTree.php,v 1.2.2.2 2007/12/29 07:23:45 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/HTMLTree.php,v 1.2.2.6 2008/01/27 10:17:28 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -38,9 +38,13 @@ class HTMLTree extends Tree {
 					printf('<tr><td class="blank" colspan="%s">&nbsp;</td></tr>',$this->getDepth()+3);
 
 				if ($ldapserver->isReadOnly())
-					printf('<tr><td class="spacer"></td><td class="links" colspan="%s">(%s)</td></tr>',$this->getDepth()+3-1,_('read only'));
+					printf('<tr><td class="spacer"></td><td class="logged_in" colspan="%s">(%s)</td></tr>',$this->getDepth()+3-1,_('read only'));
 				else
 					printf('<tr><td class="blank" colspan="%s">&nbsp;</td></tr>',$this->getDepth()+3);
+
+				printf('<tr><td>&nbsp;</td><td><div style="overflow: auto; %s%s"><table class="tree" border=0>',
+					$_SESSION['plaConfig']->GetValue('appearance','tree_width') ? sprintf('width: %spx; ',$_SESSION['plaConfig']->GetValue('appearance','tree_width')) : '',
+					$_SESSION['plaConfig']->GetValue('appearance','tree_height') ? sprintf('height: %spx; ',$_SESSION['plaConfig']->GetValue('appearance','tree_height')) : '');
 
 				foreach ($ldapserver->getBaseDN() as $base_dn) {
 					# Did we get a base_dn for this server somehow?
@@ -83,6 +87,7 @@ class HTMLTree extends Tree {
 						continue;
 					}
 				}
+				echo '</table></div></td></tr>';
 
 			} else { // end if( $ldapserver->connect(false) )
 				# @todo: need this message to display the LDAP server name, so we know which one is the problematic one.
@@ -271,7 +276,7 @@ class HTMLTree extends Tree {
 		$ldapserver = $this->getLdapServer();
 
 		$logged_in_dn = $ldapserver->getLoggedInDN();
-		printf('<tr><td class="spacer"></td><td class="links" colspan="%s"><span style="white-space: nowrap;">%s%s ',$this->getDepth()+3-1,_('Logged in as'),_(':'));
+		printf('<tr><td class="spacer"></td><td class="logged_in" colspan="%s">%s%s ',$this->getDepth()+3-1,_('Logged in as'),_(':'));
 
 		if ($ldapserver->getDNBase($logged_in_dn) == $logged_in_dn) {
 			$logged_in_branch = '';
@@ -294,7 +299,7 @@ class HTMLTree extends Tree {
 		if (strcasecmp('anonymous',$logged_in_dn)) {
 			foreach ($logged_in_dn_array as $rdn_piece) {
 				$href = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',$ldapserver->server_id,rawurlencode($rdn));
-				printf('<a class="logged_in_dn" href="%s">%s</a>',htmlspecialchars($href),pretty_print_dn($rdn_piece));
+				printf('<a href="%s">%s</a>',htmlspecialchars($href),pretty_print_dn($rdn_piece));
 
 				if ($rdn_piece != end($logged_in_dn_array))
 					echo ',';
@@ -306,7 +311,7 @@ class HTMLTree extends Tree {
 			echo 'Anonymous';
 		}
 
-		echo '</span></td></tr>';
+		echo '</td></tr>';
 	}
 
 	/**
@@ -336,7 +341,7 @@ class HTMLTree extends Tree {
 		$img_src = sprintf('images/%s',$dnEntry->getIcon($ldapserver));
 		$rdn = get_rdn($dn);
 
-		echo '<tr>';
+		echo '<tr class="option">';
 		$colspan = $this->getDepth()+3+$level+1;
 
 		for ($i=0;$i<=$level;$i++) {
@@ -373,7 +378,7 @@ class HTMLTree extends Tree {
 		printf('<td class="icon"><a href="%s" name="%s_%s"><img src="%s" alt="img" /></a></td>',$href['edit'],$ldapserver->server_id,$encoded_dn,$img_src);
 		$colspan--;
 
-		printf('<td class="rdn" colspan="%s" width=100%%><span style="white-space: nowrap;">',$colspan);
+		printf('<td class="logged_in" colspan="%s" width=100%%><span style="white-space: nowrap;">',$colspan);
 		printf('<a href="%s">%s</a>',$href['edit'],$this->get_formatted_dn($dnEntry,$level));
 
 		if ($child_count)
@@ -454,7 +459,7 @@ class HTMLTree extends Tree {
 		echo '<td class="spacer"></td>';
 		echo '<td class="spacer"></td>';
 		printf('<td class="icon"><a href="%s"><img src="images/star.png" alt="%s" /></a></td>',$href,_('new'));
-		printf('<td class="create" colspan="%s"><a href="%s" title="%s %s">%s</a></td>',
+		printf('<td class="link" colspan="%s"><a href="%s" title="%s %s">%s</a></td>',
 			$this->getDepth()+3-$level-1-3,$href,_('Create a new entry in'),$rdn,_('Create new entry here'));
 		echo '</tr>';
 	}
@@ -467,9 +472,9 @@ class HTMLTree extends Tree {
 		$href = htmlspecialchars(
 			sprintf('cmd.php?cmd=%s&server_id=%s',get_custom_file($ldapserver->server_id,'login_form',''),$ldapserver->server_id));
 
-		echo '<tr><td class="spacer"></td>';
+		echo '<tr class="option"><td class="spacer"></td>';
 		printf('<td class="icon"><a href="%s"><img src="images/uid.png" alt="%s" /></a></td>',$href,_('login'));
-		printf('<td class="rdn" colspan="%s"><a href="%s">%s</a></td>',$this->getDepth()+3-2,$href,_('Login').'...');
+		printf('<td class="logged_in" colspan="%s"><a href="%s">%s</a></td>',$this->getDepth()+3-2,$href,_('Login').'...');
 		echo '</tr>';
 
 		printf('<tr><td class="blank" colspan="%s">&nbsp;</td>',$this->getDepth()+3);

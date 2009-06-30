@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter.php,v 1.2.2.1 2008/01/27 06:48:59 wurley Exp $
 
 define('ENTRY_WRITER_CREATION_CONTEXT', '1');
 define('ENTRY_WRITER_EDITING_CONTEXT', '2');
@@ -13,7 +13,7 @@ define('ENTRY_WRITER_EDITING_CONTEXT', '2');
  */
 class EntryWriter extends Visitor {
 	# Ldapserver from context
-	protected $ldapserver;
+	protected $index;
 
 	# Context : creation or editing
 	protected $context;
@@ -27,9 +27,18 @@ class EntryWriter extends Visitor {
 	protected $visit_attributes;
 
 	public function __construct($ldapserver) {
-		$this->ldapserver = $ldapserver;
+		$this->index = $ldapserver->server_id;
 		$this->visit_attributes = true;
 		$this->context = 0;
+	}
+
+	public function getLDAPServer() {
+		static $CACHE;
+
+		if (! isset($CACHE[$this->index]))
+			$CACHE[$this->index] = $_SESSION[APPCONFIG]->ldapservers->Instance($this->index);
+
+		return $CACHE[$this->index];
 	}
 
 	/**************************/

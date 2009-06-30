@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename_form.php,v 1.11 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename_form.php,v 1.11.2.1 2008/01/13 05:37:01 wurley Exp $
 
 /**
  * Displays a form for renaming an LDAP entry.
@@ -28,10 +28,10 @@ printf('<h3 class="title">%s <b>%s</b></h3>',_('Rename Entry'),htmlspecialchars(
 printf('<h3 class="subtitle">%s: <b>%s</b> &nbsp;&nbsp;&nbsp; %s: <b>%s</b></h3>',
 	_('Server'),$ldapserver->name,_('Distinguished Name'),htmlspecialchars($dn));
 
-echo '<br /><center><form action="cmd.php?cmd=rename" method="post" class="edit_dn" />';
+echo '<br /><center><form action="cmd.php?cmd=rename" method="post" />';
 printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($dn));
 printf('<input type="text" name="new_rdn" size="30" value="%s" />',htmlspecialchars($rdn));
-printf('<input class="update_dn" type="submit" value="%s" />',_('Rename'));
+printf('<input type="submit" value="%s" />',_('Rename'));
 echo '</form></center>';
 ?>

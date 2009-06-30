@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass_form.php,v 1.25 2007/12/15 07:50:30 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass_form.php,v 1.25.2.1 2008/01/13 05:37:00 wurley Exp $
 
 /**
  * This page may simply add the objectClass and take you back to the edit page,
@@ -89,12 +89,12 @@ if (count($ldap['attrs']['need']) > 0) {
 	printf('<input type="hidden" name="dn" value="%s" />',rawurlencode($entry['dn']['string']));
 	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 
-	echo '<table class="edit_dn" cellspacing="0">';
+	echo '<table class="entry" cellspacing="0">';
 	printf('<tr><th colspan="2">%s</th></tr>',_('New Required Attributes'));
 
 	foreach ($ldap['attrs']['need'] as $count => $attr) {
-		printf('<tr><td class="attr">%s</td></tr>',htmlspecialchars($attr->getName()));
-		printf('<tr><td class="val"><input type="text" name="new_attrs[%s]" value="" size="40" /></td></tr>',htmlspecialchars($attr->getName()));
+		printf('<tr><td class="title">%s</td></tr>',htmlspecialchars($attr->getName()));
+		printf('<tr><td class="value"><input type="text" name="new_attrs[%s]" value="" size="40" /></td></tr>',htmlspecialchars($attr->getName()));
 	}
 
 	echo '</table>';

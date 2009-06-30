@@ -1,27 +1,25 @@
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/css/style.css,v 1.48.2.1 2007/12/24 06:41:51 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/css/style.css,v 1.48.2.4 2008/01/13 07:17:23 wurley Exp $ */
 
 /* Global Page */
 table.page {
 	font-weight: normal;
-	color: black;
+	color: #000000;
 
-	font-family: arial, helvetica, sans-serif;
-	background-color: white;
-	font-size: 12pt;
+	font-family: bitstream vera sans,luxi sans,verdana,geneva,arial,helvetica,sans-serif;
+	background-color: #FFFFFF;
+	font-size: 11pt;
 	empty-cells: hide;
 }
 
 /* Global Page - Defaults */
 /* A HREF Links */
 table.page a {
-	border: 0px;
-	color: #000066;
+	color: #0000AA;
 	text-decoration: none;
 }
 
 table.page a:hover {
-	text-decoration: underline;
-	color: blue;
+	text-decoration: none;
 }
 
 table.page a img {
@@ -31,7 +29,7 @@ table.page a img {
 /* Global Page - Logo & Title */
 table.page tr.head {
 	text-align: center;
-	color: white;
+	color: #FFFFFF;
 	background-color: #001188;
 	font-weight: bold;
 	font-size: 12px;
@@ -48,8 +46,8 @@ table.page tr.head img.logo {
 
 /* Global Page - Control Line */
 table.page tr.control td {
-	border-top: 1px solid #aaaacc;
-	border-bottom: 1px solid #aaaacc;
+	border-top: 1px solid #AAAACC;
+	border-bottom: 1px solid #AAAACC;
 }
 
 /* Global Page - Control Line Menu Items */
@@ -58,11 +56,7 @@ table.page table.control {
 	width: 100%;
 }
 
-table.page table.control tr {
-	width: 100%;
-}
-
-table.page table.control tr td {
+table.page table.control td {
 	border-top: 0px;
 	border-bottom: 0px;
 	width: 30px;
@@ -73,25 +67,31 @@ table.page table.control tr td {
 	font-size: 11px;
 }
 
-table.page table.control tr td img {
+table.page table.control img {
 	width: 24px;
 	height: 24px;
 }
 
-table.page table.control a:hover {
-	text-decoration: none;
+table.page table.control a {
+	color: #000000;
 }
 
-table.page table.control tr td.spacer {
+table.page table.control a:hover {
+	text-decoration: none;
+	background-color: #FFFFFF;
+	color: #0000AA;
+}
+
+table.page table.control td.spacer {
 	width: 20%;
 }
 
-table.page table.control tr td.logo {
+table.page table.control td.logo {
 	text-align: right;
 	width: 10%;
 }
 
-table.control td.logo img.logo {
+table.page table.control td.logo img.logo {
 	vertical-align: middle;
 	text-align: right;
 
@@ -101,42 +101,22 @@ table.control td.logo img.logo {
 
 /* Global Page - LDAP Tree */
 table.page td.tree {
-	border-right: 1px solid #aaaacc;
+	border-right: 1px solid #AAAACC;
 	vertical-align: top;
-	background-color: #fcfcfe;
+	background-color: #FCFCFE;
 	width: 10%;
-}
-
-/* @todo: check that this is still used */
-table.page table.tree {
-}
-
-table.page table.tree td.head {
-	font-weight: bold;
-	color: #af0000;
-}
-
-table.page table.tree td.body {
-	color: #bf0000;
-}
-
-table.page table.tree td.foot {
-	font-size: small;
-	color: #cf0000;
-	border-top: 1px solid #aaaacc;
-	border-bottom: 1px solid #aaaacc;
 }
 
 /* Global Page - Main Body */
 table.page td.body {
 	vertical-align: top;
 	width: 100%;
-	background-color: #fcfcfe;
+	background-color: #FCFCFE;
 }
 
 /* Global Page - Main Body System Message */
 table.page table.sysmsg {
-	border-bottom: 2px solid #aaaacc;
+	border-bottom: 2px solid #AAAACC;
 	width: 100%;
 }
 
@@ -158,7 +138,7 @@ table.page table.sysmsg td.icon {
 /* Global Page - Main Body */
 table.page table.body {
 	font-weight: normal;
-	background-color: #fcfcfe;
+	background-color: #FCFCFE;
 	width: 100%;
 }
 
@@ -166,9 +146,9 @@ table.page table.body h3.title {
 	text-align: center;
 	margin: 0px;
 	padding: 10px;
-	color: white;
-	background-color: #018;
-	border: 1px solid black;
+	color: #FFFFFF;
+	background-color: #000088;
+	border: 1px solid #000000;
 	font-weight: normal;
 	font-size: 150%;
 }
@@ -178,17 +158,17 @@ table.page table.body h3.subtitle {
 	margin: 0px;
 	margin-bottom: 15px;
 	font-size: 75%;
-	color: white;
-	border-bottom: 1px solid black;
-	border-left: 1px solid black;
-	border-right: 1px solid black;
-	background: #018;
+	color: #FFFFFF;
+	border-bottom: 1px solid #000000;
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;
+	background: #000088;
 	padding: 4px;
 	font-weight: normal;
 }
 
 table.page table.body td.spacer {
-	border-top: 2px solid #aaaacc;
+	border-top: 2px solid #AAAACC;
 	padding: 0px;
 	font-size: 5px;
 }
@@ -199,13 +179,13 @@ table.page table.body td.head {
 
 table.page table.body td.foot {
 	font-size: small;
-	border-top: 1px solid #aaaacc;
-	border-bottom: 1px solid #aaaacc;
+	border-top: 1px solid #AAAACC;
+	border-bottom: 1px solid #AAAACC;
 }
 
 /* Global Page Footer */
 table.page tr.foot td {
-	border-top: 1px solid #aaaacc;
+	border-top: 1px solid #AAAACC;
 	font-weight: bold;
 	font-size: 10pt;
 	text-align: right;
@@ -216,7 +196,7 @@ table.page tr.foot td {
 table.page table.server_select {
 	font-weight: bold;
 	font-size: 13px;
-	color: black;
+	color: #000000;
 }
 
 /* Individual table layouts */
@@ -241,36 +221,66 @@ table.tree tr.server td {
 	white-space: nowrap;
 }
 
-table.tree td.expander {
-	text-align: center;
-	width: 22px;
-	max-width: 22px;
-	min-width: 22px;
-	white-space: nowrap;
-}
-
-table.tree td.icon {
-	text-align: center;
-	width: 22px;
-	max-width: 22px;
-	min-width: 22px;
+table.tree td {
 	white-space: nowrap;
 }
 
 table.tree td.server_links {
 	vertical-align: top;
 	text-align: center;
+	padding-top: 0px;
+	padding-bottom: 0px;
 	padding-left: 3px;
 	padding-right: 3px;
 }
 
-table.tree td.server_links a {
-	font-size: 10px;
+table.tree td.server_links img {
+	height: 22px;
+	width: 22px;
 }
 
-table.tree td.links {
-	vertical-align: top;
-	font-size: 10px;
+table.tree td.server_links a {
+	color: #000000;
+	text-decoration: none;
+	font-size: 11px;
+}
+
+table.tree td.server_links a:hover {
+	text-decoration: none;
+	background-color: #FFFFFF;
+	color: #000000;
+}
+
+table.tree tr.option td.expander {
+	text-align: center;
+	width: 22px;
+	max-width: 22px;
+	min-width: 22px;
+	white-space: nowrap;
+}
+
+table.tree tr.option td.icon {
+	text-align: center;
+	width: 22px;
+	max-width: 22px;
+	min-width: 22px;
+	white-space: nowrap;
+}
+
+table.tree td.rdn a {
+	font-size: 13px;
+	color: #000000;
+}
+
+table.tree td.rdn a:hover {
+	font-size: 13px;
+	color: #841212;
+	background-color: #FFF0C0;
+}
+
+table.tree td.rdn span.count {
+	font-size: 13px;
+	color: #000000;
 }
 
 table.tree td.links a {
@@ -278,37 +288,22 @@ table.tree td.links a {
 	text-align: center;
 }
 
-table.tree td.rdn span.count {
-	font-family: bitstream vera sans,luxi sans,verdana,geneva,arial,helvetica,sans-serif;
+table.tree td.link a {
 	font-size: 13px;
 	color: #000000;
 }
 
-table.tree td.create a {
-	font-family: bitstream vera sans,luxi sans,verdana,geneva,arial,helvetica,sans-serif;
-	font-size: 13px;
-	color: #000000;
-}
-
-table.tree td.create a:hover {
-	font-family: bitstream vera sans,luxi sans,verdana,geneva,arial,helvetica,sans-serif;
+table.tree td.link a:hover {
 	font-size: 13px;
 	color: #841212;
-	background-color: #fff0c0;
+	background-color: #FFF0C0;
 	text-decoration: none;
 }
 
-table.tree td.rdn a {
-	font-family: bitstream vera sans,luxi sans,verdana,geneva,arial,helvetica,sans-serif;
-	font-size: 13px;
-	color: #000000;
-}
-
 table.tree td.rdn a:hover {
-	font-family: bitstream vera sans,luxi sans,verdana,geneva,arial,helvetica,sans-serif;
 	font-size: 13px;
 	color: #841212;
-	background-color: #fff0c0;
+	background-color: #FFF0C0;
 	text-decoration: none;
 }
 
@@ -330,8 +325,19 @@ table.tree td.spacer {
 	width: 22px;
 }
 
-table.tree a.logged_in_dn {
+table.tree td.logged_in {
+	font-size: 10px;
+	white-space: nowrap;
+}
+
+table.tree td.logged_in a {
 	font-size: 11px;
+}
+
+table.tree td.logged_in a:hover {
+	color: #841212;
+	background-color: #FFF0C0;
+	text-decoration: none;
 }
 
 /* Tree Global Defaults */
@@ -341,8 +347,7 @@ table.tree tr td {
 
 table.tree a {
 	text-decoration: none;
-	color: black;
-	font-size: 16px;
+	color: #000000;
 }
 
 table.tree a:hover {
@@ -350,192 +355,155 @@ table.tree a:hover {
 	color: blue;
 }
 
-/* Delete */
-table.delete {
-	background-color: #eeeeff;
+/* Standard Form */
+table.forminput {
+	background-color: #F9F9FA;
 	padding: 10px;
-	border: 1px solid #aaaacc;
+	border: 1px solid #AAAACC;
 }
 
-/* Create */
-table.create {
-	background-color: #eeeeff;
-	padding: 10px;
-	border: 1px solid #aaaacc;
-}
-
-table.create td.heading {
-	font-size: 12px;
-	vertical-align: top;
-}
-
-/* Confirm */
-table.confirm {
-}
-
-table.confirm tr.heading {
-	color: white;
-	background-color: #018;
-	font-size: 18px;
-}
-
-table.confirm tr.heading td {
-	border: 1px solid #aaaacc;
+table.forminput td.title {
+	text-align: center;
 	font-weight: bold;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	padding-left: 10px;
-	padding-right: 10px;
 }
 
-table.confirm tr.even {
-	background-color: #eee;
-}
-
-table.confirm tr.even td {
-	border: 1px solid #aaaacc;
+table.forminput td.subtitle {
+	text-align: center;
 	font-weight: normal;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	padding-left: 10px;
-	padding-right: 10px;
+	font-size: small;
 }
 
-table.confirm tr.odd {
-	background-color: #ccc;
+table.forminput tr td.heading {
+	font-weight: bold;
 }
 
-table.confirm tr.odd td {
-	border: 1px solid #aaaacc;
-	font-weight: normal;
-	padding-top: 5px;
-	padding-bottom: 5px;
-	padding-left: 10px;
-	padding-right: 10px;
+table.forminput td.small {
+	font-size: 80%;
 }
 
-/* Create - Templates */
-table.template_display {
-	font-size: 13px;
-	text-align: left;
-}
-
-table.template_display tr {
+table.forminput td.top {
 	vertical-align: top;
 }
 
-table.templates {
-	vertical-align: top;
-	text-align: left;
+table.forminput input.val {
+	width: 350px;
+	border: 1px solid #AAAACC;
 }
 
-table.templates td.icon {
+table.forminput input.roval {
+	width: 350px;
+	border: none;
+}
+
+table.forminput td.icon {
 	width: 16px;
 	text-align: center;
 }
 
-table.templates td.selector {
-	width: 12px;
-	text-align: left;
+table.forminput td.icon img {
+	border: 0px;
 }
 
-table.templates td.name {
+table.forminput td.label {
 	text-align: left;
-	white-space: nowrap;
+	font-size: 13px;
+}
+
+/* Menu on top of entry form */
+table.menu {
+	font-size: 14px;
+}
+
+table.menu td.icon {
+	width: 16px;
+	text-align: center;
 }
 
 /* Edit DN */
-/* @todo: whats this? */
 div.add_value {
 	font-size: 10pt;
 	margin: 0px;
 	padding: 0px;
 }
 
-/* Edit DN - EntryWriter1 */
-table.edit_dn {
+/* Edit Entry */
+table.entry {
 	border-collapse: collapse;
 	border-spacing: 0px;
 	empty-cells: show;
-	width: 600px;
 }
 
-table.edit_dn input {
+table.entry input {
 	margin: 1px;
 }
 
-table.edit_dn input.val {
+table.entry input.value {
 	font-size: 14px;
 	width: 350px;
-	font-family: arial, helvetica, sans-serif;
-	background-color: white;
+	background-color: #FFFFFF;
 }
 
-table.edit_dn div.helper {
+table.entry div.helper {
 	text-align: left;
 	white-space: nowrap;
-	font-family: arial, helvetica, sans-serif;
-	background-color: white;
+	background-color: #FFFFFF;
 	font-size: 14px;
 	font-weight: normal;
 	color: #888;
 }
 
-table.edit_dn input.roval {
+table.entry input.roval {
 	font-size: 14px;
 	width: 350px;
-	font-family: arial, helvetica, sans-serif;
-	background-color: white;
+	background-color: #FFFFFF;
 	border: none;
 }
 
-table.edit_dn textarea.val {
+table.entry textarea.value {
 	font-size: 14px;
 	width: 350px;
-	font-family: arial, helvetica, sans-serif;
-	background-color: white;
+	background-color: #FFFFFF;
 }
 
-table.edit_dn textarea.roval {
+table.entry textarea.roval {
 	font-size: 14px;
 	width: 350px;
-	font-family: arial, helvetica, sans-serif;
-	background-color: white;
+	background-color: #FFFFFF;
 	border: none;
 }
 
-table.edit_dn tr td {
+table.entry tr td {
 	padding: 4px;
 	padding-right: 0px;
 }
 
-table.edit_dn tr td.attr {
-	background-color: #eee;
+table.entry tr td.heading {
+	border-top: 3px solid #C0C0C0;
+	font-weight: bold;
+}
+
+table.entry tr td.note {
+	text-align: right;
+	background-color: #E0E0E0;
+}
+
+table.entry tr td.title {
+	background-color: #E0E0E0;
 	vertical-align: top;
 	font-weight: bold;
 }
 
-table.edit_dn tr td.heading {
-	border-top: 3px solid #ccc;
-	font-weight: bold;
-}
-
-table.edit_dn tr td.attr_note {
-	text-align: right;
-	background-color: #eee;
-}
-
-table.edit_dn tr td.attr a {
+table.entry tr td.title a {
 	text-decoration: none;
-	color: black;
+	color: #000000;
 }
 
-table.edit_dn tr td.attr a:hover {
+table.entry tr td.title a:hover {
 	text-decoration: underline;
 	color: #016;
 }
 
-table.edit_dn tr td.val {
+table.entry tr td.value {
 	text-align: left;
 	vertical-align: middle;
 	padding-bottom: 10px;
@@ -543,75 +511,55 @@ table.edit_dn tr td.val {
 }
 
 /** When an attr is updated, it is highlighted to indicate such */
-table.edit_dn tr.updated_attr td.attr {
-	border-top: 1px dashed green;
-	border-left: 1px dashed green;
-	background-color: #ded;
+table.entry tr.updated td.title {
+	border-top: 1px dashed #AAAA88;
+	border-left: 1px dashed #AAAA88;
+	background-color: #999988;
 }
 
-table.edit_dn tr.updated_attr td.attr_note {
-	border-top: 1px dashed green;
-	border-right: 1px dashed green;
-	background-color: #ded;
+table.entry tr.updated td.note {
+	border-top: 1px dashed #AAAA88;
+	border-right: 1px dashed #AAAA88;
+	background-color: #999988;
 }
 
 /** An extra row that sits at the bottom of recently modified attrs to encase them in dashes */
-table.edit_dn tr.updated_attr td.bottom {
-	border-top: 1px dashed green;
+table.entry tr.updated td.bottom {
+	border-top: 1px dashed #AAAA88;
 }
 
 /** Formatting for the value cell when it is the attribute that has been recently modified */
-table.edit_dn tr.updated_attr td.val {
-	border-left: 1px dashed green;
-	border-right: 1px dashed green;
+table.entry tr.updated td.value {
+	border-left: 1px dashed #AAAA88;
+	border-right: 1px dashed #AAAA88;
 }
 
 /* Need to prevent sub-tables (like the one in which jpegPhotos are displayed)
  * from drawing borders as well. */
-table.edit_dn tr.updated_attr td table td {
+table.entry tr.updated td table td {
 	border: 0px;
 }
 
-table.edit_dn tr.updated_attr a {
+table.entry tr.noinput {
+	background: #E0E0E0;
 }
 
-table.edit_dn tr.mod_dn {
-	background: #def;
-}
-
-table.edit_dn tr.row1 {
-	background: #eee;
-}
-
-table.edit_dn tr.row2 {
-	background: #ccc;
-}
-
-table.edit_dn_menu {
-	font-size: 14px;
-}
-
-table.edit_dn_menu td.icon {
-	width: 16px;
-	text-align: center;
-}
-
-/* Edit DN - EntryWriter2 */
 span.hint {
 	font-size: small;
 	font-weight: normal;
 	color: #888;
 }
 
-table.edit_dn tr.spacer {
-	background-color: #ddd;
+/* Edit DN - EntryWriter2 */
+table.entry tr.spacer {
+	background-color: #D0D0D0;
 }
 
-table.edit_dn tr td.ew2_icon {
+table.entry tr td.ew2_icon {
 	vertical-align: top;
 }
 
-table.edit_dn tr td.ew2_attr {
+table.entry tr td.ew2_attr {
 	vertical-align: top;
 	text-align: right;
 	font-size: 75%;
@@ -619,24 +567,24 @@ table.edit_dn tr td.ew2_attr {
 	font-weight: bold;
 }
 
-table.edit_dn tr td.ew2_attr a {
+table.entry tr td.ew2_attr a {
 	text-decoration: none;
-	color: black;
+	color: #000000;
 }
 
-table.edit_dn tr td.ew2_attr a:hover {
+table.entry tr td.ew2_attr a:hover {
 	text-decoration: underline;
 	color: #016;
 }
 
-table.edit_dn tr td.ew2_val {
+table.entry tr td.ew2_val {
 	text-align: left;
 	vertical-align: top;
 	padding-bottom: 10px;
 	padding-left: 50px;
 }
 
-table.edit_dn tr.updated_attr td.ew2_attr {
+table.entry tr.updated td.ew2_attr {
 	text-align: right;
 	font-size: 75%;
 	border-top: 1px dashed green;
@@ -645,185 +593,231 @@ table.edit_dn tr.updated_attr td.ew2_attr {
 	background-color: #ded;
 }
 
-table.edit_dn tr.updated_attr td.ew2_val {
+table.entry tr.updated td.ew2_val {
 	border-top: 1px dashed green;
 	border-left: 1px dashed green;
 	border-right: 1px dashed green;
 	border-bottom: 1px dashed green;
 }
 
-/* Compare */
-table.comp_dn {
-	border-collapse: collapse;
-	border-spacing: 0px;
-	empty-cells: show;
-	font-size: 80%;
-}
-
-table.comp_dn tr {
-	width: 200px;
-}
-table.comp_dn tr td.attr {
-	background-color: #eee;
-	vertical-align: top;
-	font-weight: bold;
-}
-
-table.comp_dn tr td.attr_note {
-	text-align: right;
-	background-color: #eee;
-	padding-right: 50px;
-}
-
 /* Login Box */
-table.login {
-	background-color: #eeeeff;
-	padding: 10px;
-	border: 1px solid #aaaacc;
-}
-
-#pla_login {
+#login {
 	background: url('../images/uid.png') no-repeat 0 1px;
-	background-color: #fafaff;
+	background-color: #FAFAFF;
 	padding-left: 17px;
 }
 
-#pla_login:focus {
-	background-color: #ffffba;
+#login:focus {
+	background-color: #F0F0FF;
 }
 
-#pla_login:disabled {
-	background-color: #ddddff;
+#login:disabled {
+	background-color: #DDDDFF;
 }
 
-#pla_pass {
+#password {
 	background: url('../images/key.png') no-repeat 0 1px;
-	background-color: #fafaff;
+	background-color: #FAFAFF;
 	padding-left: 17px;
 }
 
-#pla_pass:focus {
-	background-color: #ffffba;
+#password:focus {
+	background-color: #F0F0FF;
 }
 
-#pla_pass:disabled {
-	background-color: #ddddff;
+#password:disabled {
+	background-color: #DDDDFF;
 }
 
 #generic {
-	background-color: #fafaff;
+	background-color: #FAFAFF;
 	padding-left: 17px;
 }
 #generic:focus {
-	background-color: #ffffba;
+	background-color: #F0F0FF;
 }
 
 #generic:disabled {
-	background-color: #ddddff;
+	background-color: #DDDDFF;
 }
 
-
-/* Search Box */
-table.search {
-	background-color: #eeeeff;
-	padding: 10px;
-	border: 1px solid #aaaacc;
-}
-
-table.search td.title {
-	text-align: center;
-	font-weight: bold;
-}
-
-table.search td.subtitle {
-	text-align: center;
+/* After input results */
+div.execution_time {
+	font-size: 75%;
 	font-weight: normal;
-	font-size: small;
+	text-align: center;
 }
 
-/* Search Results */
-table.search_result {
+table.result {
 	width: 100%;
 	vertical-align: top;
 	empty-cells: show;
-	border: 1px solid #aaaacc;
+	border: 1px solid #AAAACC;
 	border-spacing: 0px;
-	background-color: #ddf;
+	background-color: #F2F2FF;
 }
 
-table.search_result tr.header {
+table.result tr.heading {
 	vertical-align: top;
 }
 
-table.search_result tr.list_dn {
-	background-color: white;
+table.result tr.list_title {
+	background-color: #FFFFFF;
 }
 
-table.search_result tr.list_dn td.icon {
+table.result tr.list_title td.icon {
 	text-align: center;
 	vertical-align: top;
 }
 
-table.search_result tr.list_attr {
-	background-color: white;
+table.result tr.list_item {
+	background-color: #FFFFFF;
 }
 
-table.search_result tr.list_attr td.blank {
+table.result tr.list_item td.blank {
 	width: 25px;
 }
 
-table.search_result tr.list_attr td.attr {
+table.result tr.list_item td.heading {
+	vertical-align: top;
 	color: gray;
 	width: 10%;
 	font-size: 12px;
 }
 
-table.search_result tr.list_attr td.val {
-	color: black;
+table.result tr.list_item td.value {
+	color: #000000;
 	font-size: 12px;
 }
 
-table.search_result_table {
-	border: 1px solid #aaaacc;
+table.result_table {
+	border: 1px solid #AAAACC;
 	border-collapse: collapse;
 	empty-cells: show;
 }
 
-table.search_result_table td {
+table.result_table td {
 	vertical-align: top;
-	border: 1px solid #aaaacc;
+	border: 1px solid #AAAACC;
 	padding: 4px;
 }
 
-table.search_result_table th {
-	border: 1px solid #aaaacc;
+table.result_table th {
+	border: 1px solid #AAAACC;
 	padding: 10px;
 	padding-left: 20px;
 	padding-right: 20px;
 }
 
-table.search_result_table tr.highlight {
-	background-color: #eee;
+table.result_table tr.highlight {
+	background-color: #EEEBBB;
 }
 
-/* Export Box */
-table.export {
-	background-color: #eeeeff;
-	padding: 10px;
-	border: 1px solid #aaaacc;
+table.result_table tr.highlight td {
+	border: 1px solid #AAAACC;
+	font-weight: bold;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+table.result_table td.heading {
+	color: #FFFFFF;
+	background-color: #000088;
+	font-size: 15px;
+}
+
+table.result_table td.value {
+	color: #000000;
+	background-color: #E0E0E0;
+}
+
+table.result_table tr.heading {
+	color: #FFFFFF;
+	background-color: #000088;
+	font-size: 15px;
+}
+
+table.result_table tr.heading a {
+	color: #FFFFFF;
+	font-size: 20px;
+}
+
+table.result_table tr.heading td {
+	border: 1px solid #AAAACC;
+	font-weight: normal;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+table.result_table tr.even {
+	background-color: #E0E0E0;
+}
+
+table.result_table tr.even td {
+	border: 1px solid #AAAACC;
+	font-weight: normal;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+table.result_table tr.even td.title {
+	font-weight: bold;
+}
+
+table.result_table tr.odd {
+	background-color: #F0F0F0;
+}
+
+table.result_table tr.odd td {
+	border: 1px solid #AAAACC;
+	font-weight: normal;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+table.result_table tr.odd td.title {
+	font-weight: bold;
+}
+
+table.result_table ul.list {
+	margin: 5px;
+	margin-left: 0px;
+	padding-left: 20px;
+}
+
+table.result_table ul.list li {
+	margin-left: 0px;
+	padding-left: 0px;
+}
+
+table.result_table ul.list li small {
+	font-size: 75%;
+	color: #707070;
+}
+
+table.result_table ul.list li small a {
+	color: #7070C0;
 }
 
 /* Error Dialog Box */
 table.error {
 	width: 500px;
-	border: 1px solid #aa0000;
-	background-color: #fff0f0;
+	border: 1px solid #AA0000;
+	background-color: #FFF0F0;
 }
 
 table.error th {
-	background-color: #aa0000;
+	background-color: #AA0000;
 	border: 0px;
-	color: #ffffff;
+	color: #FFFFFF;
 	font-size: 12pt;
 	font-weight: bold;
 	text-align: center;
@@ -838,173 +832,24 @@ table.error th.img {
 
 table.error td {
 	border: 0px;
-	background-color: #fff0f0;
+	background-color: #FFF0F0;
 	padding: 2px;
 	text-align: left;
 	vertical-align: top;
 }
 
-/* Schema Viewer */
-table.schema {
-	width: 100%;
-	empty-cells: show;
-}
-
-table.schema tr.name {
-	background-color: #016;
-	padding: 5px;
-	color: white;
-	font-weight: bold;
-	font-size: 125%;
-	text-align: center;
-}
-
-table.schema tr.name a {
-	color: white;
-}
-
-table.schema tr.even {
-	background-color: #eee;
-}
-
-table.schema tr.odd {
-	background-color: #ccc;
-}
-
-table.schema td.type {
-	width: 20%;
-	padding: 5px;
-}
-
-table.schema tr.highlight{
-	background-color: #bcd;
-	font-weight: bold;
-	padding: 5px;
-}
-
-/* Schema Viewer - ObjectClasses*/
-table.schema_oclass {
-	width: 100%;
-	border-spacing: 0px;
-}
-
-table.schema_oclass tr.name td {
-	background: #016;
-	padding: 5px;
-	margin: 0px;
-	margin-top: 8px;
-	font-weight: normal;
-	border: 1px solid black;
-	font-size: 140%;
-}
-
-table.schema_oclass tr.name a {
-	color: white;
-}
-
-table.schema_oclass tr.name a:hover {
-	color: #acacae;
-	text-decoration: none;
-}
-
-table.schema_oclass tr.detail td {
-	background: #dde;
-	border: 1px solid black;
-	border-top: 0px;
-	font-weight: normal;
-	margin: 0px;
-	padding: 2px;
-	padding-left: 5px;
-	font-size: 80%;
-}
-
-table.schema_oclass tr.attrshead {
-	background-color: #eee;
-}
-
-table.schema_oclass tr.attrshead td.left {
-	border-left: 1px solid black;
-	width: 0px;
-}
-
-table.schema_oclass tr.attrshead td.right {
-	border-right: 1px solid black;
-	width: 0px;
-}
-
-table.schema_oclass tr.attrshead td {
-	vertical-align: top;
-	text-align: left;
-	padding-left: 5px;
-	width: 50%;
-}
-
-table.schema_oclass tr.attrs {
-	vertical-align: top;
-	background-color: #eee;
-}
-
-table.schema_oclass tr.attrs td.left {
-	border-left: 1px solid black;
-	width: 0px;
-}
-
-table.schema_oclass tr.attrs td.right {
-	border-right: 1px solid black;
-	width: 0px;
-}
-
-table.schema_oclass tr.attrs td {
-	border-bottom: 1px solid black;
-	padding-left: 5px;
-}
-
-table.schema_oclass tr.attrs ul.schema {
-	margin: 5px;
-	margin-left: 0px;
-	padding-left: 20px;
-}
-
-table.schema_oclass tr.attrs ul.schema li {
-	margin-left: 0px;
-	padding-left: 0px;
-}
-
-table.schema_oclass tr.attrs ul.schema li small {
-	font-size: 75%;
-	color: #777;
-}
-
-table.schema_oclass tr.attrs ul.schema li small a {
-	color: #77c;
-}
-
-/* Password Checker */
-div.password_checker h3 {
+/* Popup Window */
+div.popup h3.subtitle {
 	text-align: center;
 	margin: 0px;
-	padding: 0px;
-	color: white;
-	background-color: #018;
-	font-weight: bold;
-	font-size: 18px;
-}
-
-table.password_checker {
-	background-color: #eeeeff;
-	padding: 10px;
-	border: 1px solid #aaaacc;
-}
-
-table.password_checker td.head {
-	font-size: 13px;
-	font-weight: bold;
-	width: 10%;
-	white-space: nowrap;
-}
-
-table.password_checker td.body {
-	width: 300px;
+	margin-bottom: 15px;
+	color: #FFFFFF;
+	border-bottom: 1px solid #000000;
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;
+	background: #000088;
+	padding: 4px;
+	font-weight: normal;
 }
 
 span.good {
@@ -1013,51 +858,4 @@ span.good {
 
 span.bad {
 	color: red;
-}
-
-/* Entry Chooser */
-div.entry_chooser h3 {
-	text-align: center;
-	margin: 0px;
-	padding: 0px;
-	color: white;
-	background-color: #018;
-	font-weight: bold;
-	font-size: 18px;
-}
-
-table.entry_chooser td.head {
-	font-size: 13px;
-	width: 10%;
-	white-space: nowrap;
-}
-
-table.entry_chooser td.value {
-	font-size: 15px;
-	font-weight: bold;
-	width: 100%;
-}
-
-table.entry_chooser td.body {
-	font-size: 14px;
-	font-weight: normal;
-	width: 100%;
-	padding: 1px;
-}
-
-table.entry_chooser td.icon {
-	text-align: center;
-	padding: 0px;
-	width: 15px;
-}
-
-table.entry_chooser td.icon img {
-	border: 0px;
-}
-
-table.entry_chooser td.spacer {
-	width: 10px;
-	text-align: center;
-	padding: 0px;
-	font-size: 0px;
 }

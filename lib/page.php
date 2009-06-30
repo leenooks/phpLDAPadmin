@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/page.php,v 1.3.2.13 2008/01/10 12:30:14 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/page.php,v 1.3.2.14 2008/01/27 11:57:39 wurley Exp $
 
 /**
  * Page Rendering Functions
@@ -107,17 +107,17 @@ class page {
 
 		# Style sheet.
 		printf('<link type="text/css" rel="stylesheet" href="%s" />',$this->_app['urlcss']);
-		printf('<link rel="shortcut icon" href="%s/images/favicon.ico" type="image/vnd.microsoft.icon" />','../htdocs/');
+		printf('<link rel="shortcut icon" href="%s/favicon.ico" type="image/vnd.microsoft.icon" />',IMGDIR);
 
 		if (defined('JSDIR')) {
 			printf('<link type="text/css" rel="stylesheet" media="all" href="%sjscalendar/calendar-blue.css" title="blue" />',JSDIR);
-			printf('<link type="text/css" rel="stylesheet" href="%s/phplayersmenu/layerstreemenu.css" />','../htdocs/'.JSDIR);
+			printf('<link type="text/css" rel="stylesheet" href="%s/phplayersmenu/layerstreemenu.css" />',JSDIR);
 			echo "\n";
 			printf('<script type="text/javascript" src="%spla_ajax.js"></script>',JSDIR);
 			printf('<script type="text/javascript" src="%stree_hide.js"></script>',JSDIR);
 			printf('<script type="text/javascript" src="%sentry_chooser.js"></script>',JSDIR);
-			printf('<script type="text/javascript" src="%sto_ascii.js"></script>','../htdocs/'.JSDIR);
-			printf('<script type="text/javascript" src="%sjscalendar/calendar.js"></script>','../htdocs/'.JSDIR);
+			printf('<script type="text/javascript" src="%sto_ascii.js"></script>',JSDIR);
+			printf('<script type="text/javascript" src="%sjscalendar/calendar.js"></script>',JSDIR);
 			echo "\n";
 		}
 

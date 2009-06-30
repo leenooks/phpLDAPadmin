@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_value_form.php,v 1.39.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_value_form.php,v 1.39.2.3 2008/01/13 05:43:13 wurley Exp $
 
 /**
  * Displays a form to allow the user to enter a new value to add
@@ -47,7 +47,7 @@ if ($tree) {
 	$entry['ldap'] = $tree->getEntry($entry['dn']['string']);
 }
 
-// define the template of the entry if possible
+# Define the template of the entry if possible
 eval('$reader = new '.$_SESSION[APPCONFIG]->GetValue('appearance','entry_reader').'($ldapserver);');
 $reader->visit('Start', $entry['ldap']);
 
@@ -62,7 +62,7 @@ eval('$writer = new '.$_SESSION[APPCONFIG]->GetValue('appearance','entry_writer'
 
 $ldap['attr'] = $entry['ldap']->getAttribute($entry['attr']['string']);
 if (!$ldap['attr']) {
-	// define a new attribute for the entry
+	# Define a new attribute for the entry
 	$attributefactoryclass = $_SESSION[APPCONFIG]->GetValue('appearance','attribute_factory');
 	eval('$attribute_factory = new '.$attributefactoryclass.'();');
 	$ldap['attr'] = $attribute_factory->newAttribute($entry['attr']['string'], array());
@@ -76,11 +76,6 @@ if (! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value'))
 	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('add attribute value')));
 if (($ldap['attr']->getValueCount() == 0) && ! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add'))
 	pla_error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('add attribute')));
-
-/*
-$ldap['attrs'] = $ldapserver->getDNAttr($entry['dn']['string'],$entry['attr']['string']);
-$ldap['count'] = count($ldap['attrs']);
-*/
 
 $entry['attr']['oclass'] = (strcasecmp($entry['attr']['string'],'objectClass') == 0) ? true : false;
 
@@ -99,88 +94,50 @@ printf('<h3 class="title">%s <b>%s</b> %s <b>%s</b></h3>',
 printf('<h3 class="subtitle">%s <b>%s</b> &nbsp;&nbsp;&nbsp; %s: <b>%s</b></h3>',
 	_('Server'),$ldapserver->name,_('Distinguished Name'),$entry['dn']['html']);
 
-if ($ldap['count']) {
-	printf('%s <b>%s</b> %s <b>%s</b>%s',
-		_('Current list of'),$ldap['count'],_('values for attribute'),$ldap['attr']->getFriendlyName(),_(':'));
-} else {
-	printf('%s <b>%s</b>.',
-		_('No current value for attribute'),$ldap['attr']->getFriendlyName());
-}
-
 if ($entry['attr']['oclass']) {
 	echo '<form action="cmd.php" method="post" class="new_value" name="entry_form">';
 	echo '<input type="hidden" name="cmd" value="add_oclass_form" />';
 } else {
 	echo '<form action="cmd.php" method="post" class="new_value" name="entry_form" enctype="multipart/form-data" onSubmit="return submitForm(this)">';
 	echo '<input type="hidden" name="cmd" value="update_confirm" />';
-
-	//printf('<input type="hidden" name="attr" value="%s" />',$entry['attr']['encode']);
-
 }
 printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 printf('<input type="hidden" name="dn" value="%s" />',$entry['dn']['encode']);
 
+echo '<center>';
+echo '<table class="forminput" border=0>';
+echo '<tr>';
 if ($ldap['count']) {
-	// display current attribute values
-	echo '<table class="edit_dn" cellspacing="0" cellpadding="0" align="center"><tr><td>';
+	printf('<td class="top">%s <b>%s</b> %s <b>%s</b>%s</td>',
+		_('Current list of'),$ldap['count'],_('values for attribute'),$ldap['attr']->getFriendlyName(),_(':'));
+} else {
+	printf('<td>%s <b>%s</b>.</td>',
+		_('No current value for attribute'),$ldap['attr']->getFriendlyName());
+}
+
+echo '<td>';
+if ($ldap['count']) {
+	# Display current attribute values
+	echo '<table border=0><tr><td>';
 	for ($i = 0; $i < $ldap['count']; $i++) {
 		$writer->draw('OldValue', $ldap['attr'], $i);
 		$writer->draw('ReadOnlyValue', $ldap['attr'], $i);
 	}
 	echo '</td></tr></table>';
-	/*
-	if ($ldapserver->isJpegPhoto($entry['attr']['string'])) {
-		printf('<table><tr><td>%s</td></tr></table>',
-			draw_jpeg_photos($ldapserver,$entry['dn']['string'],$entry['attr']['string'],false));
 
-		# <!-- Temporary warning until we find a way to add jpegPhoto values without an INAPROPRIATE_MATCHING error -->
-		printf('<p><small>%s</small></p>',
-			_('Note: You will get an "inappropriate matching" error if you have not setup an EQUALITY rule on your LDAP server for this attribute.'));
-		# <!-- End of temporary warning -->
-
-	} elseif ($ldapserver->isAttrBinary($entry['attr']['string'])) {
-		echo '<ul>';
-		for ($i=1; $i<=count($vals); $i++) {
-			$href = sprintf('download_binary_attr.php?server_id=%s&amp;dn=%s&amp;attr=%s&amp;value_num=%s',
-				$ldapserver->server_id,$entry['dn']['encode'],$entry['attr']['string'],$i-1);
-
-			printf('<li><a href="%s"><img src="images/save.png" alt="Save" />%s (%s)</a></li>',
-				$href,_('download value'),$i);
-		}
-		echo '</ul>';
-
-		# <!-- Temporary warning until we find a way to add jpegPhoto values without an INAPROPRIATE_MATCHING error -->
-		printf('<p><small>%s</small></p>',
-			_('Note: You will get an "inappropriate matching" error if you have not setup an EQUALITY rule on your LDAP server for this attribute.'));
-		# <!-- End of temporary warning -->
-
-	} else {
-		echo '<ul class="current_values">';
-		if (strcasecmp($entry['attr']['string'],'userPassword') == 0) {
-			foreach ($ldap['attrs'] as $key => $value) {
-				if (obfuscate_password_display(get_enc_type($value)))
-					echo '<li><span style="white-space: nowrap;">'.preg_replace('/./','*',$value).'<br /></li>';
-				else
-					echo '<li><span style="white-space: nowrap;">'.htmlspecialchars($value).'<br /></li>';
-			}
-
-		} else {
-			foreach ($ldap['attrs'] as $val)
-				printf('<li><span style="white-space: nowrap;">%s</span></li>',htmlspecialchars($val));
-		}
-		echo '</ul>';
-	}
-	*/
 } else {
 	echo '<br /><br />';
 }
+echo '</td>';
+echo '</tr>';
 
-echo _('Enter the value you would like to add:');
-echo '<br /><br />';
+echo '<tr>';
+printf('<td class="top">%s</td>',_('Enter the value you would like to add:'));
+echo '<td>';
 
 if ($entry['attr']['oclass']) {
-	// draw objectClass selection
-	echo '<table class="edit_dn" cellspacing="0" cellpadding="0" align="center"><tr><td>';
+	# Draw objectClass selection
+	echo '<table border=0><tr><td>';
 	echo '<select name="new_oclass[]" multiple="true" size="15">';
 	foreach ($ldap['oclasses'] as $name => $oclass) {
 		# exclude any structural ones, as they'll only generate an LDAP_OBJECT_CLASS_VIOLATION
@@ -195,36 +152,21 @@ if ($entry['attr']['oclass']) {
 	echo '<br />';
 	printf('<input id="save_button" type="submit" value="%s" />',_('Add new ObjectClass'));
 	echo '</td></tr></table>';
-	echo '<br />';
+	echo '</td>';
+	echo '</tr>';
 
 	if ($_SESSION[APPCONFIG]->GetValue('appearance','show_hints'))
-		printf('<small><br /><img src="images/light.png" alt="Hint" /><span class="hint">%s</span></small>',
+		printf('<tr><td colspan=2><small><br /><img src="images/light.png" alt="Hint" /><span class="hint">%s</span></small></td></tr>',
 			_('Note: You may be required to enter new attributes that these objectClass(es) require'));
+	echo '</table>';
+	echo '</center>';
 	echo '</form>';
 
 } else {
-	// draw a blank field
-	echo '<table class="edit_dn" cellspacing="0" cellpadding="0" align="center"><tr><td>';
+	# Draw a blank field
+	echo '<table border=0><tr><td>';
 	$writer->draw('BlankValue', $ldap['attr'], $ldap['count']);
 	echo '</td></tr><tr><td>';
-	/*
-	if ($ldapserver->isAttrBinary($entry['attr']['string'])) {
-		echo '<input type="file" name="new_value" />';
-		echo '<input type="hidden" name="binary" value="true" />';
-
-	} else {
-		if ($ldapserver->isMultiLineAttr($entry['attr']['string'])) {
-			echo '<textarea name="new_value" rows="3" cols="30"></textarea>';
-		} else {
-			printf('<input type="text"%s name="new_value" size="40" value="" />',
-				($ldap['attr']->getMaxLength() ? sprintf(' maxlength="%s"',$ldap['attr']->getMaxLength()) : ''));
-
-			# Draw the "browse" button next to this input box if this attr houses DNs:
-			if ($ldapserver->isDNAttr($entry['attr']['string']))
-				draw_chooser_link("new_value_form.new_value", false);
-		}
-	}
-	*/
 
 	if ($ldap['schema']->getDescription())
 		printf('<small><b>%s:</b> %s</small><br />',_('Description'),$ldap['schema']->getDescription());
@@ -240,9 +182,12 @@ if ($entry['attr']['oclass']) {
 	printf('<input type="submit" id="save_button" name="submit" value="%s" />',_('Add New Value'));
 	echo '</td></tr></table>';
 
+	echo '</td></tr>';
+	echo '</table>';
+	echo '</center>';
 	echo '</form>';
 
-	// javascript
+	# Javascript
 	echo '<script type="text/javascript" language="javascript">
 	      function pla_getComponentById(id) {
 		  return document.getElementById(id);

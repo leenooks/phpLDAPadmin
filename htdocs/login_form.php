@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login_form.php,v 1.29.2.2 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/login_form.php,v 1.29.2.4 2008/01/13 05:37:01 wurley Exp $
 
 /**
  * Displays the login form for a server for users who specify 'cookie' or 'session' for their auth_type.
@@ -40,18 +40,18 @@ if (isset($_GET['redirect']))
 	printf('<input type="hidden" name="redirect" value="%s" />',rawurlencode($_GET['redirect']));
 
 echo '<center>';
-echo '<table class="login">';
+echo '<table class="forminput">';
 
 printf('<tr><td><b>%s:</b></td></tr>',
 	$ldapserver->login_attr == 'dn' ? _('Login DN') : $_SESSION[APPCONFIG]->getFriendlyName($ldapserver->login_attr));
 
-printf('<tr><td><input type="text" id="pla_login" name="%s" size="40" value="%s" /></td></tr>',
+printf('<tr><td><input type="text" id="login" name="%s" size="40" value="%s" /></td></tr>',
 	$ldapserver->login_attr,
 	$ldapserver->login_attr == 'dn' ? $ldapserver->login_dn : '');
 
 echo '<tr><td colspan=2>&nbsp;</td></tr>';
 printf('<tr><td><b>%s:</b></td></tr>',_('Password'));
-echo '<tr><td><input type="password" id="pla_pass" size="40" value="" name="login_pass" /></td></tr>';
+echo '<tr><td><input type="password" id="password" size="40" value="" name="login_pass" /></td></tr>';
 echo '<tr><td colspan=2>&nbsp;</td></tr>';
 
 # If Anon bind allowed, then disable the form if the user choose to bind anonymously.
@@ -66,18 +66,18 @@ echo '</table>';
 echo '</center>';
 echo '</form>';
 
-echo '<script type="text/javascript" language="javascript">document.getElementById(\'pla_login\').focus()</script>';
+echo '<script type="text/javascript" language="javascript">document.getElementById(\'login\').focus()</script>';
 
 if( $ldapserver->isAnonBindAllowed() ) { ?>
 <script type="text/javascript" language="javascript">
 <!--
 	function toggle_disable_login_fields(anon_checkbox) {
 		if (anon_checkbox.checked) {
-			anon_checkbox.form.<?php echo $ldapserver->isLoginAttrEnabled() ? 'uid' : 'login_dn'; ?>.disabled = true;
+			anon_checkbox.form.<?php echo $ldapserver->login_attr; ?>.disabled = true;
 			anon_checkbox.form.login_pass.disabled = true;
 		} else {
-			anon_checkbox.form.<?php echo $ldapserver->isLoginAttrEnabled() ? 'uid' : 'login_dn'; ?>.disabled = false;
-			anon_checkbox.form.<?php echo $ldapserver->isLoginAttrEnabled() ? 'uid' : 'login_dn'; ?>.focus();
+			anon_checkbox.form.<?php echo $ldapserver->login_attr; ?>.disabled = false;
+			anon_checkbox.form.<?php echo $ldapserver->login_attr; ?>.focus();
 			anon_checkbox.form.login_pass.disabled = false;
 		}
 	}

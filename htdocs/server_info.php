@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/server_info.php,v 1.27.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/server_info.php,v 1.27.2.2 2008/01/13 05:37:01 wurley Exp $
 
 /**
  * Fetches and displays all information that it can from the specified server
@@ -72,20 +72,20 @@ if (count($attrs) == 0) {
 	return;
 }
 
-echo '<table class="edit_dn">';
+echo '<table class="result" border=0>';
 foreach ($attrs as $attr => $values) {
 	if ($attr == 'dn')
 		continue;
 
-	$schema_href = sprintf('schema.php?server_id=%s&amp;view=attributes&amp;viewvalue=%s',$ldapserver->server_id,$attr);
+	$schema_href = sprintf('cmd.php?cmd=schema&amp;server_id=%s&amp;view=attributes&amp;viewvalue=%s',$ldapserver->server_id,$attr);
 
-	echo '<tr><td class="attr">';
+	echo '<tr class="list_item"><td class="heading" rowspan=2>';
 	printf('<a title="'._('Click to view the schema definition for attribute type \'%s\'').'" href="%s">%s</a>',
 		$attr,$schema_href,htmlspecialchars($attr));
 	echo '</td></tr>';
 
-	echo '<tr><td class="val">';
-	echo '<table class="edit_dn">';
+	echo '<tr class="list_item"><td class="blank">&nbsp;</td><td class="value">';
+	echo '<table class="result" border=0>';
 
 	if (is_array($values))
 		foreach ($values as $value) {
@@ -118,7 +118,7 @@ foreach ($attrs as $attr => $values) {
 		}
 
 	else
-		printf('<tr><td>%s</td></tr>',htmlspecialchars($values));
+		printf('<tr><td>%s&nbsp;</td></tr>',htmlspecialchars($values));
 
 	echo '</table>';
 	echo '</td></tr>';

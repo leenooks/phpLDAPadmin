@@ -1,5 +1,5 @@
 <?php
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.51.2.6 2007/12/31 06:27:34 wurley Exp $ */
+/* $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/server_functions.php,v 1.51.2.7 2008/01/31 12:34:26 wurley Exp $ */
 
 /**
  * Classes and functions for LDAP server configuration and capability
@@ -92,7 +92,7 @@ class LDAPserver {
 			$return = true;
 
 		} else {
-			pla_error(sprintf(_('Error: You have an error in your config file. The only three allowed values for auth_type in the $servers section are \'session\', \'cookie\', and \'config\'. You entered \'%s\', which is not allowed.'),htmlspecialchars($this->auth_type)));
+			error(sprintf(_('Error: You have an error in your config file. The only three allowed values for auth_type in the $servers section are \'session\', \'cookie\', and \'config\'. You entered \'%s\', which is not allowed.'),htmlspecialchars($this->auth_type)),'error',true);
 		}
 
 		if (DEBUG_ENABLED)
@@ -129,6 +129,8 @@ class LDAPserver {
 		if (DEBUG_ENABLED)
 			debug_log('Creating new connection [%s] for Server ID [%s]',16,__FILE__,__LINE__,__METHOD__,
 				$connect_id,$this->server_id);
+
+		$this->connection[$connect_id]['resource'] = null;
 
 		# Grab the AUTH INFO based on the auth_type for this server
 		if ($connect_id == 'anonymous') {
@@ -259,8 +261,8 @@ class LDAPserver {
 
 		# Try to fire up TLS is specified in the config
 		if ($this->isTLSEnabled()) {
-			function_exists('ldap_start_tls') or pla_error(_('Your PHP install does not support TLS.'));
-			@ldap_start_tls($resource) or pla_error(_('Could not start TLS. Please check your LDAP server configuration.'),ldap_error($resource));
+			function_exists('ldap_start_tls') or error(_('Your PHP install does not support TLS.'),'error');
+			@ldap_start_tls($resource) or error(_('Could not start TLS. Please check your LDAP server configuration.'),'error',true);
 		}
 
 		$bind_result = false;
@@ -274,7 +276,7 @@ class LDAPserver {
 
 			# No support for ldap_sasl_bind?
 			if (! function_exists('ldap_sasl_bind'))
-				pla_error(_('Your PHP installation does not support ldap_sasl_bind() function. This function is present in PHP 5.x when compiled with --with-ldap-sasl.'));
+				error(_('Your PHP installation does not support ldap_sasl_bind() function. This function is present in PHP 5.x when compiled with --with-ldap-sasl.'),'error');
 
 			# Fill variables
 			$props = $this->connection[$connect_id]['sasl_props'];
@@ -336,16 +338,16 @@ class LDAPserver {
 			if ($process_error) {
 				switch (ldap_errno($resource)) {
 					case 0x31:
-						error(_('Bad username or password. Please try again.'),'error',true);
+						error(_('Bad username or password. Please try again.'),'error');
 						break;
 					case 0x32:
-						error(_('Insufficient access rights.'),'error',true);
+						error(_('Insufficient access rights.'),'error');
 						break;
 					case -1:
-						error(sprintf(_('Could not connect to "%s" on port "%s"'),$host,$port),'error',true);
+						error(sprintf(_('Could not connect to "%s" on port "%s"'),$host,$port),'error');
 						break;
 					default:
-						error(_('Could not bind to the LDAP server (%s).',ldap_err2str($resource),$resource),'error',true);
+						error(_('Could not bind to the LDAP server (%s).',ldap_err2str($resource),$resource),'error');
  				}
 
  			} else {

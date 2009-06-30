@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Entry.php,v 1.2.2.2 2008/01/04 14:31:05 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/Entry.php,v 1.2.2.3 2008/01/27 07:23:43 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -11,8 +11,8 @@
 abstract class Entry {
 	protected $dn;
 
-	# the tree to which the entry belongs
-	protected $tree;
+	# the server_id to which the entry belongs
+	protected $server_id;
 
 	# is the entry a leaf ?
 	private $leaf;
@@ -66,15 +66,15 @@ abstract class Entry {
 		return $attr;
 	}
 
-	public function setTree($tree) {
-		$this->tree = $tree;
+	public function setTree($index) {
+		$this->server_id = $index;
 	}
 
 	private function readChildren($nolimit=false) {
 		if (DEBUG_ENABLED)
 			debug_log('Entered with ()',1,__FILE__,__LINE__,__METHOD__);
 
-		$ldapserver = ($this->tree ? $this->tree->getLdapServer() : null);
+		$ldapserver = (isset($this->server_id) ? $_SESSION[APPCONFIG]->ldapservers->Instance($this->server_id) : null);
 		if (DEBUG_ENABLED)
 			debug_log('LdapServer (%s)',1,__FILE__,__LINE__,__METHOD__, $ldapserver ? $ldapserver->server_id : -1);
 
@@ -86,18 +86,22 @@ abstract class Entry {
 		if (DEBUG_ENABLED)
 			debug_log('Children of (%s) are (%s)',64,__FILE__,__LINE__,__METHOD__,$this->getDn(),$ldap['children']);
 
-		if ($this->tree) {
+		if (isset($this->server_id)) {
 			$this->reading_children = true;
+			$tree = get_cached_item($ldapserver->server_id,'tree');
+
 			foreach ($ldap['children'] as $dn) {
 				if (DEBUG_ENABLED)
 					debug_log('Adding (%s)',64,__FILE__,__LINE__,__METHOD__,$dn);
 
-				if (! $this->tree->getEntry($dn))
-					$this->tree->addEntry($dn);
+				if (! $tree->getEntry($dn))
+					$tree->addEntry($dn);
 			}
+			set_cached_item($ldapserver->server_id,'tree','null',$tree);
 			usort($this->children,'pla_compare_dns');
 			$this->reading_children = false;
 		}
+
 		if (count($this->children) == $ldap['child_limit'])
 			$this->size_limited = true;
 		else

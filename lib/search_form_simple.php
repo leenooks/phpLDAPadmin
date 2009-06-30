@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_simple.php,v 1.16.2.2 2007/12/26 09:26:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_simple.php,v 1.16.2.3 2008/01/13 05:37:02 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -12,15 +12,16 @@
 	}
 </script>
 
-<form action="cmd.php" method="get" class="search" name="simple_search_form">
+<h3 class="title"><?php echo _('Simple Search Form'); ?></h3>
+<br />
+<form action="cmd.php" name="simple_search_form">
 <input type="hidden" name="cmd" value="search" />
 <input type="hidden" name="search" value="true" />
 <input type="hidden" name="form" value="simple" />
 <input type="hidden" name="scope" value="sub" />
 <input type="hidden" name="format" value="<?php echo $entry['format']; ?>" />
 
-<table class="search" border=0>
-<tr><td class="title"><?php echo _('Simple Search Form'); ?></td></tr>
+<table class="forminput" border=0>
 
 <?php
 	$as = $_SESSION[APPCONFIG]->isCommandAvailable('search', 'advanced_search');

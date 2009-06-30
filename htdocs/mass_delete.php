@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/mass_delete.php,v 1.17.2.1 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/mass_delete.php,v 1.17.2.2 2008/01/13 05:37:01 wurley Exp $
 
 /**
  * Enables user to mass delete multiple entries using checkboxes.
@@ -104,7 +104,7 @@ if ($confirmed == true) {
 		printf('<input type="hidden" name="mass_delete[%s]" value="on" /><li>%s</li>',htmlspecialchars($dn),htmlspecialchars($dn));
 	echo '</ol></td></tr></table>';
 
-	printf('<input class="scary" type="submit" value="%s" /></center>',_('Yes, delete!'));
+	printf('<input type="submit" value="%s" /></center>',_('Yes, delete!'));
 	echo '</form>';
 }
 ?>

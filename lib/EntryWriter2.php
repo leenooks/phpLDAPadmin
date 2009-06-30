@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter2.php,v 1.2.2.1 2007/12/26 09:26:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryWriter2.php,v 1.2.2.3 2008/01/27 06:48:59 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -145,7 +145,7 @@ class EntryWriter2 extends EntryWriter1 {
 	protected function drawAttribute($attribute) {
 		if ($attribute->isVisible()) {
 			if (($this->context == ENTRY_WRITER_EDITING_CONTEXT) && $attribute->hasBeenModified()) {
-				echo '<tr class="updated_attr">';
+				echo '<tr class="updated">';
 			} else {
 				echo '<tr>';
 			}
@@ -157,7 +157,7 @@ class EntryWriter2 extends EntryWriter1 {
 		if ($attribute->isVisible()) {
 			echo '</tr>';
 			if (($this->context == ENTRY_WRITER_EDITING_CONTEXT) && $attribute->hasBeenModified()) {
-				//echo '<tr class="updated_attr"><td class="bottom" colspan="3"></td></tr>';
+				//echo '<tr class="updated"><td class="bottom" colspan="3"></td></tr>';
 			}
 			if ($attribute->hasProperty('spacer') && $attribute->getProperty('spacer')) {
 				echo '<tr class="spacer"><td colspan="3">&nbsp;</td></tr>';
@@ -205,7 +205,7 @@ class EntryWriter2 extends EntryWriter1 {
 
 		if ($attr_note) printf('<sup><small>%s</small></sup>', $attr_note);
 
-		if ($attribute->isReadOnly() && $this->ldapserver->isAttrReadOnly($attribute->getName())) {
+		if ($attribute->isReadOnly() && $this->getLDAPServer()->isAttrReadOnly($attribute->getName())) {
 			printf('<small>(<acronym title="%s">%s</acronym>)</small>',
 			       _('This attribute has been flagged as read only by the phpLDAPadmin administrator'),
 			       _('read only'));

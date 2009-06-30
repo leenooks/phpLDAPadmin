@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_list.php,v 1.7.2.2 2007/12/26 09:26:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_results_list.php,v 1.7.2.3 2008/01/13 05:37:02 wurley Exp $
 
 /**
  * @package phpLDAPadmin
@@ -17,9 +17,9 @@ foreach ($results as $dn => $dndetails) {
 	if ($i >= $end_entry)
 		break;
 
-	echo '<table class="search_result" border=0>';
+	echo '<table class="result" border=0>';
 
-	echo '<tr class="list_dn">';
+	echo '<tr class="list_title">';
 	printf('<td class="icon"><img src="images/%s" alt="icon" /></td>',get_icon($ldapserver,$dn));
 
 	$formatted_dn = get_rdn($dn);
@@ -33,7 +33,7 @@ foreach ($results as $dn => $dndetails) {
 	echo '</tr>';
 
 	if ($_SESSION[APPCONFIG]->isCommandAvailable('schema')) {
-		printf('<tr class="list_attr"><td class="blank">&nbsp;</td><td class="attr">dn</td><td class="val">%s</td></tr>',htmlspecialchars(dn_unescape($dn)));
+		printf('<tr class="list_item"><td class="blank">&nbsp;</td><td class="heading">dn</td><td class="value">%s</td></tr>',htmlspecialchars(dn_unescape($dn)));
 	}
 
 	# Iterate over each attribute for this entry
@@ -45,11 +45,11 @@ foreach ($results as $dn => $dndetails) {
 		if ($ldapserver->isAttrBinary($attr))
 			$values = array('(binary)');
 
-		echo '<tr class="list_attr">';
+		echo '<tr class="list_item">';
 		echo '<td class="blank">&nbsp;</td>';
-		printf('<td class="attr" valign="top">%s</td>',$_SESSION[APPCONFIG]->getFriendlyHTML($attr));
+		printf('<td class="heading" valign="top">%s</td>',$_SESSION[APPCONFIG]->getFriendlyHTML($attr));
 
-		echo '<td class="val">';
+		echo '<td class="value">';
 
 		if ($ldapserver->isJpegPhoto($attr))
 			draw_jpeg_photos($ldapserver,$dn,$attr,false,false,'align="left"');

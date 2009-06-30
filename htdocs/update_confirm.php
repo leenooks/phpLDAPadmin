@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.49.2.2 2007/12/26 09:26:32 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.49.2.3 2008/01/13 05:37:01 wurley Exp $
 
 /**
  * Takes the results of clicking "Save" in template_engine.php and determines which
@@ -195,7 +195,7 @@ if (count($entry['values']['new']) > 0) {
 	echo '<form action="cmd.php" method="post">';
 	echo '<input type="hidden" name="cmd" value="update" />';
 	echo "\n";
-	echo '<table class="confirm">';
+	echo '<table class="result_table">';
 	echo "\n";
 
 	printf('<tr class="heading"><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
@@ -278,10 +278,8 @@ if (count($entry['values']['new']) > 0) {
  		printf('<td><input name="skip_array[%s]" type="checkbox" %s %s/></td>',htmlspecialchars($attr),$input_disabled,$input_onclick);
 		echo '</tr>'."\n\n";
 	}
+	echo '</table>';
 
-	echo '</table><table class="form">';
-	echo '<tr>';
-	echo '<td>';
 	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 	printf('<input type="hidden" name="dn" value="%s" />',$entry['dn']['string']);
 
@@ -301,25 +299,18 @@ if (count($entry['values']['new']) > 0) {
 		}
 	}
 
-	printf('<input type="submit" value="%s" class="happy" />',_('Commit'));
-	echo '</td>';
-	echo '<td>';
-	printf('<input type="submit" name="cancel" value="%s" class="scary" />',_('Cancel'));
-	echo '</td>';
-	echo '</tr>';
-	echo '</table>';
+	echo '<br />';
+	printf('<input type="submit" value="%s" />',_('Commit'));
+	printf('<input type="submit" name="cancel" value="%s" />',_('Cancel'));
 	echo '</form>';
 
 	if (count($attr_to_delete) > 0) {
-		echo '<table class="form"><tr><td><br/>';
-		echo _('The deletion of objectClass(es)');
-		echo _(':');
-		echo ' <b>';
-		echo implode('</b>, <b>', $oc_to_delete);
-		echo '</b><br/>';
-		echo _('will delete the attribute(s)');
-		echo _(':');
-		echo ' <b>';
+		echo '<table class="result_table"><tr>';
+		printf('<td class="heading">%s%s</td>',_('The deletion of objectClass(es)'),_(':'));
+		printf('<td class="value"><b>%s</b></td>',implode('</b>, <b>', $oc_to_delete));
+		echo '</tr><tr>';
+		printf('<td class="heading">%s%s</td>',_('will delete the attribute(s)'),_(':'));
+		echo '<td class="value"><b>';
 		$i = 0;
 		foreach ($attr_to_delete as $attr) {
 			if ($i++ != 0) echo '</b>, <b>';

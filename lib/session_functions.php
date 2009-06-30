@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/session_functions.php,v 1.18.2.3 2007/12/29 08:24:11 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/session_functions.php,v 1.18.2.4 2008/01/13 06:35:51 wurley Exp $
 
 /**
  * A collection of functions to handle sessions throughout phpLDAPadmin.
@@ -69,7 +69,7 @@ function pla_session_verify_id() {
 
 function pla_session_param() {
 	/* If cookies were disabled, build the url parameter for the session id.
-	   It will be append to the url to be redirect */
+	 * It will be append to the url to be redirect */
 	return (SID != '') ? sprintf('&%s=%s',session_name(),session_id()) : '';
 }
 
@@ -121,12 +121,12 @@ function pla_session_start() {
 
 	# Check we have the correct version of the SESSION cache
 	if (isset($_SESSION['cache']) || isset($_SESSION[pla_session_id_init])) {
-		if (!is_array($_SESSION[pla_session_id_init])) $_SESSION[pla_session_id_init] = array();
+		if (! is_array($_SESSION[pla_session_id_init])) $_SESSION[pla_session_id_init] = array();
 
-		if (!isset($_SESSION[pla_session_id_init]['version']) || !isset($_SESSION[pla_session_id_init]['config'])
+		if (! isset($_SESSION[pla_session_id_init]['version']) || ! isset($_SESSION[pla_session_id_init]['config'])
 			|| $_SESSION[pla_session_id_init]['version'] !== pla_version()
 			|| $_SESSION[pla_session_id_init]['config'] != filemtime(CONFDIR.'config.php')) {
-        
+
 			$_SESSION[pla_session_id_init]['version'] = pla_version();
 			$_SESSION[pla_session_id_init]['config'] = filemtime(CONFDIR.'config.php');
 
@@ -160,6 +160,6 @@ function pla_session_start() {
  * Stops the current session.
  */
 function pla_session_close() {
-    @session_write_close();
+	@session_write_close();
 }
 ?>

@@ -46,7 +46,7 @@
 
 /* phpLDAPadmin can encrypt the content of sensitive cookies if you set this
    to a big random string. */
-$config->custom->session['blowfish'] = '';
+// $config->custom->session['blowfish'] = null;
 
 /* The language setting. If you set this to 'auto', phpLDAPadmin will attempt
    to determine your language automatically. Otherwise, available lanaguages
@@ -65,6 +65,12 @@ $config->custom->session['blowfish'] = '';
    password.  This is insecure but unfortunately needed for some older
    environments. */
 #  $config->custom->password['no_random_crypt_salt'] = true;
+
+/* PHP script timeout control. If php runs longer than this many seconds then
+   PHP will stop with an Maximum Execution time error. Increase this value from
+   the default if queries to your LDAP server are slow. The default is either
+   30 seconds or the setting of max_exection_time if this is null. */
+// $config->custom->session['timelimit'] = 30;
 
 /*********************************************/
 /* Commands                                  */
@@ -130,6 +136,13 @@ $config->custom->commands['all'] = array(
 
 /* Configure what objects are shown in left hand tree */
 // $config->custom->appearance['tree_filter'] = '(objectclass=*)';
+
+/* The height and width of the tree. If these values are not set, then
+   no tree scroll bars are provided.
+// $config->custom->appearance['tree_height'] = null;
+#  $config->custom->appearance['tree_height'] = 600;
+// $config->custom->appearance['tree_width'] = null;
+#  $config->custom->appearance['tree_width'] = 250;
 
 /*********************************************/
 /* Define your LDAP servers in this section  */

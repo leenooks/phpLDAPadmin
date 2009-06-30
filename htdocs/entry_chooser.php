@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/entry_chooser.php,v 1.31.2.2 2007/12/29 08:24:10 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/entry_chooser.php,v 1.31.2.3 2008/01/13 05:37:00 wurley Exp $
 
 /**
  * Display a selection (popup window) to pick a DN.
@@ -15,8 +15,8 @@ $entry['element'] = get_request('form_element','GET');
 $entry['rdn'] = get_request('rdn','GET');
 
 echo '<body>';
-echo '<div class="entry_chooser">';
-printf('<h3>%s</h3>',_('Entry Chooser'));
+echo '<div class="popup">';
+printf('<h3 class="subtitle">%s</h3>',_('Entry Chooser'));
 ?>
 
 <script type="text/javascript" language="javascript">
@@ -27,11 +27,11 @@ printf('<h3>%s</h3>',_('Entry Chooser'));
 </script>
 
 <?php
-echo '<table class="entry_chooser" border=0>';
+echo '<table class="forminput" width=100% border=0>';
 if ($entry['container']) {
-	printf('<tr><td class="head" colspan=3>%s:</td><td class="value">%s</td></tr>',_('Server'),htmlspecialchars($ldapserver->name));
-	printf('<tr><td class="head" colspan=3>%s:</td><td class="value">%s</td></tr>',_('Looking in'),htmlspecialchars($entry['container']));
-	echo '<tr><td class="spacer" colspan=4>&nbsp;</td></tr>';
+	printf('<tr><td class="heading" colspan=3>%s:</td><td>%s</td></tr>',_('Server'),htmlspecialchars($ldapserver->name));
+	printf('<tr><td class="heading" colspan=3>%s:</td><td>%s</td></tr>',_('Looking in'),htmlspecialchars($entry['container']));
+	echo '<tr><td class="blank" colspan=4>&nbsp;</td></tr>';
 }
 
 /* Has the use already begun to descend into a specific server tree? */
@@ -60,13 +60,13 @@ if (isset($ldapserver) && ! is_null($entry['container'])) {
 	}
 
 	echo '<tr>';
-	echo '<td class="spacer">&nbsp;</td>';
+	echo '<td class="blank">&nbsp;</td>';
 	printf('<td class="icon"><a href="%s"><img src="images/up.png" alt="Up" /></a></td>',$href['up']);
-	printf('<td class="value" colspan=2><a href="%s">%s</a></td>',$href['up'],_('Back Up...'));
+	printf('<td colspan=2><a href="%s">%s</a></td>',$href['up'],_('Back Up...'));
 	echo '</tr>';
 
 	if (! count($entry['children']))
-		printf('<td class="spacer" colspan=2>&nbsp;</td><td class="body" colspan=2">(%s)</td>',_('no entries'));
+		printf('<td class="blank" colspan=2>&nbsp;</td><td colspan=2">(%s)</td>',_('no entries'));
 
 	else
 		foreach ($entry['children'] as $dn) {
@@ -75,10 +75,10 @@ if (isset($ldapserver) && ! is_null($entry['container'])) {
 				$ldapserver->server_id,$entry['element'],$entry['rdn'],rawurlencode($dn)));
 
 			echo '<tr>';
-			echo '<td class="spacer">&nbsp;</td>';
+			echo '<td class="blank">&nbsp;</td>';
 			printf('<td class="icon"><a href="%s"><img src="images/plus.png" alt="Plus" /></a></td>',$href['expand']);
 
-			printf('<td colspan=2 class="body"><a href="%s">%s</a></td>',$href['return'],htmlspecialchars($dn));
+			printf('<td colspan=2><a href="%s">%s</a></td>',$href['return'],htmlspecialchars($dn));
 			echo '</tr>';
 			echo "\n\n";
 		}
@@ -95,10 +95,10 @@ if (isset($ldapserver) && ! is_null($entry['container'])) {
 				continue;
 
 			else {
-				printf('<tr><td class="head" colspan=3>%s:</td><td class="value">%s</td></tr>',_('Server'),htmlspecialchars($ldapserver->name));
+				printf('<tr><td class="heading" colspan=3>%s:</td><td class="heading">%s</td></tr>',_('Server'),htmlspecialchars($ldapserver->name));
 				foreach ($ldapserver->getBaseDN() as $dn) {
 					if (! $dn) {
-						printf('<tr><td class="spacer">&nbsp;</td><td class="body" colspan=3>(%s)</td></tr>',_('Could not determine base DN'));
+						printf('<tr><td class="blank">&nbsp;</td><td colspan=3>(%s)</td></tr>',_('Could not determine base DN'));
 
 					} else {
 						$href['return'] = sprintf("javascript:returnDN('%s%s')",($entry['rdn'] ? sprintf('%s,',$entry['rdn']) : ''),rawurlencode($dn));
@@ -106,13 +106,13 @@ if (isset($ldapserver) && ! is_null($entry['container'])) {
 							$ldapserver->server_id,$entry['element'],$entry['rdn'],rawurlencode($dn)));
 
 						echo '<tr>';
-						echo '<td class="spacer">&nbsp;</td>';
+						echo '<td class="blank">&nbsp;</td>';
 						printf('<td colspan=2 class="icon"><a href="%s"><img src="images/plus.png" alt="Plus" /></a></td>',$href['expand']);
-						printf('<td colspan=2 class="body"><a href="%s">%s</a></td>',$href['return'],htmlspecialchars($dn));
+						printf('<td colspan=2><a href="%s">%s</a></td>',$href['return'],htmlspecialchars($dn));
 					}
 				}
 
-				echo '<tr><td class="spacer" colspan=4>&nbsp;</td></tr>';
+				echo '<tr><td class="blank" colspan=4>&nbsp;</td></tr>';
 			}
 		}
 	}
@@ -120,5 +120,5 @@ if (isset($ldapserver) && ! is_null($entry['container'])) {
 
 echo '</table>';
 echo '</div>';
-echo '</body></html>';
+echo '</body>';
 ?>

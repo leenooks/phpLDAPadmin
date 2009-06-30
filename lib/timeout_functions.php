@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/timeout_functions.php,v 1.10.2.1 2007/12/29 08:24:11 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/timeout_functions.php,v 1.10.2.2 2008/01/27 05:11:41 wurley Exp $
 
 /**
  * A collection of functions used throughout phpLDAPadmin for the timeout and automatic logout feature
@@ -11,7 +11,6 @@
 /**
  * Responsible for setting/updating two session-vars that are used for the timeout and auto logout feature:
  *	- "activity" var records the server last activity.
- *	- "rightframe_server_id" var records the ID of the server active on the right frame.
  * where X is the * ID of the server which the user is working on
  *
  * @param object $ldapserver The LDAPServer object of the server which the user has logged in.
@@ -22,7 +21,6 @@ function set_lastactivity($ldapserver) {
 		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$ldapserver->server_id);
 
 	$_SESSION['activity']['server'][$ldapserver->server_id] = time();
-	$_SESSION['activity']['rightframe_server_id'] = $ldapserver->server_id;
 	return true;
 }
 
@@ -63,7 +61,7 @@ function session_timed_out($ldapserver) {
 		else
 			$session_timeout = $ldapserver->session_timeout;
 
-		# Get the $last_activity and $rightframe_server_id value
+		# Get the $last_activity value
 		$last_activity = $_SESSION['activity']['server'][$ldapserver->server_id];
 
 		# If diff between current time and last activity greater than $session_timeout, log out user

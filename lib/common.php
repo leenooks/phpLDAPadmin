@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.80.2.8 2008/01/04 12:33:03 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.80.2.9 2008/01/30 11:14:02 wurley Exp $
 
 /**
  * Contains code to be executed at the top of each application page.
@@ -145,6 +145,10 @@ if (! isset($_SESSION[APPCONFIG])) {
 	# @todo: Change this so that we dont process a cached session.
 	$_SESSION[APPCONFIG]->CheckCustom();
 }
+
+# Set our timezone, if it is specified in config.php
+if ($_SESSION[APPCONFIG]->GetValue('appearance','timezone'))
+	date_default_timezone_set($_SESSION[APPCONFIG]->GetValue('appearance','timezone'));
 
 # If we are here, $_SESSION is set - so enabled DEBUGing if it has been configured.
 if (($_SESSION[APPCONFIG]->GetValue('debug','syslog') || $_SESSION[APPCONFIG]->GetValue('debug','file'))

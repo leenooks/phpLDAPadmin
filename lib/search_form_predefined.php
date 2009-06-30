@@ -1,25 +1,26 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_predefined.php,v 1.10.2.1 2007/12/26 09:26:33 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/search_form_predefined.php,v 1.10.2.2 2008/01/13 05:37:02 wurley Exp $
 
 /**
  * @package phpLDAPadmin
  */
 
-echo '<form action="cmd.php" method="get" class="search">';
+printf('<h3 class="title">%s</h3>',_('Predefined Searches'));
+echo '<br />';
+echo '<form action="cmd.php">';
 echo '<input type="hidden" name="cmd" value="search" />';
 echo '<input type="hidden" name="search" value="true" />';
 echo '<input type="hidden" name="form" value="predefined" />';
 printf('<input type="hidden" name="format" value="%s" />',$entry['format']);
 printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
 
-echo '<table class="search" border=0>';
+echo '<table class="forminput" border=0>';
 
 if ($entry['predefined'])
 	$selected_q_number = intval($entry['predefined']);
 else
 	$selected_q_number = null;
 
-printf('<tr><td class="title" colspan=2>%s</td></tr>',_('Predefined Searches'));
 
 $ss = $_SESSION[APPCONFIG]->isCommandAvailable('search', 'simple_search');
 $as = $_SESSION[APPCONFIG]->isCommandAvailable('search', 'advanced_search');
@@ -42,7 +43,7 @@ if (! isset($_SESSION[APPCONFIG]->queries) || ! is_array($_SESSION[APPCONFIG]->q
 
 } else {
 	echo '<tr>';
-	printf('<td><small>%s: </small></td>',_('Select a predefined search'));
+	printf('<td>%s:</td>',_('Select a predefined search'));
 
 	echo '<td>';
 	echo '<select name="predefined">';

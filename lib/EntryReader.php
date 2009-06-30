@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryReader.php,v 1.2.2.1 2007/12/29 08:24:10 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/EntryReader.php,v 1.2.2.3 2008/01/27 14:09:14 wurley Exp $
 
 define('ENTRY_READER_CREATION_CONTEXT', '1');
 define('ENTRY_READER_EDITING_CONTEXT', '2');
@@ -12,11 +12,11 @@ define('ENTRY_READER_EDITING_CONTEXT', '2');
  * Visit an entry and its attributes to initialize their values
  */
 class EntryReader extends Visitor {
-	protected $ldapserver;
+	protected $index;
 	protected $context;
 
 	public function __construct($ldapserver) {
-		$this->ldapserver = $ldapserver;
+		$this->index = $ldapserver->server_id;
 		$this->context = 0;
 	}
 
@@ -109,6 +109,7 @@ class EntryReader extends Visitor {
 			debug_log('Enter with (%s) for attribute (%s)',1,__FILE__,__LINE__,__METHOD__,$attribute,$attribute->getName());
 
 		$name = $attribute->getName();
+
 		// @todo editing objectclasses
 		if (($this->context == ENTRY_READER_CREATION_CONTEXT) && ($name == 'objectClass')) return;
 
@@ -140,8 +141,6 @@ class EntryReader extends Visitor {
 		}
 
 		foreach ($new_vals as $i => $new_val) {
-			//$new_val = trim($new_val); // no trim if binary value
-
 			// if the attribute has not been already modified by a post of a previous page
 			if (!$attribute->hasBeenModified()) {
 				// if the value has changed (added or modified/deleted)
@@ -157,7 +156,6 @@ class EntryReader extends Visitor {
 		}
 
 		// old value deletion
-		//if (($this->context == ENTRY_READER_EDITING_CONTEXT) && !$attribute->isInternal()) {
 		if (isset($_POST['old_values'][$name]) && !$attribute->isInternal()) {
 			for ($i = count($new_vals); $i < count($old_vals); $i++) {
 				$attribute->addValue('', $i);
@@ -220,22 +218,17 @@ class EntryReader extends Visitor {
 			switch ($matches[1]) {
 				case 'Password' :
 					preg_match_all('/%(\w+)(\|.+)?(\/[lU])?%/U',$matches[2],$matchall);
-					//if (!isset($_POST['enc_type'][$i]) || !$_POST['enc_type'][$i]) {
-					//	pla_error(sprintf(_('Your template is missing variable (%s)'),'enc_type'));
-					//}
-					//$enc = $_POST['enc_type'][$i]; //$_REQUEST[$matchall[1][0]];
 					$enc = $this->get('RequestValue', $attribute, $i, $val, $matchall[1][0]);
-					$password = $val;              //$_REQUEST['form'][$matchall[1][1]];
+					$password = $val;
 					if ($password) {
 						$val = password_hash($password, $enc);
 					}
 					break;
 				case 'SambaPassword' :
 					$matchall = explode(',',$matches[2]);
-					//$attr = preg_replace('/%/','',$matchall[1]);
 
 					# If we have no password, then dont hash nothing!
-					if (strlen($val) <= 0) //if (! trim($_REQUEST['form'][$attr]))
+					if (strlen($val) <= 0)
 						break;
 
 					$sambapassword = new smbHash;
@@ -253,15 +246,6 @@ class EntryReader extends Visitor {
 
 					$values = array();
 					foreach ($matchall[1] as $joinattr) {
-						//$joinattribute = null;
-						//if ($attribute->getEntry()) {
-						//	$joinattribute = $attribute->getEntry()->getAttribute($joinattr);
-						//}
-						//if ($joinattribute) {
-						//	$values = array_merge($values, $joinattribute->getValues());
-						//} else {
-						//	pla_error(sprintf(_('Your template is missing variable (%s)'),$joinattr));
-						//}
 						$values[] = $this->get('RequestValue', $attribute, $i, $val, $joinattr);
 					}
 
@@ -308,11 +292,10 @@ class EntryReader extends Visitor {
 					$attribute->addFileName($filename, $i);
 					foreach ($file as $filepath => $binaries) {
 						$attribute->addFilePath($filepath, $i);
-						//$attribute->addValue($binaries, $i);
 						$bin = $binaries;
 					}
 				}
-				$vals[] = $bin; //$new_val;
+				$vals[] = $bin;
 				$i++;
 			}
 		}
@@ -333,7 +316,7 @@ class EntryReader extends Visitor {
 
 				$key = md5("$file_name|$file_path");
 				$_SESSION['submitform'][$name][$key][$file_name][$file_path] = $binary_data;
-				$vals[] = $binary_data; //$key;
+				$vals[] = $binary_data;
 				$i++;
 			}
 		}
@@ -365,8 +348,14 @@ class EntryReader extends Visitor {
 
 		if ($attribute->hasProperty('post')) {
 			$val = $this->get('Attribute::PostValue', $attribute, $i, $val);
+
 		} elseif (strlen($val) > 0) {
-			$val = password_hash($val, get_default_hash($this->ldapserver->server_id));
+			if (isset($_REQUEST['enc'][$attribute->getName()][$i]))
+				$enc = $_REQUEST['enc'][$attribute->getName()][$i];
+			else
+				$enc = get_default_hash($this->index);
+
+			$val = password_hash($val, $enc);
 		}
 		return $val;
 	}
@@ -398,5 +387,4 @@ class EntryReader extends Visitor {
 		return $val;
 	}
 }
-
 ?>

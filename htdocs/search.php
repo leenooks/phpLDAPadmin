@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/search.php,v 1.78.2.4 2007/12/29 08:24:10 wurley Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/search.php,v 1.78.2.6 2008/01/27 11:57:38 wurley Exp $
 
 /**
  * Perform LDAP searches and draw the advanced/simple search forms
@@ -78,7 +78,7 @@ if ($entry['base_dn']['string']) {
 	if (isset($ldapserver))
 		$base_dns = $ldapserver->getBaseDN();
 
-printf('<script type="text/javascript" src="%ssearch_util.js"></script>','../htdocs/'.JSDIR);
+printf('<script type="text/javascript" src="%ssearch_util.js"></script>',JSDIR);
 echo '<center>';
 
 $entry['command']['as'] = $_SESSION[APPCONFIG]->isCommandAvailable('search','advanced_search');
@@ -259,10 +259,10 @@ if ($entry['search']) {
 			$end_entry = min($start_entry+$size_limit+1,$count+1);
 
 			# Search Results Table
-			echo '<table class="search_result" border=0>';
+			echo '<table class="result" border=0>';
 
-			echo '<tr class="header">';
-			printf('<td>%s%s <b>%s</b> <small>(%s %s)</small></td>',_('Entries found'),_(':'),
+			echo '<tr class="heading">';
+			printf('<td>%s%s <b>%s</b><div class="execution_time">(%s %s)</div></td>',_('Entries found'),_(':'),
 				number_format($count),$time_elapsed,_('seconds'));
 
 			if ($_SESSION[APPCONFIG]->isCommandAvailable('export')) {
@@ -387,10 +387,6 @@ if ($entry['search']) {
 					printf('<center>%s</center>',$pager_html);
 			}
 		}
-
-		printf('<br /><br /><div class="search_result"><center><small><span style="font-weight:normal;font-size:75%%;">%s <b>%s</b> %s.</span></small></center></div>',
-			_('Search performed by phpLDAPadmin in'),$time_elapsed,_('seconds'));
-
 	}
 }
 ?>
