@@ -8,36 +8,40 @@
  *  - attr (rawurlencoded) the attribute to which we are adding a value 
  *  - server_id
  *  - new_value (form element)
+ *  - binary 
  *
  * On success, redirect to the edit_dn page.
  * On failure, echo an error.
  */
 
-require 'config.php';
-require_once 'functions.php';
+require 'common.php';
 
-$dn = stripslashes( rawurldecode( $_POST['dn'] ) );
+$dn = rawurldecode( $_POST['dn'] );
 $encoded_dn = rawurlencode( $dn );
-$attr = stripslashes( $_POST['attr'] );
+$attr = $_POST['attr'];
 $encoded_attr = rawurlencode( $attr );
 $server_id = $_POST['server_id'];
-$new_value = stripslashes( $_POST['new_value'] );
+$new_value = $_POST['new_value'];
 $new_value = utf8_encode($new_value);
+$is_binary_val = isset( $_POST['binary'] ) ? true : false;
 
-check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
-have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
+if( is_server_read_only( $server_id ) )
+	pla_error( $lang['no_updates_in_read_only_mode'] );
 
-$ds = pla_ldap_connect( $server_id ) or pla_error( "Could not connect to LDAP server" );
+check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
+have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
 
-// special case for jpegPhoto attributes: 
+$ds = pla_ldap_connect( $server_id ) or pla_error( $lang['could_not_connect'] );
+
+// special case for binary attributes: 
 // we must go read the data from the file.
-if( 0 == strcasecmp( $attr, 'jpegPhoto' ) )
+if( $is_binary_val )
 {
-	$file = $_FILES['jpeg_photo_file']['tmp_name'];
+	$file = $_FILES['new_value']['tmp_name'];
 	$f = fopen( $file, 'r' );
-	$jpeg_data = fread( $f, filesize( $file ) );
+	$binary_value = fread( $f, filesize( $file ) );
 	fclose( $f );
-	$new_value = $jpeg_data;
+	$new_value = $binary_value;
 }
 
 $new_entry = array( $attr => $new_value );
@@ -45,7 +49,7 @@ $new_entry = array( $attr => $new_value );
 $add_result = @ldap_mod_add( $ds, $dn, $new_entry );
 
 if( ! $add_result )
-	pla_error( "Could not perform ldap_mod_add operation.", ldap_error( $ds ), ldap_errno( $ds ) );
+	pla_error( $lang['could_not_perform_ldap_mod_add'], ldap_error( $ds ), ldap_errno( $ds ) );
 
 header( "Location: edit.php?server_id=$server_id&dn=$encoded_dn&updated_attr=$encoded_attr" );
 

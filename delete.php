@@ -9,15 +9,17 @@
  *  - server_id
  */
 
-require 'config.php';
-require_once 'functions.php';
+require 'common.php';
 
 $encoded_dn = $_POST['dn'];
-$dn = stripslashes( rawurldecode( $encoded_dn ) );
+$dn = rawurldecode( $encoded_dn );
 $server_id = $_POST['server_id'];
 
 if( $dn === null )
 	pla_error( "You must specify a DN." );
+
+if( is_server_read_only( $server_id ) )
+	pla_error( "You cannot perform updates while server is in read-only mode" );
 
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );

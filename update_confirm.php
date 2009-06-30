@@ -9,8 +9,8 @@
  * makes the change.
  *
  */
-include 'config.php';
-include 'functions.php';
+
+require 'common.php';
 
 include 'header.php';
 
@@ -21,7 +21,8 @@ $rdn = get_rdn( $dn );
 $old_values = $_POST['old_values'];
 $new_values = $_POST['new_values'];
 $update_array = array();
-
+if( is_server_read_only( $server_id ) )
+	pla_error( "You cannot perform updates while server is in read-only mode" );
 ?>
 
 <body>
@@ -36,17 +37,37 @@ foreach( $new_values as $attr => $new_val )
 	if( $new_val != $old_values[ $attr ] ) {
 
 		// special case for userPassword attributes
-		if( 0 == strcasecmp( $attr, 'userPassword' ) )
-		{
-			$enc_type = $_POST['enc_type'];
-			$new_val = password_hash( $new_val, $enc_type );
-		}
+		if( 0 == strcasecmp( $attr, 'userPassword' ) && $new_val != '' )
+			$new_val = password_hash( $new_val, $_POST['enc_type'] );
 
 		$update_array[ $attr ] = $new_val;
 	}
 }
 
-//echo "<pre>"; print_r( $update_array ); echo "</pre>";
+// special case check for a new enc_type for userPassword (not otherwise detected)
+if( $_POST['enc_type'] != $_POST['old_enc_type'] && $_POST['new_values']['userpassword'] != '' ) {
+	$new_password = password_hash( $_POST['new_values']['userpassword'], $_POST['enc_type'] );
+	$update_array[ 'userpassword' ] = $new_password;
+}
+
+// strip empty vals from update_array and ensure consecutive indices for each attribute
+foreach( $update_array as $attr => $val ) {
+	if( is_array( $val ) ) {
+		foreach( $val as $i => $v )
+			if( null == $v || 0 == strlen( $v ) )
+				unset( $update_array[$attr][$i] );
+		$update_array[$attr] = array_values( $update_array[$attr] );
+	}
+}
+
+// at this point, the update_array should look like this (example):
+// Array (
+//    cn => Array( 
+//           [0] => 'Dave',
+//           [1] => 'Bob' )
+//    sn => 'Smith',
+//    telephoneNumber => '555-1234' )
+//  This array should be ready to be passed to ldap_modify()
 
 ?>
 <?php if( count( $update_array ) > 0 ) { ?>
@@ -67,21 +88,36 @@ foreach( $new_values as $attr => $new_val )
 		<?php
 		if( is_array( $old_values[ $attr ] ) ) 
 			foreach( $old_values[ $attr ] as $v )
-				echo htmlspecialchars( $v ) . "<br />";
+				echo htmlspecialchars( utf8_encode( $v ) ) . "<br />";
 		else  
-			echo htmlspecialchars( $old_values[ $attr ] ) . "<br />";
+			echo htmlspecialchars( utf8_encode( $old_values[ $attr ] ) ) . "<br />";
 		echo "</nobr></td><td><nobr>";
-		if( is_array( $new_val ) )  
-			foreach( $new_val as $i => $v )
+
+		// is this a multi-valued attribute?
+		if( is_array( $new_val ) ) {
+			foreach( $new_val as $i => $v ) {
 				if( $v == '' ) {
 					// remove it from the update array if it's empty
 					unset( $update_array[ $attr ][ $i ] );
 					$update_array[ $attr ] = array_values( $update_array[ $attr ] );
-				} else 
-					echo htmlspecialchars( $v ) . "<br />";
+				} else {
+					echo htmlspecialchars( utf8_encode( $v ) ) . "<br />";
+				}
+			}
+
+			// was this a multi-valued attribute deletion? If so,
+			// fix the $update_array to reflect that per update_confirm.php's
+			// expectations
+			if( $update_array[ $attr ] == array( 0 => '' ) || $update_array[ $attr ] == array() ) {
+				$update_array[ $attr ] = '';
+				echo '<span style="color: red">[attribute deleted]</span>';
+			}
+		}
 		else 
 			if( $new_val != '' ) 
 				echo htmlspecialchars( $new_val ) . "<br />";
+			else 
+				echo '<span style="color: red">[attribute deleted]</span>';
 		echo "</nobr></td></tr>\n\n";
 	}
 

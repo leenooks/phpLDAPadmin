@@ -9,15 +9,17 @@
  *  - server_id
  */
 
-require 'config.php';
-require_once 'functions.php';
+require 'common.php';
 
-$dn = stripslashes( $_GET['dn'] );
+$dn = $_GET['dn'];
 $encoded_dn = rawurlencode( $dn );
 $server_id = $_GET['server_id'];
-$rdn = ldap_explode_dn( $dn, 0 );
+$rdn = pla_explode_dn( $dn );
 $rdn = $rdn[0];
 $server_name = $servers[$server_id]['name'];
+
+if( is_server_read_only( $server_id ) )
+	pla_error( "You cannot perform updates while server is in read-only mode" );
 
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
@@ -61,7 +63,7 @@ if( $has_children ) {
 
 <p>This object is the root of a sub-tree containing <a href="search.php?search=true&amp;server_id=<?php echo $server_id; ?>&amp;filter=<?php echo rawurlencode('objectClass=*'); ?>&amp;base_dn=<?php echo $encoded_dn; ?>&amp;form=advanced&amp;scope=sub"><?php echo ($sub_tree_count); ?> objects</a>
 
-phpLDAPAdmin can recursively delete this object and all <?php echo ($sub_tree_count-1); ?> of its children. See below for a list of DNs
+phpLDAPadmin can recursively delete this object and all <?php echo ($sub_tree_count-1); ?> of its children. See below for a list of DNs
 that this will delete. Do you want to do this?<br />
 <br />
 <small>Note: This is potentially very dangerous and you do this at your own risk. This operation cannot be undone.

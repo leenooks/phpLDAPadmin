@@ -1,9 +1,9 @@
 <?php
 
-require 'config.php';
+require 'common.php';
 
 // Common to all templates
-$container = stripslashes( $_POST['container'] );
+$container = $_POST['container'];
 $server_id = $_POST['server_id'];
 
 // Unique to this template
@@ -35,7 +35,7 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 <tr>
 	<td></td>
 	<td class="heading">Container <acronym title="Distinguished Name">DN</acronym>:</td>
-	<td><input type="text" name="container" size="40" value="<?php echo htmlspecialchars( utf8_decode( $container ) ); ?>" />
+	<td><input type="text" name="container" size="40" value="<?php echo htmlspecialchars( $container ); ?>" />
 		<?php draw_chooser_link( 'ou_form.container' ); ?></td>
 	</td>
 </tr>
@@ -47,8 +47,8 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 
 <?php } elseif( $step == 2 ) {
 
-	$ou_name = trim( stripslashes( $_POST['ou_name'] ) );
-	$container = trim( stripslashes( $_POST['container'] ) );
+	$ou_name = trim( $_POST['ou_name'] );
+	$container = trim( $_POST['container'] );
 	
 	dn_exists( $server_id, $container ) or
 		pla_error( "The container you specified (" . htmlspecialchars( $container ) . ") does not exist. " .

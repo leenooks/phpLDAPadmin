@@ -1,22 +1,24 @@
 <?php
 
 /*
- * The phpLDAPAdmin config file
- * This is where you customize phpLDAPAdmin. The most important
- * part is immediately below: The "LDAP Servers" section.
- * You must specify at least one LDAP server there.
+ *                  The phpLDAPadmin config file
+ *
+ *   This is where you customize phpLDAPadmin. The most important
+ *   part is immediately below: The "LDAP Servers" section.
+ *   You must specify at least one LDAP server there. You may add
+ *   as many as you like. You can also specify your language, and
+ *   many other options.
+ *
  */
-
-// Required Configuration
 
 // Your LDAP servers
 $i=0;
 $servers = array();
-$servers[$i]['name'] = 'My LDAP Server';   /* A convenient name that will appear in the tree viewer */
-$servers[$i]['host'] = 'ldap.example.com'; /* Examples: 'ldap.example.com', 'ldaps://ldap.example.com/'
-                                              Note: Leave blank to remove it from the list of servers in the
-                                              tree viewer*/
-$servers[$i]['base'] = 'dc=example,dc=com';/*  The base DN of your LDAP server. Leave this blank to have phpLDAPAdmin
+$servers[$i]['name'] = 'My LDAP Server';   /*  A convenient name that will appear in the tree viewer */
+$servers[$i]['host'] = 'ldap.example.com'; /*  Examples: 'ldap.example.com', 'ldaps://ldap.example.com/'
+                                               Note: Leave blank to remove it from the list of servers in the
+                                               tree viewer*/
+$servers[$i]['base'] = 'dc=example,dc=com';/*  The base DN of your LDAP server. Leave this blank to have phpLDAPadmin
                                                auto-detect it for you. */
 $servers[$i]['port'] = 389;                /*  The port your LDAP server listens on (no quotes) */
 $servers[$i]['auth_type'] = 'config';      /*  2 options: 'form': you will be prompted, and a cookie stored 
@@ -26,8 +28,17 @@ $servers[$i]['login_dn'] = 'cn=Manager,dc=example,dc=com'; /* For anonymous bind
                                                               login_pass blank */
 $servers[$i]['login_pass'] = 'secret';     /*  Your password (only if you specified 'config' for 'auth_type' */ 
 $servers[$i]['tls'] = false;               /*  Use TLS to connect. Requires PHP 4.2 or greater */
+$servers[$i]['default_hash'] = 'crypt';    /*  Default password hashing algorith: one of md5, sha, md5crpyt, blowfish or 
+                                               leave blank for now default algorithm. */
+$servers[$i]['login_attr'] = 'dn';         /*  If you specified 'form' as the auth_type above, you can optionally 
+                                               specify here an attribute to use when logging in. If you enter 'uid',
+					       then login as 'dsmith', phpLDAPadmin will search for uid=dsmith and
+					       log in as such. Leave blank or specify 'dn' to use full DN for logging in .*/
+$servers[$i]['read_only'] = false;         /*  Specify true If you want phpLDAPadmin to not display or permit any 
+                                               modification to the LDAP server. */
 
-/* If you want to configure an additional LDAP server, do so below. */
+
+/* If you want to configure additional LDAP servers, do so below. */
 $i++;
 $servers[$i]['name'] = 'Another server';
 $servers[$i]['host'] = '';
@@ -37,67 +48,55 @@ $servers[$i]['auth_type'] = 'config';
 $servers[$i]['login_dn'] = '';
 $servers[$i]['login_pass'] = '';
 $servers[$i]['tls'] = false;
+$servers[$i]['default_hash'] = 'crypt';
+$servers[$i]['login_attr'] = '';
+$servers[$i]['read_only'] = false;
 
-$i++;
-$servers[$i]['name'] = 'Another server';
-$servers[$i]['host'] = '';
-$servers[$i]['base'] = 'dc=example,dc=com';
-$servers[$i]['port'] = 389;
-$servers[$i]['auth_type'] = 'config';
-$servers[$i]['login_dn'] = '';
-$servers[$i]['login_pass'] = '';
-$servers[$i]['tls'] = false;
-
-/* If you want to configure more LDAP servers, copy and paste the sections above (including the "$i++;") */
-
+// If you want to configure more LDAP servers, copy and paste the above (including the "$i++;")
 
 // The temporary storage directory where we will put jpegPhoto data
-// This directory must be readable and writable by your web server
-$jpeg_temp_dir = "/tmp"; // for Unix systems
-//$jpeg_temp_dir = "c:\\temp"; // for Windows systems
-
-
-// Optional Configuration Below
+// This directory must be readable and writable by your web server 
+$jpeg_temp_dir = "/tmp";       // Example for Unix systems
+//$jpeg_temp_dir = "c:\\temp"; // Example for Windows systems
 
 /**                            **/
 /** Appearance and Behavior **/
 /**                            **/
 
+// The language setting. Right now, 'english', 'german' and 'french' are available
+// Localization is not complete yet, but most strings have been translated.
+// Please help by writing language files. See lang/english.php for an example.
+$language = 'english';
+
+// Set to true if you want LDAP data to be displayed read-only (without input fields)
+// when a user logs in to a server anonymously
+$anonymous_bind_implies_read_only = true;
+
 // If you used auth_type 'form' in the servers list, you can adjust how long the cookie will last 
 // (default is 0 seconds, which expires when you close the browser)
-$cookie_time = 0; 
+$cookie_time = 0; // seconds
 
 // How many pixels wide do you want your left frame view (for the tree browser)
-$tree_width = 300;
+$tree_width = 300; // pixels
 
-// Do you want phpLDAPAdmin to check the schema of the server when you edit a DN and draw
-// specialized for elements based on that schema (ie, for booleans, draw a true/false 
-// drop-down instead of a text box). This may cause a performance slow-down.
-// Note:
-// This will have problems with non-LDAP compliant servers that do not properly represent 
-// their schema.
-$edit_dn_schema_lookup = true;
-
-// How long to keep jpegPhoto temporary files around (in seconds)
-$jpeg_tmp_keep_time = 120;
+// How long to keep jpegPhoto temporary files in the jpeg_temp_dir directory (in seconds)
+$jpeg_tmp_keep_time = 120; // seconds
 
 /**                              **/
 /** Simple Search Form Config **/
 /**                              **/
 
 // Which attributes to include in the drop-down menu of the simple search form (comma-separated)
-$search_attributes = "uid, cn, gidNumber";
+// Change this to suit your needs for convenient searching. Be sure to change the correlating
+// list below ($search_attributes_display)
+$search_attributes = "uid, cn, gidNumber, objectClass";
 
 // This list correlates to the list directly above. If you want to present more readable names
 // for your search attributes, do so here. Both lists must have the same number of entries.
-$search_attributes_display = "User Name, Full Name, Group ID";
+$search_attributes_display = "User Name, Common Name, Group ID, objectClass";
 
 // The list of attributes to display in each search result entry summary
 $search_result_attributes = "dn, cn"; 
-
-// Search methods in the drop down box for the simple search form
-// (if you change this, you will also have to edit search.php to properly handle the new option)
-$search_criteria_options = "equals, starts with, contains, ends with, sounds like";
 
 /**                              **/
 /** Templates for entry creation **/
@@ -106,17 +105,17 @@ $search_criteria_options = "equals, starts with, contains, ends with, sounds lik
 $templates = array();
 
 // Fill in this array with templates that you can create to suit your needs.
-// Each entry defines a description (for display in the template list) and
+// Each entry defines a description (to be displayed in the template list) and
 // a handler, which is a file that will be executed with certain POST vars set.
-// See the templates provided here for an example of how to make your own template.
+// See the templates provided here for examples of how to make your own template.
 
 $templates[] =
-        array(  'desc'    => 'User',
+        array(  'desc'    => 'User Account',
                 'icon'    => 'images/user.png',
                 'handler' => 'new_user_template.php' );
 
 $templates[] =
-        array(  'desc'    => 'inetOrgPerson',
+        array(  'desc'    => 'Address Book Entry (inetOrgPerson)',
                 'icon'    => 'images/user.png',
                 'handler' => 'new_address_template.php' );
 
@@ -126,14 +125,30 @@ $templates[] =
                 'handler' => 'new_ou_template.php' );
 
 $templates[] =
+        array(  'desc'    => 'Posix Group',
+                'icon'    => 'images/ou.png',
+                'handler' => 'new_posix_group_template.php' );
+
+$templates[] =
         array(  'desc'    => 'Samba NT Machine',
-                'icon'    => 'images/terminal.png',
+                'icon'    => 'images/nt.png',
                 'handler' => 'new_nt_machine.php' );
+
+$templates[] =
+        array(  'desc'    => 'Samba User',
+                'icon'    => 'images/user.png',
+                'handler' => 'new_smbuser_template.php' );
 
 $templates[] =
         array(  'desc'    => 'DNS Entry',
                 'icon'    => 'images/dc.png',
                 'handler' => 'new_dns_entry.php' );
+
+$templates[] =
+        array(  'desc'    => 'Posix Group',
+                'icon'    => 'images/ou.png',
+                'handler' => 'new_posix_group_template.php' );
+
 
 /**                                         **/
 /** User-friendly attribute translation     **/
@@ -147,17 +162,15 @@ $friendly_attrs = array();
 $friendly_attrs[ 'facsimileTelephoneNumber' ] =         'Fax';
 $friendly_attrs[ 'telephoneNumber' ]  =                 'Phone';
 
-/**                                                   **/
-/** Some phpLDAPAdmin code to be executed. No touchy. **/
-/**                                                   **/
+/**                                         **/
+/** Hidden attributes                       **/
+/**                                         **/
 
-// Turn off notices about referencing arrays and such, but leave everything else on.
-error_reporting( E_ALL ^ E_NOTICE );
+// You may want to hide certain attributes from being displayed in the editor screen
+// Do this by adding the desired attributes to this list (and uncomment it). This
+// only affects the editor screen. Attributes will still be visible in the schema
+// browser and elsewhere. An example is provided below:
 
-// Always including the 'custom' template (the most generic and flexible)
-$templates['custom'] = 
-        array(  'desc'    => 'Custom',
-                'icon'    => 'images/object.png',
-                'handler' => 'custom.php' );
+//$hidden_attrs = array( 'jpegPhoto', 'objectClass' );
 
 ?>

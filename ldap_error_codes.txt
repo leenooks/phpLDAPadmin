@@ -18,9 +18,11 @@
 0x10	LDAP_NO_SUCH_ATTRIBUTE		"That entry does not contain the attribute specified."
 0x11	LDAP_UNDEFINED_TYPE		"The attribute type specified is invalid."
 0x12	LDAP_INAPPROPRIATE_MATCHING	"This usually means that your LDAP server has not defined an equality rule
-					for the attribute you are trying to alter. This is not phpLDAPAdmin's fault as the
+					for the attribute you are trying to alter. This is not phpLDAPadmin's fault as the
 					LDAP server has refused to perform the operation (as well it should if there is
-					no equality rule for it to use for the operation)."
+					no equality rule for it to use for the operation). This generally applies when
+					adding a new value to a binary attribute, or removing a single value from a 
+					multi-valued binary attribute."
 0x13	LDAP_CONSTRAINT_VIOLATION	"Some constraint would be violated by performing the action. This can happen when
 					you try to add a second value to a single-valued attribute, for example."
 0x14	LDAP_TYPE_OR_VALUE_EXISTS	"An  attribute  type or attribute value
@@ -51,7 +53,8 @@
 					to exist or that would remove a required attribute, given the current list
 					of ObjectClasses."
 0x42	LDAP_NOT_ALLOWED_ON_NONLEAF	"The entry you tried to operate on has children. (usually this means you
-					tried to delete the entry, which you cannot do to an entry with children)."
+					tried to delete or rename the entry, which you cannot do to an entry 
+					with children)."
 0x43	LDAP_NOT_ALLOWED_ON_RDN		"You cannot preform that operation on a the relative distinguished name
 					(RDN) of an object."
 0x44	LDAP_ALREADY_EXISTS		"The object already exists (usually you are trying to create a new object

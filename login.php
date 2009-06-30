@@ -15,12 +15,12 @@
  *  - server_id
  */
 
-require 'config.php';
-require_once 'functions.php';
+require 'common.php';
 
 $server_id = $_POST['server_id'];
-$dn = stripslashes( $_POST['login_dn'] );
-$pass = stripslashes( $_POST['login_pass'] );
+$dn = $_POST['login_dn'];
+$uid = $_POST['uid'];
+$pass = $_POST['login_pass'];
 $redirect = rawurldecode( $_POST['redirect'] );
 $anon_bind = $_POST['anonymous_bind'] == 'on' ? true : false;
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
@@ -37,6 +37,22 @@ if( $anon_bind ) {
 $host = $servers[$server_id]['host'];
 $port = $servers[$server_id]['port'];
 
+if ( 	isset( $servers[$server_id]['login_attr'] ) &&
+	$servers[$server_id]['login_attr'] != "dn" && 
+	$servers[$server_id]['login_attr'] != "") {
+
+	// search for the "uid" first
+	$ds = ldap_connect ( $host, $port );
+	$ds or pla_error( "Could not contact '" . htmlspecialchars( $host ) . "' on port '" . htmlentities( $port ) . "'" );
+	@ldap_bind ($ds) or pla_error( "Could not bind anonymously to server. " .
+				"Unless your server accepts anonymous binds, " .
+				"the login_attr feature will not work properly.");
+	$sr=@ldap_search($ds,$servers[$server_id]['base'],$servers[$server_id]['login_attr'] ."=". $uid, array("dn"), 0, 1);
+	$result = @ldap_get_entries($ds,$sr);
+	$dn = $result[0]["dn"];
+	@ldap_unbind ($ds);
+}
+
 // verify that the login is good 
 $ds = @ldap_connect( $host, $port );
 $ds or pla_error( "Could not connect to '" . htmlspecialchars( $host ) . "' on port '" . htmlentities( $port ) . "'" );
@@ -49,7 +65,9 @@ $bind_result = @ldap_bind( $ds, $dn, $pass );
 if( ! $bind_result )
 	pla_error( "Bad username/password. Try again" );
 
-$expire = $cookie_time==0 ? null : time()+$cookie_time;
+if( ! isset( $cookie_time ) )
+	$cookie_time = 0;
+$expire = $cookie_time == 0 ? null : time()+$cookie_time;
 if( $anon_bind ) {
 	// we set the cookie val to 0 for anonymous binds.
 	$res1 = setcookie( "pla_login_dn_$server_id", '0', $expire, dirname( $_SERVER['PHP_SELF'] ) );

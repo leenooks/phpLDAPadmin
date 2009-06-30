@@ -10,16 +10,17 @@
  *  template
  */
 
-require 'config.php';
-require_once 'functions.php';
+require 'common.php';
 
-
-$template = stripslashes( $_POST['template'] );
+$template = $_POST['template'];
 $template = $templates[$template];
 $server_id = $_POST['server_id'];
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
 $server_name = $servers[ $server_id ][ 'name' ];
+
+if( is_server_read_only( $server_id ) )
+	pla_error( "You cannot perform updates while server is in read-only mode" );
 
 include 'header.php';
 
@@ -36,6 +37,7 @@ if( ! isset( $_POST['template'] ) )
 	pla_error( "No template specified in POST variables.\n" );
 
 $handler = 'templates/creation/' . $template['handler'];
+$handler = realpath( $handler );
 if( file_exists( $handler ) )
 	include $handler;
 else

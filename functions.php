@@ -1,39 +1,120 @@
-<?php 
+<?php
 
 /* 
  * functions.php
- * A collection of functions used throughout phpLDAPAdmin.
+ * A collection of functions used throughout phpLDAPadmin.
  */
 
 @include 'config.php';
 
 /*
+ * Used to determine if the specified attribute is indeed a jpegPhoto
+ */
+function is_jpeg_photo( $server_id, $attr_name )
+{
+	// easy quick check
+	if( 0 == strcasecmp( $attr_name, 'jpegPhoto' ) ||
+	    0 == strcasecmp( $attr_name, 'photo' ) )
+	    return true;
+
+	// go to the schema and get the Syntax OID
+	require_once realpath( 'schema_functions.php' );
+	$schema_attr = get_schema_attribute( $server_id, $attr_name );
+	if( ! $schema_attr )
+		return false;
+
+	$oid = $schema_attr->getSyntaxOID();
+	$type = $schema_attr->getType();
+
+	if( 0 == strcasecmp( $type, 'JPEG' ) )
+		return true;
+	if( $oid == '1.3.6.1.4.1.1466.115.121.1.28' )
+		return true;
+
+	return false;
+}
+
+/*
+ * Given an attribute name and server id number, this function returns
+ * whether the attrbiute may contain binary data.
+ */
+function is_attr_binary( $server_id, $attr_name )
+{
+	require_once realpath( 'schema_functions.php' );
+	$schema_attrs = get_schema_attributes( $server_id );
+
+	if( 0 == strcasecmp( substr( $attr_name, strlen( $attr_name ) - 7 ), ";binary" ) )
+		return true;
+	if( isset( $schema_attrs[ strtolower( $attr_name ) ] ) ) {
+		$type = $schema_attrs[ strtolower( $attr_name ) ]->getType();
+		$syntax = $schema_attrs[ strtolower( $attr_name ) ]->getSyntaxOID();
+		if(	0 == strcasecmp( substr( $attr_name, strlen( $attr_name ) - 7 ), ";binary" ) ||		
+			0 == strcasecmp( $type, 'Certificate' ) || 
+			0 == strcasecmp( $type, 'Binary' ) || 
+			0 == strcasecmp( $attr_name, 'networkAddress' ) || 
+			0 == strcasecmp( $attr_name, 'userCertificate' ) || 
+			0 == strcasecmp( $attr_name, 'userSMIMECertificate' ) || 
+			$syntax == '1.3.6.1.4.1.1466.115.121.1.10' ||
+			$syntax == '1.3.6.1.4.1.1466.115.121.1.28' ||
+			$syntax == '1.3.6.1.4.1.1466.115.121.1.5' ||
+			$syntax == '1.3.6.1.4.1.1466.115.121.1.8' ||
+			$syntax == '1.3.6.1.4.1.1466.115.121.1.9' ) 
+			return true;
+		else
+			return false;
+	}
+	return false;
+}
+
+/*
+ * Returns true if the specified server is configured to be displayed
+ * in read only mode. If a user has logged in via anonymous bind, and
+ * config.php specifies anonymous_bind_implies_read_only as true, then
+ * this also returns true.
+ */
+function is_server_read_only( $server_id )
+{
+	global $servers;
+	if( isset( $servers[$server_id]['read_only'] ) &&
+	    $servers[$server_id]['read_only'] == true )
+		return true;
+		
+	global $anonymous_bind_implies_read_only;
+	if( 0 == strcasecmp( "anonymous", get_logged_in_dn( $server_id ) ) &&
+	    isset( $anonymous_bind_implies_read_only ) &&
+	    $anonymous_bind_implies_read_only == true )
+		return true;
+
+	return false;
+}
+
+/*
  * Given a DN and server ID, this function reads the DN's objectClasses and 
- * determines which icon best represents the entry.
+ * determines which icon best represents the entry. The results of this query
+ * are cached in a session variable so it is not run *every* time the tree
+ * browser changes, just when exposing new DNs that were not displayed
+ * previously. That means we can afford a little bit of inefficiency here
+ * in favor of coolness. :)
  */
 function get_icon( $server_id, $dn )
 {
 	// fetch and lowercase all the objectClasses in an array
-	$object_classes = get_object_attr( $server_id, $dn, 'objectClass' );
+	$object_classes = get_object_attr( $server_id, $dn, 'objectClass', true );
 
-	if( $object_classes === null )
+	if( $object_classes === null || $object_classes === false)
 		return 'object.png';
 
-	// If there is only one objectClass, make it an array with one element instead	
-	if( ! is_array( $object_classes ) )
-		$object_classes = array( $object_classes );
-	
 	foreach( $object_classes as $i => $class )
 		$object_classes[$i] = strtolower( $class );
 
-	// get the prefix (ie: dc, ou, cn, uid)
-	$exploded_dn = ldap_explode_dn( $dn, 0 );
-	$rdn = $dn[0];
-	$prefix = explode( '=', $rdn );
-	$prefix = $prefix[0];
+	$rdn = get_rdn( $dn );
 
+	// Is it a samba NT machine (is sambaAccount and ends with '$')
+	if( in_array( 'sambaaccount', $object_classes ) &&
+		'$' == $rdn{ strlen($rdn) - 1 } )
+		return 'nt.png';
 	// Is it a person or some type of account/user?
-	if( in_array( 'person', $object_classes ) || 
+	elseif( in_array( 'person', $object_classes ) || 
 	    in_array( 'organizationalperson', $object_classes ) ||
 	    in_array( 'inetorgperson', $object_classes ) || 
 	    in_array( 'account', $object_classes ) ||
@@ -55,6 +136,8 @@ function get_icon( $server_id, $dn )
 		return 'mail.png';
 	elseif( in_array( 'locality', $object_classes ) )
 		return 'locality.png';
+	elseif( in_array( 'posixgroup', $object_classes ) )
+		return 'ou.png';
 	// Oh well, I don't know what it is. Use a generic icon.
 	else
 		return 'object.png';
@@ -112,7 +195,11 @@ function get_logged_in_pass( $server_id )
 function get_logged_in_dn( $server_id )
 {
 	global $_COOKIE;
-	$dn = $_COOKIE[ 'pla_login_dn_' . $server_id ];
+	$cookie_name = 'pla_login_dn_' . $server_id; 
+	if( isset( $_COOKIE[ $cookie_name ] ) )
+		$dn = $_COOKIE[ $cookie_name ];
+	else
+		return false;
 
 	if( $dn == '0' )
 		return 'Anonymous';
@@ -139,7 +226,7 @@ function pla_ldap_connect( $server_id )
 	// times, we don't have to reauthenticate with the LDAP server
 	
 	static $conns;
-	if( $conns[$server_id] )
+	if( isset( $conns[$server_id] ) && $conns[$server_id] )
 		return $conns[$server_id];
 
 	$host = $servers[$server_id]['host'];
@@ -204,9 +291,7 @@ function get_container_contents( $server_id, $dn, $size_limit=0 )
 	$search = ldap_get_entries( $con, $search );
 
 	$return = array();
-
-	for( $i=0; $i<$search['count']; $i++ )
-	{
+	for( $i=0; $i<$search['count']; $i++ ) {
 		$entry = $search[$i];
 		$dn = $entry['dn'];
 		$return[] = $dn;
@@ -273,12 +358,15 @@ function get_entry_system_attrs( $server_id, $dn )
 
 	$entry = ldap_first_entry( $conn, $search );
 	$attrs = ldap_get_attributes( $conn, $entry );
-	foreach( $attrs as $name => $vals )
-		if( is_numeric( $name ) || $name == 'count' )
-			unset( $attrs[$name] );
-		else
-			$attrs[$name] = $vals[0];
-	return $attrs;
+	$count = $attrs['count'];
+	unset( $attrs['count'] );
+	//echo "<pre>"; print_r( $attrs );
+	for( $i=0; $i<$count; $i++ ) {
+		$attr_name = $attrs[$i];
+		unset( $attrs[$attr_name]['count'] );
+		$return_attrs[$attr_name] = $attrs[$attr_name];
+	}
+	return $return_attrs;
 }
 
 /* 
@@ -305,22 +393,22 @@ function get_object_attrs( $server_id, $dn, $lower_case_attr_names = false )
 	$conn = pla_ldap_connect( $server_id );
 	if( ! $conn ) return false;
 
-	$search = @ldap_read( $conn, $dn, '(objectClass=*)' );
-
+	$search = @ldap_read( $conn, $dn, '(objectClass=*)', array( ), 0, 200, 0, LDAP_DEREF_ALWAYS );
+	
 	if( ! $search )
 		return false;
 
 	$entry = ldap_first_entry( $conn, $search );
 	$attrs = ldap_get_attributes( $conn, $entry );
-	//$attrs = ldap_get_entries( $conn, $search );
 
-	if( ! $attrs || $attrs['count'] == 0 ) 
+	if( ! $attrs || $attrs['count'] == 0 ) {
 		return false;
+	}
 
-	//$attrs = $attrs[0];
 	$num_attrs = $attrs['count'];
 	unset( $attrs['count'] );
 
+	// strip numerical inices
 	for( $i=0; $i<$num_attrs; $i++ )
 		unset( $attrs[$i] );
 
@@ -330,10 +418,7 @@ function get_object_attrs( $server_id, $dn, $lower_case_attr_names = false )
 			$attr = strtolower( $attr );
 		$count = $vals['count'];
 		unset( $vals['count'] );
-                if( $count == 1 )
-                        $return_array[ $attr ] = $vals[0];
-                else
-                        $return_array[ $attr ] = $vals;
+		$return_array[ $attr ] = $vals;
 	}
 
 	ksort( $return_array );
@@ -374,353 +459,7 @@ function get_object_attr( $server_id, $dn, $attr )
 		return false;
 }
 
-/* 
- * Returns true if $var is not white space only, and false otherwise.
- */
-function not_white( $var )
-{
-	return trim($var) != "" ? true : false;
-}
-
-/* 
- * Returns an associative array of objectClasses for the specified 
- * $server_id. Each array entry's key is the name of the objectClass
- * in lower-case. 
- * The sub-entries consist of sub-arrays called 'must_attrs' and 
- * 'may_attrs', and sub-entries called 'oid', 'name' and 'description'.
- *
- * The bulk of this function came from the good code in the 
- * GPL'ed LDAP Explorer project. Thank you.
- */
-function get_schema_objectclasses( $server_id )
-{
-	$ds = pla_ldap_connect( $server_id );
-	
-	if( ! $ds )
-		return false;
-	
-	// get all the objectClasses
-	$result = @ldap_read($ds, 'cn=subschema', '(objectClass=*)',
-				array( 'objectclasses' ), 0, 200, 0, LDAP_DEREF_ALWAYS );
-	if( ! $result )
-		$result = @ldap_read($ds, 'cn=schema', '(objectClass=*)',
-				array( 'objectclasses' ), 0, 200, 0, LDAP_DEREF_ALWAYS );
-
-	if( ! $result ) return false;
-	if( $result ) $raw_oclasses = ldap_get_entries($ds,$result );
-	
-	// build the array of objectClasses
-	$oclasses = array();
-	for( $att=0; $att < count( $raw_oclasses[0]["objectclasses"] ); $att++ )
-	{
-		$class = $raw_oclasses[0]["objectclasses"][$att];
-
-		preg_match( "/[\s]+NAME[\s'\(]+([a-zA-Z0-9\-_]+)[\s'\)]/" , $class, $name);
-		preg_match( "/[\s]+([\d\.]+)[\s]+NAME/", $class, $oid );
-		preg_match( "/[\s]+DESC[\s]+'([a-zA-Z0-9\-_ ]+)'/", $class, $description );
-		preg_match( "/[\s]+SUP[\s]+([a-zA-Z0-9\-_]+)[\s]/", $class, $sup );
-
-		$key = strtolower( trim( $name[1] ) );
-		$oclass_name = trim( $name[1] );
-		if( ! $key ) continue;
-
-		$oclasses[$key] = array();
-		$oclasses[$key]['oid'] = trim( $oid[1] );
-		$oclasses[$key]['description'] = trim( $description[1] );
-		$oclasses[$key]['sup'] = trim( $sup[1] );       
-		
-		unset( $name );
-		unset( $syntax );
-		unset( $desription );
-
-		// get all the required attributes
-		preg_match( "/MUST[\s\(]+([a-zA-Z0-9\s$]+)(MAY|\))/" , $class, $must_attrs );
-		$must_attrs = str_replace( ' ', '', $must_attrs[1] );
-		$oclasses[$key]['must_attrs'] = array_filter( explode( '$', $must_attrs ), "not_white" );
-
-		// get all the optional attributes
-		preg_match( "/MAY[\s\(]+([a-zA-Z0-9\s$]+)(MUST|\))/" , $class, $may_attrs );
-		$may_attrs = str_replace( ' ', '', $may_attrs[1] );
-		$oclasses[$key]['may_attrs'] = array_filter( array_merge( $oclasses[$key]['must_attrs'], explode( '$', $may_attrs) ), "not_white" );
-		unset( $must_attrs );
-		unset( $may_attrs );
-
-		$oclasses[$key]['name'] = $oclass_name;
-	}
-
-	// go back and add any inherited MUST/MAY attrs to each objectClass
-	foreach( $oclasses as $oclass => $attrs )
-	{
-		$new_must = $attrs['must_attrs'];
-		$new_may = $attrs['may_attrs'];
-		$sup_attr = $attrs['sup'];      
-
-		while( $sup_attr && $sup_attr != "top" ) {
-			$new_must = array_merge( $new_must, $oclasses[strtolower($sup_attr)]['must_attrs'] );
-			$new_may = array_merge( $new_may, $oclasses[strtolower($sup_attr)]['may_attrs'] );
-			$sup_attr = $oclasses[strtolower($sup_attr)]['sup'];
-		}
-
-		$oclasses[$oclass]['must_attrs'] = array_unique( $new_must );
-		$oclasses[$oclass]['may_attrs'] = array_unique( $new_may );
-	}
-
-	ksort( $oclasses );
-
-	return $oclasses;
-
-}
-
-/* 
- * Returns an associate array of the server's schema matching rules
- */
-function get_schema_matching_rules( $server_id )
-{
-	static $cache;
-
-	if( isset( $cache[$server_id] ) )
-		return $cache[$server_id];
-
-	$ds = pla_ldap_connect( $server_id );
-
-	if( ! $ds )
-		return false;
-
-	// get all the attributeTypes
-	$result = @ldap_read($ds, 'cn=subschema', '(objectClass=*)',
-				array( 'matchingRules', 'matchingRuleUse' ), 0, 200, 0, LDAP_DEREF_ALWAYS );
-	if( ! $result )
-		$result = @ldap_read($ds, 'cn=schema', '(objectClass=*)',
-				array( 'matchingRules', 'matchingRuleUse' ), 0, 200, 0, LDAP_DEREF_ALWAYS );
-
-	if( $result )
-		$raw = ldap_get_entries( $ds, $result );
-	else
-		return( array() );
-
-	// build the array of attributes
-	$rules = array();
-	for( $i=0; $i < $raw[0]['matchingrules']['count']; $i++ )
-	{
-		$rule = $raw[0]['matchingrules'][$i];
-		preg_match( "/[\s]+([\d\.]+)[\s]+/", $rule, $oid);
-		preg_match( "/[\s]+NAME[\s]+'([\)\(:?\.a-zA-Z0-9\-_ ]+)'/", $rule, $name );
-
-		$key = strtolower( trim( $oid[1] ) );
-		if( ! $key ) continue;
-
-		$rules[$key] = $name[1];
-		//$rules[$key]['name'] = $name[1];
-	}
-
-	ksort( $rules );
-	$cache[$server_id] = $rules;
-	return $rules;
-}
-
-
-/* 
- * Returns an associate array of the syntax OIDs that this LDAP server uses mapped to
- * their descriptions.
- */
-function get_schema_syntaxes( $server_id )
-{
-	static $cache;
-
-	if( isset( $cache[$server_id] ) )
-		return $cache[$server_id];
-
-	$ds = pla_ldap_connect( $server_id );
-
-	if( ! $ds )
-		return false;
-
-	// get all the attributeTypes
-	$result = @ldap_read($ds, 'cn=subschema', '(objectClass=*)',
-				array( 'ldapSyntaxes' ), 0, 200, 0, LDAP_DEREF_ALWAYS );
-	if( ! $result )
-		$result = @ldap_read($ds, 'cn=schema', '(objectClass=*)',
-				array( 'ldapSyntaxes' ), 0, 200, 0, LDAP_DEREF_ALWAYS );
-
-	if( $result )
-		$raw = ldap_get_entries( $ds, $result );
-	else
-		return( array() );
-
-	// build the array of attributes
-	$syntaxes = array();
-	for( $i=0; $i < $raw[0]['ldapsyntaxes']['count']; $i++ )
-	{
-		$syntax = $raw[0]['ldapsyntaxes'][$i];
-		preg_match( "/[\s]+([\d\.]+)[\s]+/", $syntax, $oid);
-		preg_match( "/[\s]+DESC[\s]+'([\)\(:?\.a-zA-Z0-9\-_ ]+)'/", $syntax, $description );
-
-		$key = strtolower( trim( $oid[1] ) );
-		if( ! $key ) continue;
-
-		$syntaxes[$key] = array();
-		$syntaxes[$key]['description'] = $description[1];
-	}
-
-	ksort( $syntaxes );
-
-	$cache[$server_id] = $syntaxes;
-
-	return $syntaxes;
-}
-
-/* 
- * Returns an associative array of attributes for the specified 
- * $server_id. Each array entry's key is the name of the attribute,
- * in lower-case.
- * The sub-entries are 'oid', 'syntax', 'equality', 'substr', 'name',
- * and 'single_value'.
- *
- * The bulk of this function came from the good code in the 
- * GPL'ed LDAP Explorer project. Thank you. It was extended
- * considerably for application here.
- */
-function get_schema_attributes( $server_id )
-{
-	$ds = pla_ldap_connect( $server_id );
-
-	if( ! $ds )
-		return false;
-
-	// get all the attributeTypes
-	$result = @ldap_read($ds, 'cn=subschema', '(objectClass=*)',
-				array( 'attributeTypes' ), 0, 200, 0, LDAP_DEREF_ALWAYS );
-	if( ! $result )
-		$result = @ldap_read($ds, 'cn=schema', '(objectClass=*)',
-				array( 'attributeTypes' ), 0, 200, 0, LDAP_DEREF_ALWAYS );
-
-	if( $result )
-		$raw_attrs = ldap_get_entries( $ds, $result );
-	else
-		$raw_attrs = array();
-	$syntaxes = get_schema_syntaxes( $server_id );
-
-	// build the array of attributes
-	$attrs = array();
-	for( $i=0; $i < $raw_attrs[0]['attributetypes']['count']; $i++ )
-	{
-		$attr = $raw_attrs[0]['attributetypes'][$i];
-		
-		preg_match( "/[\s]+NAME[\s'\(]+([a-zA-Z0-9\-_]+)[\s'\)]/" , $attr, $name);
-		preg_match( "/\s+NAME\s+'([a-zA-Z0-9\-_]+)'\s/" , $attr, $name);
-		preg_match( "/[\s]+([\d\.]+)[\s]+NAME/", $attr, $oid );
-		preg_match( "/[\s]+DESC[\s]+'([\)\(:?\.a-zA-Z0-9\-_ ]+)'/", $attr, $description );
-		preg_match( "/[\s]+SYNTAX[\s]+([\d\.]+)/", $attr, $syntax);
-		preg_match( "/[\s]+EQUALITY[\s]+([a-zA-Z]+)/", $attr, $equality);
-		preg_match( "/[\s]+SUBSTR[\s]+([a-zA-Z]+)/", $attr, $substr);
-		preg_match( "/[\s]+SUP[\s]+([a-zA-Z0-9\-_]+)/", $attr, $sup );
-
-		if( preg_match( "/[\s]+SINGLE-VALUE[\s]+/", $attr, $single_value ) )
-			$single_value = 'Yes';
-		else
-			$single_value = 'No';
-
-		// If this schema attribute has multiple names (like: "NAME ( 'uid' 'userid' )"), then we need
-		// to create a matching attribute entry for each name it bares.
-		if( preg_match( "/\s+NAME\s+\(\s*['\sa-zA-Z0-9\-_]+\s*\)/", $attr, $multi_name ) ) {
-			$multi_name = $multi_name[0];
-			preg_match_all( "/'([a-zA-Z0-9\-_]+)'/", $multi_name, $multiple_names );
-			$multiple_names = $multiple_names[1];
-			//print_r( $multiple_names );
-			
-			foreach( $multiple_names as $name ) {
-				$key = strtolower( trim( $name ) );
-				$attr_name = trim( $name );
-				if( ! $key ) continue;
-
-				$attrs[$key] = array();
-				$attrs[$key]['oid'] = trim( $oid[1] );
-				$attrs[$key]['description'] = trim( $description[1] );
-				$attrs[$key]['syntax'] = trim( $syntax[1] );
-				$attrs[$key]['type'] = $syntaxes[ trim($syntax[1]) ]['description'];
-				$attrs[$key]['equality'] = trim( $equality[1] );
-				$attrs[$key]['substr'] = trim( $substr[1] );
-				$attrs[$key]['single_value'] = $single_value;
-				$attrs[$key]['sup'] = trim( $sup[1] );
-				$attrs[$key]['name'] = $attr_name;
-			
-				$count = 1;
-				for( $j=0; $j<count($multiple_names); $j++ ) {
-					$alias_name = $multiple_names[$j];
-					if( $alias_name != $name ) {
-						$attrs[$key]['alias' . $count] = $alias_name;
-						$count++;
-					}
-				}
-
-
-			}
-		} else { 
-			// this attribute bares only a single name. 
-			$key = strtolower( trim( $name[1] ) );
-			$attr_name = trim( $name[1] );
-			if( ! $key ) continue;
-
-			$attrs[$key] = array();
-			$attrs[$key]['oid'] = trim( $oid[1] );
-			$attrs[$key]['description'] = trim( $description[1] );
-			$attrs[$key]['syntax'] = trim( $syntax[1] );
-			$attrs[$key]['type'] = $syntaxes[ trim($syntax[1]) ]['description'];
-			$attrs[$key]['equality'] = trim( $equality[1] );
-			$attrs[$key]['substr'] = trim( $substr[1] );
-			$attrs[$key]['single_value'] = $single_value;
-			$attrs[$key]['sup'] = trim( $sup[1] );
-			$attrs[$key]['name'] = $attr_name;
-
-		}
-	}
-
-	// go back and add any inherited descriptions from parent attributes (ie, cn inherits name)
-	foreach( $attrs as $attr => $desc )
-	{
-		$sup_attr = $desc['sup'];      
-		while( $sup_attr ) {
-			if( ! $attrs[ $sup_attr	]['sup'] )  {
-				$attrs[ $attr ][ 'syntax' ]  = $attrs[ $sup_attr ]['syntax'];
-				$attrs[ $attr ][ 'equality' ]  = $attrs[ $sup_attr ]['equality'];
-				$attrs[ $attr ][ 'substr' ]  = $attrs[ $sup_attr ]['substr'];
-				$attrs[ $attr ][ 'single_value' ]  = $attrs[ $sup_attr ]['single_value'];
-				break;
-			} else {
-				$sup_attr = $attrs[ $sup_attr ]['sup'];
-			}
-		}
-	}
-
-	ksort( $attrs );
-
-	return $attrs;
-}
-
-/* 
- * A wrapper function to save you from having to call get_schema_objectclasses()
- * and get_schema_attributes(). Returns an array with two indexes: 'oclasses'
- * and 'attributes', as defined by their respective functions above.
- */
-function get_schema( $server_id )
-{
-	$ds = pla_ldap_connect( $server_id );
-
-	if( ! $ds )
-		return false;
-
-	$attrs = get_schema_attributes($server_id, $lower_case_all );
-	$oclasses = get_schema_objectclasses($server_id, $lower_case_all );
-
-	if( ! $oclasses )
-		return false;
-
-	$schema = array( 'attrs' => $attrs,
-			 'oclasses' => $oclasses );
-	return $schema;
-}
-
-/* 
+/*
  * A do-it-all ldap_search function. You can even specify the search scope. Other than
  * that, it's pretty much the same as the PHP ldap_search() call, except it returns
  * an array of results, rather than an LDAP result resource.
@@ -729,54 +468,74 @@ function pla_ldap_search( $server_id, $filter, $base_dn=null, $attrs=array(), $s
 {
 	global $servers;
 
-	if( ! isset($servers[$server_id]) || $servers[$server_id]['host'] == '' )
+	if( ! check_server_id( $server_id ) )
 		return false;
 
 	if( $base_dn == null )
 		$base_dn = $servers[$server_id]['base'];
-	
+
 	$ds = pla_ldap_connect( $server_id );
 	if( ! $ds )
 		return false;
-	
+
 	switch( $scope ) {
 		case 'base':
-			$search = @ldap_read( $ds, $base_dn, $filter, $attrs );
+			$search = @ldap_read( $ds, $base_dn, $filter, $attrs, 0, 200, 0, LDAP_DEREF_ALWAYS );
 			break;
 		case 'one':
-			$search = @ldap_list( $ds, $base_dn, $filter, $attrs );
+			$search = @ldap_list( $ds, $base_dn, $filter, $attrs, 0, 200, 0, LDAP_DEREF_ALWAYS );
 			break;
 		case 'sub':
 		default:
-			$search = @ldap_search( $ds, $base_dn, $filter, $attrs );
+			$search = @ldap_search( $ds, $base_dn, $filter, $attrs, 0, 200, 0, LDAP_DEREF_ALWAYS );
 			break;
 	}
 
 	if( ! $search )
 		return array();
 
-	$search = ldap_get_entries( $ds, $search );
+	//get the first entry identifier
+	if( $entry_id = ldap_first_entry($ds,$search) )
 
-	$return = array();
-	foreach( $search as $id => $attrs ) {
-		if( ! is_array( $attrs ) )
-			continue;
-        	for( $i=0; $i<$attrs['count']; $i++ )
-			unset( $attrs[$i] );
-		$dn = $attrs['dn'];
-		foreach( $attrs as $attr => $vals ) {
-			$count = $vals['count'];
-			unset( $vals['count'] );
-			if( $count == 1 )
-				$return[$dn][$attr] = $vals[0];
-			else
-				$return[$dn][$attr] = $vals;
-		}
-	}
+		//iterate over the entries
+		while($entry_id) {
 
-	if( $sort_results ) ksort( $return );
+			//get the distinguished name of the entry
+			$dn = ldap_get_dn($ds,$entry_id);
+
+			//get the attributes of the entry
+			$attrs = ldap_get_attributes($ds,$entry_id);
+			$return[$dn]['dn'] = $dn;
+
+			//get the first attribute of the entry
+			if($attr = ldap_first_attribute($ds,$entry_id,$attrs))
+
+				//iterate over the attributes 
+				while($attr){
+				  if( is_attr_binary($server_id,$attr))
+						$values = ldap_get_values_len($ds,$entry_id,$attr);
+					else
+						$values = ldap_get_values($ds,$entry_id,$attr);
+
+					//get the number of values for this attribute
+					$count = $values['count'];
+					unset($values['count']);
+					if($count==1)
+						$return[$dn][$attr] = $values[0];
+					else
+						$return[$dn][$attr] = $values;
+
+					$attr = ldap_next_attribute($ds,$entry_id,$attrs);
+				}// end while attr
+
+			$entry_id = ldap_next_entry($ds,$entry_id);
+
+		} // end while entry_id
+
+	if( $sort_results && is_array( $return ) )
+		ksort( $return );
+
 	return $return;
-
 }
 
 /*
@@ -798,10 +557,6 @@ function process_config()
 	global $search_attributes;
 	$search_attributes= explode( ",", $search_attributes);
 	array_walk( $search_attributes, "trim_it" );
-
-	global $search_criteria_options;
-	$search_criteria_options= explode( ",", $search_criteria_options);
-	array_walk( $search_criteria_options, "trim_it" );
 }
 
 /*
@@ -871,9 +626,15 @@ function get_avail_server_id()
  * For example. given 'cn=Manager,dc=example,dc=com', this function returns
  * 'cn=Manager' (it is really the exact opposite of get_container()).
  */
-function get_rdn( $dn )
+function get_rdn( $dn, $include_attrs=0 )
 {
-	$rdn = ldap_explode_dn( $dn, 0 );
+	if( $dn == null )
+		return null;
+	$rdn = pla_explode_dn( $dn, $include_attrs );
+	if( $rdn['count'] == 0 )
+		return null;
+	if( ! isset( $rdn[0] ) )
+		return null;
 	$rdn = $rdn[0];
 	return $rdn;
 }
@@ -885,7 +646,7 @@ function get_rdn( $dn )
  */
 function get_container( $dn )
 {
-	$rdn = ldap_explode_dn( $dn, 0 );
+	$rdn = pla_explode_dn( $dn );
 	$container = $rdn[ 1 ];
 	for( $i=2; $i<count($rdn)-1; $i++ )
 		$container .= ',' . $rdn[$i];
@@ -906,11 +667,11 @@ function pla_verbose_error( $err_no )
 
 	$err_codes_file = 'ldap_error_codes.txt';
 
-	if( ! file_exists( $err_codes_file ) )
+	if( ! file_exists( realpath( $err_codes_file ) ) )
 		return false;
-	if( ! is_readable( $err_codes_file ) ) 
+	if( ! is_readable( realpath( $err_codes_file ) ) ) 
 		return false;
-	if( ! ($f = fopen( $err_codes_file, 'r' )) )
+	if( ! ($f = fopen( realpath( $err_codes_file ), 'r' ) ) )
 		return false;
 
 	$contents = fread( $f, filesize( $err_codes_file ) );
@@ -938,31 +699,42 @@ function pla_error( $msg, $ldap_err_msg=null, $ldap_err_no=-1 )
 {
 	include_once 'header.php';
 
-	echo "<center>";
-	echo "<div class=\"error\">\n\n";
-	echo "<center><h3>Error</h3></center>\n\n";
-	echo "<center>$msg</center>";
-	echo "<br /><br />\n";
+	?>
+	<center>
+	<table class="error"><tr><td class="img"><img src="images/warning.png" /></td>
+	<td><center><h2>Error</h2></center>
+	<?php echo $msg; ?>
+	<br />
+	<?php
 
 	if( $ldap_err_msg )
-		echo "LDAP Server Said: <tt>" . htmlspecialchars( $ldap_err_msg ) . "</tt><br /><br />\n";
+		echo "<b>LDAP said</b>: " . htmlspecialchars( $ldap_err_msg ) . "<br /><br />\n";
 
 	if( $ldap_err_no != -1 ) {
 		$ldap_err_no = ( '0x' . str_pad( dechex( $ldap_err_no ), 2, 0, STR_PAD_LEFT ) );
 		$verbose_error = pla_verbose_error( $ldap_err_no );
 
 		if( $verbose_error ) {
-			echo "Error number: <tt>$ldap_err_no (" .
-				$verbose_error['title'] . ")</tt><br /><br />\n";
-			echo "Description: <tt>" . $verbose_error['desc'] . "</tt><br /><br />\n\n";
+			echo "<b>Error number</b>: $ldap_err_no <small>(" .
+				$verbose_error['title'] . ")</small><br /><br />\n";
+			echo "<b>Description</b>: " . $verbose_error['desc'] . "<br /><br />\n\n";
 		} else {
-			echo "Error number: <tt>$ldap_err_no</tt><br /><br />\n";
-			echo "Description: (no description available)<br />\n\n";
+			echo "<b>Error number</b>: $ldap_err_no<br /><br />\n";
+			echo "<b>Description</b>: (no description available)<br />\n\n";
 		}
 	}
-	
-	echo "</div>\n";
-	echo "</center>";
+	?>
+	<br />
+	<br />
+	<center>
+	<small>
+		Is this a phpLDAPadmin bug? If so, please 
+		<a href="<?php echo get_href( 'add_bug' ); ?>">report it</a>.
+	</small>
+	</center>
+	</td></tr></table>
+	</center>
+	<?php
 	die();
 }
 
@@ -1031,13 +803,14 @@ function draw_jpeg_photos( $server_id, $dn, $draw_delete_buttons=false )
 	for( $i=0; $i<$jpeg_data['count']; $i++ ) 
 	{
 		$jpeg_filename = $jpeg_temp_dir . '/' . basename( tempnam ('.', 'djp') );
+		$jpeg_filename = realpath( $jpeg_filename );
 		$outjpeg = fopen($jpeg_filename, "wb");
 		fwrite($outjpeg, $jpeg_data[$i]);
 		fclose ($outjpeg);
 		$jpeg_data_size = filesize( $jpeg_filename );
 		if( $jpeg_data_size < 6 ) {
 			echo "jpegPhoto contains errors<br />";
-			echo '<a href="javascript:deleteJpegPhoto();" style="color:red; font-size: 75%">Delete Photo</a>';
+			echo '<a href="javascript:deleteAttribute( \'jpegPhoto\' );" style="color:red; font-size: 75%">Delete Photo</a>';
 			continue;
 		}
 
@@ -1060,7 +833,7 @@ function draw_jpeg_photos( $server_id, $dn, $draw_delete_buttons=false )
 		if( $draw_delete_buttons )
 		{ ?>
 			<!-- JavaScript function deleteJpegPhoto() to be defined later by calling script -->
-			<a href="javascript:deleteJpegPhoto();" style="color:red; font-size: 75%">Delete Photo</a>
+			<a href="javascript:deleteAttribute( 'jpegPhoto' );" style="color:red; font-size: 75%">Delete Photo</a>
 		<?php }
 	}
 	echo "</center></td></table>\n\n";
@@ -1129,9 +902,13 @@ function password_hash( $password_clear, $enc_type )
 			$new_value = '{md5}' . base64_encode( pack( 'H*' , md5( $password_clear) ) );
 			break;
 		case 'md5crypt':
+			if( ! defined( 'CRYPT_MD5' ) || 0 == CRYPT_MD5 )
+				pla_error( "Your PHP install does not support blowfish encryption." );
 			$new_value = '{crypt}' . crypt( $password_clear , '$1$' . random_salt(9) );
 			break;
 		case 'blowfish':
+			if( ! defined( 'CRYPT_BLOWFISH' ) || 0 == CRYPT_BLOWFISH )
+				pla_error( "Your PHP install does not support blowfish encryption." );
 			$new_value = '{crypt}' . crypt( $password_clear , '$2$' . random_salt(13) );
 			break;
 		case 'sha':
@@ -1155,20 +932,99 @@ function password_hash( $password_clear, $enc_type )
  */
 function pla_version()
 {
-	if( ! file_exists( 'VERSION' ) )
+	if( ! file_exists( realpath( 'VERSION' ) ) )
 		return 'unknown version';
 
-	$f = fopen( 'VERSION', 'r' );
-	$version = fread( $f, filesize( 'VERSION' ) );
+	$f = fopen( realpath( 'VERSION' ), 'r' );
+	$version = fread( $f, filesize( realpath( 'VERSION' ) ) );
 	fclose( $f );
 	return $version;
 }
 
 function draw_chooser_link( $form_element )
 {
+	global $lang;
 	$href = "javascript:dnChooserPopup('$form_element');";
-	echo "<a href=\"$href\"><img src=\"images/find.png\" /></a>";
-	echo "<a href=\"$href\">browse</a>\n";
+	$title = $lang['chooser_link_tooltip'];
+	echo "<a href=\"$href\" title=\"$title\"><img src=\"images/find.png\" /></a>";
+	echo "<a href=\"$href\" title=\"$title\">browse</a>\n";
+}
+
+function get_values($link_id,$entry_id,$attr){
+	if( 0 == strcasecmp( $attr, 'jpegPhoto' ) ) {
+		$values = ldap_get_values_len($link_id,$entry_id,$attr);
+	} else {
+		$values = ldap_get_values($link_id,$entry_id,$attr);
+		unset($values['count']);
+	}
+	return $values;
+}
+ 
+/*
+function utf8_decode($str)
+{
+	global $code_page;
+	if( ! $code_page )
+		$code_page = "ISO-8859-1";
+	return iconv("UTF8", $code_page, $str);
+}
+
+function utf8_encode($str)
+{
+	global $code_page;
+	if( ! $code_page )
+		$code_page = "ISO-8859-1";
+	return iconv( $code_page, "UTF8", $str);
+}
+*/
+
+function get_code_page()
+{
+	global $code_page;
+	if( ! $code_page )
+		$code_page = "ISO-8859-1";
+	return $code_page;
+}
+
+/**
+ * Convert the string to the configured codepage and replace HTML chars
+ * with their &-encoded equivelants, then echo to browser.
+ */
+function pla_echo( $str )
+{
+	if( function_exists( "iconv" ) )
+		$str = iconv( "UTF8", get_code_page(), $str );
+	$str = htmlspecialchars( $str );
+	echo $str;
+}
+
+/*
+ * UTF-8 safe method for exploding a DN into its RDN parts.
+ */
+function pla_explode_dn( $dn, $with_attributes=0 )
+{
+	$dn = addcslashes( $dn, "<>" );
+	$result = ldap_explode_dn( $dn, $with_attributes );
+	//translate hex code into ascii again
+	foreach( $result as $key => $value )
+		$result[$key] = preg_replace("/\\\([0-9A-Fa-f]{2})/e", "''.chr(hexdec('\\1')).''", $value);
+	return $result;
+}
+
+/*
+ * Convenience function for fetching project HREFs (like bugs)
+ */
+function get_href( $type ) {
+	$group_id = "61828";
+	$bug_atid = "498546";
+	$rfe_atid = "498549";
+	switch( $type ) {
+	case 'open_bugs': return "http://sourceforge.net/tracker/?group_id=$group_id&amp;atid=$bug_atid";
+	case 'add_bug': return "http://sourceforge.net/tracker/?func=add&amp;group_id=$group_id&amp;atid=$bug_atid";
+	case 'open_rfes': return "http://sourceforge.net/tracker/?atid=$rfe_atid&group_id=$group_id&amp;func=browse";
+	case 'add_rfe': return "http://sourceforge.net/tracker/?func=add&amp;group_id=$group_id&amp;atid=$rfe_atid";
+	default: return null;
+	}
 }
 
 ?>

@@ -1,12 +1,12 @@
 <?php
 
-require 'config.php';
+require 'common.php';
 
 // customize this to your needs
 $default_container = "ou=Addresses";
 
 // Common to all templates
-$container = stripslashes( $_POST['container'] );
+$container = $_POST['container'];
 $server_id = $_POST['server_id'];
 
 // Unique to this template
@@ -65,8 +65,10 @@ function autoFillCommonName( form )
 	<td><img src="images/uid.png" /></td>
 	<td class="heading">Name:</td>
 	<td>
-		<input type="text" name="first_name" id="first_name" value="first"  onChange="autoFillCommonName(this.form)" />
-		<input type="text" name="last_name" id="last_name" value="last" onChange="autoFillCommonName(this.form)" />
+		<input type="text" name="first_name" 
+			id="first_name" value="first" onChange="autoFillCommonName(this.form)" />
+		<input type="text" name="last_name" 
+			id="last_name" value="last" onChange="autoFillCommonName(this.form)" />
 	</td>
 </tr>
 <tr>
@@ -136,18 +138,18 @@ function autoFillCommonName( form )
 
 <?php } elseif( $step == 2 ) {
 
-	$common_name = trim( stripslashes( $_POST['common_name'] ) );
-	$first_name = trim( stripslashes( $_POST['first_name'] ) );
-	$last_name = trim( stripslashes( $_POST['last_name'] ) );
-	$organization = trim( stripslashes( $_POST['organization'] ) );
-	$city = trim( stripslashes( $_POST['city'] ) );
-	$postal_code = trim( stripslashes( $_POST['postal_code'] ) );
-	$street = trim( stripslashes( $_POST['street'] ) );
-	$telephone_number = trim( stripslashes( $_POST['telephone_number'] ) );
-	$fax_number = trim( stripslashes( $_POST['fax_number'] ) );
-	$mobile_number = trim( stripslashes( $_POST['mobile_number'] ) );
-	$email_address = trim( stripslashes( $_POST['email_address'] ) );
-	$container = trim( stripslashes( $_POST['container'] ) );
+	$common_name = trim( $_POST['common_name'] );
+	$first_name = trim( $_POST['first_name'] );
+	$last_name = trim( $_POST['last_name'] );
+	$organization = trim( $_POST['organization'] );
+	$city = trim( $_POST['city'] );
+	$postal_code = trim( $_POST['postal_code'] );
+	$street = trim( $_POST['street'] );
+	$telephone_number = trim( $_POST['telephone_number'] );
+	$fax_number = trim( $_POST['fax_number'] );
+	$mobile_number = trim( $_POST['mobile_number'] );
+	$email_address = trim( $_POST['email_address'] );
+	$container = trim( $_POST['container'] );
 
 	/* Critical assertions */
 	0 != strlen( $common_name ) or
@@ -191,20 +193,60 @@ function autoFillCommonName( form )
 
 	<center>
 	<table class="confirm">
-	<tr class="even"><td class="heading">Common name:</td><td><b><?php echo htmlspecialchars( $common_name ); ?></b></td></tr>
-	<tr class="odd"><td class="heading">First name:</td><td><b><?php echo htmlspecialchars( $first_name ); ?></b></td></tr>
-	<tr class="even"><td class="heading">Last name:</td><td><b><?php echo htmlspecialchars( $last_name ); ?></b></td></tr>
-	<tr class="odd"><td class="heading">Organization:</td><td><?php echo htmlspecialchars( $organization ); ?></td></tr>
-	<tr class="even"><td class="heading">City:</td><td><?php echo htmlspecialchars( $city ); ?></td></tr>
-	<tr class="odd"><td class="heading">Postal code:</td><td><?php echo htmlspecialchars( $postal_code ); ?></td></tr>
-	<tr class="even"><td class="heading">Street:</td><td><?php echo htmlspecialchars( $street ); ?></td></tr>
-	<tr class="odd"><td class="heading">Work phone:</td><td><?php echo htmlspecialchars( $telephone_number ); ?></td></tr>
-	<tr class="even"><td class="heading">Fax:</td><td><?php echo htmlspecialchars( $fax_number ); ?></td></tr>
-	<tr class="odd"><td class="heading">Mobile:</td><td><?php echo htmlspecialchars( $mobile_number ); ?></td></tr>
-	<tr class="even"><td class="heading">Email:</td><td><?php echo htmlspecialchars( $email_address ); ?></td></tr>
-	<tr class="odd"><td class="heading">Container:</td><td><?php echo htmlspecialchars( $container ); ?></td></tr>
+	<tr class="even">
+		<td class="heading">Common name:</td>
+		<td><b><?php echo htmlspecialchars( $common_name ); ?></b></td>
+	</tr>
+	<tr class="odd">
+		<td class="heading">First name:</td>
+		<td><b><?php echo htmlspecialchars( $first_name ); ?></b></td>
+	</tr>
+	<tr class="even">
+		<td class="heading">Last name:</td>
+		<td><b><?php echo htmlspecialchars( $last_name ); ?></b></td>
+	</tr>
+	<tr class="odd">
+		<td class="heading">Organization:</td>
+		<td><?php echo htmlspecialchars( $organization ); ?></td>
+	</tr>
+	<tr class="even">
+		<td class="heading">City:</td>
+		<td><?php echo htmlspecialchars( $city ); ?></td>
+	</tr>
+	<tr class="odd">
+		<td class="heading">Postal code:</td>
+		<td><?php echo htmlspecialchars( $postal_code ); ?></td>
+	</tr>
+	<tr class="even">
+		<td class="heading">Street:</td>
+		<td><?php echo htmlspecialchars( $street ); ?></td>
+	</tr>
+	<tr class="odd">
+		<td class="heading">Work phone:</td>
+		<td><?php echo htmlspecialchars( $telephone_number ); ?></td>
+	</tr>
+	<tr class="even">
+		<td class="heading">Fax:</td>
+		<td><?php echo htmlspecialchars( $fax_number ); ?></td>
+	</tr>
+	<tr class="odd">
+		<td class="heading">Mobile:</td>
+		<td><?php echo htmlspecialchars( $mobile_number ); ?></td>
+	</tr>
+	<tr class="even">
+		<td class="heading">Email:</td>
+		<td><?php echo htmlspecialchars( $email_address ); ?></td>
+	</tr>
+	<tr class="odd">
+		<td class="heading">Container:</td>
+		<td><?php echo htmlspecialchars( $container ); ?></td>
+	</tr>
 	</table>
 	<br /><input type="submit" value="Create Address" />
 	</center>
+	</form>
 
 <?php } ?>
+
+</body>
+</html>

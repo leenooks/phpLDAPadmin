@@ -1,7 +1,7 @@
 <?php
 
-require 'config.php';
-require_once 'functions.php';
+require 'common.php';
+
 $container = isset( $_GET['container'] ) ? rawurldecode( $_GET['container'] ) : false;
 $server_id = isset( $_GET['server_id'] ) ? $_GET['server_id'] : false;
 $return_form_element = $_GET['form_element'];
@@ -15,6 +15,7 @@ if( $container ) {
 	echo "Looking in: <b>" . htmlspecialchars( $container ) . "</b><br />\n"; 
 }
 
+/* Has the use already begun to descend into a specific server tree? */
 if( $server_id !== false && $container !== false )
 {
 	check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
@@ -43,24 +44,47 @@ if( $server_id !== false && $container !== false )
 	else
 		foreach( $dn_list as $dn ) {
 			$href = "javascript:returnDN( '$dn' )";
-			echo "&nbsp;&nbsp;&nbsp;<a href=\"entry_chooser.php?form_element=$return_form_element&amp;server_id=$server_id&amp;container=" .
+			echo "&nbsp;&nbsp;&nbsp;<a href=\"entry_chooser.php?form_element=$return_form_element".
+				"&amp;server_id=$server_id&amp;container=" .
 				rawurlencode( $dn ) . "\"><img src=\"images/plus.png\" /></a> " .
 				"<a href=\"$href\">" . htmlspecialchars( $dn ) . "</a><br />\n";
 		}
 }
+/* draw the root of the selection tree (ie, list all the servers) */
 else
 {
 	foreach( $servers as $id => $server ) {
 		if( $server['host'] ) {
-			echo htmlspecialchars( $server['name'] ) . "<br />\n";
-			$dn = ( $server['base'] ? $server['base'] : try_to_get_root_dn( $id ) ); 
-			$href = "javascript:returnDN( '$dn' )";
-			echo "&nbsp;&nbsp;&nbsp;<a href=\"entry_chooser.php?form_element=$return_form_element&amp;server_id=$id&amp;container=" .
-				rawurlencode( $dn ) . "\"><img src=\"images/plus.png\" /></a> " .
-				"<a href=\"$href\">" . htmlspecialchars( $dn ) . "</a><br />\n";
+			echo "<b>" . htmlspecialchars( $server['name'] ) . "</b><br />\n";
+			if( ! have_auth_info( $id ) ) 
+				echo "<small>&nbsp;&nbsp;&nbsp;(Not logged in)</small><br />";
+			else {
+				$dn = ( $server['base'] ? $server['base'] : try_to_get_root_dn( $id ) ); 
+				if( ! $dn ) {
+					echo "<small>&nbsp;&nbsp;&nbsp;(Could not determine base DN)</small><br />";
+				} else {
+					$href = "javascript:returnDN( '$dn' )";
+					echo "&nbsp;&nbsp;&nbsp;<a href=\"entry_chooser.php?form_element=" . 
+						"$return_form_element&amp;server_id=$id&amp;container=" .
+						rawurlencode( $dn ) . "\"><img src=\"images/plus.png\" /></a> " .
+						"<a href=\"$href\">" . htmlspecialchars( $dn ) . "</a><br />\n";
+				}
+			}
 		}
 	}
 }
+
+// added by PD. 14082003,
+// adding the element access allows it to work with javascript arrays
+
+// the name of the form extracted from the first part of the URL variable.
+$formpart=substr($return_form_element,0,strpos($return_form_element,"."));
+
+// the name of the element extracted from the last part of the URL variable (after the dot)
+$elmpart =substr($return_form_element,strpos($return_form_element,".")+1);
+
+// rebuilt return value
+$return_form_element = $formpart . ".elements[\"" . $elmpart . "\"]";
 
 ?>
 

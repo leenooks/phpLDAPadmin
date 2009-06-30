@@ -14,17 +14,19 @@
  *  - new_attrs (array, if any)
  */
 
-require 'config.php';
-require 'functions.php';
+require 'common.php';
 
-$dn = stripslashes( rawurldecode( $_POST['dn'] ) );
+$dn = rawurldecode( $_POST['dn'] );
 $encoded_dn = rawurlencode( $dn );
-$new_oclass = stripslashes( $_POST['new_oclass'] );
+$new_oclass = $_POST['new_oclass'];
 $server_id = $_POST['server_id'];
 $new_attrs = $_POST['new_attrs'];
 
-check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
-have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
+if( is_server_read_only( $server_id ) )
+	pla_error( $lang['no_updates_in_read_only_mode'] );
+
+check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
+have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
 
 $new_entry = array();
 $new_entry['objectClass'] = $new_oclass;
@@ -40,12 +42,12 @@ if( is_array( $new_attrs ) && count( $new_attrs ) > 0 )
 //print_r( $new_entry );
 //exit;
 
-$ds = pla_ldap_connect( $server_id ) or pla_error( "Could not connect to LDAP server." );
+$ds = pla_ldap_connect( $server_id ) or pla_error( $lang['could_not_connect'] );
 $add_res = @ldap_mod_add( $ds, $dn, $new_entry );
 
 if( ! $add_res )
 {
-	pla_error( "Could not perform ldap_mod_add operation", ldap_error( $ds ), ldap_errno( $ds ) );
+	pla_error( $lang['could_not_perform_ldap_mod_add'], ldap_error( $ds ), ldap_errno( $ds ) );
 }
 else
 {

@@ -1,9 +1,9 @@
 <?php
 
-require 'config.php';
+require 'common.php';
 
 // Common to all templates
-$container = stripslashes( $_POST['container'] );
+$container = $_POST['container'];
 $server_id = $_POST['server_id'];
 
 
@@ -48,7 +48,7 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 <tr>
 	<td></td>
 	<td class="heading">Container:</td>
-	<td><input type="text" size="40" name="container" value="<?php echo htmlspecialchars( utf8_decode( $container ) ); ?>" />
+	<td><input type="text" size="40" name="container" value="<?php echo htmlspecialchars( $container ); ?>" />
 		<?php draw_chooser_link( 'machine_form.container' ); ?></td>
 	</td>
 </tr>
@@ -67,7 +67,7 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 			<li>gidNumber <b><?php echo htmlspecialchars( $default_gid_number ); ?></b></li>
 			<li>acctFlags <b><?php echo str_replace(' ', "&nbsp;", htmlspecialchars($default_acct_flags)); ?></b></li>
 			<li>cn <b><?php echo htmlspecialchars($default_cn); ?></b></li>
-			<li>in container <b><?php echo htmlspecialchars($container); ?></b></li>
+			<li>in container <b><?php echo htmlspecialchars( $container ); ?></b></li>
 		</ul>
 		To change these values, edit the template file: 
 			<code>templates/creation/new_nt_machine.php</code><br />
@@ -81,8 +81,8 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 
 <?php } elseif( $step == 2 ) {
 
-	$machine_name = trim( stripslashes( $_POST['machine_name'] ) );
-	$uid_number = trim( stripslashes( $_POST['uid_number'] ) );
+	$machine_name = trim( $_POST['machine_name'] );
+	$uid_number = trim( $_POST['uid_number'] );
 
 	dn_exists( $server_id, $container ) or
 		pla_error( "The container you specified (" . htmlspecialchars( $container ) . ") does not exist. " .
@@ -94,7 +94,7 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 	<input type="hidden" name="new_dn" value="<?php echo htmlspecialchars( 'uid=' . $machine_name . '$,' . $container ); ?>" />
 
 	<!-- ObjectClasses  -->
-	<?php $object_classes = rawurlencode( serialize( array( 'top', 'sambaAccount', 'posixAccount' ) ) ); ?>
+	<?php $object_classes = rawurlencode( serialize( array( 'top', 'sambaAccount', 'posixAccount', 'account' ) ) ); ?>
 
 	<input type="hidden" name="object_classes" value="<?php echo $object_classes; ?>" />
 		

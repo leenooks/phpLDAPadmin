@@ -14,18 +14,20 @@
  *  - server_id
  */
 
-require 'config.php';
-require_once 'functions.php';
+require 'common.php';
 
-$new_dn = stripslashes( $_POST['new_dn'] );
-$new_dn = utf8_encode( $new_dn );
+$new_dn = $_POST['new_dn'];
+//$new_dn = utf8_encode( $new_dn );
 $encoded_dn = rawurlencode( $new_dn );
 $server_id = $_POST['server_id'];
 $vals = $_POST['vals'];
 $attrs = $_POST['attrs'];
-$required_attrs = $_POST['required_attrs'];
+$required_attrs = isset( $_POST['required_attrs'] ) ? $_POST['required_attrs'] : false;
 $object_classes = unserialize( rawurldecode( $_POST['object_classes'] ) );
 $container = get_container( $new_dn );
+
+if( is_server_read_only( $server_id ) )
+	pla_error( "You cannot perform updates while server is in read-only mode" );
 
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
@@ -40,8 +42,6 @@ if( isset( $required_attrs ) && is_array( $required_attrs ) )
 			pla_error( "Error, you left the value for required attribute <b>" .
 					htmlspecialchars( $attr ) . "</b> blank." );
 
-		$attr = stripslashes( $attr );
-		$val  = stripslashes( $val );
 		$new_entry[ $attr ][] = utf8_encode( $val );
 	}
 }
@@ -50,17 +50,38 @@ if( isset( $vals ) && is_array( $vals ) )
 {
 	foreach( $vals as $i => $val )
 	{
-		$val = stripslashes( $val );
 		$attr = $attrs[$i];
-		$attr = stripslashes( $attr );
-		if( trim($val) )
-			$new_entry[ $attr ][] = utf8_encode( $val );
+		if( is_attr_binary( $server_id, $attr ) ) {
+			if( $_FILES['vals']['name'][$i] != '' ) {
+				// read in the data from the file
+				$file = $_FILES['vals']['tmp_name'][$i];
+				//echo "Reading in file $file...\n";
+				$f = fopen( $file, 'r' );
+				$binary_data = fread( $f, filesize( $file ) );
+				fclose( $f );
+				$val = $binary_data;
+				$new_entry[ $attr ][] = $val;
+			}
+		} else {
+			if( trim($val) )
+				$new_entry[ $attr ][] = utf8_encode( $val );
+		}
 	}
 }
 
 $new_entry['objectClass'] = $object_classes;
 if( ! in_array( 'top', $new_entry['objectClass'] ) )
 	$new_entry['objectClass'][] = 'top';
+
+// UTF-8 magic. Must decode the values that have been passed to us
+foreach( $new_entry as $attr => $vals )
+	if( is_array( $vals ) )
+		foreach( $vals as $i => $v )
+			$new_entry[ $attr ][ $i ] = utf8_decode( $v );
+	else
+		$new_entry[ $attr ] = utf8_decode( $vals );
+
+//echo "<pre>"; var_dump( $new_dn );print_r( $new_entry ); echo "</pre>";
 
 $ds = pla_ldap_connect( $server_id );
 $add_result = @ldap_add( $ds, $new_dn, $new_entry );
@@ -77,6 +98,7 @@ if( $add_result )
 
 		if( isset( $tree[$server_id][$container] ) ) {
 			$tree[$server_id][$container][] = $new_dn;
+			sort( $tree[$server_id][$container] );
 			$tree_icons[$server_id][$new_dn] = get_icon( $server_id, $new_dn );
 		}
 

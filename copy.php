@@ -10,17 +10,19 @@
  *  - server_id
  */
 
-require 'config.php';
-require_once 'functions.php';
+require 'common.php';
 
 session_start();
 
-$source_dn = stripslashes( rawurldecode( $_POST['old_dn'] ) );
-$dest_dn = stripslashes( $_POST['new_dn'] );
+$source_dn = rawurldecode( $_POST['old_dn'] );
+$dest_dn = utf8_encode( $_POST['new_dn'] );
 $encoded_dn = rawurlencode( $old_dn );
 $source_server_id = $_POST['server_id'];
 $dest_server_id = $_POST['dest_server_id'];
-$do_recursive = $_POST['recursive'] == 'on' ? true : false;
+$do_recursive = ( isset( $_POST['recursive'] ) && $_POST['recursive'] == 'on' ) ? true : false;
+
+if( is_server_read_only( $dest_server_id ) )
+	pla_error( "You cannot perform updates while server is in read-only mode" );
 
 check_server_id( $source_server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $source_server_id ) );
 have_auth_info( $source_server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
@@ -72,6 +74,7 @@ if( $copy_result )
 		if( isset( $tree[$dest_server_id][$container] ) )
 		{
 			$tree[$dest_server_id][$container][] = $dest_dn;
+			sort( $tree[ $dest_server_id ][ $container ] );
 			$tree_icons[$dest_server_id][$dest_dn] = get_icon( $dest_server_id, $dest_dn );
 			$_SESSION['tree'] = $tree;
 			$_SESSION['tree_icons'] = $tree_icons;
@@ -102,7 +105,7 @@ else
 
 function r_copy_dn( $source_server_id, $dest_server_id, &$tree, $root_dn, $dest_dn )
 {
-	echo "<nobr>Copying " . htmlspecialchars( utf8_decode( $root_dn ) ) . "...";
+	echo "<nobr>Copying " . htmlspecialchars( $root_dn ) . "...";
 	flush();
 	$copy_result = copy_dn( $source_server_id, $root_dn, $dest_server_id, $dest_dn );
 	

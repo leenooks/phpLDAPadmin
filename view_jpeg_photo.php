@@ -1,7 +1,6 @@
 <?php
 
-require 'config.php';
-
+require 'common.php';
 
 $file = $_GET['file'];
 

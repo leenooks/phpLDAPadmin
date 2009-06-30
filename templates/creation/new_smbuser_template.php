@@ -1,71 +1,67 @@
 <?php
+	require realpath( 'common.php' );
 
-require 'common.php';
+	// customize this to your needs
+	$default_samba_sid = "S-1-5-21-3509297442-4087397136-3591104989";
+	$default_container = "ou=Users";
+	$default_home = "/export/home";
+	$mkntpwdCommand = "./templates/creation/mkntpwd";
 
-// customize this to your needs
-$default_container = "ou=People";
+	// Common to all templates
+	$server_id = $_POST['server_id'];
 
-// Common to all templates
-$container = $_POST['container'];
-$server_id = $_POST['server_id'];
+	// Unique to this template
+	$step = $_POST['step'];
+	if( ! $step )
+		$step = 1;
 
-// Unique to this template
-$step = $_POST['step'];
-if( ! $step )
-	$step = 1;
-
-check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
-have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
-
+	check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
+	have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
 ?>
 
 <script language="javascript">
-<!--
+	<!--
+	function autoFillUserName( form ) {
+		var first_name;
+		var last_name;
+		var user_name;
 
-/*
- * Pipulates the user name field based on the first letter
- *  of the firsr name concatenated with the last name
- *  all in lower case. 
- */
-function autoFillUserName( form )
-{
-	var first_name;
-	var last_name;
-	var user_name;
+		first_name = form.first_name.value.toLowerCase();
+		last_name = form.last_name.value.toLowerCase();
+		if( last_name == '' ) {
+			return false;
+		}
+		user_name = first_name.substr( 0,1 ) + last_name;
+		user_name = first_name.substr( 0,8 );
 
-	first_name = form.first_name.value.toLowerCase();
-	last_name = form.last_name.value.toLowerCase();
-
-	if( last_name == '' ) {
-		return false;
+		form.user_name.value = user_name;
+		autoFillHomeDir( form );
 	}
+	function autoFillHomeDir( form ){
+		var user_name;
+		var home_dir;
 
-	user_name = first_name.substr( 0,1 ) + last_name;
-	form.user_name.value = user_name;
-	autoFillHomeDir( form );
-}
+		user_name = form.user_name.value.toLowerCase();
 
-/*
- * Pipulates the home directory field based on the username provided
- */
-function autoFillHomeDir( form )
-{
-	var user_name;
-	var hime_dir;
+		home_dir = '<?php echo $default_home; ?>/';
+		home_dir += user_name;
+		form.home_dir.value = home_dir;
 
-	user_name = form.user_name.value.toLowerCase();
+	}
+	function autoFillSambaSID( form ){
+		var sambaSID;
+		var uidNumber;
 
-	home_dir = '/home/';
-	home_dir += user_name;
+		uidNumber = form.uid_number.value;
+		sambaSID = '<?php echo $default_samba_sid; ?>-'+(2*uidNumber+1000);
 
-	form.home_dir.value = home_dir;	
-	
-}
+		form.samba_sid.value = sambaSID;
 
--->
-</script>
+	}
+	-->
+	</script>
 
-<center><h2>New User Account</h2></center>
+<center><h2>New Samba3-User Account</h2></center>
 
 <?php if( $step == 1 ) { ?>
 
@@ -76,6 +72,17 @@ function autoFillHomeDir( form )
 
 <center>
 <table class="confirm">
+<tr class="spacer"><td colspan="3"></tr>
+<tr>
+	<td></td>
+	<td class="heading">UID Number:</td>
+	<td><input type="text" name="uid_number" value="" onChange="autoFillSambaSID(this.form)" /></td>
+</tr>
+<tr>
+	<td></td>
+	<td class="heading"><i>Samba SID:</i></td>
+	<td><input type="text" name="samba_sid" value="" id="samba_sid" readonly=""/></td>
+</tr>
 <tr class="spacer"><td colspan="3"></tr>
 <tr>
 	<td><img src="images/uid.png" /></td>
@@ -107,27 +114,18 @@ function autoFillHomeDir( form )
 <tr>
 	<td></td>
 	<td class="heading">Encryption:</td>
-	<td><select name="encryption">
-		<option>clear</option>
-		<option>md5</option>
-		<option>crypt</option>
-		<option>sha</option>
-	    </select></td>
+	<td>
+		<input type="hidden" name="encryption" value="crypt"/>
+		<i>crypt</i>
+	</td>
 </tr>
 <tr class="spacer"><td colspan="3"></tr>
 <tr>
-	<td><img src="images/terminal.png" /></td>
+	<td><img src="images/nt.png" /></td>
 	<td class="heading">Login Shell:</td>
-	<!--<td><input type="text" name="login_shell" value="/bin/bash" /></td>-->
 	<td>
-		<select name="login_shell">
-		<option>/bin/bash</option>
-		<option>/bin/csh</option>
-		<option>/bin/ksh</option>
-		<option>/bin/tcsh</option>
-		<option>/bin/zsh</option>
-		<option>/bin/sh</option>
-		</select>
+		<input type="hidden" name="login_shell" value="/bin/csh"/>
+		<i>/bin/csh</i>
 	</td>
 </tr>
 <tr>
@@ -143,12 +141,7 @@ function autoFillHomeDir( form )
 </tr>
 <tr>
 	<td></td>
-	<td class="heading">UID Number:</td>
-	<td><input type="text" name="uid_number" value="" /></td>
-</tr>
-<tr>
-	<td></td>
-	<td class="heading">Group:</td>
+	<td class="heading">Unix Group:</td>
 	<td><select name="group">
 		<option value="1000">admins (1000)</option>
 		<option value="2000">users (2000)</option>
@@ -158,8 +151,20 @@ function autoFillHomeDir( form )
 </tr>
 <tr>
 	<td></td>
+	<td class="heading">Windows Group:</td>
+	<td><select name="sambaPrimaryGroupSID">
+			<option value="S-1-5-32-547">Local Power Users</option>
+			<option value="S-1-5-32-544">Local Administrator</option>
+			<option value="S-1-5-32-545">Local Users</option>
+			<option value="<?php echo $default_samba_sid; ?>-512">Domain Admins</option>
+			<option value="<?php echo $default_samba_sid; ?>-513">Domain Users</option>
+			<option value="<?php echo $default_samba_sid; ?>-514">Domain Guests</option>
+	    </select></td>
+</tr>
+<tr>
+	<td></td>
 	<td class="heading">Home Directory:</td>
-	<td><input type="text" name="home_dir" value="/home/" id="home_dir" /></td>
+	<td><input type="text" name="home_dir" value="<?php echo $default_home ?>" id="home_dir" /></td>
 </tr>
 <tr>
 	<td colspan="3"><center><br /><input type="submit" value="Proceed &gt;&gt;" /></td>
@@ -181,6 +186,8 @@ function autoFillHomeDir( form )
 	$container = trim( stripslashes( $_POST['container'] ) );
 	$home_dir = trim( stripslashes( $_POST['home_dir'] ) );
 
+	$samba_sid = trim( stripslashes( $_POST['samba_sid'] ) );
+
 	/* Critical assertions */
 	$password1 == $password2 or
 		pla_error( "Your passwords don't match. Please go back and try again." );
@@ -194,6 +201,10 @@ function autoFillHomeDir( form )
 
 	$password = password_hash( $password1, $encryption );
 
+	$sambaPassCommand = $mkntpwdCommand . " " . $password1;
+	$sambaPassCommandOutput = shell_exec($sambaPassCommand);
+	$sambaLMPassword = substr($sambaPassCommandOutput,0,strPos($sambaPassCommandOutput,':'));
+	$sambaNTPassword = substr($sambaPassCommandOutput,strPos($sambaPassCommandOutput,':')+1);
 	?>
 	<center><h3>Confirm account creation:</h3></center>
 
@@ -202,27 +213,50 @@ function autoFillHomeDir( form )
 	<input type="hidden" name="new_dn" value="<?php echo htmlspecialchars( 'uid=' . $user_name . ',' . $container ); ?>" />
 
 	<!-- ObjectClasses  -->
-	<?php $object_classes = rawurlencode( serialize( array( 'top', 'person', 'posixAccount' ) ) ); ?>
+	<?php $object_classes = rawurlencode( serialize( array( 'top', 'account', 'posixAccount', 'shadowAccount' , 'sambaSamAccount' ) ) ); ?>
 
 	<input type="hidden" name="object_classes" value="<?php echo $object_classes; ?>" />
-		
+
 	<!-- The array of attributes/values -->
-	<input type="hidden" name="attrs[]" value="uid" />
-		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($user_name);?>" />
 	<input type="hidden" name="attrs[]" value="cn" />
 		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($first_name);?>" />
-	<input type="hidden" name="attrs[]" value="sn" />
-		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($last_name);?>" />
-	<input type="hidden" name="attrs[]" value="userPassword" />
-		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($password);?>" />
-	<input type="hidden" name="attrs[]" value="loginShell" />
-		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($login_shell);?>" />
-	<input type="hidden" name="attrs[]" value="uidNumber" />
-		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($uid_number);?>" />
+	<input type="hidden" name="attrs[]" value="displayName" />
+		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($first_name . ' ' . $last_name);?>" />
+	<input type="hidden" name="attrs[]" value="gecos" />
+		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($first_name . ' ' . $last_name);?>" />
 	<input type="hidden" name="attrs[]" value="gidNumber" />
 		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($gid_number);?>" />
 	<input type="hidden" name="attrs[]" value="homeDirectory" />
 		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($home_dir);?>" />
+	<input type="hidden" name="attrs[]" value="loginShell" />
+		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($login_shell);?>" />
+	<input type="hidden" name="attrs[]" value="sambaAcctFlags" />
+		<input type="hidden" name="vals[]" value="[U          ]" />
+	<input type="hidden" name="attrs[]" value="sambaLMPassword" />
+		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($sambaLMPassword);?>" />
+	<input type="hidden" name="attrs[]" value="sambaNTPassword" />
+		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($sambaNTPassword);?>" />
+	<input type="hidden" name="attrs[]" value="sambaPrimaryGroupSID" />
+		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($sambaPrimaryGroupSID);?>" />
+	<input type="hidden" name="attrs[]" value="sambaPwdCanChange" />
+		<input type="hidden" name="vals[]" value="0" />
+	<input type="hidden" name="attrs[]" value="sambaPwdLastSet" />
+		<input type="hidden" name="vals[]" value="0" />
+	<input type="hidden" name="attrs[]" value="sambaPwdMustChange" />
+		<input type="hidden" name="vals[]" value="2147483647" />
+
+	<input type="hidden" name="attrs[]" value="sambaSID" />
+		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($samba_sid); ?>" />
+
+
+	<input type="hidden" name="attrs[]" value="shadowLastChange" />
+		<input type="hidden" name="vals[]" value="11778" />
+	<input type="hidden" name="attrs[]" value="uid" />
+		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($user_name);?>" />
+	<input type="hidden" name="attrs[]" value="uidNumber" />
+		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($uid_number);?>" />
+	<input type="hidden" name="attrs[]" value="userPassword" />
+		<input type="hidden" name="vals[]" value="<?php echo htmlspecialchars($password);?>" />
 
 	<center>
 	<table class="confirm">

@@ -11,8 +11,7 @@
  *	tree.php#3_dc%3Dexample%2Cdc%3Dcom
  */
 
-require 'config.php';
-require_once 'functions.php';
+require 'common.php';
 
 // no expire header stuff
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
@@ -42,29 +41,26 @@ $tree_icons = $_SESSION['tree_icons'];
 <body>
 
 <?php 
-	$group_id = "61828";
-	$bug_atid = "498546";
-	$rfe_atid = "498549";
-	$bug_href = "http://sourceforge.net/tracker/?func=add&amp;group_id=$group_id&amp;atid=$bug_atid";
-	$open_bugs_href = "http://sourceforge.net/tracker/?group_id=$group_id&amp;atid=$bug_atid";
-	$feature_href = "http://sourceforge.net/tracker/?func=add&amp;group_id=$group_id&amp;atid=$rfe_atid";
-	$open_features_href = "http://sourceforge.net/tracker/?atid=$rfe_atid&group_id=$group_id&amp;func=browse";
+	$bug_href = get_href( 'add_bug' );
+	$open_bugs_href = get_href( 'open_bugs' );
+	$feature_href = get_href( 'add_rfe' );
+	$open_features_href = get_href( 'open_rfes' );
 ?>
 
-<h3 class="subtitle" style="margin:0px">phpLDAPAdmin - <?php echo pla_version(); ?></h3>
+<h3 class="subtitle" style="margin:0px">phpLDAPadmin - <?php echo pla_version(); ?></h3>
 <table class="edit_dn_menu">
 <tr>
 	<td><img src="images/light.png" /></td>
-	<td><a href="<?php echo $feature_href; ?>" target="new">Request a new feature</a>
-		(<a href="<?php echo $open_features_href; ?>" target="new">see open requests</a>)</td>
+	<td><nobr><a href="<?php echo $feature_href; ?>" target="new"><?php echo $lang['request_new_feature']; ?></a>
+		(<a href="<?php echo $open_features_href; ?>" target="new"><?php echo $lang['see_open_requests']; ?></a>)</nobr></td>
 </tr>
 <tr>	
 	<td><img src="images/bug.png" /></td>
-	<td><a href="<?php echo $bug_href; ?>" target="new">Report a bug</a>
-		(<a href="<?php echo $open_bugs_href; ?>" target="new">see open bugs</a>)</td>
+	<td><nobr><a href="<?php echo $bug_href; ?>" target="new"><?php echo $lang['report_bug']; ?></a>
+		(<a href="<?php echo $open_bugs_href; ?>" target="new"><?php echo $lang['see_open_bugs']; ?></a>)</nobr></td>
 </tr>
 </table>
-<br />
+
 <table class="tree" cellspacing="0">
 
 <?php 
@@ -76,8 +72,9 @@ foreach( $servers as $server_id => $server_tree ) {
 		$server_name = $servers[$server_id]['name'];
 		echo '<tr class="server">';
 		echo '<td class="icon"><img src="images/server.png" alt="server"/></td>';
-		echo '<td colspan="99"><b><a name="' . $id . '">' . htmlspecialchars( $server_name ) . '</a></b><br />';
-
+		echo '<td colspan="99"><a name="' . $server_id . '"></a>';
+		echo '<nobr>' . htmlspecialchars( $server_name ) . '</nobr></td>';
+		echo '</tr>';
 
 		// do we have what it takes to authenticate here, or do we need to
 		// present the user with a login link (for 'form' auth_types)?
@@ -90,28 +87,40 @@ foreach( $servers as $server_id => $server_tree ) {
 					 rawurlencode( $servers[$server_id]['base'] );
 			$logout_href = 'logout.php?server_id=' . $server_id;
 			$info_href = 'server_info.php?server_id=' . $server_id;
+			$import_href = 'ldif_import_form.php?server_id=' . $server_id;
 
-			if( $servers[$server_id]['auth_type'] == 'form' && have_auth_info( $server_id ) )
-				echo "<small><nobr>Logged in as: " . htmlspecialchars(get_logged_in_dn($server_id)) . "</small></nobr><br />";
-			
 			// Draw the quick-links below the server name: 
 			// ( schema | search | refresh | create )
-			echo '<small>(';
-			echo '<a title="View schema for ' . $server_name . '"'.
-			     ' href="' . $schema_href . '">schema</a> | ';
-			echo '<a title="Search ' . $server_name . ' for entries"'.
-			     ' href="' . $search_href . '">search</a> | ';
-			echo '<a title="Re-query ' . $server_name . ' to refresh all expanded containers"'.
-			     ' href="' . $refresh_href . '">refresh</a> | ';
-			echo '<a title="Create a new entry on ' . $server_name . '"'.
+			echo '<tr><td colspan="100" class="links">';
+			echo '<nobr>';
+			echo '( ';
+			echo '<a title="' . $lang['view_schema_for'] . ' ' . $server_name . '"'.
+			     ' href="' . $schema_href . '">' . $lang['schema'] . '</a> | ';
+			echo '<a title="' . $lang['search'] . ' ' . $server_name . '"' .
+			     ' href="' . $search_href . '">' . $lang['search'] . '</a> | ';
+			echo '<a title="' . $lang['refresh_expanded_containers'] . ' ' . $server_name . '"'.
+			     ' href="' . $refresh_href . '">' . $lang['refresh'] . '</a> | ';
+			echo '<a title="' . $lang['create_new_entry_on'] . ' ' . $server_name . '"'.
 			     ' href="' . $create_href . '" target="right_frame">create</a> | ';
-			echo '<a title="View server-supplied information" target="right_frame"'.
-			     'href="' . $info_href . '">info</a>';
+			echo '<a title="' . $lang['view_server_info'] . '" target="right_frame"'.
+			     'href="' . $info_href . '">' . $lang['info'] . '</a> | ';
+			echo '<a title="' . $lang['import_from_ldif'] . '" target="right_frame"' .
+			     'href="' . $import_href .'">' . $lang['import'] . '</a>';
 			if( $servers[ $server_id ][ 'auth_type' ] == 'form' )
-				echo ' | <a title="Logout of this server" href="' . $logout_href . '" target="right_frame">logout</a>';
-			echo ')</small></td></tr>';
+				echo ' | <a title="' . $lang['logout_of_this_server'] . '" href="' . $logout_href . 
+					'" target="right_frame">' . $lang['logout'] . '</a>';
+			echo ' )</nobr></td></tr>';
+			
+			if( $servers[$server_id]['auth_type'] == 'form' && have_auth_info( $server_id ) )
+				echo "<tr><td class=\"links\" colspan=\"100\"><nobr>" .
+					$lang['logged_in_as'] . htmlspecialchars(get_logged_in_dn($server_id)) . 
+					"</nobr></td></tr>";
+			if( is_server_read_only( $server_id ) ) 
+				echo "<tr><td class=\"links\" colspan=\"100\"><nobr>" .
+					"(" . $lang['read_only'] . ")</nobr></td></tr>";
 
-			$rdn = utf8_decode( $dn );
+			// Fetch and display the base DN for this server
+			//$rdn = utf8_decode( $dn );
 			if( null == $servers[ $server_id ]['base'] ) {
 				$base_dn = try_to_get_root_dn( $server_id );
 			} else {
@@ -134,26 +143,32 @@ foreach( $servers as $server_id => $server_tree ) {
 				$edit_href = "edit.php?server_id=$server_id&amp;dn=" . rawurlencode( $base_dn );
 
 				$icon = get_icon( $server_id, $base_dn );
-				echo "<tr><td class=\"spacer\"></td>\n";
-				echo "<td class=\"expander\"><a href=\"$expand_href\"><img src=\"$expand_img\" /></td>";
-				echo "<td class=\"icon\"><a href=\"$edit_href\" target=\"right_frame\"><img src=\"images/$icon\" /></a></td>\n";
-				echo "<td class=\"rdn\" colspan=\"99\"><nobr><a href=\"$edit_href\" " . 
-				     "target=\"right_frame\">$base_dn</nobr></td>\n";
+				echo "<td class=\"expander\" style=\"text-align: right\">";
+				echo "<a href=\"$expand_href\"><img src=\"$expand_img\" /></td>";
+				echo "<td class=\"icon\"><a href=\"$edit_href\" target=\"right_frame\">";
+				echo "<img src=\"images/$icon\" /></a></td>\n";
+				echo "<td class=\"rdn\" colspan=\"98\"><nobr><a href=\"$edit_href\" ";
+				echo " target=\"right_frame\">$base_dn</nobr></td>\n";
 				echo "</tr>\n";
 			} else {
 				if( "" === $base_dn || null === $base_dn ) {
 					// The server refuses to give out the base dn
-					echo "<tr><td class=\"spacer\"></td><td colspan=\"99\"><small>Could not determine ";
-					echo "the root of your LDAP tree.<br />It appears that the LDAP server has ";
-					echo "been <b>configured to not give it out</b>. Please specify it in config.php";
-					echo "</small></td></tr>";
+					echo "<tr><td class=\"spacer\"></td><td colspan=\"98\"><small><nobr>";
+					echo $lang['could_not_determine_root'];
+					echo '<br />';
+					echo $lang['ldap_refuses_to_give_root'];
+					echo '<br />';
+					echo $lang['please_specify_in_config'];
+					echo "</small></nobr></td></tr>";
 					// Proceed to the next server. We cannot draw anything else for this server.
 					continue;
 				} else {
 					// For some unknown reason, we couldn't determine the base dn
-					echo "<tr><td class=\"spacer\"></td><td colspan=\"99\"><small>Could not determine ";
-					echo "the root of your LDAP tree.<br />Please specify it in config.php";
-					echo "</small></td></tr>";
+					echo "<tr><td class=\"spacer\"></td><td colspan=\"99\"><small><nobr>";
+					echo $lang['could_not_determine_root'];
+					echo '<br />';
+					echo $lang['please_specify_in_config'];
+					echo "</small></nobr></td></tr>";
 					// Proceed to the next server. We cannot draw anything else for this server.
 					continue;
 				}
@@ -164,31 +179,38 @@ foreach( $servers as $server_id => $server_tree ) {
 			// Is the root of the tree expanded already?
 			if( isset( $tree[$server_id][$base_dn] ) ) {
 				foreach( $tree[ $server_id ][ $base_dn ] as $child_dn )
-					draw_tree_html( $child_dn, $server_id, 1 );
-				echo '<td class="spacer"></td>';
-				echo '<td class="spacer"></td>';
-				echo '<td class="icon"><a href="' . $create_href .
-					'" target="right_frame"><img src="images/star.png" /></a></td>';
-				echo '<td class="create" colspan="99"><a href="' . $create_href . 
-					'" target="right_frame" title="Create a new object in '. $base_dn.'">Create New</a></td></tr>';
+					draw_tree_html( $child_dn, $server_id, 0 );
+				if( ! is_server_read_only( $server_id ) ) {
+					echo '<td class="spacer"></td>';
+					echo '<td class="icon"><a href="' . $create_href .
+						'" target="right_frame"><img src="images/star.png" /></a></td>';
+					echo '<td class="create" colspan="100"><a href="' . $create_href . 
+						'" target="right_frame" title="' . $lang['create_new_entry_in'] . ' ' . 
+						$base_dn.'">' . $lang['create_new'] . '</a></td></tr>';
+				}
 			}
 		}
 		else // have_auth_info() returned false.
 		{
 			// We don't have enough information to login to this server
+			// Draw the "login..." link
 			$login_href = "login_form.php?server_id=$server_id";
+			echo '<tr class="login"><td colspan="100">';
 			echo '&nbsp;&nbsp;&nbsp;<a href="' . $login_href . '" target="right_frame">';
 			echo '<img src="images/uid.png" align="top" alt="login"/></a> ';
 			echo '<a href="' . $login_href . '" target="right_frame">login...</a>';
 			echo '</td></tr>';
 		}
-
 	}
 }
 
 ?>
 
 </table>
+<?php 
+	//echo "<pre>"; print_r( $tree ); 
+?>
+
 </body>
 </html>
 
@@ -201,7 +223,7 @@ exit;
  */
 function draw_tree_html( $dn, $server_id, $level=0 )
 {
-	global $servers, $tree, $tree_icons;
+	global $servers, $tree, $tree_icons, $lang;
 	$id = $server_id;
 	
 	$encoded_dn = rawurlencode( $dn );
@@ -214,41 +236,41 @@ function draw_tree_html( $dn, $server_id, $level=0 )
 		$tree_icons[ $server_id ][ $dn ] = get_icon( $server_id, $dn );
 	$img_src = 'images/' . $tree_icons[ $server_id ][ $dn ];
 
-	$rdn = ldap_explode_dn( $dn, 0 );
-	$rdn = utf8_decode( $rdn[0] );
+	$rdn = pla_explode_dn( $dn );
+	$rdn = $rdn[0];
 
 	echo '<tr>';
 
 	for( $i=0; $i<=$level; $i++ ) {
-		echo '<td class="spacer"></td>';
+		echo '<td class="spacer"></td>' . "\n";
 	}
 		
-	// is this node expanded?
+	// is this node expanded? (deciding whether to draw "+" or "-")
 	if( isset( $tree[$server_id][$dn] ) ) { ?>
 		<td class="expander">
 			<nobr>
 			<a href="<?php echo $collapse_href; ?>"><img src="images/minus.png" alt="plus" /></a>
 			</nobr>
 		</td>
-		<?php  $object_count = ' <span class="count">(' . count( $tree[$server_id][$dn] ) . ')</span>'; ?>
-	<?php  } else { ?>	
+		<?php  $object_count = ' <span class="count">(' . count( $tree[$server_id][$dn] ) . ')</span>';
+	} else { ?>	
 		<td class="expander">
 			<nobr>
 			<a href="<?php echo $expand_href; ?>"><img src="images/plus.png" alt="minus" /></a>
 			</nobr>
 		</td>
-		<?php  $object_count = ''; ?>
-	<?php  } ?>	
+		<?php  $object_count = '';
+	} ?>	
 
 	<td class="icon">
 		<a href="<?php echo $edit_href; ?>"
 		   target="right_frame"
 		   name="<?php echo $server_id; ?>_<?php echo $encoded_dn; ?>"><img src="<?php echo $img_src; ?>" /></a>
 	</td>
-	<td class="rdn" colspan="99">
+	<td class="rdn" colspan="<?php echo (97-$level); ?>">
 		<nobr>
 			<a href="<?php echo $edit_href; ?>"
-				target="right_frame"><?php echo htmlspecialchars($rdn); ?></a>
+				target="right_frame"><?php echo htmlspecialchars( utf8_decode( $rdn ) ); ?></a>
 				<?php echo $object_count; ?>
 		</nobr>
 	</td>
@@ -270,8 +292,9 @@ function draw_tree_html( $dn, $server_id, $level=0 )
 		echo '<td class="spacer"></td>';
 		echo '<td class="icon"><a href="' . $create_href .
 		     '" target="right_frame"><img src="images/star.png" /></a></td>';
-		echo '<td class="create" colspan="99"><a href="' . $create_href . 
-		     '" target="right_frame" title="Create a new object in '. $rdn.'">Create New</a></td></tr>';
+		echo '<td class="create" colspan="' . (97-$level) . '"><a href="' . $create_href . 
+		     '" target="right_frame" title="' . $lang['create_new_entry_in'] . ' ' . $rdn.'">' . 
+		     $lang['create_new'] . '</a></td></tr>';
 	}
 
 	echo '</tr>';

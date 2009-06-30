@@ -1,17 +1,29 @@
+table.schema_oclasses {
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+	border-top: 0;
+	margin-bottom: 10px;
+	background-color: #eee;
+}
+
 table.schema_oclasses td {
 	vertical-align: top;
 	text-align: left;
+	padding-left: 5px;
 }
 
 table.schema_attr th {
 	background-color: #016;
 	padding: 5px;
 	color: white;
-	font-weight: normal;
+	font-weight: bold;
+	font-size: 125%;
 }
 
 table.schema_attr td {
 	padding: 5px;
+	vertical-align: top;
 }
 
 table.schema_attr tr.even {
@@ -22,13 +34,32 @@ table.schema_attr tr.odd {
 	background-color: #ccc;
 }
 
-div.error {
-	background-color: #eec;
-	border: solid black 1px;
-	padding: 15px;
-	padding-top: 0px;
-	width: 380px;
+table.schema_attr tr.highlight{
+	background-color: #bcd;
+	font-weight: Bold;
+}
+
+table.error {
+	width: 500px;
+	border: 2px solid black;
+}
+
+table.error tr td {
+	vertical-align: top;
 	text-align: left;
+	padding: 15px;
+	border: 0px;
+}
+
+table.error tr td h2 {
+	margin: 5px;
+	margin-bottom: 20px;
+}
+
+table.error tr td.img {
+	vertical-align: center;
+	text-align: center;
+	width: 20px;
 }
 
 table.confirm th {
@@ -79,6 +110,20 @@ body {
 	font-size: 12pt;
 }
 
+table.tree tr.login td {
+}
+
+table.tree td.links {
+	padding: 0px;
+	font-size: 10px;
+	padding-left: 12px;
+	font-size: 10px;
+}
+
+table.tree td.links a {
+	font-size: 10px;
+}
+
 table.tree {
 	border: 0px;
 }
@@ -86,7 +131,7 @@ table.tree {
 table.tree img {
 	border: 0px;
 }
-
+	
 table.tree td {
 	padding: 2px;
 	border: 0px solid black;
@@ -95,14 +140,27 @@ table.tree td {
 table.tree tr {
 }
 
-table.tree tr.server {
+table.tree tr.server td.icon {
+	width: 14px;
+}
+
+table.tree tr.server td {
+	padding-top: 15px;
+	padding-bottom: 0px;
 	vertical-align: top;
+	font-size: 20px;
+	text-align: left;
 }
 
 table.tree td.icon {
 	text-align: center;
 	padding: 0px;
-	width: 22px;
+	width: 14px;
+	font-size: 1px;
+}
+
+table.tree td.rdn {
+	width: 500px;
 }
 
 table.tree td.rdn a {
@@ -113,6 +171,9 @@ table.tree td.rdn a {
 table.tree td.rdn a:hover {
 	text-decoration: underline;
 	color: blue;
+}
+
+table.tree td.create {
 }
 
 table.tree td.create a {
@@ -133,6 +194,7 @@ table.tree td.spacer {
 table.tree td.expander {
 	text-align: center;
 	width: 22px;
+	max-width: 22px;
 	min-width: 22px;
 }
 
@@ -167,7 +229,7 @@ h3.subtitle {
 }
 
 table.edit_dn tr.spacer td {
-	height: 20px;
+	height: 10px;
 }
 
 table.edit_dn {
@@ -200,6 +262,7 @@ table.edit_dn tr td.val {
 	vertical-align: center;
 }
 
+/* When an attr is updated, it is displayed in light blue to indicate such */
 table.edit_dn tr.updated_attr {
 	background: #def;
 }
@@ -208,6 +271,12 @@ table.edit_dn tr.updated_attr td {
 	border-top: 1px solid black;
 	border-bottom: 1px solid black;
 	color: #005;
+}
+
+/* Neede to prevent sub-tables (like the one in which jpegPhotos are displayed)
+ * from drawing borders as well. */
+table.edit_dn tr.updated_attr td table td {
+	border: 0px;
 }
 
 table.edit_dn tr.updated_attr a {
@@ -239,7 +308,7 @@ form.edit_dn {
 }
 
 h4.oclass {
-	background: #88b;
+	background: #016;
 	padding: 5px;
 	margin: 0px;
 	margin-top: 8px;

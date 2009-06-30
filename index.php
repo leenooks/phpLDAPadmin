@@ -1,26 +1,32 @@
-<?php/*
+<?php
+
+/*******************************************
+<pre>
 
 If you are seeing this in your browser,
 PHP is not installed on your web server!!!
 
-*/?>
+</pre>
+*******************************************/
 
-<?php require_once( 'functions.php' ); ?>
+@require 'common.php';
 
-<?php  if( ! file_exists( 'config.php' ) ) { ?>
+?>
+
+<?php if( ! file_exists(realpath( 'config.php' )) ) { ?>
 
 <html>
 <head>
-	<title>phpLDAPAdmin - <?php echo pla_version(); ?></title>
+	<title>phpLDAPadmin - <?php echo pla_version(); ?></title>
 	<link rel="stylesheet" href="style.css" />		
 </head>
 
 <body>
-<h3 class="title">Configure phpLDAPAdmin</h1>
+<h3 class="title">Configure phpLDAPadmin</h1>
 <br />
 <br />
 <center>
-You need to configure phpLDAPAdmin. Edit the file 'config.php' to do so.<br />
+You need to configure phpLDAPadmin. Edit the file 'config.php' to do so.<br />
 <br />
 An example config file is provided in 'config.php.example'
 
@@ -30,7 +36,7 @@ An example config file is provided in 'config.php.example'
 
 <?php  } elseif( check_config() )  { 
 require 'config.php';
-echo "<?xml version=\"1.0\" encoding=\"utf-8\?>\n";
+echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
 
 ?>
 
@@ -38,11 +44,11 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\?>\n";
   PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN"
     "http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="no-NO">
-<head><title>phpLDAPAdmin - <?php echo pla_version(); ?></title></head>
+<head><title>phpLDAPadmin - <?php echo pla_version(); ?></title></head>
 
 <frameset cols="<?php echo $tree_width; ?>,*">
 	<frame src="tree.php" name="left_frame" id="left_frame" />
-	<frame src="search.php" name="right_frame" id="right_frame" />
+	<frame src="welcome.php" name="right_frame" id="right_frame" />
 </frameset>
 
 </html>
@@ -66,14 +72,32 @@ function check_config()
 	if( ! extension_loaded( 'ldap' ) )
 	{
 		pla_error( "Your install of PHP appears to be missing LDAP support. Please install " .
-				"LDAP support before using phpLDAPAdmin." );
+				"LDAP support before using phpLDAPadmin." );
 		return false;
 	}
 
+	/* Make sure they have all the functions we will need */
+	$required_functions = array( 'utf8_encode', 'utf8_decode', 'htmlspecialchars' );
+	foreach( $required_functions as $function ) {
+		if( ! function_exists( $function ) ) {
+			pla_error( "Your install of PHP appears to be missing the function '<b>$function()</b>' " .
+				"phpLDAPadmin requires this function to work properly." );
+			return false;
+		}
+	}
+
 	/* Make sure the config file is readable */
-	if( ! is_readable( 'config.php' ) )
+	//if( ! is_readable( 'config.php' ) )
+	if( ! is_readable(realpath( 'config.php' )) )
 	{
 		echo "The config file 'config.php' is not readable. Please check its permissions.";
+		return false;
+	}
+
+	/* Make sure their PHP install is up to snuff */
+	if( version_compare( phpversion(), "4.1.0" ) < 0 )
+	{
+		echo "You are using php version " . phpversion() . ". phpLDAPadmin requires version 4.1 or greater.";
 		return false;
 	}
 
@@ -92,7 +116,7 @@ function check_config()
 		?>
 			<html>
 			<head>
-			<title>phpLDAPAdmin Config File Error</title>
+			<title>phpLDAPadmin Config File Error</title>
 			<link rel="stylesheet" href="style.css" />
 			</head>
 
@@ -151,7 +175,7 @@ function check_config()
 	if( $count == 0 )
 	{
 		echo "None of the " . count($servers) . " servers in your \$servers array is ";
-		echo "active in config.php. phpLDAPAdmin cannot proceed util you correct this.";
+		echo "active in config.php. phpLDAPadmin cannot proceed util you correct this.";
 		return false;
 	}
 

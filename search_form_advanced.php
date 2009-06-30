@@ -1,9 +1,20 @@
+<script>
+<?
+$num_server = count($server_info_list);
+for($i=0;$i<$num_server;$i++){
+?>
+ addToServersList(new server(<?=$i?>,"<?=$server_info_list[$i]['name']?>","<?=$server_info_list[$i]['base_dn']?>"));
+<? 
+}
+?>
+</script>
+
 <form action="search.php" method="get" class="search">
 <input type="hidden" name="search" value="true" />
 <input type="hidden" name="form" value="advanced" />
 
-<center><b>Advanced Search Form</b></center>
-<small>(<a href="search.php?server_id=<?php echo $server_id; ?>&amp;form=simple">Simple Search Form</a>)</small><br />
+<center><b><?php echo $lang['advanced_search_form_str']; ?></b></center>
+<small>(<a href="search.php?server_id=<?php echo $server_id; ?>&amp;form=simple"><?php echo $lang['simple_search_form_str']; ?></a>)</small><br />
 <br />
 
 <table>

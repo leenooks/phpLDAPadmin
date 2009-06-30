@@ -9,8 +9,7 @@
  *  - server_id
  */
 
-require 'config.php';
-require_once 'functions.php';
+require 'common.php';
 
 $server_id = $_GET['server_id'];
 $server = $servers[$server_id];
@@ -43,9 +42,9 @@ check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars
 
 <?php  if( $_SERVER['SERVER_PORT'] != 443 ) { ?>
 
-<span style="color:red">Warning: this is an insecure (non-SSL) connection!<br />
- SSL is recommended when transmitting sensitive passwords.</span>
-<br />
+<center>
+<span style="color:red">Warning: This web connection is <acronym title="Your login and password will be transmitted in clear text">unencrypted</acronym> (not https).<br />
+ </span>
 
 <?php  } ?>
 
@@ -64,8 +63,12 @@ check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars
 	<td colspan="2"><small>Anonymous Bind</small> <input type="checkbox" name="anonymous_bind" onclick="toggle_disable_login_fields(this)" /></td>
 </tr>
 <tr>
+<!--
 	<td><small>Login <acronym title="Distinguished Name">DN</acronym></small></td>
 	<td><input type="text" name="login_dn" size="40" value="<?php echo $servers[$server_id]['login_dn']; ?>" name="login_dn" /></td>
+-->
+<td><small>Login <?php if ( $servers[$server_id]['login_attr'] == "dn" || $servers[$server_id]['login_attr'] == "") { echo '<acronym title="Distinguished Name">DN</acronym>';} ?></small></td>
+<td><input type="text" name="<?php if ( $servers[$server_id]['login_attr'] == "dn" || $servers[$server_id]['login_attr'] == "" ) {echo 'login_dn';} else {echo 'uid';} ?>" size="40" value="<?php echo $servers[$server_id]['login_dn']; ?>" /></td>
 </tr>
 <tr>
 	<td><small>Password</small></td>

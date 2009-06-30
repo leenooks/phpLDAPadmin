@@ -10,13 +10,18 @@
  *  - new_rdn
  */
 
-require 'config.php';
-require_once 'functions.php';
+require 'common.php';
 
-$dn = rawurldecode( stripslashes( $_POST['dn'] ) );
+$dn = rawurldecode( $_POST['dn'] );
 $server_id = $_POST['server_id'];
-$new_rdn = stripslashes( $_POST['new_rdn'] );
+$new_rdn = $_POST['new_rdn'];
 $new_rdn = utf8_encode($new_rdn);
+
+if( is_server_read_only( $server_id ) )
+	pla_error( "You cannot perform updates while server is in read-only mode" );
+
+if( is_server_read_only( $server_id ) )
+	pla_error( "You cannot perform updates while server is in read-only mode" );
 
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
@@ -24,7 +29,7 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 $ds = pla_ldap_connect( $server_id ) or pla_error( "Could not connect to LDAP sever" );
  
 // build the container string
-$old_rdn = ldap_explode_dn( $dn, 0 );
+$old_rdn = pla_explode_dn( $dn );
 $container = $old_rdn[ 1 ];
 for( $i=2; $i<count($old_rdn)-1; $i++ )
 	$container .= ',' . $old_rdn[$i];

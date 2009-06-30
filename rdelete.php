@@ -9,15 +9,17 @@
  *  - server_id
  */
 
-require 'config.php';
-require_once 'functions.php';
+require 'common.php';
 
 $encoded_dn = $_POST['dn'];
-$dn = stripslashes( rawurldecode( $encoded_dn ) );
+$dn = rawurldecode( $encoded_dn );
 $server_id = $_POST['server_id'];
 
 if( ! $dn )
 	pla_error( "You must specify a DN." );
+
+if( is_server_read_only( $server_id ) )
+	pla_error( "You cannot perform updates while server is in read-only mode" );
 
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
@@ -66,7 +68,7 @@ if( $del_result )
 		parent.left_frame.location.reload();
 	</script>
 
-	Object <b><?php echo htmlspecialchars( utf8_decode( $dn ) ); ?></b> and sub-tree deleted successfully.
+	Object <b><?php echo htmlspecialchars( $dn ); ?></b> and sub-tree deleted successfully.
 
 	<?php 
 
@@ -86,7 +88,7 @@ function pla_rdelete( $server_id, $dn )
 	$ds = pla_ldap_connect( $server_id );
 
 	if( ! is_array( $children ) || count( $children ) == 0 ) {
-		echo "<nobr>Deleting " . htmlspecialchars( utf8_decode( $dn ) ) . "...";
+		echo "<nobr>Deleting " . htmlspecialchars( $dn ) . "...";
 		flush();
 		if( ldap_delete( $ds, $dn ) ) {
 			echo " <span style=\"color:green\">Success</span></nobr><br />\n";
@@ -99,7 +101,7 @@ function pla_rdelete( $server_id, $dn )
 		foreach( $children as $child_dn ) {
 			pla_rdelete( $server_id, $child_dn );
 		}
-		echo "<nobr>Deleting " . htmlspecialchars( utf8_decode( $dn ) ) . "...";
+		echo "<nobr>Deleting " . htmlspecialchars( $dn ) . "...";
 		flush();
 		if( ldap_delete( $ds, $dn ) ) {
 			echo " <span style=\"color:green\">Success</span></nobr><br />\n";

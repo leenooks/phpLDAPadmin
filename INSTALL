@@ -1,40 +1,49 @@
 These instructions assume that you have a working install of:
-	a. A web server (Apache, IIS, etc).
-	b. PHP (with LDAP support)
+        a. A web server (Apache, IIS, etc).
+        b. PHP (with LDAP support)
 
-Installing phpLDAPAdmin in 4 easy steps:
+* Installing phpLDAPadmin in 4 easy steps:
 
-1. Untar the archive (if you're reading this, you've already done that).
-2. Put the resulting phpldapadmin directory somewhere in your webroot.
-3. Copy 'config.php.example' to 'config.php' and edit to taste.
-4. Then, point your browser to the phpldapadmin directory.
+  1. Untar the archive (if you're reading this, you already did that).
+  2. Put the resulting 'phpldapadmin' directory somewhere in your webroot.
+  3. Copy 'config.php.example' to 'config.php' and edit to taste.
+  4. Then, point your browser to the phpldapadmin directory.
 
-Browsers
+* Browser Notes
 
-phpLDAPAdmin was developed on Mozilla, and will most likely run best thereon.
-However, testing has been done on Internet Explorer, and it should work
-well also. No testing has been done on either Konqueror (or any khtml-based
-browser like Safari) or Opera. If you find a browser incompatibility,
-please report it.
+  phpLDAPadmin was developed on Mozilla, and will most likely run best thereon.
+  However, testing has been done on Internet Explorer, and it should work
+  well also. No testing has been done on either Konqueror (or any khtml-based
+  browser like Safari) or Opera. If you find a browser incompatibility,
+  please report it.
 
-Contributors (thank you!)
+* Contributors (thank you!)
+  
+  Project Developers:
+
+  - David Smith         Maintainer
+  - Xavier Renard       LDIF master
+  - Nate Rotschafer     Release manager
   
   Patch writers:
 
-  - Mario Valdez  	jpegPhoto support, localization (not yet in 0.8.x), html fixes
-  - Bayu Irawan 	userPassword encryption support,  html fixes, ldap_modify fixes
-  - Uwe Ebel 		short_open_tags fix-it script
-  - Philippe Broussard 	form auth_type bug report
-  - Andrew Tipton 	SUP support in schema-fetching
-  - Eigil Bjørgum 	UTF-8 support
-  - Brandon Lederer	DNS entry template
+  - Bayu Irawan         userPassword hash, html fixes, ldap_modify fixes
+  - Uwe Ebel         	short_open_tags fix
+  - Andrew Tipton       SUP support in schema parser
+  - Eigil Bjørgum       UTF-8 support
+  - Brandon Lederer     DNS entry template
     Nathan Rotschafer
-  - Steve Rigler	Password hash patch
-  - Chric Jackson	Blowfish and md5crypt passwords
+  - Steve Rigler        Password hash patch
+  - Chric Jackson       Blowfish and md5crypt passwords
+  - Marius Rieder       Enhanced schema parser
+  - Nick Burch          Many realpath() fixes
 
-  Bug reporters:
+  Translators:
 
-  - Colin Tinker (short_open_tags bug report)
-  - Greg Felix (multi-value update bug report)
-  - Moritz Mertinkat (creation bug report) 
+  - Uwe Ebel            German
+  - Xavier Renard       French
+  - Dave Smith          English ;)
+  
+    If you can help translate, please join the phpldapadmin-devel mailing list:
+    https://lists.sourceforge.net/mailman/listinfo/phpldapadmin-devel
 

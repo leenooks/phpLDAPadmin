@@ -10,12 +10,14 @@
  *  - container (rawurlencoded) (optional)
  */
 
-require 'config.php';
-require_once 'functions.php';
+require 'common.php';
 
 $server_id = $_REQUEST['server_id'];
-$step = $_REQUEST['step'] ? $_REQUEST['step'] : 1; // defaults to 1
-$container = stripslashes( $_REQUEST['container'] );
+$step = isset( $_REQUEST['step'] ) ? $_REQUEST['step'] : 1; // defaults to 1
+$container = $_REQUEST['container'];
+
+if( is_server_read_only( $server_id ) )
+	pla_error( "You cannot perform updates while server is in read-only mode" );
 
 check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
 have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );

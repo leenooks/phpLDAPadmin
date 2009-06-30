@@ -8,13 +8,12 @@
  *  - server_id
  */
 
-require 'config.php';
-require_once 'functions.php';
+require 'common.php';
 
-$dn = stripslashes( rawurldecode( $_GET['dn'] ) );
+$dn = rawurldecode( $_GET['dn'] );
 $encoded_dn = rawurlencode( $dn );
 $server_id = $_GET['server_id'];
-$rdn = ldap_explode_dn( $dn, 0 );
+$rdn = pla_explode_dn( $dn );
 $container = $rdn[ 1 ];
 for( $i=2; $i<count($rdn)-1; $i++ )
 	$container .= ',' . $rdn[$i];
@@ -42,11 +41,11 @@ $children = get_container_contents( $server_id, $dn );
 <?php include 'header.php'; ?>
 <body>
 
-<h3 class="title">Copy <?php echo $rdn; ?></h3>
+<h3 class="title">Copy <?php echo utf8_decode( $rdn ); ?></h3>
 <h3 class="subtitle">Server: <b><?php echo $server_name; ?></b> &nbsp;&nbsp;&nbsp; Distinguished Name: <b><?php echo $dn; ?></b></h3>
 
 <center>
-Copy <b><?php echo htmlspecialchars($rdn); ?></b> to a new object:<br />
+Copy <b><?php echo htmlspecialchars( utf8_decode( $rdn )); ?></b> to a new object:<br />
 <br />
 <form action="copy.php" method="post" name="copy_form">
 <input type="hidden" name="old_dn" value="<?php echo $encoded_dn; ?>" />
@@ -56,7 +55,7 @@ Copy <b><?php echo htmlspecialchars($rdn); ?></b> to a new object:<br />
 <tr>
 	<td>Destination DN:</td>
 	<td>
-		<input type="text" name="new_dn" size="45" value="<?php echo htmlspecialchars($dn); ?>" />
+		<input type="text" name="new_dn" size="45" value="<?php echo htmlspecialchars( utf8_decode( $dn ) ); ?>" />
 		<?php draw_chooser_link( 'copy_form.new_dn' ); ?></td>
 	</td>
 </tr>

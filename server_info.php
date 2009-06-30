@@ -8,8 +8,7 @@
  *  - server_id
  */
  
-require 'config.php';
-require_once 'functions.php';
+require 'common.php';
 
 $server_id = $_GET['server_id'];
 $server_name = $servers[$server_id]['name'];

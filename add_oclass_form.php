@@ -15,16 +15,18 @@
  *  - new_oclass
  */
 
-require 'config.php';
-require_once 'functions.php';
+require 'common.php';
 
-$dn = stripslashes( rawurldecode( $_POST['dn'] ) );
+$dn = rawurldecode( $_POST['dn'] );
 $encoded_dn = rawurlencode( $dn );
-$new_oclass = stripslashes( $_POST['new_oclass'] );
+$new_oclass = $_POST['new_oclass'];
 $server_id = $_POST['server_id'];
 
-check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
-have_auth_info( $server_id ) or pla_error( "Not enough information to login to server. Please check your configuration." );
+if( is_server_read_only( $server_id ) )
+	pla_error( $lang['no_updates_in_read_only_mode'] );
+
+check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
+have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
 
 /* Ensure that the object has defined all MUST attrs for this objectClass.
  * If it hasn't, present a form to have the user enter values for all the
@@ -47,19 +49,19 @@ foreach( $must_attrs as $attr )
 
 if( count( $needed_attrs ) > 0 )
 {
-	?>
-
-
-	<?php include 'header.php'; ?>
+	include 'header.php'; ?>
 	<body>
 	
-	<h3 class="title">New Required Attributes</h3>
-	<h3 class="subtitle">This action requires you to add <?php echo count($needed_attrs); ?> new attribute<?php echo (count($needed_attrs)>1?'s':''); ?></h3>
+	<h3 class="title"><?php echo $lang['new_required_attrs']; ?></h3>
+	<h3 class="subtitle"><?php echo $lang['requires_to_add'] . ' ' . count($needed_attrs) . 
+					' ' . $lang['new attributes']; ?></h3>
 
 	<small>
-	Instrucitons: In order to add the objectClass <b><?php echo $new_oclass; ?></b> to the object <b><?php echo htmlspecialchars($dn); ?></b>,
-	you must specify <?php echo count( $needed_attrs ); ?> new attribute<?php echo (count($needed_atts)>1?'s':''); ?> that this
-	objectClass requires. You can do so in this form.</small>
+	<?php 
+	echo $lang['new_required_attrs_instructions'];
+	echo ' ' . count( $needed_attrs ) . ' ' . $lang['new_attributes'] . ' ';
+	echo $lang['that_this_oclass_requires']; ?>
+	</small>
 
 	<br />
 	<br />
@@ -70,7 +72,7 @@ if( count( $needed_attrs ) > 0 )
 	<input type="hidden" name="server_id" value="<?php echo $server_id; ?>" />
 	
 	<table class="edit_dn" cellspacing="0">
-	<tr><th colspan="2">New Required Attributes</th></tr>
+	<tr><th colspan="2"><?php echo $lang['new_required_attrs']; ?></th></tr>
 
 	<?php foreach( $needed_attrs as $count => $attr ) { ?>
 		<?php  if( $count % 2 == 0 ) { ?>
@@ -86,7 +88,7 @@ if( count( $needed_attrs ) > 0 )
 	</table>
 	<br />
 	<br />
-	<center><input type="submit" value="Add ObjectClass and Attributes" /></center>
+	<center><input type="submit" value="<?php echo $lang['add_oclass_and_attrs']; ?>" /></center>
 	</form>
 
 	</body>

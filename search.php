@@ -13,8 +13,7 @@
  *  - base_dn, scope, filter
  */
 
-require 'config.php';
-require_once 'functions.php';
+require 'common.php';
 
 $server_id = $_GET['server_id'];
 
@@ -27,25 +26,33 @@ else
 {
 	check_server_id( $server_id ) or pla_error( "Bad server_id: " . var_dump( htmlspecialchars( $server_id ) ) );
 }
+$js_on_change_string ='';
+  if( $_GET['form'] == 'advanced' ) { 
+    $js_on_change_string = 'onChange="document.forms[0].base_dn.value=servers[document.forms[0].server_id.value].getBaseDn()"';
+  }
 
 // build the server drop-down html and JavaScript array (for base_dns)
-$server_menu_html = '<select name="server_id" onChange="base_dn.value = server_base_dns[ this.value ]">';
-$js_dn_list = '';
+$server_menu_html = '<select name="server_id" '.$js_on_change_string.'>';
+
+$server_info_list =array();
+
 foreach( $servers as $id => $server ) { 
 	$base_dn = $server['base'] ? $server['base'] : try_to_get_root_dn( $id );
-	$js_dn_list .= '"' . $server['base'] . '",';
+	$server_info_list[$id]['id'] = $id;
+	$server_info_list[$id]['name'] = $server['name'];
+	$server_info_list[$id]['base_dn'] = $base_dn;
+
 	if( $server['host'] ) { 
 		$server_menu_html .= '<option value="'.$id.'"' . ( $id==$server_id? ' selected' : '' ) . '>';
 		$server_menu_html .= $server['name'] . '</option>';
 	}
 }
-// trim off the trailing comma
-$js_dn_list = substr( $js_dn_list, 0, strlen($js_dn_list)-1 );
+
 $server_menu_html .= '</select>';
 
-$filter = stripslashes( $_GET['filter'] );
+$filter = $_GET['filter'];
 $filter = utf8_encode($filter);
-$attr = stripslashes( $_GET['attribute'] );
+$attr = $_GET['attribute'];
 
 // grab the base dn for the search
 if( isset( $_GET['base_dn'] ) )
@@ -55,8 +62,8 @@ elseif( '' != $servers[$server_id]['base'] )
 else 
 	$base_dn = try_to_get_root_dn( $server_id );
 	
-$criterion = stripslashes( $_GET['criterion'] );
-$form = stripslashes( $_GET['form'] );
+$criterion = $_GET['criterion'];
+$form = $_GET['form'];
 $scope = $_GET['scope'] ? $_GET['scope'] : 'sub';
 //echo "<PRE>";print_r( $_GET );echo "</pre>";
 ?>
@@ -88,7 +95,7 @@ if( $_GET['search'] )
 
 	if( $form == 'advanced'  ) {
 		$search_result_attributes = isset( $_GET['display_attrs'] ) ? 
-						stripslashes( $_GET['display_attrs'] ) :
+						$_GET['display_attrs'] :
 						$search_result_attributes;
 		process_config();
 	} 
@@ -117,12 +124,22 @@ if( $_GET['search'] )
 		{
 			switch( $criterion ) {
 				case 'starts with':
+					// to fix bug 789113
+					if( $filter == "*" )
+						$filter = "";
 					$filter = "($attr=$filter*)";
 					break;
 				case 'contains':
-					$filter = "($attr=*$filter*)";
+					// to fix bug 789113
+					if( $filter == "*" )
+						$filter = "($attr=*)";
+					else
+						$filter = "($attr=*$filter*)";
 					break;
 				case 'ends with':
+					// to fix bug 789113
+					if( $filter == "*" )
+						$filter = "";
 					$filter = "($attr=*$filter)";
 					break;
 				case 'equals':
@@ -139,12 +156,11 @@ if( $_GET['search'] )
 		}
 		
 		$time_start = utime();
-		$results = pla_ldap_search( $server_id, $filter, $base_dn,
-				array_merge( $search_result_attributes, array( $search_result_title_attribute ) ),
-				$scope );
+		$results = pla_ldap_search( $server_id, $filter, $base_dn, $search_result_attributes, $scope );
 		$time_end = utime();
 		$time_elapsed = round( $time_end - $time_start, 2 );
 		$count = count( $results );
+
 		?>
 
 		<br />
@@ -159,25 +175,27 @@ if( $_GET['search'] )
 		<?php flush(); ?>	
 
 		<?php if( $results ) foreach( $results as $dn => $attrs ) { ?>
-			<?php  $encoded_dn = rawurlencode($attrs['dn']); ?>
-			<?php  $rdn = utf8_decode( get_rdn( $attrs['dn'] ) ); ?>
+			<?php  $encoded_dn = rawurlencode( $dn ); ?>
+			<?php  $rdn = utf8_decode( get_rdn( $dn ) ); ?>
 			<div class="search_result">
 			<a href="edit.php?server_id=<?php echo $server_id; ?>&amp;dn=<?php echo $encoded_dn; ?>">
 				<?php echo htmlspecialchars($rdn); ?>
 			</a>
 			</div>
 			<table class="attrs">
-				<?php  if( is_array( $search_result_attributes ) ) foreach( $search_result_attributes as $attr ) { ?>
+				<?php foreach( $attrs as $attr => $values ) { ?>
 
 					<tr>
-						<td class="attr" valign="top"><?php echo htmlspecialchars($attr); ?></td>
+						<td class="attr" valign="top"><?php echo htmlspecialchars( $attr ); ?></td>
 						<td class="val">
-							<?php  if( is_array( $attrs[strtolower($attr)] ) ) { ?>
-								<?php  foreach( $attrs[strtolower($attr)] as $a ) { ?>
-									<?php echo str_replace( ' ', '&nbsp;', htmlspecialchars(utf8_decode($a))); ?><br />
+							<?php  if( is_array( $values ) ) { ?>
+								<?php  foreach( $values as $value ) { ?>
+								<?php echo str_replace( ' ', '&nbsp;',
+								htmlspecialchars( utf8_decode( $value ) ) ); ?><br />
 								<?php  } ?>
 							<?php  } else { ?>
-								<?php echo str_replace( ' ', '&nbsp;', htmlspecialchars(utf8_decode($attrs[strtolower($attr)]))); ?>
+								<?php echo str_replace( ' ', '&nbsp;',
+								htmlspecialchars( utf8_decode( $values ) ) ); ?>
 							<?php  } ?>
 						</td>
 					</tr>
@@ -188,7 +206,7 @@ if( $_GET['search'] )
 		<?php  } ?>
 
 			<br /><br />
-			<div class="search_result"><center><span style="font-weight:normal;font-size:75%;">Search happily performed by phpLDAPAdmin in 
+			<div class="search_result"><center><span style="font-weight:normal;font-size:75%;">Search happily performed by phpLDAPadmin in 
 				<b><?php echo $time_elapsed; ?></b> seconds.</small></center></div>
 		<?php 
 	}

@@ -5,8 +5,8 @@
 
 <table>
 <td>	
-<center><b>Simple Search Form</b><br />
-<small>(<a href="search.php?server_id=<?php echo $server_id; ?>&amp;form=advanced">Advanced Search Form</a>)</small><br />
+<center><b><?php echo $lang['simple_search_form_str']; ?></b><br />
+<small>(<a href="search.php?server_id=<?php echo $server_id; ?>&amp;form=advanced"><?php echo $lang['advanced_search_form_str']; ?></a>)</small><br />
 <br />
 </center>
 
@@ -24,7 +24,11 @@
 		</select>
 
 		<select name="criterion">
-		<?php  foreach( $search_criteria_options as $c ) { ?>
+
+
+		<?php  
+			$search_criteria_options = array( "equals", "starts with", "contains", "ends with", "sounds like" );
+			foreach( $search_criteria_options as $c ) { ?>
 			<option value="<?php echo $c; ?>"<?php echo $c==$criterion?' selected':''; ?>>
 				<?php echo htmlspecialchars($c); ?>
 			</option>
