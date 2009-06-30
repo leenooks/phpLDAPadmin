@@ -1,49 +1,65 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/search_form_predefined.php,v 1.6 2004/06/04 13:42:08 uugdave Exp $
-?><form action="search.php" method="get" class="search">
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/search_form_predefined.php,v 1.7 2005/02/25 13:44:06 wurley Exp $
+
+/**
+ * @package phpLDAPadmin
+ */
+
+?>
+
+<form action="search.php" method="get" class="search">
 <input type="hidden" name="search" value="true" />
 <input type="hidden" name="form" value="predefined" />
 <input type="hidden" name="format" value="<?php echo $format; ?>" />
 
 <table>
-<td>	
-<?php
-if( isset( $_GET['predefined'] ) ) 
-	$selected_q_number = intval( $_GET['predefined'] ); 
+<tr>
+	<td>
+
+<?php if( isset( $_GET['predefined'] ) )
+	$selected_q_number = intval( $_GET['predefined'] );
+
 else
-	$selected_q_number = null;
-?>
-<center><b><?php echo $lang['predefined_searches']; ?></b><br />
-<small>(<a href="search.php?server_id=<?php echo $server_id; ?>&amp;form=simple"><?php echo $lang['simple_search_form_str']; ?></a> | 
+	$selected_q_number = null; ?>
+
+	<center><b><?php echo $lang['predefined_searches']; ?></b><br />
+	<small>(<a href="search.php?server_id=<?php echo $server_id; ?>&amp;form=simple"><?php echo $lang['simple_search_form_str']; ?></a> |
 	<a href="search.php?server_id=<?php echo $server_id; ?>&amp;form=advanced"><?php echo $lang['advanced_search_form_str']; ?></a>)</small><br />
-<br />
-<?php  
-	if( ! isset( $queries ) || ! is_array( $queries ) || 0 == count( $queries ) ) {
+	<br />
+
+<?php if( ! isset( $queries ) || ! is_array( $queries ) || 0 == count( $queries ) ) {
         echo "<br />\n";
-		echo $lang['no_predefined_queries'];
+	echo $lang['no_predefined_queries'];
         echo "<br />\n";
         echo "<br />\n";
         echo "<br />\n";
-        echo "</td></table>\n";
+        echo "</td></tr></table>\n";
         echo "</body>\n";
         echo "</html>\n";
         die();
+
 } else { ?>
 
 <small><?php echo $lang['predefined_search_str']; ?>: </small>
 <select name="predefined">
-<?php 
-	foreach( $queries as $q_number => $q ) {
-		if ($selected_q_number === $q_number)
-			$selected = " selected";
-		else $selected = "";
-		print("\t<option value=\"" . $q_number . "\"" . $selected . ">\n");
-		print("\t" . htmlspecialchars( $q['name'] ) . "\n");
-		print("\t</option>\n");
-	}
-?>
+
+<?php foreach( $queries as $q_number => $q ) {
+
+	if ($selected_q_number === $q_number)
+		$selected = " selected";
+
+	else
+		$selected = "";
+
+	print("\t<option value=\"" . $q_number . "\"" . $selected . ">\n");
+	print("\t" . htmlspecialchars( $q['name'] ) . "\n");
+	print("\t</option>\n");
+} ?>
+
 </select>
+
 <?php } ?>
+
 <br />
 <br />
 <center><input type="submit" value="<?php echo $lang['Search']; ?>" /></center>

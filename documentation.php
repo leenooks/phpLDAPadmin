@@ -1,6 +1,11 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/documentation.php,v 1.7 2004/12/17 15:21:15 uugdave Exp $
- 
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/documentation.php,v 1.8 2005/02/25 13:44:06 wurley Exp $
+
+/**
+ * @package phpLDAPadmin
+ */
+/**
+ */
 
 include './common.php';
 include './header.php';
@@ -45,5 +50,3 @@ switch( $view ) {
 
 <h3 class="doc">Modification Templates</h3>
 <p class="doc">TODO: Write me.</p>
-
-

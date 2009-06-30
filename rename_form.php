@@ -1,36 +1,38 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/rename_form.php,v 1.6 2004/08/15 17:39:20 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/rename_form.php,v 1.7 2005/02/25 13:44:06 wurley Exp $
  
-
-/*
- * rename_form.php
+/**
  * Displays a form for renaming an LDAP entry.
  *
  * Variables that come in as GET vars:
  *  - dn (rawurlencoded)
  *  - server_id
+ *
+ * @package phpLDAPadmin
+ */
+/**
  */
 
 require './common.php';
 
+$server_id = (isset($_GET['server_id']) ? $_GET['server_id'] : '');
+$ldapserver = new LDAPServer($server_id);
+
+if( $ldapserver->isReadOnly() )
+	pla_error( $lang['no_updates_in_read_only_mode'] );
+if( ! $ldapserver->haveAuthInfo())
+	pla_error( $lang['not_enough_login_info'] );
+
 $dn = $_GET['dn'];
 $encoded_dn = rawurlencode( $dn );
-$server_id = $_GET['server_id'];
 $rdn = get_rdn( $dn );
-$server_name = $servers[$server_id]['name'];
-
-if( is_server_read_only( $server_id ) )
-	pla_error( $lang['no_updates_in_read_only_mode'] );
-
-check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
-have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
 
 include './header.php'; ?>
 
 <body>
 
 <h3 class="title"><?php echo sprintf( $lang['rename_entry'], htmlspecialchars( $rdn ) ); ?></b></h3>
-<h3 class="subtitle"><?php echo $lang['server']; ?>: <b><?php echo $server_name; ?></b> &nbsp;&nbsp;&nbsp; <?php echo $lang['distinguished_name']; ?>: <b><?php echo htmlspecialchars( ( $dn ) ); ?></b></h3>
+<h3 class="subtitle"><?php echo $lang['server']; ?>: <b><?php echo $ldapserver->name; ?></b> &nbsp;&nbsp;&nbsp; <?php echo $lang['distinguished_name']; ?>: <b><?php echo htmlspecialchars( ( $dn ) ); ?></b></h3>
 
 <br />
 <center>
@@ -43,4 +45,3 @@ include './header.php'; ?>
 </center>
 </body>
 </html>
-

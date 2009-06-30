@@ -1,6 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/login.php,v 1.35 2004/10/24 23:51:49 uugdave Exp $
- 
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/login.php,v 1.40 2005/03/16 11:20:25 wurley Exp $
 
 /**
  * For servers whose auth_type is set to 'cookie' or 'session'. Pass me the login info
@@ -12,8 +11,12 @@
  *
  * Variables that come in as POST vars:
  *  - login_dn
- *  - login_pass 
+ *  - login_pass
  *  - server_id
+ *
+ * @package phpLDAPadmin
+ */
+/**
  */
 
 require './common.php';
@@ -22,87 +25,113 @@ require './common.php';
 isset( $_POST['server_id'] ) or header( "Location: index.php" );
 
 $server_id = $_POST['server_id'];
+$ldapserver = new LDAPServer($server_id);
+
 $dn = isset( $_POST['login_dn'] ) ? $_POST['login_dn'] : null;
 $uid = isset( $_POST['uid'] ) ? $_POST['uid'] : null;
 $pass = isset( $_POST['login_pass'] ) ? $_POST['login_pass'] : null;
 $anon_bind = isset( $_POST['anonymous_bind'] ) && $_POST['anonymous_bind'] == 'on' ? true : false;
-check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
 
-if( ! $anon_bind ) {
+if( ! $anon_bind )
 	strlen($pass) or pla_error( $lang['password_blank'] );
-}
 
-$auth_type = $servers[$server_id]['auth_type'];
+$save_auth_type = $ldapserver->auth_type;
 
 if( $anon_bind ) {
 	$dn = null;
 	$pass = null;
 }
+
 // Checks if the login_attr option is enabled for this host,
 // which allows users to login with a simple username like 'jdoe' rather
 // than the fully qualified DN, 'uid=jdoe,ou=people,,dc=example,dc=com'.
-elseif ( login_attr_enabled( $server_id ) ) {
+elseif ( $ldapserver->isLoginAttrEnabled() ) {
 
-    // Is this a login string (printf-style)
-    if( login_string_enabled( $server_id ) ) {
-        $dn = str_replace( '<username>', $uid, get_login_string( $server_id ) );
-    } else {
-        // This is a standard login_attr
+	// Is this a login string (printf-style)
+	if( $ldapserver->isLoginStringEnabled() ) {
+		$dn = str_replace( '<username>', $uid, $ldapserver->getLoginString() );
 
-        // Fake the auth_type of config to do searching. This way, the admin can specify
-        // the DN to use when searching for the login_attr user.
-        $servers[$server_id]['auth_type'] = 'config';
+	} else {
+		// This is a standard login_attr
 
-        // search for the "uid" first
-        set_error_handler( 'temp_login_error_handler' );
-        $ds = pla_ldap_connect( $server_id );
-        pla_ldap_connection_is_error( $ds );
-        restore_error_handler();
-        $search_base = isset( $servers[$server_id]['base'] ) && '' != trim( $servers[$server_id]['base'] ) ?
-            $servers[$server_id]['base'] :
-            try_to_get_root_dn( $server_id, $ds );
-        if (!empty($servers[$server_id]['login_class'])) {
-            $filter = '(&(objectClass='.$servers[$server_id]['login_class'].')('.$servers[$server_id]['login_attr'].'='.$uid.'))';
-        } else {
-            $filter = $servers[$server_id]['login_attr'].'='.$uid;
-        }
-        $sr = @ldap_search($ds, $search_base, $filter, array('dn'), 0, 1);
-        $result = @ldap_get_entries($ds, $sr);
-        $dn = isset( $result[0]['dn'] ) ? $result[0]['dn'] : false;
-        if( ! $dn ) {
-            pla_error( $lang['bad_user_name_or_password'] );
-        }
+		// Fake the auth_type of config to do searching. This way, the admin can specify
+		// the DN to use when searching for the login_attr user.
+		$ldapserver->auth_type = 'config';
 
-        // restore the original auth_type
-        $servers[$server_id]['auth_type'] = $auth_type;
-    }
+		// search for the "uid" first, this will be an anonymous bind.
+		set_error_handler( 'temp_login_error_handler' );
+		$ldapserver->connect(true,true);
+		restore_error_handler();
+
+		if (!empty($servers[$ldapserver->server_id]['login_class'])) {
+			$filter = '(&(objectClass='.$servers[$ldapserver->server_id]['login_class'].')('.$servers[$ldapserver->server_id]['login_attr'].'='.$uid.'))';
+		} else {
+			$filter = $servers[$ldapserver->server_id]['login_attr'].'='.$uid;
+		}
+
+		// Got through each of the BASE DNs and test the login.
+		foreach ($ldapserver->getBaseDN() as $base_dn) {
+			debug_log(sprintf('login.php: Searching LDAP with base [%s]',$base_dn),9);
+			$sr = @ldap_search($ldapserver->connect(false), $base_dn, $filter, array('dn'), 0, 1);
+			$result = @ldap_get_entries($ldapserver->connect(false), $sr);
+			$dn = isset( $result[0]['dn'] ) ? $result[0]['dn'] : false;
+
+			if ($dn) {
+				debug_log(sprintf('login.php: Got DN [%s] for user ID [%s]',$dn,$uid),5);
+				break;
+			}
+		}
+
+		// If we got here then we werent able to find a DN for the login filter.
+		if( ! $dn ) {
+			pla_error( $lang['bad_user_name_or_password'] );
+		}
+
+		// restore the original auth_type
+		$ldapserver->auth_type = $save_auth_type;
+	}
 }
 
-// We fake a 'config' server auth_type to omit duplicated code 
-$auth_type = $servers[$server_id]['auth_type'];
-$servers[$server_id]['auth_type'] = 'config';
-$servers[$server_id]['login_dn'] = $dn;
-$servers[$server_id]['login_pass'] = $pass;
+// We fake a 'config' server auth_type to omit duplicated code
+debug_log(sprintf('Setting login type to config with DN [%s]',$dn),9);
+$save_auth_type = $ldapserver->auth_type;
+$ldapserver->auth_type = 'config';
+$servers[$ldapserver->server_id]['login_dn'] = $dn;
+$servers[$ldapserver->server_id]['login_pass'] = $pass;
 
-// verify that the login is good 
+// Verify that dn is allowed to login
+if ( ! userIsAllowedLogin($ldapserver,$dn) )
+	pla_error( $lang['login_not_allowed'] );
+
+debug_log(sprintf('User is not prohibited from logging in - now bind [%s]',$dn),9);
+// verify that the login is good
 if( null == $dn && null == $pass )
-    $ds = pla_ldap_connect( $server_id, true, false );
+	$ds = $ldapserver->connect(true,true,true);
 else
-    $ds = pla_ldap_connect( $server_id, false, false );
+	$ds = $ldapserver->connect(true,false,true);
 
-if( ! is_resource( $ds ) ) { 
+debug_log(sprintf('login.php: ds is a [%s]',$ds),9);
+
+if( ! is_resource( $ds ) ) {
 	if( $anon_bind )
 		pla_error( $lang['could_not_bind_anon'] );
 	else
 		pla_error( $lang['bad_user_name_or_password'] );
-} 
 
-$servers[$server_id]['auth_type'] = $auth_type;
-set_login_dn( $server_id, $dn, $pass, $anon_bind ) or pla_error( $lang['could_not_set_cookie'] );
+	syslog_msg ( LOG_NOTICE,"Authentification FAILED for $dn" );
+}
+
+$ldapserver->auth_type = $save_auth_type;
+set_login_dn( $ldapserver, $dn, $pass, $anon_bind ) or pla_error( $lang['could_not_set_cookie'] );
+set_lastactivity( $ldapserver );
 
 initialize_session_tree();
-$_SESSION['tree'][$server_id] = array();
-$_SESSION['tree_icons'][$server_id] = array();
+$_SESSION['tree'][$ldapserver->server_id] = array();
+$_SESSION['tree_icons'][$ldapserver->server_id] = array();
+
+if( ! $anon_bind ) {
+	syslog_msg ( LOG_NOTICE,"Authentification successful for $dn" );
+}
 
 session_write_close();
 
@@ -113,13 +142,13 @@ include realpath( 'header.php' );
 
 <script language="javascript">
 	<?php if( $anon_bind && anon_bind_tree_disabled() )  { ?>
-	
-		parent.location.href='search.php?server_id=<?php echo $server_id; ?>'
-
+		parent.location.href='search.php?server_id=<?php echo $ldapserver->server_id; ?>'
 	<?php } else {  ?>
-
 		parent.left_frame.location.reload();
+	<?php } ?>
 
+	<?php if ( isset($custom_welcome_page) and $custom_welcome_page ) { ?>
+		parent.right_frame.location.href='welcome.php';
 	<?php } ?>
 </script>
 
@@ -127,10 +156,10 @@ include realpath( 'header.php' );
 <br />
 <br />
 <br />
-<?php echo sprintf( $lang['successfully_logged_in_to_server'], 
-    			htmlspecialchars( $servers[$server_id]['name'] ) ); ?><br />
+<?php echo sprintf( $lang['successfully_logged_in_to_server'],
+	htmlspecialchars( $ldapserver->name ) ); ?><br />
 <?php if( $anon_bind ) { ?>
-	(<?php echo $lang['anonymous_bind']; ?>)	
+	(<?php echo $lang['anonymous_bind']; ?>)
 <?php } ?>
 <br />
 </center>
@@ -144,10 +173,9 @@ include realpath( 'header.php' );
  */
 function temp_login_error_handler( $errno, $errstr, $file, $lineno )
 {
-    global $lang;
+	global $lang;
 	if( 0 == ini_get( 'error_reporting' ) || 0 == error_reporting() )
-			return;
-    pla_error( $lang['could_not_connect'] . "<br /><br />" . htmlspecialchars( $errstr ) );
+		return;
+	pla_error( $lang['could_not_connect'] . "<br /><br />" . htmlspecialchars( $errstr ) );
 }
 ?>
-

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/export_form.php,v 1.19 2004/10/24 23:51:49 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/export_form.php,v 1.20 2005/02/25 13:44:06 wurley Exp $
 
 /**
  * export_form.php
@@ -7,6 +7,9 @@
  *
  * Html form to choose an export format(ldif,...)
  *
+ * @package phpLDAPadmin
+ */
+/**
  */
 
 require 'export_functions.php';

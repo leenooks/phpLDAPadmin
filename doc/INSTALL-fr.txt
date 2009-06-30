@@ -1,23 +1,23 @@
-$Header: /cvsroot/phpldapadmin/phpldapadmin/doc/INSTALL-fr.txt,v 1.3 2004/03/19 20:22:54 i18phpldapadmin Exp $
-Les instructions suivantes supposent une installation en état de marche de:
+$Header: /cvsroot/phpldapadmin/phpldapadmin/doc/INSTALL-fr.txt,v 1.4 2005/02/06 00:37:15 wurley Exp $
+Les instructions suivantes supposent une installation en Ã©tat de marche de:
      a. Un serveur web (Apache, IIS, etc).
-     b. PHP 4.1.0 ou une version plus récente (avec le support LDAP).
+     b. PHP 4.1.0 ou une version plus rÃ©cente (avec le support LDAP).
 
-* Installer  phpLDAPadmin en quatre étapes simples:
+* Installer  phpLDAPadmin en quatre Ã©tapes simples:
 
-  1. Dé-tarrer l'archive (si vous lisez ceci, c'est que vous l'avez déjà fait).
-  2. Mettre le répertoire 'phpldapadmin' ainsi obtenu  quelque part sous
+  1. DÃ©-tarrer l'archive (si vous lisez ceci, c'est que vous l'avez dÃ©jÃ  fait).
+  2. Mettre le rÃ©pertoire 'phpldapadmin' ainsi obtenu  quelque part sous
      la racine de votre serveur web.
-  3. Copier 'config.php.example' vers 'config.php' et éditer selon vos besoins.
-  4. Ensuite, pointer votre navigateur vers le répertoire phpldapadmin.
+  3. Copier 'config.php.example' vers 'config.php' et Ã©diter selon vos besoins.
+  4. Ensuite, pointer votre navigateur vers le rÃ©pertoire phpldapadmin.
 
 * Notes sur les navigateurs
 
-  phpLDAPadmin a été developpé avec Mozilla et fonctionnera vraisemblablement
-  mieux avec celui-ci. Cependant, des tests ont été effectué avec Internet Explorer
-  et cela devrait fonctionner également. Aucun test n'a été réalisé ni avec Konqueror 
-  (ou un navigateur basé sur khtml comme Safari par exemple) ni avec  Opera. Si
-  vous trouvez une incompatibilité avec votre navigateur, merci de la reporter.
+  phpLDAPadmin a Ã©tÃ© developpÃ© avec Mozilla et fonctionnera vraisemblablement
+  mieux avec celui-ci. Cependant, des tests ont Ã©tÃ© effectuÃ© avec Internet Explorer
+  et cela devrait fonctionner Ã©galement. Aucun test n'a Ã©tÃ© rÃ©alisÃ© ni avec Konqueror 
+  (ou un navigateur basÃ© sur khtml comme Safari par exemple) ni avec  Opera. Si
+  vous trouvez une incompatibilitÃ© avec votre navigateur, merci de la reporter.
 
 * Contributions:
   
@@ -25,7 +25,7 @@ Les instructions suivantes supposent une installation en état de marche de:
 
   - David Smith         Maintenance
   - Xavier Renard       Responsable LDIF
-  - Marius Rieder       Responsable pour les schéma LDAP
+  - Marius Rieder       Responsable pour les schÃ©ma LDAP
   - Nate Rotschafer     Directeur des releases
   
   Auteurs de patchs:
@@ -33,25 +33,25 @@ Les instructions suivantes supposent une installation en état de marche de:
   - Bayu Irawan         hachage pour le mot de passe utilisateur, 
 			corrections html, corrections pour ldap_modiy
   - Uwe Ebel         	Corrections pour short_open_tags
-  - Andrew Tipton       Support pour SUP dans le parseur de schémas
-  - Eigil Bjørgum       Support pour UTF-8
-  - Brandon Lederer     Patron pour les entrées DNS
+  - Andrew Tipton       Support pour SUP dans le parseur de schÃ©mas
+  - Eigil BjÃ¸rgum       Support pour UTF-8
+  - Brandon Lederer     Patron pour les entrÃ©es DNS
     Nathan Rotschafer
   - Steve Rigler        Correction pour les hachages des mots de passe
   - Chris Jackson       Mots de passe Blowfish et md5crypt
-  - Marius Rieder       Amélioration du parseur de schémas
+  - Marius Rieder       AmÃ©lioration du parseur de schÃ©mas
   - Nick Burch          Corrections multiples pour realpath()
 
   Traducteurs:
 
   - Uwe Ebel & Marius Reider  Allemand
-  - Xavier Renard             Français
+  - Xavier Renard             FranÃ§ais
   - Dave Smith                Anglais ;)
-  - Richard Lucassen          Néerlandais
+  - Richard Lucassen          NÃ©erlandais
   - Andreu Sanchez            Espagnol et Catalan
   - Dmitry Gorpinenko         Russe
   - Unknown                   Italien
   
-    Si vous pouvez aider à traduire phpLDAPAdmin, veuillez s'il vous plaît vous abonner 
-    à la liste de diffusion phpldapadmin-devel: 
+    Si vous pouvez aider Ã  traduire phpLDAPAdmin, veuillez s'il vous plaÃ®t vous abonner 
+    Ã  la liste de diffusion phpldapadmin-devel: 
     https://lists.sourceforge.net/mailman/listinfo/phpldapadmin-devel

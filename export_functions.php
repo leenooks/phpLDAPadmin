@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/export_functions.php,v 1.20 2004/11/03 22:00:52 xrenard Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/export_functions.php,v 1.26 2005/03/21 12:43:17 wurley Exp $
 
 /**
  * Fuctions and classes for exporting ldap entries to others formats
@@ -9,31 +9,38 @@
  * @author The phpLDAPadmin development team
  * @see  export.php and export_form.php
  */ 
+/**
+ */
 
 // include common configuration definitions
-include('common.php');
+include('./common.php');
 
 // registry for the exporters
 $exporters = array();
 
-$exporters[] = array('output_type'=>'ldif',
-			     'desc' => 'LDIF',
-			     'extension' => 'ldif'
-			     );
+$exporters[] = array(
+	'output_type'=>'ldif',
+	'desc' => 'LDIF',
+	'extension' => 'ldif'
+);
       
-$exporters[] = array('output_type'=>'dsml',
-			     'desc' => 'DSML V.1',
-			     'extension' => 'xml'
-			     );
+$exporters[] = array(
+	'output_type'=>'dsml',
+	'desc' => 'DSML V.1',
+	'extension' => 'xml'
+);
 
-$exporters[] = array('output_type'=>'vcard',
-			     'desc' => 'VCARD 2.1',
-			     'extension' => 'vcf'
-			     );
-$exporters[] = array('output_type'=>'csv',
-			     'desc' => $lang['csv_spreadsheet'],
-			     'extension' => 'csv'
-			     );
+$exporters[] = array(
+	'output_type'=>'vcard',
+	'desc' => 'VCARD 2.1',
+	'extension' => 'vcf'
+);
+
+$exporters[] = array(
+	'output_type'=>'csv',
+	'desc' => $lang['csv_spreadsheet'],
+	'extension' => 'csv'
+);
 
 /**
  * This class encapsulate informations about the ldap server 
@@ -47,36 +54,33 @@ $exporters[] = array('output_type'=>'csv',
  *                 it indicates the query filter for the search.
  * $scope: if the source of the export is the ldap server,
  *         it indicates the scope of the search.
- * $server_host: the host name of the server.
- * $server_name: the name of the server.
+ *
+ * @package phpLDAPadmin
  */
 
-class LdapInfo{
+class LdapExportInfo extends LDAPServer{
 
   var $base_dn;
   var $query_filter;
   var $scope;
-  var $server_host = NULL;
-  var $server_name = NULL;
-  var $server_id = NULL;
 
   /**
-   * Create a new LdapInfo object
+   * Create a new LdapExportInfo object
    *
    * @param int $server_id the server id
    * @param String $base_dn the base_dn for the search in a ldap server
    * @param String $query_filter the query filter for the search
-   * @param String scope the scope of the search in a ldap server
+   * @param String $scope the scope of the search in a ldap server
    */
 
-  function LdapInfo($server_id,$base_dn = NULL,$query_filter = NULL,$scope = NULL){
-    global $servers;
+  function LdapExportInfo($server_id,$base_dn = NULL,$query_filter = NULL,$scope = NULL){
+    // Call our parent to initialise.
+    parent::LDAPServer($server_id);
+
+    // global $servers;
     $this->base_dn = $base_dn;
     $this->query_filter = $query_filter;
     $this->scope = $scope;
-    $this->server_name = $servers[ $server_id ][ 'name' ];
-    $this->server_host = $servers[ $server_id ][ 'host' ];
-    $this->server_id = $server_id;
   }
 }
 
@@ -91,6 +95,7 @@ class LdapInfo{
  * the PlaExporter
  *
  * @see PlaExporter
+ * @package phpLDAPadmin
  */
 
 class PlaAbstractExporter{
@@ -139,6 +144,8 @@ class PlaAbstractExporter{
 /**
  * PlaExporter acts a wrapper around another exporter.
  * In other words, it will act as a decorator for another decorator
+ *
+ * @package phpLDAPadmin
  */
 
 class PlaExporter extends PlaAbstractExporter{
@@ -238,6 +245,7 @@ class PlaExporter extends PlaAbstractExporter{
 /**
  * Export data from a ldap server
  * @extends PlaAbstractExporter
+ * @package phpLDAPadmin
  */
 
 class PlaLdapExporter extends PlaAbstractExporter{
@@ -250,7 +258,6 @@ class PlaLdapExporter extends PlaAbstractExporter{
   var $ldap_info;
   var $queryFilter;
   var $hasNext;
-  var $connection_open_state;
   var $attributes;
   /**
    * Create a PlaLdapExporter object.
@@ -266,17 +273,16 @@ class PlaLdapExporter extends PlaAbstractExporter{
     $this->server_id = $server_id;
     $this->queryFilter = $queryFilter;
     // infos for the server
-    $this->ldap_info = new LdapInfo($server_id,$base_dn,$queryFilter,$scope);
+    $this->ldap_info = new LdapExportInfo($server_id,$base_dn,$queryFilter,$scope);
     // boolean to check if there is more entries
     $this->hasNext = 0;
     // boolean to check the state of the connection
-    $this->connection_open_state = 0;
 
     $this->attributes = $attributes;
     // connect to the server
-    $this->ds = @pla_ldap_connect( $this->server_id );
-    pla_ldap_connection_is_error( $this->ds );
-    $this->connection_open_state = 1;
+    $this->ds = $this->ldap_info->connect();
+    // @todo test whether we need to call pla_ldap_connection_is_error here.
+    //pla_ldap_connection_is_error( $this->ds );
 
     // get the data to be exported
     if( $this->scope == 'base' )
@@ -349,7 +355,7 @@ class PlaLdapExporter extends PlaAbstractExporter{
 	
 	//iterate over the attributes
 	while( $attr ){
-	  if( is_attr_binary( $this->server_id,$attr ) ){
+	  if( is_attr_binary( $this,$attr ) ){
 	    $this->entry_array[$attr] = @ldap_get_values_len( $this->ds,$this->entry_id,$attr );
 	  }
 	  else{
@@ -375,20 +381,22 @@ class PlaLdapExporter extends PlaAbstractExporter{
    * May be call when the processing is finished
    * and to free some ressources.
    * @return bool true or false if any errors is encountered
+   * @todo This could break something, so need to add a method to LDAPServer to close connection and reset $connected.
    */
   function pla_close(){
-    if($this->connection_open_state){
-      return @ldap_close( $this->ds );
-    }
-    else{
-      return true;
-    }
+//    if($this->ldap_info->connected){
+//      return @ldap_close( $this->ds );
+//    }
+//    else{
+//      return true;
+//    }
   }
 } // end PlaLdapExporter
 
 /**
  * Export entries to ldif format
  * @extends PlaExporter
+ * @package phpLDAPadmin
  */
 
 class PlaLdifExporter extends PlaExporter{
@@ -428,7 +436,7 @@ class PlaLdifExporter extends PlaExporter{
 
       // display dn
       if( $this->is_safe_ascii( $entry['dn'] ))
-	$this->multi_lines_display("dn:". $entry['dn']);
+	$this->multi_lines_display("dn: ". $entry['dn']);
       else
 	$this->multi_lines_display("dn:: " . base64_encode( $entry['dn'] ));
       array_shift($entry);
@@ -436,7 +444,7 @@ class PlaLdifExporter extends PlaExporter{
       // display the attributes
       foreach( $entry as $key => $attr ){
 	foreach( $attr as $value ){
-	  if(  !$this->is_safe_ascii($value) || is_attr_binary($pla_ldap_info->server_id,$key ) ){
+	  if(  !$this->is_safe_ascii($value) || is_attr_binary($pla_ldap_info,$key ) ){
 	    $this->multi_lines_display( $key.":: " . base64_encode( $value ) );
 	  }
 	  else{
@@ -458,8 +466,9 @@ class PlaLdifExporter extends PlaExporter{
     echo "version: 1$this->br$this->br";
     echo "# " . sprintf( $lang['ldif_export_for_dn'],  $pla_ldap_info->base_dn  ) . $this->br;
     echo "# " . sprintf( $lang['generated_on_date'], date("F j, Y g:i a") ) . $this->br;
-    echo "# " . $lang['server'] . ": " .$pla_ldap_info->server_name  . " (" . $pla_ldap_info->server_host . ")" . $this->br;
+    echo "# " . $lang['server'] . ": " .$pla_ldap_info->name  . " (" . $pla_ldap_info->host . ")" . $this->br;
     echo "# " . $lang['search_scope'] . ": " . $pla_ldap_info->scope . $this->br;
+    echo "# " . $lang['search_filter'] . ": " . $pla_ldap_info->query_filter . $this->br;
     echo "# " . $lang['total_entries'] . ": " . $this->pla_num_entries() . $this->br; 
     echo $this->br;
   }
@@ -491,6 +500,7 @@ class PlaLdifExporter extends PlaExporter{
 /**
  * Export entries to DSML v.1
  * @extends PlaExporter
+ * @package phpLDAPadmin
  */
 
 class PlaDsmlExporter extends PlaExporter{
@@ -529,8 +539,9 @@ class PlaDsmlExporter extends PlaExporter{
      echo "<!-- " . $this->br;
      echo "# " . sprintf( $lang['dsml_export_for_dn'],  $pla_ldap_info->base_dn  ) . $this->br;
      echo "# " . sprintf( $lang['generated_on_date'], date("F j, Y g:i a") ) . $this->br;
-     echo "# " . $lang['server'] . ": " .  $pla_ldap_info->server_name  . " (" . $pla_ldap_info->server_host . ")" . $this->br;
+     echo "# " . $lang['server'] . ": " .  $pla_ldap_info->name  . " (" . $pla_ldap_info->host . ")" . $this->br;
      echo "# " . $lang['search_scope'] . ": " . $pla_ldap_info->scope . $this->br;
+     echo "# " . $lang['search_filter'] . ": " . $pla_ldap_info->query_filter . $this->br;
      echo "# " . $lang['total_entries'] . ": " . $this->pla_num_entries() . $this->br; 
      echo "-->" . $this->br;
 
@@ -560,7 +571,7 @@ class PlaDsmlExporter extends PlaExporter{
 	  echo $attr_indent."<attr name=\"$key\">".$this->br;
 	  
 	  // if the attribute is binary, set the flag $binary_mode to true
-	  $binary_mode = is_attr_binary($pla_ldap_info->server_id,$key)?1:0;
+	  $binary_mode = is_attr_binary($pla_ldap_info,$key)?1:0;
 	  
 	  foreach($attr as $value){
 	    echo $attr_value_indent."<value>".($binary_mode?base64_encode( $value):  htmlspecialchars( $value ) )."</value>".$this->br;
@@ -579,6 +590,9 @@ class PlaDsmlExporter extends PlaExporter{
 }
 
 
+/**
+ * @package phpLDAPadmin
+ */
 class PlaVcardExporter extends PlaExporter{
 
   // mappping one to one attribute
@@ -621,8 +635,8 @@ class PlaVcardExporter extends PlaExporter{
     $base_dn = $ldap_info->base_dn;
     $server_id = $ldap_info->server_id;
     $scope = $ldap_info->scope;
-    $server_name = $ldap_info->server_name;
-    $server_host = $ldap_info->server_host;
+    $server_name = $ldap_info->name;
+    $server_host = $ldap_info->host;
 
     while( $this->pla_has_entry() ){
       $entry = $this->pla_fetch_entry_array();
@@ -696,6 +710,7 @@ class PlaVcardExporter extends PlaExporter{
  * Export to cvs format
  *
  * @author Glen Ogilvie
+ * @package phpLDAPadmin
  */
 
 class PlaCSVExporter extends PlaExporter{
@@ -723,8 +738,8 @@ class PlaCSVExporter extends PlaExporter{
     $base_dn = $ldap_info->base_dn;
     $server_id = $ldap_info->server_id;
     $scope = $ldap_info->scope;
-    $server_name = $ldap_info->server_name;
-    $server_host = $ldap_info->server_host;
+    $server_name = $ldap_info->name;
+    $server_host = $ldap_info->host;
     
     $entries = array();
     $headers = array();
@@ -769,7 +784,7 @@ class PlaCSVExporter extends PlaExporter{
 
 	echo $this->qualifier;
 	if (key_exists($attr_name, $entry)) {
-	  $binary_attribute = is_attr_binary( $server_id, $attr_name )?1:0;
+	  $binary_attribute = is_attr_binary( $ldap_info, $attr_name )?1:0;
 	  
 	  $attr_values = $entry[$attr_name];
 	  
@@ -803,6 +818,9 @@ class PlaCSVExporter extends PlaExporter{
 
 
 
+/**
+ * @package phpLDAPadmin
+ */
 
 class MyCustomExporter extends PlaExporter{
 
@@ -825,8 +843,8 @@ class MyCustomExporter extends PlaExporter{
     $base_dn = $ldap_info->base_dn;
     $server_id = $ldap_info->server_id;
     $scope = $ldap_info->scope;
-    $server_name = $ldap_info->server_name;
-    $server_host = $ldap_info->server_host;
+    $server_name = $ldap_info->name;
+    $server_host = $ldap_info->host;
 
 
     // Just a simple loop. For each entry 

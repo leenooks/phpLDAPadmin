@@ -1,6 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/ldif_functions.php,v 1.23 2004/04/18 19:21:54 xrenard Exp $
-
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/ldif_functions.php,v 1.26 2005/02/25 13:44:06 wurley Exp $
 
 /**
  * @todo put the display_parse_error method in ldif_import here 
@@ -18,6 +17,7 @@
 
 /**
  * This class represente an entry in the ldif file
+ * @package phpLDAPadmin
  */
 class LdifEntry{
 
@@ -98,6 +98,7 @@ class LdifEntry{
  * This exception is similar to the one in LdifReader
  * Should be remove latter
  * see comment for the class Ldif_LdapEntryReader
+ * @package phpLDAPadmin
  */
 
 class LdifEntryReaderException{
@@ -126,6 +127,7 @@ class LdifEntryReaderException{
 
 /**
  * Class in charge of reading a paricular entry
+ * @package phpLDAPadmin
  */
 
 class LdifEntryReader{
@@ -150,11 +152,13 @@ class LdifEntryReader{
    *
    * @param String[] $lines the line of the entry
    */
-  function LdifEntryReader( &$lines ){
-    $this->lines = &$lines;
-    $this->_currentLineNumber = 1;
-    $this->_error = 0;
-   }
+  function LdifEntryReader(){}
+
+  function readLines(&$lines){
+		$this->lines = &$lines;
+    	$this->_currentLineNumber = 1;
+    	$this->_error = 0;
+	}
 
   /**
    * Read the change type action associated with the entry
@@ -520,6 +524,7 @@ $arr=array();
 
 /**
  * Exception which can be raised during processing the ldif file
+ * @package phpLDAPadmin
  */
 
 class LdifReaderException{
@@ -545,6 +550,7 @@ class LdifReaderException{
 
 /**
  * Helper base class to read file.
+ * @package phpLDAPadmin
  */
 
 class FileReader{
@@ -615,6 +621,7 @@ class FileReader{
 
 /**
  * Main parser of the ldif file
+ * @package phpLDAPadmin
  */
 
 class LdifReader extends FileReader{
@@ -642,6 +649,7 @@ class LdifReader extends FileReader{
   // continuous mode operation flag
   var $continuous_mode;
 
+  var $ldifEntryReader = NULL;	
   /**
    * Private constructor of the LDIFReader class.
    * Marked as private as we need to instantiate the class
@@ -656,6 +664,7 @@ class LdifReader extends FileReader{
     $this->_currentLines = array();
     $this->_warningMessage="";
     $this->_warningVersion="";
+    $this->ldifEntryReader = new LdifEntryReader();
     //need to change this one
     $this->_currentEntry = new LdifEntry();
   }
@@ -701,14 +710,28 @@ class LdifReader extends FileReader{
   }
   
   /**
-   * Return the current entry object 
+   * Return the current entry as an object 
    *
    * @return Ldap_Ldif_entry the current ldif entry
    */
-  function getCurrentEntry(){
+  function fetchEntryObject(){
     return $this->_currentEntry;
   }
   
+  /**
+   * Return the current entry as an array
+   *
+   */
+  function fetchEntryArray(){}
+  
+  /**
+   * Return the entry as it is.
+   *
+   * @return String[] The lines from the entry.
+   */
+  function fetchEntryRaw(){
+  	return getCurrentLines();
+  }
   /**
    * Get the lines of the next entry
    *
@@ -877,15 +900,15 @@ class LdifReader extends FileReader{
   function readEntry(){
 
     if($lines = $this->nextLines()){
-      $ldifEntryReader = new LdifEntryReader($lines);
+    	$this->ldifEntryReader->readLines($lines);
       //fetch entry
-      $entry = $ldifEntryReader->getEntry();
+      $entry = $this->ldifEntryReader->getEntry();
       $this->_currentEntry = $entry;
       // if any exception has raised, catch it and throw it to the main reader
-      if($ldifEntryReader->hasRaisedException()){
-	$exception = $ldifEntryReader->getLdifEntryReaderException();
-	$faultyLineNumber = $this->dnLineNumber + $exception->lineNumber - 1;
-	$this->setLdapLdifReaderException(new LdifReaderException($faultyLineNumber,$exception->currentLine,$exception->message));
+      if($this->ldifEntryReader->hasRaisedException()){
+	      $exception = $this->ldifEntryReader->getLdifEntryReaderException();
+	      $faultyLineNumber = $this->dnLineNumber + $exception->lineNumber - 1;
+	      $this->setLdapLdifReaderException(new LdifReaderException($faultyLineNumber,$exception->currentLine,$exception->message));
 
 	if ( ! $this->continuous_mode )
 	  return 0;
@@ -904,6 +927,7 @@ class LdifReader extends FileReader{
 
 /**
  * Helper class to write entries into the ldap server
+ * @package phpLDAPadmin
  */
 
 class LdapWriter{

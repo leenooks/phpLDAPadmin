@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_dns_entry.php,v 1.9 2004/10/24 23:51:51 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_dns_entry.php,v 1.10 2005/03/05 06:27:07 wurley Exp $
 
 // Common to all templates
 $container = $_POST['container'];
@@ -56,7 +56,7 @@ if( isset($_POST['step']) )
 	$container = trim( $_POST['container'] );
 	$associateddomain = trim( $_POST['associateddomain'] );
 
-	dn_exists( $server_id, $container ) or
+	dn_exists( $ldapserver, $container ) or
 		pla_error( "The container you specified (" . htmlspecialchars( $container ) . ") does not exist. " .
 	       		       "Please go back and try again." );
 ?>

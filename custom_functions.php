@@ -1,9 +1,12 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/custom_functions.php,v 1.6 2004/05/27 13:25:13 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/custom_functions.php,v 1.8 2005/03/05 06:27:06 wurley Exp $
 
-
-/*
- * custom_functions.php: Choose your own adventure.
+/**
+ * CUSTOM_FUCTIONS has been DEPRECIATED, please use the hooks functions now.
+ * Let the phpLDAPadmin developers know if you REALLY need this - it will be removed
+ * in future releases.
+ *
+ * custom_functions.php:
  *
  * This file is full of functions (callbacks really) that are
  * meant to be filled in by users of phpLDAPadmin (you). These functions
@@ -56,6 +59,9 @@
  *       - ldap_delete  (ie, removing entries)
  *       - ldap_modify  (ie, changing the value of an attribute, for both
  *                           multi- and single-valued attributes)
+ * @deprecated
+ * @see hooks.php
+ * @package phpLDAPadmin
  */
 
 /*
@@ -86,6 +92,7 @@ function postAttrModify( $server_id, $dn, $attr_name, $new_value )
  * this function also gives you the attribute name ($attr_name)
  * and the new value that the attribute will have ($new_value).
  * $new_value may be a string or an array of strings.
+ * @deprecated
  */
 function preAttrModify( $server_id, $dn, $attr_name, $new_value )
 {
@@ -101,6 +108,7 @@ function preAttrModify( $server_id, $dn, $attr_name, $new_value )
  * this function also gives you the attribute name ($attr_name)
  * and the new value that the attribute will have ($new_value).
  * $new_value may be a string or an array of strings.
+ * @deprecated
  */
 function preAttrAdd( $server_id, $dn, $attr_name, $new_value )
 {
@@ -116,6 +124,7 @@ function preAttrAdd( $server_id, $dn, $attr_name, $new_value )
  * one may wish to create the user's home directory.
  * See the documentation for preEntryCreate() below for
  * the description of the $attrs parameter.
+ * @deprecated
  */
 function postEntryCreate( $server_id, $dn, $attrs )
 {
@@ -149,6 +158,7 @@ function postEntryCreate( $server_id, $dn, $attrs )
  *   ...
  * )
  *
+ * @deprecated
  */
 function preEntryCreate( $server_id, $dn, $attrs )
 {
@@ -160,6 +170,7 @@ function preEntryCreate( $server_id, $dn, $attrs )
  * This function is executed before an entry is deleted.
  * If it returns true, the entry is deleted, if false
  * is returned, the entry is not deleted.
+ * @deprecated
  */
 function preEntryDelete( $server_id, $dn )
 {
@@ -171,6 +182,7 @@ function preEntryDelete( $server_id, $dn )
  * This function is executed after an entry is deleted.
  * Unlike preEntryDelete(), this function's return 
  * value is ignored.
+ * @deprecated
  */
 function postEntryDelete( $server_id, $dn )
 {
@@ -179,9 +191,10 @@ function postEntryDelete( $server_id, $dn )
 
 /**
  * This function is called, after a new session is initilaized
+ * @deprecated
  */
 function postSessionInit()
 {
 	// Fill me in
 }
-
+?>

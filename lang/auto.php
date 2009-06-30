@@ -1,8 +1,8 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/auto.php,v 1.9 2004/12/09 14:02:24 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/auto.php,v 1.10 2005/02/06 00:21:30 wurley Exp $
 
 // Language for auto-detect
-// phpldapadmin/lang/auto.php in $Revision: 1.9 $
+// phpldapadmin/lang/auto.php in $Revision: 1.10 $
 $useLang="en"; // default use english encoding, a Option in Config would be nice
 
 // keep the beginning and ending spaces, they are used for finding the best language
@@ -30,6 +30,8 @@ $langSupport=array(" ca "=>"ca" // catalan
 		   ," ru-"=>"ru" // ru- exits?
 		   ," sv "=>"sv" //swedish 
                    ," sv-"=>"sv" // swedisch to
+		   ," zh-cn"=>"zh-cn" // simplified chinese
+		   ," zh-tw"=>"zh-tw" // taiwan?
 		  );// all supported languages in this array
 // test 
 

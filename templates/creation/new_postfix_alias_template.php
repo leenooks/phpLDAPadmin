@@ -56,7 +56,7 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 	$mail = trim( $_POST['mail'] );
         $maildrop = trim( $_POST['maildrop'] );
 	
-	dn_exists( $server_id, $container ) or
+	dn_exists( $ldapserver, $container ) or
 		pla_error( "The container you specified (" . htmlspecialchars( $container ) . ") does not exist. " .
 	       		       "Please go back and try again." );
 

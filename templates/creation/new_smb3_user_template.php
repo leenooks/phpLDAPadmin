@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_smb3_user_template.php,v 1.23 2004/12/16 22:59:50 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_smb3_user_template.php,v 1.24 2005/03/05 06:27:07 wurley Exp $
 
 $samba3_domains = get_samba3_domains();
 
@@ -15,7 +15,7 @@ if( isset($_POST['step']) )
      $step = $_POST['step'];
      
      //check if the sambaSamAccount objectClass is availaible
-     if( get_schema_objectclass( $server_id, 'sambaSamAccount' ) == null )
+     if( get_schema_objectclass( $ldapserver, 'sambaSamAccount' ) == null )
      pla_error( "Your LDAP server does not have schema support for the sambaSamAccount objectClass. Cannot continue." );
      
      check_server_id( $server_id ) or pla_error( "Bad server_id: " . htmlspecialchars( $server_id ) );
@@ -85,7 +85,7 @@ function autoFillSambaGroupRID( form ){
  
   if( isset( $samba_base_groups ) )
     $base_dn = $samba_base_groups;
-  $posix_groups = get_posix_groups( $server_id , $base_dn );
+  $posix_groups = get_posix_groups( $ldapserver , $base_dn );
 ?>
 
 <form action="creation_template.php" method="post" id="user_form" name="user_form">
@@ -99,7 +99,7 @@ function autoFillSambaGroupRID( form ){
 <tr>
 	<td></td>
 	<td class="heading">UID Number:</td>
-        <?php $next_uid_number = get_next_uid_number( $server_id ); ?>
+        <?php $next_uid_number = get_next_uid_number( $ldapserver ); ?>
 	<td><input type="text" name="uid_number" value="<?php echo $next_uid_number; ?>"  onChange="autoFillSambaRID(this.form)" />
 	   <?php if( false !== $next_uid_number ) echo "<small>(automatically determined)</small>"; ?>
        </td>
@@ -355,7 +355,7 @@ function autoFillSambaGroupRID( form ){
 		pla_error( "You cannot leave the UID number blank. Please go back and try again." );
 	is_numeric( $uid_number ) or
 		pla_error( "You can only enter numeric values for the UID number field. Please go back and try again." );
-	dn_exists( $server_id, $container ) or
+	dn_exists( $ldapserver, $container ) or
 		pla_error( "The container you specified (" . htmlspecialchars( $container ) . ") does not exist. " .
 	       		       "Please go back and try again." );
 

@@ -1,6 +1,9 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/index.php,v 1.30 2004/08/19 13:26:28 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/index.php,v 1.32 2005/02/26 12:35:05 wurley Exp $
 
+/**
+ * @package phpLDAPadmin
+ */
 
 /*******************************************
 <pre>
@@ -14,36 +17,36 @@ PHP is not installed on your web server!!!
 require './common.php';
 
 if( ! file_exists(realpath( 'config.php' )) ) {
-
 ?>
 
 <html>
 <head>
 	<title>phpLDAPadmin - <?php echo pla_version(); ?></title>
-	<link rel="stylesheet" href="style.css" />		
+	<link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 <h3 class="title">Configure phpLDAPadmin</h1>
 <br />
 <br />
+
 <center>
 <?php echo $lang['need_to_configure']; ?>
 </center>
 </body>
 </html>
 
-<?php  } elseif( check_config() )  { 
+<?php } elseif( check_config() ) {
 
-require 'config.php';
+require './config.php';
 echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
 
 ?>
 
-<!DOCTYPE html
-  PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN"
-    "http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN"
+	"http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="no-NO">
+
 <head><title>phpLDAPadmin - <?php echo pla_version(); ?></title></head>
 
 <frameset cols="<?php echo $tree_width; ?>,*">
@@ -53,12 +56,7 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
 
 </html>
 
-<?php  } else { ?>
-
-<?php } ?>
-
-
-<?php
+<?php }
 
 /*
  * Makes sure that the config file is properly setup and
@@ -66,24 +64,22 @@ echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n";
  * TODO: Check ALL config elements for correctness in syntax
  * TODO: Make sure all required config stuff is defined.
  */
-function check_config()
-{
-    global $lang;
+function check_config() {
+	global $lang;
+
 	/* Make sure their PHP version is current enough */
 	if( strcmp( phpversion(), REQUIRED_PHP_VERSION ) < 0 ) {
 		pla_error( "phpLDAPadmin requires PHP version 4.1.0 or greater. You are using " . phpversion() );
 	}
 
 	/* Make sure this PHP install has LDAP support */
-	if( ! extension_loaded( 'ldap' ) )
-	{
+	if( ! extension_loaded( 'ldap' ) ) {
 		pla_error( "Your install of PHP appears to be missing LDAP support. Please install " .
-				"LDAP support before using phpLDAPadmin. (Don't forget to restart your web server afterwards)" );
+			"LDAP support before using phpLDAPadmin. (Don't forget to restart your web server afterwards)" );
 		return false;
 	}
 
 	/* Make sure the config file is readable */
-	//if( ! is_readable( 'config.php' ) )
 	if( ! is_readable( realpath( 'config.php' ) ) ) {
 		pla_error( "The config file 'config.php' is not readable. Please check its permissions." );
 		return false;
@@ -91,69 +87,75 @@ function check_config()
 
 	// Make sure their session save path is writable, if they are using a file system session module, that is.
 	if( 0 == strcasecmp( "Files", session_module_name() && ! is_writable( realpath( session_save_path() ) ) ) ) {
-	  pla_error( "Your PHP session configuration is incorrect. Please check the value of session.save_path 
-                    in your php.ini to ensure that the directory specified there exists and is writable.
-                    The current setting of \"". session_save_path() . "\" is un-writable by the web server." );
-	  return false;
+		pla_error( "Your PHP session configuration is incorrect. Please check the value of session.save_path
+			in your php.ini to ensure that the directory specified there exists and is writable.
+			The current setting of \"". session_save_path() . "\" is un-writable by the web server." );
+		return false;
 	}
-	    
+
 	/* check for syntax errors in config.php */
 	// capture the result of including the file with output buffering
 	ob_start();
-	include 'config.php';
+	include './config.php';
 	$str = ob_get_contents();
 	ob_end_clean();
-	if( $str && false !== strpos( $str, 'error' ) )  {
+
+	if( $str && false !== strpos( $str, 'error' ) ) {
 		$str = strip_tags( $str );
 		$matches = array();
 		preg_match( "/on line (\d+)/", $str, $matches );
 		$line_num = $matches[1];
 		$file = file( 'config.php' );
 		?>
-			<html>
-			<head>
-			<title>phpLDAPadmin Config File Error</title>
-			<link rel="stylesheet" href="style.css" />
-			</head>
 
-			<body>
-			<h3 class="title">Config file error</h3>
-			<h3 class="subtitle">Syntax error on line <?php echo $line_num; ?></h3>
-	
-			<center>
-			Looks like your config file has a syntax error on line <?php echo $line_num; ?>. 
-			Here is a snippet around that line
-			<br />
-			<br />
-			<div style="text-align: left; margin-left: 80px; margin-right: 80px; border: 1px solid black; padding: 10px;">
-			<tt>
-			<?php
-			for( $i=$line_num-9; $i<$line_num+5; $i++ ) {
-				if( $i+1 == $line_num )
-					echo "<div style=\"color:red;background:#fdd\">";
-				if( $i < 0 )
-					continue;
-				echo "<b>" . ($i+1) . "</b>: " . htmlspecialchars($file[ $i ]) . "<br />";
-				if( $i+1 == $line_num )
-					echo "</div>";
-			}
-			?>
-			</tt>
-			</div>
-			<br />
-			Hint: Sometimes these errors are caused by lines <b>preceding</b> the line reported.
-			</body>
-			</html>
+	<html>
+	<head>
+	<title>phpLDAPadmin Config File Error</title>
+	<link rel="stylesheet" href="style.css" />
+	</head>
 
-		<?php
-		return false;
+	<body>
+	<h3 class="title">Config file error</h3>
+	<h3 class="subtitle">Syntax error on line <?php echo $line_num; ?></h3>
+
+	<center>
+	Looks like your config file has a syntax error on line <?php echo $line_num; ?>.
+	Here is a snippet around that line
+	<br />
+	<br />
+	<div style="text-align: left; margin-left: 80px; margin-right: 80px; border: 1px solid black; padding: 10px;">
+	<tt>
+
+		<?php for( $i=$line_num-9; $i<$line_num+5; $i++ ) {
+			if( $i+1 == $line_num )
+				echo "<div style=\"color:red;background:#fdd\">";
+
+			if( $i < 0 )
+				continue;
+			echo "<b>" . ($i+1) . "</b>: " . htmlspecialchars($file[ $i ]) . "<br />";
+
+			if( $i+1 == $line_num )
+				echo "</div>";
+		}
+		?>
+
+	</tt>
+
+	</div>
+	<br />
+	Hint: Sometimes these errors are caused by lines <b>preceding</b> the line reported.
+	</body>
+	</html>
+
+		<?php return false;
 	}
 
 	/* check the existence of the servers array */
-	require 'config.php';
+	require './config.php';
+
 	if( ! isset( $servers ) || ! is_array( $servers ) || count( $servers ) == 0 ) {
 		pla_error( "Your config.php is missing the \$servers array or the \$servers array is empty.
-				Please see the sample file config.php.example ", false );
+			Please see the sample file config.php.example ", false );
 		return false;
 	}
 
@@ -162,6 +164,7 @@ function check_config()
 	foreach( $servers as $i => $server )
 		if( isset( $server['host'] ) )
 			$count++;
+
 	if( $count == 0 ) {
 		pla_error( "None of the " . count($servers) . " servers in your \$servers configuration is
 		active in config.php. At least one of your servers must set the 'host' directive.
@@ -170,13 +173,14 @@ function check_config()
 		return false;
 	}
 
-    // Check that 'base' is present on all serve entries
-    foreach( $servers as $id => $server ) {
-        if( isset( $server['host'] ) && isset( $server['name'] ) )
-            isset( $server['base'] ) or pla_error ( "Your configuration has an error. You omitted the 'base' directive 
-                                                 on server number $id. Your server entry must have a 'base' directive
-                                                 even if it's empty ('')." );
-    }
+	// Check that 'base' is present on all serve entries
+	foreach( $servers as $id => $server ) {
+		if( isset( $server['host'] ) && isset( $server['name'] ) )
+			isset( $server['base'] )
+				or pla_error ( "Your configuration has an error. You omitted the 'base' directive
+					on server number $id. Your server entry must have a 'base' directive
+					even if it's empty ('')." );
+	}
 
 	// Check each of the servers in the servers array
 	foreach( $servers as $id => $server ) {
@@ -184,7 +188,7 @@ function check_config()
 
 			// Make sure they specified an auth_type
 			if( ! isset( $server['auth_type'] ) ) {
-				pla_error( "Your configuratoin has an error. You omitted the 'auth_type' directive on server number $id
+				pla_error( "Your configuration has an error. You omitted the 'auth_type' directive on server number $id
 				'auth_type' must be set, and it must be one of 'config', 'cookie', or 'session'.", false );
 				return false;
 			}
@@ -200,5 +204,4 @@ function check_config()
 
 	return true;
 }
-
 ?>

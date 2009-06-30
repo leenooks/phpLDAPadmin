@@ -1,10 +1,16 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/purge_cache.php,v 1.5 2005/02/25 13:44:06 wurley Exp $
+
+/**
+ * @package phpLDAPadmin
+ */
+/**
+ */
 
 require './common.php';
 include './header.php';
 
 $purge_session_keys = array( 'schema' );
-
 ?>
 
 <body>
@@ -21,7 +27,7 @@ foreach( $purge_session_keys as $key ) {
     if( isset( $_SESSION[$key] ) ) {
         $size += strlen( serialize( $_SESSION[$key] ) );
         unset( $_SESSION[$key] );
-    } 
+    }
 }
 
 session_write_close();

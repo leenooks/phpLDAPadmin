@@ -1,4 +1,11 @@
 <?php
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/password_checker.php,v 1.7 2005/02/25 13:44:06 wurley Exp $
+
+/**
+ * @package phpLDAPadmin
+ */
+/**
+ */
 
 require './common.php';
 include './header.php';
@@ -14,7 +21,6 @@ if( isset( $_REQUEST['base64'] ) ) {
 }
 
 $enc_type = get_enc_type( $hash );
-
 ?>
 
 <h3 class="subtitle"><?php echo $lang['password_checker_tool']; ?></h3>
@@ -33,9 +39,9 @@ $enc_type = get_enc_type( $hash );
     <tr>
         <td></td><td><input type="submit" value="Compare" />
 
-        <?php if( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'compare' ) { 
+        <?php if( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'compare' ) {
             echo "&nbsp;&nbsp;&nbsp;&nbsp;<b>";
-            if( password_check( $hash, $check_password) ) 
+            if( password_check( $hash, $check_password) )
                 echo "<span style=\"color: green\">" . $lang['passwords_match'] . "</span>";
             else
                 echo "<span style=\"color: red\">" . $lang['passwords_do_not_match'] . "</span>";
@@ -45,5 +51,3 @@ $enc_type = get_enc_type( $hash );
     </tr>
 </table>
 </form>
-
-

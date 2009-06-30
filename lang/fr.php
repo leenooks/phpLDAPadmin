@@ -11,7 +11,7 @@
  *
  * Thank you!
  *
- * $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/fr.php,v 1.25 2004/05/29 04:07:02 uugdave Exp $
+ * $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/fr.php,v 1.29 2005/04/01 22:40:23 xrenard Exp $
  */
 
 /*
@@ -34,6 +34,14 @@ $lang['contains'] = 'contient';
 $lang['predefined_search_str'] = 'Selectionner une recherche prédéfinie';
 $lang['predefined_searches'] = 'Recherches prédéfinies';
 $lang['no_predefined_queries'] = 'Aucune requête n\' a été définie dans config.php.';
+$lang['export_results'] = 'exporter le resultat';
+$lang['unrecoginzed_search_result_format'] = 'Le format du résultat de la recherche est non reconnu: %s';
+$lang['format'] = 'Format';
+$lang['list'] = 'liste';
+$lang['table'] = 'table';
+$lang['bad_search_display'] = 'Le fichier config.php contient une valeur invalide pour $default_search_display: %s. Veuillez le corriger';
+$lang['page_n'] = 'Page %d';
+$lang['no_results'] = 'Aucun résultat pour cette recherche.';
 
 // Tree browser
 $lang['request_new_feature'] = 'Demander une nouvelle fonctionnalité';
@@ -54,20 +62,25 @@ $lang['view_server_info'] = 'Voir les informations sur le serveur';
 $lang['import_from_ldif'] = 'Importer des entrées à partir d\'un fichier LDIF';
 $lang['logout_of_this_server'] = 'Se déconnecter de ce serveur';
 $lang['logged_in_as'] = 'Connecté en tant que: ';
+$lang['this_base_dn_is_not_valid'] = 'Ceci n\'est pas un DN valide.';
+$lang['this_base_dn_does_not_exist'] = 'Cette entrée n\'existe pas.';
 $lang['read_only'] = 'Lecture seule';
+$lang['read_only_tooltip'] = 'Cet attribut a été mis en lecture seule par l\'administrateur de phpLDAPAdmin';
 $lang['could_not_determine_root'] = 'La racine de l\'arborescence Ldap n\'a pu être déterminée.';
 $lang['ldap_refuses_to_give_root'] = 'Il semble que le serveur LDAP a été configuré de telle sorte que la racine ne soit pas révelée.';
 $lang['please_specify_in_config'] = 'Veuillez le spécifier dans le fichier config.php';
 $lang['create_new_entry_in'] = 'Créer une nouvelle entrée dans';
 $lang['login_link'] = 'Login...';
 $lang['login'] = 'login';
-
+$lang['base_entry_does_not_exist'] = 'L\'entrée racine n\'existe pas.';
+$lang['create_it'] = 'La créer?';
 // Entry display
 $lang['delete_this_entry'] = 'Supprimer cette entrée';
 $lang['delete_this_entry_tooltip'] = 'Il vous sera demandé confirmation';
 $lang['copy_this_entry'] = 'Copier cette entrée';
 $lang['copy_this_entry_tooltip'] = 'Copier cet objet vers un autre endroit, un nouveau DN ou un autre serveur';
 $lang['export'] = 'Exporter';
+$lang['export_lcase'] = 'exporter';
 $lang['export_tooltip'] = 'Sauvegarder cet objet';
 $lang['export_subtree_tooltip'] = 'Sauvegarder cet objet ainsi que tous les sous-objets';
 $lang['export_subtree'] = 'Exporter l\'arborescence';
@@ -84,7 +97,9 @@ $lang['hide_internal_attrs'] = 'Cacher les attributs internes';
 $lang['show_internal_attrs'] = 'Montrer les attributs internes';
 $lang['attr_name_tooltip'] = 'Cliquer pour voir la définition de schéma pour l\'attribut de type \'%s\'';
 $lang['none'] = 'aucun'; 
-$lang['save_changes'] = 'Sauver les modifications';
+$lang['no_internal_attributes'] = 'Aucun attributs internes.';
+$lang['no_attributes'] = 'Cette entrée n\a aucun attributs.';
+$lang['save_changes'] = 'Sauvegarder les modifications';
 $lang['add_value'] = 'ajouter une valeur';
 $lang['add_value_tooltip'] = 'Ajouter une valeur supplémentaire à  cet attribut';
 $lang['refresh_entry'] = 'Rafraichir';
@@ -99,6 +114,8 @@ $lang['no_new_binary_attrs_available'] = 'plus d\' attributs binaires disponible
 $lang['binary_value'] = 'Valeur de type binaire';
 $lang['add_new_binary_attr'] = 'Ajouter un nouvel attribut de type binaire';
 $lang['alias_for'] = 'Alias pour';
+$lang['required_for'] = 'Attribut requis par le(s) objectClass(es) %s';
+$lang['required_by_entry'] = 'Cet attribut est requis par le RDN.';
 $lang['download_value'] = 'Télécharger le contenu';
 $lang['delete_attribute'] = 'Supprimer l\'attribut';
 $lang['true'] = 'vrai';
@@ -108,18 +125,17 @@ $lang['really_delete_attribute'] = 'Voulez-vous vraiment supprimer l\'attribut';
 $lang['add_new_value'] = 'Ajouter une nouvelle valeur';
 
 // Schema browser
-$lang['the_following_objectclasses'] = 'Les classes d\'objets (objectClasses) suivantes sont supportés par ce serveur LDAP.';
-$lang['the_following_attributes'] = 'Les types d\'attributs (attributesTypes) suivants sont supportés par ce serveur LDAP.';
-$lang['the_following_matching'] = 'Les opérateurs (matching rules) suivants sont supportés par ce serveur LDAP.';
-$lang['the_following_syntaxes'] = 'Les syntaxes suivantes sont supportés par ce serveur LDAP.';
 $lang['schema_retrieve_error_1']='Le serveur ne supporte pas entièrement le protocol LDAP.';
-$lang['schema_retrieve_error_2']='Votre version de PHP ne permet pas d\'exécute correctement la requête.';
-$lang['schema_retrieve_error_3']='Ou tout du moins, phpLDAPadmin ne sait pas comment récupérer le schéma pour votre serveur.';
+$lang['schema_retrieve_error_2']='Votre version de PHP ne permet pas d\'exécuter correctement la requête.';
+$lang['schema_retrieve_error_3']='phpLDAPadmin ne sait pas comment récupérer le schéma pour votre serveur.';
+$lang['schema_retrieve_error_4']='Ou tout du moins, votre serveur LDAP ne procure pas cette information.';
 $lang['jump_to_objectclass'] = 'Aller à une classe d\'objet';
+$lang['view_schema_for_oclass'] = 'Voir la description du schema pour cette objectClass';
 $lang['jump_to_attr'] = 'Aller à un attribut';
 $lang['jump_to_matching_rule'] = 'Aller à une règle d\'égalité';
 $lang['schema_for_server'] = 'Schema pour le serveur';
 $lang['required_attrs'] = 'Attributs obligatoires';
+$lang['required'] = 'requis';
 $lang['optional_attrs'] = 'Attributs optionnels';
 $lang['optional_binary_attrs'] = 'Attributs binaires optionnels';
 $lang['OID'] = 'OID';
@@ -131,6 +147,7 @@ $lang['equality']='Egalité';
 $lang['is_obsolete'] = 'Cette classe d\'objet est obsolete';
 $lang['inherits'] = 'hérite';
 $lang['inherited_from']='hérite de';
+$lang['parent_to'] = 'Parent de';
 $lang['jump_to_this_oclass'] = 'Aller à la définition de cette classe d\'objet';
 $lang['matching_rule_oid'] = 'OID de l\'opérateur';
 $lang['syntax_oid'] = 'OID de la syntaxe';
@@ -140,8 +157,7 @@ $lang['character']='caractère';
 $lang['characters']='caractères';
 $lang['used_by_objectclasses']='Utilisé par les objectClasses';
 $lang['used_by_attributes']='Utilisé par les attributes';
-$lang['maximum_length']='Maximum Length';
-$lang['attributes']='Types d\'attribut';
+$lang['attribute_types']='Types d\'attribut';
 $lang['syntaxes']='Syntaxes';
 $lang['objectclasses']='objectClasses';
 $lang['matchingrules']='Règles d\'égalité';
@@ -155,7 +171,12 @@ $lang['user_modification']='Modification Utilisateur';
 $lang['usage']='Usage';
 $lang['maximum_length']='Longueur maximale';
 $lang['could_not_retrieve_schema_from']='Impossible de récupérer le schéma de';
+$lang['the_following_objectclasses'] = 'Les classes d\'objets (objectClasses) suivantes sont supportés par ce serveur LDAP.';
+$lang['the_following_attributes'] = 'Les types d\'attributs (attributesTypes) suivants sont supportés par ce serveur LDAP.';
+$lang['the_following_matching'] = 'Les opérateurs (matching rules) suivants sont supportés par ce serveur LDAP.';
+$lang['the_following_syntaxes'] = 'Les syntaxes suivantes sont supportés par ce serveur LDAP.';
 $lang['type']='Type';
+$lang['no_such_schema_item'] = 'No such schema item: "%s"';
 
 // Deleting entries
 $lang['entry_deleted_successfully'] = 'Suppression de l\'entrée \'%s\' réussie.';
@@ -182,8 +203,14 @@ $lang['no_attr_specified'] = 'Aucun nom d\'attributs spécifié.';
 $lang['no_dn_specified'] = 'Aucun DN specifié';
 
 // Adding attributes
-$lang['left_attr_blank'] = 'Vous avez laisser la valeur de l\'attribut vide. Veuillez s\'il vous plaît retourner à la page précédente et recommencer.';
+$lang['left_attr_blank'] = 'Vous avez laissé la valeur de l\'attribut vide. Veuillez s\'il vous plaît retourner à la page précédente et recommencer.';
 $lang['failed_to_add_attr'] = 'Echec lors de l\'ajout de l\'attribut.';
+$lang['file_empty'] = 'Le fichier choisi soit est vide soit n\'existe pas. Veuillez recommencez.';
+$lang['invalid_file'] = 'Erreur de sécurité: Le fichier uploadé peut etre dangereux.';
+$lang['warning_file_uploads_disabled'] = 'Votre configuration PHP interdit l\'upload de fichiers. Veuillez vérifier votre fichier php.ini avant de continuer.';
+$lang['uploaded_file_too_big'] = 'Le fichier à uploader est de trop grande taille. Veuillez vérifier votre fichier php.ini et particulièrement la directive upload_max_size setting';
+$lang['uploaded_file_partial'] = 'Le fichier sélectionner a été partiellement uploadé, probablement du à une erreur réseau.';
+$lang['max_file_size'] = 'Taille Maximum du fichier: %s';
 
 // Updating values
 $lang['modification_successful'] = 'Modification réussie!';
@@ -201,10 +228,12 @@ $lang['add_oclass_and_attrs'] = 'Ajout d\' ObjectClass et d\'attributs';
 $lang['chooser_link_tooltip'] = 'Cliquer pour choisir un entré(DN)';
 $lang['no_updates_in_read_only_mode'] = 'Vous ne pouvez effectuer des mises à jour si le serveur est en lecture seule';
 $lang['bad_server_id'] = 'Id de serveur invalide';
-$lang['not_enough_login_info'] = 'Informations insuffisantes pour se logguer au serveur. Veuillez, s\'il vous plaî, vérifier votre configuration.';
+$lang['not_enough_login_info'] = 'Informations insuffisantes pour se logguer au serveur. Veuillez, s\'il vous plaît, vérifier votre configuration.';
 $lang['could_not_connect'] = 'Impossible de se connecter au serveur LDAP.';
 $lang['could_not_connect_to_host_on_port'] = 'Impossible de se connecter à "%s" sur le port "%s"';
 $lang['could_not_perform_ldap_mod_add'] = 'Echec lors de l\'opération ldap_mod_add.';
+$lang['home'] = 'Home';
+$lang['help'] = 'Aide';
 $lang['bad_server_id_underline'] = 'serveur_id invalide: ';
 $lang['success'] = 'Succès';
 $lang['server_colon_pare'] = 'Serveur: ';
@@ -230,6 +259,11 @@ $lang['bug'] = 'bogue';
 $lang['warning'] = 'Avertissement';
 $lang['light'] = 'lumière'; // the word 'light' from 'light bulb'
 $lang['proceed_gt'] = 'Continuer &gt;&gt;';
+$lang['no_blowfish_secret'] = 'phpLDAPadmin ne peut de façon sur encrypter et décrypter les informations du fait que $blowfish_secret n\'est pas défini dans config.php. Vous devez définir $blowfish_secret avec une chaine de caractère de votre choix.';
+$lang['jpeg_dir_not_writable'] = 'Veuillez assigner à la variable $jpeg_temp_dir le nom d\'un répertoire accessible en écriture dans le fichier config.php';
+$lang['jpeg_dir_not_writable_error'] = 'Impossible d\'écrire dans le répertoire %s défini par la directive $jpeg_temp_dir. Veuillez vérifier que votre serveur web à les droits en écriture pour ce répertoire.';
+$lang['jpeg_unable_toget'] = 'Impossible de trouver la ressource jpeg du serveur LDAP pour l\'attribut %s.';
+$lang['jpeg_delete'] = 'Supprimer la photo';
 
 
 // Add value form
@@ -265,6 +299,8 @@ $lang['must_choose_template'] = 'Vous devez choisir un modèle';
 $lang['invalid_template'] = '%s est un modèle non valide';
 $lang['using_template'] = 'Utilisation du modèle';
 $lang['go_to_dn'] = 'Aller à %s';
+$lang['structural_object_class_cannot_remove'] = 'Ceci est une \'objectclass\' de type structurelle et ne peut etre supprimé.';
+$lang['structural'] = 'structurelle';
 
 
 
@@ -280,13 +316,16 @@ $lang['copyf_recursive_copy'] = 'Copier récursivement les sous-entrées de cet ob
 $lang['recursive_copy'] = 'Copie récursive';
 $lang['filter'] = 'Filtre';
 $lang['filter_tooltip'] = 'Lors d\'une copie récursive, seuls les entrées correspondant à ce filtre seront copiés';
+$lang['delete_after_copy'] = 'Suppresion après copie (déplacer):';
+$lang['delete_after_copy_warn'] = 'Soyez certain que votre filtre (ci-dessus) selectionnera tous les enregistrements enfants.';
+
 
 //create.php
 $lang['create_required_attribute'] = 'Une valeur n\'a pas été spécifiée pour l\'attribut requis %s.';
 $lang['redirecting'] = 'Redirection';
 $lang['here'] = 'ici';
 $lang['create_could_not_add'] = 'L\'ajout de l\'objet au serveur LDAP n\'a pu être effectuée.';
-$lang['rdn_field_blank'] = 'Vous avez laisser le champ du RDN vide.';
+$lang['rdn_field_blank'] = 'Vous avez laissé le champ du RDN vide.';
 $lang['container_does_not_exist'] = 'Le containeur que vous avez spécifié (%s) n\'existe pas. Veuillez, s\'il vous plaît recommencer.';
 $lang['no_objectclasses_selected'] = 'Vous n\'avez sélectionner aucun ObjectClasses pour cet objet. Veuillez s\'il vous plaît retourner à la page précédente et le faire.';
 $lang['hint_structural_oclass'] = 'Note: Vous devez choisir au moins une classe d\'objet de type structural';
@@ -295,6 +334,7 @@ $lang['hint_structural_oclass'] = 'Note: Vous devez choisir au moins une classe 
 $lang['createf_create_object'] = 'Creation d\'un objet';
 $lang['createf_choose_temp'] = 'Choix d\'un modèle';
 $lang['createf_select_temp'] = 'Selectionner un modèle pour la procédure de création';
+$lang['save_as_file'] = 'Sauvegarder en tant que fichier';
 $lang['createf_proceed'] = 'Continuer';
 $lang['relative_distinguished_name'] = 'Relative Distinguished Name';
 $lang['rdn'] = 'RDN';
@@ -306,6 +346,8 @@ $lang['alias_for'] = 'Alias pour %s';
 //creation_template.php
 $lang['ctemplate_on_server'] = 'Sur le serveur';
 $lang['ctemplate_no_template'] = 'Aucun modèle spécifié dans les variables POST.';
+$lang['template_not_readable'] = 'Votre fichier de configuration définit un gestionnaire de "%s" pour ce \'template\' mais ce fichier ne possède pas les droits de lecture.';
+$lang['template_does_not_exist'] = 'Votre fichier de configuration définit un gestionnaire de "%s" pour ce \'template\' mais le gestionnaire n\'existe pas dans le répertoire templates/creation.';
 $lang['ctemplate_config_handler'] = 'Votre configuration scécifie un gestionnaire de';
 $lang['ctemplate_handler_does_not_exist'] = 'pour ce modèle. Cependant, ce gestionnaire n\'existe pas dans le répertoire \'templates/creation\'.';
 $lang['create_step1'] = 'Etape 1 de 2: Nom et classes d\'objet';
@@ -358,12 +400,23 @@ $lang['commit'] = 'Valider';
 $lang['cancel'] = 'Annuler';
 $lang['you_made_no_changes'] = 'Aucun changement n\'a été effectué';
 $lang['go_back'] = 'Retour';
+$lang['unable_create_samba_pass'] = 'Impossible de créer le mot de passe samba. Veuillez vérifiez votre configuration dans le fichier template_config.php';
 
 // welcome.php
 $lang['welcome_note'] = 'Utilisez le menu de gauche pour la navigation';
 $lang['credits'] = 'Crédits';
 $lang['changelog'] = 'ChangeLog';
 $lang['donate'] = 'Donation';
+$lang['pla_logo'] = 'phpLDAPadmin logo';
+
+
+// Donate.php
+$lang['donation_instructions'] = 'Pour effectuer une doantion au projet phpLDAadmin, veuillez utilisez un des boutons PayPal ci-dessous.';
+$lang['donate_amount'] = 'Donner %s';
+$lang['purge_cache'] = 'Vider la cache';
+$lang['no_cache_to_purge'] = 'Aucune cache à vider.';
+$lang['done_purging_caches'] = 'Suppression de %s octets de la cache.';
+$lang['purge_cache_tooltip'] = 'Supprimer toutes les données en cache dans phpLDAPadmin, y compris les schemas serveur.';
 
 // view_jpeg_photo.php
 $lang['unsafe_file_name'] = 'Nom de fichier non sûr: ';
@@ -521,6 +574,70 @@ $lang['non_leaf_nodes_cannot_be_renamed'] = 'Vous ne pouvez pas renommer une ent
 $lang['no_rdn_change'] = 'Le RDN n\'a pas été modifié';
 $lang['invalid_rdn'] = 'Valeur invalide du RDN';
 $lang['could_not_rename'] = 'Impossible de renommer l\'entrée';
+$lang['csv_spreadsheet'] = 'CSV (tableur)';
 
 
+// Samba Account Template
+$lang['samba_account'] = 'Samba Account';
+$lang['samba_account_lcase'] = 'samba account';
+
+// New User (Posix) Account
+$lang['t_new_user_account'] = 'Nouveau compte utilisateur';
+$lang['t_hint_customize'] = 'Astuce: Pour personnaliser ce \'template\', éditez le fichier templates/creation/new_user_template.php';
+$lang['t_name'] = 'Nom';
+$lang['t_first_name'] = 'Prénom';
+$lang['t_last_name'] = 'Nom de famille';
+$lang['t_first'] = 'first';
+$lang['t_last'] = 'last';
+$lang['t_common_name'] = 'Common name';
+$lang['t_user_name'] = 'Nom d\'utilisateur';
+$lang['t_password'] = 'Mot de passe';
+$lang['t_encryption'] = 'Encryption';
+$lang['t_login_shell'] = 'Login Shell';
+$lang['t_home_dir'] = 'Home Directory';
+$lang['t_uid_number'] = 'UID Number';
+$lang['t_auto_det'] = '(déterminé automatiquement)';
+$lang['t_group'] = 'Groupe';
+$lang['t_gid_number'] = 'GID Number';
+$lang['t_err_passwords'] = 'Les mots de passe ne correspondent pas. Veuillez revenir en arrière et recommencez.';
+$lang['t_err_field_blank'] = 'Le champ %s ne peut etre vide. Veuillez revenir en arrière et recommencez.';
+$lang['t_err_field_num'] = 'Seuls des valeurs numériques sont valides pour le champ %s. Veuillez revenir en arrière et recommencez.';
+$lang['t_err_bad_container'] = 'Le conténeur spécifié (%s) n\'existe pas. Veuillez revenir en arrière et recommencez.';
+$lang['t_confirm_account_creation'] = 'Confirmation de la création du compte';
+$lang['t_secret'] = '[secret]';
+$lang['t_create_account'] = 'Créer le compte';
+
+// New Address Template
+$lang['t_new_address'] = 'New Address Book Entry';
+$lang['t_organization'] = 'Organisation';
+$lang['t_address'] = 'Adresse';
+$lang['t_city'] = 'Ville';
+$lang['t_postal_code'] = 'Code postal';
+$lang['t_street'] = 'rue';
+$lang['t_work_phone'] = 'Work phone';
+$lang['t_fax'] = 'Fax';
+$lang['t_mobile'] = 'Mobile';
+$lang['t_email'] = 'Email';
+$lang['t_container'] = 'Conténeur';
+$lang['t_err_cn_blank'] = 'Le champ \'Common Name\' ne peut etre vide. Veuillez revenir en arrière et recommencer.';
+$lang['t_confim_creation'] = 'Confirmation de la création de l\'entrée:';
+$lang['t_create_address'] = 'Create Address';
+
+// compare form
+$lang['compare'] = 'Comparer';
+$lang['comparing'] = 'Comparaison des DNs suivant:';
+$lang['compare_dn'] = 'Comparer un autre DN avec';
+$lang['with'] = 'avec ';
+$lang['compf_source_dn'] = 'DN Source';
+$lang['compf_dn_tooltip'] = 'Comparer ce DN avec un autre';
+$lang['switch_entry'] = 'Intervertir les entrées';
+$lang['no_value'] = 'Aucune Valeur';
+$lang['compare_with'] = 'Comparer avec une autre entrée';
+$lang['need_oclass'] = 'You need one of the following ObjectClass(es) to add this attribute %s.';
+
+// Time out page
+$lang['session_timed_out_1'] = 'Votre session a expiré après';
+$lang['session_timed_out_2'] = 'min. d\'inactivité. Vous avez été automatiquement déconnecté.';
+$lang['log_back_in'] = 'Pour vous connecter à nouveau, cliquez sur le lien suivant:';
+$lang['session_timed_out_tree'] = '(Expiration de session. Déconnexion automatique.)';
 ?>

@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/modification/user.php,v 1.4 2004/03/19 20:13:10 i18phpldapadmin Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/modification/user.php,v 1.5 2005/02/26 12:33:49 wurley Exp $
  
 
 /*
@@ -19,7 +19,7 @@ $encoded_dn = rawurlencode( $dn );
 
 $server_name = $servers[$server_id]['name'];
 
-include 'header.php';
+include './header.php';
 ?>
 
 <body>

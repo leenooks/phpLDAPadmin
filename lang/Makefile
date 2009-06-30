@@ -1,7 +1,7 @@
 # 
 # This Makefile (lang/Makefile) converts the source lang files to UTF8
 # coding. You need iconv installed to use it.
-# $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/Makefile,v 1.24 2004/12/09 14:12:16 uugdave Exp $
+# $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/Makefile,v 1.25 2005/02/06 00:21:30 wurley Exp $
 # ToDo: detect the encoding in the "source"
 #
 # posible detect of the language
@@ -34,10 +34,10 @@ TARGETS=${DESTDIR}/auto.php \
 		${DESTDIR}/pt-br.php \
 		${DESTDIR}/ru.php \
 		${DESTDIR}/sv.php \
+		${DESTDIR}/zh-cn.php \
+		${DESTDIR}/zh-tw.php \
 		${DESTDIR}/zz.php \
 		${DESTDIR}/zzz.php
-# OFF zh-tw.php
-#	        ${DESTDIR}/zh-tw.php \
 
 default: 
 	@echo "usage:"
@@ -129,11 +129,16 @@ ${DESTDIR}/ru.php: 	ru.php
 	@echo "Fixing encoding ru.php to UTF8 "${DESTDIR}/ru.php
 	@iconv -f utf8 -t utf8 ru.php > ${DESTDIR}/ru.php
 
-#${DESTDIR}/zh-tw.php:	zh-tw.php
-#	@echo "Copying only the zh-tw.php"
-        # 	@iconv -f utf8 -t utf8 zh-tw.php ${DESTDIR}/zh-tw.php
+${DESTDIR}/zh-cn.php:	zh-cn.php
+	@echo "Copying only the zh-cn.php"
+	@cp zh-cn.php ${DESTDIR}/zh-cn.php
+
+${DESTDIR}/zh-tw.php:	zh-tw.php
+	@echo "Copying only the zh-tw.php"
+	@cp zh-tw.php ${DESTDIR}/zh-tw.php
+	# @iconv -f utf8 -t utf8 zh-tw.php ${DESTDIR}/zh-tw.php
         # INTERNAL BUG COULDN CONVERT IT, SO WE COPY IT
-	# cp zh-tw.php ${DESTDIR}/zh-tw.php
+
 ${DESTDIR}/zz.php:	zz.php
 	@echo "Copying only the zz.php"
 	@cp zz.php ${DESTDIR}/.

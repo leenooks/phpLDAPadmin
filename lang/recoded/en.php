@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/recoded/en.php,v 1.93 2005/01/07 04:06:27 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/lang/recoded/en.php,v 1.107 2005/03/26 01:18:28 wurley Exp $
 
 
 /*        ---   INSTRUCTIONS FOR TRANSLATORS   ---
@@ -31,7 +31,6 @@ $lang['search_for_entries_whose'] = 'Search for entries whose';
 $lang['base_dn'] = 'Base DN';
 $lang['search_scope'] = 'Search Scope';
 $lang['show_attributes'] = 'Show Attributtes';
-$lang['attributes'] = 'Attributes';
 $lang['Search'] = 'Search';
 $lang['predefined_search_str'] = 'Select a predefined search';
 $lang['predefined_searches'] = 'Predefined Searches';
@@ -74,13 +73,13 @@ $lang['please_specify_in_config'] = 'Please specify it in config.php';
 $lang['create_new_entry_in'] = 'Create a new entry in';
 $lang['login_link'] = 'Login...';
 $lang['login'] = 'login';
-$lang['base_entry_does_not_exist'] = 'The base entry does not exist.';
+$lang['base_entry_does_not_exist'] = 'This base entry does not exist.';
 $lang['create_it'] = 'Create it?';
 
 // Entry display
 $lang['delete_this_entry'] = 'Delete this entry';
 $lang['delete_this_entry_tooltip'] = 'You will be prompted to confirm this decision';
-$lang['copy_this_entry'] = 'Copy this entry';
+$lang['copy_this_entry'] = 'Copy or move this entry';
 $lang['copy_this_entry_tooltip'] = 'Copy this object to another location, a new DN, or another server';
 $lang['export'] = 'Export';
 $lang['export_lcase'] = 'export';
@@ -118,6 +117,7 @@ $lang['binary_value'] = 'Binary value';
 $lang['add_new_binary_attr'] = 'Add new binary attribute';
 $lang['alias_for'] = 'Note: \'%s\' is an alias for \'%s\'';
 $lang['required_for'] = 'Required attribute for objectClass(es) %s';
+$lang['required_by_entry'] = 'This attribute is required for the RDN.';
 $lang['download_value'] = 'download value';
 $lang['delete_attribute'] = 'delete attribute';
 $lang['true'] = 'true';
@@ -127,13 +127,10 @@ $lang['really_delete_attribute'] = 'Really delete attribute';
 $lang['add_new_value'] = 'Add New Value';
 
 // Schema browser
-$lang['the_following_objectclasses'] = 'The following objectClasses are supported by this LDAP server.';
-$lang['the_following_attributes'] = 'The following attributeTypes are supported by this LDAP server.';
-$lang['the_following_matching'] = 'The following matching rules are supported by this LDAP server.';
-$lang['the_following_syntaxes'] = 'The following syntaxes are supported by this LDAP server.';
 $lang['schema_retrieve_error_1']='The server does not fully support the LDAP protocol.';
 $lang['schema_retrieve_error_2']='Your version of PHP does not correctly perform the query.';
-$lang['schema_retrieve_error_3']='Or lastly, phpLDAPadmin doesn\'t know how to fetch the schema for your server.';
+$lang['schema_retrieve_error_3']='phpLDAPadmin doesn\'t know how to fetch the schema for your server.';
+$lang['schema_retrieve_error_4']='Or lastly, your LDAP server doesnt provide this information.';
 $lang['jump_to_objectclass'] = 'Jump to an objectClass';
 $lang['view_schema_for_oclass'] = 'View the schema description for this objectClass';
 $lang['jump_to_attr'] = 'Jump to an attribute type';
@@ -233,19 +230,15 @@ $lang['not_enough_login_info'] = 'Not enough information to login to server. Ple
 $lang['could_not_connect'] = 'Could not connect to LDAP server.';
 $lang['could_not_connect_to_host_on_port'] = 'Could not connect to "%s" on port "%s"';
 $lang['could_not_perform_ldap_mod_add'] = 'Could not perform ldap_mod_add operation.';
-$lang['bad_server_id_underline'] = 'Bad server_id: ';
 $lang['home'] = 'Home';
 $lang['help'] = 'Help';
 $lang['success'] = 'Success';
 $lang['server_colon_pare'] = 'Server: ';
 $lang['look_in'] = 'Looking in: ';
-$lang['missing_server_id_in_query_string'] = 'No server ID specified in query string!';
 $lang['missing_dn_in_query_string'] = 'No DN specified in query string!';
 $lang['back_up_p'] = 'Back Up...';
 $lang['no_entries'] = 'no entries';
-$lang['not_logged_in'] = 'Not logged in';
 $lang['could_not_det_base_dn'] = 'Could not determine base DN';
-$lang['please_report_this_as_a_bug']='Please report this as a bug.';
 $lang['reasons_for_error']='This could happen for several reasons, the most probable of which are:';
 $lang['yes']='Yes';
 $lang['no']='No';
@@ -254,13 +247,16 @@ $lang['delete']='Delete';
 $lang['back']='Back';
 $lang['object']='object';
 $lang['delete_all']='Delete all';
-$lang['url_bug_report']='https://sourceforge.net/tracker/?func=add&group_id=61828&atid=498546';
 $lang['hint'] = 'hint';
 $lang['bug'] = 'bug';
 $lang['warning'] = 'warning';
 $lang['light'] = 'light'; // the word 'light' from 'light bulb'
 $lang['proceed_gt'] = 'Proceed &gt;&gt;';
-
+$lang['no_blowfish_secret'] = 'phpLDAPadmin cannot safely encrypt & decrypt your sensitive information, because $blowfish_secret is not set in config.php. You need to edit config.php and set $blowfish_secret to some secret string now.';
+$lang['jpeg_dir_not_writable'] = 'Please set $jpeg_temp_dir to a writable directory in the phpLDAPadmin config.php';
+$lang['jpeg_dir_not_writable_error'] = 'Could not write to the $jpeg_temp_dir directory %s. Please verify that your web server can write files there.';
+$lang['jpeg_unable_toget'] = 'Could not fetch jpeg data from LDAP server for attribute %s.';
+$lang['jpeg_delete'] = 'Delete photo';
 
 // Add value form
 $lang['add_new'] = 'Add new';
@@ -294,8 +290,8 @@ $lang['must_choose_template'] = 'You must choose a template';
 $lang['invalid_template'] = '%s is an invalid template';
 $lang['using_template'] = 'using template';
 $lang['go_to_dn'] = 'Go to %s';
-+$lang['structural_object_class_cannot_remove'] = 'This is a structural ObjectClass and cannot be removed.';
-+$lang['structural'] = 'structural';
+$lang['structural_object_class_cannot_remove'] = 'This is a structural ObjectClass and cannot be removed.';
+$lang['structural'] = 'structural';
 
 //copy_form.php
 $lang['copyf_title_copy'] = 'Copy ';
@@ -307,8 +303,9 @@ $lang['copyf_note'] = 'Hint: Copying between different servers only works if the
 $lang['copyf_recursive_copy'] = 'Recursively copy all children of this object as well.';
 $lang['recursive_copy'] = 'Recursive copy';
 $lang['filter'] = 'Filter';
-$lang['search_filter'] = 'Search Filter';
 $lang['filter_tooltip'] = 'When performing a recursive copy, only copy those entries which match this filter';
+$lang['delete_after_copy'] = 'Delete after copy (move):';
+$lang['delete_after_copy_warn'] = 'Make sure your filter (above) will select all child records.';
 
 //create.php
 $lang['create_required_attribute'] = 'You left the value blank for required attribute (%s).';
@@ -356,10 +353,8 @@ $lang['scope_base'] = 'Base (base dn only)';
 $lang['standard_ldap_search_filter'] = 'Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))';
 $lang['search_filter'] = 'Search Filter';
 $lang['list_of_attrs_to_display_in_results'] = 'A list of attributes to display in the results (comma-separated)';
-$lang['show_attributes'] = 'Show Attributes';
 
 // search_form_simple.php
-$lang['search_for_entries_whose'] = 'Search for entries whose:';
 $lang['equals'] = 'equals';
 $lang['starts with'] = 'starts with';
 $lang['contains'] = 'contains';
@@ -386,6 +381,7 @@ $lang['commit'] = 'Commit';
 $lang['cancel'] = 'Cancel';
 $lang['you_made_no_changes'] = 'You made no changes';
 $lang['go_back'] = 'Go back';
+$lang['unable_create_samba_pass'] = 'Unable to create samba password. Please check your configuration in template_config.php';
 
 // welcome.php
 $lang['welcome_note'] = 'Use the menu to the left to navigate';
@@ -397,8 +393,6 @@ $lang['pla_logo'] = 'phpLDAPadmin logo';
 // Donate.php
 $lang['donation_instructions'] = 'To donate funds to the phpLDAPadmin project, use one of the PayPal buttons below.';
 $lang['donate_amount'] = 'Donate %s';
-$lang['wish_list_option'] = 'Or perhaps you would prefer to purchase an gift for a phpLDAPadmin developer.';
-$lang['wish_list'] = 'View Dave\'s phpLDAPadmin wish list';
 
 $lang['purge_cache'] = 'Purge caches';
 $lang['no_cache_to_purge'] = 'No cache to purge.';
@@ -437,15 +431,15 @@ $lang['could_not_bind_anon'] = 'Could not bind anonymously to server.';
 $lang['could_not_bind'] = 'Could not bind to the LDAP server.';
 $lang['anonymous_bind'] = 'Anonymous Bind';
 $lang['bad_user_name_or_password'] = 'Bad username or password. Please try again.';
-$lang['redirecting_click_if_nothing_happens'] = 'Redirecting... Click here if nothing happens.';
 $lang['successfully_logged_in_to_server'] = 'Successfully logged into server <b>%s</b>';
 $lang['could_not_set_cookie'] = 'Could not set cookie.';
 $lang['ldap_said'] = 'LDAP said: %s';
 $lang['ferror_error'] = 'Error';
 $lang['fbrowse'] = 'browse';
 $lang['delete_photo'] = 'Delete Photo';
-$lang['install_not_support_blowfish'] = 'Your PHP install does not support blowfish encryption.';
-$lang['install_not_support_md5crypt'] = 'Your PHP install does not support md5crypt encryption.';
+$lang['install_not_support_ext_des'] = 'Your system crypt library does not support extended DES encryption.';
+$lang['install_not_support_blowfish'] = 'Your system crypt library does not support blowfish encryption.';
+$lang['install_not_support_md5crypt'] = 'Your system crypt library does not support md5crypt encryption.';
 $lang['install_no_mash'] = 'Your PHP install does not have the mhash() function. Cannot do SHA hashes.';
 $lang['jpeg_contains_errors'] = 'jpegPhoto contains errors<br />';
 $lang['ferror_number'] = 'Error number: %s (%s)';
@@ -457,8 +451,10 @@ $lang['ferror_unrecognized_num'] = 'Unrecognized error number: ';
 $lang['ferror_nonfatil_bug'] = '<center><table class=\'notice\'><tr><td colspan=\'2\'><center><img src=\'images/warning.png\' height=\'12\' width=\'13\' />
              <b>You found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>
              <td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>
-             </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr><tr><td colspan=\'2\'><center><a target=\'new\' href=\'%s\'>
-             Please report this bug by clicking here</a>.</center></td></tr></table></center><br />';
+             </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>
+	<tr><td colspan=\'2\'><center><a target=\'new\' href=\'%s\'>Please check and see if this bug has been reported here</a>.</center></td></tr>
+	<tr><td colspan=\'2\'><center><a target=\'new\' href=\'%s\'>If it hasnt been reported, you may report this bug by clicking here</a>.</center></td></tr>
+	</table></center><br />';
 $lang['ferror_congrats_found_bug'] = 'Congratulations! You found a bug in phpLDAPadmin.<br /><br />
 	     <table class=\'bug\'>
 	     <tr><td>Error:</td><td><b>%s</b></td></tr>
@@ -514,16 +510,14 @@ $lang['searching'] = 'Searching...';
 $lang['size_limit_exceeded'] = 'Notice, search size limit exceeded.';
 $lang['entry'] = 'Entry';
 $lang['ldif_export_for_dn'] = 'LDIF Export for: %s';
-$lang['generated_on_date'] = 'Generated by phpLDAPadmin ( http://www.phpldapadmin.com/ ) on %s';
+$lang['generated_on_date'] = 'Generated by phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) on %s';
 $lang['total_entries'] = 'Total Entries';
 $lang['dsml_export_for_dn'] = 'DSLM Export for: %s';
 $lang['include_system_attrs'] = 'Include system attributes';
 $lang['csv_spreadsheet'] = 'CSV (Spreadsheet)';
 
 // logins
-$lang['could_not_find_user'] = 'Could not find a user "%s"';
 $lang['password_blank'] = 'You left the password blank.';
-$lang['login_cancelled'] = 'Login cancelled.';
 $lang['no_one_logged_in'] = 'No one is logged in to that server.';
 $lang['could_not_logout'] = 'Could not logout.';
 $lang['unknown_auth_type'] = 'Unknown auth_type: %s';
@@ -535,6 +529,7 @@ $lang['login_dn'] = 'Login DN';
 $lang['user_name'] = 'User name';
 $lang['password'] = 'Password';
 $lang['authenticate'] = 'Authenticate';
+$lang['login_not_allowed'] = 'Sorry, you are not allowed to use phpLDAPadmin with this LDAP server.';
 
 // Entry browser
 $lang['entry_chooser_title'] = 'Entry Chooser';
@@ -565,7 +560,6 @@ $lang['invalid_rdn'] = 'Invalid RDN value';
 $lang['could_not_rename'] = 'Could not rename the entry';
 
 // General errors
-$lang['php5_unsupported'] = 'phpLDAPadmin does not yet support PHP 5. You will likely encounter many weird problems if you continue.';
 $lang['mismatched_search_attr_config'] = 'Your configuration has an error. $search_attributes must have the same number of attributes as $search_attributes_display.';
 
 // Password checker
@@ -577,7 +571,6 @@ $lang['to'] = 'To';
 
 // Templates
 $lang['using'] = 'Using the';
-$lang['template'] = 'template';
 $lang['switch_to'] = 'You may switch to the ';
 $lang['default_template'] = 'default template';
 
@@ -671,4 +664,22 @@ $lang['t_create_address'] = 'Create Address';
 // default template
 $lang['t_check_pass'] = 'Check password...';
 
+// compare form
+$lang['compare'] = 'Compare';
+$lang['comparing'] = 'Comparing the following DNs';
+$lang['compare_dn'] = 'Compare another DN with';
+$lang['with'] = 'with ';
+$lang['compf_source_dn'] = 'Source DN';
+$lang['compf_dn_tooltip'] = 'Compare this DN with another';
+$lang['switch_entry'] = 'Switch Entry';
+$lang['no_value'] = 'No Value';
+$lang['compare_with'] = 'Compare with another entry';
+$lang['need_oclass'] = 'You need one of the following ObjectClass(es) to add this attribute %s.';
+
+// Time out page
+$lang['session_timed_out_1'] = 'Your Session timed out after';
+$lang['session_timed_out_2'] = 'min. of inactivity. You have been automatically logged out.';
+$lang['log_back_in'] = 'To log back in please click on the following link:';
+$lang['session_timed_out_tree'] = '(Session timed out. Automatically logged out.)';
+$lang['timeout_at'] = 'Inactivity will log you off at %s';
 ?>

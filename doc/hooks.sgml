@@ -1,0 +1,1218 @@
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V4.1//EN" []>
+
+<article lang="fr">
+  <articleinfo>
+    <title>Hook system specification for phpldapadmin</title>
+    <author>
+      <firstname>Benjamin</firstname>
+      <surname>Drieu</surname>
+      <affiliation>
+	<address><email>Benjamin.Drieu@fr.alcove.com</email></address>
+      </affiliation>
+    </author>
+
+    <releaseinfo>Version 1.0</releaseinfo>
+
+    <abstract>
+      <para>This document describes the hook system developed for
+      phpldapadmin.</para>
+    </abstract>
+
+    <copyright><year>2005</year><holder>Alcôve</holder></copyright>
+    
+  </articleinfo>
+
+  <section>
+    <title>Implementation</title>
+
+    <section>
+      <title>run_hook</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>run_hook</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>hook_name</replaceable></parameter>, 
+<parameter><replaceable>args</replaceable></parameter>, 
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>hook_name</glossterm>
+	    <glossdef>
+	      <para>name of hook to run.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>args</glossterm>
+	    <glossdef>
+	      <para>Array of optional arguments set by phpldapadmin.
+ 		It is normally in a form known by
+ 		call_user_func_array() :
+<programlisting>[ 'server_id' => 0, 
+  'dn' => 'uid=epoussa,ou=tech,o=corp,o=fr' ]</programlisting></para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>Runs procedures attached to a hook.  This is normally
+	called from the phpldapadmin code.  But user can define hooks
+	in her code if needed.</para>
+
+	<para>The mechanism is quite simple : hooks are added via the
+	<function>add_hook()</function> function, using a numeric
+	priority to sort order or invocation.  The
+	<function>run_hook()</function> function will run them
+	sequentially from the lowest priority to the highest priotiry
+	untill a procedure returns a non true value.  In that case,
+	rollbacks procedures that are defined together with procedures
+	are executed in reverse order.  Rollbacks are mainly used to
+	keep consistency and achieve failsafe systems.</para>
+
+	<example>
+	  <title>Example of invocation of run_hook.</title>
+
+	  <para>Phpldapadamin runs a hook that contains three
+	  procedures, a, b, c and d of priority 0, 10, 20 and 30.
+	  Procedure a is executed first and after that, b is executed
+	  if no error occurs.  If b does not returns an error, c is
+	  executed.  Now, let imagine that c returns false.  In that
+	  case, c's rollback is executed, then b's rollback and
+	  finally a's rollback.</para>
+	</example>
+      </section>
+
+    </section>
+
+    <section>
+      <title>add_hook</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>add_hook</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>hook_name</replaceable></parameter>, 
+<parameter><replaceable>priority</replaceable></parameter>, 
+<parameter><replaceable>hook_function</replaceable></parameter>, 
+<parameter><replaceable>rollback_function</replaceable></parameter>, 
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>hook_name</glossterm>
+	    <glossdef>
+	      <para>name of hook to add a procedure to.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>priority</glossterm>
+	    <glossdef>
+	      <para>Numeric priority.  Lowest means procedure will be
+	      executed before.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>hook_function</glossterm>
+	    <glossdef>
+	      <para>Name of the php procedure called upon hook
+	      trigger.  Procedure will called via the
+	      call_user_func_array() php function with pre-set
+	      arguments that depends on hook type.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>rollback_function</glossterm>
+	    <glossdef>
+	      <para>Name of the php procedure called upon hook trigger
+	      when a procedure failed.  Procedure will called via the
+	      call_user_func_array() php function with pre-set
+	      arguments that depends on hook type.</para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>Pushes a procedure in the procedure lists of a hook for
+	later execution.</para>
+      </section>
+
+    </section>
+
+    <section>
+      <title>remove_hook</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>remove_hook</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>hook_name</replaceable></parameter>, 
+<parameter><replaceable>priority</replaceable></parameter>, 
+<parameter><replaceable>hook_function</replaceable></parameter>, 
+<parameter><replaceable>rollback_function</replaceable></parameter>, 
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>hook_name</glossterm>
+	    <glossdef>
+	      <para>name of hook to remove procedures from.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>priority</glossterm>
+	    <glossdef>
+	      <para>Numeric priority.  If set, all procedures of that
+	      priority will be removed. </para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>hook_function</glossterm>
+	    <glossdef>
+	      <para>Name of the php procedure called upon hook
+	      trigger.  If set, all procedures that call this function
+	      will be removed.
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>rollback_function</glossterm>
+	    <glossdef>
+	      <para>Name of the php rollback function called upon
+	      failure.  If set, all procedures that call this function
+	      as a rollback will be removed.</para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>Removes a procedure from a hook, based on a filter.  All
+	arguments passed after hook_name are optional and can be
+	omited.  If specified, they are used to as a filter: if a
+	procedure for this hook matches at lease one of these
+	parameters, it will be removed.</para>
+      </section>
+
+    </section>
+
+
+    <section>
+      <title>clear_hooks</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>clear_hook</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>hook_name</replaceable></parameter>
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>hook_name</glossterm>
+	    <glossdef>
+	      <para>name of hook to clear.</para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>Remove all procedures from a hook.  If this hook is
+	called after a call to clear_hook, no procedures will be
+	called.</para>
+      </section>
+
+    </section>
+
+
+
+  </section>
+
+  <section>
+    <title>Hooks reference</title>
+
+    <para></para>    
+
+    <section>
+      <title>post_attr_modify</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>post_attr_modify</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>server_id</replaceable></parameter>, 
+<parameter><replaceable>dn</replaceable></parameter>, 
+<parameter><replaceable>attr_name</replaceable></parameter>, 
+<parameter><replaceable>new_val</replaceable></parameter>, 
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>server_id</glossterm>
+	    <glossdef>
+	      <para>numeric id of the LDAP server.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>dn</glossterm>
+	    <glossdef>
+	      <para>DN of modified entry.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>attr_name</glossterm>
+	    <glossdef>
+	      <para>name of attribute modified.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>new_val</glossterm>
+	    <glossdef>
+	      <para>value that has been set by user, normally a
+	      string.</para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>This hook is triggered for every attribute changed by
+	phpldapadmin after by user interaction.  Function return value
+	is not used by phpldapadmin since this hooks comes AFTER
+	attribute has been modified.  Thought, return value may
+	trigger rollbacks.</para>
+      </section>
+
+    </section>
+
+
+    <section>
+      <title>post_display_update_array</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>post_display_update_array</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>server_id</replaceable></parameter>, 
+<parameter><replaceable>dn</replaceable></parameter>, 
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>server_id</glossterm>
+	    <glossdef>
+	      <para>numeric id of the LDAP server.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>dn</glossterm>
+	    <glossdef>
+	      <para>DN of modified entry.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>update_array</glossterm>
+	    <glossdef>
+	      <para>reference to an array containing all entries that
+	      are to be modified, in the form:
+<programlisting>
+[ 'cn' => 'El Poussah Haroun', 
+  'description' => 'Calife',
+  'diskQuota' => '10000' ]
+</programlisting>
+</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>index</glossterm>
+	    <glossdef>
+	      <para>reference to position of entry in update table.</para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>This hook is triggered by phpldapadmin after user has
+	modified attributes in the editing form and before she commits
+	changes in the confirmation form.  This hooks is run after an
+	update array of changes is build and its content is displayed
+	into the commit form.  As a reference of this update array is
+	passed to this hook, it is possible to add, remove or change
+	entries from it, thus allowing some manual tweaking before
+	data is passed to phpldapadmin.</para>
+
+	<para>An additional reference to a the number of rows already
+	displayed is passed, allowing hook to change its behaviour,
+	like displaying different color for odd or even rows.</para>
+      </section>
+
+    </section>
+
+
+    <section>
+      <title>post_entry_create</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>post_entry_create</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>server_id</replaceable></parameter>, 
+<parameter><replaceable>dn</replaceable></parameter>, 
+<parameter><replaceable>attrs</replaceable></parameter>, 
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>server_id</glossterm>
+	    <glossdef>
+	      <para>numeric id of the LDAP server.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>dn</glossterm>
+	    <glossdef>
+	      <para>DN of modified entry.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>attrs</glossterm>
+	    <glossdef>
+	      <para>an array containing all attributes of created
+	      entry, in the form:
+<programlisting>
+[ 'cn' => 'El Poussah Haroun', 
+  'description' => 'Calife',
+  'diskQuota' => '10000', 
+  ... ]</programlisting></para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>This hook is triggered after an entry has been created.
+	Its return value is not used by phpldapadmin but it can still
+	trigger rollbacks.</para>
+      </section>
+
+    </section>
+
+
+    <section>
+      <title>post_entry_delete</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>post_entry_delete</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>server_id</replaceable></parameter>, 
+<parameter><replaceable>dn</replaceable></parameter>, 
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>server_id</glossterm>
+	    <glossdef>
+	      <para>numeric id of the LDAP server.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>dn</glossterm>
+	    <glossdef>
+	      <para>DN of deleted entry.</para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>This hook is triggered after an entry has been deleted.</para>
+      </section>
+
+    </section>
+
+
+    <section>
+      <title>post_rename_entry</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>post_rename_entry</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>server_id</replaceable></parameter>, 
+<parameter><replaceable>new_dn</replaceable></parameter>, 
+<parameter><replaceable>old_dn</replaceable></parameter>, 
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>server_id</glossterm>
+	    <glossdef>
+	      <para>numeric id of the LDAP server.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>old_dn</glossterm>
+	    <glossdef>
+	      <para>Previous DN of modified entry.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>new_dn</glossterm>
+	    <glossdef>
+	      <para>New DN of modified entry.</para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>This hook is triggered by phpldapadmin after an entry
+	has been renamed.  Both dn variables are string representation
+	of old DN.</para>
+      </section>
+
+    </section>
+
+
+    <section>
+      <title>post_session_init</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>post_session_init</function></funcdef>
+	    <paramdef>
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>This hook is triggered just after an user has
+	connected.</para>
+      </section>
+
+    </section>
+
+
+    <section>
+      <title>post_update</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>post_update</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>server_id</replaceable></parameter>, 
+<parameter><replaceable>dn</replaceable></parameter>, 
+<parameter><replaceable>update_array</replaceable></parameter>, 
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>server_id</glossterm>
+	    <glossdef>
+	      <para>numeric id of the LDAP server.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>dn</glossterm>
+	    <glossdef>
+	      <para>DN of modified entry.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>update_array</glossterm>
+	    <glossdef>
+	      <para>reference to an array containing all entries that
+	      are to be modified, in the form:
+<programlisting>
+[ 'cn' => 'El Poussah Haroun', 
+  'description' => 'Calife',
+  'diskQuota' => '10000' ]
+</programlisting>
+</para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>This hook is triggered after an entry has been
+	modified.  It is run after all post_attr_modify hook.</para>
+      </section>
+
+    </section>
+
+
+    <section>
+      <title>post_update_array_processing</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>post_update_array_processing</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>server_id</replaceable></parameter>, 
+<parameter><replaceable>dn</replaceable></parameter>, 
+<parameter><replaceable>update_array</replaceable></parameter>, 
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>server_id</glossterm>
+	    <glossdef>
+	      <para>numeric id of the LDAP server.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>dn</glossterm>
+	    <glossdef>
+	      <para>DN of modified entry.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>update_array</glossterm>
+	    <glossdef>
+	      <para>reference to an array containing all entries that
+	      are to be modified, in the form:
+<programlisting>
+[ 'cn' => 'El Poussah Haroun', 
+  'description' => 'Calife',
+  'diskQuota' => '10000' ]
+</programlisting>
+</para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>This hook is triggered by phpldapadmin after user has
+	modified attributes in the editing form and before she commits
+	changes in the confirmation form.  This hooks is run BEFORE an
+	update array of changes is build and its content is displayed
+	into the commit form.  As a reference of this update array is
+	passed to this hook, it is possible to add, remove or change
+	entries from it, thus allowing some manual tweaking before
+	data is displayed in commit confirmation form.</para>
+
+      </section>
+
+    </section>
+
+
+    <section>
+      <title>pre_attr_add</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>pre_attr_add</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>server_id</replaceable></parameter>, 
+<parameter><replaceable>dn</replaceable></parameter>, 
+<parameter><replaceable>attr_name</replaceable></parameter>, 
+<parameter><replaceable>new_value</replaceable></parameter>
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>server_id</glossterm>
+	    <glossdef>
+	      <para>numeric id of the LDAP server.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>dn</glossterm>
+	    <glossdef>
+	      <para>DN of modified entry.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>attr_name</glossterm>
+	    <glossdef>
+	      <para>name of modified attribute./para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>new_value</glossterm>
+	    <glossdef>
+	      <para>new value for attribute.</para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>This hook is triggered before an attribute is changed.
+	If it returns something else than <constant>true</constant>,
+	attribute change fails and nothing is changed for this
+	attribute and phpldapadmin adds this attribute to the
+	failed_attrs parameter.  This parameter can be used later by
+	modification templates to display attributes that
+	failed.</para>
+      </section>
+
+    </section>
+
+
+    <section>
+      <title>pre_attr_modify</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>pre_attr_modify</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>server_id</replaceable></parameter>, 
+<parameter><replaceable>dn</replaceable></parameter>, 
+<parameter><replaceable>attr_name</replaceable></parameter>, 
+<parameter><replaceable>new_val</replaceable></parameter>, 
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>server_id</glossterm>
+	    <glossdef>
+	      <para>numeric id of the LDAP server.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>dn</glossterm>
+	    <glossdef>
+	      <para>DN of modified entry.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>attr_name</glossterm>
+	    <glossdef>
+	      <para>name of attribute modified.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>new_val</glossterm>
+	    <glossdef>
+	      <para>value that has been set by user, normally a
+	      string.</para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>This hook is triggered for every attribute changed by
+	phpldapadmin after by user interaction BEFORE it is changed.
+	If this hook returns a value different from true, attribute is
+	not changed and it is added to a
+	<varname>failed_attr</varname> array that can be later
+	processed by other hooks or by forms.  Rollback can be
+	triggered too.</para>
+      </section>
+
+    </section>
+
+
+    <section>
+      <title>pre_connect</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>pre_connect</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>server_id</replaceable></parameter>, 
+<parameter><replaceable>anonymous</replaceable></parameter>, 
+<parameter><replaceable>use_cache</replaceable></parameter>, 
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>server_id</glossterm>
+	    <glossdef>
+	      <para>numeric id of the LDAP server.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>anonymous</glossterm>
+	    <glossdef>
+	      <para>true if connection is anonymous.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>use_cache</glossterm>
+	    <glossdef>
+	      <para>true if connection is cached and is not closed is reused.</para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>This hook is triggered by phpldapadmin every time it
+	needs to make a connection to a LDAP server using
+	pla_ldap_connect function.</para>
+      </section>
+
+    </section>
+
+
+    <section>
+      <title>pre_display_update_array</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>pre_display_update_array</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>server_id</replaceable></parameter>, 
+<parameter><replaceable>dn</replaceable></parameter>, 
+<parameter><replaceable>update_array</replaceable></parameter>, 
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>server_id</glossterm>
+	    <glossdef>
+	      <para>numeric id of the LDAP server.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>dn</glossterm>
+	    <glossdef>
+	      <para>DN of modified entry.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>update_array</glossterm>
+	    <glossdef>
+	      <para>reference to an array containing all entries that
+	      are to be modified, in the form:
+<programlisting>
+[ 'cn' => 'El Poussah Haroun', 
+  'description' => 'Calife',
+  'diskQuota' => '10000' ]
+</programlisting>
+</para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>This hook is triggered by phpldapadmin after user has
+	modified attributes in the editing form and before she commits
+	changes in the confirmation form.  This hooks is run after an
+	update array of changes is build and BEFORE its content is
+	displayed into the commit form.  As a reference of this update
+	array is passed to this hook, it is possible to add, remove or
+	change entries from it, thus allowing some manual tweaking
+	before data is displayed in commit confirmation form.</para>
+
+      </section>
+
+    </section>
+
+
+    <section>
+      <title>pre_entry_create</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>pre_entry_create</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>server_id</replaceable></parameter>, 
+<parameter><replaceable>dn</replaceable></parameter>, 
+<parameter><replaceable>attrs</replaceable></parameter></paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>server_id</glossterm>
+	    <glossdef>
+	      <para>numeric id of the LDAP server.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>dn</glossterm>
+	    <glossdef>
+	      <para>DN of modified entry.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>attrs</glossterm>
+	    <glossdef>
+	      <para>an array containing all attributes of requested
+	      entry, in the form:
+<programlisting>
+[ 'cn' => 'El Poussah Haroun', 
+  'description' => 'Calife',
+  'diskQuota' => '10000', 
+  ... ]</programlisting></para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+	
+	<para>This hook is triggered BEFORE an entry is created.  Its
+	return value determines whether phpldapadmin will create entry
+	or not.  If not true, entry will not be created and rollbacks
+	will be triggered.</para>
+
+      </section>
+
+    </section>
+
+
+    <section>
+      <title>pre_entry_delete</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>pre_entry_delete</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>server_id</replaceable></parameter>, 
+<parameter><replaceable>dn</replaceable></parameter>, 
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>server_id</glossterm>
+	    <glossdef>
+	      <para>numeric id of the LDAP server.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>dn</glossterm>
+	    <glossdef>
+	      <para>DN of modified entry.</para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>This hook is triggered BEFORE an entry is deleted.  If
+	it returns a false value, entry will not be deleted and an
+	error will be displayed.</para>
+
+      </section>
+
+    </section>
+
+
+    <section>
+      <title>pre_rename_entry</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>pre_rename_entry</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>server_id</replaceable></parameter>, 
+<parameter><replaceable>dn</replaceable></parameter>, 
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>server_id</glossterm>
+	    <glossdef>
+	      <para>numeric id of the LDAP server.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>old_dn</glossterm>
+	    <glossdef>
+	      <para>Previous DN of modified entry.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>new_dn</glossterm>
+	    <glossdef>
+	      <para>New DN of modified entry.</para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>This hook is triggered by phpldapadmin BEFORE an entry
+	is renamed.  Both dn variables are string representation of
+	old and new DN.  If this hook returns a false value, entry is
+	not renamed.</para>
+
+      </section>
+
+    </section>
+
+
+    <section>
+      <title>pre_update</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>pre_update</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>server_id</replaceable></parameter>, 
+<parameter><replaceable>dn</replaceable></parameter>, 
+<parameter><replaceable>update_array</replaceable></parameter>
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>server_id</glossterm>
+	    <glossdef>
+	      <para>numeric id of the LDAP server.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>dn</glossterm>
+	    <glossdef>
+	      <para>DN of modified entry.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>update_array</glossterm>
+	    <glossdef>
+	      <para>reference to an array containing all entries that
+	      are to be modified, in the form:
+<programlisting>
+[ 'cn' => 'El Poussah Haroun', 
+  'description' => 'Calife',
+  'diskQuota' => '10000' ]
+</programlisting>
+</para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>This hook is triggered by phpldapadmin BEFORE an entry
+	is updated.  Also, it is run before any pre_attr_modify hook
+	is triggered.</para>
+      </section>
+
+    </section>
+
+
+    <section>
+      <title>pre_update_array_processing</title>
+
+      <section>
+	<title>Synopsis</title>
+
+	<funcsynopsis>
+	  <funcprototype>
+	    <funcdef><function>pre_update_array_processing</function></funcdef>
+	    <paramdef>
+<parameter><replaceable>server_id</replaceable></parameter>, 
+<parameter><replaceable>dn</replaceable></parameter>, 
+<parameter><replaceable>update_array</replaceable></parameter>
+</paramdef>
+	  </funcprototype>
+	</funcsynopsis>
+
+	<glosslist>
+	  <glossentry>
+	    <glossterm>server_id</glossterm>
+	    <glossdef>
+	      <para>numeric id of the LDAP server.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>dn</glossterm>
+	    <glossdef>
+	      <para>DN of modified entry.</para>
+	    </glossdef>
+	  </glossentry>
+	  <glossentry>
+	    <glossterm>update_array</glossterm>
+	    <glossdef>
+	      <para>reference to an array containing all entries that
+	      are to be modified, in the form:
+<programlisting>
+[ 'cn' => 'El Poussah Haroun', 
+  'description' => 'Calife',
+  'diskQuota' => '10000' ]
+</programlisting>
+</para>
+	    </glossdef>
+	  </glossentry>
+	</glosslist>
+
+      </section>
+
+      <section>
+	<title>Usage</title>
+
+	<para>This hook is triggered by phpldapadmin after user has
+	modified attributes in the editing form and before she commits
+	changes in the confirmation form.  This hooks is run BEFORE an
+	update array of changes is build and its content is displayed
+	into the commit form.  As a reference of this update array is
+	passed to this hook, it is possible to add, remove or change
+	entries from it, thus allowing some manual tweaking before
+	data is displayed in commit confirmation form.</para>
+
+      </section>
+
+    </section>
+
+  </section>
+
+</article>

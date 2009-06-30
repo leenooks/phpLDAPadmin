@@ -1,36 +1,41 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_oclass.php,v 1.11 2004/08/15 17:39:20 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/add_oclass.php,v 1.14 2005/03/20 04:43:36 wurley Exp $
 
-/*
- * add_oclass.php
+/**
  * Adds an objectClass to the specified dn.
- * Variables that come in as POST vars:
  *
  * Note, this does not do any schema violation checking. That is
  * performed in add_oclass_form.php.
  *
- * Vars that come in as POST:
+ * Variables that come in as POST vars:
  *  - dn (rawurlencoded)
  *  - server_id
  *  - new_oclass
  *  - new_attrs (array, if any)
+ *
+ * @package phpLDAPadmin
+ */
+/**
  */
 
 require './common.php';
 
+$server_id = (isset($_POST['server_id']) ? $_POST['server_id'] : '');
+$ldapserver = new LDAPServer($server_id);
+
+if( $ldapserver->isReadOnly() )
+	pla_error( $lang['no_updates_in_read_only_mode'] );
+if( ! $ldapserver->haveAuthInfo())
+	pla_error( $lang['not_enough_login_info'] );
+
 $dn = rawurldecode( $_POST['dn'] );
-$encoded_dn = rawurlencode( $dn );
 $new_oclass = $_POST['new_oclass'];
-$server_id = $_POST['server_id'];
 $new_attrs = $_POST['new_attrs'];
 
-if( is_attr_read_only( $server_id, 'objectClass' ) )
-	pla_error( "ObjectClasses are flagged as read only in the phpLDAPadmin configuration." );
-if( is_server_read_only( $server_id ) )
-	pla_error( $lang['no_updates_in_read_only_mode'] );
+$encoded_dn = rawurlencode( $dn );
 
-check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
-have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
+if( is_attr_read_only( $ldapserver, 'objectClass' ) )
+	pla_error( "ObjectClasses are flagged as read only in the phpLDAPadmin configuration." );
 
 $new_entry = array();
 $new_entry['objectClass'] = $new_oclass;
@@ -42,29 +47,24 @@ if( is_array( $new_attrs ) && count( $new_attrs ) > 0 )
 	foreach( $new_attrs as $attr => $val ) {
 
 		// Check to see if this is a unique Attribute
-		if( $badattr = checkUniqueAttr( $server_id, $dn, $attr, array($val) ) ) {
-			$search_href='search.php?search=true&form=advanced&server_id=' . $server_id  . '&filter=' . $attr . '=' . $badattr;
-			pla_error(sprintf( $lang['unique_attr_failed'] , $attr,$badattr,$dn,$search_href ) );
+		if( $badattr = checkUniqueAttr( $ldapserver, $dn, $attr, array($val) ) ) {
+			$search_href = sprintf('search.php?search=true&form=advanced&server_id=%s&filter=%s=%s',$server_id,$attr,$badattr);
+			pla_error(sprintf( $lang['unique_attr_failed'],$attr,$badattr,$dn,$search_href ) );
 		}
 
 		$new_entry[ $attr ] = $val;
 	}
 
-//echo "<pre>"; 
+//echo "<pre>";
 //print_r( $new_entry );
 //exit;
 
-$ds = pla_ldap_connect( $server_id );
-pla_ldap_connection_is_error( $ds );
-$add_res = @ldap_mod_add( $ds, $dn, $new_entry );
+$add_res = @ldap_mod_add( $ldapserver->connect(), $dn, $new_entry );
 
-if( ! $add_res )
-{
-	pla_error( $lang['could_not_perform_ldap_mod_add'], ldap_error( $ds ), ldap_errno( $ds ) );
-}
-else
-{
+if( ! $add_res ) {
+	pla_error( $lang['could_not_perform_ldap_mod_add'],ldap_error($ldapserver->connect()),ldap_errno($ldapserver->connect()) );
+
+} else {
 	header( "Location: edit.php?server_id=$server_id&dn=$encoded_dn&modified_attrs[]=objectclass" );
 }
-
 ?>

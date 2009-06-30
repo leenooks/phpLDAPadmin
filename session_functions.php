@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/session_functions.php,v 1.12 2004/09/09 12:45:09 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/session_functions.php,v 1.13 2005/02/25 13:44:06 wurley Exp $
 
 /**
  * A collection of functions to handle sessions throughout phpLDAPadmin.
@@ -34,10 +34,10 @@ function pla_session_get_id()
 	else
 		$ip_len = $ip_hex - 1;
 
-	$new_id = substr($id_md5, 0, $id_hex) . 
+	$new_id = substr($id_md5, 0, $id_hex) .
 		substr($ip_md5, $ip_hex, $ip_len) .
 		substr($id_md5, $id_hex, pla_session_id_ses_max - ($id_hex + $ip_len));
-		
+
 	return $new_id;
 }
 
@@ -56,7 +56,7 @@ function pla_session_verify_id()
 		$ip_len = pla_session_id_ip_min;
 	else
 		$ip_len = $ip_hex - 1;
-	
+
 	$ip_ses = substr($check_id, $id_hex, $ip_len);
 	$ip_ver = substr($ip_md5, $ip_hex, $ip_len);
 
@@ -111,9 +111,7 @@ function pla_session_start()
 /**
  * Stops the current session.
  */
-function pla_session_close()
-{
+function pla_session_close() {
     @session_write_close();
 }
-
 ?>

@@ -174,10 +174,10 @@ if ( !$verify ) {
 	$reg_zip = trim( $_POST['reg_zip'] );
 	$container = trim( $_POST['container'] );
 
-	dn_exists( $server_id, $container ) or
+	dn_exists( $ldapserver, $container ) or
 		pla_error( "The container you specified (" . htmlspecialchars( $container ) . ") does not exist. " .
 			   "Please go back and try again." );
-	dn_exists( $server_id, $occupant ) or
+	dn_exists( $ldapserver, $occupant ) or
 		pla_error( "The occupant you specified (" . htmlspecialchars( $occupant ) . ") does not exist. " .
 			   "Please go back and try again." );
 	0 != strlen( $or_name ) or

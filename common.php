@@ -1,10 +1,11 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/common.php,v 1.55 2004/10/14 20:32:48 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/common.php,v 1.59 2005/03/16 11:20:23 wurley Exp $
 
-/*
- * common.php
+/**
  * Contains code to be executed at the top of each phpLDAPadmin page.
  * include this file at the top of every PHP file.
+ *
+ * @package phpLDAPadmin
  */
 
 // Work-around to get PLA to work in PHP5
@@ -19,8 +20,9 @@ else
    // For PHP4
    error_reporting( E_ALL );
 
-
-// For PHP5 backward/forward compatibility
+/**
+ * For PHP5 backward/forward compatibility
+ */
 if( ! defined( 'E_STRICT' ) ) {
     define( 'E_STRICT', 2048 );
 }
@@ -41,7 +43,7 @@ ob_start();
 if( ! file_exists( realpath( './functions.php' ) ) ) {
     ob_end_clean();
     die( "Fatal error: Required file 'functions.php' does not exist." );
-} 
+}
 if( ! is_readable( realpath( './functions.php' ) ) ) {
     ob_end_clean();
     die( "Cannot read the file 'functions.php' its permissions are too strict." );
@@ -66,24 +68,31 @@ if( file_exists( realpath( './config.php' ) ) ) {
 	ob_end_clean();
 }
 
-$required_files = array( 
+$required_files = array(
     // The base English language strings
     './lang/recoded/en.php',
+    // Functions for talking to LDAP servers.
+    './server_functions.php',
     // Functions for managing the session (pla_session_start(), etc.)
-    './session_functions.php', 
+    './session_functions.php',
     // Functions for reading the server schema (get_schema_object_classes(), etc.)
-    './schema_functions.php', 
+    './schema_functions.php',
     // Functions that can be defined by the user (preEntryDelete(), postEntryDelete(), etc.)
     './custom_functions.php',
     // Functions for hashing passwords with OpenSSL binary (only if mhash not present)
-    './emuhash_functions.php' );
-
+    './emuhash_functions.php',
+    // Functions for sending syslog messages
+    './syslog.php',
+    // Functions for running various hooks
+    './hooks.php', 
+    // Functions for timeout and automatic logout feature
+    './timeout_functions.php' );
 
 // Include each required file and check for sanity.
 foreach( $required_files as $file_name ) {
     file_exists( realpath( $file_name ) )
         or pla_error( "Fatal error: Required file '$file_name' does not exist." );
-    is_readable( realpath( $file_name ) ) 
+    is_readable( realpath( $file_name ) )
         or pla_error( "Fatal error: Cannot read the file '$file_name', its permissions are too strict." );
     ob_start();
     require_once realpath( $file_name );
@@ -91,7 +100,7 @@ foreach( $required_files as $file_name ) {
 }
 
 if( pla_session_start() )
-	postSessionInit();
+	run_hook ( 'post_session_init', array () );
 
 // Language configuration. Auto or specified?
 // Shall we attempt to auto-determine the language?
@@ -108,7 +117,7 @@ if( isset( $language ) ) {
 					$value=preg_split ("/[-]+/", $value );
 					$HTTP_LANGS2[$key]=$value[0];
 			}
-		
+
 			$HTTP_LANGS = array_merge ($HTTP_LANGS1, $HTTP_LANGS2);
 			foreach( $HTTP_LANGS as $HTTP_LANG) {
 				// try to grab one after the other the language file
@@ -121,6 +130,7 @@ if( isset( $language ) ) {
 				}
 			}
 		}
+
 	} else {
 		// grab the language file configured in config.php
 		if( $language != null ) {
@@ -131,8 +141,8 @@ if( isset( $language ) ) {
 				ob_start();
 				include realpath( "lang/recoded/$language.php" );
 				ob_end_clean();
-			} else { 
-				pla_error( "Could not read language file 'lang/recoded/$language.php'. Either the file 
+			} else {
+				pla_error( "Could not read language file 'lang/recoded/$language.php'. Either the file
 						does not exist, or its permissions do not allow phpLDAPadmin to read it." );
 			}
 		}
@@ -144,7 +154,7 @@ if( ! isset( $templates ) || ! is_array( $templates ) )
 	$templates = array();
 
 // Always including the 'custom' template (the most generic and flexible)
-$templates['custom'] = 
+$templates['custom'] =
         array(  'desc'    => 'Custom',
                 'icon'    => 'images/object.png',
                 'handler' => 'custom.php' );
@@ -152,6 +162,7 @@ $templates['custom'] =
 // Strip slashes from GET, POST, and COOKIE variables if this
 // PHP install is configured to automatically addslashes()
 if ( get_magic_quotes_gpc() && ( ! isset( $slashes_stripped ) || ! $slashes_stripped ) ) {
+	array_stripslashes($_REQUEST);
 	array_stripslashes($_GET);
 	array_stripslashes($_POST);
 	array_stripslashes($_COOKIE);
@@ -159,4 +170,11 @@ if ( get_magic_quotes_gpc() && ( ! isset( $slashes_stripped ) || ! $slashes_stri
 	$slashes_stripped = true;
 }
 
+// Update $_SESSION[ 'activity' ]
+// for timeout and automatic logout feature
+if ( isset($_REQUEST['server_id']) ) {
+	$ldapserver = new LDAPServer($_REQUEST['server_id']);
+	if ( $ldapserver->haveAuthInfo() )
+		set_lastactivity( $ldapserver );
+}
 ?>

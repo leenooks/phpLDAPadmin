@@ -1,9 +1,19 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/welcome.php,v 1.17 2004/10/24 23:51:49 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/welcome.php,v 1.19 2005/02/25 13:44:06 wurley Exp $
  
+/**
+ * @package phpLDAPadmin
+ */
+/**
+ */
 	include './common.php'; 
 	include './header.php'; 
+//	include './config.php'; 
     
+if ( isset($custom_welcome_page) && $custom_welcome_page ) {
+    include_once $custom_welcome_page;
+
+} else {
     // Close the session for faster page loading
     pla_session_close();
 ?>
@@ -31,7 +41,8 @@ if ( ! hide_configuration_management() ) {
 ?>
 
 </center>
-
 </body>
-
 </html>
+
+<?php }
+?>

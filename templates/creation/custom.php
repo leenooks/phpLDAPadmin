@@ -1,10 +1,11 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/custom.php,v 1.37 2004/10/24 23:51:51 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/custom.php,v 1.40 2005/03/12 00:57:18 wurley Exp $
 
 // Common to all templates
 $rdn = isset( $_POST['rdn'] ) ? $_POST['rdn'] : null;
 $container = $_POST['container'];
 $server_id = $_POST['server_id'];
+$ldapserver = new LDAPServer ($server_id);
 
 // Unique to this template
 $step = isset( $_POST['step'] ) ? $_POST['step'] : 1;
@@ -14,7 +15,7 @@ have_auth_info( $server_id ) or pla_error( $lang['not_enough_login_info'] );
 
 if( $step == 1 )
 {
-	$oclasses = get_schema_objectClasses( $server_id );
+	$oclasses = get_schema_objectClasses( $ldapserver );
     if( ! $oclasses || ! is_array( $oclasses ) ) 
         pla_error( "Unable to retrieve the schema from your LDAP server. Cannot continue with creation." );
 	?>
@@ -77,7 +78,7 @@ if( $step == 2 )
 	strlen( trim( $rdn ) ) != 0 or
 		pla_error( $lang['rdn_field_blank'] );
 
-	strlen( trim( $container ) ) == 0 or dn_exists( $server_id, $container ) or
+	strlen( trim( $container ) ) == 0 or dn_exists( $ldapserver, $container ) or
 		pla_error( sprintf( $lang['container_does_not_exist'],  htmlspecialchars( $container ) ) );
 
 	$friendly_attrs = process_friendly_attr_table();
@@ -87,11 +88,11 @@ if( $step == 2 )
 	$dn = trim( $container ) ? $rdn . ',' . $container : $rdn;
 
 	// incrementally build up the all_attrs and required_attrs arrays
-	$schema_oclasses = get_schema_objectclasses( $server_id );
+	$schema_oclasses = get_schema_objectclasses( $ldapserver );
 	$required_attrs = array();
 	$all_attrs = array();
 	foreach( $oclasses as $oclass_name ) {
-		$oclass = get_schema_objectclass( $server_id, $oclass_name  );
+		$oclass = get_schema_objectclass( $ldapserver, $oclass_name  );
 		if( $oclass ) {
 			$required_attrs = array_merge( $required_attrs, 
 						$oclass->getMustAttrNames( $schema_oclasses ) );
@@ -103,8 +104,8 @@ if( $step == 2 )
 
 	$required_attrs = array_unique( $required_attrs );
 	$all_attrs = array_unique( $all_attrs );
-    remove_aliases( $required_attrs, $server_id );
-    remove_aliases( $all_attrs, $server_id );
+    remove_aliases( $required_attrs, $ldapserver );
+    remove_aliases( $all_attrs, $ldapserver );
 	sort( $required_attrs );
 	sort( $all_attrs );
 
@@ -128,7 +129,7 @@ if( $step == 2 )
 	// remove binary attributes and add them to the binary_attrs array
 	$binary_attrs = array();
 	foreach( $all_attrs as $i => $attr_name ) {
-		if( is_attr_binary( $server_id, $attr_name )  ) {
+		if( is_attr_binary( $ldapserver, $attr_name )  ) {
 			unset( $all_attrs[ $i ] );
 			$binary_attrs[] = $attr_name;
 		}
@@ -183,7 +184,7 @@ if( $step == 2 )
 			
 			?></b></td></tr>
             <tr>
-		<td class="val"><input 	type="<?php echo (is_attr_binary( $server_id, $attr ) ? "file" : "text"); ?>"
+		<td class="val"><input 	type="<?php echo (is_attr_binary( $ldapserver, $attr ) ? "file" : "text"); ?>"
 					name="required_attrs[<?php echo htmlspecialchars($attr); ?>]"
 					value="<?php echo ($attr == $rdn_attr ? htmlspecialchars($rdn_value) : '')  ?>" size="40" />
 	</tr>
@@ -272,7 +273,7 @@ function get_binary_attr_select_html( $binary_attrs, $friendly_attrs, $highlight
  * Removes attributes from the array that are aliases for eachother 
  * (just removes the second instance of the aliased attr)
  */
-function remove_aliases( &$attribute_list, $server_id )
+function remove_aliases( &$attribute_list, $ldapserver )
 {
     // remove aliases from the attribute_list array
     for( $i=0; $i<count( $attribute_list ); $i++  ) {
@@ -286,7 +287,7 @@ function remove_aliases( &$attribute_list, $server_id )
                 continue;
             $attr_name2 = $attribute_list[ $k ];
             //echo "Comparing $attr_name1 and $attr_name2<br>";
-            $attr1 = get_schema_attribute( $server_id, $attr_name1 );	
+            $attr1 = get_schema_attribute( $ldapserver, $attr_name1 );	
             if( null == $attr1 )
                 continue;
             if( $attr1->isAliasFor( $attr_name2 ) ) {
@@ -298,4 +299,3 @@ function remove_aliases( &$attribute_list, $server_id )
     $attribute_list = array_values( $attribute_list );
 }
 ?>
-

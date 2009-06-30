@@ -1,32 +1,34 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/logout.php,v 1.10 2004/10/24 21:25:51 uugdave Exp $
- 
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/logout.php,v 1.14 2005/03/16 11:20:25 wurley Exp $
 
-/*
- * logout.php
- * For servers whose auth_type is set to 'cookie' or 'session'. Pass me 
+/**
+ * For servers whose auth_type is set to 'cookie' or 'session'. Pass me
  * the server_id and I will log out the user (delete the cookie)
  *
  * Variables that come in as GET vars:
  *  - server_id
+ *
+ * @package phpLDAPadmin
+ */
+/**
  */
 
 require realpath( 'common.php' );
 
-$server_id = $_GET['server_id'];
-check_server_id( $server_id ) or pla_error( $lang['bad_server_id'] );
-have_auth_info( $server_id ) or pla_error( $lang['no_one_logged_in'] );
+$server_id = (isset($_GET['server_id']) ? $_GET['server_id'] : '');
+$ldapserver = new LDAPServer ($server_id);
 
-if( ! isset( $servers[ $server_id ][ 'auth_type' ] ) )
-	return false;
-$auth_type = $servers[ $server_id ][ 'auth_type' ]; 
-if( 'cookie' == $auth_type || 'session' == $auth_type )
-	unset_login_dn( $server_id ) or pla_error( $lang['could_not_logout'] );
-else
-	pla_error( sprintf( $lang['unknown_auth_type'], htmlspecialchars( $auth_type ) ) );
+if( ! $ldapserver->haveAuthInfo())
+	pla_error( $lang['no_one_logged_in'] );
+
+if( in_array($ldapserver->auth_type, array('cookie','session')) ) {
+        syslog_msg ( LOG_NOTICE,"Logout for " . get_logged_in_dn( $ldapserver ) );
+	unset_login_dn( $ldapserver ) or pla_error( $lang['could_not_logout'] );
+	unset_lastactivity( $ldapserver );
+} else
+	pla_error( sprintf( $lang['unknown_auth_type'], htmlspecialchars( $ldapserver->auth_type ) ) );
 
 include realpath( 'header.php' );
-
 ?>
 
 <script language="javascript">
@@ -41,4 +43,3 @@ include realpath( 'header.php' );
 
 </body>
 </html>
-

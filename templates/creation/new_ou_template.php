@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_ou_template.php,v 1.11 2004/10/24 23:51:51 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/creation/new_ou_template.php,v 1.12 2005/03/05 06:27:07 wurley Exp $
 
 // Common to all templates
 $container = $_POST['container'];
@@ -48,7 +48,7 @@ have_auth_info( $server_id ) or pla_error( "Not enough information to login to s
 	$ou_name = trim( $_POST['ou_name'] );
 	$container = trim( $_POST['container'] );
 	
-	dn_exists( $server_id, $container ) or
+	dn_exists( $ldapserver, $container ) or
 		pla_error( "The container you specified (" . htmlspecialchars( $container ) . ") does not exist. " .
 	       		       "Please go back and try again." );
 

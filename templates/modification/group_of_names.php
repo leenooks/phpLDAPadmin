@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/modification/group_of_names.php,v 1.7 2004/10/14 04:07:14 uugdave Exp $
+// $Header: /cvsroot/phpldapadmin/phpldapadmin/templates/modification/group_of_names.php,v 1.9 2005/03/05 06:27:08 wurley Exp $
 
 
 /*
@@ -13,13 +13,13 @@
  *                              they were changed by the last operation
  */
 
-include 'header.php';
-$members = get_object_attr( $server_id, $dn, 'uniqueMember' );
+include './header.php';
+$members = get_object_attr( $ldapserver, $dn, 'uniqueMember' );
 $unique = true;
 $attr_name = 'uniqueMember';
 if( null == $members ) {
 	$attr_name = 'member';
-	$members = get_object_attr( $server_id, $dn, 'member' );
+	$members = get_object_attr( $ldapserver, $dn, 'member' );
 	$unique = false;
 }
 $rdn = get_rdn( $dn );
@@ -92,9 +92,9 @@ if( ! is_array( $members ) || 0 == count( $members ) ) {
         echo htmlspecialchars( $member ) . "</a>";
         echo " <small>(<a style=\"color:red\" href=\"javascript:remove_member( '" . htmlspecialchars( $member ) . "' );\" title=\"Remove this DN from the list\">remove</a>)</small>";
 
-        $member_cn = get_object_attr( $server_id, $member, 'cn' );
+        $member_cn = get_object_attr( $ldapserver, $member, 'cn' );
         $member_cn = @$member_cn[0];
-        $member_sn = get_object_attr( $server_id, $member, 'sn' );
+        $member_sn = get_object_attr( $ldapserver, $member, 'sn' );
         $member_sn = @$member_sn[0];
         echo '<small>';
         // Don't display the SN if it is a subset of the CN
@@ -102,7 +102,7 @@ if( ! is_array( $members ) || 0 == count( $members ) ) {
             $member_sn = ' ';
         if( $member_sn && $member_cn )
             echo '<br />&nbsp;&nbsp;Name: ' . htmlspecialchars( $member_cn . ' ' . $member_sn );
-        $object_classes = get_object_attr( $server_id, $member, 'objectClass' );
+        $object_classes = get_object_attr( $ldapserver, $member, 'objectClass' );
         if( is_array( $object_classes ) )
             echo '<br />&nbsp;&nbsp;objectClasses: ' . implode( ', ', $object_classes );
         echo '</small>';
