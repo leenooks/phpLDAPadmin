@@ -1,6 +1,6 @@
 <?php
 /*
-$Id: createlm.php,v 1.4.2.2 2009/01/05 14:35:23 wurley Exp $
+$Id$
 
   This code is part of LDAP Account Manager (http://www.sourceforge.net/projects/lam)
   Copyright (C) 2004 - 2006 Roland Gruber
@@ -27,6 +27,7 @@ $Id: createlm.php,v 1.4.2.2 2009/01/05 14:35:23 wurley Exp $
 * The code is a conversion from createntlm.pl (Benjamin Kuit) and smbdes.c/md4.c (Andrew Tridgell).
 *
 * @author Roland Gruber
+* @package lam
 */
 
 /**
@@ -40,7 +41,7 @@ class smbHash {
 
 # Contants used in lanlam hash calculations
 # Ported from SAMBA/source/libsmb/smbdes.c:perm1[56]
-var $perm1 = array(57, 49, 41, 33, 25, 17,  9,
+private $perm1 = array(57, 49, 41, 33, 25, 17,  9,
               1, 58, 50, 42, 34, 26, 18,
              10,  2, 59, 51, 43, 35, 27,
              19, 11,  3, 60, 52, 44, 36,
@@ -49,7 +50,7 @@ var $perm1 = array(57, 49, 41, 33, 25, 17,  9,
              14,  6, 61, 53, 45, 37, 29,
              21, 13,  5, 28, 20, 12,  4);
 # Ported from SAMBA/source/libsmb/smbdes.c:perm2[48]
-var $perm2 = array(14, 17, 11, 24,  1,  5,
+private $perm2 = array(14, 17, 11, 24,  1,  5,
               3, 28, 15,  6, 21, 10,
              23, 19, 12,  4, 26,  8,
              16,  7, 27, 20, 13,  2,
@@ -58,7 +59,7 @@ var $perm2 = array(14, 17, 11, 24,  1,  5,
              44, 49, 39, 56, 34, 53,
              46, 42, 50, 36, 29, 32);
 # Ported from SAMBA/source/libsmb/smbdes.c:perm3[64]
-var $perm3 = array(58, 50, 42, 34, 26, 18, 10,  2,
+private $perm3 = array(58, 50, 42, 34, 26, 18, 10,  2,
              60, 52, 44, 36, 28, 20, 12,  4,
              62, 54, 46, 38, 30, 22, 14,  6,
              64, 56, 48, 40, 32, 24, 16,  8,
@@ -67,7 +68,7 @@ var $perm3 = array(58, 50, 42, 34, 26, 18, 10,  2,
              61, 53, 45, 37, 29, 21, 13,  5,
              63, 55, 47, 39, 31, 23, 15,  7);
 # Ported from SAMBA/source/libsmb/smbdes.c:perm4[48]
-var $perm4 = array(32,  1,  2,  3,  4,  5,
+private $perm4 = array(32,  1,  2,  3,  4,  5,
                  4,  5,  6,  7,  8,  9,
                  8,  9, 10, 11, 12, 13,
                 12, 13, 14, 15, 16, 17,
@@ -76,7 +77,7 @@ var $perm4 = array(32,  1,  2,  3,  4,  5,
                 24, 25, 26, 27, 28, 29,
                 28, 29, 30, 31, 32,  1);
 # Ported from SAMBA/source/libsmb/smbdes.c:perm5[32]
-var $perm5 = array(16,  7, 20, 21,
+private $perm5 = array(16,  7, 20, 21,
                    29, 12, 28, 17,
                     1, 15, 23, 26,
                     5, 18, 31, 10,
@@ -85,7 +86,7 @@ var $perm5 = array(16,  7, 20, 21,
                    19, 13, 30,  6,
                    22, 11,  4, 25);
 # Ported from SAMBA/source/libsmb/smbdes.c:perm6[64]
-var $perm6 = array(40,  8, 48, 16, 56, 24, 64, 32,
+private $perm6 = array(40,  8, 48, 16, 56, 24, 64, 32,
              39,  7, 47, 15, 55, 23, 63, 31,
              38,  6, 46, 14, 54, 22, 62, 30,
              37,  5, 45, 13, 53, 21, 61, 29,
@@ -94,11 +95,11 @@ var $perm6 = array(40,  8, 48, 16, 56, 24, 64, 32,
              34,  2, 42, 10, 50, 18, 58, 26,
              33,  1, 41,  9, 49, 17, 57, 25);
 # Ported from SAMBA/source/libsmb/smbdes.c:sc[16]
-var $sc = array(1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1);
+private $sc = array(1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1);
 # Ported from SAMBA/source/libsmb/smbdes.c:sbox[8][4][16]
 # Side note, I used cut and paste for all these numbers, I did NOT
 # type them all in =)
-var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5,  9,  0,  7),
+private $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5,  9,  0,  7),
              array( 0, 15,  7,  4, 14,  2, 13,  1, 10,  6, 12, 11,  9,  5,  3,  8),
              array( 4,  1, 14,  8, 13,  6,  2, 11, 15, 12,  9,  7,  3, 10,  5,  0),
              array(15, 12,  8,  2,  4,  9,  1,  7,  5, 11,  3, 14, 10,  0,  6, 13)),
@@ -134,7 +135,7 @@ var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5
 	/**
 	* Fixes too large numbers
 	*/
-	function x($i) {
+	private function x($i) {
 		if ($i < 0) return 4294967296 - $i;
 		else return $i;
 	}
@@ -144,7 +145,7 @@ var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5
 	* @param array $data
 	* @return array
 	*/
-	function lshift($count, $data) {
+	private function lshift($count, $data) {
 		$ret = array();
 		for ($i = 0; $i < sizeof($data); $i++) {
 			$ret[$i] = $data[($i + $count)%sizeof($data)];
@@ -157,7 +158,7 @@ var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5
 	* @param array p permutation
 	* @return array
 	*/
-	function permute($in, $p, $n) {
+	private function permute($in, $p, $n) {
 		$ret = array();
 		for ($i = 0; $i < $n; $i++) {
 			$ret[$i] = $in[$p[$i] - 1]?1:0;
@@ -170,7 +171,7 @@ var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5
 	* @param array $in2
 	* @return array
 	*/
-	function mxor($in1, $in2) {
+	private function mxor($in1, $in2) {
 		$ret = array();
 		for ($i = 0; $i < sizeof($in1); $i++) {
 			$ret[$i] = $in1[$i] ^ $in2[$i];
@@ -250,7 +251,13 @@ var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5
 		return $this->permute($rl, $this->perm6, 64);
 	}
 
-	function str_to_key($str) {
+	/**
+	 * str_to_key
+	 *
+	 * @param string $str
+	 * @return string key
+	 */
+	private function str_to_key($str) {
 		$key[0] = $this->unsigned_shift_r($str[0], 1);
 		$key[1] = (($str[0]&0x01)<<6) | $this->unsigned_shift_r($str[1], 2);
 		$key[2] = (($str[1]&0x03)<<5) | $this->unsigned_shift_r($str[2], 3);
@@ -265,7 +272,15 @@ var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5
 		return $key;
 	}
 
-	function smb_hash($in, $key, $forw){
+	/**
+	 * smb_hash
+	 *
+	 * @param unknown_type $in
+	 * @param unknown_type $key
+	 * @param unknown_type $forw
+	 * @return unknown
+	 */
+	private function smb_hash($in, $key, $forw){
 		$key2 = $this->str_to_key($key);
 	
 		for ($i = 0; $i < 64; $i++) {
@@ -285,7 +300,13 @@ var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5
 		return $out;
 	}
 
-	function E_P16($in) {
+	/**
+	 * E_P16
+	 *
+	 * @param unknown_type $in
+	 * @return unknown
+	 */
+	private function E_P16($in) {
 		$p14 = array_values(unpack("C*",$in));
 		$sp8 = array(0x4b, 0x47, 0x53, 0x21, 0x40, 0x23, 0x24, 0x25);
 		$p14_1 = array();
@@ -309,7 +330,7 @@ var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5
 	* @param string $password password
 	* @return string hash value
 	*/
-	function lmhash($password = "") {
+	public function lmhash($password = "") {
 		$password = strtoupper($password);
 		$password = substr($password,0,14);
 		$password = str_pad($password, 14, chr(0));
@@ -326,8 +347,14 @@ var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5
 	* @param string $password password
 	* @return string hash value
 	*/
-	function nthash($password = "") {
-		return strtoupper(bin2hex(mhash(MHASH_MD4,iconv('UTF-8','UTF-16LE',$password))));
+	public function nthash($password = "") {
+		if (function_exists('mhash'))
+			if (defined('MHASH_MD4'))
+				return strtoupper(bin2hex(mhash(MHASH_MD4,iconv('UTF-8','UTF-16LE',$password))));
+			else
+				return strtoupper(hash('md4', iconv("UTF-8","UTF-16LE",$password)));
+		else
+			error(_('Your PHP install does not have the mhash() function. Cannot do hashes.'),'error','index.php');
 	}
 
 	/**
@@ -335,7 +362,7 @@ var $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12,  5
 	*
 	* PHP 4 only supports signed shifts by default.
 	*/
-	function unsigned_shift_r($a, $b) { 
+	private function unsigned_shift_r($a, $b) { 
 		$z = 0x80000000; 
 		if ($z & $a) { 
 			$a = ($a >> 1); 

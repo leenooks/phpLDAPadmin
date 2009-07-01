@@ -1,89 +1,82 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/copy.php,v 1.44.2.3 2008/12/12 12:20:22 wurley Exp $
+// $Header$
 
 /**
  * Copies a given object to create a new one.
  *
- * Vars that come in as POST vars
- * - source_dn (rawurlencoded)
- * - new_dn (form element)
- * - server_id
- *
  * @package phpLDAPadmin
+ * @subpackage Page
  */
+
 /**
  */
 
 require './common.php';
 
-if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_move'))
-	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('copy entry')),'error','index.php');
+# The DNs we are working with
+$request = array();
+$request['dnSRC'] = get_request('dn_src');
+$request['dnDST'] = get_request('dn_dst');
 
-$entry = array();
-$entry['src']['id'] = get_request('server_id');
-$entry['dst']['id'] = get_request('dest_server_id');
-
-$entry['src']['ldapserver'] = $_SESSION[APPCONFIG]->ldapservers->Instance($entry['src']['id']);
-$entry['dst']['ldapserver'] = $_SESSION[APPCONFIG]->ldapservers->Instance($entry['dst']['id']);
-
-if ($entry['dst']['ldapserver']->isReadOnly())
-	error(_('Destination server is currently READ-ONLY.'),'error','index.php');
-
-if (! $entry['src']['ldapserver']->haveAuthInfo() || ! $entry['dst']['ldapserver']->haveAuthInfo())
-	error(_('Not enough information to login to server. Please check your configuration.'),'error','index.php');
-
-$entry['src']['dn'] = get_request('old_dn');
-$entry['dst']['dn'] = get_request('new_dn');
-$entry['src']['recursive'] = (get_request('recursive') == 'on') ? true : false;
-$entry['src']['remove'] = (get_request('remove') == 'yes') ? true : false;
+$ldap = array();
+$ldap['SRC'] = $_SESSION[APPCONFIG]->getServer(get_request('server_id_src'));
+$ldap['DST'] = $_SESSION[APPCONFIG]->getServer(get_request('server_id_dst'));
 
 # Error checking
-if (strlen(trim($entry['dst']['dn'])) == 0)
+if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_move'))
+	error(sprintf('%s: %s',_('This operation is not permitted by the configuration'),_('copy entry')),'error','index.php');
+
+if (! trim($request['dnDST']))
 	error(_('You left the destination DN blank.'),'error','index.php');
 
-if (pla_compare_dns($entry['src']['dn'],$entry['dst']['dn']) == 0 && $entry['src']['id'] == $entry['dst']['id'])
+if ($ldap['DST']->isReadOnly())
+	error(_('Destination server is currently READ-ONLY.'),'error','index.php');
+
+if ($ldap['DST']->dnExists($request['dnDST']))
+	error(sprintf(_('The destination entry (%s) already exists.'),pretty_print_dn($request['dnDST'])),'error','index.php');
+
+if (! $ldap['DST']->dnExists($ldap['DST']->getContainer($request['dnDST'])))
+	error(sprintf(_('The destination container (%s) does not exist.'),
+		pretty_print_dn($ldap['DST']->getContainer($request['dnDST']))),'error','index.php');
+
+if (pla_compare_dns($request['dnSRC'],$request['dnDST']) == 0 && $ldap['SRC']->getIndex() == $ldap['DST']->getIndex())
 	error(_('The source and destination DN are the same.'),'error','index.php');
 
-if ($entry['dst']['ldapserver']->dnExists($entry['dst']['dn']))
-	error(sprintf(_('The destination entry (%s) already exists.'),pretty_print_dn($entry['dst']['dn'])),'error','index.php');
+$request['recursive'] = (get_request('recursive') == 'on') ? true : false;
+$request['remove'] = (get_request('remove') == 'yes') ? true : false;
 
-if (! $entry['dst']['ldapserver']->dnExists(get_container($entry['dst']['dn'])))
-	error(sprintf(_('The destination container (%s) does not exist.'),pretty_print_dn(get_container($entry['dst']['dn']))),'error','index.php');
-
-if ($entry['src']['recursive']) {
+if ($request['recursive']) {
 	$filter = get_request('filter','POST',false,'(objectClass=*)');
 
 	# Build a tree similar to that of the tree browser to give to r_copy_dn
-	$snapshot_tree = array();
-	printf('<h3 class="title">%s%s</h3>',_('Copying '),htmlspecialchars($entry['src']['dn']));
+	$ldap['tree'] = array();
+	printf('<h3 class="title">%s%s</h3>',_('Copying '),$request['dnSRC']);
 	printf('<h3 class="subtitle">%s</h3>',_('Recursive copy progress'));
 	print '<br /><br />';
-	print '<small>';
-	print _('Building snapshot of tree to copy... ');
 
-	$snapshot_tree = build_tree($entry['src']['ldapserver'],$entry['src']['dn'],array(),$filter);
+	print '<small>';
+	printf ('%s...',_('Building snapshot of tree to copy'));
+
+	$ldap['tree'] = build_tree($ldap['SRC'],$request['dnSRC'],array(),$filter);
 	printf('<span style="color:green">%s</span><br />',_('Success'));
 
 	# Prevent script from bailing early on a long delete
 	@set_time_limit(0);
 
-	$copy_result = r_copy_dn($entry['src']['ldapserver'],$entry['dst']['ldapserver'],$snapshot_tree,$entry['src']['dn'],$entry['dst']['dn']);
-	# @todo: This is not showing the complete results - only the children of the dst - need to look at.
+	$copy_result = r_copy_dn($ldap['SRC'],$ldap['DST'],$ldap['tree'],$request['dnSRC'],$request['dnDST'],$request['remove']);
 	$copy_message = $copy_result;
 	print '</small>';
 
 } else {
-	$copy_result = copy_dn($entry['src']['ldapserver'],$entry['dst']['ldapserver'],$entry['src']['dn'],$entry['dst']['dn']);
-	$copy_message = sprintf('%s DN%s <b>%s</b> %s',_('Copy successful!'),_(':'),htmlspecialchars($entry['dst']['dn']),_('has been created.'));
+	$copy_result = copy_dn($ldap['SRC'],$ldap['DST'],$request['dnSRC'],$request['dnDST'],$request['remove']);
+	$copy_message = sprintf('%s %s: <b>%s</b> %s',
+		$request['remove'] ? _('Move successful') : _('Copy successful'),
+		_('DN'),$request['dnDST'],_('has been created.'));
 }
 
 if ($copy_result) {
-	$redirect_url = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',$entry['dst']['id'],rawurlencode($entry['dst']['dn']));
-	$new_rdn = get_rdn($entry['dst']['dn']);
-	$container = get_container($entry['dst']['dn']);
-
-	if ($entry['src']['remove'])
-		$redirect_url = sprintf('cmd.php?cmd=delete_form&server_id=%s&dn=%s',$entry['src']['id'],rawurlencode($entry['src']['dn']));
+	$redirect_url = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s&refresh=SID_%s_nodes&noheader=1',
+		$ldap['DST']->getIndex(),rawurlencode($request['dnDST']),$ldap['DST']->getIndex());
 
 	system_message(array(
 		'title'=>_('Copy Entry'),
@@ -92,91 +85,102 @@ if ($copy_result) {
 		$redirect_url);
 }
 
-function r_copy_dn($ldapserver_src,$ldapserver_dst,$snapshottree,$root_dn,$dn_dst) {
+function r_copy_dn($serverSRC,$serverDST,$snapshottree,$dnSRC,$dnDST,$remove) {
 	if (DEBUG_ENABLED)
 		debug_log('Entered with (%s,%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$ldapserver_src->server_id,$ldapserver_dst->server_id,$snapshottree,$root_dn,$dn_dst);
+			$serverSRC->getIndex(),$serverDST->getIndex(),$snapshottree,$dnSRC,$dnDST);
 
 	$copy_message = array();
 
-	$copy_result = copy_dn($ldapserver_src,$ldapserver_dst,$root_dn,$dn_dst);
+	$children = isset($snapshottree[$dnSRC]) ? $snapshottree[$dnSRC] : null;
 
-	if (! $copy_result)
-		return false;
+	# If we have children, then we need to copy, then delete for a move
+	if (is_array($children) && count($children)) {
 
-	$copy_message[] = sprintf('%s DN: <b>%s</b> %s',_('Copy successful!'),htmlspecialchars($dn_dst),_('has been created.'));
+		$copy_result = copy_dn($serverSRC,$serverDST,$dnSRC,$dnDST,false);
 
-	$children = isset($snapshottree[$root_dn]) ? $snapshottree[$root_dn] : null;
-	if (is_array($children) && count($children) > 0) {
-		foreach($children as $child_dn) {
-			$child_rdn = get_rdn($child_dn);
-			$new_dest_dn = sprintf('%s,%s',$child_rdn,$dn_dst);
-			$copy_result = r_copy_dn($ldapserver_src,$ldapserver_dst,$snapshottree,$child_dn,$new_dest_dn);
-			$copy_message[] = array_shift($copy_result);
+		if (! $copy_result)
+			return false;
+
+		array_push($copy_message,sprintf('%s %s: <b>%s</b> %s',_('Copy successful'),_('DN'),$dnDST,_('has been created.')));
+
+		$hadError = false;
+		foreach ($children as $child_dn) {
+			$dnDST_new = sprintf('%s,%s',get_rdn($child_dn),$dnDST);
+			$copy_result = r_copy_dn($serverSRC,$serverDST,$snapshottree,$child_dn,$dnDST_new,$remove);
+			$copy_message = array_merge($copy_message,array_values($copy_result));
+
+			if (! $copy_result)
+				$hadError = true;
 		}
+
+		if (! $hadError && $remove) {
+			$delete_result = $serverSRC->delete($dnSRC);
+
+			if ($delete_result)
+				array_push($copy_message,sprintf('%s %s: <b>%s</b> %s',_('Delete successful'),_('DN'),$dnDST,_('has been deleted.')));
+		}
+
+	} else {
+		$copy_result = copy_dn($serverSRC,$serverDST,$dnSRC,$dnDST,$remove);
+
+		array_push($copy_message,sprintf('%s %s: <b>%s</b> %s',
+			$remove ? _('Move successful') : _('Copy successful'),
+			_('DN'),$dnDST,_('has been created.')));
 	}
 
 	return $copy_message;
 }
 
-function copy_dn($ldapserver_src,$ldapserver_dst,$dn_src,$dn_dst) {
+function copy_dn($serverSRC,$serverDST,$dnSRC,$dnDST,$remove) {
 	if (DEBUG_ENABLED)
 		debug_log('Entered with (%s,%s,%s,%s)',17,__FILE__,__LINE__,__METHOD__,
-			$ldapserver_src->server_id,$ldapserver_dst->server_id,$dn_src,$dn_dst);
+			$serverSRC->getIndex(),$serverDST->getIndex(),$dnSRC,$dnDST);
 
-	$new_entry = $ldapserver_src->getDNAttrs($dn_src);
+	$request = array();
+	$request['pageSRC'] = new PageRender($serverSRC->getIndex(),get_request('template','REQUEST',false,'none'));
+	$request['pageSRC']->setDN($dnSRC);
+	$request['pageSRC']->accept();
 
-	# modify the prefix-value (ie "bob" in cn=bob) to match the destination DN's value.
-	$rdn_attr = substr($dn_dst,0,strpos($dn_dst,'='));
-	$rdn_value = get_rdn($dn_dst);
-	$rdn_value = substr($rdn_value,strpos($rdn_value,'=') + 1);
-	$new_entry[$rdn_attr] = $rdn_value;
+	$request['pageDST'] = new PageRender($serverDST->getIndex(),get_request('template','REQUEST',false,'none'));
+	$request['pageDST']->setContainer($serverDST->getContainer($dnDST));
+	$request['pageDST']->accept();
 
-	# don't need a dn attribute in the new entry
-	unset($new_entry['dn']);
+	$request['templateSRC'] = $request['pageSRC']->getTemplate();
+	$request['templateDST'] = $request['pageDST']->getTemplate();
+	$request['templateDST']->copy($request['pageSRC']->getTemplate(),get_rdn($dnDST,0));
 
-	# Check the user-defined custom call back first
-	if (run_hook('pre_entry_create',
-		array ('server_id'=>$ldapserver_dst->server_id,'dn'=>$dn_dst,'attrs'=>$new_entry))) {
+	# Create of move the entry
+	if ($remove)
+		$add_result = $serverDST->rename($request['templateSRC']->getDN(),$request['templateDST']->getRDN(),$serverDST->getContainer($dnDST),true);
+	else
+		$add_result = $serverDST->add($request['templateDST']->getDN(),$request['templateDST']->getLDAPadd());
 
-		$add_result = $ldapserver_dst->add($dn_dst,$new_entry);
-		if (! $add_result) {
-			echo '</small><br /><br />';
-			system_message(array(
-				'title'=>_('Failed to copy DN.').sprintf(' (%s)',$dn_dst),
-				'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
-				'type'=>'error'));
-
-		} else {
-			run_hook('post_entry_create',
-				array('server_id'=>$ldapserver_dst->server_id,'dn'=>$dn_dst,'attrs'=>$new_entry));
-		}
-
+	if ($add_result) {
 		return $add_result;
 
 	} else {
+		system_message(array(
+			'title'=>sprintf('%s (%s)',_('Failed to copy DN'),$request['templateDST']->getDN()),
+			'body'=>ldap_error_msg($serverDST->getErrorMessage(null),$serverDST->getErrorNum(null)),
+			'type'=>'error'));
+
 		return false;
 	}
 }
 
-/**
- * @param object $ldapserver
- * @param dn $dn
- * @param array $tree
- * @param string $filter
- */
-function build_tree($ldapserver,$dn,$buildtree) {
+function build_tree($server,$dn,$buildtree) {
 	if (DEBUG_ENABLED)
 		debug_log('Entered with (%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$ldapserver->server_id,$dn,$buildtree);
+			$server->getIndex(),$dn,$buildtree);
 
-	# we search all children, not only the visible children in the tree
-	$children = $ldapserver->getContainerContents($dn,0);
+	# We search all children, not only the visible children in the tree
+	$children = $server->getContainerContents($dn,null,0);
 
-	if (is_array($children) && count($children) > 0) {
+	if (count($children)) {
 		$buildtree[$dn] = $children;
 		foreach ($children as $child_dn)
-			$buildtree = build_tree($ldapserver,$child_dn,$buildtree);
+			$buildtree = build_tree($server,$child_dn,$buildtree);
 	}
 
 	if (DEBUG_ENABLED)

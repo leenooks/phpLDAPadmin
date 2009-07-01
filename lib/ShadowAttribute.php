@@ -1,11 +1,18 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/ShadowAttribute.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header$
 
 /**
- * @package phpLDAPadmin
- * @author Xavier Bruyet
+ * Classes and functions for the template engine.
  *
- * Represents an shadow attribute
+ * @author The phpLDAPadmin development team
+ * @package phpLDAPadmin
+ */
+
+/**
+ * Represents a shadow date attribute
+ *
+ * @package phpLDAPadmin
+ * @subpackage Templates
  */
 class ShadowAttribute extends Attribute {
 	public $shadow_before_today_attrs = array('shadowLastChange','shadowMin');

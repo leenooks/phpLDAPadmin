@@ -1,30 +1,33 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/password_checker.php,v 1.10.2.3 2008/12/12 12:20:22 wurley Exp $
+// $Header$
 
 /**
+ * Check the password used by an entry.
+ *
  * @package phpLDAPadmin
+ * @subpackage Page
  */
+
 /**
  */
 
 require './common.php';
-include HTDOCDIR.'header.php';
 
-echo '<body>';
-$entry = array();
-$entry['hash'] = get_request('hash','REQUEST');
-$entry['password'] = get_request('check_password','REQUEST');
-$entry['action'] = get_request('action','REQUEST');
-$entry['componentid'] = get_request('componentid','REQUEST');
+$www['page'] = new page();
+
+$request = array();
+$request['componentid'] = get_request('componentid','REQUEST');
+$request['hash'] = get_request('hash','REQUEST');
+$request['password'] = get_request('check_password','REQUEST');
+$request['action'] = get_request('action','REQUEST');
 
 if (get_request('base64','REQUEST')) {
-    $entry['hash'] = base64_decode($entry['hash']);
-    $entry['password'] = base64_decode($entry['password']);
+	$request['hash'] = base64_decode($request['hash']);
+	$request['password'] = base64_decode($request['password']);
 }
 
-$entry['enc_type'] = get_enc_type($entry['hash']);
+$request['enc_type'] = get_enc_type($request['hash']);
 
-echo '<div class="popup">';
 printf('<h3 class="subtitle">%s</h3>',_('Password Checker Tool'));
 
 echo '<form action="password_checker.php" method="post">';
@@ -35,13 +38,13 @@ echo '<table class="forminput" width=100% border=0>';
 echo '<tr>';
 printf('<td class="heading">%s</td>',_('Compare'));
 printf('<td><input type="%s" name="hash" id="hash" value="%s" /></td>',
-	(obfuscate_password_display($entry['enc_type']) ? 'password' : 'text'),htmlspecialchars($entry['hash']));
+	(obfuscate_password_display($request['enc_type']) ? 'password' : 'text'),htmlspecialchars($request['hash']));
 echo '</tr>';
 
 echo '<tr>';
 printf('<td class="heading">%s</td>',_('To'));
 printf('<td><input type="password" name="check_password" value="%s" /></td>',
-	htmlspecialchars($entry['password']));
+	htmlspecialchars($request['password']));
 echo '</tr>';
 
 echo '<tr>';
@@ -49,10 +52,10 @@ echo '<td>&nbsp;</td>';
 
 echo '<td><input type="submit" value="Compare" />';
 
-if ($entry['action'] == 'compare') {
+if ($request['action'] == 'compare') {
 	echo '&nbsp;&nbsp;&nbsp;&nbsp;<b>';
 
-	if (password_check($entry['hash'],$entry['password']))
+	if (password_check($request['hash'],$request['password']))
 		printf('<span class="good">%s</span>',_('Passwords match!'));
 	else
 		printf('<span class="bad">%s</span>',_('Passwords do not match!'));
@@ -64,14 +67,22 @@ echo '</td>';
 echo '</tr>';
 echo '</table>';
 echo '</form>';
-echo '</div>';
-echo '</body>';
 
-if ($entry['componentid']) {
-	echo '<script language="javascript">';
-	printf('var c = window.opener.document.getElementById(\'%s\');',$entry['componentid']);
-	printf('var h = document.getElementById(\'%s\');', 'hash');
+# Pull our password from the form that opened this window.
+if ($request['componentid']) {
+	echo '<script type="text/javascript">';
+	printf('var c = window.opener.document.getElementById(\'%s\');',$request['componentid']);
+	printf('var h = document.getElementById(\'%s\');','hash');
 	echo 'if (c && h) { h.value = c.value; }';
 	echo '</script>';
 }
+
+# Capture the output and put into the body of the page.
+$www['body'] = new block();
+$www['body']->SetBody(ob_get_contents());
+$www['page']->block_add('body',$www['body']);
+ob_end_clean();
+
+# Render the popup.
+$www['page']->display(array('CONTROL'=>false,'FOOT'=>false,'HEAD'=>false,'TREE'=>false));
 ?>

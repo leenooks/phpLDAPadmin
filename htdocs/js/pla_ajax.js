@@ -1,4 +1,4 @@
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/js/pla_ajax.js,v 1.2 2007/12/15 07:50:31 wurley Exp $
+// $Header$
 
 /**
  * @package phpLDAPadmin
@@ -7,6 +7,7 @@
  */
 
 // current request
+var http_div = '';
 var http_request = null;
 var http_request_success_callback = '';
 var http_request_error_callback = '';
@@ -46,7 +47,7 @@ function alertHttpRequest() {
 			http_request = null;
 			//alert(response);
 			if (http_request_success_callback) {
-				eval(http_request_success_callback + '(response)');
+				eval(http_request_success_callback + '(response,http_div)');
 			}
 		} else {
 			alert('There was a problem with the request.');
@@ -59,31 +60,33 @@ function cancelHttpRequest() {
 	if (http_request) {
 		http_request = null;
 		if (http_request_error_callback) {
-			eval(http_request_error_callback + '()');
+			eval(http_request_error_callback + '(http_div)');
 		}
 	}
 }
 
-// resquest
-function makeGETRequest(url, parameters, successCallbackFunctionName, errorCallbackFunctionName) {
-	makeHttpRequest(url, parameters, 'GET', successCallbackFunctionName, errorCallbackFunctionName);
+// request
+function makeGETRequest(url,parameters,successCallbackFunctionName,errorCallbackFunctionName,div) {
+	makeHttpRequest(url,parameters,'GET',successCallbackFunctionName,errorCallbackFunctionName,div);
 }
 
-function makePOSTRequest(url, parameters, successCallbackFunctionName, errorCallbackFunctionName) {
-	makeHttpRequest(url, parameters, 'POST', successCallbackFunctionName, errorCallbackFunctionName);
+function makePOSTRequest(url,parameters,successCallbackFunctionName,errorCallbackFunctionName,div) {
+	makeHttpRequest(url,parameters,'POST',successCallbackFunctionName,errorCallbackFunctionName,div);
 }
 
-function makeHttpRequest(url, parameters, meth, successCallbackFunctionName, errorCallbackFunctionName) {
-	cancelHttpRequest();
+function makeHttpRequest(url,parameters,meth,successCallbackFunctionName,errorCallbackFunctionName,div) {
+	cancelHttpRequest(div);
 
 	http_request_success_callback = successCallbackFunctionName;
 	http_request_error_callback = errorCallbackFunctionName;
+	http_div = div;
 
 	if (window.XMLHttpRequest) { // Mozilla, Safari,...
 		http_request = new XMLHttpRequest();
 		if (http_request.overrideMimeType) {
 			http_request.overrideMimeType('text/html');
 		}
+
 	} else if (window.ActiveXObject) { // IE
 		try {
 			http_request = new ActiveXObject("Msxml2.XMLHTTP");

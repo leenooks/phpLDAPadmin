@@ -1,70 +1,59 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/template_engine.php,v 1.45.2.2 2008/12/12 12:20:22 wurley Exp $
+// $Header$
 
 /**
  * Template render engine.
- * @param dn $dn DN of the object being edited. (For editing existing entries)
- * @param dn $container DN where the new object will be created. (For creating new entries)
- * @param string $template to use for new entry. (For creating new entries)
- * @todo schema attr keys should be in lowercase.
+ *
  * @package phpLDAPadmin
+ * @subpackage Page
  * @author The phpLDAPadmin development team
  */
+
 /**
+The template engine has the following responsibilities:
+* If we are passed a DN, then we are editing an existing entry
+* If we are not passed a DN, then we are passed a container (and creating a new entry in that container)
+
+In both cases, we are optionally passed a template ID. 
+* If we have a template ID, then we'll render the creation/editing using that template
+* If we are not passed a template ID, then we'll either:
+	* Present a list of available templates,
+	* Present the default template, because there are non available (due to hidden,regexp or non-existant)
+	* Present the only template, if there is only one.
+
+Creating and editing entries use two objects:
+* A template object which describes how the template should be rendered (and what values should asked for, etc)
+* A page object, which is responsible for actually sending out the HTML to the browser.
+
+So:
+* we init a new TemplateRender object
+* we init a new Template object
+* set the DN or container on the template object
+	* If setting the DN, this in turn should read the "old values" from the LDAP server
+* If we are not on the first page (ie: 2nd, 3rd, 4th step, etc), we should accept the post values that we have obtained thus far
+
+* Finally submit the update to "update_confirm", or the create to "create", when complete.
  */
 
-require_once './common.php';
+require './common.php';
 
-$entry = array();
-$entry['dn']['encode'] = get_request('dn','REQUEST');
-$entry['dn']['string'] = rawurldecode($entry['dn']['encode']);
-$entry['template'] = get_request('template','REQUEST',false,'');
+$request = array();
+$request['dn'] = get_request('dn','REQUEST');
+$request['page'] = new TemplateRender($app['server']->getIndex(),get_request('template','REQUEST',false,null));
 
 # If we have a DN, then this is to edit the entry.
-if ($entry['dn']['string']) {
-	$ldapserver->dnExists($entry['dn']['string'])
-		or error(sprintf('%s (%s)',_('No such entry'),pretty_print_dn($entry['dn']['string'])),'error','index.php');
+if ($request['dn']) {
+	$app['server']->dnExists($request['dn'])
+		or error(sprintf('%s (%s)',_('No such entry'),pretty_print_dn($request['dn'])),'error','index.php');
 
-	$tree = get_cached_item($ldapserver->server_id,'tree');
-
-	if ($tree) {
-		$entry['dn']['tree'] = $tree->getEntry($entry['dn']['string']);
-
-		if (! $entry['dn']['tree']) {
-			/*
-			 * The entry doesn't exists in the tree because it
-			 * may be filtered ; as we ask for its display, we
-			 * add all the same the entry in the tree
-			 */
-			$tree->addEntry($entry['dn']['string']);
-			$entry['dn']['tree'] = $tree->getEntry($entry['dn']['string']);
-
-		}
-
-		if ($entry['dn']['tree']) {
-			eval('$reader = new '.$_SESSION[APPCONFIG]->GetValue('appearance', 'entry_reader').'($ldapserver);');
-			$entry['dn']['tree']->accept($reader);
-
-			eval('$writer = new '.$_SESSION[APPCONFIG]->GetValue('appearance', 'entry_writer').'($ldapserver);');
-			$entry['dn']['tree']->accept($writer);
-		}
-	}
+	$request['page']->setDN($request['dn']);
+	$request['page']->accept();
 
 } else {
-	if ($ldapserver->isReadOnly())
+	if ($app['server']->isReadOnly())
 		error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
-	# Create a new empty entry
-	$entryfactoryclass = $_SESSION[APPCONFIG]->GetValue('appearance','entry_factory');
-	eval('$entry_factory = new '.$entryfactoryclass.'();');
-	$entry['dn']['tree'] = $entry_factory->newCreatingEntry('');
-
-	# Init the entry with incoming data
-	eval('$reader = new '.$_SESSION[APPCONFIG]->GetValue('appearance', 'entry_reader').'($ldapserver);');
-	$entry['dn']['tree']->accept($reader);
-
-	# Display the creating entry
-	eval('$writer = new '.$_SESSION[APPCONFIG]->GetValue('appearance', 'entry_writer').'($ldapserver);');
-	$entry['dn']['tree']->accept($writer);
+	$request['page']->setContainer(get_request('container','REQUEST'));
+	$request['page']->accept();
 }
 ?>

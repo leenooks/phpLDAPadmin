@@ -1,11 +1,13 @@
-<!-- ==========================================================================
- This is the DTD for phpLDAPAdmin Templates (draft).
+<!--
+==========================================================================
+ This is the DTD for phpLDAPAdmin Templates.
 
- Copyright (c) 2005 <adezorzi AT rhx DOT it>
+ Copyright (c) 2009
 
- temporary URI for the DTD: http://www.phamm.org/DTD/pla-template-strict.dtd
- Validate your templates here: http://www.stg.brown.edu/service/xmlvalid/
-========================================================================== -->
+ Temporary URI for the DTD: http://phpldapadmin.sf.net/release/templates/template.dtd
+ Validate your templates here: http://www.xmlvalidation.com
+==========================================================================
+-->
 
 <!-- Unused -->
 <!ENTITY % Boolean "(0 | 1)">
@@ -13,9 +15,8 @@
 <!-- ================================================================ -->
 
 <!-- Template Definition -->
-<!ELEMENT template (title,regexp?,icon?,description?,askcontainer?,rdn?,
-			destinationcontainer?,action?,leaf?,
-			visible?,invalid?,objectClasses,attributes)>
+<!ELEMENT template (askcontainer?,description?,icon?,invalid?,rdn?,regexp?,
+	title,visible?,objectClasses,attributes)>
 
 <!-- ObjectClasses Definition -->
 <!ELEMENT objectClasses (objectClass+)>
@@ -24,53 +25,47 @@
 
 <!-- Attributes Definition -->
 <!ELEMENT attributes (attribute*)>
-<!ELEMENT attribute (array?, value*, cols?, description?, display?, helper?, hidden?, readonly?, hint?,
-			icon?, onchange*, order?, override?, page?, post?,minvalnb?,maxvalnb?,
-			presubmit?, rows?, spacer*, type?, option*, verify?)>
+<!ELEMENT attribute (cols?,default?,display?,helper?,hidden?,hint?,icon?,
+	maxlength?,onchange*,order?,page?,post?,presubmit?,readonly?,rows?,size?,
+	spacer?,type?,value*,verify?)?>
 <!ATTLIST attribute id CDATA #REQUIRED>
 
 <!-- helper -->
-<!ELEMENT helper (value*,display?,hint?,id?,location?,option*)>
+<!ELEMENT helper (default?,display?,id?,value*)>
 
 <!-- ================================================================ -->
 
 <!-- Common Parameters -->
 <!ELEMENT icon (#PCDATA)>
-<!ELEMENT hint (#PCDATA)>
-<!ELEMENT description (#PCDATA)>
+<!ELEMENT default (#PCDATA)>
 <!ELEMENT display (#PCDATA)>
+<!ELEMENT value (#PCDATA)>
 
 <!-- Header Parameters -->
-<!ELEMENT title (#PCDATA)>
-<!ELEMENT regexp (#PCDATA)>
 <!ELEMENT askcontainer (#PCDATA)>
-<!ELEMENT rdn (#PCDATA)>
-<!ELEMENT visible (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
 <!ELEMENT invalid (#PCDATA)>
-<!ELEMENT destinationcontainer (#PCDATA)>
-<!ELEMENT action (#PCDATA)>
-<!ELEMENT leaf (#PCDATA)>
+<!ELEMENT rdn (#PCDATA)>
+<!ELEMENT regexp (#PCDATA)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT visible (#PCDATA)>
 
 <!-- Attribute Parameters -->
-<!ELEMENT array (#PCDATA)>
-<!ELEMENT minvalnb (#PCDATA)>
-<!ELEMENT maxvalnb (#PCDATA)>
 <!ELEMENT cols (#PCDATA)>
-<!ELEMENT value (#PCDATA)>
 <!ELEMENT hidden (#PCDATA)>
-<!ELEMENT readonly (#PCDATA)>
+<!ELEMENT hint (#PCDATA)>
+<!ELEMENT maxlength (#PCDATA)>
 <!ELEMENT onchange (#PCDATA)>
 <!ELEMENT order (#PCDATA)>
-<!ELEMENT override (#PCDATA)>
 <!ELEMENT page (#PCDATA)>
 <!ELEMENT post (#PCDATA)>
 <!ELEMENT presubmit (#PCDATA)>
+<!ELEMENT readonly (#PCDATA)>
 <!ELEMENT rows (#PCDATA)>
+<!ELEMENT size (#PCDATA)>
 <!ELEMENT spacer (#PCDATA)>
 <!ELEMENT type (#PCDATA)>
 <!ELEMENT verify (#PCDATA)>
 
 <!-- Helper Parameters -->
 <!ELEMENT id (#PCDATA)>
-<!ELEMENT location (#PCDATA)>
-<!ELEMENT option (#PCDATA)>

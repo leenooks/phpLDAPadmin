@@ -1,8 +1,14 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/index.php,v 1.49.2.10 2008/12/12 12:20:22 wurley Exp $
+// $Header$
 
 /**
+ * phpLDAPadmin Start Page
+ *
  * @package phpLDAPadmin
+ * @subpackage Page
+ */
+
+/**
  */
 
 /*******************************************
@@ -18,6 +24,7 @@ PHP is not installed on your web server!!!
  * We will perform some sanity checking here, since this file is normally loaded first when users
  * first access the application.
  */
+
 # The index we will store our config in $_SESSION
 define('APPCONFIG','plaConfig');
 
@@ -96,24 +103,47 @@ if (isset($app['function_files']) && is_array($app['function_files']))
 
 # Configuration File check
 if (! file_exists($app['config_file'])) {
-	error(sprintf(_('You need to configure %s. Edit the file "%s" to do so. An example config file is provided in "%s.example".'),'phpLDAPadmin',$app['config_file'],$app['config_file']),'error',null,true);
+	error(sprintf(_('You need to configure %s. Edit the file "%s" to do so. An example config file is provided in "%s.example".'),app_name(),$app['config_file'],$app['config_file']),'error',null,true);
 
 } elseif (! is_readable($app['config_file'])) {
 	error(sprintf('Fatal error: Cannot read your configuration file "%s", its permissions may be too strict.',$app['config_file']),'error',null,true);
 }
 
 # If our config file fails the sanity check, then stop now.
-if (! check_config($app['config_file'])) {
+if (! $config = check_config($app['config_file'])) {
 	$www['page'] = new page();
 	$www['body'] = new block();
 	$www['page']->block_add('body',$www['body']);
 	$www['page']->display();
-
 	exit;
+
+} else {
+	app_session_start();
+	$_SESSION[APPCONFIG] = $config;
 }
 
 if ($uri = get_request('URI','GET'))
 	header(sprintf('Location: cmd.php?%s',base64_decode($uri)));
+
+if (! preg_match('/^([0-9]+\.?)+/',app_version())) {
+	system_message(array(
+		'title'=>_('This is a development version of phpLDAPadmin'),
+		'body'=>'This is a development version of phpLDAPadmin! You should <b>NOT</b> use it in a production environment (although we dont think it should do any damage).',
+		'type'=>'info','special'=>true));
+
+	if (count($_SESSION[APPCONFIG]->untested()))
+		system_message(array(
+			'title'=>'Untested configuration paramaters',
+			'body'=>sprintf('The following parameters have not been tested. If you have configured these parameters, and they are working as expected, please let the developers know, so that they can be removed from this message.<br/><small>%s</small>',implode(', ',$_SESSION[APPCONFIG]->untested())),
+			'type'=>'info','special'=>true));
+
+	$server = $_SESSION[APPCONFIG]->getServer(get_request('server_id','REQUEST'));
+	if (count($server->untested()))
+		system_message(array(
+			'title'=>'Untested server configuration paramaters',
+			'body'=>sprintf('The following parameters have not been tested. If you have configured these parameters, and they are working as expected, please let the developers know, so that they can be removed from this message.<br/><small>%s</small>',implode(', ',$server->untested())),
+			'type'=>'info','special'=>true));
+}
 
 include './cmd.php';
 ?>

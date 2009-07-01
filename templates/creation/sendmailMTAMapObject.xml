@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE template SYSTEM "template.dtd">
-<!--This template doesnt work needs modification to the Engine.-->
+
+<!--This template doesnt does not appear to be correct. If it is correct, or if
+    you have modifications to make it correct, then let us know, and we'll
+    update and enable it.-->
+
 <template>
-<title>Sendmail Relays</title>
-<!--<regexp>^ou=People,o=.*,</regexp>-->
-<icon>images/mail.png</icon>
-<description>New Sendmail Relays</description>
 <askcontainer>1</askcontainer>
+<description>New Sendmail Relays</description>
+<icon>images/mail.png</icon>
+<invalid>1</invalid>
 <rdn>sendmailMTACluster</rdn>
+<!--<regexp>^ou=People,o=.*,</regexp>-->
+<title>Sendmail: Relays</title>
 <visible>1</visible>
 
 <objectClasses>
-<objectClass id="sendmailMTAClass"></objectClass>
+<objectClass id="sendmailMTAMapObject"></objectClass>
 </objectClasses>
 
 <attributes>
@@ -29,18 +34,20 @@
 </attribute>
 <attribute id="sendmailMTAKey">
 	<display>Host/Network/Address</display>
-	<option>RELAY: Allow host/network/address to relay</option>
-	<option>OK: Accept local mail but disallow relay</option>
-	<option>REJECT: Reject messages</option>
-	<option>DISCARD: Discard messages</option>
-	<option>SKIP: Apply default action to messages</option>
-	<option>ERROR: Reject message with custom error</option>
 	<order>3</order>
 	<page>1</page>
+	<type>select</type>
+	<value id="RELAY">RELAY: Allow host/network/address to relay</value>
+	<value id="OK">OK: Accept local mail but disallow relay</value>
+	<value id="REJECT">REJECT: Reject messages</value>
+	<value id="DISCARD">DISCARD: Discard messages</value>
+	<value id="SKIP">SKIP: Apply default action to messages</value>
+	<value id="ERROR">ERROR: Reject message with custom error</value>
 </attribute>
 <attribute id="sendmailMTAMapName">
-	<value>access</value>
 	<hidden>1</hidden>
+	<value>access</value>
 </attribute>
 </attributes>
+
 </template>

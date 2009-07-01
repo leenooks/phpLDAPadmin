@@ -13,8 +13,6 @@
 # all-mo	compile .mo files from .po translation available
 # pot		create a update main POT file
 # all-merge	merge last POT with each current translations
-# xml-pot	create a update POT template file (XML files)
-
 
 LOCALEDIR = ../../locale
 TEMPLATEFILES=`find ../../templates -iname *xml -exec echo -m {} \;`
@@ -34,10 +32,10 @@ all-mo:
 
 
 pot:
-	@cp messages.header messages.pot
+	@po4a-gettextize -o tags="<title> <description> <display>" -o tagsonly=1 -f xml $(TEMPLATEFILES) -p messages.pot
 	@find ../../ -name *.php -exec xgettext --keyword=_ -L PHP -j --omit-header -o messages.pot -s {} \;
 	@find ../../ -name *.inc -exec xgettext --keyword=_ -L PHP -j --omit-header -o messages.pot -s {} \;
-	@echo messages.pot created
+	@echo messages.pot created, you might like to change the header with contents of messages.header
 
 all-merge: pot
 	@for i in `ls -1 $(LOCALEDIR)` ; \
@@ -47,10 +45,6 @@ all-merge: pot
 	    msgmerge -v $(LOCALEDIR)/$$i/LC_MESSAGES/messages.po messages.pot -o $$i.po; \
 	    fi \
 	done
-
-xml-pot:
-	@po4a-gettextize -o tags="<display>" -o tagsonly=1 -f xml $(TEMPLATEFILES) -p template.pot
-	@echo template.pot created
 
 launchpad-extract:
 	@[ ! -r $(EXPORTFILE) ] && echo "No export file [$(EXPORTFILE)] found?" && exit 1 || true

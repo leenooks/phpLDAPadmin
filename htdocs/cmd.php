@@ -1,8 +1,15 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/cmd.php,v 1.3.2.3 2008/01/10 12:28:34 wurley Exp $
+// $Header$
 
 /**
+ * Main command page for phpLDAPadmin
+ * All pages are rendered through this script.
+ *
  * @package phpLDAPadmin
+ * @subpackage Page
+ */
+
+/**
  */
 
 require_once './common.php';
@@ -11,32 +18,55 @@ $www['cmd'] = get_request('cmd','REQUEST');
 $www['meth'] = get_request('meth','REQUEST');
 
 ob_start();
-$file = '';
 
 switch ($www['cmd']) {
-	case '_debug' :
+	case '_debug':
 		debug_dump($_REQUEST,1);
 		break;
 
-	default :
+	default:
 		if (defined('HOOKSDIR') && file_exists(HOOKSDIR.$www['cmd'].'.php'))
-			$file = HOOKSDIR.$www['cmd'].'.php';
+			$app['script_cmd'] = HOOKSDIR.$www['cmd'].'.php';
 
 		elseif (defined('HTDOCDIR') && file_exists(HTDOCDIR.$www['cmd'].'.php'))
-			$file = HTDOCDIR.$www['cmd'].'.php';
+			$app['script_cmd'] = HTDOCDIR.$www['cmd'].'.php';
 
 		elseif (file_exists('welcome.php'))
-			$file = 'welcome.php';
+			$app['script_cmd'] = 'welcome.php';
+
+		else
+			$app['script_cmd'] = null;
 }
 
 if (DEBUG_ENABLED)
-   debug_log('Ready to render page for command [%s,%s].',128,__FILE__,__LINE__,__METHOD__,$www['cmd'],$file);
+	debug_log('Ready to render page for command [%s,%s].',128,__FILE__,__LINE__,__METHOD__,$www['cmd'],$app['script_cmd']);
 
 # Create page.
-$www['page'] = new page($ldapserver->server_id);
+# Set the index so that we render the right server tree.
+$www['page'] = new page($app['server']->getIndex());
 
-if ($file)
-	include $file;
+# See if we can render the command
+if (trim($www['cmd'])) {
+	# If this is a READ-WRITE operation, the LDAP server must not be in READ-ONLY mode.
+	if ($app['server']->isReadOnly() && ! in_array(get_request('cmd','REQUEST'),$app['readwrite_cmds']))
+		error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
+
+	# If this command has been disabled by the config.
+	if (! $_SESSION[APPCONFIG]->isCommandAvailable('script',$www['cmd']))
+		system_message(array('title'=>_('Command disabled by the server configuration'),
+			_('Error'),'body'=>sprintf('%s: <b>%s</b>.',_('The command could not be run'),$www['cmd']),'type'=>'error'),'index.php');
+}
+
+if ($app['script_cmd'])
+	include $app['script_cmd'];
+
+# Refresh a frame - this is so that one frame can trigger another frame to be refreshed.
+if (isAjaxEnabled() && get_request('refresh','REQUEST') && get_request('refresh','REQUEST') != get_request('frame','REQUEST')) {
+	printf("
+<script type=\"text/javascript\" language=\"javascript\">
+	displayAJ('%s','cmd=refresh&server_id=%s&meth=ajax&noheader=%s','%s');
+</script>",get_request('refresh','REQUEST'),$app['server']->getIndex(),get_request('noheader','REQUEST',false,0),_('Auto refresh'));
+}
 
 # Capture the output and put into the body of the page.
 $www['body'] = new block();
@@ -44,8 +74,8 @@ $www['body']->SetBody(ob_get_contents());
 $www['page']->block_add('body',$www['body']);
 ob_end_clean();
 
-if ($www['meth'] == 'get_body')
-	$www['page']->body(true);
+if ($www['meth'] == 'ajax')
+	$www['page']->show(get_request('frame','REQUEST',false,'BODY'),true,get_request('raw','REQUEST',false,false));
 else
 	$www['page']->display();
 ?>

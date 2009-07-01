@@ -1,321 +1,161 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/update_confirm.php,v 1.49.2.4 2008/12/12 12:20:22 wurley Exp $
+// $Header$
 
 /**
- * Takes the results of clicking "Save" in template_engine.php and determines which
- * attributes need to be updated (ie, which ones actually changed). Then,
- * we present a confirmation table to the user outlining the changes they
- * are about to make. That form submits directly to update.php, which
- * makes the change.
+ * Takes the results of clicking "Save" in template_engine.php and determines
+ * which attributes need to be updated (ie, which ones actually changed). Then,
+ * we present a confirmation table to the user outlining the changes they are
+ * about to make. That form submits directly to update.php, which makes the
+ * change.
  *
  * @package phpLDAPadmin
+ * @subpackage Page
+ * @see update.php
  */
+
 /**
  */
 
 require './common.php';
 
-if ($ldapserver->isReadOnly())
-	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
+$request = array();
+$request['dn'] = get_request('dn','REQUEST',true);
 
-/***************/
-/* get entry   */ 
-/***************/
+if (! $request['dn'] || ! $app['server']->dnExists($request['dn']))
+	error(sprintf(_('The entry (%s) does not exist.'),$request['dn']),'error','index.php');
 
-$entry = array();
-$entry['dn']['string'] = get_request('dn');
-$entry['dn']['encode'] = rawurlencode($entry['dn']['string']);
+$request['page'] = new PageRender($app['server']->getIndex(),get_request('template','REQUEST',false,'none'));
+$request['page']->setDN($request['dn']);
+$request['page']->accept();
+$request['template'] = $request['page']->getTemplate();
 
-if (! $entry['dn']['string'] || ! $ldapserver->dnExists($entry['dn']['string']))
-	error(sprintf(_('The entry (%s) does not exist.'),htmlspecialchars($entry['dn']['string'])),'error','index.php');
+$request['page']->drawTitle(get_rdn($request['template']->getDN()));
+$request['page']->drawSubTitle();
 
-$tree = get_cached_item($ldapserver->server_id,'tree');
-$entry['ldap'] = null;
-if ($tree) {
-	$entry['ldap'] = $tree->getEntry($entry['dn']['string']);
-
-	if (! $entry['ldap'])
-		$tree->addEntry($entry['dn']['string']);
-
-	$entry['ldap'] = $tree->getEntry($entry['dn']['string']);
-}
-
-if (! $entry['ldap'] || $entry['ldap']->isReadOnly())
-	error(sprintf(_('The entry (%s) is in readonly mode.'),htmlspecialchars($entry['dn']['string'])),'error','index.php');
-
-/***************/
-/* old values  */ 
-/***************/
-
-$entry['values']['old'] = array();
-foreach ($entry['ldap']->getAttributes() as $old_attr) {
-	$name = $old_attr->getName();
-	$entry['values']['old'][$name] = array();
-
-	foreach ($old_attr->getValues() as $old_val) {
-		if (strlen($old_val) > 0)
-			$entry['values']['old'][$name][] = $old_val;
-	}
-}
-
-/***************/
-/* new values  */ 
-/***************/
-
-eval('$reader = new '.$_SESSION[APPCONFIG]->GetValue('appearance','entry_reader').'($ldapserver);');
-$entry['ldap']->accept($reader);
-
-$entry['values']['new'] = array();
-foreach ($entry['ldap']->getAttributes() as $new_attr) {
-	if ($new_attr->hasBeenModified()) {
-		$name = $new_attr->getName();
-
-		if (!isset($entry['values']['old'][$name]))
-			$entry['values']['old'][$name] = array();
-
-		$entry['values']['new'][$name] = array();
-
-		foreach ($new_attr->getValues() as $i => $new_val) {
-			if ($new_attr instanceof BinaryAttribute) {
-				$n = $new_attr->getFileName($i);
-				$p = $new_attr->getFilePath($i);
-				$new_val = md5("$n|$p");
-			}
-
-			if (strlen($new_val) > 0)
-				$entry['values']['new'][$name][] = $new_val;
-		}
-	}
-}
-
-/************************/
-/* objectClass deletion */
-/************************/
-
-$oc_to_delete = array();
-$attr_to_delete = array();
-
-// if objectClass attribute is modified
-if (isset($entry['values']['new']['objectClass'])) {
-	if (!isset($entry['values']['old']['objectClass']))
-		error(_('An entry should have one structural objectClass.'),'error','index.php');
-
-	// deleted objectClasses
-	foreach ($entry['values']['old']['objectClass'] as $oldOC) {
-		if (!in_array($oldOC, $entry['values']['new']['objectClass'])) {
-			$oc_to_delete[] = $oldOC;
-		}
-	}
-	// search the attributes used by each deleted objecClass
-	// we must maybe delete these attributes
-	foreach ($oc_to_delete as $oc) {
-		$soc = $ldapserver->getSchemaObjectClass($oc);
-		if ($soc) {
-			$ocs = $ldapserver->SchemaObjectClasses();
-			$ma = $soc->getMustAttrs($ocs);
-			foreach ($ma as $a) {
-				if (!isset($attr_to_delete[$a->getName()])) {
-					$attr_to_delete[$a->getName()] = $a;
-				}
-			}
-			$ma = $soc->getMayAttrs($ocs);
-			foreach ($ma as $a) {
-				if (!isset($attr_to_delete[$a->getName()])) {
-					$attr_to_delete[$a->getName()] = $a;
-				}
-			}
-		}
-	}
-	// if an attribute is still used by an objectClass we don't delete,
-	// we don't delete this attribute
-	foreach ($attr_to_delete as $name => $ad) {
-		$found = false;
-		$at = $ldapserver->getSchemaAttribute($name);
-		foreach ($at->getUsedInObjectClasses() as $oc) {
-			if (in_array($oc, $entry['values']['new']['objectClass'])) {
-				$found = true;
-				break;
-			}
-		}
-		if (!$found) {
-			foreach ($at->getRequiredByObjectClasses() as $oc) {
-				if (in_array($oc, $entry['values']['new']['objectClass'])) {
-					$found = true;
-					break;
-				}
-			}
-		}
-		if ($found) {
-			unset($attr_to_delete[$name]);
-		} else {
-			if (isset($entry['values']['old'][$name]) && (count($entry['values']['old'][$name]) > 0)) {
-				$found = true;
-			} else {
-				foreach ($entry['values']['new'] as $attr_name => $attr_values) {
-					if ($name == $attr_name) {
-						$found = true;
-						break;
-					}
-				}
-			}
-			if (!$found) {
-				unset($attr_to_delete[$name]);
-			} else {
-				$entry['values']['new'][$name] = array();
-				$attr_to_delete[$name] = $name;
-			}
-		}
-	}
-}
-
-/****************/
-/* update array */ 
-/****************/
-
-eval('$writer = new '.$_SESSION[APPCONFIG]->GetValue('appearance','entry_writer').'($ldapserver);');
-$writer->draw('Title',$entry['ldap']);
-$writer->draw('Subtitle',$entry['ldap']);
-
-echo "\n\n";
-
-run_hook('pre_update_array_processing',
-	array('server_id'=>$ldapserver->server_id,'dn'=>$entry['dn']['string'],'old_values'=>$entry['values']['old'],'new_values'=>$entry['values']['new']));
-
-/***************/
-/* confirm     */ 
-/***************/
-	
-if (count($entry['values']['new']) > 0) {
-	echo '<br />';
+# Confirm the updates
+if (count($request['template']->getLDAPmodify(true))) {
 	echo '<center>';
 	echo _('Do you want to make these changes?');
 	echo '<br /><br />';
 
-	# <!-- Commit button and acompanying form -->
 	echo "\n\n";
 	echo '<form action="cmd.php" method="post">';
 	echo '<input type="hidden" name="cmd" value="update" />';
+	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
+	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($request['dn']));
 	echo "\n";
+
+	$request['page']->drawHiddenAttributes();
+
 	echo '<table class="result_table">';
 	echo "\n";
 
 	printf('<tr class="heading"><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
 		_('Attribute'),_('Old Value'),_('New Value'),_('Skip'));
-
 	echo "\n\n";
-	$counter = 0;
 
-	foreach ($entry['values']['new'] as $attr => $new_val) {
+	$counter = 0;
+	foreach ($request['template']->getLDAPmodify(true) as $attribute) {
 		$counter++;
 
 		printf('<tr class="%s">',$counter%2 ? 'even' : 'odd');
-		echo '<td><b>';
-		echo $_SESSION[APPCONFIG]->getFriendlyHTML($attr);
-		echo '</b></td>';
+		printf('<td><b>%s</b></td>',$attribute->getFriendlyName());
+
+		# Show OLD Values
 		echo '<td><span style="white-space: nowrap;">';
 
-		if (strcasecmp($attr,'userPassword') == 0) {
-			foreach ($entry['values']['old'][$attr] as $key => $value) {
-				if (obfuscate_password_display(get_enc_type($entry['values']['old'][$attr][$key])))
-					echo preg_replace('/./','*',$entry['values']['old'][$attr][$key]).'<br />';
-				else
-					echo nl2br(htmlspecialchars($entry['values']['old'][$attr][$key])).'<br />';
-			}
+		if (! $attribute->getOldValues())
+			printf('<span style="color: green">[%s]</span>',_('attribute doesnt exist'));
 
-		} elseif (is_array($entry['values']['old'][$attr]))
-			foreach ($entry['values']['old'][$attr] as $v)
-				echo nl2br(htmlspecialchars($v)).'<br />';
+		foreach ($attribute->getOldValues() as $key => $value) {
+			# For multiple values, we'll highlight the changed ones
+			if ((count($attribute->getOldValues()) > 5) && in_array($value,$attribute->getRemovedValues()) && count($attribute->getValues()))
+				echo '<span style="color:#880000; background:#FFFFA0">';
 
-		else
-			echo nl2br(htmlspecialchars($entry['values']['old'][$attr])).'<br />';
+			$request['page']->draw('OldValue',$attribute,$key);
 
-		echo '</span></td>';
-		echo '<td><span style="white-space: nowrap;">';
+			# For multiple values, close the highlighting
+			if ((count($attribute->getOldValues()) > 5) && in_array($value,$attribute->getRemovedValues()) && count($attribute->getValues()))
+				echo '</span>';
 
-		# Is this a multi-valued attribute?
-		if (is_array($new_val)) {
-			if (strcasecmp($attr,'userPassword') == 0) {
-				foreach ($entry['values']['new'][$attr] as $key => $value) {
-					if (isset($new_val[$key])) {
-						if (obfuscate_password_display(get_enc_type($new_val[$key])))
-							echo preg_replace('/./','*',$new_val[$key]).'<br />';
-						else
-							echo htmlspecialchars($new_val[$key]).'<br />';
-					}
-				}
-
-			} else {
-
-				foreach ($new_val as $i => $v) {
-						echo nl2br(htmlspecialchars($v)).'<br />';
-				}
-			}
-
-			if (! $new_val) {
-				printf('<span style="color: red">%s</span>',_('[attribute deleted]'));
-			}
-
-		} elseif ($new_val == '')
-				printf('<span style="color: red">%s</span>',_('[attribute deleted]'));
+			echo '<br />';
+		}
 
 		echo '</span></td>';
 
+		# Show NEW Values
+		echo '<td><span style="white-space: nowrap;">';
+
+		if (! $attribute->getValueCount() || $attribute->isForceDelete())
+			printf('<span style="color: red">[%s]</span>',_('attribute deleted'));
+
+		foreach ($attribute->getValues() as $key => $value) {
+			# For multiple values, we'll highlight the changed ones
+			if ((count($attribute->getValues()) > 5) && in_array($value,$attribute->getAddedValues()))
+				echo '<span style="color:#004400; background:#FFFFA0">';
+
+			$request['page']->draw('CurrentValue',$attribute,$key);
+
+			# For multiple values, close the highlighting
+			if ((count($attribute->getValues()) > 5) && in_array($value,$attribute->getAddedValues()))
+				echo '</span>';
+
+			echo '<br />';
+		}
+
+		echo '</span></td>';
+
+		# Show SKIP Option
 		$input_disabled = '';
-		if (in_array($attr, $attr_to_delete)) $input_disabled = 'disabled="disabled"';
 		$input_onclick = '';
-		if ($attr == 'objectClass' && (count($attr_to_delete) > 0)) {
+
+		if ($attribute->isForceDelete())
+			$input_disabled = 'disabled="disabled"';
+
+		if ($attribute->getName() == 'objectclass' && (count($request['template']->getForceDeleteAttrs()) > 0)) {
 			$input_onclick = 'onclick="if (this.checked) {';
-			foreach ($attr_to_delete as $ad_name) {
-				$input_onclick .= "document.forms[0].elements['skip_array[$ad_name]'].disabled = false;";
-				$input_onclick .= "document.forms[0].elements['skip_array[$ad_name]'].checked = true;";
+
+			foreach ($request['template']->getForceDeleteAttrs() as $ad_name) {
+				$input_onclick .= sprintf("document.getElementById('skip_array_%s').disabled = false;",$ad_name->getName());
+				$input_onclick .= sprintf("document.getElementById('skip_array_%s').checked = true;",$ad_name->getName());
 			}
+
 			$input_onclick .= '} else {';
-			foreach ($attr_to_delete as $ad_name) {
-				$input_onclick .= "document.forms[0].elements['skip_array[$ad_name]'].checked = false;";
-				$input_onclick .= "document.forms[0].elements['skip_array[$ad_name]'].disabled = true;";
+			foreach ($request['template']->getForceDeleteAttrs() as $ad_name) {
+				$input_onclick .= sprintf("document.getElementById('skip_array_%s').checked = false;",$ad_name->getName());
+				$input_onclick .= sprintf("document.getElementById('skip_array_%s').disabled = true;",$ad_name->getName());
 			}
 			$input_onclick .= '}"';
 		}
- 		printf('<td><input name="skip_array[%s]" type="checkbox" %s %s/></td>',htmlspecialchars($attr),$input_disabled,$input_onclick);
-		echo '</tr>'."\n\n";
+
+		printf('<td><input name="skip_array[%s]" id="skip_array_%s" type="checkbox" %s %s/></td>',
+			htmlspecialchars($attribute->getName()),htmlspecialchars($attribute->getName()),$input_disabled,$input_onclick);
+		echo '</tr>';
+		echo "\n\n";
 	}
+
 	echo '</table>';
-
-	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
-	printf('<input type="hidden" name="dn" value="%s" />',$entry['dn']['string']);
-
-	foreach ($entry['values']['new'] as $attr => $val) {
-		if (count($val) > 0) {
-			if (is_array($val)) {
-				foreach($val as $i => $v)
-					printf('<input type="hidden" name="update_array[%s][%s]" value="%s" />',
-						htmlspecialchars($attr),$i,htmlspecialchars($v));
-			} else {
-				printf('<input type="hidden" name="update_array[%s]" value="%s" />',
-					htmlspecialchars($attr),htmlspecialchars($val));
-			}
-		} else {
-			printf('<input type="hidden" name="update_array[%s]" value="" />',
-				htmlspecialchars($attr));
-		}
-	}
 
 	echo '<br />';
 	printf('<input type="submit" value="%s" />',_('Commit'));
 	printf('<input type="submit" name="cancel" value="%s" />',_('Cancel'));
 	echo '</form>';
+	echo '<br />';
 
-	if (count($attr_to_delete) > 0) {
+	if (count($request['template']->getForceDeleteAttrs()) > 0) {
 		echo '<table class="result_table"><tr>';
-		printf('<td class="heading">%s%s</td>',_('The deletion of objectClass(es)'),_(':'));
-		printf('<td class="value"><b>%s</b></td>',implode('</b>, <b>', $oc_to_delete));
+		printf('<td class="heading">%s:</td>',_('The deletion of objectClass(es)'));
+		printf('<td class="value"><b>%s</b></td>',implode('</b>, <b>',$request['template']->getAttribute('objectclass')->getRemovedValues()));
 		echo '</tr><tr>';
-		printf('<td class="heading">%s%s</td>',_('will delete the attribute(s)'),_(':'));
+		printf('<td class="heading">%s:</td>',_('will delete the attribute(s)'));
 		echo '<td class="value"><b>';
+
 		$i = 0;
-		foreach ($attr_to_delete as $attr) {
-			if ($i++ != 0) echo '</b>, <b>';
-			echo $_SESSION[APPCONFIG]->getFriendlyHTML($attr);
+		foreach ($request['template']->getForceDeleteAttrs() as $attribute) {
+			if ($i++ != 0)
+				echo '</b>, <b>';
+
+			echo $_SESSION[APPCONFIG]->getFriendlyHTML($attribute);
 		}
 		echo '</b></td></tr></table>';
 	}
@@ -326,7 +166,7 @@ if (count($entry['values']['new']) > 0) {
 	echo '<center>';
 	echo _('You made no changes');
 	$href = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',
-		 $ldapserver->server_id,$entry['dn']['encode']);
+		 $app['server']->getIndex(),rawurlencode($request['dn']));
 
 	printf(' <a href="%s">%s</a>.',htmlspecialchars($href),_('Go back'));
 	echo '</center>';

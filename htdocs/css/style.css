@@ -1,11 +1,11 @@
-/* $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/css/style.css,v 1.48.2.9 2009/03/20 07:33:04 wurley Exp $ */
+/* $Header$ */
 
 /* Global Page */
 table.page {
 	font-weight: normal;
 	color: #000000;
 
-	font-family: bitstream vera sans,luxi sans,verdana,geneva,arial,helvetica,sans-serif;
+	font-family: "bitstream vera sans","luxi sans",verdana,geneva,arial,helvetica,sans-serif;
 	background-color: #FFFFFF;
 	font-size: 13px;
 	empty-cells: hide;
@@ -32,7 +32,7 @@ table.page tr.head {
 	color: #FFFFFF;
 	background-color: #001188;
 	font-weight: bold;
-	font-size: 12px;
+	font-size: 11px;
 	height: 25px;
 }
 
@@ -42,6 +42,15 @@ table.page tr.head img.logo {
 
 	width: 100px;
 	height: 60px;
+}
+
+table.page tr.pagehead {
+}
+
+table.page tr.pagehead td.imagetop {
+	width: 100%;
+	vertical-align: bottom;
+	text-align: right;
 }
 
 /* Global Page - Control Line */
@@ -59,12 +68,13 @@ table.page table.control {
 table.page table.control td {
 	border-top: 0px;
 	border-bottom: 0px;
-	width: 30px;
 	padding: 0px;
-	padding-top: 5px;
-	text-align: center;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	text-align: left;
 	vertical-align: top;
 	font-size: 11px;
+	font-weight: bold;
 }
 
 table.page table.control img {
@@ -349,6 +359,11 @@ table.tree a:hover {
 	color: blue;
 }
 
+table.tree span.dnicon img {
+	width: 16px;
+	padding-bottom: 0px;
+}
+
 /* Standard Form */
 table.forminput {
 	background-color: #F9F9FA;
@@ -548,56 +563,6 @@ span.hint {
 	color: #888;
 }
 
-/* Edit DN - EntryWriter2 */
-table.entry tr.spacer {
-	background-color: #D0D0D0;
-}
-
-table.entry tr td.ew2_icon {
-	vertical-align: top;
-}
-
-table.entry tr td.ew2_attr {
-	vertical-align: top;
-	text-align: right;
-	font-size: 75%;
-	background-color: #fff;
-	font-weight: bold;
-}
-
-table.entry tr td.ew2_attr a {
-	text-decoration: none;
-	color: #000000;
-}
-
-table.entry tr td.ew2_attr a:hover {
-	text-decoration: underline;
-	color: #016;
-}
-
-table.entry tr td.ew2_val {
-	text-align: left;
-	vertical-align: top;
-	padding-bottom: 10px;
-	padding-left: 50px;
-}
-
-table.entry tr.updated td.ew2_attr {
-	text-align: right;
-	font-size: 75%;
-	border-top: 1px dashed green;
-	border-left: 1px dashed green;
-	border-bottom: 1px dashed green;
-	background-color: #ded;
-}
-
-table.entry tr.updated td.ew2_val {
-	border-top: 1px dashed green;
-	border-left: 1px dashed green;
-	border-right: 1px dashed green;
-	border-bottom: 1px dashed green;
-}
-
 /* Login Box */
 #login {
 	background: url('../images/uid.png') no-repeat 0 1px;
@@ -652,7 +617,7 @@ table.entry tr.updated td.ew2_val {
 div.execution_time {
 	font-size: 75%;
 	font-weight: normal;
-	text-align: center;
+	text-align: left;
 }
 
 table.result {
@@ -697,6 +662,12 @@ table.result tr.list_item td.value {
 	font-size: 12px;
 }
 
+table.result_box {
+	border: 1px solid #AAAACC;
+	border-collapse: collapse;
+	empty-cells: show;
+}
+
 table.result_table {
 	border: 1px solid #AAAACC;
 	border-collapse: collapse;
@@ -704,6 +675,7 @@ table.result_table {
 }
 
 table.result_table td {
+	font-size: 12px;
 	vertical-align: top;
 	border: 1px solid #AAAACC;
 	padding: 4px;
@@ -732,7 +704,7 @@ table.result_table tr.highlight td {
 table.result_table td.heading {
 	color: #FFFFFF;
 	background-color: #000088;
-	font-size: 15px;
+	font-size: 12px;
 }
 
 table.result_table td.value {
@@ -743,12 +715,14 @@ table.result_table td.value {
 table.result_table tr.heading {
 	color: #FFFFFF;
 	background-color: #000088;
-	font-size: 15px;
+	font-size: 12px;
+	font-weight: bold;
 }
 
 table.result_table tr.heading a {
 	color: #FFFFFF;
-	font-size: 20px;
+	font-size: 12px;
+	font-weight: bold;
 }
 
 table.result_table tr.heading td {

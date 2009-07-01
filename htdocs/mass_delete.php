@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/mass_delete.php,v 1.17.2.3 2008/12/12 12:20:22 wurley Exp $
+// $Header$
 
 /**
  * Enables user to mass delete multiple entries using checkboxes.

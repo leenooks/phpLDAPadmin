@@ -1,13 +1,19 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/RandomPasswordAttribute.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header$
 
 /**
- * @package phpLDAPadmin
- * @author Xavier Bruyet
+ * Classes and functions for the template engine.
  *
- * Represents an attribute whose values are passwords
+ * @author The phpLDAPadmin development team
+ * @package phpLDAPadmin
+ */
+
+/**
+ * Represents an attribute whose values are random passwords
+ *
+ * @package phpLDAPadmin
+ * @subpackage Templates
  */
 class RandomPasswordAttribute extends PasswordAttribute {
 }
-
 ?>

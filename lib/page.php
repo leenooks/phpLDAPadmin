@@ -1,11 +1,19 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/page.php,v 1.3.2.16 2008/12/12 09:20:06 wurley Exp $
+// $Header$
 
 /**
  * Page Rendering Functions
+ *
+ * @author The phpLDAPadmin development team
  * @package phpLDAPadmin
  */
 
+/**
+ * This class controls the final output to the browser.
+ *
+ * @package phpLDAPadmin
+ * @subpackage Page
+ */
 class page {
 	# pre-HTML headers
 	protected $_pageheader;
@@ -19,19 +27,19 @@ class page {
 	# Default values array.
 	protected $_default;
 
-	public function __construct($server_id=null) {
+	public function __construct($index=null) {
 		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
-			debug_log('Entered with [%s]',129,__FILE__,__LINE__,__METHOD__,$server_id);
+			debug_log('Entered with [%s]',129,__FILE__,__LINE__,__METHOD__,$index);
 
 		# To be defined in a configuration file.
-		$this->_app['title'] = 'phpLDAPadmin';
+		$this->_app['title'] = app_name();
 
 		# Default Values for configurable items.
 		$this->_default['stylecss'] = CSSDIR.'style.css';
 		$this->_default['logo'] = IMGDIR.'logo-small.png';
-		$this->_default['sysmsg']['error'] = IMGDIR.'warning.png';
-		$this->_default['sysmsg']['warn'] = IMGDIR.'notice.png';
-		$this->_default['sysmsg']['info'] = IMGDIR.'light-big.png';
+		$this->_default['sysmsg']['error'] = IMGDIR.'error-big.png';
+		$this->_default['sysmsg']['warn'] = IMGDIR.'warn-big.png';
+		$this->_default['sysmsg']['info'] = IMGDIR.'info-big.png';
 
 		# Capture any output so far (in case we send some headers below) - there shouldnt be any output anyway.
 		$preOutput = '';
@@ -53,9 +61,9 @@ class page {
 		}
 
 		if (isset($_SESSION[APPCONFIG])
-			&& $_SESSION[APPCONFIG]->GetValue('appearance','compress')
+			&& $_SESSION[APPCONFIG]->getValue('appearance','compress')
 			&& ini_get('zlib.output_compression'))
-				$this->setsysmsg(array('title'=>_('Warning'),'body'=>_('WARNING: You cannot have PHP compression and phpLDAPadmin compression enabled at the same time. Please unset zlib.output_compression or set $config->custom->appearance[\'compress\']=false'),'type'=>'warn'));
+				$this->setsysmsg(array('title'=>_('Warning'),'body'=>_('WARNING: You cannot have PHP compression and application compression enabled at the same time. Please unset zlib.output_compression or set $config->custom->appearance[\'compress\']=false'),'type'=>'warn'));
 
 		# Turn back on output buffering.
 		ob_start();
@@ -70,12 +78,12 @@ class page {
 
 		$this->_app['logo'] = $this->_default['logo'];
 
-		if (! is_null($server_id))
-			$this->_app['urlcss'] = sprintf('%s%s',CSSDIR,$_SESSION[APPCONFIG]->GetValue('appearance','stylesheet'));
+		if (! is_null($index))
+			$this->_app['urlcss'] = sprintf('%s%s',CSSDIR,$_SESSION[APPCONFIG]->getValue('appearance','stylesheet'));
 		else
 			$this->_app['urlcss'] = sprintf('%s%s',CSSDIR,'style.css');
 
-		$this->server_id = $server_id;
+		$this->index = $index;
 	}
 
 	/* Add to the HTML Header */
@@ -97,9 +105,9 @@ class page {
 
 		if (isset($_SESSION[APPCONFIG]))
 			printf('<title>%s (%s) - %s</title>',
-				$this->_app['title'],pla_version(),$_SESSION[APPCONFIG]->GetValue('appearance','page_title'));
+				$this->_app['title'],app_version(),$_SESSION[APPCONFIG]->getValue('appearance','page_title'));
 		else
-			printf('<title>%s - %s</title>',$this->_app['title'],pla_version());
+			printf('<title>%s - %s</title>',$this->_app['title'],app_version());
 
 		# Style sheet.
 		printf('<link type="text/css" rel="stylesheet" href="%s" />',$this->_app['urlcss']);
@@ -131,37 +139,28 @@ class page {
 			debug_log('Entered with ()',129,__FILE__,__LINE__,__METHOD__);
 
 		if (isset($_SESSION[APPCONFIG]))
-			$pagetitle = $_SESSION[APPCONFIG]->GetValue('appearance','page_title') ? ' - '.$_SESSION[APPCONFIG]->GetValue('appearance','page_title') : '';
+			$pagetitle = $_SESSION[APPCONFIG]->getValue('appearance','page_title') ? ' - '.$_SESSION[APPCONFIG]->getValue('appearance','page_title') : '';
 		else
 			$pagetitle = '';
 
-		echo '<tr class="head">';
+		echo '<tr class="pagehead">';
 
-		if (! isset($this->server_id) || is_null($this->server_id))
-			printf('<td colspan=0>%s</td>','&nbsp;');
-		else
-			printf('<td colspan=0>%s %s</td>',$this->_app['title'],$pagetitle);
+		echo '<td colspan=3><div id="ajHEAD"><table width=100% border=0><tr>';
+		printf('<td align="left"><a href="%s" target="_blank"><img src="%s" alt="Logo" class="logo" /></a></td>',get_href('sf'),$this->_app['logo']);
 
-		echo '</tr>';
-	}
-
-	private function control_print() {
-		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
-			debug_log('Entered with ()',129,__FILE__,__LINE__,__METHOD__);
-
-		echo '<table class="control" border=0>';
-		echo '<tr>';
-
+		echo '<td class="imagetop">';
 		$empty = true;
-
 		if (function_exists('cmd_control_pane'))
-			foreach (cmd_control_pane() as $cmd => $cmddetails) {
-				$cmds = preg_split('/:/',$cmd);
+			foreach (cmd_control_pane('top') as $cmd => $cmddetails) {
+				$cmds = explode(':',$cmd);
 
 				if (defined('APPCONFIG') && isset($_SESSION[APPCONFIG]) && method_exists($_SESSION[APPCONFIG],'isCommandAvailable'))
-					if ($_SESSION[APPCONFIG]->isCommandAvailable($cmds)) {
+					if ($_SESSION[APPCONFIG]->isCommandAvailable('all',$cmds)) {
 						if ((isset($cmddetails['enable']) && trim($cmddetails['enable'])) || ! isset($cmddetails['enable'])) {
-							printf('<td>%s</td>',$cmddetails['link']);
+							if (! $empty)
+								echo ' ';
+
+							printf('<a %s>%s</a>',$cmddetails['link'],$cmddetails['image']);
 
 							$empty = false;
 						}
@@ -169,12 +168,42 @@ class page {
 			}
 
 		if ($empty)
-			echo '<td></td>';
+			echo '&nbsp;';
+		echo '</td>';
+		echo '</tr></table></div></td>';
+		echo '</tr>';
+		echo "\n";
+	}
 
-		if (isset($this->_app['logo']))
-			printf('<td class="spacer">&nbsp;</td><td class="logo"><img src="%s" alt="Logo" class="logo" /></td>',$this->_app['logo']);
-		else
-			echo '<td class="spacer" colspan=2>&nbsp;</td>';
+	private function control_print() {
+		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
+			debug_log('Entered with ()',129,__FILE__,__LINE__,__METHOD__);
+
+		echo '<table class="control" width=100% border=0>';
+		echo '<tr><td>';
+
+		$empty = true;
+		if (function_exists('cmd_control_pane'))
+			foreach (cmd_control_pane('main') as $cmd => $cmddetails) {
+				$cmds = explode(':',$cmd);
+
+				if (defined('APPCONFIG') && isset($_SESSION[APPCONFIG]) && method_exists($_SESSION[APPCONFIG],'isCommandAvailable'))
+					if ($_SESSION[APPCONFIG]->isCommandAvailable('all',$cmds)) {
+						if ((isset($cmddetails['enable']) && trim($cmddetails['enable'])) || ! isset($cmddetails['enable'])) {
+							if (! $empty)
+								echo ' | ';
+
+							printf('<a %s>%s</a>',$cmddetails['link'],
+								$_SESSION[APPCONFIG]->getValue('appearance','control_icons') ? $cmddetails['image'] : $cmddetails['title']);
+
+							$empty = false;
+						}
+					}
+			}
+
+		echo '</td>';
+		if ($empty)
+			echo '<td>&nbsp;</td>';
 
 		echo '</tr>';
 		echo '</table>';
@@ -187,29 +216,26 @@ class page {
 		if (! isset($_SESSION[APPCONFIG]))
 			return;
 
-		$server_id = is_null($this->server_id) ? min($_SESSION[APPCONFIG]->ldapservers->GetServerList()) : $this->server_id;
+		if (is_null($this->index))
+			$this->index = min(array_keys($_SESSION[APPCONFIG]->getServerList()));
 
-		echo '<td class="tree" colspan=2>';
-		if (count(server_info_list(true)) > 1) {
+		if (count($_SESSION[APPCONFIG]->getServerList()) > 1) {
 			echo '<form name="server_select" action="cmd.php" method="post">';
 			echo '<table class="server_select"><tr><td>';
-			printf('%s%s<br />%s',_('Server Select'),_(':'),
-				server_select_list($server_id,false,'server_id',sprintf("onchange=\"tree_unhide('server_id',%s)\"",$server_id)));
+			printf('%s:<br />%s',_('Server Select'),
+				server_select_list($this->index,false,'index',true,sprintf("onchange=\"tree_unhide('index',%s)\"",$this->index)));
 			echo '</td></tr></table>';
 			echo '</form>';
 			echo "\n\n";
 		}
 
-		foreach ($_SESSION[APPCONFIG]->ldapservers->GetServerList() as $server_id) {
-			printf('<div id="SID_%s" style="display: %s">',$server_id,($server_id == $this->server_id) ? 'block': 'none');
-			$ldapserver = $_SESSION[APPCONFIG]->ldapservers->Instance($server_id);
-
-			$tree = Tree::getInstance($ldapserver->server_id);
-
+		foreach ($_SESSION[APPCONFIG]->getServerList() as $index => $server) {
+			printf('<div id="ajSID_%s" style="display: %s">',$server->getIndex(),($server->getIndex() == $this->index) ? 'block' : 'none');
+			$tree = Tree::getInstance($server->getIndex());
 			$tree->draw();
 			echo '</div>';
+			echo "\n\n";
 		}
-		echo '</td>';
 	}
 
 	public function block_add($side,$object) {
@@ -270,15 +296,9 @@ class page {
 		}
 	}
 
-	public function body($compress=false) {
+	private function body($raw=false) {
 		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
-			debug_log('Entered with (%s)',129,__FILE__,__LINE__,__METHOD__,$compress);
-
-		# If the body is called via AJAX, and compression is enable, we need to compress the output
-		if ($compress && ob_get_level()) {
-			ob_end_clean();
-			ob_start();
-		}
+			debug_log('Entered with ()',129,__FILE__,__LINE__,__METHOD__);
 
 		# Add the Session System Messages
 		if (isset($_SESSION['sysmsg']) && is_array($_SESSION['sysmsg'])) {
@@ -295,9 +315,45 @@ class page {
 			echo "\n";
 		}
 
-		if (isset($this->_block['body'])) {
+		if (isset($this->_block['body']))
 			foreach ($this->_block['body'] as $object)
-				echo $object->draw('body');
+				echo $object->draw('body',$raw);
+	}
+
+	private function footer_print() {
+		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
+			debug_log('Entered with ()',129,__FILE__,__LINE__,__METHOD__);
+
+		printf('<tr class="foot"><td><small>%s</small></td><td colspan=2><div id="ajFOOT">%s</div>%s</td></tr>',
+			isCompress() ? '[C]' : '&nbsp;',
+			app_version(),
+			sprintf('<a href="%s"><img src="%s" border="0" alt="SourceForge.net Logo" /></a>',get_href('sf'),get_href('logo')));
+	}
+
+	/**
+	 * Only show a particular page frame - used by an AJAX call
+	 */
+	public function show($frame,$compress=false,$raw=false) {
+		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
+			debug_log('Entered with (%s)',129,__FILE__,__LINE__,__METHOD__,$compress);
+
+		# If the body is called via AJAX, and compression is enable, we need to compress the output
+		if ($compress && ob_get_level() && isCompress()) {
+			ob_end_clean();
+			ob_start();
+		}
+
+		switch ($frame) {
+			case 'BODY':
+				$this->body($raw);
+				break;
+
+			case 'TREE':
+				$this->tree();
+				break;
+
+			default:
+				error(sprintf('show called with unknown frame [%s]',$frame),'error','index.php');
 		}
 
 		if ($compress && ob_get_level() && isCompress()) {
@@ -312,29 +368,22 @@ class page {
 		}
 	}
 
-	private function footer_print() {
-		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
-			debug_log('Entered with ()',129,__FILE__,__LINE__,__METHOD__);
-
-		printf('<tr class="foot"><td><small>%s</small></td><td colspan=2>%s</td></tr>',
-			isCompress() ? '[C]' : '&nbsp;',
-			pla_version());
-	}
-
 	public function display($filter=array()) {
 		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
 			debug_log('Entered with [%s]',129,__FILE__,__LINE__,__METHOD__,$filter);
 
 		# Control what is displayed.
 		$display = array(
-			'tree'=>true
+			'HEAD'=>true,
+			'CONTROL'=>true,
+			'TREE'=>true,
+			'FOOT'=>true
 		);
 
 		$display = array_merge($display,$filter);
 
 		# HTML Header
 		$this->pageheader_print();
-		echo "\n";
 
 		# Start of body
 		# Page Header
@@ -342,26 +391,32 @@ class page {
 		echo "\n";
 		echo '<table class="page" border=0 width=100%>';
 
-		$this->head_print();
-		echo "\n";
+		if ($display['HEAD'])
+			$this->head_print();
 
 		# Control Line
-		echo '<tr class="control"><td colspan=3>';
-		$this->control_print();
-		echo '</td></tr>';
-		echo "\n";
+		if ($display['CONTROL']) {
+			echo '<tr class="control"><td colspan=3>';
+			echo '<div id="ajCONTROL">';
+			$this->control_print();
+			echo '</div></td></tr>';
+			echo "\n";
+		}
 
 		# Left Block
 		echo '<tr>';
 
-		if ($display['tree']) {
-#			$this->block_print('tree');
+		if ($display['TREE']) {
+			echo '<td class="tree" colspan=2>';
+			printf('<acronym title="%s"><img src="%s/plus.png" align="right" onClick="if (document.getElementById(\'ajTREE\').style.display == \'none\') { document.getElementById(\'ajTREE\').style.display = \'block\' } else { document.getElementById(\'ajTREE\').style.display = \'none\' };"/></acronym>',_('Hide/Unhide the tree'),IMGDIR);
+			echo '<div id="ajTREE">';
 			$this->tree();
-			echo "\n";
+			echo '</div>';
+			echo '</td>';
 		}
 
 		echo '<td class="body" width=80%>';
-		echo '<div id="main_page">';
+		echo '<div id="ajBODY">';
 		echo "\n";
 		$this->body();
 		echo '</div>';
@@ -370,7 +425,8 @@ class page {
 		echo "\n";
 
 		# Page Footer
-		$this->footer_print();
+		if ($display['FOOT'])
+			$this->footer_print();
 
 		# Finish HTML
 		echo '</table>';
@@ -408,6 +464,12 @@ class page {
 	}
 }
 
+/**
+ * This class draws a block.
+ *
+ * @package phpLDAPadmin
+ * @subpackage Page
+ */
 class block {
 	private $title;
 	private $body;
@@ -428,19 +490,26 @@ class block {
 		$this->foot = $html;
 	}
 
-	public function draw($side) {
+	public function draw($side,$raw=false) {
 		$output = '';
 
-		$output .= sprintf('<table class="%s">',$side);
-		if (isset($this->body['title']))
-			$output .= sprintf('<tr><td class="head">%s</td></tr>',$this->title);
+		if ($raw)
+			$output .= $this->body;
 
-		if (isset($this->body['body']))
-			$output .= sprintf('<tr><td>%s</td></tr>',$this->body);
+		else {
+			$output .= sprintf('<table class="%s">',$side);
 
-		if (isset($this->body['footer']))
-			$output .= sprintf('<tr><td class="foot">%s</td></tr>',$this->foot);
-		$output .= '</table>';
+			if (isset($this->title))
+				$output .= sprintf('<tr><td class="head">%s</td></tr>',$this->title);
+
+			if (isset($this->body))
+				$output .= sprintf('<tr><td>%s</td></tr>',$this->body);
+
+			if (isset($this->footer))
+				$output .= sprintf('<tr><td class="foot">%s</td></tr>',$this->foot);
+
+			$output .= '</table>';
+		}
 
 		return $output;
 	}

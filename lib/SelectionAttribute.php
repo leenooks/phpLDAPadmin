@@ -1,25 +1,42 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/SelectionAttribute.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header$
 
 /**
- * @package phpLDAPadmin
- * @author Xavier Bruyet
+ * Classes and functions for the template engine.
  *
+ * @author The phpLDAPadmin development team
+ * @package phpLDAPadmin
+ */
+
+/**
  * Represents an attribute whose values are in a predefined list
+ *
+ * @package phpLDAPadmin
+ * @subpackage Templates
  */
 class SelectionAttribute extends Attribute {
-	protected $selection;
+	protected $selection = array();
 	protected $multiple;
+	protected $default;
 
-	public function __construct($name,$values) {
-		parent::__construct($name,$values);
+	public function __construct($name,$values,$server_id,$source=null) {
+		# Call our parent constructor
+		parent::__construct($name,$values,$server_id,$source);
 
-		$this->selection = array();
-		$this->multiple = false;
+		# Our values are set by parent(). If we do have values, and the source was XML, move them to our selection.
+		if ($this->source == 'XML' && $this->values) {
+			$this->selection = $this->values;
+			$this->values = array();
+		}
+
+		if (isset($values['type']) && $values['type'] == 'multiselect')
+			$this->multiple = true;
+		else
+			$this->multiple = false;
 	}
 
-	public function addOption($value, $description) {
-		$this->selection["$value"] = $description;
+	public function addOption($value,$description) {
+		$this->selection[$value] = $description;
 	}
 
 	public function getOptionCount() {
@@ -28,6 +45,14 @@ class SelectionAttribute extends Attribute {
 
 	public function getSelection() {
 		return $this->selection;
+	}
+
+	public function autoValue($value) {
+		$this->selection = $value;
+	}
+
+	public function getDefault() {
+		return $this->default;
 	}
 
 	public function isMultiple() {

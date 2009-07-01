@@ -1,45 +1,51 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/download_binary_attr.php,v 1.15.2.4 2008/12/12 12:20:22 wurley Exp $
+// $Header$
 
 /**
+ * Download a binary value attribute to the user.
+ * A server ID, DN and Attribute must be provided in the GET attributes.
+ * Optionally an index, type and filename can be supplied.
+ *
  * @package phpLDAPadmin
- * Variables that come in via common.php
- *  - server_id
+ * @subpackage Page
  */
+
 /**
  */
 
 require './common.php';
 
-if ($ldapserver->isReadOnly())
-	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
+$request = array();
+$request['dn'] = get_request('dn','GET');
+$request['attr'] = strtolower(get_request('attr','GET',true));
+$request['index'] = get_request('index','GET',false,0);
+$request['type'] = get_request('type','GET',false,'octet-stream');
+$request['filename'] = get_request('filename','GET',false,sprintf('%s:%s.bin',get_rdn($request['dn'],true),$request['attr']));
 
-if (! $ldapserver->haveAuthInfo())
-	error(_('Not enough information to login to server. Please check your configuration.'),'error','index.php');
+if (! $app['server']->dnExists($request['dn']))
+	error(sprintf(_('The entry (%s) does not exist.'),$request['dn']),'error','index.php');
 
-$dn = rawurldecode(get_request('dn','GET'));
-$attr = get_request('attr','GET');
-
-# if there are multiple values in this attribute, which one do you want to see?
-$value_num = get_request('value_num','GET');
-
-if (! $ldapserver->dnExists($dn))
-	error(sprintf('%s (%s)',_('No such entry.'),pretty_print_dn($dn)),'error','index.php');
-
-$search = $ldapserver->search(null,$dn,'(objectClass=*)',array($attr),'base',false,$_SESSION[APPCONFIG]->GetValue('deref','view'));
+$search = $app['server']->getDNAttrValues($request['dn'],null,LDAP_DEREF_NEVER,array($request['attr']));
 
 # Dump the binary data to the browser
 $obStatus = ob_get_status();
 if (isset($obStatus['type']) && $obStatus['type'] && $obStatus['status']) 
 	ob_end_clean();
 
-header('Content-type: octet-stream');
-header("Content-disposition: attachment; filename=$attr");
-header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
+if (! isset($search[$request['attr']][$request['index']])) {
+	# We cant display an error, but we can set a system message, which will be display on the next page render.
+	system_message(array(
+		'title'=>_('No binary data available'),
+		'body'=>sprintf(_('Could not fetch binary data from LDAP server for attribute [%s].'),$request['attr']),
+		'type'=>'warn'));
 
-if ($value_num && is_array($search[$attr][$dn]))
-	echo $search[$dn][$attr][$value_num];
-else
-	echo $search[$dn][$attr];
+	die();
+}
+
+header(sprintf('Content-type: %s',$request['type']));
+header(sprintf('Content-disposition: attachment; filename="%s"',$request['filename']));
+header(sprintf('Expires: Mon, 26 Jul 1997 05:00:00 GMT',gmdate('r')));
+header(sprintf('Last-Modified: %s',gmdate('r')));
+echo $search[$request['attr']][$request['index']];
+die();
 ?>

@@ -1,13 +1,19 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/ObjectClassAttribute.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header$
 
 /**
- * @package phpLDAPadmin
- * @author Xavier Bruyet
+ * Classes and functions for the template engine.
  *
- * Represents an attribute 'objectClass'
+ * @author The phpLDAPadmin development team
+ * @package phpLDAPadmin
+ */
+
+/**
+ * Represents an 'objectClass' attribute
+ *
+ * @package phpLDAPadmin
+ * @subpackage Templates
  */
 class ObjectClassAttribute extends Attribute {
 }
-
 ?>

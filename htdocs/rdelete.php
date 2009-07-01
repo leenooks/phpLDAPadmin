@@ -1,92 +1,82 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rdelete.php,v 1.28.2.3 2008/12/12 12:20:22 wurley Exp $
+// $Header$
 
 /**
  * Recursively deletes the specified DN and all of its children
  *
- * Variables that come in as POST vars:
- *  - dn (rawurlencoded)
- *
  * @package phpLDAPadmin
+ * @subpackage Page
  */
+
 /**
  */
 
 require './common.php';
 
-if ($ldapserver->isReadOnly())
-	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
-
 if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_delete','simple_delete'))
-	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('delete entry')),'error','index.php');
+	error(sprintf('%s: %s',_('This operation is not permitted by the configuration'),_('delete entry')),'error','index.php');
 
-$entry = array();
-$entry['dn'] = get_request('dn');
-if (! $entry['dn'])
-	error(_('You must specify a DN'),'error','index.php');
+$request = array();
+$request['dn'] = get_request('dn','REQUEST',true);
 
-if (! $ldapserver->dnExists($entry['dn']))
-	error(sprintf('%s (%s)',_('No such entry.'),htmlspecialchars($entry['dn'])),'error','index.php');
+if (! $app['server']->dnExists($request['dn']))
+	error(sprintf('%s (%s)',_('No such entry.'),$request['dn']),'error','index.php');
 
-printf('<h3 class="title">'._('Deleting %s').'</h3>',htmlspecialchars(get_rdn($entry['dn'])));
+printf('<h3 class="title">%s %s</h3>',_('Deleting'),get_rdn($request['dn']));
 printf('<h3 class="subtitle">%s</h3>',_('Recursive delete progress'));
-echo '<br /><br />';
-echo '<small>';
 
 # Prevent script from bailing early on a long delete
 @set_time_limit(0);
 
-$result = pla_rdelete($ldapserver,$entry['dn']);
+echo '<br /><br />';
+echo '<small>';
+$result = pla_rdelete($app['server'],$request['dn']);
 echo '</small><br />';
 
 if ($result) {
-	printf(_('Entry %s and sub-tree deleted successfully.'),'<b>'.htmlspecialchars($entry['dn']).'</b>');
+	printf(_('Entry %s and sub-tree deleted successfully.'),'<b>'.$request['dn'].'</b>');
 
 } else {
 	system_message(array(
-		'title'=>_('Could not delete the entry.').sprintf(' (%s)',pretty_print_dn($entry['dn'])),
-		'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
+		'title'=>_('Could not delete the entry.').sprintf(' (%s)',pretty_print_dn($request['dn'])),
+		'body'=>ldap_error_msg($app['server']->getErrorMessage(null),$app['server']->getErrorNum(null)),
 		'type'=>'error'));
 }
 
-function pla_rdelete($ldapserver,$dn) {
-	# we delete all children, not only the visible children in the tree
-	$children = $ldapserver->getContainerContents($dn);
+function pla_rdelete($server,$dn) {
+	# We delete all children, not only the visible children in the tree
+	$children = $server->getContainerContents($dn,null,0,'(objectClass=*)',LDAP_DEREF_NEVER);
 
 	if (! is_array($children) || count($children) == 0) {
-		printf('<span style="white-space: nowrap;">%s %s...',_('Deleting'),htmlspecialchars($dn));
+		printf('<span style="white-space: nowrap;">%s %s...',_('Deleting'),$dn);
 
-		if (run_hook('pre_entry_delete',array('server_id'=>$ldapserver->server_id,'dn'=>$dn)))
-			if ($ldapserver->delete($dn)) {
-				run_hook('post_entry_delete',array('server_id'=>$ldapserver->server_id,'dn'=>$dn));
-				printf(' <span style="color:green">%s</span></span><br />',_('Success'));
-				return true;
+		if ($server->delete($dn)) {
+			printf(' <span style="color:green">%s</span></span><br />',_('Success'));
+			return true;
 
-			} else {
-				system_message(array(
-					'title'=>_('Could not delete the entry.').sprintf(' (%s)',pretty_print_dn($entry['dn'])),
-					'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
-					'type'=>'error'));
-			}
+		} else {
+			system_message(array(
+				'title'=>_('Could not delete the entry.').sprintf(' (%s)',pretty_print_dn($request['dn'])),
+				'body'=>ldap_error_msg($server->getErrorMessage(null),$server->getErrorNum(null)),
+				'type'=>'error'));
+		}
 
 	} else {
 		foreach ($children as $child_dn)
-			pla_rdelete($ldapserver,$child_dn);
+			pla_rdelete($server,$child_dn);
 
-		printf('<span style="white-space: nowrap;">%s %s...',_('Deleting'),htmlspecialchars($dn));
+		printf('<span style="white-space: nowrap;">%s %s...',_('Deleting'),$dn);
 
-		if (run_hook('pre_entry_delete',array('server_id'=>$ldapserver->server_id,'dn'=>$dn)))
-			if ($ldapserver->delete($dn)) {
-				run_hook('post_entry_delete',array('server_id'=>$ldapserver->server_id,'dn'=>$dn));
-				printf(' <span style="color:green">%s</span></span><br />',_('Success'));
-				return true;
+		if ($server->delete($dn)) {
+			printf(' <span style="color:green">%s</span></span><br />',_('Success'));
+			return true;
 
-			} else {
-				system_message(array(
-					'title'=>_('Could not delete the entry.').sprintf(' (%s)',pretty_print_dn($entry['dn'])),
-					'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
-					'type'=>'error'));
-			}
+		} else {
+			system_message(array(
+				'title'=>_('Could not delete the entry.').sprintf(' (%s)',pretty_print_dn($request['dn'])),
+				'body'=>ldap_error_msg($server->getErrorMessage(null),$server->getErrorNum(null)),
+				'type'=>'error'));
+		}
 	}
 }
 ?>

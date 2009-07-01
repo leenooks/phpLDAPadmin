@@ -1,39 +1,79 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/view_jpeg_photo.php,v 1.11.2.3 2008/12/12 12:20:22 wurley Exp $
+// $Header$
 
 /**
+ * This script will display the contents of the jpegPhoto attribute to the browser.
+ * A server ID and DN must be provided in the GET attributes.
+ * Optionally an attr name, index, type and filename can be supplied.
+ *
  * @package phpLDAPadmin
+ * @subpackage Page
  */
+
 /**
  */
 
 require './common.php';
 
-$file = array();
-$file['name'] = get_request('file','GET');
+$request = array();
+$request['dn'] = get_request('dn','GET');
+$request['attr'] = strtolower(get_request('attr','GET',false,'jpegphoto'));
+$request['index'] = get_request('index','GET',false,0);
+$request['type'] = get_request('type','GET',false,'image/jpeg');
+$request['filename'] = get_request('filename','GET',false,sprintf('%s.jpg',get_rdn($request['dn'],true)));
+$request['location'] = get_request('location','GET',false,'ldap');
 
-/* Security check (we don't want anyone tryting to get at /etc/passwd or something)
- * Slashes and dots are not permitted in these names.
- */
-if (! preg_match('/^pla/',$file['name']) || preg_match('/[\.\/\\\\]/',$file['name']))
-	error(sprintf('%s: %s',_('Unsafe file name'),htmlspecialchars($file['name'])),'error','index.php');
+switch ($request['location']) {
+	case 'session':
+		if (isset($_SESSION['tmp'][$request['attr']][$request['index']])) {
+			$jpeg_data = $_SESSION['tmp'];
+			unset($_SESSION['tmp'][$request['attr']][$request['index']]);
+		}
 
-/* Little security measure here (prevents users from accessing
-   files, like /etc/passwd for example).*/
-$file['name'] = basename(addcslashes($file['name'],'/\\'));
-$file['name'] = sprintf('%s/%s',$_SESSION[APPCONFIG]->GetValue('jpeg','tmpdir'),$file['name']);
-if (! file_exists($file['name']))
-	error(sprintf('%s%s %s',_('No such file'),_(':'),htmlspecialchars($file['name'])),'error','index.php');
+		break;
 
-$file['handle'] = fopen($file['name'],'r');
-$file['data'] = fread($file['handle'],filesize($file['name']));
-fclose($file['handle']);
+	case 'ldap':
+	default:
+		$jpeg_data = $app['server']->getDNAttrValues($request['dn'],null,LDAP_DEREF_NEVER,array($request['attr']));
+
+		break;
+}
+
+if (! isset($jpeg_data[$request['attr']][$request['index']])) {
+	if (function_exists('imagecreate')) {
+		$im = imagecreate(160,30);
+		if (is_resource($im)) {
+			header('Content-type: image/png');
+
+			# Set the background
+			imagecolorallocatealpha($im,0xFC,0xFC,0xFE,127);
+			$text_color = imagecolorallocate($im,0,0,0);
+			imagestring($im,4,3,5,_('Image not available'),$text_color);
+			imagepng($im);
+			imagedestroy($im);
+
+			die();
+		}
+	}
+
+	# We cant display an error, but we can set a system message, which will be display on the next page render.
+	system_message(array(
+		'title'=>_('No image available'),
+		'body'=>sprintf(_('Could not fetch jpeg data from LDAP server for attribute [%s].'),$request['attr']),
+		'type'=>'warn'));
+
+	die();
+}
+
+if (! is_array($jpeg_data[$request['attr']]))
+	$jpeg_data[$request['attr']] = array($jpeg_data[$request['attr']]);
 
 $obStatus = ob_get_status();
 if (isset($obStatus['type']) && $obStatus['type'] && $obStatus['status'])
 	ob_end_clean();
 
-Header('Content-type: image/jpeg');
-Header('Content-disposition: inline; filename=jpeg_photo.jpg');
-echo $file['data'];
+header(sprintf('Content-type: %s',$request['type']));
+header(sprintf('Content-disposition: inline; filename="%s"',$request['filename']));
+echo $jpeg_data[$request['attr']][$request['index']];
+die();
 ?>

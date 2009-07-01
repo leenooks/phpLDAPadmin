@@ -1,2959 +1,1580 @@
 # : $
+
+
 msgid ""
 msgstr ""
 "Project-Id-Version: messages\n"
 "Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2004-01-14 17:45+0200\n"
-"PO-Revision-Date: 2009-03-10 11:46+0000\n"
-"Last-Translator: Yuri Lugovskikh <Unknown>\n"
 "Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
+"Last-Translator: Sergey Saukh\n"
+"POT-Creation-Date: 2005-11-29 17:45+0100\n"
+"PO-Revision-Date: 2005-11-29 18:22+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-03-20 08:04+0000\n"
-"X-Generator: Launchpad (build Unknown)\n"
 
-#: ../../htdocs/mass_delete.php:86
-#, php-format
-msgid "%s of %s entries failed to be deleted."
-msgstr "Не удалось удалить %s из %s записей."
 
-#: ../../lib/EntryWriter1.php:960
-msgid "("
-msgstr "("
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: ../../lib/HTMLTree.php:486
-msgid "(Session timed out. Automatically logged out.)"
-msgstr "(Сеанс работы завершен из-за превышения времени неактивности.)"
 
-#: ../../lib/EntryWriter1.php:962
-msgid ")"
-msgstr ")"
-
-#: ../../lib/HTMLTree.php:279 ../../lib/EntryWriter1.php:247
-#: ../../lib/EntryWriter1.php:254 ../../lib/EntryWriter1.php:261
-#: ../../lib/EntryWriter1.php:507 ../../lib/EntryWriter1.php:513
-#: ../../lib/EntryWriter1.php:520 ../../lib/EntryWriter1.php:1033
-#: ../../lib/EntryWriter1.php:1036 ../../lib/EntryWriter1.php:1255
-#: ../../lib/EntryWriter1.php:1418 ../../lib/EntryWriter1.php:2463
-#: ../../lib/EntryWriter2.php:21 ../../lib/EntryWriter2.php:175
-#: ../../lib/page.php:200 ../../htdocs/create.php:25
-#: ../../htdocs/create.php:115 ../../htdocs/update_confirm.php:309
-#: ../../htdocs/update_confirm.php:312 ../../htdocs/add_value_form.php:76
-#: ../../htdocs/add_value_form.php:78 ../../htdocs/add_value_form.php:112
-#: ../../htdocs/server_info.php:16 ../../htdocs/purge_cache.php:13
-#: ../../htdocs/view_jpeg_photo.php:25 ../../htdocs/schema.php:20
-#: ../../htdocs/update.php:61 ../../htdocs/update.php:67
-#: ../../htdocs/update.php:80 ../../htdocs/rename.php:24
-#: ../../htdocs/delete_attr.php:21 ../../htdocs/delete.php:21
-#: ../../htdocs/mass_delete.php:26 ../../htdocs/copy.php:20
-#: ../../htdocs/copy.php:76 ../../htdocs/add_value.php:24
-#: ../../htdocs/search.php:120 ../../htdocs/search.php:124
-#: ../../htdocs/search.php:128 ../../htdocs/search.php:265
-#: ../../htdocs/search.php:276 ../../htdocs/search.php:295
-#: ../../htdocs/search.php:299 ../../htdocs/export.php:18
-#: ../../htdocs/ldif_import.php:19 ../../htdocs/refresh.php:17
-#: ../../htdocs/rdelete.php:21 ../../htdocs/add_attr.php:25
-msgid ":"
-msgstr ":"
-
-#: ../../lib/search_form_advanced.php:103
-msgid "A list of attributes to display in the results (comma-separated)"
-msgstr ""
-"Список атрибутов, которые отображать в результатах (разделенные запятыми)"
-
-#: ../../lib/functions.php:1292
-msgid "A query on the uidpool_dn did return a valid uidNumber."
-msgstr "При запросе к uidpool_dn не удалось получить корректный uidNumber."
-
-#: ../../lib/EntryWriter1.php:2463 ../../lib/template_functions.php:962
-msgid "A random password was generated for you"
-msgstr "Для вас сгенерирован случайный пароль"
-
-#: ../../lib/ldif_functions.php:532
-msgid "A valid deleteoldrdn attribute should be specified"
-msgstr "Требуется указать атрибут deleteoldrdn"
-
-#: ../../lib/ldif_functions.php:243
-msgid "A valid dn line is required."
-msgstr "Требуется правильная строка с dn."
-
-#: ../../lib/ldif_functions.php:538
-msgid "A valid newrdn attribute  should be specified"
-msgstr "Требуется указать атрибут newrdn"
-
-#: ../../lib/EntryWriter1.php:789 ../../htdocs/add_attr_form.php:104
-#: ../../htdocs/add_attr_form.php:148
-msgid "Add"
-msgstr "Добавить"
-
-#: ../../htdocs/add_value_form.php:182
-msgid "Add New Value"
-msgstr "Добавить новое значение"
-
-#: ../../htdocs/compare.php:466 ../../htdocs/add_oclass_form.php:104
-msgid "Add ObjectClass and Attributes"
-msgstr "Добавить объект и атрибуты"
-
-#: ../../htdocs/modify_member_form.php:145
-msgid "Add all"
-msgstr "Добавить все"
-
-#: ../../lib/EntryWriter1.php:1847 ../../htdocs/compare.php:479
-#, php-format
-msgid "Add an additional value to attribute '%s'"
-msgstr "Добавить дополнительное значение для атрибута '%s'"
-
-#: ../../htdocs/add_value_form.php:93
-msgid "Add new"
-msgstr "Добавить новый"
-
-#: ../../htdocs/add_value_form.php:153 ../../htdocs/compare.php:470
-msgid "Add new ObjectClass"
-msgstr "Добавить новый объект"
-
-#: ../../lib/EntryWriter1.php:789 ../../htdocs/add_attr_form.php:23
-#: ../../htdocs/add_attr_form.php:72
-msgid "Add new attribute"
-msgstr "Добавить новый атрибут"
-
-#: ../../htdocs/add_attr_form.php:114
-msgid "Add new binary attribute"
-msgstr "Добавить новый бинарный атрибут"
-
-#: ../../htdocs/modify_member_form.php:145
-msgid "Add selected"
-msgstr "Добавить выделенные"
-
-#: ../../htdocs/ldif_import.php:62
-msgid "Adding..."
-msgstr "Добавляю..."
-
-#: ../../lib/search_form_predefined.php:34
-#: ../../lib/search_form_advanced.php:25 ../../lib/search_form_simple.php:35
-msgid "Advanced Search Form"
-msgstr "Расширенная форма поиска"
-
-#: ../../lib/config_default.php:646
-msgid "Alias for"
-msgstr "Синоним для"
-
-#: ../../htdocs/schema.php:110
-msgid "Aliases"
-msgstr "Алиасы"
-
-#: ../../htdocs/mass_delete.php:88
-msgid "All entries deleted successfully."
-msgstr "Все записи успешно удалены."
-
-#: ../../lib/EntryWriter1.php:825
-#, php-format
-msgid "An attribute (%s) was modified and is highlighted below."
-msgstr "Атрибут (%s) был изменен и теперь подсвечен ниже."
-
-#: ../../htdocs/update_confirm.php:100
-msgid "An entry should have one structural objectClass."
-msgstr "У каждого объекта должен быть ровно один структурный класс."
-
-#: ../../htdocs/login_form.php:60
-msgid "Anonymous"
-msgstr "Анонимно"
-
-#: ../../htdocs/login.php:164
-msgid "Anonymous Bind"
-msgstr "Анонимная привязка"
-
-#: ../../htdocs/delete_form.php:102
-msgid "Are you sure you want to permanently delete this object?"
-msgstr "Вы уверены, что хотите окончательно удалить этот объект?"
-
-#: ../../htdocs/update_confirm.php:202 ../../htdocs/compare.php:46
-msgid "Attribute"
-msgstr "Атрибут"
-
-#: ../../htdocs/schema.php:42
-msgid "Attribute Types"
-msgstr "Типы атрибутов"
-
-#: ../../lib/ldif_functions.php:455
-msgid "Attribute is not valid"
-msgstr "Недопустимый атрибут"
-
-#: ../../lib/ldif_functions.php:375
-msgid "Attribute not well formed"
-msgstr "Недопустимое значение атрибута"
-
-#: ../../htdocs/login_form.php:63
-msgid "Authenticate"
-msgstr "Авторизация"
-
-#: ../../lib/HTMLTree.php:95 ../../lib/server_functions.php:2442
-#: ../../htdocs/login.php:26 ../../htdocs/login.php:91
-#: ../../htdocs/login.php:116 ../../htdocs/login.php:136
-#: ../../htdocs/login.php:143 ../../htdocs/login.php:163
-#: ../../htdocs/login_form.php:19
-msgid "Authenticate to server"
-msgstr "Аутентификация на сервере"
-
-#: ../../htdocs/modify_member_form.php:114
-msgid "Available members"
-msgstr "Доступные пользователи"
-
-#: ../../htdocs/entry_chooser.php:65
-msgid "Back Up..."
-msgstr "Назад..."
-
-#: ../../lib/server_functions.php:341 ../../lib/server_functions.php:2443
-#: ../../htdocs/login.php:92 ../../htdocs/login.php:144
-msgid "Bad username or password. Please try again."
-msgstr "Неверное имя или пароль. Попробуйте еще раз."
-
-#: ../../lib/search_form_advanced.php:90 ../../htdocs/export_form.php:31
-msgid "Base (base dn only)"
-msgstr "База (только базовый dn)"
-
-#: ../../lib/search_form_advanced.php:64 ../../htdocs/export_form.php:52
-#: ../../htdocs/search.php:295
-msgid "Base DN"
-msgstr "Базовый DN"
-
-#: ../../lib/EntryWriter1.php:2001 ../../htdocs/compare.php:251
-msgid "Binary value"
-msgstr "Бинарное значение"
-
-#: ../../htdocs/copy.php:61
-msgid "Building snapshot of tree to copy... "
-msgstr "Создаю копию состояния дерева для копирования... "
-
-#: ../../lib/export_functions.php:38
-msgid "CSV (Spreadsheet)"
-msgstr "CSV (Таблица)"
-
-#: ../../lib/functions.php:63
-msgid "Called to load a class that cant be found"
-msgstr "Не могу найти указанный класс"
-
-#: ../../htdocs/update_confirm.php:304 ../../htdocs/delete_form.php:77
-#: ../../htdocs/delete_form.php:127
-msgid "Cancel"
-msgstr "Отменить"
-
-#: ../../htdocs/compare.php:343
-msgid "Check password"
-msgstr "Проверка пароля"
-
-#: ../../lib/EntryWriter1.php:2427
-msgid "Check password..."
-msgstr "Проверка пароля..."
-
-#: ../../lib/EntryReader.php:346 ../../lib/EntryReader.php:374
-msgid "Checking passwords"
-msgstr "Проверка паролей"
-
-#: ../../lib/EntryWriter1.php:796
-msgid "Children"
-msgstr "Потомки"
-
-#: ../../lib/functions.php:3223
-msgid "Click to popup a dialog to select a date graphically"
-msgstr "Нажмите для графического выбора даты"
-
-#: ../../lib/functions.php:2239
-msgid "Click to popup a dialog to select an entry (DN) graphically"
-msgstr "Нажмите чтобы вызвать диалог для визуального выбора записи(DN)"
-
-#: ../../lib/EntryWriter1.php:1914 ../../htdocs/server_info.php:83
-#: ../../htdocs/compare.php:145
-#, php-format
-msgid "Click to view the schema definition for attribute type '%s'"
-msgstr "Нажмите, чтобы посмотреть определение схемы для атрибута '%s'"
-
-#: ../../htdocs/schema.php:106
-msgid "Collective"
-msgstr "Совместный"
-
-#: ../../htdocs/update_confirm.php:303
-msgid "Commit"
-msgstr "Подтвердить"
-
-#: ../../lib/EntryWriter1.php:775 ../../htdocs/password_checker.php:35
-#: ../../htdocs/compare_form.php:29 ../../htdocs/compare_form.php:64
-msgid "Compare"
-msgstr "Сравнить"
-
-#: ../../htdocs/compare_form.php:21
-msgid "Compare another DN with"
-msgstr "Сравнить другой DN с"
-
-#: ../../htdocs/compare_form.php:41 ../../htdocs/compare_form.php:53
-msgid "Compare this DN with another"
-msgstr "Сравнить этот DN с другим"
-
-#: ../../lib/EntryWriter1.php:776
-msgid "Compare with another entry"
-msgstr "Сравнить с другой записью"
-
-#: ../../htdocs/compare.php:42
-msgid "Comparing the following DNs"
-msgstr "Сравниваем следующие DN"
-
-#: ../../htdocs/export_form.php:84
-msgid "Compress"
-msgstr "Сжать"
-
-#: ../../lib/session_functions.php:138
-msgid "Configuration cache stale."
-msgstr "Кеш конфигурации устарел"
-
-#: ../../htdocs/mass_delete.php:92
-#, php-format
-msgid "Confirm mass delete of %s entries on server %s"
-msgstr "Подтвердите массовое удаление %s записей на сервере %s"
-
-#: ../../lib/EntryWriter1.php:327
-msgid "Container"
-msgstr "Контейнер"
-
-#: ../../lib/EntryWriter1.php:256
-msgid "Container and ObjectClass(es)"
-msgstr "Контейнер и класс(ы)"
-
-#: ../../lib/ldif_functions.php:525
-msgid "Container is null"
-msgstr "Контейнер пуст"
-
-#: ../../htdocs/copy_form.php:45 ../../htdocs/copy_form.php:51
-msgid "Copy"
-msgstr "Копировать"
-
-#: ../../htdocs/copy_form.php:96
-msgid "Copy "
-msgstr "Копировать "
-
-#: ../../htdocs/copy.php:88
-msgid "Copy Entry"
-msgstr "Копирование записи"
-
-#: ../../lib/EntryWriter1.php:741
-msgid "Copy or move this entry"
-msgstr "Скопировать эту запись"
-
-#: ../../htdocs/copy.php:76 ../../htdocs/copy.php:106
-msgid "Copy successful!"
-msgstr "Копирование прошло успешно!"
-
-#: ../../lib/EntryWriter1.php:740
-msgid "Copy this object to another location,a new DN, or another server"
-msgstr ""
-"Копировать этот объект в другой контейнер, с другим DN, или на другой сервер"
-
-#: ../../htdocs/copy.php:57
-msgid "Copying "
-msgstr "Сопирую "
-
-#: ../../htdocs/ldif_import.php:70
-msgid "Could not add object:"
-msgstr "Не удалось добавить объект:"
-
-#: ../../htdocs/create.php:133
-msgid "Could not add the object to the LDAP server."
-msgstr "Не удалось добавить объект на LDAP-сервер."
-
-#: ../../htdocs/login.php:137
-msgid "Could not bind anonymously to server."
-msgstr "Не могу анонимно привязаться к серверу."
-
-#: ../../lib/server_functions.php:350
-#, php-format
-msgid "Could not bind to the LDAP server (%s)."
-msgstr "Не удалось привязаться к LDAP серверу (%s)."
-
-#: ../../lib/server_functions.php:347
-#, php-format
-msgid "Could not connect to \"%s\" on port \"%s\""
-msgstr "Не могу подключиться к \"%s\" на порт \"%s\""
-
-#: ../../lib/HTMLTree.php:96
-msgid "Could not connect to LDAP server"
-msgstr "Не удалось соединиться с LDAP сервером"
-
-#: ../../htdocs/ldif_import.php:71
-msgid "Could not delete object:"
-msgstr "Не удалось удалить объект:"
-
-#: ../../htdocs/delete.php:35 ../../htdocs/delete.php:49
-#: ../../htdocs/rdelete.php:45
-#, php-format
-msgid "Could not delete the entry: %s"
-msgstr "Не удалось удалить запись: %s"
-
-#: ../../htdocs/entry_chooser.php:101
-msgid "Could not determine base DN"
-msgstr "Не могу выяснить основной DN"
-
-#: ../../lib/HTMLTree.php:82
-msgid "Could not determine the root of your LDAP tree."
-msgstr "Не могу найти корень вашего LDAP дерева."
-
-#: ../../lib/functions.php:1849
-#, php-format
-msgid "Could not fetch jpeg data from LDAP server for attribute %s."
-msgstr "Не удалось получить фото jpeg с LDAP сервера для атрибута %s."
-
-#: ../../lib/timeout_functions.php:72 ../../htdocs/logout.php:24
-msgid "Could not logout."
-msgstr "Не удалось выйти."
-
-#: ../../htdocs/ldif_import.php:74
-msgid "Could not modify object:"
-msgstr "Не удалось изменить объект:"
-
-#: ../../htdocs/add_oclass.php:54 ../../htdocs/add_value.php:72
-msgid "Could not perform ldap_mod_add operation."
-msgstr "Не удалось произвести операцию ldap_mod_add."
-
-#: ../../htdocs/update.php:178 ../../htdocs/delete_attr.php:50
-msgid "Could not perform ldap_modify operation."
-msgstr "Не удалось произвести операцию ldap_modify."
-
-#: ../../htdocs/ldif_import.php:72 ../../htdocs/ldif_import.php:73
-msgid "Could not rename object:"
-msgstr "Не удалось переименовать объект:"
-
-#: ../../lib/server_functions.php:1533 ../../htdocs/rename.php:61
-msgid "Could not rename the entry"
-msgstr "Не удалось переименовать запись"
-
-#: ../../htdocs/schema.php:31
-msgid "Could not retrieve schema from"
-msgstr "Не могу получить схему из"
-
-#: ../../htdocs/login.php:152
-msgid "Could not set cookie."
-msgstr "Не удалось установить cookie."
-
-#: ../../lib/server_functions.php:265
-msgid "Could not start TLS. Please check your LDAP server configuration."
-msgstr "Не могу запустить TLS. Проверьте конфигурацию Вашего LDAP-сервера."
-
-#: ../../lib/functions.php:1864
-#, php-format
-msgid ""
-"Could not write to the $jpeg_temp_dir directory %s. Please verify that your "
-"web server can write files there."
-msgstr ""
-"Не удается записать в папку %s, заданную переменной $jpeg_temp_dir. "
-"Проверьте, что у вебсервера есть право записи в нее."
-
-#: ../../lib/EntryWriter1.php:783
-msgid "Create"
-msgstr "Создать"
-
-#: ../../htdocs/create.php:118
-msgid "Create Entry"
-msgstr "Создание объекта"
-
-#: ../../lib/EntryWriter1.php:242 ../../lib/EntryWriter1.php:313
-#: ../../lib/EntryWriter2.php:82
-msgid "Create Object"
-msgstr "Создать объект"
-
-#: ../../lib/EntryWriter1.php:783
-msgid "Create a child entry"
-msgstr "Создать потомка"
-
-#: ../../lib/HTMLTree.php:463
-msgid "Create a new entry in"
-msgstr "Создать новую запись в"
-
-#: ../../htdocs/create.php:128
-msgid "Create another entry"
-msgstr "Создать еще одну запись"
-
-#: ../../lib/HTMLTree.php:70
-msgid "Create it?"
-msgstr "Создать ?"
-
-#: ../../lib/HTMLTree.php:463 ../../lib/PLMTree.php:142
-#: ../../lib/PLMTree.php:162 ../../lib/AJAXTree.php:343
-#: ../../lib/AJAXTree.php:344 ../../lib/AJAXTree.php:367
-#: ../../lib/AJAXTree.php:368
-msgid "Create new entry here"
-msgstr "Создать новый"
-
-#: ../../htdocs/create.php:115
-msgid "Creation successful!"
-msgstr "Успешно!"
-
-#: ../../htdocs/welcome.php:25
-msgid "Credits"
-msgstr "Создатели"
-
-#: ../../htdocs/add_value_form.php:112
-msgid "Current list of"
-msgstr "Текущий список"
-
-#: ../../lib/EntryWriter1.php:739
-msgid "Cut"
-msgstr "Вырезать"
-
-#: ../../htdocs/delete_form.php:107
-msgid "DN"
-msgstr "DN"
-
-#: ../../lib/EntryWriter1.php:1886
-msgid "DN not available"
-msgstr "DN недоступен"
-
-#: ../../lib/export_functions.php:414
-#, php-format
-msgid "DSLM Export for: %s"
-msgstr "DSLM экспорт для: %s"
-
-#: ../../lib/EntryWriter1.php:1095 ../../lib/EntryWriter1.php:1301
-msgid "Default"
-msgstr "По умолчанию"
-
-#: ../../htdocs/delete_form.php:117
-msgid "Delete"
-msgstr "Удалить"
-
-#: ../../htdocs/delete_form.php:27
-#, php-format
-msgid "Delete %s"
-msgstr "Удалить %s"
-
-#: ../../lib/HTMLTree.php:139
-msgid "Delete Checked Entries"
-msgstr "Удалить отмеченные записи"
-
-#: ../../htdocs/delete.php:43
-msgid "Delete DN"
-msgstr "Удалить DN"
-
-#: ../../lib/functions.php:1871
-msgid "Delete Photo"
-msgstr "Удалить фото"
-
-#: ../../htdocs/copy_form.php:86 ../../htdocs/copy_form.php:92
-msgid "Delete after copy (move):"
-msgstr "Удалить после копирования (перемещения):"
-
-#: ../../htdocs/delete_form.php:68
-#, php-format
-msgid "Delete all %s objects"
-msgstr "Удалить все %s объектов"
-
-#: ../../lib/functions.php:1906
-msgid "Delete photo"
-msgstr "Удалить фото"
-
-#: ../../lib/EntryWriter1.php:763
-msgid "Delete this entry"
-msgstr "Удалить эту запись"
-
-#: ../../htdocs/rdelete.php:54 ../../htdocs/rdelete.php:71
-msgid "Deleting"
-msgstr "Удаление"
-
-#: ../../htdocs/mass_delete.php:61 ../../htdocs/rdelete.php:30
-#, php-format
-msgid "Deleting %s"
-msgstr "Удаляю %s"
-
-#: ../../htdocs/ldif_import.php:63
-msgid "Deleting..."
-msgstr "Удаляю..."
-
-#: ../../htdocs/mass_delete.php:43
-#, php-format
-msgid "Deletion progress on server \"%s\""
-msgstr "Прогресс удаления на сервере \"%s\""
-
-#: ../../lib/functions.php:1790 ../../lib/functions.php:1793
-#: ../../htdocs/add_value_form.php:172 ../../htdocs/schema.php:70
-#: ../../htdocs/schema.php:98 ../../htdocs/schema.php:410
-#: ../../htdocs/ldif_import.php:110 ../../htdocs/ldif_import.php:120
-#: ../../htdocs/ldif_import.php:190
-msgid "Description"
-msgstr "Описание"
-
-#: ../../htdocs/compare_form.php:53 ../../htdocs/copy_form.php:64
-msgid "Destination DN"
-msgstr "Конечный DN"
-
-#: ../../htdocs/compare_form.php:61 ../../htdocs/copy_form.php:70
-msgid "Destination Server"
-msgstr "Конечный сервер"
-
-#: ../../htdocs/copy.php:29
-msgid "Destination server is currently READ-ONLY."
-msgstr "Сервер назначения доступен только для чтения"
-
-#: ../../htdocs/create.php:126
-msgid "Display the new created entry"
-msgstr "Показать созданную запись"
-
-#: ../../lib/EntryWriter1.php:512 ../../htdocs/add_value_form.php:95
-#: ../../htdocs/compare.php:49 ../../htdocs/compare.php:52
-#: ../../htdocs/delete_form.php:29 ../../htdocs/delete_form.php:107
-#: ../../htdocs/rename_form.php:29 ../../htdocs/compare_form.php:24
-#: ../../htdocs/modify_member_form.php:72 ../../htdocs/copy_form.php:47
-#: ../../htdocs/add_attr_form.php:25
-msgid "Distinguished Name"
-msgstr "Отличительное имя"
-
-#: ../../htdocs/mass_delete.php:95
-#, php-format
-msgid "Do you really want to delete %s %s %s"
-msgstr "Подтверждаете удаление %s %s %s"
-
-#: ../../htdocs/update_confirm.php:190
-msgid "Do you want to make these changes?"
-msgstr "Вы действительно хотите произвести эти изменения?"
-
-#: ../../htdocs/welcome.php:30
-msgid "Documentation"
-msgstr "Документация"
-
-#: ../../htdocs/ldif_import_form.php:44
-msgid "Don't stop on errors"
-msgstr "Не останавливаться на ошибках"
-
-#: ../../lib/functions.php:355 ../../htdocs/welcome.php:35
-msgid "Donate"
-msgstr "Спонсировать"
-
-#: ../../lib/export_functions.php:252 ../../htdocs/search.php:250
-msgid "Encountered an error while performing search."
-msgstr "Произошла ошибка во время поиска."
-
-#: ../../htdocs/add_value_form.php:135
-msgid "Enter the value you would like to add:"
-msgstr "Введите значение, которое Вы хотите добавить:"
-
-#: ../../htdocs/search.php:265
-msgid "Entries found"
-msgstr "Найдено записей"
-
-#: ../../lib/export_functions.php:319
-msgid "Entry"
-msgstr "Запись"
-
-#: ../../htdocs/rdelete.php:42
-#, php-format
-msgid "Entry %s and sub-tree deleted successfully."
-msgstr "Запись %s и ее потомки успешно удалены."
-
-#: ../../htdocs/entry_chooser.php:19
-msgid "Entry Chooser"
-msgstr "Выбор записи"
-
-#: ../../htdocs/create.php:123
-msgid "Entry created"
-msgstr "Запись создана"
-
-#: ../../htdocs/schema.php:101
-msgid "Equality"
-msgstr "Равенство"
-
-#: ../../lib/functions.php:130 ../../lib/functions.php:513
-msgid "Error"
-msgstr "Ошибка"
-
-#: ../../htdocs/mass_delete.php:30
-msgid "Error calling mass_delete.php. Missing mass_delete in POST vars."
-msgstr ""
-"Ошибка вызова mass_delete.php. Отсутствует mass_delete в POST переменных."
-
-#: ../../htdocs/ldif_import.php:118
-msgid "Error code"
-msgstr "Код ошибки"
-
-#: ../../lib/functions.php:1789 ../../lib/functions.php:1792
-#: ../../lib/functions.php:1798
-msgid "Error number"
-msgstr "Номер ошибки"
-
-#: ../../lib/server_functions.php:95
-#, php-format
-msgid ""
-"Error: You have an error in your config file. The only three allowed values "
-"for auth_type in the $servers section are 'session', 'cookie', and 'config'. "
-"You entered '%s', which is not allowed."
-msgstr ""
-"Ошибка в конфигурационном файле. Для переменной auth_type допустимы "
-"следующие три значения: 'session', 'cookie', 'config' и 'http'. Вы указали "
-"'%s', что является недопустимым."
-
-#: ../../lib/EntryWriter1.php:733 ../../htdocs/export_form.php:36
-#: ../../htdocs/export_form.php:46
-msgid "Export"
-msgstr "Экспорт"
-
-#: ../../lib/HTMLTree.php:264
-msgid "Export entries"
-msgstr "Экспортировать"
-
-#: ../../htdocs/export_form.php:97
-msgid "Export format"
-msgstr "Формат экспорта"
-
-#: ../../lib/EntryWriter1.php:804
-msgid "Export subtree"
-msgstr "Экспортировать ветвь"
-
-#: ../../htdocs/mass_delete.php:73 ../../htdocs/ldif_import.php:103
-#: ../../htdocs/ldif_import.php:116 ../../htdocs/ldif_import.php:139
-#: ../../htdocs/ldif_import.php:162
-msgid "Failed"
-msgstr "Не удалось"
-
-#: ../../htdocs/add_attr.php:128
-msgid "Failed to add the attribute."
-msgstr "Не удалось добавить атрибут."
-
-#: ../../htdocs/copy.php:144
-msgid "Failed to copy DN: "
-msgstr "Не удалось скопировать DN: "
-
-#: ../../htdocs/rdelete.php:63 ../../htdocs/rdelete.php:80
-#, php-format
-msgid "Failed to delete entry %s"
-msgstr "Не удалось удалить запись %s"
-
-#: ../../tools/unserialize.php:14 ../../lib/functions.php:132
-#: ../../lib/functions.php:535 ../../htdocs/ldif_import.php:54
-msgid "File"
-msgstr "Файл"
-
-#: ../../htdocs/copy_form.php:81
-msgid "Filter"
-msgstr "Фильтр"
-
-#: ../../htdocs/search.php:299
-msgid "Filter performed"
-msgstr "Фильтр"
-
-#: ../../htdocs/schema.php:112
-msgid "Force as MAY by config"
-msgstr "Согласно конфигурации, считаем, что равно MAY"
-
-#: ../../htdocs/search.php:276
-msgid "Format"
-msgstr "Формат"
-
-#: ../../tools/unserialize.php:17 ../../lib/functions.php:539
-msgid "Function"
-msgstr "Функция"
-
-#: ../../lib/export_functions.php:195
-#, php-format
-msgid ""
-"Generated by phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) on %s"
-msgstr "Сгенерировано phpLDAPadmin %s"
-
-#: ../../lib/functions.php:61 ../../lib/functions.php:598
-msgid "Generic Error"
-msgstr "Общая ошибка"
-
-#: ../../htdocs/schema.php:134 ../../htdocs/schema.php:318
-#: ../../htdocs/schema.php:364 ../../htdocs/schema.php:395
-msgid "Go"
-msgstr "Перейти"
-
-#: ../../htdocs/update_confirm.php:330
-msgid "Go back"
-msgstr "Вернуться"
-
-#: ../../lib/EntryWriter1.php:1882
-msgid "Go to"
-msgstr "Перейти к"
-
-#: ../../htdocs/compare.php:403
-#, php-format
-msgid "Go to %s"
-msgstr "Перейти к %s"
-
-#: ../../htdocs/modify_member_form.php:115
-msgid "Group members"
-msgstr "Состав группы"
-
-#: ../../lib/functions.php:359
-msgid "Help"
-msgstr "Справка"
-
-#: ../../lib/EntryWriter1.php:748
-msgid "Hide"
-msgstr "Скрыть"
-
-#: ../../lib/EntryWriter1.php:749
-msgid "Hide internal attributes"
-msgstr "Скрыть служебные атрибуты"
-
-#: ../../lib/EntryWriter1.php:493
-msgid "Hint"
-msgstr "Подсказка"
-
-#: ../../htdocs/copy_form.php:102
-msgid ""
-"Hint: Copying between different servers only works if there are no schema "
-"violations"
-msgstr ""
-"Подсказка: Копирование между различными серверами сработает, если между ними "
-"нет противоречий в схемах"
-
-#: ../../lib/EntryWriter1.php:809
-msgid "Hint: To delete an attribute, empty the text field and click save."
-msgstr ""
-"Подсказка: Чтобы удалить атрибут - очистите текстовое поле и нажмите "
-"\"сохранить\""
-
-#: ../../lib/EntryWriter1.php:815
-msgid "Hint: To view the schema for an attribute, click the attribute name."
-msgstr ""
-"Подсказка: Чтобы просмотреть схему атрибута - нажмите на его названии."
-
-#: ../../lib/EntryWriter1.php:357
-msgid ""
-"Hint: You must choose exactly one structural objectClass (shown in bold "
-"above)"
-msgstr "Подсказка: Вы должны выбрать как минимум один структурный класс"
-
-#: ../../lib/functions.php:347
-msgid "Home"
-msgstr "Домой"
-
-#: ../../htdocs/ldif_import.php:195
-#, php-format
-msgid "If so, please <a href=\"%s\">report it</a>."
-msgstr "Если да, пожалуйста, <a href=\"%s\">отправьте отчет</a>."
-
-#: ../../htdocs/search.php:215
-msgid ""
-"If you want to add your own criteria to the list. Be sure to edit search.php "
-"to handle them. Quitting."
-msgstr ""
-"Если Вы хотите добавить свои критерии поиска в список, отредактируйте "
-"search.php, чтобы они поддерживались. Выхожу."
-
-#: ../../htdocs/ldif_import_form.php:21 ../../htdocs/ldif_import.php:51
-msgid "Import LDIF File"
-msgstr "Иморт LDIF файла"
-
-#: ../../lib/HTMLTree.php:256
-msgid "Import entries from an LDIF file"
-msgstr "Импортировать записи из LDIF-файла"
-
-#: ../../htdocs/add_oclass_form.php:80
-msgid "In order to add these objectClass(es) to this entry, you must specify"
-msgstr "Для того, чтобы добавить данные класс(ы), необходимо заполнить"
-
-#: ../../lib/HTMLTree.php:161
-#, php-format
-msgid "Inactivity will log you off at %s"
-msgstr "Отключение по неактивности в %s"
-
-#: ../../htdocs/export_form.php:78
-msgid "Include system attributes"
-msgstr "в том числе служебные"
-
-#: ../../lib/functions.php:225
-msgid "Incorrect version of PHP"
-msgstr "Неправильная версия PHP"
-
-#: ../../htdocs/schema.php:468 ../../htdocs/schema.php:491
-msgid "Inherited from"
-msgstr "Заимствован из"
-
-#: ../../htdocs/schema.php:100 ../../htdocs/schema.php:417
-msgid "Inherits from"
-msgstr "Заимствует из"
-
-#: ../../htdocs/add_oclass_form.php:79
-msgid "Instructions"
-msgstr "Указания"
-
-#: ../../lib/server_functions.php:344
-msgid "Insufficient access rights."
-msgstr "Недостаточные права доступа."
-
-#: ../../htdocs/rename.php:47
-msgid "Invalid RDN value"
-msgstr "Неверное значение RDN"
-
-#: ../../htdocs/export.php:44
-msgid "Invalid export format"
-msgstr "Неверный формат экспорта"
-
-#: ../../htdocs/ldif_import.php:195
-msgid "Is this a phpLDAPadmin bug?"
-msgstr "Это баг в pdpLDAPadmin ?"
-
-#: ../../lib/HTMLTree.php:83
-msgid ""
-"It appears that the LDAP server has been configured to not reveal its root."
-msgstr ""
-"Похоже что ваш LDAP сервер сконфигурирован не показывать свой корень."
-
-#: ../../lib/server_functions.php:312
-#, php-format
-msgid ""
-"It seems that sasl_authz_id_regex \"%s\".\" contains invalid PCRE regular "
-"expression."
-msgstr ""
-"Похоже, что sasl_authz_id_regex \"%s\".\" содержит некорректное выражение в "
-"формате PCRE."
-
-#: ../../htdocs/schema.php:302
-msgid "Jump to a matching rule"
-msgstr "Перейти к правилам соответствия"
-
-#: ../../htdocs/schema.php:121
-msgid "Jump to an attribute type"
-msgstr "Перейти к типам атрибутов"
-
-#: ../../htdocs/schema.php:381
-msgid "Jump to an objectClass"
-msgstr "Перейти к объекту"
-
-#: ../../htdocs/schema.php:426 ../../htdocs/schema.php:444
-msgid "Jump to this objectClass definition"
-msgstr "Перейти к определению этого объекта"
-
-#: ../../lib/functions.php:1780 ../../htdocs/ldif_import.php:144
-msgid "LDAP said"
-msgstr "Сообщение LDAP"
-
-#: ../../lib/export_functions.php:309
-#, php-format
-msgid "LDIF Export for: %s"
-msgstr "LDIF экспорт для: %s"
-
-#: ../../htdocs/ldif_import.php:187
-msgid "LDIF Parse Error"
-msgstr "Ошибка интерпретации LDIF файла"
-
-#: ../../htdocs/ldif_import.php:147
-msgid "LDIF text import"
-msgstr "импорт LDIF"
-
-#: ../../htdocs/ldif_import.php:108 ../../htdocs/ldif_import.php:191
-msgid "Line"
-msgstr "строка"
-
-#: ../../htdocs/ldif_import.php:106 ../../htdocs/ldif_import.php:192
-msgid "Line Number"
-msgstr "Номер строки"
-
-#: ../../htdocs/export_form.php:111
-msgid "Line ends"
-msgstr "Конец строки"
-
-#: ../../htdocs/delete_form.php:87
-msgid "List of entries to be deleted:"
-msgstr "Список записей на удаление:"
-
-#: ../../lib/HTMLTree.php:279
-msgid "Logged in as"
-msgstr "Вошли под именем"
-
-#: ../../lib/HTMLTree.php:477 ../../htdocs/update.php:158
-msgid "Login"
-msgstr "Войти"
-
-#: ../../htdocs/login_form.php:46
-msgid "Login DN"
-msgstr "Login DN"
-
-#: ../../htdocs/timeout.php:37
-msgid "Login..."
-msgstr "Вход..."
-
-#: ../../htdocs/logout.php:33
-msgid "Logout"
-msgstr "Выйти"
-
-#: ../../lib/HTMLTree.php:272
-msgid "Logout of this server"
-msgstr "Выйти из этого сервера"
-
-#: ../../htdocs/entry_chooser.php:33
-msgid "Looking in"
-msgstr "Контекст"
-
-#: ../../lib/EntryWriter1.php:1891
-msgid "Mail"
-msgstr "Почта"
-
-#: ../../htdocs/copy_form.php:88
-msgid "Make sure your filter (above) will select all child records."
-msgstr "Убедитесь, что фильтр (выше) захватывает всех потомков."
-
-#: ../../htdocs/mass_delete.php:51
-msgid "Malformed mass_delete array."
-msgstr "Неправильно сформированный массив mass_delete."
-
-#: ../../htdocs/mass_delete.php:40
-msgid "Mass Deleting"
-msgstr "Массовое удаление"
-
-#: ../../htdocs/mass_delete.php:38
-msgid ""
-"Mass deletion is not enabled. Please enable it in config.php before "
-"proceeding."
-msgstr ""
-"Массовое удаление не разрешено. Испровьте это в config.php перед тем как "
-"продолжить."
-
-#: ../../htdocs/schema.php:323
-msgid "Matching Rule OID"
-msgstr "OID правила соответствия"
-
-#: ../../htdocs/schema.php:44
-msgid "Matching Rules"
-msgstr "Правила соответствия"
-
-#: ../../htdocs/add_value_form.php:179 ../../htdocs/schema.php:109
-msgid "Maximum Length"
-msgstr "Максимальная длина"
-
-#: ../../htdocs/ldif_import_form.php:37 ../../htdocs/add_attr_form.php:155
-msgid "Maximum file size"
-msgstr "Максимальный размер файла"
-
-#: ../../lib/functions.php:329
-msgid "Memory Limit low."
-msgstr "Недостаточно памяти."
-
-#: ../../lib/template_functions.php:419
-#, php-format
-msgid "Missing %s in the XML file."
-msgstr "В XML файле пропущено %s."
-
-#: ../../lib/ldif_functions.php:169
-msgid "Missing attibutes or changetype attribute for entry"
-msgstr "Пропущены атрибуты для атрибута changetype записи."
-
-#: ../../lib/ldif_functions.php:352 ../../lib/ldif_functions.php:390
-msgid "Missing attributes for the entry"
-msgstr "Недостающие атрибуты для записи"
-
-#: ../../lib/functions.php:311
-msgid "Missing required configuration"
-msgstr "Недостающая обязательная конфигурация"
-
-#: ../../lib/functions.php:233 ../../lib/functions.php:240
-msgid "Missing required extension"
-msgstr "Недостающее обязательное расширение"
-
-#: ../../htdocs/ldif_import.php:34
-msgid "Missing uploaded file."
-msgstr "Отсутствует загруженный файл."
-
-#: ../../htdocs/update.php:154
-msgid "Modification successful!"
-msgstr "Изменения успешно произведены!"
-
-#: ../../htdocs/modify_member_form.php:69
-msgid "Modify group"
-msgstr "Редактирование группы"
-
-#: ../../lib/EntryWriter1.php:1860
-#, php-format
-msgid "Modify members for '%s'"
-msgstr "Редактировать состав '%s'"
-
-#: ../../htdocs/ldif_import.php:66
-msgid "Modifying..."
-msgstr "Изменяю..."
-
-#: ../../htdocs/schema.php:323
-msgid "Name"
-msgstr "Имя"
-
-#: ../../htdocs/add_oclass_form.php:75 ../../htdocs/add_oclass_form.php:93
-msgid "New Required Attributes"
-msgstr "Новые обязательные атрибуты"
-
-#: ../../htdocs/update_confirm.php:202
-msgid "New Value"
-msgstr "Новое значение"
-
-#: ../../htdocs/schema.php:168 ../../htdocs/schema.php:225
-#: ../../htdocs/schema.php:229 ../../htdocs/schema.php:233
-#: ../../htdocs/schema.php:284
-msgid "No"
-msgstr "Нет"
-
-#: ../../htdocs/delete_attr.php:28
-msgid "No DN specified"
-msgstr "Не указан DN"
-
-#: ../../htdocs/ldif_import.php:38
-msgid "No LDIF file specified. Please try again."
-msgstr "Не указан файл с данными LDIF. Попробуйте еще раз."
-
-#: ../../lib/Entry.php:282
-msgid "No Template"
-msgstr "Без шаблона"
-
-#: ../../htdocs/compare.php:186 ../../htdocs/compare.php:199
-msgid "No Value"
-msgstr "Значение не указано"
-
-#: ../../htdocs/delete_attr.php:31
-msgid "No attribute name specified."
-msgstr "Не указано имя атрибута."
-
-#: ../../htdocs/export.php:88
-msgid "No available exporter found."
-msgstr "Нет доступных экспортеров."
-
-#: ../../htdocs/purge_cache.php:26
-msgid "No cache to purge."
-msgstr "Кеш уже пуст."
-
-#: ../../htdocs/add_value_form.php:115
-msgid "No current value for attribute"
-msgstr "Атрибуту не присвоено значение"
-
-#: ../../lib/EntryWriter1.php:840 ../../lib/EntryWriter2.php:104
-msgid "No internal attributes"
-msgstr "Нет внутренних атрибутов"
-
-#: ../../htdocs/logout.php:19
-msgid "No one is logged in to that server."
-msgstr "На этом сервере сейчас никого нет."
-
-#: ../../lib/search_form_predefined.php:42
-msgid "No queries have been defined in config.php."
-msgstr "Не определено ни одного запроса в config.php."
-
-#: ../../htdocs/compare.php:29 ../../htdocs/compare.php:31
-#: ../../htdocs/template_engine.php:25
-#: ../../htdocs/download_binary_attr.php:26 ../../htdocs/delete.php:29
-#: ../../htdocs/rdelete.php:28
-#, php-format
-msgid "No such entry: %s"
-msgstr "Нет такой записи: %s"
-
-#: ../../htdocs/view_jpeg_photo.php:25
-msgid "No such file"
-msgstr "Нет такого файла"
-
-#: ../../htdocs/schema.php:515
-#, php-format
-msgid "No such schema item: \"%s\""
-msgstr "Схема не содержит элемента: \"%s\""
-
-#: ../../lib/ldif_functions.php:621
-msgid "No version found. Assuming 1."
-msgstr "Не найдено номера версии. Предполагаю 1."
-
-#: ../../htdocs/compare.php:22 ../../htdocs/compare.php:26
-#: ../../htdocs/rename_form.php:22 ../../htdocs/download_binary_attr.php:17
-#: ../../htdocs/entry_chooser.php:41 ../../htdocs/copy.php:32
-#: ../../htdocs/modify_member_form.php:23
-msgid ""
-"Not enough information to login to server. Please check your configuration."
-msgstr ""
-"Недостаточно информации чтобы подключиться к серверу. Проверьте Вашу "
-"конфигурацию."
-
-#: ../../lib/EntryWriter1.php:1926 ../../htdocs/compare.php:105
-msgid "Note"
-msgstr "Заметьте"
-
-#: ../../htdocs/add_value_form.php:160
-msgid ""
-"Note: You may be required to enter new attributes that these objectClass(es) "
-"require"
-msgstr ""
-"Внимание: Вам может потребоваться ввести новые атрибуты, которые требует "
-"этот объект"
-
-#: ../../htdocs/delete_form.php:59
-msgid ""
-"Note: this is potentially very dangerous and you do this at your own risk. "
-"This operation cannot be undone. Take into consideration aliases, referrals, "
-"and other things that may cause problems."
-msgstr ""
-"Внимание: это потенциально очень опасно и вы делаете это на свой собственный "
-"риск. Эта операция не может быть отменена. Примите во внимание алиасы, "
-"ссылки и другие вещи, которые могум вызвать проблемы."
-
-#: ../../htdocs/search.php:310
-msgid "Notice, search size limit exceeded."
-msgstr "Внимание, превышен размер поиска."
-
-#: ../../htdocs/schema.php:407
-msgid "OID"
-msgstr "OID"
-
-#: ../../lib/EntryWriter1.php:340 ../../htdocs/schema.php:41
-msgid "ObjectClasses"
-msgstr "Объекты"
-
-#: ../../htdocs/add_oclass.php:26
-msgid ""
-"ObjectClasses are flagged as read only in the phpLDAPadmin configuration."
-msgstr ""
-"В конфигурации phpLDAPadmin классы объектов помечены только для чтения."
-
-#: ../../lib/template_functions.php:273
-msgid "ObjectClasses in XML dont exist in LDAP server."
-msgstr "Классы объектов из XML не поддерживаются LDAP сервером."
-
-#: ../../htdocs/schema.php:99 ../../htdocs/schema.php:341
-msgid "Obsolete"
-msgstr "Устаревший"
-
-#: ../../htdocs/update_confirm.php:202
-msgid "Old Value"
-msgstr "Старое значение"
-
-#: ../../lib/search_form_advanced.php:87 ../../htdocs/export_form.php:32
-msgid "One (one level beneath base)"
-msgstr "Один (один уровень под базовым)"
-
-#: ../../lib/EntryWriter1.php:407 ../../lib/EntryWriter1.php:417
-#: ../../htdocs/schema.php:452
-msgid "Optional Attributes"
-msgstr "Необязательные атрибуты"
-
-#: ../../htdocs/schema.php:34
-msgid "Or lastly, your LDAP server doesnt provide this information."
-msgstr ""
-"Или, в крайнем случае, ваш LDAP сервер не предоставил эту информацию."
-
-#: ../../htdocs/ldif_import_form.php:40
-msgid "Or paste your LDIF here"
-msgstr "Или скопируйте данные LDIF непосредственно сюда"
-
-#: ../../lib/search_form_advanced.php:112
-msgid "Order by"
-msgstr "Сортировать по"
-
-#: ../../htdocs/schema.php:102
-msgid "Ordering"
-msgstr "Сортировка"
-
-#: ../../lib/common.php:158
-msgid "PHP Safe Mode"
-msgstr "Безопасный режим (Safe Mode) PHP"
-
-#: ../../htdocs/search.php:324 ../../htdocs/search.php:362
-#, php-format
-msgid "Page %d"
-msgstr "Страница %d"
-
-#: ../../htdocs/schema.php:433
-msgid "Parent to"
-msgstr "Родитель для"
-
-#: ../../htdocs/login_form.php:53
-msgid "Password"
-msgstr "Пароль"
-
-#: ../../htdocs/password_checker.php:27
-msgid "Password Checker Tool"
-msgstr "Проверка пароля"
-
-#: ../../htdocs/password_checker.php:57
-msgid "Passwords do not match!"
-msgstr "Не совпадают!"
-
-#: ../../htdocs/password_checker.php:55
-msgid "Passwords match!"
-msgstr "Совпадают!"
-
-#: ../../htdocs/delete_form.php:35
-msgid "Permanently delete all children also?"
-msgstr "Также окончательно удалить всех потомков?"
-
-#: ../../lib/functions.php:140
-msgid "Please check and see if this bug has been reported"
-msgstr "Вдруг это известная ошибка ? Перейдите по ссылке, чтобы проверить"
-
-#: ../../lib/functions.php:1855
-msgid ""
-"Please set $jpeg_temp_dir to a writable directory in the phpLDAPadmin "
-"config.php"
-msgstr ""
-"Пожалуйста, установите переменную $jpeg_temp_dir в config.php в папку, "
-"доступную по записи"
-
-#: ../../lib/HTMLTree.php:84
-msgid "Please specify it in config.php"
-msgstr "Укажите это в config.php"
-
-#: ../../lib/search_form_predefined.php:8
-#: ../../lib/search_form_advanced.php:52 ../../lib/search_form_simple.php:43
-msgid "Predefined Searches"
-msgstr "Предопределенные поиски"
-
-#: ../../lib/EntryWriter1.php:308 ../../lib/EntryWriter2.php:78
-msgid "Proceed &gt;&gt;"
-msgstr "Далее &gt;&gt;"
-
-#: ../../htdocs/ldif_import_form.php:45 ../../htdocs/export_form.php:126
-msgid "Proceed >>"
-msgstr "Далее >>"
-
-#: ../../lib/functions.php:349
-msgid "Purge all cached data in phpLDAPadmin, including server schemas."
-msgstr ""
-"Очистить закешированные данные в phpLDAPadmin, включая схемы сервера."
-
-#: ../../htdocs/purge_cache.php:31
-msgid "Purge cache"
-msgstr "Очистка кеша"
-
-#: ../../lib/functions.php:349
-msgid "Purge caches"
-msgstr "Очистить кеш"
-
-#: ../../htdocs/purge_cache.php:28
-#, php-format
-msgid "Purged %s bytes of cache."
-msgstr "Высвобождено %s байтов."
-
-#: ../../lib/EntryWriter1.php:2088 ../../htdocs/compare.php:506
-msgid "Really delete attribute"
-msgstr "Действительно удалить значение"
-
-#: ../../htdocs/copy_form.php:75
-msgid "Recursive copy"
-msgstr "Рекурсивное копирование"
-
-#: ../../htdocs/copy.php:58
-msgid "Recursive copy progress"
-msgstr "Прогресс рекурсивного копирования"
-
-#: ../../htdocs/rdelete.php:31
-msgid "Recursive delete progress"
-msgstr "Прогресс рекурсивного удаления"
-
-#: ../../htdocs/copy_form.php:77
-msgid "Recursively copy all children of this object as well."
-msgstr "Рекурсивно скопировать и всех потомков этого объекта."
-
-#: ../../lib/EntryWriter1.php:725 ../../lib/EntryWriter1.php:726
-msgid "Refresh"
-msgstr "Обновить"
-
-#: ../../lib/HTMLTree.php:240
-msgid "Refresh all expanded containers for"
-msgstr "Обновить все открытые контейнеры для"
-
-#: ../../lib/EntryWriter1.php:726
-msgid "Refresh this entry"
-msgstr "Обновить эту запись"
-
-#: ../../htdocs/modify_member_form.php:149
-msgid "Remove selected"
-msgstr "Удалить выделенные"
-
-#: ../../lib/EntryWriter1.php:769 ../../htdocs/rename_form.php:35
-msgid "Rename"
-msgstr "Переименовать"
-
-#: ../../htdocs/rename_form.php:27 ../../htdocs/rename.php:71
-msgid "Rename Entry"
-msgstr "Переименовать запись"
-
-#: ../../htdocs/rename.php:67
-msgid "Rename successful!"
-msgstr "Успешно переименовано!"
-
-#: ../../htdocs/ldif_import.php:64 ../../htdocs/ldif_import.php:65
-msgid "Renaming..."
-msgstr "Переименовываю..."
-
-#: ../../lib/functions.php:353
-msgid "Report a bug"
-msgstr "Сообщить об ошибке"
-
-#: ../../lib/functions.php:351
-msgid "Request feature"
-msgstr "У меня идея!"
-
-#: ../../lib/EntryWriter1.php:397 ../../lib/EntryWriter1.php:404
-#: ../../htdocs/schema.php:452
-msgid "Required Attributes"
-msgstr "Обязательные атрибуты"
-
-#: ../../lib/EntryWriter1.php:1962 ../../htdocs/compare.php:162
-#, php-format
-msgid "Required attribute for objectClass(es) %s"
-msgstr "Обязательный атрибут для класса(ов) %s"
-
-#: ../../lib/AJAXTree.php:313
-msgid "Retrieving DN"
-msgstr "Запрашиваю DN"
-
-#: ../../lib/EntryWriter1.php:732 ../../lib/EntryWriter1.php:803
-msgid "Save"
-msgstr "Сохранить"
-
-#: ../../lib/EntryWriter1.php:861 ../../lib/EntryWriter2.php:117
-#: ../../htdocs/compare.php:495
-msgid "Save Changes"
-msgstr "Сохранить изменения"
-
-#: ../../lib/EntryWriter1.php:733
-msgid "Save a dump of this object"
-msgstr "Сохранить дамп этого объекта"
-
-#: ../../lib/EntryWriter1.php:804
-msgid "Save a dump of this object and all of its children"
-msgstr "Сохранить дамп этого объекта и всех его потомков"
-
-#: ../../htdocs/export_form.php:81
-msgid "Save as file"
-msgstr "Сохранить как файл"
-
-#: ../../htdocs/modify_member_form.php:177
-msgid "Save changes"
-msgstr "Сохранить изменения"
-
-#: ../../htdocs/schema.php:37
-msgid "Schema for server"
-msgstr "Схема для сервера"
-
-#: ../../lib/search_form_predefined.php:64
-#: ../../lib/search_form_advanced.php:116 ../../lib/search_form_simple.php:75
-#: ../../htdocs/search.php:148
-msgid "Search"
-msgstr "Поиск"
-
-#: ../../lib/export_functions.php:198 ../../lib/search_form_advanced.php:98
-#: ../../htdocs/export_form.php:72
-msgid "Search Filter"
-msgstr "Фильтр поиска"
-
-#: ../../lib/export_functions.php:197 ../../lib/search_form_advanced.php:80
-#: ../../htdocs/export_form.php:59
-msgid "Search Scope"
-msgstr "Область поиска"
-
-#: ../../lib/search_form_simple.php:53
-msgid "Search for entries whose"
-msgstr "Искать записи, которые:"
-
-#: ../../htdocs/search.php:111
-msgid "Searching is not permitted"
-msgstr "Недостаточно прав для выполнения поиска"
-
-#: ../../htdocs/add_attr.php:63 ../../htdocs/add_attr.php:83
-#: ../../htdocs/add_attr.php:88
-msgid "Security error: The file being uploaded may be malicious."
-msgstr ""
-"Ошибка безопасности: Файл который Вы загрузили может иметь вредоносный код."
-
-#: ../../lib/search_form_predefined.php:46
-msgid "Select a predefined search"
-msgstr "Выбрать предопределенный поиск"
-
-#: ../../lib/EntryWriter1.php:1021
-msgid "Select a template for the creation process"
-msgstr "Выберите шаблон для создания объекта"
-
-#: ../../lib/EntryWriter1.php:1244
-msgid "Select a template to edit the entry"
-msgstr "Укажите шаблон для редактирования записи"
-
-#: ../../htdocs/ldif_import_form.php:32
-msgid "Select an LDIF file"
-msgstr "Выберите файл, содержащий данные в формате LDIF"
-
-#: ../../lib/HTMLTree.php:156 ../../lib/EntryWriter1.php:247
-#: ../../lib/EntryWriter1.php:506 ../../lib/EntryWriter1.php:1033
-#: ../../lib/export_functions.php:196 ../../lib/search_form_advanced.php:61
-#: ../../lib/search_form_simple.php:51 ../../htdocs/add_value_form.php:95
-#: ../../htdocs/compare.php:49 ../../htdocs/compare.php:52
-#: ../../htdocs/delete_form.php:29 ../../htdocs/delete_form.php:105
-#: ../../htdocs/rename_form.php:29 ../../htdocs/compare_form.php:22
-#: ../../htdocs/ldif_import_form.php:22 ../../htdocs/export_form.php:49
-#: ../../htdocs/entry_chooser.php:32 ../../htdocs/entry_chooser.php:98
-#: ../../htdocs/modify_member_form.php:72 ../../htdocs/ldif_import.php:53
-#: ../../htdocs/copy_form.php:46 ../../htdocs/add_attr_form.php:25
-msgid "Server"
-msgstr "Сервер"
-
-#: ../../lib/page.php:200
-msgid "Server Select"
-msgstr "Выбор сервера"
-
-#: ../../htdocs/server_info.php:66
-msgid "Server info for: "
-msgstr "Информация о сервере: "
-
-#: ../../htdocs/server_info.php:67
-msgid "Server reports the following information about itself"
-msgstr "Сервер сообщил о себе следующую информацию"
-
-#: ../../lib/EntryWriter1.php:754
-msgid "Show"
-msgstr "Показать"
-
-#: ../../lib/search_form_advanced.php:104 ../../htdocs/export_form.php:75
-msgid "Show Attributtes"
-msgstr "Показать атрибуты"
-
-#: ../../lib/functions.php:357
-msgid "Show Cache"
-msgstr "Показать кеш"
-
-#: ../../lib/EntryWriter1.php:755
-msgid "Show internal attributes"
-msgstr "Показать служебные атрибуты"
-
-#: ../../htdocs/search.php:318
-#, php-format
-msgid "Showing results %s through %s."
-msgstr "Показываю результаты с %s по %s."
-
-#: ../../lib/search_form_predefined.php:30
-#: ../../lib/search_form_advanced.php:44 ../../lib/search_form_simple.php:15
 msgid "Simple Search Form"
 msgstr "Простая форма поиска"
 
-#: ../../htdocs/update.php:156
-msgid ""
-"Since you changed your password, you must now login again with your new "
-"password."
-msgstr ""
-"Т.к. Вы изменили свой пароль, Вы должны войти заново, используя свой новый "
-"пароль."
 
-#: ../../htdocs/schema.php:105
-msgid "Single Valued"
-msgstr "Однозначный"
+msgid "Advanced Search Form"
+msgstr "Расширенная форма поиска"
 
-#: ../../htdocs/update_confirm.php:202
-msgid "Skip"
-msgstr "Пропустить"
 
-#: ../../lib/EntryWriter1.php:826
-#, php-format
-msgid "Some attributes (%s) were modified and are highlighted below."
-msgstr "Некоторые атрибуты (%s) были изменены и теперь подсвечены ниже."
+msgid "Server"
+msgstr "Сервер"
 
-#: ../../htdocs/login.php:117
-msgid "Sorry, you are not allowed to use phpLDAPadmin with this LDAP server."
-msgstr ""
-"Извините, вам не разрешено использовать phpLDAPadmin с данным сервером LDAP."
 
-#: ../../htdocs/compare_form.php:41
-msgid "Source DN"
-msgstr "Исходный DN"
+msgid "Search for entries whose"
+msgstr "Искать записи, которые:"
 
-#: ../../lib/EntryWriter1.php:263
-msgid "Specify attributes and values"
-msgstr "Укажите атрибуты и значения"
 
-#: ../../lib/search_form_advanced.php:97
-msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))"
-msgstr ""
-"Стандартный фильтр поиска LDAP. Пример: (&(sn=Smith)(givenname=David))"
+msgid "Base DN"
+msgstr "Базовый DN"
 
-#: ../../lib/EntryWriter1.php:253 ../../lib/EntryWriter1.php:260
-#, php-format
-msgid "Step %s of %s"
-msgstr "Шаг %s из %s"
 
-#: ../../lib/search_form_advanced.php:84 ../../htdocs/export_form.php:33
-msgid "Sub (entire subtree)"
-msgstr "Все (все поддерево)"
-
-#: ../../htdocs/schema.php:103
-msgid "Substring Rule"
-msgstr "Правило подстроки"
-
-#: ../../htdocs/mass_delete.php:69 ../../htdocs/copy.php:64
-#: ../../htdocs/ldif_import.php:114 ../../htdocs/ldif_import.php:136
-#: ../../htdocs/rdelete.php:59 ../../htdocs/rdelete.php:76
-msgid "Success"
-msgstr "Успешно"
-
-#: ../../htdocs/delete.php:44
-msgid "Successfully deleted DN "
-msgstr "Успешно удален DN "
-
-#: ../../htdocs/login.php:164
-msgid "Successfully logged into server."
-msgstr "Успешный вход на сервер"
-
-#: ../../htdocs/compare.php:64
-msgid "Switch Entry"
-msgstr "Переключить запись"
-
-#: ../../htdocs/add_value_form.php:175 ../../htdocs/schema.php:104
-msgid "Syntax"
-msgstr "Синтакс"
-
-#: ../../htdocs/schema.php:70
-msgid "Syntax OID"
-msgstr "OID синтаксиса"
-
-#: ../../htdocs/schema.php:43
-msgid "Syntaxes"
-msgstr "Синтаксисы"
-
-#: ../../lib/EntryWriter1.php:519
-msgid "Template"
-msgstr "Шаблон"
-
-#: ../../lib/EntryWriter1.php:2570
-msgid "Template Value Error"
-msgstr "Ошибка значения шаблона"
-
-#: ../../lib/EntryWriter1.php:1036 ../../lib/EntryWriter1.php:1255
-msgid "Templates"
-msgstr "Шаблоны"
-
-#: ../../htdocs/create.php:54
-#, php-format
-msgid "The Rdn attribute (%s) does not exist."
-msgstr "Атрибут Rdn (%s) не существует."
-
-#: ../../htdocs/update.php:103 ../../htdocs/delete_attr.php:34
-#: ../../htdocs/add_value.php:37
-#, php-format
-msgid ""
-"The attribute \"%s\" is flagged as read-only in the phpLDAPadmin "
-"configuration."
-msgstr ""
-"Этот атрибут \"%s\" установлен \"только для чтения\" в конфигурации "
-"phpLDAPadmin."
-
-#: ../../htdocs/add_value_form.php:74
-#, php-format
-msgid "The attribute (%s) is in readonly mode."
-msgstr "Атрибут (%s) доступен только для чтения."
-
-#: ../../lib/ldif_functions.php:410
-msgid "The attribute name should be add, delete or replace"
-msgstr "Имя атрибута должно быть add, delete или replace"
-
-#: ../../lib/ldif_functions.php:514
-msgid "The attribute name should be newsuperior"
-msgstr "Имя атрибута должно быть newsuperior"
-
-#: ../../lib/ldif_functions.php:448
-#, php-format
-msgid ""
-"The attribute to modify doesnt match the one specified by the %s attribute."
-msgstr "Изменяемый атрибут не соответствует указанному в атрибуте %s."
-
-#: ../../htdocs/create.php:49
-#, php-format
-msgid "The container (%s) is a leaf."
-msgstr "Контейнер (%s) является листом."
-
-#: ../../lib/EntryWriter1.php:213
-#, php-format
-msgid "The container you specified (%s) does not exist."
-msgstr "Указанного вами контейнера (%s) не существует."
-
-#: ../../htdocs/create.php:39
-#, php-format
-msgid "The container you specified (%s) does not exist. Please try again."
-msgstr ""
-"Контейнер, который Вы указали (%s) не существует. Попробуйте еще раз."
-
-#: ../../htdocs/update_confirm.php:309
-msgid "The deletion of objectClass(es)"
-msgstr "Удаление класса(ов)"
-
-#: ../../htdocs/copy.php:50
-#, php-format
-msgid "The destination container (%s) does not exist."
-msgstr "Конечный контейнер (%s) не существует."
-
-#: ../../htdocs/copy.php:47
-#, php-format
-msgid "The destination entry (%s) already exists."
-msgstr "Конечная запись (%s) уже сужествует."
-
-#: ../../htdocs/update_confirm.php:29 ../../htdocs/add_value_form.php:37
-#, php-format
-msgid "The entry (%s) does not exist."
-msgstr "Записи (%s) не существует."
-
-#: ../../htdocs/update_confirm.php:43 ../../htdocs/add_value_form.php:55
-#, php-format
-msgid "The entry (%s) is in readonly mode."
-msgstr "Запись (%s) доступна только по чтению."
-
-#: ../../lib/ldif_functions.php:483
-msgid "The entry is not valid"
-msgstr "Запись некорректна"
-
-#: ../../htdocs/add_attr.php:56
-msgid ""
-"The file you chose is either empty or does not exist. Please go back and try "
-"again."
-msgstr ""
-"Файл, который Вы выбрали или не существует или пуст. Пожалуйста вернитесь и "
-"попробуйте еще раз."
-
-#: ../../htdocs/add_attr.php:75
-msgid ""
-"The file you selected was only partially uploaded, likley due to a network "
-"error."
-msgstr ""
-"Файл, который Вы выбрали был загружен только частично, вероятно из-за ошибки "
-"в сети."
-
-#: ../../htdocs/add_attr.php:67 ../../htdocs/add_attr.php:71
-msgid ""
-"The file you uploaded is too large. Please check php.ini, upload_max_size "
-"setting"
-msgstr ""
-"Файл, который Вы загрузили слишком велик. Проверьте php.ini, опцию "
-"upload_max_size"
-
-#: ../../htdocs/copy_form.php:64
-msgid ""
-"The full DN of the new entry to be created when copying the source entry"
-msgstr "Полный DN новой записи будет создан при копировании исходной"
-
-#: ../../lib/search_form_advanced.php:80
-msgid "The scope in which to search"
+msgid "Search Scope"
 msgstr "Область поиска"
 
-#: ../../htdocs/search.php:371
-msgid "The search found no results."
-msgstr "Ничего не найдено по вашему запросу."
 
-#: ../../htdocs/schema.php:32
-msgid "The server does not fully support the LDAP protocol."
-msgstr "Этот сервер не полностью поддерживает LDAP протокол."
+msgid "Show Attributtes"
+msgstr "Показать атрибуты"
 
-#: ../../htdocs/copy.php:44
-msgid "The source and destination DN are the same."
-msgstr "Исходный и конечный DN одинаковы."
 
-#: ../../lib/ldif_functions.php:333
-msgid "The url attribute value should begin with file:///"
-msgstr "Значение атрибута url должно начинаться с file:///"
+msgid "Search"
+msgstr "Поиск"
 
-#: ../../htdocs/modify_member_form.php:75
-msgid "There are"
-msgstr "Всего"
 
-#: ../../lib/functions.php:1267
-msgid "There is more than one dn for uidpool,please change filter parameter"
-msgstr "Для uidpool найдено более одного dn, пожалуйста, исправьте фильтр"
+msgid "Select a predefined search"
+msgstr "Выбрать предопределенный поиск"
 
-#: ../../htdocs/add_oclass_form.php:76
-msgid "This action requires you to add"
-msgstr "Это действие требует добавить"
 
-#: ../../lib/EntryWriter1.php:1509 ../../lib/EntryWriter2.php:210
-#: ../../htdocs/compare.php:166
-msgid ""
-"This attribute has been flagged as read only by the phpLDAPadmin "
-"administrator"
-msgstr "Этот атрибут установлен администратором только для чтения"
+msgid "Predefined Searches"
+msgstr "Предопределенные поиски"
 
-#: ../../htdocs/schema.php:496
-msgid ""
-"This attribute has been forced as a MAY attribute by the configuration"
-msgstr "Согласно конфигурации этот атрибут установлен в значение MAY"
 
-#: ../../lib/EntryWriter1.php:1418
-msgid "This attribute is required"
-msgstr "Обязательный атрибут"
+msgid "No queries have been defined in config.php."
+msgstr "Не определено ни одного запроса в config.php."
 
-#: ../../lib/EntryWriter1.php:1971
-msgid "This attribute is required for the RDN."
-msgstr "Данный атрибут необходим для RDN."
 
-#: ../../lib/HTMLTree.php:70
-msgid "This base entry does not exist."
-msgstr "Данная базовая запись не существует."
+msgid "Request feature"
+msgstr "Запросить фичу"
 
-#: ../../htdocs/schema.php:32
-msgid ""
-"This could happen for several reasons, the most probable of which are:"
-msgstr "Это могло случится по нескольким причинам, наиболее вероятные это:"
 
-#: ../../lib/search_form_advanced.php:74
-msgid "This entry does not exist."
-msgstr "Записи не существует."
+msgid "Report a bug"
+msgstr "Сообщить об ошибке"
 
-#: ../../htdocs/compare.php:70
-msgid "This entry has no attributes"
-msgstr "Эта запись не имеет атрибутов"
 
-#: ../../htdocs/delete_form.php:46
-#, php-format
-msgid "This entry is the root of a sub-tree containing %s entries."
-msgstr "Эта запись является корнем дерева содержащего %s записей."
-
-#: ../../lib/EntryWriter1.php:2316 ../../htdocs/compare.php:392
-msgid "This is a structural ObjectClass and cannot be removed."
-msgstr "Этот класс является структурным и его нельзя удалить."
-
-#: ../../lib/search_form_advanced.php:71
-msgid "This is not a valid DN."
-msgstr "Это не является корректным DN."
-
-#: ../../htdocs/schema.php:415
-msgid "This objectClass is obsolete."
-msgstr "Этот объект устарел."
-
-#: ../../htdocs/create.php:25 ../../htdocs/add_value_form.php:76
-#: ../../htdocs/add_value_form.php:78 ../../htdocs/server_info.php:16
-#: ../../htdocs/purge_cache.php:13 ../../htdocs/schema.php:20
-#: ../../htdocs/update.php:61 ../../htdocs/update.php:67
-#: ../../htdocs/update.php:80 ../../htdocs/rename.php:24
-#: ../../htdocs/delete_attr.php:21 ../../htdocs/delete.php:21
-#: ../../htdocs/mass_delete.php:26 ../../htdocs/copy.php:20
-#: ../../htdocs/add_value.php:24 ../../htdocs/search.php:120
-#: ../../htdocs/search.php:124 ../../htdocs/search.php:128
-#: ../../htdocs/export.php:18 ../../htdocs/ldif_import.php:19
-#: ../../htdocs/refresh.php:17 ../../htdocs/rdelete.php:21
-#: ../../htdocs/add_attr.php:25
-msgid "This operation is not permitted by the configuration"
-msgstr "Данная операция запрещена конфигурацией"
-
-#: ../../htdocs/server_info.php:71
-msgid "This server has nothing to report."
-msgstr "Этому серверу нечего о себе сообщить."
-
-#: ../../lib/EntryWriter1.php:1073
-msgid "This template is not allowed in this container."
-msgstr "Указанный шаблон нельзя применять для этого контейнера."
-
-#: ../../htdocs/login_form.php:28
-msgid "This web connection is unencrypted"
-msgstr "Соединение с сервером нешифровано"
-
-#: ../../htdocs/password_checker.php:41
-msgid "To"
-msgstr "С"
-
-#: ../../htdocs/timeout.php:36
-msgid "To log back in please click on the following link:"
-msgstr "Чтобы войти заново, перейдите по ссылке:"
-
-#: ../../lib/export_functions.php:199
-msgid "Total Entries"
-msgstr "Всего записей"
-
-#: ../../lib/EntryWriter1.php:762
-msgid "Trash"
-msgstr "Корзина"
-
-#: ../../htdocs/schema.php:412
-msgid "Type"
-msgstr "Тип"
-
-#: ../../lib/EntryWriter1.php:1898
-msgid "URL"
-msgstr "URL"
-
-#: ../../lib/functions.php:1264
-msgid "Uidpool dn not found, please change filter parameter"
-msgstr "Не найден dn для uidpool, пожалуйста, исправьте фильтр"
-
-#: ../../lib/functions.php:1184 ../../lib/functions.php:1248
-#, php-format
-msgid ""
-"Unable to bind to <b>%s</b> with your with auto_uid credentials. Please "
-"check your configuration file."
-msgstr ""
-"Не могу привязаться к <b>%s</b> с Вашими auto_uid данными. Проверьте Ваш "
-"файл конфигурации."
-
-#: ../../lib/server_functions.php:2852
-#, php-format
-msgid ""
-"Unable to bind to <b>%s</b> with your with unique_attrs credentials. Please "
-"check your configuration file."
-msgstr ""
-"Не удалось привязаться к <b>%s</b> с учетными данными with unique_attrs. "
-"Проверьте конфигурацию."
-
-#: ../../htdocs/mass_delete.php:23
-msgid "Unable to delete, server is in READY-ONLY mode."
-msgstr "Удалить нельзя, поскольку сервер в режиме READ-ONLY."
-
-#: ../../lib/ldif_functions.php:327
-msgid "Unable to open file"
-msgstr "Не удалось открыть файл"
-
-#: ../../lib/ldif_functions.php:320
-msgid "Unable to read file"
-msgstr "Не удалось прочитать файл"
-
-#: ../../lib/server_functions.php:1988 ../../lib/server_functions.php:2060
-#: ../../lib/server_functions.php:2355 ../../lib/server_functions.php:2466
-#: ../../htdocs/logout.php:30 ../../htdocs/login_form.php:17
-#, php-format
-msgid "Unknown auth_type: %s"
-msgstr "Неизвестный auth_type: %s"
-
-#: ../../lib/functions.php:1285
-msgid "Unknown uidpool type."
-msgstr "Неизвестный тип uidpool."
-
-#: ../../htdocs/search.php:214
-msgid "Unrecognized criteria option: "
-msgstr "Нераспознанный критерий поиска: "
-
-#: ../../lib/functions.php:122
-msgid "Unrecognized error number"
-msgstr "Неизвестный номер ошибки"
-
-#: ../../htdocs/search.php:383
-#, php-format
-msgid "Unrecognized search result format: %s"
-msgstr "Неизвестный формат результатов поиска: %s."
-
-#: ../../htdocs/view_jpeg_photo.php:18
-msgid "Unsafe file name"
-msgstr "Небезопасное имя файла"
-
-#: ../../htdocs/ldif_import.php:42
-msgid "Uploaded LDIF file is empty."
-msgstr "Загруженный LDIF файл пуст."
-
-#: ../../htdocs/schema.php:108
-msgid "Usage"
-msgstr "Использование"
-
-#: ../../htdocs/welcome.php:18
-msgid "Use the menu to the left to navigate"
-msgstr "Используйте меню слева для навигации"
-
-#: ../../htdocs/schema.php:323
-msgid "Used by Attributes"
-msgstr "Использован атрибутами"
-
-#: ../../htdocs/schema.php:111
-msgid "Used by objectClasses"
-msgstr "Используется объектами"
-
-#: ../../htdocs/schema.php:107
-msgid "User Modification"
-msgstr "Изменение пользователем"
-
-#: ../../lib/EntryWriter1.php:797
-#, php-format
-msgid "View %s children"
-msgstr "Просмотреть %s потомков"
-
-#: ../../lib/EntryWriter1.php:797
-msgid "View 1 child"
-msgstr "Просмотреть 1 потомка"
-
-#: ../../lib/HTMLTree.php:224
-msgid "View schema for"
-msgstr "Просмотреть схему для"
-
-#: ../../lib/HTMLTree.php:248
-msgid "View server-supplied information"
-msgstr "Просмотреть информацию с сервера"
-
-#: ../../lib/EntryWriter1.php:2328 ../../htdocs/compare.php:386
-msgid "View the schema description for this objectClass"
-msgstr "Посмотреть схему для данного класса"
-
-#: ../../lib/EntryWriter1.php:819
-msgid "Viewing entry in read-only mode."
-msgstr "Просмотр записи в режиме \"только для чтения\"."
-
-#: ../../lib/page.php:62
-msgid ""
-"WARNING: You cannot have PHP compression and phpLDAPadmin compression "
-"enabled at the same time. Please unset zlib.output_compression or set "
-"$config->custom->appearance['compress']=false"
-msgstr ""
-"ВНИМАНИЕ: Нельзя одновременно применять сжатие в PHP и в phpLDAPadmin. "
-"Пожалуйста, либо отключите zlib.output_compression или установите $config-"
-">custom->appearance['compress']=false"
-
-#: ../../lib/page.php:62 ../../htdocs/login_form.php:28
-msgid "Warning"
-msgstr "Внимание"
-
-#: ../../htdocs/copy_form.php:81
-msgid ""
-"When performing a recursive copy, only copy those entries which match this "
-"filter"
-msgstr ""
-"Если производите рекурсивное копирование - копируйте только те записи, "
-"которые соответствуют этому фильтру"
-
-#: ../../htdocs/schema.php:168 ../../htdocs/schema.php:225
-#: ../../htdocs/schema.php:229 ../../htdocs/schema.php:233
-#: ../../htdocs/schema.php:284
-msgid "Yes"
-msgstr "Да"
-
-#: ../../htdocs/mass_delete.php:107
-msgid "Yes, delete!"
-msgstr "Да, удалить!"
-
-#: ../../htdocs/login_form.php:27
-msgid ""
-"You are not using 'https'. Web browser will transmit login information in "
-"clear text."
-msgstr ""
-"Вы не используете 'https'. Web-браузер передает авторизационные данные "
-"открытым текстом."
-
-#: ../../htdocs/create.php:22 ../../htdocs/update_confirm.php:19
-#: ../../htdocs/add_value_form.php:16 ../../htdocs/template_engine.php:54
-#: ../../htdocs/delete_form.php:19 ../../htdocs/rename_form.php:20
-#: ../../htdocs/add_oclass.php:23 ../../htdocs/update.php:39
-#: ../../htdocs/download_binary_attr.php:15 ../../htdocs/rename.php:21
-#: ../../htdocs/delete_attr.php:18 ../../htdocs/ldif_import_form.php:19
-#: ../../htdocs/delete.php:18 ../../htdocs/add_oclass_form.php:27
-#: ../../htdocs/add_value.php:21 ../../htdocs/modify_member_form.php:21
-#: ../../htdocs/copy_form.php:18 ../../htdocs/rdelete.php:18
-#: ../../htdocs/add_attr.php:22 ../../htdocs/add_attr_form.php:18
-msgid "You cannot perform updates while server is in read-only mode"
-msgstr ""
-"Вы не можете производить обновления до тех пор, пока сервер находится в "
-"режиме \"только для чтения\""
-
-#: ../../htdocs/rename.php:31
-msgid ""
-"You cannot rename an entry which has children entries (eg, the rename "
-"operation is not allowed on non-leaf entries)"
-msgstr ""
-"Вы не можете переименовать запись, которая имеет потомков (т.е., операция "
-"переименования не допустима для дерева)"
-
-#: ../../htdocs/rename.php:39
-msgid "You did not change the RDN"
-msgstr "Вы не изменили RDN"
-
-#: ../../htdocs/add_oclass_form.php:30
-msgid ""
-"You did not select any ObjectClasses for this object. Please go back and do "
-"so."
-msgstr ""
-"Вы не выбрали ни одного класса для этого объекта. Вернитесь и сделайте это."
-
-#: ../../htdocs/mass_delete.php:55
-msgid "You did not select any entries to delete."
-msgstr "Вы не выбрали ни одной записи для удаления."
-
-#: ../../lib/EntryWriter1.php:218
-msgid "You did not select any objectClasses for this object."
-msgstr "Вы не указали класс для данного объекта."
-
-#: ../../lib/functions.php:144
-msgid "You found a non-fatal phpLDAPadmin bug!"
-msgstr "Некритичная ошибка phpLDAPadmin!"
-
-#: ../../lib/common.php:159
-msgid ""
-"You have PHP Safe Mode enabled. PLA may work unexpectedly in Safe Mode."
-msgstr ""
-"Включен безопасный режим (safe mode) на PHP. В этом режиме PLA может "
-"работать непредсказуемо."
-
-#: ../../htdocs/search.php:149
-msgid ""
-"You have not logged into the selected server yet, so you cannot perform "
-"searches on it."
-msgstr ""
-"Вы еще на вошли на выбранный сервер, поэтому Вы не можете производить на нем "
-"поиск."
-
-#: ../../lib/EntryReader.php:347 ../../lib/EntryReader.php:375
-msgid "You have specified two different passwords"
-msgstr "Вы указали два разных пароля"
-
-#: ../../htdocs/create.php:58
-msgid "You left the RDN field blank."
-msgstr "Вы оставили RDN поле пустым."
-
-#: ../../htdocs/add_attr.php:37 ../../htdocs/add_attr.php:79
-msgid "You left the attribute value blank. Please go back and try again."
-msgstr ""
-"Вы оставили значение атрибута пустым. Вернитесь и попробуйте еще раз."
-
-#: ../../htdocs/copy.php:41
-msgid "You left the destination DN blank."
-msgstr "Вы не заполнили конечный DN."
-
-#: ../../htdocs/login.php:27
-msgid "You left the password blank."
-msgstr "Вы не ввели пароль."
-
-#: ../../htdocs/create.php:73
-#, php-format
-msgid "You left the value blank for required attribute (%s)."
-msgstr "Вы оставили пустым значение для требуемого атрибута (%s)."
-
-#: ../../htdocs/update_confirm.php:326
-msgid "You made no changes"
-msgstr "Вы не сделали никаких изменений"
-
-#: ../../htdocs/export.php:43
-msgid "You must choose an export format."
-msgstr "Вы должны выбрать формат экспорта."
-
-#: ../../htdocs/ldif_import.php:47
-msgid "You must either upload a file or provide an LDIF in the text box."
-msgstr ""
-"Надо либо загрузить файл, либо скопировать содержимое LDIF в область ввода."
-
-#: ../../htdocs/delete.php:26 ../../htdocs/rdelete.php:25
-msgid "You must specify a DN"
-msgstr "Вы должны указать DN"
-
-#: ../../htdocs/compare.php:469
-#, php-format
-msgid ""
-"You need one of the following ObjectClass(es) to add this attribute %s."
-msgstr "Чтобы добавить атрибут %s, требуется один из следующих классов."
-
-#: ../../htdocs/index.php:82
-#, php-format
-msgid ""
-"You need to configure %s. Edit the file \"%s\" to do so. An example config "
-"file is provided in \"%s.example\"."
-msgstr ""
-"Вам надо сконфигурировать %s. Для этого отредактируйте файл \"%s\". Пример "
-"файла конфигурации называется  \"%s.example\"."
-
-#: ../../lib/functions.php:1305
-#, php-format
-msgid ""
-"You specified an invalid value for auto_uid_number_mechanism (\"%s\")\n"
-"\t\t\t\tin your configration. Only \"uidpool\" and \"search\" are valid.\n"
-"\t\t\t\tPlease correct this problem."
-msgstr ""
-"Указано неверное значение для auto_uid_number_mechanism (\"%s\")\n"
-"\t\t\t\tв файле конфигурации. Допустимы значения \"uidpool\" и \"search\".\n"
-"\t\t\t\tПожалуйста, устраните данную проблему."
-
-#: ../../lib/functions.php:1163
-#, php-format
-msgid ""
-"You specified the \"auto_uid_number_mechanism\" as \"search\" in your\n"
-"\t\t\t\t\t\tconfiguration for server <b>%s</b>, but you did not specify the\n"
-"\t\t\t\t\t\t\"auto_uid_number_search_base\". Please specify it before "
-"proceeding."
-msgstr ""
-"Для параметра \"auto_uid_number_mechanism\" выбрано значение \"search\" в\n"
-"\t\t\t\t\t\tфайле конфигурации для сервера <b>%s</b>, но не указан параметр\n"
-"\t\t\t\t\t\t\"auto_uid_number_search_base\". Пожалуйста, устраните данную "
-"проблему."
-
-#: ../../lib/EntryWriter1.php:763
-msgid "You will be prompted to confirm this decision"
-msgstr "Вас попросят подтвердить Ваше решение"
-
-#: ../../htdocs/add_attr_form.php:152
-msgid ""
-"Your PHP configuration has disabled file uploads. Please check php.ini "
-"before proceeding."
-msgstr ""
-"Ваша конфигурация PHP запрещает загрузку файлов. Проверьте php.ini перед тем "
-"как продолжить."
-
-#: ../../lib/functions.php:1988 ../../lib/functions.php:1999
-#: ../../lib/functions.php:2010 ../../lib/functions.php:2058
-#: ../../lib/functions.php:2076
-msgid ""
-"Your PHP install does not have the mhash() function. Cannot do SHA hashes."
-msgstr ""
-"Ваша установленная версия PHP не имеет функцию mhash(). Не могу создать хэши "
-"SHA."
-
-#: ../../lib/server_functions.php:264
-msgid "Your PHP install does not support TLS."
-msgstr "Ваша установленная версия PHP не поддерживает TLS."
-
-#: ../../lib/server_functions.php:279
-msgid ""
-"Your PHP installation does not support ldap_sasl_bind() function. This "
-"function is present in PHP 5.x when compiled with --with-ldap-sasl."
-msgstr ""
-"PHP не содержит функции ldap_sasl_bind(). Чтобы добавить поддержку данной "
-"функции на PHP 5.x пересоберите его с ключом --with-ldap-sasl."
-
-#: ../../htdocs/ldif_import_form.php:16
-msgid ""
-"Your PHP.INI does not have file_uploads = ON. Please enable file uploads in "
-"PHP."
-msgstr ""
-"Ваша конфигурация PHP не содержит параметра file_uploads = ON. Разрешите "
-"загрузку файлов в PHP."
-
-#: ../../htdocs/timeout.php:33
-msgid "Your Session timed out after"
-msgstr "Ваш сеанс завершен по истечении"
-
-#: ../../htdocs/update.php:92
-#, php-format
-msgid ""
-"Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT "
-"allowed. That attribute/value belongs to another entry.<p>You might like to "
-"<a href=\"%s\">search</a> for that entry."
-msgstr ""
-"Попытка добавить <b>%s</b> (<i>%s</i>) к <br><b>%s</b><br> ОТКЛОНЕНА. Данные "
-"атрибут/значение принадлежат другой записи.<p>Вы можете <a "
-"href=\"%s\">поискать</a> эту запись."
-
-#: ../../htdocs/create.php:87 ../../htdocs/add_oclass.php:45
-#: ../../htdocs/add_value.php:59 ../../htdocs/add_attr.php:51
-#, php-format
-msgid ""
-"Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT "
-"allowed. That attribute/value belongs to another entry.<p>You might like to "
-"<a href='%s'>search</a> for that entry."
-msgstr ""
-"Попытка добавить <b>%s</b> (<i>%s</i>) к <br><b>%s</b><br> ОТКЛОНЕНА. Данные "
-"атрибут/значение принадлежат другой записи.<p>Вы можете <a "
-"href=\"%s\">поискать</a> эту запись."
-
-#: ../../lib/session_functions.php:139
-msgid "Your configuration has been automatically refreshed."
-msgstr "Конфигурация была автоматически обновлена."
-
-#: ../../lib/functions.php:1172
-#, php-format
-msgid ""
-"Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base "
-"for server %s"
-msgstr ""
-"В Вашей конфигурации phpLDAPadmin указано неверное значение для "
-"auto_uid_search_base для сервера %s"
-
-#: ../../lib/functions.php:1969 ../../lib/functions.php:2103
-msgid "Your system crypt library does not support blowfish encryption."
-msgstr "Ваша версия PHP не поддерживает шифрование blowfish."
-
-#: ../../lib/functions.php:1955 ../../lib/functions.php:2133
-msgid "Your system crypt library does not support extended DES encryption."
-msgstr "Ваша библиотека crypt не поддерживает раширенное шифрование DES."
-
-#: ../../lib/functions.php:1962 ../../lib/functions.php:2118
-msgid "Your system crypt library does not support md5crypt encryption."
-msgstr "Ваша версия PHP не поддерживает шифрование md5crypt."
-
-#: ../../lib/template_functions.php:984
-#, php-format
-msgid ""
-"Your template calls php.Function for a default value, however (%s) is NOT "
-"available in the POST FORM variables. The following variables are available "
-"[%s]."
-msgstr ""
-"Ваш шаблон обращается к php. Однако функция (%s) не содержится среди POST "
-"переменных формы. Доступны следующие переменные [%s]."
-
-#: ../../lib/EntryReader.php:262
-#, php-format
-msgid "Your template has an unknown post function (%s)."
-msgstr "Ваш шаблон содержит неизвестную функцию post (%s)."
-
-#: ../../lib/EntryReader.php:212
-#, php-format
-msgid "Your template is missing variable (%s)"
-msgstr "В шаблоне не хватает переменной (%s)"
-
-#: ../../htdocs/schema.php:33
-msgid "Your version of PHP does not correctly perform the query."
-msgstr "Ваша версия PHP неправильно обработала запрос."
-
-#: ../../htdocs/update_confirm.php:254 ../../htdocs/update_confirm.php:258
-msgid "[attribute deleted]"
-msgstr "[атрибут удален]"
-
-#: ../../lib/EntryWriter1.php:2035 ../../lib/EntryWriter1.php:2242
-msgid "[no value]"
-msgstr "[значение не указано]"
-
-#: ../../htdocs/add_value_form.php:78 ../../htdocs/add_attr.php:25
-msgid "add attribute"
-msgstr "добавить атрибут"
-
-#: ../../htdocs/add_value_form.php:76 ../../htdocs/add_value.php:24
-msgid "add attribute value"
-msgstr "добавить значение атрибута"
-
-#: ../../lib/EntryWriter1.php:1848 ../../htdocs/compare.php:466
-#: ../../htdocs/compare.php:479
-msgid "add value"
-msgstr "добавить значение"
-
-#: ../../htdocs/search.php:120
-msgid "advanced search"
-msgstr "расширенный поиск"
-
-#: ../../lib/EntryWriter1.php:1926 ../../htdocs/compare.php:105
-msgid "alias"
-msgstr "синоним"
-
-#: ../../lib/functions.php:2243
-msgid "browse"
-msgstr "просмотр"
-
-#: ../../lib/functions.php:353
-msgid "bug"
-msgstr "ошибка"
-
-#: ../../lib/functions.php:1901 ../../htdocs/ldif_import.php:54
-msgid "bytes"
-msgstr "байтов"
-
-#: ../../lib/functions.php:132
-msgid "caller"
-msgstr "вызов из"
-
-#: ../../htdocs/schema.php:248
-msgid "character"
-msgstr "символ"
-
-#: ../../htdocs/add_value_form.php:179 ../../htdocs/schema.php:248
-msgid "characters"
-msgstr "символы"
-
-#: ../../lib/EntryWriter1.php:2404
-msgid "confirm"
-msgstr "подтвердить"
-
-#: ../../htdocs/copy.php:20
-msgid "copy entry"
-msgstr "копировать запись"
-
-#: ../../htdocs/create.php:25
-msgid "create entry"
-msgstr "создать запись"
-
-#: ../../lib/EntryWriter1.php:2031 ../../htdocs/compare.php:261
-#: ../../htdocs/update.php:61 ../../htdocs/delete_attr.php:21
-msgid "delete attribute"
-msgstr "удалить атрибут"
-
-#: ../../htdocs/delete.php:21 ../../htdocs/rdelete.php:21
-msgid "delete entry"
-msgstr "удалить запись"
-
-#: ../../htdocs/mass_delete.php:26
-msgid "delete mass entries"
-msgstr "массовое удаление записей"
-
-#: ../../lib/EntryWriter1.php:2020 ../../lib/EntryWriter1.php:2024
-#: ../../htdocs/compare.php:256 ../../htdocs/compare.php:258
-msgid "download value"
-msgstr "загрузить значение"
-
-#: ../../htdocs/compare.php:280
-msgid "empty"
-msgstr "пуст"
-
-#: ../../htdocs/mass_delete.php:96
-msgid "entries"
-msgstr "записи"
-
-#: ../../htdocs/mass_delete.php:96
-msgid "entry"
-msgstr "запись"
-
-#: ../../lib/HTMLTree.php:264 ../../htdocs/export.php:18
-msgid "export"
-msgstr "экспорт"
-
-#: ../../htdocs/search.php:273
-msgid "export results"
-msgstr "экспортировать"
-
-#: ../../lib/AttributeFactory.php:39 ../../htdocs/compare.php:358
-msgid "false"
-msgstr "ложь"
-
-#: ../../htdocs/create.php:115 ../../htdocs/copy.php:76
-#: ../../htdocs/copy.php:106
-msgid "has been created."
-msgstr "создан."
-
-#: ../../lib/EntryWriter1.php:1980
-msgid "hint"
-msgstr "подсказка"
-
-#: ../../lib/HTMLTree.php:256 ../../htdocs/ldif_import.php:19
-msgid "import"
-msgstr "импорт"
-
-#: ../../lib/HTMLTree.php:248
-msgid "info"
-msgstr "инфо"
-
-#: ../../lib/EntryWriter1.php:1926 ../../htdocs/compare.php:105
-msgid "is an alias for"
-msgstr "синоним для"
-
-#: ../../lib/functions.php:1870
-msgid "jpegPhoto contains errors<br />"
-msgstr "jpegPhoto содержит ошибки<br />"
-
-#: ../../lib/functions.php:351
-msgid "light"
-msgstr "свет"
-
-#: ../../lib/functions.php:132
-msgid "line"
-msgstr "строка"
-
-#: ../../lib/HTMLTree.php:476
-msgid "login"
-msgstr "войти"
-
-#: ../../lib/HTMLTree.php:272 ../../lib/HTMLTree.php:494
-msgid "logout"
-msgstr "выйти"
-
-#: ../../htdocs/mass_delete.php:35
-msgid "mass_delete POST var is not an array."
-msgstr "POST переменная mass_delete не в массиве."
-
-#: ../../htdocs/modify_member_form.php:75
-msgid "members in group"
-msgstr "пользователей в группе"
-
-#: ../../htdocs/timeout.php:33
-msgid "min. of inactivity. You have been automatically logged out."
-msgstr "минут неактивности. Сеанс завершен автоматически."
-
-#: ../../htdocs/update.php:67 ../../htdocs/update.php:80
-msgid "modify attribute values"
-msgstr "изменить значения атрибутов"
-
-#: ../../lib/EntryWriter1.php:1860
-msgid "modify group members"
-msgstr "релактировать состав группы"
-
-#: ../../lib/HTMLTree.php:461
-msgid "new"
-msgstr "новая"
-
-#: ../../htdocs/add_oclass_form.php:76 ../../htdocs/add_oclass_form.php:81
-msgid "new attributes"
-msgstr "новые атрибуты"
-
-#: ../../htdocs/schema.php:158
-msgid "no description"
-msgstr "нет описания"
-
-#: ../../lib/functions.php:1793
-msgid "no description available"
-msgstr "описание отсутствует"
-
-#: ../../htdocs/entry_chooser.php:69
-msgid "no entries"
-msgstr "нет записей"
-
-#: ../../htdocs/add_attr_form.php:109
-msgid "no new attributes available for this entry"
-msgstr "для этой записи нет доступных новых атрибутов"
-
-#: ../../htdocs/add_attr_form.php:161
-msgid "no new binary attributes available for this entry"
-msgstr "для этой записи нет доступных новых бинарных атрибутов"
-
-#: ../../lib/EntryWriter1.php:405 ../../lib/EntryWriter1.php:418
-#: ../../lib/functions.php:2788 ../../htdocs/schema.php:175
-#: ../../htdocs/schema.php:257 ../../htdocs/schema.php:272
-#: ../../htdocs/schema.php:350 ../../htdocs/schema.php:419
-#: ../../htdocs/schema.php:439 ../../htdocs/schema.php:475
-#: ../../htdocs/schema.php:503
-msgid "none"
-msgstr "нет"
-
-#: ../../lib/EntryWriter1.php:2590 ../../htdocs/compare.php:359
-msgid "none, remove value"
-msgstr "пусто, удалите значение"
-
-#: ../../htdocs/schema.php:244
-msgid "not applicable"
-msgstr "неприменимый"
-
-#: ../../htdocs/schema.php:189 ../../htdocs/schema.php:201
-#: ../../htdocs/schema.php:206 ../../htdocs/schema.php:237
-msgid "not specified"
-msgstr "не указано"
-
-#: ../../htdocs/delete_form.php:54
-#, php-format
-msgid ""
-"phpLDAPadmin can recursively delete this entry and all %s of its children. "
-"See below for a list of all the entries that this action will delete. Do you "
-"want to do this?"
-msgstr ""
-"phpLDAPadmin может рекурсивно удалить эту запись и %s его потомков. Ниже "
-"список всех записей, которые будут удалены. Вы действительно хотите это "
-"сделать?"
-
-#: ../../htdocs/schema.php:33
-msgid "phpLDAPadmin doesn't know how to fetch the schema for your server."
-msgstr "Или phpLDAPadmin не знает как получить схему для вашего сервера."
-
-#: ../../htdocs/welcome.php:16
-msgid "phpLDAPadmin logo"
-msgstr "логотип phpLDAPadmin"
-
-#: ../../htdocs/search.php:124
-msgid "predefined search"
-msgstr "поиск по шаблону"
-
-#: ../../htdocs/purge_cache.php:13
-msgid "purge"
-msgstr "очистить"
-
-#: ../../lib/HTMLTree.php:41 ../../lib/EntryWriter1.php:1510
-#: ../../lib/EntryWriter2.php:211 ../../htdocs/compare.php:166
-msgid "read only"
-msgstr "только для чтения"
-
-#: ../../lib/HTMLTree.php:240
-msgid "refresh"
-msgstr "обновить"
-
-#: ../../htdocs/refresh.php:17
-msgid "refresh server"
-msgstr "обновить сервер"
-
-#: ../../lib/EntryWriter1.php:1829
-msgid "rename"
-msgstr "переименовать"
-
-#: ../../htdocs/rename.php:24
-msgid "rename entry"
-msgstr "переименовать запись"
-
-#: ../../lib/EntryWriter1.php:1962 ../../htdocs/compare.php:162
-msgid "required"
-msgstr "обязательный"
-
-#: ../../lib/HTMLTree.php:224
 msgid "schema"
 msgstr "схема"
 
-#: ../../lib/HTMLTree.php:232
+
 msgid "search"
 msgstr "поиск"
 
-#: ../../htdocs/search.php:266
-msgid "seconds"
-msgstr "секунд"
 
-#: ../../lib/EntryWriter1.php:368 ../../lib/EntryWriter2.php:23
-msgid "select the rdn attribute"
-msgstr "укажите атрибут rdn"
+msgid "create"
+msgstr "создать"
 
-#: ../../htdocs/search.php:128
-msgid "simple search"
-msgstr "простой поиск"
 
-#: ../../lib/EntryWriter1.php:961
-#, php-format
-msgid "step %s of %s"
-msgstr "шаг %s из %s"
+msgid "info"
+msgstr "инфо"
 
-#: ../../lib/EntryWriter1.php:2317 ../../htdocs/compare.php:392
-msgid "structural"
-msgstr "структурный"
 
-#: ../../htdocs/add_oclass_form.php:82
-msgid "that this objectClass requires."
-msgstr "которые являются обязательными."
+msgid "import"
+msgstr "импорт"
 
-#: ../../htdocs/mass_delete.php:96
-msgid "these"
-msgstr "эти"
 
-#: ../../htdocs/mass_delete.php:96
-msgid "this"
-msgstr "этот"
+msgid "refresh"
+msgstr "обновить"
 
-#: ../../htdocs/copy_form.php:51
-msgid "to a new object"
-msgstr "в новый объект"
 
-#: ../../lib/AttributeFactory.php:38 ../../htdocs/compare.php:357
+msgid "logout"
+msgstr "выйти"
+
+
+msgid "Create new entry here"
+msgstr "Создать новый"
+
+
+msgid "View schema for"
+msgstr "Просмотреть схему для"
+
+
+msgid "Refresh all expanded containers for"
+msgstr "Обновить все открытые контейнеры для"
+
+
+msgid "Create a new entry on"
+msgstr "Создать новую запись на"
+
+
+msgid "new"
+msgstr "новая"
+
+
+msgid "View server-supplied information"
+msgstr "Просмотреть информацию с сервера"
+
+
+msgid "Import entries from an LDIF file"
+msgstr "Импортировать записи из LDIF-файла"
+
+
+msgid "Logout of this server"
+msgstr "Выйти из этого сервера"
+
+
+msgid "Logged in as: "
+msgstr "Вошли как: "
+
+
+msgid "read only"
+msgstr "только для чтения"
+
+
+msgid "This attribute has been flagged as read only by the phpLDAPadmin administrator"
+msgstr "Этот атрибут установлен администратором только для чтения"
+
+
+msgid "Could not determine the root of your LDAP tree."
+msgstr "Не могу найти корень вашего LDAP дерева."
+
+
+msgid "It appears that the LDAP server has been configured to not reveal its root."
+msgstr "Похоже что ваш LDAP сервер сконфигурирован не показывать свой корень."
+
+
+msgid "Please specify it in config.php"
+msgstr "Укажите это в config.php"
+
+
+msgid "Create a new entry in"
+msgstr "Создать новую запись в"
+
+
+msgid "Login..."
+msgstr "Вход..."
+
+
+msgid "login"
+msgstr "войти"
+
+
+msgid "Delete this entry"
+msgstr "Удалить эту запись"
+
+
+msgid "You will be prompted to confirm this decision"
+msgstr "Вас попросят подтвердить Ваше решение"
+
+
+msgid "Copy or move this entry"
+msgstr "Скопировать эту запись"
+
+
+msgid "Copy this object to another location, a new DN, or another server"
+msgstr "Скопировать этот объект в другое место, в новый DN или на другой сервер"
+
+
+msgid "Export"
+msgstr "Экспорт"
+
+
+msgid "Save a dump of this object"
+msgstr "Сохранить дамп этого объекта"
+
+
+msgid "Save a dump of this object and all of its children"
+msgstr "Сохранить дамп этого объекта и всех его потомков"
+
+
+msgid "Export subtree"
+msgstr "Экспортировать ветвь"
+
+
+msgid "Create a child entry"
+msgstr "Создать потомка"
+
+
+msgid "Rename Entry"
+msgstr "Переименовать запись"
+
+
+msgid "Rename"
+msgstr "Переименовать"
+
+
+msgid "rename"
+msgstr "ÐÐµÑÐµÐžÐŒÐµÐœÐŸÐ²Ð°ÑÑ"
+
+
+msgid "Add"
+msgstr "Добавить"
+
+
+msgid "View"
+msgstr "Просмотреть"
+
+
+msgid "View 1 child"
+msgstr "Просмотреть 1 потомка"
+
+
+msgid "View %s children"
+msgstr "Просмотреть %s потомков"
+
+
+msgid "Add new attribute"
+msgstr "Добавить новый атрибут"
+
+
+msgid "Add new ObjectClass"
+msgstr "Добавить новый объект"
+
+
+msgid "Hide internal attributes"
+msgstr "Скрыть внутренние атрибуты"
+
+
+msgid "Show internal attributes"
+msgstr "Показать внутренние атрибуты"
+
+
+msgid "Click to view the schema defintion for attribute type '%s'"
+msgstr "Нажмите чтобы просмотреть описание схемы для атрибута '%s'"
+
+
+msgid "none"
+msgstr "нет"
+
+
+msgid "No internal attributes"
+msgstr "Нет внутренних атрибутов"
+
+
+msgid "This entry has no attributes"
+msgstr "Эта запись не имеет атрибутов"
+
+
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+
+msgid "add value"
+msgstr "добавить значение"
+
+
+msgid "Add an additional value to attribute '%s'"
+msgstr "Добавить дополнительное значение для атрибута '%s'"
+
+
+msgid "Refresh"
+msgstr "Обновить"
+
+
+msgid "Refresh this entry"
+msgstr "Обновить эту запись"
+
+
+msgid "Hint: To delete an attribute, empty the text field and click save."
+msgstr "Подсказка: Чтобы удалить атрибут - очистите текстовое поле и нажмите \"сохранить\""
+
+
+msgid "Hint: To view the schema for an attribute, click the attribute name."
+msgstr "Подсказка: Чтобы просмотреть схему атрибута - нажмите на его названии."
+
+
+msgid "Some attributes (%s) were modified and are highlighted below."
+msgstr "Некоторые атрибуты (%s) были модифицированы и теперь подсвечены ниже."
+
+
+msgid "An attribute (%s) was modified and is highlighted below."
+msgstr "Атрибут (%s) был модифицирован и теперь подсвечен ниже."
+
+
+msgid "Viewing entry in read-only mode."
+msgstr "Просмотр записи в режиме \"только для чтения\"."
+
+
+msgid "no new attributes available for this entry"
+msgstr "для этой записи нет доступных новых атрибутов"
+
+
+msgid "no new binary attributes available for this entry"
+msgstr "для этой записи нет доступных новых бинарных атрибутов"
+
+
+msgid "Binary value"
+msgstr "Бинарное значение"
+
+
+msgid "Add new binary attribute"
+msgstr "Добавить новый бинарный атрибут"
+
+
+msgid "Note: '%s' is an alias for '%s'"
+msgstr "Алиас для %s"
+
+
+msgid "download value"
+msgstr "загрузить значение"
+
+
+msgid "delete attribute"
+msgstr "удалить атрибут"
+
+
 msgid "true"
-msgstr "истина"
+msgstr "правда"
 
-#: ../../lib/functions.php:1277
-msgid ""
-"uidpool_dn not found. Please check filter (arg 3) or set up uidpool_dn in "
-"config file"
-msgstr ""
-"uidpool_dn не найден. Проверьте, указан ли данный параметр в файле "
-"конфигурации"
 
-#: ../../htdocs/update.php:46
-msgid ""
-"update_array is malformed. This might be a phpLDAPadmin bug. Please report "
-"it."
-msgstr ""
-"неправильно сформирован update_array. Возможно это ошибка phpLDAPadmin. "
-"Сообщите о ней."
+msgid "false"
+msgstr "ложь"
 
-#: ../../htdocs/add_value_form.php:93
-msgid "value to"
-msgstr "значение для"
 
-#: ../../htdocs/add_value_form.php:112
-msgid "values for attribute"
-msgstr "значений атрибутов"
+msgid "none, remove value"
+msgstr "пусто, удалите значение"
 
-#: ../../htdocs/delete_form.php:48
+
+msgid "Really delete attribute"
+msgstr "Действительно удалить значение"
+
+
+msgid "Add New Value"
+msgstr "Добавить новое значение"
+
+
+msgid "The server does not fully support the LDAP protocol."
+msgstr "Этот сервер не полностью поддерживает LDAP протокол."
+
+
+msgid "Your version of PHP does not correctly perform the query."
+msgstr "Ваша версия PHP неправильно обработала запрос."
+
+
+msgid "phpLDAPadmin doesn't know how to fetch the schema for your server."
+msgstr "Или phpLDAPadmin не знает как получить схему для вашего сервера."
+
+
+msgid "Jump to an objectClass"
+msgstr "Перейти к объекту"
+
+
+msgid "Jump to an attribute type"
+msgstr "Перейти к типам атрибутов"
+
+
+msgid "Jump to a matching rule"
+msgstr "Перейти к правилам соответствия"
+
+
+msgid "Schema for server"
+msgstr "Схема для сервера"
+
+
+msgid "Required Attributes"
+msgstr "Требуемые атрибуты"
+
+
+msgid "Optional Attributes"
+msgstr "Необязательные атрибуты"
+
+
+msgid "Optional Binary Attributes"
+msgstr "Необязательные бинарные атрибуты"
+
+
+msgid "OID"
+msgstr "OID"
+
+
+msgid "Aliases"
+msgstr "Алиасы"
+
+
+msgid "Description"
+msgstr "Описание"
+
+
+msgid "no description"
+msgstr "нет описания"
+
+
+msgid "Name"
+msgstr "Имя"
+
+
+msgid "Equality"
+msgstr "Равенство"
+
+
+msgid "This objectClass is obsolete."
+msgstr "Этот объект устарел."
+
+
+msgid "Inherits from"
+msgstr "Заимствует из"
+
+
+msgid "Inherited from"
+msgstr "Заимствован из"
+
+
+msgid "Parent to"
+msgstr "Родитель для"
+
+
+msgid "Jump to this objectClass definition"
+msgstr "Перейти к определению этого объекта"
+
+
+msgid "Matching Rule OID"
+msgstr "OID правила соответствия"
+
+
+msgid "Syntax OID"
+msgstr "OID синтаксиса"
+
+
+msgid "not applicable"
+msgstr "неприменимый"
+
+
+msgid "not specified"
+msgstr "не указано"
+
+
+msgid "character"
+msgstr "символ"
+
+
+msgid "characters"
+msgstr "символы"
+
+
+msgid "Used by objectClasses"
+msgstr "Используется объектами"
+
+
+msgid "Used by Attributes"
+msgstr "Использован атрибутами"
+
+
+msgid "Maximum Length"
+msgstr "Максимальная длина"
+
+
+msgid "Syntaxes"
+msgstr "Синтаксисы"
+
+
+msgid "Matching Rules"
+msgstr "Правила соответствия"
+
+
+msgid "Obsolete"
+msgstr "Устаревший"
+
+
+msgid "Ordering"
+msgstr "Сортировка"
+
+
+msgid "Substring Rule"
+msgstr "Правило подстроки"
+
+
+msgid "Single Valued"
+msgstr "Однозначный"
+
+
+msgid "Collective"
+msgstr "Совместный"
+
+
+msgid "User Modification"
+msgstr "Изменение пользователем"
+
+
+msgid "Usage"
+msgstr "Использование"
+
+
+msgid "Could not retrieve schema from"
+msgstr "Не могу получить схему из"
+
+
+msgid "Type"
+msgstr "Тип"
+
+
+msgid "Entry %s deleted successfully."
+msgstr "Запись %s успешно удалена."
+
+
+msgid "You must specify a DN"
+msgstr "Вы должны указать DN"
+
+
+msgid "Could not delete the entry: %s"
+msgstr "Не удалось удалить запись: %s"
+
+
+msgid "No such entry: %s"
+msgstr "Нет такой записи: %s"
+
+
+msgid "Delete %s"
+msgstr "Удалить %s"
+
+
+msgid "Permanently delete all children also?"
+msgstr "Также окончательно удалить всех потомков?"
+
+
+msgid "This entry is the root of a sub-tree containing %s entries."
+msgstr "Эта запись является корнем дерева содержащего %s записей."
+
+
 msgid "view entries"
 msgstr "просмотреть записи"
 
-#: ../../htdocs/schema.php:20
-msgid "view schema"
-msgstr "посмотреть схему"
 
-#: ../../htdocs/server_info.php:16
-msgid "view server informations"
-msgstr "посмотреть информацию о сервере"
+msgid "phpLDAPadmin can recursively delete this entry and all %s of its children. See below for a list of all the entries that this action will delete. Do you want to do this?"
+msgstr "phpLDAPadmin может рекурсивно удалить эту запись и %s его потомков. Ниже список всех записей, которые будут удалены. Вы действительно хотите это сделать?"
 
-#: ../../htdocs/update_confirm.php:312
-msgid "will delete the attribute(s)"
-msgstr "приведет к удалению атрибута(ов)"
 
-#: ../../htdocs/compare_form.php:29
-msgid "with "
-msgstr "с "
+msgid "Note: this is potentially very dangerous and you do this at your own risk. This operation cannot be undone. Take into consideration aliases, referrals, and other things that may cause problems."
+msgstr "Внимание: это потенциально очень опасно и вы делаете это на свой собственный риск. Эта операция не может быть отменена. Примите во внимание алиасы, ссылки и другие вещи, которые могум вызвать проблемы."
 
-#~ msgid "equals"
-#~ msgstr "равны"
 
-#~ msgid "contains"
-#~ msgstr "содержат"
+msgid "Delete all %s objects"
+msgstr "Удалить все %s объектов"
 
-#~ msgid "create"
-#~ msgstr "создать"
 
-#~ msgid "Create a new entry on"
-#~ msgstr "Создать новую запись на"
+msgid "Recursive delete progress"
+msgstr "Прогресс рекурсивного удаления"
 
-#~ msgid "Logged in as: "
-#~ msgstr "Вошли как: "
 
-#~ msgid "Copy this object to another location, a new DN, or another server"
-#~ msgstr ""
-#~ "Скопировать этот объект в другое место, в новый DN или на другой сервер"
+msgid "Entry %s and sub-tree deleted successfully."
+msgstr "Запись %s и ее потомки успешно удалены."
 
-#~ msgid "View"
-#~ msgstr "Просмотреть"
 
-#~ msgid "Click to view the schema defintion for attribute type '%s'"
-#~ msgstr "Нажмите чтобы просмотреть описание схемы для атрибута '%s'"
+msgid "Failed to delete entry %s"
+msgstr "Не удалось удалить запись %s"
 
-#~ msgid "Note: '%s' is an alias for '%s'"
-#~ msgstr "Алиас для %s"
 
-#~ msgid "Entry %s deleted successfully."
-#~ msgstr "Запись %s успешно удалена."
+msgid "List of entries to be deleted:"
+msgstr "Список записей на удаление:"
 
-#~ msgid ""
-#~ "Instructions: In order to add these objectClass(es) to this entry, you must "
-#~ "specify"
-#~ msgstr ""
-#~ "Инструкция: Чтобы добавить этот объект к этой записи, Вы должны указать"
 
-#~ msgid "that this objectClass requires. You can do so in this form."
-#~ msgstr "что требует этот объект. Вы можете это сделать в этой форме."
+msgid "Are you sure you want to permanently delete this object?"
+msgstr "Вы уверены, что хотите окончательно удалить этот объект?"
 
-#~ msgid "Bad server id"
-#~ msgstr "Неправильный id сервера"
-
-#~ msgid "Could not connect to LDAP server."
-#~ msgstr "Не могу подключиться к LDAP-серверу."
-
-#~ msgid "Server: "
-#~ msgstr "Сервер: "
-
-#~ msgid "Looking in: "
-#~ msgstr "Ищу в: "
-
-#~ msgid "No DN specified in query string!"
-#~ msgstr "Не указан DN в строке запроса!"
-
-#~ msgid ""
-#~ "Note: You will get an \"inappropriate matching\" error if you have not setup "
-#~ "an EQUALITY rule on your LDAP server for this attribute."
-#~ msgstr ""
-#~ "Внимание: Вы получите ошибку \"неподходящее соответствие\", если Вы "
-#~ "выставили правило \"равенство\"(EQUALITY) на Вашем LDAP-сервере для этого "
-#~ "атрибута."
-
-#~ msgid "Copy successful! Would you like to "
-#~ msgstr "Копирование прошло успешно! Вы хотите "
-
-#~ msgid "view the new entry"
-#~ msgstr "просмотреть новую запись"
-
-#~ msgid "Choose a template"
-#~ msgstr "Выберите шаблон"
-
-#~ msgid "Click here to go to the login form"
-#~ msgstr "Нажмите здесь чтобы перейти на форму входа на сервер"
-
-#~ msgid "Entries found: "
-#~ msgstr "Найдено записей: "
-
-#~ msgid "Filter performed: "
-#~ msgstr "Применен фильтр: "
-
-#~ msgid "Search performed by phpLDAPadmin in"
-#~ msgstr "phpLDAPadmin произвел поиск за"
-
-#~ msgid "starts with"
-#~ msgstr "начинаются с"
-
-#~ msgid "ends with"
-#~ msgstr "заканчиваются на"
-
-#~ msgid "sounds like"
-#~ msgstr "похожи на"
-
-#~ msgid ""
-#~ "Could not retrieve LDAP information from the server. This may be due to a <a "
-#~ "href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version of PHP "
-#~ "or perhaps your LDAP server has access control specified that prevents LDAP "
-#~ "clients from accessing the RootDSE."
-#~ msgstr "Не могу получить LDAP-информацию с сервера"
-
-#~ msgid "ChangeLog"
-#~ msgstr "Список изменений"
-
-#~ msgid "Unsafe file name: "
-#~ msgstr "Небезопастное имя файла: "
-
-#~ msgid "No such file: "
-#~ msgstr "Нет такого файла: "
-
-#~ msgid ""
-#~ "You have enabled auto_uid_numbers for <b>%s</b> in your configuration,       "
-#~ "                           but you have not specified the "
-#~ "auto_uid_number_mechanism. Please correct                                  "
-#~ "this problem."
-#~ msgstr ""
-#~ "Вы разрешили auto_uid_numbers для <b>%s</b> в Вашей конфигурации,            "
-#~ "                      но Вы не указали auto_uid_number_mechanism. Пожалуйста "
-#~ "исправьте эту проблему."
-
-#~ msgid ""
-#~ "You specified the \"auto_uid_number_mechanism\" as \"uidpool\"               "
-#~ "             in your configuration for server <b>%s</b>, but you did not "
-#~ "specify the                            audo_uid_number_uid_pool_dn. Please "
-#~ "specify it before proceeding."
-#~ msgstr ""
-#~ "Вы указали \"auto_uid_number_mechanism\" как \"uidpool\"                     "
-#~ "       в Вашей конфигурации для сервера <b>%s</b>, но не указали             "
-#~ "               audo_uid_number_uid_pool_dn. Исправьте это перед тем как "
-#~ "продолжить."
-
-#~ msgid ""
-#~ "It appears that the uidPool you specified in your configuration (\"%s\")     "
-#~ "                         does not exist."
-#~ msgstr ""
-#~ "Похоже что uidPool, который Вы указали в Вашей конфигурации (\"%s\")         "
-#~ "                     не существует."
-
-#~ msgid ""
-#~ "You specified the \"auto_uid_number_mechanism\" as \"search\" in your        "
-#~ "                      configuration for server <b>%s</b>, but you did not "
-#~ "specify the                              \"auto_uid_number_search_base\". "
-#~ "Please specify it before proceeding."
-#~ msgstr ""
-#~ "Вы указали \"auto_uid_number_mechanism\" как \"search\" в Вашей кофигурации  "
-#~ "                            для сервера <b>%s</b>, но не указали             "
-#~ "                 \"auto_uid_number_search_base\". Исправьте это перед тем "
-#~ "как продолжить."
-
-#~ msgid ""
-#~ "You specified an invalid value for auto_uid_number_mechanism (\"%s\")        "
-#~ "                           in your configration. Only \"uidpool\" and "
-#~ "\"search\" are valid.                                   Please correct this "
-#~ "problem."
-#~ msgstr ""
-#~ "Вы указали неверное значение для auto_uid_number_mechanism (\"%s\")          "
-#~ "                         в Вашей конфигурации. Возможны только \"uidpool\" и "
-#~ "\"search\".                                   Пожалуйста исправьте эту "
-#~ "проблему."
-
-#~ msgid ""
-#~ "Error: You have an error in your config file. The only three allowed values  "
-#~ "                                  for auth_type in the $servers section are "
-#~ "'session', 'cookie', and 'config'. You entered '%s',                         "
-#~ "           which is not allowed. "
-#~ msgstr ""
-#~ "Ошибка: В Вашем конфигурационном файле ошибка. Единственные три допустимых "
-#~ "значения                                    для auth_type в секции $servers -"
-#~ " 'session', 'cookie', и 'config'. Вы ввели '%s',                             "
-#~ "       что недопустимо. "
-
-#~ msgid "LDAP said: %s"
-#~ msgstr "LDAP ответил: %s"
-
-#~ msgid "Error number: %s (%s)"
-#~ msgstr "Номер ошибки: %s (%s)"
-
-#~ msgid "Description: %s <br /><br />"
-#~ msgstr "Описание: %s <br /><br />"
-
-#~ msgid "Error number: %s<br /><br />"
-#~ msgstr "Номер ошибки: %s<br /><br />"
-
-#~ msgid "Description: (no description available)<br />"
-#~ msgstr "Описание: (нет описания)<br />"
-
-#~ msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
-#~ msgstr ""
-#~ "Если это ошибка phpLDAPadmin - пожалуйста, <a href='%s'>сообщите о ней</a>."
-
-#~ msgid "Unrecognized error number: "
-#~ msgstr "Нераспознанная ошибка: "
-
-#~ msgid ""
-#~ "<center><table class='notice'><tr><td colspan='2'><center><img "
-#~ "src='images/warning.png' height='12' width='13' />             <b>You found "
-#~ "a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> "
-#~ "(<b>%s</b>)</td></tr><tr><td>File:</td>             <td><b>%s</b> line "
-#~ "<b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: "
-#~ "<b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>             </td></tr><tr><td>Web "
-#~ "server:</td><td><b>%s</b></td></tr>\t<tr><td colspan='2'><center><a "
-#~ "target='new' href='%s'>Please check and see if this bug has been reported "
-#~ "here</a>.</center></td></tr>\t<tr><td colspan='2'><center><a target='new' "
-#~ "href='%s'>If it hasnt been reported, you may report this bug by clicking "
-#~ "here</a>.</center></td></tr>\t</table></center><br />"
-#~ msgstr ""
-#~ "<center><table class='notice'><tr><td colspan='2'><center><img "
-#~ "src='images/warning.png' height='12' width='13' />             <b>Вы нашли "
-#~ "нефатальную ошибку "
-#~ "phpLDAPadmin!</b></td></tr><tr><td>Ошибка:</td><td><b>%s</b> "
-#~ "(<b>%s</b>)</td></tr><tr><td>Файл:</td>             <td><b>%s</b> строка "
-#~ "<b>%s</b>, вызвано <b>%s</b></td></tr><tr><td>Версии:</td><td>PLA: "
-#~ "<b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>             </td></tr><tr><td>Web "
-#~ "сервер:</td><td><b>%s</b></td></tr><tr><td colspan='2'><center><a "
-#~ "target='new' href='%s'>             Сообщите об этой ошибке нажав "
-#~ "здесь</a>.</center></td></tr></table></center><br />"
-
-#~ msgid ""
-#~ "Congratulations! You found a bug in phpLDAPadmin.<br /><br />\t     <table "
-#~ "class='bug'>\t     <tr><td>Error:</td><td><b>%s</b></td></tr>\t     "
-#~ "<tr><td>Level:</td><td><b>%s</b></td></tr>\t     "
-#~ "<tr><td>File:</td><td><b>%s</b></td></tr>\t     "
-#~ "<tr><td>Line:</td><td><b>%s</b></td></tr>\t\t "
-#~ "<tr><td>Caller:</td><td><b>%s</b></td></tr>\t     <tr><td>PLA "
-#~ "Version:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP "
-#~ "Version:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP "
-#~ "SAPI:</td><td><b>%s</b></td></tr>\t     <tr><td>Web "
-#~ "server:</td><td><b>%s</b></td></tr>\t     </table>\t     <br />\t     Please "
-#~ "report this bug by clicking below!"
-#~ msgstr ""
-#~ "Поздравляем! Вы нашли ошибку в phpLDAPadmin.<br /><br />\t     <table "
-#~ "class='bug'>\t     <tr><td>Ошибка:</td><td><b>%s</b></td></tr>\t     "
-#~ "<tr><td>Уровень:</td><td><b>%s</b></td></tr>\t     "
-#~ "<tr><td>Файл:</td><td><b>%s</b></td></tr>\t     "
-#~ "<tr><td>Строка:</td><td><b>%s</b></td></tr>\t\t "
-#~ "<tr><td>Вызвано:</td><td><b>%s</b></td></tr>\t     <tr><td>PLA "
-#~ "Версия:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP "
-#~ "Версия:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP "
-#~ "SAPI:</td><td><b>%s</b></td></tr>\t     <tr><td>Web "
-#~ "сервер:</td><td><b>%s</b></td></tr>\t     </table>\t     <br />\t     "
-#~ "Сообщите об этой ошибке нажав ниже!"
-
-#~ msgid "Select an LDIF file:"
-#~ msgstr "Выберите LDIF файл:"
-
-#~ msgid "Line Number:"
-#~ msgstr "Номер строки:"
-
-#~ msgid "Line:"
-#~ msgstr "Строка:"
-
-#~ msgid "Optional Binary Attributes"
-#~ msgstr "Необязательные бинарные атрибуты"
-
-#~ msgid "Maximum file size: %s"
-#~ msgstr "Максимальный размер файла: %s"
-
-#~ msgid "Back"
-#~ msgstr "Назад"
-
-#~ msgid "object"
-#~ msgstr "объект"
-
-#~ msgid "Delete all"
-#~ msgstr "Удалить все"
-
-#~ msgid "warning"
-#~ msgstr "предупреждение"
-
-#~ msgid "using template"
-#~ msgstr "использую шаблон"
-
-#~ msgid "Redirecting..."
-#~ msgstr "Переназначаю..."
-
-#~ msgid "here"
-#~ msgstr "сюда"
-
-#~ msgid "Step 1 of 2: Name and ObjectClass(es)"
-#~ msgstr "Шаг 1 из 2: Имя и класс(ы) объекта"
-
-#~ msgid "Step 2 of 2: Specify attributes and values"
-#~ msgstr "Шаг 2 из 2: Определение атрибутов и значений"
-
-#~ msgid "Relative Distinguished Name"
-#~ msgstr "Относительное оттличительное имя"
-
-#~ msgid "RDN"
-#~ msgstr "RDN"
-
-#~ msgid "(example: cn=MyNewPerson)"
-#~ msgstr "(пример: cn=MyNewPerson)"
-
-#~ msgid "Could not bind to the LDAP server."
-#~ msgstr "Не удалось привязаться к LDAP-серверу."
-
-#~ msgid "Successfully logged into server <b>%s</b>"
-#~ msgstr "Успешно вошли на сервер <b>%s</b>"
-
-#~ msgid "%s bytes"
-#~ msgstr "%s байт"
-
-#~ msgid "Searching..."
-#~ msgstr "Поиск..."
-
-#~ msgid "Logged out successfully from server <b>%s</b>"
-#~ msgstr "Успешно вышли с сервера <b>%s</b>"
-
-#~ msgid "Authenticate to server %s"
-#~ msgstr "Авторизация на сервере %s"
-
-#~ msgid "Warning: This web connection is unencrypted."
-#~ msgstr "Предупреждение: Это web-соединение нешифровано."
-
-#~ msgid "User name"
-#~ msgstr "Имя пользователя"
-
-#~ msgid ""
-#~ "You need to configure phpLDAPadmin. Edit the file 'config/config.php' to do "
-#~ "so. An example config file is provided in 'config/config.php.example'"
-#~ msgstr ""
-#~ "Вам надо сконфигурировать phpLDAPadmin. Отредактируйте файл 'config.php'. "
-#~ "Примерный файл настроек - 'config.php.example'"
-
-#~ msgid "Deletes not allowed in read only mode."
-#~ msgstr "Удаление невозможно в режиме \"только для чтения\"."
+
+msgid "DN"
+msgstr "DN"
+
+
+msgid "The attribute \"%s\" is flagged as read-only in the phpLDAPadmin configuration."
+msgstr "Этот атрибут \"%s\" установлен \"только для чтения\" в конфигурации phpLDAPadmin."
+
+
+msgid "No attribute name specified."
+msgstr "Не указано имя атрибута."
+
+
+msgid "No DN specified"
+msgstr "Не указан DN"
+
+
+msgid "You left the attribute value blank. Please go back and try again."
+msgstr "Вы оставили значение атрибута пустым. Вернитесь и попробуйте еще раз."
+
+
+msgid "Failed to add the attribute."
+msgstr "Не удалось добавить атрибут."
+
+
+msgid "The file you chose is either empty or does not exist. Please go back and try again."
+msgstr "Файл, который Вы выбрали или не существует или пуст. Пожалуйста вернитесь и попробуйте еще раз."
+
+
+msgid "Security error: The file being uploaded may be malicious."
+msgstr "Ошибка безопасности: Файл который Вы загрузили может иметь вредоносный код."
+
+
+msgid "Your PHP configuration has disabled file uploads. Please check php.ini before proceeding."
+msgstr "Ваша конфигурация PHP запрещает загрузку файлов. Проверьте php.ini перед тем как продолжить."
+
+
+msgid "The file you uploaded is too large. Please check php.ini, upload_max_size setting"
+msgstr "Файл, который Вы загрузили слишком велик. Проверьте php.ini, опцию upload_max_size"
+
+
+msgid "The file you selected was only partially uploaded, likley due to a network error."
+msgstr "Файл, который Вы выбрали был загружен только частично, вероятно из-за ошибки в сети."
+
+
+msgid "Maximum file size: %s"
+msgstr "Максимальный размер файла: %s"
+
+
+msgid "Modification successful!"
+msgstr "Изменения успешно произведены!"
+
+
+msgid "Since you changed your password, you must now login again with your new password."
+msgstr "Т.к. Вы изменили свой пароль, Вы должны войти заново, используя свой новый пароль."
+
+
+msgid "New Required Attributes"
+msgstr "Новые требуемые атрибуты"
+
+
+msgid "This action requires you to add"
+msgstr "Это действие требует добавить"
+
+
+msgid "new attributes"
+msgstr "новые атрибуты"
+
+
+msgid "Instructions: In order to add these objectClass(es) to this entry, you must specify"
+msgstr "Инструкция: Чтобы добавить этот объект к этой записи, Вы должны указать"
+
+
+msgid "that this objectClass requires. You can do so in this form."
+msgstr "что требует этот объект. Вы можете это сделать в этой форме."
+
+
+msgid "Add ObjectClass and Attributes"
+msgstr "Добавить объект и атрибуты"
+
+
+msgid "ObjectClasses"
+msgstr "Объекты"
+
+
+msgid "Click to popup a dialog to select an entry (DN) graphically"
+msgstr "Нажмите чтобы вызвать диалог для визуального выбора записи(DN)"
+
+
+msgid "You cannot perform updates while server is in read-only mode"
+msgstr "Вы не можете производить обновления до тех пор, пока сервер находится в режиме \"только для чтения\""
+
+
+msgid "Bad server id"
+msgstr "Неправильный id сервера"
+
+
+msgid "Not enough information to login to server. Please check your configuration."
+msgstr "Недостаточно информации чтобы подключиться к серверу. Проверьте Вашу конфигурацию."
+
+
+msgid "Could not connect to LDAP server."
+msgstr "Не могу подключиться к LDAP-серверу."
+
+
+msgid "Could not connect to \"%s\" on port \"%s\""
+msgstr "Не могу подключиться к \"%s\" на порт \"%s\""
+
+
+msgid "Could not perform ldap_mod_add operation."
+msgstr "Не удалось произвести операцию ldap_mod_add."
+
+
+msgid "Success"
+msgstr "Успешно"
+
+
+msgid "Server: "
+msgstr "Сервер: "
+
+
+msgid "Looking in: "
+msgstr "Ищу в: "
+
+
+msgid "No DN specified in query string!"
+msgstr "Не указан DN в строке запроса!"
+
+
+msgid "Back Up..."
+msgstr "Back Up..."
+
+
+msgid "no entries"
+msgstr "нет записей"
+
+
+msgid "Could not determine base DN"
+msgstr "Не могу выяснить основной DN"
+
+
+msgid "This could happen for several reasons, the most probable of which are:"
+msgstr "Это могло случится по нескольким причинам, наиболее вероятные это:"
+
+
+msgid "Yes"
+msgstr "Да"
+
+
+msgid "No"
+msgstr "Нет"
+
+
+msgid "Go"
+msgstr "Перейти"
+
+
+msgid "Delete"
+msgstr "Удалить"
+
+
+msgid "Back"
+msgstr "Назад"
+
+
+msgid "object"
+msgstr "объект"
+
+
+msgid "Delete all"
+msgstr "Удалить все"
+
+
+msgid "hint"
+msgstr "подсказка"
+
+
+msgid "bug"
+msgstr "ошибка"
+
+
+msgid "warning"
+msgstr "предупреждение"
+
+
+msgid "light"
+msgstr "свет"
+
+
+msgid "Proceed &gt;&gt;"
+msgstr "Далее &gt;&gt;"
+
+
+msgid "Add new"
+msgstr "Добавить новый"
+
+
+msgid "value to"
+msgstr "значение для"
+
+
+msgid "Distinguished Name"
+msgstr "Отличительное имя"
+
+
+msgid "Current list of"
+msgstr "Текущий список"
+
+
+msgid "values for attribute"
+msgstr "значений атрибутов"
+
+
+msgid "Note: You will get an \"inappropriate matching\" error if you have not setup an EQUALITY rule on your LDAP server for this attribute."
+msgstr "Внимание: Вы получите ошибку \"неподходящее соответствие\", если Вы выставили правило \"равенство\"(EQUALITY) на Вашем LDAP-сервере для этого атрибута."
+
+
+msgid "Enter the value you would like to add:"
+msgstr "Введите значение, которое Вы хотите добавить:"
+
+
+msgid "Note: You may be required to enter new attributes that these objectClass(es) require"
+msgstr "Внимание: Вам может потребоваться ввести новые атрибуты, которые требует этот объект"
+
+
+msgid "Syntax"
+msgstr "Синтакс"
+
+
+msgid "You left the destination DN blank."
+msgstr "Вы не заполнили конечный DN."
+
+
+msgid "The destination entry (%s) already exists."
+msgstr "Конечная запись (%s) уже сужествует."
+
+
+msgid "The destination container (%s) does not exist."
+msgstr "Конечный контейнер (%s) не существует."
+
+
+msgid "The source and destination DN are the same."
+msgstr "Исходный и конечный DN одинаковы."
+
+
+msgid "Copying "
+msgstr "Сопирую "
+
+
+msgid "Recursive copy progress"
+msgstr "Прогресс рекурсивного копирования"
+
+
+msgid "Building snapshot of tree to copy... "
+msgstr "Создаю копию состояния дерева для копирования... "
+
+
+msgid "Copy successful! Would you like to "
+msgstr "Копирование прошло успешно! Вы хотите "
+
+
+msgid "view the new entry"
+msgstr "просмотреть новую запись"
+
+
+msgid "Failed to copy DN: "
+msgstr "Не удалось скопировать DN: "
+
+
+msgid "Template"
+msgstr "Шаблон"
+
+
+msgid "using template"
+msgstr "использую шаблон"
+
+
+msgid "Go to %s"
+msgstr "Перейти к %s"
+
+
+msgid "Copy "
+msgstr "Копировать "
+
+
+msgid "to a new object"
+msgstr "в новый объект"
+
+
+msgid "Destination DN"
+msgstr "Конечный DN"
+
+
+msgid "The full DN of the new entry to be created when copying the source entry"
+msgstr "Полный DN новой записи будет создан при копировании исходной"
+
+
+msgid "Destination Server"
+msgstr "Конечный сервер"
+
+
+msgid "Hint: Copying between different servers only works if there are no schema violations"
+msgstr "Подсказка: Копирование между различными серверами сработает, если между ними нет противоречий в схемах"
+
+
+msgid "Recursively copy all children of this object as well."
+msgstr "Рекурсивно скопировать и всех потомков этого объекта."
+
+
+msgid "Recursive copy"
+msgstr "Рекурсивное копирование"
+
+
+msgid "Filter"
+msgstr "Фильтр"
+
+
+msgid "When performing a recursive copy, only copy those entries which match this filter"
+msgstr "Если производите рекурсивное копирование - копируйте только те записи, которые соответствуют этому фильтру"
+
+
+msgid "You left the value blank for required attribute (%s)."
+msgstr "Вы оставили пустым значение для требуемого атрибута (%s)."
+
+
+msgid "Redirecting..."
+msgstr "Переназначаю..."
+
+
+msgid "here"
+msgstr "сюда"
+
+
+msgid "Could not add the object to the LDAP server."
+msgstr "Не удалось добавить объект на LDAP-сервер."
+
+
+msgid "Create Object"
+msgstr "Создать объект"
+
+
+msgid "Choose a template"
+msgstr "Выберите шаблон"
+
+
+msgid "Select a template for the creation process"
+msgstr "Выберите шаблон для создания объекта"
+
+
+msgid "You left the RDN field blank."
+msgstr "Вы оставили RDN поле пустым."
+
+
+msgid "The container you specified (%s) does not exist. Please try again."
+msgstr "Контейнер, который Вы указали (%s) не существует. Попробуйте еще раз."
+
+
+msgid "You did not select any ObjectClasses for this object. Please go back and do so."
+msgstr "Вы не выбрали ни одного класса для этого объекта. Вернитесь и сделайте это."
+
+
+msgid "Hint: You must choose exactly one structural objectClass (shown in bold above)"
+msgstr "Подсказка: Вы должны выбрать как минимум один структурный класс"
+
+
+msgid "Step 1 of 2: Name and ObjectClass(es)"
+msgstr "Шаг 1 из 2: Имя и класс(ы) объекта"
+
+
+msgid "Step 2 of 2: Specify attributes and values"
+msgstr "Шаг 2 из 2: Определение атрибутов и значений"
+
+
+msgid "Relative Distinguished Name"
+msgstr "Относительное оттличительное имя"
+
+
+msgid "RDN"
+msgstr "RDN"
+
+
+msgid "(example: cn=MyNewPerson)"
+msgstr "(пример: cn=MyNewPerson)"
+
+
+msgid "Container"
+msgstr "Контейнер"
+
+
+msgid "You have not logged into the selected server yet, so you cannot perform searches on it."
+msgstr "Вы еще на вошли на выбранный сервер, поэтому Вы не можете производить на нем поиск."
+
+
+msgid "Click here to go to the login form"
+msgstr "Нажмите здесь чтобы перейти на форму входа на сервер"
+
+
+msgid "Unrecognized criteria option: "
+msgstr "Нераспознанный критерий поиска: "
+
+
+msgid "If you want to add your own criteria to the list. Be sure to edit search.php to handle them. Quitting."
+msgstr "Если Вы хотите добавить свои критерии поиска в список, отредактируйте search.php, чтобы они поддерживались. Выхожу."
+
+
+msgid "Entries found: "
+msgstr "Найдено записей: "
+
+
+msgid "Filter performed: "
+msgstr "Применен фильтр: "
+
+
+msgid "Search performed by phpLDAPadmin in"
+msgstr "phpLDAPadmin произвел поиск за"
+
+
+msgid "seconds"
+msgstr "секунд"
+
+
+msgid "Sub (entire subtree)"
+msgstr "Все (все поддерево)"
+
+
+msgid "One (one level beneath base)"
+msgstr "Один (один уровень под базовым)"
+
+
+msgid "Base (base dn only)"
+msgstr "База (только базовый dn)"
+
+
+msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))"
+msgstr "Стандартный фильтр поиска LDAP. Пример: (&(sn=Smith)(givenname=David))"
+
+
+msgid "Search Filter"
+msgstr "Фильтр поиска"
+
+
+msgid "A list of attributes to display in the results (comma-separated)"
+msgstr "Список атрибутов, которые отображать в результатах (разделенные запятыми)"
+
+
+msgid "equals"
+msgstr "равны"
+
+
+msgid "starts with"
+msgstr "начинаются с"
+
+
+msgid "contains"
+msgstr "содержат"
+
+
+msgid "ends with"
+msgstr "заканчиваются на"
+
+
+msgid "sounds like"
+msgstr "похожи на"
+
+
+msgid "Could not retrieve LDAP information from the server. This may be due to a <a href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version of PHP or perhaps your LDAP server has access control specified that prevents LDAP clients from accessing the RootDSE."
+msgstr "Не могу получить LDAP-информацию с сервера"
+
+
+msgid "Server info for: "
+msgstr "Информация о сервере: "
+
+
+msgid "Server reports the following information about itself"
+msgstr "Сервер сообщил о себе следующую информацию"
+
+
+msgid "This server has nothing to report."
+msgstr "Этому серверу нечего о себе сообщить."
+
+
+msgid "update_array is malformed. This might be a phpLDAPadmin bug. Please report it."
+msgstr "неправильно сформирован update_array. Возможно это ошибка phpLDAPadmin. Сообщите о ней."
+
+
+msgid "Could not perform ldap_modify operation."
+msgstr "Не удалось произвести операцию ldap_modify."
+
+
+msgid "Do you want to make these changes?"
+msgstr "Вы действительно хотите произвести эти изменения?"
+
+
+msgid "Attribute"
+msgstr "Атрибут"
+
+
+msgid "Old Value"
+msgstr "Старое значение"
+
+
+msgid "New Value"
+msgstr "Новое значение"
+
+
+msgid "[attribute deleted]"
+msgstr "[атрибут удален]"
+
+
+msgid "Commit"
+msgstr "Подтвердить"
+
+
+msgid "Cancel"
+msgstr "Отменить"
+
+
+msgid "You made no changes"
+msgstr "Вы не сделали никаких изменений"
+
+
+msgid "Go back"
+msgstr "Вернуться"
+
+
+msgid "Use the menu to the left to navigate"
+msgstr "Используйте меню слева для навигации"
+
+
+msgid "Credits"
+msgstr "Создатели"
+
+
+msgid "ChangeLog"
+msgstr "Список изменений"
+
+
+msgid "Donate"
+msgstr "Спонсировать"
+
+
+msgid "Unsafe file name: "
+msgstr "Небезопастное имя файла: "
+
+
+msgid "No such file: "
+msgstr "Нет такого файла: "
+
+
+msgid "You have enabled auto_uid_numbers for <b>%s</b> in your configuration,"
+"                                  but you have not specified the auto_uid_number_mechanism. Please correct"
+"                                  this problem."
+msgstr "Вы разрешили auto_uid_numbers для <b>%s</b> в Вашей конфигурации,"
+"                                  но Вы не указали auto_uid_number_mechanism. Пожалуйста исправьте эту проблему."
+
+
+msgid "You specified the \"auto_uid_number_mechanism\" as \"uidpool\""
+"                            in your configuration for server <b>%s</b>, but you did not specify the"
+"                            audo_uid_number_uid_pool_dn. Please specify it before proceeding."
+msgstr "Вы указали \"auto_uid_number_mechanism\" как \"uidpool\""
+"                            в Вашей конфигурации для сервера <b>%s</b>, но не указали"
+"                            audo_uid_number_uid_pool_dn. Исправьте это перед тем как продолжить."
+
+
+msgid "It appears that the uidPool you specified in your configuration (\"%s\")"
+"                              does not exist."
+msgstr "Похоже что uidPool, который Вы указали в Вашей конфигурации (\"%s\")"
+"                              не существует."
+
+
+msgid "You specified the \"auto_uid_number_mechanism\" as \"search\" in your"
+"                              configuration for server <b>%s</b>, but you did not specify the"
+"                              \"auto_uid_number_search_base\". Please specify it before proceeding."
+msgstr "Вы указали \"auto_uid_number_mechanism\" как \"search\" в Вашей кофигурации"
+"                              для сервера <b>%s</b>, но не указали"
+"                              \"auto_uid_number_search_base\". Исправьте это перед тем как продолжить."
+
+
+msgid "Unable to bind to <b>%s</b> with your with auto_uid credentials. Please check your configuration file."
+msgstr "Не могу привязаться к <b>%s</b> с Вашими auto_uid данными. Проверьте Ваш файл конфигурации."
+
+
+msgid "Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base for server %s"
+msgstr "В Вашей конфигурации phpLDAPadmin указано неверное значение для auto_uid_search_base для сервера %s"
+
+
+msgid "You specified an invalid value for auto_uid_number_mechanism (\"%s\")"
+"                                   in your configration. Only \"uidpool\" and \"search\" are valid."
+"                                   Please correct this problem."
+msgstr "Вы указали неверное значение для auto_uid_number_mechanism (\"%s\")"
+"                                   в Вашей конфигурации. Возможны только \"uidpool\" и \"search\"."
+"                                   Пожалуйста исправьте эту проблему."
+
+
+msgid "Error: You have an error in your config file. The only three allowed values"
+"                                    for auth_type in the $servers section are 'session', 'cookie', and 'config'. You entered '%s',"
+"                                    which is not allowed. "
+msgstr "Ошибка: В Вашем конфигурационном файле ошибка. Единственные три допустимых значения"
+"                                    для auth_type в секции $servers - 'session', 'cookie', и 'config'. Вы ввели '%s',"
+"                                    что недопустимо. "
+
+
+msgid "Your PHP install does not support TLS."
+msgstr "Ваша установленная версия PHP не поддерживает TLS."
+
+
+msgid "Could not start TLS. Please check your LDAP server configuration."
+msgstr "Не могу запустить TLS. Проверьте конфигурацию Вашего LDAP-сервера."
+
+
+msgid "Could not bind anonymously to server."
+msgstr "Не могу анонимно привязаться к серверу."
+
+
+msgid "Could not bind to the LDAP server."
+msgstr "Не удалось привязаться к LDAP-серверу."
+
+
+msgid "Anonymous Bind"
+msgstr "Анонимная привязка"
+
+
+msgid "Bad username or password. Please try again."
+msgstr "Неверное имя или пароль. Попробуйте еще раз."
+
+
+msgid "Successfully logged into server <b>%s</b>"
+msgstr "Успешно вошли на сервер <b>%s</b>"
+
+
+msgid "Could not set cookie."
+msgstr "Не удалось установить cookie."
+
+
+msgid "LDAP said: %s"
+msgstr "LDAP ответил: %s"
+
+
+msgid "Error"
+msgstr "Ошибка"
+
+
+msgid "browse"
+msgstr "просмотр"
+
+
+msgid "Delete Photo"
+msgstr "Удалить фотографию"
+
+
+msgid "Your system crypt library does not support blowfish encryption."
+msgstr "Ваша установленная версия PHP не поддерживает шифрование blowfish."
+
+
+msgid "Your system crypt library does not support md5crypt encryption."
+msgstr "Ваша установленная версия PHP не поддерживает шифрование md5crypt."
+
+
+msgid "Your PHP install does not have the mhash() function. Cannot do SHA hashes."
+msgstr "Ваша установленная версия PHP не имеет функцию mhash(). Не могу создать хэши SHA."
+
+
+msgid "jpegPhoto contains errors<br />"
+msgstr "jpegPhoto содержит ошибки<br />"
+
+
+msgid "Error number: %s (%s)"
+msgstr "Номер ошибки: %s (%s)"
+
+
+msgid "Description: %s <br /><br />"
+msgstr "Описание: %s <br /><br />"
+
+
+msgid "Error number: %s<br /><br />"
+msgstr "Номер ошибки: %s<br /><br />"
+
+
+msgid "Description: (no description available)<br />"
+msgstr "Описание: (нет описания)<br />"
+
+
+msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
+msgstr "Если это ошибка phpLDAPadmin - пожалуйста, <a href='%s'>сообщите о ней</a>."
+
+
+msgid "Unrecognized error number: "
+msgstr "Нераспознанная ошибка: "
+
+
+msgid "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
+"             <b>You found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>"
+"             <td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
+"             </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	<tr><td colspan='2'><center><a target='new' href='%s'>Please check and see if this bug has been reported here</a>.</center></td></tr>"
+"	<tr><td colspan='2'><center><a target='new' href='%s'>If it hasnt been reported, you may report this bug by clicking here</a>.</center></td></tr>"
+"	</table></center><br />"
+msgstr "<center><table class='notice'><tr><td colspan='2'><center><img src='images/warning.png' height='12' width='13' />"
+"             <b>Вы нашли нефатальную ошибку phpLDAPadmin!</b></td></tr><tr><td>Ошибка:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Файл:</td>"
+"             <td><b>%s</b> строка <b>%s</b>, вызвано <b>%s</b></td></tr><tr><td>Версии:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>"
+"             </td></tr><tr><td>Web сервер:</td><td><b>%s</b></td></tr><tr><td colspan='2'><center><a target='new' href='%s'>"
+"             Сообщите об этой ошибке нажав здесь</a>.</center></td></tr></table></center><br />"
+
+
+msgid "Congratulations! You found a bug in phpLDAPadmin.<br /><br />"
+"	     <table class='bug'>"
+"	     <tr><td>Error:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Level:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>File:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Line:</td><td><b>%s</b></td></tr>"
+"		 <tr><td>Caller:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PLA Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP Version:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Web server:</td><td><b>%s</b></td></tr>"
+"	     </table>"
+"	     <br />"
+"	     Please report this bug by clicking below!"
+msgstr "Поздравляем! Вы нашли ошибку в phpLDAPadmin.<br /><br />"
+"	     <table class='bug'>"
+"	     <tr><td>Ошибка:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Уровень:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Файл:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Строка:</td><td><b>%s</b></td></tr>"
+"		 <tr><td>Вызвано:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PLA Версия:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP Версия:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>"
+"	     <tr><td>Web сервер:</td><td><b>%s</b></td></tr>"
+"	     </table>"
+"	     <br />"
+"	     Сообщите об этой ошибке нажав ниже!"
+
+
+msgid "Import LDIF File"
+msgstr "Иморт LDIF файла"
+
+
+msgid "Select an LDIF file:"
+msgstr "Выберите LDIF файл:"
+
+
+msgid "Don't stop on errors"
+msgstr "Не останавливаться на ошибках"
+
+
+msgid "Adding..."
+msgstr "Добавляю..."
+
+
+msgid "Deleting..."
+msgstr "Удаляю..."
+
+
+msgid "Renaming..."
+msgstr "Переименовываю..."
+
+
+msgid "Modifying..."
+msgstr "Изменяю..."
+
+
+msgid "No version found. Assuming 1."
+msgstr "Не найдено номера версии. Предполагаю 1."
+
+
+msgid "A valid dn line is required."
+msgstr "Требуется правильная строка с dn."
+
+
+msgid "Missing uploaded file."
+msgstr "Отсутствует загруженный файл."
+
+
+msgid "Uploaded LDIF file is empty."
+msgstr "Загруженный LDIF файл пуст."
+
+
+msgid "empty"
+msgstr "пуст"
+
+
+msgid "File"
+msgstr "Файл"
+
+
+msgid "%s bytes"
+msgstr "%s байт"
+
+
+msgid "Failed"
+msgstr "Не удалось"
+
+
+msgid "LDIF Parse Error"
+msgstr "Ошибка интерпретации LDIF файла"
+
+
+msgid "Could not add object:"
+msgstr "Не удалось добавить объект:"
+
+
+msgid "Could not rename object:"
+msgstr "Не удалось переименовать объект:"
+
+
+msgid "Could not delete object:"
+msgstr "Не удалось удалить объект:"
+
+
+msgid "Could not modify object:"
+msgstr "Не удалось изменить объект:"
+
+
+msgid "Line Number:"
+msgstr "Номер строки:"
+
+
+msgid "Line:"
+msgstr "Строка:"
+
+
+msgid "Export format"
+msgstr "Формат экспорта"
+
+
+msgid "Line ends"
+msgstr "Конец строки"
+
+
+msgid "You must choose an export format."
+msgstr "Вы должны выбрать формат экспорта."
+
+
+msgid "Invalid export format"
+msgstr "Неверный формат экспорта"
+
+
+msgid "No available exporter found."
+msgstr "Нет доступных экспортеров."
+
+
+msgid "Encountered an error while performing search."
+msgstr "Произошла ошибка во время поиска."
+
+
+msgid "Showing results %s through %s."
+msgstr "Показываю результаты с %s по %s."
+
+
+msgid "Searching..."
+msgstr "Поиск..."
+
+
+msgid "Notice, search size limit exceeded."
+msgstr "Внимание, превышен размер поиска."
+
+
+msgid "Entry"
+msgstr "Запись"
+
+
+msgid "LDIF Export for: %s"
+msgstr "LDIF экспорт для: %s"
+
+
+msgid "Generated by phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) on %s"
+msgstr "Сгенерировано phpLDAPadmin %s"
+
+
+msgid "Total Entries"
+msgstr "Всего записей"
+
+
+msgid "DSLM Export for: %s"
+msgstr "DSLM экспорт для: %s"
+
+
+msgid "You left the password blank."
+msgstr "Вы не ввели пароль."
+
+
+msgid "No one is logged in to that server."
+msgstr "На этом сервере сейчас никого нет."
+
+
+msgid "Could not logout."
+msgstr "Не удалось выйти."
+
+
+msgid "Unknown auth_type: %s"
+msgstr "Неизвестный auth_type: %s"
+
+
+msgid "Logged out successfully from server <b>%s</b>"
+msgstr "Успешно вышли с сервера <b>%s</b>"
+
+
+msgid "Authenticate to server %s"
+msgstr "Авторизация на сервере %s"
+
+
+msgid "Warning: This web connection is unencrypted."
+msgstr "Предупреждение: Это web-соединение нешифровано."
+
+
+msgid "You are not using 'https'. Web browser will transmit login information in clear text."
+msgstr "Вы не используете 'https'. Web-браузер передает авторизационные данные открытым текстом."
+
+
+msgid "Login DN"
+msgstr "Login DN"
+
+
+msgid "User name"
+msgstr "Имя пользователя"
+
+
+msgid "Password"
+msgstr "Пароль"
+
+
+msgid "Authenticate"
+msgstr "Авторизация"
+
+
+msgid "Entry Chooser"
+msgstr "Выбор записи"
+
+
+msgid "You need to configure phpLDAPadmin. Edit the file 'config/config.php' to do so. An example config file is provided in 'config/config.php.example'"
+msgstr "Вам надо сконфигурировать phpLDAPadmin. Отредактируйте файл 'config.php'. Примерный файл настроек - 'config.php.example'"
+
+
+msgid "Deletes not allowed in read only mode."
+msgstr "Удаление невозможно в режиме \"только для чтения\"."
+
+
+msgid "Error calling mass_delete.php. Missing mass_delete in POST vars."
+msgstr "Ошибка вызова mass_delete.php. Отсутствует mass_delete в POST переменных."
+
+
+msgid "mass_delete POST var is not an array."
+msgstr "POST переменная mass_delete не в массиве."
+
+
+msgid "Mass deletion is not enabled. Please enable it in config.php before proceeding."
+msgstr "Массовое удаление не разрешено. Испровьте это в config.php перед тем как продолжить."
+
+
+msgid "Mass Deleting"
+msgstr "Массовое удаление"
+
+
+msgid "Deletion progress on server \"%s\""
+msgstr "Прогресс удаления на сервере \"%s\""
+
+
+msgid "Malformed mass_delete array."
+msgstr "Неправильно сформированный массив mass_delete."
+
+
+msgid "You did not select any entries to delete."
+msgstr "Вы не выбрали ни одной записи для удаления."
+
+
+msgid "Deleting %s"
+msgstr "Удаляю %s"
+
+
+msgid "%s of %s entries failed to be deleted."
+msgstr "Не удалось удалить %s из %s записей."
+
+
+msgid "All entries deleted successfully."
+msgstr "Все записи успешно удалены."
+
+
+msgid "Confirm mass delete of %s entries on server %s"
+msgstr "Подтвердите массовое удаление %s записей на сервере %s"
+
+
+msgid "Yes, delete!"
+msgstr "Да, удалить!"
+
+
+msgid "You cannot rename an entry which has children entries (eg, the rename operation is not allowed on non-leaf entries)"
+msgstr "Вы не можете переименовать запись, которая имеет потомков (т.е., операция переименования не допустима для дерева)"
+
+
+msgid "You did not change the RDN"
+msgstr "Вы не изменили RDN"
+
+
+msgid "Invalid RDN value"
+msgstr "Неверное значение RDN"
+
+
+msgid "Could not rename the entry"
+msgstr "Не удалось переименовать запись"
+
+

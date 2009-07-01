@@ -1,81 +1,68 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/add_oclass_form.php,v 1.25.2.2 2008/12/12 12:20:22 wurley Exp $
+// $Header$
 
 /**
- * This page may simply add the objectClass and take you back to the edit page,
- * but, in one condition it may prompt the user for input. That condition is this:
- *
- *    If the user has requested to add an objectClass that requires a set of
- *    attributes with 1 or more not defined by the object. In that case, we will
- *    present a form for the user to add those attributes to the object.
- *
- * Variables that come in as REQUEST vars:
- *  - dn (rawurlencoded)
- *  - new_oclass
+ * This page will allow the adding of additional ObjectClasses to an item.
+ * + If the ObjectClass to be added requires additional MUST attributes to be
+ *   defined, then they will be prompted for.
+ * + If the ObjectClass doesnt need any additional MUST attributes, then it
+ *   will be silently added to the object.
  *
  * @package phpLDAPadmin
- * @todo If an attribute expects a DN, show the dn browser.
+ * @subpackage Page
  */
+
 /**
  */
+
 require './common.php';
 
-$entry = array();
-$entry['oclass']['new'] = get_request('new_oclass','REQUEST');
-$entry['dn']['string'] = get_request('dn','REQUEST');
+# The DN and OBJECTCLASS we are working with.
+$request = array();
+$request['dn'] = get_request('dn','REQUEST',true);
 
-if ($ldapserver->isReadOnly())
-	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
+# Check if the entry exists.
+if (! $request['dn'] || ! $app['server']->dnExists($request['dn']))
+	error(sprintf(_('The entry (%s) does not exist.'),$request['dn']),'error','index.php');
 
-if (! $entry['oclass']['new'])
-	error(_('You did not select any ObjectClasses for this object. Please go back and do so.'),'error','index.php');
+$request['page'] = new TemplateRender($app['server']->getIndex(),get_request('template','REQUEST',false,'none'));
+$request['page']->setDN($request['dn']);
+$request['page']->accept(true);
+$request['template'] = $request['page']->getTemplate();
 
-/* Ensure that the object has defined all MUST attrs for this objectClass.
- * If it hasn't, present a form to have the user enter values for all the
- * newly required attrs.
- */
-
-$entry['dn']['attrs'] = $ldapserver->getDNAttrs($entry['dn']['string'],true);
-
-$entry['attrs']['current'] = array();
-foreach ($entry['dn']['attrs'] as $attr => $junk)
-	$entry['attrs']['current'][] = strtolower($attr);
+$attribute_factory = new AttributeFactory();
 
 # Grab the required attributes for the new objectClass
-$ldap['oclasses'] = $ldapserver->SchemaObjectClasses();
+$ldap = array();
 $ldap['attrs']['must'] = array();
-foreach ($entry['oclass']['new'] as $oclass_name) {
-	$ldap['oclass'] = $ldapserver->getSchemaObjectClass($oclass_name);
 
-	if ($ldap['oclass'])
-		$ldap['attrs']['must'] = array_merge($ldap['attrs']['must'],$ldap['oclass']->getMustAttrNames($ldap['oclasses']));
+foreach ($request['template']->getAttribute('objectclass')->getValues() as $oclass_name) {
+	# Exclude "top" if its there.
+	if (! strcasecmp('top',$oclass_name))
+		continue;
+
+	if ($soc = $app['server']->getSchemaObjectClass($oclass_name))
+		$ldap['attrs']['must'] = array_merge($ldap['attrs']['must'],$soc->getMustAttrNames(true));
 }
+
 $ldap['attrs']['must'] = array_unique($ldap['attrs']['must']);
 
 /* Build a list of the attributes that this new objectClass requires,
- * but that the object does not currently contain
- */
+ * but that the object does not currently contain */
 $ldap['attrs']['need'] = array();
-foreach ($ldap['attrs']['must'] as $attr) {
-	$attr = $ldapserver->getSchemaAttribute($attr);
+foreach ($ldap['attrs']['must'] as $attr)
+	if (is_null($request['template']->getAttribute($attr)))
+		array_push($ldap['attrs']['need'],$attribute_factory->newAttribute($attr,array('values'=>array()),$app['server']->getIndex()));
 
-	# First, check if one of this attr's aliases is already an attribute of this entry
-	foreach ($attr->getAliases() as $alias_attr_name)
-		if (in_array(strtolower($alias_attr_name),$entry['attrs']['current']))
-			continue;
-
-	if (in_array(strtolower($attr->getName()),$entry['attrs']['current']))
-		continue;
-
-	/* We made it this far, so the attribute needs to be added to this entry in order
-	 * to add this objectClass */
-	$ldap['attrs']['need'][] = $attr;
-}
+# Mark all the need attributes as shown
+foreach ($ldap['attrs']['need'] as $index => $values)
+	$ldap['attrs']['need'][$index]->show();
 
 if (count($ldap['attrs']['need']) > 0) {
-	printf('<h3 class="title">%s</h3>',_('New Required Attributes'));
-	printf('<h3 class="subtitle">%s %s %s</h3>',_('This action requires you to add'),count($ldap['attrs']['need']),_('new attributes'));
+	$request['page']->drawTitle(sprintf('%s <b>%s</b>',_('Add new objectClass to'),get_rdn($request['dn'])));
+	$request['page']->drawSubTitle();
 
+	echo '<center>';
 	printf('<small><b>%s: </b>%s <b>%s</b> %s %s</small>',
 		_('Instructions'),
 		_('In order to add these objectClass(es) to this entry, you must specify'),
@@ -84,39 +71,44 @@ if (count($ldap['attrs']['need']) > 0) {
 
 	echo '<br /><br />';
 
-	echo '<form action="cmd.php" method="post">';
-	echo '<input type="hidden" name="cmd" value="add_oclass" />';
-	printf('<input type="hidden" name="new_oclass" value="%s" />',rawurlencode(serialize($entry['oclass']['new'])));
-	printf('<input type="hidden" name="dn" value="%s" />',rawurlencode($entry['dn']['string']));
-	printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
+	echo '<form action="cmd.php" method="post" name="entry_form">';
+
+	if ($_SESSION[APPCONFIG]->getValue('confirm','update'))
+		echo '<input type="hidden" name="cmd" value="update_confirm" />';
+	else
+		echo '<input type="hidden" name="cmd" value="update" />';
+
+	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
+	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($request['dn']));
 
 	echo '<table class="entry" cellspacing="0">';
 	printf('<tr><th colspan="2">%s</th></tr>',_('New Required Attributes'));
 
-	foreach ($ldap['attrs']['need'] as $count => $attr) {
-		printf('<tr><td class="title">%s</td></tr>',htmlspecialchars($attr->getName()));
-		printf('<tr><td class="value"><input type="text" name="new_attrs[%s]" value="" size="40" /></td></tr>',htmlspecialchars($attr->getName()));
+	$counter = 0;
+	foreach ($request['template']->getAttribute('objectclass')->getValues() as $value) {
+		echo '<tr><td colspan=2>';
+		$request['page']->draw('HiddenValue',$request['template']->getAttribute('objectclass'),$counter++);
+		echo '</td></tr>';
 	}
+
+	foreach ($ldap['attrs']['need'] as $count => $attr)
+		$request['page']->draw('Template',$attr);
 
 	echo '</table>';
 
-	echo '<br /><br />';
+	echo '<br />';
 
 	printf('<center><input type="submit" value="%s" /></center>',_('Add ObjectClass and Attributes'));
 	echo '</form>';
+	echo '</center>';
 
+# There are no other required attributes, so we just need to add the objectclass to the DN.
 } else {
-	$result = $ldapserver->attrModify($entry['dn']['string'],array('objectClass'=>$entry['oclass']['new']));
+	$result = $app['server']->modify($request['dn'],$request['template']->getLDAPmodify());
 
-	if (! $result)
-		system_message(array(
-			'title'=>_('Could not perform ldap_mod_add operation.'),
-			'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
-			'type'=>'error'));
-
-	else {
-		$href = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s&modified_attrs[]=objectClass',
-			$ldapserver->server_id,rawurlencode($entry['dn']['string']));
+	if ($result) {
+		$href = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s&modified_attrs[]=objectclass',
+			$app['server']->getIndex(),rawurlencode($request['dn']));
 
 		header(sprintf('Location: %s',$href));
 		die();

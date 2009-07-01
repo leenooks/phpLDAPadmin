@@ -1,37 +1,42 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/rename_form.php,v 1.11.2.2 2008/12/12 12:20:22 wurley Exp $
+// $Header$
 
 /**
  * Displays a form for renaming an LDAP entry.
  *
- * Variables that come in via common.php
- *  - server_id
- * Variables that come in as GET vars:
- *  - dn (rawurlencoded)
- *
  * @package phpLDAPadmin
+ * @subpackage Page
  */
+
 /**
  */
 
 require './common.php';
 
-if ($ldapserver->isReadOnly())
-	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
-if (! $ldapserver->haveAuthInfo())
-	error(_('Not enough information to login to server. Please check your configuration.'),'error','index.php');
+# The DN we are working with
+$request = array();
+$request['dn'] = get_request('dn','GET');
+$request['template'] = get_request('template','GET');
 
-$dn = $_GET['dn'];
-$rdn = get_rdn($dn);
+$request['page'] = new PageRender($app['server']->getIndex(),get_request('template','REQUEST',false,'none'));
+$request['page']->setDN($request['dn']);
+$request['page']->accept();
 
-printf('<h3 class="title">%s <b>%s</b></h3>',_('Rename Entry'),htmlspecialchars($rdn));
-printf('<h3 class="subtitle">%s: <b>%s</b> &nbsp;&nbsp;&nbsp; %s: <b>%s</b></h3>',
-	_('Server'),$ldapserver->name,_('Distinguished Name'),htmlspecialchars($dn));
+# Render the form
+$request['page']->drawTitle(sprintf('%s <b>%s</b>',_('Rename'),get_rdn($request['dn'])));
+$request['page']->drawSubTitle();
 
-echo '<br /><center><form action="cmd.php?cmd=rename" method="post" />';
-printf('<input type="hidden" name="server_id" value="%s" />',$ldapserver->server_id);
-printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($dn));
-printf('<input type="text" name="new_rdn" size="30" value="%s" />',htmlspecialchars($rdn));
+echo '<center>';
+printf('%s <b>%s</b> %s:<br /><br />',_('Rename'),get_rdn($request['dn']),_('to a new object'));
+
+echo '<form action="cmd.php?cmd=rename" method="post" />';
+printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
+printf('<input type="hidden" name="dn" value="%s" />',rawurlencode($request['dn']));
+printf('<input type="hidden" name="template" value="%s" />',$request['template']);
+printf('<input type="text" name="new_rdn" size="30" value="%s" />',get_rdn($request['dn']));
 printf('<input type="submit" value="%s" />',_('Rename'));
-echo '</form></center>';
+echo '</form>';
+
+echo '</center>';
+echo "\n";
 ?>

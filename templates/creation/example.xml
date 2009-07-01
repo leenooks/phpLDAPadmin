@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE template SYSTEM "template.dtd">
+
 <template>
-<title>Example entry</title>
-<regexp>^$</regexp>
-<icon>images/star.png</icon>
+<askcontainer>1</askcontainer>
 <description>This is the description</description>
+<icon>images/star.png</icon>
+<invalid>1</invalid>
 <rdn>o</rdn>
+<regexp>^$</regexp>
+<title>Example entry</title>
 <visible>0</visible>
 
 <objectClasses>
@@ -14,7 +17,6 @@
 
 <attributes>
 <attribute id="attribute1">
-	<description>This is the attribute description</description>
 	<display>Attribute 1</display>
 	<hint>This is an example</hint>
 	<icon>images/user.png</icon>
@@ -22,16 +24,15 @@
 	<page>1</page>
 </attribute>
 <attribute id="attribute2">
-	<description>This is the attribute description</description>
 	<display>Attribute 2</display>
 	<order>2</order>
 	<page>2</page>
 </attribute>
 <attribute id="attribute3">
-	<description>This is the attribute description</description>
 	<display>Attribute 3</display>
 	<order>1</order>
 	<page>2</page>
 </attribute>
 </attributes>
+
 </template>

@@ -1,11 +1,18 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/GidAttribute.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header$
 
 /**
- * @package phpLDAPadmin
- * @author Xavier Bruyet
+ * Classes and functions for the template engine.
  *
- * Represents an attribute 'gidNumber'
+ * @author The phpLDAPadmin development team
+ * @package phpLDAPadmin
+ */
+
+/**
+ * Represents a 'gidNumber' attribute
+ *
+ * @package phpLDAPadmin
+ * @subpackage Templates
  */
 class GidAttribute extends Attribute {
 }

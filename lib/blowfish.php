@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/blowfish.php,v 1.4.2.1 2008/12/12 12:20:22 wurley Exp $
+// $Header$
 
 /**
  * The Cipher_blowfish:: class implements the Cipher interface enryption data
@@ -13,7 +13,7 @@
  * did not receive this file, see http://www.fsf.org/copyleft/lgpl.html.
  *
  * @author  Mike Cochrane <mike@graftonhall.co.nz>
- * @version $Revision: 1.4.2.1 $
+ * @version $Revision$
  * @since   Horde 2.2
  * @package horde.cipher
  */
@@ -442,7 +442,7 @@ class Horde_Cipher_blowfish {
 	if (! is_array($unpack))
 		error(
 			sprintf('BLOWFISH: decryptBock()<br>We expected unpack to produce an array, but instead it produced [%s]. This function was entered with (%s,%s). If you think that this is a bug, then please tell the PLA developers how you got here. You are using PLA [%s,%s]',
-				serialize($unpack),rawurlencode($block),$key,pla_version(),phpversion()),'error','index.php');
+				serialize($unpack),$block,$key,app_version(),phpversion()),'error','index.php');
 
         list($L, $R) = array_values($unpack);
 

@@ -66,8 +66,7 @@
 					(RDN) of an object."
 0x44	LDAP_ALREADY_EXISTS		"The object already exists. Usually you are trying to create a new object
 					on top of an existing one."
-0x45	LDAP_NO_OBJECT_CLASS_MODS	"ObjectClass modifications are not
-					allolwed."
+0x45	LDAP_NO_OBJECT_CLASS_MODS	"ObjectClass modifications are not allowed."
 0x46	LDAP_RESULTS_TOO_LARGE		""
 0x47	LDAP_AFFECTS_MULTIPLE_DSAS	""
 0x50	LDAP_OTHER			""

@@ -1,37 +1,28 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/logout.php,v 1.20.2.2 2008/12/12 12:20:22 wurley Exp $
+// $Header$
 
 /**
- * For servers whose auth_type is set to 'cookie' or 'session'. Pass me
- * the server_id and I will log out the user (delete the cookie)
- *
- * Variables that come in via common.php
- *  - server_id
+ * Log the user out of the application.
  *
  * @package phpLDAPadmin
+ * @subpackage Page
  */
+
 /**
  */
 
 require './common.php';
 
-if (! $ldapserver->haveAuthInfo())
-	error(_('No one is logged in to that server.'),'error','index.php');
-
-if (in_array($ldapserver->auth_type, array('cookie','session','http'))) {
-	syslog_notice (sprintf('Logout for %s',$ldapserver->getLoggedInDN()));
-	if($ldapserver->auth_type!='http')
-		$ldapserver->unsetLoginDN() or error(_('Could not logout.'),'error','index.php');
-	unset_lastactivity($ldapserver);
-
-	@session_destroy();
-
-} else
-	error(sprintf(_('Unknown auth_type: %s'),htmlspecialchars($ldapserver->auth_type)),'error','index.php');
-
-system_message(array(
-	'title'=>_('Logout'),
-	'body'=>('Logged out successfully from server.'),
-	'type'=>'info'),
-	sprintf('index.php?server_id=%s',$ldapserver->server_id));
+if ($app['server']->logout())
+	system_message(array(
+		'title'=>_('Authenticate to server'),
+		'body'=>_('Successfully logged out of server.'),
+		'type'=>'info'),
+		sprintf('index.php?server_id=%s',$app['server']->getIndex()));
+else
+	system_message(array(
+		'title'=>_('Failed to Logout of server'),
+		'body'=>_('Please report this error to the admins.'),
+		'type'=>'error'),
+		sprintf('index.php?server_id=%s',$app['server']->getIndex()));
 ?>

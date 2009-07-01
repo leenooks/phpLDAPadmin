@@ -1,44 +1,49 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/export_form.php,v 1.26.2.2 2008/12/12 12:20:22 wurley Exp $
+// $Header$
 
 /**
- * export_form.php
- * Html form to choose an export format(ldif,...)
+ * Export entries from the LDAP server.
+ *
  * @package phpLDAPadmin
+ * @subpackage Page
  */
+
 /**
  */
 
 require './common.php';
-
 require LIBDIR.'export_functions.php';
 
-$entry = array();
-$entry['format'] = get_request('format','GET',false,get_line_end_format());
-$entry['scope'] = get_request('scope','GET',false,'base');
-$entry['id'] = get_request('exporter_id','GET',false,0);
-$entry['dn'] = get_request('dn','GET');
-$entry['filter'] = get_request('filter','GET',false,'(objectClass=*)');
-$entry['attr'] = get_request('attributes','GET',false,'*');
-$entry['sys_attr'] = get_request('sys_attr','GET') ? true: false;
+$request = array();
+$request['dn'] = get_request('dn','GET');
+$request['format'] = get_request('format','GET',false,get_line_end_format());
+$request['scope'] = get_request('scope','GET',false,'base');
+$request['exporter_id'] = get_request('exporter_id','GET',false,'LDIF');
+$request['filter'] = get_request('filter','GET',false,'(objectClass=*)');
+$request['attr'] = get_request('attributes','GET',false,'*');
+$request['sys_attr'] = get_request('sys_attr','GET') ? true: false;
 
-$available_formats = array (
-	'unix' => 'UNIX (Linux, BSD)',
+$available_formats = array(
 	'mac'  => 'Macintosh',
+	'unix' => 'UNIX (Linux, BSD)',
 	'win'  => 'Windows'
 );
 
-$available_scopes = array (
+$available_scopes = array(
 	'base' => _('Base (base dn only)'),
 	'one' => _('One (one level beneath base)'),
 	'sub' => _('Sub (entire subtree)')
 );
 
-printf('<h3 class="title">%s</h3>',_('Export'));
+$request['page'] = new PageRender($app['server']->getIndex(),get_request('template','REQUEST',false,'none'));
+$request['page']->drawTitle(sprintf('<b>%s</b>',_('Export')));
+
 echo '<br />';
 echo '<center>';
 echo '<form name="export_form" action="cmd.php" method="post">';
 echo '<input type="hidden" name="cmd" value="export" />';
+printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
+
 echo '<table class="forminput">';
 echo '<tr>';
 echo '<td>';
@@ -47,11 +52,12 @@ echo '<fieldset>';
 printf('<legend>%s</legend>',_('Export'));
 
 echo '<table>';
-printf('<tr><td>%s</td><td>%s</td></tr>',_('Server'),server_select_list($ldapserver->server_id));
+printf('<tr><td>%s</td><td>%s</td></tr>',_('Server'),server_select_list($app['server']->getIndex()));
 
 echo '<tr>';
 printf('<td style="white-space:nowrap">%s</td>',_('Base DN'));
-printf('<td><span style="white-space: nowrap;"><input type="text" name="dn" id="dn" style="width:230px" value="%s" />&nbsp;',htmlspecialchars($entry['dn']));
+echo '<td><span style="white-space: nowrap;">';
+printf('<input type="text" name="dn" id="dn" style="width:230px" value="%s" />&nbsp;',htmlspecialchars($request['dn']));
 draw_chooser_link('export_form.dn');
 echo '</span></td>';
 echo '</tr>';
@@ -63,20 +69,21 @@ echo '<td>';
 
 foreach ($available_scopes as $id => $desc)
 	printf('<input type="radio" name="scope" value="%s" id="%s"%s /><label for="%s">%s</label><br />',
-		htmlspecialchars($id),htmlspecialchars($id),($id == $entry['scope']) ? 'checked="true"' : '',
-		htmlspecialchars($id),htmlspecialchars($desc));
+		htmlspecialchars($id),$id,($id == $request['scope']) ? 'checked="true"' : '',
+		htmlspecialchars($id),$desc);
 
 echo '</td>';
+
 echo '</tr>';
 
 printf('<tr><td>%s</td><td><input type="text" name="filter" style="width:300px" value="%s" /></td></tr>',
-	_('Search Filter'),htmlspecialchars($entry['filter']));
+	_('Search Filter'),htmlspecialchars($request['filter']));
 
 printf('<tr><td>%s</td><td><input type="text" name="attributes" style="width:300px" value="%s" /></td></tr>',
-	_('Show Attributtes'),htmlspecialchars($entry['attr']));
+	_('Show Attributtes'),htmlspecialchars($request['attr']));
 
 printf('<tr><td>&nbsp;</td><td><input type="checkbox" name="sys_attr" id="sys_attr" %s/> <label for="sys_attr">%s</label></td></tr>',
-	$entry['sys_attr'] ? 'checked="true" ' : '',_('Include system attributes'));
+	$request['sys_attr'] ? 'checked="true" ' : '',_('Include system attributes'));
 
 printf('<tr><td>&nbsp;</td><td><input type="checkbox" id="save_as_file" name="save_as_file" onclick="toggle_disable_field_saveas(this)" /> <label for="save_as_file">%s</label></td></tr>',
 	_('Save as file'));
@@ -92,71 +99,131 @@ echo '<tr>';
 echo '<td>';
 
 echo '<table style="width: 100%">';
-echo '<tr><td style="width: 50%">';
+echo '<tr>';
+
+echo '<td style="width: 50%">';
 echo '<fieldset style="height: 100px">';
 
 printf('<legend>%s</legend>',_('Export format'));
 
-foreach ($exporters as $index => $exporter) {
-	printf('<input type="radio" name="exporter_id" id="exporter_id_%s" value="%s"%s />',
-		htmlspecialchars($index),htmlspecialchars($index),($index==$entry['id']) ? ' checked="true"' : '');
+foreach (Exporter::types() as $index => $exporter) {
+	printf('<input type="radio" name="exporter_id" id="exporter_id_%s" value="%s"%s/>',
+		htmlspecialchars($exporter['type']),htmlspecialchars($exporter['type']),($exporter['type'] === $request['exporter_id']) ? ' checked="true"' : '');
+
 	printf('<label for="%s">%s</label><br />',
-		htmlspecialchars($index),htmlspecialchars($exporter['desc']));
+		htmlspecialchars($exporter['type']),$exporter['type']);
 }
 
 echo '</fieldset>';
 echo '</td>';
+
 echo '<td style="width: 50%">';
 echo '<fieldset style="height: 100px">';
 
 printf('<legend>%s</legend>',_('Line ends'));
 foreach ($available_formats as $id => $desc)
 	printf('<input type="radio" name="format" value="%s" id="%s"%s /><label for="%s">%s</label><br />',
-		htmlspecialchars($id),htmlspecialchars($id),($entry['format']==$id) ? ' checked="true"' : '',
-		htmlspecialchars($id),htmlspecialchars($desc));
+		htmlspecialchars($id),htmlspecialchars($id),($request['format']==$id) ? ' checked="true"' : '',
+		htmlspecialchars($id),$desc);
 
 echo '</fieldset>';
 echo '</td></tr>';
 echo '</table>';
 echo '</td>';
+
 echo '</tr>';
 
-echo '<tr>';
-echo '<td colspan="2">';
-printf('<center><input type="submit" name="target" value="%s" /></center>',
+printf('<tr><td colspan="2"><center><input type="submit" name="target" value="%s" /></center></td></tr>',
 	htmlspecialchars(_('Proceed >>')));
-echo '</td>';
-echo '</tr>';
+
 echo '</table>';
 
 echo '</form>';
 echo '</center>';
 
 /**
- * Helper functoin for fetching the line end format.
+ * Helper function for fetching the line end format.
+ *
  * @return String 'win', 'unix', or 'mac' based on the user's browser..
  */
 function get_line_end_format() {
-	if (is_browser_os_windows())
+	if (is_browser('win'))
 		return 'win';
-	elseif (is_browser_os_unix())
+	elseif (is_browser('unix'))
 		return 'unix';
-	elseif (is_browser_os_mac())
+	elseif (is_browser('mac'))
 		return 'mac';
 	else
 		return 'unix';
 }
 
+/**
+ * Gets the USER_AGENT string from the $_SERVER array, all in lower case in
+ * an E_NOTICE safe manner.
+ *
+ * @return string|false The user agent string as reported by the browser.
+ */
+function get_user_agent_string() {
+	if (isset($_SERVER['HTTP_USER_AGENT']))
+		$return = strtolower($_SERVER['HTTP_USER_AGENT']);
+	else
+		$return = '';
+
+	if (DEBUG_ENABLED)
+		debug_log('Entered with (), Returning (%s)',1,__FILE__,__LINE__,__METHOD__,$return);
+
+	return $return;
+}
+
+/**
+ * Determine the OS for the browser
+ */
+function is_browser($type) {
+	$agents = array();
+
+	$agents['unix'] = array(
+		'sunos','sunos 4','sunos 5',
+		'i86',
+		'irix','irix 5','irix 6','irix6',
+		'hp-ux','09.','10.',
+		'aix','aix 1','aix 2','aix 3','aix 4',
+		'inux',
+		'sco',
+		'unix_sv','unix_system_v','ncr','reliant','dec','osf1',
+		'dec_alpha','alphaserver','ultrix','alphastation',
+		'sinix',
+		'freebsd','bsd',
+		'x11','vax','openvms'
+	);
+
+	$agents['win'] = array(
+		'win','win95','windows 95',
+		'win16','windows 3.1','windows 16-bit','windows','win31','win16','winme',
+		'win2k','winxp',
+		'win98','windows 98','win9x',
+		'winnt','windows nt','win32',
+		'32bit'
+	);
+
+	$agents['mac'] = array(
+		'mac','68000','ppc','powerpc'
+	);
+
+	if (isset($agents[$type]))
+		return in_array(get_user_agent_string(),$agents[$type]);
+	else
+		return false;
+}
 ?>
 <script type="text/javascript" language="javascript">
 <!--
-        function toggle_disable_field_saveas(id) {
-                if (id.checked) {
-                        id.form.compress.disabled = false;
-                } else {
-                        id.form.compress.disabled = true;
-                        id.form.compress.checked = false;
-                }
-        }
+function toggle_disable_field_saveas(id) {
+	if (id.checked) {
+		id.form.compress.disabled = false;
+	} else {
+		id.form.compress.disabled = true;
+		id.form.compress.checked = false;
+	}
+}
 -->
 </script>

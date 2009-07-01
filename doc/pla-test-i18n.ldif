@@ -1,4 +1,4 @@
-# $Header: /cvsroot/phpldapadmin/phpldapadmin/doc/pla-test-i18n.ldif,v 1.4 2004/03/19 20:22:54 i18phpldapadmin Exp $
+# $Header$
 # This is a Test-File for characters / encoding
 # 1. Change the
 #      ,dc=example,dc=com

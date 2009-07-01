@@ -1,43 +1,30 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/config_default.php,v 1.27.2.9 2008/12/12 12:20:22 wurley Exp $
+// $Header$
 
 /**
  * Configuration processing and defaults.
  *
  * @author The phpLDAPadmin development team
  * @package phpLDAPadmin
- *
  * @todo Add validation of set variables to enforce limits or particular values.
  */
 
-# The minimum version of PHP required to run phpLDAPadmin.
+/** The minimum version of PHP required to run phpLDAPadmin. */
 define('REQUIRED_PHP_VERSION','5.0.0');
 
 /**
  * The config class contains all our configuration settings for a session.
- * 
+ *
  * An instance of this class should be stored in $_SESSION to maintain state, and to avoid
  * rebuilding/rereading it at the state of each page output.
  *
  * @package phpLDAPadmin
- *
- * @author The phpLDAPadmin development team
- * @author Deon George
+ * @subpackage Tree
  */
 class Config {
 	public $custom;
 	protected $default;
-
-	public $ldapservers = array();
-	protected $friendly_attrs = array();
-	public $queries = array();
-	public $attrs_display_order = array();
-	public $hidden_attrs = array();
-	public $hidden_except_dn = '';
-	public $hidden_attrs_ro = array();
-	public $read_only_attrs = array();
-	public $read_only_except_dn = '';
-	public $unique_attrs = array();
+	protected $servers = array();
 
 	public $hooks = array();
 
@@ -54,18 +41,22 @@ class Config {
 			'desc'=>'Display as read only if user logs in with anonymous bind',
 			'default'=>true);
 
-		/* Anonymous redirect
-		 * Set to true if you want phpLDAPadmin to redirect anonymous
-		 * users to a search form with no tree viewer on the left after
-		 * logging in.
-		 * @todo: With the new no-frames PLA, this code is broken, and needs to be fixed.
-		 */
-		$this->default->appearance['anonymous_bind_redirect_no_tree'] = array(
-			'desc'=>'Redirect user to search form if anonymous',
-			'default'=>false);
+		$this->default->appearance['attr_display_order'] = array(
+			'desc'=>'Custom order to display attributes',
+			'default'=>array());
 
+		/*
+		* @todo Compression is not working,
+		* purge_cache shows blank,
+		* tree refresh shows blank - and if view_tree_node is modified to compress output, then previously opened items show up as compressed data.
+		*/
 		$this->default->appearance['compress'] = array(
 			'desc'=>'Compress Output',
+			'untested'=>true,
+			'default'=>false);
+
+		$this->default->appearance['control_icons'] = array(
+			'desc'=>'Show the control as icons or text',
 			'default'=>false);
 
 		$this->default->appearance['date'] = array(
@@ -88,9 +79,33 @@ class Config {
 			'desc'=>'Disabled the Default Template',
 			'default'=>false);
 
+		$this->default->appearance['friendly_attrs'] = array(
+			'desc'=>'Friendly names for attributes',
+			'default'=>array());
+
+		$this->default->appearance['hide_attrs'] = array(
+			'desc'=>'Hide attributes from display',
+			'default'=>array());
+
+		$this->default->appearance['hide_attrs_exempt'] = array(
+			'desc'=>'Group DN, where membership will exempt the users from hide_attrs',
+			'default'=>null);
+
 		$this->default->appearance['hide_debug_info'] = array(
 			'desc'=>'Hide the features that may provide sensitive debugging information to the browser',
 			'default'=>true);
+
+		$this->default->appearance['rdn_all_attrs'] = array(
+			'desc'=>'Whether to show all attributes in the RDN chooser, or just the required ones',
+			'default'=>true);
+
+		$this->default->appearance['readonly_attrs'] = array(
+			'desc'=>'Mark these attributes as readonly',
+			'default'=>array());
+
+		$this->default->appearance['readonly_attrs_exempt'] = array(
+			'desc'=>'Group DN, where membership will exempt the users from readonly attrs',
+			'default'=>null);
 
 		$this->default->appearance['timezone'] = array(
 			'desc'=>'Define our timezone, if not defined in php.ini',
@@ -98,14 +113,18 @@ class Config {
 
 		/** Language
 		 * The language setting. If you set this to 'auto', phpLDAPadmin will
-		 * attempt to determine your language automatically. Otherwise, available
-		 * lanaguages are: 'ct', 'de', 'en', 'es', 'fr', 'it', 'nl', and 'ru'
+		 * attempt to determine your language automatically. Otherwise, set
+		 * this to your applicable language in xx_XX format.
 		 * Localization is not complete yet, but most strings have been translated.
-		 * Please help by writing language files. See lang/en.php for an example.
+		 * Please help by writing language files.
 		 */
 		$this->default->appearance['language'] = array(
 			'desc'=>'Language',
 			'default'=>'auto');
+
+		$this->default->appearance['max_add_attrs'] = array(
+			'desc'=>'Maximum number of attrs to show in the add attr form',
+			'default'=>10);
 
 		/**
 		 * If you want certain attributes to be editable as multi-line, include them in this list
@@ -173,8 +192,14 @@ class Config {
 			'default'=>'style.css');
 
 		/** Tree display
-		 * A format string used to display enties in the tree viewer (left-hand side)
-		 * You can use special tokens to draw the entries as you wish. You can even mix in HTML to format the string
+		 * An array of format strings used to display enties in the 
+		 * tree viewer (left-hand side). The first format string that 
+		 * is completely defined (i.e., does not reference attributes 
+		 * that are not defined the object). If there is no format 
+		 * string that is completely defined, the last one is used. 
+		 * 
+		 * You can use special tokens to draw the entries as you wish. 
+		 * You can even mix in HTML to format the string. 
 		 * Here are all the tokens you can use:
 		 *	%rdn - draw the RDN of the entry (ie, "cn=Dave")
 		 *	%dn - draw the DN of the entry (ie, "cn=Dave,ou=People,dc=example,dc=com"
@@ -182,10 +207,12 @@ class Config {
 		 *	%[attrname]- draw the value (or values) of the specified attribute.
 		 *	 example: %gidNumber
 		 *
+		 * Any multivalued attributes will be displayed as a comma separated list.
+		 *
 		 * Examples:
 		 *
 		 * To draw the gidNumber and uidNumber to the right of the RDN in a small, gray font:
-		 *	'%rdn <small style="color:gray">( %gidNumber / %uidNumber )</span>'
+		 *	'%rdn <small style="color:gray">( %gidNumber / %uidNumber )</small>'
 		 * To draw the full DN of each entry:
 		 *	'%dn'
 		 * To draw the objectClasses to the right in parenthesis:
@@ -195,7 +222,7 @@ class Config {
 		 */
 		$this->default->appearance['tree_display_format'] = array(
 			'desc'=>'LDAP attribute to show in the tree',
-			'default'=>'%rdn');
+			'default'=>array('%rdn'));
 
 		$this->default->appearance['tree_height'] = array(
 			'desc'=>'Pixel height of the tree browser',
@@ -205,8 +232,7 @@ class Config {
 			'desc'=>'Pixel width of the tree browser',
 			'default'=>null);
 
-		/**
-		 * Tree display filter
+		/** Tree display filter
 		 * LDAP filter used to search entries for the tree viewer (left-hand side)
 		 */
 		$this->default->appearance['tree_filter'] = array(
@@ -217,45 +243,93 @@ class Config {
 			'desc'=>'Class name which inherits from Tree class and implements the draw() method',
 			'default'=>'AJAXTree');
 
-		$this->default->appearance['entry_factory'] = array(
-			'desc'=>'Class name which inherits from EntryFactory class',
-			'default'=>'TemplateEntryFactory');
-
-		$this->default->appearance['attribute_factory'] = array(
-			'desc'=>'Class name which inherits from AttributeFactory class',
-			'default'=>'AttributeFactory');
-
-		$this->default->appearance['entry_reader'] = array(
-			'desc'=>'Class name which inherits from EntryReader class',
-			'default'=>'EntryReader');
-
-		$this->default->appearance['entry_writer'] = array(
-			'desc'=>'Class name which inherits from EntryWriter class',
-			'default'=>'EntryWriter1');
-
-		/** Caching
-		 */
+		## Caching
 		$this->default->cache['schema'] = array(
-			'desc'=>'Cache schema activity',
+			'desc'=>'Cache Schema Activity',
 			'default'=>true);
+
+		$this->default->cache['query'] = array(
+			'desc'=>'Cache Query Configuration',
+			'default'=>true);
+
+		$this->default->cache['query_time'] = array(
+			'desc'=>'Cache the query configuration for atleast this amount of time in seconds',
+			'default'=>5);
 
 		$this->default->cache['template'] = array(
-			'desc'=>'Cache Template configuration',
+			'desc'=>'Cache Template Configuration',
 			'default'=>true);
+
+		$this->default->cache['template_time'] = array(
+			'desc'=>'Cache the template configuration for atleast this amount of time in seconds',
+			'default'=>60);
 
 		$this->default->cache['tree'] = array(
 			'desc'=>'Cache Browser Tree',
 			'default'=>true);
 
-		/**
+		/** Confirm actions
+		 */
+		$this->default->confirm['create'] = array(
+			'desc'=>'Confirm creation actions',
+			'default'=>true);
+
+		$this->default->confirm['update'] = array(
+			'desc'=>'Confirm update actions',
+			'default'=>true);
+
+		/** Commands
 		 * Define command availability ; if the value of a command is true,
 		 * the command will be available.
 		 */
+		$this->default->commands['script'] = array(
+			'desc'=>'Define scripts availability',
+			'default'=> array(
+				'add_attr_form' => true,
+				'add_oclass_form' => true,
+				'add_value_form' => true,
+				'collapse' => true,
+				'compare' => true,
+				'compare_form' => true,
+				'copy' => true,
+				'copy_form' => true,
+				'create' => true,
+				'create_confirm' => true,
+				'delete' => true,
+				'delete_attr' => true,
+				'delete_form' => true,
+				'draw_tree_node' => true,
+				'expand' => true,
+				'export' => true,
+				'export_form' => true,
+				'import' => true,
+				'import_form' => true,
+				'login' => true,
+				'logout' => true,
+				'login_form' => true,
+				'modify_member_form' => true,
+				'monitor' => true,
+				'purge_cache' => true,
+				'query_engine' => true,
+				'rename' => true,
+				'rename_form' => true,
+				'rdelete' => true,
+				'refresh' => true,
+				'schema' => true,
+				'server_info' => true,
+				'show_cache' => true,
+				'template_engine' => true,
+				'update_confirm' => true,
+				'update' => true,
+				'test' => true
+			));
+
 		$this->default->commands['all'] = array(
 			'desc'=>'Define command availability',
 			'default'=> array(
 				'home' => true,
 				'external_links' => array('feature' => true,
+					'forum' => true,
 					'bug' => true,
 					'donation' => true,
 					'help' => true,
@@ -297,6 +371,8 @@ class Config {
 		 *			object but not during the search.
 		 * LDAP_DEREF_ALWAYS	- aliases should be dereferenced always (eg, the contents
 		 *			of the referenced entry is shown and not the aliasing entry)
+		 * We superceed these definitions with @ to suppress the error if php-ldap is
+		 * not installed.
 		 */
 		@$this->default->deref['export'] = array(
 			'desc'=>'',
@@ -335,16 +411,13 @@ class Config {
 			'desc'=>'Whether to append to the debug file, or create it fresh each time',
 			'default'=>true);
 
-		/** Temp Directories
+		## Temp Directories
+		/** JPEG TMPDir
 		 * This directory must be readable and writable by your web server
 		 */
 		$this->default->jpeg['tmpdir'] = array(
 			'desc'=>'Temporary directory for jpegPhoto data',
 			'default'=>'/tmp');
-
-		$this->default->jpeg['tmp_keep_time'] = array(
-			'desc'=>'Time in seconds to keep jpegPhoto temporary files in the temp directory',
-			'default'=>120);
 
 		## Modify members feature
 		/**
@@ -463,61 +536,71 @@ class Config {
 			'default'=>50);
 
 		/**
-		 * Which attributes to include in the drop-down menu of the simple search form (comma-separated)
-		 * Change this to suit your needs for convenient searching. Be sure to change the corresponding
-		 * list below ($search_attributes_display)
-		 */
-		$this->default->search['attributes'] = array(
-			'desc'=>'Attributes to include in the drop down menu of the simple search form (comma separated)',
-			'default'=>array('uid','cn','gidNumber','objectClass','telephoneNumber','mail','street'));
-
-		/**
-		 * You can re-arrange the order of the search criteria on the simple search form by modifying this array
-		 * You cannot however change the names of the criteria. Criteria names will be translated at run-time.
-		 */
-		$this->default->search['criteria_options'] = array(
-			'desc'=>'Rearrange the order of the search criteria',
-			'default'=>array('equals','starts with','contains','ends with','sounds like'));
-
-		/**
 		 * The list of attributes to display in each search result entry.
 		 * Note that you can add * to the list to display all attributes
 		 */
 		$this->default->search['result_attributes'] = array(
 			'desc'=>'List of attributes to display in each search result entry',
 			'default'=>array('cn','sn','uid','postalAddress','telephoneNumber'));
+
+		$this->default->search['time_limit'] = array(
+			'desc'=>'Maximum time to allow unlimited size_limit searches to the ldap server',
+			'default'=>120);
 	}
 
+	/**
+	 * Access the configuration, taking into account the defaults and the customisations
+	 */
 	private function getConfigArray($usecache=true) {
-		global $CACHE;
+		static $CACHE = array();
 
-		if ($usecache && isset($CACHE[__METHOD__]))
-			return $CACHE[__METHOD__];
+		if ($usecache && count($CACHE))
+			return $CACHE;
 
 		foreach ($this->default as $key => $vals)
-			$CACHE[__METHOD__][$key] = $vals;
+			$CACHE[$key] = $vals;
 
 		foreach ($this->custom as $key => $vals)
 			foreach ($vals as $index => $val)
-				$CACHE[__METHOD__][$key][$index]['value'] = $val;
+				$CACHE[$key][$index]['value'] = $val;
 
-		return $CACHE[__METHOD__];
+		return $CACHE;
 	}
 
 	/**
 	 * Get a configuration value.
 	 */
-	public function GetValue($key,$index) {
+	public function getValue($key,$index,$fatal=true) {
 		$config = $this->getConfigArray();
 
 		if (! isset($config[$key]))
-			error(sprintf('A call was made in [%s] to GetValue requesting [%s] that isnt predefined.',
-				basename($_SERVER['PHP_SELF']),$key),'error',null,true);
+			if ($fatal)
+				error(sprintf('A call was made in [%s] to getValue requesting [%s] that isnt predefined.',
+					basename($_SERVER['PHP_SELF']),$key),'error',null,true);
+			else
+				return '';
 
 		if (! isset($config[$key][$index]))
-			error(sprintf('Requesting an index [%s] in key [%s] that isnt predefined.',$index,$key),'error',null,true);
+			if ($fatal)
+				error(sprintf('Requesting an index [%s] in key [%s] that isnt predefined.',$index,$key),'error',null,true);
+			else
+				return '';
 
 		return isset($config[$key][$index]['value']) ? $config[$key][$index]['value'] : $config[$key][$index]['default'];
+	}
+
+	/**
+	 * Return the untested config items
+	 */
+	public function untested() {
+		$result = array();
+
+		foreach ($this->default as $option => $details)
+			foreach ($details as $param => $values)
+				if (isset($values['untested']) && $values['untested'])
+					array_push($result,sprintf('%s.%s',$option,$param));
+
+		return $result;
 	}
 
 	/**
@@ -553,21 +636,43 @@ class Config {
 	}
 
 	/**
-	 * The parameter number is variable.
-	 * For example : isCommandAvailable('search', 'simple_search')
+	 * Get a list of available commands.
 	 */
-	public function isCommandAvailable() {
+	public function getCommandList() {
+		$config = $this->getConfigArray(false);
+
+		masort($config['command'],'summary');
+
+		if (isset($config['command']) && is_array($config['command']))
+			return $config['command'];
+		else
+			return array();
+	}
+
+	/**
+	 * The parameter number is variable.
+	 * For example : isCommandAvailable('search','simple_search')
+	 */
+	public function isCommandAvailable($index='all') {
 		$a = func_get_args();
+
+		if (! in_array($index,array('all','script')))
+			$index = 'all';
+		else
+			array_shift($a);
+
 		if (count($a) == 1 && is_array($a[0]))
 			$a = $a[0];
 		$i = 0;
 
 		# Command availability list
-		$cmd = $this->GetValue('commands','all');
+		$cmd = $this->getValue('commands',$index);
+
 		# Search for the command
 		while ($i < count($a)) {
 			if (! is_array($cmd))
 				return $cmd;
+
 			if (! isset($cmd[$a[$i]]))
 				return false;
 
@@ -589,24 +694,26 @@ class Config {
 		return false;
 	}
 
+	public function configDefinition($key,$index,$config) {
+		if (! is_array($config) || ! array_key_exists('desc',$config) || ! array_key_exists('default',$config))
+			return;
+
+		if (isset($this->default->$key))
+			$definition = $this->default->$key;
+
+		$definition[$index] = $config;
+		$this->default->$key = $definition;
+	}
+
 	/**
-	 * Reads the friendly_attrs array as defined in config.php and lower-cases all
-	 * the keys. Will return an empty array if the friendly_attrs array is not defined
-	 * in config.php. This is simply used so we can more easily lookup user-friendly
-	 * attributes configured by the admin.
+	 * Return the friendly attributes names
 	 */
-	function getFriendlyAttrs($friendly_attrs) {
+	private function getFriendlyAttrs() {
 		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
 			debug_log('Entered with ()',1,__FILE__,__LINE__,__METHOD__);
 
-		# If friendly_attrs is not an array, then set to an empty array.
-		if (! is_array($friendly_attrs))
-			$this->friendly_attrs =  array();
-
-		else
-			foreach ($friendly_attrs as $old_name => $new_name)
-				$this->friendly_attrs[strtolower($old_name)] = $new_name;
-		}
+		return array_change_key_case($this->getValue('appearance','friendly_attrs'));
+	}
 
 	/**
 	 * This function will return the friendly name of an attribute, if it exists.
@@ -616,10 +723,21 @@ class Config {
 	 * @return string friendly name|attribute
 	 */
 	public function getFriendlyName($attr) {
-		if ($this->haveFriendlyName($attr))
-			return $this->friendly_attrs[strtolower($attr)];
+		static $friendly_attrs;
+
+		if (! $friendly_attrs)
+			$friendly_attrs = $this->getFriendlyAttrs();
+
+		if (! is_object($attr))
+			if (isset($friendly_attrs[$attr]))
+				return $friendly_attrs[$attr];
+			else
+				return $attr;
+
+		if (isset($friendly_attrs[$attr->getName()]))
+			return $friendly_attrs[$attr->getName()];
 		else
-			return $attr;
+			return $attr->getName(false);
 	}
 
 	/**
@@ -630,8 +748,7 @@ class Config {
 	 * @return boolean true|false
 	 */
 	public function haveFriendlyName($attr) {
-		return isset($this->friendly_attrs[strtolower($attr)]);
-
+		return $attr->getName(false) != $this->getFriendlyName($attr);
 	}
 
 	/**
@@ -643,9 +760,25 @@ class Config {
 	public function getFriendlyHTML($attr) {
 		if ($this->haveFriendlyName($attr))
 			return sprintf('<acronym title="%s %s">%s</acronym>',
-				_('Alias for'),$attr,htmlspecialchars($this->getFriendlyName($attr)));
+				_('Alias for'),$attr->getName(false),$this->getFriendlyName($attr));
 		else
-			return $attr;
+			return $attr->getName(false);
+	}
+
+	public function setServers($servers) {
+		$this->servers = $servers;
+	}
+
+	public function getServer($index=null) {
+		return $this->servers->Instance($index);
+	}
+
+	/**
+	 * Return a list of our servers
+	 * @param boolean $visible - Only return visible servers
+	 */
+	public function getServerList($visible=true) {
+		return $this->servers->getServerList($visible);
 	}
 }
 ?>

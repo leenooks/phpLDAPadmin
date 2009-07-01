@@ -1,56 +1,54 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/htdocs/delete_attr.php,v 1.16.2.2 2008/12/12 12:20:22 wurley Exp $
+// $Header$
 
 /**
  *  Deletes an attribute from an entry with NO confirmation.
  *
- *  On success, redirect to template_engine.php
- *  On failure, echo an error.
- *
  * @package phpLDAPadmin
+ * @subpackage Page
  */
+
 /**
  */
 
 require './common.php';
 
-if ($ldapserver->isReadOnly())
-	error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
-
 if (! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete'))
-	error(sprintf('%s%s %s',_('This operation is not permitted by the configuration'),_(':'),_('delete attribute')),'error','index.php');
+	error(sprintf('%s: %s',_('This operation is not permitted by the configuration'),_('delete attribute')),'error','index.php');
 
-$entry = array();
-$entry['dn']['string'] = get_request('dn');
-$entry['dn']['encode'] = rawurlencode($entry['dn']['string']);
-$entry['attr'] = get_request('attr');
+$request = array();
+$request['dn'] = get_request('dn','REQUEST',true);
+$request['attr'] = get_request('attr','REQUEST',true);
+$request['index'] = get_request('index','REQUEST',true);
 
-if (! $entry['dn']['string'])
-	error(_('No DN specified'),'error','index.php');
-
-if (! $entry['attr'])
-	error(_('No attribute name specified.'),'error','index.php');
-
-if ($ldapserver->isAttrReadOnly($entry['attr']))
-	error(sprintf(_('The attribute "%s" is flagged as read-only in the phpLDAPadmin configuration.'),htmlspecialchars($entry['attr'])),'error','index.php');
+if ($app['server']->isAttrReadOnly($request['attr']))
+	error(sprintf(_('The attribute "%s" is flagged as read-only in the phpLDAPadmin configuration.'),$request['attr']),'error','index.php');
 
 $update_array = array();
-$update_array[$entry['attr']] = array();
+$update_array[$request['attr']] = $app['server']->getDNAttrValue($request['dn'],$request['attr']);
 
-$result = $ldapserver->modify($entry['dn']['string'],$update_array);
-if ($result) {
-	$redirect_url = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',$ldapserver->server_id,$entry['dn']['encode']);
+$redirect_url = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',
+	$app['server']->getIndex(),rawurlencode($request['dn']));
 
-	foreach ($update_array as $attr => $junk)
-		$redirect_url .= "&modified_attrs[]=$attr";
-
-	header("Location: $redirect_url");
-	die();
-
-} else {
+if (! isset($update_array[$request['attr']][$request['index']]))
 	system_message(array(
-		'title'=>_('Could not perform ldap_modify operation.'),
-		'body'=>ldap_error_msg($ldapserver->error(),$ldapserver->errno()),
-		'type'=>'error'));
+		'title'=>_('Could not delete attribute value.'),
+		'body'=>sprintf('%s. %s/%s',_('The attribute value does not exist'),$request['attr'],$request['index']),
+		'type'=>'warn'),$redirect_url);
+
+else {
+	unset($update_array[$request['attr']][$request['index']]);
+	foreach ($update_array as $key => $values)
+		$update_array[$key] = array_values($values);
+
+	$result = $app['server']->modify($request['dn'],$update_array);
+
+	if ($result) {
+		foreach ($update_array as $attr => $junk)
+			$redirect_url .= sprintf('&modified_attrs[]=%s',$attr);
+
+		header("Location: $redirect_url");
+		die();
+	}
 }
 ?>

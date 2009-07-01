@@ -1,22 +1,22 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/MultiLineAttribute.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header$
 
 /**
- * @package phpLDAPadmin
- * @author Xavier Bruyet
+ * Classes and functions for the template engine.
  *
+ * @author The phpLDAPadmin development team
+ * @package phpLDAPadmin
+ */
+
+/**
  * Represents a attribute whose values are multiline text
+ *
+ * @package phpLDAPadmin
+ * @subpackage Templates
  */
 class MultiLineAttribute extends Attribute {
-	protected $rows;
-	protected $cols;
-
-	public function __construct($name,$values) {
-		parent::__construct($name,$values);
-
-		$this->rows = 0;
-		$this->cols = 0;
-	}
+	protected $rows = 0;
+	protected $cols = 0;
 
 	public function getRows() {
 		return $this->rows;

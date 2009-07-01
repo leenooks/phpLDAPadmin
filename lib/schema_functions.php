@@ -1,11 +1,11 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/schema_functions.php,v 1.92.2.1 2008/11/29 09:23:11 wurley Exp $
+// $Header$
 
 /**
  * Classes and functions for fetching and parsing schema from an LDAP server.
  *
- * @package phpLDAPadmin
  * @author The phpLDAPadmin development team
+ * @package phpLDAPadmin
  */
 
 /**
@@ -14,147 +14,89 @@
  * All schema items have at least two things in common: An OID
  * and a description. This class provides an implementation for
  * these two data.
+ *
  * @package phpLDAPadmin
+ * @subpackage Schema
  */
-class SchemaItem {
+abstract class SchemaItem {
+	# The schema item's name.
+	protected $name = null;
 	# The OID of this schema item.
-	var $oid;
-
+	private $oid = null;
 	# The description of this schema item.
-	var $description;
+	protected $description = null;
+	# Boolean value indicating whether this objectClass is obsolete
+	private $is_obsolete = false;
 
-	# Initialize class members to default values.
-	function initVars() {
-		$this->oid = null;
-		$this->description = null;
+	public function setOID($oid) {
+		$this->oid = $oid;
 	}
 
-	function setOID($new_oid) {
-		$this->oid = $new_oid;
+	public function setDescription($desc) {
+		$this->description = $desc;
 	}
 
-	function setDescription($new_desc) {
-		$this->description = $new_desc;
-	}
-
-	function getOID() {
+	public function getOID() {
 		return $this->oid;
 	}
 
-	function getDescription() {
+	public function getDescription() {
 		return $this->description;
+	}
+
+	/**
+	 * Gets whether this objectClass is flagged as obsolete by the LDAP server.
+	 */
+	public function getIsObsolete() {
+		return $this->is_obsolete;
+	}
+
+	/**
+	 * Return the objects name.
+	 *
+	 * param boolean $lower Return the name in lower case (default)
+	 * @return string The name
+	 */
+	public function getName($lower=true) {
+		return $lower ? strtolower($this->name) : $this->name;
 	}
 }
 
 /**
  * Represents an LDAP objectClass
+ *
  * @package phpLDAPadmin
+ * @subpackage Schema
  */
 class ObjectClass extends SchemaItem {
-	# This objectClass' name, ie "inetOrgPerson"
-	var $name;
+	# The server ID that this objectclass belongs to.
+	private $server_id = null;
 	# Array of objectClass names from which this objectClass inherits
-	var $sup_classes;
+	private $sup_classes = array();
 	# One of STRUCTURAL, ABSTRACT, or AUXILIARY
-	var $type;
+	private $type;
 	# Arrays of attribute names that this objectClass requires
-	var $must_attrs;
+	private $must_attrs = array();
 	# Arrays of attribute names that this objectClass allows, but does not require
-	var $may_attrs;
+	private $may_attrs = array();
 	# Arrays of attribute names that this objectClass has been forced to MAY attrs, due to configuration
-	var $force_may;
-	# Boolean value indicating whether this objectClass is obsolete
-	var $is_obsolete;
+	private $force_may = array();
 	# Array of objectClasses which inherit from this one (must be set at runtime explicitly by the caller)
-	var $children_objectclasses;
-
-	# Initialize the class' member variables
-	function initVars($ldapserver) {
-		parent::initVars();
-
-		$this->oid = null;
-		$this->name = null;
-		$this->description = null;
-		$this->sup_classes = array();
-		$this->type = $ldapserver->schema_oclass_default;
-		$this->must_attrs = array();
-		$this->force_may = array();
-		$this->may_attrs = array();
-		$this->is_obsolete = false;
-		$this->children_objectclasses = array();
-	}
-
-	function _parse_list($i,$strings,&$attrs) {
-		/*
-		 * A list starts with a ( followed by a list of attributes separated by $ terminated by )
-		 * The first token can therefore be a ( or a (NAME or a (NAME)
-		 * The last token can therefore be a ) or NAME)
-		 * The last token may be terminate by more than one bracket
-		 */
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%d,%s,%s)',9,__FILE__,__LINE__,__METHOD__,$i,$strings,$attrs);
-
-		$string = $strings[$i];
-		if (! preg_match('/^\(/',$string)) {
-			# A bareword only - can be terminated by a ) if the last item
-			if (preg_match('/\)+$/',$string))
-				$string = preg_replace('/\)+$/','',$string);
-
-			array_push($attrs,$string);
-
-		} elseif (preg_match('/^\(.*\)$/',$string)) {
-			$string = preg_replace('/^\(/','',$string);
-			$string = preg_replace('/\)+$/','',$string);
-			array_push($attrs,$string);
-
-		} else {
-			# Handle the opening cases first
-			if ($string == '(') {
-				$i++;
-
-			} elseif (preg_match('/^\(./',$string)) {
-				$string = preg_replace('/^\(/','',$string);
-				array_push ($attrs,$string);
-				$i++;
-			}
-
-			// Token is either a name, a $ or a ')'
-			// NAME can be terminated by one or more ')'
-			while (! preg_match('/\)+$/',$strings[$i])) {
-				$string = $strings[$i];
-				if ($string == '$') {
-					$i++;
-					continue;
-				}
-
-				if (preg_match('/\)$/',$string)) {
-					$string = preg_replace('/\)+$/','',$string);
-				} else {
-					$i++;
-				}
-
-				array_push ($attrs,$string);
-			}
-		}
-		sort($attrs);
-
-		if (DEBUG_ENABLED)
-			debug_log('Returning (%d,[%s],[%s])',9,__FILE__,__LINE__,__METHOD__,$i,$strings,$attrs);
-		return $i;
-	}
+	private $children_objectclasses = array();
+	# The objectclass hierarchy
+	private $hierarchy = array();
 
 	/**
 	 * Creates a new ObjectClass object given a raw LDAP objectClass string.
-	 * @todo: Unfortunately, some schemas are not well defined - eg: dNSDomain. Where the schema definition is not case consistent with the attribute definitions. This causes us some problems, which we need to resolve.
 	 */
-	function ObjectClass($raw_ldap_schema_string,$ldapserver) {
+	public function __construct($class,$server) {
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$raw_ldap_schema_string);
+			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$class);
 
-		$this->initVars($ldapserver);
-		$class = $raw_ldap_schema_string;
+		$this->server_id = $server->getIndex();
+		$this->type = $server->getValue('server','schema_oclass_default');
+
 		$strings = preg_split('/[\s,]+/',$class,-1,PREG_SPLIT_DELIM_CAPTURE);
-
 		$str_count = count($strings);
 
 		for ($i=0; $i < $str_count; $i++) {
@@ -170,7 +112,7 @@ class ObjectClass extends SchemaItem {
 							if (strlen($this->name) == 0)
 								$this->name = $strings[$i];
 							else
-								$this->name .= ' ' . $strings[$i];
+								$this->name .= ' '.$strings[$i];
 
 						} while (! preg_match('/\'$/s',$strings[$i]));
 
@@ -181,7 +123,7 @@ class ObjectClass extends SchemaItem {
 							if (strlen($this->name) == 0)
 								$this->name = $strings[$i];
 							else
-								$this->name .= ' ' . $strings[$i];
+								$this->name .= ' '.$strings[$i];
 
 						} while (! preg_match('/\'$/s',$strings[$i]));
 
@@ -201,9 +143,9 @@ class ObjectClass extends SchemaItem {
 					do {
 						$i++;
 						if (strlen($this->description) == 0)
-							$this->description=$this->description . $strings[$i];
+							$this->description=$this->description.$strings[$i];
 						else
-							$this->description=$this->description . ' ' . $strings[$i];
+							$this->description=$this->description.' '.$strings[$i];
 
 					} while (! preg_match('/\'$/s',$strings[$i]));
 
@@ -261,15 +203,15 @@ class ObjectClass extends SchemaItem {
 				case 'MUST':
 					$attrs = array();
 
-					$i = $this->_parse_list(++$i,$strings,$attrs);
+					$i = $this->parseList(++$i,$strings,$attrs);
 
 					if (DEBUG_ENABLED)
-						debug_log('_parse_list returned %d (%s)',8,__FILE__,__LINE__,__METHOD__,$i,$attrs);
+						debug_log('parseList returned %d (%s)',8,__FILE__,__LINE__,__METHOD__,$i,$attrs);
 
 					foreach ($attrs as $string) {
 						$attr = new ObjectClass_ObjectClassAttribute($string,$this->name);
 
-						if ($ldapserver->isForceMay($attr->name)) {
+						if ($server->isForceMay($attr->getName())) {
 							array_push($this->force_may,$attr);
 							array_push($this->may_attrs,$attr);
 
@@ -284,14 +226,14 @@ class ObjectClass extends SchemaItem {
 				case 'MAY':
 					$attrs = array();
 
-					$i = $this->_parse_list(++$i,$strings,$attrs);
+					$i = $this->parseList(++$i,$strings,$attrs);
 
 					if (DEBUG_ENABLED)
-						debug_log('_parse_list returned %d (%s)',8,__FILE__,__LINE__,__METHOD__,$i,$attrs);
+						debug_log('parseList returned %d (%s)',8,__FILE__,__LINE__,__METHOD__,$i,$attrs);
 
 					foreach ($attrs as $string) {
 						$attr = new ObjectClass_ObjectClassAttribute($string,$this->name);
-						array_push ($this->may_attrs,$attr);
+						array_push($this->may_attrs,$attr);
 					}
 
 					if (DEBUG_ENABLED)
@@ -300,10 +242,10 @@ class ObjectClass extends SchemaItem {
 
 				default:
 					if (preg_match('/[\d\.]+/i',$strings[$i]) && $i == 1) {
-						$this->oid = $strings[$i];
+						$this->setOID($strings[$i]);
 
 						if (DEBUG_ENABLED)
-							debug_log('Case default returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->oid);
+							debug_log('Case default returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->getOID());
 					}
 					break;
 			}
@@ -318,10 +260,95 @@ class ObjectClass extends SchemaItem {
 	}
 
 	/**
+	 * Parse an LDAP schema list
+	 */
+	private function parseList($i,$strings,&$attrs) {
+		/*
+		 * A list starts with a ( followed by a list of attributes separated by $ terminated by )
+		 * The first token can therefore be a ( or a (NAME or a (NAME)
+		 * The last token can therefore be a ) or NAME)
+		 * The last token may be terminate by more than one bracket
+		 */
+		if (DEBUG_ENABLED)
+			debug_log('Entered with (%d,%s,%s)',9,__FILE__,__LINE__,__METHOD__,$i,$strings,$attrs);
+
+		$string = $strings[$i];
+		if (! preg_match('/^\(/',$string)) {
+			# A bareword only - can be terminated by a ) if the last item
+			if (preg_match('/\)+$/',$string))
+				$string = preg_replace('/\)+$/','',$string);
+
+			array_push($attrs,$string);
+
+		} elseif (preg_match('/^\(.*\)$/',$string)) {
+			$string = preg_replace('/^\(/','',$string);
+			$string = preg_replace('/\)+$/','',$string);
+			array_push($attrs,$string);
+
+		} else {
+			# Handle the opening cases first
+			if ($string == '(') {
+				$i++;
+
+			} elseif (preg_match('/^\(./',$string)) {
+				$string = preg_replace('/^\(/','',$string);
+				array_push($attrs,$string);
+				$i++;
+			}
+
+			# Token is either a name, a $ or a ')'
+			# NAME can be terminated by one or more ')'
+			while (! preg_match('/\)+$/',$strings[$i])) {
+				$string = $strings[$i];
+				if ($string == '$') {
+					$i++;
+					continue;
+				}
+
+				if (preg_match('/\)$/',$string))
+					$string = preg_replace('/\)+$/','',$string);
+				else
+					$i++;
+
+				array_push($attrs,$string);
+			}
+		}
+
+		sort($attrs);
+
+		if (DEBUG_ENABLED)
+			debug_log('Returning (%d,[%s],[%s])',9,__FILE__,__LINE__,__METHOD__,$i,$strings,$attrs);
+
+		return $i;
+	}
+
+	/**
+	 * This will return all our parent ObjectClass Objects
+	 */
+	public function getParents() {
+		if ((count($this->sup_classes) == 1) && ($this->sup_classes[0] == 'top'))
+			return array();
+
+		$server = $_SESSION[APPCONFIG]->getServer($this->server_id);
+		$return = array();
+
+		foreach ($this->sup_classes as $object_class) {
+			array_push($return,$object_class);
+
+			$oc = $server->getSchemaObjectClass($object_class);
+
+			if ($oc)
+				$return = array_merge($return,$oc->getParents());
+		}
+
+		return $return;
+	}
+
+	/**
 	 * Gets an array of AttributeType objects that entries of this ObjectClass must define.
 	 * This differs from getMustAttrNames in that it returns an array of AttributeType objects
 	 *
-	 * @param array $oclasses An array of ObjectClass objects to use when traversing
+	 * @param array $parents An array of ObjectClass objects to use when traversing
 	 *             the inheritance tree. This presents some what of a bootstrapping problem
 	 *             as we must fetch all objectClasses to determine through inheritance which
 	 *             attributes this objectClass requires.
@@ -331,38 +358,38 @@ class ObjectClass extends SchemaItem {
 	 * @see getMayAttrs
 	 * @see getMayAttrNames
 	 */
-	function getMustAttrs($oclasses=null) {
+	public function getMustAttrs($parents=false) {
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$oclasses);
+			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$parents);
 
-		$all_must_attrs = array();
-		$all_must_attrs = $this->must_attrs;
-		foreach ($this->sup_classes as $sup_class) {
-			if (! is_null($oclasses) && $sup_class != 'top'
-				&& isset($oclasses[strtolower($sup_class)])) {
-					$sup_class = $oclasses[ strtolower($sup_class)];
-					$sup_class_must_attrs = $sup_class->getMustAttrs($oclasses);
-					$all_must_attrs = array_merge($sup_class_must_attrs,$all_must_attrs);
-			}
+		if (! $parents)
+			return $this->must_attrs;
+
+		$server = $_SESSION[APPCONFIG]->getServer($this->server_id);
+		$attrs = $this->must_attrs;
+
+		foreach ($this->getParents() as $sup_class) {
+			$sc = $server->getSchemaObjectClass($sup_class);
+			$attrs = array_merge($attrs,$sc->getMustAttrs());
 		}
 
-		masort($all_must_attrs,'name,source',1);
+		masort($attrs,'name,source');
 
 		# Remove any duplicates
-		foreach ($all_must_attrs as $index => $attr)
-			if (isset($allattr[$attr->name]))
-				unset($all_must_attrs[$index]);
+		foreach ($attrs as $index => $attr)
+			if (isset($allattr[$attr->getName()]))
+				unset($attrs[$index]);
 			else
-				$allattr[$attr->name] = 1;
+				$allattr[$attr->getName()] = 1;
 
-		return $all_must_attrs;
+		return $attrs;
 	}
 
 	/**
 	 * Gets an array of AttributeType objects that entries of this ObjectClass may define.
 	 * This differs from getMayAttrNames in that it returns an array of AttributeType objects
 	 *
-	 * @param array $oclasses An array of ObjectClass objects to use when traversing
+	 * @param array $parents An array of ObjectClass objects to use when traversing
 	 *             the inheritance tree. This presents some what of a bootstrapping problem
 	 *             as we must fetch all objectClasses to determine through inheritance which
 	 *             attributes this objectClass provides.
@@ -373,32 +400,35 @@ class ObjectClass extends SchemaItem {
 	 * @see getMayAttrNames
 	 * @see AttributeType
 	 */
-	function getMayAttrs($oclasses=null) {
+	public function getMayAttrs($parents=false) {
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$oclasses);
+			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$parents);
 
-		$all_may_attrs = array();
-		$all_may_attrs = $this->may_attrs;
-		foreach ($this->sup_classes as $sup_class_name) {
-			if (! is_null($oclasses) && $sup_class_name != 'top'
-				&& isset($oclasses[strtolower($sup_class_name)])) {
+		if (! $parents)
+			return $this->may_attrs;
 
-					$sup_class = $oclasses[strtolower($sup_class_name)];
-					$sup_class_may_attrs = $sup_class->getMayAttrs($oclasses);
-					$all_may_attrs = array_merge($sup_class_may_attrs,$all_may_attrs);
-			}
+		$server = $_SESSION[APPCONFIG]->getServer($this->server_id);
+		$attrs = $this->may_attrs;
+
+		foreach ($this->getParents() as $sup_class) {
+			$sc = $server->getSchemaObjectClass($sup_class);
+			$attrs = array_merge($attrs,$sc->getMayAttrs());
 		}
 
-		masort($all_may_attrs,'name,source',1);
+		masort($attrs,'name,source');
 
 		# Remove any duplicates
-		foreach ($all_may_attrs as $index => $attr)
+		foreach ($attrs as $index => $attr)
 			if (isset($allattr[$attr->name]))
-				unset($all_may_attrs[$index]);
+				unset($attrs[$index]);
 			else
 				$allattr[$attr->name] = 1;
 
-		return $all_may_attrs;
+		return $attrs;
+	}
+
+	public function getForceMayAttrs() {
+		return $this->force_may;
 	}
 
 	/**
@@ -406,7 +436,7 @@ class ObjectClass extends SchemaItem {
 	 * This differs from getMustAttrs in that it returns an array of strings rather than
 	 * array of AttributeType objects
 	 *
-	 * @param array $oclasses An array of ObjectClass objects to use when traversing
+	 * @param array $parents An array of ObjectClass objects to use when traversing
 	 *             the inheritance tree. This presents some what of a bootstrapping problem
 	 *             as we must fetch all objectClasses to determine through inheritance which
 	 *             attributes this objectClass provides.
@@ -416,15 +446,14 @@ class ObjectClass extends SchemaItem {
 	 * @see getMayAttrs
 	 * @see getMayAttrNames
 	 */
-	function getMustAttrNames($oclasses=null) {
+	public function getMustAttrNames($parents=false) {
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$oclasses);
+			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$parents);
 
-		$attrs = $this->getMustAttrs($oclasses);
 		$attr_names = array();
 
-		foreach ($attrs as $attr)
-			$attr_names[] = $attr->getName();
+		foreach ($this->getMustAttrs($parents) as $attr)
+			array_push($attr_names,$attr->getName());
 
 		return $attr_names;
 	}
@@ -434,7 +463,7 @@ class ObjectClass extends SchemaItem {
 	 * This differs from getMayAttrs in that it returns an array of strings rather than
 	 * array of AttributeType objects
 	 *
-	 * @param array $oclasses An array of ObjectClass objects to use when traversing
+	 * @param array $parents An array of ObjectClass objects to use when traversing
 	 *             the inheritance tree. This presents some what of a bootstrapping problem
 	 *             as we must fetch all objectClasses to determine through inheritance which
 	 *             attributes this objectClass provides.
@@ -444,15 +473,14 @@ class ObjectClass extends SchemaItem {
 	 * @see getMayAttrs
 	 * @see getMustAttrNames
 	 */
-	function getMayAttrNames($oclasses=null) {
+	public function getMayAttrNames($parents=false) {
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$oclasses);
+			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$parents);
 
-		$attrs = $this->getMayAttrs($oclasses);
 		$attr_names = array();
 
-		foreach ($attrs as $attr)
-			$attr_names[] = $attr->getName();
+		foreach ($this->getMayAttrs($parents) as $attr)
+			array_push($attr_names,$attr->getName());
 
 		return $attr_names;
 	}
@@ -460,39 +488,30 @@ class ObjectClass extends SchemaItem {
 	/**
 	 * Adds an objectClass to the list of objectClasses that inherit
 	 * from this objectClass.
-	 * @param String $object_class_name The name of the objectClass to add
-	 * @return bool Returns true on success or false on failure (objectclass already existed for example)
+	 *
+	 * @param String $name The name of the objectClass to add
+	 * @return boolean Returns true on success or false on failure (objectclass already existed for example)
 	 */
-	function addChildObjectClass($object_class_name) {
+	public function addChildObjectClass($name) {
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$object_class_name);
+			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$name);
 
-		$object_class_name = trim($object_class_name);
-		if (! is_array($this->children_objectclasses))
-			$this->children_objectclasses = array();
+		$name = trim($name);
 
 		foreach ($this->children_objectclasses as $existing_objectclass)
-			if (strcasecmp($object_class_name,$existing_objectclass) == 0)
+			if (strcasecmp($name,$existing_objectclass) == 0)
 				return false;
 
-		$this->children_objectclasses[] = $object_class_name;
-		return true;
+		array_push($this->children_objectclasses,$name);
 	}
 
 	/**
 	 * Returns the array of objectClass names which inherit from this objectClass.
+	 *
 	 * @return Array Names of objectClasses which inherit from this objectClass.
 	 */
-	function getChildObjectClasses() {
+	public function getChildObjectClasses() {
 		return $this->children_objectclasses;
-	}
-
-	/**
-	 * Gets the name of this objectClass (ie, "inetOrgPerson")
-	 * @return string The name of the objectClass
-	 */
-	function getName() {
-		return $this->name;
 	}
 
 	/**
@@ -500,22 +519,37 @@ class ObjectClass extends SchemaItem {
 	 *
 	 * @return array An array of objectClass names (strings)
 	 */
-	function getSupClasses() {
+	public function getSupClasses() {
 		return $this->sup_classes;
+	}
+
+	/**
+	 * Return if this objectClass is related to $oclass
+	 *
+	 * @param array ObjectClasses that this attribute may be related to
+	 */
+	public function isRelated($oclass) {
+		# If I am in the array, we'll just return false
+		if (in_array_ignore_case($this->name,$oclass))
+			return false;
+
+		$server = $_SESSION[APPCONFIG]->getServer($this->server_id);
+
+		foreach ($oclass as $object_class) {
+			$oc = $server->getSchemaObjectClass($object_class);
+
+			if ($oc->isStructural() && in_array_ignore_case($this->getName(),$oc->getParents()))
+				return true;
+		}
+
+		return false;
 	}
 
 	/**
 	 * Gets the type of this objectClass: STRUCTURAL, ABSTRACT, or AUXILIARY.
 	 */
-	function getType() {
+	public function getType() {
 		return $this->type;
-	}
-
-	/**
-	 * Gets whether this objectClass is flagged as obsolete by the LDAP server.
-	 */
-	function getIsObsolete() {
-		return $this->is_obsolete;
 	}
 
 	/**
@@ -523,49 +557,50 @@ class ObjectClass extends SchemaItem {
 	 * MUST attributes. The resulting array of must attributes will contain
 	 * unique members.
 	 *
-	 * @param array $new_must_attrs An array of attribute names (strings) to add.
+	 * @param array $attr An array of attribute names (strings) to add.
 	 */
-	function addMustAttrs($new_must_attrs) {
+	private function addMustAttrs($attr) {
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$new_must_attrs);
+			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$attr);
 
-		if (! is_array($new_must_attrs))
+		if (! is_array($attr) || ! count($attr))
 			return;
 
-		if (count($new_must_attrs) == 0)
-			return;
-
-		$this->must_attrs = array_values(array_unique(array_merge($this->must_attrs,$new_must_attrs)));
+		$this->must_attrs = array_values(array_unique(array_merge($this->must_attrs,$attr)));
 	}
 
 	/**
 	 * Behaves identically to addMustAttrs, but it operates on the MAY
 	 * attributes of this objectClass.
 	 *
-	 * @param array $new_may_attrs An array of attribute names (strings) to add.
+	 * @param array $attr An array of attribute names (strings) to add.
 	 */
-	function addMayAttrs($new_may_attrs) {
+	private function addMayAttrs($attr) {
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$new_may_attrs);
+			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$attr);
 
-		if (! is_array($new_may_attrs))
+		if (! is_array($attr) || ! count($attr))
 			return;
 
-		if (count($new_may_attrs) == 0)
-			return;
-
-		$this->may_attrs = array_values(array_unique(array_merge($this->may_attrs,$new_may_attrs)));
+		$this->may_attrs = array_values(array_unique(array_merge($this->may_attrs,$attr)));
 	}
 
 	/**
 	 * Determine if an array is listed in the force_may attrs
 	 */
-	function isForceMay($attr) {
+	public function isForceMay($attr) {
 		foreach ($this->force_may as $forcemay)
 			if ($forcemay->getName() == $attr)
 				return true;
 
 		return false;
+	}
+
+	public function isStructural() {
+		if ($this->type == 'structural')
+			return true;
+		else
+			return false;
 	}
 }
 
@@ -578,116 +613,87 @@ class ObjectClass extends SchemaItem {
  * a "source" objectClass, meaning that it keeps track of which objectClass originally
  * specified it. This class is therefore used by the class ObjectClass to determine
  * inheritance.
+ *
  * @package phpLDAPadmin
+ * @subpackage Schema
  */
 class ObjectClass_ObjectClassAttribute {
- 	# This Attribute's name
-	var $name;
-
-	# This Attribute's root
-	var $source;
+ 	# This Attribute's name (needs to be public, as we sort on it with masort).
+	public $name;
+	# This Attribute's root (needs to be public, as we sort on it with masort).
+	public $source;
 
 	/**
 	 * Creates a new ObjectClass_ObjectClassAttribute with specified name and source objectClass.
+	 *
 	 * @param string $name the name of the new attribute.
-	 * @param string $source the name of the ObjectClass which
-	 *           specifies this attribute.
+	 * @param string $source the name of the ObjectClass which specifies this attribute.
 	 */
-	function ObjectClass_ObjectClassAttribute($name,$source) {
+	public function __construct($name,$source) {
 		if (DEBUG_ENABLED)
 			debug_log('Entered with name (%s), source (%s)',9,__FILE__,__LINE__,__METHOD__,$name,$source);
+
 		$this->name = $name;
 		$this->source = $source;
 	}
 
 	# Gets this attribute's name
-	function getName () {
-		return $this->name;
+	public function getName($lower=true) {
+		return $lower ? strtolower($this->name) : $this->name;
 	}
 
 	# Gets the name of the ObjectClass which originally specified this attribute.
-	function getSource () {
+	public function getSource() {
 		return $this->source;
 	}
 }
 
 /**
  * Represents an LDAP AttributeType
+ *
  * @package phpLDAPadmin
+ * @subpackage Schema
  */
 class AttributeType extends SchemaItem {
-	# The name of this attributeType
-	var $name;
-	# string: the description
-	var $is_obsolete;
 	# The attribute from which this attribute inherits (if any)
-	var $sup_attribute;
+	private $sup_attribute = null;
 	# The equality rule used
-	var $equality;
+	private $equality = null;
 	# The ordering of the attributeType
-	var $ordering;
+	private $ordering = null;
 	# Boolean: supports substring matching?
-	var $sub_str;
+	private $sub_str = null;
 	# The full syntax string, ie 1.2.3.4{16}
-	var $syntax;
+	private $syntax = null;
+	private $syntax_oid = null;
 	# boolean: is single valued only?
-	var $is_single_value;
+	private $is_single_value = false;
 	# boolean: is collective?
-	var $is_collective;
+	private $is_collective = false;
 	# boolean: can use modify?
-	var $is_no_user_modification;
+	private $is_no_user_modification = false;
 	# The usage string set by the LDAP schema
-	var $usage;
+	private $usage = null;
 	# An array of alias attribute names, strings
-	var $aliases;
+	private $aliases = array();
 	# The max number of characters this attribute can be
-	var $max_length;
+	private $max_length = null;
 	# A string description of the syntax type (taken from the LDAPSyntaxes)
-	var $type;
+	private $type = null;
 	# An array of objectClasses which use this attributeType (must be set by caller)
-	var $used_in_object_classes;
+	private $used_in_object_classes = array();
 	# A list of object class names that require this attribute type.
-	var $required_by_object_classes;
+	private $required_by_object_classes = array();
 	# This attribute has been forced a MAY attribute by the configuration.
-	var $forced_as_may;
-
-	/**
-	 * Initialize the class' member variables
-	 */
-	function initVars() {
-		parent::initVars();
-
-		$this->oid = null;
-		$this->name = null;
-		$this->description = null;
-		$this->is_obsolete = false;
-		$this->sup_attribute = null;
-		$this->equality = null;
-		$this->ordering = null;
-		$this->sub_str = null;
-		$this->syntax_oid = null;
-		$this->syntax = null;
-		$this->max_length = null;
-		$this->is_single_value= null;
-		$this->is_collective = false;
-		$this->is_no_user_modification = false;
-		$this->usage = null;
-		$this->aliases = array();
-		$this->type = null;
-		$this->used_in_object_classes = array();
-		$this->required_by_object_classes = array();
-		$this->forced_as_may = false;
-	}
+	private $forced_as_may = false;
 
 	/**
 	 * Creates a new AttributeType object from a raw LDAP AttributeType string.
 	 */
-	function AttributeType($raw_ldap_attr_string) {
+	public function __construct($attr) {
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$raw_ldap_attr_string);
+			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$attr);
 
-		$this->initVars();
-		$attr = $raw_ldap_attr_string;
 		$strings = preg_split('/[\s,]+/',$attr,-1,PREG_SPLIT_DELIM_CAPTURE);
 
 		for($i=0; $i<count($strings); $i++) {
@@ -697,35 +703,42 @@ class AttributeType extends SchemaItem {
 					break;
 
 				case 'NAME':
-					if ($strings[$i+1] != '(') {
+					# Some schema's return a (' instead of a ( '
+					if ($strings[$i+1] != '(' && ! preg_match('/^\(/',$strings[$i+1])) {
 						do {
 							$i++;
 							if (strlen($this->name)==0)
 								$this->name = $strings[$i];
 							else
-								$this->name .= ' ' . $strings[$i];
+								$this->name .= ' '.$strings[$i];
 
 						} while (! preg_match("/\'$/s",$strings[$i]));
-						// this attribute has no aliases
+
+						# This attribute has no aliases
 						$this->aliases = array();
 
 					} else {
 						$i++;
 						do {
-							$i++;
+							# In case we came here becaues of a ('
+							if (preg_match('/^\(/',$strings[$i]))
+								$strings[$i] = preg_replace('/^\(/','',$strings[$i]);
+							else
+								$i++;
+
 							if (strlen($this->name) == 0)
  								$this->name = $strings[$i];
 							else
-								$this->name .= ' ' . $strings[$i];
+								$this->name .= ' '.$strings[$i];
 
 						} while (! preg_match("/\'$/s",$strings[$i]));
-						// add alias names for this attribute
 
+						# Add alias names for this attribute
 						while ($strings[++$i] != ')') {
 							$alias = $strings[$i];
 							$alias = preg_replace("/^\'/",'',$alias);
 							$alias = preg_replace("/\'$/",'',$alias);
-							$this->aliases[] = $alias;
+							$this->addAlias($alias);
 						}
 					}
 
@@ -737,9 +750,9 @@ class AttributeType extends SchemaItem {
 					do {
 						$i++;
 						if (strlen($this->description)==0)
-							$this->description=$this->description . $strings[$i];
+							$this->description=$this->description.$strings[$i];
 						else
-							$this->description=$this->description . ' ' . $strings[$i];
+							$this->description=$this->description.' '.$strings[$i];
 					} while (! preg_match("/\'$/s",$strings[$i]));
 
 					if (DEBUG_ENABLED)
@@ -790,7 +803,7 @@ class AttributeType extends SchemaItem {
 					$this->syntax = $strings[$i];
 					$this->syntax_oid = preg_replace('/{\d+}$/','',$this->syntax);
 
-					// does this SYNTAX string specify a max length (ie, 1.2.3.4{16})
+					# Does this SYNTAX string specify a max length (ie, 1.2.3.4{16})
 					if (preg_match('/{(\d+)}$/',$this->syntax,$this->max_length))
 						$this->max_length = $this->max_length[1];
 					else
@@ -799,7 +812,7 @@ class AttributeType extends SchemaItem {
 					if ($i < count($strings) - 1 && $strings[$i+1] == '{') {
 						do {
 							$i++;
-							$this->name .= ' ' . $strings[$i];
+							$this->name .= ' '.$strings[$i];
 						} while ($strings[$i] != '}');
 					}
 
@@ -838,10 +851,10 @@ class AttributeType extends SchemaItem {
 
 				default:
 					if (preg_match('/[\d\.]+/i',$strings[$i]) && $i == 1) {
-						$this->oid = $strings[$i];
+						$this->setOID($strings[$i]);
 
 						if (DEBUG_ENABLED)
-							debug_log('Case default returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->oid);
+							debug_log('Case default returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->getOID());
 					}
 			}
 		}
@@ -862,35 +875,21 @@ class AttributeType extends SchemaItem {
 	}
 
 	/**
-	 * Gets this attribute's name
-	 * @return string
-	 */
-	function getName() {
-		return $this->name;
-	}
-
-	/**
-	 * Gets whether this attribute has been flagged as obsolete by the LDAP server
-	 * @return bool
-	 */
-	function getIsObsolete() {
-		return $this->is_obsolete;
-	}
-
-	/**
 	 * Gets this attribute's usage string as defined by the LDAP server
+	 *
 	 * @return string
 	 */
-	function getUsage() {
+	public function getUsage() {
 		return $this->usage;
 	}
 
 	/**
 	 * Gets this attribute's parent attribute (if any). If this attribute does not
 	 * inherit from another attribute, null is returned.
+	 *
 	 * @return string
 	 */
-	function getSupAttribute() {
+	public function getSupAttribute() {
 		if ($this->sup_attribute)
 			return $this->sup_attribute;
 		else
@@ -899,43 +898,48 @@ class AttributeType extends SchemaItem {
 
 	/**
 	 * Gets this attribute's equality string
+	 *
 	 * @return string
 	 */
-	function getEquality() {
+	public function getEquality() {
 		return $this->equality;
 	}
 
 	/**
 	 * Gets this attribute's ordering specification.
+	 *
 	 * @return string
 	 */
-	function getOrdering() {
+	public function getOrdering() {
 		return $this->ordering;
 	}
 
 	/**
 	 * Gets this attribute's substring matching specification
+	 *
 	 * @return string
 	 */
-	function getSubstr() {
+	public function getSubstr() {
 		return $this->sub_str;
 	}
 
 	/**
 	 * Gets the names of attributes that are an alias for this attribute (if any).
+	 *
 	 * @return array An array of names of attributes which alias this attribute or
 	 *          an empty array if no attribute aliases this object.
 	 */
-	function getAliases() {
+	public function getAliases() {
 		return $this->aliases;
 	}
 
 	/**
 	 * Returns whether the specified attribute is an alias for this one (based on this attribute's alias list).
+	 *
 	 * @param string $attr_name The name of the attribute to check.
-	 * @return bool True if the specified attribute is an alias for this one, or false otherwise.
+	 * @return boolean True if the specified attribute is an alias for this one, or false otherwise.
 	 */
-	function isAliasFor($attr_name) {
+	public function isAliasFor($attr_name) {
 		if (DEBUG_ENABLED)
 			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$attr_name);
 
@@ -948,9 +952,10 @@ class AttributeType extends SchemaItem {
 
 	/**
 	 * Gets this attribute's raw syntax string (ie: "1.2.3.4{16}").
+	 *
 	 * @return string The raw syntax string
 	 */
-	function getSyntaxString() {
+	public function getSyntaxString() {
 		return $this->syntax;
 	}
 
@@ -959,68 +964,76 @@ class AttributeType extends SchemaItem {
 	 * function only returns the actual OID with any length specification removed.
 	 * Ie, if the syntax string is "1.2.3.4{16}", this function only retruns
 	 * "1.2.3.4".
+	 *
 	 * @return string The syntax OID string.
 	 */
-	function getSyntaxOID() {
+	public function getSyntaxOID() {
 		return $this->syntax_oid;
 	}
 
 	/**
 	 * Gets this attribute's the maximum length. If no maximum is defined by the LDAP server, null is returned.
+	 *
 	 * @return int The maximum length (in characters) of this attribute or null if no maximum is specified.
 	 */
-	function getMaxLength() {
+	public function getMaxLength() {
 		return $this->max_length;
 	}
 
 	/**
 	 * Gets whether this attribute is single-valued. If this attribute only supports single values, true
 	 * is returned. If this attribute supports multiple values, false is returned.
-	 * @return bool Returns true if this attribute is single-valued or false otherwise.
+	 *
+	 * @return boolean Returns true if this attribute is single-valued or false otherwise.
 	 */
-	function getIsSingleValue() {
+	public function getIsSingleValue() {
 		return $this->is_single_value;
 	}
 
 	/**
 	 * Sets whether this attribute is single-valued.
-	 * @param bool $is_single_value
+	 *
+	 * @param boolean $is
 	 */
-	function setIsSingleValue($is_single_value) {
-		$this->is_single_value = $is_single_value;
+	public function setIsSingleValue($is) {
+		$this->is_single_value = $is;
 	}
 
 	/**
 	 * Gets whether this attribute is collective.
-	 * @return bool Returns true if this attribute is collective and false otherwise.
+	 *
+	 * @return boolean Returns true if this attribute is collective and false otherwise.
 	 */
-	function getIsCollective() {
+	public function getIsCollective() {
 		return $this->is_collective;
 	}
 
 	/**
 	 * Gets whether this attribute is not modifiable by users.
-	 * @return bool Returns true if this attribute is not modifiable by users.
+	 *
+	 * @return boolean Returns true if this attribute is not modifiable by users.
 	 */
-	function getIsNoUserModification() {
+	public function getIsNoUserModification() {
 		return $this->is_no_user_modification;
 	}
 
 	/**
 	 * Gets this attribute's type
+	 *
 	 * @return string The attribute's type.
 	 */
-	function getType() {
+	public function getType() {
 		return $this->type;
 	}
 
 	/**
 	 * Removes an attribute name from this attribute's alias array.
+	 *
 	 * @param string $remove_alias_name The name of the attribute to remove.
-	 * @return bool true on success or false on failure (ie, if the specified
+	 * @return boolean true on success or false on failure (ie, if the specified
 	 *           attribute name is not found in this attribute's list of aliases)
 	 */
-	function removeAlias($remove_alias_name) {
+	public function removeAlias($remove_alias_name) {
 		if (DEBUG_ENABLED)
 			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$remove_alias_name);
 
@@ -1038,131 +1051,133 @@ class AttributeType extends SchemaItem {
 
 	/**
 	 * Adds an attribute name to the alias array.
-	 * @param string $new_alias_name The name of a new attribute to add to this attribute's list of aliases.
+	 *
+	 * @param string $alias The name of a new attribute to add to this attribute's list of aliases.
 	 */
-	function addAlias($new_alias_name) {
-		$this->aliases[] = $new_alias_name;
+	public function addAlias($alias) {
+		array_push($this->aliases,$alias);
 	}
 
 	/**
 	 * Sets this attriute's name.
-	 * @param string $new_name The new name to give this attribute.
+	 *
+	 * @param string $name The new name to give this attribute.
 	 */
-	function setName($new_name) {
-		$this->name = $new_name;
+	public function setName($name) {
+		$this->name = $name;
 	}
 
 	/**
 	 * Sets this attriute's SUP attribute (ie, the attribute from which this attribute inherits).
-	 * @param string $new_sup_attr The name of the new parent (SUP) attribute
+	 *
+	 * @param string $attr The name of the new parent (SUP) attribute
 	 */
-	function setSupAttribute($new_sup_attr) {
-		$this->sup_attribute = $new_sup_attr;
+	public function setSupAttribute($attr) {
+		$this->sup_attribute = $attr;
 	}
 
 	/**
 	 * Sets this attribute's list of aliases.
-	 * @param array $new_aliases The array of alias names (strings)
+	 *
+	 * @param array $aliases The array of alias names (strings)
 	 */
-	function setAliases($new_aliases) {
-		$this->aliases = $new_aliases;
+	public function setAliases($aliases) {
+		$this->aliases = $aliases;
 	}
 
 	/**
 	 * Sets this attribute's type.
-	 * @param string $new_type The new type.
+	 *
+	 * @param string $type The new type.
 	 */
-	function setType($new_type) {
-		$this->type = $new_type;
+	public function setType($type) {
+		$this->type = $type;
 	}
 
 	/**
 	 * Adds an objectClass name to this attribute's list of "used in" objectClasses,
 	 * that is the list of objectClasses which provide this attribute.
-	 * @param string $object_class_name The name of the objectClass to add.
+	 *
+	 * @param string $name The name of the objectClass to add.
 	 */
-	function addUsedInObjectClass($object_class_name) {
+	public function addUsedInObjectClass($name) {
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$object_class_name);
+			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$name);
 
 		foreach ($this->used_in_object_classes as $used_in_object_class) {
 			if (DEBUG_ENABLED)
-				debug_log('Checking (%s) with (%s)',8,__FILE__,__LINE__,__METHOD__,$used_in_object_class,$object_class_name);
+				debug_log('Checking (%s) with (%s)',8,__FILE__,__LINE__,__METHOD__,$used_in_object_class,$name);
 
-			if (strcasecmp($used_in_object_class,$object_class_name) == 0)
+			if (strcasecmp($used_in_object_class,$name) == 0)
 				return false;
 		}
 
-		$this->used_in_object_classes[] = $object_class_name;
-		return true;
+		array_push($this->used_in_object_classes,$name);
 	}
 
 	/**
 	 * Gets the list of "used in" objectClasses, that is the list of objectClasses
 	 * which provide this attribute.
+	 *
 	 * @return array An array of names of objectclasses (strings) which provide this attribute
 	 */
-	function getUsedInObjectClasses() {
+	public function getUsedInObjectClasses() {
 		return $this->used_in_object_classes;
 	}
 
 	/**
 	 * Adds an objectClass name to this attribute's list of "required by" objectClasses,
 	 * that is the list of objectClasses which must have this attribute.
-	 * @param string $object_class_name The name of the objectClass to add.
+	 *
+	 * @param string $name The name of the objectClass to add.
 	 */
-	function addRequiredByObjectClass($object_class_name) {
+	public function addRequiredByObjectClass($name) {
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$object_class_name);
+			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$name);
 
 		foreach ($this->required_by_object_classes as $required_by_object_class)
-			if (strcasecmp($required_by_object_class,$object_class_name) == 0)
+			if (strcasecmp($required_by_object_class,$name) == 0)
 				return false;
 
-		$this->required_by_object_classes[] = $object_class_name;
-		return true;
+		array_push($this->required_by_object_classes,$name);
 	}
 
 	/**
 	 * Gets the list of "required by" objectClasses, that is the list of objectClasses
 	 * which provide must have attribute.
+	 *
 	 * @return array An array of names of objectclasses (strings) which provide this attribute
 	 */
-	function getRequiredByObjectClasses() {
+	public function getRequiredByObjectClasses() {
 		return $this->required_by_object_classes;
 	}
 
 	/**
 	 * This function will mark this attribute as a forced MAY attribute
 	 */
-	function setForceMay() {
+	public function setForceMay() {
 		$this->forced_as_may = true;
+	}
+
+	public function isForceMay() {
+		return $this->forced_as_may;
 	}
 }
 
 /**
  * Represents an LDAP Syntax
+ *
  * @package phpLDAPadmin
+ * @subpackage Schema
  */
 class Syntax extends SchemaItem {
-	/** Initializes the class' member variables */
-	function initVars() {
-		parent::initVars();
-
-		$this->oid = null;
-		$this->description = null;
-	}
-
 	/**
 	 * Creates a new Syntax object from a raw LDAP syntax string.
 	 */
-	function Syntax($raw_ldap_syntax_string) {
+	public function __construct($class) {
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$raw_ldap_syntax_string);
+			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$class);
 
-		$this->initVars();
-
-		$class = $raw_ldap_syntax_string;
 		$strings = preg_split('/[\s,]+/',$class,-1,PREG_SPLIT_DELIM_CAPTURE);
 
 		for($i=0; $i<count($strings); $i++) {
@@ -1174,15 +1189,15 @@ class Syntax extends SchemaItem {
 					do {
 						$i++;
 						if (strlen($this->description) == 0)
-							$this->description=$this->description . $strings[$i];
+							$this->description=$this->description.$strings[$i];
 						else
-							$this->description=$this->description . ' ' . $strings[$i];
+							$this->description=$this->description.' '.$strings[$i];
 					} while (! preg_match("/\'$/s",$strings[$i]));
 					break;
 
 				default:
 					if (preg_match('/[\d\.]+/i',$strings[$i]) && $i == 1)
-						$this->oid = $strings[$i];
+						$this->setOID($strings[$i]);
 			}
 		}
 
@@ -1193,39 +1208,24 @@ class Syntax extends SchemaItem {
 
 /**
  * Represents an LDAP MatchingRule
+ *
  * @package phpLDAPadmin
+ * @subpackage Schema
  */
 class MatchingRule extends SchemaItem {
-	/** This rule's name */
-	var $name;
-	/** This rule's syntax OID */
-	var $syntax;
-	/** Boolean value indicating whether this MatchingRule is obsolete */
-	var $is_obsolete;
-	/** An array of attribute names who use this MatchingRule */
-	var $used_by_attrs;
-
-	/** Initialize the class' member variables */
-	function initVars() {
-		parent::initVars();
-
-		$this->oid = null;
-		$this->name = null;
-		$this->description = null;
-		$this->is_obsolete = false;
-		$this->syntax = null;
-		$this->used_by_attrs = array();
-	}
+	# This rule's syntax OID
+	private $syntax = null;
+	# An array of attribute names who use this MatchingRule
+	private $used_by_attrs = array();
 
 	/**
 	 * Creates a new MatchingRule object from a raw LDAP MatchingRule string.
 	 */
-	function MatchingRule($raw_ldap_matching_rule_string) {
+	function __construct($strings) {
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$raw_ldap_matching_rule_string);
+			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$strings);
 
-		$this->initVars();
-		$strings = preg_split('/[\s,]+/',$raw_ldap_matching_rule_string,-1,PREG_SPLIT_DELIM_CAPTURE);
+		$strings = preg_split('/[\s,]+/',$strings,-1,PREG_SPLIT_DELIM_CAPTURE);
 
 		for ($i=0; $i<count($strings); $i++) {
 			switch($strings[$i]) {
@@ -1239,7 +1239,7 @@ class MatchingRule extends SchemaItem {
 							if (strlen($this->name) == 0)
 								$this->name = $strings[$i];
 						else
-								$this->name .= ' ' . $strings[$i];
+								$this->name .= ' '.$strings[$i];
 						} while (! preg_match("/\'$/s",$strings[$i]));
 
 					} else {
@@ -1249,7 +1249,7 @@ class MatchingRule extends SchemaItem {
 							if (strlen($this->name) == 0)
 								$this->name = $strings[$i];
 							else
-								$this->name .= ' ' . $strings[$i];
+								$this->name .= ' '.$strings[$i];
 						} while (! preg_match("/\'$/s",$strings[$i]));
 
 						do {
@@ -1265,9 +1265,9 @@ class MatchingRule extends SchemaItem {
 					do {
 						$i++;
 						if (strlen($this->description)==0)
-							$this->description=$this->description . $strings[$i];
+							$this->description=$this->description.$strings[$i];
 						else
-							$this->description=$this->description . ' ' . $strings[$i];
+							$this->description=$this->description.' '.$strings[$i];
 					} while (! preg_match("/\'$/s",$strings[$i]));
 					break;
 
@@ -1281,7 +1281,7 @@ class MatchingRule extends SchemaItem {
 
 				default:
 					if (preg_match('/[\d\.]+/i',$strings[$i]) && $i == 1)
-						$this->oid = $strings[$i];
+						$this->setOID($strings[$i]);
 			}
 		}
 		$this->description = preg_replace("/^\'/",'',$this->description);
@@ -1290,89 +1290,57 @@ class MatchingRule extends SchemaItem {
 
 	/**
 	 * Sets the list of used_by_attrs to the array specified by $attrs;
+	 *
 	 * @param array $attrs The array of attribute names (strings) which use this MatchingRule
 	 */
-	function setUsedByAttrs($attrs) {
+	public function setUsedByAttrs($attrs) {
 		$this->used_by_attrs = $attrs;
 	}
 
 	/**
 	 * Adds an attribute name to the list of attributes who use this MatchingRule
+	 *
 	 * @return true if the attribute was added and false otherwise (already in the list)
 	 */
-	function addUsedByAttr($new_attr_name) {
+	public function addUsedByAttr($attr) {
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$new_attr_name);
+			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$attr);
 
 		foreach ($this->used_by_attrs as $attr_name)
-			if (strcasecmp($attr_name,$new_attr_name) == 0)
+			if (strcasecmp($attr_name,$attr) == 0)
 				return false;
 
-		$this->used_by_attrs[] = $new_attr_name;
+		array_push($this->used_by_attrs,$attr);
 
 		return true;
 	}
 
 	/**
-	 * Gets this MatchingRule's name.
-	 * @return string The name.
-	 */
-	function getName() {
-		return $this->name;
-	}
-
-	/**
-	 * Gets whether this MatchingRule is flagged as obsolete by the LDAP server.
-	 * @return bool True if this MatchingRule is obsolete and false otherwise.
-	 */
-	function getIsObsolete() {
-		return $this->is_obsolete;
-	}
-
-	/**
-	 * Gets this MatchingRule's syntax string (an OID).
-	 */
-	function getSyntax() {
-		return $this->description;
-	}
-
-	/**
 	 * Gets an array of attribute names (strings) which use this MatchingRule
+	 *
 	 * @return array The array of attribute names (strings).
 	 */
-	function getUsedByAttrs() {
+	public function getUsedByAttrs() {
 		return $this->used_by_attrs;
 	}
 }
 
 /**
  * Represents an LDAP schema matchingRuleUse entry
+ *
  * @package phpLDAPadmin
+ * @subpackage Schema
  */
 class MatchingRuleUse extends SchemaItem {
-	/** The name of the MathingRule this applies to */
-	var $name;
+	# An array of attribute names who use this MatchingRule
+	private $used_by_attrs = array();
 
-	/** An array of attributeType names who make use of the mathingRule
-	 * identified by $this->oid and $this->name */
-	var $used_by_attrs;
-
-	/** Initialize the class' member variables */
-	function initVars() {
-		parent::initVars();
-
-		$this->oid = null;
-		$this->name = null;
-		$this->used_by_attrs = array();
-	}
-
-	function MatchingRuleUse($raw_matching_rule_use_string) {
+	function __construct($strings) {
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$raw_matching_rule_use_string);
+			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$strings);
 
-		$this->initVars();
+		$strings = preg_split('/[\s,]+/',$strings,-1,PREG_SPLIT_DELIM_CAPTURE);
 
-		$strings = preg_split('/[\s,]+/',$raw_matching_rule_use_string,-1,PREG_SPLIT_DELIM_CAPTURE);
 		for($i=0; $i<count($strings); $i++) {
 			switch($strings[$i]) {
 				case '(':
@@ -1385,7 +1353,7 @@ class MatchingRuleUse extends SchemaItem {
 							if (! isset($this->name) || strlen($this->name) == 0)
 								$this->name = $strings[$i];
 							else
-								$this->name .= ' ' . $strings[$i];
+								$this->name .= ' '.$strings[$i];
 
 						} while (! preg_match("/\'$/s",$strings[$i]));
 
@@ -1396,7 +1364,7 @@ class MatchingRuleUse extends SchemaItem {
 							if (strlen($this->name) == 0)
 								$this->name = $strings[$i];
 							else
-								$this->name .= ' ' . $strings[$i];
+								$this->name .= ' '.$strings[$i];
 						} while (! preg_match("/\'$/s",$strings[$i]));
 
 						do {
@@ -1409,12 +1377,10 @@ class MatchingRuleUse extends SchemaItem {
 					break;
 
 				case 'APPLIES':
-					# @TODO
 					if ($strings[$i+1] != '(') {
 						# Has a single attribute name
 						$i++;
 						$this->used_by_attrs = array($strings[$i]);
-						//echo "Adding single: " . $strings[$i] . "<br />";
 
 					} else {
 						# Has multiple attribute names
@@ -1424,8 +1390,7 @@ class MatchingRuleUse extends SchemaItem {
 							$new_attr = $strings[$i];
 							$new_attr = preg_replace("/^\'/",'',$new_attr);
 							$new_attr = preg_replace("/\'$/",'',$new_attr);
-							$this->used_by_attrs[] = $new_attr;
-							//echo "Adding $new_attr<br />";
+							array_push($this->used_by_attrs,$new_attr);
 							$i++;
 						}
 					}
@@ -1433,25 +1398,19 @@ class MatchingRuleUse extends SchemaItem {
 
 				default:
 					if (preg_match('/[\d\.]+/i',$strings[$i]) && $i == 1)
-						$this->oid = $strings[$i];
+						$this->setOID($strings[$i]);
 			}
 		}
+
 		sort($this->used_by_attrs);
 	}
 
 	/**
-	 * Gets this MatchingRuleUse's name
-	 * @return string The name
-	 */
-	function getName() {
-		return $this->name;
-	}
-
-	/**
 	 * Gets an array of attribute names (strings) which use this MatchingRuleUse object.
+	 *
 	 * @return array The array of attribute names (strings).
 	 */
-	function getUsedByAttrs() {
+	public function getUsedByAttrs() {
 		return $this->used_by_attrs;
 	}
 }

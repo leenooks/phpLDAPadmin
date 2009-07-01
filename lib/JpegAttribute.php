@@ -1,11 +1,18 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/JpegAttribute.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header$
 
 /**
- * @package phpLDAPadmin
- * @author Xavier Bruyet
+ * Classes and functions for the template engine.
  *
+ * @author The phpLDAPadmin development team
+ * @package phpLDAPadmin
+ */
+
+/**
  * Represents an attribute whose values are jpeg pictures
+ *
+ * @package phpLDAPadmin
+ * @subpackage Templates
  */
 class JpegAttribute extends BinaryAttribute {
 }

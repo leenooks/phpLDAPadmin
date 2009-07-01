@@ -1,18 +1,25 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/BinaryAttribute.php,v 1.2 2007/12/15 07:50:32 wurley Exp $
+// $Header$
 
 /**
- * @package phpLDAPadmin
- * @author Xavier Bruyet
+ * Classes and functions for the template engine.
  *
- * Represents an attribute whose values are binaries
+ * @author The phpLDAPadmin development team
+ * @package phpLDAPadmin
+ */
+
+/**
+ * Represents an attribute whose values are binary
+ *
+ * @package phpLDAPadmin
+ * @subpackage Templates
  */
 class BinaryAttribute extends Attribute {
 	protected $filepaths;
 	protected $filenames;
 
-	public function __construct($name, $values) {
-		parent::__construct($name, $values);
+	public function __construct($name,$values,$server_id,$source=null) {
+		parent::__construct($name,$values,$server_id,$source);
 
 		$this->filepaths = array();
 		$this->filenames = array();

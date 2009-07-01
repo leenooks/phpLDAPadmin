@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE template SYSTEM "template.dtd">
+
 <template>
-<title>Address Book Entry</title>
-<regexp>^uid=.*,</regexp>
+<description>Address Book Entry</description>
 <icon>images/user.png</icon>
-<visible>0</visible>
-<rdn>uid</rdn>
+<invalid>0</invalid>
+<rdn>cn</rdn>
+<regexp>^uid=.*,</regexp>
+<title>Generic: Address Book Entry</title>
+<visible>1</visible>
 
 <objectClasses>
 <objectClass id="inetOrgPerson"></objectClass>
@@ -16,18 +19,24 @@
 <attribute id="givenName">
 	<display>First name</display>
 	<icon>images/uid.png</icon>
-	<onchange>autoFill:cn,%givenName% %sn%</onchange>
+	<onchange>=autoFill(cn;%givenName% %sn%)</onchange>
 	<order>1</order>
 </attribute>
 <attribute id="sn">
 	<display>Last name</display>
-	<onchange>autoFill:cn,%givenName% %sn%</onchange>
+	<onchange>=autoFill(cn;%givenName% %sn%)</onchange>
 	<order>2</order>
 </attribute>
 <attribute id="cn">
 	<display>Common Name</display>
-	<readonly>1</readonly>
 	<order>3</order>
+	<readonly>1</readonly>
+	<spacer>1</spacer>
+</attribute>
+<attribute id="jpegPhoto">
+	<display>Photo</display>
+	<order>3</order>
+	<readonly>0</readonly>
 	<spacer>1</spacer>
 </attribute>
 <attribute id="o">
@@ -35,21 +44,22 @@
 	<order>4</order>
 </attribute>
 <attribute id="street">
+	<cols>50</cols>
 	<display>Street</display>
 	<icon>images/mail.png</icon>
-	<type>textarea</type>
-	<cols>50</cols>
-	<rows>4</rows>
 	<order>5</order>
+	<rows>4</rows>
+	<type>textarea</type>
 </attribute>
 <attribute id="l">
 	<display>City</display>
-	<option>Berlin</option>
-	<option>London</option>
-	<option>Paris</option>
-	<option>Washington</option>
-	<option>Other</option>
 	<order>6</order>
+	<type>select</type>
+	<value id="Berlin">Berlin</value>
+	<value id="London">London</value>
+	<value id="Paris">Paris</value>
+	<value id="Washington">Washington</value>
+	<value id="Other">Other</value>
 </attribute>
 <attribute id="st">
 	<display>State</display>
@@ -79,4 +89,5 @@
 	<order>12</order>
 </attribute>
 </attributes>
+
 </template>

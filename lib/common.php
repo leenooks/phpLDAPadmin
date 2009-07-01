@@ -1,5 +1,5 @@
 <?php
-// $Header: /cvsroot/phpldapadmin/phpldapadmin/lib/common.php,v 1.80.2.17 2008/12/13 08:57:09 wurley Exp $
+// $Header$
 
 /**
  * Contains code to be executed at the top of each application page.
@@ -13,10 +13,20 @@
  *
  * The list of ADDITIONAL function files is now defined in functions.php.
  *
+ * @author The phpLDAPadmin development team
  * @package phpLDAPadmin
  */
 
-# The index we will store our config in $_SESSION
+/**
+ * @package phpLDAPadmin
+ * @subpackage Functions
+ */
+
+/* Initialize the app array. The app array is initialised each invocation of a PLA script and therefore
+   has no state between invocations.*/
+$app = array();
+
+/** The index we will store our config in $_SESSION */
 if (! defined('APPCONFIG'))
 	define('APPCONFIG','plaConfig');
 
@@ -30,26 +40,46 @@ $app['direct_scripts'] = array('cmd.php','index.php',
 	'unserialize.php'
 	);
 
-foreach ($app['direct_scripts'] as $script) {
-	$scriptOK = false;
+# Which script was invoked.
+$app['script_running'] = $_SERVER['SCRIPT_NAME'];
 
-	if (preg_match('/'.$script.'$/',$_SERVER['SCRIPT_NAME'])) {
-		$scriptOK = true;
+foreach ($app['direct_scripts'] as $script) {
+	$app['scriptOK'] = false;
+
+	if (preg_match('/'.$script.'$/',$app['script_running'])) {
+		$app['scriptOK'] = true;
 		break;
 	}
 }
 
-# Anything in the tools dir can be executed directly.
-if (! $scriptOK && preg_match('/^\/tools/',$_SERVER['SCRIPT_NAME']))
-	$scriptOK = true;
+# Anything in the tools dir or cron dir can be executed directly.
+if ((! $app['scriptOK'] && preg_match('/^\/[cron|tools]/',$app['script_running'])) || ! isset($_SERVER['SERVER_SOFTWARE']))
+	$app['scriptOK'] = true;
 
-if (! $scriptOK) {
+if (! $app['scriptOK']) {
 	if (isset($_REQUEST['server_id']))
 		header(sprintf('Location: index.php?server_id=%s',$_REQUEST['server_id']));
 	else
 		header('Location: index.php');
 	die();
 }
+
+/**
+ * All commands are disabled in read-only unless specified here
+ */
+$app['readwrite_cmds'] = array(
+	'collapse','draw_tree_node','expand',
+	'compare_form','compare',
+	'download_binary_attr','view_jpeg_photo',
+	'entry_chooser',
+	'export_form','export',
+	'login_form','login','logout',
+	'monitor',
+	'password_checker',
+	'purge_cache',
+	'refresh','schema','query_engine','server_info','show_cache','template_engine',
+	'welcome'
+	);
 
 /**
  * Timer stopwatch, used to instrument the application
@@ -81,9 +111,6 @@ if (! function_exists('stopwatch')) {
 if (function_exists('date_default_timezone_set') && ! ini_get('date.timezone'))
 	date_default_timezone_set('UTC');
 
-# Start out instrumentation
-$timer = stopwatch();
-
 # If we are called from index.php, LIBDIR will be set, all other calls to common.php dont need to set it.
 if (! defined('LIBDIR'))
 	define('LIBDIR','../lib/');
@@ -105,8 +132,8 @@ if (ob_get_level())
  */
 
 # Call our custom defined error handler, if it is defined in functions.php
-if (function_exists('pla_error_handler'))
-	set_error_handler('pla_error_handler');
+if (function_exists('app_error_handler'))
+	set_error_handler('app_error_handler');
 
 # Disable error reporting until all our required functions are loaded.
 error_reporting(0);
@@ -119,9 +146,8 @@ error_reporting(0);
  */
 ob_start();
 if (isset($app['function_files']) && is_array($app['function_files']))
-	foreach ($app['function_files'] as $file_name) {
-		require_once realpath ($file_name);
-	}
+	foreach ($app['function_files'] as $script)
+		require_once realpath($script);
 
 # Now read in config_default.php
 require_once realpath(LIBDIR.'config_default.php');
@@ -132,14 +158,18 @@ if (ob_get_level())
 error_reporting(E_ALL);
 
 # Start our session.
-pla_session_start();
+app_session_start();
 
 # Initialise the hooks
 require_once LIBDIR.'hooks.php';
 
 # If we get here, and $_SESSION[APPCONFIG] is not set, then redirect the user to the index.
-if (! isset($_SESSION[APPCONFIG])) {
-	header(sprintf('Location: index.php?URI=%s',base64_encode($_SERVER['QUERY_STRING'])));
+if (isset($_SERVER['SERVER_SOFTWARE']) && ! isset($_SESSION[APPCONFIG])) {
+	if ($_SERVER['QUERY_STRING'])
+		header(sprintf('Location: index.php?URI=%s',base64_encode($_SERVER['QUERY_STRING'])));
+	else
+		header('Location: index.php');
+
 	die();
 
 } else {
@@ -148,7 +178,7 @@ if (! isset($_SESSION[APPCONFIG])) {
 		error('Unknown situation, $_SESSION[APPCONFIG] exists, but method CheckCustom() does not','error',null,true,true);
 
 	# Check our custom variables.
-	# @todo: Change this so that we dont process a cached session.
+	# @todo Change this so that we dont process a cached session.
 	$_SESSION[APPCONFIG]->CheckCustom();
 }
 
@@ -156,70 +186,74 @@ if (! isset($_SESSION[APPCONFIG])) {
 if (ini_get('safe_mode') && ! get_request('cmd','GET'))
 	system_message(array(
 	'title'=>_('PHP Safe Mode'),
-	'body'=>_('You have PHP Safe Mode enabled. PLA may work unexpectedly in Safe Mode.'),
+	'body'=>_('You have PHP Safe Mode enabled. This application may work unexpectedly in Safe Mode.'),
 	'type'=>'info'));
 
 # Set our timezone, if it is specified in config.php
-if ($_SESSION[APPCONFIG]->GetValue('appearance','timezone'))
-	date_default_timezone_set($_SESSION[APPCONFIG]->GetValue('appearance','timezone'));
+if ($_SESSION[APPCONFIG]->getValue('appearance','timezone'))
+	date_default_timezone_set($_SESSION[APPCONFIG]->getValue('appearance','timezone'));
 
 # If we are here, $_SESSION is set - so enabled DEBUGing if it has been configured.
-if (($_SESSION[APPCONFIG]->GetValue('debug','syslog') || $_SESSION[APPCONFIG]->GetValue('debug','file'))
-	&& $_SESSION[APPCONFIG]->GetValue('debug','level'))
+if (($_SESSION[APPCONFIG]->getValue('debug','syslog') || $_SESSION[APPCONFIG]->getValue('debug','file'))
+	&& $_SESSION[APPCONFIG]->getValue('debug','level'))
 	define('DEBUG_ENABLED',1);
 else
 	define('DEBUG_ENABLED',0);
 
 if (DEBUG_ENABLED)
 	debug_log('Application (%s) initialised and starting with (%s).',1,__FILE__,__LINE__,__METHOD__,
-		pla_version(),$_REQUEST);
+		app_version(),$_REQUEST);
 
 # Set our PHP timelimit.
-if ($_SESSION[APPCONFIG]->GetValue('session','timelimit'))
-	@set_time_limit($_SESSION[APPCONFIG]->GetValue('session','timelimit'));
+if ($_SESSION[APPCONFIG]->getValue('session','timelimit') && ! ini_get('safe_mode'))
+	set_time_limit($_SESSION[APPCONFIG]->getValue('session','timelimit'));
 
 # If debug mode is set, increase the time_limit, since we probably need it.
-if (DEBUG_ENABLED && $_SESSION[APPCONFIG]->GetValue('session','timelimit'))
-	@set_time_limit($_SESSION[APPCONFIG]->GetValue('session','timelimit') * 5);
+if (DEBUG_ENABLED && $_SESSION[APPCONFIG]->getValue('session','timelimit') && ! ini_get('safe_mode'))
+	set_time_limit($_SESSION[APPCONFIG]->getValue('session','timelimit') * 5);
 
 /**
  * Language configuration. Auto or specified?
  * Shall we attempt to auto-determine the language?
  */
-$language = $_SESSION[APPCONFIG]->GetValue('appearance','language');
+# If we are in safe mode, and LANG is not in the allowed vars, display an error.
+if (ini_get('safe_mode') && ! in_array('LANG',explode(',',ini_get('safe_mode_allowed_env_vars'))))
+	error('You are running in SAFE_MODE, but LANG is not in the safe_mode_allowed_env_vars. Please add LANG to safe_mode_allowed_env_vars','error',true,false);
 
-if ($language == 'auto') {
+$app['language'] = $_SESSION[APPCONFIG]->getValue('appearance','language');
+
+if ($app['language'] == 'auto') {
 
 	# Make sure their browser correctly reports language. If not, skip this.
 	if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 
 		# Get the languages which are spetcified in the HTTP header
-		$HTTP_LANGS = preg_split ('/[;,]+/',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
-		foreach ($HTTP_LANGS as $key => $value) {
+		$app['lang_http'] = preg_split ('/[;,]+/',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
+		foreach ($app['lang_http'] as $key => $value) {
 			if (substr($value,0,2) == 'q=') {
-				unset($HTTP_LANGS[$key]);
+				unset($app['lang_http'][$key]);
 				continue;
 			}
 
 			$value = preg_split('/[-]+/',$value);
 			if (sizeof($value) == 2)
-				$HTTP_LANGS[$key] = strtolower($value[0]).'_'.strtoupper($value[1]);
+				$app['lang_http'][$key] = strtolower($value[0]).'_'.strtoupper($value[1]);
 			else
-				$HTTP_LANGS[$key] = auto_lang(strtolower($value[0]));
+				$app['lang_http'][$key] = auto_lang(strtolower($value[0]));
 		}
 
-		$HTTP_LANGS = array_unique($HTTP_LANGS);
+		$app['lang_http'] = array_unique($app['lang_http']);
 
-		foreach ($HTTP_LANGS as $HTTP_LANG) {
-			$language_dir = LANGDIR.$HTTP_LANG;
+		foreach ($app['lang_http'] as $lang) {
+			$app['language_dir'] = LANGDIR.$lang;
 
-			if ((substr($HTTP_LANG,0,2) == 'en') ||
-				(file_exists($language_dir) && is_readable($language_dir))) {
+			if ((substr($lang,0,2) == 'en') ||
+				(file_exists($app['language_dir']) && is_readable($app['language_dir']))) {
 
 				# Set language
-				@putenv('LANG='.$HTTP_LANG); # e.g. LANG=de_DE
-				$HTTP_LANG .= '.UTF-8';
-				setlocale(LC_ALL,$HTTP_LANG); # set LC_ALL to de_DE
+				putenv('LANG='.$lang); # e.g. LANG=de_DE
+				$lang .= '.UTF-8';
+				setlocale(LC_ALL,$lang); # set LC_ALL to de_DE
 				bindtextdomain('messages',LANGDIR);
 				bind_textdomain_codeset('messages','UTF-8');
 				textdomain('messages');
@@ -227,20 +261,20 @@ if ($language == 'auto') {
 				break;
 			}
 		}
-		#todo: Generate an error if language doesnt exist.
+		#todo Generate an error if language doesnt exist.
 	}
 
 } else {
 	# Grab the language file configured in config.php
-	#todo: Generate an error if language doesnt exist.
-	if ($language != null) {
-		if (strcmp($language,'english') == 0)
-			$language = 'en_GB';
+	#todo Generate an error if language doesnt exist.
+	if ($app['language'] != null) {
+		if (strcmp($app['language'],'english') == 0)
+			$app['language'] = 'en_GB';
 
 		# Set language
-		@putenv('LANG='.$language); # e.g. LANG=de_DE
-		$language .= '.UTF-8';
-		setlocale(LC_ALL,$language); # set LC_ALL to de_DE
+		putenv('LANG='.$app['language']); # e.g. LANG=de_DE
+		$app['language'] .= '.UTF-8';
+		setlocale(LC_ALL,$app['language']); # set LC_ALL to de_DE
 		bindtextdomain('messages',LANGDIR);
 		bind_textdomain_codeset('messages','UTF-8');
 		textdomain('messages');
@@ -260,45 +294,26 @@ if (get_magic_quotes_gpc() && (! isset($slashes_stripped) || ! $slashes_stripped
 	$slashes_stripped = true;
 }
 
-/**
- * Create our application repository variable.
- */
-if (isset($_REQUEST['server_id'])) {
-	$ldapserver = $_SESSION[APPCONFIG]->ldapservers->Instance($_REQUEST['server_id']);
-} else {
-	if (isset($_SESSION[APPCONFIG]->ldapservers) && is_object($_SESSION[APPCONFIG]->ldapservers))
-		$ldapserver = $_SESSION[APPCONFIG]->ldapservers->Instance(null);
-}
+# Create our application repository variable.
+$app['server'] = $_SESSION[APPCONFIG]->getServer(get_request('server_id','REQUEST'));
 
 /**
  * Look/evaluate our timeout
  */
-if (isset($ldapserver) && is_object($ldapserver) && method_exists($ldapserver,'haveAuthInfo')) {
-	if ($ldapserver->haveAuthInfo() && isset($ldapserver->auth_type) && ! in_array($ldapserver->auth_type,array('config','http'))) {
-		/**
-		 * If time out value has been reached:
-		 * - log out user
-		 * - put $server_id in array of recently timed out servers
-		 */
-		if (function_exists('session_timed_out') && session_timed_out($ldapserver)) {
+if (! $app['server']->isSessionValid()) {
+	system_message(array(
+		'title'=>_('Session Timed Out'),
+		'body'=>sprintf('%s %s %s',
+			_('Your Session timed out after'),$app['server']->getValue('login','timeout'),
+			_('min. of inactivity. You have been automatically logged out.')),
+		'type'=>'info'),sprintf('index.php?server_id=%s&refresh=SID_%s',$app['server']->getIndex(),$app['server']->getIndex()));
 
-			# If $session_timeout not defined, use ( session_cache_expire() - 1 )
-			$session_timeout = $ldapserver->session_timeout ? $ldapserver->session_timeout : session_cache_expire()-1;
-
-			system_message(array(
-				'title'=>_('Session Timed Out'),
-				'body'=>sprintf('%s %s %s',
-					_('Your Session timed out after'),$session_timeout,
-					_('min. of inactivity. You have been automatically logged out.')),
-				'type'=>'info'),'index.php');
-			die();
-		}
-	}
-
-	# Update $_SESSION['activity'] for timeout and automatic logout feature
-	if ($ldapserver->haveAuthInfo() && function_exists('set_lastactivity'))
-		set_lastactivity($ldapserver);
+	die();
 }
+
+# If syslog is enabled, we need to include the supporting file.
+if ($_SESSION[APPCONFIG]->getValue('debug','syslog'))
+	require LIBDIR.'syslog.php';
 
 /**
  * At this point we have read all our additional function PHP files and our configuration.
