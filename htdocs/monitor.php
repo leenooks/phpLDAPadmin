@@ -62,7 +62,7 @@ foreach (array(
 	printf('<tr class="list_item"><td class="heading" rowspan=2><acronym title="%s">%s</acronym></td></tr>',$description,$dn);
 	echo '<tr class="list_item"><td class="value">';
 	echo '<table class="result"><tr><td>';
-	echo '<table class="result_table" border=0>';
+	echo '<table class="result_table" border=0 width="100%">';
 
 	$attrs = array(
 		'monitorRuntimeConfig',
@@ -70,10 +70,10 @@ foreach (array(
 		);
 
 	echo '<tr class="highlight">';
-	printf('<td>%s</td><td>%s</td>',_('Type'),'namingContext');
+	printf('<td width="10%%">%s</td><td width="20%%">%s</td>',_('Type'),'namingContext');
 
 	foreach ($attrs as $attr)
-		printf('<td>%s</td>',$attr);
+		printf('<td width="20%%">%s</td>',$attr);
 
 	echo '</tr>';
 
@@ -136,11 +136,11 @@ foreach (array(
 printf('<tr class="list_item"><td class="heading" rowspan=2><acronym title="%s">%s</acronym></td></tr>',$results['cn=Connections,cn=Monitor']['description'],_('LDAP Connections'));
 printf('<tr class="list_item"><td class="value">');
 echo '<table class="result"><tr><td>';
-echo '<table class="result_table" border=0>';
+echo '<table class="result_table" border=0 width="100%">';
 
-printf('<tr class="highlight"><td>%s</td><td class="value">%s</td></tr>',
+printf('<tr class="highlight"><td class="20%%">%s</td><td class="value" width="80%%">%s</td></tr>',
 	_('Total Connections'),$results['cn=Total,cn=Connections,cn=Monitor']['monitorCounter']);
-printf('<tr class="highlight"><td>%s</td><td class="value">%s</td></tr>',
+printf('<tr class="highlight"><td class="20%%">%s</td><td class="value" width="80%%">%s</td></tr>',
 	_('Current Connections'),$results['cn=Current,cn=Connections,cn=Monitor']['monitorCounter']);
 
 # Look for some connections
@@ -150,7 +150,7 @@ foreach ($results as $key => $value) {
 		printf('<td>%s</td>',$results[$key]['cn']);
 
 		echo '<td class="value">';
-		echo '<table class="result_table" border=0>';
+		echo '<table class="result_table" border=0 width="100%">';
 
 		$counter = 0;
 		foreach (array(
@@ -175,7 +175,7 @@ foreach ($results as $key => $value) {
 
 			printf('<tr class="%s">',$counter++%2==0?'even':'odd');
 
-			printf('<td class="title">%s</td><td>%s</td>',
+			printf('<td class="title" width="35%%">%s</td><td width="65%%">%s</td>',
 				$metric,isset($results[$key][$metric]) ? $results[$key][$metric] : '&nbsp;');
 			echo '</tr>';
 		}
@@ -211,26 +211,26 @@ foreach (array(
 	printf('<tr class="list_item"><td class="heading" rowspan=2><acronym title="%s">%s</acronym></td></tr>',$description,$dn);
 	echo '<tr class="list_item"><td class="value">';
 	echo '<table class="result"><tr><td>';
-	echo '<table class="result_table" border=0>';
+	echo '<table class="result_table" border=0 width="100%">';
 
 	if (isset($results[$dn]['monitorOpInitiated']))
-		printf('<tr class="highlight"><td>%s</td><td class="value">%s</td></tr>',
+		printf('<tr class="highlight"><td width="20%%">%s</td><td class="value" width="80%%">%s</td></tr>',
 			'monitorOpInitiated',$results[$dn]['monitorOpInitiated']);
 	if (isset($results[$dn]['monitorOpCompleted']))
-		printf('<tr class="highlight"><td>%s</td><td class="value">%s</td></tr>',
+		printf('<tr class="highlight"><td width="20%%">%s</td><td class="value" width="80%%">%s</td></tr>',
 			'monitorOpCompleted',$results[$dn]['monitorOpCompleted']);
 	if (isset($results[$dn]['monitoredInfo']))
-		printf('<tr class="highlight"><td>%s</td><td class="value">%s</td></tr>',
+		printf('<tr class="highlight"><td width="20%%">%s</td><td class="value" width="80%%">%s</td></tr>',
 			'monitoredInfo',$results[$dn]['monitoredInfo']);
 
 	# Look for some connecitons
 	foreach ($results as $key => $value) {
 		if (preg_match('/^.*,'.$dn.'$/',$key)) {
 			echo '<tr class="highlight">';
-			printf('<td>%s</td>',$results[$key]['cn']);
+			printf('<td width="20%%">%s</td>',$results[$key]['cn']);
 
-			echo '<td class="value">';
-			echo '<table class="result_table" border=0>';
+			echo '<td class="value" width="80%">';
+			echo '<table class="result_table" border=0 width="100%">';
 
 			foreach (array(
 				'labeledURI',
@@ -245,7 +245,7 @@ foreach (array(
 				if (isset($results[$key][$metric])) {
 					printf('<tr class="%s">',$counter++%2==0?'even':'odd');
 
-					printf('<td class="title">%s</td><td>%s</td>',
+					printf('<td class="title" width="35%%">%s</td><td width="65%%">%s</td>',
 						$metric,$results[$key][$metric]);
 
 					echo '</tr>';
