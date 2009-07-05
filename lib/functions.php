@@ -789,7 +789,7 @@ function blowfish_decrypt($encdata,$secret=null) {
 	if (file_exists(LIBDIR.'blowfish.php'))
 		require_once LIBDIR.'blowfish.php';
 	else
-		return $data;
+		return $encdata;
 
 	$pma_cipher = new Horde_Cipher_blowfish;
 	$decrypt = '';
