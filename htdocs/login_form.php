@@ -45,7 +45,7 @@ printf('<tr><td><b>%s:</b></td></tr>',
 		($app['server']->getValue('login','attr') == 'dn' ? _('Login DN') : $_SESSION[APPCONFIG]->getFriendlyName($app['server']->getValue('login','attr'))));
 
 printf('<tr><td><input type="text" id="login" name="login" size="40" value="%s" /></td></tr>',
-	$app['server']->getValue('login','attr') == 'dn' ? $app['server']->getValue('login','bind_id') : '');
+	$app['server']->getValue('login','attr',false) == 'dn' ? $app['server']->getValue('login','bind_id') : '');
 
 echo '<tr><td colspan=2>&nbsp;</td></tr>';
 printf('<tr><td><b>%s:</b></td></tr>',_('Password'));

@@ -69,16 +69,18 @@ abstract class DS {
 	/**
 	 * Return a configuration value
 	 */
-	public function getValue($key,$setting) {
+	public function getValue($key,$setting,$fatal=true) {
 		if (isset($this->custom->{$key}[$setting]))
 			return $this->custom->{$key}[$setting];
 
 		elseif (isset($this->default->{$key}[$setting]) && array_key_exists('default',$this->default->{$key}[$setting]))
 			return $this->default->{$key}[$setting]['default'];
 
-		else {
+		elseif ($fatal)
 			debug_dump_backtrace("Error trying to get a non-existant value ($key,$setting)",1);
-		}
+
+		else
+			return null;
 	}
 
 	/**
