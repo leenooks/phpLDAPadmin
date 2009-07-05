@@ -54,6 +54,15 @@ if (count($request['template']->getLDAPmodify(true))) {
 		_('Attribute'),_('Old Value'),_('New Value'),_('Skip'));
 	echo "\n\n";
 
+	# If we skip objectclass changes, but there are new must/may attrs provided by the new objectclass, they need to be skip.
+	$mustattrs = array();
+	foreach ($request['template']->getAttribute('objectclass')->getValues() as $value) {
+		$soc = $app['server']->getSchemaObjectClass($value);
+
+		foreach ($soc->getMustAttrs() as $sma)
+			array_push($mustattrs,$sma->getName());
+	}
+			
 	$counter = 0;
 	foreach ($request['template']->getLDAPmodify(true) as $attribute) {
 		$counter++;
@@ -109,23 +118,60 @@ if (count($request['template']->getLDAPmodify(true))) {
 		$input_disabled = '';
 		$input_onclick = '';
 
-		if ($attribute->isForceDelete())
+		if ($attribute->isForceDelete() || in_array($attribute->getName(),$mustattrs))
 			$input_disabled = 'disabled="disabled"';
 
-		if ($attribute->getName() == 'objectclass' && (count($request['template']->getForceDeleteAttrs()) > 0)) {
-			$input_onclick = 'onclick="if (this.checked) {';
+		if ($attribute->getName() == 'objectclass') {
+			$input_onclick = '';
 
-			foreach ($request['template']->getForceDeleteAttrs() as $ad_name) {
-				$input_onclick .= sprintf("document.getElementById('skip_array_%s').disabled = false;",$ad_name->getName());
-				$input_onclick .= sprintf("document.getElementById('skip_array_%s').checked = true;",$ad_name->getName());
+			if (count($request['template']->getForceDeleteAttrs()) > 0) {
+				$input_onclick = 'onclick="if (this.checked) {';
+
+				foreach ($request['template']->getForceDeleteAttrs() as $ad_name) {
+					$input_onclick .= sprintf("document.getElementById('skip_array_%s').disabled = false;",$ad_name->getName());
+					$input_onclick .= sprintf("document.getElementById('skip_array_%s').checked = true;",$ad_name->getName());
+					$input_onclick .= "\n";
+				}
+
+				$input_onclick .= '} else {';
+
+				foreach ($request['template']->getForceDeleteAttrs() as $ad_name) {
+					$input_onclick .= sprintf("document.getElementById('skip_array_%s').checked = false;",$ad_name->getName());
+					$input_onclick .= sprintf("document.getElementById('skip_array_%s').disabled = true;",$ad_name->getName());
+					$input_onclick .= "\n";
+				}
+
+				$input_onclick .= '};'; 
+			}
+
+			if ($input_onclick)
+				$input_onclick .= 'if (this.checked) {';
+			else
+				$input_onclick = 'onclick="if (this.checked) {';
+
+			foreach ($request['template']->getLDAPmodify(true) as $skipattr) {
+				if (! $skipattr->getOldValues()) {
+					if (! in_array($skipattr->getName(),$mustattrs))
+						$input_onclick .= sprintf("document.getElementById('skip_array_%s').disabled = true;",$skipattr->getName());
+
+					$input_onclick .= sprintf("document.getElementById('skip_array_%s').checked = true;",$skipattr->getName());
+					$input_onclick .= "\n";
+				}
 			}
 
 			$input_onclick .= '} else {';
-			foreach ($request['template']->getForceDeleteAttrs() as $ad_name) {
-				$input_onclick .= sprintf("document.getElementById('skip_array_%s').checked = false;",$ad_name->getName());
-				$input_onclick .= sprintf("document.getElementById('skip_array_%s').disabled = true;",$ad_name->getName());
+
+			foreach ($request['template']->getLDAPmodify(true) as $skipattr) {
+				if (! $skipattr->getOldValues()) {
+					if (! in_array($skipattr->getName(),$mustattrs))
+						$input_onclick .= sprintf("document.getElementById('skip_array_%s').disabled = false;",$skipattr->getName());
+
+					$input_onclick .= sprintf("document.getElementById('skip_array_%s').checked = false;",$skipattr->getName());
+					$input_onclick .= "\n";
+				}
 			}
-			$input_onclick .= '}"';
+
+			$input_onclick .= '};"';
 		}
 
 		printf('<td><input name="skip_array[%s]" id="skip_array_%s" type="checkbox" %s %s/></td>',
