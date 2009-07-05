@@ -175,9 +175,10 @@ class Template extends xmlTemplate {
 			return;
 
 		} else {
-			$attribute = $this->addAttribute('objectClass',array('values'=>$objectclasses));
+			$attribute = $this->addAttribute('objectClass',array('values'=>$objectclasses),'XML');
 			$attribute->justModified();
 			$attribute->setRequired();
+			$attribute->hide();
 		}
 
 		$this->rebuildTemplateAttrs();
@@ -266,9 +267,14 @@ class Template extends xmlTemplate {
 				if (is_null($attribute))
 					$attribute = $this->addAttribute($attr,array('values'=>$values));
 				else
-					if ($attribute->getValues())
-						$attribute->setValue(array_values($values));
-					else
+					if ($attribute->getValues()) {
+						# Override values to those that are defined in the XML file.
+						if ($attribute->getSource() != 'XML')
+							$attribute->setValue(array_values($values));
+						else
+							$attribute->setOldValue(array_values($values));
+
+					} else
 						$attribute->initValue(array_values($values));
 
 				# Work out the RDN attributes

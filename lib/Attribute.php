@@ -146,6 +146,10 @@ class Attribute {
 		return count($this->values);
 	}
 
+	public function getSource() {
+		return $this->source;
+	}
+
 	/**
 	 * Autovalue is called after the attribute is initialised, and thus the values from the ldap server will be set.
 	 */
@@ -169,9 +173,16 @@ class Attribute {
 		$this->values = array();
 	}
 
+	public function setOldValue($val) {
+		$this->oldvalues = $val;
+	}
+
 	public function setValue($new_val) {
 		if ($this->values) {
-			if ($this->oldvalues && ($new_val != $this->values)) {
+			if ($this->values == $new_val)
+				return;
+
+			if ($this->oldvalues) {
 				debug_dump($this);
 				debug_dump_backtrace('old values are set',1);
 			} else
@@ -595,6 +606,7 @@ class Attribute {
 					case 'readonly':
 					case 'rows':
 					case 'size':
+					case 'values':
 					case 'verify': $this->$index = $value;
 						break;
 
@@ -607,7 +619,6 @@ class Attribute {
 
 		elseif (is_string($values) && (strlen($values) > 0))
 			$this->values = array($values);
-
 	}
 
 	/**
