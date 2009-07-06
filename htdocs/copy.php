@@ -69,9 +69,15 @@ if ($request['recursive']) {
 
 } else {
 	$copy_result = copy_dn($ldap['SRC'],$ldap['DST'],$request['dnSRC'],$request['dnDST'],$request['remove']);
-	$copy_message = sprintf('%s %s: <b>%s</b> %s',
-		$request['remove'] ? _('Move successful') : _('Copy successful'),
-		_('DN'),$request['dnDST'],_('has been created.'));
+
+	if ($copy_result)
+		$copy_message = sprintf('%s %s: <b>%s</b> %s',
+			$request['remove'] ? _('Move successful') : _('Copy successful'),
+			_('DN'),$request['dnDST'],_('has been created.'));
+	else
+		$copy_message = sprintf('%s %s: <b>%s</b> %s',
+			$request['remove'] ? _('Move NOT successful') : _('Copy NOT successful'),
+			_('DN'),$request['dnDST'],_('has NOT been created.'));
 }
 
 if ($copy_result) {
@@ -124,9 +130,14 @@ function r_copy_dn($serverSRC,$serverDST,$snapshottree,$dnSRC,$dnDST,$remove) {
 	} else {
 		$copy_result = copy_dn($serverSRC,$serverDST,$dnSRC,$dnDST,$remove);
 
-		array_push($copy_message,sprintf('%s %s: <b>%s</b> %s',
-			$remove ? _('Move successful') : _('Copy successful'),
-			_('DN'),$dnDST,_('has been created.')));
+		if ($copy_result)
+			array_push($copy_message,sprintf('%s %s: <b>%s</b> %s',
+				$remove ? _('Move successful') : _('Copy successful'),
+				_('DN'),$dnDST,_('has been created.')));
+		else
+			array_push($copy_message,sprintf('%s %s: <b>%s</b> %s',
+				$remove ? _('Move NOT successful') : _('Copy NOT successful'),
+				_('DN'),$dnDST,_('has NOT been created.')));
 	}
 
 	return $copy_message;
@@ -152,21 +163,9 @@ function copy_dn($serverSRC,$serverDST,$dnSRC,$dnDST,$remove) {
 
 	# Create of move the entry
 	if ($remove)
-		$add_result = $serverDST->rename($request['templateSRC']->getDN(),$request['templateDST']->getRDN(),$serverDST->getContainer($dnDST),true);
+		return $serverDST->rename($request['templateSRC']->getDN(),$request['templateDST']->getRDN(),$serverDST->getContainer($dnDST),true);
 	else
-		$add_result = $serverDST->add($request['templateDST']->getDN(),$request['templateDST']->getLDAPadd());
-
-	if ($add_result) {
-		return $add_result;
-
-	} else {
-		system_message(array(
-			'title'=>sprintf('%s (%s)',_('Failed to copy DN'),$request['templateDST']->getDN()),
-			'body'=>ldap_error_msg($serverDST->getErrorMessage(null),$serverDST->getErrorNum(null)),
-			'type'=>'error'));
-
-		return false;
-	}
+		return $serverDST->add($request['templateDST']->getDN(),$request['templateDST']->getLDAPadd());
 }
 
 function build_tree($server,$dn,$buildtree) {
