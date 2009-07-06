@@ -683,7 +683,7 @@ class ldap_pla extends ldap {
 				foreach ($results as $values)
 					# If one of the attributes is owned to somebody else, then we may as well die here.
 					if ($values['dn'] != $dn) {
-						$href = sprintf('cmd.php?cmd=query_engine&server=%s&filter=%s&scope=sub&query=none&format=list',$this->index,$query['filter']);
+						$href = sprintf('cmd.php?cmd=query_engine&server_id=%s&filter=%s&scope=sub&query=none&format=list',$this->index,$query['filter']);
 
 						system_message(array(
 							'title'=>_('Attribute value would not be unique'),
