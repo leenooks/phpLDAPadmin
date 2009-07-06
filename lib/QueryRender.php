@@ -99,7 +99,6 @@ class QueryRender extends PageRender {
 			echo '</tr>';
 		}
 
-		echo '<tr>';
 		printf('<td><acronym title="%s">%s</acronym></td>',_('The format to show the query results'),_('Display Format'));
 		echo '<td>';
 		echo '<select name="format" style="width: 200px">';
@@ -204,6 +203,14 @@ class QueryRender extends PageRender {
 	private function visitEnd() {
 		$server = $this->getServer();
 		$afattrs = $this->getAFAttrs();
+
+		# If Mass Actions Enabled
+		if ($_SESSION[APPCONFIG]->getValue('mass','enabled')) {
+			$mass_actions = array(
+				'&nbsp;' => '',
+				_('delete') => 'mass_delete'
+			);
+		}
 
 		# Display the Javascript that enables us to show/hide DV entries
 		echo '<script type="text/javascript" language="javascript">';
@@ -354,10 +361,14 @@ function hideall(key,except) {
 						continue;
 					}
 
+					echo '<form action="cmd.php" method="post" name="massform">';
+					printf('<input type="hidden" name="server_id" value="%s" />',$server->getIndex());
+
 					echo '<table class="result_table" border=0>';
 
 					echo '<thead class="fixheader">';
 					echo '<tr class="heading">';
+					echo '<td>&nbsp;</td>';
 					echo '<td>&nbsp;</td>';
 
 					foreach (explode(',',$this->template->getAttrDisplayOrder()) as $attr) {
@@ -372,12 +383,18 @@ function hideall(key,except) {
 					echo '<tbody class="scroll">';
 					$counter = 0;
 					foreach ($results as $dn => $dndetails) {
+						$counter++;
 						$dndetails = array_change_key_case($dndetails);
 
 						# Temporarily set our DN, for rendering that leverages our DN (eg: JpegPhoto)
 						$this->template->setDN($dn);
 
-						printf('<tr class="%s">',++$counter%2 ? 'odd' : 'even');
+						printf('<tr class="%s" id="tr_ma%s" onClick="var cb=document.getElementById(\'ma%s\'); cb.checked=!cb.checked;">',
+							$counter%2 ? 'odd' : 'even',$counter,$counter);
+
+						# Is mass action enabled.
+						if ($_SESSION[APPCONFIG]->getValue('mass','enabled'))
+							printf('<td><input type="checkbox" id="ma%s" name="dn[]" value="%s"/ onclick="this.checked=!this.checked;"></td>',$counter,$dn);
 
 						$href = sprintf('cmd=template_engine&server_id=%s&dn=%s',$server->getIndex(),rawurlencode($dn));
 						printf('<td class="icon"><a href="cmd.php?%s"><img src="%s/%s" alt="icon" /></a></td>',
@@ -417,12 +434,49 @@ function hideall(key,except) {
 						echo '</tr>';
 					}
 
+					# Is mass action enabled.
+					if ($_SESSION[APPCONFIG]->getValue('mass','enabled')) {
+						printf('<tr class="%s">',++$counter%2 ? 'odd' : 'even',$counter);
+						echo '<td><input type="checkbox" name="allbox" value="1" onclick="CheckAll(1);" /></td>';
+						printf('<td colspan=%s>',2+count(explode(',',$this->template->getAttrDisplayOrder())));
+						echo '<select name="cmd" onChange="if (this.value) submit();" style="font-size: 12px">';
+						foreach ($mass_actions as $action => $display)
+							printf('<option value="%s">%s</option>',$display,$action);
+						echo '</select>';
+						echo '</td>';
+						echo '</tr>';
+					}
+
 					echo '</tbody>';
 					echo '</table>';
+					echo '</form>';
 					echo '</td></tr>';
 					echo '</table>';
 					echo '</div>';
 					echo "\n\n";
+
+					echo '<script type="text/javascript" language="javascript">'."\n";
+					echo "
+function CheckAll(setbgcolor) {
+var deon=0;
+	for (var i=0;i<document.massform.elements.length;i++) {
+		var e = document.massform.elements[i];
+		if (e.type == 'checkbox' && e.name != 'allbox') {
+			e.checked = document.massform.allbox.checked;
+			if (!document.layers && setbgcolor) {
+				var tr = document.getElementById('tr_'+e.id);
+				if (e.checked) {
+					tr.style.backgroundColor='#DDDDFF';
+				} else {
+					var id = e.id.substr(2);
+					tr.style.backgroundColor= id%2 ? '#F0F0F0' : '#E0E0E0';
+				}
+			}
+		}
+	}
+}
+";
+					echo '</script>';
 				}
 
 				break;

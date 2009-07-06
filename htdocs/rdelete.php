@@ -19,28 +19,40 @@ if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_delete','simple_delete'))
 $request = array();
 $request['dn'] = get_request('dn','REQUEST',true);
 
-if (! $app['server']->dnExists($request['dn']))
-	error(sprintf('%s (%s)',_('No such entry.'),$request['dn']),'error','index.php');
+if (! is_array($request['dn']))
+	$request['dn'] = array($request['dn']);
 
-printf('<h3 class="title">%s %s</h3>',_('Deleting'),get_rdn($request['dn']));
+$request['parent'] = array();
+foreach ($request['dn'] as $dn)
+	if (! $app['server']->dnExists($dn))
+		system_message(array(
+			'title'=>_('Entry does not exist'),
+			'body'=>sprintf('%s (%s)',_('Unable to delete entry, it does not exist'),$dn),
+			'type'=>'error'));
+	else
+		array_push($request['parent'],$dn);
+
+printf('<h3 class="title">%s</h3>',_('Delete LDAP entries'));
 printf('<h3 class="subtitle">%s</h3>',_('Recursive delete progress'));
 
 # Prevent script from bailing early on a long delete
 @set_time_limit(0);
 
-echo '<br /><br />';
-echo '<small>';
-$result = pla_rdelete($app['server'],$request['dn']);
-echo '</small><br />';
+foreach ($request['parent'] as $dn) {
+	echo '<br /><br />';
+	echo '<small>';
+	$result = pla_rdelete($app['server'],$dn);
+	echo '</small><br />';
 
-if ($result) {
-	printf(_('Entry %s and sub-tree deleted successfully.'),'<b>'.$request['dn'].'</b>');
+	if ($result) {
+		printf(_('Entry %s and sub-tree deleted successfully.'),'<b>'.$dn.'</b>');
 
-} else {
-	system_message(array(
-		'title'=>_('Could not delete the entry.').sprintf(' (%s)',pretty_print_dn($request['dn'])),
-		'body'=>ldap_error_msg($app['server']->getErrorMessage(null),$app['server']->getErrorNum(null)),
-		'type'=>'error'));
+	} else {
+		system_message(array(
+			'title'=>_('Could not delete the entry.').sprintf(' (%s)',pretty_print_dn($request['dn'])),
+			'body'=>ldap_error_msg($app['server']->getErrorMessage(null),$app['server']->getErrorNum(null)),
+			'type'=>'error'));
+	}
 }
 
 function pla_rdelete($server,$dn) {

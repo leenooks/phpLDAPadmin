@@ -307,6 +307,7 @@ class Config {
 				'login' => true,
 				'logout' => true,
 				'login_form' => true,
+				'mass_delete' => true,
 				'modify_member_form' => true,
 				'monitor' => true,
 				'purge_cache' => true,
@@ -418,6 +419,11 @@ class Config {
 		$this->default->jpeg['tmpdir'] = array(
 			'desc'=>'Temporary directory for jpegPhoto data',
 			'default'=>'/tmp');
+
+		## Mass update commands
+		$this->default->mass['enabled'] = array(
+			'desc'=>'Are mass update commands enabled',
+			'default'=>true);
 
 		## Modify members feature
 		/**
