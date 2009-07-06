@@ -19,7 +19,10 @@ $request['dn'] = get_request('dn','GET');
 
 # Check if the entry exists.
 if (! $request['dn'] || ! $app['server']->dnExists($request['dn']))
-	error(sprintf(_('The entry (%s) does not exist.'),$request['dn']),'error','index.php');
+	system_message(array(
+		'title'=>_('Entry does not exist'),
+		'body'=>sprintf('%s (%s)',_('The entry does not exist'),$request['dn']),
+		'type'=>'error'),'index.php');
 
 # We search all children, not only the visible children in the tree
 $request['children'] = $app['server']->getContainerContents($request['dn'],null,0,'(objectClass=*)',LDAP_DEREF_NEVER);
@@ -34,13 +37,14 @@ echo '<center>';
 if (count($request['children'])) {
 	printf('<b>%s</b><br /><br />',_('Permanently delete all children also?'));
 
-	$search['href'] = htmlspecialchars(sprintf('cmd.php?cmd=search&search=true&server_id=%s&filter=%s&base_dn=%s&form=advanced&scope=sub',
+	$search['href'] = htmlspecialchars(sprintf('cmd.php?cmd=query_engine&server_id=%s&filter=%s&base=%s&scope=sub&query=none&format=list',
 		$app['server']->getIndex(),rawurlencode('objectClass=*'),rawurlencode($request['dn'])));
 
 	$query = array();
 	$query['base'] = $request['dn'];
 	$query['scope'] = 'sub';
 	$query['attrs'] = array('dn');
+	$query['size_limit'] = 0;
 	$query['deref'] = LDAP_DEREF_NEVER;
 	$request['search'] = $app['server']->query($query,null);
 
