@@ -17,6 +17,12 @@ require './common.php';
 $request = array();
 $request['dn'] = get_request('dn','REQUEST');
 
+if (! $request['dn'])
+	system_message(array(
+		'title'=>_('No entry selected'),
+		'body'=>_('No entry was selected to delete'),
+		'type'=>'warn'),'index.php');
+
 if (! is_array($request['dn']))
 	$request['dn'] = array($request['dn']);
 

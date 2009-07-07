@@ -208,7 +208,8 @@ class QueryRender extends PageRender {
 		if ($_SESSION[APPCONFIG]->getValue('mass','enabled')) {
 			$mass_actions = array(
 				'&nbsp;' => '',
-				_('delete') => 'mass_delete'
+				_('delete') => 'mass_delete',
+				_('edit') => 'mass_edit'
 			);
 		}
 
@@ -364,6 +365,9 @@ function hideall(key,except) {
 					echo '<form action="cmd.php" method="post" name="massform">';
 					printf('<input type="hidden" name="server_id" value="%s" />',$server->getIndex());
 
+					foreach ($this->template->resultsdata[$base]['attrs'] as $attr)
+						printf('<input type="hidden" name="attrs[]" value="%s" />',$attr);
+
 					echo '<table class="result_table" border=0>';
 
 					echo '<thead class="fixheader">';
@@ -394,7 +398,7 @@ function hideall(key,except) {
 
 						# Is mass action enabled.
 						if ($_SESSION[APPCONFIG]->getValue('mass','enabled'))
-							printf('<td><input type="checkbox" id="ma%s" name="dn[]" value="%s"/ onclick="this.checked=!this.checked;"></td>',$counter,$dn);
+							printf('<td><input type="checkbox" id="ma%s" name="dn[]" value="%s" onclick="this.checked=!this.checked;" /></td>',$counter,$dn);
 
 						$href = sprintf('cmd=template_engine&server_id=%s&dn=%s',$server->getIndex(),rawurlencode($dn));
 						printf('<td class="icon"><a href="cmd.php?%s"><img src="%s/%s" alt="icon" /></a></td>',

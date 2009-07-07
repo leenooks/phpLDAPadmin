@@ -308,6 +308,8 @@ class Config {
 				'logout' => true,
 				'login_form' => true,
 				'mass_delete' => true,
+				'mass_edit' => true,
+				'mass_update' => true,
 				'modify_member_form' => true,
 				'monitor' => true,
 				'purge_cache' => true,
