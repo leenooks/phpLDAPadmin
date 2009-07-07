@@ -1353,7 +1353,7 @@ function pla_compare_dns($dn1,$dn2) {
  * @param string LDAP filter to use (for pool searches)
  * @return int
  */
-function get_next_number($base,$attr,$increment=false,$filter=false) {
+function get_next_number($base,$attr,$increment=false,$filter=false,$startmin=null) {
 	if (DEBUG_ENABLED)
 		debug_log('Entered with (%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
 			$base,$attr,$increment,$filter);
@@ -1439,14 +1439,14 @@ function get_next_number($base,$attr,$increment=false,$filter=false) {
 			sort($autonum);
 
 			# Start with the least existing autoNumber and add 1
-			$minNumber = intval($autonum[0])+1;
+			$minNumber = is_null($startmin) ? intval($autonum[0])+1 : $startmin;
 
 			# Override our minNumber by the configuration if it exists.
 			if (count($server->getValue('auto_number','min'))) {
 				$min = array_change_key_case($server->getValue('auto_number','min'));
 
 				if (isset($min[$attr]))
-					$minNumber = $min[$attr];
+					$minNumber = $min[$attr] > $minNumber ? $min[$attr] : $minNumber;
 			}
 
 			for ($i=0;$i<count($autonum);$i++) {
@@ -1455,7 +1455,7 @@ function get_next_number($base,$attr,$increment=false,$filter=false) {
 				/* If we're at the end of the list, or we've found a gap between this number and the 
 				   following, use the next available number in the gap. */ 
 				if ($i+1 == count($autonum) || $autonum[$i+1] > $num+1) 
-					return $num+1; 
+					return $autonum[$i] >= $num ? $num+1 : $num; 
 			}
 
 			# If we didnt find a suitable gap and are all above the minNumber, we'll just return the $minNumber

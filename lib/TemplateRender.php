@@ -170,6 +170,9 @@ class TemplateRender extends PageRender {
 			 * * arg 4
 			 *   - calculus on number, eg:
 			 *   - *2,+1000 => number = (2*number) + 1000
+			 *
+			 * * arg 5
+			 *   - Min number
 			 */
 			case 'GetNextNumber':
 				# If the attribute already has values, we'll return
@@ -183,7 +186,8 @@ class TemplateRender extends PageRender {
 
 				$vals = get_next_number($container,$args[1],
 					(! empty($args[2]) && ($args[2] == 'false')) ? false : true,
-					(! empty($args[3])) ? $args[3] : false);
+					(! empty($args[3])) ? $args[3] : false,
+					(! empty($args[5])) ? $args[5] : null);
 
 				# Operate calculus on next number.
 				if (! empty($args[4])) {
