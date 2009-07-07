@@ -775,11 +775,12 @@ class TemplateRender extends PageRender {
 	public function drawSubTitle($subtitle=null) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
-		$subtitle = '';
+		if ($subtitle)
+			return parent::drawSubTitle($subtitle);
 
 		switch ($this->getMode()) {
 			case 'creation':
-				$subtitle .= sprintf('%s: <b>%s</b>&nbsp;&nbsp;&nbsp;%s: <b>%s</b>',
+				$subtitle = sprintf('%s: <b>%s</b>&nbsp;&nbsp;&nbsp;%s: <b>%s</b>',
 					_('Server'),$this->getServer()->getName(),
 					_('Container'),$this->container);
 
