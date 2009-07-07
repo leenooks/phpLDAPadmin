@@ -1256,12 +1256,15 @@ class Template extends xmlTemplate {
 	 *
 	 * @param boolean Return the attribute objects (useful for a confirmation process), or the modification array for ldap_modify()
 	 */
-	public function getLDAPmodify($attrsOnly=false) {
+	public function getLDAPmodify($attrsOnly=false,$index=0) {
 		static $return = array();
 		static $returnattrs = array();
 
-		if ($attrsOnly && count($returnattrs))
-			return $returnattrs;
+		if ($attrsOnly && isset($returnattrs[$index]) && count($returnattrs[$index]))
+			return $returnattrs[$index];
+
+		$returnattrs[$index] = array();
+		$return[$index] = array();
 
 		# If an objectclass is being modified, we need to remove all the orphan attributes that would result.
 		if ($this->getAttribute('objectclass')->hasBeenModified()) {
@@ -1316,15 +1319,15 @@ class Template extends xmlTemplate {
 			if ($attribute->hasBeenModified()
 				&& (count(array_diff($attribute->getValues(),$attribute->getOldValues())) || ! count($attribute->getValues())
 					|| $attribute->isForceDelete() || (count($attribute->getValues()) != count($attribute->getOldValues()))))
-				$returnattrs[$attribute->getName()] = $attribute;
+				$returnattrs[$index][$attribute->getName()] = $attribute;
 
 		if ($attrsOnly)
-			return $returnattrs;
+			return $returnattrs[$index];
 
-		foreach ($returnattrs as $attribute)
-			$return[$attribute->getName()] = $attribute->getValues();
+		foreach ($returnattrs[$index] as $attribute)
+			$return[$index][$attribute->getName()] = $attribute->getValues();
 
-		return $return;
+		return $return[$index];
 	}
 
 	/**
