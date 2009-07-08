@@ -3,12 +3,12 @@
  * This will show a nice table of all the icons used by phpLDAPadmin.
  * @package phpLDAPadmin
  */
+
 /**
  */
 ?>
 <html>
 <head>
-	<link rel="stylesheet" href="../style.css" media="screen" />
 </head>
 <body>
 <h3 class="title">phpLDAPadmin icons</h3>
