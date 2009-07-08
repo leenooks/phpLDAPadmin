@@ -89,8 +89,8 @@ else
 echo '<table class="modify_members">';
 
 echo '<tr>';
-printf('<td><img src="%s/user.png" alt="Users" /> %s</td>',IMGDIR,_('Available members'));
-printf('<td><img src="%s/uniquegroup.png" alt="Members" /> %s</td>',IMGDIR,_('Group members'));
+printf('<td><img src="%s/ldap-user.png" alt="Users" /> %s</td>',IMGDIR,_('Available members'));
+printf('<td><img src="%s/ldap-uniquegroup.png" alt="Members" /> %s</td>',IMGDIR,_('Group members'));
 echo '</tr>';
 
 # Generate select box from all possible members

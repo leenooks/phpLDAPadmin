@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New Organisational Unit</description>
-<icon>ou.png</icon>
+<icon>ldap-ou.png</icon>
 <invalid>0</invalid>
 <rdn>ou</rdn>
 <!-- <regexp>^o=.*,</regexp> -->

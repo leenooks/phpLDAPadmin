@@ -3,7 +3,7 @@
 
 <template>
 <description>Address Book Entry</description>
-<icon>user.png</icon>
+<icon>address-book.png</icon>
 <invalid>0</invalid>
 <rdn>cn</rdn>
 <!-- <regexp>^uid=.*,</regexp> -->

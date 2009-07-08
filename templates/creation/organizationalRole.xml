@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New Organisational Role</description>
-<icon>o.png</icon>
+<icon>ldap-o.png</icon>
 <invalid>0</invalid>
 <rdn>cn</rdn>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
@@ -39,7 +39,7 @@
 </attribute>
 <attribute id="roleOccupant">
 	<display>Occupant</display>
-	<icon>object.png</icon>
+	<icon>ldap-default.png</icon>
 	<order>5</order>
 	<spacer>1</spacer>
 </attribute>

@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New Samba3 Account</description>
-<icon>user.png</icon>
+<icon>ldap-user.png</icon>
 <invalid>0</invalid>
 <rdn>cn</rdn>
 <!--<regexp>^ou=People,o=.*,</regexp>-->

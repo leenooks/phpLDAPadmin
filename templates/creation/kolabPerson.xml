@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New Address Book Entry</description>
-<icon>user.png</icon>
+<icon>address-book.png</icon>
 <invalid>0</invalid>
 <rdn>cn</rdn>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
@@ -45,7 +45,7 @@
 </attribute>
 <attribute id="title">
 	<display>Title</display>
-	<icon>ou.png</icon>
+	<icon>ldap-ou.png</icon>
 	<order>6</order>
 </attribute>
 <attribute id="alias">

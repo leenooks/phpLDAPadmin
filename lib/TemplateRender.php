@@ -623,7 +623,7 @@ class TemplateRender extends PageRender {
 			echo '<tr>';
 
 			if ($isInValid)
-				printf('<td class="icon"><img src="%s/disabled.png" alt="Error" /></td>',IMGDIR);
+				printf('<td class="icon"><img src="%s/disabled.png" alt="Disabled" /></td>',IMGDIR);
 
 			else {
 				if (isAjaxEnabled())
@@ -669,7 +669,7 @@ class TemplateRender extends PageRender {
 			else
 				echo '<td><input type="radio" name="template" value="none" id="none" onclick="document.forms.template_choice_form.submit()" /></td>';
 
-			printf('<td class="icon"><label for="none"><img src="%s/object.png" alt="" /></label></td>',IMGDIR);
+			printf('<td class="icon"><label for="none"><img src="%s/ldap-default.png" alt="" /></label></td>',IMGDIR);
 			printf('<td class="label"><label for="none">%s</label></td>',_('Default'));
 			echo '</tr>';
 		}
@@ -1114,10 +1114,10 @@ class TemplateRender extends PageRender {
 		$href = sprintf('cmd=template_engine&%s&template=',$this->url_base);
 
 		if (isAjaxEnabled())
-			return sprintf($this->layout['actionajax'],IMGDIR,'catalog.png',_('Switch Template'),
+			return sprintf($this->layout['actionajax'],IMGDIR,'switch.png',_('Switch Template'),
 				htmlspecialchars($href),_('Change to another template'),htmlspecialchars($href),_('Loading'),_('Switch Template'));
 		else
-			return sprintf($this->layout['action'],IMGDIR,'catalog.png',_('Switch Template'),
+			return sprintf($this->layout['action'],IMGDIR,'switch.png',_('Switch Template'),
 				htmlspecialchars($href),_('Change to another template'),_('Switch Template'));
 	}
 
@@ -1127,10 +1127,10 @@ class TemplateRender extends PageRender {
 		$href = sprintf('cmd=export_form&%s&scope=base',$this->url_base);
 
 		if (isAjaxEnabled())
-			return sprintf($this->layout['actionajax'],IMGDIR,'save.png',_('Export'),
+			return sprintf($this->layout['actionajax'],IMGDIR,'export.png',_('Export'),
 				htmlspecialchars($href),_('Save a dump of this object'),htmlspecialchars($href),_('Loading'),_('Export'));
 		else
-			return sprintf($this->layout['action'],IMGDIR,'save.png',_('Export'),
+			return sprintf($this->layout['action'],IMGDIR,'export.png',_('Export'),
 				htmlspecialchars($href),_('Save a dump of this object'),_('Export'));
 	}
 
@@ -1213,11 +1213,11 @@ class TemplateRender extends PageRender {
 		$href = sprintf('cmd=template_engine&server_id=%s&container=%s',$this->getServerID(),rawurlencode($this->template->getDN()));
 
 		if (isAjaxEnabled())
-			return sprintf($this->layout['actionajax'],IMGDIR,'star.png',_('Create'),
+			return sprintf($this->layout['actionajax'],IMGDIR,'create.png',_('Create'),
 				htmlspecialchars($href),_('Create a child entry'),
 				htmlspecialchars($href),_('Loading'),_('Create a child entry'));
 		else
-			return sprintf($this->layout['action'],IMGDIR,'star.png',_('Create'),
+			return sprintf($this->layout['action'],IMGDIR,'create.png',_('Create'),
 				htmlspecialchars($href),_('Create a child entry'),_('Create a child entry'));
 	}
 
@@ -1262,11 +1262,11 @@ class TemplateRender extends PageRender {
 		$href = sprintf('cmd=export_form&%s&scope=%s',$this->url_base,'sub');
 
 		if (isAjaxEnabled())
-			return sprintf($this->layout['actionajax'],IMGDIR,'save.png',_('Save'),
+			return sprintf($this->layout['actionajax'],IMGDIR,'export.png',_('Save'),
 				htmlspecialchars($href),_('Save a dump of this object and all of its children'),
 				htmlspecialchars($href),_('Loading'),_('Export subtree'));
 		else
-			return sprintf($this->layout['action'],IMGDIR,'save.png',_('Save'),
+			return sprintf($this->layout['action'],IMGDIR,'export.png',_('Save'),
 				htmlspecialchars($href),_('Save a dump of this object and all of its children'),_('Export subtree'));
 	}
 
@@ -1830,9 +1830,9 @@ function fillRec(id,value) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
 		if (strlen($val) <= 0)
-			printf('<img src="%s/go.png" alt="Go" align="top" />&nbsp;',IMGDIR);
+			printf('<img src="%s/ldap-alias.png" alt="Go" align="top" />&nbsp;',IMGDIR);
 		elseif ($this->getServer()->dnExists($val))
-			printf('<a href="cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s" title="%s %s"><img src="%s/go.png" alt="Go" /></a>&nbsp;',
+			printf('<a href="cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s" title="%s %s"><img src="%s/ldap-alias.png" alt="Go" /></a>&nbsp;',
 				$this->getServerID(),rawurlencode($val),_('Go to'),$val,IMGDIR);
 		else
 			printf('<a title="%s %s"><img src="%s/nogo.png" alt="Go" /></a>&nbsp;',_('DN not available'),$val,IMGDIR);
@@ -1852,7 +1852,7 @@ function fillRec(id,value) {
 	protected function drawUrlValueIconAttribute($attribute,$val) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
-		$img = sprintf('<img src="%s/dc.png" alt="%s" align="top" />',IMGDIR,_('URL'));
+		$img = sprintf('<img src="%s/ldap-dc.png" alt="%s" align="top" />',IMGDIR,_('URL'));
 		$url = explode(' +',$val,2);
 
 		if (strlen($val) <= 0)

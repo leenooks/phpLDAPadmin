@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New DNS Entry</description>
-<icon>dc.png</icon>
+<icon>ldap-dc.png</icon>
 <invalid>0</invalid>
 <rdn>dc</rdn>
 <!--<regexp>^ou=People,o=.*,</regexp>-->

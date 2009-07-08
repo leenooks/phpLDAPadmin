@@ -384,12 +384,12 @@ function cmd_control_pane($type) {
 				'external_links:forum'=>array(
 					'title'=>_('Forum'),
 					'link'=>sprintf('href="%s" title="%s" target="_blank"',get_href('forum'),_('Forum')),
-					'image'=>sprintf('<img src="%s/help.png" alt="%s" />',IMGDIR,_('Forum'))),
+					'image'=>sprintf('<img src="%s/forum-big.png" alt="%s" />',IMGDIR,_('Forum'))),
 
 				'external_links:feature'=>array(
 					'title'=>_('Request feature'),
 					'link'=>sprintf('href="%s" title="%s" target="_blank"',get_href('add_rfe'),_('Request feature')),
-					'image'=>sprintf('<img src="%s/request-feature.png" alt="%s" />',IMGDIR,_('Request feature'))),
+					'image'=>sprintf('<img src="%s/request-feature-big.png" alt="%s" />',IMGDIR,_('Request feature'))),
 
 				'external_links:bug'=>array(
 					'title'=>_('Report a bug'),
@@ -1579,26 +1579,26 @@ function get_icon($server_id,$dn,$object_classes=array()) {
 		in_array('account',$object_classes) ||
 		in_array('posixaccount',$object_classes))
 
-		return 'user.png';
+		return 'ldap-user.png';
 
 	elseif (in_array('organization',$object_classes))
-		return 'o.png';
+		return 'ldap-o.png';
 
 	elseif (in_array('organizationalunit',$object_classes))
-		return 'ou.png';
+		return 'ldap-ou.png';
 
 	elseif (in_array('organizationalrole',$object_classes))
-		return 'uid.png';
+		return 'ldap-uid.png';
 
 	elseif (in_array('dcobject',$object_classes) ||
 		in_array('domainrelatedobject',$object_classes) ||
 		in_array('domain',$object_classes) ||
 		in_array('builtindomain',$object_classes))
 
-		return 'dc.png';
+		return 'ldap-dc.png';
 
 	elseif (in_array('alias',$object_classes))
-		return 'go.png';
+		return 'ldap-alias.png';
 
 	elseif (in_array('room',$object_classes))
 		return 'door.png';
@@ -1632,13 +1632,13 @@ function get_icon($server_id,$dn,$object_classes=array()) {
 		in_array('groupofnames',$object_classes) ||
 		in_array('group',$object_classes))
 
-		return 'ou.png';
+		return 'ldap-ou.png';
 
 	elseif (in_array('applicationprocess',$object_classes))
 		return 'process.png';
 
 	elseif (in_array('groupofuniquenames',$object_classes))
-		return 'uniquegroup.png';
+		return 'ldap-uniquegroup.png';
 
 	elseif (in_array('iphost',$object_classes))
 		return 'host.png';
@@ -1671,7 +1671,7 @@ function get_icon($server_id,$dn,$object_classes=array()) {
 		return 'ldap-server.png';
 
 	elseif (in_array('rbscollection',$object_classes))
-		return 'ou.png';
+		return 'ldap-ou.png';
 
 	elseif (in_array('dfsconfiguration',$object_classes))
 		return 'nt_machine.png';
@@ -1713,11 +1713,11 @@ function get_icon($server_id,$dn,$object_classes=array()) {
 		return 'lock.png';
 
 	elseif (strcasecmp($rdn_value,'MicrosoftDNS') == 0)
-		return 'dc.png';
+		return 'ldap-dc.png';
 
 	# Oh well, I don't know what it is. Use a generic icon.
 	else
-		return 'object.png';
+		return 'ldap-default.png';
 }
 
 /**

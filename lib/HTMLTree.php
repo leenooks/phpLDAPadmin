@@ -151,7 +151,7 @@ class HTMLTree extends Tree {
 		if (! is_null($server->inactivityTime())) {
 			$m = sprintf(_('Inactivity will log you off at %s'),
 				strftime('%H:%M',$server->inactivityTime()));
-			printf(' <img width=14 height=14 src="%s/timeout.png" title="%s" alt="%s"/>',IMGDIR,$m,$m);
+			printf(' <img width=14 height=14 src="%s/timeout.png" title="%s" alt="%s"/>',IMGDIR,$m,'Timeout');
 		}
 		echo '</td></tr>';
 	}
@@ -193,7 +193,7 @@ class HTMLTree extends Tree {
 				$menu['ajax'] = _('Loading Schema');
 				$menu['div'] = 'BODY';
 				$menu['title'] = _('View schema for');
-				$menu['img'] = 'schema.png';
+				$menu['img'] = 'schema-big.png';
 				$menu['name'] = _('schema');
 				break;
 
@@ -205,7 +205,7 @@ class HTMLTree extends Tree {
 				$menu['ajax'] = _('Loading Search');
 				$menu['div'] = 'BODY';
 				$menu['title'] = _('Search');
-				$menu['img'] = 'search.png';
+				$menu['img'] = 'search-big.png';
 				$menu['name'] = _('search');
 				break;
 
@@ -230,7 +230,7 @@ class HTMLTree extends Tree {
 				$menu['ajax'] = _('Loading Info');
 				$menu['div'] = 'BODY';
 				$menu['title'] = _('Info');
-				$menu['img'] = 'info.png';
+				$menu['img'] = 'info-big.png';
 				$menu['name'] = _('info');
 				break;
 
@@ -257,7 +257,7 @@ class HTMLTree extends Tree {
 				$menu['ajax'] = _('Loading Monitor Info');
 				$menu['div'] = 'BODY';
 				$menu['title'] = _('Monitor');
-				$menu['img'] = 'ldap-server.png';
+				$menu['img'] = 'monitorserver-big.png';
 				$menu['name'] = _('monitor');
 				break;
 
@@ -269,7 +269,7 @@ class HTMLTree extends Tree {
 				$menu['ajax'] = _('Loading Import');
 				$menu['div'] = 'BODY';
 				$menu['title'] = _('Import');
-				$menu['img'] = 'import.png';
+				$menu['img'] = 'import-big.png';
 				$menu['name'] = _('import');
 				break;
 
@@ -281,7 +281,7 @@ class HTMLTree extends Tree {
 				$menu['ajax'] = _('Loading Export');
 				$menu['div'] = 'BODY';
 				$menu['title'] = _('Export');
-				$menu['img'] = 'export.png';
+				$menu['img'] = 'export-big.png';
 				$menu['name'] = _('export');
 				break;
 
@@ -292,7 +292,7 @@ class HTMLTree extends Tree {
 				$href = sprintf('cmd.php?cmd=logout&server_id=%s',$server->getIndex());
 
 				return sprintf('<a href="%s" title="%s"><img src="%s/%s" alt="%s" /><br />%s</a>',
-					htmlspecialchars($href),_('Logout of this server'),IMGDIR,'logout.png',_('logout'),_('logout'));
+					htmlspecialchars($href),_('Logout of this server'),IMGDIR,'logout-big.png',_('logout'),_('logout'));
 
 			default:
 				return false;
@@ -465,7 +465,7 @@ class HTMLTree extends Tree {
 
 		echo '<tr>';
 		printf('<td class="spacer" colspan=%s></td>',$level+3);
-		printf('<td class="icon"><a href="%s"><img src="%s/star.png" alt="%s" /></a></td>',$href,IMGDIR,_('new'));
+		printf('<td class="icon"><a href="%s"><img src="%s/create.png" alt="%s" /></a></td>',$href,IMGDIR,_('new'));
 		printf('<td class="link" colspan="%s"><a href="%s" title="%s %s">%s</a></td>',
 			$this->getDepth()+3-$level,$href,_('Create a new entry in'),$rdn,_('Create new entry here'));
 		echo '</tr>';
@@ -486,12 +486,12 @@ class HTMLTree extends Tree {
 
 		if (isAjaxEnabled()) {
 			printf('<td class="icon"><a href="cmd.php?%s" onclick="return displayAJ(\'BODY\',\'%s\',\'%s\');" title="%s %s"><img src="%s/%s" alt="%s" /></a></td>',
-				$href_parm,$href_parm,_('Loading Login'),_('Login to'),$server->getName(),IMGDIR,'uid.png',_('login'));
+				$href_parm,$href_parm,_('Loading Login'),_('Login to'),$server->getName(),IMGDIR,'login.png',_('login'));
 			printf('<td class="logged_in" colspan="%s"><a href="cmd.php?%s" onclick="return displayAJ(\'BODY\',\'%s\',\'%s\');" title="%s %s">%s</a></td>',
 				$this->getDepth()+3-2,$href_parm,$href_parm,_('Loading Login'),_('Login to'),$server->getName(),_('login'));
 
 		} else {
-			printf('<td class="icon"><a href="cmd.php?%s"><img src="%s/%s" alt="%s" /></a></td>',$href_parm,IMGDIR,'uid.png',_('login'));
+			printf('<td class="icon"><a href="cmd.php?%s"><img src="%s/%s" alt="%s" /></a></td>',$href_parm,IMGDIR,'login.png',_('login'));
 			printf('<td class="logged_in" colspan="%s"><a href="cmd.php?%s">%s...</a></td>',$this->getDepth()+3-2,$href_parm,_('Login'));
 		}
 

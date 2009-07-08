@@ -19,7 +19,7 @@
 <attribute id="attribute1">
 	<display>Attribute 1</display>
 	<hint>This is an example</hint>
-	<icon>user.png</icon>
+	<icon>ldap-uid.png</icon>
 	<order>1</order>
 	<page>1</page>
 </attribute>

@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New Samba Domain</description>
-<icon>dc.png</icon>
+<icon>ldap-dc.png</icon>
 <invalid>0</invalid>
 <rdn>sambaDomainName</rdn>
 <!--<regexp>^ou=People,o=.*,</regexp>-->

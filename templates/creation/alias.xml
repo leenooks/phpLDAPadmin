@@ -5,7 +5,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New LDAP Alias</description>
-<icon>go.png</icon>
+<icon>ldap-alias.png</icon>
 <invalid>0</invalid>
 <rdn>uid</rdn>
 <!--<regexp>^ou=People,o=.*,</regexp>-->

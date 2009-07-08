@@ -261,7 +261,7 @@ class AJAXTree extends HTMLTree {
 		$output .= $this->get_indentation($level);
 		$output .= sprintf('<img align="top" border="0" class="imgs" src="%s" alt="--" />',$img);
 		$output .= sprintf('<a href="%s" title="%s">',htmlspecialchars($href),$entry->getDN());
-		$output .= sprintf('<img align="top" border="0" class="imgs" src="%s/star.png" alt="->" />',IMGDIR);
+		$output .= sprintf('<img align="top" border="0" class="imgs" src="%s/create.png" alt="->" />',IMGDIR);
 		$output .= '</a>';
 		$output .= '&nbsp;';
 
