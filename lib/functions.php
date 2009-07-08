@@ -218,18 +218,14 @@ function app_version() {
 		$version = trim(fread($f, filesize($version_file)));
 		fclose($f);
 
-		# We use cvs_prefix, because CVS will translate this on checkout otherwise.
-		$cvs_prefix = '\$Name:';
-
-		$CACHE = preg_replace('/^'.$cvs_prefix.' RELEASE-([0-9_]+)\s*\$$/','$1',$version);
-		$CACHE = preg_replace('/_/','.',$CACHE);
+		$CACHE = preg_replace('/^RELEASE-([0-9\.]+(-.*)+)$/','$1',$version);
 
 		# Check if we are a CVS copy.
-		if (preg_match('/^'.$cvs_prefix.'?\s*\$$/',$CACHE))
+		if (preg_match('/^$/',$CACHE))
 			$CACHE = 'CVS';
 
 		# Check if we are special CVS branch
-		elseif (preg_match('/^'.$cvs_prefix.'?\s*([a-zA-Z]+)?\s*\$$/',$CACHE,$match))
+		elseif (preg_match('/^([a-zA-Z]+)?$/',$CACHE,$match))
 			$CACHE = $match[1];
 
 		# If return is still the same as version, then the tag is not one we expect.
