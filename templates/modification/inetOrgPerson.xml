@@ -3,7 +3,7 @@
 
 <template>
 <description>Address Book Entry</description>
-<icon>images/user.png</icon>
+<icon>user.png</icon>
 <invalid>0</invalid>
 <rdn>cn</rdn>
 <!-- <regexp>^uid=.*,</regexp> -->
@@ -18,7 +18,7 @@
 <attributes>
 <attribute id="givenName">
 	<display>First name</display>
-	<icon>images/uid.png</icon>
+	<icon>uid.png</icon>
 	<onchange>=autoFill(cn;%givenName% %sn%)</onchange>
 	<order>1</order>
 </attribute>
@@ -46,7 +46,7 @@
 <attribute id="street">
 	<cols>50</cols>
 	<display>Street</display>
-	<icon>images/mail.png</icon>
+	<icon>mail.png</icon>
 	<order>5</order>
 	<rows>4</rows>
 	<type>textarea</type>
@@ -73,7 +73,7 @@
 </attribute>
 <attribute id="telephoneNumber">
 	<display>Work phone</display>
-	<icon>images/phone.png</icon>
+	<icon>phone.png</icon>
 	<order>9</order>
 </attribute>
 <attribute id="facsimileTelephoneNumber">

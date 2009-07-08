@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New Simple Security Object</description>
-<icon>images/user.png</icon>
+<icon>user.png</icon>
 <invalid>0</invalid>
 <rdn>userid</rdn>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
@@ -19,14 +19,14 @@
 <attributes>
 <attribute id="userid">
 	<display>User Name</display>
-	<icon>images/uid.png</icon>
+	<icon>uid.png</icon>
 	<order>1</order>
 	<page>1</page>
 	<spacer>1</spacer>
 </attribute>
 <attribute id="userPassword">
 	<display>Password</display>
-	<icon>images/lock.png</icon>
+	<icon>lock.png</icon>
 	<order>5</order>
 	<page>1</page>
 	<post>=php.PasswordEncrypt(%enc%;%userPassword%)</post>

@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New Organisational Role</description>
-<icon>images/o.png</icon>
+<icon>o.png</icon>
 <invalid>0</invalid>
 <rdn>cn</rdn>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
@@ -23,7 +23,7 @@
 </attribute>
 <attribute id="telephoneNumber">
 	<display>Work phone</display>
-	<icon>images/phone.png</icon>
+	<icon>phone.png</icon>
 	<order>2</order>
 </attribute>
 <attribute id="facsimileTelephoneNumber">
@@ -33,19 +33,19 @@
 </attribute>
 <attribute id="description">
 	<display>Comments</display>
-	<icon>images/light.png</icon>
+	<icon>light.png</icon>
 	<order>4</order>
 	<spacer>1</spacer>
 </attribute>
 <attribute id="roleOccupant">
 	<display>Occupant</display>
-	<icon>images/object.png</icon>
+	<icon>object.png</icon>
 	<order>5</order>
 	<spacer>1</spacer>
 </attribute>
 <attribute id="street">
 	<display>Street Address</display>
-	<icon>images/mail.png</icon>
+	<icon>mail.png</icon>
 	<order>6</order>
 </attribute>
 <attribute id="l">
@@ -63,13 +63,13 @@
 </attribute>
 <attribute id="postalAddress">
 	<display>Postal Address</display>
-	<icon>images/mail.png</icon>
+	<icon>mail.png</icon>
 	<order>10</order>
 	<spacer>1</spacer>
 </attribute>
 <attribute id="registeredAddress">
 	<display>Registered Address</display>
-	<icon>images/mail.png</icon>
+	<icon>mail.png</icon>
 	<order>11</order>
 </attribute>
 </attributes>

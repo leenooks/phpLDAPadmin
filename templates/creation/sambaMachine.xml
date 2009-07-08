@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New Samba3 Machine</description>
-<icon>images/server.png</icon>
+<icon>server.png</icon>
 <invalid>0</invalid>
 <rdn>uid</rdn>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
@@ -21,7 +21,7 @@
 <attribute id="uid">
 	<display>Machine Name</display>
 	<hint>The machine name should end with a $</hint>
-	<icon>images/terminal.png</icon>
+	<icon>terminal.png</icon>
 	<onchange>=autoFill(cn;%uid%)</onchange>
 	<order>1</order>
 	<page>1</page>

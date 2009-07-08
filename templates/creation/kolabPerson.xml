@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New Address Book Entry</description>
-<icon>images/user.png</icon>
+<icon>user.png</icon>
 <invalid>0</invalid>
 <rdn>cn</rdn>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
@@ -18,7 +18,7 @@
 <attributes>
 <attribute id="givenName">
 	<display>First name</display>
-	<icon>images/uid.png</icon>
+	<icon>uid.png</icon>
 	<onchange>=autoFill(cn;%givenName% %sn%)</onchange>
 	<order>1</order>
 </attribute>
@@ -37,7 +37,7 @@
 </attribute>
 <attribute id="userPassword">
 	<display>Password</display>
-	<icon>images/lock.png</icon>
+	<icon>lock.png</icon>
 	<order>5</order>
 	<post>=php.PasswordEncrypt(%enc%;%userPassword%)</post>
 	<spacer>1</spacer>
@@ -45,7 +45,7 @@
 </attribute>
 <attribute id="title">
 	<display>Title</display>
-	<icon>images/ou.png</icon>
+	<icon>ou.png</icon>
 	<order>6</order>
 </attribute>
 <attribute id="alias">
@@ -67,7 +67,7 @@
 </attribute>
 <attribute id="street">
 	<display>Address</display>
-	<icon>images/mail.png</icon>
+	<icon>mail.png</icon>
 	<order>11</order>
 </attribute>
 <attribute id="postOfficeBox">
@@ -93,7 +93,7 @@
 </attribute> -->
 <attribute id="telephoneNumber">
 	<display>Work phone</display>
-	<icon>images/phone.png</icon>
+	<icon>phone.png</icon>
 	<order>17</order>
 </attribute>
 <attribute id="facsimileTelephoneNumber">

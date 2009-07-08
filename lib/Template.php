@@ -892,7 +892,7 @@ class Template extends xmlTemplate {
 	 * Get template icon
 	 */
 	public function getIcon() {
-		return isset($this->icon) ? $this->icon : '';
+		return isset($this->icon) ? sprintf('%s/%s',IMGDIR,$this->icon) : '';
 	}
 
 	/**

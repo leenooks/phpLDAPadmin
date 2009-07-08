@@ -565,7 +565,7 @@ span.hint {
 
 /* Login Box */
 #login {
-	background: url('../images/uid.png') no-repeat 0 1px;
+	background: url('../../images/default/uid.png') no-repeat 0 1px;
 	background-color: #FAFAFF;
 	color: #000000;
 	padding-left: 17px;
@@ -582,7 +582,7 @@ span.hint {
 }
 
 #password {
-	background: url('../images/key.png') no-repeat 0 1px;
+	background: url('../../images/default/key.png') no-repeat 0 1px;
 	background-color: #FAFAFF;
 	color: #000000;
 	padding-left: 17px;

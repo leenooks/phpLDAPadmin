@@ -7,7 +7,7 @@
 </bases>
 <filter><![CDATA[(&(|(objectClass=sambaAccount)(objectClass=sambaSamAccount))(objectClass=posixAccount)(!(uid=*$)))]]></filter>
 <description>Samba Users</description>
-<icon>images/user.png</icon>
+<icon>user.png</icon>
 <scope>sub</scope>
 <visible>1</visible>
 

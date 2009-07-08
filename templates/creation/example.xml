@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>This is the description</description>
-<icon>images/star.png</icon>
+<icon>star.png</icon>
 <invalid>1</invalid>
 <rdn>o</rdn>
 <regexp>^$</regexp>
@@ -19,7 +19,7 @@
 <attribute id="attribute1">
 	<display>Attribute 1</display>
 	<hint>This is an example</hint>
-	<icon>images/user.png</icon>
+	<icon>user.png</icon>
 	<order>1</order>
 	<page>1</page>
 </attribute>

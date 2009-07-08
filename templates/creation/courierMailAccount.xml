@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New Courier Mail Account</description>
-<icon>images/mail_account.png</icon>
+<icon>mail_account.png</icon>
 <invalid>0</invalid>
 <rdn>cn</rdn>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
@@ -39,7 +39,7 @@
 </attribute>
 <attribute id="uid">
 	<display>User ID</display>
-	<icon>images/uid.png</icon>
+	<icon>uid.png</icon>
 	<!--<onchange>=autoFill(homeDirectory;/home/users/%uid%)</onchange>-->
 	<onchange>=autoFill(homeDirectory;/home/users/%gidNumber|0-0/T%/%uid|3-%)</onchange>
 	<order>4</order>
@@ -47,7 +47,7 @@
 </attribute>
 <attribute id="uidNumber">
 	<display>UID Number</display>
-	<icon>images/terminal.png</icon>
+	<icon>terminal.png</icon>
 	<order>6</order>
 	<page>1</page>
 	<readonly>1</readonly>
@@ -69,7 +69,7 @@
 </attribute>
 <attribute id="mail">
 	<display>Email</display>
-	<icon>images/mail.png</icon>
+	<icon>mail.png</icon>
 	<order>9</order>
 	<page>1</page>
 </attribute>
@@ -80,7 +80,7 @@
 </attribute>
 <attribute id="userPassword">
 	<display>Password</display>
-	<icon>images/lock.png</icon>
+	<icon>lock.png</icon>
 	<order>11</order>
 	<page>1</page>
 	<post>=php.PasswordEncrypt(%enc%;%userPassword%)</post>

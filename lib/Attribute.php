@@ -404,7 +404,7 @@ class Attribute {
 	}
 
 	public function getIcon() {
-		return $this->icon;
+		return $this->icon ? sprintf('%s/%s',IMGDIR,$this->icon) : '';
 	}
 
 	public function getHint() {

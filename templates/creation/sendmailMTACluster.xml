@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New Sendmail Cluster</description>
-<icon>images/mail.png</icon>
+<icon>mail.png</icon>
 <invalid>0</invalid>
 <rdn>sendmailMTACluster</rdn>
 <!--<regexp>^ou=People,o=.*,</regexp>-->

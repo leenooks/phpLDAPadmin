@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New Sendmail Alias</description>
-<icon>images/mail.png</icon>
+<icon>mail.png</icon>
 <invalid>0</invalid>
 <rdn>sendmailMTACluster</rdn>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
@@ -18,7 +18,7 @@
 <attributes>
 <attribute id="sendmailMTACluster">
 	<display>Sendmail Cluster Name</display>
-	<icon>images/object.png</icon>
+	<icon>object.png</icon>
 	<order>1</order>
 	<page>1</page>
 </attribute>

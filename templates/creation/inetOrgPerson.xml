@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New Address Book Entry</description>
-<icon>images/user.png</icon>
+<icon>user.png</icon>
 <invalid>0</invalid>
 <rdn>cn</rdn>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
@@ -18,7 +18,7 @@
 <attributes>
 <attribute id="givenName">
 	<display>First name</display>
-	<icon>images/uid.png</icon>
+	<icon>uid.png</icon>
 	<onchange>=autoFill(cn;%givenName% %sn%)</onchange>
 	<order>1</order>
 	<page>1</page>
@@ -48,7 +48,7 @@
 <attribute id="street">
 	<cols>50</cols>
 	<display>Street</display>
-	<icon>images/mail.png</icon>
+	<icon>mail.png</icon>
 	<order>4</order>
 	<page>1</page>
 	<rows>4</rows>
@@ -72,7 +72,7 @@
 </attribute>
 <attribute id="telephoneNumber">
 	<display>Work phone</display>
-	<icon>images/phone.png</icon>
+	<icon>phone.png</icon>
 	<order>8</order>
 	<page>1</page>
 </attribute>

@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New User Account</description>
-<icon>images/user.png</icon>
+<icon>user.png</icon>
 <invalid>0</invalid>
 <rdn>cn</rdn>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
@@ -19,7 +19,7 @@
 <attributes>
 <attribute id="givenName">
 	<display>First name</display>
-	<icon>images/uid.png</icon>
+	<icon>uid.png</icon>
 	<onchange>=autoFill(cn;%givenName% %sn%)</onchange>
 	<onchange>=autoFill(uid;%givenName|0-1/l%%sn/l%)</onchange>
 	<order>1</order>
@@ -53,7 +53,7 @@
 </attribute>
 <attribute id="uidNumber">
 	<display>UID Number</display>
-	<icon>images/terminal.png</icon>
+	<icon>terminal.png</icon>
 	<order>6</order>
 	<page>1</page>
 	<readonly>1</readonly>
@@ -83,7 +83,7 @@
 		<id>enc</id>
 		<value>=php.PasswordEncryptionTypes()</value>
 	</helper> -->
-	<icon>images/lock.png</icon>
+	<icon>lock.png</icon>
 	<order>5</order>
 	<page>1</page>
 	<post>=php.PasswordEncrypt(%enc%;%userPassword%)</post>

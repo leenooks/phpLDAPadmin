@@ -160,6 +160,17 @@ error_reporting(E_ALL);
 # Start our session.
 app_session_start();
 
+# See if we have a session, we can then get our theme out
+$app['theme'] = 'default';
+if (isset($_SESSION[APPCONFIG]))
+    if (is_dir(realpath(sprintf('images/%s',$_SESSION[APPCONFIG]->getValue('appearance','theme'))))
+		&& is_file(realpath(sprintf('css/%s/%s',$_SESSION[APPCONFIG]->getValue('appearance','theme'),$_SESSION[APPCONFIG]->getValue('appearance','stylesheet')))))
+
+	    $app['theme'] = $_SESSION[APPCONFIG]->getValue('appearance','theme');
+
+define('CSSDIR',sprintf('css/%s',$app['theme']));
+define('IMGDIR',sprintf('images/%s',$app['theme']));
+
 # Initialise the hooks
 require_once LIBDIR.'hooks.php';
 

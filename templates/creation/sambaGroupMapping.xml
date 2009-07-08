@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New Samba3 Group Mapping</description>
-<icon>images/ou.png</icon>
+<icon>ou.png</icon>
 <invalid>0</invalid>
 <rdn>cn</rdn>
 <!-- <regexp>^ou=.*,</regexp> -->

@@ -31,15 +31,21 @@ class page {
 		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
 			debug_log('Entered with [%s]',129,__FILE__,__LINE__,__METHOD__,$index);
 
+		$this->index = $index;
+
 		# To be defined in a configuration file.
 		$this->_app['title'] = app_name();
+		$this->_app['logo'] = IMGDIR.'/logo-small.png';
+
+		if (! is_null($index))
+			$this->_app['urlcss'] = sprintf('%s/%s',CSSDIR,$_SESSION[APPCONFIG]->getValue('appearance','stylesheet'));
+		else
+			$this->_app['urlcss'] = sprintf('%s/%s',CSSDIR,'style.css');
 
 		# Default Values for configurable items.
-		$this->_default['stylecss'] = CSSDIR.'style.css';
-		$this->_default['logo'] = IMGDIR.'logo-small.png';
-		$this->_default['sysmsg']['error'] = IMGDIR.'error-big.png';
-		$this->_default['sysmsg']['warn'] = IMGDIR.'warn-big.png';
-		$this->_default['sysmsg']['info'] = IMGDIR.'info-big.png';
+		$this->_default['sysmsg']['error'] = IMGDIR.'/error-big.png';
+		$this->_default['sysmsg']['warn'] = IMGDIR.'/warn-big.png';
+		$this->_default['sysmsg']['info'] = IMGDIR.'/info-big.png';
 
 		# Capture any output so far (in case we send some headers below) - there shouldnt be any output anyway.
 		$preOutput = '';
@@ -75,15 +81,6 @@ class page {
 		$this->_pageheader[] .= "\n";
 		$this->_pageheader[] .= '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="auto" lang="auto" dir="ltr">'."\n";
 		$this->_pageheader[] .= "\n";
-
-		$this->_app['logo'] = $this->_default['logo'];
-
-		if (! is_null($index))
-			$this->_app['urlcss'] = sprintf('%s%s',CSSDIR,$_SESSION[APPCONFIG]->getValue('appearance','stylesheet'));
-		else
-			$this->_app['urlcss'] = sprintf('%s%s',CSSDIR,'style.css');
-
-		$this->index = $index;
 	}
 
 	/* Add to the HTML Header */

@@ -4,7 +4,7 @@
 <template>
 <askcontainer>1</askcontainer>
 <description>New Samba3 Account</description>
-<icon>images/user.png</icon>
+<icon>user.png</icon>
 <invalid>0</invalid>
 <rdn>cn</rdn>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
@@ -20,7 +20,7 @@
 <attributes>
 <attribute id="givenName">
 	<display>First name</display>
-	<icon>images/uid.png</icon>
+	<icon>uid.png</icon>
 	<onchange>=autoFill(cn;%givenName% %sn%)</onchange>
 	<order>1</order>
 	<page>1</page>
@@ -73,7 +73,7 @@
 </attribute>
 <attribute id="userPassword">
 	<display>Password</display>
-	<icon>images/lock.png</icon>
+	<icon>lock.png</icon>
 	<onchange>=autoFill(sambaLMPassword;%userPassword%)</onchange>
 	<onchange>=autoFill(sambaNTPassword;%userPassword%)</onchange>
 	<order>8</order>
@@ -98,7 +98,7 @@
 </attribute>
 <attribute id="loginShell">
 	<display>Login shell</display>
-	<icon>images/terminal.png</icon>
+	<icon>terminal.png</icon>
 	<order>11</order>
 	<page>1</page>
 	<type>select</type>

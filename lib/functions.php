@@ -22,8 +22,6 @@ define('QUERYDIR',sprintf('%s/',realpath(LIBDIR.'../queries/')));
 define('TMPLDIR',sprintf('%s/',realpath(LIBDIR.'../templates/')));
 define('DOCDIR',sprintf('%s/',realpath(LIBDIR.'../doc/')));
 define('HOOKSDIR',sprintf('%s/',realpath(LIBDIR.'../hooks/')));
-define('CSSDIR','css/');
-define('IMGDIR','images/');
 define('JSDIR','js/');
 
 /**
@@ -1616,9 +1614,9 @@ function get_icon($server_id,$dn,$object_classes=array()) {
 		$cval = explode('=',$tmp[0],2);
 		$cval = isset($cval[1]) ? $cval[1] : false;
 		if ($cval && false === strpos($cval,'..') &&
-			file_exists(realpath(sprintf('%s/countries/%s.png',IMGDIR,strtolower($cval)))))
+			file_exists(realpath(sprintf('%s/../countries/%s.png',IMGDIR,strtolower($cval)))))
 
-			return sprintf('countries/%s.png',strtolower($cval));
+			return sprintf('../countries/%s.png',strtolower($cval));
 
 		else
 			return 'country.png';

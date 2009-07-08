@@ -191,6 +191,10 @@ class Config {
 			'desc'=>'Style sheet to use',
 			'default'=>'style.css');
 
+		$this->default->appearance['theme'] = array(
+			'desc'=>'Which theme to use',
+			'default'=>'default');
+
 		/** Tree display
 		 * An array of format strings used to display enties in the 
 		 * tree viewer (left-hand side). The first format string that 

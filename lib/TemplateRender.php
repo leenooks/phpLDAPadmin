@@ -1821,9 +1821,7 @@ function fillRec(id,value) {
 			$this->draw('UrlValueIcon',$attribute,$val);
 
 		else {
-			$icon = $attribute->getIcon();
-
-			if ($icon)
+			if ($icon = $attribute->getIcon())
 				printf('<img src="%s" alt="Icon" align="top" />&nbsp;',$icon);
 		}
 	}
