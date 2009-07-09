@@ -224,7 +224,7 @@ class TemplateRender extends PageRender {
 
 			/**
 			 * MultiList will query the LDAP server and provide a multi select list of values
-			 * eg: <![CDATA[<value>=php.MultiList(/;(objectClass=posixAccount);uid)</value>]]>
+			 * eg: <![CDATA[=php.MultiList(/;(objectClass=posixAccount);uid)]]>
 			 *
 			 * eg: <![CDATA[=php.MultiList(/;(&(objectClass=posixAccount)(uid=groupA*));uid;%cn/U% (%gidNumber%);memberUid;dmdName=users,root => cn=root;nobody => cn=nobody;gidNumber;10;(gidNuber=%gidNumber%);uid)]]>
 			 *

@@ -1310,7 +1310,7 @@ function pla_compare_dns($dn1,$dn2) {
 
 /**
  * For LDAP servers with auto_number enabled, this function will get the next
- * available uidNumber using the host's preferred mechanism (pool or search).
+ * available number using the host's preferred mechanism (pool or search).
  *
  * This is configured in config.php by server:
  *
@@ -1330,14 +1330,10 @@ function pla_compare_dns($dn1,$dn2) {
  *   incrementing the smallest attribute until an unused value is found.
  *
  * NOTE: Both mechanisms do NOT prevent race conditions or toe-stomping, so
- * care must be taken when actually creating the entry to check that the uidNumber
+ * care must be taken when actually creating the entry to check that the number
  * returned here has not been used in the mean time. Note that the two different
  * mechanisms may (will!) return different values as they use different algorithms
  * to arrive at their result. Do not be alarmed if (when!) this is the case.
- *
- * Also note that both algorithms are susceptible to a race condition. If two admins
- * are adding users simultaneously, the users may get identical uidNumbers with this
- * function.
  *
  * See config.php.example for more notes on the two mechanisms.
  *
