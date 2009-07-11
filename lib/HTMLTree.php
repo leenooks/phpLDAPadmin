@@ -121,8 +121,16 @@ class HTMLTree extends Tree {
 
 		# We are not logged in, draw a login... link.
 		} else {
-			if ($server->getAuthType() != 'config')
-				$this->draw_login_link();
+			switch ($server->getAuthType()) {
+
+				case 'http':
+				case 'session':
+					$this->draw_login_link();
+					break;
+
+				default:
+					die(sprintf('Error: %s hasnt been configured for auth_type %s',__METHOD__,$server->getAuthType()));
+			}
 		}
 
 		# Tree Footer.

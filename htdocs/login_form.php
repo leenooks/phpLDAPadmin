@@ -29,44 +29,68 @@ if (! isset($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) != 'on') {
 }
 echo '<br />';
 
-# Login form.
-echo '<form action="cmd.php" method="post" name="login_form">';
-echo '<input type="hidden" name="cmd" value="login" />';
-printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
+# HTTP Basic Auth Form.
+if ($app['server']->getAuthType() == 'http') {
+	ob_end_clean();
 
-if (get_request('redirect','GET',false,false))
-	printf('<input type="hidden" name="redirect" value="%s" />',rawurlencode(get_request('redirect','GET')));
+	# When we pop up the basic athentication, we come back to this script, so try the login again.
+	if ($app['server']->isLoggedIn('user')) {
+		system_message(array(
+			'title'=>_('Authenticate to server'),
+			'body'=>_('Successfully logged into server.'),
+			'type'=>'info'),
+			sprintf('cmd.php?server_id=%s&refresh=SID_%s',$app['server']->getIndex(),$app['server']->getIndex()));
 
-echo '<center>';
-echo '<table class="forminput">';
+		die();
+	}
 
-printf('<tr><td><b>%s:</b></td></tr>',
-	$app['server']->getValue('login','auth_text') ? $app['server']->getValue('login','auth_text') :
-		($app['server']->getValue('login','attr') == 'dn' ? _('Login DN') : $_SESSION[APPCONFIG]->getFriendlyName($app['server']->getValue('login','attr'))));
+	header(sprintf('WWW-Authenticate: Basic realm="%s %s"',app_name(),_('login')));
 
-printf('<tr><td><input type="text" id="login" name="login" size="40" value="%s" /></td></tr>',
-	$app['server']->getValue('login','attr',false) == 'dn' ? $app['server']->getValue('login','bind_id') : '');
+	if ($_SERVER['SERVER_PROTOCOL'] == 'HTTP/1.0')
+		header('HTTP/1.0 401 Unauthorized'); // http 1.0 method
+	else
+		header('Status: 401 Unauthorized'); // http 1.1 method
 
-echo '<tr><td colspan=2>&nbsp;</td></tr>';
-printf('<tr><td><b>%s:</b></td></tr>',_('Password'));
-echo '<tr><td><input type="password" id="password" size="40" value="" name="login_pass" /></td></tr>';
-echo '<tr><td colspan=2>&nbsp;</td></tr>';
+	return;
+# HTML Login Form
+} else {
+	echo '<form action="cmd.php" method="post" name="login_form">';
+	echo '<input type="hidden" name="cmd" value="login" />';
+	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 
-# If Anon bind allowed, then disable the form if the user choose to bind anonymously.
-if ($app['server']->isAnonBindAllowed())
-	printf('<tr><td colspan="2"><small><b>%s</b></small> <input type="checkbox" name="anonymous_bind" onclick="toggle_disable_login_fields(this)" id="anonymous_bind_checkbox" /></td></tr>',
-		_('Anonymous'));
+	if (get_request('redirect','GET',false,false))
+		printf('<input type="hidden" name="redirect" value="%s" />',rawurlencode(get_request('redirect','GET')));
 
-printf('<tr><td colspan="2"><center><input type="submit" name="submit" value="%s" /></center></td></tr>',
-	_('Authenticate'));
+	echo '<center>';
+	echo '<table class="forminput">';
 
-echo '</table>';
-echo '</center>';
-echo '</form>';
+	printf('<tr><td><b>%s:</b></td></tr>',
+		$app['server']->getValue('login','auth_text') ? $app['server']->getValue('login','auth_text') :
+			($app['server']->getValue('login','attr') == 'dn' ? _('Login DN') : $_SESSION[APPCONFIG]->getFriendlyName($app['server']->getValue('login','attr'))));
 
-echo '<script type="text/javascript" language="javascript">document.getElementById(\'login\').focus()</script>';
+	printf('<tr><td><input type="text" id="login" name="login" size="40" value="%s" /></td></tr>',
+		$app['server']->getValue('login','attr',false) == 'dn' ? $app['server']->getValue('login','bind_id') : '');
 
-if ($app['server']->isAnonBindAllowed() ) {
+	echo '<tr><td colspan=2>&nbsp;</td></tr>';
+	printf('<tr><td><b>%s:</b></td></tr>',_('Password'));
+	echo '<tr><td><input type="password" id="password" size="40" value="" name="login_pass" /></td></tr>';
+	echo '<tr><td colspan=2>&nbsp;</td></tr>';
+
+	# If Anon bind allowed, then disable the form if the user choose to bind anonymously.
+	if ($app['server']->isAnonBindAllowed())
+		printf('<tr><td colspan="2"><small><b>%s</b></small> <input type="checkbox" name="anonymous_bind" onclick="toggle_disable_login_fields(this)" id="anonymous_bind_checkbox" /></td></tr>',
+			_('Anonymous'));
+
+	printf('<tr><td colspan="2"><center><input type="submit" name="submit" value="%s" /></center></td></tr>',
+		_('Authenticate'));
+
+	echo '</table>';
+	echo '</center>';
+	echo '</form>';
+
+	echo '<script type="text/javascript" language="javascript">document.getElementById(\'login\').focus()</script>';
+
+	if ($app['server']->isAnonBindAllowed() ) {
 ?>
 <script type="text/javascript" language="javascript">
 function toggle_disable_login_fields(anon_checkbox) {
@@ -81,5 +105,6 @@ function toggle_disable_login_fields(anon_checkbox) {
 }
 </script>
 <?php
+	}
 }
 ?>

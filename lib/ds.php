@@ -127,6 +127,7 @@ abstract class DS {
 	public function getAuthType() {
 		switch ($this->getValue('login','auth_type')) {
 			case 'config':
+			case 'http':
 			case 'session':
 				return $this->getValue('login','auth_type');
 
@@ -154,6 +155,7 @@ abstract class DS {
 				else
 					return blowfish_decrypt($_SESSION['USER'][$this->index][$method]['name']);
 
+			case 'http':
 			case 'session':
 				if (! isset($_SESSION['USER'][$this->index][$method]['name']))
 					return null;
@@ -173,6 +175,7 @@ abstract class DS {
 
 		switch ($this->getAuthType()) {
 			case 'config':
+			case 'http':
 			case 'session':
 				$_SESSION['USER'][$this->index][$method]['name'] = blowfish_encrypt($user);
 				$_SESSION['USER'][$this->index][$method]['pass'] = blowfish_encrypt($pass);
@@ -200,6 +203,7 @@ abstract class DS {
 				else
 					return blowfish_decrypt($_SESSION['USER'][$this->index][$method]['pass']);
 
+			case 'http':
 			case 'session':
 				if (! isset($_SESSION['USER'][$this->index][$method]['pass']))
 					return null;
@@ -215,9 +219,56 @@ abstract class DS {
 	 * Return if this datastore's connection method has been logged into
 	 */
 	public function isLoggedIn($method=null) {
+		static $CACHE = null;
+
 		$method = $this->getMethod($method);
 
-		return is_null($this->getLogin($method)) ? false : true;
+		if (! is_null($CACHE))
+			return $CACHE;
+
+		# For some authentication types, we need to do the login here
+		switch ($this->getAuthType()) {
+			case 'http':
+				# If our auth vars are not set, throw up a login box.
+				if (! isset($_SERVER['PHP_AUTH_USER'])) {
+					header(sprintf('WWW-Authenticate: Basic realm="%s %s"',app_name(),_('login')));
+
+					if ($_SERVER['SERVER_PROTOCOL'] == 'HTTP/1.0')
+						header('HTTP/1.0 401 Unauthorized'); // http 1.0 method
+					else
+						header('Status: 401 Unauthorized'); // http 1.1 method
+
+					# If we still dont have login details...
+					if (! isset($_SERVER['PHP_AUTH_USER'])) {
+						system_message(array(
+							'title'=>_('Unable to login.'),
+							'body'=>_('Your configuration file has authentication set to HTTP based authentication, however, there was none presented'),
+							'type'=>'error'));
+
+						$CACHE = false;
+					}
+
+				# Check our auth vars are valid.
+				} else {
+					if (! $this->login($_SERVER['PHP_AUTH_USER'],$_SERVER['PHP_AUTH_PW'],$method)) {
+						system_message(array(
+							'title'=>_('Unable to login.'),
+							'body'=>_('Your HTTP based authentication is not accepted by the LDAP server'),
+							'type'=>'error'));
+
+						$CACHE = false;
+
+					} else
+						$CACHE = true;
+				}
+
+				break;
+
+			default:
+				$CACHE = is_null($this->getLogin($method)) ? false : true;
+		}
+
+		return $CACHE;
 	}
 
 	/**
@@ -231,6 +282,9 @@ abstract class DS {
 				if (isset($_SESSION['USER'][$this->index][$method]))
 					unset($_SESSION['USER'][$this->index][$method]);
 
+				return true;
+
+			case 'http':
 				return true;
 
 			case 'session':
@@ -272,14 +326,22 @@ abstract class DS {
 	 * @return string Connection Method
 	 */
 	protected function getMethod($method=null) {
+		static $CACHE = null;
+
 		# Immediately return if method is set.
 		if (! is_null($method))
 			return $method;
 
+		# If we have been here already, then return our result
+		if (! is_null($CACHE))
+			return $CACHE;
+
+		$CACHE = 'anon';
+
 		if ($this->isLoggedIn('user'))
-			return 'user';
-		else
-			return 'anon';
+			$CACHE = 'user';
+
+		return $CACHE;
 	}
 }
 

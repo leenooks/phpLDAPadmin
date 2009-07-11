@@ -137,8 +137,8 @@ class ldap extends DS {
 			return $CACHE[$this->index][$method];
 
 		# Check if we have logged in and therefore need to use those details as our bind.
-		$bind['id'] = is_null($this->getLogin($method)) ? $this->getLogin('user') : $this->getLogin($method);
-		$bind['pass'] = is_null($this->getPassword($method)) ? $this->getPassword('user') : $this->getPassword($method);
+		$bind['id'] = is_null($this->getLogin($method)) && $method != 'anon' ? $this->getLogin('user') : $this->getLogin($method);
+		$bind['pass'] = is_null($this->getPassword($method)) && $method != 'anon' ? $this->getPassword('user') : $this->getPassword($method);
 
 		# If our bind id is still null, we are not logged in.
 		if (is_null($bind['id']))

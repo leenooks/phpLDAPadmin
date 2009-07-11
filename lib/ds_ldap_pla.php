@@ -404,7 +404,7 @@ class ldap_pla extends ldap {
 	 * this function will return null.
 	 */
 	public function inactivityTime() {
-		if ($this->isLoggedIn() && ! in_array($this->getAuthType(),array('config','httpd')))
+		if ($this->isLoggedIn() && ! in_array($this->getAuthType(),array('config','http')))
 			return time()+($this->getValue('login','timeout')*60);
 		else
 			return null;

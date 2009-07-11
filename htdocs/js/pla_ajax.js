@@ -42,7 +42,7 @@ function includeHTML(component, html) {
 // callback function
 function alertHttpRequest() {
 	if (http_request && (http_request.readyState == 4)) {
-		if (http_request.status == 200) {
+		if (http_request.status == 200 || http_request.status == 401) {
 			response = http_request.responseText;
 			http_request = null;
 			//alert(response);
