@@ -26,8 +26,9 @@ if (! isset($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) != 'on') {
 		_('Warning'),_('This web connection is unencrypted'));
 	echo '</span>';
 	echo '</center>';
+
+	echo '<br />';
 }
-echo '<br />';
 
 # HTTP Basic Auth Form.
 if ($app['server']->getAuthType() == 'http') {
@@ -87,6 +88,8 @@ if ($app['server']->getAuthType() == 'http') {
 	echo '</table>';
 	echo '</center>';
 	echo '</form>';
+
+	echo '<br/>';
 
 	echo '<script type="text/javascript" language="javascript">document.getElementById(\'login\').focus()</script>';
 
