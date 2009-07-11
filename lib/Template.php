@@ -994,6 +994,15 @@ class Template extends xmlTemplate {
 			U:	Make the result upper case.
 			*/
 			case 'autoFill':
+				if (! preg_match('/;/',$arg)) {
+					system_message(array(
+						'title'=>_('Problem with autoFill() in template'),
+						'body'=>sprintf('%s (<b>%s</b>)',_('There is only 1 argument, when there should be two'),$attribute->getName(false)),
+						'type'=>'warn'));
+
+					return;
+				}
+
 				list($attr,$string) = preg_split('(([^,]+);(.*))',$arg,-1,PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 				preg_match_all('/%(\w+)(\|[0-9]*-[0-9]*)?(\/[KklTUA]+)?%/U',$string,$matchall);
 				//print"<PRE>";print_r($matchall); //0 = highlevel match, 1 = attr, 2 = subst, 3 = mod
