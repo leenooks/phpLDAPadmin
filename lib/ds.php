@@ -219,18 +219,26 @@ abstract class DS {
 	 * Return if this datastore's connection method has been logged into
 	 */
 	public function isLoggedIn($method=null) {
-		static $CACHE = null;
+		static $CACHE = array();
 
 		$method = $this->getMethod($method);
 
-		if (! is_null($CACHE))
-			return $CACHE;
+		if (isset($CACHE[$this->index]) && ! is_null($CACHE))
+			return $CACHE[$this->index];
+
+		$CACHE[$this->index] = null;
 
 		# For some authentication types, we need to do the login here
 		switch ($this->getAuthType()) {
 			case 'http':
 				# If our auth vars are not set, throw up a login box.
 				if (! isset($_SERVER['PHP_AUTH_USER'])) {
+					# If this server is not in focus, skip the basic auth prompt.
+					if (get_request('server_id','REQUEST') != $this->getIndex()) {
+						$CACHE[$this->index] = false;
+						break;
+					}
+
 					header(sprintf('WWW-Authenticate: Basic realm="%s %s"',app_name(),_('login')));
 
 					if ($_SERVER['SERVER_PROTOCOL'] == 'HTTP/1.0')
@@ -245,7 +253,7 @@ abstract class DS {
 							'body'=>_('Your configuration file has authentication set to HTTP based authentication, however, there was none presented'),
 							'type'=>'error'));
 
-						$CACHE = false;
+						$CACHE[$this->index] = false;
 					}
 
 				# Check our auth vars are valid.
@@ -256,19 +264,19 @@ abstract class DS {
 							'body'=>_('Your HTTP based authentication is not accepted by the LDAP server'),
 							'type'=>'error'));
 
-						$CACHE = false;
+						$CACHE[$this->index] = false;
 
 					} else
-						$CACHE = true;
+						$CACHE[$this->index] = true;
 				}
 
 				break;
 
 			default:
-				$CACHE = is_null($this->getLogin($method)) ? false : true;
+				$CACHE[$this->index] = is_null($this->getLogin($method)) ? false : true;
 		}
 
-		return $CACHE;
+		return $CACHE[$this->index];
 	}
 
 	/**
