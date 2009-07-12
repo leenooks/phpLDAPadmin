@@ -213,12 +213,13 @@ class ldap extends DS {
 				debug_log('Leaving with FALSE, bind FAILed',16,__FILE__,__LINE__,__METHOD__);
 
 			$this->noconnect = true;
-			$CACHE[$this->index][$method] = null;
 
 			system_message(array(
 				'title'=>sprintf('%s %s',_('Unable to connect to LDAP server'),$this->getName()),
 				'body'=>sprintf('<b>%s</b>: %s (%s) for <b>%s</b>',_('Error'),$this->getErrorMessage($method),$this->getErrorNum($method),$method),
 				'type'=>'error'));
+
+			$CACHE[$this->index][$method] = null;
 
 		} else {
 			$this->noconnect = false;
