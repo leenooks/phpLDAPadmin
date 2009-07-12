@@ -59,8 +59,9 @@ if (count($request['template']->getLDAPmodify(true))) {
 	foreach ($request['template']->getAttribute('objectclass')->getValues() as $value) {
 		$soc = $app['server']->getSchemaObjectClass($value);
 
-		foreach ($soc->getMustAttrs() as $sma)
-			array_push($mustattrs,$sma->getName());
+		if ($soc)
+			foreach ($soc->getMustAttrs() as $sma)
+				array_push($mustattrs,$sma->getName());
 	}
 			
 	$counter = 0;
