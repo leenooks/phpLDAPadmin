@@ -24,7 +24,7 @@ $results = $app['server']->query($query,null);
 if (! isset($attrs['monitorcontext']) || ! count($results))
 	system_message(array(
 		'title'=>_('Monitoring context does not exist'),
-		'body'=>sprintf('%s: <b>%s</b>',_('Could not optain the monitor context for this server'),$app['server']->getName()),
+		'body'=>sprintf('%s: <b>%s</b>',_('Could not obtain the monitor context for this server'),$app['server']->getName()),
 		'type'=>'warn'),'index.php');
 
 printf('<h3 class="title">%s%s</h3>',_('Monitor info for: '),$app['server']->getName());
