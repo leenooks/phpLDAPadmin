@@ -250,19 +250,8 @@ class HTMLTree extends Tree {
 				if (! $_SESSION[APPCONFIG]->isCommandAvailable('script','monitor'))
 					return '';
 
-				# Fetch basic RootDSE attributes using the + and *.
-				$query = array();
-				$query['base'] = '';
-				$query['scope'] = 'base';
-				$query['attrs'] = $server->getValue('server','root_dse_attributes');
-				$query['baseok'] = true;
-				$results = $server->query($query,null);
-				if ($results)
-					$attrs = array_change_key_case(array_pop($results));
-				else
-					return '';
-
-				if (! isset($attrs['monitorcontext']))
+				$attrs = $server->getRootDSE();
+				if (! $attrs || ! isset($attrs['monitorcontext']))
 					return '';
 
 				$menu['cmd'] = 'monitor';

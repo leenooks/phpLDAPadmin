@@ -13,14 +13,7 @@
 
 require './common.php';
 
-# Fetch basic RootDSE attributes using the + and *.
-$query = array();
-$query['base'] = '';
-$query['scope'] = 'base';
-$query['attrs'] = $app['server']->getValue('server','root_dse_attributes');
-$query['baseok'] = true;
-$results = $app['server']->query($query,null);
-$attrs = array_pop($results);
+$attrs = $app['server']->getRootDSE();
 
 printf('<h3 class="title">%s%s</h3>',_('Server info for: '),$app['server']->getName());
 printf('<h3 class="subtitle">%s</h3>',_('Server reports the following information about itself'));

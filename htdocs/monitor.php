@@ -13,18 +13,12 @@
 
 require './common.php';
 
-# Fetch basic RootDSE attributes using the + and *.
+$attrs = $app['server']->getRootDSE();
+
 $query = array();
-$query['base'] = '';
-$query['scope'] = 'base';
-$query['attrs'] = $app['server']->getValue('server','root_dse_attributes');
-$query['baseok'] = true;
-$results = $app['server']->query($query,null);
-
-$attrs = array_change_key_case(array_pop($results));
-
 $query['base'] = $attrs['monitorcontext'];
 $query['scope'] = 'sub';
+$query['attrs'] = array('+','*');
 $results = $app['server']->query($query,null);
 
 if (! isset($attrs['monitorcontext']) || ! count($results))
