@@ -12,14 +12,15 @@
 # all		display target
 # all-mo	compile .mo files from .po translation available
 # pot		create a update main POT file
-# all-merge	merge last POT with each current translations
+# all-merge	merge last POT with each current translations (re-create POT)
+# all-merge-pot	merge last POT with each current translations
 
 LOCALEDIR = ../../locale
 TEMPLATEFILES=`find ../../templates -iname *xml -exec echo -m {} \;`
 EXPORTFILE = $(shell echo $${EXPORTFILE:-/tmp/launchpad-export.tgz})
 
 all:
-	@echo Please, specify a target [pot, xml-pot, all-mo, all-merge, launchpad-export]
+	@echo Please, specify a target [pot, xml-pot, all-mo, all-merge, all-merge-pot, launchpad-export]
 
 all-mo:
 	@for i in `ls -1 $(LOCALEDIR)` ; \
@@ -38,11 +39,13 @@ pot:
 	@echo messages.pot created, you might like to change the header with contents of messages.header
 
 all-merge: pot
+all-merge-pot:
 	@for i in `ls -1 $(LOCALEDIR)` ; \
 	do \
 	    if [ -f $(LOCALEDIR)/$$i/LC_MESSAGES/messages.po ]; then \
 	    echo Processing: $$i ; \
 	    msgmerge -v $(LOCALEDIR)/$$i/LC_MESSAGES/messages.po messages.pot -o $$i.po; \
+	    mv $$i.po $(LOCALEDIR)/$$i/LC_MESSAGES/messages.po; \
 	    fi \
 	done
 

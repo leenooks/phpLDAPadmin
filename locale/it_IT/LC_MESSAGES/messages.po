@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: phpldapadmin messages\n"
 "Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sf.net\n"
-"POT-Creation-Date: 2004-01-14 17:45+0200\n"
+"POT-Creation-Date: 2009-07-12 20:50+0200\n"
 "PO-Revision-Date: 2008-01-22 15:04+0100\n"
 "Last-Translator: Fabio Pedretti <fabio.ped@libero.it>\n"
 "Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
@@ -11,318 +11,543 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../../htdocs/mass_delete.php:86
-#, php-format
-msgid "%s of %s entries failed to be deleted."
-msgstr "Impossibile eliminare %s di %s voci."
-
-#: ../../lib/EntryWriter1.php:960
-msgid "("
-msgstr "("
-
-#: ../../lib/HTMLTree.php:481
+#: ../../lib/HTMLTree.php:507
 msgid "(Session timed out. Automatically logged out.)"
 msgstr "(Sessione scaduta. Disconnesso automaticamente.)"
 
-#: ../../lib/EntryWriter1.php:962
-msgid ")"
-msgstr ")"
+#: ../../lib/TemplateRender.php:101
+msgid "A call was made to getDefaultAttribute() with an unkown context"
+msgstr ""
 
-#: ../../htdocs/add_attr.php:25 ../../htdocs/add_value.php:24
-#: ../../htdocs/add_value_form.php:76 ../../htdocs/add_value_form.php:78
-#: ../../htdocs/add_value_form.php:104 ../../htdocs/copy.php:20
-#: ../../htdocs/copy.php:76 ../../htdocs/create.php:25
-#: ../../htdocs/create.php:114 ../../htdocs/delete.php:21
-#: ../../htdocs/delete_attr.php:21 ../../htdocs/export.php:18
-#: ../../htdocs/ldif_import.php:19 ../../htdocs/mass_delete.php:26
-#: ../../htdocs/purge_cache.php:13 ../../htdocs/rdelete.php:21
-#: ../../htdocs/refresh.php:17 ../../htdocs/rename.php:24
-#: ../../htdocs/schema.php:20 ../../htdocs/search.php:120
-#: ../../htdocs/search.php:124 ../../htdocs/search.php:128
-#: ../../htdocs/search.php:265 ../../htdocs/search.php:276
-#: ../../htdocs/search.php:295 ../../htdocs/search.php:299
-#: ../../htdocs/server_info.php:16 ../../htdocs/update.php:61
-#: ../../htdocs/update.php:67 ../../htdocs/update.php:80
-#: ../../htdocs/update_confirm.php:316 ../../htdocs/update_confirm.php:321
-#: ../../htdocs/view_jpeg_photo.php:25 ../../lib/EntryWriter1.php:247
-#: ../../lib/EntryWriter1.php:254 ../../lib/EntryWriter1.php:261
-#: ../../lib/EntryWriter1.php:507 ../../lib/EntryWriter1.php:513
-#: ../../lib/EntryWriter1.php:520 ../../lib/EntryWriter1.php:1033
-#: ../../lib/EntryWriter1.php:1036 ../../lib/EntryWriter1.php:1260
-#: ../../lib/EntryWriter1.php:1429 ../../lib/EntryWriter1.php:2452
-#: ../../lib/EntryWriter2.php:21 ../../lib/EntryWriter2.php:175
-#: ../../lib/HTMLTree.php:274 ../../lib/page.php:200
-msgid ":"
-msgstr ":"
+#: ../../lib/functions.php:1358
+msgid ""
+"A call was made to get_next_number(), however, it is disabled for this server"
+msgstr ""
 
-#: ../../lib/search_form_advanced.php:102
+#: ../../lib/functions.php:1394
+msgid ""
+"A call was made to get_next_number(), however, the base to search does not "
+"exist for this server."
+msgstr ""
+
+#: ../../lib/functions.php:1382
+msgid ""
+"A call was made to get_next_number(), however, the base to search is empty."
+msgstr ""
+
+#: ../../lib/QueryRender.php:174
 msgid "A list of attributes to display in the results (comma-separated)"
 msgstr ""
 "Una lista di attributi da visualizzare nei risultati (separati da virgole)"
 
-#: ../../lib/EntryWriter1.php:2452 ../../lib/template_functions.php:962
+#: ../../lib/xmlTemplates.php:96
+msgid "A new template XML file has been loaded"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:2362
 msgid "A random password was generated for you"
 msgstr "E' stata generata una password casuale"
 
-#: ../../lib/ldif_functions.php:532
+#: ../../lib/import_functions.php:600
 msgid "A valid deleteoldrdn attribute should be specified"
 msgstr "Deve essere specificato un corretto attributo"
 
-#: ../../lib/ldif_functions.php:243
-msgid "A valid dn line is required."
+#: ../../lib/import_functions.php:244
+#, fuzzy
+msgid "A valid dn line is required"
 msgstr "E' richiesta una corretta riga dn."
 
-#: ../../lib/ldif_functions.php:538
-msgid "A valid newrdn attribute  should be specified"
+#: ../../lib/import_functions.php:603
+#, fuzzy
+msgid "A valid newrdn attribute should be specified"
 msgstr "Deve essere specificato un corretto attributo newrdn"
 
-#: ../../htdocs/add_attr_form.php:103 ../../htdocs/add_attr_form.php:147
-#: ../../lib/EntryWriter1.php:789
+#: ../../lib/import_functions.php:594
+#, fuzzy
+msgid "A valid newsuperier attribute should be specified"
+msgstr "Deve essere specificato un corretto attributo newrdn"
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:48
+#, no-wrap
+msgid "AIM Nick"
+msgstr ""
+
+#: ../../lib/functions.php:1367
+msgid "AUTO_NUMBER invalid login/password"
+msgstr ""
+
+#: ../../lib/functions.php:1357
+msgid "AUTO_NUMBER is disabled for this server"
+msgstr ""
+
+#: ../../lib/functions.php:1481
+msgid "AUTO_NUMBER pool filter didnt return any DNs"
+msgstr ""
+
+#: ../../lib/functions.php:1489
+msgid "AUTO_NUMBER pool filter returned too many DNs"
+msgstr ""
+
+#: ../../lib/functions.php:1402
+msgid "AUTO_NUMBER search attribute invalid"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:1234 ../../lib/TemplateRender.php:1238
+#: ../../htdocs/add_attr_form.php:79 ../../htdocs/add_attr_form.php:120
 msgid "Add"
 msgstr "Aggiungi"
 
-#: ../../htdocs/add_value_form.php:240
+#: ../../htdocs/add_attr_form.php:164
+#, fuzzy
+msgid "Add Attribute"
+msgstr "aggiungi attributo"
+
+#: ../../htdocs/add_value_form.php:155
 msgid "Add New Value"
 msgstr "Aggiungi Nuovo Valore"
 
-#: ../../htdocs/add_oclass_form.php:104 ../../htdocs/compare.php:526
+#: ../../htdocs/add_oclass_form.php:101
 msgid "Add ObjectClass and Attributes"
 msgstr "Aggiungi ObjectClass e Attributi"
 
-#: ../../htdocs/modify_member_form.php:144
+#: ../../lib/TemplateRender.php:2024
+#, fuzzy
+msgid "Add Value to Attribute"
+msgstr "Aggiungi un nuovo attributo"
+
+#: ../../htdocs/modify_member_form.php:123
 msgid "Add all"
 msgstr "Aggiungi tutto"
 
-#: ../../htdocs/compare.php:537 ../../lib/EntryWriter1.php:1835
-#, php-format
-msgid "Add an additional value to attribute '%s'"
+#: ../../lib/TemplateRender.php:2023 ../../lib/TemplateRender.php:2027
+#, fuzzy
+msgid "Add an additional value to attribute"
 msgstr "Aggiungi un'altro valore all'attributo '%s'"
 
-#: ../../htdocs/add_value_form.php:98
+#: ../../htdocs/add_value_form.php:46
 msgid "Add new"
 msgstr "Aggiungi nuovo"
 
-#: ../../htdocs/add_value_form.php:196 ../../htdocs/compare.php:528
+#: ../../htdocs/add_value_form.php:123
 msgid "Add new ObjectClass"
 msgstr "Aggiungi nuovo ObjectClass"
 
-#: ../../htdocs/add_attr_form.php:23 ../../htdocs/add_attr_form.php:71
-#: ../../lib/EntryWriter1.php:789
+#: ../../lib/TemplateRender.php:1236 ../../lib/TemplateRender.php:1239
+#: ../../htdocs/add_attr_form.php:31 ../../htdocs/add_attr_form.php:50
 msgid "Add new attribute"
 msgstr "Aggiungi un nuovo attributo"
 
-#: ../../htdocs/add_attr_form.php:113
+#: ../../lib/TemplateRender.php:1235 ../../lib/TemplateRender.php:1239
+#, fuzzy
+msgid "Add new attribute to this object"
+msgstr "Aggiungi un nuovo attributo"
+
+#: ../../htdocs/add_attr_form.php:89
 msgid "Add new binary attribute"
 msgstr "Aggiungi un nuovo attributo binario"
 
-#: ../../htdocs/modify_member_form.php:144
+#: ../../htdocs/add_oclass_form.php:62
+#, fuzzy
+msgid "Add new objectClass to"
+msgstr "Aggiungi nuovo ObjectClass"
+
+#: ../../htdocs/modify_member_form.php:123
 msgid "Add selected"
 msgstr "Aggiungi selezionato/i"
 
-#: ../../htdocs/ldif_import.php:62
-msgid "Adding..."
+#: ../../htdocs/import.php:33
+#, fuzzy
+msgid "Adding"
 msgstr "In aggiunta..."
 
-#: ../../lib/search_form_advanced.php:32
-#: ../../lib/search_form_predefined.php:33 ../../lib/search_form_simple.php:34
-msgid "Advanced Search Form"
-msgstr "Modulo di Ricerca Avanzato"
+#: ../../templates/creation/kolabPerson.xml:69
+#, fuzzy, no-wrap
+msgid "Address"
+msgstr "Aggiungi"
 
-#: ../../lib/config_default.php:634
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:78
+#, no-wrap
+msgid "Address (personal)"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:115
+#, no-wrap
+msgid "Address (professional)"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/modification/inetOrgPerson.xml:5
+#, no-wrap
+msgid "Address Book Entry"
+msgstr ""
+
+#: ../../templates/creation/kolabPerson.xml:52
+#, fuzzy, no-wrap
+msgid "Alias"
+msgstr "Alias"
+
+#: ../../templates/creation/alias.xml:22
+#: ../../templates/creation/sendmailMTACluster.xml:20
+#: ../../templates/creation/test_extensible.xml:22
+#, fuzzy, no-wrap
+msgid "Alias To"
+msgstr "Alias per"
+
+#: ../../lib/config_default.php:775
 msgid "Alias for"
 msgstr "Alias per"
 
-#: ../../htdocs/schema.php:108
+#: ../../htdocs/schema.php:176
 msgid "Aliases"
 msgstr "Alias"
 
-#: ../../htdocs/mass_delete.php:88
-msgid "All entries deleted successfully."
-msgstr "Tutte le voci sono state correttamente eliminate."
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:44
+#, no-wrap
+msgid "Alternative Email"
+msgstr ""
 
-#: ../../lib/EntryWriter1.php:825
+#: ../../lib/TemplateRender.php:145
+msgid "An attempt was made to call a function that doesnt exist"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:1082
 #, php-format
 msgid "An attribute (%s) was modified and is highlighted below."
 msgstr "Un attributo (%s) è stato modificato ed è evidenziato sotto."
 
-#: ../../htdocs/update_confirm.php:100
+#: ../../lib/Template.php:1304
 msgid "An entry should have one structural objectClass."
 msgstr "Una voce dovrebbe avere un objectClass strutturale."
 
-#: ../../htdocs/login_form.php:60
+#: ../../htdocs/login_form.php:83
 msgid "Anonymous"
 msgstr "Anonimo"
 
-#: ../../htdocs/login.php:164
-msgid "Anonymous Bind"
-msgstr "Bind Anonimo"
+#: ../../htdocs/mass_delete.php:56
+#, fuzzy
+msgid "Are you sure you want to permanently delete these objects?"
+msgstr "Sei sicuro di voler permanentemente eliminare questo oggetto?"
 
-#: ../../htdocs/delete_form.php:102
+#: ../../htdocs/mass_delete.php:54 ../../htdocs/delete_form.php:108
 msgid "Are you sure you want to permanently delete this object?"
 msgstr "Sei sicuro di voler permanentemente eliminare questo oggetto?"
 
-#: ../../htdocs/compare.php:53 ../../htdocs/update_confirm.php:202
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/dNSDomain.xml:26
+#, no-wrap
+msgid "Associated Domain"
+msgstr ""
+
+#: ../../lib/import_functions.php:462
+msgid "Attempting to delete a non existant attribute"
+msgstr ""
+
+#: ../../lib/import_functions.php:473
+msgid "Attempting to replace a non existant attribute"
+msgstr ""
+
+#: ../../htdocs/update_confirm.php:54 ../../htdocs/create_confirm.php:85
 msgid "Attribute"
 msgstr "Attributo"
 
-#: ../../lib/ldif_functions.php:455
-msgid "Attribute is not valid"
+#: ../../templates/creation/example.xml:20
+#, fuzzy, no-wrap
+msgid "Attribute 1"
+msgstr "Attributo"
+
+#: ../../templates/creation/example.xml:27
+#, fuzzy, no-wrap
+msgid "Attribute 2"
+msgstr "Attributo"
+
+#: ../../templates/creation/example.xml:32
+#, fuzzy, no-wrap
+msgid "Attribute 3"
+msgstr "Attributo"
+
+#: ../../htdocs/schema.php:43
+#, fuzzy
+msgid "Attribute Types"
+msgstr "Attributo"
+
+#: ../../lib/ds_ldap.php:649
+#, fuzzy
+msgid "Attribute doesnt exist"
+msgstr "L'attributo Rdn (%s) non esiste."
+
+#: ../../lib/ds_ldap_pla.php:529
+#, fuzzy
+msgid "Attribute not added"
 msgstr "L'attributo non è valido"
 
-#: ../../lib/ldif_functions.php:375
-msgid "Attribute not well formed"
-msgstr "Attributo malformato"
+#: ../../htdocs/mass_edit.php:115
+#, fuzzy
+msgid "Attribute not available"
+msgstr "L'attributo non è valido"
 
-#: ../../htdocs/login_form.php:63
+#: ../../lib/ds_ldap_pla.php:559
+#, fuzzy
+msgid "Attribute not deleted"
+msgstr "[attributo rimosso]"
+
+#: ../../lib/ds_ldap_pla.php:543
+#, fuzzy
+msgid "Attribute not modified"
+msgstr "L'attributo non è valido"
+
+#: ../../lib/import_functions.php:542
+#, fuzzy
+msgid "Attribute not valid"
+msgstr "L'attributo non è valido"
+
+#: ../../lib/ds_ldap_pla.php:689
+#, fuzzy
+msgid "Attribute value would not be unique"
+msgstr "Il nome dell'attributo dovrebbe essere newsuperior"
+
+#: ../../htdocs/schema.php:500 ../../htdocs/schema.php:638
+#: ../../htdocs/schema.php:671
+#, fuzzy
+msgid "Attributes"
+msgstr "Attributo"
+
+#: ../../htdocs/login_form.php:86
 msgid "Authenticate"
 msgstr "Autentica"
 
-#: ../../htdocs/login.php:26 ../../htdocs/login.php:91
-#: ../../htdocs/login.php:116 ../../htdocs/login.php:136
-#: ../../htdocs/login.php:143 ../../htdocs/login.php:163
-#: ../../htdocs/login_form.php:19 ../../lib/HTMLTree.php:90
-#: ../../lib/server_functions.php:2426
+#: ../../htdocs/login.php:22 ../../htdocs/login.php:29
+#: ../../htdocs/login_form.php:17 ../../htdocs/login_form.php:40
+#: ../../htdocs/logout.php:18
 msgid "Authenticate to server"
 msgstr "Autentica sul server"
 
-#: ../../htdocs/modify_member_form.php:113
+#: ../../htdocs/cmd.php:68
+#, fuzzy
+msgid "Auto refresh"
+msgstr "aggiorna"
+
+#: ../../lib/Attribute.php:586
+msgid "Automatically determined"
+msgstr ""
+
+#: ../../lib/Template.php:1226
+msgid "Automatically removed attribute from template"
+msgstr ""
+
+#: ../../lib/Template.php:99
+msgid "Automatically removed objectClass from template"
+msgstr ""
+
+#: ../../htdocs/modify_member_form.php:92
 msgid "Available members"
 msgstr "Membri disponibili"
 
 #: ../../htdocs/entry_chooser.php:65
-msgid "Back Up..."
+#, fuzzy
+msgid "Back Up"
 msgstr "Back Up..."
 
-#: ../../htdocs/login.php:92 ../../htdocs/login.php:144
-#: ../../lib/server_functions.php:339 ../../lib/server_functions.php:2427
-msgid "Bad username or password. Please try again."
-msgstr "Nome utente o password errati. Riprova."
-
-#: ../../htdocs/export_form.php:31 ../../lib/search_form_advanced.php:89
+#: ../../lib/QueryRender.php:157 ../../htdocs/export_form.php:33
 msgid "Base (base dn only)"
 msgstr "Base (solo base dn)"
 
-#: ../../htdocs/export_form.php:52 ../../htdocs/search.php:295
-#: ../../lib/search_form_advanced.php:63
+#: ../../lib/QueryRender.php:136 ../../lib/QueryRender.php:592
+#: ../../htdocs/export_form.php:58
 msgid "Base DN"
 msgstr "DN Base"
 
-#: ../../htdocs/compare.php:274 ../../lib/EntryWriter1.php:1979
-msgid "Binary value"
+#: ../../lib/PageRender.php:604 ../../lib/PageRender.php:608
+#, fuzzy
+msgid "Binary Value"
 msgstr "Valore binario"
 
-#: ../../htdocs/copy.php:61
-msgid "Building snapshot of tree to copy... "
+#: ../../htdocs/copy.php:58
+#, fuzzy
+msgid "Building snapshot of tree to copy"
 msgstr "Istantanea dell'albero da copiare in costruzione... "
 
-#: ../../lib/export_functions.php:38
-msgid "CSV (Spreadsheet)"
-msgstr "CSV (Foglio di calcolo)"
+#: ../../htdocs/mass_edit.php:63
+#, fuzzy
+msgid "Bulk edit the following DNs"
+msgstr "Confronta i seguenti DN"
 
-#: ../../lib/functions.php:65
+#: ../../htdocs/mass_update.php:48
+#, fuzzy
+msgid "Bulk update the following DNs"
+msgstr "Confronta i seguenti DN"
+
+#: ../../lib/functions.php:70
 msgid "Called to load a class that cant be found"
 msgstr "Richiesta l'esecuzione di una classe che non può essere trovata"
 
-#: ../../htdocs/delete_form.php:77 ../../htdocs/delete_form.php:127
-#: ../../htdocs/update_confirm.php:307
+#: ../../htdocs/mass_delete.php:138 ../../htdocs/delete_form.php:85
+#: ../../htdocs/delete_form.php:133 ../../htdocs/update_confirm.php:188
+#: ../../htdocs/create_confirm.php:119
 msgid "Cancel"
 msgstr "Annulla"
 
-#: ../../htdocs/compare.php:381
+#: ../../lib/TemplateRender.php:1118 ../../lib/TemplateRender.php:1121
+#, fuzzy
+msgid "Change to another template"
+msgstr "Confronta con un'altra voce"
+
+#: ../../lib/TemplateRender.php:2333
 msgid "Check password"
 msgstr "Verifica password"
 
-#: ../../lib/EntryWriter1.php:2416
-msgid "Check password..."
-msgstr "Verifica password..."
-
-#: ../../lib/EntryReader.php:359 ../../lib/EntryReader.php:381
-msgid "Checking passwords"
-msgstr "Verifica password"
-
-#: ../../lib/EntryWriter1.php:796
+#: ../../lib/TemplateRender.php:1249 ../../lib/TemplateRender.php:1254
 msgid "Children"
 msgstr "Figli"
 
-#: ../../lib/functions.php:3208
+#: ../../templates/creation/organizationalRole.xml:52
+#: ../../templates/creation/inetOrgPerson.xml:58
+#: ../../templates/creation/kolabPerson.xml:78
+#: ../../templates/modification/inetOrgPerson.xml:55
+#, fuzzy, no-wrap
+msgid "City"
+msgstr "Invia"
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/test_normal.xml:73
+#, no-wrap
+msgid "City (Hidden with 2 values)"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:82
+#, no-wrap
+msgid "City (personal)"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:119
+#, no-wrap
+msgid "City (professional)"
+msgstr ""
+
+#: ../../lib/functions.php:367
+#, fuzzy
+msgid "Clearing cache"
+msgstr "Svuota la cache"
+
+#: ../../lib/TemplateRender.php:2274
 msgid "Click to popup a dialog to select a date graphically"
 msgstr ""
 "Clicca per aprire una finestra di dialogo per la selezione grafica di una "
 "data"
 
-#: ../../lib/functions.php:2226
+#: ../../lib/functions.php:2386
 msgid "Click to popup a dialog to select an entry (DN) graphically"
 msgstr ""
 "Clicca per aprire una finestra di dialogo per la selezione grafica di una "
 "voce (DN)"
 
-#: ../../htdocs/compare.php:160 ../../htdocs/server_info.php:83
-#: ../../lib/EntryWriter1.php:1901
-#, php-format
-msgid "Click to view the schema definition for attribute type '%s'"
+#: ../../lib/PageRender.php:337 ../../htdocs/server_info.php:36
+#, fuzzy
+msgid "Click to view the schema definition for attribute type"
 msgstr ""
 "Clicca per visualizzare la definizione dello schema per il tipo di attributo "
 "'%s'"
 
-#: ../../htdocs/schema.php:104
+#: ../../htdocs/schema.php:172
 msgid "Collective"
 msgstr "Collettivo"
 
-#: ../../htdocs/update_confirm.php:304
+#: ../../htdocs/cmd.php:56
+#, fuzzy
+msgid "Command disabled by the server configuration"
+msgstr "Questa operazione non è consentita dalla configurazione"
+
+#: ../../templates/creation/organizationalRole.xml:35
+#, fuzzy, no-wrap
+msgid "Comments"
+msgstr "Invia"
+
+#: ../../htdocs/update_confirm.php:187 ../../htdocs/create_confirm.php:118
 msgid "Commit"
 msgstr "Invia"
 
-#: ../../htdocs/compare_form.php:29 ../../htdocs/compare_form.php:64
-#: ../../htdocs/password_checker.php:33 ../../lib/EntryWriter1.php:775
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/posixAccount.xml:37
+#: ../../templates/creation/courierMailAccount.xml:35
+#: ../../templates/creation/courierMailAlias.xml:21
+#: ../../templates/creation/inetOrgPerson.xml:33
+#: ../../templates/creation/kolabPerson.xml:31
+#: ../../templates/creation/sambaSamAccount.xml:35
+#: ../../templates/creation/test_uid1200.xml:37
+#: ../../templates/creation/test_uid1010.xml:37
+#: ../../templates/creation/test_function.xml:20
+#: ../../templates/modification/inetOrgPerson.xml:31
+#: ../../templates/modification/sambaSamAccount.xml:35
+#, no-wrap
+msgid "Common Name"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/test_normal.xml:53
+#: ../../templates/creation/test_picklist.xml:53
+#, no-wrap
+msgid "Common Name (RDN + ReadOnly)"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:1202 ../../lib/TemplateRender.php:1206
+#: ../../htdocs/compare_form.php:34 ../../htdocs/compare_form.php:58
+#: ../../htdocs/password_checker.php:39
 msgid "Compare"
 msgstr "Confronta"
 
-#: ../../htdocs/compare_form.php:21
+#: ../../htdocs/compare_form.php:30
 msgid "Compare another DN with"
 msgstr "Confronta un altro DN con"
 
-#: ../../htdocs/compare_form.php:41 ../../htdocs/compare_form.php:53
+#: ../../htdocs/compare_form.php:47
 msgid "Compare this DN with another"
 msgstr "Confronta questo DN con un altro"
 
-#: ../../lib/EntryWriter1.php:776
+#: ../../lib/TemplateRender.php:1203 ../../lib/TemplateRender.php:1207
+#, fuzzy
+msgid "Compare this entry with another"
+msgstr "Confronta questo DN con un altro"
+
+#: ../../lib/TemplateRender.php:1204 ../../lib/TemplateRender.php:1207
 msgid "Compare with another entry"
 msgstr "Confronta con un'altra voce"
 
-#: ../../htdocs/compare.php:48
+#: ../../htdocs/compare.php:44
 msgid "Comparing the following DNs"
 msgstr "Confronta i seguenti DN"
 
-#: ../../htdocs/export_form.php:84
+#: ../../htdocs/export_form.php:92
 msgid "Compress"
 msgstr "Comprimi"
 
-#: ../../lib/session_functions.php:138
+#: ../../lib/session_functions.php:147
 msgid "Configuration cache stale."
 msgstr "Cache di configurazione vecchia."
 
-#: ../../htdocs/mass_delete.php:92
-#, php-format
-msgid "Confirm mass delete of %s entries on server %s"
-msgstr "Conferma l'eliminazione di massa di %s voci sul server %s"
+#: ../../lib/ds.php:92
+#, fuzzy
+msgid "Configuration setting already defined."
+msgstr "Cache di configurazione vecchia."
 
-#: ../../lib/EntryWriter1.php:327
+#: ../../lib/TemplateRender.php:789 ../../lib/TemplateRender.php:1319
+#: ../../htdocs/create_confirm.php:61
 msgid "Container"
 msgstr "Contenitore"
 
-#: ../../lib/EntryWriter1.php:256
+#: ../../lib/TemplateRender.php:1451
 msgid "Container and ObjectClass(es)"
 msgstr "Contenitore ed ObjectClass"
 
-#: ../../lib/ldif_functions.php:525
-msgid "Container is null"
-msgstr "Il contenitore è vuoto"
-
-#: ../../htdocs/copy_form.php:45 ../../htdocs/copy_form.php:51
+#: ../../htdocs/copy_form.php:29 ../../htdocs/copy_form.php:33
 msgid "Copy"
 msgstr "Copia"
 
-#: ../../htdocs/copy_form.php:96
+#: ../../htdocs/copy_form.php:87
 msgid "Copy "
 msgstr "Copia "
 
@@ -330,282 +555,369 @@ msgstr "Copia "
 msgid "Copy Entry"
 msgstr "Copia Voce"
 
-#: ../../lib/EntryWriter1.php:741
+#: ../../htdocs/copy.php:79 ../../htdocs/copy.php:139
+#, fuzzy
+msgid "Copy NOT successful"
+msgstr "Copia eseguita!"
+
+#: ../../lib/TemplateRender.php:1145 ../../lib/TemplateRender.php:1149
 msgid "Copy or move this entry"
 msgstr "Copia o sposta questa voce"
 
-#: ../../htdocs/copy.php:76 ../../htdocs/copy.php:106
-msgid "Copy successful!"
+#: ../../htdocs/copy.php:75 ../../htdocs/copy.php:111
+#: ../../htdocs/copy.php:135
+#, fuzzy
+msgid "Copy successful"
 msgstr "Copia eseguita!"
 
-#: ../../lib/EntryWriter1.php:740
-msgid "Copy this object to another location,a new DN, or another server"
+#: ../../lib/TemplateRender.php:1144 ../../lib/TemplateRender.php:1148
+#, fuzzy
+msgid "Copy this object to another location, a new DN, or another server"
 msgstr ""
 "Copia questo oggetto in un'altra posizione, un nuovo DN od un altro server"
 
-#: ../../htdocs/copy.php:57
+#: ../../htdocs/copy.php:53
 msgid "Copying "
 msgstr "In copia "
 
-#: ../../htdocs/ldif_import.php:70
-msgid "Could not add object:"
+#: ../../htdocs/import.php:42
+#, fuzzy
+msgid "Could not add object"
 msgstr "Impossibile aggiungere l'oggetto:"
 
-#: ../../htdocs/create.php:132
+#: ../../lib/ds_ldap_pla.php:443
 msgid "Could not add the object to the LDAP server."
 msgstr "Impossibile aggiungere l'oggetto al server LDAP."
 
-#: ../../htdocs/login.php:137
-msgid "Could not bind anonymously to server."
-msgstr "Impossibile collegarsi anonimamente al server LDAP."
+#: ../../htdocs/delete_attr.php:35
+#, fuzzy
+msgid "Could not delete attribute value."
+msgstr "aggiungi valore di attributo"
 
-#: ../../lib/server_functions.php:348
-#, php-format
-msgid "Could not bind to the LDAP server (%s)."
-msgstr "Impossibile collegarsi al server LDAP (%s)."
-
-#: ../../lib/server_functions.php:345
-#, php-format
-msgid "Could not connect to \"%s\" on port \"%s\""
-msgstr "Impossibile collegarsi a \"%s\" sulla porta \"%s\""
-
-#: ../../lib/HTMLTree.php:91
-msgid "Could not connect to LDAP server"
-msgstr "Impossibile collegarsi al server LDAP."
-
-#: ../../htdocs/ldif_import.php:71
-msgid "Could not delete object:"
+#: ../../htdocs/import.php:43
+#, fuzzy
+msgid "Could not delete object"
 msgstr "Impossibile eliminare l'oggetto:"
 
-#: ../../htdocs/delete.php:35 ../../htdocs/delete.php:49
-#: ../../htdocs/rdelete.php:45
-#, php-format
-msgid "Could not delete the entry: %s"
+#: ../../htdocs/rdelete.php:52 ../../htdocs/rdelete.php:71
+#: ../../htdocs/rdelete.php:88 ../../htdocs/delete.php:37
+#, fuzzy
+msgid "Could not delete the entry."
 msgstr "Impossibile eliminare la voce: %s"
 
-#: ../../htdocs/entry_chooser.php:101
+#: ../../htdocs/entry_chooser.php:93
 msgid "Could not determine base DN"
 msgstr "Impossibile determinare la DN di base."
 
-#: ../../lib/HTMLTree.php:78
+#: ../../lib/HTMLTree.php:71
 msgid "Could not determine the root of your LDAP tree."
 msgstr "Impossibile determinare la radice del tuo albero LDAP."
 
-#: ../../lib/functions.php:1836
-#, php-format
-msgid "Could not fetch jpeg data from LDAP server for attribute %s."
+#: ../../htdocs/download_binary_attr.php:39
+#, fuzzy, php-format
+msgid "Could not fetch binary data from LDAP server for attribute [%s]."
 msgstr "Impossibile recuperare dati jpeg dal server LDAP per l'attributo %s."
 
-#: ../../htdocs/logout.php:24 ../../lib/timeout_functions.php:74
-msgid "Could not logout."
-msgstr "Impossibile uscire."
+#: ../../lib/functions.php:1990
+#, fuzzy
+msgid "Could not fetch jpeg data for attribute"
+msgstr "Impossibile recuperare dati jpeg dal server LDAP per l'attributo %s."
 
-#: ../../htdocs/ldif_import.php:74
-msgid "Could not modify object:"
+#: ../../htdocs/view_jpeg_photo.php:62
+#, fuzzy, php-format
+msgid "Could not fetch jpeg data from LDAP server for attribute [%s]."
+msgstr "Impossibile recuperare dati jpeg dal server LDAP per l'attributo %s."
+
+#: ../../htdocs/import.php:46
+#, fuzzy
+msgid "Could not modify object"
 msgstr "Impossibile modificare l'oggetto:"
 
-#: ../../htdocs/add_oclass.php:54 ../../htdocs/add_value.php:72
-msgid "Could not perform ldap_mod_add operation."
-msgstr "Impossibile eseguire l'operazione ldap_mod_add."
+#: ../../htdocs/monitor.php:27
+#, fuzzy
+msgid "Could not obtain the monitor context for this server"
+msgstr "Impossibile aggiungere l'oggetto al server LDAP."
 
-#: ../../htdocs/delete_attr.php:50 ../../htdocs/update.php:178
+#: ../../lib/ds_ldap_pla.php:601
 msgid "Could not perform ldap_modify operation."
 msgstr "Impossibile eseguire l'operazione ldap_modify."
 
-#: ../../htdocs/ldif_import.php:72 ../../htdocs/ldif_import.php:73
-msgid "Could not rename object:"
+#: ../../htdocs/import.php:44 ../../htdocs/import.php:45
+#, fuzzy
+msgid "Could not rename object"
 msgstr "Impossibile rinominare l'oggetto:"
 
-#: ../../htdocs/rename.php:61 ../../lib/server_functions.php:1522
-msgid "Could not rename the entry"
+#: ../../htdocs/rename.php:65
+#, fuzzy
+msgid "Could not rename the entry."
 msgstr "Impossibile rinominare la voce"
 
-#: ../../htdocs/schema.php:31
+#: ../../htdocs/schema.php:34
 msgid "Could not retrieve schema from"
 msgstr "Impossibile recuperare lo schema per"
 
-#: ../../htdocs/login.php:152
-msgid "Could not set cookie."
-msgstr "Impossibile impostare un cookie."
-
-#: ../../lib/server_functions.php:263
+#: ../../lib/ds_ldap.php:534
 msgid "Could not start TLS. Please check your LDAP server configuration."
 msgstr ""
 "Impossibile utilizzare TLS. Controlla la configurazione del server LDAP."
 
-#: ../../lib/functions.php:1851
-#, php-format
-msgid ""
-"Could not write to the $jpeg_temp_dir directory %s. Please verify that your "
-"web server can write files there."
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:94
+#, no-wrap
+msgid "Country (personal)"
 msgstr ""
-"Impossibile scrivere sulla directory $jpeg_temp_dir %s. Controlla che il "
-"server web possa scrivere file qui."
 
-#: ../../lib/EntryWriter1.php:783
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:131
+#, no-wrap
+msgid "Country (professional)"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/courierMailAccount.xml:11
+#, no-wrap
+msgid "Courier Mail: Account"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/courierMailAlias.xml:11
+#, no-wrap
+msgid "Courier Mail: Alias"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:1216 ../../lib/TemplateRender.php:1220
 msgid "Create"
 msgstr "Crea"
 
-#: ../../htdocs/create.php:117
+#: ../../htdocs/create.php:91
 msgid "Create Entry"
 msgstr "Crea la Voce"
 
-#: ../../lib/EntryWriter1.php:242 ../../lib/EntryWriter1.php:313
-#: ../../lib/EntryWriter2.php:82
+#: ../../htdocs/create_confirm.php:59
+#, fuzzy
+msgid "Create LDAP Entry"
+msgstr "Crea la Voce"
+
+#: ../../lib/TemplateRender.php:765 ../../lib/TemplateRender.php:1525
 msgid "Create Object"
 msgstr "Crea l'Oggetto"
 
-#: ../../lib/EntryWriter1.php:783
+#: ../../lib/TemplateRender.php:1217 ../../lib/TemplateRender.php:1218
+#: ../../lib/TemplateRender.php:1221
 msgid "Create a child entry"
 msgstr "Crea una voce figlia"
 
-#: ../../lib/HTMLTree.php:458
+#: ../../lib/HTMLTree.php:471
 msgid "Create a new entry in"
 msgstr "Crea una nuova voce in"
 
-#: ../../htdocs/create.php:127
+#: ../../htdocs/create.php:107
 msgid "Create another entry"
 msgstr "Crea un'altra voce"
 
-#: ../../lib/HTMLTree.php:66
+#: ../../lib/HTMLTree.php:102
 msgid "Create it?"
 msgstr "Crearla?"
 
-#: ../../lib/AJAXTree.php:343 ../../lib/AJAXTree.php:344
-#: ../../lib/AJAXTree.php:367 ../../lib/AJAXTree.php:368
-#: ../../lib/HTMLTree.php:458 ../../lib/PLMTree.php:142
-#: ../../lib/PLMTree.php:162
+#: ../../lib/AJAXTree.php:270 ../../lib/AJAXTree.php:273
+#: ../../lib/AJAXTree.php:275 ../../lib/HTMLTree.php:471
 msgid "Create new entry here"
 msgstr "Crea qui una nuova voce"
 
-#: ../../htdocs/create.php:114
+#: ../../htdocs/create.php:85
 msgid "Creation successful!"
 msgstr "Creazione eseguita!"
 
-#: ../../htdocs/welcome.php:25
+#: ../../htdocs/welcome.php:26
 msgid "Credits"
 msgstr "Riconoscimenti"
 
-#: ../../htdocs/add_value_form.php:104
+#: ../../htdocs/monitor.php:138
+msgid "Current Connections"
+msgstr ""
+
+#: ../../htdocs/add_value_form.php:73
 msgid "Current list of"
 msgstr "Lista corrente di"
 
-#: ../../lib/EntryWriter1.php:739
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:140
+#, no-wrap
+msgid "Custom 1"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:144
+#, no-wrap
+msgid "Custom 2"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:148
+#, no-wrap
+msgid "Custom 3"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:152
+#, no-wrap
+msgid "Custom 4"
+msgstr ""
+
+#: ../../lib/QueryRender.php:133
+msgid "Custom Query"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:1143 ../../lib/TemplateRender.php:1147
 msgid "Cut"
 msgstr "Taglia"
 
-#: ../../htdocs/delete_form.php:107
+#: ../../htdocs/mass_delete.php:63 ../../htdocs/copy.php:76
+#: ../../htdocs/copy.php:80 ../../htdocs/copy.php:111
+#: ../../htdocs/copy.php:127 ../../htdocs/copy.php:136
+#: ../../htdocs/copy.php:140 ../../htdocs/create.php:85
+#: ../../htdocs/delete_form.php:113
 msgid "DN"
 msgstr "DN"
 
-#: ../../lib/EntryWriter1.php:1874
+#: ../../lib/import_functions.php:217 ../../lib/import_functions.php:229
+#, fuzzy
+msgid "DN does not exist"
+msgstr "Questa voce non esiste."
+
+#: ../../lib/TemplateRender.php:1838
 msgid "DN not available"
 msgstr "DN non disponibile"
 
-#: ../../lib/export_functions.php:414
-#, php-format
-msgid "DSLM Export for: %s"
-msgstr "Esportazione DSLM per: %s"
+#: ../../lib/export_functions.php:350
+msgid "DSML V.1 Export"
+msgstr ""
 
-#: ../../lib/EntryWriter1.php:1098 ../../lib/EntryWriter1.php:1310
+#: ../../htdocs/import.php:108
+#, fuzzy
+msgid "Data"
+msgstr "Dona"
+
+#: ../../lib/functions.php:450
+#, fuzzy
+msgid "Debug"
+msgstr "baco"
+
+#: ../../lib/QueryRender.php:502 ../../lib/TemplateRender.php:673
+#: ../../lib/TemplateRender.php:793 ../../lib/TemplateRender.php:807
 msgid "Default"
 msgstr "Predefinito"
 
-#: ../../htdocs/delete_form.php:117
+#: ../../htdocs/delete_form.php:30 ../../htdocs/delete_form.php:123
 msgid "Delete"
 msgstr "Elimina"
 
-#: ../../htdocs/delete_form.php:27
-#, php-format
-msgid "Delete %s"
-msgstr "Elimina %s"
-
-#: ../../lib/HTMLTree.php:134
-msgid "Delete Checked Entries"
-msgstr "Elimina le Voci Selezionate"
-
-#: ../../htdocs/delete.php:43
+#: ../../htdocs/delete.php:31
 msgid "Delete DN"
 msgstr "Elimina DN"
 
-#: ../../lib/functions.php:1858
-msgid "Delete Photo"
-msgstr "Elimina Foto"
+#: ../../htdocs/rdelete.php:35
+#, fuzzy
+msgid "Delete LDAP entries"
+msgstr "cancella voci in massa"
 
-#: ../../htdocs/copy_form.php:86 ../../htdocs/copy_form.php:92
+#: ../../htdocs/copy_form.php:76 ../../htdocs/copy_form.php:83
 msgid "Delete after copy (move):"
 msgstr "Elimina dopo la copia (sposta):"
 
-#: ../../htdocs/delete_form.php:68
+#: ../../htdocs/mass_delete.php:129 ../../htdocs/delete_form.php:76
 #, php-format
 msgid "Delete all %s objects"
 msgstr "Elimina tutti gli oggetti %s"
 
-#: ../../lib/functions.php:1893
+#: ../../lib/functions.php:2063
 msgid "Delete photo"
 msgstr "Elimina foto"
 
-#: ../../lib/EntryWriter1.php:763
+#: ../../htdocs/copy.php:127
+#, fuzzy
+msgid "Delete successful"
+msgstr "Rinominazione eseguita!"
+
+#: ../../lib/TemplateRender.php:1177 ../../lib/TemplateRender.php:1180
 msgid "Delete this entry"
 msgstr "Elimina questa voce"
 
-#: ../../htdocs/rdelete.php:54 ../../htdocs/rdelete.php:71
+#: ../../lib/import_functions.php:519
+msgid "Delete value doesnt exist in DN"
+msgstr ""
+
+#: ../../htdocs/rdelete.php:63 ../../htdocs/rdelete.php:80
+#: ../../htdocs/import.php:34
 msgid "Deleting"
 msgstr "Eliminazione"
 
-#: ../../htdocs/mass_delete.php:61 ../../htdocs/rdelete.php:30
-#, php-format
-msgid "Deleting %s"
-msgstr "Eliminazione di %s"
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:107
+#, no-wrap
+msgid "Department (professional)"
+msgstr ""
 
-#: ../../htdocs/ldif_import.php:63
-msgid "Deleting..."
-msgstr "Eliminazione..."
-
-#: ../../htdocs/mass_delete.php:43
-#, php-format
-msgid "Deletion progress on server \"%s\""
-msgstr "Eliminazione in corso sul server \"%s\""
-
-#: ../../htdocs/add_value_form.php:230 ../../htdocs/ldif_import.php:110
-#: ../../htdocs/ldif_import.php:120 ../../htdocs/ldif_import.php:190
-#: ../../htdocs/schema.php:69 ../../htdocs/schema.php:96
-#: ../../htdocs/schema.php:403 ../../lib/functions.php:1777
-#: ../../lib/functions.php:1780
+#: ../../templates/creation/mozillaOrgPerson.xml:156
+#: ../../lib/functions.php:1938 ../../lib/functions.php:1942
+#: ../../htdocs/add_value_form.php:145 ../../htdocs/import.php:106
+#: ../../htdocs/schema.php:136 ../../htdocs/schema.php:164
+#: ../../htdocs/schema.php:572
+#, no-wrap
 msgid "Description"
 msgstr "Descrizione"
 
-#: ../../htdocs/compare_form.php:53 ../../htdocs/copy_form.php:64
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/test_function.xml:27
+#, no-wrap
+msgid "Description (output from function)"
+msgstr ""
+
+#: ../../htdocs/compare_form.php:47 ../../htdocs/copy_form.php:46
 msgid "Destination DN"
 msgstr "DN di destinazione"
 
-#: ../../htdocs/compare_form.php:61 ../../htdocs/copy_form.php:70
+#: ../../htdocs/compare_form.php:55 ../../htdocs/copy_form.php:54
 msgid "Destination Server"
 msgstr "Server di destinazione"
 
-#: ../../htdocs/copy.php:29
+#: ../../htdocs/copy.php:33
 msgid "Destination server is currently READ-ONLY."
 msgstr "Il server di destinazione è al momento in SOLA-LETTURA"
 
-#: ../../htdocs/create.php:125
+#: ../../lib/Template.php:169
+#, fuzzy
+msgid "Disabled by XML configuration"
+msgstr "Configurazione richiesta mancante"
+
+#: ../../lib/QueryRender.php:102
+#, fuzzy
+msgid "Display Format"
+msgstr "Formato"
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:31
+#, no-wrap
+msgid "Display Name"
+msgstr ""
+
+#: ../../htdocs/create.php:104
 msgid "Display the new created entry"
 msgstr "Visualizza le nuove voci create"
 
-#: ../../htdocs/add_attr_form.php:25 ../../htdocs/add_value_form.php:100
-#: ../../htdocs/compare.php:56 ../../htdocs/compare.php:59
-#: ../../htdocs/compare_form.php:24 ../../htdocs/copy_form.php:47
-#: ../../htdocs/delete_form.php:29 ../../htdocs/delete_form.php:107
-#: ../../htdocs/modify_member_form.php:72 ../../htdocs/rename_form.php:29
-#: ../../lib/EntryWriter1.php:512
+#: ../../lib/TemplateRender.php:803 ../../lib/PageRender.php:97
+#: ../../htdocs/mass_delete.php:63 ../../htdocs/compare.php:54
+#: ../../htdocs/compare.php:60 ../../htdocs/create.php:99
+#: ../../htdocs/delete_form.php:32 ../../htdocs/delete_form.php:113
 msgid "Distinguished Name"
 msgstr "Distinguished Name"
 
-#: ../../htdocs/mass_delete.php:95
-#, php-format
-msgid "Do you really want to delete %s %s %s"
-msgstr "Si vuole veramente eliminare  %s %s %s"
+#: ../../htdocs/create_confirm.php:66
+#, fuzzy
+msgid "Do you want to create this entry?"
+msgstr "Si vogliono effettuare le seguenti modifiche?"
 
-#: ../../htdocs/update_confirm.php:190
+#: ../../htdocs/update_confirm.php:38
 msgid "Do you want to make these changes?"
 msgstr "Si vogliono effettuare le seguenti modifiche?"
 
@@ -613,183 +925,374 @@ msgstr "Si vogliono effettuare le seguenti modifiche?"
 msgid "Documentation"
 msgstr "Documentazione"
 
-#: ../../htdocs/ldif_import_form.php:33 ../../htdocs/ldif_import_form.php:44
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/dNSDomain.xml:21
+#, no-wrap
+msgid "Domain Component"
+msgstr ""
+
+#: ../../htdocs/import_form.php:45
 msgid "Don't stop on errors"
 msgstr "Non interrompere in caso di errori"
 
-#: ../../htdocs/welcome.php:35 ../../lib/functions.php:371
+#: ../../lib/functions.php:396 ../../lib/functions.php:397
+#: ../../lib/functions.php:398 ../../htdocs/welcome.php:35
 msgid "Donate"
 msgstr "Dona"
 
-#: ../../htdocs/search.php:250 ../../lib/export_functions.php:252
+#: ../../templates/creation/courierMailAccount.xml:71
+#: ../../templates/creation/courierMailAlias.xml:31
+#: ../../templates/creation/inetOrgPerson.xml:90
+#: ../../templates/creation/kolabPerson.xml:35
+#: ../../templates/creation/mozillaOrgPerson.xml:40
+#: ../../templates/modification/inetOrgPerson.xml:88
+#, fuzzy, no-wrap
+msgid "Email"
+msgstr "Posta"
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/test_normal.xml:69
+#, no-wrap
+msgid "Email (Verify)"
+msgstr ""
+
+#: ../../templates/creation/sendmailMTAAliasObject.xml:32
+#: ../../templates/creation/sendmailVirtualUser.xml:36
+#, fuzzy, no-wrap
+msgid "Email alias"
+msgstr "alias"
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/sendmailMTAClass.xml:32
+#: ../../templates/creation/sendmailVirtualDomain.xml:32
+#, no-wrap
+msgid "Email domain"
+msgstr ""
+
+#: ../../lib/export_functions.php:165
 msgid "Encountered an error while performing search."
 msgstr "Si è verificato un errore nell'esecuzione della ricerca."
 
-#: ../../htdocs/add_value_form.php:178
-msgid "Enter the value you would like to add:"
+#: ../../templates/creation/test_randompassword.xml:31
+#, fuzzy, no-wrap
+msgid "Encryption"
+msgstr "nessuna descrizione"
+
+#: ../../htdocs/add_value_form.php:98
+#, fuzzy
+msgid "Enter the value(s) you would like to add:"
 msgstr "Inserisci il valore che si desidera aggiungere:"
 
-#: ../../htdocs/search.php:265
+#: ../../lib/QueryRender.php:561
 msgid "Entries found"
 msgstr "Voci trovate"
 
-#: ../../lib/export_functions.php:319
+#: ../../lib/QueryRender.php:116
+msgid "Entries to show per page"
+msgstr ""
+
+#: ../../lib/export_functions.php:480
 msgid "Entry"
 msgstr "Voce"
 
-#: ../../htdocs/rdelete.php:42
+#: ../../htdocs/rdelete.php:48
 #, php-format
 msgid "Entry %s and sub-tree deleted successfully."
 msgstr "Voce %s e sotto-albero eliminati con successo."
 
-#: ../../htdocs/entry_chooser.php:19
+#: ../../htdocs/entry_chooser.php:24
 msgid "Entry Chooser"
 msgstr "Selezionatore di Voci"
 
-#: ../../htdocs/create.php:122
+#: ../../htdocs/create.php:97
 msgid "Entry created"
 msgstr "Voce creata"
 
-#: ../../htdocs/schema.php:99
+#: ../../htdocs/mass_delete.php:35 ../../htdocs/rdelete.php:29
+#: ../../htdocs/delete_form.php:23 ../../htdocs/mass_edit.php:27
+#: ../../htdocs/mass_update.php:26
+#, fuzzy
+msgid "Entry does not exist"
+msgstr "Questa voce non esiste."
+
+#: ../../htdocs/schema.php:167
 msgid "Equality"
 msgstr "Uguaglianza"
 
-#: ../../lib/functions.php:132 ../../lib/functions.php:520
+#: ../../lib/functions.php:168 ../../lib/functions.php:574
+#: ../../lib/functions.php:576 ../../lib/ds_ldap.php:220
+#: ../../lib/ds_ldap.php:635 ../../lib/ds_ldap.php:649
+#: ../../lib/ds_ldap.php:683 ../../lib/ds_ldap.php:701
+#: ../../lib/ds_ldap.php:1360 ../../htdocs/cmd.php:57
+#: ../../htdocs/import.php:84
 msgid "Error"
 msgstr "Errore"
 
-#: ../../htdocs/mass_delete.php:30
-msgid "Error calling mass_delete.php. Missing mass_delete in POST vars."
-msgstr ""
-"Errore invocando mass_delete.php. Manca mass_delete nella variabile POST."
-
-#: ../../htdocs/ldif_import.php:118
-msgid "Error code"
-msgstr "Codice d'errore"
-
-#: ../../lib/functions.php:1776 ../../lib/functions.php:1779
-#: ../../lib/functions.php:1785
+#: ../../lib/functions.php:1937 ../../lib/functions.php:1941
 msgid "Error number"
 msgstr "Numero d'errore"
 
-#: ../../lib/server_functions.php:95
-#, php-format
-msgid ""
-"Error: You have an error in your config file. The only three allowed values "
-"for auth_type in the $servers section are 'session', 'cookie', and 'config'. "
-"You entered '%s', which is not allowed."
+#: ../../lib/functions.php:2017
+msgid "Error writing to jpeg tmp directory"
 msgstr ""
-"Errore: c'è un errore nel file di configurazione. I soli tre valori permessi "
-"per il parametro auth_type nella sezione $servers sono 'session', 'cookie' e "
-"'config'. Il valore inserito '%s' non è permesso."
 
-#: ../../htdocs/export_form.php:36 ../../htdocs/export_form.php:46
-#: ../../lib/EntryWriter1.php:733
+#: ../../templates/creation/example.xml:11
+#, fuzzy, no-wrap
+msgid "Example entry"
+msgstr "rinomina voce"
+
+#: ../../lib/HTMLTree.php:284 ../../lib/TemplateRender.php:1130
+#: ../../lib/TemplateRender.php:1131 ../../lib/TemplateRender.php:1133
+#: ../../lib/TemplateRender.php:1134 ../../htdocs/export_form.php:39
+#: ../../htdocs/export_form.php:52
 msgid "Export"
 msgstr "Esporta"
 
-#: ../../lib/HTMLTree.php:259
-msgid "Export entries"
-msgstr "Esporta le voci"
-
-#: ../../htdocs/export_form.php:97
+#: ../../htdocs/export_form.php:107
 msgid "Export format"
 msgstr "Formato d'esportazione"
 
-#: ../../lib/EntryWriter1.php:804
+#: ../../lib/TemplateRender.php:1267 ../../lib/TemplateRender.php:1270
 msgid "Export subtree"
 msgstr "Esporta sottoalbero"
 
-#: ../../htdocs/ldif_import.php:103 ../../htdocs/ldif_import.php:116
-#: ../../htdocs/ldif_import.php:139 ../../htdocs/ldif_import.php:162
-#: ../../htdocs/mass_delete.php:73
+#: ../../htdocs/import.php:71
 msgid "Failed"
 msgstr "Fallito"
 
-#: ../../htdocs/add_attr.php:128
-msgid "Failed to add the attribute."
-msgstr "Aggiunta dell'attributo fallita."
+#: ../../htdocs/login.php:35
+#, fuzzy
+msgid "Failed to Authenticate to server"
+msgstr "Autentica sul server"
 
-#: ../../htdocs/copy.php:144
-msgid "Failed to copy DN: "
-msgstr "Impossibile copiare: "
+#: ../../htdocs/logout.php:24
+#, fuzzy
+msgid "Failed to Logout of server"
+msgstr "Esci da questo Server"
 
-#: ../../htdocs/rdelete.php:63 ../../htdocs/rdelete.php:80
-#, php-format
-msgid "Failed to delete entry %s"
-msgstr "Impossibile eliminare la voce %s"
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/organizationalRole.xml:30
+#: ../../templates/creation/inetOrgPerson.xml:80
+#: ../../templates/creation/kolabPerson.xml:100
+#: ../../templates/modification/inetOrgPerson.xml:80
+#, no-wrap
+msgid "Fax"
+msgstr ""
 
-#: ../../htdocs/ldif_import.php:54 ../../lib/functions.php:134
-#: ../../lib/functions.php:537
+#: ../../templates/creation/mozillaOrgPerson.xml:65
+#, fuzzy, no-wrap
+msgid "Fax Number"
+msgstr "Linea Numero"
+
+#: ../../tools/unserialize.php:14 ../../lib/functions.php:170
+#: ../../lib/functions.php:596 ../../htdocs/import.php:53
 msgid "File"
 msgstr "File"
 
-#: ../../htdocs/copy_form.php:81
+#: ../../htdocs/copy_form.php:70
 msgid "Filter"
 msgstr "Filtro"
 
-#: ../../htdocs/search.php:299
+#: ../../lib/QueryRender.php:595
 msgid "Filter performed"
 msgstr "Filtro eseguito"
 
-#: ../../htdocs/search.php:276
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:21
+#, no-wrap
+msgid "First Name"
+msgstr ""
+
+#: ../../templates/creation/posixAccount.xml:21
+#: ../../templates/creation/inetOrgPerson.xml:20
+#: ../../templates/creation/kolabPerson.xml:20
+#: ../../templates/creation/sambaSamAccount.xml:22
+#: ../../templates/creation/test_uid1200.xml:21
+#: ../../templates/creation/test_uid1010.xml:21
+#: ../../templates/modification/inetOrgPerson.xml:20
+#: ../../templates/modification/sambaSamAccount.xml:22
+#, fuzzy, no-wrap
+msgid "First name"
+msgstr "rinomina"
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/test_normal.xml:25
+#: ../../templates/creation/test_picklist.xml:21
+#, no-wrap
+msgid "First name (JS OnChange)"
+msgstr ""
+
+#: ../../htdocs/schema.php:178
+msgid "Force as MAY by config"
+msgstr ""
+
+#: ../../lib/QueryRender.php:574
 msgid "Format"
 msgstr "Formato"
 
-#: ../../lib/functions.php:540
+#: ../../lib/functions.php:381 ../../lib/functions.php:382
+#: ../../lib/functions.php:383
+#, fuzzy
+msgid "Forum"
+msgstr "Formato"
+
+#: ../../tools/unserialize.php:17 ../../lib/functions.php:600
 msgid "Function"
 msgstr "Funzione"
 
-#: ../../lib/export_functions.php:195
-#, php-format
-msgid ""
-"Generated by phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) on %s"
-msgstr ""
-"Generato da phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) su %s"
+#: ../../lib/TemplateRender.php:144
+#, fuzzy
+msgid "Function doesnt exist"
+msgstr "Questa voce non esiste."
 
-#: ../../lib/functions.php:63 ../../lib/functions.php:594
+#: ../../lib/TemplateRender.php:131
+msgid "Function() only takes two arguments and more than two were specified"
+msgstr ""
+
+#: ../../lib/PageRender.php:175
+msgid "Function() variable expansion can only handle 1 value"
+msgstr ""
+
+#: ../../templates/creation/posixAccount.xml:63
+#: ../../templates/creation/posixGroup.xml:25
+#: ../../templates/creation/sambaGroupMapping.xml:31
+#: ../../templates/creation/courierMailAccount.xml:57
+#: ../../templates/creation/sambaMachine.xml:37
+#: ../../templates/creation/sambaSamAccount.xml:41
+#: ../../templates/creation/test_uid1200.xml:63
+#: ../../templates/creation/test_uid1010.xml:63
+#: ../../templates/creation/test_invalidattrs.xml:20
+#: ../../templates/creation/test_multilist.xml:25
+#: ../../templates/creation/test_normal.xml:35
+#: ../../templates/creation/test_picklist.xml:29
+#: ../../templates/modification/posixGroup.xml:25
+#: ../../templates/modification/sambaSamAccount.xml:41
+#, fuzzy, no-wrap
+msgid "GID Number"
+msgstr "Linea Numero"
+
+#: ../../lib/functions.php:68 ../../lib/functions.php:658
 msgid "Generic Error"
 msgstr "Errore Generico"
 
-#: ../../htdocs/schema.php:131 ../../htdocs/schema.php:311
-#: ../../htdocs/schema.php:357 ../../htdocs/schema.php:388
+# type: Content of: <template><title>
+#: ../../templates/creation/inetOrgPerson.xml:11
+#: ../../templates/modification/inetOrgPerson.xml:10
+#, no-wrap
+msgid "Generic: Address Book Entry"
+msgstr ""
+
+#: ../../templates/creation/dNSDomain.xml:11
+#, fuzzy, no-wrap
+msgid "Generic: DNS Entry"
+msgstr "Errore Generico"
+
+# type: Content of: <template><title>
+#: ../../templates/creation/alias.xml:12
+#, no-wrap
+msgid "Generic: LDAP Alias"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/organizationalRole.xml:11
+#, no-wrap
+msgid "Generic: Organisational Role"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/ou.xml:11
+#, no-wrap
+msgid "Generic: Organisational Unit"
+msgstr ""
+
+#: ../../templates/creation/posixGroup.xml:11
+#: ../../templates/modification/posixGroup.xml:11
+#, fuzzy, no-wrap
+msgid "Generic: Posix Group"
+msgstr "Errore Generico"
+
+# type: Content of: <template><title>
+#: ../../templates/creation/simpleSecurityObject.xml:11
+#, no-wrap
+msgid "Generic: Simple Security Object"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/posixAccount.xml:11
+#, no-wrap
+msgid "Generic: User Account"
+msgstr ""
+
+#: ../../templates/creation/courierMailAccount.xml:21
+#, fuzzy, no-wrap
+msgid "Given Name"
+msgstr "Rinomina"
+
+#: ../../htdocs/schema.php:216 ../../htdocs/schema.php:218
+#: ../../htdocs/schema.php:446 ../../htdocs/schema.php:448
+#: ../../htdocs/schema.php:500 ../../htdocs/schema.php:502
+#: ../../htdocs/schema.php:551 ../../htdocs/schema.php:553
 msgid "Go"
 msgstr "Vai"
 
-#: ../../htdocs/update_confirm.php:339
+#: ../../htdocs/update_confirm.php:218 ../../htdocs/create_confirm.php:131
 msgid "Go back"
 msgstr "Torna indietro"
 
-#: ../../lib/EntryWriter1.php:1870
+#: ../../lib/TemplateRender.php:1836
 msgid "Go to"
 msgstr "Vai a"
 
-#: ../../htdocs/compare.php:449
-#, php-format
-msgid "Go to %s"
-msgstr "Vai a %s"
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/posixGroup.xml:20
+#: ../../templates/creation/sambaGroupMapping.xml:21
+#: ../../templates/creation/test_multilist.xml:20
+#: ../../templates/modification/posixGroup.xml:20
+#, no-wrap
+msgid "Group"
+msgstr ""
 
-#: ../../htdocs/modify_member_form.php:114
+#: ../../htdocs/modify_member_form.php:93
 msgid "Group members"
 msgstr "Membri del gruppo"
 
-#: ../../lib/functions.php:375
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:52
+#, no-wrap
+msgid "HTML Email Format"
+msgstr ""
+
+#: ../../lib/functions.php:401 ../../lib/functions.php:402
+#: ../../lib/functions.php:403
 msgid "Help"
 msgstr "Aiuto"
 
-#: ../../lib/EntryWriter1.php:748
+#: ../../lib/TemplateRender.php:2109 ../../lib/TemplateRender.php:2120
+msgid ""
+"Helper attribute has too many DISPLAY values, only the first one is used"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:2098
+msgid "Helper attribute has too many ID values, only the first one is used"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:1158
 msgid "Hide"
 msgstr "Nascondi"
 
-#: ../../lib/EntryWriter1.php:749
+#: ../../lib/TemplateRender.php:1159
 msgid "Hide internal attributes"
 msgstr "Nascondi gli attributi interni"
 
-#: ../../lib/EntryWriter1.php:493
+#: ../../lib/page.php:408
+msgid "Hide/Unhide the tree"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:56
 msgid "Hint"
 msgstr "Consiglio"
 
-#: ../../htdocs/copy_form.php:102
+#: ../../htdocs/copy_form.php:95
 msgid ""
 "Hint: Copying between different servers only works if there are no schema "
 "violations"
@@ -797,18 +1300,18 @@ msgstr ""
 "Consiglio: la copia tra server differenti funziona solo se non ci sono "
 "violazioni di schema"
 
-#: ../../lib/EntryWriter1.php:809
+#: ../../lib/TemplateRender.php:1072
 msgid "Hint: To delete an attribute, empty the text field and click save."
 msgstr ""
 "Consiglio: per cancellare un attributo, svuota il campo testo e clicca salva."
 
-#: ../../lib/EntryWriter1.php:815
+#: ../../lib/TemplateRender.php:1095
 msgid "Hint: To view the schema for an attribute, click the attribute name."
 msgstr ""
 "Consiglio: per visualizzare lo schema per un attributo, clicca il nome "
 "dell'attributo."
 
-#: ../../lib/EntryWriter1.php:357
+#: ../../lib/TemplateRender.php:1355
 msgid ""
 "Hint: You must choose exactly one structural objectClass (shown in bold "
 "above)"
@@ -816,344 +1319,738 @@ msgstr ""
 "E' necessario scegliere esattamente un objectClass stutturale (mostrato "
 "sopra in grassetto)"
 
-#: ../../lib/functions.php:363
+#: ../../lib/functions.php:360 ../../lib/functions.php:361
+#: ../../lib/functions.php:362
 msgid "Home"
 msgstr "Inizio"
 
-#: ../../htdocs/ldif_import.php:195
-#, php-format
-msgid "If so, please <a href=\"%s\">report it</a>."
-msgstr "Se così, si prega di <a href=\"%s\">segnalarlo</a>."
-
-#: ../../htdocs/search.php:215
-msgid ""
-"If you want to add your own criteria to the list. Be sure to edit search.php "
-"to handle them. Quitting."
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/courierMailAccount.xml:66
+#, no-wrap
+msgid "Home Directory"
 msgstr ""
-"Se si desidera aggiungere i propri criteri alla lista. Assicurarsi di "
-"modificare search.php per gestirli. Esco."
 
-#: ../../htdocs/ldif_import.php:51 ../../htdocs/ldif_import_form.php:21
-msgid "Import LDIF File"
-msgstr "Importa file LDIF"
+#: ../../templates/creation/mozillaOrgPerson.xml:61
+#, fuzzy, no-wrap
+msgid "Home Phone Number"
+msgstr "Linea Numero"
 
-#: ../../lib/HTMLTree.php:251
-msgid "Import entries from an LDIF file"
-msgstr "Importa voci da un file LDIF"
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/posixAccount.xml:49
+#: ../../templates/creation/sambaSamAccount.xml:123
+#: ../../templates/creation/test_uid1200.xml:49
+#: ../../templates/creation/test_uid1010.xml:49
+#: ../../templates/modification/sambaSamAccount.xml:123
+#, no-wrap
+msgid "Home directory"
+msgstr ""
 
-#: ../../htdocs/add_oclass_form.php:80
+#: ../../lib/hooks.php:124
+#, fuzzy
+msgid "Hook function does not exist"
+msgstr "Questa voce non esiste."
+
+#: ../../lib/ds_ldap_pla.php:530
+msgid "Hook pre_attr_add prevented attribute from being added"
+msgstr ""
+
+#: ../../lib/ds_ldap_pla.php:560
+msgid "Hook pre_attr_delete prevented attribute from being deleted"
+msgstr ""
+
+#: ../../lib/ds_ldap_pla.php:544
+msgid "Hook pre_attr_modify prevented attribute from being modified"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/sendmailMTAMapObject.xml:36
+#, no-wrap
+msgid "Host/Network/Address"
+msgstr ""
+
+#: ../../htdocs/view_jpeg_photo.php:51
+#, fuzzy
+msgid "Image not available"
+msgstr "DN non disponibile"
+
+#: ../../lib/HTMLTree.php:272 ../../htdocs/import.php:50
+#: ../../htdocs/import_form.php:21
+#, fuzzy
+msgid "Import"
+msgstr "importa"
+
+#: ../../htdocs/add_oclass_form.php:68
 msgid "In order to add these objectClass(es) to this entry, you must specify"
 msgstr "Per aggiungere questa/e objectClass a questa voce, devi specificare"
 
-#: ../../lib/HTMLTree.php:156
+#: ../../lib/Query.php:73
+#, php-format
+msgid "In the XML file (%s), [%s] contains an unknown key."
+msgstr ""
+
+#: ../../lib/Template.php:162 ../../lib/Query.php:103
+#, php-format
+msgid "In the XML file (%s), [%s] is an array, it must be a string."
+msgstr ""
+
+#: ../../lib/HTMLTree.php:164
 #, php-format
 msgid "Inactivity will log you off at %s"
 msgstr "L'inattività ti disconnetterà alle %s"
 
-#: ../../htdocs/export_form.php:78
+#: ../../htdocs/export_form.php:86
 msgid "Include system attributes"
 msgstr "Includi gli attributi di sistema"
 
-#: ../../htdocs/schema.php:462 ../../htdocs/schema.php:485
+#: ../../lib/functions.php:265
+msgid "Incorrect version of PHP"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:244
+#, fuzzy
+msgid "Info"
+msgstr "info"
+
+#: ../../htdocs/schema.php:645 ../../htdocs/schema.php:678
 msgid "Inherited from"
 msgstr "Ereditato da"
 
-#: ../../htdocs/schema.php:98 ../../htdocs/schema.php:410
+#: ../../htdocs/schema.php:166 ../../htdocs/schema.php:579
 msgid "Inherits from"
 msgstr "Eredita da"
 
-#: ../../htdocs/add_oclass_form.php:79
+#: ../../htdocs/add_oclass_form.php:67
 msgid "Instructions"
 msgstr "Istruzioni"
 
-#: ../../lib/server_functions.php:342
-msgid "Insufficient access rights."
-msgstr "Permessi di accesso insufficienti."
+#: ../../htdocs/monitor.php:87
+msgid "Internal"
+msgstr ""
+
+#: ../../lib/functions.php:1514
+msgid "Invalid AUTO_NUMBER mechanism"
+msgstr ""
+
+#: ../../lib/ds_ldap.php:346
+msgid "Invalid BASE for query"
+msgstr ""
+
+#: ../../templates/creation/test_invalidoc.xml:6
+#: ../../templates/creation/test_invalidoc2.xml:6
+#, fuzzy, no-wrap
+msgid "Invalid Object Class"
+msgstr "ObjectClass"
 
 #: ../../htdocs/rename.php:47
 msgid "Invalid RDN value"
 msgstr "Valore RDN non valido"
 
-#: ../../htdocs/export.php:44
-msgid "Invalid export format"
+#: ../../htdocs/login.php:36
+#, fuzzy
+msgid "Invalid Username or Password."
+msgstr "Nome utente o password errati. Riprova."
+
+#: ../../lib/PageRender.php:204
+msgid "Invalid argument count for PasswordEncrypt"
+msgstr ""
+
+#: ../../lib/import_functions.php:567
+#, fuzzy
+msgid "Invalid entry"
 msgstr "Formato di esportazione non valido"
 
-#: ../../htdocs/ldif_import.php:195
-msgid "Is this a phpLDAPadmin bug?"
-msgstr "E' un baco di phpLDAPadmin?"
+#: ../../lib/PageRender.php:215 ../../lib/PageRender.php:232
+msgid "Invalid value count for PasswordEncrypt"
+msgstr ""
 
-#: ../../lib/HTMLTree.php:79
+#: ../../lib/PageRender.php:174
+msgid "Invalid value count for [post] processing"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:72
 msgid ""
 "It appears that the LDAP server has been configured to not reveal its root."
 msgstr ""
 "Sembra che il server LDAP sia stato configurato per non rivelare la sua "
 "radice."
 
-#: ../../lib/server_functions.php:310
-#, php-format
+#: ../../lib/functions.php:2024
+msgid "It appears that the jpeg image may not be a jpeg image"
+msgstr ""
+
+#: ../../lib/ds_ldap.php:589
+#, fuzzy, php-format
 msgid ""
-"It seems that sasl_authz_id_regex \"%s\".\" contains invalid PCRE regular "
-"expression."
+"It seems that sasl_authz_id_regex \"%s\" contains invalid PCRE regular "
+"expression. The error is \"%s\"."
 msgstr ""
 "Sembra che sasl_authz_id_regex \"%s\".\" contenga un'espressione regolare "
 "PCRE non valida."
 
-#: ../../htdocs/schema.php:295
+#: ../../htdocs/schema.php:411
 msgid "Jump to a matching rule"
 msgstr "Vai alla regola di confronto"
 
-#: ../../htdocs/schema.php:118
+#: ../../htdocs/schema.php:186
 msgid "Jump to an attribute type"
 msgstr "Vai al tipo di attributo"
 
-#: ../../htdocs/schema.php:374
+#: ../../htdocs/schema.php:519
 msgid "Jump to an objectClass"
 msgstr "Vai alla objectClass"
 
-#: ../../htdocs/schema.php:419 ../../htdocs/schema.php:437
+#: ../../htdocs/schema.php:591 ../../htdocs/schema.php:615
+#: ../../htdocs/schema.php:617 ../../htdocs/schema.php:648
+#: ../../htdocs/schema.php:681
 msgid "Jump to this objectClass definition"
 msgstr "Vai a questa definizione di objectClass"
 
-#: ../../htdocs/ldif_import.php:144 ../../lib/functions.php:1767
+# type: Content of: <template><title>
+#: ../../templates/creation/kolabPerson.xml:11
+#, no-wrap
+msgid "Kolab: User Entry"
+msgstr ""
+
+#: ../../htdocs/monitor.php:130
+msgid "LDAP Connections"
+msgstr ""
+
+#: ../../htdocs/monitor.php:36
+#, fuzzy
+msgid "LDAP Server"
+msgstr "Server"
+
+#: ../../lib/functions.php:1934
 msgid "LDAP said"
 msgstr "LDAP dice"
 
-#: ../../lib/export_functions.php:309
-#, php-format
-msgid "LDIF Export for: %s"
-msgstr "Esportazione LDIF per: %s"
+#: ../../lib/export_functions.php:449
+#, fuzzy
+msgid "LDIF Export"
+msgstr "Importazione testo LDIF"
 
-#: ../../htdocs/ldif_import.php:187
-msgid "LDIF Parse Error"
-msgstr "Errore di analisi LDIF"
+#: ../../lib/import_functions.php:156
+#, fuzzy
+msgid "LDIF Import"
+msgstr "Importazione testo LDIF"
 
-#: ../../htdocs/ldif_import.php:147
+#: ../../lib/import_functions.php:177
+msgid "LDIF import only suppports version 1"
+msgstr ""
+
+#: ../../htdocs/import.php:76
 msgid "LDIF text import"
 msgstr "Importazione testo LDIF"
 
-#: ../../htdocs/ldif_import.php:108 ../../htdocs/ldif_import.php:191
+#: ../../templates/creation/sambaSamAccount.xml:85
+#: ../../templates/modification/sambaSamAccount.xml:85
+#, fuzzy, no-wrap
+msgid "LM Password"
+msgstr "Password"
+
+#: ../../templates/creation/mozillaOrgPerson.xml:26
+#, fuzzy, no-wrap
+msgid "Last Name"
+msgstr "Nome"
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/posixAccount.xml:29
+#: ../../templates/creation/courierMailAccount.xml:28
+#: ../../templates/creation/courierMailAlias.xml:26
+#: ../../templates/creation/inetOrgPerson.xml:27
+#: ../../templates/creation/kolabPerson.xml:26
+#: ../../templates/creation/sambaSamAccount.xml:29
+#: ../../templates/creation/test_uid1200.xml:29
+#: ../../templates/creation/test_uid1010.xml:29
+#: ../../templates/modification/inetOrgPerson.xml:26
+#: ../../templates/modification/sambaSamAccount.xml:29
+#, no-wrap
+msgid "Last name"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/test_normal.xml:46
+#: ../../templates/creation/test_picklist.xml:46
+#, no-wrap
+msgid "Last name (JS OnChange)"
+msgstr ""
+
+#: ../../htdocs/import.php:107
 msgid "Line"
 msgstr "Linea"
 
-#: ../../htdocs/ldif_import.php:106 ../../htdocs/ldif_import.php:192
-msgid "Line Number"
-msgstr "Linea Numero"
-
-#: ../../htdocs/export_form.php:111
+#: ../../htdocs/export_form.php:123
 msgid "Line ends"
 msgstr "Fine linea"
 
-#: ../../htdocs/delete_form.php:87
+#: ../../lib/QueryRender.php:107
+msgid "List"
+msgstr ""
+
+#: ../../htdocs/mass_delete.php:107 ../../htdocs/delete_form.php:95
 msgid "List of entries to be deleted:"
 msgstr "Lista di voci da eliminare:"
 
-#: ../../lib/HTMLTree.php:274
+#: ../../lib/AJAXTree.php:271 ../../lib/TemplateRender.php:1118
+#: ../../lib/TemplateRender.php:1131 ../../lib/TemplateRender.php:1145
+#: ../../lib/TemplateRender.php:1177 ../../lib/TemplateRender.php:1190
+#: ../../lib/TemplateRender.php:1204 ../../lib/TemplateRender.php:1218
+#: ../../lib/TemplateRender.php:1251 ../../lib/TemplateRender.php:1267
+#: ../../lib/functions.php:373 ../../htdocs/show_cache.php:96
+#, fuzzy
+msgid "Loading"
+msgstr "Autenticati"
+
+#: ../../lib/HTMLTree.php:282
+#, fuzzy
+msgid "Loading Export"
+msgstr "Esporta"
+
+#: ../../lib/HTMLTree.php:270
+#, fuzzy
+msgid "Loading Import"
+msgstr "importa"
+
+#: ../../lib/HTMLTree.php:242
+#, fuzzy
+msgid "Loading Info"
+msgstr "Ricerca in"
+
+#: ../../lib/HTMLTree.php:490 ../../lib/HTMLTree.php:492
+#, fuzzy
+msgid "Loading Login"
+msgstr "Ricerca in"
+
+#: ../../lib/HTMLTree.php:258
+msgid "Loading Monitor Info"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:205
+msgid "Loading Schema"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:217
+#, fuzzy
+msgid "Loading Search"
+msgstr "ricerca avanzata"
+
+#: ../../lib/HTMLTree.php:321
 msgid "Logged in as"
 msgstr "Autenticato come"
 
-#: ../../htdocs/update.php:158 ../../lib/HTMLTree.php:472
+#: ../../lib/HTMLTree.php:496 ../../htdocs/update.php:66
 msgid "Login"
 msgstr "Autenticati"
 
-#: ../../htdocs/login_form.php:46
+#: ../../htdocs/login_form.php:70
 msgid "Login DN"
 msgstr "DN d'accesso"
 
-#: ../../htdocs/timeout.php:37
-msgid "Login..."
-msgstr "Accesso..."
+#: ../../templates/creation/posixAccount.xml:70
+#: ../../templates/creation/sambaSamAccount.xml:100
+#: ../../templates/creation/test_uid1200.xml:70
+#: ../../templates/creation/test_uid1010.xml:70
+#: ../../templates/modification/sambaSamAccount.xml:100
+#, fuzzy, no-wrap
+msgid "Login shell"
+msgstr "DN d'accesso"
 
-#: ../../htdocs/logout.php:33
-msgid "Logout"
-msgstr "Esci"
+#: ../../lib/HTMLTree.php:490 ../../lib/HTMLTree.php:492
+#, fuzzy
+msgid "Login to"
+msgstr "Autenticati"
 
-#: ../../lib/HTMLTree.php:267
+#: ../../lib/HTMLTree.php:296
 msgid "Logout of this server"
 msgstr "Esci da questo Server"
 
-#: ../../htdocs/entry_chooser.php:33
+#: ../../htdocs/entry_chooser.php:36
 msgid "Looking in"
 msgstr "Ricerca in"
 
-#: ../../lib/EntryWriter1.php:1879
+#: ../../templates/creation/sambaMachine.xml:22
+#, fuzzy, no-wrap
+msgid "Machine Name"
+msgstr "Linea Numero"
+
+#: ../../lib/TemplateRender.php:1844
 msgid "Mail"
 msgstr "Posta"
 
-#: ../../htdocs/copy_form.php:88
+#: ../../templates/creation/courierMailAccount.xml:77
+#, fuzzy, no-wrap
+msgid "Mailbox"
+msgstr "Posta"
+
+#: ../../templates/creation/courierMailAlias.xml:36
+#, fuzzy, no-wrap
+msgid "Maildrop"
+msgstr "Posta"
+
+#: ../../htdocs/copy_form.php:78
 msgid "Make sure your filter (above) will select all child records."
 msgstr "Assicurarsi che i filtri (sopra) selezionino tutti i record figli."
 
-#: ../../htdocs/mass_delete.php:51
-msgid "Malformed mass_delete array."
-msgstr "Array mass_delete malformato."
-
-#: ../../htdocs/mass_delete.php:40
-msgid "Mass Deleting"
+#: ../../htdocs/mass_delete.php:46
+#, fuzzy
+msgid "Mass Delete"
 msgstr "Eliminazione di Massa"
 
-#: ../../htdocs/mass_delete.php:38
-msgid ""
-"Mass deletion is not enabled. Please enable it in config.php before "
-"proceeding."
-msgstr ""
-"Eliminazone di Massa disabilitata. La si abiliti in config.php prima di "
-"continuare."
-
-#: ../../htdocs/schema.php:316
+#: ../../htdocs/schema.php:454
 msgid "Matching Rule OID"
 msgstr "Regola Corrispondente OID"
 
-#: ../../htdocs/add_value_form.php:237 ../../htdocs/schema.php:107
+#: ../../htdocs/schema.php:45 ../../htdocs/schema.php:288
+#, fuzzy
+msgid "Matching Rules"
+msgstr "Regola Corrispondente OID"
+
+#: ../../htdocs/add_value_form.php:152 ../../htdocs/schema.php:175
 msgid "Maximum Length"
 msgstr "Massima Lunghezza"
 
-#: ../../htdocs/add_attr_form.php:154 ../../htdocs/ldif_import_form.php:35
+#: ../../htdocs/add_attr_form.php:127 ../../htdocs/import_form.php:38
 msgid "Maximum file size"
 msgstr "Massima dimensione del file"
 
-#: ../../lib/functions.php:345
+#: ../../lib/functions.php:342
 msgid "Memory Limit low."
 msgstr "Limite di Memoria basso."
 
-#: ../../lib/template_functions.php:419
+#: ../../lib/Template.php:191 ../../lib/Query.php:116
 #, php-format
 msgid "Missing %s in the XML file."
 msgstr "%s mancante nel file XML."
 
-#: ../../lib/ldif_functions.php:169
-msgid "Missing attibutes or changetype attribute for entry"
-msgstr "Attributi o attributo changetype mancante per la voce"
+#: ../../lib/Template.php:207
+#, fuzzy, php-format
+msgid "Missing RDN attribute %s in the XML file."
+msgstr "%s mancante nel file XML."
 
-#: ../../lib/ldif_functions.php:352 ../../lib/ldif_functions.php:390
-msgid "Missing attributes for the entry"
+#: ../../lib/Attribute.php:521
+#, fuzzy
+msgid "Missing [post] setting in XML file"
+msgstr "%s mancante nel file XML."
+
+#: ../../lib/import_functions.php:436
+#, fuzzy
+msgid "Missing attributes for"
 msgstr "Attributo mancante per la voce"
 
-#: ../../lib/functions.php:327
-msgid "Missing required configuration"
-msgstr "Configurazione richiesta mancante"
+#: ../../lib/import_functions.php:450
+#, fuzzy
+msgid "Missing modify command add, delete or replace"
+msgstr ""
+"Il nome dell'attributo dovrebbe essere aggiunto, eliminato o sostituito"
 
-#: ../../lib/functions.php:232 ../../lib/functions.php:239
-#: ../../lib/functions.php:246
+#: ../../htdocs/index.php:69 ../../htdocs/index.php:76
+#: ../../htdocs/index.php:83
 msgid "Missing required extension"
 msgstr "Estensione richiesta mancante"
 
-#: ../../htdocs/ldif_import.php:34
-msgid "Missing uploaded file."
-msgstr "File da caricare mancante."
+#: ../../templates/creation/inetOrgPerson.xml:85
+#: ../../templates/creation/kolabPerson.xml:104
+#: ../../templates/creation/mozillaOrgPerson.xml:73
+#: ../../templates/modification/inetOrgPerson.xml:84
+#, fuzzy, no-wrap
+msgid "Mobile"
+msgstr "Posta"
 
-#: ../../htdocs/update.php:154
+#: ../../htdocs/mass_update.php:62
+#, fuzzy
+msgid "Modification NOT successful!"
+msgstr "Modifica eseguita!"
+
+#: ../../htdocs/update.php:62 ../../htdocs/mass_update.php:60
 msgid "Modification successful!"
 msgstr "Modifica eseguita!"
 
-#: ../../htdocs/modify_member_form.php:69
+#: ../../htdocs/modify_member_form.php:59
 msgid "Modify group"
 msgstr "Modifica gruppo"
 
-#: ../../lib/EntryWriter1.php:1848
-#, php-format
-msgid "Modify members for '%s'"
+#: ../../lib/TemplateRender.php:2039
+#, fuzzy
+msgid "Modify group membership"
+msgstr "modifica membri del gruppo"
+
+#: ../../lib/TemplateRender.php:2038 ../../lib/TemplateRender.php:2043
+#, fuzzy
+msgid "Modify members for"
 msgstr "Modifica i membri per '%s'"
 
-#: ../../htdocs/ldif_import.php:66
-msgid "Modifying..."
+#: ../../htdocs/import.php:37
+#, fuzzy
+msgid "Modifying"
 msgstr "Modifica..."
 
-#: ../../htdocs/schema.php:316
+#: ../../lib/HTMLTree.php:260
+msgid "Monitor"
+msgstr ""
+
+#: ../../htdocs/monitor.php:30
+#, fuzzy
+msgid "Monitor info for: "
+msgstr "Informazioni sul server per: "
+
+#: ../../htdocs/monitor.php:26
+#, fuzzy
+msgid "Monitoring context does not exist"
+msgstr "Questa voce non esiste."
+
+#: ../../htdocs/copy.php:79 ../../htdocs/copy.php:139
+#, fuzzy
+msgid "Move NOT successful"
+msgstr "Copia eseguita!"
+
+#: ../../htdocs/copy.php:75 ../../htdocs/copy.php:135
+#, fuzzy
+msgid "Move successful"
+msgstr "Copia eseguita!"
+
+#: ../../templates/creation/sambaSamAccount.xml:92
+#: ../../templates/modification/sambaSamAccount.xml:92
+#, fuzzy, no-wrap
+msgid "NT Password"
+msgstr "Password"
+
+#: ../../htdocs/schema.php:454
 msgid "Name"
 msgstr "Nome"
 
-#: ../../htdocs/add_oclass_form.php:75 ../../htdocs/add_oclass_form.php:93
+# type: Content of: <template><description>
+#: ../../templates/creation/inetOrgPerson.xml:6
+#: ../../templates/creation/kolabPerson.xml:6
+#, no-wrap
+msgid "New Address Book Entry"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/courierMailAccount.xml:6
+#, no-wrap
+msgid "New Courier Mail Account"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/courierMailAlias.xml:6
+#, no-wrap
+msgid "New Courier Mail Alias"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/dNSDomain.xml:6
+#, no-wrap
+msgid "New DNS Entry"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/test_function.xml:6
+#, no-wrap
+msgid "New Device"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/alias.xml:7
+#: ../../templates/creation/test_extensible.xml:7
+#, no-wrap
+msgid "New LDAP Alias"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/organizationalRole.xml:6
+#, no-wrap
+msgid "New Organisational Role"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/ou.xml:6
+#, no-wrap
+msgid "New Organisational Unit"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/posixGroup.xml:6
+#: ../../templates/creation/test_multilist.xml:6
+#: ../../templates/modification/posixGroup.xml:6
+#, no-wrap
+msgid "New Posix Group"
+msgstr ""
+
+#: ../../htdocs/add_oclass_form.php:85
 msgid "New Required Attributes"
 msgstr "Nuovi Attributi Richiesti"
 
-#: ../../htdocs/update_confirm.php:202
+# type: Content of: <template><description>
+#: ../../templates/creation/sambaDomain.xml:6
+#, no-wrap
+msgid "New Samba Domain"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/sambaSamAccount.xml:6
+#: ../../templates/modification/sambaSamAccount.xml:6
+#, no-wrap
+msgid "New Samba3 Account"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/sambaGroupMapping.xml:6
+#, no-wrap
+msgid "New Samba3 Group Mapping"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/sambaMachine.xml:6
+#, no-wrap
+msgid "New Samba3 Machine"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/sendmailMTAAliasObject.xml:6
+#, no-wrap
+msgid "New Sendmail Alias"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/sendmailMTACluster.xml:6
+#, no-wrap
+msgid "New Sendmail Cluster"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/sendmailMTAClass.xml:6
+#: ../../templates/creation/sendmailVirtualDomain.xml:6
+#, no-wrap
+msgid "New Sendmail Domain"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/sendmailMTAMapObject.xml:10
+#, no-wrap
+msgid "New Sendmail Relays"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/sendmailVirtualUser.xml:10
+#, no-wrap
+msgid "New Sendmail Virtual User"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/simpleSecurityObject.xml:6
+#: ../../templates/creation/test_randompassword.xml:6
+#, no-wrap
+msgid "New Simple Security Object"
+msgstr ""
+
+#: ../../lib/xmlTemplates.php:95
+msgid "New Template XML found."
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/mozillaOrgPerson.xml:6
+#, no-wrap
+msgid "New Thunderbird Address Book Entry"
+msgstr ""
+
+# type: Content of: <template><description>
+#: ../../templates/creation/posixAccount.xml:6
+#: ../../templates/creation/test_uid1200.xml:6
+#: ../../templates/creation/test_uid1010.xml:6
+#, no-wrap
+msgid "New User Account"
+msgstr ""
+
+#: ../../htdocs/update_confirm.php:54 ../../htdocs/create_confirm.php:85
 msgid "New Value"
 msgstr "Nuovo Valore"
 
-#: ../../htdocs/schema.php:165 ../../htdocs/schema.php:222
-#: ../../htdocs/schema.php:226 ../../htdocs/schema.php:230
+#: ../../templates/creation/mozillaOrgPerson.xml:35
+#, fuzzy, no-wrap
+msgid "NickName"
+msgstr "Nome"
+
+#: ../../htdocs/schema.php:257 ../../htdocs/schema.php:325
+#: ../../htdocs/schema.php:329 ../../htdocs/schema.php:333
+#: ../../htdocs/schema.php:392
 msgid "No"
 msgstr "No"
 
-#: ../../htdocs/delete_attr.php:28
-msgid "No DN specified"
-msgstr "DN non specificato"
+#: ../../lib/functions.php:1381
+msgid "No AUTO_NUMBER search_base configured for this server"
+msgstr ""
 
-#: ../../htdocs/ldif_import.php:38
-msgid "No LDIF file specified. Please try again."
-msgstr "File LDIF non specificato. Riprovare."
+#: ../../lib/functions.php:1393
+msgid "No AUTO_NUMBER search_base exists for this server"
+msgstr ""
 
-#: ../../lib/Entry.php:271
-msgid "No Template"
-msgstr "Nessun modello"
+#: ../../lib/Template.php:532
+#, fuzzy
+msgid "No RDN attribute"
+msgstr "aggiungi attributo"
 
-#: ../../htdocs/compare.php:204 ../../htdocs/compare.php:217
-msgid "No Value"
-msgstr "Valore assente"
-
-#: ../../htdocs/delete_attr.php:31
-msgid "No attribute name specified."
+#: ../../lib/Template.php:533
+#, fuzzy
+msgid "No RDN attribute was selected"
 msgstr "Nome dell'attributo non specificato."
 
-#: ../../htdocs/export.php:88
-msgid "No available exporter found."
-msgstr "Nessun esportatore trovato."
+#: ../../htdocs/download_binary_attr.php:38
+#, fuzzy
+msgid "No binary data available"
+msgstr "DN non disponibile"
 
 #: ../../htdocs/purge_cache.php:26
 msgid "No cache to purge."
 msgstr "Nessuna cache da svuotare."
 
-#: ../../htdocs/add_value_form.php:107
+#: ../../htdocs/add_value_form.php:91
 msgid "No current value for attribute"
 msgstr "Nessun valore corrente per l'attributo"
 
-#: ../../lib/EntryWriter1.php:840 ../../lib/EntryWriter2.php:104
+#: ../../htdocs/mass_delete.php:22
+#, fuzzy
+msgid "No entry selected"
+msgstr "Rimuovi selezionati"
+
+#: ../../htdocs/mass_delete.php:23
+#, fuzzy
+msgid "No entry was selected to delete"
+msgstr "Non è stata selezionata nessuna voce da eliminare."
+
+#: ../../htdocs/view_jpeg_photo.php:61
+#, fuzzy
+msgid "No image available"
+msgstr "DN non disponibile"
+
+#: ../../lib/import_functions.php:101
+msgid "No import input"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:1367
 msgid "No internal attributes"
 msgstr "Nessun attributo interno"
 
-#: ../../htdocs/logout.php:19
-msgid "No one is logged in to that server."
-msgstr "Nessuno è autenticato su quel server."
-
-#: ../../lib/search_form_predefined.php:41
-msgid "No queries have been defined in config.php."
-msgstr "Nessuna interrogazione definita in config.php"
-
-#: ../../htdocs/compare.php:32 ../../htdocs/compare.php:34
-#: ../../htdocs/delete.php:29 ../../htdocs/download_binary_attr.php:26
-#: ../../htdocs/rdelete.php:28 ../../htdocs/template_engine.php:25
-#, php-format
-msgid "No such entry: %s"
+#: ../../htdocs/template_engine.php:47
+#, fuzzy
+msgid "No such entry"
 msgstr "Voce non trovata: %s"
 
-#: ../../htdocs/view_jpeg_photo.php:25
-msgid "No such file"
-msgstr "File non trovato"
+#: ../../htdocs/compare.php:26 ../../htdocs/compare.php:29
+#: ../../htdocs/delete.php:21
+#, fuzzy
+msgid "No such entry."
+msgstr "Voce non trovata: %s"
 
-#: ../../htdocs/schema.php:505
+#: ../../htdocs/schema.php:709
 #, php-format
 msgid "No such schema item: \"%s\""
 msgstr "Schema non trovato: \"%s\""
 
-#: ../../lib/ldif_functions.php:621
-msgid "No version found. Assuming 1."
-msgstr "Nessuna versione trovata. Si ipotizza 1."
-
-#: ../../htdocs/compare.php:25 ../../htdocs/compare.php:29
-#: ../../htdocs/copy.php:32 ../../htdocs/download_binary_attr.php:17
-#: ../../htdocs/entry_chooser.php:41 ../../htdocs/modify_member_form.php:23
-#: ../../htdocs/rename_form.php:22
-msgid ""
-"Not enough information to login to server. Please check your configuration."
-msgstr ""
-"Informazioni insufficienti per autenticarsi al server. Si controlli la "
-"configurazione."
-
-#: ../../htdocs/compare.php:121 ../../lib/EntryWriter1.php:1913
+#: ../../lib/PageRender.php:374
 msgid "Note"
 msgstr "Nota"
 
-#: ../../htdocs/add_value_form.php:202
+#: ../../htdocs/add_value_form.php:130
 msgid ""
 "Note: You may be required to enter new attributes that these objectClass(es) "
 "require"
@@ -1161,7 +2058,7 @@ msgstr ""
 "Nota: ti potrebbe essere chiesto di inserire nuovi attributi che questa/e "
 "objectClass richiede/ono."
 
-#: ../../htdocs/delete_form.php:59
+#: ../../htdocs/mass_delete.php:100 ../../htdocs/delete_form.php:67
 msgid ""
 "Note: this is potentially very dangerous and you do this at your own risk. "
 "This operation cannot be undone. Take into consideration aliases, referrals, "
@@ -1171,132 +2068,259 @@ msgstr ""
 "Questa operazione non può essere annullata. Si considerino alias, referral "
 "ed altre cose che potrebbero causare problemi."
 
-#: ../../htdocs/search.php:310
-msgid "Notice, search size limit exceeded."
-msgstr "Avviso, limite dimensione di ricerca superato."
+#: ../../lib/export_functions.php:457
+msgid "Nothing to export"
+msgstr ""
 
-#: ../../htdocs/schema.php:400
+#: ../../htdocs/schema.php:569
 msgid "OID"
 msgstr "OID"
 
-#: ../../lib/EntryWriter1.php:340
+#: ../../lib/TemplateRender.php:1337 ../../htdocs/schema.php:42
+#: ../../htdocs/schema.php:383
 msgid "ObjectClasses"
 msgstr "ObjectClass"
 
-#: ../../htdocs/add_oclass.php:26
-msgid ""
-"ObjectClasses are flagged as read only in the phpLDAPadmin configuration."
-msgstr ""
-"Gli ObjectClass sono etichettati in sola lettura nella configurazione di "
-"phpLDAPadmin."
-
-#: ../../lib/template_functions.php:273
+#: ../../lib/Template.php:174
 msgid "ObjectClasses in XML dont exist in LDAP server."
 msgstr "Gli ObjectClass in XML non esistono nel server LDAP."
 
-#: ../../htdocs/schema.php:97 ../../htdocs/schema.php:334
+#: ../../htdocs/schema.php:165 ../../htdocs/schema.php:471
 msgid "Obsolete"
 msgstr "Obsoleto"
 
-#: ../../htdocs/update_confirm.php:202
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/organizationalRole.xml:41
+#, no-wrap
+msgid "Occupant"
+msgstr ""
+
+#: ../../htdocs/update_confirm.php:54 ../../htdocs/mass_update.php:99
 msgid "Old Value"
 msgstr "Vecchio Valore"
 
-#: ../../htdocs/export_form.php:32 ../../lib/search_form_advanced.php:86
+#: ../../lib/QueryRender.php:154 ../../htdocs/export_form.php:34
 msgid "One (one level beneath base)"
 msgstr "Uno (un livello sotto la base)"
 
-#: ../../htdocs/schema.php:445 ../../lib/EntryWriter1.php:407
-#: ../../lib/EntryWriter1.php:417
+#: ../../lib/TemplateRender.php:1559 ../../htdocs/schema.php:625
 msgid "Optional Attributes"
 msgstr "Attributi Opzionali"
 
-#: ../../htdocs/schema.php:34
+#: ../../htdocs/schema.php:37
 msgid "Or lastly, your LDAP server doesnt provide this information."
 msgstr "O, per lo meno, il server LDAP non fornisce questa informazione."
 
-#: ../../lib/search_form_advanced.php:111
+#: ../../htdocs/import_form.php:41
+#, fuzzy
+msgid "Or paste your LDIF here"
+msgstr "Incolla il file LDIF qui"
+
+#: ../../lib/QueryRender.php:181
 msgid "Order by"
 msgstr "Ordina per"
 
-#: ../../htdocs/schema.php:100
+#: ../../htdocs/schema.php:168
 msgid "Ordering"
 msgstr "Ordinamento"
 
-#: ../../htdocs/search.php:324 ../../htdocs/search.php:362
-#, php-format
-msgid "Page %d"
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/inetOrgPerson.xml:44
+#: ../../templates/creation/kolabPerson.xml:56
+#: ../../templates/modification/inetOrgPerson.xml:43
+#, no-wrap
+msgid "Organisation"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/ou.xml:20
+#, no-wrap
+msgid "Organisational Unit"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/kolabPerson.xml:60
+#, no-wrap
+msgid "Organisational unit"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:111
+#, no-wrap
+msgid "Organization (professional)"
+msgstr ""
+
+#: ../../lib/ds_ldap.php:1359
+msgid "Our attempts to find your SCHEMA have failed"
+msgstr ""
+
+#: ../../lib/common.php:199
+msgid "PHP Safe Mode"
+msgstr ""
+
+#: ../../templates/creation/mozillaOrgPerson.xml:69
+#, fuzzy, no-wrap
+msgid "Pager"
 msgstr "Pagina %d"
 
-#: ../../htdocs/schema.php:426
+#: ../../htdocs/schema.php:598
 msgid "Parent to"
 msgstr "Padre di"
 
-#: ../../htdocs/login_form.php:53
+#: ../../htdocs/import.php:103
+#, fuzzy
+msgid "Parse Error"
+msgstr "Errore di analisi LDIF"
+
+#: ../../templates/creation/posixAccount.xml:80
+#: ../../templates/creation/courierMailAccount.xml:82
+#: ../../templates/creation/kolabPerson.xml:39
+#: ../../templates/creation/sambaSamAccount.xml:75
+#: ../../templates/creation/simpleSecurityObject.xml:28
+#: ../../templates/creation/test_uid1200.xml:80
+#: ../../templates/creation/test_uid1010.xml:80
+#: ../../templates/creation/test_randompassword.xml:28
+#: ../../templates/modification/sambaSamAccount.xml:75
+#: ../../htdocs/login_form.php:76
+#, no-wrap
 msgid "Password"
 msgstr "Password"
 
-#: ../../htdocs/password_checker.php:25
+#: ../../htdocs/password_checker.php:31
 msgid "Password Checker Tool"
 msgstr "Strumento di Verifica Password"
 
-#: ../../htdocs/password_checker.php:55
+#: ../../lib/PageRender.php:205
+msgid "PasswordEncrypt() only accepts two arguments"
+msgstr ""
+
+#: ../../htdocs/password_checker.php:61
 msgid "Passwords do not match!"
 msgstr "La password non corrisponde!"
 
-#: ../../htdocs/password_checker.php:53
+#: ../../htdocs/password_checker.php:59
 msgid "Passwords match!"
 msgstr "La password corrisponde!"
 
-#: ../../htdocs/ldif_import_form.php:39
-msgid "Paste your LDIF here"
-msgstr "Incolla il file LDIF qui"
-
-#: ../../htdocs/delete_form.php:35
+#: ../../htdocs/mass_delete.php:70 ../../htdocs/delete_form.php:38
 msgid "Permanently delete all children also?"
 msgstr "Eliminare permanentemente anche tutti i figli?"
 
-#: ../../lib/functions.php:142
+#: ../../templates/creation/inetOrgPerson.xml:39
+#: ../../templates/modification/inetOrgPerson.xml:37
+#, fuzzy, no-wrap
+msgid "Photo"
+msgstr "Vai a"
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/test_normal.xml:62
+#, no-wrap
+msgid "Photo (Binary)"
+msgstr ""
+
+#: ../../htdocs/add_attr_form.php:170
+msgid "Please Wait"
+msgstr ""
+
+#: ../../lib/functions.php:1482 ../../lib/functions.php:1490
+msgid ""
+"Please change your filter parameter, or check your auto_number,search_base "
+"configuration"
+msgstr ""
+
+#: ../../lib/functions.php:178
 msgid "Please check and see if this bug has been reported"
 msgstr "Controlla e verifica se questo baco è stato segnalato"
 
-#: ../../lib/functions.php:1842
+#: ../../lib/functions.php:2018
+#, fuzzy, php-format
 msgid ""
-"Please set $jpeg_temp_dir to a writable directory in the phpLDAPadmin config."
+"Please check jpeg,tmpdir is a writable directory in the phpLDAPadmin config."
 "php"
 msgstr ""
 "Si imposti $jpeg_temp_dir ad una directory scrivibile in config.php di "
 "phpLDAPadmin"
 
-#: ../../lib/HTMLTree.php:80
+#: ../../lib/Template.php:449
+#, fuzzy
+msgid "Please go back and try again."
+msgstr ""
+"Il valore dell'attributo è stato lasciato vuoto. Si torni indietro e si "
+"riprovi."
+
+#: ../../htdocs/logout.php:25
+msgid "Please report this error to the admins."
+msgstr ""
+
+#: ../../lib/functions.php:2007
+#, fuzzy
+msgid ""
+"Please set jpeg,tmpdir to a writable directory in the phpLDAPadmin config.php"
+msgstr ""
+"Si imposti $jpeg_temp_dir ad una directory scrivibile in config.php di "
+"phpLDAPadmin"
+
+#: ../../lib/HTMLTree.php:73
 msgid "Please specify it in config.php"
 msgstr "Specificarlo nel config.php"
 
-#: ../../lib/search_form_advanced.php:51
-#: ../../lib/search_form_predefined.php:22 ../../lib/search_form_simple.php:42
-msgid "Predefined Searches"
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/test_normal.xml:82
+#, no-wrap
+msgid "Post Code (Option selection)"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/kolabPerson.xml:74
+#, no-wrap
+msgid "Post box"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/organizationalRole.xml:65
+#, no-wrap
+msgid "Postal Address"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/organizationalRole.xml:60
+#: ../../templates/creation/inetOrgPerson.xml:68
+#: ../../templates/creation/kolabPerson.xml:86
+#: ../../templates/modification/inetOrgPerson.xml:69
+#, no-wrap
+msgid "Postal code"
+msgstr ""
+
+#: ../../lib/QueryRender.php:86
+#, fuzzy
+msgid "Predefined Query"
 msgstr "Ricerche Predefinite"
 
-#: ../../lib/EntryWriter1.php:308 ../../lib/EntryWriter2.php:78
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/sambaSamAccount.xml:111
+#: ../../templates/modification/sambaSamAccount.xml:111
+#, no-wrap
+msgid "Primary Group ID"
+msgstr ""
+
+#: ../../lib/Template.php:999
+msgid "Problem with autoFill() in template"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:1523
 msgid "Proceed &gt;&gt;"
 msgstr "Continuare &gt;&gt;"
 
-#: ../../htdocs/export_form.php:126 ../../htdocs/ldif_import_form.php:34
-#: ../../htdocs/ldif_import_form.php:45
+#: ../../htdocs/export_form.php:137 ../../htdocs/import_form.php:46
 msgid "Proceed >>"
 msgstr "Continuare >>"
-
-#: ../../lib/functions.php:365
-msgid "Purge all cached data in phpLDAPadmin, including server schemas."
-msgstr ""
-"Svuota tutti i dati nella cache di phpLDAPadmin, inclusi gli schemi del "
-"server."
 
 #: ../../htdocs/purge_cache.php:31
 msgid "Purge cache"
 msgstr "Svuota la cache"
 
-#: ../../lib/functions.php:365
+#: ../../lib/functions.php:365 ../../lib/functions.php:367
+#: ../../lib/functions.php:368
 msgid "Purge caches"
 msgstr "Svuota le cache"
 
@@ -1305,301 +2329,630 @@ msgstr "Svuota le cache"
 msgid "Purged %s bytes of cache."
 msgstr "Svuotati %s byte dalla cache."
 
-#: ../../htdocs/compare.php:564 ../../lib/EntryWriter1.php:2066
-msgid "Really delete attribute"
+#: ../../lib/Template.php:736
+#, php-format
+msgid ""
+"RDN attribute sequence [%s] is already used by attribute [%s] and cant be "
+"used by attribute [%s] also."
+msgstr ""
+
+#: ../../lib/Template.php:733
+#, fuzzy
+msgid "RDN attribute sequence already defined"
+msgstr "Nome dell'attributo non specificato."
+
+#: ../../lib/TemplateRender.php:2214
+#, fuzzy
+msgid "Really delete value from attribute"
 msgstr "Cancella definitivamente il valore"
 
-#: ../../htdocs/copy_form.php:75
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/sendmailMTAAliasObject.xml:37
+#: ../../templates/creation/sendmailVirtualUser.xml:42
+#, no-wrap
+msgid "Recipient Addresses"
+msgstr ""
+
+#: ../../htdocs/copy_form.php:62
 msgid "Recursive copy"
 msgstr "Copia ricorsiva"
 
-#: ../../htdocs/copy.php:58
+#: ../../htdocs/copy.php:54
 msgid "Recursive copy progress"
 msgstr "Copia ricorsiva in corso"
 
-#: ../../htdocs/rdelete.php:31
+#: ../../htdocs/rdelete.php:36
 msgid "Recursive delete progress"
 msgstr "Eliminazione ricorsiva in corso"
 
-#: ../../htdocs/copy_form.php:77
+#: ../../htdocs/copy_form.php:64
 msgid "Recursively copy all children of this object as well."
 msgstr "Copia ricorsivamente anche tutti i figli di questo oggetto."
 
-#: ../../lib/EntryWriter1.php:725 ../../lib/EntryWriter1.php:726
+#: ../../lib/HTMLTree.php:232 ../../lib/TemplateRender.php:1106
+#: ../../lib/TemplateRender.php:1107 ../../lib/TemplateRender.php:1109
+#: ../../lib/TemplateRender.php:1110
 msgid "Refresh"
 msgstr "Aggiorna"
 
-#: ../../lib/HTMLTree.php:235
-msgid "Refresh all expanded containers for"
-msgstr "Aggiorna tutti i contenitori aperti per"
-
-#: ../../lib/EntryWriter1.php:726
+#: ../../lib/TemplateRender.php:1107 ../../lib/TemplateRender.php:1110
 msgid "Refresh this entry"
 msgstr "Aggiorna questa voce"
 
-#: ../../htdocs/modify_member_form.php:148
+#: ../../lib/HTMLTree.php:230
+#, fuzzy
+msgid "Refreshing Tree"
+msgstr "Aggiorna"
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/organizationalRole.xml:71
+#, no-wrap
+msgid "Registered Address"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:1107
+#, fuzzy
+msgid "Reloading"
+msgstr "Rinominazione..."
+
+#: ../../htdocs/modify_member_form.php:127
 msgid "Remove selected"
 msgstr "Rimuovi selezionati"
 
-#: ../../htdocs/rename_form.php:35 ../../lib/EntryWriter1.php:769
+#: ../../lib/TemplateRender.php:1189 ../../lib/TemplateRender.php:1190
+#: ../../lib/TemplateRender.php:1192 ../../lib/TemplateRender.php:1193
+#: ../../htdocs/rename_form.php:26 ../../htdocs/rename_form.php:30
+#: ../../htdocs/rename_form.php:37
 msgid "Rename"
 msgstr "Rinomina"
 
-#: ../../htdocs/rename.php:71 ../../htdocs/rename_form.php:27
+#: ../../htdocs/rename.php:58
 msgid "Rename Entry"
 msgstr "Rinomina la Voce"
 
-#: ../../htdocs/rename.php:67
+#: ../../htdocs/rename.php:53
 msgid "Rename successful!"
 msgstr "Rinominazione eseguita!"
 
-#: ../../htdocs/ldif_import.php:64 ../../htdocs/ldif_import.php:65
-msgid "Renaming..."
+#: ../../lib/TemplateRender.php:1190 ../../lib/TemplateRender.php:1193
+#, fuzzy
+msgid "Rename this entry"
+msgstr "Aggiorna questa voce"
+
+#: ../../htdocs/import.php:35 ../../htdocs/import.php:36
+#, fuzzy
+msgid "Renaming"
 msgstr "Rinominazione..."
 
-#: ../../lib/functions.php:369
+#: ../../lib/functions.php:391 ../../lib/functions.php:392
+#: ../../lib/functions.php:393
 msgid "Report a bug"
 msgstr "Riporta un baco"
 
-#: ../../lib/functions.php:367
+#: ../../lib/functions.php:386 ../../lib/functions.php:387
+#: ../../lib/functions.php:388
 msgid "Request feature"
 msgstr "Richiedi una nuova funzionalità"
 
-#: ../../htdocs/schema.php:445 ../../lib/EntryWriter1.php:397
-#: ../../lib/EntryWriter1.php:404
+#: ../../lib/TemplateRender.php:1551 ../../htdocs/schema.php:625
 msgid "Required Attributes"
 msgstr "Attributi Richiesti"
 
-#: ../../htdocs/compare.php:169 ../../lib/EntryWriter1.php:1949
-#, php-format
-msgid "Required attribute for objectClass(es) %s"
+#: ../../lib/PageRender.php:414
+#, fuzzy
+msgid "Required attribute for objectClass(es)"
 msgstr "Attributi richiesti per l'objectClass %s"
 
-#: ../../lib/AJAXTree.php:313
+#: ../../lib/TemplateRender.php:631 ../../lib/TemplateRender.php:668
+#, fuzzy
+msgid "Retieving DN"
+msgstr "Recupero DN"
+
+#: ../../lib/AJAXTree.php:122 ../../lib/AJAXTree.php:127
 msgid "Retrieving DN"
 msgstr "Recupero DN"
 
-#: ../../lib/EntryWriter1.php:732 ../../lib/EntryWriter1.php:803
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/organizationalRole.xml:20
+#, no-wrap
+msgid "Role CN"
+msgstr ""
+
+#: ../../templates/creation/kolabPerson.xml:64
+#, fuzzy, no-wrap
+msgid "Room Number"
+msgstr "Linea Numero"
+
+#: ../../lib/QueryRender.php:86
+#, fuzzy
+msgid "Run a predefined query"
+msgstr "ricerca predefinita"
+
+#: ../../lib/ds_ldap.php:549
+msgid ""
+"SASL has been enabled in your config, but your PHP install does not support "
+"SASL. SASL will be disabled."
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/sambaDomain.xml:20
+#, no-wrap
+msgid "Samba Domain Name"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/sambaGroupMapping.xml:50
+#, no-wrap
+msgid "Samba Group Type"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/sambaDomain.xml:25
+#: ../../templates/creation/sambaGroupMapping.xml:39
+#: ../../templates/creation/sambaMachine.xml:43
+#: ../../templates/creation/sambaSamAccount.xml:63
+#: ../../templates/modification/sambaSamAccount.xml:63
+#, no-wrap
+msgid "Samba SID"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/sambaSamAccount.xml:11
+#: ../../templates/modification/sambaSamAccount.xml:11
+#, no-wrap
+msgid "Samba: Account"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/sambaDomain.xml:11
+#, no-wrap
+msgid "Samba: Domain"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/sambaGroupMapping.xml:11
+#, no-wrap
+msgid "Samba: Group Mapping"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/sambaMachine.xml:11
+#, no-wrap
+msgid "Samba: Machine"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:1265 ../../lib/TemplateRender.php:1269
 msgid "Save"
 msgstr "Salva"
 
-#: ../../htdocs/compare.php:552 ../../lib/EntryWriter1.php:861
-#: ../../lib/EntryWriter2.php:117
-msgid "Save Changes"
-msgstr "Salva i Cambiamenti"
-
-#: ../../lib/EntryWriter1.php:733
+#: ../../lib/TemplateRender.php:1131 ../../lib/TemplateRender.php:1134
 msgid "Save a dump of this object"
 msgstr "Salva un'immagine di questo oggetto"
 
-#: ../../lib/EntryWriter1.php:804
+#: ../../lib/TemplateRender.php:1266 ../../lib/TemplateRender.php:1270
 msgid "Save a dump of this object and all of its children"
 msgstr "Salva un'immagine di questo oggetto e tutti i suoi figli"
 
-#: ../../htdocs/export_form.php:81
+#: ../../htdocs/export_form.php:89
 msgid "Save as file"
 msgstr "Salva come file"
 
-#: ../../htdocs/modify_member_form.php:176
+#: ../../htdocs/modify_member_form.php:152
 msgid "Save changes"
 msgstr "Salva i cambiamenti"
 
-#: ../../htdocs/schema.php:37
+#: ../../htdocs/schema.php:39
 msgid "Schema for server"
 msgstr "Schema per il server"
 
-#: ../../htdocs/search.php:148 ../../lib/search_form_advanced.php:115
-#: ../../lib/search_form_predefined.php:63 ../../lib/search_form_simple.php:74
+#: ../../lib/QueryRender.php:67 ../../lib/QueryRender.php:190
+#: ../../lib/HTMLTree.php:219 ../../lib/ds_ldap_pla.php:693
 msgid "Search"
 msgstr "Cerca"
 
-#: ../../htdocs/export_form.php:72 ../../lib/export_functions.php:198
-#: ../../lib/search_form_advanced.php:97
+#: ../../lib/QueryRender.php:165 ../../lib/export_functions.php:208
+#: ../../htdocs/export_form.php:80
 msgid "Search Filter"
 msgstr "Filtro di Ricerca"
 
-#: ../../htdocs/export_form.php:59 ../../lib/export_functions.php:197
-#: ../../lib/search_form_advanced.php:79
+#: ../../lib/QueryRender.php:198
+#, fuzzy
+msgid "Search Results"
+msgstr "Filtro di Ricerca"
+
+#: ../../lib/QueryRender.php:145 ../../lib/export_functions.php:207
+#: ../../htdocs/export_form.php:66
 msgid "Search Scope"
 msgstr "Campo di Ricerca"
 
-#: ../../lib/search_form_simple.php:52
-msgid "Search for entries whose"
-msgstr "Cerca per voci che"
+#: ../../lib/ds_ldap.php:683
+msgid "Search for DN returned the incorrect number of results"
+msgstr ""
 
-#: ../../htdocs/search.php:392
-msgid "Search performed by phpLDAPadmin in"
-msgstr "Ricerca eseguita da phpLDAPadmin in"
+#: ../../lib/QueryRender.php:359
+#, fuzzy
+msgid "Search returned no results"
+msgstr "La ricerca non ha dato risultati."
 
-#: ../../htdocs/search.php:111
-msgid "Searching is not permitted"
-msgstr "La ricerca non è permessa"
-
-#: ../../htdocs/add_attr.php:63 ../../htdocs/add_attr.php:83
-#: ../../htdocs/add_attr.php:88
+#: ../../lib/Template.php:372 ../../lib/Template.php:397
+#: ../../lib/Template.php:402 ../../lib/Template.php:459
+#: ../../lib/Template.php:484 ../../lib/Template.php:489
 msgid "Security error: The file being uploaded may be malicious."
 msgstr "Errore di sicurezza: if file da caricare potrebbe essere pericoloso."
 
-#: ../../lib/search_form_predefined.php:45
-msgid "Select a predefined search"
-msgstr "Seleziona una ricerca predefinita"
-
-#: ../../lib/EntryWriter1.php:1021
+#: ../../lib/TemplateRender.php:574
 msgid "Select a template for the creation process"
 msgstr "Seleziona un modello per il processo di creazione"
 
-#: ../../lib/EntryWriter1.php:1249
+#: ../../lib/TemplateRender.php:578
 msgid "Select a template to edit the entry"
 msgstr "Seleziona un modello per modificare la voce"
 
-#: ../../htdocs/ldif_import_form.php:25
+#: ../../htdocs/import_form.php:33
 msgid "Select an LDIF file"
 msgstr "Seleziona un file LDIF"
 
-#: ../../htdocs/add_attr_form.php:25 ../../htdocs/add_value_form.php:100
-#: ../../htdocs/compare.php:56 ../../htdocs/compare.php:59
-#: ../../htdocs/compare_form.php:22 ../../htdocs/copy_form.php:46
-#: ../../htdocs/delete_form.php:29 ../../htdocs/delete_form.php:105
-#: ../../htdocs/entry_chooser.php:32 ../../htdocs/entry_chooser.php:98
-#: ../../htdocs/export_form.php:49 ../../htdocs/ldif_import.php:53
-#: ../../htdocs/ldif_import_form.php:22 ../../htdocs/modify_member_form.php:72
-#: ../../htdocs/rename_form.php:29 ../../lib/EntryWriter1.php:247
-#: ../../lib/EntryWriter1.php:506 ../../lib/EntryWriter1.php:1033
-#: ../../lib/HTMLTree.php:151 ../../lib/export_functions.php:196
-#: ../../lib/search_form_advanced.php:60 ../../lib/search_form_simple.php:50
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/sendmailMTAAliasObject.xml:20
+#: ../../templates/creation/sendmailMTAClass.xml:20
+#: ../../templates/creation/sendmailMTAMapObject.xml:24
+#: ../../templates/creation/sendmailVirtualDomain.xml:20
+#: ../../templates/creation/sendmailVirtualUser.xml:24
+#, no-wrap
+msgid "Sendmail Cluster Name"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/sendmailMTAAliasObject.xml:26
+#: ../../templates/creation/sendmailMTAClass.xml:26
+#: ../../templates/creation/sendmailMTAMapObject.xml:30
+#: ../../templates/creation/sendmailVirtualDomain.xml:26
+#: ../../templates/creation/sendmailVirtualUser.xml:30
+#, no-wrap
+msgid "Sendmail Hostname"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/sendmailMTAAliasObject.xml:11
+#, no-wrap
+msgid "Sendmail: Alias"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/sendmailMTACluster.xml:11
+#, no-wrap
+msgid "Sendmail: Cluster"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/sendmailMTAClass.xml:11
+#, no-wrap
+msgid "Sendmail: Domain"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/sendmailMTAMapObject.xml:15
+#, no-wrap
+msgid "Sendmail: Relays"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/sendmailVirtualDomain.xml:11
+#, no-wrap
+msgid "Sendmail: Virtual Domain"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/sendmailVirtualUser.xml:15
+#, no-wrap
+msgid "Sendmail: Virtual Users"
+msgstr ""
+
+#: ../../lib/QueryRender.php:498 ../../lib/HTMLTree.php:159
+#: ../../lib/TemplateRender.php:788 ../../lib/TemplateRender.php:802
+#: ../../lib/PageRender.php:97 ../../lib/export_functions.php:206
+#: ../../htdocs/mass_delete.php:47 ../../htdocs/mass_delete.php:59
+#: ../../htdocs/compare.php:54 ../../htdocs/compare.php:60
+#: ../../htdocs/create.php:99 ../../htdocs/delete_form.php:32
+#: ../../htdocs/delete_form.php:111 ../../htdocs/entry_chooser.php:35
+#: ../../htdocs/entry_chooser.php:90 ../../htdocs/export_form.php:55
+#: ../../htdocs/import.php:52 ../../htdocs/mass_edit.php:64
+#: ../../htdocs/import_form.php:22 ../../htdocs/mass_update.php:49
+#: ../../htdocs/create_confirm.php:61
 msgid "Server"
 msgstr "Server"
 
-#: ../../lib/page.php:200
+#: ../../lib/page.php:222
 msgid "Server Select"
 msgstr "Selezione Server"
 
-#: ../../htdocs/server_info.php:66
+#: ../../htdocs/server_info.php:18
 msgid "Server info for: "
 msgstr "Informazioni sul server per: "
 
-#: ../../htdocs/server_info.php:67
+#: ../../htdocs/server_info.php:19 ../../htdocs/monitor.php:31
 msgid "Server reports the following information about itself"
 msgstr "Il server dichiara le seguenti informazioni su di sè"
 
-#: ../../lib/EntryWriter1.php:754
+#: ../../lib/common.php:316
+#, fuzzy
+msgid "Session Timed Out"
+msgstr "La Sessione è scaduta dopo"
+
+#: ../../lib/TemplateRender.php:1164
 msgid "Show"
 msgstr "Mostra"
 
-#: ../../htdocs/export_form.php:75 ../../lib/search_form_advanced.php:103
+#: ../../lib/QueryRender.php:174
+#, fuzzy
+msgid "Show Attributes"
+msgstr "Mostra gli Attributi"
+
+#: ../../htdocs/export_form.php:83
 msgid "Show Attributtes"
 msgstr "Mostra gli Attributi"
 
-#: ../../lib/functions.php:373
+#: ../../lib/functions.php:371 ../../lib/functions.php:373
+#: ../../lib/functions.php:374
 msgid "Show Cache"
 msgstr "Mostra la Cache"
 
-#: ../../lib/EntryWriter1.php:755
+#: ../../lib/QueryRender.php:116
+#, fuzzy
+msgid "Show Results"
+msgstr "risultati dell'esportazione"
+
+#: ../../lib/TemplateRender.php:1165
 msgid "Show internal attributes"
 msgstr "Mostra gli attributi interni"
 
-#: ../../htdocs/search.php:318
-#, php-format
-msgid "Showing results %s through %s."
-msgstr "Mostra i risultati da %s a %s"
-
-#: ../../lib/search_form_advanced.php:43
-#: ../../lib/search_form_predefined.php:29 ../../lib/search_form_simple.php:23
-msgid "Simple Search Form"
-msgstr "Modulo di Ricerca Semplice"
-
-#: ../../htdocs/update.php:156
+#: ../../htdocs/update.php:64
 msgid ""
 "Since you changed your password, you must now login again with your new "
 "password."
 msgstr ""
 "Dato che hai cambiato password, devi reautenticarti con la nuova password."
 
-#: ../../htdocs/schema.php:103
+#: ../../htdocs/schema.php:171
 msgid "Single Valued"
 msgstr "Valore Singolo"
 
-#: ../../htdocs/update_confirm.php:202
+#: ../../htdocs/update_confirm.php:54 ../../htdocs/create_confirm.php:85
 msgid "Skip"
 msgstr "Salta"
 
-#: ../../lib/EntryWriter1.php:826
+#: ../../lib/TemplateRender.php:1083
 #, php-format
 msgid "Some attributes (%s) were modified and are highlighted below."
 msgstr "Alcuni attributi (%s) sono stati modificati e sono evidenziati sotto."
 
-#: ../../htdocs/login.php:117
-msgid "Sorry, you are not allowed to use phpLDAPadmin with this LDAP server."
-msgstr ""
-"Mi spiace, non ti è permesso usare phpLDAPadmin con questo server LDAP."
-
-#: ../../htdocs/compare_form.php:41
-msgid "Source DN"
-msgstr "DN sorgente"
-
-#: ../../lib/EntryWriter1.php:263
+#: ../../lib/TemplateRender.php:1453
 msgid "Specify attributes and values"
 msgstr "Specifica attributi e valori"
 
-#: ../../lib/search_form_advanced.php:96
-msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenname=David))"
+#: ../../lib/QueryRender.php:165
+#, fuzzy
+msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenName=David))"
 msgstr ""
 "Filtro standard di ricerca LDAP. Esempio (&(sn=Rossi)(givenname=Mario))"
 
-#: ../../lib/EntryWriter1.php:253 ../../lib/EntryWriter1.php:260
+#: ../../templates/creation/organizationalRole.xml:56
+#: ../../templates/creation/inetOrgPerson.xml:63
+#: ../../templates/creation/kolabPerson.xml:82
+#: ../../templates/modification/inetOrgPerson.xml:65
+#, fuzzy, no-wrap
+msgid "State"
+msgstr "Salva"
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:86
+#, no-wrap
+msgid "State (personal)"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:123
+#, no-wrap
+msgid "State (professional)"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:1448 ../../lib/TemplateRender.php:1460
 #, php-format
 msgid "Step %s of %s"
 msgstr "Passo %s di %s"
 
-#: ../../htdocs/export_form.php:33 ../../lib/search_form_advanced.php:83
+#: ../../templates/creation/inetOrgPerson.xml:50
+#: ../../templates/modification/inetOrgPerson.xml:48
+#, fuzzy, no-wrap
+msgid "Street"
+msgstr "vero"
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/organizationalRole.xml:47
+#, no-wrap
+msgid "Street Address"
+msgstr ""
+
+#: ../../lib/QueryRender.php:151 ../../htdocs/export_form.php:35
 msgid "Sub (entire subtree)"
 msgstr "Sub (intero sottoalbero)"
 
-#: ../../htdocs/schema.php:101
+#: ../../htdocs/schema.php:169
 msgid "Substring Rule"
 msgstr "Regola di Substring"
 
-#: ../../htdocs/copy.php:64 ../../htdocs/ldif_import.php:114
-#: ../../htdocs/ldif_import.php:136 ../../htdocs/mass_delete.php:69
-#: ../../htdocs/rdelete.php:59 ../../htdocs/rdelete.php:76
+#: ../../htdocs/rdelete.php:66 ../../htdocs/rdelete.php:83
+#: ../../htdocs/copy.php:61 ../../htdocs/import.php:68
 msgid "Success"
 msgstr "Successo"
 
-#: ../../htdocs/delete.php:44
+#: ../../htdocs/delete.php:32
 msgid "Successfully deleted DN "
 msgstr "Correttamente eliminata DN "
 
-#: ../../htdocs/login.php:164
+#: ../../htdocs/login.php:30 ../../htdocs/login_form.php:41
 msgid "Successfully logged into server."
 msgstr "Autenticazione al server eseguita."
 
-#: ../../htdocs/compare.php:70
+#: ../../htdocs/logout.php:19
+#, fuzzy
+msgid "Successfully logged out of server."
+msgstr "Autenticazione al server eseguita."
+
+#: ../../htdocs/compare.php:73
 msgid "Switch Entry"
 msgstr "Scambia Voce"
 
-#: ../../htdocs/add_value_form.php:233 ../../htdocs/schema.php:102
+#: ../../lib/TemplateRender.php:1117 ../../lib/TemplateRender.php:1118
+#: ../../lib/TemplateRender.php:1120 ../../lib/TemplateRender.php:1121
+#, fuzzy
+msgid "Switch Template"
+msgstr "Modello"
+
+#: ../../htdocs/add_value_form.php:148 ../../htdocs/schema.php:170
 msgid "Syntax"
 msgstr "Sintassi"
 
-#: ../../htdocs/schema.php:69
+#: ../../htdocs/schema.php:136
 msgid "Syntax OID"
 msgstr "Sintassi OID"
 
-#: ../../lib/EntryWriter1.php:519
-msgid "Template"
-msgstr "Modello"
+#: ../../htdocs/schema.php:44 ../../htdocs/schema.php:316
+#, fuzzy
+msgid "Syntaxes"
+msgstr "Sintassi"
 
-#: ../../lib/EntryWriter1.php:1036 ../../lib/EntryWriter1.php:1260
+#: ../../lib/ds_ldap.php:522
+msgid ""
+"TLS has been enabled in your config, but your PHP install does not support "
+"TLS. TLS will be disabled."
+msgstr ""
+
+#: ../../lib/QueryRender.php:109
+#, fuzzy
+msgid "Table"
+msgstr "falso"
+
+#: ../../lib/PageRender.php:1026
+msgid "Template Value Error"
+msgstr ""
+
+#: ../../lib/xmlTemplates.php:57
+msgid "Template XML file changed."
+msgstr ""
+
+#: ../../lib/xmlTemplates.php:58
+msgid "Template XML file has changed and been reread"
+msgstr ""
+
+#: ../../lib/xmlTemplates.php:47
+msgid "Template XML file has removed"
+msgstr ""
+
+#: ../../lib/xmlTemplates.php:46
+msgid "Template XML file removed."
+msgstr ""
+
+#: ../../lib/TemplateRender.php:596
 msgid "Templates"
 msgstr "Modelli"
 
-#: ../../htdocs/create.php:54
-#, php-format
-msgid "The Rdn attribute (%s) does not exist."
-msgstr "L'attributo Rdn (%s) non esiste."
+#: ../../templates/creation/test_nordn.xml:6
+#: ../../templates/creation/test_invalidattrs.xml:6
+#: ../../templates/creation/test_noattrs.xml:6
+#, fuzzy, no-wrap
+msgid "Test Template"
+msgstr "Modello"
 
-#: ../../htdocs/add_value.php:37 ../../htdocs/delete_attr.php:34
-#: ../../htdocs/update.php:103
+# type: Content of: <template><description>
+#: ../../templates/creation/test_normal.xml:6
+#: ../../templates/creation/test_picklist.xml:6
+#, no-wrap
+msgid "Test Template (no definitions for wsVPN)"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/test_normal.xml:11
+#, no-wrap
+msgid "Test Template: All Functions"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/test_picklist.xml:11
+#, no-wrap
+msgid "Test Template: AutoFill/GetNextNumber/PickList"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/test_extensible.xml:12
+#, no-wrap
+msgid "Test Template: Extensible Object (attribute not defined)"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/test_function.xml:11
+#, no-wrap
+msgid "Test Template: Function"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/test_multilist.xml:11
+#, no-wrap
+msgid "Test Template: GetNextNumber/MultList"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/test_randompassword.xml:11
+#, no-wrap
+msgid "Test Template: Helper/RandomPassword"
+msgstr ""
+
+#: ../../templates/creation/test_invalidattrs.xml:12
+#, fuzzy, no-wrap
+msgid "Test Template: Invalid Attributes"
+msgstr "Attributi Opzionali"
+
+# type: Content of: <template><title>
+#: ../../templates/creation/test_invalidoc.xml:11
+#, no-wrap
+msgid "Test Template: Invalid Object Class"
+msgstr ""
+
+#: ../../templates/creation/test_noattrs.xml:11
+#, fuzzy, no-wrap
+msgid "Test Template: No Attributes"
+msgstr "Usato dagli Attributi"
+
+# type: Content of: <template><title>
+#: ../../templates/creation/test_nordn.xml:11
+#, no-wrap
+msgid "Test Template: No RDN, No Attributes"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/test_uid1010.xml:11
+#, no-wrap
+msgid "Test Template: User Account (UID > 1010)"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/test_uid1200.xml:11
+#, no-wrap
+msgid "Test Template: User Account (UID > 1200)"
+msgstr ""
+
+# type: Content of: <template><title>
+#: ../../templates/creation/test_invalidoc2.xml:11
+#, no-wrap
+msgid "Test Template: Valid and Invalid Object Class"
+msgstr ""
+
+#: ../../htdocs/create.php:51 ../../htdocs/create_confirm.php:45
+#, fuzzy
+msgid "The RDN field is empty?"
+msgstr "Il file LDIF caricato è vuoto."
+
+#: ../../htdocs/delete_attr.php:25
 #, php-format
 msgid ""
 "The attribute \"%s\" is flagged as read-only in the phpLDAPadmin "
@@ -1608,78 +2961,71 @@ msgstr ""
 "L'attributo \"%s\" è etichettato in sola lettura nella configurazione di "
 "phpLDAPadmin."
 
-#: ../../htdocs/add_value_form.php:74
-#, php-format
-msgid "The attribute (%s) is in readonly mode."
-msgstr "L'attributo (%s) è in modalità sola lettura."
-
-#: ../../lib/ldif_functions.php:410
-msgid "The attribute name should be add, delete or replace"
-msgstr ""
-"Il nome dell'attributo dovrebbe essere aggiunto, eliminato o sostituito"
-
-#: ../../lib/ldif_functions.php:514
-msgid "The attribute name should be newsuperior"
-msgstr "Il nome dell'attributo dovrebbe essere newsuperior"
-
-#: ../../lib/ldif_functions.php:448
-#, php-format
-msgid ""
-"The attribute to modify doesnt match the one specified by the %s attribute."
+#: ../../lib/import_functions.php:538
+#, fuzzy
+msgid "The attribute to modify doesnt match the one specified by"
 msgstr ""
 "L'attributo da modificare non corrisponde a quello specificato "
 "dall'attributo %s."
 
-#: ../../htdocs/create.php:49
+#: ../../htdocs/delete_attr.php:36
+#, fuzzy
+msgid "The attribute value does not exist"
+msgstr "L'attributo Rdn (%s) non esiste."
+
+#: ../../htdocs/cmd.php:57
+msgid "The command could not be run"
+msgstr ""
+
+#: ../../htdocs/create.php:45 ../../htdocs/create_confirm.php:39
 #, php-format
 msgid "The container (%s) is a leaf."
 msgstr "Il contenitore (%s) è una folgia."
 
-#: ../../lib/EntryWriter1.php:213
-#, php-format
-msgid "The container you specified (%s) does not exist."
-msgstr "Il contenitore specificato (%s) non esiste."
-
-#: ../../htdocs/create.php:39
+#: ../../htdocs/create.php:34 ../../htdocs/create_confirm.php:28
 #, php-format
 msgid "The container you specified (%s) does not exist. Please try again."
 msgstr "Il contenitore specificato (%s) non esiste. Riprovare."
 
-#: ../../htdocs/update_confirm.php:315
+#: ../../htdocs/update_confirm.php:194
 msgid "The deletion of objectClass(es)"
 msgstr "L'eliminazione di objectClass"
 
-#: ../../htdocs/copy.php:50
+#: ../../htdocs/copy.php:39
 #, php-format
 msgid "The destination container (%s) does not exist."
 msgstr "Il container di destinazione (%s) non esiste."
 
-#: ../../htdocs/copy.php:47
+#: ../../htdocs/copy.php:36
 #, php-format
 msgid "The destination entry (%s) already exists."
 msgstr "La voce di destinazione (%s) esiste già."
 
-#: ../../htdocs/add_value_form.php:37 ../../htdocs/update_confirm.php:29
+#: ../../htdocs/add_attr_form.php:22 ../../htdocs/add_oclass_form.php:26
+#: ../../htdocs/add_value_form.php:24 ../../htdocs/compare_form.php:23
+#: ../../htdocs/copy_form.php:22 ../../htdocs/download_binary_attr.php:26
+#: ../../htdocs/update.php:29 ../../htdocs/update_confirm.php:25
 #, php-format
 msgid "The entry (%s) does not exist."
 msgstr "La voce (%s) non esiste."
 
-#: ../../htdocs/add_value_form.php:55 ../../htdocs/update_confirm.php:43
-#, php-format
-msgid "The entry (%s) is in readonly mode."
-msgstr "La voce (%s) è in modalità sola lettura."
+#: ../../htdocs/delete_form.php:24
+#, fuzzy
+msgid "The entry does not exist"
+msgstr "Questa voce non esiste."
 
-#: ../../lib/ldif_functions.php:483
-msgid "The entry is not valid"
-msgstr "La voce non è valida"
+#: ../../htdocs/mass_delete.php:36 ../../htdocs/mass_edit.php:28
+#: ../../htdocs/mass_update.php:27
+#, fuzzy
+msgid "The entry does not exist and will be ignored"
+msgstr "Questa voce non esiste."
 
-#: ../../htdocs/add_attr.php:56
-msgid ""
-"The file you chose is either empty or does not exist. Please go back and try "
-"again."
+#: ../../lib/Template.php:449
+#, fuzzy
+msgid "The file you chose is either empty or does not exist."
 msgstr "Il file scelto è vuoto o non esiste. Torna indietro e riprova."
 
-#: ../../htdocs/add_attr.php:75
+#: ../../lib/Template.php:387 ../../lib/Template.php:474
 msgid ""
 "The file you selected was only partially uploaded, likley due to a network "
 "error."
@@ -1687,7 +3033,8 @@ msgstr ""
 "Il file selezionato è stato caricato solo parzialmente, probabilmente a "
 "causa di un errore di rete."
 
-#: ../../htdocs/add_attr.php:67 ../../htdocs/add_attr.php:71
+#: ../../lib/Template.php:377 ../../lib/Template.php:382
+#: ../../lib/Template.php:464 ../../lib/Template.php:469
 msgid ""
 "The file you uploaded is too large. Please check php.ini, upload_max_size "
 "setting"
@@ -1695,267 +3042,466 @@ msgstr ""
 "Il file caricato è troppo grande. Controlla il parametro upload_max_size nel "
 "file php.ini"
 
-#: ../../htdocs/copy_form.php:64
+#: ../../lib/QueryRender.php:102
+msgid "The format to show the query results"
+msgstr ""
+
+#: ../../htdocs/copy_form.php:46
 msgid ""
 "The full DN of the new entry to be created when copying the source entry"
 msgstr "Il DN completo della voce da creare quando si copia la voce di origine"
 
-#: ../../lib/search_form_advanced.php:79
+#: ../../lib/ds_ldap.php:347
+msgid "The query was cancelled because of an invalid base."
+msgstr ""
+
+#: ../../lib/QueryRender.php:145
 msgid "The scope in which to search"
 msgstr "Dove cercare"
 
-#: ../../htdocs/search.php:371
-msgid "The search found no results."
-msgstr "La ricerca non ha dato risultati."
+#: ../../lib/functions.php:1403
+msgid ""
+"The search attribute for AUTO_NUMBER is invalid, expecting a single valid "
+"attribute."
+msgstr ""
 
-#: ../../htdocs/schema.php:32
+#: ../../htdocs/schema.php:35
 msgid "The server does not fully support the LDAP protocol."
 msgstr "Il server non supporta pienamente il protocollo LDAP."
 
-#: ../../htdocs/copy.php:44
+#: ../../htdocs/copy.php:43
 msgid "The source and destination DN are the same."
 msgstr "I DN origine e destinazione sono gli stessi."
 
-#: ../../lib/ldif_functions.php:333
-msgid "The url attribute value should begin with file:///"
+#: ../../lib/AttributeFactory.php:32 ../../lib/AttributeFactory.php:74
+msgid "The template function is not known and will be ignored."
+msgstr ""
+
+#: ../../lib/AttributeFactory.php:46
+msgid "The template helper function is not known and will be ignored."
+msgstr ""
+
+#: ../../lib/import_functions.php:403
+#, fuzzy
+msgid "The url attribute value should begin with file:// for"
 msgstr "Il valore dell'attributo url dovrebbe cominciare con file:///"
 
-#: ../../htdocs/modify_member_form.php:75
+#: ../../htdocs/create.php:49 ../../htdocs/create_confirm.php:43
+msgid "The were no attributes marked as an RDN attribute."
+msgstr ""
+
+#: ../../htdocs/modify_member_form.php:63
 msgid "There are"
 msgstr "Ci sono"
 
-#: ../../lib/functions.php:1262
-msgid "There is more than one dn for uidpool,please change filter parameter"
-msgstr "C'è più di un dn per uidpool, si cambino i parametri del filtro"
-
-#: ../../htdocs/add_oclass_form.php:76
-msgid "This action requires you to add"
-msgstr "Questa azione richiede che tu aggiunga"
-
-#: ../../htdocs/compare.php:179 ../../lib/EntryWriter1.php:1514
-#: ../../lib/EntryWriter2.php:210
-msgid ""
-"This attribute has been flagged as read only by the phpLDAPadmin "
-"administrator"
+#: ../../lib/Template.php:735
+#, php-format
+msgid "There is a problem in template [%s]."
 msgstr ""
-"Questo attributo è stato etichettato in sola lettura dall'amministratore di "
-"phpLDAPadmin."
 
-#: ../../lib/EntryWriter1.php:1429
+#: ../../lib/Template.php:1000
+msgid "There is only 1 argument, when there should be two"
+msgstr ""
+
+#: ../../htdocs/mass_update.php:81
+#, php-format
+msgid "There will be %s updates done with this mass update"
+msgstr ""
+
+#: ../../htdocs/schema.php:689
+#, fuzzy
+msgid "This attribute has been forced as a MAY attribute by the configuration"
+msgstr "Questa operazione non è consentita dalla configurazione"
+
+#: ../../lib/PageRender.php:444
+#, fuzzy
+msgid "This attribute has been marked as Read Only."
+msgstr "Questo attributo è richiesto per l'RDN."
+
+#: ../../lib/PageRender.php:339
+#, fuzzy
+msgid "This attribute is not defined in the LDAP schema"
+msgstr "Questo attributo è richiesto per l'RDN."
+
+#: ../../lib/TemplateRender.php:1949
 msgid "This attribute is required"
 msgstr "Questo attributo è richiesto"
 
-#: ../../lib/EntryWriter1.php:1958
+#: ../../lib/PageRender.php:424
 msgid "This attribute is required for the RDN."
 msgstr "Questo attributo è richiesto per l'RDN."
 
-#: ../../lib/HTMLTree.php:66
+#: ../../lib/HTMLTree.php:102
 msgid "This base entry does not exist."
 msgstr "Questa voce base non esiste."
 
-#: ../../htdocs/schema.php:32
+#: ../../htdocs/schema.php:35
 msgid "This could happen for several reasons, the most probable of which are:"
 msgstr "Questo potrebbe accadere per vari motivi, i cui più probabili sono:"
 
-#: ../../lib/search_form_advanced.php:73
-msgid "This entry does not exist."
-msgstr "Questa voce non esiste."
-
-#: ../../htdocs/compare.php:77
+#: ../../htdocs/compare.php:79
 msgid "This entry has no attributes"
 msgstr "Questa voce non ha attributi."
 
-#: ../../htdocs/delete_form.php:46
+#: ../../htdocs/delete_form.php:54
 #, php-format
 msgid "This entry is the root of a sub-tree containing %s entries."
 msgstr "Questa voce è la radice di un sotto albero contenente %s voci."
 
-#: ../../htdocs/compare.php:436 ../../lib/EntryWriter1.php:2296
-#, php-format
+#: ../../htdocs/index.php:130
+msgid "This is a development version of phpLDAPadmin"
+msgstr ""
+
+#: ../../lib/PageRender.php:829
 msgid "This is a structural ObjectClass and cannot be removed."
 msgstr "Questo è un ObjectClass strutturale e non può essere rimosso."
 
-#: ../../lib/search_form_advanced.php:70
-msgid "This is not a valid DN."
-msgstr "Questo non è un RDN valido."
+#: ../../templates/creation/example.xml:6
+#, fuzzy, no-wrap
+msgid "This is the description"
+msgstr "nessuna descrizione"
 
-#: ../../htdocs/schema.php:408
+#: ../../htdocs/schema.php:577
 msgid "This objectClass is obsolete."
 msgstr "Questa objectClass è obsoleta."
 
-#: ../../htdocs/add_attr.php:25 ../../htdocs/add_value.php:24
-#: ../../htdocs/add_value_form.php:76 ../../htdocs/add_value_form.php:78
-#: ../../htdocs/copy.php:20 ../../htdocs/create.php:25
-#: ../../htdocs/delete.php:21 ../../htdocs/delete_attr.php:21
-#: ../../htdocs/export.php:18 ../../htdocs/ldif_import.php:19
-#: ../../htdocs/mass_delete.php:26 ../../htdocs/purge_cache.php:13
-#: ../../htdocs/rdelete.php:21 ../../htdocs/refresh.php:17
-#: ../../htdocs/rename.php:24 ../../htdocs/schema.php:20
-#: ../../htdocs/search.php:120 ../../htdocs/search.php:124
-#: ../../htdocs/search.php:128 ../../htdocs/server_info.php:16
-#: ../../htdocs/update.php:61 ../../htdocs/update.php:67
-#: ../../htdocs/update.php:80
+#: ../../htdocs/rdelete.php:17 ../../htdocs/copy.php:27
+#: ../../htdocs/create.php:23 ../../htdocs/delete.php:24
+#: ../../htdocs/delete_attr.php:17 ../../htdocs/export.php:18
+#: ../../htdocs/import.php:18 ../../htdocs/rename.php:24
+#: ../../htdocs/create_confirm.php:17
 msgid "This operation is not permitted by the configuration"
 msgstr "Questa operazione non è consentita dalla configurazione"
 
-#: ../../htdocs/server_info.php:71
+#: ../../htdocs/mass_delete.php:91
+#, php-format
+msgid "This request also includes %s children entries."
+msgstr ""
+
+#: ../../htdocs/server_info.php:23
 msgid "This server has nothing to report."
 msgstr "Questo server non ha niente da dichiarare."
 
-#: ../../lib/EntryWriter1.php:1074
-msgid "This template is not allowed in this container."
+#: ../../lib/TemplateRender.php:614
+#, fuzzy
+msgid "This template is not valid in this container"
 msgstr "Questo modello non è permesso in questo contenitore."
 
-#: ../../htdocs/login_form.php:28
+#: ../../lib/ds_ldap_pla.php:691
+msgid ""
+"This update has been or will be cancelled, it would result in an attribute "
+"value not being unique. You might like to search the LDAP server for the "
+"offending entry."
+msgstr ""
+
+#: ../../htdocs/login_form.php:26
 msgid "This web connection is unencrypted"
 msgstr "Questa connessione web non è crittografata"
 
-#: ../../htdocs/password_checker.php:39
+# type: Content of: <template><title>
+#: ../../templates/creation/mozillaOrgPerson.xml:11
+#, no-wrap
+msgid "Thunderbird: Address Book Entry"
+msgstr ""
+
+#: ../../templates/creation/kolabPerson.xml:47
+#, fuzzy, no-wrap
+msgid "Title"
+msgstr "File"
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:103
+#, no-wrap
+msgid "Title (professional)"
+msgstr ""
+
+#: ../../htdocs/password_checker.php:45
 msgid "To"
 msgstr "A"
 
-#: ../../htdocs/timeout.php:36
-msgid "To log back in please click on the following link:"
-msgstr "Per riaccedere cliccare sul seguente link:"
+#: ../../lib/TemplateRender.php:130 ../../lib/TemplateRender.php:2097
+#: ../../lib/TemplateRender.php:2108 ../../lib/TemplateRender.php:2119
+msgid "Too many arguments"
+msgstr ""
 
-#: ../../lib/export_functions.php:199
+#: ../../htdocs/monitor.php:136
+#, fuzzy
+msgid "Total Connections"
+msgstr "Voci Totali"
+
+#: ../../lib/export_functions.php:209
 msgid "Total Entries"
 msgstr "Voci Totali"
 
-#: ../../lib/EntryWriter1.php:762
+#: ../../lib/TemplateRender.php:1175 ../../lib/TemplateRender.php:1179
 msgid "Trash"
 msgstr "Cestino"
 
-#: ../../htdocs/schema.php:405
+#: ../../htdocs/schema.php:574 ../../htdocs/monitor.php:67
 msgid "Type"
 msgstr "Tipo"
 
-#: ../../lib/EntryWriter1.php:1886
+#: ../../templates/creation/posixAccount.xml:55
+#: ../../templates/creation/courierMailAccount.xml:49
+#: ../../templates/creation/sambaMachine.xml:30
+#: ../../templates/creation/sambaSamAccount.xml:56
+#: ../../templates/creation/test_uid1200.xml:55
+#: ../../templates/creation/test_uid1010.xml:55
+#: ../../templates/creation/test_picklist.xml:38
+#: ../../templates/modification/sambaSamAccount.xml:56
+#, fuzzy, no-wrap
+msgid "UID Number"
+msgstr "Linea Numero"
+
+#: ../../lib/ds_ldap_pla.php:654
+msgid "UNIQUE invalid login/password"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:1855
 msgid "URL"
 msgstr "URL"
 
-#: ../../lib/functions.php:1259
-msgid "Uidpool dn not found, please change filter parameter"
-msgstr "dn uidpool non trovato, si cambino i parametri del filtro"
+#: ../../lib/ds_ldap.php:219
+#, fuzzy
+msgid "Unable to connect to LDAP server"
+msgstr "Impossibile collegarsi al server LDAP."
 
-#: ../../lib/functions.php:1180 ../../lib/functions.php:1244
-#, php-format
+#: ../../lib/functions.php:1368
+#, fuzzy
 msgid ""
-"Unable to bind to <b>%s</b> with your with auto_uid credentials. Please "
-"check your configuration file."
+"Unable to connect to LDAP server with the auto_number login/password, please "
+"check your configuration."
 msgstr ""
 "Impossibile fare il bind su <b>%s</b> con le credenziali auto_uid. Si "
 "controlli il file di configurazione."
 
-#: ../../lib/server_functions.php:2734
-#, php-format
+#: ../../lib/ds_ldap_pla.php:655
+#, fuzzy
 msgid ""
-"Unable to bind to <b>%s</b> with your with unique_attrs credentials. Please "
-"check your configuration file."
+"Unable to connect to LDAP server with the unique login/password, please "
+"check your configuration."
 msgstr ""
 "Impossibile fare il bind su <b>%s</b> con le credenziali unique_attrs. Si "
 "controlli il file di configurazione."
 
-#: ../../htdocs/mass_delete.php:23
-msgid "Unable to delete, server is in READY-ONLY mode."
-msgstr "Impossibile da eliminare, il server è in modalità SOLA LETTURA."
+#: ../../htdocs/rdelete.php:30
+#, fuzzy
+msgid "Unable to delete entry, it does not exist"
+msgstr "La voce (%s) non esiste."
 
-#: ../../lib/ldif_functions.php:327
-msgid "Unable to open file"
+#: ../../lib/PageRender.php:216 ../../lib/PageRender.php:233
+msgid "Unable to get the attribute value for PasswordEncrypt()"
+msgstr ""
+
+#: ../../lib/ds.php:250 ../../lib/ds.php:275 ../../lib/ds.php:286
+#, fuzzy
+msgid "Unable to login."
 msgstr "Impossibile aprire il file"
 
-#: ../../lib/ldif_functions.php:320
-msgid "Unable to read file"
+#: ../../lib/import_functions.php:400
+#, fuzzy
+msgid "Unable to open file for"
+msgstr "Impossibile aprire il file"
+
+#: ../../lib/import_functions.php:395
+#, fuzzy
+msgid "Unable to read file for"
 msgstr "Impossibile apire il file"
 
-#: ../../htdocs/login_form.php:17 ../../htdocs/logout.php:30
-#: ../../lib/server_functions.php:1973 ../../lib/server_functions.php:2045
-#: ../../lib/server_functions.php:2339 ../../lib/server_functions.php:2450
-#, php-format
-msgid "Unknown auth_type: %s"
+#: ../../lib/functions.php:1988
+#, fuzzy
+msgid "Unable to retrieve image"
+msgstr "Impossibile apire il file"
+
+#: ../../lib/ds_ldap.php:634 ../../lib/ds_ldap.php:648
+#: ../../lib/ds_ldap.php:682 ../../lib/ds_ldap.php:700
+msgid "Unable to start proxy connection"
+msgstr ""
+
+#: ../../lib/functions.php:2006
+msgid "Unable to write to jpeg tmp directory"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:100
+msgid "Unknown Default Attribute context"
+msgstr ""
+
+#: ../../lib/export_functions.php:72
+#, fuzzy
+msgid "Unknown Export Type"
 msgstr "auth_type sconosciuto: %s"
 
-#: ../../htdocs/search.php:214
-msgid "Unrecognized criteria option: "
-msgstr "Opzione del criterio non riconosciuta: "
+#: ../../lib/import_functions.php:54
+#, fuzzy
+msgid "Unknown Import Type"
+msgstr "auth_type sconosciuto: %s"
 
-#: ../../lib/functions.php:124
+#: ../../lib/Attribute.php:535 ../../lib/Attribute.php:557
+#: ../../lib/Attribute.php:570 ../../lib/Attribute.php:615
+msgid "Unknown XML setting"
+msgstr ""
+
+#: ../../lib/Attribute.php:536
+msgid "Unknown XML type setting for helper will be ignored."
+msgstr ""
+
+#: ../../lib/Attribute.php:558 ../../lib/Attribute.php:571
+msgid "Unknown XML type setting will be ignored."
+msgstr ""
+
+#: ../../lib/Attribute.php:616
+msgid "Unknown attribute setting will be ignored."
+msgstr ""
+
+#: ../../lib/AttributeFactory.php:31
+#, fuzzy
+msgid "Unknown template [post] function"
+msgstr "Il modello ha una funzione post sconosciuta (%s)."
+
+#: ../../lib/AttributeFactory.php:73
+msgid "Unknown template function"
+msgstr ""
+
+#: ../../lib/AttributeFactory.php:45
+msgid "Unknown template helper function"
+msgstr ""
+
+#: ../../lib/import_functions.php:240
+#, fuzzy
+msgid "Unkown change type"
+msgstr "auth_type sconosciuto: %s"
+
+#: ../../lib/functions.php:160
 msgid "Unrecognized error number"
 msgstr "Numero d'errore non riconosciuto"
 
-#: ../../htdocs/search.php:383
-#, php-format
-msgid "Unrecognized search result format: %s"
-msgstr "Formato di ricerca non riconosciuto: %s"
+#: ../../lib/TemplateRender.php:1433
+#, fuzzy
+msgid "Update Object"
+msgstr "Crea l'Oggetto"
 
-#: ../../htdocs/view_jpeg_photo.php:18
-msgid "Unsafe file name"
-msgstr "Nome del file non sicuro"
+#: ../../htdocs/mass_edit.php:126 ../../htdocs/mass_update.php:166
+#, fuzzy
+msgid "Update Values"
+msgstr "Vecchio Valore"
 
-#: ../../htdocs/ldif_import.php:42
-msgid "Uploaded LDIF file is empty."
-msgstr "Il file LDIF caricato è vuoto."
+#: ../../lib/Template.php:405 ../../lib/Template.php:448
+#: ../../lib/Template.php:492
+#, fuzzy
+msgid "Upload Binary Attribute Error"
+msgstr "Aggiungi un nuovo attributo binario"
 
-#: ../../htdocs/schema.php:106
+#: ../../htdocs/schema.php:174
 msgid "Usage"
 msgstr "Utilizzo"
 
-#: ../../htdocs/welcome.php:18
+#: ../../htdocs/welcome.php:20
 msgid "Use the menu to the left to navigate"
 msgstr "Usa il menù sulla sinistra per spostarti"
 
-#: ../../htdocs/schema.php:316
+#: ../../htdocs/schema.php:454
 msgid "Used by Attributes"
 msgstr "Usato dagli Attributi"
 
-#: ../../htdocs/schema.php:109
+#: ../../htdocs/schema.php:177
 msgid "Used by objectClasses"
 msgstr "Usato da objectClass"
 
-#: ../../htdocs/schema.php:105
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/alias.xml:27
+#: ../../templates/creation/posixAccount.xml:42
+#: ../../templates/creation/courierMailAccount.xml:41
+#: ../../templates/creation/sambaSamAccount.xml:49
+#: ../../templates/creation/test_uid1200.xml:42
+#: ../../templates/creation/test_uid1010.xml:42
+#: ../../templates/creation/test_extensible.xml:27
+#: ../../templates/modification/sambaSamAccount.xml:49
+#, no-wrap
+msgid "User ID"
+msgstr ""
+
+#: ../../htdocs/schema.php:173
 msgid "User Modification"
 msgstr "Modifica Utente"
 
-#: ../../lib/EntryWriter1.php:797
+#: ../../templates/creation/simpleSecurityObject.xml:21
+#: ../../templates/creation/test_randompassword.xml:21
+#, fuzzy, no-wrap
+msgid "User Name"
+msgstr "Nome"
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/test_normal.xml:65
+#, no-wrap
+msgid "UserPassword (Verify)"
+msgstr ""
+
+#: ../../templates/creation/posixGroup.xml:34
+#: ../../templates/creation/sambaGroupMapping.xml:60
+#: ../../templates/creation/test_multilist.xml:34
+#: ../../templates/modification/posixGroup.xml:34
+#, fuzzy, no-wrap
+msgid "Users"
+msgstr "Utilizzo"
+
+#: ../../lib/export_functions.php:550
+msgid "VCARD 2.1 Export"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:1252 ../../lib/TemplateRender.php:1256
 #, php-format
 msgid "View %s children"
 msgstr "Visualizza %s come figlio"
 
-#: ../../lib/EntryWriter1.php:797
+#: ../../lib/TemplateRender.php:1252 ../../lib/TemplateRender.php:1256
 msgid "View 1 child"
 msgstr "Visualizza 1 figlio"
 
-#: ../../lib/HTMLTree.php:219
+#: ../../lib/HTMLTree.php:207
 msgid "View schema for"
 msgstr "Visualizza lo schema per"
 
-#: ../../lib/HTMLTree.php:243
-msgid "View server-supplied information"
-msgstr "Visualizza le informazioni fornite dal server"
+#: ../../lib/TemplateRender.php:1250 ../../lib/TemplateRender.php:1255
+#, fuzzy
+msgid "View the children of this object"
+msgstr "Visualizza la descrizione dello schema per questa objectClass"
 
-#: ../../htdocs/compare.php:431 ../../lib/EntryWriter1.php:2308
+#: ../../lib/TemplateRender.php:2294
 msgid "View the schema description for this objectClass"
 msgstr "Visualizza la descrizione dello schema per questa objectClass"
 
-#: ../../lib/EntryWriter1.php:819
+#: ../../lib/TemplateRender.php:1089
 msgid "Viewing entry in read-only mode."
 msgstr "Stai guardando la voce in modalità sola lettura."
 
-#: ../../lib/page.php:62
+#: ../../lib/page.php:72
+#, fuzzy
 msgid ""
-"WARNING: You cannot have PHP compression and phpLDAPadmin compression "
-"enabled at the same time. Please unset zlib.output_compression or set "
-"$config->custom->appearance['compress']=false"
+"WARNING: You cannot have PHP compression and application compression enabled "
+"at the same time. Please unset zlib.output_compression or set $config-"
+">custom->appearance['compress']=false"
 msgstr ""
 "AVVISO: Non è possibile avere abilitata la compressione sia a livello di PHP "
 "che a livello di phpLDAPadmin. Si disabiliti zlib.output_compression o si "
 "abiliti $config->custom->appearance['compress']=false"
 
-#: ../../htdocs/login_form.php:28 ../../lib/page.php:62
+#: ../../lib/page.php:72 ../../htdocs/login_form.php:26
 msgid "Warning"
 msgstr "Attenzione"
 
-#: ../../htdocs/copy_form.php:81
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:135
+#, no-wrap
+msgid "Web Page (professional)"
+msgstr ""
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:98
+#, no-wrap
+msgid "Web page (personal)"
+msgstr ""
+
+#: ../../htdocs/copy_form.php:70
 msgid ""
 "When performing a recursive copy, only copy those entries which match this "
 "filter"
@@ -1963,16 +3509,33 @@ msgstr ""
 "Quando si esegue una copia ricorsiva, copia solo le voci che corrispondono a "
 "questo filtro"
 
-#: ../../htdocs/schema.php:165 ../../htdocs/schema.php:222
-#: ../../htdocs/schema.php:226 ../../htdocs/schema.php:230
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/sambaGroupMapping.xml:26
+#, no-wrap
+msgid "Windows Name"
+msgstr ""
+
+#: ../../templates/creation/mozillaOrgPerson.xml:57
+#, fuzzy, no-wrap
+msgid "Work Phone Number"
+msgstr "Linea Numero"
+
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/organizationalRole.xml:25
+#: ../../templates/creation/inetOrgPerson.xml:74
+#: ../../templates/creation/kolabPerson.xml:95
+#: ../../templates/modification/inetOrgPerson.xml:75
+#, no-wrap
+msgid "Work phone"
+msgstr ""
+
+#: ../../htdocs/schema.php:257 ../../htdocs/schema.php:325
+#: ../../htdocs/schema.php:329 ../../htdocs/schema.php:333
+#: ../../htdocs/schema.php:392
 msgid "Yes"
 msgstr "Sì"
 
-#: ../../htdocs/mass_delete.php:107
-msgid "Yes, delete!"
-msgstr "Sì, eliminalo!"
-
-#: ../../htdocs/login_form.php:27
+#: ../../htdocs/login_form.php:25
 msgid ""
 "You are not using 'https'. Web browser will transmit login information in "
 "clear text."
@@ -1980,16 +3543,7 @@ msgstr ""
 "Non si sta usando 'https'. Il browser web trasmetterà le informazioni in "
 "chiaro."
 
-#: ../../htdocs/add_attr.php:22 ../../htdocs/add_attr_form.php:18
-#: ../../htdocs/add_oclass.php:23 ../../htdocs/add_oclass_form.php:27
-#: ../../htdocs/add_value.php:21 ../../htdocs/add_value_form.php:16
-#: ../../htdocs/copy_form.php:18 ../../htdocs/create.php:22
-#: ../../htdocs/delete.php:18 ../../htdocs/delete_attr.php:18
-#: ../../htdocs/delete_form.php:19 ../../htdocs/download_binary_attr.php:15
-#: ../../htdocs/ldif_import_form.php:19 ../../htdocs/modify_member_form.php:21
-#: ../../htdocs/rdelete.php:18 ../../htdocs/rename.php:21
-#: ../../htdocs/rename_form.php:20 ../../htdocs/template_engine.php:54
-#: ../../htdocs/update.php:39 ../../htdocs/update_confirm.php:19
+#: ../../htdocs/cmd.php:52 ../../htdocs/template_engine.php:54
 msgid "You cannot perform updates while server is in read-only mode"
 msgstr ""
 "Non è possibile eseguire aggiornamenti quando il server è in modalità sola "
@@ -2003,88 +3557,50 @@ msgstr ""
 "Non è possibile rinominare una voce che ha voci figlie (ad esempio, "
 "l'operazione di rinomina non è consentita su voci non figlie)"
 
-#: ../../htdocs/rename.php:39
+#: ../../htdocs/rename.php:37
 msgid "You did not change the RDN"
 msgstr "Non è stato cambiato il RDN"
 
-#: ../../htdocs/add_oclass_form.php:30
-msgid ""
-"You did not select any ObjectClasses for this object. Please go back and do "
-"so."
-msgstr ""
-"Non è stato selezionato nessun ObjectClasses per questo oggetto. Si torni "
-"indietro e lo si selezioni."
-
-#: ../../htdocs/mass_delete.php:55
-msgid "You did not select any entries to delete."
-msgstr "Non è stata selezionata nessuna voce da eliminare."
-
-#: ../../lib/EntryWriter1.php:218
-msgid "You did not select any objectClasses for this object."
-msgstr "Non è stata selezionata nessuna objectClass per questo oggetto."
-
-#: ../../lib/functions.php:146
+#: ../../lib/functions.php:182
 msgid "You found a non-fatal phpLDAPadmin bug!"
 msgstr "Hai trovato un baco non grave di phpLDAPadmin!"
 
-#: ../../htdocs/search.php:149
+#: ../../lib/common.php:200
 msgid ""
-"You have not logged into the selected server yet, so you cannot perform "
-"searches on it."
+"You have PHP Safe Mode enabled. This application may work unexpectedly in "
+"Safe Mode."
 msgstr ""
-"Non ci si è ancora autenticati sul server selezionato, quindi non è "
-"possibile eseguirvi ricerche."
 
-#: ../../lib/EntryReader.php:360 ../../lib/EntryReader.php:382
-msgid "You have specified two different passwords"
-msgstr "Sono state specificate due password diverse"
-
-#: ../../htdocs/create.php:58
-msgid "You left the RDN field blank."
-msgstr "Il campo RDN è stato lasciato vuoto."
-
-#: ../../htdocs/add_attr.php:37 ../../htdocs/add_attr.php:79
+#: ../../lib/Template.php:392 ../../lib/Template.php:479
 msgid "You left the attribute value blank. Please go back and try again."
 msgstr ""
 "Il valore dell'attributo è stato lasciato vuoto. Si torni indietro e si "
 "riprovi."
 
-#: ../../htdocs/copy.php:41
+#: ../../htdocs/copy.php:30
 msgid "You left the destination DN blank."
 msgstr "Il DN di destinazione è stato lasciato vuoto."
 
-#: ../../htdocs/login.php:27
+#: ../../htdocs/login.php:23
 msgid "You left the password blank."
 msgstr "La password è stata lasciata vuota."
 
-#: ../../htdocs/create.php:73
+#: ../../htdocs/create.php:58 ../../htdocs/create_confirm.php:52
 #, php-format
 msgid "You left the value blank for required attribute (%s)."
 msgstr "Il valore è stato lasciato vuoto per l'attributo richiesto (%s)."
 
-#: ../../htdocs/update_confirm.php:335
+#: ../../htdocs/update_confirm.php:214 ../../htdocs/mass_update.php:172
+#: ../../htdocs/create_confirm.php:127
 msgid "You made no changes"
 msgstr "Non sono state fatte modifiche"
 
-#: ../../htdocs/export.php:43
-msgid "You must choose an export format."
-msgstr "Si deve scegliere un formato d'esportazione."
-
-#: ../../htdocs/ldif_import.php:47
-msgid "You must either upload a file or provide an LDIF in the text box."
+#: ../../lib/import_functions.php:102
+#, fuzzy
+msgid "You must either upload a file or provide an import in the text box."
 msgstr "Si deve caricare un file o fornire un LDIF nel campo testuale."
 
-#: ../../htdocs/delete.php:26 ../../htdocs/rdelete.php:25
-msgid "You must specify a DN"
-msgstr "Si deve specificare un DN"
-
-#: ../../htdocs/compare.php:528
-#, php-format
-msgid "You need one of the following ObjectClass(es) to add this attribute %s."
-msgstr ""
-"Serve una della/e seguente/i ObjectClass per aggiungere questo attributo: %s."
-
-#: ../../htdocs/index.php:88
+#: ../../htdocs/index.php:106
 #, php-format
 msgid ""
 "You need to configure %s. Edit the file \"%s\" to do so. An example config "
@@ -2093,37 +3609,20 @@ msgstr ""
 "Bisogna configurare %s. Si editi il file \"%s\" per farlo. Un file di "
 "configurazione di esempio è fornito in \"%s.example\"."
 
-#: ../../lib/functions.php:1292
-#, php-format
-msgid ""
-"You specified an invalid value for auto_uid_number_mechanism (\"%s\")\n"
-"\t\t\t\tin your configration. Only \"uidpool\" and \"search\" are valid.\n"
-"\t\t\t\tPlease correct this problem."
-msgstr ""
-"E' stato specificato un valore non valido per auto_uid_number_mechanism (\"%s"
-"\")\n"
-"\t\t\t\tnella configurazione. Solo \"uidpool\" e \"search\" sono ammessi.\n"
-"\t\t\t\tSi corregga questo problema."
-
-#: ../../lib/functions.php:1159
-#, php-format
-msgid ""
-"You specified the \"auto_uid_number_mechanism\" as \"search\" in your\n"
-"\t\t\t\t\t\tconfiguration for server <b>%s</b>, but you did not specify the\n"
-"\t\t\t\t\t\t\"auto_uid_number_search_base\". Please specify it before "
-"proceeding."
-msgstr ""
-"E' stato specificato \"auto_uid_number_mechanism\" come \"search\" nella\n"
-"\t\t\t\t\t\tconfigurazione per il server <b>%s</b>, ma non è stato "
-"specificato\n"
-"\t\t\t\t\t\t\"auto_uid_number_search_base\". Lo si specifichi prima di "
-"continuare."
-
-#: ../../lib/EntryWriter1.php:763
+#: ../../lib/TemplateRender.php:1176 ../../lib/TemplateRender.php:1180
 msgid "You will be prompted to confirm this decision"
 msgstr "Ti sarà richiesto di confermare questa decisione"
 
-#: ../../htdocs/add_attr_form.php:151
+#: ../../lib/ds.php:287
+msgid "Your HTTP based authentication is not accepted by the LDAP server"
+msgstr ""
+
+#: ../../lib/ds_ldap.php:635
+#, fuzzy
+msgid "Your LDAP server doesnt seem to support this control"
+msgstr "O, per lo meno, il server LDAP non fornisce questa informazione."
+
+#: ../../htdocs/add_attr_form.php:124
 msgid ""
 "Your PHP configuration has disabled file uploads. Please check php.ini "
 "before proceeding."
@@ -2131,28 +3630,31 @@ msgstr ""
 "Nella configurazione di PHP è disabilitato il caricamento di file. Si "
 "controlli il file php.ini prima di continuare."
 
-#: ../../lib/functions.php:1975 ../../lib/functions.php:1986
-#: ../../lib/functions.php:1997 ../../lib/functions.php:2045
-#: ../../lib/functions.php:2063
+#: ../../lib/functions.php:2146 ../../lib/functions.php:2220
+#: ../../lib/functions.php:2239
 msgid ""
 "Your PHP install does not have the mhash() function. Cannot do SHA hashes."
 msgstr ""
 "L'installazione di PHP non dispone della funzione mhash(). Non è possibile "
 "eseguire hash SHA."
 
-#: ../../lib/server_functions.php:262
-msgid "Your PHP install does not support TLS."
-msgstr "L'installazione di PHP non supporta TLS."
-
-#: ../../lib/server_functions.php:277
-msgid ""
-"Your PHP installation does not support ldap_sasl_bind() function. This "
-"function is present in PHP 5.x when compiled with --with-ldap-sasl."
+#: ../../lib/createlm.php:357
+#, fuzzy
+msgid "Your PHP install does not have the mhash() function. Cannot do hashes."
 msgstr ""
-"L'installazione di PHP non supporta la funzione ldap_sasl_bind(). Questa "
-"funzione è presente in PHP 5.x quando compilato con --with-ldap-sasl."
+"L'installazione di PHP non dispone della funzione mhash(). Non è possibile "
+"eseguire hash SHA."
 
-#: ../../htdocs/ldif_import_form.php:16
+#: ../../lib/functions.php:2157 ../../lib/functions.php:2169
+#, fuzzy
+msgid ""
+"Your PHP install does not have the mhash() or mhash_keygen_s2k() function. "
+"Cannot do S2K hashes."
+msgstr ""
+"L'installazione di PHP non dispone della funzione mhash(). Non è possibile "
+"eseguire hash SHA."
+
+#: ../../htdocs/import_form.php:18
 msgid ""
 "Your PHP.INI does not have file_uploads = ON. Please enable file uploads in "
 "PHP."
@@ -2160,260 +3662,236 @@ msgstr ""
 "Il file PHP.INI non ha file_uploads = ON. Si abiliti il caricamento dei file "
 "in PHP."
 
-#: ../../htdocs/timeout.php:33
+#: ../../lib/common.php:318
 msgid "Your Session timed out after"
 msgstr "La Sessione è scaduta dopo"
 
-#: ../../htdocs/update.php:92
-#, php-format
-msgid ""
-"Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT "
-"allowed. That attribute/value belongs to another entry.<p>You might like to "
-"<a href=\"%s\">search</a> for that entry."
+#: ../../lib/functions.php:1515
+msgid "Your config file specifies an unknown AUTO_NUMBER search mechanism."
 msgstr ""
-"Il tentativo di aggiungere <b>%s</b> (<i>%s</i>) a <br><b>%s</b><br> NON è "
-"consentito. Quell'attributo/valore appartiene ad un'altra voce.<p>Si "
-"dovrebbe <a href=\"%s\">cercare</a> per quella voce."
 
-#: ../../htdocs/add_attr.php:51 ../../htdocs/add_oclass.php:45
-#: ../../htdocs/add_value.php:59 ../../htdocs/create.php:86
-#, php-format
+#: ../../lib/functions.php:335
 msgid ""
-"Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT "
-"allowed. That attribute/value belongs to another entry.<p>You might like to "
-"<a href='%s'>search</a> for that entry."
+"Your config.php is missing Server Definitions. Please see the sample file "
+"config/config.php.example."
 msgstr ""
-"Il tentativo di aggiungere <b>%s</b> (<i>%s</i>) a <br><b>%s</b><br> NON è "
-"consentito. Quell'attributo/valore appartiene ad un'altra voce.<p>Si "
-"dovrebbe <a href='%s'>cercare</a> per quella voce."
 
-#: ../../lib/session_functions.php:139
+#: ../../lib/ds.php:251
+msgid ""
+"Your configuration file has authentication set to CONFIG based "
+"authentication, however, the userid/password failed to login"
+msgstr ""
+
+#: ../../lib/ds.php:276
+msgid ""
+"Your configuration file has authentication set to HTTP based authentication, "
+"however, there was none presented"
+msgstr ""
+
+#: ../../lib/session_functions.php:148
 msgid "Your configuration has been automatically refreshed."
 msgstr "La configurazione è stata automaticamente aggiornata."
 
-#: ../../lib/functions.php:1168
-#, php-format
-msgid ""
-"Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base "
-"for server %s"
-msgstr ""
-"La configurazione di phpLDAPadmin specifica un valore non valido di "
-"auto_uid_search_base per il server %s"
-
-#: ../../lib/functions.php:1956 ../../lib/functions.php:2090
+#: ../../lib/functions.php:2128 ../../lib/functions.php:2269
 msgid "Your system crypt library does not support blowfish encryption."
 msgstr "La tua libreria crypt di sistema non supporta la codifica blowfish."
 
-#: ../../lib/functions.php:1942 ../../lib/functions.php:2120
+#: ../../lib/functions.php:2112 ../../lib/functions.php:2299
 msgid "Your system crypt library does not support extended DES encryption."
 msgstr "La tua libreria crypt di sistema non supporta la codifica DES estesa."
 
-#: ../../lib/functions.php:1949 ../../lib/functions.php:2105
+#: ../../lib/functions.php:2120 ../../lib/functions.php:2284
 msgid "Your system crypt library does not support md5crypt encryption."
 msgstr "La tua libreria crypt di sistema non supporta la codifica md5crypt."
 
-#: ../../lib/template_functions.php:984
-#, php-format
-msgid ""
-"Your template calls php.Function for a default value, however (%s) is NOT "
-"available in the POST FORM variables. The following variables are available "
-"[%s]."
-msgstr ""
-"Il modello chiama php. Funziona per un valore predefinito, ma (%s) NON è "
-"disponibile nelle variabili POST FORM. Le seguenti variabili sono "
-"disponibili [%s]."
-
-#: ../../lib/EntryReader.php:274
-#, php-format
-msgid "Your template has an unknown post function (%s)."
-msgstr "Il modello ha una funzione post sconosciuta (%s)."
-
-#: ../../lib/EntryReader.php:210
-#, php-format
-msgid "Your template is missing variable (%s)"
-msgstr "Nel modello manca la variabile (%s)"
-
-#: ../../htdocs/schema.php:33
+#: ../../htdocs/schema.php:36
 msgid "Your version of PHP does not correctly perform the query."
 msgstr "La versione di PHP non ha eseguito correttamente l'interrogazione."
 
-#: ../../htdocs/update_confirm.php:254 ../../htdocs/update_confirm.php:258
-msgid "[attribute deleted]"
-msgstr "[attributo rimosso]"
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:90
+#, no-wrap
+msgid "Zip (personal)"
+msgstr ""
 
-#: ../../lib/EntryWriter1.php:2013 ../../lib/EntryWriter1.php:2222
-msgid "[no value]"
-msgstr "[nessun valore]"
+# type: Content of: <template><attributes><attribute><display>
+#: ../../templates/creation/mozillaOrgPerson.xml:127
+#, no-wrap
+msgid "Zip (professional)"
+msgstr ""
 
-#: ../../htdocs/add_attr.php:25 ../../htdocs/add_value_form.php:78
-msgid "add attribute"
-msgstr "aggiungi attributo"
+#: ../../lib/Attribute.php:522
+msgid "[helper] needs an accompanying [post] action."
+msgstr ""
 
-#: ../../htdocs/add_value.php:24 ../../htdocs/add_value_form.php:76
-msgid "add attribute value"
-msgstr "aggiungi valore di attributo"
-
-#: ../../htdocs/compare.php:526 ../../htdocs/compare.php:537
-#: ../../lib/EntryWriter1.php:1836
+#: ../../lib/TemplateRender.php:2024 ../../lib/TemplateRender.php:2027
 msgid "add value"
 msgstr "aggiungi un valore"
 
-#: ../../htdocs/search.php:120
-msgid "advanced search"
-msgstr "ricerca avanzata"
-
-#: ../../htdocs/compare.php:121 ../../lib/EntryWriter1.php:1913
+#: ../../lib/PageRender.php:374
 msgid "alias"
 msgstr "alias"
 
-#: ../../lib/functions.php:2230
+#: ../../htdocs/update_confirm.php:100 ../../htdocs/mass_update.php:113
+#, fuzzy
+msgid "attribute deleted"
+msgstr "[attributo rimosso]"
+
+#: ../../htdocs/update_confirm.php:78 ../../htdocs/mass_update.php:138
+#, fuzzy
+msgid "attribute doesnt exist"
+msgstr "L'attributo Rdn (%s) non esiste."
+
+#: ../../lib/functions.php:2391
 msgid "browse"
 msgstr "sfoglia"
 
-#: ../../lib/functions.php:369
-msgid "bug"
-msgstr "baco"
-
-#: ../../htdocs/ldif_import.php:54 ../../lib/functions.php:1888
+#: ../../lib/functions.php:2049 ../../htdocs/import.php:53
 msgid "bytes"
 msgstr "byte"
 
-#: ../../lib/functions.php:134
+#: ../../lib/functions.php:170
 msgid "caller"
 msgstr "chiamante"
 
-#: ../../htdocs/schema.php:245
+#: ../../htdocs/schema.php:348
 msgid "character"
 msgstr "carattere"
 
-#: ../../htdocs/add_value_form.php:237 ../../htdocs/schema.php:245
+#: ../../htdocs/add_value_form.php:152 ../../htdocs/schema.php:348
 msgid "characters"
 msgstr "caratteri"
 
-#: ../../lib/EntryWriter1.php:2393
+#: ../../lib/PageRender.php:579 ../../lib/PageRender.php:936
 msgid "confirm"
 msgstr "conferma"
 
-#: ../../htdocs/copy.php:20
+#: ../../lib/functions.php:2023
+#, fuzzy
+msgid "contains errors"
+msgstr "Contenitore"
+
+#: ../../htdocs/copy.php:27
 msgid "copy entry"
 msgstr "copia voce"
 
-#: ../../htdocs/create.php:25
+#: ../../htdocs/create.php:23 ../../htdocs/create_confirm.php:17
 msgid "create entry"
 msgstr "crea voce"
 
-#: ../../htdocs/compare.php:287 ../../htdocs/delete_attr.php:21
-#: ../../htdocs/update.php:61 ../../lib/EntryWriter1.php:2009
+#: ../../lib/QueryRender.php:211
+#, fuzzy
+msgid "delete"
+msgstr "Elimina"
+
+#: ../../lib/PageRender.php:628 ../../htdocs/delete_attr.php:17
 msgid "delete attribute"
 msgstr "cancella attributo"
 
-#: ../../htdocs/delete.php:21 ../../htdocs/rdelete.php:21
+#: ../../htdocs/rdelete.php:17 ../../htdocs/delete.php:24
 msgid "delete entry"
 msgstr "cancella voce"
 
-#: ../../htdocs/mass_delete.php:26
-msgid "delete mass entries"
-msgstr "cancella voci in massa"
-
-#: ../../htdocs/compare.php:278 ../../htdocs/compare.php:281
-#: ../../lib/EntryWriter1.php:1998 ../../lib/EntryWriter1.php:2002
+#: ../../lib/PageRender.php:622
 msgid "download value"
 msgstr "valore del download"
 
-#: ../../htdocs/compare.php:310
-msgid "empty"
-msgstr "vuoto"
+#: ../../lib/QueryRender.php:212
+#, fuzzy
+msgid "edit"
+msgstr "Riconoscimenti"
 
-#: ../../htdocs/mass_delete.php:96
-msgid "entries"
-msgstr "voci"
-
-#: ../../htdocs/mass_delete.php:96
-msgid "entry"
-msgstr "voce"
-
-#: ../../htdocs/export.php:18 ../../lib/HTMLTree.php:259
+#: ../../lib/HTMLTree.php:286 ../../htdocs/export.php:18
 msgid "export"
 msgstr "esporta"
 
-#: ../../htdocs/search.php:273
+#: ../../lib/QueryRender.php:571
 msgid "export results"
 msgstr "risultati dell'esportazione"
 
-#: ../../htdocs/compare.php:400 ../../lib/AttributeFactory.php:39
+#: ../../lib/AttributeFactory.php:118
 msgid "false"
 msgstr "falso"
 
-#: ../../htdocs/copy.php:76 ../../htdocs/copy.php:106
-#: ../../htdocs/create.php:114
+#: ../../lib/export_functions.php:205
+msgid "for"
+msgstr ""
+
+#: ../../htdocs/copy.php:80 ../../htdocs/copy.php:140
+#, fuzzy
+msgid "has NOT been created."
+msgstr "è stato creato."
+
+#: ../../htdocs/copy.php:76 ../../htdocs/copy.php:111
+#: ../../htdocs/copy.php:136 ../../htdocs/create.php:85
 msgid "has been created."
 msgstr "è stato creato."
 
-#: ../../htdocs/ldif_import.php:19 ../../lib/HTMLTree.php:251
+#: ../../htdocs/copy.php:127
+#, fuzzy
+msgid "has been deleted."
+msgstr "è stato creato."
+
+#: ../../lib/PageRender.php:434
+#, fuzzy
+msgid "hint"
+msgstr "Consiglio"
+
+#: ../../lib/HTMLTree.php:274 ../../htdocs/import.php:18
 msgid "import"
 msgstr "importa"
 
-#: ../../lib/HTMLTree.php:243
+#: ../../lib/HTMLTree.php:246
 msgid "info"
 msgstr "info"
 
-#: ../../htdocs/compare.php:121 ../../lib/EntryWriter1.php:1913
+#: ../../lib/PageRender.php:374
 msgid "is an alias for"
 msgstr "è un alias per"
 
-#: ../../lib/functions.php:1857
-msgid "jpegPhoto contains errors<br />"
-msgstr "jpegPhoto contiene errori<br />"
-
-#: ../../lib/functions.php:367
-msgid "light"
-msgstr "leggero"
-
-#: ../../lib/functions.php:134
+#: ../../lib/functions.php:170
 msgid "line"
 msgstr "linea"
 
-#: ../../lib/HTMLTree.php:471
+#: ../../lib/HTMLTree.php:490 ../../lib/HTMLTree.php:492
+#: ../../lib/HTMLTree.php:495 ../../lib/ds.php:265
+#: ../../htdocs/login_form.php:48
 msgid "login"
 msgstr "autentica"
 
-#: ../../lib/HTMLTree.php:267 ../../lib/HTMLTree.php:489
+#: ../../lib/HTMLTree.php:296
 msgid "logout"
 msgstr "esci"
 
-#: ../../htdocs/mass_delete.php:35
-msgid "mass_delete POST var is not an array."
-msgstr "la variabile mass_delete POST non è un array."
-
-#: ../../htdocs/modify_member_form.php:75
+#: ../../htdocs/modify_member_form.php:63
 msgid "members in group"
 msgstr "membri nel gruppo"
 
-#: ../../htdocs/timeout.php:33
+#: ../../lib/common.php:319
 msgid "min. of inactivity. You have been automatically logged out."
 msgstr "min. di inattività. Sei stato scollegato automaticamente."
 
-#: ../../htdocs/update.php:67 ../../htdocs/update.php:80
-msgid "modify attribute values"
-msgstr "modifica valori degli attributi"
-
-#: ../../lib/EntryWriter1.php:1848
+#: ../../lib/TemplateRender.php:2040 ../../lib/TemplateRender.php:2043
 msgid "modify group members"
 msgstr "modifica membri del gruppo"
 
-#: ../../lib/HTMLTree.php:456
+#: ../../lib/HTMLTree.php:262
+msgid "monitor"
+msgstr ""
+
+#: ../../lib/HTMLTree.php:469
 msgid "new"
 msgstr "nuovo"
 
-#: ../../htdocs/add_oclass_form.php:76 ../../htdocs/add_oclass_form.php:81
+#: ../../htdocs/add_oclass_form.php:69
 msgid "new attributes"
 msgstr "nuovi attributi"
 
-#: ../../htdocs/schema.php:155
+#: ../../htdocs/schema.php:247
 msgid "no description"
 msgstr "nessuna descrizione"
 
-#: ../../lib/functions.php:1780
+#: ../../lib/functions.php:1942
 msgid "no description available"
 msgstr "descrizione non disponibile"
 
@@ -2421,37 +3899,48 @@ msgstr "descrizione non disponibile"
 msgid "no entries"
 msgstr "nessuna voce"
 
-#: ../../htdocs/add_attr_form.php:108
+#: ../../htdocs/add_attr_form.php:84 ../../htdocs/add_attr_form.php:155
 msgid "no new attributes available for this entry"
 msgstr "nessun nuovo attributo disponibile per questa voce"
 
-#: ../../htdocs/add_attr_form.php:160
+#: ../../htdocs/add_attr_form.php:133
 msgid "no new binary attributes available for this entry"
 msgstr "nessun nuovo attributo binario disponibile per questa voce"
 
-#: ../../htdocs/schema.php:172 ../../htdocs/schema.php:254
-#: ../../htdocs/schema.php:269 ../../htdocs/schema.php:343
-#: ../../htdocs/schema.php:412 ../../htdocs/schema.php:432
-#: ../../htdocs/schema.php:469 ../../htdocs/schema.php:492
-#: ../../lib/EntryWriter1.php:405 ../../lib/EntryWriter1.php:418
-#: ../../lib/functions.php:2775
+#: ../../lib/TemplateRender.php:1557 ../../lib/TemplateRender.php:1565
+#: ../../lib/functions.php:2742 ../../htdocs/schema.php:264
+#: ../../htdocs/schema.php:357 ../../htdocs/schema.php:376
+#: ../../htdocs/schema.php:484 ../../htdocs/schema.php:581
+#: ../../htdocs/schema.php:608 ../../htdocs/schema.php:658
+#: ../../htdocs/schema.php:696
 msgid "none"
 msgstr "nessuno"
 
-#: ../../htdocs/compare.php:401 ../../lib/EntryWriter1.php:2570
+#: ../../lib/PageRender.php:1057
 msgid "none, remove value"
 msgstr "nessuno, rimuovi il valore"
 
-#: ../../htdocs/schema.php:241
+#: ../../htdocs/schema.php:344
 msgid "not applicable"
 msgstr "non appicabile"
 
-#: ../../htdocs/schema.php:186 ../../htdocs/schema.php:198
-#: ../../htdocs/schema.php:203 ../../htdocs/schema.php:234
+#: ../../htdocs/schema.php:282 ../../htdocs/schema.php:298
+#: ../../htdocs/schema.php:303 ../../htdocs/schema.php:337
 msgid "not specified"
 msgstr "non specificato"
 
-#: ../../htdocs/delete_form.php:54
+#: ../../htdocs/mass_delete.php:95
+#, fuzzy, php-format
+msgid ""
+"phpLDAPadmin can also recursively delete all %s of the child entries. See "
+"below for a list of all the entries that this action will delete. Do you "
+"want to do this?"
+msgstr ""
+"phpLDAPadmin può cancellare in modo ricorsivo questa voce e tutti i suoi %s "
+"figli. Si veda sotto per una lista di tutte le voci che questa azione "
+"cancellerà. Si desidera continuare?"
+
+#: ../../htdocs/delete_form.php:62
 #, php-format
 msgid ""
 "phpLDAPadmin can recursively delete this entry and all %s of its children. "
@@ -2462,36 +3951,43 @@ msgstr ""
 "figli. Si veda sotto per una lista di tutte le voci che questa azione "
 "cancellerà. Si desidera continuare?"
 
-#: ../../htdocs/schema.php:33
+#: ../../htdocs/schema.php:36
 msgid "phpLDAPadmin doesn't know how to fetch the schema for your server."
 msgstr "phpLDAPadmin non sa come recuperare lo schema per il tuo server."
 
-#: ../../htdocs/welcome.php:16
+#: ../../lib/export_functions.php:73
+msgid "phpLDAPadmin has not been configured for that export type"
+msgstr ""
+
+#: ../../lib/import_functions.php:55
+msgid "phpLDAPadmin has not been configured for that import type"
+msgstr ""
+
+#: ../../htdocs/welcome.php:18
 msgid "phpLDAPadmin logo"
 msgstr "logo di phpLDAPadmin"
 
-#: ../../htdocs/search.php:124
-msgid "predefined search"
-msgstr "ricerca predefinita"
+#: ../../lib/functions.php:2049
+msgid "pixels"
+msgstr ""
 
-#: ../../htdocs/purge_cache.php:13
-msgid "purge"
-msgstr "svuota"
-
-#: ../../htdocs/compare.php:179 ../../lib/EntryWriter1.php:1515
-#: ../../lib/EntryWriter2.php:211 ../../lib/HTMLTree.php:41
+#: ../../lib/HTMLTree.php:55
 msgid "read only"
 msgstr "sola lettura"
 
-#: ../../lib/HTMLTree.php:235
+#: ../../lib/HTMLTree.php:234
 msgid "refresh"
 msgstr "aggiorna"
 
-#: ../../htdocs/refresh.php:17
-msgid "refresh server"
-msgstr "aggiorna server"
+#: ../../lib/Template.php:1227
+msgid "removed from template as it is not defined by an ObjectClass"
+msgstr ""
 
-#: ../../lib/EntryWriter1.php:1817
+#: ../../lib/Template.php:100
+msgid "removed from template as it is not defined in the schema"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:2052
 msgid "rename"
 msgstr "rinomina"
 
@@ -2499,99 +3995,529 @@ msgstr "rinomina"
 msgid "rename entry"
 msgstr "rinomina voce"
 
-#: ../../htdocs/compare.php:169 ../../lib/EntryWriter1.php:1949
+#: ../../lib/PageRender.php:414
 msgid "required"
 msgstr "richiesto"
 
-#: ../../lib/HTMLTree.php:219
+#: ../../lib/HTMLTree.php:209
 msgid "schema"
 msgstr "schema"
 
-#: ../../lib/HTMLTree.php:227
+#: ../../lib/HTMLTree.php:221
 msgid "search"
 msgstr "cerca"
 
-#: ../../htdocs/search.php:266 ../../htdocs/search.php:392
+#: ../../lib/QueryRender.php:562
 msgid "seconds"
 msgstr "secondi"
 
-#: ../../lib/EntryWriter1.php:368 ../../lib/EntryWriter2.php:23
+#: ../../lib/TemplateRender.php:1285
 msgid "select the rdn attribute"
 msgstr "seleziona l'attributo rdn"
 
-#: ../../htdocs/search.php:128
-msgid "simple search"
-msgstr "ricerca semplice"
-
-#: ../../lib/EntryWriter1.php:961
-#, php-format
-msgid "step %s of %s"
-msgstr "passo %s di %s"
-
-#: ../../htdocs/compare.php:436 ../../lib/EntryWriter1.php:2297
+#: ../../lib/PageRender.php:830
 msgid "structural"
 msgstr "strutturale"
 
-#: ../../htdocs/add_oclass_form.php:82
+#: ../../htdocs/add_oclass_form.php:70
 msgid "that this objectClass requires."
 msgstr "che questa objectClass richiede."
 
-#: ../../htdocs/mass_delete.php:96
-msgid "these"
-msgstr "questi"
-
-#: ../../htdocs/mass_delete.php:96
-msgid "this"
-msgstr "questo"
-
-#: ../../htdocs/copy_form.php:51
+#: ../../htdocs/copy_form.php:33 ../../htdocs/rename_form.php:30
 msgid "to a new object"
 msgstr "ad un nuovo oggetto"
 
-#: ../../htdocs/compare.php:399 ../../lib/AttributeFactory.php:38
+#: ../../lib/AttributeFactory.php:117
 msgid "true"
 msgstr "vero"
 
-#: ../../lib/functions.php:1271
-msgid ""
-"uidpool_dn not found. Please check filter (arg 3) or set up uidpool_dn in "
-"config file"
-msgstr ""
-"uidpool_dn non trovato. Si controlli il filtro (arg 3) o si imposti "
-"uidpool_dn nel file di configurazione"
-
-#: ../../htdocs/update.php:46
-msgid ""
-"update_array is malformed. This might be a phpLDAPadmin bug. Please report "
-"it."
-msgstr ""
-"update_array è malformato. Potrebbe essere un baco di phpLDAPadmin. Lo si "
-"segnali per cortesia."
-
-#: ../../htdocs/add_value_form.php:98
+#: ../../htdocs/add_value_form.php:46
 msgid "value to"
 msgstr "valore a"
 
-#: ../../htdocs/add_value_form.php:104
+#: ../../htdocs/add_value_form.php:73
 msgid "values for attribute"
 msgstr "valori per l'attributo"
 
-#: ../../htdocs/delete_form.php:48
+#: ../../htdocs/delete_form.php:56
 msgid "view entries"
 msgstr "visualiiza voci"
 
-#: ../../htdocs/schema.php:20
-msgid "view schema"
-msgstr "visualizza schema"
-
-#: ../../htdocs/server_info.php:16
-msgid "view server informations"
-msgstr "visualizza le informazioni del server"
-
-#: ../../htdocs/update_confirm.php:320
+#: ../../htdocs/update_confirm.php:197
 msgid "will delete the attribute(s)"
 msgstr "cancellerà il/gli attributo/i?"
 
-#: ../../htdocs/compare_form.php:29
+#: ../../htdocs/compare_form.php:34
 msgid "with "
 msgstr "con"
+
+#~ msgid "%s of %s entries failed to be deleted."
+#~ msgstr "Impossibile eliminare %s di %s voci."
+
+#~ msgid "("
+#~ msgstr "("
+
+#~ msgid ")"
+#~ msgstr ")"
+
+#~ msgid ":"
+#~ msgstr ":"
+
+#~ msgid "Advanced Search Form"
+#~ msgstr "Modulo di Ricerca Avanzato"
+
+#~ msgid "All entries deleted successfully."
+#~ msgstr "Tutte le voci sono state correttamente eliminate."
+
+#~ msgid "Anonymous Bind"
+#~ msgstr "Bind Anonimo"
+
+#~ msgid "Attribute not well formed"
+#~ msgstr "Attributo malformato"
+
+#~ msgid "CSV (Spreadsheet)"
+#~ msgstr "CSV (Foglio di calcolo)"
+
+#~ msgid "Check password..."
+#~ msgstr "Verifica password..."
+
+#~ msgid "Checking passwords"
+#~ msgstr "Verifica password"
+
+#~ msgid "Confirm mass delete of %s entries on server %s"
+#~ msgstr "Conferma l'eliminazione di massa di %s voci sul server %s"
+
+#~ msgid "Container is null"
+#~ msgstr "Il contenitore è vuoto"
+
+#~ msgid "Could not bind anonymously to server."
+#~ msgstr "Impossibile collegarsi anonimamente al server LDAP."
+
+#~ msgid "Could not bind to the LDAP server (%s)."
+#~ msgstr "Impossibile collegarsi al server LDAP (%s)."
+
+#~ msgid "Could not connect to \"%s\" on port \"%s\""
+#~ msgstr "Impossibile collegarsi a \"%s\" sulla porta \"%s\""
+
+#~ msgid "Could not logout."
+#~ msgstr "Impossibile uscire."
+
+#~ msgid "Could not perform ldap_mod_add operation."
+#~ msgstr "Impossibile eseguire l'operazione ldap_mod_add."
+
+#~ msgid "Could not set cookie."
+#~ msgstr "Impossibile impostare un cookie."
+
+#~ msgid ""
+#~ "Could not write to the $jpeg_temp_dir directory %s. Please verify that "
+#~ "your web server can write files there."
+#~ msgstr ""
+#~ "Impossibile scrivere sulla directory $jpeg_temp_dir %s. Controlla che il "
+#~ "server web possa scrivere file qui."
+
+#~ msgid "DSLM Export for: %s"
+#~ msgstr "Esportazione DSLM per: %s"
+
+#~ msgid "Delete %s"
+#~ msgstr "Elimina %s"
+
+#~ msgid "Delete Checked Entries"
+#~ msgstr "Elimina le Voci Selezionate"
+
+#~ msgid "Delete Photo"
+#~ msgstr "Elimina Foto"
+
+#~ msgid "Deleting %s"
+#~ msgstr "Eliminazione di %s"
+
+#~ msgid "Deleting..."
+#~ msgstr "Eliminazione..."
+
+#~ msgid "Deletion progress on server \"%s\""
+#~ msgstr "Eliminazione in corso sul server \"%s\""
+
+#~ msgid "Do you really want to delete %s %s %s"
+#~ msgstr "Si vuole veramente eliminare  %s %s %s"
+
+#~ msgid "Error calling mass_delete.php. Missing mass_delete in POST vars."
+#~ msgstr ""
+#~ "Errore invocando mass_delete.php. Manca mass_delete nella variabile POST."
+
+#~ msgid "Error code"
+#~ msgstr "Codice d'errore"
+
+#~ msgid ""
+#~ "Error: You have an error in your config file. The only three allowed "
+#~ "values for auth_type in the $servers section are 'session', 'cookie', and "
+#~ "'config'. You entered '%s', which is not allowed."
+#~ msgstr ""
+#~ "Errore: c'è un errore nel file di configurazione. I soli tre valori "
+#~ "permessi per il parametro auth_type nella sezione $servers sono "
+#~ "'session', 'cookie' e 'config'. Il valore inserito '%s' non è permesso."
+
+#~ msgid "Export entries"
+#~ msgstr "Esporta le voci"
+
+#~ msgid "Failed to add the attribute."
+#~ msgstr "Aggiunta dell'attributo fallita."
+
+#~ msgid "Failed to copy DN: "
+#~ msgstr "Impossibile copiare: "
+
+#~ msgid "Failed to delete entry %s"
+#~ msgstr "Impossibile eliminare la voce %s"
+
+#~ msgid ""
+#~ "Generated by phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) on %s"
+#~ msgstr ""
+#~ "Generato da phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) su %s"
+
+#~ msgid "Go to %s"
+#~ msgstr "Vai a %s"
+
+#~ msgid "If so, please <a href=\"%s\">report it</a>."
+#~ msgstr "Se così, si prega di <a href=\"%s\">segnalarlo</a>."
+
+#~ msgid ""
+#~ "If you want to add your own criteria to the list. Be sure to edit search."
+#~ "php to handle them. Quitting."
+#~ msgstr ""
+#~ "Se si desidera aggiungere i propri criteri alla lista. Assicurarsi di "
+#~ "modificare search.php per gestirli. Esco."
+
+#~ msgid "Import LDIF File"
+#~ msgstr "Importa file LDIF"
+
+#~ msgid "Import entries from an LDIF file"
+#~ msgstr "Importa voci da un file LDIF"
+
+#~ msgid "Insufficient access rights."
+#~ msgstr "Permessi di accesso insufficienti."
+
+#~ msgid "Is this a phpLDAPadmin bug?"
+#~ msgstr "E' un baco di phpLDAPadmin?"
+
+#~ msgid "LDIF Export for: %s"
+#~ msgstr "Esportazione LDIF per: %s"
+
+#~ msgid "Login..."
+#~ msgstr "Accesso..."
+
+#~ msgid "Logout"
+#~ msgstr "Esci"
+
+#~ msgid "Malformed mass_delete array."
+#~ msgstr "Array mass_delete malformato."
+
+#~ msgid ""
+#~ "Mass deletion is not enabled. Please enable it in config.php before "
+#~ "proceeding."
+#~ msgstr ""
+#~ "Eliminazone di Massa disabilitata. La si abiliti in config.php prima di "
+#~ "continuare."
+
+#~ msgid "Missing attibutes or changetype attribute for entry"
+#~ msgstr "Attributi o attributo changetype mancante per la voce"
+
+#~ msgid "Missing uploaded file."
+#~ msgstr "File da caricare mancante."
+
+#~ msgid "No DN specified"
+#~ msgstr "DN non specificato"
+
+#~ msgid "No LDIF file specified. Please try again."
+#~ msgstr "File LDIF non specificato. Riprovare."
+
+#~ msgid "No Template"
+#~ msgstr "Nessun modello"
+
+#~ msgid "No Value"
+#~ msgstr "Valore assente"
+
+#~ msgid "No available exporter found."
+#~ msgstr "Nessun esportatore trovato."
+
+#~ msgid "No one is logged in to that server."
+#~ msgstr "Nessuno è autenticato su quel server."
+
+#~ msgid "No queries have been defined in config.php."
+#~ msgstr "Nessuna interrogazione definita in config.php"
+
+#~ msgid "No such file"
+#~ msgstr "File non trovato"
+
+#~ msgid "No version found. Assuming 1."
+#~ msgstr "Nessuna versione trovata. Si ipotizza 1."
+
+#~ msgid ""
+#~ "Not enough information to login to server. Please check your "
+#~ "configuration."
+#~ msgstr ""
+#~ "Informazioni insufficienti per autenticarsi al server. Si controlli la "
+#~ "configurazione."
+
+#~ msgid "Notice, search size limit exceeded."
+#~ msgstr "Avviso, limite dimensione di ricerca superato."
+
+#~ msgid ""
+#~ "ObjectClasses are flagged as read only in the phpLDAPadmin configuration."
+#~ msgstr ""
+#~ "Gli ObjectClass sono etichettati in sola lettura nella configurazione di "
+#~ "phpLDAPadmin."
+
+#~ msgid "Purge all cached data in phpLDAPadmin, including server schemas."
+#~ msgstr ""
+#~ "Svuota tutti i dati nella cache di phpLDAPadmin, inclusi gli schemi del "
+#~ "server."
+
+#~ msgid "Refresh all expanded containers for"
+#~ msgstr "Aggiorna tutti i contenitori aperti per"
+
+#~ msgid "Save Changes"
+#~ msgstr "Salva i Cambiamenti"
+
+#~ msgid "Search for entries whose"
+#~ msgstr "Cerca per voci che"
+
+#~ msgid "Search performed by phpLDAPadmin in"
+#~ msgstr "Ricerca eseguita da phpLDAPadmin in"
+
+#~ msgid "Searching is not permitted"
+#~ msgstr "La ricerca non è permessa"
+
+#~ msgid "Select a predefined search"
+#~ msgstr "Seleziona una ricerca predefinita"
+
+#~ msgid "Showing results %s through %s."
+#~ msgstr "Mostra i risultati da %s a %s"
+
+#~ msgid "Simple Search Form"
+#~ msgstr "Modulo di Ricerca Semplice"
+
+#~ msgid ""
+#~ "Sorry, you are not allowed to use phpLDAPadmin with this LDAP server."
+#~ msgstr ""
+#~ "Mi spiace, non ti è permesso usare phpLDAPadmin con questo server LDAP."
+
+#~ msgid "Source DN"
+#~ msgstr "DN sorgente"
+
+#~ msgid "The attribute (%s) is in readonly mode."
+#~ msgstr "L'attributo (%s) è in modalità sola lettura."
+
+#~ msgid "The container you specified (%s) does not exist."
+#~ msgstr "Il contenitore specificato (%s) non esiste."
+
+#~ msgid "The entry (%s) is in readonly mode."
+#~ msgstr "La voce (%s) è in modalità sola lettura."
+
+#~ msgid "The entry is not valid"
+#~ msgstr "La voce non è valida"
+
+#~ msgid "There is more than one dn for uidpool,please change filter parameter"
+#~ msgstr "C'è più di un dn per uidpool, si cambino i parametri del filtro"
+
+#~ msgid "This action requires you to add"
+#~ msgstr "Questa azione richiede che tu aggiunga"
+
+#~ msgid ""
+#~ "This attribute has been flagged as read only by the phpLDAPadmin "
+#~ "administrator"
+#~ msgstr ""
+#~ "Questo attributo è stato etichettato in sola lettura dall'amministratore "
+#~ "di phpLDAPadmin."
+
+#~ msgid "This is not a valid DN."
+#~ msgstr "Questo non è un RDN valido."
+
+#~ msgid "To log back in please click on the following link:"
+#~ msgstr "Per riaccedere cliccare sul seguente link:"
+
+#~ msgid "Uidpool dn not found, please change filter parameter"
+#~ msgstr "dn uidpool non trovato, si cambino i parametri del filtro"
+
+#~ msgid "Unable to delete, server is in READY-ONLY mode."
+#~ msgstr "Impossibile da eliminare, il server è in modalità SOLA LETTURA."
+
+#~ msgid "Unrecognized criteria option: "
+#~ msgstr "Opzione del criterio non riconosciuta: "
+
+#~ msgid "Unrecognized search result format: %s"
+#~ msgstr "Formato di ricerca non riconosciuto: %s"
+
+#~ msgid "Unsafe file name"
+#~ msgstr "Nome del file non sicuro"
+
+#~ msgid "View server-supplied information"
+#~ msgstr "Visualizza le informazioni fornite dal server"
+
+#~ msgid "Yes, delete!"
+#~ msgstr "Sì, eliminalo!"
+
+#~ msgid ""
+#~ "You did not select any ObjectClasses for this object. Please go back and "
+#~ "do so."
+#~ msgstr ""
+#~ "Non è stato selezionato nessun ObjectClasses per questo oggetto. Si torni "
+#~ "indietro e lo si selezioni."
+
+#~ msgid "You did not select any objectClasses for this object."
+#~ msgstr "Non è stata selezionata nessuna objectClass per questo oggetto."
+
+#~ msgid ""
+#~ "You have not logged into the selected server yet, so you cannot perform "
+#~ "searches on it."
+#~ msgstr ""
+#~ "Non ci si è ancora autenticati sul server selezionato, quindi non è "
+#~ "possibile eseguirvi ricerche."
+
+#~ msgid "You have specified two different passwords"
+#~ msgstr "Sono state specificate due password diverse"
+
+#~ msgid "You left the RDN field blank."
+#~ msgstr "Il campo RDN è stato lasciato vuoto."
+
+#~ msgid "You must choose an export format."
+#~ msgstr "Si deve scegliere un formato d'esportazione."
+
+#~ msgid "You must specify a DN"
+#~ msgstr "Si deve specificare un DN"
+
+#~ msgid ""
+#~ "You need one of the following ObjectClass(es) to add this attribute %s."
+#~ msgstr ""
+#~ "Serve una della/e seguente/i ObjectClass per aggiungere questo attributo: "
+#~ "%s."
+
+#~ msgid ""
+#~ "You specified an invalid value for auto_uid_number_mechanism (\"%s\")\n"
+#~ "\t\t\t\tin your configration. Only \"uidpool\" and \"search\" are valid.\n"
+#~ "\t\t\t\tPlease correct this problem."
+#~ msgstr ""
+#~ "E' stato specificato un valore non valido per auto_uid_number_mechanism "
+#~ "(\"%s\")\n"
+#~ "\t\t\t\tnella configurazione. Solo \"uidpool\" e \"search\" sono "
+#~ "ammessi.\n"
+#~ "\t\t\t\tSi corregga questo problema."
+
+#~ msgid ""
+#~ "You specified the \"auto_uid_number_mechanism\" as \"search\" in your\n"
+#~ "\t\t\t\t\t\tconfiguration for server <b>%s</b>, but you did not specify "
+#~ "the\n"
+#~ "\t\t\t\t\t\t\"auto_uid_number_search_base\". Please specify it before "
+#~ "proceeding."
+#~ msgstr ""
+#~ "E' stato specificato \"auto_uid_number_mechanism\" come \"search\" nella\n"
+#~ "\t\t\t\t\t\tconfigurazione per il server <b>%s</b>, ma non è stato "
+#~ "specificato\n"
+#~ "\t\t\t\t\t\t\"auto_uid_number_search_base\". Lo si specifichi prima di "
+#~ "continuare."
+
+#~ msgid "Your PHP install does not support TLS."
+#~ msgstr "L'installazione di PHP non supporta TLS."
+
+#~ msgid ""
+#~ "Your PHP installation does not support ldap_sasl_bind() function. This "
+#~ "function is present in PHP 5.x when compiled with --with-ldap-sasl."
+#~ msgstr ""
+#~ "L'installazione di PHP non supporta la funzione ldap_sasl_bind(). Questa "
+#~ "funzione è presente in PHP 5.x quando compilato con --with-ldap-sasl."
+
+#~ msgid ""
+#~ "Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT "
+#~ "allowed. That attribute/value belongs to another entry.<p>You might like "
+#~ "to <a href=\"%s\">search</a> for that entry."
+#~ msgstr ""
+#~ "Il tentativo di aggiungere <b>%s</b> (<i>%s</i>) a <br><b>%s</b><br> NON "
+#~ "è consentito. Quell'attributo/valore appartiene ad un'altra voce.<p>Si "
+#~ "dovrebbe <a href=\"%s\">cercare</a> per quella voce."
+
+#~ msgid ""
+#~ "Your attempt to add <b>%s</b> (<i>%s</i>) to <br><b>%s</b><br> is NOT "
+#~ "allowed. That attribute/value belongs to another entry.<p>You might like "
+#~ "to <a href='%s'>search</a> for that entry."
+#~ msgstr ""
+#~ "Il tentativo di aggiungere <b>%s</b> (<i>%s</i>) a <br><b>%s</b><br> NON "
+#~ "è consentito. Quell'attributo/valore appartiene ad un'altra voce.<p>Si "
+#~ "dovrebbe <a href='%s'>cercare</a> per quella voce."
+
+#~ msgid ""
+#~ "Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base "
+#~ "for server %s"
+#~ msgstr ""
+#~ "La configurazione di phpLDAPadmin specifica un valore non valido di "
+#~ "auto_uid_search_base per il server %s"
+
+#~ msgid ""
+#~ "Your template calls php.Function for a default value, however (%s) is NOT "
+#~ "available in the POST FORM variables. The following variables are "
+#~ "available [%s]."
+#~ msgstr ""
+#~ "Il modello chiama php. Funziona per un valore predefinito, ma (%s) NON è "
+#~ "disponibile nelle variabili POST FORM. Le seguenti variabili sono "
+#~ "disponibili [%s]."
+
+#~ msgid "Your template is missing variable (%s)"
+#~ msgstr "Nel modello manca la variabile (%s)"
+
+#~ msgid "[no value]"
+#~ msgstr "[nessun valore]"
+
+#~ msgid "empty"
+#~ msgstr "vuoto"
+
+#~ msgid "entries"
+#~ msgstr "voci"
+
+#~ msgid "entry"
+#~ msgstr "voce"
+
+#~ msgid "jpegPhoto contains errors<br />"
+#~ msgstr "jpegPhoto contiene errori<br />"
+
+#~ msgid "light"
+#~ msgstr "leggero"
+
+#~ msgid "mass_delete POST var is not an array."
+#~ msgstr "la variabile mass_delete POST non è un array."
+
+#~ msgid "modify attribute values"
+#~ msgstr "modifica valori degli attributi"
+
+#~ msgid "purge"
+#~ msgstr "svuota"
+
+#~ msgid "refresh server"
+#~ msgstr "aggiorna server"
+
+#~ msgid "simple search"
+#~ msgstr "ricerca semplice"
+
+#~ msgid "step %s of %s"
+#~ msgstr "passo %s di %s"
+
+#~ msgid "these"
+#~ msgstr "questi"
+
+#~ msgid "this"
+#~ msgstr "questo"
+
+#~ msgid ""
+#~ "uidpool_dn not found. Please check filter (arg 3) or set up uidpool_dn in "
+#~ "config file"
+#~ msgstr ""
+#~ "uidpool_dn non trovato. Si controlli il filtro (arg 3) o si imposti "
+#~ "uidpool_dn nel file di configurazione"
+
+#~ msgid ""
+#~ "update_array is malformed. This might be a phpLDAPadmin bug. Please "
+#~ "report it."
+#~ msgstr ""
+#~ "update_array è malformato. Potrebbe essere un baco di phpLDAPadmin. Lo si "
+#~ "segnali per cortesia."
+
+#~ msgid "view schema"
+#~ msgstr "visualizza schema"
+
+#~ msgid "view server informations"
+#~ msgstr "visualizza le informazioni del server"
