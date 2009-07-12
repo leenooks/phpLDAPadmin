@@ -144,10 +144,10 @@ abstract class DS {
 	 * If this returns '', we are logged in with anonymous
 	 */
 	public function getLogin($method=null) {
-		$method = $this->getMethod($method);
-
 		if ($method == 'anon')
 			return '';
+
+		$method = $this->getMethod($method);
 
 		switch ($this->getAuthType()) {
 			case 'config':
@@ -312,6 +312,8 @@ abstract class DS {
 	 */
 	public function logout($method=null) {
 		$method = $this->getMethod($method);
+
+		unset ($_SESSION['cache'][$this->index]);
 
 		switch ($this->getAuthType()) {
 			case 'config':
