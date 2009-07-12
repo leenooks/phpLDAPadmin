@@ -128,6 +128,10 @@ class HTMLTree extends Tree {
 					$this->draw_login_link();
 					break;
 
+				case 'config':
+				case 'proxy':
+					break;
+
 				default:
 					die(sprintf('Error: %s hasnt been configured for auth_type %s',__METHOD__,$server->getAuthType()));
 			}
@@ -294,7 +298,7 @@ class HTMLTree extends Tree {
 				break;
 
 			case 'logout':
-				if (in_array($server->getAuthType(),array('config','http')))
+				if (in_array($server->getAuthType(),array('config','http','proxy')))
 					return '';
 
 				$href = sprintf('cmd.php?cmd=logout&server_id=%s',$server->getIndex());
@@ -512,17 +516,6 @@ class HTMLTree extends Tree {
 		if (is_array($recently_timed_out_servers) && in_array($server->getIndex(),$recently_timed_out_servers))
 			printf('<tr><td class="spacer"></td><td colspan="%s" class="links">%s</td></tr>',
 				$this->getDepth()+3-1,_('(Session timed out. Automatically logged out.)'));
-	}
-
-	/**
-	 * Draw out link
-	 */
-	protected function draw_logout_link() {
-		$server = $this->getServer();
-
-		if (! in_array($server->getAuthType(),array('config','http')))
-			printf('<tr><td class="spacer"></td><td colspan="%s"><small><a href="cmd.php?cmd=%s&server_id=%s">%s</a></small></td></tr>',
-				$this->getDepth()+3-1,get_custom_file($server->getIndex(),'logout',''),$server->getIndex(),_('logout'));
 	}
 
 	/**

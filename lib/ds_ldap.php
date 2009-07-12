@@ -79,6 +79,10 @@ class ldap extends DS {
 			'desc'=>'Limit logins to users who match any of the following LDAP filters',
 			'default'=>array());
 
+		$this->default->proxy['attr'] = array(
+			'desc'=>'Attribute to use to find the users DN for proxy based authentication',
+			'default'=>array());
+
 		# SASL configuration
 		$this->default->server['sasl'] = array(
 			'desc'=>'Use SASL authentication when binding LDAP server',
@@ -209,14 +213,23 @@ class ldap extends DS {
 				debug_log('Leaving with FALSE, bind FAILed',16,__FILE__,__LINE__,__METHOD__);
 
 			$this->noconnect = true;
+			$CACHE[$this->index][$method] = null;
 
 			system_message(array(
 				'title'=>sprintf('%s %s',_('Unable to connect to LDAP server'),$this->getName()),
 				'body'=>sprintf('<b>%s</b>: %s (%s) for <b>%s</b>',_('Error'),$this->getErrorMessage($method),$this->getErrorNum($method),$method),
 				'type'=>'error'));
 
-		} else
+		} else {
 			$this->noconnect = false;
+
+			# If this is a proxy session, we need to switch to the proxy user
+			if ($this->isProxyEnabled() && $bind['id'] && $method != 'anon')
+				if (! $this->startProxy($resource,$method)) {
+					$this->noconnect = true;
+					$CACHE[$this->index][$method] = null;
+				}
+		}
 
 		if (function_exists('run_hook'))
 			run_hook('post_connect',array('server_id'=>$this->index,'method'=>$method,'id'=>$bind['id']));
@@ -243,7 +256,7 @@ class ldap extends DS {
 				if ($this->getValue('login','attr') == 'dn')
 					$userDN = $user;
 				else
-					$userDN = $this->getLoginID($user,'unauth');
+					$userDN = $this->getLoginID($user,'anon');
 
 				if (! $userDN)
 					return false;
@@ -597,6 +610,106 @@ class ldap extends DS {
 	}
 
 	/**
+	 * Fetches whether PROXY AUTH has been configured for use with a certain server.
+	 *
+	 * Users may configure phpLDAPadmin to use PROXY AUTH in config,php thus:
+	 * <code>
+	 *	$servers->setValue('login','auth_type','proxy');
+	 * </code>
+	 *
+	 * @return boolean
+	 */
+	private function isProxyEnabled() {
+		return $this->getValue('login','auth_type') == 'proxy' ? true : false;
+	}
+
+	/**
+	 * If PROXY AUTH is configured, then start it
+	 */
+	private function startProxy($resource,$method) {
+		$rootdse = $this->getRootDSE();
+
+		if (! (isset($rootdse['supportedcontrol']) && in_array('2.16.840.1.113730.3.4.18',$rootdse['supportedcontrol']))) {
+			system_message(array(
+				'title'=>sprintf('%s %s',_('Unable to start proxy connection'),$this->getName()),
+				'body'=>sprintf('<b>%s</b>: %s',_('Error'),_('Your LDAP server doesnt seem to support this control')),
+				'type'=>'error'));
+
+			return false;
+		}
+
+		$filter = '(&';
+		$dn = '';
+
+		$missing = false;
+		foreach ($this->getValue('proxy','attr') as $attr => $var) {
+			if (! isset($_SERVER[$var])) {
+				system_message(array(
+					'title'=>sprintf('%s %s',_('Unable to start proxy connection'),$this->getName()),
+					'body'=>sprintf('<b>%s</b>: %s (%s)',_('Error'),_('Attribute doesnt exist'),$var),
+					'type'=>'error'));
+
+				$missing = true;
+
+			} else {
+				if ($attr == 'dn') {
+					$dn = $var;
+
+					break;
+
+				} else
+					$filter .= sprintf('(%s=%s)',$attr,$_SERVER[$var]);
+			}
+		}
+
+		if ($missing)
+			return false;
+
+		$filter .= ')';
+
+		if (! $dn) {
+			$query['filter'] = $filter;
+
+			foreach ($this->getBaseDN() as $base) {
+				$query['base'] = $base;
+
+				if ($search = $this->query($query,$method))
+					break;
+			}
+
+			if (count($search) != 1) {
+				system_message(array(
+					'title'=>sprintf('%s %s',_('Unable to start proxy connection'),$this->getName()),
+					'body'=>sprintf('<b>%s</b>: %s (%s)',_('Error'),_('Search for DN returned the incorrect number of results'),count($search)),
+					'type'=>'error'));
+
+				return false;
+			}
+
+			$search = array_pop($search);
+			$dn = $search['dn'];
+		}
+
+		$ctrl = array(
+			'oid'=>'2.16.840.1.113730.3.4.18',
+			'value'=>sprintf('dn:%s',$dn),
+			'iscritical' => true);
+
+		if (! ldap_set_option($resource,LDAP_OPT_SERVER_CONTROLS,array($ctrl))) {
+			system_message(array(
+				'title'=>sprintf('%s %s',_('Unable to start proxy connection'),$this->getName()),
+				'body'=>sprintf('<b>%s</b>: %s (%s) for <b>%s</b>',_('Error'),$this->getErrorMessage($method),$this->getErrorNum($method),$method),
+				'type'=>'error'));
+
+			return false;
+		}
+
+		$_SESSION['USER'][$this->index][$method]['proxy'] = blowfish_encrypt($dn);
+
+		return true;
+	}
+
+	/**
 	 * Modify attributes of a DN
 	 */
 	public function modify($dn,$attrs,$method=null) {
@@ -944,6 +1057,20 @@ class ldap extends DS {
 
 		} else
 			return preg_replace('/\\\([0-9A-Fa-f]{2})/e',"''.chr(hexdec('\\1')).''",$dn);
+	}
+
+	public function getRootDSE($method=null) {
+		$query = array();
+		$query['base'] = '';
+		$query['scope'] = 'base';
+		$query['attrs'] = $this->getValue('server','root_dse_attributes');
+		$query['baseok'] = true;
+		$results = $this->query($query,$method);
+
+		if (is_array($results))
+			return array_change_key_case(array_pop($results));
+		else
+			return array();
 	}
 
 	/** Schema Methods **/

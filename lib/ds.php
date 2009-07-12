@@ -128,6 +128,7 @@ abstract class DS {
 		switch ($this->getValue('login','auth_type')) {
 			case 'config':
 			case 'http':
+			case 'proxy':
 			case 'session':
 				return $this->getValue('login','auth_type');
 
@@ -145,7 +146,7 @@ abstract class DS {
 	public function getLogin($method=null) {
 		$method = $this->getMethod($method);
 
-		if ($method == 'unauth')
+		if ($method == 'anon')
 			return '';
 
 		switch ($this->getAuthType()) {
@@ -154,6 +155,12 @@ abstract class DS {
 					return $this->getValue('login','bind_id');
 				else
 					return blowfish_decrypt($_SESSION['USER'][$this->index][$method]['name']);
+
+			case 'proxy':
+				if (! isset($_SESSION['USER'][$this->index][$method]['proxy']))
+					return $this->getValue('login','bind_id');
+				else
+					return blowfish_decrypt($_SESSION['USER'][$this->index][$method]['proxy']);
 
 			case 'http':
 			case 'session':
@@ -175,6 +182,12 @@ abstract class DS {
 
 		switch ($this->getAuthType()) {
 			case 'config':
+				return true;
+
+			case 'proxy':
+				if (isset($_SESSION['USER'][$this->index][$method]['proxy']))
+					unset($_SESSION['USER'][$this->index][$method]['proxy']);
+
 			case 'http':
 			case 'session':
 				$_SESSION['USER'][$this->index][$method]['name'] = blowfish_encrypt($user);
@@ -193,11 +206,12 @@ abstract class DS {
 	protected function getPassword($method=null) {
 		$method = $this->getMethod($method);
 
-		if ($method == 'unauth')
+		if ($method == 'anon')
 			return '';
 
 		switch ($this->getAuthType()) {
 			case 'config':
+			case 'proxy':
 				if (! isset($_SESSION['USER'][$this->index][$method]['pass']))
 					return $this->getValue('login','bind_pass');
 				else
@@ -230,6 +244,15 @@ abstract class DS {
 
 		# For some authentication types, we need to do the login here
 		switch ($this->getAuthType()) {
+			case 'config':
+				if (! $CACHE[$this->index] = $this->login($this->getLogin($method),$this->getPassword($method),$method))
+					system_message(array(
+						'title'=>_('Unable to login.'),
+						'body'=>_('Your configuration file has authentication set to CONFIG based authentication, however, the userid/password failed to login'),
+						'type'=>'error'));
+
+				break;
+
 			case 'http':
 				# If our auth vars are not set, throw up a login box.
 				if (! isset($_SERVER['PHP_AUTH_USER'])) {
@@ -272,6 +295,11 @@ abstract class DS {
 
 				break;
 
+			case 'proxy':
+				$CACHE[$this->index] = $this->login($this->getValue('login','bind_id'),$this->getValue('login','bind_pass'),$method);
+
+				break;
+
 			default:
 				$CACHE[$this->index] = is_null($this->getLogin($method)) ? false : true;
 		}
@@ -287,14 +315,10 @@ abstract class DS {
 
 		switch ($this->getAuthType()) {
 			case 'config':
-				if (isset($_SESSION['USER'][$this->index][$method]))
-					unset($_SESSION['USER'][$this->index][$method]);
-
 				return true;
 
 			case 'http':
-				return true;
-
+			case 'proxy':
 			case 'session':
 				if (isset($_SESSION['USER'][$this->index][$method]))
 					unset($_SESSION['USER'][$this->index][$method]);
