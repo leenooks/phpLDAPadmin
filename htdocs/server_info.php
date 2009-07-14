@@ -29,11 +29,18 @@ foreach ($attrs as $key => $values) {
 	if ($key == 'dn')
 		continue;
 
-	$href = sprintf('cmd.php?cmd=schema&amp;server_id=%s&amp;view=attributes&amp;viewvalue=%s',$app['server']->getIndex(),$key);
-
 	echo '<tr class="list_item"><td class="heading" rowspan=2>';
-	printf('<a href="%s" title="%s: %s" >%s</a>',
-		$href,_('Click to view the schema definition for attribute type'),$key,$key);
+
+	$sattr = $app['server']->getSchemaAttribute($key);
+
+	if ($sattr) {
+		$href = sprintf('cmd.php?cmd=schema&amp;server_id=%s&amp;view=attributes&amp;viewvalue=%s',$app['server']->getIndex(),$sattr->getName());
+		printf('<a href="%s" title="%s: %s" >%s</a>',
+			$href,_('Click to view the schema definition for attribute type'),$sattr->getName(false),$sattr->getName(false));
+
+	} else
+		echo $key;
+
 	echo '</td></tr>';
 
 	echo '<tr class="list_item"><td class="blank">&nbsp;</td><td class="value">';

@@ -361,18 +361,20 @@ class ldap extends DS {
 		if ($debug)
 			debug_dump(array('query'=>$query,'server'=>$this->getIndex(),'con'=>$this->connect($method)));
 
+		$resource = $this->connect($method,$debug);
+
 		switch ($query['scope']) {
 			case 'base':
-				$search = @ldap_read($this->connect($method,$debug),$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$time_limit,$query['deref']);
+				$search = @ldap_read($resource,$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$time_limit,$query['deref']);
 				break;
 
 			case 'one':
-				$search = @ldap_list($this->connect($method,$debug),$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$time_limit,$query['deref']);
+				$search = @ldap_list($resource,$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$time_limit,$query['deref']);
 				break;
 
 			case 'sub':
 			default:
-				$search = @ldap_search($this->connect($method,$debug),$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$time_limit,$query['deref']);
+				$search = @ldap_search($resource,$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$time_limit,$query['deref']);
 				break;
 		}
 
@@ -389,70 +391,47 @@ class ldap extends DS {
 		$return = array();
 
 		# Get the first entry identifier
-		if ($entry_id = ldap_first_entry($this->connect($method,$debug),$search)) {
-
-			if ($debug)
-				debug_dump(array('entry_id'=>$entry_id));
+		if ($entries = ldap_get_entries($resource,$search)) {
+			# Remove the count
+			if (isset($entries['count']))
+				unset($entries['count']);
 
 			# Iterate over the entries
-			while ($entry_id) {
+			foreach ($entries as $a => $entry) {
+				if (! isset($entry['dn']))
+					debug_dump_backtrace('No DN?',1);
 
-				# Get the distinguished name of the entry
-				$dn = ldap_get_dn($this->connect($method,$debug),$entry_id);
-
-				if (DEBUG_ENABLED)
-					debug_log('Got DN [%s].',64,__FILE__,__LINE__,__METHOD__,$dn);
-
-				$return[$dn]['dn'] = $dn;
-
-				# Get the attributes of the entry
-				$attrs = ldap_get_attributes($this->connect($method,$debug),$entry_id);
-
-				if (DEBUG_ENABLED)
-					debug_log('Got ATTRS [%s].',64,__FILE__,__LINE__,__METHOD__,$attrs);
-
-				# Get the first attribute of the entry
-				if ($attr = ldap_first_attribute($this->connect($method,$debug),$entry_id,$attrs)) {
-
-					if (DEBUG_ENABLED)
-						debug_log('Processing ATTR [%s].',64,__FILE__,__LINE__,__METHOD__,$attr);
-
-					# Iterate over the attributes
-					while ($attr) {
-						# It seems that OpenDS complains when you do a ldap_get_values on these attributes - we'll skip them as a workaround
-						# This is probably the bug https://opends.dev.java.net/issues/show_bug.cgi?id=3446
-						#@todo we probably shouldnt completely ignore the isMemberOf ?
-						if (in_array($attr,array('isMemberOf'))) {
-							$attr = ldap_next_attribute($this->connect($method,$debug),$entry_id,$attrs);
-							continue;
-						}
-
-						if ($this->isAttrBinary($attr))
-							$values = ldap_get_values_len($this->connect($method,$debug),$entry_id,$attr);
-						else
-							$values = ldap_get_values($this->connect($method,$debug),$entry_id,$attr);
-
-						# Get the number of values for this attribute
-						$count = $values['count'];
-						unset($values['count']);
-
-						if ($count == 1)
-							$return[$dn][$attr] = $values[0];
-						else
-							$return[$dn][$attr] = $values;
-
-						$attr = ldap_next_attribute($this->connect($method,$debug),$entry_id,$attrs);
-					} # end while attr
+				# Remove the none entry references.
+				if (! is_array($entry)) {
+					unset($entries[$a]);
+					continue;
 				}
 
-				$entry_id = ldap_next_entry($this->connect($method,$debug),$entry_id);
+				$dn = $entry['dn'];
+				unset($entry['dn']);
 
-			} # End while entry_id
+				# Iterate over the attributes
+				foreach ($entry as $b => $attrs) {
+					# Remove the none entry references.
+					if (! is_array($attrs)) {
+						unset($entry[$b]);
+						continue;
+					}
+
+					# Remove the count
+					if (isset($entry[$b]['count']))
+						unset($entry[$b]['count']);
+				}
+
+				# Our queries always include the DN (the only value not an array).
+				$entry['dn'] = $dn;
+				$return[$dn] = $entry;
+			}
+
+			# Sort our results
+			foreach ($return as $key=> $values)
+				ksort($return[$key]);
 		}
-
-		# Sort our results
-		foreach ($return as $key=> $values)
-			ksort($return[$key]);
 
 		if (DEBUG_ENABLED)
 			debug_log('Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$return);
@@ -763,9 +742,6 @@ class ldap extends DS {
 			$results = $this->getDNAttrValues('',$method);
 
 			if (isset($results['namingcontexts'])) {
-				if (! is_array($results['namingcontexts']))
-					$results['namingcontexts'] = array($results['namingcontexts']);
-
 				if (DEBUG_ENABLED)
 					debug_log('LDAP Entries:%s',80,__FILE__,__LINE__,__METHOD__,implode('|',$results['namingcontexts']));
 
@@ -792,8 +768,8 @@ class ldap extends DS {
 
 		$results = $this->getDNAttrValues($dn,$method);
 
-		if (isset($results['dn'][0]))
-			return $results['dn'][0];
+		if ($results)
+			return $results;
 		else
 			return false;
 	}

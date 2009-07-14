@@ -16,7 +16,7 @@ require './common.php';
 $attrs = $app['server']->getRootDSE();
 
 $query = array();
-$query['base'] = $attrs['monitorcontext'];
+$query['base'] = $attrs['monitorcontext'][0];
 $query['scope'] = 'sub';
 $query['attrs'] = array('+','*');
 $results = $app['server']->query($query,null);
@@ -37,7 +37,7 @@ printf('<tr class="list_item"><td class="heading" rowspan=2>%s</td></tr>',_('LDA
 printf('<tr class="list_item"><td class="value">');
 
 echo '<table class="result" border=0>';
-printf('<tr><td>%s</td></tr>',$results['cn=Monitor']['monitoredInfo']);
+printf('<tr><td>%s</td></tr>',$results[$attrs['monitorcontext'][0]]['monitoredinfo'][0]);
 echo '</table>';
 
 echo '</td></tr>';
@@ -47,10 +47,7 @@ foreach (array(
 	'cn=Overlays,cn=Monitor' => 'cn=Overlay %s,%s'
 	) as $dn => $child) {
 
-	if (is_array($results[$dn]['description']))
-		$description = implode(' ',$results[$dn]['description']);
-	else
-		$description = $results[$dn]['description'];
+	$description = implode(' ',$results[$dn]['description']);
 
 	$description = preg_replace('/"/','\'',$description);
 	printf('<tr class="list_item"><td class="heading" rowspan=2><acronym title="%s">%s</acronym></td></tr>',$description,$dn);
@@ -59,8 +56,8 @@ foreach (array(
 	echo '<table class="result_table" border=0 width="100%">';
 
 	$attrs = array(
-		'monitorRuntimeConfig',
-		'supportedControl'
+		'monitorruntimeconfig',
+		'supportedcontrol'
 		);
 
 	echo '<tr class="highlight">';
@@ -72,21 +69,23 @@ foreach (array(
 	echo '</tr>';
 
 	$counter = 0;
-	foreach ($results[$dn]['monitoredInfo'] as $index => $backend) {
+	foreach ($results[$dn]['monitoredinfo'] as $index => $backend) {
 		printf('<tr class="%s">',$counter++%2==0?'even':'odd');
 		printf('<td>%s</td>',$backend);
 
 		$key = sprintf($child,$index,$dn);
 
 		echo '<td>';
-		if (isset($results[$key]['seeAlso'])) {
-			$seealso = is_array($results[$key]['seeAlso']) ? $results[$key]['seeAlso'] : array($results[$key]['seeAlso']);
+		if (isset($results[$key]['seealso'])) {
+			$seealso = is_array($results[$key]['seealso']) ? $results[$key]['seealso'] : array($results[$key]['seealso']);
 
 			foreach ($seealso as $db)
-				if (isset($results[$db]['namingContexts']))
-					printf('<acronym title="%s">%s</acronym><br/>',isset($results[$db]['labeledURI']) ? $results[$db]['labeledURI'] : _('Internal'),$results[$db]['namingContexts']);
+				if (isset($results[$db]['namingcontexts']))
+					printf('<acronym title="%s">%s</acronym><br/>',
+						isset($results[$db]['labeleduri']) ? implode(' ',$results[$db]['labeleduri']) : _('Internal'),
+						implode(' ',$results[$db]['namingcontexts']));
 				else
-					printf('%s ',$results[$db]['monitoredInfo']);
+					printf('%s ',implode(' ',$results[$db]['monitoredinfo']));
 
 		} else {
 			echo '&nbsp;';
@@ -101,7 +100,7 @@ foreach (array(
 				else
 					$sc = $results[$key][$attr];
 
-				if (strcasecmp('supportedControl',$attr) == 0)
+				if (strcasecmp('supportedcontrol',$attr) == 0)
 					foreach ($sc as $control) {
 						$oidtotext = support_oid_to_text($control);
 
@@ -133,44 +132,44 @@ echo '<table class="result"><tr><td>';
 echo '<table class="result_table" border=0 width="100%">';
 
 printf('<tr class="highlight"><td class="20%%">%s</td><td class="value" width="80%%">%s</td></tr>',
-	_('Total Connections'),$results['cn=Total,cn=Connections,cn=Monitor']['monitorCounter']);
+	_('Total Connections'),$results['cn=Total,cn=Connections,cn=Monitor']['monitorcounter']);
 printf('<tr class="highlight"><td class="20%%">%s</td><td class="value" width="80%%">%s</td></tr>',
-	_('Current Connections'),$results['cn=Current,cn=Connections,cn=Monitor']['monitorCounter']);
+	_('Current Connections'),$results['cn=Current,cn=Connections,cn=Monitor']['monitorcounter']);
 
 # Look for some connections
 foreach ($results as $key => $value) {
 	if (preg_match('/^cn=Connection.*,cn=Connections,cn=Monitor$/',$key)) {
 		echo '<tr class="highlight">';
-		printf('<td>%s</td>',$results[$key]['cn']);
+		printf('<td>%s</td>',$results[$key]['cn'][0]);
 
 		echo '<td class="value">';
 		echo '<table class="result_table" border=0 width="100%">';
 
 		$counter = 0;
 		foreach (array(
-			'monitorConnectionActivityTime',
-			'monitorConnectionAuthzDN',
-			'monitorConnectionGet',
-			'monitorConnectionListener',
-			'monitorConnectionLocalAddress',
-			'monitorConnectionMask',
-			'monitorConnectionNumber',
-			'monitorConnectionOpsCompleted',
-			'monitorConnectionOpsExecuting',
-			'monitorConnectionOpsPending',
-			'monitorConnectionOpsReceived',
-			'monitorConnectionPeerAddress',
-			'monitorConnectionPeerDomain',
-			'monitorConnectionProtocol',
-			'monitorConnectionRead',
-			'monitorConnectionStartTime',
-			'monitorConnectionWrite'
+			'monitorconnectionactivitytime',
+			'monitorconnectionauthzdn',
+			'monitorconnectionget',
+			'monitorconnectionlistener',
+			'monitorconnectionlocaladdress',
+			'monitorconnectionmask',
+			'monitorconnectionnumber',
+			'monitorconnectionopscompleted',
+			'monitorconnectionopsexecuting',
+			'monitorconnectionopspending',
+			'monitorconnectionopsreceived',
+			'monitorconnectionpeeraddress',
+			'monitorconnectionpeerdomain',
+			'monitorconnectionprotocol',
+			'monitorconnectionread',
+			'monitorconnectionstarttime',
+			'monitorconnectionwrite'
 			) as $metric) {
 
 			printf('<tr class="%s">',$counter++%2==0?'even':'odd');
 
 			printf('<td class="title" width="35%%">%s</td><td width="65%%">%s</td>',
-				$metric,isset($results[$key][$metric]) ? $results[$key][$metric] : '&nbsp;');
+				$metric,isset($results[$key][$metric]) ? $results[$key][$metric][0] : '&nbsp;');
 			echo '</tr>';
 		}
 
@@ -196,51 +195,48 @@ foreach (array(
 	'cn=Waiters,cn=Monitor'
 	) as $dn ) {
 
-	if (is_array($results[$dn]['description']))
-		$description = implode(' ',$results[$dn]['description']);
-	else
-		$description = $results[$dn]['description'];
-
+	$description = implode(' ',$results[$dn]['description']);
 	$description = preg_replace('/"/','\'',$description);
+
 	printf('<tr class="list_item"><td class="heading" rowspan=2><acronym title="%s">%s</acronym></td></tr>',$description,$dn);
 	echo '<tr class="list_item"><td class="value">';
 	echo '<table class="result"><tr><td>';
 	echo '<table class="result_table" border=0 width="100%">';
 
-	if (isset($results[$dn]['monitorOpInitiated']))
+	if (isset($results[$dn]['monitoropinitiated']))
 		printf('<tr class="highlight"><td width="20%%">%s</td><td class="value" width="80%%">%s</td></tr>',
-			'monitorOpInitiated',$results[$dn]['monitorOpInitiated']);
-	if (isset($results[$dn]['monitorOpCompleted']))
+			'monitorOpInitiated',$results[$dn]['monitoropinitiated'][0]);
+	if (isset($results[$dn]['monitoropcompleted']))
 		printf('<tr class="highlight"><td width="20%%">%s</td><td class="value" width="80%%">%s</td></tr>',
-			'monitorOpCompleted',$results[$dn]['monitorOpCompleted']);
-	if (isset($results[$dn]['monitoredInfo']))
+			'monitorOpCompleted',$results[$dn]['monitoropcompleted'][0]);
+	if (isset($results[$dn]['monitoredinfo']))
 		printf('<tr class="highlight"><td width="20%%">%s</td><td class="value" width="80%%">%s</td></tr>',
-			'monitoredInfo',$results[$dn]['monitoredInfo']);
+			'monitoredInfo',$results[$dn]['monitoredinfo'][0]);
 
 	# Look for some connecitons
 	foreach ($results as $key => $value) {
 		if (preg_match('/^.*,'.$dn.'$/',$key)) {
 			echo '<tr class="highlight">';
-			printf('<td width="20%%">%s</td>',$results[$key]['cn']);
+			printf('<td width="20%%">%s</td>',$results[$key]['cn'][0]);
 
 			echo '<td class="value" width="80%">';
 			echo '<table class="result_table" border=0 width="100%">';
 
 			foreach (array(
-				'labeledURI',
-				'monitorConnectionLocalAddress',
-				'monitoredInfo',
-				'monitorCounter',
-				'monitorOpInitiated',
-				'monitorOpCompleted',
-				'monitorTimestamp'
+				'labeleduri',
+				'monitorconnectionlocaladdress',
+				'monitoredinfo',
+				'monitorcounter',
+				'monitoropinitiated',
+				'monitoropcompleted',
+				'monitortimestamp'
 				) as $metric) {
 
 				if (isset($results[$key][$metric])) {
 					printf('<tr class="%s">',$counter++%2==0?'even':'odd');
 
 					printf('<td class="title" width="35%%">%s</td><td width="65%%">%s</td>',
-						$metric,$results[$key][$metric]);
+						$metric,$results[$key][$metric][0]);
 
 					echo '</tr>';
 				}

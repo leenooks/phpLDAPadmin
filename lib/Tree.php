@@ -146,7 +146,7 @@ abstract class Tree {
 		$server = $this->getServer();
 		$dnlower = $this->indexDN($dn);
 
-		if (! ($dn = $server->dnExists($dn)))
+		if (! ($server->dnExists($dn)))
 			return;
 
 		if (isset($this->entries[$dnlower]))
