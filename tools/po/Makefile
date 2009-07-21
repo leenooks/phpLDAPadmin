@@ -52,9 +52,9 @@ all-merge-pot:
 launchpad-extract:
 	@[ ! -r $(EXPORTFILE) ] && echo "No export file [$(EXPORTFILE)] found?" && exit 1 || true
 	@cd $(LOCALEDIR); tar xzf $(EXPORTFILE)
-	@rm -f $(LOCALEDIR)/phpldapadmin-uk.po
+	@rm -f $(LOCALEDIR)/phpldapadmin/phpldapadmin-uk.po
 	@rm -f $(LOCALEDIR)/phpldapadmin/phpldapadmin.pot
-	@rmdir $(LOCALEDIR)/phpldapadmin
-	@find $(LOCALEDIR) -name phpldapadmin-\*.po | while read i; do newi=$$(echo $$i| sed -e 's/phpldapadmin-.*/messages.po/'); mv $$i $$newi; done
+	@find $(LOCALEDIR) -name phpldapadmin-\*.po | while read i; do newi=$$(echo $$i| sed -r 's/phpldapadmin-(.*).po/..\/\1\*\/LC_MESSAGES\/messages.po/'); mv $$i $$newi; done
+	rmdir $(LOCALEDIR)/phpldapadmin
 
 launchpad-export: launchpad-extract all-mo
