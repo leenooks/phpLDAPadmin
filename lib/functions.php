@@ -218,7 +218,7 @@ function app_version() {
 		$version = trim(fread($f, filesize($version_file)));
 		fclose($f);
 
-		$CACHE = preg_replace('/^RELEASE-([0-9\.]+(-.*)+)$/','$1',$version);
+		$CACHE = preg_replace('/^RELEASE-([0-9\.]+(-.*)*)$/','$1',$version);
 
 		# Check if we are a CVS copy.
 		if (preg_match('/^$/',$CACHE))
