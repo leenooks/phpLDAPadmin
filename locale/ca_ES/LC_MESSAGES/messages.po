@@ -4,13 +4,14 @@ msgstr ""
 "Project-Id-Version: messages\n"
 "Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sf.net\n"
 "POT-Creation-Date: 2009-07-12 20:50+0200\n"
-"PO-Revision-Date: 2005-11-29 18:22+0100\n"
-"Last-Translator: Unknown <nobody@nodomain.org>\n"
+"PO-Revision-Date: 2009-07-21 07:51+0000\n"
+"Last-Translator: Unknown <Unknown>\n"
 "Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"X-Launchpad-Export-Date: 2009-07-21 12:24+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 #: ../../lib/HTMLTree.php:507
 msgid "(Session timed out. Automatically logged out.)"
@@ -64,7 +65,6 @@ msgstr ""
 msgid "A valid newsuperier attribute should be specified"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:48
 #, no-wrap
 msgid "AIM Nick"
@@ -96,43 +96,36 @@ msgid "Add"
 msgstr "Afegir"
 
 #: ../../htdocs/add_attr_form.php:164
-#, fuzzy
 msgid "Add Attribute"
-msgstr "Atribut"
+msgstr ""
 
 #: ../../htdocs/add_value_form.php:155
-#, fuzzy
 msgid "Add New Value"
-msgstr "Valor nou"
+msgstr ""
 
 #: ../../htdocs/add_oclass_form.php:101
 msgid "Add ObjectClass and Attributes"
 msgstr "Afegir ObjectClass i Atributs"
 
 #: ../../lib/TemplateRender.php:2024
-#, fuzzy
 msgid "Add Value to Attribute"
-msgstr "Afegir nou atribut"
+msgstr ""
 
 #: ../../htdocs/modify_member_form.php:123
-#, fuzzy
 msgid "Add all"
-msgstr "afegir valor"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:2023 ../../lib/TemplateRender.php:2027
-#, fuzzy
 msgid "Add an additional value to attribute"
-msgstr "Afegir valor adicional a aquest atribut"
+msgstr ""
 
 #: ../../htdocs/add_value_form.php:46
-#, fuzzy
 msgid "Add new"
-msgstr "Afegir"
+msgstr ""
 
 #: ../../htdocs/add_value_form.php:123
-#, fuzzy
 msgid "Add new ObjectClass"
-msgstr "Saltar a una ObjectClass"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1236 ../../lib/TemplateRender.php:1239
 #: ../../htdocs/add_attr_form.php:31 ../../htdocs/add_attr_form.php:50
@@ -140,58 +133,50 @@ msgid "Add new attribute"
 msgstr "Afegir nou atribut"
 
 #: ../../lib/TemplateRender.php:1235 ../../lib/TemplateRender.php:1239
-#, fuzzy
 msgid "Add new attribute to this object"
-msgstr "Afegir nou atribut"
+msgstr ""
 
 #: ../../htdocs/add_attr_form.php:89
 msgid "Add new binary attribute"
 msgstr "Afegir valor binari"
 
 #: ../../htdocs/add_oclass_form.php:62
-#, fuzzy
 msgid "Add new objectClass to"
-msgstr "Saltar a una ObjectClass"
+msgstr ""
 
 #: ../../htdocs/modify_member_form.php:123
 msgid "Add selected"
 msgstr ""
 
 #: ../../htdocs/import.php:33
-#, fuzzy
 msgid "Adding"
-msgstr "Afegint..."
+msgstr ""
 
 #: ../../templates/creation/kolabPerson.xml:69
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Address"
-msgstr "Afegir"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:78
 #, no-wrap
 msgid "Address (personal)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:115
 #, no-wrap
 msgid "Address (professional)"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/modification/inetOrgPerson.xml:5
 #, no-wrap
 msgid "Address Book Entry"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/kolabPerson.xml:52
 #, no-wrap
 msgid "Alias"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/alias.xml:22
 #: ../../templates/creation/sendmailMTACluster.xml:20
 #: ../../templates/creation/test_extensible.xml:22
@@ -207,7 +192,6 @@ msgstr ""
 msgid "Aliases"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:44
 #, no-wrap
 msgid "Alternative Email"
@@ -238,7 +222,6 @@ msgstr ""
 msgid "Are you sure you want to permanently delete this object?"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/dNSDomain.xml:26
 #, no-wrap
 msgid "Associated Domain"
@@ -257,52 +240,47 @@ msgid "Attribute"
 msgstr "Atribut"
 
 #: ../../templates/creation/example.xml:20
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Attribute 1"
-msgstr "Atribut"
+msgstr ""
 
 #: ../../templates/creation/example.xml:27
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Attribute 2"
-msgstr "Atribut"
+msgstr ""
 
 #: ../../templates/creation/example.xml:32
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Attribute 3"
-msgstr "Atribut"
+msgstr ""
 
 #: ../../htdocs/schema.php:43
-#, fuzzy
 msgid "Attribute Types"
-msgstr "Atribut"
+msgstr ""
 
 #: ../../lib/ds_ldap.php:649
-#, fuzzy
 msgid "Attribute doesnt exist"
-msgstr "[atribut esborrat]"
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:529
-#, fuzzy
 msgid "Attribute not added"
-msgstr "Atribut"
+msgstr ""
 
 #: ../../htdocs/mass_edit.php:115
 msgid "Attribute not available"
 msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:559
-#, fuzzy
 msgid "Attribute not deleted"
-msgstr "[atribut esborrat]"
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:543
 msgid "Attribute not modified"
 msgstr ""
 
 #: ../../lib/import_functions.php:542
-#, fuzzy
 msgid "Attribute not valid"
-msgstr "Atribut"
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:689
 msgid "Attribute value would not be unique"
@@ -310,9 +288,8 @@ msgstr ""
 
 #: ../../htdocs/schema.php:500 ../../htdocs/schema.php:638
 #: ../../htdocs/schema.php:671
-#, fuzzy
 msgid "Attributes"
-msgstr "Atribut"
+msgstr ""
 
 #: ../../htdocs/login_form.php:86
 msgid "Authenticate"
@@ -321,14 +298,12 @@ msgstr ""
 #: ../../htdocs/login.php:22 ../../htdocs/login.php:29
 #: ../../htdocs/login_form.php:17 ../../htdocs/login_form.php:40
 #: ../../htdocs/logout.php:18
-#, fuzzy
 msgid "Authenticate to server"
-msgstr "Esquema del servidor "
+msgstr ""
 
 #: ../../htdocs/cmd.php:68
-#, fuzzy
 msgid "Auto refresh"
-msgstr "refrescar"
+msgstr ""
 
 #: ../../lib/Attribute.php:586
 msgid "Automatically determined"
@@ -347,9 +322,8 @@ msgid "Available members"
 msgstr ""
 
 #: ../../htdocs/entry_chooser.php:65
-#, fuzzy
 msgid "Back Up"
-msgstr "Tornar a..."
+msgstr ""
 
 #: ../../lib/QueryRender.php:157 ../../htdocs/export_form.php:33
 msgid "Base (base dn only)"
@@ -361,14 +335,12 @@ msgid "Base DN"
 msgstr "Base DN"
 
 #: ../../lib/PageRender.php:604 ../../lib/PageRender.php:608
-#, fuzzy
 msgid "Binary Value"
-msgstr "Valor binari"
+msgstr ""
 
 #: ../../htdocs/copy.php:58
-#, fuzzy
 msgid "Building snapshot of tree to copy"
-msgstr "Construïnt la 'foto' de l'arbre per a copiar... "
+msgstr ""
 
 #: ../../htdocs/mass_edit.php:63
 msgid "Bulk edit the following DNs"
@@ -389,9 +361,8 @@ msgid "Cancel"
 msgstr "Cancel.lar"
 
 #: ../../lib/TemplateRender.php:1118 ../../lib/TemplateRender.php:1121
-#, fuzzy
 msgid "Change to another template"
-msgstr "Escull una plantilla"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:2333
 msgid "Check password"
@@ -405,23 +376,20 @@ msgstr ""
 #: ../../templates/creation/inetOrgPerson.xml:58
 #: ../../templates/creation/kolabPerson.xml:78
 #: ../../templates/modification/inetOrgPerson.xml:55
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "City"
-msgstr "Cometre"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:73
 #, no-wrap
 msgid "City (Hidden with 2 values)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:82
 #, no-wrap
 msgid "City (personal)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:119
 #, no-wrap
 msgid "City (professional)"
@@ -432,18 +400,16 @@ msgid "Clearing cache"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:2274
-#, fuzzy
 msgid "Click to popup a dialog to select a date graphically"
-msgstr "Fer click per seleccionar un objecte gràficament"
+msgstr ""
 
 #: ../../lib/functions.php:2386
 msgid "Click to popup a dialog to select an entry (DN) graphically"
 msgstr "Fer click per seleccionar un objecte gràficament"
 
 #: ../../lib/PageRender.php:337 ../../htdocs/server_info.php:36
-#, fuzzy
 msgid "Click to view the schema definition for attribute type"
-msgstr "Fes click per veure la definició de l'esquema per tipus d'atribut '%s'"
+msgstr ""
 
 #: ../../htdocs/schema.php:172
 msgid "Collective"
@@ -454,15 +420,14 @@ msgid "Command disabled by the server configuration"
 msgstr ""
 
 #: ../../templates/creation/organizationalRole.xml:35
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Comments"
-msgstr "Cometre"
+msgstr ""
 
 #: ../../htdocs/update_confirm.php:187 ../../htdocs/create_confirm.php:118
 msgid "Commit"
 msgstr "Cometre"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/posixAccount.xml:37
 #: ../../templates/creation/courierMailAccount.xml:35
 #: ../../templates/creation/courierMailAlias.xml:21
@@ -478,7 +443,6 @@ msgstr "Cometre"
 msgid "Common Name"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:53
 #: ../../templates/creation/test_picklist.xml:53
 #, no-wrap
@@ -525,27 +489,24 @@ msgstr ""
 
 #: ../../lib/TemplateRender.php:789 ../../lib/TemplateRender.php:1319
 #: ../../htdocs/create_confirm.php:61
-#, fuzzy
 msgid "Container"
-msgstr "contingui"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1451
 msgid "Container and ObjectClass(es)"
 msgstr ""
 
 #: ../../htdocs/copy_form.php:29 ../../htdocs/copy_form.php:33
-#, fuzzy
 msgid "Copy"
-msgstr "Copiar "
+msgstr ""
 
 #: ../../htdocs/copy_form.php:87
 msgid "Copy "
 msgstr "Copiar "
 
 #: ../../htdocs/copy.php:88
-#, fuzzy
 msgid "Copy Entry"
-msgstr "Copiar "
+msgstr ""
 
 #: ../../htdocs/copy.php:79 ../../htdocs/copy.php:139
 msgid "Copy NOT successful"
@@ -557,9 +518,8 @@ msgstr "Copiar aquest objecte"
 
 #: ../../htdocs/copy.php:75 ../../htdocs/copy.php:111
 #: ../../htdocs/copy.php:135
-#, fuzzy
 msgid "Copy successful"
-msgstr "Exit! Desitges "
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1144 ../../lib/TemplateRender.php:1148
 msgid "Copy this object to another location, a new DN, or another server"
@@ -572,29 +532,25 @@ msgid "Copying "
 msgstr "Copiant "
 
 #: ../../htdocs/import.php:42
-#, fuzzy
 msgid "Could not add object"
-msgstr "No he pogut afegir l'objecte:"
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:443
 msgid "Could not add the object to the LDAP server."
 msgstr "No he pogut afegir l'objecte al servidor LDAP."
 
 #: ../../htdocs/delete_attr.php:35
-#, fuzzy
 msgid "Could not delete attribute value."
-msgstr "No he pogut esborrar l'objecte:"
+msgstr ""
 
 #: ../../htdocs/import.php:43
-#, fuzzy
 msgid "Could not delete object"
-msgstr "No he pogut esborrar l'objecte:"
+msgstr ""
 
 #: ../../htdocs/rdelete.php:52 ../../htdocs/rdelete.php:71
 #: ../../htdocs/rdelete.php:88 ../../htdocs/delete.php:37
-#, fuzzy
 msgid "Could not delete the entry."
-msgstr "No he pogut esborrar l'entrada: %s"
+msgstr ""
 
 #: ../../htdocs/entry_chooser.php:93
 msgid "Could not determine base DN"
@@ -619,33 +575,28 @@ msgid "Could not fetch jpeg data from LDAP server for attribute [%s]."
 msgstr ""
 
 #: ../../htdocs/import.php:46
-#, fuzzy
 msgid "Could not modify object"
-msgstr "No he pogut modificar l'objecte:"
+msgstr ""
 
 #: ../../htdocs/monitor.php:27
-#, fuzzy
 msgid "Could not obtain the monitor context for this server"
-msgstr "No he pogut afegir l'objecte al servidor LDAP."
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:601
 msgid "Could not perform ldap_modify operation."
 msgstr "No he pogut executar l'operació ldap_modify."
 
 #: ../../htdocs/import.php:44 ../../htdocs/import.php:45
-#, fuzzy
 msgid "Could not rename object"
-msgstr "No he pogut renombrar l'objecte:"
+msgstr ""
 
 #: ../../htdocs/rename.php:65
-#, fuzzy
 msgid "Could not rename the entry."
-msgstr "No he pogut esborrar l'entrada: %s"
+msgstr ""
 
 #: ../../htdocs/schema.php:34
-#, fuzzy
 msgid "Could not retrieve schema from"
-msgstr "No he pogut determinar la base DN"
+msgstr ""
 
 #: ../../lib/ds_ldap.php:534
 msgid "Could not start TLS. Please check your LDAP server configuration."
@@ -653,44 +604,37 @@ msgstr ""
 "No he pogut iniciar el TLS.<br />Revisa la teva configuració del servidor "
 "LDAP."
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:94
 #, no-wrap
 msgid "Country (personal)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:131
 #, no-wrap
 msgid "Country (professional)"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/courierMailAccount.xml:11
 #, no-wrap
 msgid "Courier Mail: Account"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/courierMailAlias.xml:11
 #, no-wrap
 msgid "Courier Mail: Alias"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:1216 ../../lib/TemplateRender.php:1220
-#, fuzzy
 msgid "Create"
-msgstr "crear"
+msgstr ""
 
 #: ../../htdocs/create.php:91
-#, fuzzy
 msgid "Create Entry"
-msgstr "Renombrar objecte"
+msgstr ""
 
 #: ../../htdocs/create_confirm.php:59
-#, fuzzy
 msgid "Create LDAP Entry"
-msgstr "Crear objecte com a fill"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:765 ../../lib/TemplateRender.php:1525
 msgid "Create Object"
@@ -706,14 +650,12 @@ msgid "Create a new entry in"
 msgstr "Crear un nou objecte a"
 
 #: ../../htdocs/create.php:107
-#, fuzzy
 msgid "Create another entry"
-msgstr "Crear nou objecte a"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:102
-#, fuzzy
 msgid "Create it?"
-msgstr "Crear Objecte"
+msgstr ""
 
 #: ../../lib/AJAXTree.php:270 ../../lib/AJAXTree.php:273
 #: ../../lib/AJAXTree.php:275 ../../lib/HTMLTree.php:471
@@ -736,25 +678,21 @@ msgstr ""
 msgid "Current list of"
 msgstr "La llista actual de"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:140
 #, no-wrap
 msgid "Custom 1"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:144
 #, no-wrap
 msgid "Custom 2"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:148
 #, no-wrap
 msgid "Custom 3"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:152
 #, no-wrap
 msgid "Custom 4"
@@ -781,9 +719,8 @@ msgid "DN does not exist"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:1838
-#, fuzzy
 msgid "DN not available"
-msgstr "no es aplicable"
+msgstr ""
 
 #: ../../lib/export_functions.php:350
 msgid "DSML V.1 Export"
@@ -803,38 +740,33 @@ msgid "Default"
 msgstr ""
 
 #: ../../htdocs/delete_form.php:30 ../../htdocs/delete_form.php:123
-#, fuzzy
 msgid "Delete"
-msgstr "Esborrar foto"
+msgstr ""
 
 #: ../../htdocs/delete.php:31
-#, fuzzy
 msgid "Delete DN"
-msgstr "Esborrar foto"
+msgstr ""
 
 #: ../../htdocs/rdelete.php:35
-#, fuzzy
 msgid "Delete LDAP entries"
-msgstr "Esborrar aquest objecte"
+msgstr ""
 
 #: ../../htdocs/copy_form.php:76 ../../htdocs/copy_form.php:83
 msgid "Delete after copy (move):"
 msgstr ""
 
 #: ../../htdocs/mass_delete.php:129 ../../htdocs/delete_form.php:76
-#, fuzzy, php-format
+#, php-format
 msgid "Delete all %s objects"
-msgstr "a un objecte nou"
+msgstr ""
 
 #: ../../lib/functions.php:2063
-#, fuzzy
 msgid "Delete photo"
-msgstr "Esborrar foto"
+msgstr ""
 
 #: ../../htdocs/copy.php:127
-#, fuzzy
 msgid "Delete successful"
-msgstr "Entrada '%s' esborrada correctament."
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1177 ../../lib/TemplateRender.php:1180
 msgid "Delete this entry"
@@ -846,11 +778,9 @@ msgstr ""
 
 #: ../../htdocs/rdelete.php:63 ../../htdocs/rdelete.php:80
 #: ../../htdocs/import.php:34
-#, fuzzy
 msgid "Deleting"
-msgstr "Esborrant..."
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:107
 #, no-wrap
 msgid "Department (professional)"
@@ -865,7 +795,6 @@ msgstr ""
 msgid "Description"
 msgstr "Descripció"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_function.xml:27
 #, no-wrap
 msgid "Description (output from function)"
@@ -891,16 +820,14 @@ msgstr ""
 msgid "Display Format"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:31
 #, no-wrap
 msgid "Display Name"
 msgstr ""
 
 #: ../../htdocs/create.php:104
-#, fuzzy
 msgid "Display the new created entry"
-msgstr "Veure el nou objecte?"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:803 ../../lib/PageRender.php:97
 #: ../../htdocs/mass_delete.php:63 ../../htdocs/compare.php:54
@@ -910,9 +837,8 @@ msgid "Distinguished Name"
 msgstr "Nom distinguit"
 
 #: ../../htdocs/create_confirm.php:66
-#, fuzzy
 msgid "Do you want to create this entry?"
-msgstr "Vols fer aquests canvis?"
+msgstr ""
 
 #: ../../htdocs/update_confirm.php:38
 msgid "Do you want to make these changes?"
@@ -922,7 +848,6 @@ msgstr "Vols fer aquests canvis?"
 msgid "Documentation"
 msgstr "Documentació"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/dNSDomain.xml:21
 #, no-wrap
 msgid "Domain Component"
@@ -934,11 +859,9 @@ msgstr ""
 
 #: ../../lib/functions.php:396 ../../lib/functions.php:397
 #: ../../lib/functions.php:398 ../../htdocs/welcome.php:35
-#, fuzzy
 msgid "Donate"
-msgstr "cap"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/courierMailAccount.xml:71
 #: ../../templates/creation/courierMailAlias.xml:31
 #: ../../templates/creation/inetOrgPerson.xml:90
@@ -949,20 +872,17 @@ msgstr "cap"
 msgid "Email"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:69
 #, no-wrap
 msgid "Email (Verify)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:32
 #: ../../templates/creation/sendmailVirtualUser.xml:36
 #, no-wrap
 msgid "Email alias"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAClass.xml:32
 #: ../../templates/creation/sendmailVirtualDomain.xml:32
 #, no-wrap
@@ -974,19 +894,17 @@ msgid "Encountered an error while performing search."
 msgstr ""
 
 #: ../../templates/creation/test_randompassword.xml:31
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Encryption"
-msgstr "Descripció"
+msgstr ""
 
 #: ../../htdocs/add_value_form.php:98
-#, fuzzy
 msgid "Enter the value(s) you would like to add:"
-msgstr "Proveïr el valor per afegir: "
+msgstr ""
 
 #: ../../lib/QueryRender.php:561
-#, fuzzy
 msgid "Entries found"
-msgstr "Entrades trobades: "
+msgstr ""
 
 #: ../../lib/QueryRender.php:116
 msgid "Entries to show per page"
@@ -997,18 +915,17 @@ msgid "Entry"
 msgstr ""
 
 #: ../../htdocs/rdelete.php:48
-#, fuzzy, php-format
+#, php-format
 msgid "Entry %s and sub-tree deleted successfully."
-msgstr "Entrada '%s' esborrada correctament."
+msgstr ""
 
 #: ../../htdocs/entry_chooser.php:24
 msgid "Entry Chooser"
 msgstr ""
 
 #: ../../htdocs/create.php:97
-#, fuzzy
 msgid "Entry created"
-msgstr "crear"
+msgstr ""
 
 #: ../../htdocs/mass_delete.php:35 ../../htdocs/rdelete.php:29
 #: ../../htdocs/delete_form.php:23 ../../htdocs/mass_edit.php:27
@@ -1030,26 +947,24 @@ msgid "Error"
 msgstr "Error"
 
 #: ../../lib/functions.php:1937 ../../lib/functions.php:1941
-#, fuzzy
 msgid "Error number"
-msgstr "<b>Error número</b>: %s <small>(%s)</small><br /><br />"
+msgstr ""
 
 #: ../../lib/functions.php:2017
 msgid "Error writing to jpeg tmp directory"
 msgstr ""
 
 #: ../../templates/creation/example.xml:11
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Example entry"
-msgstr "Renombrar objecte"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:284 ../../lib/TemplateRender.php:1130
 #: ../../lib/TemplateRender.php:1131 ../../lib/TemplateRender.php:1133
 #: ../../lib/TemplateRender.php:1134 ../../htdocs/export_form.php:39
 #: ../../htdocs/export_form.php:52
-#, fuzzy
 msgid "Export"
-msgstr "importar"
+msgstr ""
 
 #: ../../htdocs/export_form.php:107
 msgid "Export format"
@@ -1068,11 +983,9 @@ msgid "Failed to Authenticate to server"
 msgstr ""
 
 #: ../../htdocs/logout.php:24
-#, fuzzy
 msgid "Failed to Logout of server"
-msgstr "Sortiu d'aquest servidor"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:30
 #: ../../templates/creation/inetOrgPerson.xml:80
 #: ../../templates/creation/kolabPerson.xml:100
@@ -1082,27 +995,23 @@ msgid "Fax"
 msgstr ""
 
 #: ../../templates/creation/mozillaOrgPerson.xml:65
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Fax Number"
-msgstr "Línia Número:"
+msgstr ""
 
 #: ../../tools/unserialize.php:14 ../../lib/functions.php:170
 #: ../../lib/functions.php:596 ../../htdocs/import.php:53
-#, fuzzy
 msgid "File"
-msgstr "fallat"
+msgstr ""
 
 #: ../../htdocs/copy_form.php:70
-#, fuzzy
 msgid "Filter"
-msgstr "fallat"
+msgstr ""
 
 #: ../../lib/QueryRender.php:595
-#, fuzzy
 msgid "Filter performed"
-msgstr "Filtre realitzat: "
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:21
 #, no-wrap
 msgid "First Name"
@@ -1116,11 +1025,10 @@ msgstr ""
 #: ../../templates/creation/test_uid1010.xml:21
 #: ../../templates/modification/inetOrgPerson.xml:20
 #: ../../templates/modification/sambaSamAccount.xml:22
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "First name"
-msgstr "renombrar"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:25
 #: ../../templates/creation/test_picklist.xml:21
 #, no-wrap
@@ -1170,15 +1078,14 @@ msgstr ""
 #: ../../templates/creation/test_picklist.xml:29
 #: ../../templates/modification/posixGroup.xml:25
 #: ../../templates/modification/sambaSamAccount.xml:41
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "GID Number"
-msgstr "Línia Número:"
+msgstr ""
 
 #: ../../lib/functions.php:68 ../../lib/functions.php:658
 msgid "Generic Error"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/inetOrgPerson.xml:11
 #: ../../templates/modification/inetOrgPerson.xml:10
 #, no-wrap
@@ -1186,51 +1093,45 @@ msgid "Generic: Address Book Entry"
 msgstr ""
 
 #: ../../templates/creation/dNSDomain.xml:11
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Generic: DNS Entry"
-msgstr "Renombrar objecte"
+msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/alias.xml:12
 #, no-wrap
 msgid "Generic: LDAP Alias"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/organizationalRole.xml:11
 #, no-wrap
 msgid "Generic: Organisational Role"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/ou.xml:11
 #, no-wrap
 msgid "Generic: Organisational Unit"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/posixGroup.xml:11
 #: ../../templates/modification/posixGroup.xml:11
 #, no-wrap
 msgid "Generic: Posix Group"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/simpleSecurityObject.xml:11
 #, no-wrap
 msgid "Generic: Simple Security Object"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/posixAccount.xml:11
 #, no-wrap
 msgid "Generic: User Account"
 msgstr ""
 
 #: ../../templates/creation/courierMailAccount.xml:21
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Given Name"
-msgstr "Renombrar"
+msgstr ""
 
 #: ../../htdocs/schema.php:216 ../../htdocs/schema.php:218
 #: ../../htdocs/schema.php:446 ../../htdocs/schema.php:448
@@ -1247,7 +1148,6 @@ msgstr "Tornar enrera"
 msgid "Go to"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/posixGroup.xml:20
 #: ../../templates/creation/sambaGroupMapping.xml:21
 #: ../../templates/creation/test_multilist.xml:20
@@ -1260,7 +1160,6 @@ msgstr ""
 msgid "Group members"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:52
 #, no-wrap
 msgid "HTML Email Format"
@@ -1327,18 +1226,16 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/courierMailAccount.xml:66
 #, no-wrap
 msgid "Home Directory"
 msgstr ""
 
 #: ../../templates/creation/mozillaOrgPerson.xml:61
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Home Phone Number"
-msgstr "Línia Número:"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/posixAccount.xml:49
 #: ../../templates/creation/sambaSamAccount.xml:123
 #: ../../templates/creation/test_uid1200.xml:49
@@ -1364,29 +1261,23 @@ msgstr ""
 msgid "Hook pre_attr_modify prevented attribute from being modified"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAMapObject.xml:36
 #, no-wrap
 msgid "Host/Network/Address"
 msgstr ""
 
 #: ../../htdocs/view_jpeg_photo.php:51
-#, fuzzy
 msgid "Image not available"
-msgstr "no es aplicable"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:272 ../../htdocs/import.php:50
 #: ../../htdocs/import_form.php:21
-#, fuzzy
 msgid "Import"
-msgstr "importar"
+msgstr ""
 
 #: ../../htdocs/add_oclass_form.php:68
-#, fuzzy
 msgid "In order to add these objectClass(es) to this entry, you must specify"
 msgstr ""
-"Instruccions: Per afegir aquesta ObjectClass a aquest objecte, s'ha "
-"d'especificar"
 
 #: ../../lib/Query.php:73
 #, php-format
@@ -1404,23 +1295,20 @@ msgid "Inactivity will log you off at %s"
 msgstr ""
 
 #: ../../htdocs/export_form.php:86
-#, fuzzy
 msgid "Include system attributes"
-msgstr "Esborrar atribut"
+msgstr ""
 
 #: ../../lib/functions.php:265
 msgid "Incorrect version of PHP"
 msgstr ""
 
 #: ../../lib/HTMLTree.php:244
-#, fuzzy
 msgid "Info"
-msgstr "info"
+msgstr ""
 
 #: ../../htdocs/schema.php:645 ../../htdocs/schema.php:678
-#, fuzzy
 msgid "Inherited from"
-msgstr "Hereda"
+msgstr ""
 
 #: ../../htdocs/schema.php:166 ../../htdocs/schema.php:579
 msgid "Inherits from"
@@ -1442,7 +1330,6 @@ msgstr ""
 msgid "Invalid BASE for query"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/test_invalidoc.xml:6
 #: ../../templates/creation/test_invalidoc2.xml:6
 #, no-wrap
@@ -1450,9 +1337,8 @@ msgid "Invalid Object Class"
 msgstr ""
 
 #: ../../htdocs/rename.php:47
-#, fuzzy
 msgid "Invalid RDN value"
-msgstr "afegir valor"
+msgstr ""
 
 #: ../../htdocs/login.php:36
 msgid "Invalid Username or Password."
@@ -1492,9 +1378,8 @@ msgid ""
 msgstr ""
 
 #: ../../htdocs/schema.php:411
-#, fuzzy
 msgid "Jump to a matching rule"
-msgstr "Saltar a un atribut"
+msgstr ""
 
 #: ../../htdocs/schema.php:186
 msgid "Jump to an attribute type"
@@ -1510,7 +1395,6 @@ msgstr "Saltar a una ObjectClass"
 msgid "Jump to this objectClass definition"
 msgstr "Saltar a aquesta ObjectClass"
 
-# type: Content of: <template><title>
 #: ../../templates/creation/kolabPerson.xml:11
 #, no-wrap
 msgid "Kolab: User Entry"
@@ -1521,14 +1405,12 @@ msgid "LDAP Connections"
 msgstr ""
 
 #: ../../htdocs/monitor.php:36
-#, fuzzy
 msgid "LDAP Server"
-msgstr "Servidor"
+msgstr ""
 
 #: ../../lib/functions.php:1934
-#, fuzzy
 msgid "LDAP said"
-msgstr "<b>LDAP diguè</b>: %s<br /><br />"
+msgstr ""
 
 #: ../../lib/export_functions.php:449
 msgid "LDIF Export"
@@ -1546,7 +1428,6 @@ msgstr ""
 msgid "LDIF text import"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaSamAccount.xml:85
 #: ../../templates/modification/sambaSamAccount.xml:85
 #, no-wrap
@@ -1554,11 +1435,10 @@ msgid "LM Password"
 msgstr ""
 
 #: ../../templates/creation/mozillaOrgPerson.xml:26
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Last Name"
-msgstr "Nom"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/posixAccount.xml:29
 #: ../../templates/creation/courierMailAccount.xml:28
 #: ../../templates/creation/courierMailAlias.xml:26
@@ -1573,7 +1453,6 @@ msgstr "Nom"
 msgid "Last name"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:46
 #: ../../templates/creation/test_picklist.xml:46
 #, no-wrap
@@ -1581,9 +1460,8 @@ msgid "Last name (JS OnChange)"
 msgstr ""
 
 #: ../../htdocs/import.php:107
-#, fuzzy
 msgid "Line"
-msgstr "Línia:"
+msgstr ""
 
 #: ../../htdocs/export_form.php:123
 msgid "Line ends"
@@ -1611,18 +1489,16 @@ msgid "Loading Export"
 msgstr ""
 
 #: ../../lib/HTMLTree.php:270
-#, fuzzy
 msgid "Loading Import"
-msgstr "importar"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:242
 msgid "Loading Info"
 msgstr ""
 
 #: ../../lib/HTMLTree.php:490 ../../lib/HTMLTree.php:492
-#, fuzzy
 msgid "Loading Login"
-msgstr "Buscant a: "
+msgstr ""
 
 #: ../../lib/HTMLTree.php:258
 msgid "Loading Monitor Info"
@@ -1633,26 +1509,21 @@ msgid "Loading Schema"
 msgstr ""
 
 #: ../../lib/HTMLTree.php:217
-#, fuzzy
 msgid "Loading Search"
-msgstr "Buscar"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:321
-#, fuzzy
 msgid "Logged in as"
-msgstr "Conectat com: "
+msgstr ""
 
 #: ../../lib/HTMLTree.php:496 ../../htdocs/update.php:66
-#, fuzzy
 msgid "Login"
-msgstr "Autenticació..."
+msgstr ""
 
 #: ../../htdocs/login_form.php:70
-#, fuzzy
 msgid "Login DN"
-msgstr "Autenticació..."
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/posixAccount.xml:70
 #: ../../templates/creation/sambaSamAccount.xml:100
 #: ../../templates/creation/test_uid1200.xml:70
@@ -1663,37 +1534,31 @@ msgid "Login shell"
 msgstr ""
 
 #: ../../lib/HTMLTree.php:490 ../../lib/HTMLTree.php:492
-#, fuzzy
 msgid "Login to"
-msgstr "Autenticació..."
+msgstr ""
 
 #: ../../lib/HTMLTree.php:296
 msgid "Logout of this server"
 msgstr "Sortiu d'aquest servidor"
 
 #: ../../htdocs/entry_chooser.php:36
-#, fuzzy
 msgid "Looking in"
-msgstr "Buscant a: "
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaMachine.xml:22
 #, no-wrap
 msgid "Machine Name"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:1844
-#, fuzzy
 msgid "Mail"
-msgstr "fallat"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/courierMailAccount.xml:77
 #, no-wrap
 msgid "Mailbox"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/courierMailAlias.xml:36
 #, no-wrap
 msgid "Maildrop"
@@ -1712,9 +1577,8 @@ msgid "Matching Rule OID"
 msgstr "OID de Matching Rule"
 
 #: ../../htdocs/schema.php:45 ../../htdocs/schema.php:288
-#, fuzzy
 msgid "Matching Rules"
-msgstr "OID de Matching Rule"
+msgstr ""
 
 #: ../../htdocs/add_value_form.php:152 ../../htdocs/schema.php:175
 msgid "Maximum Length"
@@ -1743,9 +1607,8 @@ msgid "Missing [post] setting in XML file"
 msgstr ""
 
 #: ../../lib/import_functions.php:436
-#, fuzzy
 msgid "Missing attributes for"
-msgstr "nous atributs"
+msgstr ""
 
 #: ../../lib/import_functions.php:450
 msgid "Missing modify command add, delete or replace"
@@ -1756,7 +1619,6 @@ msgstr ""
 msgid "Missing required extension"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/inetOrgPerson.xml:85
 #: ../../templates/creation/kolabPerson.xml:104
 #: ../../templates/creation/mozillaOrgPerson.xml:73
@@ -1786,23 +1648,20 @@ msgid "Modify members for"
 msgstr ""
 
 #: ../../htdocs/import.php:37
-#, fuzzy
 msgid "Modifying"
-msgstr "Modificant..."
+msgstr ""
 
 #: ../../lib/HTMLTree.php:260
 msgid "Monitor"
 msgstr ""
 
 #: ../../htdocs/monitor.php:30
-#, fuzzy
 msgid "Monitor info for: "
-msgstr "Informació del servidor per a: "
+msgstr ""
 
 #: ../../htdocs/monitor.php:26
-#, fuzzy
 msgid "Monitoring context does not exist"
-msgstr "El contenidor de destí (%s) no existeix."
+msgstr ""
 
 #: ../../htdocs/copy.php:79 ../../htdocs/copy.php:139
 msgid "Move NOT successful"
@@ -1812,7 +1671,6 @@ msgstr ""
 msgid "Move successful"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaSamAccount.xml:92
 #: ../../templates/modification/sambaSamAccount.xml:92
 #, no-wrap
@@ -1823,57 +1681,48 @@ msgstr ""
 msgid "Name"
 msgstr "Nom"
 
-# type: Content of: <template><description>
 #: ../../templates/creation/inetOrgPerson.xml:6
 #: ../../templates/creation/kolabPerson.xml:6
 #, no-wrap
 msgid "New Address Book Entry"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/courierMailAccount.xml:6
 #, no-wrap
 msgid "New Courier Mail Account"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/courierMailAlias.xml:6
 #, no-wrap
 msgid "New Courier Mail Alias"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/dNSDomain.xml:6
 #, no-wrap
 msgid "New DNS Entry"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/test_function.xml:6
 #, no-wrap
 msgid "New Device"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/alias.xml:7
 #: ../../templates/creation/test_extensible.xml:7
 #, no-wrap
 msgid "New LDAP Alias"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/organizationalRole.xml:6
 #, no-wrap
 msgid "New Organisational Role"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/ou.xml:6
 #, no-wrap
 msgid "New Organisational Unit"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/posixGroup.xml:6
 #: ../../templates/creation/test_multilist.xml:6
 #: ../../templates/modification/posixGroup.xml:6
@@ -1885,63 +1734,53 @@ msgstr ""
 msgid "New Required Attributes"
 msgstr "Nous atributs requerits"
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sambaDomain.xml:6
 #, no-wrap
 msgid "New Samba Domain"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sambaSamAccount.xml:6
 #: ../../templates/modification/sambaSamAccount.xml:6
 #, no-wrap
 msgid "New Samba3 Account"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sambaGroupMapping.xml:6
 #, no-wrap
 msgid "New Samba3 Group Mapping"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sambaMachine.xml:6
 #, no-wrap
 msgid "New Samba3 Machine"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:6
 #, no-wrap
 msgid "New Sendmail Alias"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sendmailMTACluster.xml:6
 #, no-wrap
 msgid "New Sendmail Cluster"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sendmailMTAClass.xml:6
 #: ../../templates/creation/sendmailVirtualDomain.xml:6
 #, no-wrap
 msgid "New Sendmail Domain"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sendmailMTAMapObject.xml:10
 #, no-wrap
 msgid "New Sendmail Relays"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sendmailVirtualUser.xml:10
 #, no-wrap
 msgid "New Sendmail Virtual User"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/simpleSecurityObject.xml:6
 #: ../../templates/creation/test_randompassword.xml:6
 #, no-wrap
@@ -1952,13 +1791,11 @@ msgstr ""
 msgid "New Template XML found."
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/mozillaOrgPerson.xml:6
 #, no-wrap
 msgid "New Thunderbird Address Book Entry"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/posixAccount.xml:6
 #: ../../templates/creation/test_uid1200.xml:6
 #: ../../templates/creation/test_uid1010.xml:6
@@ -1971,9 +1808,9 @@ msgid "New Value"
 msgstr "Valor nou"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:35
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "NickName"
-msgstr "Nom"
+msgstr ""
 
 #: ../../htdocs/schema.php:257 ../../htdocs/schema.php:325
 #: ../../htdocs/schema.php:329 ../../htdocs/schema.php:333
@@ -1990,14 +1827,12 @@ msgid "No AUTO_NUMBER search_base exists for this server"
 msgstr ""
 
 #: ../../lib/Template.php:532
-#, fuzzy
 msgid "No RDN attribute"
-msgstr "nous atributs"
+msgstr ""
 
 #: ../../lib/Template.php:533
-#, fuzzy
 msgid "No RDN attribute was selected"
-msgstr "[atribut esborrat]"
+msgstr ""
 
 #: ../../htdocs/download_binary_attr.php:38
 msgid "No binary data available"
@@ -2008,9 +1843,8 @@ msgid "No cache to purge."
 msgstr ""
 
 #: ../../htdocs/add_value_form.php:91
-#, fuzzy
 msgid "No current value for attribute"
-msgstr "valors per a l'atribut"
+msgstr ""
 
 #: ../../htdocs/mass_delete.php:22
 msgid "No entry selected"
@@ -2029,25 +1863,22 @@ msgid "No import input"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:1367
-#, fuzzy
 msgid "No internal attributes"
-msgstr "mostrar els atributs interns"
+msgstr ""
 
 #: ../../htdocs/template_engine.php:47
-#, fuzzy
 msgid "No such entry"
-msgstr "Arxiu no existent: "
+msgstr ""
 
 #: ../../htdocs/compare.php:26 ../../htdocs/compare.php:29
 #: ../../htdocs/delete.php:21
-#, fuzzy
 msgid "No such entry."
-msgstr "Arxiu no existent: "
+msgstr ""
 
 #: ../../htdocs/schema.php:709
-#, fuzzy, php-format
+#, php-format
 msgid "No such schema item: \"%s\""
-msgstr "Arxiu no existent: "
+msgstr ""
 
 #: ../../lib/PageRender.php:374
 msgid "Note"
@@ -2078,9 +1909,8 @@ msgstr "OID"
 
 #: ../../lib/TemplateRender.php:1337 ../../htdocs/schema.php:42
 #: ../../htdocs/schema.php:383
-#, fuzzy
 msgid "ObjectClasses"
-msgstr "Afegir ObjectClass i Atributs"
+msgstr ""
 
 #: ../../lib/Template.php:174
 msgid "ObjectClasses in XML dont exist in LDAP server."
@@ -2090,7 +1920,6 @@ msgstr ""
 msgid "Obsolete"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:41
 #, no-wrap
 msgid "Occupant"
@@ -2124,7 +1953,6 @@ msgstr ""
 msgid "Ordering"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/inetOrgPerson.xml:44
 #: ../../templates/creation/kolabPerson.xml:56
 #: ../../templates/modification/inetOrgPerson.xml:43
@@ -2132,19 +1960,16 @@ msgstr ""
 msgid "Organisation"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/ou.xml:20
 #, no-wrap
 msgid "Organisational Unit"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/kolabPerson.xml:60
 #, no-wrap
 msgid "Organisational unit"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:111
 #, no-wrap
 msgid "Organization (professional)"
@@ -2158,7 +1983,6 @@ msgstr ""
 msgid "PHP Safe Mode"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:69
 #, no-wrap
 msgid "Pager"
@@ -2169,11 +1993,9 @@ msgid "Parent to"
 msgstr ""
 
 #: ../../htdocs/import.php:103
-#, fuzzy
 msgid "Parse Error"
-msgstr "Error de parsejat LDIF"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/posixAccount.xml:80
 #: ../../templates/creation/courierMailAccount.xml:82
 #: ../../templates/creation/kolabPerson.xml:39
@@ -2208,14 +2030,12 @@ msgstr ""
 msgid "Permanently delete all children also?"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/inetOrgPerson.xml:39
 #: ../../templates/modification/inetOrgPerson.xml:37
 #, no-wrap
 msgid "Photo"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:62
 #, no-wrap
 msgid "Photo (Binary)"
@@ -2238,8 +2058,8 @@ msgstr ""
 #: ../../lib/functions.php:2018
 #, php-format
 msgid ""
-"Please check jpeg,tmpdir is a writable directory in the phpLDAPadmin config."
-"php"
+"Please check jpeg,tmpdir is a writable directory in the phpLDAPadmin "
+"config.php"
 msgstr ""
 
 #: ../../lib/Template.php:449
@@ -2259,25 +2079,21 @@ msgstr ""
 msgid "Please specify it in config.php"
 msgstr "Si us plau especifícala a l'arxiu config.php"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:82
 #, no-wrap
 msgid "Post Code (Option selection)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/kolabPerson.xml:74
 #, no-wrap
 msgid "Post box"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:65
 #, no-wrap
 msgid "Postal Address"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:60
 #: ../../templates/creation/inetOrgPerson.xml:68
 #: ../../templates/creation/kolabPerson.xml:86
@@ -2290,7 +2106,6 @@ msgstr ""
 msgid "Predefined Query"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaSamAccount.xml:111
 #: ../../templates/modification/sambaSamAccount.xml:111
 #, no-wrap
@@ -2335,11 +2150,9 @@ msgid "RDN attribute sequence already defined"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:2214
-#, fuzzy
 msgid "Really delete value from attribute"
-msgstr "Esborrar realment l'atribut?"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:37
 #: ../../templates/creation/sendmailVirtualUser.xml:42
 #, no-wrap
@@ -2347,18 +2160,16 @@ msgid "Recipient Addresses"
 msgstr ""
 
 #: ../../htdocs/copy_form.php:62
-#, fuzzy
 msgid "Recursive copy"
-msgstr "El progrés de la còpia recurrent"
+msgstr ""
 
 #: ../../htdocs/copy.php:54
 msgid "Recursive copy progress"
 msgstr "El progrés de la còpia recurrent"
 
 #: ../../htdocs/rdelete.php:36
-#, fuzzy
 msgid "Recursive delete progress"
-msgstr "El progrés de la còpia recurrent"
+msgstr ""
 
 #: ../../htdocs/copy_form.php:64
 msgid "Recursively copy all children of this object as well."
@@ -2375,20 +2186,17 @@ msgid "Refresh this entry"
 msgstr "Refrescar aquest objecte"
 
 #: ../../lib/HTMLTree.php:230
-#, fuzzy
 msgid "Refreshing Tree"
-msgstr "Refrescar"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:71
 #, no-wrap
 msgid "Registered Address"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:1107
-#, fuzzy
 msgid "Reloading"
-msgstr "Renombrant..."
+msgstr ""
 
 #: ../../htdocs/modify_member_form.php:127
 msgid "Remove selected"
@@ -2410,14 +2218,12 @@ msgid "Rename successful!"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:1190 ../../lib/TemplateRender.php:1193
-#, fuzzy
 msgid "Rename this entry"
-msgstr "Refrescar aquest objecte"
+msgstr ""
 
 #: ../../htdocs/import.php:35 ../../htdocs/import.php:36
-#, fuzzy
 msgid "Renaming"
-msgstr "Renombrant..."
+msgstr ""
 
 #: ../../lib/functions.php:391 ../../lib/functions.php:392
 #: ../../lib/functions.php:393
@@ -2434,29 +2240,26 @@ msgid "Required Attributes"
 msgstr "Atributs Requerits (MUST)"
 
 #: ../../lib/PageRender.php:414
-#, fuzzy
 msgid "Required attribute for objectClass(es)"
-msgstr "Atributs Requerits (MUST)"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:631 ../../lib/TemplateRender.php:668
-#, fuzzy
 msgid "Retieving DN"
-msgstr "DN de destí"
+msgstr ""
 
 #: ../../lib/AJAXTree.php:122 ../../lib/AJAXTree.php:127
 msgid "Retrieving DN"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:20
 #, no-wrap
 msgid "Role CN"
 msgstr ""
 
 #: ../../templates/creation/kolabPerson.xml:64
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Room Number"
-msgstr "Línia Número:"
+msgstr ""
 
 #: ../../lib/QueryRender.php:86
 msgid "Run a predefined query"
@@ -2468,19 +2271,16 @@ msgid ""
 "SASL. SASL will be disabled."
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaDomain.xml:20
 #, no-wrap
 msgid "Samba Domain Name"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaGroupMapping.xml:50
 #, no-wrap
 msgid "Samba Group Type"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaDomain.xml:25
 #: ../../templates/creation/sambaGroupMapping.xml:39
 #: ../../templates/creation/sambaMachine.xml:43
@@ -2490,35 +2290,30 @@ msgstr ""
 msgid "Samba SID"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sambaSamAccount.xml:11
 #: ../../templates/modification/sambaSamAccount.xml:11
 #, no-wrap
 msgid "Samba: Account"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sambaDomain.xml:11
 #, no-wrap
 msgid "Samba: Domain"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sambaGroupMapping.xml:11
 #, no-wrap
 msgid "Samba: Group Mapping"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sambaMachine.xml:11
 #, no-wrap
 msgid "Samba: Machine"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:1265 ../../lib/TemplateRender.php:1269
-#, fuzzy
 msgid "Save"
-msgstr "Servidor"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1131 ../../lib/TemplateRender.php:1134
 msgid "Save a dump of this object"
@@ -2533,13 +2328,12 @@ msgid "Save as file"
 msgstr ""
 
 #: ../../htdocs/modify_member_form.php:152
-#, fuzzy
 msgid "Save changes"
-msgstr "Desar els canvis"
+msgstr ""
 
 #: ../../htdocs/schema.php:39
 msgid "Schema for server"
-msgstr "Esquema del servidor "
+msgstr "Esquema del servidor"
 
 #: ../../lib/QueryRender.php:67 ../../lib/QueryRender.php:190
 #: ../../lib/HTMLTree.php:219 ../../lib/ds_ldap_pla.php:693
@@ -2552,9 +2346,8 @@ msgid "Search Filter"
 msgstr "Filtre de recerca"
 
 #: ../../lib/QueryRender.php:198
-#, fuzzy
 msgid "Search Results"
-msgstr "Filtre de recerca"
+msgstr ""
 
 #: ../../lib/QueryRender.php:145 ../../lib/export_functions.php:207
 #: ../../htdocs/export_form.php:66
@@ -2566,9 +2359,8 @@ msgid "Search for DN returned the incorrect number of results"
 msgstr ""
 
 #: ../../lib/QueryRender.php:359
-#, fuzzy
 msgid "Search returned no results"
-msgstr "Buscar entrades les quals:"
+msgstr ""
 
 #: ../../lib/Template.php:372 ../../lib/Template.php:397
 #: ../../lib/Template.php:402 ../../lib/Template.php:459
@@ -2581,16 +2373,13 @@ msgid "Select a template for the creation process"
 msgstr "Selecciona una plantilla per al procès de creació"
 
 #: ../../lib/TemplateRender.php:578
-#, fuzzy
 msgid "Select a template to edit the entry"
-msgstr "Selecciona una plantilla per al procès de creació"
+msgstr ""
 
 #: ../../htdocs/import_form.php:33
-#, fuzzy
 msgid "Select an LDIF file"
-msgstr "Selecciona un arxiu LDIF:"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:20
 #: ../../templates/creation/sendmailMTAClass.xml:20
 #: ../../templates/creation/sendmailMTAMapObject.xml:24
@@ -2600,7 +2389,6 @@ msgstr "Selecciona un arxiu LDIF:"
 msgid "Sendmail Cluster Name"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:26
 #: ../../templates/creation/sendmailMTAClass.xml:26
 #: ../../templates/creation/sendmailMTAMapObject.xml:30
@@ -2610,37 +2398,31 @@ msgstr ""
 msgid "Sendmail Hostname"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:11
 #, no-wrap
 msgid "Sendmail: Alias"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailMTACluster.xml:11
 #, no-wrap
 msgid "Sendmail: Cluster"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailMTAClass.xml:11
 #, no-wrap
 msgid "Sendmail: Domain"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailMTAMapObject.xml:15
 #, no-wrap
 msgid "Sendmail: Relays"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailVirtualDomain.xml:11
 #, no-wrap
 msgid "Sendmail: Virtual Domain"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailVirtualUser.xml:15
 #, no-wrap
 msgid "Sendmail: Virtual Users"
@@ -2661,9 +2443,8 @@ msgid "Server"
 msgstr "Servidor"
 
 #: ../../lib/page.php:222
-#, fuzzy
 msgid "Server Select"
-msgstr "Servidor: "
+msgstr ""
 
 #: ../../htdocs/server_info.php:18
 msgid "Server info for: "
@@ -2682,9 +2463,8 @@ msgid "Show"
 msgstr ""
 
 #: ../../lib/QueryRender.php:174
-#, fuzzy
 msgid "Show Attributes"
-msgstr "Mostrar atributs"
+msgstr ""
 
 #: ../../htdocs/export_form.php:83
 msgid "Show Attributtes"
@@ -2710,9 +2490,8 @@ msgid ""
 msgstr ""
 
 #: ../../htdocs/schema.php:171
-#, fuzzy
 msgid "Single Valued"
-msgstr "Valor nou"
+msgstr ""
 
 #: ../../htdocs/update_confirm.php:54 ../../htdocs/create_confirm.php:85
 msgid "Skip"
@@ -2728,12 +2507,9 @@ msgid "Specify attributes and values"
 msgstr ""
 
 #: ../../lib/QueryRender.php:165
-#, fuzzy
 msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenName=David))"
 msgstr ""
-"Filtre de recerca estàndar de LDAP. Exemple: (&(sn=Smith)(givenname=David))"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:56
 #: ../../templates/creation/inetOrgPerson.xml:63
 #: ../../templates/creation/kolabPerson.xml:82
@@ -2742,13 +2518,11 @@ msgstr ""
 msgid "State"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:86
 #, no-wrap
 msgid "State (personal)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:123
 #, no-wrap
 msgid "State (professional)"
@@ -2761,11 +2535,10 @@ msgstr ""
 
 #: ../../templates/creation/inetOrgPerson.xml:50
 #: ../../templates/modification/inetOrgPerson.xml:48
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Street"
-msgstr "veritat"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:47
 #, no-wrap
 msgid "Street Address"
@@ -2814,9 +2587,8 @@ msgid "Syntax OID"
 msgstr "OID de Sintaxi"
 
 #: ../../htdocs/schema.php:44 ../../htdocs/schema.php:316
-#, fuzzy
 msgid "Syntaxes"
-msgstr "Sintaxi"
+msgstr ""
 
 #: ../../lib/ds_ldap.php:522
 msgid ""
@@ -2825,9 +2597,8 @@ msgid ""
 msgstr ""
 
 #: ../../lib/QueryRender.php:109
-#, fuzzy
 msgid "Table"
-msgstr "fals"
+msgstr ""
 
 #: ../../lib/PageRender.php:1026
 msgid "Template Value Error"
@@ -2856,89 +2627,76 @@ msgstr ""
 #: ../../templates/creation/test_nordn.xml:6
 #: ../../templates/creation/test_invalidattrs.xml:6
 #: ../../templates/creation/test_noattrs.xml:6
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Test Template"
-msgstr "Escull una plantilla"
+msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/test_normal.xml:6
 #: ../../templates/creation/test_picklist.xml:6
 #, no-wrap
 msgid "Test Template (no definitions for wsVPN)"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_normal.xml:11
 #, no-wrap
 msgid "Test Template: All Functions"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_picklist.xml:11
 #, no-wrap
 msgid "Test Template: AutoFill/GetNextNumber/PickList"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_extensible.xml:12
 #, no-wrap
 msgid "Test Template: Extensible Object (attribute not defined)"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_function.xml:11
 #, no-wrap
 msgid "Test Template: Function"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_multilist.xml:11
 #, no-wrap
 msgid "Test Template: GetNextNumber/MultList"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_randompassword.xml:11
 #, no-wrap
 msgid "Test Template: Helper/RandomPassword"
 msgstr ""
 
 #: ../../templates/creation/test_invalidattrs.xml:12
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Test Template: Invalid Attributes"
-msgstr "Atributs Opcionals (MAY)"
+msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_invalidoc.xml:11
 #, no-wrap
 msgid "Test Template: Invalid Object Class"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_noattrs.xml:11
 #, no-wrap
 msgid "Test Template: No Attributes"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_nordn.xml:11
 #, no-wrap
 msgid "Test Template: No RDN, No Attributes"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_uid1010.xml:11
 #, no-wrap
 msgid "Test Template: User Account (UID > 1010)"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_uid1200.xml:11
 #, no-wrap
 msgid "Test Template: User Account (UID > 1200)"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_invalidoc2.xml:11
 #, no-wrap
 msgid "Test Template: Valid and Invalid Object Class"
@@ -2960,28 +2718,26 @@ msgid "The attribute to modify doesnt match the one specified by"
 msgstr ""
 
 #: ../../htdocs/delete_attr.php:36
-#, fuzzy
 msgid "The attribute value does not exist"
-msgstr "El contenidor de destí (%s) no existeix."
+msgstr ""
 
 #: ../../htdocs/cmd.php:57
 msgid "The command could not be run"
 msgstr ""
 
 #: ../../htdocs/create.php:45 ../../htdocs/create_confirm.php:39
-#, fuzzy, php-format
+#, php-format
 msgid "The container (%s) is a leaf."
-msgstr "El contenidor de destí (%s) no existeix."
+msgstr ""
 
 #: ../../htdocs/create.php:34 ../../htdocs/create_confirm.php:28
-#, fuzzy, php-format
+#, php-format
 msgid "The container you specified (%s) does not exist. Please try again."
-msgstr "El contenidor de destí (%s) no existeix."
+msgstr ""
 
 #: ../../htdocs/update_confirm.php:194
-#, fuzzy
 msgid "The deletion of objectClass(es)"
-msgstr "Saltar a una ObjectClass"
+msgstr ""
 
 #: ../../htdocs/copy.php:39
 #, php-format
@@ -2997,14 +2753,13 @@ msgstr "L'entrada de destí (%s) encara existeix."
 #: ../../htdocs/add_value_form.php:24 ../../htdocs/compare_form.php:23
 #: ../../htdocs/copy_form.php:22 ../../htdocs/download_binary_attr.php:26
 #: ../../htdocs/update.php:29 ../../htdocs/update_confirm.php:25
-#, fuzzy, php-format
+#, php-format
 msgid "The entry (%s) does not exist."
-msgstr "El contenidor de destí (%s) no existeix."
+msgstr ""
 
 #: ../../htdocs/delete_form.php:24
-#, fuzzy
 msgid "The entry does not exist"
-msgstr "El contenidor de destí (%s) no existeix."
+msgstr ""
 
 #: ../../htdocs/mass_delete.php:36 ../../htdocs/mass_edit.php:28
 #: ../../htdocs/mass_update.php:27
@@ -3095,7 +2850,8 @@ msgid "There will be %s updates done with this mass update"
 msgstr ""
 
 #: ../../htdocs/schema.php:689
-msgid "This attribute has been forced as a MAY attribute by the configuration"
+msgid ""
+"This attribute has been forced as a MAY attribute by the configuration"
 msgstr ""
 
 #: ../../lib/PageRender.php:444
@@ -3111,23 +2867,21 @@ msgid "This attribute is required"
 msgstr ""
 
 #: ../../lib/PageRender.php:424
-#, fuzzy
 msgid "This attribute is required for the RDN."
-msgstr "Aquesta acció exigeix que s'afegeixin"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:102
-#, fuzzy
 msgid "This base entry does not exist."
-msgstr "El contenidor de destí (%s) no existeix."
+msgstr ""
 
 #: ../../htdocs/schema.php:35
-msgid "This could happen for several reasons, the most probable of which are:"
+msgid ""
+"This could happen for several reasons, the most probable of which are:"
 msgstr ""
 
 #: ../../htdocs/compare.php:79
-#, fuzzy
 msgid "This entry has no attributes"
-msgstr "ocultar els atributs interns"
+msgstr ""
 
 #: ../../htdocs/delete_form.php:54
 #, php-format
@@ -3142,7 +2896,6 @@ msgstr ""
 msgid "This is a structural ObjectClass and cannot be removed."
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/example.xml:6
 #, no-wrap
 msgid "This is the description"
@@ -3184,19 +2937,16 @@ msgstr ""
 msgid "This web connection is unencrypted"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/mozillaOrgPerson.xml:11
 #, no-wrap
 msgid "Thunderbird: Address Book Entry"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/kolabPerson.xml:47
 #, no-wrap
 msgid "Title"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:103
 #, no-wrap
 msgid "Title (professional)"
@@ -3216,9 +2966,8 @@ msgid "Total Connections"
 msgstr ""
 
 #: ../../lib/export_functions.php:209
-#, fuzzy
 msgid "Total Entries"
-msgstr "no hi han entrades"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1175 ../../lib/TemplateRender.php:1179
 msgid "Trash"
@@ -3236,9 +2985,9 @@ msgstr ""
 #: ../../templates/creation/test_uid1010.xml:55
 #: ../../templates/creation/test_picklist.xml:38
 #: ../../templates/modification/sambaSamAccount.xml:56
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "UID Number"
-msgstr "Línia Número:"
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:654
 msgid "UNIQUE invalid login/password"
@@ -3249,9 +2998,8 @@ msgid "URL"
 msgstr ""
 
 #: ../../lib/ds_ldap.php:219
-#, fuzzy
 msgid "Unable to connect to LDAP server"
-msgstr "No s'ha pogut conectar al servidor LDAP"
+msgstr ""
 
 #: ../../lib/functions.php:1368
 msgid ""
@@ -3344,25 +3092,21 @@ msgid "Unkown change type"
 msgstr ""
 
 #: ../../lib/functions.php:160
-#, fuzzy
 msgid "Unrecognized error number"
-msgstr "Número d'error desconegut: "
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1433
-#, fuzzy
 msgid "Update Object"
-msgstr "Crear Objecte"
+msgstr ""
 
 #: ../../htdocs/mass_edit.php:126 ../../htdocs/mass_update.php:166
-#, fuzzy
 msgid "Update Values"
-msgstr "Valor nou"
+msgstr ""
 
 #: ../../lib/Template.php:405 ../../lib/Template.php:448
 #: ../../lib/Template.php:492
-#, fuzzy
 msgid "Upload Binary Attribute Error"
-msgstr "Afegir valor binari"
+msgstr ""
 
 #: ../../htdocs/schema.php:174
 msgid "Usage"
@@ -3373,16 +3117,13 @@ msgid "Use the menu to the left to navigate"
 msgstr "Fes anar el menú de l'esquerra per a navegar"
 
 #: ../../htdocs/schema.php:454
-#, fuzzy
 msgid "Used by Attributes"
-msgstr "Atributs Requerits (MUST)"
+msgstr ""
 
 #: ../../htdocs/schema.php:177
-#, fuzzy
 msgid "Used by objectClasses"
-msgstr "Saltar a una ObjectClass"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/alias.xml:27
 #: ../../templates/creation/posixAccount.xml:42
 #: ../../templates/creation/courierMailAccount.xml:41
@@ -3401,17 +3142,15 @@ msgstr ""
 
 #: ../../templates/creation/simpleSecurityObject.xml:21
 #: ../../templates/creation/test_randompassword.xml:21
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "User Name"
-msgstr "Nom"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:65
 #, no-wrap
 msgid "UserPassword (Verify)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/posixGroup.xml:34
 #: ../../templates/creation/sambaGroupMapping.xml:60
 #: ../../templates/creation/test_multilist.xml:34
@@ -3438,14 +3177,12 @@ msgid "View schema for"
 msgstr "Veure esquema per a"
 
 #: ../../lib/TemplateRender.php:1250 ../../lib/TemplateRender.php:1255
-#, fuzzy
 msgid "View the children of this object"
-msgstr "Esborrar tots els fills recurrentment també?"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:2294
-#, fuzzy
 msgid "View the schema description for this objectClass"
-msgstr "Fes click per veure la definició de l'esquema per tipus d'atribut '%s'"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1089
 msgid "Viewing entry in read-only mode."
@@ -3462,13 +3199,11 @@ msgstr ""
 msgid "Warning"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:135
 #, no-wrap
 msgid "Web Page (professional)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:98
 #, no-wrap
 msgid "Web page (personal)"
@@ -3480,18 +3215,16 @@ msgid ""
 "filter"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaGroupMapping.xml:26
 #, no-wrap
 msgid "Windows Name"
 msgstr ""
 
 #: ../../templates/creation/mozillaOrgPerson.xml:57
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Work Phone Number"
-msgstr "Línia Número:"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:25
 #: ../../templates/creation/inetOrgPerson.xml:74
 #: ../../templates/creation/kolabPerson.xml:95
@@ -3525,9 +3258,8 @@ msgid ""
 msgstr ""
 
 #: ../../htdocs/rename.php:37
-#, fuzzy
 msgid "You did not change the RDN"
-msgstr "No has fet cap canvi"
+msgstr ""
 
 #: ../../lib/functions.php:182
 msgid "You found a non-fatal phpLDAPadmin bug!"
@@ -3548,9 +3280,8 @@ msgid "You left the destination DN blank."
 msgstr "No se emplenat el formulari de DN."
 
 #: ../../htdocs/login.php:23
-#, fuzzy
 msgid "You left the password blank."
-msgstr "No se emplenat el formulari de DN."
+msgstr ""
 
 #: ../../htdocs/create.php:58 ../../htdocs/create_confirm.php:52
 #, php-format
@@ -3599,18 +3330,15 @@ msgstr ""
 "La teva instalació de PHP no té la funció mhash(). No puc fer hash SHA."
 
 #: ../../lib/createlm.php:357
-#, fuzzy
-msgid "Your PHP install does not have the mhash() function. Cannot do hashes."
+msgid ""
+"Your PHP install does not have the mhash() function. Cannot do hashes."
 msgstr ""
-"La teva instalació de PHP no té la funció mhash(). No puc fer hash SHA."
 
 #: ../../lib/functions.php:2157 ../../lib/functions.php:2169
-#, fuzzy
 msgid ""
 "Your PHP install does not have the mhash() or mhash_keygen_s2k() function. "
 "Cannot do S2K hashes."
 msgstr ""
-"La teva instalació de PHP no té la funció mhash(). No puc fer hash SHA."
 
 #: ../../htdocs/import_form.php:18
 msgid ""
@@ -3650,29 +3378,26 @@ msgstr ""
 
 #: ../../lib/functions.php:2128 ../../lib/functions.php:2269
 msgid "Your system crypt library does not support blowfish encryption."
-msgstr "La teva instalació de PHP no soporta el tipus d'encriptació blowfish."
+msgstr ""
+"La teva instalació de PHP no soporta el tipus d'encriptació blowfish."
 
 #: ../../lib/functions.php:2112 ../../lib/functions.php:2299
-#, fuzzy
 msgid "Your system crypt library does not support extended DES encryption."
-msgstr "La teva instalació de PHP no soporta el tipus d'encriptació blowfish."
+msgstr ""
 
 #: ../../lib/functions.php:2120 ../../lib/functions.php:2284
-#, fuzzy
 msgid "Your system crypt library does not support md5crypt encryption."
-msgstr "La teva instalació de PHP no soporta el tipus d'encriptació blowfish."
+msgstr ""
 
 #: ../../htdocs/schema.php:36
 msgid "Your version of PHP does not correctly perform the query."
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:90
 #, no-wrap
 msgid "Zip (personal)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:127
 #, no-wrap
 msgid "Zip (professional)"
@@ -3687,19 +3412,16 @@ msgid "add value"
 msgstr "afegir valor"
 
 #: ../../lib/PageRender.php:374
-#, fuzzy
 msgid "alias"
-msgstr "fals"
+msgstr ""
 
 #: ../../htdocs/update_confirm.php:100 ../../htdocs/mass_update.php:113
-#, fuzzy
 msgid "attribute deleted"
-msgstr "[atribut esborrat]"
+msgstr ""
 
 #: ../../htdocs/update_confirm.php:78 ../../htdocs/mass_update.php:138
-#, fuzzy
 msgid "attribute doesnt exist"
-msgstr "[atribut esborrat]"
+msgstr ""
 
 #: ../../lib/functions.php:2391
 msgid "browse"
@@ -3714,33 +3436,28 @@ msgid "caller"
 msgstr ""
 
 #: ../../htdocs/schema.php:348
-#, fuzzy
 msgid "character"
-msgstr "crear"
+msgstr ""
 
 #: ../../htdocs/add_value_form.php:152 ../../htdocs/schema.php:348
-#, fuzzy
 msgid "characters"
-msgstr "crear"
+msgstr ""
 
 #: ../../lib/PageRender.php:579 ../../lib/PageRender.php:936
 msgid "confirm"
 msgstr ""
 
 #: ../../lib/functions.php:2023
-#, fuzzy
 msgid "contains errors"
-msgstr "contingui"
+msgstr ""
 
 #: ../../htdocs/copy.php:27
-#, fuzzy
 msgid "copy entry"
-msgstr "no hi han entrades"
+msgstr ""
 
 #: ../../htdocs/create.php:23 ../../htdocs/create_confirm.php:17
-#, fuzzy
 msgid "create entry"
-msgstr "Crear objecte com a fill"
+msgstr ""
 
 #: ../../lib/QueryRender.php:211
 msgid "delete"
@@ -3751,23 +3468,20 @@ msgid "delete attribute"
 msgstr "Esborrar atribut"
 
 #: ../../htdocs/rdelete.php:17 ../../htdocs/delete.php:24
-#, fuzzy
 msgid "delete entry"
-msgstr "Esborrar aquest objecte"
+msgstr ""
 
 #: ../../lib/PageRender.php:622
 msgid "download value"
 msgstr "Descarregar valor"
 
 #: ../../lib/QueryRender.php:212
-#, fuzzy
 msgid "edit"
-msgstr "Crèdits"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:286 ../../htdocs/export.php:18
-#, fuzzy
 msgid "export"
-msgstr "importar"
+msgstr ""
 
 #: ../../lib/QueryRender.php:571
 msgid "export results"
@@ -3791,9 +3505,8 @@ msgid "has been created."
 msgstr ""
 
 #: ../../htdocs/copy.php:127
-#, fuzzy
 msgid "has been deleted."
-msgstr "[atribut esborrat]"
+msgstr ""
 
 #: ../../lib/PageRender.php:434
 msgid "hint"
@@ -3808,21 +3521,18 @@ msgid "info"
 msgstr "info"
 
 #: ../../lib/PageRender.php:374
-#, fuzzy
 msgid "is an alias for"
-msgstr "Sinònim per a"
+msgstr ""
 
 #: ../../lib/functions.php:170
-#, fuzzy
 msgid "line"
-msgstr "Línia:"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:490 ../../lib/HTMLTree.php:492
 #: ../../lib/HTMLTree.php:495 ../../lib/ds.php:265
 #: ../../htdocs/login_form.php:48
-#, fuzzy
 msgid "login"
-msgstr "Autenticació..."
+msgstr ""
 
 #: ../../lib/HTMLTree.php:296
 msgid "logout"
@@ -3853,14 +3563,12 @@ msgid "new attributes"
 msgstr "nous atributs"
 
 #: ../../htdocs/schema.php:247
-#, fuzzy
 msgid "no description"
-msgstr "Descripció"
+msgstr ""
 
 #: ../../lib/functions.php:1942
-#, fuzzy
 msgid "no description available"
-msgstr "<b>Descripció</b>: (no hi ha descripció)<br />"
+msgstr ""
 
 #: ../../htdocs/entry_chooser.php:69
 msgid "no entries"
@@ -3871,9 +3579,8 @@ msgid "no new attributes available for this entry"
 msgstr "No hi han atributs nous disponibles per aquest objecte"
 
 #: ../../htdocs/add_attr_form.php:133
-#, fuzzy
 msgid "no new binary attributes available for this entry"
-msgstr "No hi han atributs nous disponibles per aquest objecte"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1557 ../../lib/TemplateRender.php:1565
 #: ../../lib/functions.php:2742 ../../htdocs/schema.php:264
@@ -3954,9 +3661,8 @@ msgid "rename"
 msgstr "renombrar"
 
 #: ../../htdocs/rename.php:24
-#, fuzzy
 msgid "rename entry"
-msgstr "Renombrar objecte"
+msgstr ""
 
 #: ../../lib/PageRender.php:414
 msgid "required"
@@ -3975,18 +3681,16 @@ msgid "seconds"
 msgstr "segons"
 
 #: ../../lib/TemplateRender.php:1285
-#, fuzzy
 msgid "select the rdn attribute"
-msgstr "Esborrar atribut"
+msgstr ""
 
 #: ../../lib/PageRender.php:830
 msgid "structural"
 msgstr ""
 
 #: ../../htdocs/add_oclass_form.php:70
-#, fuzzy
 msgid "that this objectClass requires."
-msgstr "que aquest ObjectClass requereix. Es pot fer amb aquest formulari."
+msgstr ""
 
 #: ../../htdocs/copy_form.php:33 ../../htdocs/rename_form.php:30
 msgid "to a new object"
@@ -4005,88 +3709,38 @@ msgid "values for attribute"
 msgstr "valors per a l'atribut"
 
 #: ../../htdocs/delete_form.php:56
-#, fuzzy
 msgid "view entries"
-msgstr "no hi han entrades"
+msgstr ""
 
 #: ../../htdocs/update_confirm.php:197
-#, fuzzy
 msgid "will delete the attribute(s)"
-msgstr "Esborrar realment l'atribut?"
+msgstr ""
 
 #: ../../htdocs/compare_form.php:34
 msgid "with "
 msgstr ""
 
-#~ msgid "Simple Search Form"
-#~ msgstr "Formulari de recerca sencilla"
-
-#~ msgid "Advanced Search Form"
-#~ msgstr "Formulari de recerca avançada"
-
 #~ msgid "equals"
 #~ msgstr "sigui igual"
-
-#~ msgid "Refresh all expanded containers for"
-#~ msgstr "Refrescar tots els contenidors extés per a"
-
-#~ msgid "View server-supplied information"
-#~ msgstr "Veure informació del servidor"
-
-#~ msgid "Import entries from an LDIF file"
-#~ msgstr "Importar objectes d'arxiu LDIF"
 
 #~ msgid "View"
 #~ msgstr "Veure"
 
-#~ msgid "You must specify a DN"
-#~ msgstr "Has d'especificar un DN"
-
 #~ msgid "Bad server id"
 #~ msgstr "L'identificador de servidor està malament"
-
-#~ msgid ""
-#~ "Not enough information to login to server. Please check your "
-#~ "configuration."
-#~ msgstr ""
-#~ "No tinc suficient informació per conectar al servidor. Si us plau "
-#~ "configurar correctament l'arxiu config.php"
-
-#~ msgid "Could not perform ldap_mod_add operation."
-#~ msgstr "No s'ha pogut fer l'operació del ldap_mod_add."
 
 #~ msgid "No DN specified in query string!"
 #~ msgstr "No està present el DN a la URL"
 
 #~ msgid ""
-#~ "Note: You will get an \"inappropriate matching\" error if you have not "
-#~ "setup an EQUALITY rule on your LDAP server for this attribute."
+#~ "Note: You will get an \"inappropriate matching\" error if you have not setup "
+#~ "an EQUALITY rule on your LDAP server for this attribute."
 #~ msgstr ""
-#~ "Nota: Sino has configurat una regla 'EQUALITY' al servidor LDAP, rebràs "
-#~ "un error 'inappropriate matching'"
-
-#~ msgid "Failed to copy DN: "
-#~ msgstr "Fallida al copiar DN: "
-
-#~ msgid ""
-#~ "You have not logged into the selected server yet, so you cannot perform "
-#~ "searches on it."
-#~ msgstr ""
-#~ "Encara no t'has autenticat al servidor selectionat, no pots fer cap "
-#~ "recerca."
+#~ "Nota: Sino has configurat una regla 'EQUALITY' al servidor LDAP, rebràs un "
+#~ "error 'inappropriate matching'"
 
 #~ msgid "Click here to go to the login form"
 #~ msgstr "Clica aquí per anar al formulari d'autenticació"
-
-#~ msgid "Unrecognized criteria option: "
-#~ msgstr "Opció de criteri desconeguda: "
-
-#~ msgid ""
-#~ "If you want to add your own criteria to the list. Be sure to edit search."
-#~ "php to handle them. Quitting."
-#~ msgstr ""
-#~ "Si vols afegir el teu propi criteri a la llista. Estigues segur d'editar "
-#~ "search.php per manejar-lo. Sortint."
 
 #~ msgid "Search performed by phpLDAPadmin in"
 #~ msgstr "Recerca realitzada per phpLDAPadmin a"
@@ -4101,18 +3755,11 @@ msgstr ""
 #~ msgstr "soni com"
 
 #~ msgid ""
-#~ "Could not retrieve LDAP information from the server. This may be due to a "
-#~ "<a href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version "
-#~ "of PHP or perhaps your LDAP server has access control specified that "
-#~ "prevents LDAP clients from accessing the RootDSE."
+#~ "Could not retrieve LDAP information from the server. This may be due to a <a "
+#~ "href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version of PHP "
+#~ "or perhaps your LDAP server has access control specified that prevents LDAP "
+#~ "clients from accessing the RootDSE."
 #~ msgstr "No s'ha pogut treure informació LDAP del servidor"
-
-#~ msgid ""
-#~ "update_array is malformed. This might be a phpLDAPadmin bug. Please "
-#~ "report it."
-#~ msgstr ""
-#~ "l'update_array està malformat. Aixó podria ser una errada del "
-#~ "phpLDAPadmin. Si us plau reportala."
 
 #~ msgid "ChangeLog"
 #~ msgstr "Històric de canvis"
@@ -4121,74 +3768,67 @@ msgstr ""
 #~ msgstr "Nom d'arxiu insegur: "
 
 #~ msgid ""
-#~ "You have enabled auto_uid_numbers for <b>%s</b> in your "
-#~ "configuration,                                  but you have not "
-#~ "specified the auto_uid_number_mechanism. Please "
-#~ "correct                                  this problem."
+#~ "You have enabled auto_uid_numbers for <b>%s</b> in your configuration,       "
+#~ "                           but you have not specified the "
+#~ "auto_uid_number_mechanism. Please correct                                  "
+#~ "this problem."
 #~ msgstr ""
-#~ "Has activat els auto_uid_numbers per <b>%s</b> a la teva "
-#~ "configuració,                                  pero no has especificat "
-#~ "l'auto_uid_number_mechanism. Si us plau "
-#~ "soluciona                                  aquest problema."
+#~ "Has activat els auto_uid_numbers per <b>%s</b> a la teva configuració,       "
+#~ "                           pero no has especificat "
+#~ "l'auto_uid_number_mechanism. Si us plau soluciona                            "
+#~ "      aquest problema."
 
 #~ msgid ""
-#~ "You specified the \"auto_uid_number_mechanism\" as \"uidpool"
-#~ "\"                            in your configuration for server <b>%s</b>, "
-#~ "but you did not specify the                            "
-#~ "audo_uid_number_uid_pool_dn. Please specify it before proceeding."
+#~ "You specified the \"auto_uid_number_mechanism\" as \"uidpool\"               "
+#~ "             in your configuration for server <b>%s</b>, but you did not "
+#~ "specify the                            audo_uid_number_uid_pool_dn. Please "
+#~ "specify it before proceeding."
 #~ msgstr ""
-#~ "Has especificat l'<tt>auto_uid_number_mechanism</tt> com <tt>uidpool</"
-#~ "tt>                            a la teva configuració per al servidor <b>%"
-#~ "s</b>, pero no has especificat el                            "
+#~ "Has especificat l'<tt>auto_uid_number_mechanism</tt> com <tt>uidpool</tt>    "
+#~ "                        a la teva configuració per al servidor <b>%s</b>, "
+#~ "pero no has especificat el                            "
 #~ "audo_uid_number_uid_pool_dn. Si us plau especifica'l avans de procedir."
 
 #~ msgid ""
-#~ "It appears that the uidPool you specified in your configuration (\"%s"
-#~ "\")                              does not exist."
+#~ "It appears that the uidPool you specified in your configuration (\"%s\")     "
+#~ "                         does not exist."
 #~ msgstr ""
-#~ "Sembla ser que el uidPool que has especificat a la teva configuració (<tt>"
-#~ "%s</tt>)                              no existeix."
+#~ "Sembla ser que el uidPool que has especificat a la teva configuració "
+#~ "(<tt>%s</tt>)                              no existeix."
 
 #~ msgid ""
-#~ "You specified the \"auto_uid_number_mechanism\" as \"search\" in "
-#~ "your                              configuration for server <b>%s</b>, but "
-#~ "you did not specify the                              "
-#~ "\"auto_uid_number_search_base\". Please specify it before proceeding."
+#~ "You specified the \"auto_uid_number_mechanism\" as \"search\" in your        "
+#~ "                      configuration for server <b>%s</b>, but you did not "
+#~ "specify the                              \"auto_uid_number_search_base\". "
+#~ "Please specify it before proceeding."
 #~ msgstr ""
-#~ "Has especificat l'<tt>auto_uid_number_mechanism</tt> com <tt>search</tt> "
-#~ "a la teva                              configuració per al servidor <b>%"
-#~ "s</b>, pero no has especificat el                              "
+#~ "Has especificat l'<tt>auto_uid_number_mechanism</tt> com <tt>search</tt> a "
+#~ "la teva                              configuració per al servidor <b>%s</b>, "
+#~ "pero no has especificat el                              "
 #~ "<tt>auto_uid_number_search_base</tt>. Si us plau especifica'l avans de "
 #~ "procedir."
 
 #~ msgid ""
-#~ "You specified an invalid value for auto_uid_number_mechanism (\"%s"
-#~ "\")                                   in your configration. Only \"uidpool"
-#~ "\" and \"search\" are valid.                                   Please "
-#~ "correct this problem."
+#~ "You specified an invalid value for auto_uid_number_mechanism (\"%s\")        "
+#~ "                           in your configration. Only \"uidpool\" and "
+#~ "\"search\" are valid.                                   Please correct this "
+#~ "problem."
 #~ msgstr ""
-#~ "Has especificat un valor no vàlid per a l'auto_uid_number_mechanism (<tt>%"
-#~ "s</tt>)                                   a la teva configuració. Sols "
-#~ "<tt>uidpool</tt> i <tt>search</tt> son "
-#~ "vàlids.                                   Si us plau soluciona aquest "
-#~ "problema."
+#~ "Has especificat un valor no vàlid per a l'auto_uid_number_mechanism "
+#~ "(<tt>%s</tt>)                                   a la teva configuració. Sols "
+#~ "<tt>uidpool</tt> i <tt>search</tt> son vàlids.                               "
+#~ "    Si us plau soluciona aquest problema."
 
 #~ msgid ""
-#~ "Error: You have an error in your config file. The only three allowed "
-#~ "values                                    for auth_type in the $servers "
-#~ "section are 'session', 'cookie', and 'config'. You entered '%"
-#~ "s',                                    which is not allowed. "
+#~ "Error: You have an error in your config file. The only three allowed values  "
+#~ "                                  for auth_type in the $servers section are "
+#~ "'session', 'cookie', and 'config'. You entered '%s',                         "
+#~ "           which is not allowed. "
 #~ msgstr ""
 #~ "Error: Tens un error al teu arxiu de configuració. Els dos únics valors "
 #~ "acceptats per                                    'auth_type' a la secció "
-#~ "$servers son 'config' i 'form'. Tu has ficat '%"
-#~ "s',                                    el qual no està acceptat. "
-
-#~ msgid "Your PHP install does not support TLS."
-#~ msgstr "La teva instalació de PHP no soporta TLS"
-
-#~ msgid "jpegPhoto contains errors<br />"
-#~ msgstr "jpegPhoto conté errors<br />"
+#~ "$servers son 'config' i 'form'. Tu has ficat '%s',                           "
+#~ "         el qual no està acceptat. "
 
 #~ msgid "Description: %s <br /><br />"
 #~ msgstr "<b>Descripció</b>: %s <br /><br />"
@@ -4196,57 +3836,56 @@ msgstr ""
 #~ msgid "Error number: %s<br /><br />"
 #~ msgstr "<b>Error número</b>: %s<br /><br />"
 
-#~ msgid ""
-#~ "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
+#~ msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
 #~ msgstr ""
-#~ "Es una errada del phpLDAPadmin? Si ho és, si us plau <a href='%"
-#~ "s'>diguen's-ho</a>."
+#~ "Es una errada del phpLDAPadmin? Si ho és, si us plau <a href='%s'>diguen's-"
+#~ "ho</a>."
 
 #~ msgid ""
 #~ "<center><table class='notice'><tr><td colspan='2'><center><img "
-#~ "src='images/warning.png' height='12' width='13' />             <b>You "
-#~ "found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</"
-#~ "td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>             "
-#~ "<td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:"
-#~ "</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>             </"
-#~ "td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>\t<tr><td "
-#~ "colspan='2'><center><a target='new' href='%s'>Please check and see if "
-#~ "this bug has been reported here</a>.</center></td></tr>\t<tr><td "
-#~ "colspan='2'><center><a target='new' href='%s'>If it hasnt been reported, "
-#~ "you may report this bug by clicking here</a>.</center></td></tr>\t</"
-#~ "table></center><br />"
+#~ "src='images/warning.png' height='12' width='13' />             <b>You found "
+#~ "a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> "
+#~ "(<b>%s</b>)</td></tr><tr><td>File:</td>             <td><b>%s</b> line "
+#~ "<b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: "
+#~ "<b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>             </td></tr><tr><td>Web "
+#~ "server:</td><td><b>%s</b></td></tr>\t<tr><td colspan='2'><center><a "
+#~ "target='new' href='%s'>Please check and see if this bug has been reported "
+#~ "here</a>.</center></td></tr>\t<tr><td colspan='2'><center><a target='new' "
+#~ "href='%s'>If it hasnt been reported, you may report this bug by clicking "
+#~ "here</a>.</center></td></tr>\t</table></center><br />"
 #~ msgstr ""
 #~ "<center><table class='notice'><tr><td colspan='2'><center><img "
-#~ "src='images/warning.png' height='12' width='13' />             <b>Has "
-#~ "trobat un error fatal del phpLDAPadmin!</b></td></tr><tr><td>Error:</"
-#~ "td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Arxiu:</td>             "
-#~ "<td><b>%s</b> línia <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:"
-#~ "</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>             </"
-#~ "td></tr><tr><td>Servidor Web:</td><td><b>%s</b></td></tr><tr><td "
+#~ "src='images/warning.png' height='12' width='13' />             <b>Has trobat "
+#~ "un error fatal del "
+#~ "phpLDAPadmin!</b></td></tr><tr><td>Error:</td><td><b>%s</b> "
+#~ "(<b>%s</b>)</td></tr><tr><td>Arxiu:</td>             <td><b>%s</b> línia "
+#~ "<b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: "
+#~ "<b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>             "
+#~ "</td></tr><tr><td>Servidor Web:</td><td><b>%s</b></td></tr><tr><td "
 #~ "colspan='2'><center><a target='new' href='%s'>             Envía aquesta "
 #~ "errada fent click aquí</a>.</center></td></tr></table></center><br />"
 
 #~ msgid ""
-#~ "Congratulations! You found a bug in phpLDAPadmin.<br /><br />\t     "
-#~ "<table class='bug'>\t     <tr><td>Error:</td><td><b>%s</b></td></tr>"
-#~ "\t     <tr><td>Level:</td><td><b>%s</b></td></tr>\t     <tr><td>File:</"
-#~ "td><td><b>%s</b></td></tr>\t     <tr><td>Line:</td><td><b>%s</b></td></tr>"
-#~ "\t\t <tr><td>Caller:</td><td><b>%s</b></td></tr>\t     <tr><td>PLA "
-#~ "Version:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP Version:</"
-#~ "td><td><b>%s</b></td></tr>\t     <tr><td>PHP SAPI:</td><td><b>%s</b></"
-#~ "td></tr>\t     <tr><td>Web server:</td><td><b>%s</b></td></tr>\t     </"
-#~ "table>\t     <br />\t     Please report this bug by clicking below!"
+#~ "Congratulations! You found a bug in phpLDAPadmin.<br /><br />\t     <table "
+#~ "class='bug'>\t     <tr><td>Error:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>Level:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>File:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>Line:</td><td><b>%s</b></td></tr>\t\t "
+#~ "<tr><td>Caller:</td><td><b>%s</b></td></tr>\t     <tr><td>PLA "
+#~ "Version:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP "
+#~ "Version:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP "
+#~ "SAPI:</td><td><b>%s</b></td></tr>\t     <tr><td>Web "
+#~ "server:</td><td><b>%s</b></td></tr>\t     </table>\t     <br />\t     Please "
+#~ "report this bug by clicking below!"
 #~ msgstr ""
-#~ "Felicitats! Has trobat una errada al phpLDAPadmin.<br /><br />\t     "
-#~ "<table class='bug'>\t     <tr><td>Error:</td><td><b>%s</b></td></tr>"
-#~ "\t     <tr><td>Nivell:</td><td><b>%s</b></td></tr>\t     <tr><td>Arxiu:</"
-#~ "td><td><b>%s</b></td></tr>\t     <tr><td>Línia:</td><td><b>%s</b></td></"
-#~ "tr>\t     <tr><td>Caller:</td><td><b>%s</b></td></tr>\t     "
-#~ "<tr><td>Versió PLA:</td><td><b>%s</b></td></tr>\t     <tr><td>Versió PHP:"
-#~ "</td><td><b>%s</b></td></tr>\t     <tr><td>PHP SAPI:</td><td><b>%s</b></"
-#~ "td></tr>\t     <tr><td>Servidor Web:</td><td><b>%s</b></td></tr>\t     </"
-#~ "table>\t     <br />\t     Si us plau envía aquesta errada fent click "
-#~ "abaix!"
-
-#~ msgid "Import LDIF File"
-#~ msgstr "Importar arxiu LDIF"
+#~ "Felicitats! Has trobat una errada al phpLDAPadmin.<br /><br />\t     <table "
+#~ "class='bug'>\t     <tr><td>Error:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>Nivell:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>Arxiu:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>Línia:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>Caller:</td><td><b>%s</b></td></tr>\t     <tr><td>Versió "
+#~ "PLA:</td><td><b>%s</b></td></tr>\t     <tr><td>Versió "
+#~ "PHP:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP "
+#~ "SAPI:</td><td><b>%s</b></td></tr>\t     <tr><td>Servidor "
+#~ "Web:</td><td><b>%s</b></td></tr>\t     </table>\t     <br />\t     Si us "
+#~ "plau envía aquesta errada fent click abaix!"

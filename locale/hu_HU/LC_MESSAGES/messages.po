@@ -4,13 +4,14 @@ msgstr ""
 "Project-Id-Version: messages\n"
 "Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sf.net\n"
 "POT-Creation-Date: 2009-07-12 20:50+0200\n"
-"PO-Revision-Date: 2005-11-29 18:22+0100\n"
-"Last-Translator: VOROSBARANYI Zoltan <http://vbzo.li/>\n"
+"PO-Revision-Date: 2009-07-21 07:50+0000\n"
+"Last-Translator: Deon George <Unknown>\n"
 "Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"X-Launchpad-Export-Date: 2009-07-21 12:24+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 #: ../../lib/HTMLTree.php:507
 msgid "(Session timed out. Automatically logged out.)"
@@ -54,20 +55,17 @@ msgid "A valid deleteoldrdn attribute should be specified"
 msgstr ""
 
 #: ../../lib/import_functions.php:244
-#, fuzzy
 msgid "A valid dn line is required"
-msgstr "Érvényes DN-sor kell."
+msgstr ""
 
 #: ../../lib/import_functions.php:603
-#, fuzzy
 msgid "A valid newrdn attribute should be specified"
-msgstr "Nincs megadva az attribútumnév."
+msgstr ""
 
 #: ../../lib/import_functions.php:594
 msgid "A valid newsuperier attribute should be specified"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:48
 #, no-wrap
 msgid "AIM Nick"
@@ -99,9 +97,8 @@ msgid "Add"
 msgstr "Hozzáadás"
 
 #: ../../htdocs/add_attr_form.php:164
-#, fuzzy
 msgid "Add Attribute"
-msgstr "Attribútumok"
+msgstr ""
 
 #: ../../htdocs/add_value_form.php:155
 msgid "Add New Value"
@@ -112,19 +109,16 @@ msgid "Add ObjectClass and Attributes"
 msgstr "Objektumosztály és attribútumok hozzáadása"
 
 #: ../../lib/TemplateRender.php:2024
-#, fuzzy
 msgid "Add Value to Attribute"
-msgstr "Új attribútum hozzáadása"
+msgstr ""
 
 #: ../../htdocs/modify_member_form.php:123
-#, fuzzy
 msgid "Add all"
-msgstr "érték hozzáadása"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:2023 ../../lib/TemplateRender.php:2027
-#, fuzzy
 msgid "Add an additional value to attribute"
-msgstr "Érték hozzáadása a(z) %s attribútumhoz"
+msgstr ""
 
 #: ../../htdocs/add_value_form.php:46
 msgid "Add new"
@@ -140,73 +134,65 @@ msgid "Add new attribute"
 msgstr "Új attribútum hozzáadása"
 
 #: ../../lib/TemplateRender.php:1235 ../../lib/TemplateRender.php:1239
-#, fuzzy
 msgid "Add new attribute to this object"
-msgstr "Új attribútum hozzáadása"
+msgstr ""
 
 #: ../../htdocs/add_attr_form.php:89
 msgid "Add new binary attribute"
 msgstr "Új bináris attribútum hozzáadása"
 
 #: ../../htdocs/add_oclass_form.php:62
-#, fuzzy
 msgid "Add new objectClass to"
-msgstr "Új objektumosztály hozzáadása"
+msgstr ""
 
 #: ../../htdocs/modify_member_form.php:123
 msgid "Add selected"
 msgstr ""
 
 #: ../../htdocs/import.php:33
-#, fuzzy
 msgid "Adding"
-msgstr "Hozzáadás..."
+msgstr ""
 
 #: ../../templates/creation/kolabPerson.xml:69
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Address"
-msgstr "Hozzáadás"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:78
 #, no-wrap
 msgid "Address (personal)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:115
 #, no-wrap
 msgid "Address (professional)"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/modification/inetOrgPerson.xml:5
 #, no-wrap
 msgid "Address Book Entry"
 msgstr ""
 
 #: ../../templates/creation/kolabPerson.xml:52
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Alias"
-msgstr "Álnevek (alias)"
+msgstr ""
 
 #: ../../templates/creation/alias.xml:22
 #: ../../templates/creation/sendmailMTACluster.xml:20
 #: ../../templates/creation/test_extensible.xml:22
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Alias To"
-msgstr "Álnevek (alias)"
+msgstr ""
 
 #: ../../lib/config_default.php:775
-#, fuzzy
 msgid "Alias for"
-msgstr "Álnevek (alias)"
+msgstr ""
 
 #: ../../htdocs/schema.php:176
 msgid "Aliases"
 msgstr "Álnevek (alias)"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:44
 #, no-wrap
 msgid "Alternative Email"
@@ -219,27 +205,24 @@ msgstr ""
 #: ../../lib/TemplateRender.php:1082
 #, php-format
 msgid "An attribute (%s) was modified and is highlighted below."
-msgstr "Módosult egy attribútum (%s), s ez kiemelve szerepel az alábbiakban. "
+msgstr "Módosult egy attribútum (%s), s ez kiemelve szerepel az alábbiakban."
 
 #: ../../lib/Template.php:1304
 msgid "An entry should have one structural objectClass."
 msgstr ""
 
 #: ../../htdocs/login_form.php:83
-#, fuzzy
 msgid "Anonymous"
-msgstr "Anonymous bind"
+msgstr ""
 
 #: ../../htdocs/mass_delete.php:56
-#, fuzzy
 msgid "Are you sure you want to permanently delete these objects?"
-msgstr "Biztos törölni óhajtja ezt az objektumot?"
+msgstr ""
 
 #: ../../htdocs/mass_delete.php:54 ../../htdocs/delete_form.php:108
 msgid "Are you sure you want to permanently delete this object?"
 msgstr "Biztos törölni óhajtja ezt az objektumot?"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/dNSDomain.xml:26
 #, no-wrap
 msgid "Associated Domain"
@@ -258,53 +241,47 @@ msgid "Attribute"
 msgstr "Attribútumok"
 
 #: ../../templates/creation/example.xml:20
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Attribute 1"
-msgstr "Attribútumok"
+msgstr ""
 
 #: ../../templates/creation/example.xml:27
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Attribute 2"
-msgstr "Attribútumok"
+msgstr ""
 
 #: ../../templates/creation/example.xml:32
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Attribute 3"
-msgstr "Attribútumok"
+msgstr ""
 
 #: ../../htdocs/schema.php:43
-#, fuzzy
 msgid "Attribute Types"
-msgstr "Attribútumok"
+msgstr ""
 
 #: ../../lib/ds_ldap.php:649
-#, fuzzy
 msgid "Attribute doesnt exist"
-msgstr "[attribútum törölve]"
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:529
-#, fuzzy
 msgid "Attribute not added"
-msgstr "Attribútumok"
+msgstr ""
 
 #: ../../htdocs/mass_edit.php:115
 msgid "Attribute not available"
 msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:559
-#, fuzzy
 msgid "Attribute not deleted"
-msgstr "[attribútum törölve]"
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:543
-#, fuzzy
 msgid "Attribute not modified"
-msgstr "Nincs megadva az attribútumnév."
+msgstr ""
 
 #: ../../lib/import_functions.php:542
-#, fuzzy
 msgid "Attribute not valid"
-msgstr "Attribútumok"
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:689
 msgid "Attribute value would not be unique"
@@ -312,9 +289,8 @@ msgstr ""
 
 #: ../../htdocs/schema.php:500 ../../htdocs/schema.php:638
 #: ../../htdocs/schema.php:671
-#, fuzzy
 msgid "Attributes"
-msgstr "Attribútumok"
+msgstr ""
 
 #: ../../htdocs/login_form.php:86
 msgid "Authenticate"
@@ -323,14 +299,12 @@ msgstr "Azonosítás"
 #: ../../htdocs/login.php:22 ../../htdocs/login.php:29
 #: ../../htdocs/login_form.php:17 ../../htdocs/login_form.php:40
 #: ../../htdocs/logout.php:18
-#, fuzzy
 msgid "Authenticate to server"
-msgstr "Azonosítsa magát a(z) %s kiszolgálón"
+msgstr ""
 
 #: ../../htdocs/cmd.php:68
-#, fuzzy
 msgid "Auto refresh"
-msgstr "frissítés"
+msgstr ""
 
 #: ../../lib/Attribute.php:586
 msgid "Automatically determined"
@@ -349,9 +323,8 @@ msgid "Available members"
 msgstr ""
 
 #: ../../htdocs/entry_chooser.php:65
-#, fuzzy
 msgid "Back Up"
-msgstr "Vissza..."
+msgstr ""
 
 #: ../../lib/QueryRender.php:157 ../../htdocs/export_form.php:33
 msgid "Base (base dn only)"
@@ -363,14 +336,12 @@ msgid "Base DN"
 msgstr "Alap-DN"
 
 #: ../../lib/PageRender.php:604 ../../lib/PageRender.php:608
-#, fuzzy
 msgid "Binary Value"
-msgstr "Bináris érték"
+msgstr ""
 
 #: ../../htdocs/copy.php:58
-#, fuzzy
 msgid "Building snapshot of tree to copy"
-msgstr "A fáról készítek egy pillanatfelvételt a másoláshoz... "
+msgstr ""
 
 #: ../../htdocs/mass_edit.php:63
 msgid "Bulk edit the following DNs"
@@ -391,14 +362,12 @@ msgid "Cancel"
 msgstr "Mégsem"
 
 #: ../../lib/TemplateRender.php:1118 ../../lib/TemplateRender.php:1121
-#, fuzzy
 msgid "Change to another template"
-msgstr "Válasszon mintát"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:2333
-#, fuzzy
 msgid "Check password"
-msgstr "Jelszó"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1249 ../../lib/TemplateRender.php:1254
 msgid "Children"
@@ -408,23 +377,20 @@ msgstr ""
 #: ../../templates/creation/inetOrgPerson.xml:58
 #: ../../templates/creation/kolabPerson.xml:78
 #: ../../templates/modification/inetOrgPerson.xml:55
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "City"
-msgstr "Érvényesítés"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:73
 #, no-wrap
 msgid "City (Hidden with 2 values)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:82
 #, no-wrap
 msgid "City (personal)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:119
 #, no-wrap
 msgid "City (professional)"
@@ -435,11 +401,8 @@ msgid "Clearing cache"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:2274
-#, fuzzy
 msgid "Click to popup a dialog to select a date graphically"
 msgstr ""
-"Kattintásra egy új ablak jön föl, amelyben egy bejegyzést választhat a DN "
-"alapján."
 
 #: ../../lib/functions.php:2386
 msgid "Click to popup a dialog to select an entry (DN) graphically"
@@ -448,9 +411,8 @@ msgstr ""
 "alapján."
 
 #: ../../lib/PageRender.php:337 ../../htdocs/server_info.php:36
-#, fuzzy
 msgid "Click to view the schema definition for attribute type"
-msgstr "Kattintással megjelenik a(z) %s attribútumtípus sémabeli definíciója"
+msgstr ""
 
 #: ../../htdocs/schema.php:172
 msgid "Collective"
@@ -461,15 +423,14 @@ msgid "Command disabled by the server configuration"
 msgstr ""
 
 #: ../../templates/creation/organizationalRole.xml:35
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Comments"
-msgstr "Érvényesítés"
+msgstr ""
 
 #: ../../htdocs/update_confirm.php:187 ../../htdocs/create_confirm.php:118
 msgid "Commit"
 msgstr "Érvényesítés"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/posixAccount.xml:37
 #: ../../templates/creation/courierMailAccount.xml:35
 #: ../../templates/creation/courierMailAlias.xml:21
@@ -485,7 +446,6 @@ msgstr "Érvényesítés"
 msgid "Common Name"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:53
 #: ../../templates/creation/test_picklist.xml:53
 #, no-wrap
@@ -536,24 +496,20 @@ msgid "Container"
 msgstr "Tároló"
 
 #: ../../lib/TemplateRender.php:1451
-#, fuzzy
 msgid "Container and ObjectClass(es)"
-msgstr "Első lépés: Név és objektumosztály(ok)"
+msgstr ""
 
 #: ../../htdocs/copy_form.php:29 ../../htdocs/copy_form.php:33
-#, fuzzy
 msgid "Copy"
-msgstr "Másolás: "
+msgstr ""
 
 #: ../../htdocs/copy_form.php:87
-#, fuzzy
 msgid "Copy "
-msgstr "Másolás: "
+msgstr ""
 
 #: ../../htdocs/copy.php:88
-#, fuzzy
 msgid "Copy Entry"
-msgstr "Bejegyzés"
+msgstr ""
 
 #: ../../htdocs/copy.php:79 ../../htdocs/copy.php:139
 msgid "Copy NOT successful"
@@ -565,9 +521,8 @@ msgstr "A bejegyzés másolása"
 
 #: ../../htdocs/copy.php:75 ../../htdocs/copy.php:111
 #: ../../htdocs/copy.php:135
-#, fuzzy
 msgid "Copy successful"
-msgstr "A módosítás sikerült!"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1144 ../../lib/TemplateRender.php:1148
 msgid "Copy this object to another location, a new DN, or another server"
@@ -578,29 +533,25 @@ msgid "Copying "
 msgstr "Másolás: "
 
 #: ../../htdocs/import.php:42
-#, fuzzy
 msgid "Could not add object"
-msgstr "Nem tudom ezt az objektumot hozzáadni:"
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:443
 msgid "Could not add the object to the LDAP server."
 msgstr "Nem tudom az objektumot létrehozni a kiszolgálón."
 
 #: ../../htdocs/delete_attr.php:35
-#, fuzzy
 msgid "Could not delete attribute value."
-msgstr "Nem tudom ezt az objektumot törölni:"
+msgstr ""
 
 #: ../../htdocs/import.php:43
-#, fuzzy
 msgid "Could not delete object"
-msgstr "Nem tudom ezt az objektumot törölni:"
+msgstr ""
 
 #: ../../htdocs/rdelete.php:52 ../../htdocs/rdelete.php:71
 #: ../../htdocs/rdelete.php:88 ../../htdocs/delete.php:37
-#, fuzzy
 msgid "Could not delete the entry."
-msgstr "Nem tudom a(z) %s bejegyzést törölni"
+msgstr ""
 
 #: ../../htdocs/entry_chooser.php:93
 msgid "Could not determine base DN"
@@ -625,28 +576,24 @@ msgid "Could not fetch jpeg data from LDAP server for attribute [%s]."
 msgstr ""
 
 #: ../../htdocs/import.php:46
-#, fuzzy
 msgid "Could not modify object"
-msgstr "Nem tudom ezt az objektumot módosítani:"
+msgstr ""
 
 #: ../../htdocs/monitor.php:27
-#, fuzzy
 msgid "Could not obtain the monitor context for this server"
-msgstr "Nem tudom az objektumot létrehozni a kiszolgálón."
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:601
 msgid "Could not perform ldap_modify operation."
 msgstr "Nem tudom elvégezni az ldap_modify műveletet."
 
 #: ../../htdocs/import.php:44 ../../htdocs/import.php:45
-#, fuzzy
 msgid "Could not rename object"
-msgstr "Nem tudom ezt az objektumot átnevezni:"
+msgstr ""
 
 #: ../../htdocs/rename.php:65
-#, fuzzy
 msgid "Could not rename the entry."
-msgstr "A bejegyzést nem sikerült átnevezni"
+msgstr ""
 
 #: ../../htdocs/schema.php:34
 msgid "Could not retrieve schema from"
@@ -658,44 +605,37 @@ msgstr ""
 "Nem tudom a TLS-t elindítani. Kérem ellenőrizze az LDAP-kiszolgálót és a "
 "konfigurációt."
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:94
 #, no-wrap
 msgid "Country (personal)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:131
 #, no-wrap
 msgid "Country (professional)"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/courierMailAccount.xml:11
 #, no-wrap
 msgid "Courier Mail: Account"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/courierMailAlias.xml:11
 #, no-wrap
 msgid "Courier Mail: Alias"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:1216 ../../lib/TemplateRender.php:1220
-#, fuzzy
 msgid "Create"
-msgstr "létrehozás"
+msgstr ""
 
 #: ../../htdocs/create.php:91
-#, fuzzy
 msgid "Create Entry"
-msgstr "A bejegyzés átnevezése"
+msgstr ""
 
 #: ../../htdocs/create_confirm.php:59
-#, fuzzy
 msgid "Create LDAP Entry"
-msgstr "Gyermekbejegyzés létrehozása"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:765 ../../lib/TemplateRender.php:1525
 msgid "Create Object"
@@ -707,19 +647,16 @@ msgid "Create a child entry"
 msgstr "Gyermekbejegyzés létrehozása"
 
 #: ../../lib/HTMLTree.php:471
-#, fuzzy
 msgid "Create a new entry in"
-msgstr "Új bejegyzés létrehozása:"
+msgstr ""
 
 #: ../../htdocs/create.php:107
-#, fuzzy
 msgid "Create another entry"
-msgstr "Új bejegyzés létrehozása:"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:102
-#, fuzzy
 msgid "Create it?"
-msgstr "Objektum létrehozása"
+msgstr ""
 
 #: ../../lib/AJAXTree.php:270 ../../lib/AJAXTree.php:273
 #: ../../lib/AJAXTree.php:275 ../../lib/HTMLTree.php:471
@@ -727,9 +664,8 @@ msgid "Create new entry here"
 msgstr "Új bejegyzés"
 
 #: ../../htdocs/create.php:85
-#, fuzzy
 msgid "Creation successful!"
-msgstr "A módosítás sikerült!"
+msgstr ""
 
 #: ../../htdocs/welcome.php:26
 msgid "Credits"
@@ -743,25 +679,21 @@ msgstr ""
 msgid "Current list of"
 msgstr "Az aktuális lista"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:140
 #, no-wrap
 msgid "Custom 1"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:144
 #, no-wrap
 msgid "Custom 2"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:148
 #, no-wrap
 msgid "Custom 3"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:152
 #, no-wrap
 msgid "Custom 4"
@@ -788,43 +720,37 @@ msgid "DN does not exist"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:1838
-#, fuzzy
 msgid "DN not available"
-msgstr "nem alkalmazható"
+msgstr ""
 
 #: ../../lib/export_functions.php:350
 msgid "DSML V.1 Export"
 msgstr ""
 
 #: ../../htdocs/import.php:108
-#, fuzzy
 msgid "Data"
-msgstr "Adományozzon"
+msgstr ""
 
 #: ../../lib/functions.php:450
-#, fuzzy
 msgid "Debug"
-msgstr "hiba"
+msgstr ""
 
 #: ../../lib/QueryRender.php:502 ../../lib/TemplateRender.php:673
 #: ../../lib/TemplateRender.php:793 ../../lib/TemplateRender.php:807
-#, fuzzy
 msgid "Default"
-msgstr "Törlés"
+msgstr ""
 
 #: ../../htdocs/delete_form.php:30 ../../htdocs/delete_form.php:123
 msgid "Delete"
 msgstr "Törlés"
 
 #: ../../htdocs/delete.php:31
-#, fuzzy
 msgid "Delete DN"
-msgstr "Törlés"
+msgstr ""
 
 #: ../../htdocs/rdelete.php:35
-#, fuzzy
 msgid "Delete LDAP entries"
-msgstr "A bejegyzés törlése"
+msgstr ""
 
 #: ../../htdocs/copy_form.php:76 ../../htdocs/copy_form.php:83
 msgid "Delete after copy (move):"
@@ -836,14 +762,12 @@ msgid "Delete all %s objects"
 msgstr "Mind a(z) %s objektum törlése"
 
 #: ../../lib/functions.php:2063
-#, fuzzy
 msgid "Delete photo"
-msgstr "Fotó törlése"
+msgstr ""
 
 #: ../../htdocs/copy.php:127
-#, fuzzy
 msgid "Delete successful"
-msgstr "A(z) %s bejegyzés sikeresen törölve."
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1177 ../../lib/TemplateRender.php:1180
 msgid "Delete this entry"
@@ -855,11 +779,9 @@ msgstr ""
 
 #: ../../htdocs/rdelete.php:63 ../../htdocs/rdelete.php:80
 #: ../../htdocs/import.php:34
-#, fuzzy
 msgid "Deleting"
-msgstr "%s törölve"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:107
 #, no-wrap
 msgid "Department (professional)"
@@ -874,7 +796,6 @@ msgstr ""
 msgid "Description"
 msgstr "Leírás"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_function.xml:27
 #, no-wrap
 msgid "Description (output from function)"
@@ -900,16 +821,14 @@ msgstr ""
 msgid "Display Format"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:31
 #, no-wrap
 msgid "Display Name"
 msgstr ""
 
 #: ../../htdocs/create.php:104
-#, fuzzy
 msgid "Display the new created entry"
-msgstr "megtekinteni az új bejegyzést"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:803 ../../lib/PageRender.php:97
 #: ../../htdocs/mass_delete.php:63 ../../htdocs/compare.php:54
@@ -919,9 +838,8 @@ msgid "Distinguished Name"
 msgstr "Megkülönböztető név (DN)"
 
 #: ../../htdocs/create_confirm.php:66
-#, fuzzy
 msgid "Do you want to create this entry?"
-msgstr "Érvényesíteni kívánja a változásokat?"
+msgstr ""
 
 #: ../../htdocs/update_confirm.php:38
 msgid "Do you want to make these changes?"
@@ -931,7 +849,6 @@ msgstr "Érvényesíteni kívánja a változásokat?"
 msgid "Documentation"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/dNSDomain.xml:21
 #, no-wrap
 msgid "Domain Component"
@@ -946,7 +863,6 @@ msgstr "Ne állj meg hiba esetén"
 msgid "Donate"
 msgstr "Adományozzon"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/courierMailAccount.xml:71
 #: ../../templates/creation/courierMailAlias.xml:31
 #: ../../templates/creation/inetOrgPerson.xml:90
@@ -957,20 +873,17 @@ msgstr "Adományozzon"
 msgid "Email"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:69
 #, no-wrap
 msgid "Email (Verify)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:32
 #: ../../templates/creation/sendmailVirtualUser.xml:36
 #, no-wrap
 msgid "Email alias"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAClass.xml:32
 #: ../../templates/creation/sendmailVirtualDomain.xml:32
 #, no-wrap
@@ -982,19 +895,17 @@ msgid "Encountered an error while performing search."
 msgstr "Keresés közben hibába akadtam."
 
 #: ../../templates/creation/test_randompassword.xml:31
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Encryption"
-msgstr "nincs leírás"
+msgstr ""
 
 #: ../../htdocs/add_value_form.php:98
-#, fuzzy
 msgid "Enter the value(s) you would like to add:"
-msgstr "Adja meg a kívánt értéket:"
+msgstr ""
 
 #: ../../lib/QueryRender.php:561
-#, fuzzy
 msgid "Entries found"
-msgstr "A megtalált bejegyzések: "
+msgstr ""
 
 #: ../../lib/QueryRender.php:116
 msgid "Entries to show per page"
@@ -1014,9 +925,8 @@ msgid "Entry Chooser"
 msgstr "Bejegyzés kiválasztása"
 
 #: ../../htdocs/create.php:97
-#, fuzzy
 msgid "Entry created"
-msgstr "létrehozás"
+msgstr ""
 
 #: ../../htdocs/mass_delete.php:35 ../../htdocs/rdelete.php:29
 #: ../../htdocs/delete_form.php:23 ../../htdocs/mass_edit.php:27
@@ -1038,18 +948,17 @@ msgid "Error"
 msgstr "Hiba"
 
 #: ../../lib/functions.php:1937 ../../lib/functions.php:1941
-#, fuzzy
 msgid "Error number"
-msgstr "Hibaszám: %s (%s)"
+msgstr ""
 
 #: ../../lib/functions.php:2017
 msgid "Error writing to jpeg tmp directory"
 msgstr ""
 
 #: ../../templates/creation/example.xml:11
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Example entry"
-msgstr "A bejegyzés átnevezése"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:284 ../../lib/TemplateRender.php:1130
 #: ../../lib/TemplateRender.php:1131 ../../lib/TemplateRender.php:1133
@@ -1071,16 +980,13 @@ msgid "Failed"
 msgstr "Sikertelen"
 
 #: ../../htdocs/login.php:35
-#, fuzzy
 msgid "Failed to Authenticate to server"
-msgstr "Azonosítsa magát a(z) %s kiszolgálón"
+msgstr ""
 
 #: ../../htdocs/logout.php:24
-#, fuzzy
 msgid "Failed to Logout of server"
-msgstr "Kilépés ebből a kiszolgálóból"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:30
 #: ../../templates/creation/inetOrgPerson.xml:80
 #: ../../templates/creation/kolabPerson.xml:100
@@ -1090,9 +996,9 @@ msgid "Fax"
 msgstr ""
 
 #: ../../templates/creation/mozillaOrgPerson.xml:65
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Fax Number"
-msgstr "Sorszám:"
+msgstr ""
 
 #: ../../tools/unserialize.php:14 ../../lib/functions.php:170
 #: ../../lib/functions.php:596 ../../htdocs/import.php:53
@@ -1104,11 +1010,9 @@ msgid "Filter"
 msgstr "Szűrő"
 
 #: ../../lib/QueryRender.php:595
-#, fuzzy
 msgid "Filter performed"
-msgstr "Használt szűrő: "
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:21
 #, no-wrap
 msgid "First Name"
@@ -1122,11 +1026,10 @@ msgstr ""
 #: ../../templates/creation/test_uid1010.xml:21
 #: ../../templates/modification/inetOrgPerson.xml:20
 #: ../../templates/modification/sambaSamAccount.xml:22
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "First name"
-msgstr "A felhasználó neve"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:25
 #: ../../templates/creation/test_picklist.xml:21
 #, no-wrap
@@ -1176,15 +1079,14 @@ msgstr ""
 #: ../../templates/creation/test_picklist.xml:29
 #: ../../templates/modification/posixGroup.xml:25
 #: ../../templates/modification/sambaSamAccount.xml:41
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "GID Number"
-msgstr "Sorszám:"
+msgstr ""
 
 #: ../../lib/functions.php:68 ../../lib/functions.php:658
 msgid "Generic Error"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/inetOrgPerson.xml:11
 #: ../../templates/modification/inetOrgPerson.xml:10
 #, no-wrap
@@ -1192,51 +1094,45 @@ msgid "Generic: Address Book Entry"
 msgstr ""
 
 #: ../../templates/creation/dNSDomain.xml:11
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Generic: DNS Entry"
-msgstr "A bejegyzés átnevezése"
+msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/alias.xml:12
 #, no-wrap
 msgid "Generic: LDAP Alias"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/organizationalRole.xml:11
 #, no-wrap
 msgid "Generic: Organisational Role"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/ou.xml:11
 #, no-wrap
 msgid "Generic: Organisational Unit"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/posixGroup.xml:11
 #: ../../templates/modification/posixGroup.xml:11
 #, no-wrap
 msgid "Generic: Posix Group"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/simpleSecurityObject.xml:11
 #, no-wrap
 msgid "Generic: Simple Security Object"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/posixAccount.xml:11
 #, no-wrap
 msgid "Generic: User Account"
 msgstr ""
 
 #: ../../templates/creation/courierMailAccount.xml:21
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Given Name"
-msgstr "Átnevezés"
+msgstr ""
 
 #: ../../htdocs/schema.php:216 ../../htdocs/schema.php:218
 #: ../../htdocs/schema.php:446 ../../htdocs/schema.php:448
@@ -1250,11 +1146,9 @@ msgid "Go back"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:1836
-#, fuzzy
 msgid "Go to"
-msgstr "Menj a(z) %s DN-hez"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/posixGroup.xml:20
 #: ../../templates/creation/sambaGroupMapping.xml:21
 #: ../../templates/creation/test_multilist.xml:20
@@ -1267,7 +1161,6 @@ msgstr ""
 msgid "Group members"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:52
 #, no-wrap
 msgid "HTML Email Format"
@@ -1300,9 +1193,8 @@ msgid "Hide/Unhide the tree"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:56
-#, fuzzy
 msgid "Hint"
-msgstr "tipp"
+msgstr ""
 
 #: ../../htdocs/copy_form.php:95
 msgid ""
@@ -1334,18 +1226,16 @@ msgstr "Tipp: Legalább egy strukturális objektumosztályt kell választania"
 msgid "Home"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/courierMailAccount.xml:66
 #, no-wrap
 msgid "Home Directory"
 msgstr ""
 
 #: ../../templates/creation/mozillaOrgPerson.xml:61
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Home Phone Number"
-msgstr "Sorszám:"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/posixAccount.xml:49
 #: ../../templates/creation/sambaSamAccount.xml:123
 #: ../../templates/creation/test_uid1200.xml:49
@@ -1371,27 +1261,23 @@ msgstr ""
 msgid "Hook pre_attr_modify prevented attribute from being modified"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAMapObject.xml:36
 #, no-wrap
 msgid "Host/Network/Address"
 msgstr ""
 
 #: ../../htdocs/view_jpeg_photo.php:51
-#, fuzzy
 msgid "Image not available"
-msgstr "nem alkalmazható"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:272 ../../htdocs/import.php:50
 #: ../../htdocs/import_form.php:21
-#, fuzzy
 msgid "Import"
-msgstr "import"
+msgstr ""
 
 #: ../../htdocs/add_oclass_form.php:68
-#, fuzzy
 msgid "In order to add these objectClass(es) to this entry, you must specify"
-msgstr "Az új objektumosztály hozzáadásához"
+msgstr ""
 
 #: ../../lib/Query.php:73
 #, php-format
@@ -1409,18 +1295,16 @@ msgid "Inactivity will log you off at %s"
 msgstr ""
 
 #: ../../htdocs/export_form.php:86
-#, fuzzy
 msgid "Include system attributes"
-msgstr "attribútum törlése"
+msgstr ""
 
 #: ../../lib/functions.php:265
 msgid "Incorrect version of PHP"
 msgstr ""
 
 #: ../../lib/HTMLTree.php:244
-#, fuzzy
 msgid "Info"
-msgstr "infó"
+msgstr ""
 
 #: ../../htdocs/schema.php:645 ../../htdocs/schema.php:678
 msgid "Inherited from"
@@ -1448,27 +1332,25 @@ msgstr ""
 
 #: ../../templates/creation/test_invalidoc.xml:6
 #: ../../templates/creation/test_invalidoc2.xml:6
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Invalid Object Class"
-msgstr "Objektumosztályok"
+msgstr ""
 
 #: ../../htdocs/rename.php:47
 msgid "Invalid RDN value"
 msgstr "Érvénytelen RDN érték"
 
 #: ../../htdocs/login.php:36
-#, fuzzy
 msgid "Invalid Username or Password."
-msgstr "Helytelen felhasználónév vagy jelszó. Kérem próbálja újra."
+msgstr ""
 
 #: ../../lib/PageRender.php:204
 msgid "Invalid argument count for PasswordEncrypt"
 msgstr ""
 
 #: ../../lib/import_functions.php:567
-#, fuzzy
 msgid "Invalid entry"
-msgstr "Az export formátuma érvénytelen"
+msgstr ""
 
 #: ../../lib/PageRender.php:215 ../../lib/PageRender.php:232
 msgid "Invalid value count for PasswordEncrypt"
@@ -1513,7 +1395,6 @@ msgstr "Ugrás az objektumosztályhoz"
 msgid "Jump to this objectClass definition"
 msgstr "Ugrás ehhez az objektumosztály-definícióhoz"
 
-# type: Content of: <template><title>
 #: ../../templates/creation/kolabPerson.xml:11
 #, no-wrap
 msgid "Kolab: User Entry"
@@ -1524,24 +1405,20 @@ msgid "LDAP Connections"
 msgstr ""
 
 #: ../../htdocs/monitor.php:36
-#, fuzzy
 msgid "LDAP Server"
-msgstr "Kiszolgáló"
+msgstr ""
 
 #: ../../lib/functions.php:1934
-#, fuzzy
 msgid "LDAP said"
-msgstr "Az LDAP ezt mondta: %s"
+msgstr ""
 
 #: ../../lib/export_functions.php:449
-#, fuzzy
 msgid "LDIF Export"
-msgstr "A(z) %s LDIF exportja"
+msgstr ""
 
 #: ../../lib/import_functions.php:156
-#, fuzzy
 msgid "LDIF Import"
-msgstr "A(z) %s LDIF exportja"
+msgstr ""
 
 #: ../../lib/import_functions.php:177
 msgid "LDIF import only suppports version 1"
@@ -1553,14 +1430,14 @@ msgstr ""
 
 #: ../../templates/creation/sambaSamAccount.xml:85
 #: ../../templates/modification/sambaSamAccount.xml:85
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "LM Password"
-msgstr "Jelszó"
+msgstr ""
 
 #: ../../templates/creation/mozillaOrgPerson.xml:26
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Last Name"
-msgstr "Név"
+msgstr ""
 
 #: ../../templates/creation/posixAccount.xml:29
 #: ../../templates/creation/courierMailAccount.xml:28
@@ -1572,11 +1449,10 @@ msgstr "Név"
 #: ../../templates/creation/test_uid1010.xml:29
 #: ../../templates/modification/inetOrgPerson.xml:26
 #: ../../templates/modification/sambaSamAccount.xml:29
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Last name"
-msgstr "A felhasználó neve"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:46
 #: ../../templates/creation/test_picklist.xml:46
 #, no-wrap
@@ -1584,9 +1460,8 @@ msgid "Last name (JS OnChange)"
 msgstr ""
 
 #: ../../htdocs/import.php:107
-#, fuzzy
 msgid "Line"
-msgstr "Sor:"
+msgstr ""
 
 #: ../../htdocs/export_form.php:123
 msgid "Line ends"
@@ -1610,23 +1485,20 @@ msgid "Loading"
 msgstr ""
 
 #: ../../lib/HTMLTree.php:282
-#, fuzzy
 msgid "Loading Export"
-msgstr "Exportálás"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:270
-#, fuzzy
 msgid "Loading Import"
-msgstr "import"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:242
 msgid "Loading Info"
 msgstr ""
 
 #: ../../lib/HTMLTree.php:490 ../../lib/HTMLTree.php:492
-#, fuzzy
 msgid "Loading Login"
-msgstr "Keresés itt: "
+msgstr ""
 
 #: ../../lib/HTMLTree.php:258
 msgid "Loading Monitor Info"
@@ -1637,19 +1509,16 @@ msgid "Loading Schema"
 msgstr ""
 
 #: ../../lib/HTMLTree.php:217
-#, fuzzy
 msgid "Loading Search"
-msgstr "Előre definiált keresések"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:321
-#, fuzzy
 msgid "Logged in as"
-msgstr "Belépve mint"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:496 ../../htdocs/update.php:66
-#, fuzzy
 msgid "Login"
-msgstr "belépés"
+msgstr ""
 
 #: ../../htdocs/login_form.php:70
 msgid "Login DN"
@@ -1660,41 +1529,36 @@ msgstr "Bejelentkezési DN"
 #: ../../templates/creation/test_uid1200.xml:70
 #: ../../templates/creation/test_uid1010.xml:70
 #: ../../templates/modification/sambaSamAccount.xml:100
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Login shell"
-msgstr "Bejelentkezési DN"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:490 ../../lib/HTMLTree.php:492
-#, fuzzy
 msgid "Login to"
-msgstr "Bejelentkezési DN"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:296
 msgid "Logout of this server"
 msgstr "Kilépés ebből a kiszolgálóból"
 
 #: ../../htdocs/entry_chooser.php:36
-#, fuzzy
 msgid "Looking in"
-msgstr "Keresés itt: "
+msgstr ""
 
 #: ../../templates/creation/sambaMachine.xml:22
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Machine Name"
-msgstr "Illesztőszabályok"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1844
-#, fuzzy
 msgid "Mail"
-msgstr "Sikertelen"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/courierMailAccount.xml:77
 #, no-wrap
 msgid "Mailbox"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/courierMailAlias.xml:36
 #, no-wrap
 msgid "Maildrop"
@@ -1705,9 +1569,8 @@ msgid "Make sure your filter (above) will select all child records."
 msgstr ""
 
 #: ../../htdocs/mass_delete.php:46
-#, fuzzy
 msgid "Mass Delete"
-msgstr "Tömeges törlés"
+msgstr ""
 
 #: ../../htdocs/schema.php:454
 msgid "Matching Rule OID"
@@ -1722,18 +1585,17 @@ msgid "Maximum Length"
 msgstr "Maximális hossz"
 
 #: ../../htdocs/add_attr_form.php:127 ../../htdocs/import_form.php:38
-#, fuzzy
 msgid "Maximum file size"
-msgstr "Maximális állományméret: %s"
+msgstr ""
 
 #: ../../lib/functions.php:342
 msgid "Memory Limit low."
 msgstr ""
 
 #: ../../lib/Template.php:191 ../../lib/Query.php:116
-#, fuzzy, php-format
+#, php-format
 msgid "Missing %s in the XML file."
-msgstr "A feltöltött állomány hiányzik."
+msgstr ""
 
 #: ../../lib/Template.php:207
 #, php-format
@@ -1745,9 +1607,8 @@ msgid "Missing [post] setting in XML file"
 msgstr ""
 
 #: ../../lib/import_functions.php:436
-#, fuzzy
 msgid "Missing attributes for"
-msgstr "új attribútumo(ka)t"
+msgstr ""
 
 #: ../../lib/import_functions.php:450
 msgid "Missing modify command add, delete or replace"
@@ -1762,14 +1623,13 @@ msgstr ""
 #: ../../templates/creation/kolabPerson.xml:104
 #: ../../templates/creation/mozillaOrgPerson.xml:73
 #: ../../templates/modification/inetOrgPerson.xml:84
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Mobile"
-msgstr "Állomány"
+msgstr ""
 
 #: ../../htdocs/mass_update.php:62
-#, fuzzy
 msgid "Modification NOT successful!"
-msgstr "A módosítás sikerült!"
+msgstr ""
 
 #: ../../htdocs/update.php:62 ../../htdocs/mass_update.php:60
 msgid "Modification successful!"
@@ -1788,95 +1648,81 @@ msgid "Modify members for"
 msgstr ""
 
 #: ../../htdocs/import.php:37
-#, fuzzy
 msgid "Modifying"
-msgstr "Módosítás..."
+msgstr ""
 
 #: ../../lib/HTMLTree.php:260
 msgid "Monitor"
 msgstr ""
 
 #: ../../htdocs/monitor.php:30
-#, fuzzy
 msgid "Monitor info for: "
-msgstr "Kiszolgáló-infó: "
+msgstr ""
 
 #: ../../htdocs/monitor.php:26
-#, fuzzy
 msgid "Monitoring context does not exist"
-msgstr "A cél-tároló (%s) nem létezik."
+msgstr ""
 
 #: ../../htdocs/copy.php:79 ../../htdocs/copy.php:139
-#, fuzzy
 msgid "Move NOT successful"
-msgstr "A módosítás sikerült!"
+msgstr ""
 
 #: ../../htdocs/copy.php:75 ../../htdocs/copy.php:135
-#, fuzzy
 msgid "Move successful"
-msgstr "A módosítás sikerült!"
+msgstr ""
 
 #: ../../templates/creation/sambaSamAccount.xml:92
 #: ../../templates/modification/sambaSamAccount.xml:92
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "NT Password"
-msgstr "Jelszó"
+msgstr ""
 
 #: ../../htdocs/schema.php:454
 msgid "Name"
 msgstr "Név"
 
-# type: Content of: <template><description>
 #: ../../templates/creation/inetOrgPerson.xml:6
 #: ../../templates/creation/kolabPerson.xml:6
 #, no-wrap
 msgid "New Address Book Entry"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/courierMailAccount.xml:6
 #, no-wrap
 msgid "New Courier Mail Account"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/courierMailAlias.xml:6
 #, no-wrap
 msgid "New Courier Mail Alias"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/dNSDomain.xml:6
 #, no-wrap
 msgid "New DNS Entry"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/test_function.xml:6
 #, no-wrap
 msgid "New Device"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/alias.xml:7
 #: ../../templates/creation/test_extensible.xml:7
 #, no-wrap
 msgid "New LDAP Alias"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/organizationalRole.xml:6
 #, no-wrap
 msgid "New Organisational Role"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/ou.xml:6
 #, no-wrap
 msgid "New Organisational Unit"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/posixGroup.xml:6
 #: ../../templates/creation/test_multilist.xml:6
 #: ../../templates/modification/posixGroup.xml:6
@@ -1888,63 +1734,53 @@ msgstr ""
 msgid "New Required Attributes"
 msgstr "Új kötelező attribútumok"
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sambaDomain.xml:6
 #, no-wrap
 msgid "New Samba Domain"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sambaSamAccount.xml:6
 #: ../../templates/modification/sambaSamAccount.xml:6
 #, no-wrap
 msgid "New Samba3 Account"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sambaGroupMapping.xml:6
 #, no-wrap
 msgid "New Samba3 Group Mapping"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sambaMachine.xml:6
 #, no-wrap
 msgid "New Samba3 Machine"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:6
 #, no-wrap
 msgid "New Sendmail Alias"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sendmailMTACluster.xml:6
 #, no-wrap
 msgid "New Sendmail Cluster"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sendmailMTAClass.xml:6
 #: ../../templates/creation/sendmailVirtualDomain.xml:6
 #, no-wrap
 msgid "New Sendmail Domain"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sendmailMTAMapObject.xml:10
 #, no-wrap
 msgid "New Sendmail Relays"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sendmailVirtualUser.xml:10
 #, no-wrap
 msgid "New Sendmail Virtual User"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/simpleSecurityObject.xml:6
 #: ../../templates/creation/test_randompassword.xml:6
 #, no-wrap
@@ -1955,13 +1791,11 @@ msgstr ""
 msgid "New Template XML found."
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/mozillaOrgPerson.xml:6
 #, no-wrap
 msgid "New Thunderbird Address Book Entry"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/posixAccount.xml:6
 #: ../../templates/creation/test_uid1200.xml:6
 #: ../../templates/creation/test_uid1010.xml:6
@@ -1974,9 +1808,9 @@ msgid "New Value"
 msgstr "Új érték"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:35
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "NickName"
-msgstr "Név"
+msgstr ""
 
 #: ../../htdocs/schema.php:257 ../../htdocs/schema.php:325
 #: ../../htdocs/schema.php:329 ../../htdocs/schema.php:333
@@ -1993,14 +1827,12 @@ msgid "No AUTO_NUMBER search_base exists for this server"
 msgstr ""
 
 #: ../../lib/Template.php:532
-#, fuzzy
 msgid "No RDN attribute"
-msgstr "Nincs belső attribútum"
+msgstr ""
 
 #: ../../lib/Template.php:533
-#, fuzzy
 msgid "No RDN attribute was selected"
-msgstr "Nincs megadva az attribútumnév."
+msgstr ""
 
 #: ../../htdocs/download_binary_attr.php:38
 msgid "No binary data available"
@@ -2011,18 +1843,16 @@ msgid "No cache to purge."
 msgstr ""
 
 #: ../../htdocs/add_value_form.php:91
-#, fuzzy
 msgid "No current value for attribute"
-msgstr "értéket tartalmaz. Attribútum:"
+msgstr ""
 
 #: ../../htdocs/mass_delete.php:22
 msgid "No entry selected"
 msgstr ""
 
 #: ../../htdocs/mass_delete.php:23
-#, fuzzy
 msgid "No entry was selected to delete"
-msgstr "Nem választotta ki a törlendő bejegyzés(eke)t. "
+msgstr ""
 
 #: ../../htdocs/view_jpeg_photo.php:61
 msgid "No image available"
@@ -2037,25 +1867,22 @@ msgid "No internal attributes"
 msgstr "Nincs belső attribútum"
 
 #: ../../htdocs/template_engine.php:47
-#, fuzzy
 msgid "No such entry"
-msgstr "Nincs ilyen bejegyzés: %s"
+msgstr ""
 
 #: ../../htdocs/compare.php:26 ../../htdocs/compare.php:29
 #: ../../htdocs/delete.php:21
-#, fuzzy
 msgid "No such entry."
-msgstr "Nincs ilyen bejegyzés: %s"
+msgstr ""
 
 #: ../../htdocs/schema.php:709
-#, fuzzy, php-format
+#, php-format
 msgid "No such schema item: \"%s\""
-msgstr "Nincs ilyen bejegyzés: %s"
+msgstr ""
 
 #: ../../lib/PageRender.php:374
-#, fuzzy
 msgid "Note"
-msgstr "Nem"
+msgstr ""
 
 #: ../../htdocs/add_value_form.php:130
 msgid ""
@@ -2070,7 +1897,8 @@ msgid ""
 "Note: this is potentially very dangerous and you do this at your own risk. "
 "This operation cannot be undone. Take into consideration aliases, referrals, "
 "and other things that may cause problems."
-msgstr "Megj.: Ez a törlés veszélyes lehet. A műveletet nem lehet visszavonni!"
+msgstr ""
+"Megj.: Ez a törlés veszélyes lehet. A műveletet nem lehet visszavonni!"
 
 #: ../../lib/export_functions.php:457
 msgid "Nothing to export"
@@ -2093,7 +1921,6 @@ msgstr ""
 msgid "Obsolete"
 msgstr "Maradi"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:41
 #, no-wrap
 msgid "Occupant"
@@ -2120,15 +1947,13 @@ msgid "Or paste your LDIF here"
 msgstr ""
 
 #: ../../lib/QueryRender.php:181
-#, fuzzy
 msgid "Order by"
-msgstr "Sorbarendezés"
+msgstr ""
 
 #: ../../htdocs/schema.php:168
 msgid "Ordering"
 msgstr "Sorbarendezés"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/inetOrgPerson.xml:44
 #: ../../templates/creation/kolabPerson.xml:56
 #: ../../templates/modification/inetOrgPerson.xml:43
@@ -2136,19 +1961,16 @@ msgstr "Sorbarendezés"
 msgid "Organisation"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/ou.xml:20
 #, no-wrap
 msgid "Organisational Unit"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/kolabPerson.xml:60
 #, no-wrap
 msgid "Organisational unit"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:111
 #, no-wrap
 msgid "Organization (professional)"
@@ -2163,18 +1985,17 @@ msgid "PHP Safe Mode"
 msgstr ""
 
 #: ../../templates/creation/mozillaOrgPerson.xml:69
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Pager"
-msgstr "Használat"
+msgstr ""
 
 #: ../../htdocs/schema.php:598
 msgid "Parent to"
 msgstr "Kinek a szülője"
 
 #: ../../htdocs/import.php:103
-#, fuzzy
 msgid "Parse Error"
-msgstr "LDIF-pásztázási hiba"
+msgstr ""
 
 #: ../../templates/creation/posixAccount.xml:80
 #: ../../templates/creation/courierMailAccount.xml:82
@@ -2203,22 +2024,19 @@ msgid "Passwords do not match!"
 msgstr ""
 
 #: ../../htdocs/password_checker.php:59
-#, fuzzy
 msgid "Passwords match!"
-msgstr "Jelszó"
+msgstr ""
 
 #: ../../htdocs/mass_delete.php:70 ../../htdocs/delete_form.php:38
 msgid "Permanently delete all children also?"
 msgstr "Az összes gyermeket is töröljem?"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/inetOrgPerson.xml:39
 #: ../../templates/modification/inetOrgPerson.xml:37
 #, no-wrap
 msgid "Photo"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:62
 #, no-wrap
 msgid "Photo (Binary)"
@@ -2241,15 +2059,13 @@ msgstr ""
 #: ../../lib/functions.php:2018
 #, php-format
 msgid ""
-"Please check jpeg,tmpdir is a writable directory in the phpLDAPadmin config."
-"php"
+"Please check jpeg,tmpdir is a writable directory in the phpLDAPadmin "
+"config.php"
 msgstr ""
 
 #: ../../lib/Template.php:449
-#, fuzzy
 msgid "Please go back and try again."
 msgstr ""
-"Az attribútumértéket üresen hagyta. Kérem lépjen vissza és próbálja újra."
 
 #: ../../htdocs/logout.php:25
 msgid "Please report this error to the admins."
@@ -2264,25 +2080,21 @@ msgstr ""
 msgid "Please specify it in config.php"
 msgstr "Kérem adja meg a config.php-ban"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:82
 #, no-wrap
 msgid "Post Code (Option selection)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/kolabPerson.xml:74
 #, no-wrap
 msgid "Post box"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:65
 #, no-wrap
 msgid "Postal Address"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:60
 #: ../../templates/creation/inetOrgPerson.xml:68
 #: ../../templates/creation/kolabPerson.xml:86
@@ -2292,11 +2104,9 @@ msgid "Postal code"
 msgstr ""
 
 #: ../../lib/QueryRender.php:86
-#, fuzzy
 msgid "Predefined Query"
-msgstr "Előre definiált keresések"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaSamAccount.xml:111
 #: ../../templates/modification/sambaSamAccount.xml:111
 #, no-wrap
@@ -2312,9 +2122,8 @@ msgid "Proceed &gt;&gt;"
 msgstr "Tovább &gt;&gt;"
 
 #: ../../htdocs/export_form.php:137 ../../htdocs/import_form.php:46
-#, fuzzy
 msgid "Proceed >>"
-msgstr "Tovább &gt;&gt;"
+msgstr ""
 
 #: ../../htdocs/purge_cache.php:31
 msgid "Purge cache"
@@ -2338,16 +2147,13 @@ msgid ""
 msgstr ""
 
 #: ../../lib/Template.php:733
-#, fuzzy
 msgid "RDN attribute sequence already defined"
-msgstr "Nincs megadva az attribútumnév."
+msgstr ""
 
 #: ../../lib/TemplateRender.php:2214
-#, fuzzy
 msgid "Really delete value from attribute"
-msgstr "Attribútum tényleges törlése"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:37
 #: ../../templates/creation/sendmailVirtualUser.xml:42
 #, no-wrap
@@ -2381,11 +2187,9 @@ msgid "Refresh this entry"
 msgstr "Bejegyzés frissítése"
 
 #: ../../lib/HTMLTree.php:230
-#, fuzzy
 msgid "Refreshing Tree"
-msgstr "Frissítés"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:71
 #, no-wrap
 msgid "Registered Address"
@@ -2411,19 +2215,16 @@ msgid "Rename Entry"
 msgstr "A bejegyzés átnevezése"
 
 #: ../../htdocs/rename.php:53
-#, fuzzy
 msgid "Rename successful!"
-msgstr "A módosítás sikerült!"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1190 ../../lib/TemplateRender.php:1193
-#, fuzzy
 msgid "Rename this entry"
-msgstr "Bejegyzés frissítése"
+msgstr ""
 
 #: ../../htdocs/import.php:35 ../../htdocs/import.php:36
-#, fuzzy
 msgid "Renaming"
-msgstr "Átnevezés"
+msgstr ""
 
 #: ../../lib/functions.php:391 ../../lib/functions.php:392
 #: ../../lib/functions.php:393
@@ -2440,34 +2241,30 @@ msgid "Required Attributes"
 msgstr "Kötelező attribútumok"
 
 #: ../../lib/PageRender.php:414
-#, fuzzy
 msgid "Required attribute for objectClass(es)"
-msgstr "Kötelező attribútumok"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:631 ../../lib/TemplateRender.php:668
-#, fuzzy
 msgid "Retieving DN"
-msgstr "Cél-DN"
+msgstr ""
 
 #: ../../lib/AJAXTree.php:122 ../../lib/AJAXTree.php:127
 msgid "Retrieving DN"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:20
 #, no-wrap
 msgid "Role CN"
 msgstr ""
 
 #: ../../templates/creation/kolabPerson.xml:64
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Room Number"
-msgstr "Sorszám:"
+msgstr ""
 
 #: ../../lib/QueryRender.php:86
-#, fuzzy
 msgid "Run a predefined query"
-msgstr "Előre definiált keresés kiválasztása"
+msgstr ""
 
 #: ../../lib/ds_ldap.php:549
 msgid ""
@@ -2475,19 +2272,16 @@ msgid ""
 "SASL. SASL will be disabled."
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaDomain.xml:20
 #, no-wrap
 msgid "Samba Domain Name"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaGroupMapping.xml:50
 #, no-wrap
 msgid "Samba Group Type"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaDomain.xml:25
 #: ../../templates/creation/sambaGroupMapping.xml:39
 #: ../../templates/creation/sambaMachine.xml:43
@@ -2497,35 +2291,30 @@ msgstr ""
 msgid "Samba SID"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sambaSamAccount.xml:11
 #: ../../templates/modification/sambaSamAccount.xml:11
 #, no-wrap
 msgid "Samba: Account"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sambaDomain.xml:11
 #, no-wrap
 msgid "Samba: Domain"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sambaGroupMapping.xml:11
 #, no-wrap
 msgid "Samba: Group Mapping"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sambaMachine.xml:11
 #, no-wrap
 msgid "Samba: Machine"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:1265 ../../lib/TemplateRender.php:1269
-#, fuzzy
 msgid "Save"
-msgstr "Kiszolgáló"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1131 ../../lib/TemplateRender.php:1134
 msgid "Save a dump of this object"
@@ -2540,9 +2329,8 @@ msgid "Save as file"
 msgstr ""
 
 #: ../../htdocs/modify_member_form.php:152
-#, fuzzy
 msgid "Save changes"
-msgstr "Változások mentése"
+msgstr ""
 
 #: ../../htdocs/schema.php:39
 msgid "Schema for server"
@@ -2559,9 +2347,8 @@ msgid "Search Filter"
 msgstr "Keresőszűrő"
 
 #: ../../lib/QueryRender.php:198
-#, fuzzy
 msgid "Search Results"
-msgstr "Keresőszűrő"
+msgstr ""
 
 #: ../../lib/QueryRender.php:145 ../../lib/export_functions.php:207
 #: ../../htdocs/export_form.php:66
@@ -2573,9 +2360,8 @@ msgid "Search for DN returned the incorrect number of results"
 msgstr ""
 
 #: ../../lib/QueryRender.php:359
-#, fuzzy
 msgid "Search returned no results"
-msgstr "Bejegyzések keresése, ahol:"
+msgstr ""
 
 #: ../../lib/Template.php:372 ../../lib/Template.php:397
 #: ../../lib/Template.php:402 ../../lib/Template.php:459
@@ -2589,16 +2375,13 @@ msgid "Select a template for the creation process"
 msgstr "Válasszon mintát a létrehozási folyamathoz"
 
 #: ../../lib/TemplateRender.php:578
-#, fuzzy
 msgid "Select a template to edit the entry"
-msgstr "Válasszon mintát a létrehozási folyamathoz"
+msgstr ""
 
 #: ../../htdocs/import_form.php:33
-#, fuzzy
 msgid "Select an LDIF file"
-msgstr "LDIF-állomány kiválasztása"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:20
 #: ../../templates/creation/sendmailMTAClass.xml:20
 #: ../../templates/creation/sendmailMTAMapObject.xml:24
@@ -2608,7 +2391,6 @@ msgstr "LDIF-állomány kiválasztása"
 msgid "Sendmail Cluster Name"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:26
 #: ../../templates/creation/sendmailMTAClass.xml:26
 #: ../../templates/creation/sendmailMTAMapObject.xml:30
@@ -2618,37 +2400,31 @@ msgstr ""
 msgid "Sendmail Hostname"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:11
 #, no-wrap
 msgid "Sendmail: Alias"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailMTACluster.xml:11
 #, no-wrap
 msgid "Sendmail: Cluster"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailMTAClass.xml:11
 #, no-wrap
 msgid "Sendmail: Domain"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailMTAMapObject.xml:15
 #, no-wrap
 msgid "Sendmail: Relays"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailVirtualDomain.xml:11
 #, no-wrap
 msgid "Sendmail: Virtual Domain"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailVirtualUser.xml:15
 #, no-wrap
 msgid "Sendmail: Virtual Users"
@@ -2669,9 +2445,8 @@ msgid "Server"
 msgstr "Kiszolgáló"
 
 #: ../../lib/page.php:222
-#, fuzzy
 msgid "Server Select"
-msgstr "Kiszolgáló: "
+msgstr ""
 
 #: ../../htdocs/server_info.php:18
 msgid "Server info for: "
@@ -2690,9 +2465,8 @@ msgid "Show"
 msgstr ""
 
 #: ../../lib/QueryRender.php:174
-#, fuzzy
 msgid "Show Attributes"
-msgstr "Attribútumok megjelenítése"
+msgstr ""
 
 #: ../../htdocs/export_form.php:83
 msgid "Show Attributtes"
@@ -2734,30 +2508,26 @@ msgstr ""
 "Módosult néhány attribútum (%s), s ezek kiemelve szerepelnek az alábbiakban."
 
 #: ../../lib/TemplateRender.php:1453
-#, fuzzy
 msgid "Specify attributes and values"
-msgstr "Második lépés: Adja meg az attribútumokat és értékeiket"
+msgstr ""
 
 #: ../../lib/QueryRender.php:165
-#, fuzzy
 msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenName=David))"
-msgstr "Szabványos LDAP-szűrő, pl. (&(sn=Kovács)(givenname=István))"
+msgstr ""
 
 #: ../../templates/creation/organizationalRole.xml:56
 #: ../../templates/creation/inetOrgPerson.xml:63
 #: ../../templates/creation/kolabPerson.xml:82
 #: ../../templates/modification/inetOrgPerson.xml:65
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "State"
-msgstr "Szintaxisok"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:86
 #, no-wrap
 msgid "State (personal)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:123
 #, no-wrap
 msgid "State (professional)"
@@ -2770,11 +2540,10 @@ msgstr ""
 
 #: ../../templates/creation/inetOrgPerson.xml:50
 #: ../../templates/modification/inetOrgPerson.xml:48
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Street"
-msgstr "igaz"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:47
 #, no-wrap
 msgid "Street Address"
@@ -2798,14 +2567,12 @@ msgid "Successfully deleted DN "
 msgstr ""
 
 #: ../../htdocs/login.php:30 ../../htdocs/login_form.php:41
-#, fuzzy
 msgid "Successfully logged into server."
-msgstr "A(z) %s kiszolgálóhoz sikeresen bejelentkezett."
+msgstr ""
 
 #: ../../htdocs/logout.php:19
-#, fuzzy
 msgid "Successfully logged out of server."
-msgstr "A(z) %s kiszolgálóhoz sikeresen bejelentkezett."
+msgstr ""
 
 #: ../../htdocs/compare.php:73
 msgid "Switch Entry"
@@ -2813,9 +2580,8 @@ msgstr ""
 
 #: ../../lib/TemplateRender.php:1117 ../../lib/TemplateRender.php:1118
 #: ../../lib/TemplateRender.php:1120 ../../lib/TemplateRender.php:1121
-#, fuzzy
 msgid "Switch Template"
-msgstr "Minta"
+msgstr ""
 
 #: ../../htdocs/add_value_form.php:148 ../../htdocs/schema.php:170
 msgid "Syntax"
@@ -2836,9 +2602,8 @@ msgid ""
 msgstr ""
 
 #: ../../lib/QueryRender.php:109
-#, fuzzy
 msgid "Table"
-msgstr "hamis"
+msgstr ""
 
 #: ../../lib/PageRender.php:1026
 msgid "Template Value Error"
@@ -2861,104 +2626,90 @@ msgid "Template XML file removed."
 msgstr ""
 
 #: ../../lib/TemplateRender.php:596
-#, fuzzy
 msgid "Templates"
-msgstr "Minta"
+msgstr ""
 
 #: ../../templates/creation/test_nordn.xml:6
 #: ../../templates/creation/test_invalidattrs.xml:6
 #: ../../templates/creation/test_noattrs.xml:6
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Test Template"
-msgstr "Minta"
+msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/test_normal.xml:6
 #: ../../templates/creation/test_picklist.xml:6
 #, no-wrap
 msgid "Test Template (no definitions for wsVPN)"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_normal.xml:11
 #, no-wrap
 msgid "Test Template: All Functions"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_picklist.xml:11
 #, no-wrap
 msgid "Test Template: AutoFill/GetNextNumber/PickList"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_extensible.xml:12
 #, no-wrap
 msgid "Test Template: Extensible Object (attribute not defined)"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_function.xml:11
 #, no-wrap
 msgid "Test Template: Function"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_multilist.xml:11
 #, no-wrap
 msgid "Test Template: GetNextNumber/MultList"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_randompassword.xml:11
 #, no-wrap
 msgid "Test Template: Helper/RandomPassword"
 msgstr ""
 
 #: ../../templates/creation/test_invalidattrs.xml:12
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Test Template: Invalid Attributes"
-msgstr "Opcionális attribútumok"
+msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_invalidoc.xml:11
 #, no-wrap
 msgid "Test Template: Invalid Object Class"
 msgstr ""
 
 #: ../../templates/creation/test_noattrs.xml:11
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Test Template: No Attributes"
-msgstr "Mely attribútumok használják"
+msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_nordn.xml:11
 #, no-wrap
 msgid "Test Template: No RDN, No Attributes"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_uid1010.xml:11
 #, no-wrap
 msgid "Test Template: User Account (UID > 1010)"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_uid1200.xml:11
 #, no-wrap
 msgid "Test Template: User Account (UID > 1200)"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_invalidoc2.xml:11
 #, no-wrap
 msgid "Test Template: Valid and Invalid Object Class"
 msgstr ""
 
 #: ../../htdocs/create.php:51 ../../htdocs/create_confirm.php:45
-#, fuzzy
 msgid "The RDN field is empty?"
-msgstr "A feltöltött LDIF-állomány üres."
+msgstr ""
 
 #: ../../htdocs/delete_attr.php:25
 #, php-format
@@ -2973,18 +2724,17 @@ msgid "The attribute to modify doesnt match the one specified by"
 msgstr ""
 
 #: ../../htdocs/delete_attr.php:36
-#, fuzzy
 msgid "The attribute value does not exist"
-msgstr "A cél-tároló (%s) nem létezik."
+msgstr ""
 
 #: ../../htdocs/cmd.php:57
 msgid "The command could not be run"
 msgstr ""
 
 #: ../../htdocs/create.php:45 ../../htdocs/create_confirm.php:39
-#, fuzzy, php-format
+#, php-format
 msgid "The container (%s) is a leaf."
-msgstr "A cél-tároló (%s) nem létezik."
+msgstr ""
 
 #: ../../htdocs/create.php:34 ../../htdocs/create_confirm.php:28
 #, php-format
@@ -2992,9 +2742,8 @@ msgid "The container you specified (%s) does not exist. Please try again."
 msgstr "A(z) %s tároló nem létezik. Kérem próbálja újra."
 
 #: ../../htdocs/update_confirm.php:194
-#, fuzzy
 msgid "The deletion of objectClass(es)"
-msgstr "Mely osztályok használják"
+msgstr ""
 
 #: ../../htdocs/copy.php:39
 #, php-format
@@ -3010,14 +2759,13 @@ msgstr "A célbejegyzés (%s) már létezik."
 #: ../../htdocs/add_value_form.php:24 ../../htdocs/compare_form.php:23
 #: ../../htdocs/copy_form.php:22 ../../htdocs/download_binary_attr.php:26
 #: ../../htdocs/update.php:29 ../../htdocs/update_confirm.php:25
-#, fuzzy, php-format
+#, php-format
 msgid "The entry (%s) does not exist."
-msgstr "A cél-tároló (%s) nem létezik."
+msgstr ""
 
 #: ../../htdocs/delete_form.php:24
-#, fuzzy
 msgid "The entry does not exist"
-msgstr "A cél-tároló (%s) nem létezik."
+msgstr ""
 
 #: ../../htdocs/mass_delete.php:36 ../../htdocs/mass_edit.php:28
 #: ../../htdocs/mass_update.php:27
@@ -3025,11 +2773,8 @@ msgid "The entry does not exist and will be ignored"
 msgstr ""
 
 #: ../../lib/Template.php:449
-#, fuzzy
 msgid "The file you chose is either empty or does not exist."
 msgstr ""
-"A kiválasztott állomány vagy üres, vagy nem létezik. Kérem lépjen vissza és "
-"próbálja újra."
 
 #: ../../lib/Template.php:387 ../../lib/Template.php:474
 msgid ""
@@ -3096,9 +2841,8 @@ msgid "The were no attributes marked as an RDN attribute."
 msgstr ""
 
 #: ../../htdocs/modify_member_form.php:63
-#, fuzzy
 msgid "There are"
-msgstr "ide"
+msgstr ""
 
 #: ../../lib/Template.php:735
 #, php-format
@@ -3115,16 +2859,13 @@ msgid "There will be %s updates done with this mass update"
 msgstr ""
 
 #: ../../htdocs/schema.php:689
-#, fuzzy
-msgid "This attribute has been forced as a MAY attribute by the configuration"
+msgid ""
+"This attribute has been forced as a MAY attribute by the configuration"
 msgstr ""
-"A phpLDAPadmin adminisztrátora ezt az attribútumot csak olvashatóra állította"
 
 #: ../../lib/PageRender.php:444
-#, fuzzy
 msgid "This attribute has been marked as Read Only."
 msgstr ""
-"A phpLDAPadmin adminisztrátora ezt az attribútumot csak olvashatóra állította"
 
 #: ../../lib/PageRender.php:339
 msgid "This attribute is not defined in the LDAP schema"
@@ -3135,17 +2876,16 @@ msgid "This attribute is required"
 msgstr ""
 
 #: ../../lib/PageRender.php:424
-#, fuzzy
 msgid "This attribute is required for the RDN."
-msgstr "Ez a művelet megközeveteli hogy hozzáadjon"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:102
-#, fuzzy
 msgid "This base entry does not exist."
-msgstr "A cél-tároló (%s) nem létezik."
+msgstr ""
 
 #: ../../htdocs/schema.php:35
-msgid "This could happen for several reasons, the most probable of which are:"
+msgid ""
+"This could happen for several reasons, the most probable of which are:"
 msgstr "Ez több dolog miatt történhet, például:"
 
 #: ../../htdocs/compare.php:79
@@ -3166,9 +2906,9 @@ msgid "This is a structural ObjectClass and cannot be removed."
 msgstr ""
 
 #: ../../templates/creation/example.xml:6
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "This is the description"
-msgstr "nincs leírás"
+msgstr ""
 
 #: ../../htdocs/schema.php:577
 msgid "This objectClass is obsolete."
@@ -3203,22 +2943,19 @@ msgid ""
 msgstr ""
 
 #: ../../htdocs/login_form.php:26
-#, fuzzy
 msgid "This web connection is unencrypted"
-msgstr "Figyelem: A kapcsolat a bögészővel titkosítatlan."
+msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/mozillaOrgPerson.xml:11
 #, no-wrap
 msgid "Thunderbird: Address Book Entry"
 msgstr ""
 
 #: ../../templates/creation/kolabPerson.xml:47
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Title"
-msgstr "Állomány"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:103
 #, no-wrap
 msgid "Title (professional)"
@@ -3234,9 +2971,8 @@ msgid "Too many arguments"
 msgstr ""
 
 #: ../../htdocs/monitor.php:136
-#, fuzzy
 msgid "Total Connections"
-msgstr "Bejegyzések száma összesen"
+msgstr ""
 
 #: ../../lib/export_functions.php:209
 msgid "Total Entries"
@@ -3258,9 +2994,9 @@ msgstr "Típus"
 #: ../../templates/creation/test_uid1010.xml:55
 #: ../../templates/creation/test_picklist.xml:38
 #: ../../templates/modification/sambaSamAccount.xml:56
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "UID Number"
-msgstr "Sorszám:"
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:654
 msgid "UNIQUE invalid login/password"
@@ -3271,32 +3007,24 @@ msgid "URL"
 msgstr ""
 
 #: ../../lib/ds_ldap.php:219
-#, fuzzy
 msgid "Unable to connect to LDAP server"
-msgstr "Nem tudok csatlakozni az LDAP-kiszolgálóhoz."
+msgstr ""
 
 #: ../../lib/functions.php:1368
-#, fuzzy
 msgid ""
 "Unable to connect to LDAP server with the auto_number login/password, please "
 "check your configuration."
 msgstr ""
-"A bind művelet sikertelen a(z) <b>%s</b> kiszolgálóhoz az auto_uid "
-"használatával. Kérem ellenőrizze a konfigurációt. "
 
 #: ../../lib/ds_ldap_pla.php:655
-#, fuzzy
 msgid ""
 "Unable to connect to LDAP server with the unique login/password, please "
 "check your configuration."
 msgstr ""
-"A bind művelet sikertelen a(z) <b>%s</b> kiszolgálóhoz az auto_uid "
-"használatával. Kérem ellenőrizze a konfigurációt. "
 
 #: ../../htdocs/rdelete.php:30
-#, fuzzy
 msgid "Unable to delete entry, it does not exist"
-msgstr "A(z) %s bejegyzés törlése sikertelen"
+msgstr ""
 
 #: ../../lib/PageRender.php:216 ../../lib/PageRender.php:233
 msgid "Unable to get the attribute value for PasswordEncrypt()"
@@ -3332,14 +3060,12 @@ msgid "Unknown Default Attribute context"
 msgstr ""
 
 #: ../../lib/export_functions.php:72
-#, fuzzy
 msgid "Unknown Export Type"
-msgstr "Ismeretlen auth_type: %s"
+msgstr ""
 
 #: ../../lib/import_functions.php:54
-#, fuzzy
 msgid "Unknown Import Type"
-msgstr "Ismeretlen auth_type: %s"
+msgstr ""
 
 #: ../../lib/Attribute.php:535 ../../lib/Attribute.php:557
 #: ../../lib/Attribute.php:570 ../../lib/Attribute.php:615
@@ -3371,30 +3097,25 @@ msgid "Unknown template helper function"
 msgstr ""
 
 #: ../../lib/import_functions.php:240
-#, fuzzy
 msgid "Unkown change type"
-msgstr "Ismeretlen auth_type: %s"
+msgstr ""
 
 #: ../../lib/functions.php:160
-#, fuzzy
 msgid "Unrecognized error number"
-msgstr "Ismeretlen hibaszám: "
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1433
-#, fuzzy
 msgid "Update Object"
-msgstr "Objektum létrehozása"
+msgstr ""
 
 #: ../../htdocs/mass_edit.php:126 ../../htdocs/mass_update.php:166
-#, fuzzy
 msgid "Update Values"
-msgstr "Új érték"
+msgstr ""
 
 #: ../../lib/Template.php:405 ../../lib/Template.php:448
 #: ../../lib/Template.php:492
-#, fuzzy
 msgid "Upload Binary Attribute Error"
-msgstr "Opcionális bináris attribútumok"
+msgstr ""
 
 #: ../../htdocs/schema.php:174
 msgid "Usage"
@@ -3420,9 +3141,9 @@ msgstr "Mely osztályok használják"
 #: ../../templates/creation/test_uid1010.xml:42
 #: ../../templates/creation/test_extensible.xml:27
 #: ../../templates/modification/sambaSamAccount.xml:49
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "User ID"
-msgstr "A felhasználó neve"
+msgstr ""
 
 #: ../../htdocs/schema.php:173
 msgid "User Modification"
@@ -3430,11 +3151,10 @@ msgstr "Felhasználó-módosítás"
 
 #: ../../templates/creation/simpleSecurityObject.xml:21
 #: ../../templates/creation/test_randompassword.xml:21
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "User Name"
-msgstr "A felhasználó neve"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:65
 #, no-wrap
 msgid "UserPassword (Verify)"
@@ -3444,9 +3164,9 @@ msgstr ""
 #: ../../templates/creation/sambaGroupMapping.xml:60
 #: ../../templates/creation/test_multilist.xml:34
 #: ../../templates/modification/posixGroup.xml:34
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Users"
-msgstr "Használat"
+msgstr ""
 
 #: ../../lib/export_functions.php:550
 msgid "VCARD 2.1 Export"
@@ -3466,14 +3186,12 @@ msgid "View schema for"
 msgstr "Séma megtekintése:"
 
 #: ../../lib/TemplateRender.php:1250 ../../lib/TemplateRender.php:1255
-#, fuzzy
 msgid "View the children of this object"
-msgstr "Az objektum kiírása"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:2294
-#, fuzzy
 msgid "View the schema description for this objectClass"
-msgstr "Kattintással megjelenik a(z) %s attribútumtípus sémabeli definíciója"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1089
 msgid "Viewing entry in read-only mode."
@@ -3487,17 +3205,14 @@ msgid ""
 msgstr ""
 
 #: ../../lib/page.php:72 ../../htdocs/login_form.php:26
-#, fuzzy
 msgid "Warning"
-msgstr "figyelmeztetés"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:135
 #, no-wrap
 msgid "Web Page (professional)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:98
 #, no-wrap
 msgid "Web page (personal)"
@@ -3507,20 +3222,19 @@ msgstr ""
 msgid ""
 "When performing a recursive copy, only copy those entries which match this "
 "filter"
-msgstr "Rekurzív másolásnál csak azokat másolja le, amelyekre illik ez a szűrő"
+msgstr ""
+"Rekurzív másolásnál csak azokat másolja le, amelyekre illik ez a szűrő"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaGroupMapping.xml:26
 #, no-wrap
 msgid "Windows Name"
 msgstr ""
 
 #: ../../templates/creation/mozillaOrgPerson.xml:57
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Work Phone Number"
-msgstr "Sorszám:"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:25
 #: ../../templates/creation/inetOrgPerson.xml:74
 #: ../../templates/creation/kolabPerson.xml:95
@@ -3545,7 +3259,8 @@ msgstr ""
 
 #: ../../htdocs/cmd.php:52 ../../htdocs/template_engine.php:54
 msgid "You cannot perform updates while server is in read-only mode"
-msgstr "Nem lehet módosítani mikor a kiszolgáló csak olvasható üzemmódban van"
+msgstr ""
+"Nem lehet módosítani mikor a kiszolgáló csak olvasható üzemmódban van"
 
 #: ../../htdocs/rename.php:31
 msgid ""
@@ -3597,13 +3312,11 @@ msgid "You must either upload a file or provide an import in the text box."
 msgstr ""
 
 #: ../../htdocs/index.php:106
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "You need to configure %s. Edit the file \"%s\" to do so. An example config "
 "file is provided in \"%s.example\"."
 msgstr ""
-"Konfigurálnia kell a phpLDAPadmint a config.php állomány szerkesztésével, "
-"amihez mintául a config.php.example szolgálhat."
 
 #: ../../lib/TemplateRender.php:1176 ../../lib/TemplateRender.php:1180
 msgid "You will be prompted to confirm this decision"
@@ -3622,8 +3335,8 @@ msgid ""
 "Your PHP configuration has disabled file uploads. Please check php.ini "
 "before proceeding."
 msgstr ""
-"A PHP-konfiguráció tiltja az állományok feltöltését. Kérem ellenőrizze a php."
-"ini állományt."
+"A PHP-konfiguráció tiltja az állományok feltöltését. Kérem ellenőrizze a "
+"php.ini állományt."
 
 #: ../../lib/functions.php:2146 ../../lib/functions.php:2220
 #: ../../lib/functions.php:2239
@@ -3634,20 +3347,15 @@ msgstr ""
 "kezelni."
 
 #: ../../lib/createlm.php:357
-#, fuzzy
-msgid "Your PHP install does not have the mhash() function. Cannot do hashes."
+msgid ""
+"Your PHP install does not have the mhash() function. Cannot do hashes."
 msgstr ""
-"Ez a PHP nem tartalmazza az mhash() függvényt. Nem tudok SHA hash-eket "
-"kezelni."
 
 #: ../../lib/functions.php:2157 ../../lib/functions.php:2169
-#, fuzzy
 msgid ""
 "Your PHP install does not have the mhash() or mhash_keygen_s2k() function. "
 "Cannot do S2K hashes."
 msgstr ""
-"Ez a PHP nem tartalmazza az mhash() függvényt. Nem tudok SHA hash-eket "
-"kezelni."
 
 #: ../../htdocs/import_form.php:18
 msgid ""
@@ -3690,9 +3398,8 @@ msgid "Your system crypt library does not support blowfish encryption."
 msgstr "Ez a PHP nem támogatja a blowfish titkosítást."
 
 #: ../../lib/functions.php:2112 ../../lib/functions.php:2299
-#, fuzzy
 msgid "Your system crypt library does not support extended DES encryption."
-msgstr "Ez a PHP nem támogatja az md5crypt titkosítást."
+msgstr ""
 
 #: ../../lib/functions.php:2120 ../../lib/functions.php:2284
 msgid "Your system crypt library does not support md5crypt encryption."
@@ -3702,13 +3409,11 @@ msgstr "Ez a PHP nem támogatja az md5crypt titkosítást."
 msgid "Your version of PHP does not correctly perform the query."
 msgstr "Ez a PHP-verzió nem tudja szabályosan végrehajtani a keresést."
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:90
 #, no-wrap
 msgid "Zip (personal)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:127
 #, no-wrap
 msgid "Zip (professional)"
@@ -3723,28 +3428,24 @@ msgid "add value"
 msgstr "érték hozzáadása"
 
 #: ../../lib/PageRender.php:374
-#, fuzzy
 msgid "alias"
-msgstr "Álnevek (alias)"
+msgstr ""
 
 #: ../../htdocs/update_confirm.php:100 ../../htdocs/mass_update.php:113
-#, fuzzy
 msgid "attribute deleted"
-msgstr "[attribútum törölve]"
+msgstr ""
 
 #: ../../htdocs/update_confirm.php:78 ../../htdocs/mass_update.php:138
-#, fuzzy
 msgid "attribute doesnt exist"
-msgstr "[attribútum törölve]"
+msgstr ""
 
 #: ../../lib/functions.php:2391
 msgid "browse"
 msgstr "böngészés"
 
 #: ../../lib/functions.php:2049 ../../htdocs/import.php:53
-#, fuzzy
 msgid "bytes"
-msgstr "%s byte"
+msgstr ""
 
 #: ../../lib/functions.php:170
 msgid "caller"
@@ -3755,61 +3456,52 @@ msgid "character"
 msgstr "karakter"
 
 #: ../../htdocs/add_value_form.php:152 ../../htdocs/schema.php:348
-#, fuzzy
 msgid "characters"
-msgstr "karakter"
+msgstr ""
 
 #: ../../lib/PageRender.php:579 ../../lib/PageRender.php:936
 msgid "confirm"
 msgstr ""
 
 #: ../../lib/functions.php:2023
-#, fuzzy
 msgid "contains errors"
-msgstr "tartalmaz"
+msgstr ""
 
 #: ../../htdocs/copy.php:27
-#, fuzzy
 msgid "copy entry"
-msgstr "nics bejegyzés"
+msgstr ""
 
 #: ../../htdocs/create.php:23 ../../htdocs/create_confirm.php:17
-#, fuzzy
 msgid "create entry"
-msgstr "Gyermekbejegyzés létrehozása"
+msgstr ""
 
 #: ../../lib/QueryRender.php:211
-#, fuzzy
 msgid "delete"
-msgstr "Törlés"
+msgstr ""
 
 #: ../../lib/PageRender.php:628 ../../htdocs/delete_attr.php:17
 msgid "delete attribute"
 msgstr "attribútum törlése"
 
 #: ../../htdocs/rdelete.php:17 ../../htdocs/delete.php:24
-#, fuzzy
 msgid "delete entry"
-msgstr "A bejegyzés törlése"
+msgstr ""
 
 #: ../../lib/PageRender.php:622
 msgid "download value"
 msgstr "érték letöltése"
 
 #: ../../lib/QueryRender.php:212
-#, fuzzy
 msgid "edit"
-msgstr "Köszönetnyilvánítás"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:286 ../../htdocs/export.php:18
-#, fuzzy
 msgid "export"
-msgstr "Exportálás"
+msgstr ""
 
 #: ../../lib/QueryRender.php:571
-#, fuzzy
 msgid "export results"
-msgstr "Részfa exportálása"
+msgstr ""
 
 #: ../../lib/AttributeFactory.php:118
 msgid "false"
@@ -3829,9 +3521,8 @@ msgid "has been created."
 msgstr ""
 
 #: ../../htdocs/copy.php:127
-#, fuzzy
 msgid "has been deleted."
-msgstr "[attribútum törölve]"
+msgstr ""
 
 #: ../../lib/PageRender.php:434
 msgid "hint"
@@ -3846,14 +3537,12 @@ msgid "info"
 msgstr "infó"
 
 #: ../../lib/PageRender.php:374
-#, fuzzy
 msgid "is an alias for"
-msgstr "A(z) %s álneve a(z) %s attribútumnévnek"
+msgstr ""
 
 #: ../../lib/functions.php:170
-#, fuzzy
 msgid "line"
-msgstr "Sor:"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:490 ../../lib/HTMLTree.php:492
 #: ../../lib/HTMLTree.php:495 ../../lib/ds.php:265
@@ -3894,9 +3583,8 @@ msgid "no description"
 msgstr "nincs leírás"
 
 #: ../../lib/functions.php:1942
-#, fuzzy
 msgid "no description available"
-msgstr "nincs leírás"
+msgstr ""
 
 #: ../../htdocs/entry_chooser.php:69
 msgid "no entries"
@@ -3933,14 +3621,12 @@ msgid "not specified"
 msgstr "nincs megadva"
 
 #: ../../htdocs/mass_delete.php:95
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "phpLDAPadmin can also recursively delete all %s of the child entries. See "
 "below for a list of all the entries that this action will delete. Do you "
 "want to do this?"
 msgstr ""
-"Rekurzív módon törölhetem ezt a bejegyzést, és mind a(z) %s gyermekét. Lásd "
-"alul a bejegyzéseket, amelyeket törölnék. Óhajtja törölni?"
 
 #: ../../htdocs/delete_form.php:62
 #, php-format
@@ -3995,9 +3681,8 @@ msgid "rename"
 msgstr "ÃtnevezÃ©s"
 
 #: ../../htdocs/rename.php:24
-#, fuzzy
 msgid "rename entry"
-msgstr "A bejegyzés átnevezése"
+msgstr ""
 
 #: ../../lib/PageRender.php:414
 msgid "required"
@@ -4016,18 +3701,16 @@ msgid "seconds"
 msgstr "s alatt hajtotta végre a keresést"
 
 #: ../../lib/TemplateRender.php:1285
-#, fuzzy
 msgid "select the rdn attribute"
-msgstr "attribútum törlése"
+msgstr ""
 
 #: ../../lib/PageRender.php:830
 msgid "structural"
 msgstr ""
 
 #: ../../htdocs/add_oclass_form.php:70
-#, fuzzy
 msgid "that this objectClass requires."
-msgstr "kell megadni ezen az űrlapon."
+msgstr ""
 
 #: ../../htdocs/copy_form.php:33 ../../htdocs/rename_form.php:30
 msgid "to a new object"
@@ -4050,63 +3733,21 @@ msgid "view entries"
 msgstr "bejegyzések megtekintése"
 
 #: ../../htdocs/update_confirm.php:197
-#, fuzzy
 msgid "will delete the attribute(s)"
-msgstr "Attribútum tényleges törlése"
+msgstr ""
 
 #: ../../htdocs/compare_form.php:34
 msgid "with "
 msgstr ""
 
-#~ msgid "Simple Search Form"
-#~ msgstr "Egyszerű keresési űrlap"
-
-#~ msgid "Advanced Search Form"
-#~ msgstr "Részletes keresési űrlap"
-
-#~ msgid "No queries have been defined in config.php."
-#~ msgstr "Nincs keresés definiálva a config.php-ben."
-
-#~ msgid "Refresh all expanded containers for"
-#~ msgstr "Az összes kiterjesztett tároló frissítése:"
-
-#~ msgid "View server-supplied information"
-#~ msgstr "A kiszolgáló információinak megtekintése"
-
-#~ msgid "Import entries from an LDIF file"
-#~ msgstr "LDIF-állományból bejegyzések importálása"
-
-#~ msgid "Login..."
-#~ msgstr "Belépés..."
+#~ msgid "equals"
+#~ msgstr "egyenlő"
 
 #~ msgid "View"
 #~ msgstr "Megtekintés"
 
-#~ msgid "You must specify a DN"
-#~ msgstr "A DN-t meg kell adni"
-
-#~ msgid "Delete %s"
-#~ msgstr "A(z) %s törlése"
-
-#~ msgid "No DN specified"
-#~ msgstr "Nincs megadva a DN"
-
-#~ msgid "Failed to add the attribute."
-#~ msgstr "Nem tudtam az attribútumot hozzáadni."
-
 #~ msgid "Bad server id"
 #~ msgstr "Hibás kiszolgáló-azonosító"
-
-#~ msgid ""
-#~ "Not enough information to login to server. Please check your "
-#~ "configuration."
-#~ msgstr "Kevés az adat a belépéshez. Kérem ellenőrizze a konfigurációt."
-
-#~ msgid "Could not connect to \"%s\" on port \"%s\""
-#~ msgstr "Nem tudok csatlakozni a(z) %s géphez a(z) %s porton."
-
-#~ msgid "Could not perform ldap_mod_add operation."
-#~ msgstr "Nem tudom végrehajtani az ldap_mod_add műveletet."
 
 #~ msgid "No DN specified in query string!"
 #~ msgstr "Nincs megadva a DN a keresési füzérben!"
@@ -4120,12 +3761,9 @@ msgstr ""
 #~ msgid "Delete all"
 #~ msgstr "Minden törlése"
 
-#~ msgid "light"
-#~ msgstr "lámpa"
-
 #~ msgid ""
-#~ "Note: You will get an \"inappropriate matching\" error if you have not "
-#~ "setup an EQUALITY rule on your LDAP server for this attribute."
+#~ "Note: You will get an \"inappropriate matching\" error if you have not setup "
+#~ "an EQUALITY rule on your LDAP server for this attribute."
 #~ msgstr ""
 #~ "Megj.: Ha nincs beállítva EGYENLŐSÉG-szabály ehhez az attribútumhoz a "
 #~ "kiszolgáló az ún. inappropriate matching hibát adja vissza."
@@ -4133,24 +3771,11 @@ msgstr ""
 #~ msgid "Copy successful! Would you like to "
 #~ msgstr "A másolás sikerült! Szeretné-e "
 
-#~ msgid "Failed to copy DN: "
-#~ msgstr "A DN másolása nem sikerült: "
-
 #~ msgid "using template"
 #~ msgstr "használt minta:"
 
 #~ msgid "Redirecting..."
 #~ msgstr "Átirányítás..."
-
-#~ msgid "You left the RDN field blank."
-#~ msgstr "Az RDN-mezőt üresen hagyta"
-
-#~ msgid ""
-#~ "You did not select any ObjectClasses for this object. Please go back and "
-#~ "do so."
-#~ msgstr ""
-#~ "Nem választott objektumosztályt ehhez az objektumhoz. Kérem lépjen vissza "
-#~ "és válasszon egyet."
 
 #~ msgid "Relative Distinguished Name"
 #~ msgstr "Viszonylagos megkülönböztető név (RDN)"
@@ -4161,29 +3786,11 @@ msgstr ""
 #~ msgid "(example: cn=MyNewPerson)"
 #~ msgstr "(példa: cn=ÚjEmber)"
 
-#~ msgid ""
-#~ "You have not logged into the selected server yet, so you cannot perform "
-#~ "searches on it."
-#~ msgstr "Nem lépett be a kiválasztott kiszolgálóba, s így nem tudok keresni."
-
 #~ msgid "Click here to go to the login form"
 #~ msgstr "Kattintson ide a belépési űrlap eléréséhez"
 
-#~ msgid "Unrecognized criteria option: "
-#~ msgstr "Ismeretlen kritérium-opció: "
-
-#~ msgid ""
-#~ "If you want to add your own criteria to the list. Be sure to edit search."
-#~ "php to handle them. Quitting."
-#~ msgstr ""
-#~ "Ha kritériumot kíván adni a listához szerkessze meg a search.php-t, hogy "
-#~ "kezelje le azokat. Most kilépek."
-
 #~ msgid "Search performed by phpLDAPadmin in"
 #~ msgstr "A phpLDAPadmin"
-
-#~ msgid "equals"
-#~ msgstr "egyenlő"
 
 #~ msgid "starts with"
 #~ msgstr "kezdet"
@@ -4195,17 +3802,11 @@ msgstr ""
 #~ msgstr "hangzás"
 
 #~ msgid ""
-#~ "Could not retrieve LDAP information from the server. This may be due to a "
-#~ "<a href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version "
-#~ "of PHP or perhaps your LDAP server has access control specified that "
-#~ "prevents LDAP clients from accessing the RootDSE."
+#~ "Could not retrieve LDAP information from the server. This may be due to a <a "
+#~ "href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version of PHP "
+#~ "or perhaps your LDAP server has access control specified that prevents LDAP "
+#~ "clients from accessing the RootDSE."
 #~ msgstr "Nem tudom az információt letölteni a kiszolgálóról"
-
-#~ msgid ""
-#~ "update_array is malformed. This might be a phpLDAPadmin bug. Please "
-#~ "report it."
-#~ msgstr ""
-#~ "Az update_array hibés. Ez a phpLDAPadmin hibája lehet, kérem jelentse."
 
 #~ msgid "ChangeLog"
 #~ msgstr "Változtatások naplója"
@@ -4217,79 +3818,60 @@ msgstr ""
 #~ msgstr "Nincs ilyen állomány: "
 
 #~ msgid ""
-#~ "You have enabled auto_uid_numbers for <b>%s</b> in your "
-#~ "configuration,                                  but you have not "
-#~ "specified the auto_uid_number_mechanism. Please "
-#~ "correct                                  this problem."
+#~ "You have enabled auto_uid_numbers for <b>%s</b> in your configuration,       "
+#~ "                           but you have not specified the "
+#~ "auto_uid_number_mechanism. Please correct                                  "
+#~ "this problem."
 #~ msgstr ""
 #~ "Az auto_uid_numbers engedélyezett a konfigurációban  a(z) <b>%s</b> "
-#~ "kiszolgálóhoz, de az auto_uid_number_mechanism nincs megadva. Kérem írja "
-#~ "be ezt az értéket."
+#~ "kiszolgálóhoz, de az auto_uid_number_mechanism nincs megadva. Kérem írja be "
+#~ "ezt az értéket."
 
 #~ msgid ""
-#~ "You specified the \"auto_uid_number_mechanism\" as \"uidpool"
-#~ "\"                            in your configuration for server <b>%s</b>, "
-#~ "but you did not specify the                            "
-#~ "audo_uid_number_uid_pool_dn. Please specify it before proceeding."
+#~ "You specified the \"auto_uid_number_mechanism\" as \"uidpool\"               "
+#~ "             in your configuration for server <b>%s</b>, but you did not "
+#~ "specify the                            audo_uid_number_uid_pool_dn. Please "
+#~ "specify it before proceeding."
 #~ msgstr ""
-#~ "A konfigurációban az auto_uid_number_mechanism értéke uidpool a(z) <b>%s</"
-#~ "b> kiszolgálóhoz, de nem adta meg az auto_uid_number_uid_pool_dn értékét. "
-#~ "Kérem írja be ezt az értéket."
+#~ "A konfigurációban az auto_uid_number_mechanism értéke uidpool a(z) <b>%s</b> "
+#~ "kiszolgálóhoz, de nem adta meg az auto_uid_number_uid_pool_dn értékét. Kérem "
+#~ "írja be ezt az értéket."
 
 #~ msgid ""
-#~ "It appears that the uidPool you specified in your configuration (\"%s"
-#~ "\")                              does not exist."
+#~ "It appears that the uidPool you specified in your configuration (\"%s\")     "
+#~ "                         does not exist."
 #~ msgstr "A konfigurációban megadott uidPool nem létezik (%s)."
 
 #~ msgid ""
-#~ "You specified the \"auto_uid_number_mechanism\" as \"search\" in "
-#~ "your                              configuration for server <b>%s</b>, but "
-#~ "you did not specify the                              "
-#~ "\"auto_uid_number_search_base\". Please specify it before proceeding."
+#~ "You specified the \"auto_uid_number_mechanism\" as \"search\" in your        "
+#~ "                      configuration for server <b>%s</b>, but you did not "
+#~ "specify the                              \"auto_uid_number_search_base\". "
+#~ "Please specify it before proceeding."
 #~ msgstr ""
-#~ "A konfigurációban az auto_uid_number_mechanism értéke search a(z) <b>%s</"
-#~ "b> kiszolgálóhoz, de nem adta meg az auto_uid_number_search_base értékét. "
-#~ "Kérem írja be ezt az értéket."
+#~ "A konfigurációban az auto_uid_number_mechanism értéke search a(z) <b>%s</b> "
+#~ "kiszolgálóhoz, de nem adta meg az auto_uid_number_search_base értékét. Kérem "
+#~ "írja be ezt az értéket."
 
 #~ msgid ""
-#~ "Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base "
-#~ "for server %s"
-#~ msgstr ""
-#~ "A konfigurációban érvénytelen auto_uid_search_base van megadva a(z) <b>%"
-#~ "s</b> kiszolgálóhoz."
-
-#~ msgid ""
-#~ "You specified an invalid value for auto_uid_number_mechanism (\"%s"
-#~ "\")                                   in your configration. Only \"uidpool"
-#~ "\" and \"search\" are valid.                                   Please "
-#~ "correct this problem."
+#~ "You specified an invalid value for auto_uid_number_mechanism (\"%s\")        "
+#~ "                           in your configration. Only \"uidpool\" and "
+#~ "\"search\" are valid.                                   Please correct this "
+#~ "problem."
 #~ msgstr ""
 #~ "Érvénytelen értéket adott meg a auto_uid_number_mechanism-nak (%s). Csak "
 #~ "uidpool és search a megengedett érték."
 
 #~ msgid ""
-#~ "Error: You have an error in your config file. The only three allowed "
-#~ "values                                    for auth_type in the $servers "
-#~ "section are 'session', 'cookie', and 'config'. You entered '%"
-#~ "s',                                    which is not allowed. "
+#~ "Error: You have an error in your config file. The only three allowed values  "
+#~ "                                  for auth_type in the $servers section are "
+#~ "'session', 'cookie', and 'config'. You entered '%s',                         "
+#~ "           which is not allowed. "
 #~ msgstr ""
 #~ "Csak a session, cookie és config a megengedett értékek az auth_type-nak a "
-#~ "konfigurációban. A megadott helytelen érték: %s."
-
-#~ msgid "Your PHP install does not support TLS."
-#~ msgstr "Ez a PHP nem támogatja a TLS-t."
-
-#~ msgid "Could not bind anonymously to server."
-#~ msgstr "Az anonymous bind művelet nem sikerült."
+#~ "konfigurációban. A megadott helytelen érték: %s. "
 
 #~ msgid "Could not bind to the LDAP server."
 #~ msgstr "A bind művelet sikertelen az LDAP-kiszolgálóhoz."
-
-#~ msgid "Could not set cookie."
-#~ msgstr "Nem tudok sütit beállítani."
-
-#~ msgid "jpegPhoto contains errors<br />"
-#~ msgstr "A jpegPhoto hibás<br />"
 
 #~ msgid "Description: %s <br /><br />"
 #~ msgstr "Leírás: %s <br /><br />"
@@ -4300,131 +3882,63 @@ msgstr ""
 #~ msgid "Description: (no description available)<br />"
 #~ msgstr "Leírás: (nincs leírás)<br />"
 
-#~ msgid ""
-#~ "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
+#~ msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
 #~ msgstr "Ez a phpLDAPadmin hibája? Ha igen, kérem <a href='%s'>jelentse</a>."
 
 #~ msgid ""
 #~ "<center><table class='notice'><tr><td colspan='2'><center><img "
-#~ "src='images/warning.png' height='12' width='13' />             <b>You "
-#~ "found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</"
-#~ "td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>             "
-#~ "<td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:"
-#~ "</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>             </"
-#~ "td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>\t<tr><td "
-#~ "colspan='2'><center><a target='new' href='%s'>Please check and see if "
-#~ "this bug has been reported here</a>.</center></td></tr>\t<tr><td "
-#~ "colspan='2'><center><a target='new' href='%s'>If it hasnt been reported, "
-#~ "you may report this bug by clicking here</a>.</center></td></tr>\t</"
-#~ "table></center><br />"
+#~ "src='images/warning.png' height='12' width='13' />             <b>You found "
+#~ "a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> "
+#~ "(<b>%s</b>)</td></tr><tr><td>File:</td>             <td><b>%s</b> line "
+#~ "<b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: "
+#~ "<b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>             </td></tr><tr><td>Web "
+#~ "server:</td><td><b>%s</b></td></tr>\t<tr><td colspan='2'><center><a "
+#~ "target='new' href='%s'>Please check and see if this bug has been reported "
+#~ "here</a>.</center></td></tr>\t<tr><td colspan='2'><center><a target='new' "
+#~ "href='%s'>If it hasnt been reported, you may report this bug by clicking "
+#~ "here</a>.</center></td></tr>\t</table></center><br />"
 #~ msgstr ""
 #~ "<center><table class='notice'><tr><td colspan='2'><center><img "
-#~ "src='images/warning.png' height='12' width='13' />             <b>Egy "
-#~ "kisebb hibát talált a phpLDAPadmin-ban!</b></td></tr><tr><td>Hiba:</"
-#~ "td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>Állomány:</td>             "
-#~ "<td><b>%s.</b> sor <b>%s</b>, hívó <b>%s</b></td></tr><tr><td>Verziók:</"
-#~ "td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>             </td></"
-#~ "tr><tr><td>Web-kiszolgáló:</td><td><b>%s</b></td></tr><tr><td "
-#~ "colspan='2'><center><a target='new' href='%s'>             Kérem jelentse "
-#~ "a hibát, kattintson ide!</a>.</center></td></tr></table></center><br />"
+#~ "src='images/warning.png' height='12' width='13' />             <b>Egy kisebb "
+#~ "hibát talált a phpLDAPadmin-"
+#~ "ban!</b></td></tr><tr><td>Hiba:</td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><t"
+#~ "d>Állomány:</td>             <td><b>%s.</b> sor <b>%s</b>, hívó "
+#~ "<b>%s</b></td></tr><tr><td>Verziók:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, "
+#~ "SAPI: <b>%s</b>             </td></tr><tr><td>Web-"
+#~ "kiszolgáló:</td><td><b>%s</b></td></tr><tr><td colspan='2'><center><a "
+#~ "target='new' href='%s'>             Kérem jelentse a hibát, kattintson "
+#~ "ide!</a>.</center></td></tr></table></center><br />"
 
 #~ msgid ""
-#~ "Congratulations! You found a bug in phpLDAPadmin.<br /><br />\t     "
-#~ "<table class='bug'>\t     <tr><td>Error:</td><td><b>%s</b></td></tr>"
-#~ "\t     <tr><td>Level:</td><td><b>%s</b></td></tr>\t     <tr><td>File:</"
-#~ "td><td><b>%s</b></td></tr>\t     <tr><td>Line:</td><td><b>%s</b></td></tr>"
-#~ "\t\t <tr><td>Caller:</td><td><b>%s</b></td></tr>\t     <tr><td>PLA "
-#~ "Version:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP Version:</"
-#~ "td><td><b>%s</b></td></tr>\t     <tr><td>PHP SAPI:</td><td><b>%s</b></"
-#~ "td></tr>\t     <tr><td>Web server:</td><td><b>%s</b></td></tr>\t     </"
-#~ "table>\t     <br />\t     Please report this bug by clicking below!"
+#~ "Congratulations! You found a bug in phpLDAPadmin.<br /><br />\t     <table "
+#~ "class='bug'>\t     <tr><td>Error:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>Level:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>File:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>Line:</td><td><b>%s</b></td></tr>\t\t "
+#~ "<tr><td>Caller:</td><td><b>%s</b></td></tr>\t     <tr><td>PLA "
+#~ "Version:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP "
+#~ "Version:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP "
+#~ "SAPI:</td><td><b>%s</b></td></tr>\t     <tr><td>Web "
+#~ "server:</td><td><b>%s</b></td></tr>\t     </table>\t     <br />\t     Please "
+#~ "report this bug by clicking below!"
 #~ msgstr ""
 #~ "Gratulálunk! Hibát talált a phpLDAPadmin-ban.<br /><br />\t     <table "
 #~ "class='bug'>\t     <tr><td>Hiba:</td><td><b>%s</b></td></tr>\t     "
-#~ "<tr><td>Szint:</td><td><b>%s</b></td></tr>\t     <tr><td>Állomány:</"
-#~ "td><td><b>%s</b></td></tr>\t     <tr><td>Sor:</td><td><b>%s</b></td></tr>"
-#~ "\t\t <tr><td>Hívó:</td><td><b>%s</b></td></tr>\t     <tr><td>PLA Verzió:</"
-#~ "td><td><b>%s</b></td></tr>\t     <tr><td>PHP Verzió:</td><td><b>%s</b></"
-#~ "td></tr>\t     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>\t     "
-#~ "<tr><td>Web-kiszolgáló:</td><td><b>%s</b></td></tr>\t     </table>\t     "
-#~ "<br />\t     Kérjük jelentse a hibát, kattintson alulra!"
-
-#~ msgid "Import LDIF File"
-#~ msgstr "LDIF-állomány importálása"
-
-#~ msgid "Deleting..."
-#~ msgstr "Törlés..."
-
-#~ msgid "No version found. Assuming 1."
-#~ msgstr "Nem találtam verziószámot, feltételeztem, hogy 1-es."
-
-#~ msgid "empty"
-#~ msgstr "üres"
-
-#~ msgid "You must choose an export format."
-#~ msgstr "Az export formátumát ki kell választani."
-
-#~ msgid "No available exporter found."
-#~ msgstr "Nincs használható exportáló."
-
-#~ msgid "Showing results %s through %s."
-#~ msgstr "A(z) %s és %s közé eső találatok megjelenítése."
+#~ "<tr><td>Szint:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>Állomány:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>Sor:</td><td><b>%s</b></td></tr>\t\t "
+#~ "<tr><td>Hívó:</td><td><b>%s</b></td></tr>\t     <tr><td>PLA "
+#~ "Verzió:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP "
+#~ "Verzió:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP "
+#~ "SAPI:</td><td><b>%s</b></td></tr>\t     <tr><td>Web-"
+#~ "kiszolgáló:</td><td><b>%s</b></td></tr>\t     </table>\t     <br />\t     "
+#~ "Kérjük jelentse a hibát, kattintson alulra!"
 
 #~ msgid "Searching..."
 #~ msgstr "Folyik a keresés..."
-
-#~ msgid "Notice, search size limit exceeded."
-#~ msgstr "Figyelem: a keresési méret korlátja túllépve."
-
-#~ msgid ""
-#~ "Generated by phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) on %s"
-#~ msgstr "A phpLDAPadmin generálta, dátum: %s"
-
-#~ msgid "DSLM Export for: %s"
-#~ msgstr "A(z) %s DSLM exportja"
-
-#~ msgid "No one is logged in to that server."
-#~ msgstr "Arra a kiszolgálóra nincs bejelentkezve senki."
-
-#~ msgid "Could not logout."
-#~ msgstr "Nem sikerült kilépni."
 
 #~ msgid "Logged out successfully from server <b>%s</b>"
 #~ msgstr "A kilépés sikerült a(z) <b>%s</b> kiszolgálóból"
 
 #~ msgid "Deletes not allowed in read only mode."
 #~ msgstr "Csak olvasható üzemmódban a törlés nem működik."
-
-#~ msgid "Error calling mass_delete.php. Missing mass_delete in POST vars."
-#~ msgstr ""
-#~ "Hiba a mass_delete.php hívásakor. A POST változók közül hiányzik a "
-#~ "mass_delete."
-
-#~ msgid "mass_delete POST var is not an array."
-#~ msgstr "A mass_delete POST változó nem tömb."
-
-#~ msgid ""
-#~ "Mass deletion is not enabled. Please enable it in config.php before "
-#~ "proceeding."
-#~ msgstr ""
-#~ "A tömeges törlés nincs engedélyezve. Mielőtt folytatná, állítsa át az "
-#~ "enable_mass_delete értékét config.php állományban."
-
-#~ msgid "Deletion progress on server \"%s\""
-#~ msgstr "A törlési művelet a(z) %s kiszolgálón"
-
-#~ msgid "Malformed mass_delete array."
-#~ msgstr "A tömeges törléshez megadott tömb formátuma helytelen"
-
-#~ msgid "%s of %s entries failed to be deleted."
-#~ msgstr "%s darab bejegyzés törlése nem sikerült a(z) %s darabból."
-
-#~ msgid "All entries deleted successfully."
-#~ msgstr "Az összes bejegyzés törlése sikerült."
-
-#~ msgid "Confirm mass delete of %s entries on server %s"
-#~ msgstr ""
-#~ "Hagyja jóvá a(z) %s bejegyzés tömeges törlését a(z) %s kiszolgálóról"
-
-#~ msgid "Yes, delete!"
-#~ msgstr "Igen, törlődjön"

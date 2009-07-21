@@ -4,13 +4,14 @@ msgstr ""
 "Project-Id-Version: messages\n"
 "Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sf.net\n"
 "POT-Creation-Date: 2009-07-12 20:50+0200\n"
-"PO-Revision-Date: 2005-11-29 18:22+0100\n"
-"Last-Translator: Unknown <nobody@nodomain.org>\n"
+"PO-Revision-Date: 2009-07-12 14:28+0000\n"
+"Last-Translator: Unknown <Unknown>\n"
 "Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"X-Launchpad-Export-Date: 2009-07-21 12:24+0000\n"
+"X-Generator: Launchpad (build Unknown)\n"
 
 #: ../../lib/HTMLTree.php:507
 msgid "(Session timed out. Automatically logged out.)"
@@ -53,20 +54,17 @@ msgid "A valid deleteoldrdn attribute should be specified"
 msgstr ""
 
 #: ../../lib/import_functions.php:244
-#, fuzzy
 msgid "A valid dn line is required"
-msgstr "需要有效的識別名稱行"
+msgstr ""
 
 #: ../../lib/import_functions.php:603
-#, fuzzy
 msgid "A valid newrdn attribute should be specified"
-msgstr "請指定屬性名稱"
+msgstr ""
 
 #: ../../lib/import_functions.php:594
 msgid "A valid newsuperier attribute should be specified"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:48
 #, no-wrap
 msgid "AIM Nick"
@@ -98,9 +96,8 @@ msgid "Add"
 msgstr "新增"
 
 #: ../../htdocs/add_attr_form.php:164
-#, fuzzy
 msgid "Add Attribute"
-msgstr "屬性"
+msgstr ""
 
 #: ../../htdocs/add_value_form.php:155
 msgid "Add New Value"
@@ -111,24 +108,20 @@ msgid "Add ObjectClass and Attributes"
 msgstr "新增ObjectClass與屬性"
 
 #: ../../lib/TemplateRender.php:2024
-#, fuzzy
 msgid "Add Value to Attribute"
-msgstr "新增屬性"
+msgstr ""
 
 #: ../../htdocs/modify_member_form.php:123
-#, fuzzy
 msgid "Add all"
-msgstr "加入新數值"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:2023 ../../lib/TemplateRender.php:2027
-#, fuzzy
 msgid "Add an additional value to attribute"
-msgstr "增加一個附加值到屬性 \\\"%s\\\""
+msgstr ""
 
 #: ../../htdocs/add_value_form.php:46
-#, fuzzy
 msgid "Add new"
-msgstr "新增數值"
+msgstr ""
 
 #: ../../htdocs/add_value_form.php:123
 msgid "Add new ObjectClass"
@@ -140,73 +133,65 @@ msgid "Add new attribute"
 msgstr "新增屬性"
 
 #: ../../lib/TemplateRender.php:1235 ../../lib/TemplateRender.php:1239
-#, fuzzy
 msgid "Add new attribute to this object"
-msgstr "新增屬性"
+msgstr ""
 
 #: ../../htdocs/add_attr_form.php:89
 msgid "Add new binary attribute"
 msgstr "新增二進位屬性"
 
 #: ../../htdocs/add_oclass_form.php:62
-#, fuzzy
 msgid "Add new objectClass to"
-msgstr "新增ObjectClass"
+msgstr ""
 
 #: ../../htdocs/modify_member_form.php:123
 msgid "Add selected"
 msgstr ""
 
 #: ../../htdocs/import.php:33
-#, fuzzy
 msgid "Adding"
-msgstr "增加中..."
+msgstr ""
 
 #: ../../templates/creation/kolabPerson.xml:69
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Address"
-msgstr "新增"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:78
 #, no-wrap
 msgid "Address (personal)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:115
 #, no-wrap
 msgid "Address (professional)"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/modification/inetOrgPerson.xml:5
 #, no-wrap
 msgid "Address Book Entry"
 msgstr ""
 
 #: ../../templates/creation/kolabPerson.xml:52
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Alias"
-msgstr "別名"
+msgstr ""
 
 #: ../../templates/creation/alias.xml:22
 #: ../../templates/creation/sendmailMTACluster.xml:20
 #: ../../templates/creation/test_extensible.xml:22
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Alias To"
-msgstr "別名"
+msgstr ""
 
 #: ../../lib/config_default.php:775
-#, fuzzy
 msgid "Alias for"
-msgstr "別名"
+msgstr ""
 
 #: ../../htdocs/schema.php:176
 msgid "Aliases"
 msgstr "別名"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:44
 #, no-wrap
 msgid "Alternative Email"
@@ -217,29 +202,26 @@ msgid "An attempt was made to call a function that doesnt exist"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:1082
-#, fuzzy, php-format
+#, php-format
 msgid "An attribute (%s) was modified and is highlighted below."
-msgstr "修改後的屬性為 (%s) 並以不同的顏色區分"
+msgstr ""
 
 #: ../../lib/Template.php:1304
 msgid "An entry should have one structural objectClass."
 msgstr ""
 
 #: ../../htdocs/login_form.php:83
-#, fuzzy
 msgid "Anonymous"
-msgstr "匿名登入"
+msgstr ""
 
 #: ../../htdocs/mass_delete.php:56
-#, fuzzy
 msgid "Are you sure you want to permanently delete these objects?"
-msgstr "您確定要永久刪除此物件？"
+msgstr ""
 
 #: ../../htdocs/mass_delete.php:54 ../../htdocs/delete_form.php:108
 msgid "Are you sure you want to permanently delete this object?"
 msgstr "您確定要永久刪除此物件？"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/dNSDomain.xml:26
 #, no-wrap
 msgid "Associated Domain"
@@ -258,53 +240,47 @@ msgid "Attribute"
 msgstr "屬性"
 
 #: ../../templates/creation/example.xml:20
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Attribute 1"
-msgstr "屬性"
+msgstr ""
 
 #: ../../templates/creation/example.xml:27
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Attribute 2"
-msgstr "屬性"
+msgstr ""
 
 #: ../../templates/creation/example.xml:32
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Attribute 3"
-msgstr "屬性"
+msgstr ""
 
 #: ../../htdocs/schema.php:43
-#, fuzzy
 msgid "Attribute Types"
-msgstr "屬性"
+msgstr ""
 
 #: ../../lib/ds_ldap.php:649
-#, fuzzy
 msgid "Attribute doesnt exist"
-msgstr "[屬性已刪除]"
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:529
-#, fuzzy
 msgid "Attribute not added"
-msgstr "屬性"
+msgstr ""
 
 #: ../../htdocs/mass_edit.php:115
 msgid "Attribute not available"
 msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:559
-#, fuzzy
 msgid "Attribute not deleted"
-msgstr "[屬性已刪除]"
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:543
-#, fuzzy
 msgid "Attribute not modified"
-msgstr "請指定屬性名稱"
+msgstr ""
 
 #: ../../lib/import_functions.php:542
-#, fuzzy
 msgid "Attribute not valid"
-msgstr "屬性"
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:689
 msgid "Attribute value would not be unique"
@@ -312,9 +288,8 @@ msgstr ""
 
 #: ../../htdocs/schema.php:500 ../../htdocs/schema.php:638
 #: ../../htdocs/schema.php:671
-#, fuzzy
 msgid "Attributes"
-msgstr "屬性"
+msgstr ""
 
 #: ../../htdocs/login_form.php:86
 msgid "Authenticate"
@@ -323,14 +298,12 @@ msgstr "驗證"
 #: ../../htdocs/login.php:22 ../../htdocs/login.php:29
 #: ../../htdocs/login_form.php:17 ../../htdocs/login_form.php:40
 #: ../../htdocs/logout.php:18
-#, fuzzy
 msgid "Authenticate to server"
-msgstr "登入伺服器 %s"
+msgstr ""
 
 #: ../../htdocs/cmd.php:68
-#, fuzzy
 msgid "Auto refresh"
-msgstr "重新整理"
+msgstr ""
 
 #: ../../lib/Attribute.php:586
 msgid "Automatically determined"
@@ -349,9 +322,8 @@ msgid "Available members"
 msgstr ""
 
 #: ../../htdocs/entry_chooser.php:65
-#, fuzzy
 msgid "Back Up"
-msgstr "備份..."
+msgstr ""
 
 #: ../../lib/QueryRender.php:157 ../../htdocs/export_form.php:33
 msgid "Base (base dn only)"
@@ -363,14 +335,12 @@ msgid "Base DN"
 msgstr "基礎識別名稱"
 
 #: ../../lib/PageRender.php:604 ../../lib/PageRender.php:608
-#, fuzzy
 msgid "Binary Value"
-msgstr "二進位數值"
+msgstr ""
 
 #: ../../htdocs/copy.php:58
-#, fuzzy
 msgid "Building snapshot of tree to copy"
-msgstr "對資料樹建立副本來複製"
+msgstr ""
 
 #: ../../htdocs/mass_edit.php:63
 msgid "Bulk edit the following DNs"
@@ -391,14 +361,12 @@ msgid "Cancel"
 msgstr "取消"
 
 #: ../../lib/TemplateRender.php:1118 ../../lib/TemplateRender.php:1121
-#, fuzzy
 msgid "Change to another template"
-msgstr "選擇樣版"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:2333
-#, fuzzy
 msgid "Check password"
-msgstr "密碼"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1249 ../../lib/TemplateRender.php:1254
 msgid "Children"
@@ -408,23 +376,20 @@ msgstr ""
 #: ../../templates/creation/inetOrgPerson.xml:58
 #: ../../templates/creation/kolabPerson.xml:78
 #: ../../templates/modification/inetOrgPerson.xml:55
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "City"
-msgstr "送出"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:73
 #, no-wrap
 msgid "City (Hidden with 2 values)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:82
 #, no-wrap
 msgid "City (personal)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:119
 #, no-wrap
 msgid "City (professional)"
@@ -435,18 +400,16 @@ msgid "Clearing cache"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:2274
-#, fuzzy
 msgid "Click to popup a dialog to select a date graphically"
-msgstr "點選此處即可以圖形介面選擇資料(識別名稱)"
+msgstr ""
 
 #: ../../lib/functions.php:2386
 msgid "Click to popup a dialog to select an entry (DN) graphically"
 msgstr "點選此處即可以圖形介面選擇資料(識別名稱)"
 
 #: ../../lib/PageRender.php:337 ../../htdocs/server_info.php:36
-#, fuzzy
 msgid "Click to view the schema definition for attribute type"
-msgstr "查閱屬性 "
+msgstr ""
 
 #: ../../htdocs/schema.php:172
 msgid "Collective"
@@ -457,15 +420,14 @@ msgid "Command disabled by the server configuration"
 msgstr ""
 
 #: ../../templates/creation/organizationalRole.xml:35
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Comments"
-msgstr "送出"
+msgstr ""
 
 #: ../../htdocs/update_confirm.php:187 ../../htdocs/create_confirm.php:118
 msgid "Commit"
 msgstr "送出"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/posixAccount.xml:37
 #: ../../templates/creation/courierMailAccount.xml:35
 #: ../../templates/creation/courierMailAlias.xml:21
@@ -481,7 +443,6 @@ msgstr "送出"
 msgid "Common Name"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:53
 #: ../../templates/creation/test_picklist.xml:53
 #, no-wrap
@@ -528,28 +489,24 @@ msgstr ""
 
 #: ../../lib/TemplateRender.php:789 ../../lib/TemplateRender.php:1319
 #: ../../htdocs/create_confirm.php:61
-#, fuzzy
 msgid "Container"
-msgstr "內含"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1451
-#, fuzzy
 msgid "Container and ObjectClass(es)"
-msgstr "步驟 1 之 2:名稱與ObjectClass(es)"
+msgstr ""
 
 #: ../../htdocs/copy_form.php:29 ../../htdocs/copy_form.php:33
-#, fuzzy
 msgid "Copy"
-msgstr "複製"
+msgstr ""
 
 #: ../../htdocs/copy_form.php:87
 msgid "Copy "
-msgstr "複製"
+msgstr "複製 "
 
 #: ../../htdocs/copy.php:88
-#, fuzzy
 msgid "Copy Entry"
-msgstr "紀錄"
+msgstr ""
 
 #: ../../htdocs/copy.php:79 ../../htdocs/copy.php:139
 msgid "Copy NOT successful"
@@ -561,9 +518,8 @@ msgstr "複製此記錄"
 
 #: ../../htdocs/copy.php:75 ../../htdocs/copy.php:111
 #: ../../htdocs/copy.php:135
-#, fuzzy
 msgid "Copy successful"
-msgstr "修改成功"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1144 ../../lib/TemplateRender.php:1148
 msgid "Copy this object to another location, a new DN, or another server"
@@ -571,32 +527,28 @@ msgstr "將此記錄複製到您選擇的目的地"
 
 #: ../../htdocs/copy.php:53
 msgid "Copying "
-msgstr "複製中"
+msgstr "複製中 "
 
 #: ../../htdocs/import.php:42
-#, fuzzy
 msgid "Could not add object"
-msgstr "無法新增 object:"
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:443
 msgid "Could not add the object to the LDAP server."
 msgstr "不能新增物件到此LDAP伺服器"
 
 #: ../../htdocs/delete_attr.php:35
-#, fuzzy
 msgid "Could not delete attribute value."
-msgstr "無法刪除 object:"
+msgstr ""
 
 #: ../../htdocs/import.php:43
-#, fuzzy
 msgid "Could not delete object"
-msgstr "無法刪除 object:"
+msgstr ""
 
 #: ../../htdocs/rdelete.php:52 ../../htdocs/rdelete.php:71
 #: ../../htdocs/rdelete.php:88 ../../htdocs/delete.php:37
-#, fuzzy
 msgid "Could not delete the entry."
-msgstr "無法刪除記錄 %s"
+msgstr ""
 
 #: ../../htdocs/entry_chooser.php:93
 msgid "Could not determine base DN"
@@ -621,28 +573,24 @@ msgid "Could not fetch jpeg data from LDAP server for attribute [%s]."
 msgstr ""
 
 #: ../../htdocs/import.php:46
-#, fuzzy
 msgid "Could not modify object"
-msgstr "無法修改 object:"
+msgstr ""
 
 #: ../../htdocs/monitor.php:27
-#, fuzzy
 msgid "Could not obtain the monitor context for this server"
-msgstr "不能新增物件到此LDAP伺服器"
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:601
 msgid "Could not perform ldap_modify operation."
 msgstr "無法執行ldap_modify操作"
 
 #: ../../htdocs/import.php:44 ../../htdocs/import.php:45
-#, fuzzy
 msgid "Could not rename object"
-msgstr "無法重新命名 object:"
+msgstr ""
 
 #: ../../htdocs/rename.php:65
-#, fuzzy
 msgid "Could not rename the entry."
-msgstr "無法重新命名"
+msgstr ""
 
 #: ../../htdocs/schema.php:34
 msgid "Could not retrieve schema from"
@@ -652,44 +600,37 @@ msgstr "無法恢復 Schema 於"
 msgid "Could not start TLS. Please check your LDAP server configuration."
 msgstr "無法啟動 TLS 請檢查您的 LDAP 伺服器設定."
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:94
 #, no-wrap
 msgid "Country (personal)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:131
 #, no-wrap
 msgid "Country (professional)"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/courierMailAccount.xml:11
 #, no-wrap
 msgid "Courier Mail: Account"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/courierMailAlias.xml:11
 #, no-wrap
 msgid "Courier Mail: Alias"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:1216 ../../lib/TemplateRender.php:1220
-#, fuzzy
 msgid "Create"
-msgstr "建立"
+msgstr ""
 
 #: ../../htdocs/create.php:91
-#, fuzzy
 msgid "Create Entry"
-msgstr "重新命名"
+msgstr ""
 
 #: ../../htdocs/create_confirm.php:59
-#, fuzzy
 msgid "Create LDAP Entry"
-msgstr "建立子記錄"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:765 ../../lib/TemplateRender.php:1525
 msgid "Create Object"
@@ -701,19 +642,16 @@ msgid "Create a child entry"
 msgstr "建立子記錄"
 
 #: ../../lib/HTMLTree.php:471
-#, fuzzy
 msgid "Create a new entry in"
-msgstr "建立新紀錄於"
+msgstr ""
 
 #: ../../htdocs/create.php:107
-#, fuzzy
 msgid "Create another entry"
-msgstr "建立新紀錄於"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:102
-#, fuzzy
 msgid "Create it?"
-msgstr "創造物件"
+msgstr ""
 
 #: ../../lib/AJAXTree.php:270 ../../lib/AJAXTree.php:273
 #: ../../lib/AJAXTree.php:275 ../../lib/HTMLTree.php:471
@@ -721,9 +659,8 @@ msgid "Create new entry here"
 msgstr "建立新紀錄"
 
 #: ../../htdocs/create.php:85
-#, fuzzy
 msgid "Creation successful!"
-msgstr "修改成功"
+msgstr ""
 
 #: ../../htdocs/welcome.php:26
 msgid "Credits"
@@ -737,25 +674,21 @@ msgstr ""
 msgid "Current list of"
 msgstr "此屬性有"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:140
 #, no-wrap
 msgid "Custom 1"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:144
 #, no-wrap
 msgid "Custom 2"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:148
 #, no-wrap
 msgid "Custom 3"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:152
 #, no-wrap
 msgid "Custom 4"
@@ -782,43 +715,37 @@ msgid "DN does not exist"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:1838
-#, fuzzy
 msgid "DN not available"
-msgstr "未應用的"
+msgstr ""
 
 #: ../../lib/export_functions.php:350
 msgid "DSML V.1 Export"
 msgstr ""
 
 #: ../../htdocs/import.php:108
-#, fuzzy
 msgid "Data"
-msgstr "捐獻"
+msgstr ""
 
 #: ../../lib/functions.php:450
-#, fuzzy
 msgid "Debug"
-msgstr "臭蟲"
+msgstr ""
 
 #: ../../lib/QueryRender.php:502 ../../lib/TemplateRender.php:673
 #: ../../lib/TemplateRender.php:793 ../../lib/TemplateRender.php:807
-#, fuzzy
 msgid "Default"
-msgstr "刪除"
+msgstr ""
 
 #: ../../htdocs/delete_form.php:30 ../../htdocs/delete_form.php:123
 msgid "Delete"
 msgstr "刪除"
 
 #: ../../htdocs/delete.php:31
-#, fuzzy
 msgid "Delete DN"
-msgstr "刪除"
+msgstr ""
 
 #: ../../htdocs/rdelete.php:35
-#, fuzzy
 msgid "Delete LDAP entries"
-msgstr "刪除此紀錄"
+msgstr ""
 
 #: ../../htdocs/copy_form.php:76 ../../htdocs/copy_form.php:83
 msgid "Delete after copy (move):"
@@ -830,14 +757,12 @@ msgid "Delete all %s objects"
 msgstr "刪除所有 %s 物件"
 
 #: ../../lib/functions.php:2063
-#, fuzzy
 msgid "Delete photo"
-msgstr "刪除相片"
+msgstr ""
 
 #: ../../htdocs/copy.php:127
-#, fuzzy
 msgid "Delete successful"
-msgstr "資料 %s 成功的刪除"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1177 ../../lib/TemplateRender.php:1180
 msgid "Delete this entry"
@@ -849,11 +774,9 @@ msgstr ""
 
 #: ../../htdocs/rdelete.php:63 ../../htdocs/rdelete.php:80
 #: ../../htdocs/import.php:34
-#, fuzzy
 msgid "Deleting"
-msgstr "刪除中..."
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:107
 #, no-wrap
 msgid "Department (professional)"
@@ -868,7 +791,6 @@ msgstr ""
 msgid "Description"
 msgstr "說明"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_function.xml:27
 #, no-wrap
 msgid "Description (output from function)"
@@ -894,29 +816,25 @@ msgstr ""
 msgid "Display Format"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:31
 #, no-wrap
 msgid "Display Name"
 msgstr ""
 
 #: ../../htdocs/create.php:104
-#, fuzzy
 msgid "Display the new created entry"
-msgstr "查閱此新紀錄?"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:803 ../../lib/PageRender.php:97
 #: ../../htdocs/mass_delete.php:63 ../../htdocs/compare.php:54
 #: ../../htdocs/compare.php:60 ../../htdocs/create.php:99
 #: ../../htdocs/delete_form.php:32 ../../htdocs/delete_form.php:113
-#, fuzzy
 msgid "Distinguished Name"
-msgstr "相對識別名稱"
+msgstr ""
 
 #: ../../htdocs/create_confirm.php:66
-#, fuzzy
 msgid "Do you want to create this entry?"
-msgstr "您確定要做這些更動?"
+msgstr ""
 
 #: ../../htdocs/update_confirm.php:38
 msgid "Do you want to make these changes?"
@@ -926,7 +844,6 @@ msgstr "您確定要做這些更動?"
 msgid "Documentation"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/dNSDomain.xml:21
 #, no-wrap
 msgid "Domain Component"
@@ -941,7 +858,6 @@ msgstr ""
 msgid "Donate"
 msgstr "捐獻"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/courierMailAccount.xml:71
 #: ../../templates/creation/courierMailAlias.xml:31
 #: ../../templates/creation/inetOrgPerson.xml:90
@@ -952,20 +868,17 @@ msgstr "捐獻"
 msgid "Email"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:69
 #, no-wrap
 msgid "Email (Verify)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:32
 #: ../../templates/creation/sendmailVirtualUser.xml:36
 #, no-wrap
 msgid "Email alias"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAClass.xml:32
 #: ../../templates/creation/sendmailVirtualDomain.xml:32
 #, no-wrap
@@ -977,19 +890,17 @@ msgid "Encountered an error while performing search."
 msgstr "在執行搜尋時發生錯誤"
 
 #: ../../templates/creation/test_randompassword.xml:31
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Encryption"
-msgstr "沒有說明"
+msgstr ""
 
 #: ../../htdocs/add_value_form.php:98
-#, fuzzy
 msgid "Enter the value(s) you would like to add:"
-msgstr "請輸入您要加入的數值"
+msgstr ""
 
 #: ../../lib/QueryRender.php:561
-#, fuzzy
 msgid "Entries found"
-msgstr "找到的紀錄:"
+msgstr ""
 
 #: ../../lib/QueryRender.php:116
 msgid "Entries to show per page"
@@ -1009,9 +920,8 @@ msgid "Entry Chooser"
 msgstr "紀錄選擇器"
 
 #: ../../htdocs/create.php:97
-#, fuzzy
 msgid "Entry created"
-msgstr "建立"
+msgstr ""
 
 #: ../../htdocs/mass_delete.php:35 ../../htdocs/rdelete.php:29
 #: ../../htdocs/delete_form.php:23 ../../htdocs/mass_edit.php:27
@@ -1033,18 +943,17 @@ msgid "Error"
 msgstr "錯誤"
 
 #: ../../lib/functions.php:1937 ../../lib/functions.php:1941
-#, fuzzy
 msgid "Error number"
-msgstr "錯誤碼: %s (%s)"
+msgstr ""
 
 #: ../../lib/functions.php:2017
 msgid "Error writing to jpeg tmp directory"
 msgstr ""
 
 #: ../../templates/creation/example.xml:11
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Example entry"
-msgstr "重新命名"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:284 ../../lib/TemplateRender.php:1130
 #: ../../lib/TemplateRender.php:1131 ../../lib/TemplateRender.php:1133
@@ -1066,16 +975,13 @@ msgid "Failed"
 msgstr "失敗"
 
 #: ../../htdocs/login.php:35
-#, fuzzy
 msgid "Failed to Authenticate to server"
-msgstr "登入伺服器 %s"
+msgstr ""
 
 #: ../../htdocs/logout.php:24
-#, fuzzy
 msgid "Failed to Logout of server"
-msgstr "登出此伺服器"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:30
 #: ../../templates/creation/inetOrgPerson.xml:80
 #: ../../templates/creation/kolabPerson.xml:100
@@ -1085,9 +991,9 @@ msgid "Fax"
 msgstr ""
 
 #: ../../templates/creation/mozillaOrgPerson.xml:65
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Fax Number"
-msgstr "行數："
+msgstr ""
 
 #: ../../tools/unserialize.php:14 ../../lib/functions.php:170
 #: ../../lib/functions.php:596 ../../htdocs/import.php:53
@@ -1099,11 +1005,9 @@ msgid "Filter"
 msgstr "過濾條件"
 
 #: ../../lib/QueryRender.php:595
-#, fuzzy
 msgid "Filter performed"
-msgstr "執行過濾條件"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:21
 #, no-wrap
 msgid "First Name"
@@ -1117,11 +1021,10 @@ msgstr ""
 #: ../../templates/creation/test_uid1010.xml:21
 #: ../../templates/modification/inetOrgPerson.xml:20
 #: ../../templates/modification/sambaSamAccount.xml:22
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "First name"
-msgstr "使用者名稱"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:25
 #: ../../templates/creation/test_picklist.xml:21
 #, no-wrap
@@ -1171,15 +1074,14 @@ msgstr ""
 #: ../../templates/creation/test_picklist.xml:29
 #: ../../templates/modification/posixGroup.xml:25
 #: ../../templates/modification/sambaSamAccount.xml:41
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "GID Number"
-msgstr "行數："
+msgstr ""
 
 #: ../../lib/functions.php:68 ../../lib/functions.php:658
 msgid "Generic Error"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/inetOrgPerson.xml:11
 #: ../../templates/modification/inetOrgPerson.xml:10
 #, no-wrap
@@ -1187,51 +1089,45 @@ msgid "Generic: Address Book Entry"
 msgstr ""
 
 #: ../../templates/creation/dNSDomain.xml:11
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Generic: DNS Entry"
-msgstr "重新命名"
+msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/alias.xml:12
 #, no-wrap
 msgid "Generic: LDAP Alias"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/organizationalRole.xml:11
 #, no-wrap
 msgid "Generic: Organisational Role"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/ou.xml:11
 #, no-wrap
 msgid "Generic: Organisational Unit"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/posixGroup.xml:11
 #: ../../templates/modification/posixGroup.xml:11
 #, no-wrap
 msgid "Generic: Posix Group"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/simpleSecurityObject.xml:11
 #, no-wrap
 msgid "Generic: Simple Security Object"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/posixAccount.xml:11
 #, no-wrap
 msgid "Generic: User Account"
 msgstr ""
 
 #: ../../templates/creation/courierMailAccount.xml:21
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Given Name"
-msgstr "更名"
+msgstr ""
 
 #: ../../htdocs/schema.php:216 ../../htdocs/schema.php:218
 #: ../../htdocs/schema.php:446 ../../htdocs/schema.php:448
@@ -1245,11 +1141,9 @@ msgid "Go back"
 msgstr "回上頁"
 
 #: ../../lib/TemplateRender.php:1836
-#, fuzzy
 msgid "Go to"
-msgstr "到 %s"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/posixGroup.xml:20
 #: ../../templates/creation/sambaGroupMapping.xml:21
 #: ../../templates/creation/test_multilist.xml:20
@@ -1262,7 +1156,6 @@ msgstr ""
 msgid "Group members"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:52
 #, no-wrap
 msgid "HTML Email Format"
@@ -1295,9 +1188,8 @@ msgid "Hide/Unhide the tree"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:56
-#, fuzzy
 msgid "Hint"
-msgstr "提示"
+msgstr ""
 
 #: ../../htdocs/copy_form.php:95
 msgid ""
@@ -1324,18 +1216,16 @@ msgstr "提示：您必須在伺服器上至少"
 msgid "Home"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/courierMailAccount.xml:66
 #, no-wrap
 msgid "Home Directory"
 msgstr ""
 
 #: ../../templates/creation/mozillaOrgPerson.xml:61
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Home Phone Number"
-msgstr "行數："
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/posixAccount.xml:49
 #: ../../templates/creation/sambaSamAccount.xml:123
 #: ../../templates/creation/test_uid1200.xml:49
@@ -1361,27 +1251,23 @@ msgstr ""
 msgid "Hook pre_attr_modify prevented attribute from being modified"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAMapObject.xml:36
 #, no-wrap
 msgid "Host/Network/Address"
 msgstr ""
 
 #: ../../htdocs/view_jpeg_photo.php:51
-#, fuzzy
 msgid "Image not available"
-msgstr "未應用的"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:272 ../../htdocs/import.php:50
 #: ../../htdocs/import_form.php:21
-#, fuzzy
 msgid "Import"
-msgstr "匯入"
+msgstr ""
 
 #: ../../htdocs/add_oclass_form.php:68
-#, fuzzy
 msgid "In order to add these objectClass(es) to this entry, you must specify"
-msgstr "作法：在新增objectClass之前，您必須指定"
+msgstr ""
 
 #: ../../lib/Query.php:73
 #, php-format
@@ -1399,18 +1285,16 @@ msgid "Inactivity will log you off at %s"
 msgstr ""
 
 #: ../../htdocs/export_form.php:86
-#, fuzzy
 msgid "Include system attributes"
-msgstr "刪除屬性"
+msgstr ""
 
 #: ../../lib/functions.php:265
 msgid "Incorrect version of PHP"
 msgstr ""
 
 #: ../../lib/HTMLTree.php:244
-#, fuzzy
 msgid "Info"
-msgstr "系統資訊"
+msgstr ""
 
 #: ../../htdocs/schema.php:645 ../../htdocs/schema.php:678
 msgid "Inherited from"
@@ -1438,27 +1322,25 @@ msgstr ""
 
 #: ../../templates/creation/test_invalidoc.xml:6
 #: ../../templates/creation/test_invalidoc2.xml:6
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Invalid Object Class"
-msgstr "ObjectClasses"
+msgstr ""
 
 #: ../../htdocs/rename.php:47
 msgid "Invalid RDN value"
 msgstr "無效的相對識別名稱"
 
 #: ../../htdocs/login.php:36
-#, fuzzy
 msgid "Invalid Username or Password."
-msgstr "錯誤的 使用者名稱 或 密碼.請重新輸入一次."
+msgstr ""
 
 #: ../../lib/PageRender.php:204
 msgid "Invalid argument count for PasswordEncrypt"
 msgstr ""
 
 #: ../../lib/import_functions.php:567
-#, fuzzy
 msgid "Invalid entry"
-msgstr "無效的匯出格式"
+msgstr ""
 
 #: ../../lib/PageRender.php:215 ../../lib/PageRender.php:232
 msgid "Invalid value count for PasswordEncrypt"
@@ -1502,7 +1384,6 @@ msgstr "選擇objectClass"
 msgid "Jump to this objectClass definition"
 msgstr "選擇此objectClass定義"
 
-# type: Content of: <template><title>
 #: ../../templates/creation/kolabPerson.xml:11
 #, no-wrap
 msgid "Kolab: User Entry"
@@ -1513,24 +1394,20 @@ msgid "LDAP Connections"
 msgstr ""
 
 #: ../../htdocs/monitor.php:36
-#, fuzzy
 msgid "LDAP Server"
-msgstr "伺服器"
+msgstr ""
 
 #: ../../lib/functions.php:1934
-#, fuzzy
 msgid "LDAP said"
-msgstr "伺服器回應: %s"
+msgstr ""
 
 #: ../../lib/export_functions.php:449
-#, fuzzy
 msgid "LDIF Export"
-msgstr "匯出 LDIF :"
+msgstr ""
 
 #: ../../lib/import_functions.php:156
-#, fuzzy
 msgid "LDIF Import"
-msgstr "匯出 LDIF :"
+msgstr ""
 
 #: ../../lib/import_functions.php:177
 msgid "LDIF import only suppports version 1"
@@ -1542,14 +1419,14 @@ msgstr ""
 
 #: ../../templates/creation/sambaSamAccount.xml:85
 #: ../../templates/modification/sambaSamAccount.xml:85
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "LM Password"
-msgstr "密碼"
+msgstr ""
 
 #: ../../templates/creation/mozillaOrgPerson.xml:26
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Last Name"
-msgstr "名稱"
+msgstr ""
 
 #: ../../templates/creation/posixAccount.xml:29
 #: ../../templates/creation/courierMailAccount.xml:28
@@ -1561,11 +1438,10 @@ msgstr "名稱"
 #: ../../templates/creation/test_uid1010.xml:29
 #: ../../templates/modification/inetOrgPerson.xml:26
 #: ../../templates/modification/sambaSamAccount.xml:29
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Last name"
-msgstr "使用者名稱"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:46
 #: ../../templates/creation/test_picklist.xml:46
 #, no-wrap
@@ -1573,9 +1449,8 @@ msgid "Last name (JS OnChange)"
 msgstr ""
 
 #: ../../htdocs/import.php:107
-#, fuzzy
 msgid "Line"
-msgstr "行："
+msgstr ""
 
 #: ../../htdocs/export_form.php:123
 msgid "Line ends"
@@ -1599,23 +1474,20 @@ msgid "Loading"
 msgstr ""
 
 #: ../../lib/HTMLTree.php:282
-#, fuzzy
 msgid "Loading Export"
-msgstr "匯出"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:270
-#, fuzzy
 msgid "Loading Import"
-msgstr "匯入"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:242
 msgid "Loading Info"
 msgstr ""
 
 #: ../../lib/HTMLTree.php:490 ../../lib/HTMLTree.php:492
-#, fuzzy
 msgid "Loading Login"
-msgstr "登入:"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:258
 msgid "Loading Monitor Info"
@@ -1626,19 +1498,16 @@ msgid "Loading Schema"
 msgstr ""
 
 #: ../../lib/HTMLTree.php:217
-#, fuzzy
 msgid "Loading Search"
-msgstr "預先定義好的搜尋"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:321
-#, fuzzy
 msgid "Logged in as"
-msgstr "登入為"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:496 ../../htdocs/update.php:66
-#, fuzzy
 msgid "Login"
-msgstr "登入"
+msgstr ""
 
 #: ../../htdocs/login_form.php:70
 msgid "Login DN"
@@ -1649,41 +1518,36 @@ msgstr "登入 DN"
 #: ../../templates/creation/test_uid1200.xml:70
 #: ../../templates/creation/test_uid1010.xml:70
 #: ../../templates/modification/sambaSamAccount.xml:100
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Login shell"
-msgstr "登入 DN"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:490 ../../lib/HTMLTree.php:492
-#, fuzzy
 msgid "Login to"
-msgstr "登入 DN"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:296
 msgid "Logout of this server"
 msgstr "登出此伺服器"
 
 #: ../../htdocs/entry_chooser.php:36
-#, fuzzy
 msgid "Looking in"
-msgstr "登入:"
+msgstr ""
 
 #: ../../templates/creation/sambaMachine.xml:22
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Machine Name"
-msgstr "配對規則"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1844
-#, fuzzy
 msgid "Mail"
-msgstr "失敗"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/courierMailAccount.xml:77
 #, no-wrap
 msgid "Mailbox"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/courierMailAlias.xml:36
 #, no-wrap
 msgid "Maildrop"
@@ -1694,9 +1558,8 @@ msgid "Make sure your filter (above) will select all child records."
 msgstr ""
 
 #: ../../htdocs/mass_delete.php:46
-#, fuzzy
 msgid "Mass Delete"
-msgstr "大量刪除"
+msgstr ""
 
 #: ../../htdocs/schema.php:454
 msgid "Matching Rule OID"
@@ -1719,9 +1582,9 @@ msgid "Memory Limit low."
 msgstr ""
 
 #: ../../lib/Template.php:191 ../../lib/Query.php:116
-#, fuzzy, php-format
+#, php-format
 msgid "Missing %s in the XML file."
-msgstr "找不到指定的上傳檔案"
+msgstr ""
 
 #: ../../lib/Template.php:207
 #, php-format
@@ -1733,9 +1596,8 @@ msgid "Missing [post] setting in XML file"
 msgstr ""
 
 #: ../../lib/import_functions.php:436
-#, fuzzy
 msgid "Missing attributes for"
-msgstr "新屬性"
+msgstr ""
 
 #: ../../lib/import_functions.php:450
 msgid "Missing modify command add, delete or replace"
@@ -1750,14 +1612,13 @@ msgstr ""
 #: ../../templates/creation/kolabPerson.xml:104
 #: ../../templates/creation/mozillaOrgPerson.xml:73
 #: ../../templates/modification/inetOrgPerson.xml:84
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Mobile"
-msgstr "檔案"
+msgstr ""
 
 #: ../../htdocs/mass_update.php:62
-#, fuzzy
 msgid "Modification NOT successful!"
-msgstr "修改成功"
+msgstr ""
 
 #: ../../htdocs/update.php:62 ../../htdocs/mass_update.php:60
 msgid "Modification successful!"
@@ -1776,95 +1637,81 @@ msgid "Modify members for"
 msgstr ""
 
 #: ../../htdocs/import.php:37
-#, fuzzy
 msgid "Modifying"
-msgstr "改變中..."
+msgstr ""
 
 #: ../../lib/HTMLTree.php:260
 msgid "Monitor"
 msgstr ""
 
 #: ../../htdocs/monitor.php:30
-#, fuzzy
 msgid "Monitor info for: "
-msgstr "伺服器資訊:"
+msgstr ""
 
 #: ../../htdocs/monitor.php:26
-#, fuzzy
 msgid "Monitoring context does not exist"
-msgstr "目的地集合 (%s) 不存在"
+msgstr ""
 
 #: ../../htdocs/copy.php:79 ../../htdocs/copy.php:139
-#, fuzzy
 msgid "Move NOT successful"
-msgstr "修改成功"
+msgstr ""
 
 #: ../../htdocs/copy.php:75 ../../htdocs/copy.php:135
-#, fuzzy
 msgid "Move successful"
-msgstr "修改成功"
+msgstr ""
 
 #: ../../templates/creation/sambaSamAccount.xml:92
 #: ../../templates/modification/sambaSamAccount.xml:92
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "NT Password"
-msgstr "密碼"
+msgstr ""
 
 #: ../../htdocs/schema.php:454
 msgid "Name"
 msgstr "名稱"
 
-# type: Content of: <template><description>
 #: ../../templates/creation/inetOrgPerson.xml:6
 #: ../../templates/creation/kolabPerson.xml:6
 #, no-wrap
 msgid "New Address Book Entry"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/courierMailAccount.xml:6
 #, no-wrap
 msgid "New Courier Mail Account"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/courierMailAlias.xml:6
 #, no-wrap
 msgid "New Courier Mail Alias"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/dNSDomain.xml:6
 #, no-wrap
 msgid "New DNS Entry"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/test_function.xml:6
 #, no-wrap
 msgid "New Device"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/alias.xml:7
 #: ../../templates/creation/test_extensible.xml:7
 #, no-wrap
 msgid "New LDAP Alias"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/organizationalRole.xml:6
 #, no-wrap
 msgid "New Organisational Role"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/ou.xml:6
 #, no-wrap
 msgid "New Organisational Unit"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/posixGroup.xml:6
 #: ../../templates/creation/test_multilist.xml:6
 #: ../../templates/modification/posixGroup.xml:6
@@ -1876,63 +1723,53 @@ msgstr ""
 msgid "New Required Attributes"
 msgstr "新必須屬性"
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sambaDomain.xml:6
 #, no-wrap
 msgid "New Samba Domain"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sambaSamAccount.xml:6
 #: ../../templates/modification/sambaSamAccount.xml:6
 #, no-wrap
 msgid "New Samba3 Account"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sambaGroupMapping.xml:6
 #, no-wrap
 msgid "New Samba3 Group Mapping"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sambaMachine.xml:6
 #, no-wrap
 msgid "New Samba3 Machine"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:6
 #, no-wrap
 msgid "New Sendmail Alias"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sendmailMTACluster.xml:6
 #, no-wrap
 msgid "New Sendmail Cluster"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sendmailMTAClass.xml:6
 #: ../../templates/creation/sendmailVirtualDomain.xml:6
 #, no-wrap
 msgid "New Sendmail Domain"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sendmailMTAMapObject.xml:10
 #, no-wrap
 msgid "New Sendmail Relays"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/sendmailVirtualUser.xml:10
 #, no-wrap
 msgid "New Sendmail Virtual User"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/simpleSecurityObject.xml:6
 #: ../../templates/creation/test_randompassword.xml:6
 #, no-wrap
@@ -1943,13 +1780,11 @@ msgstr ""
 msgid "New Template XML found."
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/mozillaOrgPerson.xml:6
 #, no-wrap
 msgid "New Thunderbird Address Book Entry"
 msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/posixAccount.xml:6
 #: ../../templates/creation/test_uid1200.xml:6
 #: ../../templates/creation/test_uid1010.xml:6
@@ -1962,9 +1797,9 @@ msgid "New Value"
 msgstr "新設定植"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:35
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "NickName"
-msgstr "名稱"
+msgstr ""
 
 #: ../../htdocs/schema.php:257 ../../htdocs/schema.php:325
 #: ../../htdocs/schema.php:329 ../../htdocs/schema.php:333
@@ -1981,14 +1816,12 @@ msgid "No AUTO_NUMBER search_base exists for this server"
 msgstr ""
 
 #: ../../lib/Template.php:532
-#, fuzzy
 msgid "No RDN attribute"
-msgstr "新屬性"
+msgstr ""
 
 #: ../../lib/Template.php:533
-#, fuzzy
 msgid "No RDN attribute was selected"
-msgstr "請指定屬性名稱"
+msgstr ""
 
 #: ../../htdocs/download_binary_attr.php:38
 msgid "No binary data available"
@@ -1999,18 +1832,16 @@ msgid "No cache to purge."
 msgstr ""
 
 #: ../../htdocs/add_value_form.php:91
-#, fuzzy
 msgid "No current value for attribute"
-msgstr "下列數值:"
+msgstr ""
 
 #: ../../htdocs/mass_delete.php:22
 msgid "No entry selected"
 msgstr ""
 
 #: ../../htdocs/mass_delete.php:23
-#, fuzzy
 msgid "No entry was selected to delete"
-msgstr "您沒有選擇任何要刪除的紀錄"
+msgstr ""
 
 #: ../../htdocs/view_jpeg_photo.php:61
 msgid "No image available"
@@ -2021,30 +1852,26 @@ msgid "No import input"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:1367
-#, fuzzy
 msgid "No internal attributes"
-msgstr "顯示隱藏屬性"
+msgstr ""
 
 #: ../../htdocs/template_engine.php:47
-#, fuzzy
 msgid "No such entry"
-msgstr "無此記錄 %s"
+msgstr ""
 
 #: ../../htdocs/compare.php:26 ../../htdocs/compare.php:29
 #: ../../htdocs/delete.php:21
-#, fuzzy
 msgid "No such entry."
-msgstr "無此記錄 %s"
+msgstr ""
 
 #: ../../htdocs/schema.php:709
-#, fuzzy, php-format
+#, php-format
 msgid "No such schema item: \"%s\""
-msgstr "無此記錄 %s"
+msgstr ""
 
 #: ../../lib/PageRender.php:374
-#, fuzzy
 msgid "Note"
-msgstr "否"
+msgstr ""
 
 #: ../../htdocs/add_value_form.php:130
 msgid ""
@@ -2080,7 +1907,6 @@ msgstr ""
 msgid "Obsolete"
 msgstr "必要"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:41
 #, no-wrap
 msgid "Occupant"
@@ -2107,15 +1933,13 @@ msgid "Or paste your LDIF here"
 msgstr ""
 
 #: ../../lib/QueryRender.php:181
-#, fuzzy
 msgid "Order by"
-msgstr "排序中"
+msgstr ""
 
 #: ../../htdocs/schema.php:168
 msgid "Ordering"
 msgstr "排序中"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/inetOrgPerson.xml:44
 #: ../../templates/creation/kolabPerson.xml:56
 #: ../../templates/modification/inetOrgPerson.xml:43
@@ -2123,19 +1947,16 @@ msgstr "排序中"
 msgid "Organisation"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/ou.xml:20
 #, no-wrap
 msgid "Organisational Unit"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/kolabPerson.xml:60
 #, no-wrap
 msgid "Organisational unit"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:111
 #, no-wrap
 msgid "Organization (professional)"
@@ -2150,18 +1971,17 @@ msgid "PHP Safe Mode"
 msgstr ""
 
 #: ../../templates/creation/mozillaOrgPerson.xml:69
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Pager"
-msgstr "使用量"
+msgstr ""
 
 #: ../../htdocs/schema.php:598
 msgid "Parent to"
 msgstr ""
 
 #: ../../htdocs/import.php:103
-#, fuzzy
 msgid "Parse Error"
-msgstr "LDIF 解析錯誤"
+msgstr ""
 
 #: ../../templates/creation/posixAccount.xml:80
 #: ../../templates/creation/courierMailAccount.xml:82
@@ -2190,22 +2010,19 @@ msgid "Passwords do not match!"
 msgstr ""
 
 #: ../../htdocs/password_checker.php:59
-#, fuzzy
 msgid "Passwords match!"
-msgstr "密碼"
+msgstr ""
 
 #: ../../htdocs/mass_delete.php:70 ../../htdocs/delete_form.php:38
 msgid "Permanently delete all children also?"
 msgstr "永久刪除所有子資料？"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/inetOrgPerson.xml:39
 #: ../../templates/modification/inetOrgPerson.xml:37
 #, no-wrap
 msgid "Photo"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:62
 #, no-wrap
 msgid "Photo (Binary)"
@@ -2228,14 +2045,13 @@ msgstr ""
 #: ../../lib/functions.php:2018
 #, php-format
 msgid ""
-"Please check jpeg,tmpdir is a writable directory in the phpLDAPadmin config."
-"php"
+"Please check jpeg,tmpdir is a writable directory in the phpLDAPadmin "
+"config.php"
 msgstr ""
 
 #: ../../lib/Template.php:449
-#, fuzzy
 msgid "Please go back and try again."
-msgstr "您沒有輸入屬性數值，請重新輸入"
+msgstr ""
 
 #: ../../htdocs/logout.php:25
 msgid "Please report this error to the admins."
@@ -2250,25 +2066,21 @@ msgstr ""
 msgid "Please specify it in config.php"
 msgstr "請在config.php中指定"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:82
 #, no-wrap
 msgid "Post Code (Option selection)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/kolabPerson.xml:74
 #, no-wrap
 msgid "Post box"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:65
 #, no-wrap
 msgid "Postal Address"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:60
 #: ../../templates/creation/inetOrgPerson.xml:68
 #: ../../templates/creation/kolabPerson.xml:86
@@ -2278,11 +2090,9 @@ msgid "Postal code"
 msgstr ""
 
 #: ../../lib/QueryRender.php:86
-#, fuzzy
 msgid "Predefined Query"
-msgstr "預先定義好的搜尋"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaSamAccount.xml:111
 #: ../../templates/modification/sambaSamAccount.xml:111
 #, no-wrap
@@ -2298,9 +2108,8 @@ msgid "Proceed &gt;&gt;"
 msgstr "下一步 >>"
 
 #: ../../htdocs/export_form.php:137 ../../htdocs/import_form.php:46
-#, fuzzy
 msgid "Proceed >>"
-msgstr "下一步 >>"
+msgstr ""
 
 #: ../../htdocs/purge_cache.php:31
 msgid "Purge cache"
@@ -2324,16 +2133,13 @@ msgid ""
 msgstr ""
 
 #: ../../lib/Template.php:733
-#, fuzzy
 msgid "RDN attribute sequence already defined"
-msgstr "請指定屬性名稱"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:2214
-#, fuzzy
 msgid "Really delete value from attribute"
-msgstr "確定要刪除屬性？"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:37
 #: ../../templates/creation/sendmailVirtualUser.xml:42
 #, no-wrap
@@ -2359,29 +2165,25 @@ msgstr "遞迴複製所有此物件的子資料"
 #: ../../lib/HTMLTree.php:232 ../../lib/TemplateRender.php:1106
 #: ../../lib/TemplateRender.php:1107 ../../lib/TemplateRender.php:1109
 #: ../../lib/TemplateRender.php:1110
-#, fuzzy
 msgid "Refresh"
-msgstr "重新整理"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1107 ../../lib/TemplateRender.php:1110
 msgid "Refresh this entry"
 msgstr "重整此筆資"
 
 #: ../../lib/HTMLTree.php:230
-#, fuzzy
 msgid "Refreshing Tree"
-msgstr "重整此筆資"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:71
 #, no-wrap
 msgid "Registered Address"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:1107
-#, fuzzy
 msgid "Reloading"
-msgstr "更名中..."
+msgstr ""
 
 #: ../../htdocs/modify_member_form.php:127
 msgid "Remove selected"
@@ -2399,19 +2201,16 @@ msgid "Rename Entry"
 msgstr "重新命名"
 
 #: ../../htdocs/rename.php:53
-#, fuzzy
 msgid "Rename successful!"
-msgstr "修改成功"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1190 ../../lib/TemplateRender.php:1193
-#, fuzzy
 msgid "Rename this entry"
-msgstr "重整此筆資"
+msgstr ""
 
 #: ../../htdocs/import.php:35 ../../htdocs/import.php:36
-#, fuzzy
 msgid "Renaming"
-msgstr "更名中..."
+msgstr ""
 
 #: ../../lib/functions.php:391 ../../lib/functions.php:392
 #: ../../lib/functions.php:393
@@ -2428,34 +2227,30 @@ msgid "Required Attributes"
 msgstr "必要屬性"
 
 #: ../../lib/PageRender.php:414
-#, fuzzy
 msgid "Required attribute for objectClass(es)"
-msgstr "必要屬性"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:631 ../../lib/TemplateRender.php:668
-#, fuzzy
 msgid "Retieving DN"
-msgstr "目的地識別名稱"
+msgstr ""
 
 #: ../../lib/AJAXTree.php:122 ../../lib/AJAXTree.php:127
 msgid "Retrieving DN"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:20
 #, no-wrap
 msgid "Role CN"
 msgstr ""
 
 #: ../../templates/creation/kolabPerson.xml:64
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Room Number"
-msgstr "行數："
+msgstr ""
 
 #: ../../lib/QueryRender.php:86
-#, fuzzy
 msgid "Run a predefined query"
-msgstr "以預先定義好的條件搜尋"
+msgstr ""
 
 #: ../../lib/ds_ldap.php:549
 msgid ""
@@ -2463,19 +2258,16 @@ msgid ""
 "SASL. SASL will be disabled."
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaDomain.xml:20
 #, no-wrap
 msgid "Samba Domain Name"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaGroupMapping.xml:50
 #, no-wrap
 msgid "Samba Group Type"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaDomain.xml:25
 #: ../../templates/creation/sambaGroupMapping.xml:39
 #: ../../templates/creation/sambaMachine.xml:43
@@ -2485,35 +2277,30 @@ msgstr ""
 msgid "Samba SID"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sambaSamAccount.xml:11
 #: ../../templates/modification/sambaSamAccount.xml:11
 #, no-wrap
 msgid "Samba: Account"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sambaDomain.xml:11
 #, no-wrap
 msgid "Samba: Domain"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sambaGroupMapping.xml:11
 #, no-wrap
 msgid "Samba: Group Mapping"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sambaMachine.xml:11
 #, no-wrap
 msgid "Samba: Machine"
 msgstr ""
 
 #: ../../lib/TemplateRender.php:1265 ../../lib/TemplateRender.php:1269
-#, fuzzy
 msgid "Save"
-msgstr "伺服器"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1131 ../../lib/TemplateRender.php:1134
 msgid "Save a dump of this object"
@@ -2528,9 +2315,8 @@ msgid "Save as file"
 msgstr ""
 
 #: ../../htdocs/modify_member_form.php:152
-#, fuzzy
 msgid "Save changes"
-msgstr "儲存"
+msgstr ""
 
 #: ../../htdocs/schema.php:39
 msgid "Schema for server"
@@ -2547,9 +2333,8 @@ msgid "Search Filter"
 msgstr "過濾搜尋"
 
 #: ../../lib/QueryRender.php:198
-#, fuzzy
 msgid "Search Results"
-msgstr "過濾搜尋"
+msgstr ""
 
 #: ../../lib/QueryRender.php:145 ../../lib/export_functions.php:207
 #: ../../htdocs/export_form.php:66
@@ -2561,9 +2346,8 @@ msgid "Search for DN returned the incorrect number of results"
 msgstr ""
 
 #: ../../lib/QueryRender.php:359
-#, fuzzy
 msgid "Search returned no results"
-msgstr "選擇搜尋條件"
+msgstr ""
 
 #: ../../lib/Template.php:372 ../../lib/Template.php:397
 #: ../../lib/Template.php:402 ../../lib/Template.php:459
@@ -2576,16 +2360,13 @@ msgid "Select a template for the creation process"
 msgstr "請選擇一個你要建立的紀錄模板"
 
 #: ../../lib/TemplateRender.php:578
-#, fuzzy
 msgid "Select a template to edit the entry"
-msgstr "請選擇一個你要建立的紀錄模板"
+msgstr ""
 
 #: ../../htdocs/import_form.php:33
-#, fuzzy
 msgid "Select an LDIF file"
-msgstr "選擇一個 LDIF 檔案:"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:20
 #: ../../templates/creation/sendmailMTAClass.xml:20
 #: ../../templates/creation/sendmailMTAMapObject.xml:24
@@ -2595,7 +2376,6 @@ msgstr "選擇一個 LDIF 檔案:"
 msgid "Sendmail Cluster Name"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:26
 #: ../../templates/creation/sendmailMTAClass.xml:26
 #: ../../templates/creation/sendmailMTAMapObject.xml:30
@@ -2605,37 +2385,31 @@ msgstr ""
 msgid "Sendmail Hostname"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailMTAAliasObject.xml:11
 #, no-wrap
 msgid "Sendmail: Alias"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailMTACluster.xml:11
 #, no-wrap
 msgid "Sendmail: Cluster"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailMTAClass.xml:11
 #, no-wrap
 msgid "Sendmail: Domain"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailMTAMapObject.xml:15
 #, no-wrap
 msgid "Sendmail: Relays"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailVirtualDomain.xml:11
 #, no-wrap
 msgid "Sendmail: Virtual Domain"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/sendmailVirtualUser.xml:15
 #, no-wrap
 msgid "Sendmail: Virtual Users"
@@ -2656,13 +2430,12 @@ msgid "Server"
 msgstr "伺服器"
 
 #: ../../lib/page.php:222
-#, fuzzy
 msgid "Server Select"
-msgstr "伺服器:"
+msgstr ""
 
 #: ../../htdocs/server_info.php:18
 msgid "Server info for: "
-msgstr "伺服器資訊:"
+msgstr "伺服器資訊: "
 
 #: ../../htdocs/server_info.php:19 ../../htdocs/monitor.php:31
 msgid "Server reports the following information about itself"
@@ -2677,9 +2450,8 @@ msgid "Show"
 msgstr ""
 
 #: ../../lib/QueryRender.php:174
-#, fuzzy
 msgid "Show Attributes"
-msgstr "顯示屬性"
+msgstr ""
 
 #: ../../htdocs/export_form.php:83
 msgid "Show Attributtes"
@@ -2718,30 +2490,26 @@ msgid "Some attributes (%s) were modified and are highlighted below."
 msgstr "修改後的屬性為 (%s) 並以不同的顏色區分"
 
 #: ../../lib/TemplateRender.php:1453
-#, fuzzy
 msgid "Specify attributes and values"
-msgstr "步驟 2 之 2:指定屬性與數值"
+msgstr ""
 
 #: ../../lib/QueryRender.php:165
-#, fuzzy
 msgid "Standard LDAP search filter. Example: (&(sn=Smith)(givenName=David))"
-msgstr "標準的LDAP搜尋條件. 如： (&(sn=Smith)(givenname=David))"
+msgstr ""
 
 #: ../../templates/creation/organizationalRole.xml:56
 #: ../../templates/creation/inetOrgPerson.xml:63
 #: ../../templates/creation/kolabPerson.xml:82
 #: ../../templates/modification/inetOrgPerson.xml:65
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "State"
-msgstr "語法"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:86
 #, no-wrap
 msgid "State (personal)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:123
 #, no-wrap
 msgid "State (professional)"
@@ -2754,11 +2522,10 @@ msgstr ""
 
 #: ../../templates/creation/inetOrgPerson.xml:50
 #: ../../templates/modification/inetOrgPerson.xml:48
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Street"
-msgstr "true"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:47
 #, no-wrap
 msgid "Street Address"
@@ -2782,14 +2549,12 @@ msgid "Successfully deleted DN "
 msgstr ""
 
 #: ../../htdocs/login.php:30 ../../htdocs/login_form.php:41
-#, fuzzy
 msgid "Successfully logged into server."
-msgstr "成功登入伺服器 %s"
+msgstr ""
 
 #: ../../htdocs/logout.php:19
-#, fuzzy
 msgid "Successfully logged out of server."
-msgstr "成功登入伺服器 %s"
+msgstr ""
 
 #: ../../htdocs/compare.php:73
 msgid "Switch Entry"
@@ -2797,9 +2562,8 @@ msgstr ""
 
 #: ../../lib/TemplateRender.php:1117 ../../lib/TemplateRender.php:1118
 #: ../../lib/TemplateRender.php:1120 ../../lib/TemplateRender.php:1121
-#, fuzzy
 msgid "Switch Template"
-msgstr "樣版"
+msgstr ""
 
 #: ../../htdocs/add_value_form.php:148 ../../htdocs/schema.php:170
 msgid "Syntax"
@@ -2820,9 +2584,8 @@ msgid ""
 msgstr ""
 
 #: ../../lib/QueryRender.php:109
-#, fuzzy
 msgid "Table"
-msgstr "false"
+msgstr ""
 
 #: ../../lib/PageRender.php:1026
 msgid "Template Value Error"
@@ -2845,104 +2608,90 @@ msgid "Template XML file removed."
 msgstr ""
 
 #: ../../lib/TemplateRender.php:596
-#, fuzzy
 msgid "Templates"
-msgstr "樣版"
+msgstr ""
 
 #: ../../templates/creation/test_nordn.xml:6
 #: ../../templates/creation/test_invalidattrs.xml:6
 #: ../../templates/creation/test_noattrs.xml:6
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Test Template"
-msgstr "樣版"
+msgstr ""
 
-# type: Content of: <template><description>
 #: ../../templates/creation/test_normal.xml:6
 #: ../../templates/creation/test_picklist.xml:6
 #, no-wrap
 msgid "Test Template (no definitions for wsVPN)"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_normal.xml:11
 #, no-wrap
 msgid "Test Template: All Functions"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_picklist.xml:11
 #, no-wrap
 msgid "Test Template: AutoFill/GetNextNumber/PickList"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_extensible.xml:12
 #, no-wrap
 msgid "Test Template: Extensible Object (attribute not defined)"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_function.xml:11
 #, no-wrap
 msgid "Test Template: Function"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_multilist.xml:11
 #, no-wrap
 msgid "Test Template: GetNextNumber/MultList"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_randompassword.xml:11
 #, no-wrap
 msgid "Test Template: Helper/RandomPassword"
 msgstr ""
 
 #: ../../templates/creation/test_invalidattrs.xml:12
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Test Template: Invalid Attributes"
-msgstr "選擇性屬性"
+msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_invalidoc.xml:11
 #, no-wrap
 msgid "Test Template: Invalid Object Class"
 msgstr ""
 
 #: ../../templates/creation/test_noattrs.xml:11
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Test Template: No Attributes"
-msgstr "已被屬性使用"
+msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_nordn.xml:11
 #, no-wrap
 msgid "Test Template: No RDN, No Attributes"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_uid1010.xml:11
 #, no-wrap
 msgid "Test Template: User Account (UID > 1010)"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_uid1200.xml:11
 #, no-wrap
 msgid "Test Template: User Account (UID > 1200)"
 msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/test_invalidoc2.xml:11
 #, no-wrap
 msgid "Test Template: Valid and Invalid Object Class"
 msgstr ""
 
 #: ../../htdocs/create.php:51 ../../htdocs/create_confirm.php:45
-#, fuzzy
 msgid "The RDN field is empty?"
-msgstr "上傳的 LDIF 檔案是空白的"
+msgstr ""
 
 #: ../../htdocs/delete_attr.php:25
 #, php-format
@@ -2956,18 +2705,17 @@ msgid "The attribute to modify doesnt match the one specified by"
 msgstr ""
 
 #: ../../htdocs/delete_attr.php:36
-#, fuzzy
 msgid "The attribute value does not exist"
-msgstr "目的地集合 (%s) 不存在"
+msgstr ""
 
 #: ../../htdocs/cmd.php:57
 msgid "The command could not be run"
 msgstr ""
 
 #: ../../htdocs/create.php:45 ../../htdocs/create_confirm.php:39
-#, fuzzy, php-format
+#, php-format
 msgid "The container (%s) is a leaf."
-msgstr "目的地集合 (%s) 不存在"
+msgstr ""
 
 #: ../../htdocs/create.php:34 ../../htdocs/create_confirm.php:28
 #, php-format
@@ -2975,9 +2723,8 @@ msgid "The container you specified (%s) does not exist. Please try again."
 msgstr "您指定的集合 (%s) 不存在，請重新指定"
 
 #: ../../htdocs/update_confirm.php:194
-#, fuzzy
 msgid "The deletion of objectClass(es)"
-msgstr "已被 objectClasses 使用"
+msgstr ""
 
 #: ../../htdocs/copy.php:39
 #, php-format
@@ -2993,14 +2740,13 @@ msgstr "目的地識別名稱 (%s) 已經存在"
 #: ../../htdocs/add_value_form.php:24 ../../htdocs/compare_form.php:23
 #: ../../htdocs/copy_form.php:22 ../../htdocs/download_binary_attr.php:26
 #: ../../htdocs/update.php:29 ../../htdocs/update_confirm.php:25
-#, fuzzy, php-format
+#, php-format
 msgid "The entry (%s) does not exist."
-msgstr "目的地集合 (%s) 不存在"
+msgstr ""
 
 #: ../../htdocs/delete_form.php:24
-#, fuzzy
 msgid "The entry does not exist"
-msgstr "目的地集合 (%s) 不存在"
+msgstr ""
 
 #: ../../htdocs/mass_delete.php:36 ../../htdocs/mass_edit.php:28
 #: ../../htdocs/mass_update.php:27
@@ -3072,9 +2818,8 @@ msgid "The were no attributes marked as an RDN attribute."
 msgstr ""
 
 #: ../../htdocs/modify_member_form.php:63
-#, fuzzy
 msgid "There are"
-msgstr "這裡"
+msgstr ""
 
 #: ../../lib/Template.php:735
 #, php-format
@@ -3091,7 +2836,8 @@ msgid "There will be %s updates done with this mass update"
 msgstr ""
 
 #: ../../htdocs/schema.php:689
-msgid "This attribute has been forced as a MAY attribute by the configuration"
+msgid ""
+"This attribute has been forced as a MAY attribute by the configuration"
 msgstr ""
 
 #: ../../lib/PageRender.php:444
@@ -3107,28 +2853,26 @@ msgid "This attribute is required"
 msgstr ""
 
 #: ../../lib/PageRender.php:424
-#, fuzzy
 msgid "This attribute is required for the RDN."
-msgstr "執行此項操作前您必須先加入"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:102
-#, fuzzy
 msgid "This base entry does not exist."
-msgstr "目的地集合 (%s) 不存在"
+msgstr ""
 
 #: ../../htdocs/schema.php:35
-msgid "This could happen for several reasons, the most probable of which are:"
+msgid ""
+"This could happen for several reasons, the most probable of which are:"
 msgstr "此問題可能有好幾個原因，最有可能的是："
 
 #: ../../htdocs/compare.php:79
-#, fuzzy
 msgid "This entry has no attributes"
-msgstr "不顯示隱藏屬性"
+msgstr ""
 
 #: ../../htdocs/delete_form.php:54
-#, fuzzy, php-format
+#, php-format
 msgid "This entry is the root of a sub-tree containing %s entries."
-msgstr "此資料"
+msgstr ""
 
 #: ../../htdocs/index.php:130
 msgid "This is a development version of phpLDAPadmin"
@@ -3139,9 +2883,9 @@ msgid "This is a structural ObjectClass and cannot be removed."
 msgstr ""
 
 #: ../../templates/creation/example.xml:6
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "This is the description"
-msgstr "沒有說明"
+msgstr ""
 
 #: ../../htdocs/schema.php:577
 msgid "This objectClass is obsolete."
@@ -3176,22 +2920,19 @@ msgid ""
 msgstr ""
 
 #: ../../htdocs/login_form.php:26
-#, fuzzy
 msgid "This web connection is unencrypted"
-msgstr "警告: 這個網頁連線是沒有加密的."
+msgstr ""
 
-# type: Content of: <template><title>
 #: ../../templates/creation/mozillaOrgPerson.xml:11
 #, no-wrap
 msgid "Thunderbird: Address Book Entry"
 msgstr ""
 
 #: ../../templates/creation/kolabPerson.xml:47
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Title"
-msgstr "檔案"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:103
 #, no-wrap
 msgid "Title (professional)"
@@ -3207,9 +2948,8 @@ msgid "Too many arguments"
 msgstr ""
 
 #: ../../htdocs/monitor.php:136
-#, fuzzy
 msgid "Total Connections"
-msgstr "全部的紀錄"
+msgstr ""
 
 #: ../../lib/export_functions.php:209
 msgid "Total Entries"
@@ -3231,9 +2971,9 @@ msgstr "類型"
 #: ../../templates/creation/test_uid1010.xml:55
 #: ../../templates/creation/test_picklist.xml:38
 #: ../../templates/modification/sambaSamAccount.xml:56
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "UID Number"
-msgstr "行數："
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:654
 msgid "UNIQUE invalid login/password"
@@ -3244,28 +2984,24 @@ msgid "URL"
 msgstr ""
 
 #: ../../lib/ds_ldap.php:219
-#, fuzzy
 msgid "Unable to connect to LDAP server"
-msgstr "無法連接LDAP伺服器"
+msgstr ""
 
 #: ../../lib/functions.php:1368
-#, fuzzy
 msgid ""
 "Unable to connect to LDAP server with the auto_number login/password, please "
 "check your configuration."
-msgstr "無法以您的auto_uid設定登入<b>%s</b>，請檢查您的設定檔"
+msgstr ""
 
 #: ../../lib/ds_ldap_pla.php:655
-#, fuzzy
 msgid ""
 "Unable to connect to LDAP server with the unique login/password, please "
 "check your configuration."
-msgstr "無法以您的auto_uid設定登入<b>%s</b>，請檢查您的設定檔"
+msgstr ""
 
 #: ../../htdocs/rdelete.php:30
-#, fuzzy
 msgid "Unable to delete entry, it does not exist"
-msgstr "無法刪除資料 %s"
+msgstr ""
 
 #: ../../lib/PageRender.php:216 ../../lib/PageRender.php:233
 msgid "Unable to get the attribute value for PasswordEncrypt()"
@@ -3301,14 +3037,12 @@ msgid "Unknown Default Attribute context"
 msgstr ""
 
 #: ../../lib/export_functions.php:72
-#, fuzzy
 msgid "Unknown Export Type"
-msgstr "未知的認證模式: %s"
+msgstr ""
 
 #: ../../lib/import_functions.php:54
-#, fuzzy
 msgid "Unknown Import Type"
-msgstr "未知的認證模式: %s"
+msgstr ""
 
 #: ../../lib/Attribute.php:535 ../../lib/Attribute.php:557
 #: ../../lib/Attribute.php:570 ../../lib/Attribute.php:615
@@ -3340,30 +3074,25 @@ msgid "Unknown template helper function"
 msgstr ""
 
 #: ../../lib/import_functions.php:240
-#, fuzzy
 msgid "Unkown change type"
-msgstr "未知的認證模式: %s"
+msgstr ""
 
 #: ../../lib/functions.php:160
-#, fuzzy
 msgid "Unrecognized error number"
-msgstr "無法辨識的錯誤代碼："
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1433
-#, fuzzy
 msgid "Update Object"
-msgstr "創造物件"
+msgstr ""
 
 #: ../../htdocs/mass_edit.php:126 ../../htdocs/mass_update.php:166
-#, fuzzy
 msgid "Update Values"
-msgstr "新設定植"
+msgstr ""
 
 #: ../../lib/Template.php:405 ../../lib/Template.php:448
 #: ../../lib/Template.php:492
-#, fuzzy
 msgid "Upload Binary Attribute Error"
-msgstr "選擇性二進位屬性"
+msgstr ""
 
 #: ../../htdocs/schema.php:174
 msgid "Usage"
@@ -3389,9 +3118,9 @@ msgstr "已被 objectClasses 使用"
 #: ../../templates/creation/test_uid1010.xml:42
 #: ../../templates/creation/test_extensible.xml:27
 #: ../../templates/modification/sambaSamAccount.xml:49
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "User ID"
-msgstr "使用者名稱"
+msgstr ""
 
 #: ../../htdocs/schema.php:173
 msgid "User Modification"
@@ -3399,11 +3128,10 @@ msgstr "使用者修改"
 
 #: ../../templates/creation/simpleSecurityObject.xml:21
 #: ../../templates/creation/test_randompassword.xml:21
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "User Name"
-msgstr "使用者名稱"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/test_normal.xml:65
 #, no-wrap
 msgid "UserPassword (Verify)"
@@ -3413,9 +3141,9 @@ msgstr ""
 #: ../../templates/creation/sambaGroupMapping.xml:60
 #: ../../templates/creation/test_multilist.xml:34
 #: ../../templates/modification/posixGroup.xml:34
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Users"
-msgstr "使用量"
+msgstr ""
 
 #: ../../lib/export_functions.php:550
 msgid "VCARD 2.1 Export"
@@ -3435,14 +3163,12 @@ msgid "View schema for"
 msgstr "查閱schema"
 
 #: ../../lib/TemplateRender.php:1250 ../../lib/TemplateRender.php:1255
-#, fuzzy
 msgid "View the children of this object"
-msgstr "將此物件匯出"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:2294
-#, fuzzy
 msgid "View the schema description for this objectClass"
-msgstr "查閱屬性 "
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1089
 msgid "Viewing entry in read-only mode."
@@ -3456,17 +3182,14 @@ msgid ""
 msgstr ""
 
 #: ../../lib/page.php:72 ../../htdocs/login_form.php:26
-#, fuzzy
 msgid "Warning"
-msgstr "警告"
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:135
 #, no-wrap
 msgid "Web Page (professional)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:98
 #, no-wrap
 msgid "Web page (personal)"
@@ -3478,18 +3201,16 @@ msgid ""
 "filter"
 msgstr "只有符合過濾條件的資料會被遞迴複製"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/sambaGroupMapping.xml:26
 #, no-wrap
 msgid "Windows Name"
 msgstr ""
 
 #: ../../templates/creation/mozillaOrgPerson.xml:57
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "Work Phone Number"
-msgstr "行數："
+msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/organizationalRole.xml:25
 #: ../../templates/creation/inetOrgPerson.xml:74
 #: ../../templates/creation/kolabPerson.xml:95
@@ -3561,11 +3282,11 @@ msgid "You must either upload a file or provide an import in the text box."
 msgstr ""
 
 #: ../../htdocs/index.php:106
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "You need to configure %s. Edit the file \"%s\" to do so. An example config "
 "file is provided in \"%s.example\"."
-msgstr "您必須先設定phpLDAPadmin，請依照config.php.example編輯config.php"
+msgstr ""
 
 #: ../../lib/TemplateRender.php:1176 ../../lib/TemplateRender.php:1180
 msgid "You will be prompted to confirm this decision"
@@ -3592,16 +3313,15 @@ msgid ""
 msgstr "您所安裝的 PHP 並沒有 mhash() 函數,無法進行 SHA 加密"
 
 #: ../../lib/createlm.php:357
-#, fuzzy
-msgid "Your PHP install does not have the mhash() function. Cannot do hashes."
-msgstr "您所安裝的 PHP 並沒有 mhash() 函數,無法進行 SHA 加密"
+msgid ""
+"Your PHP install does not have the mhash() function. Cannot do hashes."
+msgstr ""
 
 #: ../../lib/functions.php:2157 ../../lib/functions.php:2169
-#, fuzzy
 msgid ""
 "Your PHP install does not have the mhash() or mhash_keygen_s2k() function. "
 "Cannot do S2K hashes."
-msgstr "您所安裝的 PHP 並沒有 mhash() 函數,無法進行 SHA 加密"
+msgstr ""
 
 #: ../../htdocs/import_form.php:18
 msgid ""
@@ -3644,26 +3364,22 @@ msgid "Your system crypt library does not support blowfish encryption."
 msgstr "您所安裝的 PHP 並不支援 Blowfish 加密"
 
 #: ../../lib/functions.php:2112 ../../lib/functions.php:2299
-#, fuzzy
 msgid "Your system crypt library does not support extended DES encryption."
-msgstr "您所安裝的 PHP 並不支援 Blowfish 加密"
+msgstr ""
 
 #: ../../lib/functions.php:2120 ../../lib/functions.php:2284
-#, fuzzy
 msgid "Your system crypt library does not support md5crypt encryption."
-msgstr "您所安裝的 PHP 並不支援 Blowfish 加密"
+msgstr ""
 
 #: ../../htdocs/schema.php:36
 msgid "Your version of PHP does not correctly perform the query."
 msgstr "您的php版本並未正確執行此查詢"
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:90
 #, no-wrap
 msgid "Zip (personal)"
 msgstr ""
 
-# type: Content of: <template><attributes><attribute><display>
 #: ../../templates/creation/mozillaOrgPerson.xml:127
 #, no-wrap
 msgid "Zip (professional)"
@@ -3678,28 +3394,24 @@ msgid "add value"
 msgstr "加入新數值"
 
 #: ../../lib/PageRender.php:374
-#, fuzzy
 msgid "alias"
-msgstr "別名"
+msgstr ""
 
 #: ../../htdocs/update_confirm.php:100 ../../htdocs/mass_update.php:113
-#, fuzzy
 msgid "attribute deleted"
-msgstr "[屬性已刪除]"
+msgstr ""
 
 #: ../../htdocs/update_confirm.php:78 ../../htdocs/mass_update.php:138
-#, fuzzy
 msgid "attribute doesnt exist"
-msgstr "[屬性已刪除]"
+msgstr ""
 
 #: ../../lib/functions.php:2391
 msgid "browse"
 msgstr "瀏覽"
 
 #: ../../lib/functions.php:2049 ../../htdocs/import.php:53
-#, fuzzy
 msgid "bytes"
-msgstr "%s bytes"
+msgstr ""
 
 #: ../../lib/functions.php:170
 msgid "caller"
@@ -3718,52 +3430,44 @@ msgid "confirm"
 msgstr ""
 
 #: ../../lib/functions.php:2023
-#, fuzzy
 msgid "contains errors"
-msgstr "內含"
+msgstr ""
 
 #: ../../htdocs/copy.php:27
-#, fuzzy
 msgid "copy entry"
-msgstr "沒有任何紀錄"
+msgstr ""
 
 #: ../../htdocs/create.php:23 ../../htdocs/create_confirm.php:17
-#, fuzzy
 msgid "create entry"
-msgstr "建立子記錄"
+msgstr ""
 
 #: ../../lib/QueryRender.php:211
-#, fuzzy
 msgid "delete"
-msgstr "刪除"
+msgstr ""
 
 #: ../../lib/PageRender.php:628 ../../htdocs/delete_attr.php:17
 msgid "delete attribute"
 msgstr "刪除屬性"
 
 #: ../../htdocs/rdelete.php:17 ../../htdocs/delete.php:24
-#, fuzzy
 msgid "delete entry"
-msgstr "刪除此紀錄"
+msgstr ""
 
 #: ../../lib/PageRender.php:622
 msgid "download value"
 msgstr "下載數值"
 
 #: ../../lib/QueryRender.php:212
-#, fuzzy
 msgid "edit"
-msgstr "成員列表"
+msgstr ""
 
 #: ../../lib/HTMLTree.php:286 ../../htdocs/export.php:18
-#, fuzzy
 msgid "export"
-msgstr "匯出"
+msgstr ""
 
 #: ../../lib/QueryRender.php:571
-#, fuzzy
 msgid "export results"
-msgstr "將此子樹匯出"
+msgstr ""
 
 #: ../../lib/AttributeFactory.php:118
 msgid "false"
@@ -3783,9 +3487,8 @@ msgid "has been created."
 msgstr ""
 
 #: ../../htdocs/copy.php:127
-#, fuzzy
 msgid "has been deleted."
-msgstr "[屬性已刪除]"
+msgstr ""
 
 #: ../../lib/PageRender.php:434
 msgid "hint"
@@ -3800,14 +3503,12 @@ msgid "info"
 msgstr "系統資訊"
 
 #: ../../lib/PageRender.php:374
-#, fuzzy
 msgid "is an alias for"
-msgstr "Alias for %s"
+msgstr ""
 
 #: ../../lib/functions.php:170
-#, fuzzy
 msgid "line"
-msgstr "行："
+msgstr ""
 
 #: ../../lib/HTMLTree.php:490 ../../lib/HTMLTree.php:492
 #: ../../lib/HTMLTree.php:495 ../../lib/ds.php:265
@@ -3848,9 +3549,8 @@ msgid "no description"
 msgstr "沒有說明"
 
 #: ../../lib/functions.php:1942
-#, fuzzy
 msgid "no description available"
-msgstr "沒有說明"
+msgstr ""
 
 #: ../../htdocs/entry_chooser.php:69
 msgid "no entries"
@@ -3887,14 +3587,12 @@ msgid "not specified"
 msgstr "未指定的"
 
 #: ../../htdocs/mass_delete.php:95
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "phpLDAPadmin can also recursively delete all %s of the child entries. See "
 "below for a list of all the entries that this action will delete. Do you "
 "want to do this?"
 msgstr ""
-"phpLDAPadmin可以幫您刪除此資料與所有 %s 子資料.下列資料將會被刪除，您確定要刪"
-"除？"
 
 #: ../../htdocs/delete_form.php:62
 #, php-format
@@ -3902,9 +3600,7 @@ msgid ""
 "phpLDAPadmin can recursively delete this entry and all %s of its children. "
 "See below for a list of all the entries that this action will delete. Do you "
 "want to do this?"
-msgstr ""
-"phpLDAPadmin可以幫您刪除此資料與所有 %s 子資料.下列資料將會被刪除，您確定要刪"
-"除？"
+msgstr "phpLDAPadmin可以幫您刪除此資料與所有 %s 子資料.下列資料將會被刪除，您確定要刪除？"
 
 #: ../../htdocs/schema.php:36
 msgid "phpLDAPadmin doesn't know how to fetch the schema for your server."
@@ -3947,9 +3643,8 @@ msgid "rename"
 msgstr "æŽå"
 
 #: ../../htdocs/rename.php:24
-#, fuzzy
 msgid "rename entry"
-msgstr "重新命名"
+msgstr ""
 
 #: ../../lib/PageRender.php:414
 msgid "required"
@@ -3960,27 +3655,24 @@ msgid "schema"
 msgstr "schema"
 
 #: ../../lib/HTMLTree.php:221
-#, fuzzy
 msgid "search"
-msgstr "搜尋"
+msgstr ""
 
 #: ../../lib/QueryRender.php:562
 msgid "seconds"
 msgstr "馬上執行查詢"
 
 #: ../../lib/TemplateRender.php:1285
-#, fuzzy
 msgid "select the rdn attribute"
-msgstr "刪除屬性"
+msgstr ""
 
 #: ../../lib/PageRender.php:830
 msgid "structural"
 msgstr ""
 
 #: ../../htdocs/add_oclass_form.php:70
-#, fuzzy
 msgid "that this objectClass requires."
-msgstr "此objectClass為必須，您可以在此表單中指定"
+msgstr ""
 
 #: ../../htdocs/copy_form.php:33 ../../htdocs/rename_form.php:30
 msgid "to a new object"
@@ -4003,63 +3695,21 @@ msgid "view entries"
 msgstr "查閱資料"
 
 #: ../../htdocs/update_confirm.php:197
-#, fuzzy
 msgid "will delete the attribute(s)"
-msgstr "確定要刪除屬性？"
+msgstr ""
 
 #: ../../htdocs/compare_form.php:34
 msgid "with "
 msgstr ""
 
-#~ msgid "Simple Search Form"
-#~ msgstr "簡易搜尋表單"
-
-#~ msgid "Advanced Search Form"
-#~ msgstr "進階搜尋表單"
-
-#~ msgid "No queries have been defined in config.php."
-#~ msgstr "config.php中沒有預先定義的搜尋條件"
-
-#~ msgid "Refresh all expanded containers for"
-#~ msgstr "重新整理所有展開的集合"
-
-#~ msgid "View server-supplied information"
-#~ msgstr "查閱伺服器提供的資訊"
-
-#~ msgid "Import entries from an LDIF file"
-#~ msgstr "從LDIF檔案匯入紀錄"
-
-#~ msgid "Login..."
-#~ msgstr "登入..."
+#~ msgid "equals"
+#~ msgstr "等於"
 
 #~ msgid "View"
 #~ msgstr "查閱"
 
-#~ msgid "You must specify a DN"
-#~ msgstr "您必須指定一個識別名稱"
-
-#~ msgid "Delete %s"
-#~ msgstr "刪除 %s"
-
-#~ msgid "No DN specified"
-#~ msgstr "請指定識別名稱"
-
-#~ msgid "Failed to add the attribute."
-#~ msgstr "無法新增此屬性"
-
 #~ msgid "Bad server id"
 #~ msgstr "錯誤的 server id"
-
-#~ msgid ""
-#~ "Not enough information to login to server. Please check your "
-#~ "configuration."
-#~ msgstr "沒有足夠的資訊以進行登入伺服器,請檢查您的設定值"
-
-#~ msgid "Could not connect to \"%s\" on port \"%s\""
-#~ msgstr "無法透過port \\\"%s\\\" 連接到 \\\"%s\\\" "
-
-#~ msgid "Could not perform ldap_mod_add operation."
-#~ msgstr "無法執行ldap_mod_add操作"
 
 #~ msgid "No DN specified in query string!"
 #~ msgstr "查詢字串中並未指定識別名稱"
@@ -4073,21 +3723,13 @@ msgstr ""
 #~ msgid "Delete all"
 #~ msgstr "刪除全部"
 
-#~ msgid "light"
-#~ msgstr "light"
-
 #~ msgid ""
-#~ "Note: You will get an \"inappropriate matching\" error if you have not "
-#~ "setup an EQUALITY rule on your LDAP server for this attribute."
-#~ msgstr ""
-#~ "請注意：若您的LDAP伺服器中並未設定等式規則，您將會遇到\\\"無適合的比對\\"
-#~ "\"錯誤"
+#~ "Note: You will get an \"inappropriate matching\" error if you have not setup "
+#~ "an EQUALITY rule on your LDAP server for this attribute."
+#~ msgstr "請注意：若您的LDAP伺服器中並未設定等式規則，您將會遇到\\\"無適合的比對\\\"錯誤"
 
 #~ msgid "Copy successful! Would you like to "
-#~ msgstr "複製成功!!您要"
-
-#~ msgid "Failed to copy DN: "
-#~ msgstr "以下 DN 複製失敗："
+#~ msgstr "複製成功!!您要 "
 
 #~ msgid "using template"
 #~ msgstr "使用樣版"
@@ -4095,38 +3737,14 @@ msgstr ""
 #~ msgid "Redirecting..."
 #~ msgstr "正在轉換至..."
 
-#~ msgid "You left the RDN field blank."
-#~ msgstr "相對識別名稱欄位不能是空白"
-
-#~ msgid ""
-#~ "You did not select any ObjectClasses for this object. Please go back and "
-#~ "do so."
-#~ msgstr "您必須為此物件指定ObjectClasses"
-
 #~ msgid "(example: cn=MyNewPerson)"
 #~ msgstr "(範例: cn=MyNewPerson)(範例: cn=MyNewPerson)"
-
-#~ msgid ""
-#~ "You have not logged into the selected server yet, so you cannot perform "
-#~ "searches on it."
-#~ msgstr "您必須先登入伺服器才能在伺服器執行搜尋"
 
 #~ msgid "Click here to go to the login form"
 #~ msgstr "點選這邊回去登入表單"
 
-#~ msgid "Unrecognized criteria option: "
-#~ msgstr "無法辨識的基準"
-
-#~ msgid ""
-#~ "If you want to add your own criteria to the list. Be sure to edit search."
-#~ "php to handle them. Quitting."
-#~ msgstr "如果您要加入自己的基準到項目列表中，請編輯search.php"
-
 #~ msgid "Search performed by phpLDAPadmin in"
 #~ msgstr "phpLDAPadmin將會"
-
-#~ msgid "equals"
-#~ msgstr "等於"
 
 #~ msgid "starts with"
 #~ msgstr "開始於"
@@ -4138,92 +3756,66 @@ msgstr ""
 #~ msgstr "喜愛的聲音"
 
 #~ msgid ""
-#~ "Could not retrieve LDAP information from the server. This may be due to a "
-#~ "<a href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version "
-#~ "of PHP or perhaps your LDAP server has access control specified that "
-#~ "prevents LDAP clients from accessing the RootDSE."
+#~ "Could not retrieve LDAP information from the server. This may be due to a <a "
+#~ "href=\"http://bugs.php.net/bug.php?id=29587\">bug</a> in your version of PHP "
+#~ "or perhaps your LDAP server has access control specified that prevents LDAP "
+#~ "clients from accessing the RootDSE."
 #~ msgstr "無法從伺服器取得 LDAP 資訊"
-
-#~ msgid ""
-#~ "update_array is malformed. This might be a phpLDAPadmin bug. Please "
-#~ "report it."
-#~ msgstr "無法更新陣列，可能是phpLDAPadmin的bug，請回報此問題"
 
 #~ msgid "ChangeLog"
 #~ msgstr "更新紀錄"
 
 #~ msgid "Unsafe file name: "
-#~ msgstr "不安全的檔案名稱:"
+#~ msgstr "不安全的檔案名稱: "
 
 #~ msgid "No such file: "
-#~ msgstr "沒有以下檔案:"
+#~ msgstr "沒有以下檔案: "
 
 #~ msgid ""
-#~ "You have enabled auto_uid_numbers for <b>%s</b> in your "
-#~ "configuration,                                  but you have not "
-#~ "specified the auto_uid_number_mechanism. Please "
-#~ "correct                                  this problem."
+#~ "You have enabled auto_uid_numbers for <b>%s</b> in your configuration,       "
+#~ "                           but you have not specified the "
+#~ "auto_uid_number_mechanism. Please correct                                  "
+#~ "this problem."
 #~ msgstr ""
-#~ "您在設定中開啟 <b>%s</b>的auto_uid_numbers功能，但並未指定"
-#~ "auto_uid_number_mechanism，請修正此問題"
+#~ "您在設定中開啟 <b>%s</b>的auto_uid_numbers功能，但並未指定auto_uid_number_mechanism，請修正此問題"
 
 #~ msgid ""
-#~ "You specified the \"auto_uid_number_mechanism\" as \"uidpool"
-#~ "\"                            in your configuration for server <b>%s</b>, "
-#~ "but you did not specify the                            "
-#~ "audo_uid_number_uid_pool_dn. Please specify it before proceeding."
+#~ "You specified the \"auto_uid_number_mechanism\" as \"uidpool\"               "
+#~ "             in your configuration for server <b>%s</b>, but you did not "
+#~ "specify the                            audo_uid_number_uid_pool_dn. Please "
+#~ "specify it before proceeding."
 #~ msgstr ""
-#~ "伺服器<b>%s</b>的auto_uid_number_mechanism指定為uidpool，但並未指定"
-#~ "audo_uid_number_uid_pool_dn，請修正此問題再繼續"
+#~ "伺服器<b>%s</b>的auto_uid_number_mechanism指定為uidpool，但並未指定audo_uid_number_uid_poo"
+#~ "l_dn，請修正此問題再繼續"
 
 #~ msgid ""
-#~ "It appears that the uidPool you specified in your configuration (\"%s"
-#~ "\")                              does not exist."
+#~ "It appears that the uidPool you specified in your configuration (\"%s\")     "
+#~ "                         does not exist."
 #~ msgstr "您再設定檔(\\\"%s\\\")中指定的uidPool機制並不存在"
 
 #~ msgid ""
-#~ "You specified the \"auto_uid_number_mechanism\" as \"search\" in "
-#~ "your                              configuration for server <b>%s</b>, but "
-#~ "you did not specify the                              "
-#~ "\"auto_uid_number_search_base\". Please specify it before proceeding."
+#~ "You specified the \"auto_uid_number_mechanism\" as \"search\" in your        "
+#~ "                      configuration for server <b>%s</b>, but you did not "
+#~ "specify the                              \"auto_uid_number_search_base\". "
+#~ "Please specify it before proceeding."
 #~ msgstr ""
-#~ "伺服器<b>%s</b>的auto_uid_number_mechanism指定為search，但您並未指定"
-#~ "auto_uid_number_search_base，請修正此問題再繼續"
+#~ "伺服器<b>%s</b>的auto_uid_number_mechanism指定為search，但您並未指定auto_uid_number_search_"
+#~ "base，請修正此問題再繼續"
 
 #~ msgid ""
-#~ "Your phpLDAPadmin configuration specifies an invalid auto_uid_search_base "
-#~ "for server %s"
-#~ msgstr "您在phpLDAPadmin設定中對伺服器%s指定了無效的auto_uid_search_base"
+#~ "You specified an invalid value for auto_uid_number_mechanism (\"%s\")        "
+#~ "                           in your configration. Only \"uidpool\" and "
+#~ "\"search\" are valid.                                   Please correct this "
+#~ "problem."
+#~ msgstr ""
+#~ "您的auto_uid_number_mechanism (\\\"%s\\\") 設定是無效的，只有uidpool與search為有效設定，請修正此問題"
 
 #~ msgid ""
-#~ "You specified an invalid value for auto_uid_number_mechanism (\"%s"
-#~ "\")                                   in your configration. Only \"uidpool"
-#~ "\" and \"search\" are valid.                                   Please "
-#~ "correct this problem."
-#~ msgstr ""
-#~ "您的auto_uid_number_mechanism (\\\"%s\\\") 設定是無效的，只有uidpool與"
-#~ "search為有效設定，請修正此問題"
-
-#~ msgid ""
-#~ "Error: You have an error in your config file. The only three allowed "
-#~ "values                                    for auth_type in the $servers "
-#~ "section are 'session', 'cookie', and 'config'. You entered '%"
-#~ "s',                                    which is not allowed. "
-#~ msgstr ""
-#~ "錯誤：您的設定有錯誤，變數auth_type只允許session , cookie與config，您的設"
-#~ "定值 "
-
-#~ msgid "Your PHP install does not support TLS."
-#~ msgstr "您安裝的 php 並沒有支援 TLS."
-
-#~ msgid "Could not bind anonymously to server."
-#~ msgstr "伺服器不接受匿名登入"
-
-#~ msgid "Could not set cookie."
-#~ msgstr "不能設定 cookie"
-
-#~ msgid "jpegPhoto contains errors<br />"
-#~ msgstr "jpegPhoto 內容發生錯誤<br />"
+#~ "Error: You have an error in your config file. The only three allowed values  "
+#~ "                                  for auth_type in the $servers section are "
+#~ "'session', 'cookie', and 'config'. You entered '%s',                         "
+#~ "           which is not allowed. "
+#~ msgstr "錯誤：您的設定有錯誤，變數auth_type只允許session , cookie與config，您的設定值 "
 
 #~ msgid "Description: %s <br /><br />"
 #~ msgstr "說明: %s <br /><br />"
@@ -4234,122 +3826,64 @@ msgstr ""
 #~ msgid "Description: (no description available)<br />"
 #~ msgstr "說明: (無任何說明內容)<br />"
 
-#~ msgid ""
-#~ "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
-#~ msgstr ""
-#~ "這是 phpLDAPadmin 的 bug? 如果是,請<a href=\\\"%s\\\">回報這個Bug</a>."
+#~ msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
+#~ msgstr "這是 phpLDAPadmin 的 bug? 如果是,請<a href=\\\"%s\\\">回報這個Bug</a>."
 
 #~ msgid ""
 #~ "<center><table class='notice'><tr><td colspan='2'><center><img "
-#~ "src='images/warning.png' height='12' width='13' />             <b>You "
-#~ "found a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</"
-#~ "td><td><b>%s</b> (<b>%s</b>)</td></tr><tr><td>File:</td>             "
-#~ "<td><b>%s</b> line <b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:"
-#~ "</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>             </"
-#~ "td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>\t<tr><td "
-#~ "colspan='2'><center><a target='new' href='%s'>Please check and see if "
-#~ "this bug has been reported here</a>.</center></td></tr>\t<tr><td "
-#~ "colspan='2'><center><a target='new' href='%s'>If it hasnt been reported, "
-#~ "you may report this bug by clicking here</a>.</center></td></tr>\t</"
-#~ "table></center><br />"
+#~ "src='images/warning.png' height='12' width='13' />             <b>You found "
+#~ "a non-fatal phpLDAPadmin bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> "
+#~ "(<b>%s</b>)</td></tr><tr><td>File:</td>             <td><b>%s</b> line "
+#~ "<b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: "
+#~ "<b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>             </td></tr><tr><td>Web "
+#~ "server:</td><td><b>%s</b></td></tr>\t<tr><td colspan='2'><center><a "
+#~ "target='new' href='%s'>Please check and see if this bug has been reported "
+#~ "here</a>.</center></td></tr>\t<tr><td colspan='2'><center><a target='new' "
+#~ "href='%s'>If it hasnt been reported, you may report this bug by clicking "
+#~ "here</a>.</center></td></tr>\t</table></center><br />"
 #~ msgstr ""
-#~ "<center><table class=\\\"notice\\\"><tr><td colspan=\\\"2\\"
-#~ "\"><center><img src=\\\"images/warning.png\\\" height=\\\"12\\\" width=\\"
-#~ "\"13\\\" />\r             <b>You found a non-fatal phpLDAPadmin bug!</b></"
-#~ "td></tr><tr><td>Error:</td><td><b>%s</b> (<b>%s</b>)</td></"
-#~ "tr><tr><td>File:</td>\r             <td><b>%s</b> line <b>%s</b>, caller "
-#~ "<b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</"
-#~ "b>, SAPI: <b>%s</b>\r             </td></tr><tr><td>Web server:</"
-#~ "td><td><b>%s</b></td></tr><tr><td colspan=\\\"2\\\"><center><a target=\\"
-#~ "\"new\\\" href=\\\"%s\\\">\r             Please report this bug by "
-#~ "clicking here</a>.</center></td></tr></table></center><br />"
+#~ "<center><table class=\\\"notice\\\"><tr><td colspan=\\\"2\\\"><center><img "
+#~ "src=\\\"images/warning.png\\\" height=\\\"12\\\" width=\\\"13\\\" />\r       "
+#~ "      <b>You found a non-fatal phpLDAPadmin "
+#~ "bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> "
+#~ "(<b>%s</b>)</td></tr><tr><td>File:</td>\r             <td><b>%s</b> line "
+#~ "<b>%s</b>, caller <b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: "
+#~ "<b>%s</b>, PHP: <b>%s</b>, SAPI: <b>%s</b>\r             "
+#~ "</td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr><tr><td colspan=\\"
+#~ "\"2\\\"><center><a target=\\\"new\\\" href=\\\"%s\\\">\r             Please "
+#~ "report this bug by clicking here</a>.</center></td></tr></table></center><br "
+#~ "/>"
 
 #~ msgid ""
-#~ "Congratulations! You found a bug in phpLDAPadmin.<br /><br />\t     "
-#~ "<table class='bug'>\t     <tr><td>Error:</td><td><b>%s</b></td></tr>"
-#~ "\t     <tr><td>Level:</td><td><b>%s</b></td></tr>\t     <tr><td>File:</"
-#~ "td><td><b>%s</b></td></tr>\t     <tr><td>Line:</td><td><b>%s</b></td></tr>"
-#~ "\t\t <tr><td>Caller:</td><td><b>%s</b></td></tr>\t     <tr><td>PLA "
-#~ "Version:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP Version:</"
-#~ "td><td><b>%s</b></td></tr>\t     <tr><td>PHP SAPI:</td><td><b>%s</b></"
-#~ "td></tr>\t     <tr><td>Web server:</td><td><b>%s</b></td></tr>\t     </"
-#~ "table>\t     <br />\t     Please report this bug by clicking below!"
+#~ "Congratulations! You found a bug in phpLDAPadmin.<br /><br />\t     <table "
+#~ "class='bug'>\t     <tr><td>Error:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>Level:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>File:</td><td><b>%s</b></td></tr>\t     "
+#~ "<tr><td>Line:</td><td><b>%s</b></td></tr>\t\t "
+#~ "<tr><td>Caller:</td><td><b>%s</b></td></tr>\t     <tr><td>PLA "
+#~ "Version:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP "
+#~ "Version:</td><td><b>%s</b></td></tr>\t     <tr><td>PHP "
+#~ "SAPI:</td><td><b>%s</b></td></tr>\t     <tr><td>Web "
+#~ "server:</td><td><b>%s</b></td></tr>\t     </table>\t     <br />\t     Please "
+#~ "report this bug by clicking below!"
 #~ msgstr ""
-#~ "恭喜! 您發現了phpLDAPadmin的bug.<br /><br />  <table class=\\\"bug\\\">\r"
-#~ "\t     <tr><td>Error:</td><td><b>%s</b></td></tr>\r\t     <tr><td>Level:</"
-#~ "td><td><b>%s</b></td></tr>\r\t     <tr><td>File:</td><td><b>%s</b></td></"
-#~ "tr>\r\t     <tr><td>Line:</td><td><b>%s</b></td></tr>\r\t\t "
-#~ "<tr><td>Caller:</td><td><b>%s</b></td></tr>\r\t     <tr><td>PLA Version:</"
-#~ "td><td><b>%s</b></td></tr>\r\t     <tr><td>PHP Version:</td><td><b>%s</"
-#~ "b></td></tr>\r\t     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>\r"
-#~ "\t     <tr><td>Web server:</td><td><b>%s</b></td></tr>\r\t     </table>\r"
-#~ "\t     <br />\r\t     Please report this bug by clicking below!"
-
-#~ msgid "Import LDIF File"
-#~ msgstr "匯入 LDIF 檔案"
-
-#~ msgid "No version found. Assuming 1."
-#~ msgstr "找不到版本資訊，預設使用版本1"
-
-#~ msgid "You must choose an export format."
-#~ msgstr "你必須選擇一種匯出格式"
-
-#~ msgid "No available exporter found."
-#~ msgstr "沒有可用的匯出程式"
-
-#~ msgid "Showing results %s through %s."
-#~ msgstr "透過 %s 顯示結果 %s"
+#~ "恭喜! 您發現了phpLDAPadmin的bug.<br /><br />  <table class=\\\"bug\\\">\r\t     "
+#~ "<tr><td>Error:</td><td><b>%s</b></td></tr>\r\t     "
+#~ "<tr><td>Level:</td><td><b>%s</b></td></tr>\r\t     "
+#~ "<tr><td>File:</td><td><b>%s</b></td></tr>\r\t     "
+#~ "<tr><td>Line:</td><td><b>%s</b></td></tr>\r\t\t "
+#~ "<tr><td>Caller:</td><td><b>%s</b></td></tr>\r\t     <tr><td>PLA "
+#~ "Version:</td><td><b>%s</b></td></tr>\r\t     <tr><td>PHP "
+#~ "Version:</td><td><b>%s</b></td></tr>\r\t     <tr><td>PHP "
+#~ "SAPI:</td><td><b>%s</b></td></tr>\r\t     <tr><td>Web "
+#~ "server:</td><td><b>%s</b></td></tr>\r\t     </table>\r\t     <br />\r\t     "
+#~ "Please report this bug by clicking below!"
 
 #~ msgid "Searching..."
 #~ msgstr "搜索中..."
-
-#~ msgid "Notice, search size limit exceeded."
-#~ msgstr "注意：到達搜尋大小上限"
-
-#~ msgid ""
-#~ "Generated by phpLDAPadmin ( http://phpldapadmin.sourceforge.net/ ) on %s"
-#~ msgstr "由"
-
-#~ msgid "DSLM Export for: %s"
-#~ msgstr "匯出 DSLM :"
-
-#~ msgid "No one is logged in to that server."
-#~ msgstr "在此伺服器尚無人登入."
-
-#~ msgid "Could not logout."
-#~ msgstr "無法登出."
 
 #~ msgid "Logged out successfully from server <b>%s</b>"
 #~ msgstr "成功的從 %s 伺服器登出"
 
 #~ msgid "Deletes not allowed in read only mode."
 #~ msgstr "在唯讀模式時不允許刪除資料"
-
-#~ msgid "Error calling mass_delete.php. Missing mass_delete in POST vars."
-#~ msgstr "呼叫mass_delete.php時發生錯誤，mass_delete不在POST變數中"
-
-#~ msgid "mass_delete POST var is not an array."
-#~ msgstr "mass_delete POST變數不是陣列"
-
-#~ msgid ""
-#~ "Mass deletion is not enabled. Please enable it in config.php before "
-#~ "proceeding."
-#~ msgstr "大量刪除功能並未開啟，請在config.php中開啟此功能"
-
-#~ msgid "Deletion progress on server \"%s\""
-#~ msgstr "正在 \\\"%s\\\" 伺服器上進行刪除程序"
-
-#~ msgid "Malformed mass_delete array."
-#~ msgstr "錯誤的大量刪除陣列"
-
-#~ msgid "%s of %s entries failed to be deleted."
-#~ msgstr "無法刪除紀錄 %s %s"
-
-#~ msgid "All entries deleted successfully."
-#~ msgstr "全部刪除完成"
-
-#~ msgid "Confirm mass delete of %s entries on server %s"
-#~ msgstr "確認要刪除 %s 登入在伺服器 %s上"
-
-#~ msgid "Yes, delete!"
-#~ msgstr "沒錯,刪除吧!"
