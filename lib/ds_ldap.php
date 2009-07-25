@@ -1044,7 +1044,7 @@ class ldap extends DS {
 		$query['baseok'] = true;
 		$results = $this->query($query,$method);
 
-		if (is_array($results))
+		if (is_array($results) && count($results) == 1)
 			return array_change_key_case(array_pop($results));
 		else
 			return array();
