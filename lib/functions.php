@@ -2518,7 +2518,7 @@ function get_href($type,$extra_info='') {
 		case 'forum':
 			return sprintf('%s/mailarchive/forum.php?forum_name=%s',$sf,$forum_id);
 		case 'logo':
-			return sprintf('http://sflogo.sourceforge.net/sflogo.php?group_id=%s&amp;type=8',$group_id);
+			return isset($_SESSION) && ! $_SESSION[APPCONFIG]->getValue('appearance','remoteurls') ? '' : sprintf('http://sflogo.sourceforge.net/sflogo.php?group_id=%s&amp;type=8',$group_id);
 		case 'sf':
 			return sprintf('%s/projects/phpldapadmin',$sf);
 		case 'web':

@@ -31,6 +31,12 @@ class page {
 		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
 			debug_log('Entered with [%s]',129,__FILE__,__LINE__,__METHOD__,$index);
 
+		# If we done have a configuration, then our IMGDIR and CSS are not defined
+		if (! defined('IMGDIR'))
+			define('IMGDIR','images/default');
+		if (! defined('CSSDIR'))
+			define('CSSDIR','css/default');
+
 		$this->index = $index;
 
 		# To be defined in a configuration file.
@@ -324,7 +330,7 @@ class page {
 		printf('<tr class="foot"><td><small>%s</small></td><td colspan=2><div id="ajFOOT">%s</div>%s</td></tr>',
 			isCompress() ? '[C]' : '&nbsp;',
 			app_version(),
-			sprintf('<a href="%s"><img src="%s" border="0" alt="SourceForge.net Logo" /></a>',get_href('sf'),get_href('logo')));
+			get_href('logo') ? sprintf('<a href="%s"><img src="%s" border="0" alt="SourceForge.net Logo" /></a>',get_href('sf'),get_href('logo')) : '&nbsp;');
 	}
 
 	/**

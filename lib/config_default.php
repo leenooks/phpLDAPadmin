@@ -107,6 +107,10 @@ class Config {
 			'desc'=>'Group DN, where membership will exempt the users from readonly attrs',
 			'default'=>null);
 
+		$this->default->appearance['remoteurls'] = array(
+			'desc'=>'Whether to include renders for remote URLs',
+			'default'=>true);
+
 		$this->default->appearance['timezone'] = array(
 			'desc'=>'Define our timezone, if not defined in php.ini',
 			'default'=>null);
