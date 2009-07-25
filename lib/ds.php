@@ -144,9 +144,6 @@ abstract class DS {
 	 * If this returns '', we are logged in with anonymous
 	 */
 	public function getLogin($method=null) {
-		if ($method == 'anon')
-			return '';
-
 		$method = $this->getMethod($method);
 
 		switch ($this->getAuthType()) {
@@ -237,15 +234,15 @@ abstract class DS {
 
 		$method = $this->getMethod($method);
 
-		if (isset($CACHE[$this->index]) && ! is_null($CACHE))
-			return $CACHE[$this->index];
+		if (isset($CACHE[$this->index][$method]) && ! is_null($CACHE[$this->index][$method]))
+			return $CACHE[$this->index][$method];
 
-		$CACHE[$this->index] = null;
+		$CACHE[$this->index][$method] = null;
 
 		# For some authentication types, we need to do the login here
 		switch ($this->getAuthType()) {
 			case 'config':
-				if (! $CACHE[$this->index] = $this->login($this->getLogin($method),$this->getPassword($method),$method))
+				if (! $CACHE[$this->index][$method] = $this->login($this->getLogin($method),$this->getPassword($method),$method))
 					system_message(array(
 						'title'=>_('Unable to login.'),
 						'body'=>_('Your configuration file has authentication set to CONFIG based authentication, however, the userid/password failed to login'),
@@ -258,7 +255,7 @@ abstract class DS {
 				if (! isset($_SERVER['PHP_AUTH_USER'])) {
 					# If this server is not in focus, skip the basic auth prompt.
 					if (get_request('server_id','REQUEST') != $this->getIndex()) {
-						$CACHE[$this->index] = false;
+						$CACHE[$this->index][$method] = false;
 						break;
 					}
 
@@ -276,7 +273,7 @@ abstract class DS {
 							'body'=>_('Your configuration file has authentication set to HTTP based authentication, however, there was none presented'),
 							'type'=>'error'));
 
-						$CACHE[$this->index] = false;
+						$CACHE[$this->index][$method] = false;
 					}
 
 				# Check our auth vars are valid.
@@ -287,24 +284,24 @@ abstract class DS {
 							'body'=>_('Your HTTP based authentication is not accepted by the LDAP server'),
 							'type'=>'error'));
 
-						$CACHE[$this->index] = false;
+						$CACHE[$this->index][$method] = false;
 
 					} else
-						$CACHE[$this->index] = true;
+						$CACHE[$this->index][$method] = true;
 				}
 
 				break;
 
 			case 'proxy':
-				$CACHE[$this->index] = $this->login($this->getValue('login','bind_id'),$this->getValue('login','bind_pass'),$method);
+				$CACHE[$this->index][$method] = $this->login($this->getValue('login','bind_id'),$this->getValue('login','bind_pass'),$method);
 
 				break;
 
 			default:
-				$CACHE[$this->index] = is_null($this->getLogin($method)) ? false : true;
+				$CACHE[$this->index][$method] = is_null($this->getLogin($method)) ? false : true;
 		}
 
-		return $CACHE[$this->index];
+		return $CACHE[$this->index][$method];
 	}
 
 	/**
