@@ -123,31 +123,6 @@ class ldap_pla extends ldap {
 
 /** FUNCTIONS TO BE REWORKED BELOW HERE **/
 	/**
-	 * Returns true if the user has configured the specified server to enable mass deletion.
-	 *
-	 * Mass deletion is enabled in config.php this:
-	 * <code>
-	 *	$config->custom->commands['all'] = array('entry_delete' => array('mass_delete' => true));
-	 * </code>
-	 * Notice that mass deletes are not enabled on a per-server basis, but this
-	 * function checks that the server is not in a read-only state as well.
-	 *
-	 * @return boolean
-	 */
-	function isMassDeleteEnabled() {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with ()',17,__FILE__,__LINE__,__METHOD__);
-
-		if ($this->connect(false) && $this->haveAuthInfo() && ! $this->isReadOnly() &&
-			$_SESSION[APPCONFIG]->isCommandAvailable('entry_delete', 'mass_delete'))
-
-			return true;
-
-		else
-			return false;
-	}
-
-	/**
 	 * Gets whether the admin has configured phpLDAPadmin to show the "Create New" link in the tree viewer.
 	 * <code>
 	 *	$servers->setValue('appearance','show_create',true|false);
@@ -166,7 +141,7 @@ class ldap_pla extends ldap {
 		if (DEBUG_ENABLED)
 			debug_log('Entered with ()',17,__FILE__,__LINE__,__METHOD__);
 
-		if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_create'))
+		if (! $_SESSION[APPCONFIG]->isCommandAvailable('script','create'))
 			return false;
 		else
 			return $this->getValue('appearance','show_create');

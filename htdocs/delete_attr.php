@@ -13,9 +13,6 @@
 
 require './common.php';
 
-if (! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete'))
-	error(sprintf('%s: %s',_('This operation is not permitted by the configuration'),_('delete attribute')),'error','index.php');
-
 $request = array();
 $request['dn'] = get_request('dn','REQUEST',true);
 $request['attr'] = get_request('attr','REQUEST',true);

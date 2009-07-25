@@ -14,9 +14,6 @@
 require './common.php';
 require LIBDIR.'import_functions.php';
 
-if (! $_SESSION[APPCONFIG]->isCommandAvailable('import'))
-	error(sprintf('%s: %s',_('This operation is not permitted by the configuration'),_('import')),'error','index.php');
-
 $request = array();
 $request['importer'] = new Importer($app['server']->getIndex(),'LDIF');
 $request['import'] = $request['importer']->getTemplate();

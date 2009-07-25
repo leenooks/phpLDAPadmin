@@ -207,6 +207,7 @@ class HTMLTree extends Tree {
 				$menu['title'] = _('View schema for');
 				$menu['img'] = 'schema-big.png';
 				$menu['name'] = _('schema');
+
 				break;
 
 			case 'search':
@@ -219,6 +220,7 @@ class HTMLTree extends Tree {
 				$menu['title'] = _('Search');
 				$menu['img'] = 'search-big.png';
 				$menu['name'] = _('search');
+
 				break;
 
 			case 'refresh':
@@ -232,6 +234,7 @@ class HTMLTree extends Tree {
 				$menu['title'] = _('Refresh');
 				$menu['img'] = 'refresh-big.png';
 				$menu['name'] = _('refresh');
+
 				break;
 
 			case 'server_info':
@@ -244,6 +247,7 @@ class HTMLTree extends Tree {
 				$menu['title'] = _('Info');
 				$menu['img'] = 'info-big.png';
 				$menu['name'] = _('info');
+
 				break;
 
 			case 'monitor':
@@ -260,10 +264,11 @@ class HTMLTree extends Tree {
 				$menu['title'] = _('Monitor');
 				$menu['img'] = 'monitorserver-big.png';
 				$menu['name'] = _('monitor');
+
 				break;
 
 			case 'import':
-				if (! $_SESSION[APPCONFIG]->isCommandAvailable('script','import') || $server->isReadOnly())
+				if (! $_SESSION[APPCONFIG]->isCommandAvailable('script','import_form') || ! $_SESSION[APPCONFIG]->isCommandAvailable('script','import') || $server->isReadOnly())
 					return '';
 
 				$menu['cmd'] = 'import_form';
@@ -272,10 +277,11 @@ class HTMLTree extends Tree {
 				$menu['title'] = _('Import');
 				$menu['img'] = 'import-big.png';
 				$menu['name'] = _('import');
+
 				break;
 
 			case 'export':
-				if (! $_SESSION[APPCONFIG]->isCommandAvailable('script','export'))
+				if (! $_SESSION[APPCONFIG]->isCommandAvailable('script','export_form') || ! $_SESSION[APPCONFIG]->isCommandAvailable('script','export'))
 					return '';
 
 				$menu['cmd'] = 'export_form';
@@ -284,10 +290,11 @@ class HTMLTree extends Tree {
 				$menu['title'] = _('Export');
 				$menu['img'] = 'export-big.png';
 				$menu['name'] = _('export');
+
 				break;
 
 			case 'logout':
-				if (in_array($server->getAuthType(),array('config','http','proxy')))
+				if (! $_SESSION[APPCONFIG]->isCommandAvailable('script','logout') || in_array($server->getAuthType(),array('config','http','proxy')))
 					return '';
 
 				$href = sprintf('cmd.php?cmd=logout&server_id=%s',$server->getIndex());

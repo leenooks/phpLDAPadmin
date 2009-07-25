@@ -14,9 +14,6 @@
 require './common.php';
 require LIBDIR.'export_functions.php';
 
-if (! $_SESSION[APPCONFIG]->isCommandAvailable('export'))
-	error(sprintf('%s: %s',_('This operation is not permitted by the configuration'),_('export')),'error','index.php');
-
 # Prevent script from bailing early for long search
 @set_time_limit(0);
 

@@ -623,7 +623,7 @@ class PageRender extends Visitor {
 
 			echo '<br/>';
 
-			if (! $attribute->isReadOnly() && $_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete'))
+			if (! $attribute->isReadOnly() && $_SESSION[APPCONFIG]->isCommandAvailable('script','delete_attr'))
 				printf('<a href="javascript:deleteAttribute(\'%s\',\'%s\',\'%s\');" style="color:red;"><img src="%s/trash.png" alt="Trash" /> %s</a>',
 					$attribute->getName(),$attribute->getFriendlyName(),$i,IMGDIR,_('delete attribute'));
 

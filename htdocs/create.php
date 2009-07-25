@@ -19,9 +19,6 @@ if (get_request('cancel','REQUEST')) {
 	die();
 }
 
-if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_create'))
-	error(sprintf('%s: %s',_('This operation is not permitted by the configuration'),_('create entry')),'error','index.php');
-
 $request = array();
 $request['redirect'] = get_request('redirect','POST',false,false);
 

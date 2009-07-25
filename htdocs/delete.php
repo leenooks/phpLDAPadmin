@@ -20,9 +20,6 @@ $request['dn'] = get_request('dn','REQUEST',true);
 if (! $app['server']->dnExists($request['dn']))
 	error(sprintf('%s (%s)',_('No such entry.'),'<b>'.pretty_print_dn($request['dn']).'</b>'),'error','index.php');
 
-if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_delete','simple_delete'))
-	error(sprintf('%s: %s',_('This operation is not permitted by the configuration'),_('delete entry')),'error','index.php');
-
 # Delete the entry.
 $result = $app['server']->delete($request['dn']);
 

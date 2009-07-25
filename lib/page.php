@@ -154,24 +154,19 @@ class page {
 		echo '<td class="imagetop">';
 		$empty = true;
 		if (function_exists('cmd_control_pane'))
-			foreach (cmd_control_pane('top') as $cmd => $cmddetails) {
-				$cmds = explode(':',$cmd);
+			foreach (cmd_control_pane('top') as $cmddetails)
+				if ((isset($cmddetails['enable']) && $cmddetails['enable']) || ! isset($cmddetails['enable'])) {
+					if (! $empty)
+						echo ' ';
 
-				if (defined('APPCONFIG') && isset($_SESSION[APPCONFIG]) && method_exists($_SESSION[APPCONFIG],'isCommandAvailable'))
-					if ($_SESSION[APPCONFIG]->isCommandAvailable('all',$cmds)) {
-						if ((isset($cmddetails['enable']) && trim($cmddetails['enable'])) || ! isset($cmddetails['enable'])) {
-							if (! $empty)
-								echo ' ';
+					printf('<a %s>%s</a>',$cmddetails['link'],$cmddetails['image']);
 
-							printf('<a %s>%s</a>',$cmddetails['link'],$cmddetails['image']);
-
-							$empty = false;
-						}
-					}
-			}
+					$empty = false;
+				}
 
 		if ($empty)
 			echo '&nbsp;';
+
 		echo '</td>';
 		echo '</tr></table></div></td>';
 		echo '</tr>';
@@ -187,22 +182,16 @@ class page {
 
 		$empty = true;
 		if (function_exists('cmd_control_pane'))
-			foreach (cmd_control_pane('main') as $cmd => $cmddetails) {
-				$cmds = explode(':',$cmd);
-
-				if (defined('APPCONFIG') && isset($_SESSION[APPCONFIG]) && method_exists($_SESSION[APPCONFIG],'isCommandAvailable'))
-					if ($_SESSION[APPCONFIG]->isCommandAvailable('all',$cmds)) {
-						if ((isset($cmddetails['enable']) && trim($cmddetails['enable'])) || ! isset($cmddetails['enable'])) {
-							if (! $empty)
+			foreach (cmd_control_pane('main') as $cmddetails)
+				if ((isset($cmddetails['enable']) && trim($cmddetails['enable'])) || ! isset($cmddetails['enable'])) {
+					if (! $empty)
 								echo ' | ';
 
-							printf('<a %s>%s</a>',$cmddetails['link'],
-								$_SESSION[APPCONFIG]->getValue('appearance','control_icons') ? $cmddetails['image'] : $cmddetails['title']);
+					printf('<a %s>%s</a>',$cmddetails['link'],
+						$_SESSION[APPCONFIG]->getValue('appearance','control_icons') ? $cmddetails['image'] : $cmddetails['title']);
 
-							$empty = false;
-						}
-					}
-			}
+					$empty = false;
+				}
 
 		echo '</td>';
 		if ($empty)

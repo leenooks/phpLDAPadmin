@@ -561,7 +561,7 @@ var deon=0;
 		printf('<td>%s: <b>%s</b><br/><br/><div class="execution_time">(%s %s)</div></td>',_('Entries found'),
 			number_format($results),$this->template->resultsdata[$base]['time'],_('seconds'));
 
-		if ($_SESSION[APPCONFIG]->isCommandAvailable('export')) {
+		if ($_SESSION[APPCONFIG]->isCommandAvailable('script','export') && $_SESSION[APPCONFIG]->isCommandAvailable('script','export_form')) {
 			$href = htmlspecialchars(sprintf('cmd.php?cmd=export_form&server_id=%s&scope=%s&dn=%s&filter=%s&attributes=%s',
 				$server->getIndex(),$this->template->resultsdata[$base]['scope'],
 				$base,rawurlencode($this->template->resultsdata[$base]['filter']),

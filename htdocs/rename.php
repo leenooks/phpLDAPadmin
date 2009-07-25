@@ -20,9 +20,6 @@ $request['rdnDST'] = get_request('new_rdn','REQUEST');
 $request['container'] = $app['server']->getContainer($request['dnSRC']);
 
 # Error checking
-if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_rename'))
-	error(sprintf('%s: %s',_('This operation is not permitted by the configuration'),_('rename entry')),'error','index.php');
-
 if (! $app['server']->isBranchRenameEnabled()) {
 	# We search all children, not only the visible children in the tree
 	$children = $app['server']->getContainerContents($request['dnSRC'],null,0,'(objectClass=*)',LDAP_DEREF_NEVER);

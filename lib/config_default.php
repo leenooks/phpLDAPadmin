@@ -290,6 +290,15 @@ class Config {
 		 * Define command availability ; if the value of a command is true,
 		 * the command will be available.
 		 */
+		$this->default->commands['cmd'] = array(
+			'desc'=>'Define command availability',
+			'default'=> array(
+				'entry_internal_attributes_show' => true,
+				'entry_refresh' => true,
+				'oslinks' => true,
+				'switch_template' => true
+			));
+
 		$this->default->commands['script'] = array(
 			'desc'=>'Define scripts availability',
 			'default'=> array(
@@ -331,42 +340,7 @@ class Config {
 				'show_cache' => true,
 				'template_engine' => true,
 				'update_confirm' => true,
-				'update' => true,
-				'test' => true
-			));
-
-		$this->default->commands['all'] = array(
-			'desc'=>'Define command availability',
-			'default'=> array(
-				'home' => true,
-				'external_links' => array('feature' => true,
-					'forum' => true,
-					'bug' => true,
-					'donation' => true,
-					'help' => true,
-					'credits' => true),
-				'purge' => true,
-				'schema' => true,
-				'import' => true,
-				'export' => true,
-				'logout' => true,
-				'search' => array('simple_search' => true,
-					'predefined_search' => true,
-					'advanced_search' => true),
-				'server_refresh' => true,
-				'server_info' => true,
-				'entry_refresh' => true,
-				'entry_move' => true,
-				'entry_internal_attributes_show' => true,
-				'entry_delete' => array('simple_delete' => true,
-					'mass_delete' => false),
-				'entry_rename' => true,
-				'entry_compare' => true,
-				'entry_create' => true,
-				'attribute_add' => true,
-				'attribute_add_value' => true,
-				'attribute_delete' => true,
-				'attribute_delete_value' => true
+				'update' => true
 			));
 
 		/** Aliases and Referrrals
@@ -666,48 +640,20 @@ class Config {
 	}
 
 	/**
-	 * The parameter number is variable.
-	 * For example : isCommandAvailable('search','simple_search')
+	 * Simple ACL to see if commands can be run
 	 */
-	public function isCommandAvailable($index='all') {
+	public function isCommandAvailable($index='cmd') {
 		$a = func_get_args();
-
-		if (! in_array($index,array('all','script')))
-			$index = 'all';
-		else
-			array_shift($a);
-
-		if (count($a) == 1 && is_array($a[0]))
-			$a = $a[0];
-		$i = 0;
+		array_shift($a);
+		$a = $a[0];
 
 		# Command availability list
 		$cmd = $this->getValue('commands',$index);
 
-		# Search for the command
-		while ($i < count($a)) {
-			if (! is_array($cmd))
-				return $cmd;
+		if (! is_string($a) || ! isset($cmd[$a]))
+			debug_dump(array('Unknown command '=>$a),1);
 
-			if (! isset($cmd[$a[$i]]))
-				return false;
-
-			$cmd = $cmd[$a[$i]];
-			$i++;
-		}
-
-		# If this is a leaf command, return its availability
-		if (! is_array($cmd))
-			return $cmd;
-
-		# Else the command is available, if one of its sub-command is available
-		$a[] = '';
-		foreach ($cmd as $c => $v) {
-			$a[$i] = $c;
-			if ($this->isCommandAvailable($a))
-				return true;
-		}
-		return false;
+		return $cmd[$a];
 	}
 
 	public function configDefinition($key,$index,$config) {

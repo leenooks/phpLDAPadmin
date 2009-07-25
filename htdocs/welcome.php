@@ -20,23 +20,10 @@ echo '<br /><br />';
 echo _('Use the menu to the left to navigate');
 echo '<br /><br />';
 
-$links = '';
-
-if ($_SESSION[APPCONFIG]->isCommandAvailable('external_links','credits'))
-	$links .= sprintf('<a href="%s" target="_blank">%s</a>',get_href('credits'),_('Credits'));
-
-if ($_SESSION[APPCONFIG]->isCommandAvailable('external_links','help')) {
-	if ($links) $links .= ' | ';
-	$links .= sprintf('<a href="%s" target="_blank">%s</a>',get_href('documentation'),_('Documentation'));
-}
-
-if ($_SESSION[APPCONFIG]->isCommandAvailable('external_links','donation')) {
-	if ($links) $links .= ' | ';
-	$links .= sprintf('<a href="%s" target="_blank">%s</a>',get_href('donate'),_('Donate'));
-}
-
-if ($links) {
-	echo $links;
+if ($_SESSION[APPCONFIG]->isCommandAvailable('cmd','oslinks')) {
+	printf('<a href="%s" target="_blank">%s</a>',get_href('credits'),_('Credits'));
+	printf(' | <a href="%s" target="_blank">%s</a>',get_href('documentation'),_('Documentation'));
+	printf(' | <a href="%s" target="_blank">%s</a>',get_href('donate'),_('Donate'));
 	echo '<br /><br />';
 }
 

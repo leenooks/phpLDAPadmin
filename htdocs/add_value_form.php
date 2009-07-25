@@ -31,13 +31,6 @@ $request['template'] = $request['page']->getTemplate();
 /*
 if ($request['attribute']->isReadOnly())
 	error(sprintf(_('The attribute (%s) is in readonly mode.'),$request['attr']),'error','index.php');
-
-# Check our permissions
-if (! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value'))
-	error(sprintf('%s: %s',_('This operation is not permitted by the configuration'),_('add attribute value')),'error','index.php');
-
-if (($request['attribute']->getValueCount() == 0) && ! $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add'))
-	error(sprintf('%s: %s',_('This operation is not permitted by the configuration'),_('add attribute')),'error','index.php');
 */
 
 # Render the form

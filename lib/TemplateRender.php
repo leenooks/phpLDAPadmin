@@ -914,40 +914,43 @@ class TemplateRender extends PageRender {
 
 		switch ($i) {
 			case 'entryrefresh':
-				if ($_SESSION[APPCONFIG]->isCommandAvailable('entry_refresh'))
+				if ($_SESSION[APPCONFIG]->isCommandAvailable('cmd','entry_refresh'))
 					return $this->getMenuItemRefresh();
 				else
 					return '';
 
 			case 'switchtemplate':
-				return $this->getMenuItemSwitchTemplate();
+				if ($_SESSION[APPCONFIG]->isCommandAvailable('cmd','switch_template'))
+					return $this->getMenuItemSwitchTemplate();
+				else
+					return '';
 
 			case 'entryexport':
-				if ($_SESSION[APPCONFIG]->isCommandAvailable('script','export_form'))
+				if ($_SESSION[APPCONFIG]->isCommandAvailable('script','export_form') && $_SESSION[APPCONFIG]->isCommandAvailable('script','export'))
 					return $this->getMenuItemExportBase();
 				else
 					return '';
 
 			case 'entrycopy':
-				if ($_SESSION[APPCONFIG]->isCommandAvailable('script','copy_form') && ! $this->template->isReadOnly())
+				if ($_SESSION[APPCONFIG]->isCommandAvailable('script','copy_form') && $_SESSION[APPCONFIG]->isCommandAvailable('script','copy') && ! $this->template->isReadOnly())
 					return $this->getMenuItemMove();
 				else
 					return '';
 
 			case 'showinternal':
-				if ($_SESSION[APPCONFIG]->isCommandAvailable('entry_internal_attributes_show'))
+				if ($_SESSION[APPCONFIG]->isCommandAvailable('cmd','entry_internal_attributes_show'))
 					return $this->getMenuItemInternalAttributes();
 				else
 					return '';
 
 			case 'entrydelete':
-				if ($_SESSION[APPCONFIG]->isCommandAvailable('script','delete_form') && ! $this->template->isReadOnly())
+				if ($_SESSION[APPCONFIG]->isCommandAvailable('script','delete_form') && $_SESSION[APPCONFIG]->isCommandAvailable('script','delete') && ! $this->template->isReadOnly())
 					return $this->getMenuItemDelete();
 				else
 					return '';
 
 			case 'entryrename':
-				if ($_SESSION[APPCONFIG]->isCommandAvailable('entry_rename') && ! $this->template->isReadOnly()) {
+				if ($_SESSION[APPCONFIG]->isCommandAvailable('script','rename_form') && $_SESSION[APPCONFIG]->isCommandAvailable('script','rename') && ! $this->template->isReadOnly()) {
 
 					# Check if any of the RDN's are read only.
 					$rdnro = false;
@@ -968,25 +971,25 @@ class TemplateRender extends PageRender {
 
 			case 'msgdel':
 				if ($_SESSION[APPCONFIG]->getValue('appearance','show_hints')
-					&& $_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete') && ! $this->template->isReadOnly())
+					&& $_SESSION[APPCONFIG]->isCommandAvailable('script','delete_form') && $_SESSION[APPCONFIG]->isCommandAvailable('script','delete') && ! $this->template->isReadOnly())
 					return array('',$this->getDeleteAttributeMessage());
 				else
 					return '';
 
 			case 'entrycompare':
-				if ($_SESSION[APPCONFIG]->isCommandAvailable('entry_compare') && ! $this->template->isReadOnly())
+				if ($_SESSION[APPCONFIG]->isCommandAvailable('script','compare_form') && $_SESSION[APPCONFIG]->isCommandAvailable('script','compare') && ! $this->template->isReadOnly())
 					return $this->getMenuItemCompare();
 				else
 					return '';
 
 			case 'childcreate':
-				if ($_SESSION[APPCONFIG]->isCommandAvailable('entry_create') && ! $this->template->isReadOnly())
+				if ($_SESSION[APPCONFIG]->isCommandAvailable('script','create') && ! $this->template->isReadOnly())
 					return $this->getMenuItemCreate();
 				else
 					return '';
 
 			case 'addattr':
-				if ($_SESSION[APPCONFIG]->isCommandAvailable('attribute_add') && ! $this->template->isReadOnly())
+				if ($_SESSION[APPCONFIG]->isCommandAvailable('script','add_attr_form') && ! $this->template->isReadOnly())
 					return $this->getMenuItemAddAttribute();
 				else
 					return '';
@@ -1027,7 +1030,7 @@ class TemplateRender extends PageRender {
 
 					if ($i == 'childview')
 						return $this->getMenuItemShowChildren($children_count);
-					elseif ($i == 'childexport' && $_SESSION[APPCONFIG]->isCommandAvailable('export'))
+					elseif ($i == 'childexport' && $_SESSION[APPCONFIG]->isCommandAvailable('script','export_form') && $_SESSION[APPCONFIG]->isCommandAvailable('script','export'))
 						return $this->getMenuItemExportSub();
 					else
 						return '';
@@ -1036,7 +1039,7 @@ class TemplateRender extends PageRender {
 					return '';
 
 			case 'msgschema':
-				if ($_SESSION[APPCONFIG]->getValue('appearance','show_hints') && $_SESSION[APPCONFIG]->isCommandAvailable('schema'))
+				if ($_SESSION[APPCONFIG]->getValue('appearance','show_hints') && $_SESSION[APPCONFIG]->isCommandAvailable('script','schema'))
 					return array('',$this->getViewSchemaMessage());
 				else
 					return array();
@@ -1068,7 +1071,7 @@ class TemplateRender extends PageRender {
 	protected function getDeleteAttributeMessage() {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
-		if ($_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete_value') && ! $this->template->isReadOnly())
+		if ($_SESSION[APPCONFIG]->isCommandAvailable('script','delete_attr') && ! $this->template->isReadOnly())
 			return sprintf($this->layout['hint'],_('Hint: To delete an attribute, empty the text field and click save.'));
 		else
 			return '';
@@ -1982,7 +1985,7 @@ function fillRec(id,value) {
 		switch ($action) {
 			case 'add':
 				if ($attribute->isVisible() && ! $attribute->isReadOnly()
-					&& $_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value')) {
+					&& $_SESSION[APPCONFIG]->isCommandAvailable('script','add_value_form')) {
 
 					if ($attribute->haveMoreValues())
 						return $this->get('AddValueMenuItem',$attribute);
@@ -1993,8 +1996,7 @@ function fillRec(id,value) {
 			case 'modify':
 				if (in_array($attribute->getName(),arrayLower($_SESSION[APPCONFIG]->getValue('modify_member','groupattr')))) {
 					if ($attribute->isVisible() && ! $attribute->isReadOnly() && ! $attribute->isRDN()
-						&& ($_SESSION[APPCONFIG]->isCommandAvailable('attribute_add_value')
-						|| $_SESSION[APPCONFIG]->isCommandAvailable('attribute_delete_value')))
+						&& $_SESSION[APPCONFIG]->isCommandAvailable('script','modify_member_form'))
 						return $this->get('ModifyMemberMenuItem',$attribute);
 				}
 
@@ -2002,7 +2004,8 @@ function fillRec(id,value) {
 
 			case 'rename':
 				if ($attribute->isVisible() && $attribute->isRDN() && ! $attribute->isReadOnly()
-					&& $_SESSION[APPCONFIG]->isCommandAvailable('entry_rename'))
+					&& $_SESSION[APPCONFIG]->isCommandAvailable('script','rename_form')
+					&& $_SESSION[APPCONFIG]->isCommandAvailable('script','rename'))
 					return $this->get('RenameMenuItem',$attribute);
 
 				return '';

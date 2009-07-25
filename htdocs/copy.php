@@ -23,9 +23,6 @@ $ldap['SRC'] = $_SESSION[APPCONFIG]->getServer(get_request('server_id_src'));
 $ldap['DST'] = $_SESSION[APPCONFIG]->getServer(get_request('server_id_dst'));
 
 # Error checking
-if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_move'))
-	error(sprintf('%s: %s',_('This operation is not permitted by the configuration'),_('copy entry')),'error','index.php');
-
 if (! trim($request['dnDST']))
 	error(_('You left the destination DN blank.'),'error','index.php');
 

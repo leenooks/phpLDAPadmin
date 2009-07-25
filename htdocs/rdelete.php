@@ -13,9 +13,6 @@
 
 require './common.php';
 
-if (! $_SESSION[APPCONFIG]->isCommandAvailable('entry_delete','simple_delete'))
-	error(sprintf('%s: %s',_('This operation is not permitted by the configuration'),_('delete entry')),'error','index.php');
-
 $request = array();
 $request['dn'] = get_request('dn','REQUEST',true);
 
