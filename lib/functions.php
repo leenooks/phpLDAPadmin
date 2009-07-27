@@ -1432,7 +1432,8 @@ function get_next_number($base,$attr,$increment=false,$filter=false,$startmin=nu
 
 			foreach ($search as $dn => $values) {
 				$values = array_change_key_case($values);
-				array_push($autonum,$values[$attr]);
+				foreach ($values[$attr] as $value)
+					array_push($autonum,$value);
 			}
 
 			$autonum = array_unique($autonum);
@@ -1507,7 +1508,7 @@ function get_next_number($base,$attr,$increment=false,$filter=false,$startmin=nu
 			foreach ($search as $dn => $values) {
 				$values = array_change_key_case($values);
 
-				$autonum = $values[$attr];
+				$autonum = $values[$attr][0];
 				$poolDN = $values['dn'];
 			}
 
@@ -2861,6 +2862,7 @@ function return_ldap_hash($base,$filter,$key,$attrs,$sort=true) {
 			$server->getIndex(),$base,$filter,$key,$attrs,$sort);
 
 	$server = $_SESSION[APPCONFIG]->getServer(get_request('server_id','REQUEST'));
+	$key = strtolower($key);
 
 	$query = array();
 	$query['base'] = $base;

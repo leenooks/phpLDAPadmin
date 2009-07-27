@@ -271,6 +271,8 @@ class TemplateRender extends PageRender {
 			 * @todo This could probably be merged with PickList
 			 */
 			case 'MultiList':
+				$args[2] = strtolower($args[2]);
+
 				# arg5 overrides our container
 				if (empty($args[5]))
 					$container = $server->getContainerPath($container,$args[0]);
@@ -457,6 +459,8 @@ class TemplateRender extends PageRender {
 			 *   - csv list (, separator) of sort attributes (less to more important)
 			 */
 			case 'PickList':
+				$args[2] = strtolower($args[2]);
+
 				# arg5 overrides our container
 				if (empty($args[5]))
 					$container = $server->getContainerPath($container,$args[0]);
