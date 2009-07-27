@@ -145,7 +145,7 @@ class ldap extends DS {
 		$bind['pass'] = is_null($this->getPassword($method)) && $method != 'anon' ? $this->getPassword('user') : $this->getPassword($method);
 
 		# If our bind id is still null, we are not logged in.
-		if (is_null($bind['id']))
+		if (is_null($bind['id']) && $method != 'anon')
 			return null;
 
 		# If we bound to the LDAP server with these details for a different connection, return that resource
