@@ -19,7 +19,7 @@
 <attributes>
 <attribute id="userid">
 	<display>User Name</display>
-	<icon>uid.png</icon>
+	<icon>ldap-uid.png</icon>
 	<order>1</order>
 	<page>1</page>
 	<spacer>1</spacer>

@@ -19,7 +19,7 @@
 <attributes>
 <attribute id="givenName">
 	<display>First name</display>
-	<icon>uid.png</icon>
+	<icon>ldap-uid.png</icon>
 	<onchange>=autoFill(cn;%givenName% %sn%)</onchange>
 	<onchange>=autoFill(uid;%givenName|0-1/l%%sn/l%)</onchange>
 	<order>1</order>

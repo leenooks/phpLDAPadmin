@@ -39,7 +39,7 @@
 </attribute>
 <attribute id="uid">
 	<display>User ID</display>
-	<icon>uid.png</icon>
+	<icon>ldap-uid.png</icon>
 	<!--<onchange>=autoFill(homeDirectory;/home/users/%uid%)</onchange>-->
 	<onchange>=autoFill(homeDirectory;/home/users/%gidNumber|0-0/T%/%uid|3-%)</onchange>
 	<order>4</order>
