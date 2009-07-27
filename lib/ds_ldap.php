@@ -144,6 +144,9 @@ class ldap extends DS {
 		$bind['id'] = is_null($this->getLogin($method)) && $method != 'anon' ? $this->getLogin('user') : $this->getLogin($method);
 		$bind['pass'] = is_null($this->getPassword($method)) && $method != 'anon' ? $this->getPassword('user') : $this->getPassword($method);
 
+		if ($method == 'anon' && $bind['id'])
+			debug_dump_backtrace('Anon should not have an id',1);
+
 		# If our bind id is still null, we are not logged in.
 		if (is_null($bind['id']) && $method != 'anon')
 			return null;
@@ -273,9 +276,15 @@ class ldap extends DS {
 			}
 
 		} else {
-			$method = 'anon';
-			$userDN = '';
-			$pass = '';
+			if ($method == 'user') {
+				$method = 'anon';
+				$userDN = '';
+				$pass = '';
+
+			} else {
+				$userDN = $this->getLogin('user');
+				$pass = $this->getLogin('user');
+			}
 		}
 
 		if (! $this->isAnonBindAllowed() && ! trim($userDN))
