@@ -6,13 +6,12 @@
 <icon>address-book.png</icon>
 <invalid>0</invalid>
 <rdn>cn</rdn>
-<!-- <regexp>^uid=.*,</regexp> -->
+<!--<regexp>^ou=People,o=.*,</regexp>-->
 <title>Generic: Address Book Entry</title>
 <visible>1</visible>
 
 <objectClasses>
 <objectClass id="inetOrgPerson"></objectClass>
-<objectClass id="top"></objectClass>
 </objectClasses>
 
 <attributes>
@@ -36,7 +35,6 @@
 <attribute id="jpegPhoto">
 	<display>Photo</display>
 	<order>3</order>
-	<readonly>0</readonly>
 	<spacer>1</spacer>
 </attribute>
 <attribute id="o">
@@ -54,12 +52,6 @@
 <attribute id="l">
 	<display>City</display>
 	<order>6</order>
-	<type>select</type>
-	<value id="Berlin">Berlin</value>
-	<value id="London">London</value>
-	<value id="Paris">Paris</value>
-	<value id="Washington">Washington</value>
-	<value id="Other">Other</value>
 </attribute>
 <attribute id="st">
 	<display>State</display>
@@ -67,7 +59,6 @@
 </attribute>
 <attribute id="postalCode">
 	<display>Postal code</display>
-	<maxlength>5</maxlength>
 	<order>8</order>
 	<spacer>1</spacer>
 </attribute>
