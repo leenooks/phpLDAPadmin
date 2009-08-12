@@ -375,17 +375,6 @@ class ldap_pla extends ldap {
 	}
 
 	/**
-	 * Return the time left in seconds until this connection times out. If there is not timeout,
-	 * this function will return null.
-	 */
-	public function inactivityTime() {
-		if ($this->isLoggedIn() && ! in_array($this->getAuthType(),array('config','http')))
-			return time()+($this->getValue('login','timeout')*60);
-		else
-			return null;
-	}
-
-	/**
 	 * Add objects
 	 */
 	public function add($dn,$entry_array,$method=null) {

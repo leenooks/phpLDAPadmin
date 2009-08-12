@@ -144,9 +144,6 @@ class ldap extends DS {
 		$bind['id'] = is_null($this->getLogin($method)) && $method != 'anon' ? $this->getLogin('user') : $this->getLogin($method);
 		$bind['pass'] = is_null($this->getPassword($method)) && $method != 'anon' ? $this->getPassword('user') : $this->getPassword($method);
 
-		if ($method == 'anon' && $bind['id'])
-			debug_dump_backtrace('Anon should not have an id',1);
-
 		# If our bind id is still null, we are not logged in.
 		if (is_null($bind['id']) && $method != 'anon')
 			return null;
@@ -255,28 +252,17 @@ class ldap extends DS {
 
 		# Get the userDN from the username.
 		if (! is_null($user)) {
-			if ($method == 'user') {
-				# If login,attr is set to DN, then user should be a DN
-				if ($this->getValue('login','attr') == 'dn')
-					$userDN = $user;
-				else
-					$userDN = $this->getLoginID($user,'anon');
-
-				if (! $userDN)
-					return false;
-
-			} elseif (is_dn_string($user)) {
+			# If login,attr is set to DN, then user should be a DN
+			if ($this->getValue('login','attr') == 'dn')
 				$userDN = $user;
+			else
+				$userDN = $this->getLoginID($user,'anon');
 
-			# Invalid User, so we'll blank out the username/password
-			} else {
-				$userDN = '';
-				$pass = '';
-				$method = 'anon';
-			}
+			if (! $userDN)
+				return false;
 
 		} else {
-			if ($method == 'user') {
+			if (in_array($method,array('user','anon'))) {
 				$method = 'anon';
 				$userDN = '';
 				$pass = '';

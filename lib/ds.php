@@ -146,6 +146,13 @@ abstract class DS {
 	public function getLogin($method=null) {
 		$method = $this->getMethod($method);
 
+		# For anonymous binds
+		if ($method == 'anon')
+			if (isset($_SESSION['USER'][$this->index][$method]['name']))
+				return '';
+			else
+				return null;
+
 		switch ($this->getAuthType()) {
 			case 'config':
 				if (! isset($_SESSION['USER'][$this->index][$method]['name']))
@@ -203,8 +210,12 @@ abstract class DS {
 	protected function getPassword($method=null) {
 		$method = $this->getMethod($method);
 
+		# For anonymous binds
 		if ($method == 'anon')
-			return '';
+			if (isset($_SESSION['USER'][$this->index][$method]['name']))
+				return '';
+			else
+				return null;
 
 		switch ($this->getAuthType()) {
 			case 'config':
@@ -357,22 +368,40 @@ abstract class DS {
 	 * @return string Connection Method
 	 */
 	protected function getMethod($method=null) {
-		static $CACHE = null;
+		static $CACHE = array();
 
 		# Immediately return if method is set.
 		if (! is_null($method))
 			return $method;
 
 		# If we have been here already, then return our result
-		if (! is_null($CACHE))
-			return $CACHE;
+		if (isset($CACHE[$this->index]) && ! is_null($CACHE))
+			return $CACHE[$this->index];
 
-		$CACHE = 'anon';
+		$CACHE[$this->index] = 'anon';
 
 		if ($this->isLoggedIn('user'))
-			$CACHE = 'user';
+			$CACHE[$this->index] = 'user';
 
-		return $CACHE;
+		return $CACHE[$this->index];
+	}
+
+	/**
+	 * This method should be overridden in application specific ds files
+	 */
+	public function isSessionValid() {
+		return true;
+	}
+
+	/**
+	 * Return the time left in seconds until this connection times out. If there is not timeout,
+	 * this function will return null.
+	 */
+	public function inactivityTime() {
+		if ($this->isLoggedIn() && ! in_array($this->getAuthType(),array('config','http')))
+			return time()+($this->getValue('login','timeout')*60);
+		else
+			return null;
 	}
 }
 
