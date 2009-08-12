@@ -163,16 +163,17 @@ app_session_start();
 # See if we have a session, we can then get our theme out
 $app['theme'] = 'default';
 if (isset($_SESSION[APPCONFIG]))
-    if (is_dir(realpath(sprintf('images/%s',$_SESSION[APPCONFIG]->getValue('appearance','theme'))))
+	if (is_dir(realpath(sprintf('images/%s',$_SESSION[APPCONFIG]->getValue('appearance','theme'))))
 		&& is_file(realpath(sprintf('css/%s/%s',$_SESSION[APPCONFIG]->getValue('appearance','theme'),$_SESSION[APPCONFIG]->getValue('appearance','stylesheet')))))
 
-	    $app['theme'] = $_SESSION[APPCONFIG]->getValue('appearance','theme');
+		$app['theme'] = $_SESSION[APPCONFIG]->getValue('appearance','theme');
 
 define('CSSDIR',sprintf('css/%s',$app['theme']));
 define('IMGDIR',sprintf('images/%s',$app['theme']));
 
 # Initialise the hooks
-require_once LIBDIR.'hooks.php';
+if (file_exists(LIBDIR.'hooks.php'))
+	require_once LIBDIR.'hooks.php';
 
 # If we get here, and $_SESSION[APPCONFIG] is not set, then redirect the user to the index.
 if (isset($_SERVER['SERVER_SOFTWARE']) && ! isset($_SESSION[APPCONFIG])) {

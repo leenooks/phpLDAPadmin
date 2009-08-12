@@ -32,6 +32,16 @@ class Config {
 		$this->custom = new stdClass;
 		$this->default = new stdClass;
 
+		/*
+		 * What to do after entry creation :
+		 * 2 : display the creation form again
+		 * 1 : display the new created entry
+		 * 0 : display the choice between 1 and 2
+		 */
+		$this->default->appearance['action_after_creation'] = array(
+			'desc'=>'Display the new created entry',
+			'default'=>1);
+
 		## Appearance Attributes
 		/** Anonymous implies read only
 		 * Set to true if you want LDAP data to be displayed read-only (without input fields)
@@ -59,13 +69,13 @@ class Config {
 			'desc'=>'Show the control as icons or text',
 			'default'=>false);
 
-		$this->default->appearance['date'] = array(
-			'desc'=>'Date format whenever dates are shown',
-			'default'=>'%A %e %B %Y');
-
 		$this->default->appearance['custom_templates_only'] = array(
 			'desc'=>'Only display the custom templates.',
 			'default'=>false);
+
+		$this->default->appearance['date'] = array(
+			'desc'=>'Date format whenever dates are shown',
+			'default'=>'%A %e %B %Y');
 
 		$this->default->appearance['date_attrs'] = array(
 			'desc'=>'Array of attributes that should show a jscalendar',
@@ -94,26 +104,6 @@ class Config {
 		$this->default->appearance['hide_debug_info'] = array(
 			'desc'=>'Hide the features that may provide sensitive debugging information to the browser',
 			'default'=>true);
-
-		$this->default->appearance['rdn_all_attrs'] = array(
-			'desc'=>'Whether to show all attributes in the RDN chooser, or just the required ones',
-			'default'=>true);
-
-		$this->default->appearance['readonly_attrs'] = array(
-			'desc'=>'Mark these attributes as readonly',
-			'default'=>array());
-
-		$this->default->appearance['readonly_attrs_exempt'] = array(
-			'desc'=>'Group DN, where membership will exempt the users from readonly attrs',
-			'default'=>null);
-
-		$this->default->appearance['remoteurls'] = array(
-			'desc'=>'Whether to include renders for remote URLs',
-			'default'=>true);
-
-		$this->default->appearance['timezone'] = array(
-			'desc'=>'Define our timezone, if not defined in php.ini',
-			'default'=>null);
 
 		/** Language
 		 * The language setting. If you set this to 'auto', phpLDAPadmin will
@@ -157,13 +147,29 @@ class Config {
 			'desc'=>'Obfuscate the display of passwords',
 			'default'=>true);
 
-		$this->default->appearance['show_clear_password'] = array(
-			'desc'=>'Whether to show clear passwords if we dont obfuscate them',
-			'default'=>false);
-
 		$this->default->appearance['page_title'] = array(
 			'desc'=>'Change the page title to this text',
 			'default'=>'');
+
+		$this->default->appearance['rdn_all_attrs'] = array(
+			'desc'=>'Whether to show all attributes in the RDN chooser, or just the required ones',
+			'default'=>true);
+
+		$this->default->appearance['readonly_attrs'] = array(
+			'desc'=>'Mark these attributes as readonly',
+			'default'=>array());
+
+		$this->default->appearance['readonly_attrs_exempt'] = array(
+			'desc'=>'Group DN, where membership will exempt the users from readonly attrs',
+			'default'=>null);
+
+		$this->default->appearance['remoteurls'] = array(
+			'desc'=>'Whether to include renders for remote URLs',
+			'default'=>true);
+
+		$this->default->appearance['show_clear_password'] = array(
+			'desc'=>'Whether to show clear passwords if we dont obfuscate them',
+			'default'=>false);
 
 		$this->default->appearance['show_hints'] = array(
 			'desc'=>'Show helpful hints',
@@ -172,16 +178,6 @@ class Config {
 		$this->default->appearance['show_top_create'] = array(
 			'desc'=>'Show a additional create link on the top of the list if there are more than 10 entries',
 			'default'=>true);
-
-		/*
-		 * What to do after entry creation :
-		 * 2 : display the creation form again
-		 * 1 : display the new created entry
-		 * 0 : display the choice between 1 and 2
-		 */
-		$this->default->appearance['action_after_creation'] = array(
-			'desc'=>'Display the new created entry',
-			'default'=>1);
 
 		$this->default->appearance['show_schema_link'] = array(
 			'desc'=>'Show the schema link for each attribute',
@@ -198,6 +194,14 @@ class Config {
 		$this->default->appearance['theme'] = array(
 			'desc'=>'Which theme to use',
 			'default'=>'default');
+
+		$this->default->appearance['timezone'] = array(
+			'desc'=>'Define our timezone, if not defined in php.ini',
+			'default'=>null);
+
+		$this->default->appearance['tree'] = array(
+			'desc'=>'Class name which inherits from Tree class and implements the draw() method',
+			'default'=>'AJAXTree');
 
 		/** Tree display
 		 * An array of format strings used to display enties in the 
@@ -246,10 +250,6 @@ class Config {
 		$this->default->appearance['tree_filter'] = array(
 			'desc'=>'LDAP search filter for the tree entries',
 			'default'=>'(objectClass=*)');
-
-		$this->default->appearance['tree'] = array(
-			'desc'=>'Class name which inherits from Tree class and implements the draw() method',
-			'default'=>'AJAXTree');
 
 		## Caching
 		$this->default->cache['schema'] = array(
@@ -482,6 +482,21 @@ class Config {
 		$this->default->session['cookie_time'] = array(
 			'desc'=>'Time in seconds for the life of cookies',
 			'default'=>0);
+
+		/**
+		 * Session Menu
+		 */
+		$this->default->menu['session'] = array(
+			'desc'=>'Menu items when logged in.',
+			'default'=>array(
+				'schema'=>true,
+				'search'=>true,
+				'refresh'=>true,
+				'server_info'=>true,
+				'monitor'=>true,
+				'import'=>true,
+				'export'=>true
+			));
 
 		## Password Generation
 		$this->default->password['length'] = array(

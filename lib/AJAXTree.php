@@ -24,9 +24,9 @@ class AJAXTree extends HTMLTree {
 	 * @param boolean $first_child is the first child entry, which is normally the "Create New Entry" option
 	 * @param boolean $last_child is the last child entry, which is normally the "Create New Entry" option
 	 */
-	protected function draw_dn($dn,$level,$first_child=true,$last_child=true) {
+	protected function draw_item($item,$level,$first_child=true,$last_child=true) {
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s,%s,%s,%s)',33,__FILE__,__LINE__,__METHOD__,$dn,$level,$first_child,$last_child);
+			debug_log('Entered with (%s,%s,%s,%s)',33,__FILE__,__LINE__,__METHOD__,$item,$level,$first_child,$last_child);
 
 		$server = $this->getServer();
 
@@ -46,12 +46,12 @@ class AJAXTree extends HTMLTree {
 		$level = strlen($code);
 
 		# Get entry to display as node
-		$entry = $this->getEntry($dn);
+		$entry = $this->getEntry($item);
 
 		# If the entry doesnt exist, we'll add it.
 		if (! $entry) {
-			$this->addEntry($dn);
-			$entry = $this->getEntry($dn);
+			$this->addEntry($item);
+			$entry = $this->getEntry($item);
 		}
 
 		# If the entry doesnt exist in the server, then return here with an empty string.
@@ -59,7 +59,7 @@ class AJAXTree extends HTMLTree {
 			return '';
 
 		# Get our children.
-		$child_count = $this->readChildrenNumber($dn);
+		$child_count = $this->readChildrenNumber($item);
 
 		$nb = 0;
 		if ($first_child)
@@ -90,12 +90,12 @@ class AJAXTree extends HTMLTree {
 		$new_code = array('1','1','0','0');
 
 		# Links
-		$parms['openclose'] = htmlspecialchars(sprintf('server_id=%s&dn=%s&code=%s%s',$this->getServerID(),rawurlencode($dn),$code,$new_code[$nb]));
-		$parms['edit'] = htmlspecialchars(sprintf('cmd=template_engine&server_id=%s&dn=%s',$this->getServerID(),rawurlencode($dn)));
+		$parms['openclose'] = htmlspecialchars(sprintf('server_id=%s&dn=%s&code=%s%s',$this->getServerID(),rawurlencode($item),$code,$new_code[$nb]));
+		$parms['edit'] = htmlspecialchars(sprintf('cmd=template_engine&server_id=%s&dn=%s',$this->getServerID(),rawurlencode($item)));
 		$href = sprintf('cmd.php?%s',$parms['edit']);
 
 		# Each node has a unique id based on dn
-		$node_id = sprintf('node%s',base64_encode(sprintf('%s-%s',$server->getIndex(),$dn)));
+		$node_id = sprintf('node%s',base64_encode(sprintf('%s-%s',$server->getIndex(),$item)));
 		$node_id = str_replace('=','_',$node_id);
 
 		if ($level == 0)
@@ -119,12 +119,12 @@ class AJAXTree extends HTMLTree {
 			echo '</a>';
 		}
 
-		printf('<a href="%s" onclick="return displayAJ(\'BODY\',\'%s\',\'%s\');" title="%s" >',$href,$parms['edit'],_('Retrieving DN'),htmlspecialchars($dn));
+		printf('<a href="%s" onclick="return displayAJ(\'BODY\',\'%s\',\'%s\');" title="%s" >',$href,$parms['edit'],_('Retrieving DN'),htmlspecialchars($item));
 		printf('<span class="dnicon"><img align="top" border="0" class="imgs" id="jt%sfolder" src="%s/%s" alt="->" /></span>',$node_id,IMGDIR,$entry->getIcon($server));
 		echo '</a>';
 
 		echo '&nbsp;';
-		printf('<a href="%s" onclick="return displayAJ(\'BODY\',\'%s\',\'%s\');" title="%s" class="phplm">',$href,$parms['edit'],_('Retrieving DN'),htmlspecialchars($dn));
+		printf('<a href="%s" onclick="return displayAJ(\'BODY\',\'%s\',\'%s\');" title="%s" class="phplm">',$href,$parms['edit'],_('Retrieving DN'),htmlspecialchars($item));
 		echo $this->get_formatted_dn($entry,$level-1);
 		echo ($child_count ? (sprintf(' (%s%s)',$child_count,($entry->isSizeLimited() ? '+' : ''))) : '');
 		echo '</a>';
@@ -170,7 +170,7 @@ class AJAXTree extends HTMLTree {
 			$last = ($i == (count($children)-1)) && (! $last_child);
 
 			if (is_object($children[$i]))
-				$this->draw_dn($children[$i]->getDN(),$code,$first,$last);
+				$this->draw_item($children[$i]->getDN(),$code,$first,$last);
 			else
 				echo '<br/>problem getting DN entry from ldap';
 

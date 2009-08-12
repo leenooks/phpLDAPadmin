@@ -53,6 +53,7 @@ if ($app['server']->getAuthType() == 'http') {
 		header('Status: 401 Unauthorized'); // http 1.1 method
 
 	return;
+
 # HTML Login Form
 } else {
 	echo '<form action="cmd.php" method="post" name="login_form">';

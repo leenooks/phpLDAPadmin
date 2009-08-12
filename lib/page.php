@@ -185,7 +185,7 @@ class page {
 			foreach (cmd_control_pane('main') as $cmddetails)
 				if ((isset($cmddetails['enable']) && trim($cmddetails['enable'])) || ! isset($cmddetails['enable'])) {
 					if (! $empty)
-								echo ' | ';
+						echo ' | ';
 
 					printf('<a %s>%s</a>',$cmddetails['link'],
 						$_SESSION[APPCONFIG]->getValue('appearance','control_icons') ? $cmddetails['image'] : $cmddetails['title']);

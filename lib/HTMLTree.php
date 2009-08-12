@@ -16,13 +16,13 @@
  * @see AJAXTree Tree
  */
 class HTMLTree extends Tree {
-
 	protected $javascript = '';
+
 	/**
 	 * Required ABSTRACT methods
 	 */
 	/**
- 	 * Displays the tree in HTML
+	 * Displays the tree in HTML
 	 *
 	 * @param boolean Only display the tree, or include the server name and menu items
 	 */
@@ -47,7 +47,7 @@ class HTMLTree extends Tree {
 				$this->draw_menu();
 
 				if ($server->getAuthType() != 'config')
-					$this->draw_logged_in_dn();
+					$this->draw_logged_in_user();
 				else
 					printf('<tr><td class="blank" colspan="%s">&nbsp;</td></tr>',$this->getDepth()+3);
 
@@ -110,7 +110,7 @@ class HTMLTree extends Tree {
 					return;
 
 				} else {
-					$this->draw_dn($base->getDN(),-1);
+					$this->draw_item($base->getDN(),-1);
 				}
 			}
 
@@ -122,7 +122,6 @@ class HTMLTree extends Tree {
 		# We are not logged in, draw a login... link.
 		} else {
 			switch ($server->getAuthType()) {
-
 				case 'http':
 				case 'session':
 					$this->draw_login_link();
@@ -173,13 +172,15 @@ class HTMLTree extends Tree {
 	 */
 	protected function draw_menu() {
 		$links = '';
-		$i = 0;
 
-		foreach (array('schema','search','refresh','server_info','monitor','import','export','logout') as $menu) {
-			$link = $this->get_menu_item($menu);
-			if ($link)
-				$links .= sprintf('<td class="server_links">%s</td>',$this->get_menu_item($menu));
-		}
+		if (is_array($_SESSION[APPCONFIG]->getValue('menu','session')))
+			foreach ($_SESSION[APPCONFIG]->getValue('menu','session') as $link => $title) {
+				if ($this->get_menu_item($link))
+					$links .= sprintf('<td class="server_links">%s</td>',$this->get_menu_item($link));
+			}
+
+		# Finally add our logout link.
+		$links .= sprintf('<td class="server_links">%s</td>',$this->get_logout_menu_item());
 
 		# Draw the quick-links below the server name:
 		if ($links) {
@@ -192,11 +193,11 @@ class HTMLTree extends Tree {
 	/**
 	 * Get the HTML for each tree menu option
 	 */
-	protected function get_menu_item($i) {
+	protected function get_menu_item($item) {
 		$server = $this->getServer();
 		$menu = array();
 
-		switch($i) {
+		switch($item) {
 			case 'schema':
 				if (! $_SESSION[APPCONFIG]->isCommandAvailable('script','schema'))
 					return '';
@@ -293,15 +294,6 @@ class HTMLTree extends Tree {
 
 				break;
 
-			case 'logout':
-				if (! $_SESSION[APPCONFIG]->isCommandAvailable('script','logout') || in_array($server->getAuthType(),array('config','http','proxy')))
-					return '';
-
-				$href = sprintf('cmd.php?cmd=logout&server_id=%s',$server->getIndex());
-
-				return sprintf('<a href="%s" title="%s"><img src="%s/%s" alt="%s" /><br />%s</a>',
-					htmlspecialchars($href),_('Logout of this server'),IMGDIR,'logout-big.png',_('logout'),_('logout'));
-
 			default:
 				return false;
 		}
@@ -316,10 +308,21 @@ class HTMLTree extends Tree {
 				$href_parms,$menu['title'],$server->getName(),IMGDIR,$menu['img'],$menu['name'],$menu['name']);
 	}
 
+	protected function get_logout_menu_item() {
+		$server = $this->getServer();
+		$href = sprintf('cmd.php?cmd=logout&server_id=%s',$server->getIndex());
+
+		if (! $_SESSION[APPCONFIG]->isCommandAvailable('script','logout') || in_array($server->getAuthType(),array('config','http','proxy')))
+			return '';
+		else
+			return sprintf('<a href="%s" title="%s"><img src="%s/%s" alt="%s" /><br />%s</a>',
+				htmlspecialchars($href),_('Logout of this server'),IMGDIR,'logout-big.png',_('logout'),_('logout'));
+	}
+
 	/**
-	 * Draw the Logged in User DN
+	 * Draw the Logged in User
 	 */
-	protected function draw_logged_in_dn() {
+	protected function draw_logged_in_user() {
 		$server = $this->getServer();
 
 		$logged_in_dn = $server->getLogin(null);
@@ -374,21 +377,20 @@ class HTMLTree extends Tree {
 	 *
 	 * @param dn $dn Current dn.
 	 * @param int $level Level to start drawing (start to -1)
-	 * @todo This function hasnt been tested with the new rewrite of PLA
 	 */
-	protected function draw_dn($dn,$level) {
+	protected function draw_item($item,$level) {
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s,%s)',33,__FILE__,__LINE__,__METHOD__,$dn,$level);
+			debug_log('Entered with (%s,%s)',33,__FILE__,__LINE__,__METHOD__,$item,$level);
 
 		$server = $this->getServer();
 
 		# Get entry to display as node
-		$entry = $this->getEntry($dn);
+		$entry = $this->getEntry($item);
 
 		# If the entry doesnt exist, we'll add it.
 		if (! $entry) {
-			$this->addEntry($dn);
-			$entry = $this->getEntry($dn);
+			$this->addEntry($item);
+			$entry = $this->getEntry($item);
 		}
 
 		# If the entry doesnt exist in the server, then return here with an empty string.
@@ -396,10 +398,10 @@ class HTMLTree extends Tree {
 			return;
 
 		# Get our children.
-		$child_count = $this->readChildrenNumber($dn);
+		$child_count = $this->readChildrenNumber($item);
 
-		$rdn = get_rdn($dn);
-		$dnENCODE = rawurlencode($dn);
+		$rdn = get_rdn($item);
+		$dnENCODE = rawurlencode($item);
 		$href['expand'] = htmlspecialchars(sprintf('cmd.php?cmd=expand&server_id=%s&dn=%s',$server->getIndex(),$dnENCODE));
 		$href['collapse'] = htmlspecialchars(sprintf('cmd.php?cmd=collapse&server_id=%s&dn=%s',$server->getIndex(),$dnENCODE));
 		$href['edit'] = htmlspecialchars(sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',$server->getIndex(),$dnENCODE));
@@ -420,7 +422,7 @@ class HTMLTree extends Tree {
 				printf('<td class="expander"><a href="%s"><img src="%s/plus.png" alt="+" /></a></td>',$href['expand'],IMGDIR);
 
 		printf('<td class="icon"><a href="%s" id="node_%s_%s"><img src="%s/%s" alt="img" /></a></td>',
-			$href['edit'],$server->getIndex(),preg_replace('/=/','_',base64_encode($dn)),IMGDIR,$entry->getIcon());
+			$href['edit'],$server->getIndex(),preg_replace('/=/','_',base64_encode($item)),IMGDIR,$entry->getIcon());
 
 		printf('<td class="phplm" width=100%% colspan="%s"><span style="white-space: nowrap;">',$this->getDepth()+3-$level);
 		printf('<a href="%s">%s</a>',$href['edit'],$this->get_formatted_dn($entry,$level));
@@ -441,7 +443,7 @@ class HTMLTree extends Tree {
 			}
 
 			foreach ($entry->getChildren() as $dnChildEntry)
-				$this->draw_dn($dnChildEntry,$level+1);
+				$this->draw_item($dnChildEntry,$level+1);
 
 			# Always draw the "create new" link at the bottom of the listing
 			if (! $server->isReadOnly() && ! $entry->isLeaf() && $this->getServer()->isShowCreateEnabled()) {
@@ -450,7 +452,7 @@ class HTMLTree extends Tree {
 		}
 
 		if (DEBUG_ENABLED)
-			debug_log('Leaving (%s,%s)',33,__FILE__,__LINE__,__METHOD__,$dn,$level);
+			debug_log('Leaving (%s,%s)',33,__FILE__,__LINE__,__METHOD__,$item,$level);
 	}
 
 	protected function get_formatted_dn($entry,$level) {
@@ -481,13 +483,9 @@ class HTMLTree extends Tree {
 
 	/**
 	 * Draw login link
-	 * @todo change the determination of $recently_timed_out_servers
 	 */
 	protected function draw_login_link() {
-		global $recently_timed_out_servers;
-
 		$server = $this->getServer();
-
 		$href_parm = htmlspecialchars(sprintf('cmd=%s&server_id=%s',get_custom_file($server->getIndex(),'login_form',''),$server->getIndex()));
 
 		echo '<tr class="option"><td class="spacer"></td>';
@@ -507,11 +505,6 @@ class HTMLTree extends Tree {
 
 		printf('<tr><td class="blank" colspan="%s">&nbsp;</td>',$this->getDepth()+3);
 		printf('<tr><td class="blank" colspan="%s">&nbsp;</td>',$this->getDepth()+3);
-
-		# If the server recently timed out display the message
-		if (is_array($recently_timed_out_servers) && in_array($server->getIndex(),$recently_timed_out_servers))
-			printf('<tr><td class="spacer"></td><td colspan="%s" class="links">%s</td></tr>',
-				$this->getDepth()+3-1,_('(Session timed out. Automatically logged out.)'));
 	}
 
 	/**
@@ -525,7 +518,7 @@ class HTMLTree extends Tree {
 		}
 	}
 
-	/*
+	/**
 	 * Work out how deep the "opened" tree is.
 	 */
 	public function getDepth() {

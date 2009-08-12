@@ -10,7 +10,7 @@
  */
 
 /** The session ID that this application will use for all sessions */
-define('APP_SESSION_ID','APPSESSID');
+define('APP_SESSION_ID',md5(app_name()));
 /** Enables session paranoia, which causes SIDs to change each page load (EXPERIMENTAL!) */
 define('app_session_id_paranoid', false);
 /** Flag to indicate whether the session has already been initialized (this constant gets stored in $_SESSION) */
