@@ -608,20 +608,26 @@ class PageRender extends Visitor {
 		printf('<small>[%s]</small>',_('Binary Value'));
 	}
 
+	protected function drawFormReadOnlyValueBinaryAttribute($attribute,$i) {
+		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
+
+		$this->draw('CurrentValue',$attribute,$i);
+		echo '<br/><br/>';
+
+		$href = sprintf('download_binary_attr.php?server_id=%s&dn=%s&attr=%s&index=%s',
+		$this->getServerID(),rawurlencode($this->template->getDN()),$attribute->getName(),$i);
+
+		printf('<a href="%s"><img src="%s/save.png" alt="Save" /> %s</a>',
+			htmlspecialchars($href),IMGDIR,_('download value'));
+
+		echo '<br/>';
+	}
+
 	protected function drawFormReadWriteValueBinaryAttribute($attribute,$i) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
 		if ($attribute->getValue($i)) {
-			$this->draw('CurrentValue',$attribute,$i);
-			echo '<br/><br/>';
-
-			$href = sprintf('download_binary_attr.php?server_id=%s&dn=%s&attr=%s&index=%s',
-				$this->getServerID(),rawurlencode($this->template->getDN()),$attribute->getName(),$i);
-
-			printf('<a href="%s"><img src="%s/save.png" alt="Save" /> %s</a>',
-				htmlspecialchars($href),IMGDIR,_('download value'));
-
-			echo '<br/>';
+			$this->draw('FormReadOnlyValue',$attribute,$i);
 
 			if (! $attribute->isReadOnly() && $_SESSION[APPCONFIG]->isCommandAvailable('script','delete_attr'))
 				printf('<a href="javascript:deleteAttribute(\'%s\',\'%s\',\'%s\');" style="color:red;"><img src="%s/trash.png" alt="Trash" /> %s</a>',
