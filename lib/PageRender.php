@@ -606,6 +606,9 @@ class PageRender extends Visitor {
 
 	final protected function drawCurrentValueBinaryAttribute($attribute,$i) {
 		printf('<small>[%s]</small>',_('Binary Value'));
+
+		if (in_array($attribute->getName(),array('objectsid')))
+			printf('<small> (%s)</small>', binSIDtoText($attribute->getValue(0)));
 	}
 
 	protected function drawFormReadOnlyValueBinaryAttribute($attribute,$i) {

@@ -1979,8 +1979,6 @@ function ldap_error_msg($msg,$errnum) {
  *                fixed_width, fixed_height, img_opts.
  */
 function draw_jpeg_photo($server,$dn,$attr_name='jpegphoto',$index,$draw_delete_buttons=false,$options=array()) {
-	global $app;
-
 	if (DEBUG_ENABLED)
 		debug_log('Entered with (%s,%s,%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
 			is_object($server),$dn,$attr_name,$index,$draw_delete_buttons,$img_html_attrs);
