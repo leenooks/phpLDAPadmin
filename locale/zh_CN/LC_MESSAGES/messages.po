@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-07-21 12:24+0000\n"
+"X-Launchpad-Export-Date: 2009-08-13 11:56+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../../lib/HTMLTree.php:507
@@ -3573,8 +3573,13 @@ msgstr ""
 msgid "with "
 msgstr "同 "
 
-#~ msgid "equals"
-#~ msgstr "等于"
+#~ msgid ""
+#~ "Your config.php specifies an invalid value for $default_search_display: %s. "
+#~ "Please fix it"
+#~ msgstr "你的config.php 给$default_search_display指定了一个非法的值： %s，请更正"
+
+#~ msgid "Create a new entry on"
+#~ msgstr "创建新条目到"
 
 #~ msgid "View"
 #~ msgstr "查看"
@@ -3610,6 +3615,11 @@ msgstr "同 "
 #~ msgid "Redirecting..."
 #~ msgstr "重定向..."
 
+#~ msgid ""
+#~ "Your config specifies a handler of \"%s\" for this template but this file is "
+#~ "not readable because the permissions are too strict."
+#~ msgstr "你在配置中指定了用于该样板的\"%s\"的手柄，但是这个文件因为禁止权限太严格而不可读。"
+
 #~ msgid "Relative Distinguished Name"
 #~ msgstr "Relative Distinguished Name（相对标识名）"
 
@@ -3624,6 +3634,9 @@ msgstr "同 "
 
 #~ msgid "Search performed by phpLDAPadmin in"
 #~ msgstr "phpLDAPadmin完成搜索，用时"
+
+#~ msgid "equals"
+#~ msgstr "等于"
 
 #~ msgid "starts with"
 #~ msgstr "开始于"
@@ -3778,19 +3791,6 @@ msgstr "同 "
 
 #~ msgid "Deletes not allowed in read only mode."
 #~ msgstr "在只读模式下不允许删除。"
-
-#~ msgid ""
-#~ "Your config.php specifies an invalid value for $default_search_display: %s. "
-#~ "Please fix it"
-#~ msgstr "你的config.php 给$default_search_display指定了一个非法的值： %s，请更正"
-
-#~ msgid "Create a new entry on"
-#~ msgstr "创建新条目到"
-
-#~ msgid ""
-#~ "Your config specifies a handler of \"%s\" for this template but this file is "
-#~ "not readable because the permissions are too strict."
-#~ msgstr "你在配置中指定了用于该样板的\"%s\"的手柄，但是这个文件因为禁止权限太严格而不可读。"
 
 #~ msgid "Using the"
 #~ msgstr "使用该"

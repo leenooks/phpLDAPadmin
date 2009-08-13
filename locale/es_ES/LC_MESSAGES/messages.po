@@ -10,7 +10,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-07-21 12:24+0000\n"
+"X-Launchpad-Export-Date: 2009-08-13 11:56+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../../lib/TemplateRender.php:101
@@ -3176,8 +3176,12 @@ msgstr "valores del atributo"
 msgid "view entries"
 msgstr "ver objetos"
 
-#~ msgid "equals"
-#~ msgstr "sea igual a"
+#~ msgid ""
+#~ "Your config.php specifies an invalid value for $default_search_display: %s. "
+#~ "Please fix it"
+#~ msgstr ""
+#~ "Su config.php especifica un valor no válido para $default_search_display: "
+#~ "%s. Por favor, arréglelo"
 
 #~ msgid "View"
 #~ msgstr "Ver"
@@ -3214,6 +3218,14 @@ msgstr "ver objetos"
 #~ msgid "Redirecting..."
 #~ msgstr "Redirigiendo..."
 
+#~ msgid ""
+#~ "Your config specifies a handler of \"%s\" for this template but this file is "
+#~ "not readable because the permissions are too strict."
+#~ msgstr ""
+#~ "Su configuración especifica un fichero \"%s\" para esta plantilla pero dicho "
+#~ "fichero no se puede leer debido a que sus permisos son demasiado "
+#~ "restrictivos."
+
 #~ msgid "Relative Distinguished Name"
 #~ msgstr "Nombre Distinguido Relativo (RDN)"
 
@@ -3228,6 +3240,9 @@ msgstr "ver objetos"
 
 #~ msgid "Search performed by phpLDAPadmin in"
 #~ msgstr "Búsqueda realizada por phpLDAPadmin en"
+
+#~ msgid "equals"
+#~ msgstr "sea igual a"
 
 #~ msgid "starts with"
 #~ msgstr "comience por"
@@ -3389,23 +3404,11 @@ msgstr "ver objetos"
 #~ msgid "Logged out successfully from server <b>%s</b>"
 #~ msgstr "Se ha desconectado del servidor <b>%s</b>"
 
+#~ msgid "User name"
+#~ msgstr "Nombre de usuario"
+
 #~ msgid "Deletes not allowed in read only mode."
 #~ msgstr "No se permiten borrados en modo de sólo lectura."
-
-#~ msgid ""
-#~ "Your config.php specifies an invalid value for $default_search_display: %s. "
-#~ "Please fix it"
-#~ msgstr ""
-#~ "Su config.php especifica un valor no válido para $default_search_display: "
-#~ "%s. Por favor, arréglelo"
-
-#~ msgid ""
-#~ "Your config specifies a handler of \"%s\" for this template but this file is "
-#~ "not readable because the permissions are too strict."
-#~ msgstr ""
-#~ "Su configuración especifica un fichero \"%s\" para esta plantilla pero dicho "
-#~ "fichero no se puede leer debido a que sus permisos son demasiado "
-#~ "restrictivos."
 
 #~ msgid "Using the"
 #~ msgstr "Usando la"
@@ -3518,6 +3521,3 @@ msgstr "ver objetos"
 
 #~ msgid "Confirm entry creation:"
 #~ msgstr "Confirmar creación de entrada:"
-
-#~ msgid "User name"
-#~ msgstr "Nombre de usuario"

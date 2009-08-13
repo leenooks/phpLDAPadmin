@@ -13,7 +13,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-07-21 12:24+0000\n"
+"X-Launchpad-Export-Date: 2009-08-13 11:56+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../../lib/HTMLTree.php:507
@@ -3712,8 +3712,89 @@ msgstr ""
 msgid "with "
 msgstr "と "
 
-#~ msgid "equals"
-#~ msgstr "に一致"
+#~ msgid "Relative Distinguished Name"
+#~ msgstr "関連識別名"
+
+#~ msgid "RDN"
+#~ msgstr "RDN"
+
+#~ msgid "(example: cn=MyNewPerson)"
+#~ msgstr "(例: cn=MyNewPerson)"
+
+#~ msgid "using template"
+#~ msgstr "使用中のテンプレート"
+
+#~ msgid "Maximum file size: %s"
+#~ msgstr "最大ファイルサイズ: %s"
+
+#~ msgid ""
+#~ "Note: You will get an \"inappropriate matching\" error if you have not setup "
+#~ "an EQUALITY rule on your LDAP server for this attribute."
+#~ msgstr ""
+#~ "注: LDAP サーバーでこの属性の EQUALITY ルールをセットアップしていなかった場合、\"inappropriate matching\" "
+#~ "エラーを取得するでしょう。"
+
+#~ msgid "Copy successful! Would you like to "
+#~ msgstr "コピー成功! Would you like to "
+
+#~ msgid "Redirecting..."
+#~ msgstr "リダイレクト中..."
+
+#~ msgid ""
+#~ "This template has been disabled, possibly due to missing schema or missing "
+#~ "template XML fields."
+#~ msgstr "このテンプレートは、恐らくスキーマか見当たらないか、テンプレート XML 項目が見当たらないため、無効になりました。"
+
+#~ msgid "Logged out successfully from server <b>%s</b>"
+#~ msgstr "サーバー <b>%s</b> からログアウトに成功しました"
+
+#~ msgid "Click here to go to the login form"
+#~ msgstr "ここをクリックするとログインフォームに移動します"
+
+#~ msgid "Searching..."
+#~ msgstr "検索中..."
+
+#~ msgid "Base DN: "
+#~ msgstr "ベース DN: "
+
+#~ msgid "Search performed by phpLDAPadmin in"
+#~ msgstr "phpLDadmin で検索を実行"
+
+#~ msgid "Next Page"
+#~ msgstr "次のページ"
+
+#~ msgid "Unsafe file name: "
+#~ msgstr "安全でないファイル名: "
+
+#~ msgid "No such file: "
+#~ msgstr "ファイルがありません: "
+
+#~ msgid "Description: %s <br /><br />"
+#~ msgstr "説明: %s <br /><br />"
+
+#~ msgid "Error number: %s<br /><br />"
+#~ msgstr "エラー番号: %s<br /><br />"
+
+#~ msgid "Description: (no description available)<br />"
+#~ msgstr "説明: (利用可能な説明がありませんでした)<br />"
+
+#~ msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
+#~ msgstr "これは phpLDAPadmin の不都合ですか? もしそうなら <a href='%s'>報告</a> してください。"
+
+#~ msgid ""
+#~ "Your config.php specifies an invalid value for $default_search_display: %s. "
+#~ "Please fix it"
+#~ msgstr ""
+#~ "config.php にて $default_search_display: %s の無効な値が指定されています。それを修正してください。"
+
+#~ msgid "Could not bind to the LDAP server."
+#~ msgstr "LDAP サーバーに接続できませんでした。"
+
+#~ msgid "Click to expand this branch."
+#~ msgstr "クリックするとこの枝を展開します。"
+
+#~ msgid "Create a new entry on"
+#~ msgstr "エントリを新規作成 対象:"
 
 #~ msgid "View"
 #~ msgstr "閲覧"
@@ -3733,36 +3814,20 @@ msgstr "と "
 #~ msgid "Delete all"
 #~ msgstr "すべて削除"
 
-#~ msgid ""
-#~ "Note: You will get an \"inappropriate matching\" error if you have not setup "
-#~ "an EQUALITY rule on your LDAP server for this attribute."
-#~ msgstr ""
-#~ "注: LDAP サーバーでこの属性の EQUALITY ルールをセットアップしていなかった場合、\"inappropriate matching\" "
-#~ "エラーを取得するでしょう。"
+#~ msgid "Warning: missing template file, "
+#~ msgstr "警告: テンプレートファイルがありません。 "
 
-#~ msgid "Copy successful! Would you like to "
-#~ msgstr "コピー成功! Would you like to "
+#~ msgid "Using default."
+#~ msgstr "デフォルトを使います。"
 
-#~ msgid "using template"
-#~ msgstr "使用中のテンプレート"
+#~ msgid "You must choose a template"
+#~ msgstr "テンプレートを選ばなければなりません"
 
-#~ msgid "Redirecting..."
-#~ msgstr "リダイレクト中..."
+#~ msgid "%s is an invalid template"
+#~ msgstr "%s は無効なテンプレート"
 
-#~ msgid "Relative Distinguished Name"
-#~ msgstr "関連識別名"
-
-#~ msgid "RDN"
-#~ msgstr "RDN"
-
-#~ msgid "(example: cn=MyNewPerson)"
-#~ msgstr "(例: cn=MyNewPerson)"
-
-#~ msgid "Click here to go to the login form"
-#~ msgstr "ここをクリックするとログインフォームに移動します"
-
-#~ msgid "Search performed by phpLDAPadmin in"
-#~ msgstr "phpLDadmin で検索を実行"
+#~ msgid "equals"
+#~ msgstr "に一致"
 
 #~ msgid "starts with"
 #~ msgstr "で始まる"
@@ -3786,11 +3851,13 @@ msgstr "と "
 #~ msgid "ChangeLog"
 #~ msgstr "変更履歴"
 
-#~ msgid "Unsafe file name: "
-#~ msgstr "安全でないファイル名: "
+#~ msgid ""
+#~ "To donate funds to the phpLDAPadmin project, use one of the PayPal buttons "
+#~ "below."
+#~ msgstr "phpLDAPadmin プロジェクトに資金を寄贈するためには、PayPal ボタンのうちの 1 つを下に使用してください。"
 
-#~ msgid "No such file: "
-#~ msgstr "ファイルがありません: "
+#~ msgid "Donate %s"
+#~ msgstr "%s を寄贈"
 
 #~ msgid ""
 #~ "You have enabled auto_uid_numbers for <b>%s</b> in your configuration,       "
@@ -3812,38 +3879,8 @@ msgstr "と "
 #~ "                         audo_uid_number_uid_pool_dn を指定していません。              "
 #~ "              続行する前にそれを指定してください"
 
-#~ msgid "Could not bind to the LDAP server."
-#~ msgstr "LDAP サーバーに接続できませんでした。"
-
-#~ msgid "Description: %s <br /><br />"
-#~ msgstr "説明: %s <br /><br />"
-
-#~ msgid "Error number: %s<br /><br />"
-#~ msgstr "エラー番号: %s<br /><br />"
-
-#~ msgid "Description: (no description available)<br />"
-#~ msgstr "説明: (利用可能な説明がありませんでした)<br />"
-
-#~ msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
-#~ msgstr "これは phpLDAPadmin の不都合ですか? もしそうなら <a href='%s'>報告</a> してください。"
-
-#~ msgid "Searching..."
-#~ msgstr "検索中..."
-
-#~ msgid "Logged out successfully from server <b>%s</b>"
-#~ msgstr "サーバー <b>%s</b> からログアウトに成功しました"
-
 #~ msgid "Deletes not allowed in read only mode."
 #~ msgstr "読み込み専用モードでは削除は許可されていません。"
-
-#~ msgid ""
-#~ "Your config.php specifies an invalid value for $default_search_display: %s. "
-#~ "Please fix it"
-#~ msgstr ""
-#~ "config.php にて $default_search_display: %s の無効な値が指定されています。それを修正してください。"
-
-#~ msgid "Create a new entry on"
-#~ msgstr "エントリを新規作成 対象:"
 
 #~ msgid "default template"
 #~ msgstr "デフォルトテンプレート"
@@ -3935,40 +3972,3 @@ msgstr "と "
 
 #~ msgid "Confirm entry creation:"
 #~ msgstr "エントリ作成の確認:"
-
-#~ msgid "Maximum file size: %s"
-#~ msgstr "最大ファイルサイズ: %s"
-
-#~ msgid ""
-#~ "This template has been disabled, possibly due to missing schema or missing "
-#~ "template XML fields."
-#~ msgstr "このテンプレートは、恐らくスキーマか見当たらないか、テンプレート XML 項目が見当たらないため、無効になりました。"
-
-#~ msgid "Base DN: "
-#~ msgstr "ベース DN: "
-
-#~ msgid "Next Page"
-#~ msgstr "次のページ"
-
-#~ msgid "Click to expand this branch."
-#~ msgstr "クリックするとこの枝を展開します。"
-
-#~ msgid "Warning: missing template file, "
-#~ msgstr "警告: テンプレートファイルがありません。 "
-
-#~ msgid "Using default."
-#~ msgstr "デフォルトを使います。"
-
-#~ msgid "You must choose a template"
-#~ msgstr "テンプレートを選ばなければなりません"
-
-#~ msgid "%s is an invalid template"
-#~ msgstr "%s は無効なテンプレート"
-
-#~ msgid ""
-#~ "To donate funds to the phpLDAPadmin project, use one of the PayPal buttons "
-#~ "below."
-#~ msgstr "phpLDAPadmin プロジェクトに資金を寄贈するためには、PayPal ボタンのうちの 1 つを下に使用してください。"
-
-#~ msgid "Donate %s"
-#~ msgstr "%s を寄贈"
