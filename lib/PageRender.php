@@ -236,7 +236,9 @@ class PageRender extends Visitor {
 					$enc = $_REQUEST[$matchall[1][0]][$passwordattr][$i];
 
 				} else
-					$enc = strtolower($args[0]);
+					$enc = $args[0];
+
+				$enc = strtolower($enc);
 
 				switch ($enc) {
 					case 'lm':

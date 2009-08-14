@@ -2401,6 +2401,25 @@ function deleteAttribute(attrName,friendlyName,i)
 		echo '</select>';
 	}
 
+	protected function drawDefaultHelperSambaPasswordAttribute($attribute,$i) {
+		$id = 'enc';
+
+		if (! $attribute->getPostValue())
+			printf('<input type="hidden" name="post_value[%s][]" value="%s"/>',$attribute->getName(),$i);
+
+		switch ($attribute->getName()) {
+			case 'sambalmpassword' : $enc = 'lm'; break;
+			case 'sambantpassword' : $enc = 'nt'; break;
+
+			default:
+				return '';
+		}
+
+		printf('<input type="hidden" name="%s[%s][%s]" id="%s_%s_%s" value="%s">',
+			$id,htmlspecialchars($attribute->getName()),$i,
+			$id,htmlspecialchars($attribute->getName()),$i,$enc);
+	}
+
 	/** SELECTION ATTRIBUTE RENDERING **/
 
 	protected function drawIconSelectionAttribute($attribute,$val) {

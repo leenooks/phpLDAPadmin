@@ -14,6 +14,6 @@
  * @package phpLDAPadmin
  * @subpackage Templates
  */
-class SambaPasswordAttribute extends Attribute {
+class SambaPasswordAttribute extends PasswordAttribute {
 }
 ?>
