@@ -35,6 +35,7 @@ class Template extends xmlTemplate {
 	private $visible = true;
 	# Is this template valid after parsing the XML file
 	private $invalid = false;
+	private $invalid_admin = false;
 	private $invalid_reason;
 	# The TEMPLATE structural objectclasses
 	protected $structural_oclass = array();
@@ -166,7 +167,7 @@ class Template extends xmlTemplate {
 					$this->$xml_key = $xml_value;
 
 					if ($xml_key == 'invalid' && $xml_value)
-						$this->invalid_reason = _('Disabled by XML configuration');
+						$this->setInvalid(_('Disabled by XML configuration'),true);
 			}
 		}
 
@@ -909,9 +910,10 @@ class Template extends xmlTemplate {
 	 *
 	 * @param string Message indicating the reason the template has been invalidated
 	 */
-	private function setInvalid($msg) {
+	public function setInvalid($msg,$admin=false) {
 		$this->invalid = true;
 		$this->invalid_reason = $msg;
+		$this->invalid_admin = $admin;
 	}
 
 	/**
@@ -924,6 +926,10 @@ class Template extends xmlTemplate {
 			return $this->invalid_reason;
 		else
 			return false;
+	}
+
+	public function isAdminDisabled() {
+		return $this->invalid_admin;
 	}
 
 	/**

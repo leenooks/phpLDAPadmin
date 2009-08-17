@@ -554,6 +554,24 @@ class TemplateRender extends PageRender {
 	}
 
 	/**
+	 * Return the container for this mode
+	 */
+	protected function getModeContainer() {
+		switch ($this->getMode()) {
+			case 'creation':
+				return $this->container;
+				break;
+
+			case 'modification':
+				return $this->dn;
+				break;
+
+			default:
+				return null;
+		}
+	}
+
+	/**
 	 * Is the default template enabled?
 	 */
 	protected function haveDefaultTemplate() {
@@ -584,7 +602,7 @@ class TemplateRender extends PageRender {
 		}
 
 		$avail_templates = $this->getTemplates();
-		$templates = $avail_templates->getTemplates($this->getMode());
+		$templates = $avail_templates->getTemplates($this->getMode(),$this->getModeContainer());
 		printf('<center><h3>%s</h3></center>',$msg);
 
 		$href_parms = array_to_query_string($_GET,array('meth'));
@@ -611,11 +629,6 @@ class TemplateRender extends PageRender {
 			$i++;
 
 			$isInValid = $details->isInValid();
-
-			if (($regexp = $details->getRegExp())
-				&& (($this->getMode() == 'creation' && ! @preg_match('/'.$regexp.'/i',$this->container))
-					|| ($this->getMode() == 'modification' && ! @preg_match('/'.$regexp.'/i',$this->dn))))
-				$isInValid = _('This template is not valid in this container');
 
 			# Balance the columns properly
 			if (($nb_templates % 2 == 0 && $i == intval($nb_templates / 2)) ||

@@ -123,6 +123,7 @@ class PageRender extends Visitor {
 	 * May be overloaded in other classes
 	 */
 	protected function getMode() {}
+	protected function getModeContainer() {}
 
 	/**
 	 * Process our <post> arguments from the templates
@@ -297,17 +298,17 @@ class PageRender extends Visitor {
 			return $this->template_id;
 
 		# If there are no defined templates
-		} elseif (count($templates->getTemplates($this->getMode())) <= 0) {
+		} elseif (count($templates->getTemplates($this->getMode(),$this->getModeContainer(),false)) <= 0) {
 			if (DEBUGTMP) printf('<font size=-2>%s:<u>%s</u></font><br />',__METHOD__,'Choosing the DEFAULT template, no other template applicable');
 
 			# Since getTemplate() returns a default template if the one we want doesnt exist, we can return $templates->getID(), it should be the default.
 			return $template->getID();
 
 		# If there is only 1 defined template, and no default available, then that is our template.
-		} elseif ((count($templates->getTemplates($this->getMode())) == 1) && ! $this->haveDefaultTemplate()) {
+		} elseif ((count($templates->getTemplates($this->getMode(),$this->getModeContainer(),true)) == 1) && ! $this->haveDefaultTemplate()) {
 			if (DEBUGTMP) printf('<font size=-2>%s:<u>%s</u></font><br />',__METHOD__,'AUTOMATIC choosing a template, only 1 template applicable');
 
-			$template = $templates->getTemplates($this->getMode());
+			$template = $templates->getTemplates($this->getMode(),$this->getModeContainer(),true);
 			$template = array_shift($template);
 			return $template->getID();
 

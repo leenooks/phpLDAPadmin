@@ -177,16 +177,24 @@ abstract class xmlTemplates {
 	 * This function should return a sorted list, as the array is built sorted.
 	 *
 	 * @param string Type of template, eg: creation, modification
+	 * @param boolean Exclude templates purposely disabled.
 	 * @return array List of templates of the type
 	 */
-	public function getTemplates($type=null) {
+	public function getTemplates($type=null,$container=null,$disabled=false) {
 		$result = array();
 
 		if (is_array($this->templates))
-			foreach ($this->templates as $template)
-				if ($template->isVisible())
+			foreach ($this->templates as $details) {
+
+				# Clone this, as we'll disable some templates, as a result of the container being requested.
+				$template = clone $details;
+				if (! is_null($container) && ($regexp = $template->getRegExp()) && (! @preg_match('/'.$regexp.'/i',$container)))
+					$template->setInvalid(_('This template is not valid in this container'),true);
+
+				if ($template->isVisible() && (! $disabled || ! $template->isAdminDisabled()))
 					if (is_null($type) || (! is_null($type) && $template->isType($type)))
 						array_push($result,$template);
+			}
 
 		return $result;
 	}
