@@ -310,7 +310,12 @@ class PageRender extends Visitor {
 
 			$template = $templates->getTemplates($this->getMode(),$this->getModeContainer(),true);
 			$template = array_shift($template);
-			return $template->getID();
+
+			# Dont render the only available template if it is invalid.
+			if (! $template->isInvalid())
+				return $template->getID();
+			else
+				$this->drawTemplateChoice();
 
 		} else {
 			if (DEBUGTMP) printf('<font size=-2>%s:<u>%s</u></font><br />',__METHOD__,'SELECT a template to use.');
