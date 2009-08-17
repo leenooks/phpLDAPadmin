@@ -225,7 +225,8 @@ abstract class Tree {
 		$dnlowerNEW = $this->indexDN($dnNEW);
 
 		$this->entries[$dnlowerNEW] = $this->entries[$dnlowerOLD];
-		unset($this->entries[$dnlowerOLD]);
+		if ($dnlowerOLD != $dnlowerNEW)
+			unset($this->entries[$dnlowerOLD]);
 		$this->entries[$dnlowerNEW]->rename($dnNEW);
 
 		# Update the parent's children
