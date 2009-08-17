@@ -145,6 +145,9 @@ $config->custom->commands['script'] = array(
 /* Disable the default template. */
 // $config->custom->appearance['disable_default_template'] = false;
 
+/* Hide the warnings for invalid objectClasses/attributes in templates. */
+// $config->custom->appearance['hide_template_warning'] = false;
+
 /* Configure what objects are shown in left hand tree */
 // $config->custom->appearance['tree_filter'] = '(objectclass=*)';
 

@@ -105,6 +105,10 @@ class Config {
 			'desc'=>'Hide the features that may provide sensitive debugging information to the browser',
 			'default'=>true);
 
+		$this->default->appearance['hide_template_warning'] = array(
+			'desc'=>'Hide template errors from being displayed',
+			'default'=>false);
+
 		/** Language
 		 * The language setting. If you set this to 'auto', phpLDAPadmin will
 		 * attempt to determine your language automatically. Otherwise, set

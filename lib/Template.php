@@ -94,7 +94,7 @@ class Template extends xmlTemplate {
 								if (is_object($soc) && ! in_array($soc->getName(),$objectclasses))
 									array_push($objectclasses,$soc->getName(false));
 
-								elseif (! is_object($soc))
+								elseif (! is_object($soc) && ! $_SESSION[APPCONFIG]->getValue('appearance','hide_template_warning'))
 									system_message(array(
 										'title'=>_('Automatically removed objectClass from template'),
 										'body'=>sprintf('%s: <b>%s</b> %s',$this->getTitle(),$details,_('removed from template as it is not defined in the schema')),
@@ -1222,10 +1222,11 @@ class Template extends xmlTemplate {
 				&& (! in_array_ignore_case('extensibleobject',$this->getObjectClasses()))) {
 				unset($this->attributes[$index]);
 
-				system_message(array(
-					'title'=>_('Automatically removed attribute from template'),
-					'body'=>sprintf('%s: <b>%s</b> %s',$this->getTitle(),$attribute->getName(false),_('removed from template as it is not defined by an ObjectClass')),
-					'type'=>'warn'));
+				if (! $_SESSION[APPCONFIG]->getValue('appearance','hide_template_warning'))
+					system_message(array(
+						'title'=>_('Automatically removed attribute from template'),
+						'body'=>sprintf('%s: <b>%s</b> %s',$this->getTitle(),$attribute->getName(false),_('removed from template as it is not defined by an ObjectClass')),
+						'type'=>'warn'));
 			}
 	}
 
