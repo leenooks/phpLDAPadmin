@@ -253,7 +253,7 @@ class ldap extends DS {
 		# Get the userDN from the username.
 		if (! is_null($user)) {
 			# If login,attr is set to DN, then user should be a DN
-			if ($this->getValue('login','attr') == 'dn')
+			if (($this->getValue('login','attr') == 'dn') || $method != 'user')
 				$userDN = $user;
 			else
 				$userDN = $this->getLoginID($user,'anon');
