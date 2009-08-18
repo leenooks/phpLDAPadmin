@@ -87,7 +87,7 @@ class QueryRender extends PageRender {
 			echo '<td>';
 			echo '<select name="query">';
 			if ($this->haveDefaultTemplate())
-				printf('<option value="%s" %s>%s</option>','none','',('Custom Query'));
+				printf('<option value="%s" %s>%s</option>','none','',_('Custom Query'));
 
 			foreach ($templates->getTemplates() as $template)
 				printf('<option value="%s" %s>%s</option>',
@@ -104,9 +104,9 @@ class QueryRender extends PageRender {
 		echo '<select name="format" style="width: 200px">';
 
 		printf('<option value="list" %s>%s</option>',
-			$_SESSION[APPCONFIG]->getValue('search','display') == 'list' ? 'selected' : '',_('List'));
+			$_SESSION[APPCONFIG]->getValue('search','display') == 'list' ? 'selected' : '',_('list'));
 		printf('<option value="table" %s>%s</option>',
-			$_SESSION[APPCONFIG]->getValue('search','display') == 'table' ? 'selected' : '',_('Table'));
+			$_SESSION[APPCONFIG]->getValue('search','display') == 'table' ? 'selected' : '',_('table'));
 
 		echo '</select>';
 		echo '</td>';

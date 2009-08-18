@@ -807,7 +807,7 @@ class TemplateRender extends PageRender {
 
 				if ($this->template_id) {
 					$subtitle .= '<br />';
-					$subtitle .= sprintf('%s: <b>%s</b>',('Template'),$this->template->getID() != 'none' ? $this->template->getTitle() : _('Default'));
+					$subtitle .= sprintf('%s: <b>%s</b>',_('Template'),$this->template->getID() != 'none' ? $this->template->getTitle() : _('Default'));
 					if ($this->template->getName())
 						$subtitle .= sprintf(' (<b>%s</b>)',$this->template->getName(false));
 				}
@@ -821,7 +821,7 @@ class TemplateRender extends PageRender {
 
 				if ($this->template_id) {
 					$subtitle .= '<br />';
-					$subtitle .= sprintf('%s: <b>%s</b>',('Template'),$this->template->getID() != 'none' ? $this->template->getTitle() : _('Default'));
+					$subtitle .= sprintf('%s: <b>%s</b>',_('Template'),$this->template->getID() != 'none' ? $this->template->getTitle() : _('Default'));
 					if ($this->template->getName())
 						$subtitle .= sprintf(' (<b>%s</b>)',$this->template->getName(false));
 				}
