@@ -424,5 +424,10 @@ abstract class xmlTemplate {
 
 		return null;
 	}
+
+	/**
+	 * May be overloaded in other classes
+	 */
+	public function isAdminDisabled() {}
 }
 ?>
