@@ -117,7 +117,7 @@ class page {
 
 		# Style sheet.
 		printf('<link type="text/css" rel="stylesheet" href="%s" />',$this->_app['urlcss']);
-		printf('<link rel="shortcut icon" href="%s/favicon.ico" type="image/vnd.microsoft.icon" />',IMGDIR);
+		echo '<link rel="shortcut icon" href="images/favicon.ico" type="image/vnd.microsoft.icon" />';
 
 		if (defined('JSDIR')) {
 			printf('<link type="text/css" rel="stylesheet" media="all" href="%sjscalendar/calendar-blue.css" title="blue" />',JSDIR);
