@@ -133,7 +133,6 @@ class TreeItem {
 			return;
 
 		array_push($this->children,$dn);
-		usort($this->children,'pla_compare_dns');
 	}
 
 	/**

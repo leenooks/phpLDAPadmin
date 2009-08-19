@@ -167,8 +167,9 @@ abstract class Tree {
 		$server = $this->getServer();
 		$dnlower = $this->indexDN($dn);
 
-		if (! ($server->dnExists($dn)))
-			return;
+		# @todo Temporarily removed, some non-ascii char DNs that do exist, fail here for some reason?
+		#if (! ($server->dnExists($dn)))
+		#	return;
 
 		if (isset($this->entries[$dnlower]))
 			debug_dump_backtrace('Calling add entry to an entry that ALREADY exists?',1);
@@ -178,6 +179,9 @@ abstract class Tree {
 
 		$tree_factory = new TreeItem($server->getIndex(),$dn);
 		$tree_factory->setObjectClasses($server->getDNAttrValue($dn,'objectClass'));
+
+		if ((($isleaf = $server->getDNAttrValue($dn,'hassubordinates')) && ! strcasecmp($isleaf[0],'false')) || ! $isleaf)
+			$tree_factory->setLeaf();
 
 		$this->entries[$dnlower] = $tree_factory;
 

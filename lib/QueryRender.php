@@ -261,11 +261,13 @@ function hideall(key,except) {
 		echo "\n\n";
 
 		$this->drawBaseTabs();
+		$ado = $this->template->getAttrDisplayOrder();
 
 		switch(get_request('format','REQUEST',false,'table')) {
 			case 'list':
 
 				$counter = 0;
+
 				foreach ($this->template->results as $base => $results) {
 					if (! $show = get_request('show','REQUEST'))
 						$show = ($counter++ === 0 ? $this->getAjaxRef($base) : null);
@@ -303,7 +305,7 @@ function hideall(key,except) {
 							htmlspecialchars(dn_unescape($dn)));
 
 						# Iterate over each attribute for this entry
-						foreach (explode(',',$this->template->getAttrDisplayOrder()) as $attr) {
+						foreach (explode(',',$ado) as $attr) {
 							# Ignore DN, we've already displayed it.
 							if ($attr == 'dn')
 								continue;
@@ -387,7 +389,7 @@ function hideall(key,except) {
 					echo '<td>&nbsp;</td>';
 					echo '<td>&nbsp;</td>';
 
-					foreach (explode(',',$this->template->getAttrDisplayOrder()) as $attr) {
+					foreach (explode(',',$ado) as $attr) {
 						echo '<td>';
 						$this->draw('Name',$afattrs[$attr]);
 						echo '</td>';
@@ -418,7 +420,7 @@ function hideall(key,except) {
 							IMGDIR,get_icon($server->getIndex(),$dn));
 
 						# We'll clone our attribute factory attributes, since we need to add the values to them for rendering.
-						foreach (explode(',',$this->template->getAttrDisplayOrder()) as $attr) {
+						foreach (explode(',',$ado) as $attr) {
 							# If the entry is blank, we'll draw an empty box and continue.
 							if (! isset($dndetails[$attr])) {
 								echo '<td>&nbsp;</td>';
@@ -454,7 +456,7 @@ function hideall(key,except) {
 					if ($_SESSION[APPCONFIG]->getValue('mass','enabled')) {
 						printf('<tr class="%s">',++$counter%2 ? 'odd' : 'even',$counter);
 						echo '<td><input type="checkbox" name="allbox" value="1" onclick="CheckAll(1);" /></td>';
-						printf('<td colspan=%s>',2+count(explode(',',$this->template->getAttrDisplayOrder())));
+						printf('<td colspan=%s>',2+count(explode(',',$ado)));
 						echo '<select name="cmd" onChange="if (this.value) submit();" style="font-size: 12px">';
 						foreach ($mass_actions as $action => $display)
 							printf('<option value="%s">%s</option>',$display,$action);
