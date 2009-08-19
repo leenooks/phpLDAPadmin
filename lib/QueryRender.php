@@ -190,8 +190,14 @@ class QueryRender extends PageRender {
 		echo '<tr>';
 		printf('<td><acronym title="%s">%s</acronym></td>',_('Order by'),_('Order by'));
 		printf('<td><input type="text" name="orderby" id="orderby" style="width: 200px" value="%s" /></td>','');
+		echo '</tr>';
 
-		echo '</tr></table>';
+		echo '<tr>';
+		printf('<td><acronym title="%s">%s</acronym></td>',_('Set the search results to 0 to retrieve all available records'),_('Search Results'));
+		printf('<td><input type="text" name="size_limit" id="size_limit" style="width: 200px" value="%s" /></td>',$_SESSION[APPCONFIG]->getValue('search','size_limit'));
+		echo '</tr>';
+
+		echo '</table>';
 		echo '</fieldset>';
 		echo '</div>';
 		echo '</td>';
