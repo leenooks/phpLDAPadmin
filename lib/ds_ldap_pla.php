@@ -138,8 +138,8 @@ class ldap_pla extends ldap {
 	 * @return boolean True if the feature is enabled and false otherwise.
 	 */
 	function isShowCreateEnabled() {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with ()',17,__FILE__,__LINE__,__METHOD__);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		if (! $_SESSION[APPCONFIG]->isCommandAvailable('script','create'))
 			return false;
@@ -161,13 +161,16 @@ class ldap_pla extends ldap {
 	 * @return boolean
 	 */
 	function isLoginAttrEnabled() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if ((strcasecmp($this->getLoginAttr(),'dn') != 0) && trim($this->getLoginAttr()))
 			$return = true;
 		else
 			$return = false;
 
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (), Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$return);
+			debug_log('Returning (%s)',17,0,__FILE__,__LINE__,__METHOD__,$return);
 
 		return $return;
 	}
@@ -183,8 +186,8 @@ class ldap_pla extends ldap {
 	 * @return boolean
 	 */
 	function isLoginStringEnabled() {
-		if (DEBUG_ENABLED)
-			debug_log('login_attr is [%s]',80,__FILE__,__LINE__,__METHOD__,$this->getLoginAttr());
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		if (! strcasecmp($this->getLoginAttr(),'string'))
 			$return = true;
@@ -192,7 +195,7 @@ class ldap_pla extends ldap {
 			$return = false;
 
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (), Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$return);
+			debug_log('Returning (%s)',17,0,__FILE__,__LINE__,__METHOD__,$return);
 
 		return $return;
 	}
@@ -208,8 +211,8 @@ class ldap_pla extends ldap {
 	 * @return string|false
 	 */
 	function getLoginString() {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with ()',17,__FILE__,__LINE__,__METHOD__,__FILE__,__LINE__,__METHOD__);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		return $this->login_string;
 	}
@@ -224,6 +227,9 @@ class ldap_pla extends ldap {
 	 * @return boolean
 	 */
 	public function isAnonBindAllowed() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		# If only_login_allowed_dns is set, then we cant have anonymous.
 		if (count($this->getValue('login','allowed_dns')) > 0)
 			$return = false;
@@ -231,7 +237,7 @@ class ldap_pla extends ldap {
 			$return = $this->getValue('login','anon_bind');
 
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (), Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$return);
+			debug_log('Returning (%s)',17,0,__FILE__,__LINE__,__METHOD__,$return);
 
 		return $return;
 	}
@@ -247,7 +253,8 @@ class ldap_pla extends ldap {
 	 * @return boolean
 	 */
 	function isBranchRenameEnabled() {
-		debug_log('Entered with (), Returning (%s).',17,__FILE__,__LINE__,__METHOD__,$this->getValue('server','branch_rename'));
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
  		return $this->getValue('server','branch_rename');
 	}
@@ -271,6 +278,9 @@ class ldap_pla extends ldap {
 	 * @return boolean
 	 */
 	function isMultiLineAttr($attr_name,$val=null) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		# Set default return
 		$return = false;
 
@@ -303,7 +313,7 @@ class ldap_pla extends ldap {
 		}
 
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s,%s), Returning (%s)',17,__FILE__,__LINE__,__METHOD__,$attr_name,$val,$return);
+			debug_log('Returning (%s)',17,0,__FILE__,__LINE__,__METHOD__,$return);
 
 		return $return;
 	}
@@ -320,8 +330,8 @@ class ldap_pla extends ldap {
 	 * @return boolean
 	 */
 	public function isAttrReadOnly($attr) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$attr);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$attrs = $_SESSION[APPCONFIG]->getValue('appearance','readonly_attrs');
 		$except_dn = $_SESSION[APPCONFIG]->getValue('appearance','readonly_attrs_exempt');
@@ -353,8 +363,8 @@ class ldap_pla extends ldap {
 	 * @return boolean
 	 */
 	public function isAttrHidden($attr) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$attr);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$attrs = $_SESSION[APPCONFIG]->getValue('appearance','hide_attrs');
 		$except_dn = $_SESSION[APPCONFIG]->getValue('appearance','hide_attrs_exempt');
@@ -378,8 +388,8 @@ class ldap_pla extends ldap {
 	 * Add objects
 	 */
 	public function add($dn,$entry_array,$method=null) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s,%s,%s)',17,__FILE__,__LINE__,__METHOD__,$dn,$entry_array,$method);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		foreach ($entry_array as $attr => $val)
 			$entry_array[$attr] = dn_unescape($val);
@@ -417,8 +427,8 @@ class ldap_pla extends ldap {
 	 * Delete objects
 	 */
 	public function delete($dn,$method=null) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s,%s)',17,__FILE__,__LINE__,__METHOD__,$dn,$method);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$result = false;
 
@@ -443,8 +453,8 @@ class ldap_pla extends ldap {
 	 * Rename objects
 	 */
 	public function rename($dn,$new_rdn,$container,$deleteoldrdn,$method=null) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s,%s,%s,%s,%s)',17,__FILE__,__LINE__,__METHOD__,$dn,$new_rdn,$container,$deleteoldrdn,$method);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$result = false;
 
@@ -470,8 +480,8 @@ class ldap_pla extends ldap {
 	 * Modify objects
 	 */
 	public function modify($dn,$attrs,$method=null) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s,%s,%s)',17,__FILE__,__LINE__,__METHOD__,$dn,$attrs,$method);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		# Check our unique attributes.
 		if (! $this->checkUniqueAttrs($dn,$attrs))
@@ -583,8 +593,8 @@ class ldap_pla extends ldap {
 	 * @return boolean
 	 */
 	public function isAttrUnique($attr) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',17,__FILE__,__LINE__,__METHOD__,$attr);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		# Should this attribute value be unique
 		if (in_array_ignore_case($attr,$this->getValue('unique','attrs')))
@@ -604,9 +614,8 @@ class ldap_pla extends ldap {
 	 * @param string|array New values for the attribute
 	 */
 	public function checkUniqueAttrs($dn,$attrs) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s,%s,%s)',17,__FILE__,__LINE__,__METHOD__,
-				$dn,$attrs);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		# If none of the attributes are defined unique, we'll return immediately;
 		if (! $checkattrs = array_intersect(arrayLower($this->getValue('unique','attrs')),array_keys(array_change_key_case($attrs))))
@@ -669,6 +678,9 @@ class ldap_pla extends ldap {
 	 * Check if the session timeout has occured for this LDAP server.
 	 */
 	public function isSessionValid() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		# If inactiveTime() returns a value, we need to check that it has not expired.
 		if (is_null($this->inactivityTime()) || ! $this->isLoggedIn())
 			return true;

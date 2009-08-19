@@ -23,6 +23,9 @@ class PageRender extends Visitor {
 	protected $page;
 
 	public function __construct($server_id,$template_id) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$this->server_id = $server_id;
 		$this->template_id = $template_id;
 	}
@@ -36,14 +39,23 @@ class PageRender extends Visitor {
 	 * Get our templates applicable for this object
 	 */
 	protected function getTemplates() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		return new Templates($this->server_id);
 	}
 
 	public function getTemplate() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		return $this->template;
 	}
 
 	public function getTemplateID() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		return $this->template->getID();
 	}
 
@@ -51,6 +63,9 @@ class PageRender extends Visitor {
 	 * Initialise the PageRender
 	 */
 	public function accept() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if (DEBUGTMP) printf('<font size=-2>%s:%s</font><br />',time(),__METHOD__);
 
 		if ($this->template_id) {
@@ -100,6 +115,9 @@ class PageRender extends Visitor {
 	}
 
 	public function setDN($dn) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if ($this->container)
 			system_message(array(
 				'title'=>__METHOD__,
@@ -110,6 +128,9 @@ class PageRender extends Visitor {
 	}
 
 	public function setContainer($dn) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if ($this->dn)
 			system_message(array(
 				'title'=>__METHOD__,
@@ -129,6 +150,9 @@ class PageRender extends Visitor {
 	 * Process our <post> arguments from the templates
 	 */
 	protected function getPostAttribute($attribute,$i) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$autovalue = $attribute->getPostValue();
 		$args = explode(';',$autovalue['args']);
 		$server = $this->getServer();
@@ -283,9 +307,10 @@ class PageRender extends Visitor {
 	 * @return string Template ID to be used or null if the user was presented with a list.
 	 */
 	protected function getTemplateChoice() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$this->template ? $this->template->getDN() : '');
 
 		# First work out our template
 		$templates = $this->getTemplates();
@@ -372,6 +397,9 @@ class PageRender extends Visitor {
 	}
 
 	protected function getNoteAliasAttribute($attribute) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
 		# Is there a user-friendly translation available for this attribute?
@@ -386,6 +414,9 @@ class PageRender extends Visitor {
 
 	#@todo this function shouldnt re-calculate requiredness, it should be known in the template already - need to set the ldaptype when initiating the attribute.
 	protected function getNoteRequiredAttribute($attribute) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
 		$required_by = '';
@@ -425,6 +456,9 @@ class PageRender extends Visitor {
 	}
 
 	protected function getNoteRDNAttribute($attribute) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
 		# Is this attribute required because its the RDN
@@ -435,6 +469,9 @@ class PageRender extends Visitor {
 	}
 
 	protected function getNoteHintAttribute($attribute) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
 		# Is there a hint for this attribute
@@ -445,6 +482,9 @@ class PageRender extends Visitor {
 	}
 
 	protected function getNoteROAttribute($attribute) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
 		# Is this attribute is readonly
@@ -459,6 +499,9 @@ class PageRender extends Visitor {
 	 * Draw all hidden attributes
 	 */
 	final public function drawHiddenAttributes() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		foreach ($this->template->getAttributes(true) as $attribute)
 			if ($attribute->hasbeenModified())
 				if ($attribute->getValues())
@@ -1091,9 +1134,8 @@ class PageRender extends Visitor {
 	 * @param string A shadow attribute name
 	 */
 	private function shadow_date($attribute) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,
-				$attr);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$shadowattr = array();
 		$shadowattr['lastchange'] = $this->template->getAttribute('shadowlastchange');

@@ -616,6 +616,9 @@ class Config {
 	 * Function to check and warn about any unusual defined variables.
 	 */
 	public function CheckCustom() {
+		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',3,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if (isset($this->custom)) {
 			foreach ($this->custom as $masterkey => $masterdetails) {
 
@@ -648,6 +651,9 @@ class Config {
 	 * Get a list of available commands.
 	 */
 	public function getCommandList() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',3,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$config = $this->getConfigArray(false);
 
 		masort($config['command'],'summary');
@@ -662,6 +668,9 @@ class Config {
 	 * Simple ACL to see if commands can be run
 	 */
 	public function isCommandAvailable($index='cmd') {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',3,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$a = func_get_args();
 		array_shift($a);
 		$a = $a[0];
@@ -676,6 +685,9 @@ class Config {
 	}
 
 	public function configDefinition($key,$index,$config) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',3,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if (! is_array($config) || ! array_key_exists('desc',$config) || ! array_key_exists('default',$config))
 			return;
 
@@ -690,8 +702,8 @@ class Config {
 	 * Return the friendly attributes names
 	 */
 	private function getFriendlyAttrs() {
-		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
-			debug_log('Entered with ()',1,__FILE__,__LINE__,__METHOD__);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',3,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		return array_change_key_case($this->getValue('appearance','friendly_attrs'));
 	}
@@ -704,6 +716,9 @@ class Config {
 	 * @return string friendly name|attribute
 	 */
 	public function getFriendlyName($attr) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',3,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		static $friendly_attrs;
 
 		if (! $friendly_attrs)
@@ -729,6 +744,9 @@ class Config {
 	 * @return boolean true|false
 	 */
 	public function haveFriendlyName($attr) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',3,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		return $attr->getName(false) != $this->getFriendlyName($attr);
 	}
 
@@ -739,6 +757,9 @@ class Config {
 	 * @return string html for the friendly name.
 	 */
 	public function getFriendlyHTML($attr) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',3,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if ($this->haveFriendlyName($attr))
 			return sprintf('<acronym title="%s %s">%s</acronym>',
 				_('Alias for'),$attr->getName(false),$this->getFriendlyName($attr));
@@ -759,6 +780,9 @@ class Config {
 	 * @param boolean $visible - Only return visible servers
 	 */
 	public function getServerList($visible=true) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',3,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		return $this->servers->getServerList($visible);
 	}
 }

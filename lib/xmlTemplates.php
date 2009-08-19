@@ -21,8 +21,8 @@ abstract class xmlTemplates {
 	protected $templates = array();
 
 	function __construct($server_id) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',5,__FILE__,__LINE__,__METHOD__,$server_id);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$this->server_id = $server_id;
 		$server = $_SESSION[APPCONFIG]->getServer($this->server_id);
@@ -33,7 +33,7 @@ abstract class xmlTemplates {
 		# Try to get the templates from our CACHE.
 		if ($this->templates = get_cached_item($server_id,$class['item'])) {
 			if (DEBUG_ENABLED)
-				debug_log('Using CACHED templates',5,__FILE__,__LINE__,__METHOD__);
+				debug_log('Using CACHED templates',4,0,__FILE__,__LINE__,__METHOD__);
 
 			# See if the template_time has expired to see if we should reload the templates.
 			foreach ($this->templates as $index => $template) {
@@ -62,6 +62,9 @@ abstract class xmlTemplates {
 					eval(sprintf('$this->templates[$index] = new %s($this->server_id,$template->getName(false),$template->getFileName(),$template->getType(),$index);',$class['name']));
 				}
 			}
+
+			if (DEBUG_ENABLED)
+				debug_log('Templates refreshed',4,0,__FILE__,__LINE__,__METHOD__);
 
 			# See if there are any new template files
 			$index = max(array_keys($this->templates))+1;
@@ -101,7 +104,7 @@ abstract class xmlTemplates {
 
 		} else {
 			if (DEBUG_ENABLED)
-				debug_log('Parsing templates',5,__FILE__,__LINE__,__METHOD__);
+				debug_log('Parsing templates',4,0,__FILE__,__LINE__,__METHOD__);
 
 			# Need to reset this, as get_cached_item() returns null if nothing cached.
 			$this->templates = array();
@@ -134,6 +137,9 @@ abstract class xmlTemplates {
 			}
 		}
 
+		if (DEBUG_ENABLED)
+			debug_log('Templates loaded',4,0,__FILE__,__LINE__,__METHOD__);
+
 		if ($changed) {
 			masort($this->templates,'title');
 			set_cached_item($server_id,$class['item'],'null',$this->templates);
@@ -144,6 +150,9 @@ abstract class xmlTemplates {
 	 * This will return our custom class variables, used by the parent to create objects.
 	 */
 	private function getClassVars() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$class = array();
 
 		switch (get_class($this)) {
@@ -181,6 +190,9 @@ abstract class xmlTemplates {
 	 * @return array List of templates of the type
 	 */
 	public function getTemplates($type=null,$container=null,$disabled=false) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$result = array();
 
 		if (is_array($this->templates))
@@ -206,6 +218,9 @@ abstract class xmlTemplates {
 	 * @return object Template (or default template if the ID doesnt exist)
 	 */
 	function getTemplate($templateid) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$class = $this->getClassVars();
 
 		foreach ($this->templates as $template)
@@ -221,6 +236,9 @@ abstract class xmlTemplates {
 	 * Get a list of template filenames.
 	 */
 	private function getTemplateFiles() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$result = array();
 
 		foreach ($this->templates as $template)
@@ -253,6 +271,9 @@ abstract class xmlTemplate {
 	protected $attributes = array();
 
 	public function __construct($server_id,$name=null,$filename=null,$type=null,$id=null) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$this->server_id = $server_id;
 		$this->name = $name;
 		$this->type = $type;
@@ -277,6 +298,9 @@ abstract class xmlTemplate {
 	 * @return int Attribute ID in the array
 	 */
 	protected function getAttrID($attr) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		foreach ($this->attributes as $index => $attribute)
 			if (strtolower($attr) == $attribute->getName() || in_array(strtolower($attr),$attribute->getAliases()))
 				return $index;
@@ -288,6 +312,9 @@ abstract class xmlTemplate {
 	 * Get the Template filename.
 	 */
 	public function getFileName() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->filename);
+
 		return $this->filename;
 	}
 
@@ -295,6 +322,9 @@ abstract class xmlTemplate {
 	 * Return the template by ID
 	 */
 	public function getID() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs,$this->id);
+
 		if ($this->name)
 			return sprintf('%s:%s',$this->getName(false),$this->id);
 		else
@@ -307,6 +337,9 @@ abstract class xmlTemplate {
 	 * @param boolean Force the name to be lowercase (default)
 	 */
 	public function getName($lower=true) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->name);
+
 		if ($lower)
 			return strtolower($this->name);
 		else
@@ -317,6 +350,9 @@ abstract class xmlTemplate {
 	 * Get the Template read time.
 	 */
 	public function getReadTime() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->readtime);
+
 		return $this->readtime;
 	}
 
@@ -326,6 +362,9 @@ abstract class xmlTemplate {
 	 * @return object DataStore Server
 	 */
 	protected function getServer() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		return $_SESSION[APPCONFIG]->getServer($this->getServerID());
 	}
 
@@ -335,6 +374,9 @@ abstract class xmlTemplate {
 	 * @return int Server ID
 	 */
 	protected function getServerID() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->server_id);
+
 		return $this->server_id;
 	}
 
@@ -344,6 +386,9 @@ abstract class xmlTemplate {
 	 * @return boolean
 	 */
 	public function isType($type) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs,$this->type);
+
 		if ($this->type == $type)
 			return true;
 		else
@@ -354,6 +399,9 @@ abstract class xmlTemplate {
 	 * Return the template type
 	 */
 	public function getType() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->type);
+
 		return $this->type;
 	}
 
@@ -361,6 +409,9 @@ abstract class xmlTemplate {
 	 * Get template title
 	 */
 	public function getTitle() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if (! isset($this->title) && ! isset($this->description))
 			return '';
 
@@ -373,6 +424,9 @@ abstract class xmlTemplate {
 	 * @return int Attribute ID
 	 */
 	public function addAttribute($name,$value,$source=null) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if (! is_array($value))
 			debug_dump_backtrace('Value should be an array()',1);
 
@@ -403,6 +457,9 @@ abstract class xmlTemplate {
 	 * @return array Array of attributes Names
 	 */
 	public function getAttributeNames() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$result = array();
 
 		foreach ($this->attributes as $attribute)
@@ -418,6 +475,9 @@ abstract class xmlTemplate {
 	 * @return object Attribute
 	 */
 	public function getAttribute($name) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		foreach ($this->attributes as $attribute)
 			if (($attribute->getName() == strtolower($name)) || in_array(strtolower($name),$attribute->getAliases()))
 				return $attribute;

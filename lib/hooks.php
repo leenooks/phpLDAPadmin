@@ -34,6 +34,9 @@
  * element priority. 1 otherwise.
  */
 function sort_array_by_priority($a,$b) {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',257,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	return (($a['priority'] < $b['priority']) ? -1 : 1 );
 }
 
@@ -49,16 +52,14 @@ function sort_array_by_priority($a,$b) {
  * @return true if all procedures returned true, false otherwise.
  */
 function run_hook($hook_name,$args) {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',257,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	$hooks = isset($_SESSION[APPCONFIG]) ? $_SESSION[APPCONFIG]->hooks : array();
 
-	if (DEBUG_ENABLED)
-		debug_log('Running HOOK (%s,%s)',257,__FILE__,__LINE__,__METHOD__,
-			$hook_name,$args);
-
-	if (! array_key_exists($hook_name,$hooks)) {
+	if (! count($hooks) || ! array_key_exists($hook_name,$hooks)) {
 		if (DEBUG_ENABLED)
-			debug_log('Returning, HOOK not defined (%s)',257,__FILE__,__LINE__,__METHOD__,
-				$hook_name);
+			debug_log('Returning, HOOK not defined (%s)',257,0,__FILE__,__LINE__,__METHOD__,$hook_name);
 
 		return true;
 	}
@@ -71,14 +72,14 @@ function run_hook($hook_name,$args) {
 	 * numerical weight. */
 	while (list($key,$hook) = each($hooks[$hook_name])) {
 		if (DEBUG_ENABLED)
-			debug_log('Calling HOOK Function (%s)(%s)',257,__FILE__,__LINE__,__METHOD__,
+			debug_log('Calling HOOK Function (%s)(%s)',257,0,__FILE__,__LINE__,__METHOD__,
 				$hook['hook_function'],$args);
 
 		array_push($rollbacks,$hook['rollback_function']);
 
 		$result = call_user_func_array($hook['hook_function'],$args);
 		if (DEBUG_ENABLED)
-			debug_log('Called HOOK Function (%s)',257,__FILE__,__LINE__,__METHOD__,
+			debug_log('Called HOOK Function (%s)',257,0,__FILE__,__LINE__,__METHOD__,
 				$hook['hook_function']);
 
 		/* If a procedure fails (identified by a false return), its optional rollback is executed with
@@ -87,7 +88,7 @@ function run_hook($hook_name,$args) {
 		 * order. */
 		if (! is_null($result) && $result == false) {
 			if (DEBUG_ENABLED)
-				debug_log('HOOK Function [%s] return (%s)',257,__FILE__,__LINE__,__METHOD__,
+				debug_log('HOOK Function [%s] return (%s)',257,0,__FILE__,__LINE__,__METHOD__,
 					$hook['hook_function'],$result);
 
 			while ($rollbacks) {
@@ -95,7 +96,7 @@ function run_hook($hook_name,$args) {
 
 				if ($rollback != false) {
 					if (DEBUG_ENABLED)
-						debug_log('HOOK Function Rollback (%s)',257,__FILE__,__LINE__,__METHOD__,
+						debug_log('HOOK Function Rollback (%s)',257,0,__FILE__,__LINE__,__METHOD__,
 							$rollback);
 
 					call_user_func_array($rollback,$args);
@@ -118,6 +119,9 @@ function run_hook($hook_name,$args) {
  * @param rollback_function	Name of the php rollback function called upon failure.
  */
 function add_hook($hook_name,$hook_function,$priority=0,$rollback_function=null) {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',257,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	# First, see if the hook function exists.
 	if (! function_exists($hook_function)) {
 		system_message(array(
@@ -151,6 +155,9 @@ function add_hook($hook_name,$hook_function,$priority=0,$rollback_function=null)
  *			procedures that call this function as a rollback will be removed.
  */
 function remove_hook($hook_name,$hook_function,$priority,$rollback_function) {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',257,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	if (array_key_exists($hook_name,$_SESSION[APPCONFIG]->hooks)) {
 		reset($_SESSION[APPCONFIG]->hooks[$hook_name]);
 
@@ -171,6 +178,9 @@ function remove_hook($hook_name,$hook_function,$priority,$rollback_function) {
  * @param hook_name	Name of hook to clear.
  */
 function clear_hooks($hook_name) {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',257,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	if (array_key_exists($hook_name,$_SESSION[APPCONFIG]->hooks))
 		unset($_SESSION[APPCONFIG]->hooks[$hook_name]);
 }

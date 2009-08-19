@@ -25,8 +25,8 @@ class AJAXTree extends HTMLTree {
 	 * @param boolean $last_child is the last child entry, which is normally the "Create New Entry" option
 	 */
 	protected function draw_item($item,$level,$first_child=true,$last_child=true) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s,%s,%s,%s)',33,__FILE__,__LINE__,__METHOD__,$item,$level,$first_child,$last_child);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$server = $this->getServer();
 
@@ -145,8 +145,8 @@ class AJAXTree extends HTMLTree {
 	 * Expand and draw a child entry, when it is clicked on. This is using AJAX just to render this section of the tree.
 	 */
 	public function draw_children($parent_entry,$code) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s,%s)',33,__FILE__,__LINE__,__METHOD__,$parent_entry,$code);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$children = array();
 		foreach ($parent_entry->getChildren() as $child) {
@@ -192,6 +192,9 @@ class AJAXTree extends HTMLTree {
 	 * @param $code a string of 0 and 1 ; $code == "000101" will return "   | |"
 	 */
 	protected function get_indentation($code) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$indent = '';
 
 		for ($i=0; $i<strlen($code); $i++) {
@@ -213,6 +216,9 @@ class AJAXTree extends HTMLTree {
 	 * Draw the javascript to support the tree.
 	 */
 	protected function draw_javascript() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		printf('<script type="text/javascript" language="javascript" src="%sphplayersmenu/libjs/layersmenu-browser_detection.js"></script>',JSDIR);
 		printf('<script type="text/javascript" language="javascript" src="%sajaxtree.js"></script>',JSDIR);
 	}
@@ -221,6 +227,9 @@ class AJAXTree extends HTMLTree {
 	 * Draw the "Create New Entry" item before the children.
 	 */
 	private function create_before_child($entry,$level) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if (strlen($level) == 0)
 			return '';
 
@@ -238,6 +247,9 @@ class AJAXTree extends HTMLTree {
 	 * Draw the "Create New Entry" item after the children.
 	 */
 	private function create_after_child($entry,$level) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if (strlen($level) == 0)
 			return '';
 
@@ -254,6 +266,9 @@ class AJAXTree extends HTMLTree {
 	 * Draw the "Create New Entry" item.
 	 */
 	private function draw_create_new_entry($entry,$level,$img) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$output = '';
 
 		$href = sprintf('cmd=template_engine&server_id=%s&container=%s',$this->getServerID(),rawurlencode($entry->getDN()));
@@ -284,6 +299,9 @@ class AJAXTree extends HTMLTree {
 	 * @return array List of open nodes
 	 */
 	public function listOpenItems() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$result = array();
 
 		foreach ($this->entries as $dn => $value)

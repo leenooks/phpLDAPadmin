@@ -45,7 +45,7 @@ if (isset($app['server']) && ! is_null($request['container'])) {
 
 	foreach ($app['server']->getBaseDN() as $base) {
 		if (DEBUG_ENABLED)
-			debug_log('Comparing BaseDN [%s] with container [%s]',64,__FILE__,__LINE__,__METHOD__,$base,$request['container']);
+			debug_log('Comparing BaseDN [%s] with container [%s]',64,0,__FILE__,__LINE__,__METHOD__,$base,$request['container']);
 
 		if (! pla_compare_dns($request['container'],$base)) {
 			$parent_container = false;

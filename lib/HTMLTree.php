@@ -27,8 +27,8 @@ class HTMLTree extends Tree {
 	 * @param boolean Only display the tree, or include the server name and menu items
 	 */
 	public function draw($onlytree=false) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with ()',33,__FILE__,__LINE__,__METHOD__);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$server = $this->getServer();
 
@@ -152,6 +152,9 @@ class HTMLTree extends Tree {
 	 * Draw the server name
 	 */
 	protected function draw_server_name() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$server = $this->getServer();
 
 		echo '<tr class="server">';
@@ -171,6 +174,9 @@ class HTMLTree extends Tree {
 	 * Draw the tree menu options
 	 */
 	protected function draw_menu() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$links = '';
 
 		if (is_array($_SESSION[APPCONFIG]->getValue('menu','session')))
@@ -194,6 +200,9 @@ class HTMLTree extends Tree {
 	 * Get the HTML for each tree menu option
 	 */
 	protected function get_menu_item($item) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$server = $this->getServer();
 		$menu = array();
 
@@ -309,6 +318,9 @@ class HTMLTree extends Tree {
 	}
 
 	protected function get_logout_menu_item() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$server = $this->getServer();
 		$href = sprintf('cmd.php?cmd=logout&server_id=%s',$server->getIndex());
 
@@ -323,6 +335,9 @@ class HTMLTree extends Tree {
 	 * Draw the Logged in User
 	 */
 	protected function draw_logged_in_user() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$server = $this->getServer();
 
 		$logged_in_dn = $server->getLogin(null);
@@ -379,8 +394,8 @@ class HTMLTree extends Tree {
 	 * @param int $level Level to start drawing (start to -1)
 	 */
 	protected function draw_item($item,$level) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s,%s)',33,__FILE__,__LINE__,__METHOD__,$item,$level);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$server = $this->getServer();
 
@@ -452,10 +467,13 @@ class HTMLTree extends Tree {
 		}
 
 		if (DEBUG_ENABLED)
-			debug_log('Leaving (%s,%s)',33,__FILE__,__LINE__,__METHOD__,$item,$level);
+			debug_log('Leaving (%s,%s)',33,0,__FILE__,__LINE__,__METHOD__,$item,$level);
 	}
 
 	protected function get_formatted_dn($entry,$level) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if ($level < 0)
 			return pretty_print_dn($entry->getDN());
 		else
@@ -470,6 +488,9 @@ class HTMLTree extends Tree {
 	 * @param dn $encoded_dn
 	 */
 	protected function draw_create_link($rdn,$level,$encoded_dn) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		# print the "Create New object" link.
 		$href = htmlspecialchars(sprintf('cmd.php?cmd=template_engine&server_id=%s&container=%s',$this->getServerID(),$encoded_dn));
 
@@ -485,6 +506,9 @@ class HTMLTree extends Tree {
 	 * Draw login link
 	 */
 	protected function draw_login_link() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$server = $this->getServer();
 		$href_parm = htmlspecialchars(sprintf('cmd=%s&server_id=%s',get_custom_file($server->getIndex(),'login_form',''),$server->getIndex()));
 
@@ -511,6 +535,9 @@ class HTMLTree extends Tree {
 	 * If there is javascript, draw it
 	 */
 	protected function draw_javascript() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if ($this->javascript) {
 			echo "<!-- Forms for javascript submit to call to create base_dns -->\n";
 			echo $this->javascript;
@@ -522,6 +549,9 @@ class HTMLTree extends Tree {
 	 * Work out how deep the "opened" tree is.
 	 */
 	public function getDepth() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$server = $this->getServer();
 
 		# If we are not logged in

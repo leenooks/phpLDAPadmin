@@ -24,6 +24,9 @@ abstract class Visitor {
 	protected $server_id;
 
 	public function __call($method,$args) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if (! in_array($method,array('get','visit','draw')))
 			debug_dump_backtrace(sprintf('Incorrect use of method loading [%s]',$method),1);
 
@@ -75,7 +78,7 @@ abstract class Visitor {
 				return;
 
 		} elseif (DEBUG_ENABLED) {
-			debug_log('Doesnt exist param (%s,%s)',1,__FILE__,__LINE__,__METHOD__,$method,$fnct);
+			debug_log('Doesnt exist param (%s,%s)',1,0,__FILE__,__LINE__,__METHOD__,$method,$fnct);
 		}
 
 		printf('<font size=-2><i>NO Methods: %s</i></font><br />',implode('|',$methods));
@@ -87,6 +90,9 @@ abstract class Visitor {
 	 * @return int Server ID
 	 */
 	public function getServerID() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->server_id);
+
 		if (isset($this->server_id))
 			return $this->server_id;
 		else
@@ -99,6 +105,9 @@ abstract class Visitor {
 	 * @return object DataStore Server
 	 */
 	protected function getServer() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		return $_SESSION[APPCONFIG]->getServer($this->getServerID());
 	}
 }

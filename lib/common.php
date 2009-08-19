@@ -213,7 +213,7 @@ else
 	define('DEBUG_ENABLED',0);
 
 if (DEBUG_ENABLED)
-	debug_log('Application (%s) initialised and starting with (%s).',1,__FILE__,__LINE__,__METHOD__,
+	debug_log('Application (%s) initialised and starting with (%s).',1,0,__FILE__,__LINE__,__METHOD__,
 		app_version(),$_REQUEST);
 
 # Set our PHP timelimit.

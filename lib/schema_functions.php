@@ -29,18 +29,30 @@ abstract class SchemaItem {
 	private $is_obsolete = false;
 
 	public function setOID($oid) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$this->oid = $oid;
 	}
 
 	public function setDescription($desc) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$this->description = $desc;
 	}
 
 	public function getOID() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		return $this->oid;
 	}
 
 	public function getDescription() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->description);
+
 		return $this->description;
 	}
 
@@ -48,6 +60,9 @@ abstract class SchemaItem {
 	 * Gets whether this objectClass is flagged as obsolete by the LDAP server.
 	 */
 	public function getIsObsolete() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->is_obsolete);
+
 		return $this->is_obsolete;
 	}
 
@@ -58,6 +73,9 @@ abstract class SchemaItem {
 	 * @return string The name
 	 */
 	public function getName($lower=true) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->name);
+
 		return $lower ? strtolower($this->name) : $this->name;
 	}
 }
@@ -90,8 +108,8 @@ class ObjectClass extends SchemaItem {
 	 * Creates a new ObjectClass object given a raw LDAP objectClass string.
 	 */
 	public function __construct($class,$server) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$class);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$this->server_id = $server->getIndex();
 		$this->type = $server->getValue('server','schema_oclass_default');
@@ -136,7 +154,7 @@ class ObjectClass extends SchemaItem {
 					$this->name = preg_replace('/\'$/','',$this->name);
 
 					if (DEBUG_ENABLED)
-						debug_log('Case NAME returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->name);
+						debug_log('Case NAME returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->name);
 					break;
 
 				case 'DESC':
@@ -150,14 +168,14 @@ class ObjectClass extends SchemaItem {
 					} while (! preg_match('/\'$/s',$strings[$i]));
 
 					if (DEBUG_ENABLED)
-						debug_log('Case DESC returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->description);
+						debug_log('Case DESC returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->description);
 					break;
 
 				case 'OBSOLETE':
 					$this->is_obsolete = TRUE;
 
 					if (DEBUG_ENABLED)
-						debug_log('Case OBSOLETE returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->is_obsolete);
+						debug_log('Case OBSOLETE returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->is_obsolete);
 					break;
 
 				case 'SUP':
@@ -176,28 +194,28 @@ class ObjectClass extends SchemaItem {
 					}
 
 					if (DEBUG_ENABLED)
-						debug_log('Case SUP returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->sup_classes);
+						debug_log('Case SUP returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->sup_classes);
 					break;
 
 				case 'ABSTRACT':
 					$this->type = 'abstract';
 
 					if (DEBUG_ENABLED)
-						debug_log('Case ABSTRACT returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->type);
+						debug_log('Case ABSTRACT returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->type);
 					break;
 
 				case 'STRUCTURAL':
 					$this->type = 'structural';
 
 					if (DEBUG_ENABLED)
-						debug_log('Case STRUCTURAL returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->type);
+						debug_log('Case STRUCTURAL returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->type);
 					break;
 
 				case 'AUXILIARY':
 					$this->type = 'auxiliary';
 
 					if (DEBUG_ENABLED)
-						debug_log('Case AUXILIARY returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->type);
+						debug_log('Case AUXILIARY returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->type);
 					break;
 
 				case 'MUST':
@@ -206,7 +224,7 @@ class ObjectClass extends SchemaItem {
 					$i = $this->parseList(++$i,$strings,$attrs);
 
 					if (DEBUG_ENABLED)
-						debug_log('parseList returned %d (%s)',8,__FILE__,__LINE__,__METHOD__,$i,$attrs);
+						debug_log('parseList returned %d (%s)',8,0,__FILE__,__LINE__,__METHOD__,$i,$attrs);
 
 					foreach ($attrs as $string) {
 						$attr = new ObjectClass_ObjectClassAttribute($string,$this->name);
@@ -220,7 +238,7 @@ class ObjectClass extends SchemaItem {
 					}
 
 					if (DEBUG_ENABLED)
-						debug_log('Case MUST returned (%s) (%s)',8,__FILE__,__LINE__,__METHOD__,$this->must_attrs,$this->force_may);
+						debug_log('Case MUST returned (%s) (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->must_attrs,$this->force_may);
 					break;
 
 				case 'MAY':
@@ -229,7 +247,7 @@ class ObjectClass extends SchemaItem {
 					$i = $this->parseList(++$i,$strings,$attrs);
 
 					if (DEBUG_ENABLED)
-						debug_log('parseList returned %d (%s)',8,__FILE__,__LINE__,__METHOD__,$i,$attrs);
+						debug_log('parseList returned %d (%s)',8,0,__FILE__,__LINE__,__METHOD__,$i,$attrs);
 
 					foreach ($attrs as $string) {
 						$attr = new ObjectClass_ObjectClassAttribute($string,$this->name);
@@ -237,7 +255,7 @@ class ObjectClass extends SchemaItem {
 					}
 
 					if (DEBUG_ENABLED)
-						debug_log('Case MAY returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->may_attrs);
+						debug_log('Case MAY returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->may_attrs);
 					break;
 
 				default:
@@ -245,7 +263,7 @@ class ObjectClass extends SchemaItem {
 						$this->setOID($strings[$i]);
 
 						if (DEBUG_ENABLED)
-							debug_log('Case default returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->getOID());
+							debug_log('Case default returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->getOID());
 					}
 					break;
 			}
@@ -255,7 +273,7 @@ class ObjectClass extends SchemaItem {
 		$this->description = preg_replace("/\'$/",'',$this->description);
 
 		if (DEBUG_ENABLED)
-			debug_log('Returning () - NAME (%s), DESCRIPTION (%s), MUST (%s), MAY (%s), FORCE MAY (%s)',9,__FILE__,__LINE__,__METHOD__,
+			debug_log('Returning () - NAME (%s), DESCRIPTION (%s), MUST (%s), MAY (%s), FORCE MAY (%s)',9,0,__FILE__,__LINE__,__METHOD__,
 				$this->name,$this->description,$this->must_attrs,$this->may_attrs,$this->force_may);
 	}
 
@@ -263,14 +281,15 @@ class ObjectClass extends SchemaItem {
 	 * Parse an LDAP schema list
 	 */
 	private function parseList($i,$strings,&$attrs) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		/*
 		 * A list starts with a ( followed by a list of attributes separated by $ terminated by )
 		 * The first token can therefore be a ( or a (NAME or a (NAME)
 		 * The last token can therefore be a ) or NAME)
 		 * The last token may be terminate by more than one bracket
 		 */
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%d,%s,%s)',9,__FILE__,__LINE__,__METHOD__,$i,$strings,$attrs);
 
 		$string = $strings[$i];
 		if (! preg_match('/^\(/',$string)) {
@@ -317,7 +336,7 @@ class ObjectClass extends SchemaItem {
 		sort($attrs);
 
 		if (DEBUG_ENABLED)
-			debug_log('Returning (%d,[%s],[%s])',9,__FILE__,__LINE__,__METHOD__,$i,$strings,$attrs);
+			debug_log('Returning (%d,[%s],[%s])',9,0,__FILE__,__LINE__,__METHOD__,$i,$strings,$attrs);
 
 		return $i;
 	}
@@ -326,6 +345,9 @@ class ObjectClass extends SchemaItem {
 	 * This will return all our parent ObjectClass Objects
 	 */
 	public function getParents() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if ((count($this->sup_classes) == 1) && ($this->sup_classes[0] == 'top'))
 			return array();
 
@@ -359,8 +381,8 @@ class ObjectClass extends SchemaItem {
 	 * @see getMayAttrNames
 	 */
 	public function getMustAttrs($parents=false) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$parents);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		if (! $parents)
 			return $this->must_attrs;
@@ -401,8 +423,8 @@ class ObjectClass extends SchemaItem {
 	 * @see AttributeType
 	 */
 	public function getMayAttrs($parents=false) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$parents);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		if (! $parents)
 			return $this->may_attrs;
@@ -428,6 +450,9 @@ class ObjectClass extends SchemaItem {
 	}
 
 	public function getForceMayAttrs() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		return $this->force_may;
 	}
 
@@ -447,8 +472,8 @@ class ObjectClass extends SchemaItem {
 	 * @see getMayAttrNames
 	 */
 	public function getMustAttrNames($parents=false) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$parents);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$attr_names = array();
 
@@ -474,8 +499,8 @@ class ObjectClass extends SchemaItem {
 	 * @see getMustAttrNames
 	 */
 	public function getMayAttrNames($parents=false) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$parents);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$attr_names = array();
 
@@ -493,8 +518,8 @@ class ObjectClass extends SchemaItem {
 	 * @return boolean Returns true on success or false on failure (objectclass already existed for example)
 	 */
 	public function addChildObjectClass($name) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$name);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$name = trim($name);
 
@@ -511,6 +536,9 @@ class ObjectClass extends SchemaItem {
 	 * @return Array Names of objectClasses which inherit from this objectClass.
 	 */
 	public function getChildObjectClasses() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		return $this->children_objectclasses;
 	}
 
@@ -520,6 +548,9 @@ class ObjectClass extends SchemaItem {
 	 * @return array An array of objectClass names (strings)
 	 */
 	public function getSupClasses() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		return $this->sup_classes;
 	}
 
@@ -529,6 +560,9 @@ class ObjectClass extends SchemaItem {
 	 * @param array ObjectClasses that this attribute may be related to
 	 */
 	public function isRelated($oclass) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		# If I am in the array, we'll just return false
 		if (in_array_ignore_case($this->name,$oclass))
 			return false;
@@ -549,6 +583,9 @@ class ObjectClass extends SchemaItem {
 	 * Gets the type of this objectClass: STRUCTURAL, ABSTRACT, or AUXILIARY.
 	 */
 	public function getType() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->type);
+
 		return $this->type;
 	}
 
@@ -560,8 +597,8 @@ class ObjectClass extends SchemaItem {
 	 * @param array $attr An array of attribute names (strings) to add.
 	 */
 	private function addMustAttrs($attr) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$attr);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		if (! is_array($attr) || ! count($attr))
 			return;
@@ -576,8 +613,8 @@ class ObjectClass extends SchemaItem {
 	 * @param array $attr An array of attribute names (strings) to add.
 	 */
 	private function addMayAttrs($attr) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$attr);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		if (! is_array($attr) || ! count($attr))
 			return;
@@ -589,6 +626,9 @@ class ObjectClass extends SchemaItem {
 	 * Determine if an array is listed in the force_may attrs
 	 */
 	public function isForceMay($attr) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		foreach ($this->force_may as $forcemay)
 			if ($forcemay->getName() == $attr)
 				return true;
@@ -597,6 +637,9 @@ class ObjectClass extends SchemaItem {
 	}
 
 	public function isStructural() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		if ($this->type == 'structural')
 			return true;
 		else
@@ -630,8 +673,8 @@ class ObjectClass_ObjectClassAttribute {
 	 * @param string $source the name of the ObjectClass which specifies this attribute.
 	 */
 	public function __construct($name,$source) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with name (%s), source (%s)',9,__FILE__,__LINE__,__METHOD__,$name,$source);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$this->name = $name;
 		$this->source = $source;
@@ -639,11 +682,17 @@ class ObjectClass_ObjectClassAttribute {
 
 	# Gets this attribute's name
 	public function getName($lower=true) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->name);
+
 		return $lower ? strtolower($this->name) : $this->name;
 	}
 
 	# Gets the name of the ObjectClass which originally specified this attribute.
 	public function getSource() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->source);
+
 		return $this->source;
 	}
 }
@@ -691,8 +740,8 @@ class AttributeType extends SchemaItem {
 	 * Creates a new AttributeType object from a raw LDAP AttributeType string.
 	 */
 	public function __construct($attr) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$attr);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$strings = preg_split('/[\s,]+/',$attr,-1,PREG_SPLIT_DELIM_CAPTURE);
 
@@ -743,7 +792,7 @@ class AttributeType extends SchemaItem {
 					}
 
 					if (DEBUG_ENABLED)
-						debug_log('Case NAME returned (%s) (%s)',8,__FILE__,__LINE__,__METHOD__,$this->name,$this->aliases);
+						debug_log('Case NAME returned (%s) (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->name,$this->aliases);
 					break;
 
 				case 'DESC':
@@ -756,14 +805,14 @@ class AttributeType extends SchemaItem {
 					} while (! preg_match("/\'$/s",$strings[$i]));
 
 					if (DEBUG_ENABLED)
-						debug_log('Case DESC returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->description);
+						debug_log('Case DESC returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->description);
 					break;
 
 				case 'OBSOLETE':
 					$this->is_obsolete = TRUE;
 
 					if (DEBUG_ENABLED)
-						debug_log('Case OBSOLETE returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->is_obsolete);
+						debug_log('Case OBSOLETE returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->is_obsolete);
 					break;
 
 				case 'SUP':
@@ -771,7 +820,7 @@ class AttributeType extends SchemaItem {
 					$this->sup_attribute = $strings[$i];
 
 					if (DEBUG_ENABLED)
-						debug_log('Case SUP returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->sup_attribute);
+						debug_log('Case SUP returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->sup_attribute);
 					break;
 
 				case 'EQUALITY':
@@ -779,7 +828,7 @@ class AttributeType extends SchemaItem {
 					$this->equality = $strings[$i];
 
 					if (DEBUG_ENABLED)
-						debug_log('Case EQUALITY returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->equality);
+						debug_log('Case EQUALITY returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->equality);
 					break;
 
 				case 'ORDERING':
@@ -787,7 +836,7 @@ class AttributeType extends SchemaItem {
 					$this->ordering = $strings[$i];
 
 					if (DEBUG_ENABLED)
-						debug_log('Case ORDERING returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->ordering);
+						debug_log('Case ORDERING returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->ordering);
 					break;
 
 				case 'SUBSTR':
@@ -795,7 +844,7 @@ class AttributeType extends SchemaItem {
 					$this->sub_str = $strings[$i];
 
 					if (DEBUG_ENABLED)
-						debug_log('Case SUBSTR returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->sub_str);
+						debug_log('Case SUBSTR returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->sub_str);
 					break;
 
 				case 'SYNTAX':
@@ -817,28 +866,28 @@ class AttributeType extends SchemaItem {
 					}
 
 					if (DEBUG_ENABLED)
-						debug_log('Case SYNTAX returned (%s) (%s) (%s)',8,__FILE__,__LINE__,__METHOD__,
+						debug_log('Case SYNTAX returned (%s) (%s) (%s)',8,0,__FILE__,__LINE__,__METHOD__,
 							$this->syntax,$this->syntax_oid,$this->max_length);
 					break;
 
 				case 'SINGLE-VALUE':
 					$this->is_single_value = TRUE;
 					if (DEBUG_ENABLED)
-						debug_log('Case SINGLE-VALUE returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->is_single_value);
+						debug_log('Case SINGLE-VALUE returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->is_single_value);
 					break;
 
 				case 'COLLECTIVE':
 					$this->is_collective = TRUE;
 
 					if (DEBUG_ENABLED)
-						debug_log('Case COLLECTIVE returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->is_collective);
+						debug_log('Case COLLECTIVE returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->is_collective);
 					break;
 
 				case 'NO-USER-MODIFICATION':
 					$this->is_no_user_modification = TRUE;
 
 					if (DEBUG_ENABLED)
-						debug_log('Case NO-USER-MODIFICATION returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->is_no_user_modification);
+						debug_log('Case NO-USER-MODIFICATION returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->is_no_user_modification);
 					break;
 
 				case 'USAGE':
@@ -846,7 +895,7 @@ class AttributeType extends SchemaItem {
 					$this->usage = $strings[$i];
 
 					if (DEBUG_ENABLED)
-						debug_log('Case USAGE returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->usage);
+						debug_log('Case USAGE returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->usage);
 					break;
 
 				default:
@@ -854,7 +903,7 @@ class AttributeType extends SchemaItem {
 						$this->setOID($strings[$i]);
 
 						if (DEBUG_ENABLED)
-							debug_log('Case default returned (%s)',8,__FILE__,__LINE__,__METHOD__,$this->getOID());
+							debug_log('Case default returned (%s)',8,0,__FILE__,__LINE__,__METHOD__,$this->getOID());
 					}
 			}
 		}
@@ -871,7 +920,7 @@ class AttributeType extends SchemaItem {
 		$this->sup_attribute = preg_replace("/\'$/",'',$this->sup_attribute);
 
 		if (DEBUG_ENABLED)
-			debug_log('Returning ()',9,__FILE__,__LINE__,__METHOD__);
+			debug_log('Returning ()',9,0,__FILE__,__LINE__,__METHOD__);
 	}
 
 	/**
@@ -880,6 +929,9 @@ class AttributeType extends SchemaItem {
 	 * @return string
 	 */
 	public function getUsage() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->usage);
+
 		return $this->usage;
 	}
 
@@ -890,10 +942,10 @@ class AttributeType extends SchemaItem {
 	 * @return string
 	 */
 	public function getSupAttribute() {
-		if ($this->sup_attribute)
-			return $this->sup_attribute;
-		else
-			return null;
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->sup_attribute);
+
+		return $this->sup_attribute;
 	}
 
 	/**
@@ -902,6 +954,9 @@ class AttributeType extends SchemaItem {
 	 * @return string
 	 */
 	public function getEquality() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->equality);
+
 		return $this->equality;
 	}
 
@@ -911,6 +966,9 @@ class AttributeType extends SchemaItem {
 	 * @return string
 	 */
 	public function getOrdering() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->ordering);
+
 		return $this->ordering;
 	}
 
@@ -920,6 +978,9 @@ class AttributeType extends SchemaItem {
 	 * @return string
 	 */
 	public function getSubstr() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->sub_str);
+
 		return $this->sub_str;
 	}
 
@@ -930,6 +991,9 @@ class AttributeType extends SchemaItem {
 	 *          an empty array if no attribute aliases this object.
 	 */
 	public function getAliases() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->aliases);
+
 		return $this->aliases;
 	}
 
@@ -940,8 +1004,8 @@ class AttributeType extends SchemaItem {
 	 * @return boolean True if the specified attribute is an alias for this one, or false otherwise.
 	 */
 	public function isAliasFor($attr_name) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$attr_name);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		foreach ($this->aliases as $alias_attr_name)
 			if (strcasecmp($alias_attr_name,$attr_name) == 0)
@@ -956,6 +1020,9 @@ class AttributeType extends SchemaItem {
 	 * @return string The raw syntax string
 	 */
 	public function getSyntaxString() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->syntax);
+
 		return $this->syntax;
 	}
 
@@ -968,6 +1035,9 @@ class AttributeType extends SchemaItem {
 	 * @return string The syntax OID string.
 	 */
 	public function getSyntaxOID() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->syntax_oid);
+
 		return $this->syntax_oid;
 	}
 
@@ -977,6 +1047,9 @@ class AttributeType extends SchemaItem {
 	 * @return int The maximum length (in characters) of this attribute or null if no maximum is specified.
 	 */
 	public function getMaxLength() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->max_length);
+
 		return $this->max_length;
 	}
 
@@ -987,6 +1060,9 @@ class AttributeType extends SchemaItem {
 	 * @return boolean Returns true if this attribute is single-valued or false otherwise.
 	 */
 	public function getIsSingleValue() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->is_single_value);
+
 		return $this->is_single_value;
 	}
 
@@ -996,6 +1072,9 @@ class AttributeType extends SchemaItem {
 	 * @param boolean $is
 	 */
 	public function setIsSingleValue($is) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$this->is_single_value = $is;
 	}
 
@@ -1005,6 +1084,9 @@ class AttributeType extends SchemaItem {
 	 * @return boolean Returns true if this attribute is collective and false otherwise.
 	 */
 	public function getIsCollective() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->is_collective);
+
 		return $this->is_collective;
 	}
 
@@ -1014,6 +1096,9 @@ class AttributeType extends SchemaItem {
 	 * @return boolean Returns true if this attribute is not modifiable by users.
 	 */
 	public function getIsNoUserModification() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->is_no_user_modification);
+
 		return $this->is_no_user_modification;
 	}
 
@@ -1023,6 +1108,9 @@ class AttributeType extends SchemaItem {
 	 * @return string The attribute's type.
 	 */
 	public function getType() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->type);
+
 		return $this->type;
 	}
 
@@ -1034,8 +1122,8 @@ class AttributeType extends SchemaItem {
 	 *           attribute name is not found in this attribute's list of aliases)
 	 */
 	public function removeAlias($remove_alias_name) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$remove_alias_name);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		foreach ($this->aliases as $i => $alias_name) {
 
@@ -1055,6 +1143,9 @@ class AttributeType extends SchemaItem {
 	 * @param string $alias The name of a new attribute to add to this attribute's list of aliases.
 	 */
 	public function addAlias($alias) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		array_push($this->aliases,$alias);
 	}
 
@@ -1064,6 +1155,9 @@ class AttributeType extends SchemaItem {
 	 * @param string $name The new name to give this attribute.
 	 */
 	public function setName($name) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$this->name = $name;
 	}
 
@@ -1073,6 +1167,9 @@ class AttributeType extends SchemaItem {
 	 * @param string $attr The name of the new parent (SUP) attribute
 	 */
 	public function setSupAttribute($attr) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$this->sup_attribute = $attr;
 	}
 
@@ -1082,6 +1179,9 @@ class AttributeType extends SchemaItem {
 	 * @param array $aliases The array of alias names (strings)
 	 */
 	public function setAliases($aliases) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$this->aliases = $aliases;
 	}
 
@@ -1091,6 +1191,9 @@ class AttributeType extends SchemaItem {
 	 * @param string $type The new type.
 	 */
 	public function setType($type) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$this->type = $type;
 	}
 
@@ -1101,12 +1204,12 @@ class AttributeType extends SchemaItem {
 	 * @param string $name The name of the objectClass to add.
 	 */
 	public function addUsedInObjectClass($name) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$name);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		foreach ($this->used_in_object_classes as $used_in_object_class) {
 			if (DEBUG_ENABLED)
-				debug_log('Checking (%s) with (%s)',8,__FILE__,__LINE__,__METHOD__,$used_in_object_class,$name);
+				debug_log('Checking (%s) with (%s)',8,0,__FILE__,__LINE__,__METHOD__,$used_in_object_class,$name);
 
 			if (strcasecmp($used_in_object_class,$name) == 0)
 				return false;
@@ -1122,6 +1225,9 @@ class AttributeType extends SchemaItem {
 	 * @return array An array of names of objectclasses (strings) which provide this attribute
 	 */
 	public function getUsedInObjectClasses() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->used_in_object_classes);
+
 		return $this->used_in_object_classes;
 	}
 
@@ -1132,8 +1238,8 @@ class AttributeType extends SchemaItem {
 	 * @param string $name The name of the objectClass to add.
 	 */
 	public function addRequiredByObjectClass($name) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$name);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		foreach ($this->required_by_object_classes as $required_by_object_class)
 			if (strcasecmp($required_by_object_class,$name) == 0)
@@ -1149,6 +1255,9 @@ class AttributeType extends SchemaItem {
 	 * @return array An array of names of objectclasses (strings) which provide this attribute
 	 */
 	public function getRequiredByObjectClasses() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->required_by_object_classes);
+
 		return $this->required_by_object_classes;
 	}
 
@@ -1156,10 +1265,16 @@ class AttributeType extends SchemaItem {
 	 * This function will mark this attribute as a forced MAY attribute
 	 */
 	public function setForceMay() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$this->forced_as_may = true;
 	}
 
 	public function isForceMay() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->forced_as_may);
+
 		return $this->forced_as_may;
 	}
 }
@@ -1175,8 +1290,8 @@ class Syntax extends SchemaItem {
 	 * Creates a new Syntax object from a raw LDAP syntax string.
 	 */
 	public function __construct($class) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$class);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$strings = preg_split('/[\s,]+/',$class,-1,PREG_SPLIT_DELIM_CAPTURE);
 
@@ -1222,8 +1337,8 @@ class MatchingRule extends SchemaItem {
 	 * Creates a new MatchingRule object from a raw LDAP MatchingRule string.
 	 */
 	function __construct($strings) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$strings);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$strings = preg_split('/[\s,]+/',$strings,-1,PREG_SPLIT_DELIM_CAPTURE);
 
@@ -1294,6 +1409,9 @@ class MatchingRule extends SchemaItem {
 	 * @param array $attrs The array of attribute names (strings) which use this MatchingRule
 	 */
 	public function setUsedByAttrs($attrs) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$this->used_by_attrs = $attrs;
 	}
 
@@ -1303,8 +1421,8 @@ class MatchingRule extends SchemaItem {
 	 * @return true if the attribute was added and false otherwise (already in the list)
 	 */
 	public function addUsedByAttr($attr) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$attr);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		foreach ($this->used_by_attrs as $attr_name)
 			if (strcasecmp($attr_name,$attr) == 0)
@@ -1321,6 +1439,9 @@ class MatchingRule extends SchemaItem {
 	 * @return array The array of attribute names (strings).
 	 */
 	public function getUsedByAttrs() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->used_by_attrs);
+
 		return $this->used_by_attrs;
 	}
 }
@@ -1336,8 +1457,8 @@ class MatchingRuleUse extends SchemaItem {
 	private $used_by_attrs = array();
 
 	function __construct($strings) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',9,__FILE__,__LINE__,__METHOD__,$strings);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$strings = preg_split('/[\s,]+/',$strings,-1,PREG_SPLIT_DELIM_CAPTURE);
 
@@ -1411,6 +1532,9 @@ class MatchingRuleUse extends SchemaItem {
 	 * @return array The array of attribute names (strings).
 	 */
 	public function getUsedByAttrs() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->used_by_attrs);
+
 		return $this->used_by_attrs;
 	}
 }

@@ -54,9 +54,6 @@ if (file_exists(LIBDIR.'functions.custom.php'))
  * Loads class definition
  */
 function __autoload($className) {
-	if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
-		debug_log('Call to autoload (%s)',1,__FILE__,__LINE__,__METHOD__,$className);
-
 	if (file_exists(HOOKSDIR."classes/$className.php"))
 		require_once(HOOKSDIR."classes/$className.php");
 	elseif (file_exists(LIBDIR."$className.php"))
@@ -77,8 +74,8 @@ function __autoload($className) {
  *                     $_GET, $_POST, or $_COOKIE.
  */
 function array_stripslashes(&$array) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$array);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	if (is_array($array))
 		while (list($key) = each($array))
@@ -125,9 +122,8 @@ if (! function_exists('_')) {
  * @see set_error_handler
  */
 function app_error_handler($errno,$errstr,$file,$lineno) {
-	if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$errno,$errstr,$file,$lineno);
+	if (defined('DEBUG_ENABLED') && DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	/**
 	 * error_reporting will be 0 if the error context occurred
@@ -232,9 +228,6 @@ function app_version() {
 		elseif ($CACHE == $version)
 			$CACHE = 'UNKNOWN';
 	}
-
-	if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
-		debug_log('Entered with (), Returning (%s)',1,__FILE__,__LINE__,__METHOD__,$CACHE);
 
 	return $CACHE;
 }
@@ -353,6 +346,9 @@ function check_config($config_file) {
  * @return array
  */
 function cmd_control_pane($type) {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	switch ($type) {
 		case 'main' :
 			return array(
@@ -491,29 +487,25 @@ function debug_sysmsg($msg) {
  * @param int Log bit number for this message.
  * @see syslog.php
  */
-function debug_log($msg,$level=0) {
-	global $debug_file;
-
-	# Temporary, to catch when these are not set in the function arguments.
-	$file = __FILE__;
-	$line = __LINE__;
-	$method = __METHOD__;
+function debug_log($msg,$level,$indent) {
+	static $debug_file;
 
 	# In case we are called before we are fully initialised or if debugging is not set.
-	if (! isset($_SESSION[APPCONFIG]) || ! ($_SESSION[APPCONFIG]->getValue('debug','file')
-		|| $_SESSION[APPCONFIG]->getValue('debug','syslog')))
-		return false;
+	if (! isset($_SESSION[APPCONFIG]) ||
+		! ($_SESSION[APPCONFIG]->getValue('debug','file') || $_SESSION[APPCONFIG]->getValue('debug','syslog')))
+		return;
 
 	$debug_level = $_SESSION[APPCONFIG]->getValue('debug','level');
 	if (! $debug_level || (! ($level & $debug_level)))
 		return;
 
-	$debugaddr = false;
 	if ($_SESSION[APPCONFIG]->getValue('debug','addr'))
 		if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR'] == $_SESSION[APPCONFIG]->getValue('debug','addr'))
 			$debugaddr = true;
 		elseif ($_SERVER['REMOTE_ADDR'] == $_SESSION[APPCONFIG]->getValue('debug','addr'))
 			$debugaddr = true;
+		else
+			$debugaddr = false;
 
 	else
 		$debugaddr = true;
@@ -522,36 +514,51 @@ function debug_log($msg,$level=0) {
 		return;
 
 	# If we are limiting debug to a browser, then check that
-	$caller = basename( $_SERVER['PHP_SELF'] );
+	$caller = basename($_SERVER['PHP_SELF']);
 
-	if (func_num_args() > 2) {
-		$args = func_get_args();
-		array_shift($args);
-		array_shift($args);
+	$args = func_get_args();
+	# Discard our first three arguments.
+	array_shift($args);
+	array_shift($args);
+	array_shift($args);
 
-		# This is temporary, until we change all the debug_log statements.
-		if (is_string($args[0]) && preg_match('/.php$/',$args[0])) {
-			$file = array_shift($args);
-			$line = array_shift($args);
-			$method = array_shift($args);
-		}
+	# Pull the file/line/method
+	if (is_string($args[0]) && preg_match('/.php$/',$args[0])) {
+		$file = preg_replace('/.php$/','',array_shift($args));
+		$line = array_shift($args);
+		$method = array_shift($args);
 
-		$fargs = array();
-		foreach ($args as $key) {
-			if (is_array($key) || is_object($key))
-				array_push($fargs,serialize($key));
-			else
-				array_push($fargs,$key);
-		}
-		$msg = vsprintf($msg, array_values($fargs));
+	} else {
+		$file = 'UNKNOWN';
+		$line = 'UNKNOWN';
+		$method = 'UNKNOWN';
 	}
+
+	# TEMP: New debuglog format
+	if (preg_match('/%%/',$msg) && $args[0] != 'NOARGS')
+		$args = array_shift($args);
+
+	$fargs = array();
+	foreach ($args as $key) {
+		if (is_array($key))
+			array_push($fargs,serialize($key));
+		elseif (is_object($key))
+			array_push($fargs,sprintf('OBJECT:%s',get_class($key)));
+		else
+			array_push($fargs,$key);
+	}
+
+	if (preg_match('/%%/',$msg))
+		$msg = preg_replace('/%%/',join('|',$fargs),$msg);
+	else
+		$msg = vsprintf($msg,array_values($fargs));
 
 	if (function_exists('stopwatch'))
 		$timer = stopwatch();
 	else
 		$timer = null;
 
-	$debug_message = sprintf('[%2.3f] %3s-%s(%04s): %s: %s',$timer,$level,basename($file),$line,$method,substr($msg,0,200));
+	$debug_message = sprintf('[%2.3f] %15s(%04s-%03s): %s%s: %s',$timer,basename($file),$line,$level,str_repeat('.',$indent),$method,substr($msg,0,200));
 
 	if ($debug_file || $_SESSION[APPCONFIG]->getValue('debug','file')) {
 		if (! $debug_file)
@@ -732,9 +739,8 @@ function system_message($msg,$redirect=null) {
  * @author lem9 (taken from the phpMyAdmin source)
  */
 function blowfish_encrypt($data,$secret=null) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$data,$secret);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	# If our secret is null or blank, get the default.
 	if ($secret === null || ! trim($secret))
@@ -772,9 +778,8 @@ function blowfish_encrypt($data,$secret=null) {
  * @author lem9 (taken from the phpMyAdmin source)
  */
 function blowfish_decrypt($encdata,$secret=null) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$encdata,$secret);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	# This cache gives major speed up for stupid callers :)
 	static $CACHE = array();
@@ -817,9 +822,8 @@ function blowfish_decrypt($encdata,$secret=null) {
  * @return string The padded string
  */
 function full_str_pad($input,$pad_length,$pad_string='',$pad_type=0) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$input,$pad_length,$pad_string,$pad_type);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	$str = '';
 	$length = $pad_length - strlen($input);
@@ -853,22 +857,18 @@ function full_str_pad($input,$pad_length,$pad_string='',$pad_type=0) {
  *         or null if there is nothing cached..
  */
 function get_cached_item($index,$item,$subitem='null') {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	# Set default return
 	$return = null;
 
 	# Check config to make sure session-based caching is enabled.
-	if ($_SESSION[APPCONFIG]->getValue('cache',$item))
-		if (isset($_SESSION['cache'][$index][$item][$subitem])) {
-			if (DEBUG_ENABLED)
-				debug_log('Returning SESSION cached [%s] (%s)',1,__FILE__,__LINE__,__METHOD__,
-					$item,$subitem);
-
-			$return = $_SESSION['cache'][$index][$item][$subitem];
-		}
+	if ($_SESSION[APPCONFIG]->getValue('cache',$item) && isset($_SESSION['cache'][$index][$item][$subitem]))
+		$return = $_SESSION['cache'][$index][$item][$subitem];
 
 	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s,%s), Returning (%s)',1,__FILE__,__LINE__,__METHOD__,
-			$index,$item,$subitem,$return);
+		debug_log('Returning (%s)',1,0,__FILE__,__LINE__,__METHOD__,$return);
 
 	return $return;
 }
@@ -879,9 +879,8 @@ function get_cached_item($index,$item,$subitem='null') {
  * Returns true on success of false on failure.
  */
 function set_cached_item($index,$item,$subitem='null',$data) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$index,$item,$subitem,$data);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	# Check config to make sure session-based caching is enabled.
 	if ($_SESSION[APPCONFIG]->getValue('cache',$item)) {
@@ -889,6 +888,7 @@ function set_cached_item($index,$item,$subitem='null',$data) {
 
 		$CACHE[$index][$item][$subitem] = $data;
 		$_SESSION['cache'][$index][$item][$subitem] = $data;
+
 		return true;
 
 	} else
@@ -899,11 +899,10 @@ function set_cached_item($index,$item,$subitem='null',$data) {
  * Deletes the cache for a specified $item for the specified $index
  */
 function del_cached_item($index,$item,$subitem='null') {
-	global $CACHE;
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$index,$item,$subitem);
+	global $CACHE;
 
 	# Check config to make sure session-based caching is enabled.
 	if (isset($_SESSION['cache'][$index][$item][$subitem]))
@@ -925,6 +924,9 @@ function del_cached_item($index,$item,$subitem='null') {
  * @return boolean
  */
 function set_cookie($name,$val,$expire=null,$dir=null) {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	# Set default return
 	$return = false;
 
@@ -942,8 +944,7 @@ function set_cookie($name,$val,$expire=null,$dir=null) {
 	}
 
 	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s,%s,%s), Returning (%s)',1,__FILE__,__LINE__,__METHOD__,
-			$name,$val,$expire,$dir,$return);
+		debug_log('Returning (%s)',1,0,__FILE__,__LINE__,__METHOD__,$return);
 
 	return $return;
 }
@@ -958,6 +959,9 @@ function set_cookie($name,$val,$expire=null,$dir=null) {
  * @return string The customized filename, if exists, or the standard one
  */
 function get_custom_file($index,$filename,$path) {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	# Set default return
 	$return = $path.$filename;
 	$server = $_SESSION[APPCONFIG]->getServer($index);
@@ -967,8 +971,7 @@ function get_custom_file($index,$filename,$path) {
 		$return = $path.$custom.$filename;
 
 	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s,%s), Returning (%s)',1,__FILE__,__LINE__,__METHOD__,
-			$index,$filename,$path,$return);
+		debug_log('Returning (%s)',1,0,__FILE__,__LINE__,__METHOD__,$return);
 
 	return $return;
 }
@@ -982,9 +985,8 @@ function get_custom_file($index,$filename,$path) {
  * @return array Sorted multi demension array.
  */
 function masort(&$data,$sortby,$rev=0) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$data,$sortby,$rev);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	# if the array to sort is null or empty
 	if (! $data) return;
@@ -1097,6 +1099,9 @@ function isCompress() {
  * @return boolean
  */
 function obfuscate_password_display($enc=null) {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	if ($_SESSION[APPCONFIG]->getValue('appearance','obfuscate_password_display'))
 		$return = true;
 
@@ -1107,8 +1112,7 @@ function obfuscate_password_display($enc=null) {
 		$return = false;
 
 	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s), Returning (%s)',1,__FILE__,__LINE__,__METHOD__,
-			$enc,$return);
+		debug_log('Returning (%s)',1,0,__FILE__,__LINE__,__METHOD__,$return);
 
 	return $return;
 }
@@ -1124,8 +1128,8 @@ function obfuscate_password_display($enc=null) {
  * @return string
  */
 function pretty_print_dn($dn) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$dn);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	$dn_save = $dn;
 	$dn = pla_explode_dn($dn);
@@ -1157,8 +1161,8 @@ function pretty_print_dn($dn) {
  * @return boolean
  */
 function is_dn_string($str) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$str);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	/* Try to break the string into its component parts if it can be done
 	   ie, "uid=Manager" "dc=example" and "dc=com" */
@@ -1194,8 +1198,8 @@ function is_dn_string($str) {
  * @return boolean Returns true if the specified string looks like an email address or false otherwise.
  */
 function is_mail_string($str) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$str);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	$mail_regex = "/^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*$/";
 
@@ -1212,8 +1216,8 @@ function is_mail_string($str) {
  * @return boolean Returns true if the specified string looks like a web URL or false otherwise.
  */
 function is_url_string($str) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$str);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	$url_regex = '/^(ftp|https?):\/\/+[\w\.\-\/\?\=\&]*\w+/';
 
@@ -1255,8 +1259,8 @@ function is_url_string($str) {
  * @return int
  */
 function pla_compare_dns($dn1,$dn2) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s)',1,__FILE__,__LINE__,__METHOD__,$dn1,$dn2);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	# If pla_compare_dns is passed via a tree, then we'll just get the DN part.
 	if (is_array($dn1))
@@ -1354,9 +1358,8 @@ function pla_compare_dns($dn1,$dn2) {
  * @return int
  */
 function get_next_number($base,$attr,$increment=false,$filter=false,$startmin=null) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$base,$attr,$increment,$filter);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	$server = $_SESSION[APPCONFIG]->getServer(get_request('server_id','REQUEST'));
 	$attr = strtolower($attr);
@@ -1550,8 +1553,8 @@ function get_next_number($base,$attr,$increment=false,$filter=false,$startmin=nu
  * @return string
  */
 function get_icon($server_id,$dn,$object_classes=array()) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$dn);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	$server = $_SESSION[APPCONFIG]->getServer($server_id);
 
@@ -1731,9 +1734,8 @@ function get_icon($server_id,$dn,$object_classes=array()) {
  * @return string|null Returns null if both base is null and sub_dn is null or empty
  */
 function expand_dn_with_base($base,$sub_dn) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$base,$sub_dn);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	$empty_str = (is_null($sub_dn) || (($len=strlen(trim($sub_dn))) == 0));
 
@@ -1758,8 +1760,8 @@ function expand_dn_with_base($base,$sub_dn) {
  * @return string The generated salt string.
  */
 function random_salt($length) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$length);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	$possible = '0123456789'.
 		'abcdefghijklmnopqrstuvwxyz'.
@@ -1784,8 +1786,8 @@ function random_salt($length) {
  * @return string The RDN
  */
 function get_rdn($dn,$include_attrs=0,$decode=false) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,$dn,$include_attrs,$decode);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	if (is_null($dn))
 		return null;
@@ -1806,6 +1808,9 @@ function get_rdn($dn,$include_attrs=0,$decode=false) {
  * Split an RDN into its attributes
  */
 function rdn_explode($rdn) {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	# Setup to work out our RDN.
 	$rdnarray = explode('\+',$rdn);
 
@@ -1839,8 +1844,8 @@ function rdn_explode($rdn) {
  * @return array An associative array contianing the error title and description like so:
  */
 function pla_verbose_error($key) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$key);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	static $CACHE = array();
 
@@ -1891,10 +1896,11 @@ function pla_verbose_error($key) {
  * @return array An associative array contianing the OID title and description like so:
  */
 function support_oid_to_text($key) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$key);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	static $CACHE = array();
+
 	$unknown = array();
 	$unknown['desc'] = 'We have no description for this OID, if you know what this OID provides, please let us know. Please also include an RFC reference if it is available.';
 	$unknown['title'] = 'Can you help with this OID info?';
@@ -1937,6 +1943,9 @@ function support_oid_to_text($key) {
  * Print an LDAP error message
  */
 function ldap_error_msg($msg,$errnum) {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	$body = '<table border=0>';
 
 	$errnum = ('0x'.str_pad(dechex($errnum),2,0,STR_PAD_LEFT));
@@ -1979,9 +1988,8 @@ function ldap_error_msg($msg,$errnum) {
  *                fixed_width, fixed_height, img_opts.
  */
 function draw_jpeg_photo($server,$dn,$attr_name='jpegphoto',$index,$draw_delete_buttons=false,$options=array()) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s,%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			is_object($server),$dn,$attr_name,$index,$draw_delete_buttons,$img_html_attrs);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	$fixed = array();
 	$fixed['width'] = isset($options['fixed_width']) ? $options['fixed_width'] : false;
@@ -2078,6 +2086,9 @@ function draw_jpeg_photo($server,$dn,$attr_name='jpegphoto',$index,$draw_delete_
  * @todo Dynamically work this list out so we only present hashes that we can encrypt
  */
 function password_types() {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	return array(
 		'blowfish',
 		'clear',
@@ -2100,9 +2111,8 @@ function password_types() {
  * @return string The hashed password.
  */
 function password_hash($password_clear,$enc_type) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$password_clear,$enc_type);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	$enc_type = strtolower($enc_type);
 
@@ -2197,9 +2207,8 @@ function password_hash($password_clear,$enc_type) {
  * @return Boolean True if the clear password matches the hash, and false otherwise.
  */
 function password_check($cryptedpassword,$plainpassword) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$cryptedpassword,$plainpassword);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	if (preg_match('/{([^}]+)}(.*)/',$cryptedpassword,$matches)) {
 		$cryptedpassword = $matches[2];
@@ -2344,8 +2353,8 @@ function password_check($cryptedpassword,$plainpassword) {
  * @return string
  */
 function get_enc_type($user_password) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$user_password);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	# Capture the stuff in the { } to determine if this is crypt, md5, etc.
 	$enc_type = null;
@@ -2383,9 +2392,8 @@ function get_enc_type($user_password) {
  * @param boolean (optional) If true, the function draws the localized text "choose" to the right of the button.
  */
 function draw_chooser_link($form_element,$include_choose_text=true,$rdn='none') {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$form_element,$include_choose_text,$rdn);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	if ($rdn == 'none')
 		$href = sprintf("javascript:dnChooserPopup('%s','');",$form_element);
@@ -2419,14 +2427,14 @@ function draw_chooser_link($form_element,$include_choose_text=true,$rdn='none') 
  * @return array An array of RDN parts of this format:
  */
 function pla_explode_dn($dn,$with_attributes=0) {
-	global $CACHE;
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s)',1,__FILE__,__LINE__,__METHOD__,$dn,$with_attributes);
+	global $CACHE;
 
 	if (isset($CACHE['explode'][$dn][$with_attributes])) {
 		if (DEBUG_ENABLED)
-			debug_log('Return CACHED result (%s) for (%s)',1,__FILE__,__LINE__,__METHOD__,
+			debug_log('Return CACHED result (%s) for (%s)',1,0,__FILE__,__LINE__,__METHOD__,
 				$CACHE['explode'][$dn][$with_attributes],$dn);
 
 		return $CACHE['explode'][$dn][$with_attributes];
@@ -2439,7 +2447,7 @@ function pla_explode_dn($dn,$with_attributes=0) {
 	$result[1] = ldap_explode_dn(dn_escape($dn),1);
 	if (! $result[$with_attributes]) {
 		if (DEBUG_ENABLED)
-			debug_log('Returning NULL - NO result.',1,__FILE__,__LINE__,__METHOD__);
+			debug_log('Returning NULL - NO result.',1,0,__FILE__,__LINE__,__METHOD__);
 
 		return array();
 	}
@@ -2458,8 +2466,7 @@ function pla_explode_dn($dn,$with_attributes=0) {
 	}
 
 	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s), Returning (%s)',1,__FILE__,__LINE__,__METHOD__,
-			$dn,$with_attributes,$result[$with_attributes]);
+		debug_log('Returning (%s)',1,0,__FILE__,__LINE__,__METHOD__,$result[$with_attributes]);
 
 	return $result[$with_attributes];
 }
@@ -2468,6 +2475,9 @@ function pla_explode_dn($dn,$with_attributes=0) {
  * Parse a DN and escape any special characters
  */
 function dn_escape($dn) {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	$olddn = $dn;
 
 	# Check if the RDN has a comma and escape it.
@@ -2477,7 +2487,7 @@ function dn_escape($dn) {
 	$dn = preg_replace('/([^\\\\]),(\s*[^=]*\s*)([^,])$/','$1\\\\2C$2$3',$dn);
 
 	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s), Returning (%s)',1,__FILE__,__LINE__,__METHOD__,$olddn,$dn);
+		debug_log('Returning (%s)',1,0,__FILE__,__LINE__,__METHOD__,$dn);
 
 	return $dn;
 }
@@ -2486,12 +2496,17 @@ function dn_escape($dn) {
  * Parse a DN and unescape any special characters
  */
 function dn_unescape($dn) {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	if (is_array($dn)) {
 		$a = array();
-		foreach ($dn as $key => $rdn) {
+
+		foreach ($dn as $key => $rdn)
 			$a[$key] = preg_replace('/\\\([0-9A-Fa-f]{2})/e',"''.chr(hexdec('\\1')).''",$rdn);
-		}
+
 		return $a;
+
 	} else {
 		return preg_replace('/\\\([0-9A-Fa-f]{2})/e',"''.chr(hexdec('\\1')).''",$dn);
 	}
@@ -2569,9 +2584,8 @@ function utime() {
  * @return string The string created from the array.
  */
 function array_to_query_string($array,$exclude_vars=array()) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$array,$exclude_vars,$url_encode_ampersands);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	if (! is_array($array) || ! count($array))
 		return '';
@@ -2617,8 +2631,8 @@ function array_to_query_string($array,$exclude_vars=array()) {
  * @see pla_explode_dns
  */
 function pla_reverse_dn($dn) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$dn);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	return (implode(',',array_reverse(pla_explode_dn($dn))));
 }
@@ -2627,8 +2641,8 @@ function pla_reverse_dn($dn) {
  * Attribute sorting
  */
 function sortAttrs($a,$b) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s)',1,__FILE__,__LINE__,__METHOD__,$a,$b);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	if ($a == $b)
 		return 0;
@@ -2665,8 +2679,8 @@ function sortAttrs($a,$b) {
  * @returns array Array with values converted to lowercase.
  */
 function arrayLower($array) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$array);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	if (! is_array($array))
 		return $array;
@@ -2686,8 +2700,8 @@ function arrayLower($array) {
  * @return boolean True if its there, false if its not.
  */
 function in_array_ignore_case($needle,$haystack) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s)',1,__FILE__,__LINE__,__METHOD__,$needle,$haystack);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	if (! is_array($haystack))
 		return false;
@@ -2705,7 +2719,7 @@ function in_array_ignore_case($needle,$haystack) {
 	}
 
 	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s), Returning (%s)',1,__FILE__,__LINE__,__METHOD__,$needle,$haystack,$return);
+		debug_log('Returning (%s)',1,0,__FILE__,__LINE__,__METHOD__,$return);
 
 	return $return;
 }
@@ -2714,11 +2728,10 @@ function in_array_ignore_case($needle,$haystack) {
  * Gets a DN string using the user-configured tree_display_format string to format it.
  */
 function draw_formatted_dn($server,$entry) {
-	$dn = $entry->getDn();
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$server->getIndex(),$dn);
+	$dn = $entry->getDn();
 
 	$formats = $_SESSION[APPCONFIG]->getValue('appearance','tree_display_format');
 
@@ -2728,7 +2741,7 @@ function draw_formatted_dn($server,$entry) {
 		$tokens = $tokens[0];
 
 		if (DEBUG_ENABLED)
-			debug_log('The tokens are (%s)',1,__FILE__,__LINE__,__METHOD__,$tokens);
+			debug_log('The tokens are (%s)',1,0,__FILE__,__LINE__,__METHOD__,$tokens);
 
 		foreach ($tokens as $token) {
 			if (strcasecmp($token,'%dn') == 0)
@@ -2773,9 +2786,8 @@ function draw_formatted_dn($server,$entry) {
  * Server html select list
  */
 function server_select_list($selected=null,$logged_on=false,$name='index',$isVisible=true,$js=null) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$selected,$logged_on,$name,$js);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	$count = 0;
 	$server_menu_html = sprintf('<select name="%s" id="%s" %s>',$name,$name,$js);
@@ -2812,8 +2824,8 @@ function server_select_list($selected=null,$logged_on=false,$name='index',$isVis
  * Converts a little-endian hex-number to one, that 'hexdec' can convert
  */
 function littleEndian($hex) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$hex);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	$result = '';
 
@@ -2824,8 +2836,8 @@ function littleEndian($hex) {
 }
 
 function binSIDtoText($binsid) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$binsid);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	$hex_sid = bin2hex($binsid);
 	$rev = hexdec(substr($hex_sid,0,2)); // Get revision-part of SID
@@ -2855,9 +2867,8 @@ function binSIDtoText($binsid) {
  * @return array Array of values keyed by $key.
  */
 function return_ldap_hash($base,$filter,$key,$attrs,$sort=true) {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s,%s,%s,%s,%s)',1,__FILE__,__LINE__,__METHOD__,
-			$server->getIndex(),$base,$filter,$key,$attrs,$sort);
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	$server = $_SESSION[APPCONFIG]->getServer(get_request('server_id','REQUEST'));
 	$key = strtolower($key);
@@ -2899,6 +2910,9 @@ function return_ldap_hash($base,$filter,$key,$attrs,$sort=true) {
  * based on the criteria defined in the array $criteria in config.php
  */
 function password_generate() {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	$no_use_similiar = ! $_SESSION[APPCONFIG]->getValue('password','use_similar');
 	$lowercase = $_SESSION[APPCONFIG]->getValue('password','lowercase');
 	$uppercase = $_SESSION[APPCONFIG]->getValue('password','uppercase');
@@ -2964,7 +2978,8 @@ function password_generate() {
 	$return = implode('',$outarray);
 
 	if (DEBUG_ENABLED)
-		debug_log('Entered with (), Returning (%s)',1,__FILE__,__LINE__,__METHOD__,$return);
+		debug_log('Returning (%s)',1,0,__FILE__,__LINE__,__METHOD__,$return);
+
 	return $return;
 }
 
@@ -2977,6 +2992,9 @@ function password_generate() {
  * @return string The padded string
  */
 function a_array_rand($input,$num_req) {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	if (count($input) == 0)
 		return array();
 
@@ -3000,8 +3018,7 @@ function a_array_rand($input,$num_req) {
 	}
 
 	if (DEBUG_ENABLED)
-		debug_log('Entered with (%s,%s), Returning (%s)',1,__FILE__,__LINE__,__METHOD__,
-			$input,$num_req,$return);
+		debug_log('Returning (%s)',1,0,__FILE__,__LINE__,__METHOD__,$return);
 
 	return $return;
 }
@@ -3030,6 +3047,9 @@ function htmlid($sid,$dn) {
  * Is PLA configured for AJAX display
  */
 function isAjaxEnabled() {
+	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 	if (isset($_SESSION[APPCONFIG]))
 		return ($_SESSION[APPCONFIG]->getValue('appearance','tree') == 'AJAXTree');
 	else

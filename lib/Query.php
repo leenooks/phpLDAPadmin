@@ -24,28 +24,28 @@ class Query extends xmlTemplate {
 	 * @param xmldata Parsed xmldata from xml2array object
 	 */
 	protected function storeTemplate($xmldata) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',5,__FILE__,__LINE__,__METHOD__,$xmldata);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$server = $this->getServer();
 
 		foreach ($xmldata['query'] as $xml_key => $xml_value) {
 			if (DEBUG_ENABLED)
-				debug_log('Foreach loop Key [%s] Value [%s]',4,__FILE__,__LINE__,__METHOD__,$xml_key,is_array($xml_value));
+				debug_log('Foreach loop Key [%s] Value [%s]',4,0,__FILE__,__LINE__,__METHOD__,$xml_key,is_array($xml_value));
 
 			switch ($xml_key) {
 
 				# Build our attribute list from the DN and Template.
 				case ('attributes'):
 					if (DEBUG_ENABLED)
-						debug_log('Case [%s]',4,__FILE__,__LINE__,__METHOD__,$xml_key);
+						debug_log('Case [%s]',4,0,__FILE__,__LINE__,__METHOD__,$xml_key);
 
 					if (is_array($xmldata['query'][$xml_key])) {
 						foreach ($xmldata['query'][$xml_key] as $tattrs) {
 							foreach ($tattrs as $index => $details) {
 
 								if (DEBUG_ENABLED)
-									debug_log('Foreach tattrs Key [%s] Value [%s]',4,__FILE__,__LINE__,__METHOD__,
+									debug_log('Foreach tattrs Key [%s] Value [%s]',4,0,__FILE__,__LINE__,__METHOD__,
 										$index,$details);
 
 								# If there is no schema definition for the attribute, it will be ignored.
@@ -78,7 +78,7 @@ class Query extends xmlTemplate {
 
 				default:
 					if (DEBUG_ENABLED)
-						debug_log('Case [%s]',4,__FILE__,__LINE__,__METHOD__,$xml_key);
+						debug_log('Case [%s]',4,0,__FILE__,__LINE__,__METHOD__,$xml_key);
 
 					# Some key definitions need to be an array, some must not be:
 					$allowed_arrays = array('');
@@ -123,6 +123,9 @@ class Query extends xmlTemplate {
 	 * Accept will run the query and store the results in results()
 	 */
 	public function accept() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$server = $this->getServer();
 
 		$query = array();
@@ -173,6 +176,9 @@ class Query extends xmlTemplate {
 	 * This is temporary to get around objects that use a DN for rendering, for example jpegPhoto
 	 */
 	public function setDN($dn) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$this->dn = $dn;
 	}
 
@@ -180,10 +186,16 @@ class Query extends xmlTemplate {
 	 * This is temporary to get around objects that use a DN for rendering, for example jpegPhoto
 	 */
 	public function getDN() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->dn);
+
 		return $this->dn;
 	}
 
 	public function getAttrSortOrder() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$result = array();
 
 		if (count($this->attributes)) {
@@ -203,6 +215,9 @@ class Query extends xmlTemplate {
 	}
 
 	public function getAttrDisplayOrder() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$result = array();
 
 		if (count($this->attributes)) {
@@ -241,10 +256,16 @@ class Query extends xmlTemplate {
 	 * @return boolean
 	 */
 	public function isVisible() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->visible);
+
 		return $this->visible;
 	}
 
 	public function getDescription() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->description);
+
 		return $this->description;
 	}
 }

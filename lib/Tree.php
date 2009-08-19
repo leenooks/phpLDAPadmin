@@ -28,6 +28,9 @@ abstract class Tree {
 	abstract public function draw();
 
 	protected function __construct($server_id) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$this->server_id = $server_id;
 	}
 
@@ -38,6 +41,9 @@ abstract class Tree {
 	 * @return object Tree
 	 */
 	static public function getInstance($server_id) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$tree = get_cached_item($server_id,'tree');
 
 		if (! $tree) {
@@ -69,6 +75,9 @@ abstract class Tree {
 	 * @return int Server ID that this tree is for
 	 */
 	protected function getServerID() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->server_id);
+
 		return $this->server_id;
 	}
 
@@ -78,6 +87,9 @@ abstract class Tree {
 	 * @return object Server Object for this tree
 	 */
 	protected function getServer() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		return $_SESSION[APPCONFIG]->getServer($this->server_id);
 	}
 
@@ -87,6 +99,9 @@ abstract class Tree {
 	 * @return array Base DN entries
 	 */
 	public function getBaseEntries() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$return = array();
 
 		foreach ($this->entries as $details)
@@ -109,10 +124,13 @@ abstract class Tree {
 	 * @return dn Lowercase clean DN
 	 */
 	private function indexDN($dn) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$index = strtolower(implode(',',pla_explode_dn($dn)));
 
 		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s), Result (%s)',1,__FILE__,__LINE__,__METHOD__,$dn,$index);
+			debug_log('Result (%s)',1,0,__FILE__,__LINE__,__METHOD__,$index);
 
 		return $index;
 	}
@@ -124,6 +142,9 @@ abstract class Tree {
 	 * @return object Tree DN object
 	 */
 	public function getEntry($dn) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
 		$dnlower = $this->indexDN($dn);
 
 		if (isset($this->entries[$dnlower]))
@@ -140,8 +161,8 @@ abstract class Tree {
 	 * @param string $dn the dn of the entry to create
 	 */
 	public function addEntry($dn) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$dn);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$server = $this->getServer();
 		$dnlower = $this->indexDN($dn);
@@ -153,7 +174,7 @@ abstract class Tree {
 			debug_dump_backtrace('Calling add entry to an entry that ALREADY exists?',1);
 
 		if (DEBUG_ENABLED)
-			debug_log('New ENTRY (%s).',64,__FILE__,__LINE__,__METHOD__,$dn);
+			debug_log('New ENTRY (%s).',64,0,__FILE__,__LINE__,__METHOD__,$dn);
 
 		$tree_factory = new TreeItem($server->getIndex(),$dn);
 		$tree_factory->setObjectClasses($server->getDNAttrValue($dn,'objectClass'));
@@ -170,7 +191,7 @@ abstract class Tree {
 			$parent_dn = $server->getContainer($dn);
 
 			if (DEBUG_ENABLED)
-				debug_log('Parent DNs (%s)',64,__FILE__,__LINE__,__METHOD__,$parent_dn);
+				debug_log('Parent DNs (%s)',64,0,__FILE__,__LINE__,__METHOD__,$parent_dn);
 
 			if ($parent_dn) {
 				$parent_entry = $this->getEntry($parent_dn);
@@ -193,8 +214,8 @@ abstract class Tree {
 	 * @param dn DN to remote
 	 */
 	public function delEntry($dn) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s)',1,__FILE__,__LINE__,__METHOD__,$dn);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$server = $this->getServer();
 		$dnlower = $this->indexDN($dn);
@@ -217,8 +238,8 @@ abstract class Tree {
 	 * @param dn New DN
 	 */
 	public function renameEntry($dnOLD,$dnNEW) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s,%s)',1,__FILE__,__LINE__,__METHOD__,$dnOLD,$dnNEW);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$server = $this->getServer();
 		$dnlowerOLD = $this->indexDN($dnOLD);
@@ -249,8 +270,8 @@ abstract class Tree {
 	 * @param boolean LDAP Size Limit
 	 */
 	public function readChildren($dn,$nolimit=false) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s,%s)',1,__FILE__,__LINE__,__METHOD__,$dn,$nolimit);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$server = $this->getServer();
 		$dnlower = $this->indexDN($dn);
@@ -272,7 +293,7 @@ abstract class Tree {
 		}
 
 		if (DEBUG_ENABLED)
-			debug_log('Children of (%s) are (%s)',64,__FILE__,__LINE__,__METHOD__,$dn,$ldap['children']);
+			debug_log('Children of (%s) are (%s)',64,0,__FILE__,__LINE__,__METHOD__,$dn,$ldap['children']);
 
 		# Relax our execution time, it might take some time to load this
 		if ($nolimit)
@@ -280,7 +301,7 @@ abstract class Tree {
 
 		foreach ($ldap['children'] as $child) {
 			if (DEBUG_ENABLED)
-				debug_log('Adding (%s)',64,__FILE__,__LINE__,__METHOD__,$child);
+				debug_log('Adding (%s)',64,0,__FILE__,__LINE__,__METHOD__,$child);
 
 			if (! in_array($child,$this->entries[$dnlower]->getChildren()))
 				$this->entries[$dnlower]->addChild($child);
@@ -290,9 +311,6 @@ abstract class Tree {
 			$this->entries[$dnlower]->setSizeLimited();
 		else
 			$this->entries[$dnlower]->unsetSizeLimited();
-
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s,%s), Returning ()',1,__FILE__,__LINE__,__METHOD__,$dn,$nolimit);
 	}
 
 	/**
@@ -302,8 +320,8 @@ abstract class Tree {
 	 * @param boolean LDAP Size Limit
 	 */
 	protected function readChildrenNumber($dn,$nolimit=false) {
-		if (DEBUG_ENABLED)
-			debug_log('Entered with (%s,%s)',1,__FILE__,__LINE__,__METHOD__,$dn,$nolimit);
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$dnlower = $this->indexDN($dn);
 

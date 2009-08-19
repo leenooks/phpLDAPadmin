@@ -26,9 +26,6 @@ define('app_session_id_ses_max', 36);
  * @return string the new session ID string
  */
 function app_session_get_id() {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with ()',1,__FILE__,__LINE__,__METHOD__);
-
 	$id_md5 = md5(rand(1,1000000));
 	$ip_md5 = md5($_SERVER['REMOTE_ADDR']);
 	$id_hex = hexdec($id_md5[0]) + 1;
@@ -51,9 +48,6 @@ function app_session_get_id() {
  * @return boolean True, if the session is valid
  */
 function app_session_verify_id() {
-	if (DEBUG_ENABLED)
-		debug_log('Entered with ()',1,__FILE__,__LINE__,__METHOD__);
-
 	$check_id = session_id();
 	$ip_md5 = md5($_SERVER['REMOTE_ADDR']);
 	$id_hex = hexdec($check_id[0]) + 1;

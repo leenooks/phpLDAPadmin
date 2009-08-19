@@ -165,14 +165,9 @@ function get_line_end_format() {
  */
 function get_user_agent_string() {
 	if (isset($_SERVER['HTTP_USER_AGENT']))
-		$return = strtolower($_SERVER['HTTP_USER_AGENT']);
+		return strtolower($_SERVER['HTTP_USER_AGENT']);
 	else
-		$return = '';
-
-	if (DEBUG_ENABLED)
-		debug_log('Entered with (), Returning (%s)',1,__FILE__,__LINE__,__METHOD__,$return);
-
-	return $return;
+		return '';
 }
 
 /**
