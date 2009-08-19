@@ -135,6 +135,8 @@ class Query extends xmlTemplate {
 			$bases = get_request('base','REQUEST',false,null);
 			$query['filter'] = get_request('filter','REQUEST',false,'objectClass=*');
 			$query['scope'] = get_request('scope','REQUEST',false,'sub');
+			$query['size_limit'] = get_request('size_limit','REQUEST',false,$_SESSION[APPCONFIG]->getValue('search','size_limit'));
+			$query['format'] = get_request('format','REQUEST',false,$_SESSION[APPCONFIG]->getValue('search','display'));
 			$attrs = get_request('display_attrs','REQUEST');
 
 			$attrs = preg_replace('/\s+/','',$attrs);

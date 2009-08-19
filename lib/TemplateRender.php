@@ -1327,7 +1327,7 @@ class TemplateRender extends PageRender {
 
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
-		$href = sprintf('cmd=query_engine&server_id=%s&filter=%s&base=%s&scope=one&query=none',
+		$href = sprintf('cmd=query_engine&server_id=%s&filter=%s&base=%s&scope=one&query=none&size_limit=0',
 			$this->getServerID(),rawurlencode('objectClass=*'),rawurlencode($this->template->getDN()));
 
 		if (isAjaxEnabled())

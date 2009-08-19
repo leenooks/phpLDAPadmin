@@ -262,30 +262,29 @@ function hideall(key,except) {
 
 		$this->drawBaseTabs();
 		$ado = $this->template->getAttrDisplayOrder();
+		$counter = 0;
 
-		switch(get_request('format','REQUEST',false,'table')) {
-			case 'list':
+		foreach ($this->template->results as $base => $results) {
+			$counter++;
 
-				$counter = 0;
+			if (! $show = get_request('show','REQUEST'))
+				$show = ($counter === 1 ? $this->getAjaxRef($base) : null);
 
-				foreach ($this->template->results as $base => $results) {
-					if (! $show = get_request('show','REQUEST'))
-						$show = ($counter++ === 0 ? $this->getAjaxRef($base) : null);
+			printf('<div id="DN%s" style="display: %s">',
+				$this->getAjaxRef($base), ($show == $this->getAjaxRef($base) ? '' : 'none'));
 
-					printf('<div id="DN%s" style="display: %s">',
-						$this->getAjaxRef($base),
-						($show == $this->getAjaxRef($base) ? '' : 'none'));
+			echo '<table class="result_box" border=0 width=100%>';
+			echo '<tr><td>';
+			echo '<br/>';
+			echo '<br/>';
 
-					echo '<table class="result_box" border=0 width=100%>';
-					echo '<tr><td>';
-					echo '<br/>';
-					echo '<br/>';
+			$this->drawResultsTable($base,count($results));
 
-					$this->drawResultsTable($base,count($results));
+			echo '<br/>';
+			echo '<br/>';
 
-					echo '<br/>';
-					echo '<br/>';
-
+			switch(get_request('format','REQUEST',false,$_SESSION[APPCONFIG]->getValue('search','display'))) {
+				case 'list':
 					foreach ($results as $dn => $dndetails) {
 						$dndetails = array_change_key_case($dndetails);
 
@@ -338,45 +337,17 @@ function hideall(key,except) {
 						echo '<br/>';
 					}
 
-					echo '</td></tr>';
-					echo '</table>';
-					echo '</div>';
-
-					echo "\n\n";
-				}
-
-				break;
-
-			case 'table':
+					break;
 
 				# Display the results.
-				$counter = 0;
-				foreach ($this->template->results as $base => $results) {
-					if (! $show = get_request('show','REQUEST'))
-						$show = ($counter++ === 0 ? $this->getAjaxRef($base) : null);
-
-					printf('<div id="DN%s" style="display: %s">',
-						$this->getAjaxRef($base),
-						($show == $this->getAjaxRef($base) ? '' : 'none'));
-
-					echo '<table class="result_box" border=0 width=100%>';
-					echo '<tr><td>';
-					echo '<br/>';
-					echo '<br/>';
-
-					$this->drawResultsTable($base,count($results));
-
-					echo '<br/>';
-					echo '<br/>';
-
+				case 'table':
 					if (! $results) {
 						echo _('Search returned no results');
-						echo '</td></tr></table>';
-						echo '</div>';
+
 						continue;
 					}
 
-					echo '<form action="cmd.php" method="post" name="massform">';
+					printf('<form action="cmd.php" method="post" id="massform_%s">',$counter);
 					printf('<input type="hidden" name="server_id" value="%s" />',$server->getIndex());
 
 					foreach ($this->template->resultsdata[$base]['attrs'] as $attr)
@@ -399,20 +370,20 @@ function hideall(key,except) {
 					echo '</thead>';
 
 					echo '<tbody class="scroll">';
-					$counter = 0;
+					$j = 0;
 					foreach ($results as $dn => $dndetails) {
-						$counter++;
+						$j++;
 						$dndetails = array_change_key_case($dndetails);
 
 						# Temporarily set our DN, for rendering that leverages our DN (eg: JpegPhoto)
 						$this->template->setDN($dn);
 
-						printf('<tr class="%s" id="tr_ma%s" onClick="var cb=document.getElementById(\'ma%s\'); cb.checked=!cb.checked;">',
-							$counter%2 ? 'odd' : 'even',$counter,$counter);
+						printf('<tr class="%s" id="tr_ma_%s_%s" onClick="var cb=document.getElementById(\'ma_%s_%s\'); cb.checked=!cb.checked;">',
+							$j%2 ? 'even' : 'odd',$j,$counter,$j,$counter);
 
 						# Is mass action enabled.
 						if ($_SESSION[APPCONFIG]->getValue('mass','enabled'))
-							printf('<td><input type="checkbox" id="ma%s" name="dn[]" value="%s" onclick="this.checked=!this.checked;" /></td>',$counter,$dn);
+							printf('<td><input type="checkbox" id="ma_%s_%s" name="dn[]" value="%s" onclick="this.checked=!this.checked;" /></td>',$j,$counter,$dn);
 
 						$href = sprintf('cmd=template_engine&server_id=%s&dn=%s',$server->getIndex(),rawurlencode($dn));
 						printf('<td class="icon"><a href="cmd.php?%s"><img src="%s/%s" alt="icon" /></a></td>',
@@ -454,12 +425,14 @@ function hideall(key,except) {
 
 					# Is mass action enabled.
 					if ($_SESSION[APPCONFIG]->getValue('mass','enabled')) {
-						printf('<tr class="%s">',++$counter%2 ? 'odd' : 'even',$counter);
-						echo '<td><input type="checkbox" name="allbox" value="1" onclick="CheckAll(1);" /></td>';
+						printf('<tr class="%s">',++$j%2 ? 'odd' : 'even');
+						printf('<td><input type="checkbox" name="allbox" value="1" onclick="CheckAll(1,%s);" /></td>',$counter);
 						printf('<td colspan=%s>',2+count(explode(',',$ado)));
 						echo '<select name="cmd" onChange="if (this.value) submit();" style="font-size: 12px">';
+
 						foreach ($mass_actions as $action => $display)
 							printf('<option value="%s">%s</option>',$display,$action);
+
 						echo '</select>';
 						echo '</td>';
 						echo '</tr>';
@@ -468,19 +441,30 @@ function hideall(key,except) {
 					echo '</tbody>';
 					echo '</table>';
 					echo '</form>';
-					echo '</td></tr>';
-					echo '</table>';
-					echo '</div>';
 					echo "\n\n";
 
-					echo '<script type="text/javascript" language="javascript">'."\n";
-					echo "
-function CheckAll(setbgcolor) {
-var deon=0;
-	for (var i=0;i<document.massform.elements.length;i++) {
-		var e = document.massform.elements[i];
+					break;
+
+				default:
+					printf('Have ID [%s], run this query for page [%s]',$this->template_id,$this->page);
+			}
+
+			echo '</td></tr>';
+			echo '</table>';
+			echo '</div>';
+			echo "\n\n";
+		}
+
+			if (get_request('format','REQUEST',false,'table') == 'table') {
+				echo '<script type="text/javascript" language="javascript">'."\n";
+				echo "
+function CheckAll(setbgcolor,form) {
+	htmlform = document.getElementById('massform_'+form);
+
+	for (var i=0;i<htmlform.elements.length;i++) {
+		var e = htmlform.elements[i];
 		if (e.type == 'checkbox' && e.name != 'allbox') {
-			e.checked = document.massform.allbox.checked;
+			e.checked = htmlform.allbox.checked;
 			if (!document.layers && setbgcolor) {
 				var tr = document.getElementById('tr_'+e.id);
 				if (e.checked) {
@@ -494,14 +478,8 @@ var deon=0;
 	}
 }
 ";
-					echo '</script>';
-				}
-
-				break;
-
-			default:
-				printf('Have ID [%s], run this query for page [%s]',$this->template_id,$this->page);
-		}
+				echo '</script>';
+			}
 	}
 
 	public function drawSubTitle($subtitle=null) {
@@ -596,13 +574,17 @@ var deon=0;
 		foreach (array('list','table') as $f) {
 			echo '&nbsp;';
 
-			if (get_request('format','REQUEST') == $f) {
+			if (get_request('format','REQUEST',false,$_SESSION[APPCONFIG]->getValue('search','display')) == $f) {
 				printf('<b>%s</b>',_($f));
 
 			} else {
-				$query_string = array_to_query_string($_GET,array('format','cmd'));
-				$query_string .= sprintf('&format=%s&show=%s',$f,$this->getAjaxRef($base));
-				printf('<a href="cmd.php?cmd=query_engine&amp;%s">%s</a>',htmlspecialchars($query_string),_($f));
+				$query_string = htmlspecialchars(sprintf('%s&format=%s&show=%s&focusbase=%s',array_to_query_string($_GET,array('format','meth')),$f,$this->getAjaxRef($base),$base));
+
+				if (isAjaxEnabled())
+					printf('<a href="cmd.php?%s" onclick="return displayAJ(\'BODY\',\'%s\',\'%s\');">%s</a>',
+						$query_string,$query_string,_('Loading Search'),_($f));
+				else
+					printf('<a href="cmd.php?%s">%s</a>',$query_string,_($f));
 			}
 		}
 
