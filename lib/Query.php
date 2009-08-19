@@ -129,14 +129,15 @@ class Query extends xmlTemplate {
 		$server = $this->getServer();
 
 		$query = array();
+		$query['size_limit'] = get_request('size_limit','REQUEST',false,$_SESSION[APPCONFIG]->getValue('search','size_limit'));
+		$query['format'] = get_request('format','REQUEST',false,$_SESSION[APPCONFIG]->getValue('search','display'));
+		$query['orderby'] = get_request('orderby','REQUEST',false,'dn');
 
 		# If this is a custom search, we need to populate are paramters
 		if ($this->getID() == 'none') {
 			$bases = get_request('base','REQUEST',false,null);
 			$query['filter'] = get_request('filter','REQUEST',false,'objectClass=*');
 			$query['scope'] = get_request('scope','REQUEST',false,'sub');
-			$query['size_limit'] = get_request('size_limit','REQUEST',false,$_SESSION[APPCONFIG]->getValue('search','size_limit'));
-			$query['format'] = get_request('format','REQUEST',false,$_SESSION[APPCONFIG]->getValue('search','display'));
 			$attrs = get_request('display_attrs','REQUEST');
 
 			$attrs = preg_replace('/\s+/','',$attrs);
@@ -169,7 +170,9 @@ class Query extends xmlTemplate {
 			$this->resultsdata[$base]['filter'] = $query['filter'];
 			$this->resultsdata[$base]['attrs'] = $query['attrs'];
 
-			if ($this->getAttrSortOrder())
+			if ($this->getAttrSortOrder() == 'dn')
+				usort($this->results[$base],'pla_compare_dns');
+			elseif ($this->getAttrSortOrder())
 				masort($this->results[$base],$this->getAttrSortOrder());
 		}
 	}
@@ -207,7 +210,7 @@ class Query extends xmlTemplate {
 				array_push($result,$attribute->getName());
 
 		} else {
-			$display = preg_replace('/,\s+/',',',get_request('orderby','REQUEST',false,''));
+			$display = preg_replace('/,\s+/',',',get_request('orderby','REQUEST',false,'dn'));
 
 			if (trim($display))
 				$result = explode(',',$display);

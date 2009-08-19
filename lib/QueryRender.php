@@ -30,7 +30,11 @@ class QueryRender extends PageRender {
 		$this->template_id = $this->getTemplateChoice();
 		$this->page = get_request('page','REQUEST',false,1);
 
-		if ($this->template_id) {
+		# If we are the default template, make sure we pressed search
+		if ($this->template_id == 'none' && ! get_request('search','REQUEST'))
+			$this->drawTemplateChoice();
+
+		elseif ($this->template_id) {
 			$templates = $this->getTemplates();
 			$this->template = $templates->getTemplate($this->template_id);
 			$this->template->accept();
@@ -193,7 +197,7 @@ class QueryRender extends PageRender {
 		echo '</td>';
 		echo '</tr>';
 
-		printf('<tr><td colspan="2"><br /><center><input type="submit" value="%s" /></center></td></tr>',_('Search'));
+		printf('<tr><td colspan="2"><br /><center><input type="submit" name="search" value="%s" /></center></td></tr>',_('Search'));
 
 		echo '</table>';
 		echo '</form>';
@@ -285,23 +289,23 @@ function hideall(key,except) {
 
 			switch(get_request('format','REQUEST',false,$_SESSION[APPCONFIG]->getValue('search','display'))) {
 				case 'list':
-					foreach ($results as $dn => $dndetails) {
+					foreach ($results as $dndetails) {
 						$dndetails = array_change_key_case($dndetails);
 
 						# Temporarily set our DN, for rendering that leverages our DN (eg: JpegPhoto)
-						$this->template->setDN($dn);
+						$this->template->setDN($dndetails['dn']);
 
 						echo '<table class="result" border=0>';
 
 						echo '<tr class="list_title">';
-						printf('<td class="icon"><img src="%s/%s" alt="icon" /></td>',IMGDIR,get_icon($server->getIndex(),$dn));
+						printf('<td class="icon"><img src="%s/%s" alt="icon" /></td>',IMGDIR,get_icon($server->getIndex(),$dndetails['dn']));
 
 						printf('<td colspan=2><a href="cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s">%s</a></td>',
-							$server->getIndex(),rawurlencode(dn_unescape($dn)),htmlspecialchars(get_rdn($dn)));
+							$server->getIndex(),rawurlencode(dn_unescape($dndetails['dn'])),htmlspecialchars(get_rdn($dndetails['dn'])));
 						echo '</tr>';
 
 						printf('<tr class="list_item"><td class="blank">&nbsp;</td><td class="heading">dn</td><td class="value">%s</td></tr>',
-							htmlspecialchars(dn_unescape($dn)));
+							htmlspecialchars(dn_unescape($dndetails['dn'])));
 
 						# Iterate over each attribute for this entry
 						foreach (explode(',',$ado) as $attr) {
@@ -371,24 +375,24 @@ function hideall(key,except) {
 
 					echo '<tbody class="scroll">';
 					$j = 0;
-					foreach ($results as $dn => $dndetails) {
+					foreach ($results as $dndetails) {
 						$j++;
 						$dndetails = array_change_key_case($dndetails);
 
 						# Temporarily set our DN, for rendering that leverages our DN (eg: JpegPhoto)
-						$this->template->setDN($dn);
+						$this->template->setDN($dndetails['dn']);
 
 						printf('<tr class="%s" id="tr_ma_%s_%s" onClick="var cb=document.getElementById(\'ma_%s_%s\'); cb.checked=!cb.checked;">',
 							$j%2 ? 'even' : 'odd',$j,$counter,$j,$counter);
 
 						# Is mass action enabled.
 						if ($_SESSION[APPCONFIG]->getValue('mass','enabled'))
-							printf('<td><input type="checkbox" id="ma_%s_%s" name="dn[]" value="%s" onclick="this.checked=!this.checked;" /></td>',$j,$counter,$dn);
+							printf('<td><input type="checkbox" id="ma_%s_%s" name="dn[]" value="%s" onclick="this.checked=!this.checked;" /></td>',$j,$counter,$dndetails['dn']);
 
-						$href = sprintf('cmd=template_engine&server_id=%s&dn=%s',$server->getIndex(),rawurlencode($dn));
+						$href = sprintf('cmd=template_engine&server_id=%s&dn=%s',$server->getIndex(),rawurlencode($dndetails['dn']));
 						printf('<td class="icon"><a href="cmd.php?%s"><img src="%s/%s" alt="icon" /></a></td>',
 							htmlspecialchars($href),
-							IMGDIR,get_icon($server->getIndex(),$dn));
+							IMGDIR,get_icon($server->getIndex(),$dndetails['dn']));
 
 						# We'll clone our attribute factory attributes, since we need to add the values to them for rendering.
 						foreach (explode(',',$ado) as $attr) {
@@ -400,9 +404,9 @@ function hideall(key,except) {
 
 							# Special case for DNs
 							if ($attr == 'dn') {
-								$dn_display = strlen($dn) > 40
-									? sprintf('<acronym title="%s">%s...</acronym>',htmlspecialchars($dn),htmlspecialchars(substr($dn,0,40)))
-									: htmlspecialchars($dn);
+								$dn_display = strlen($dndetails['dn']) > 40
+									? sprintf('<acronym title="%s">%s...</acronym>',htmlspecialchars($dndetails['dn']),htmlspecialchars(substr($dndetails['dn'],0,40)))
+									: htmlspecialchars($dndetails['dn']);
 
 								printf('<td><a href="cmd.php?%s">%s</a></td>',htmlspecialchars($href),$dn_display);
 								continue;
@@ -483,13 +487,12 @@ function CheckAll(setbgcolor,form) {
 	}
 
 	public function drawSubTitle($subtitle=null) {
-
 		if (is_null($subtitle)) {
 			$server = $this->getServer();
 	
 			$subtitle = sprintf('%s: <b>%s</b>',_('Server'),$server->getName());
 
-			if ($this->template_id) {
+			if ($this->template) {
 				$subtitle .= '<br />';
 				$subtitle .= sprintf('%s: <b>%s</b>',('Query'),$this->template->getID() != 'none' ? $this->template->getTitle() : _('Default'));
 				if ($this->template->getName())
