@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Displays the schema for the specified server
  *

@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Compares two DN entries side by side.
  * This is the entry form to determine which DN to compare this DN with.

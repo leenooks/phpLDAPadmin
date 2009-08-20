@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Log the user out of the application.
  *

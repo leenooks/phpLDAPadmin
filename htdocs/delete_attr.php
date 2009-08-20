@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  *  Deletes an attribute from an entry with NO confirmation.
  *

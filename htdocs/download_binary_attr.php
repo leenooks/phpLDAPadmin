@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Download a binary value attribute to the user.
  * A server ID, DN and Attribute must be provided in the GET attributes.

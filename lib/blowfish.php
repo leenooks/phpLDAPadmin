@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * The Cipher_blowfish:: class implements the Cipher interface enryption data
  * using the Blowfish algorithm.

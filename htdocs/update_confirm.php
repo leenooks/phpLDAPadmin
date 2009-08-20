@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Takes the results of clicking "Save" in template_engine.php and determines
  * which attributes need to be updated (ie, which ones actually changed). Then,

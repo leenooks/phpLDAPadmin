@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Displays a form to allow the user to enter a new value to add
  * to the existing list of values for a multi-valued attribute.

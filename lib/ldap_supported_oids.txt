@@ -1,5 +1,3 @@
-# $Header$
-
 # If you find some reliable and more meaningful descriptions to this OIDS,
 # then please let the phpldapadmin development know so that this file can be
 # more descriptive.

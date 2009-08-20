@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Copies a given object to create a new one.
  *

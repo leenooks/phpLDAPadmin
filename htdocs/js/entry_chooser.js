@@ -1,4 +1,3 @@
-// $Header$
 function dnChooserPopup(form_element,rdn)
 {
 	mywindow=open('entry_chooser.php','myname','resizable=no,width=600,height=370,scrollbars=1');

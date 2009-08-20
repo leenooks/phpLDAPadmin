@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Export entries from the LDAP server.
  *

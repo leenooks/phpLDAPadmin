@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * This class will render the creation or editing of an LDAP entry.
  *

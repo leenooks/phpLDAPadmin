@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Log the user in.
  *

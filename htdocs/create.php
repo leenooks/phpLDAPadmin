@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Creates a new object in LDAP.
  *

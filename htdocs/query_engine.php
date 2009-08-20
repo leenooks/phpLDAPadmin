@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Query render engine.
  *

@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Classes and functions for export data from LDAP
  *

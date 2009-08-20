@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Displays a last chance confirmation form to delete a DN.
  *

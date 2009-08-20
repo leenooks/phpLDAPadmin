@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Displays a form for renaming an LDAP entry.
  *

@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Functions related to syslog logging.
  *

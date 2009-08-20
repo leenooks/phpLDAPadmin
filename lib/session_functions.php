@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * A collection of functions to handle sessions.
  *

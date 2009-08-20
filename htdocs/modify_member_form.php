@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Displays a form to allow the user to modify group members.
  *

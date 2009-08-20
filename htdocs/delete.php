@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Deletes a DN and presents a "job's done" message.
  *

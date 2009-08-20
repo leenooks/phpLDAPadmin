@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Classes and functions for fetching and parsing schema from an LDAP server.
  *

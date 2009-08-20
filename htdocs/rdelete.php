@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Recursively deletes the specified DN and all of its children
  *

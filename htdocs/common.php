@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * This script provides a convienent method to call the proper common.php
  *

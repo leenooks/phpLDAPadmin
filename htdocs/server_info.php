@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Fetches and displays all information that it can from the specified server
  *

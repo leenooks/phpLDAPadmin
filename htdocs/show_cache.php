@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * This script shows the contents of the cache for debugging purposes
  *

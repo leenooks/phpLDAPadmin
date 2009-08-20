@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Renames a DN to a different name.
  *

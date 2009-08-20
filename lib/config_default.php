@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Configuration processing and defaults.
  *

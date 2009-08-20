@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * This page will allow the adding of additional ObjectClasses to an item.
  * + If the ObjectClass to be added requires additional MUST attributes to be

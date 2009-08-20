@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Allows to create new attributes
  *

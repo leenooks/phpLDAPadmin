@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /*******************************************************************************
  * @package default
  * emuhash - partly emulates the php mhash functions

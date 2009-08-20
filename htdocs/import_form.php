@@ -1,6 +1,4 @@
 <?php
-// $Header$
- 
 /**
  * Displays a form to allow the user to upload and import
  * an LDIF file.

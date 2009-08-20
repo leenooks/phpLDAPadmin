@@ -1,6 +1,4 @@
 <?php
-// $Header$
- 
 /**
  * Imports an LDIF file to the specified LDAP server.
  *

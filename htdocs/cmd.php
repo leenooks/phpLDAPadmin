@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Main command page for phpLDAPadmin
  * All pages are rendered through this script.

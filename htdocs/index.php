@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * phpLDAPadmin Start Page
  *

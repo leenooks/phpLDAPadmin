@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Displays a form for adding an attribute/value to an LDAP entry.
  *

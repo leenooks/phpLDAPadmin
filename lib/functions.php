@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * A collection of common generic functions used throughout the application.
  *

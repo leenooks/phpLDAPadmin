@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * This script alters the session variable 'tree', collapsing it
  * at the dn specified in the query string.

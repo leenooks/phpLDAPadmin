@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * This script deletes the session variable 'tree', which will result in re-querying
  * the LDAP server to grab the contents of all LDAP entries starting from the base.

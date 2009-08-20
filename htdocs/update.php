@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Updates or deletes a value from a specified attribute for a specified dn.
  *

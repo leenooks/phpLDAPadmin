@@ -1,5 +1,3 @@
-// $Header$
-
 /**
  * @package phpLDAPadmin
  * @author The phpLDAPadmin development team

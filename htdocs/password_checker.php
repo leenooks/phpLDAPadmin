@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Check the password used by an entry.
  *

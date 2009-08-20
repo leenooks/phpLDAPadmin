@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Draw a portion of the LDAP tree.
  *

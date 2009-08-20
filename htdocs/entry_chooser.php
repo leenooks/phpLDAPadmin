@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Display a selection (popup window) to pick a DN.
  *

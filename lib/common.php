@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Contains code to be executed at the top of each application page.
  * include this file at the top of every PHP file.

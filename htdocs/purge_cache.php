@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Purge our session cache details
  *

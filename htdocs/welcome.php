@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Show a simple welcome page.
  *

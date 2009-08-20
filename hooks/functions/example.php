@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * An example of a hooks implementation.
  *

@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Displays the login form for a server for users who specify 'cookie' or 'session' for their auth_type.
  *

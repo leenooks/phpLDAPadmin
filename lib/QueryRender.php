@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * @author The phpLDAPadmin development team
  * @package phpLDAPadmin

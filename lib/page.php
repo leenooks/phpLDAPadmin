@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Page Rendering Functions
  *

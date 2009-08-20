@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * This script will display the contents of the jpegPhoto attribute to the browser.
  * A server ID and DN must be provided in the GET attributes.

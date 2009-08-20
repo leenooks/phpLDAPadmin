@@ -1,6 +1,4 @@
 <?php
-// $Header$
-
 /**
  * Displays the information from the monitor context
  *
