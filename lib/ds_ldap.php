@@ -1144,7 +1144,7 @@ class ldap extends DS {
 		if (! $this->connect($method))
 			return false;
 
-		$search = @ldap_read($this->connect($method),$dn,'objectClass=*',array('subschemaSubentry'));
+		$search = @ldap_read($this->connect($method),$dn,'objectclass=*',array('subschemaSubentry'),false,0,10,LDAP_DEREF_NEVER);
 
 		if (DEBUG_ENABLED)
 			debug_log('Search returned (%s)',24,0,__FILE__,__LINE__,__METHOD__,is_resource($search));
@@ -1156,7 +1156,7 @@ class ldap extends DS {
 
 			if (isset($this->_baseDN)) {
 				foreach ($this->_baseDN as $base) {
-					$search = @ldap_read($this->connect($method),$base,'objectClass=*',array('subschemaSubentry'));
+					$search = @ldap_read($this->connect($method),$base,'objectclass=*',array('subschemaSubentry'),false,0,10,LDAP_DEREF_NEVER);
 
 					if (DEBUG_ENABLED)
 						debug_log('Search returned (%s) for base (%s)',24,0,__FILE__,__LINE__,__METHOD__,
@@ -1281,7 +1281,7 @@ class ldap extends DS {
 				if (DEBUG_ENABLED)
 					debug_log('Looking for schema with Filter (%s)',24,0,__FILE__,__LINE__,__METHOD__,$schema_filter);
 
-				$schema_search = @ldap_read($this->connect($method),$schema_dn,$schema_filter,array($schema_to_fetch),0,0,0,LDAP_DEREF_NEVER);
+				$schema_search = @ldap_read($this->connect($method),$schema_dn,$schema_filter,array($schema_to_fetch),false,0,10,LDAP_DEREF_NEVER);
 
 				if (is_null($schema_search))
 					continue;
@@ -1328,8 +1328,7 @@ class ldap extends DS {
 						debug_log('Attempting [%s] (%s) (%s)<BR>',24,0,__FILE__,__LINE__,__METHOD__,
 							$ldap_server_name,$ldap_dn,$ldap_filter);
 
-					$schema_search = @ldap_read($this->connect($method),$ldap_dn,$ldap_filter,
-						array($schema_to_fetch), 0, 0, 0, LDAP_DEREF_NEVER);
+					$schema_search = @ldap_read($this->connect($method),$ldap_dn,$ldap_filter,array($schema_to_fetch),false,0,10,LDAP_DEREF_NEVER);
 					if (is_null($schema_search))
 						continue;
 
@@ -1367,11 +1366,11 @@ class ldap extends DS {
 
 				switch ($ldap_scope) {
 					case 'base':
-						$schema_search = @ldap_read($this->connect($method),'','(objectClass=*)',array($schema_to_fetch),0,0,0,LDAP_DEREF_NEVER);
+						$schema_search = @ldap_read($this->connect($method),'','(objectClass=*)',array($schema_to_fetch),false,0,10,LDAP_DEREF_NEVER);
 						break;
 
 					case 'one':
-						$schema_search = @ldap_list($this->connect($method),'','(objectClass=*)',array($schema_to_fetch),0,0,0,LDAP_DEREF_NEVER);
+						$schema_search = @ldap_list($this->connect($method),'','(objectClass=*)',array($schema_to_fetch),false,0,10,LDAP_DEREF_NEVER);
 						break;
 				}
 
