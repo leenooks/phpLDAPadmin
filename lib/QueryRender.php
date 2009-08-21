@@ -271,6 +271,7 @@ function hideall(key,except) {
 		$this->drawBaseTabs();
 		$ado = $this->template->getAttrDisplayOrder();
 		$counter = 0;
+		$j = 0;
 
 		foreach ($this->template->results as $base => $results) {
 			$counter++;
@@ -279,7 +280,7 @@ function hideall(key,except) {
 				$show = ($counter === 1 ? $this->getAjaxRef($base) : null);
 
 			printf('<div id="DN%s" style="display: %s">',
-				$this->getAjaxRef($base), ($show == $this->getAjaxRef($base) ? '' : 'none'));
+				$this->getAjaxRef($base), ($show == $this->getAjaxRef($base) ? 'block' : 'none'));
 
 			echo '<table class="result_box" border=0 width=100%>';
 			echo '<tr><td>';
@@ -378,7 +379,6 @@ function hideall(key,except) {
 					echo '</thead>';
 
 					echo '<tbody class="scroll">';
-					$j = 0;
 					foreach ($results as $dndetails) {
 						$j++;
 						$dndetails = array_change_key_case($dndetails);
@@ -386,12 +386,12 @@ function hideall(key,except) {
 						# Temporarily set our DN, for rendering that leverages our DN (eg: JpegPhoto)
 						$this->template->setDN($dndetails['dn']);
 
-						printf('<tr class="%s" id="tr_ma_%s_%s" onClick="var cb=document.getElementById(\'ma_%s_%s\'); cb.checked=!cb.checked;">',
-							$j%2 ? 'even' : 'odd',$j,$counter,$j,$counter);
+						printf('<tr class="%s" id="tr_ma_%s" onClick="var cb=document.getElementById(\'ma_%s\'); cb.checked=!cb.checked;">',
+							$j%2 ? 'even' : 'odd',$j,$j);
 
 						# Is mass action enabled.
 						if ($_SESSION[APPCONFIG]->getValue('mass','enabled'))
-							printf('<td><input type="checkbox" id="ma_%s_%s" name="dn[]" value="%s" onclick="this.checked=!this.checked;" /></td>',$j,$counter,$dndetails['dn']);
+							printf('<td><input type="checkbox" id="ma_%s" name="dn[]" value="%s" onclick="this.checked=!this.checked;" /></td>',$j,$dndetails['dn']);
 
 						$href = sprintf('cmd=template_engine&server_id=%s&dn=%s',$server->getIndex(),rawurlencode($dndetails['dn']));
 						printf('<td class="icon"><a href="cmd.php?%s"><img src="%s/%s" alt="icon" /></a></td>',
@@ -478,8 +478,8 @@ function CheckAll(setbgcolor,form) {
 				if (e.checked) {
 					tr.style.backgroundColor='#DDDDFF';
 				} else {
-					var id = e.id.substr(2);
-					tr.style.backgroundColor= id%2 ? '#F0F0F0' : '#E0E0E0';
+					var id = e.id.substr(3);
+					tr.style.backgroundColor= id%2 ? '#E0E0E0' : '#F0F0F0';
 				}
 			}
 		}

@@ -178,7 +178,7 @@ abstract class Tree {
 		$tree_factory = new TreeItem($server->getIndex(),$dn);
 		$tree_factory->setObjectClasses($server->getDNAttrValue($dn,'objectClass'));
 
-		if ((($isleaf = $server->getDNAttrValue($dn,'hassubordinates')) && ! strcasecmp($isleaf[0],'false')) || ! $isleaf)
+		if ((($isleaf = $server->getDNAttrValue($dn,'hassubordinates')) && ! strcasecmp($isleaf[0],'false')))
 			$tree_factory->setLeaf();
 
 		$this->entries[$dnlower] = $tree_factory;

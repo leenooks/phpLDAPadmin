@@ -72,6 +72,13 @@
    30 seconds or the setting of max_exection_time if this is null. */
 // $config->custom->session['timelimit'] = 30;
 
+/* Our local timezone
+   This is to make sure that when we ask the system for the current time, we
+   get the right local time. If this is not set, all time() calculations will
+   assume UTC if you have not set PHP date.timezone. */
+// $config->custom->appearance['timezone'] = null;
+#  $config->custom->appearance['timezone'] = 'Australia/Melbourne';
+
 /*********************************************/
 /* Commands                                  */
 /*********************************************/
@@ -290,12 +297,12 @@ $servers->setValue('server','name','My LDAP Server');
 /* The DN of the user for phpLDAPadmin to bind with. For anonymous binds or
    'cookie' or 'session' auth_types, LEAVE THE LOGIN_DN AND LOGIN_PASS BLANK. If
    you specify a login_attr in conjunction with a cookie or session auth_type,
-   then you can also specify the login_dn/login_pass here for searching the
+   then you can also specify the bind_dn/bind_pass here for searching the
    directory for users (ie, if your LDAP server does not allow anonymous binds. */
 // $servers->setValue('login','bind_id','');
 #  $servers->setValue('login','bind_id','cn=Manager,dc=example,dc=com');
 
-/* Your LDAP password. If you specified an empty login_dn above, this MUST also
+/* Your LDAP password. If you specified an empty bind_dn above, this MUST also
    be blank. */
 // $servers->setValue('login','bind_pass','');
 #  $servers->setValue('login','bind_pass','secret');
@@ -343,8 +350,7 @@ $servers->setValue('server','name','My LDAP Server');
 #  $servers->setValue('server','sasl_authz_id_replacement','$1');
 
 /* SASL auth security props.
-   See http://beepcore-tcl.sourceforge.net/tclsasl.html#anchor5 for explanation.
-*/
+   See http://beepcore-tcl.sourceforge.net/tclsasl.html#anchor5 for explanation. */
 // $servers->setValue('server','sasl_props',null);
 
 /* Default password hashing algorithm. One of md5, ssha, sha, md5crpyt, smd5,
@@ -357,10 +363,18 @@ $servers->setValue('server','name','My LDAP Server');
    and log in as that user.
    Leave blank or specify 'dn' to use full DN for logging in. Note also that if
    your LDAP server requires you to login to perform searches, you can enter the
-   DN to use when searching in 'login_dn' and 'login_pass' above. You may also
-   specify 'string', in which case you can provide a string to use for logging
-   users in. See 'login_string' directly below. */
+   DN to use when searching in 'bind_dn' and 'bind_pass' above.
 // $servers->setValue('login','attr','dn');
+
+/* Base DNs to used for logins. If this value is not set, then the LDAP server
+   Base DNs are used. */
+// $servers->setValue('login','base',array());
+
+/* If 'login,attr' is used above such that phpLDAPadmin will search for your DN
+   at login, you may restrict the search to a specific objectClasses. EG, set this
+   to array('posixAccount') or array('inetOrgPerson',..), depending upon your
+   setup. */
+// $servers->setValue('login','class',array());
 
 /* If you specified something different from 'dn', for example 'uid', as the
    login_attr above, you can optionally specify here to fall back to
@@ -370,19 +384,6 @@ $servers->setValue('server','name','My LDAP Server');
    necessarily have the uid attribute.
    When using this feature, login_class is ignored. */
 // $servers->setValue('login','fallback_dn',false);
-
-/* If you specified 'cookie' or 'session' as the auth_type above, and you
-   specified 'string' for 'login_attr' above, you must provide a string here for
-   logging users in. If, for example, I have a lot of user entries with DNs like
-   "uid=dsmith,ou=People,dc=example,dc=com", then I can specify a string
-   "uid=<username>,ou=People,dc=example,dc=com" and my users can login with
-   their user names alone, ie: "dsmith" in this case. */
-#  $servers->setValue('login','string','uid=<username>,ou=People,dc=example,dc=com');
-
-/* If 'login_attr' is used above such that phpLDAPadmin will search for your DN
-   at login, you may restrict the search to a specific objectClass. EG, set this
-   to 'posixAccount' or 'inetOrgPerson', depending upon your setup. */
-// $servers->setValue('login','class',null);
 
 /* Specify true If you want phpLDAPadmin to not display or permit any
    modification to the LDAP server. */
@@ -516,7 +517,6 @@ $servers->setValue('server','sasl_props',null);
 $servers->setValue('appearance','password_hash','md5');
 $servers->setValue('login','attr','dn');
 $servers->setValue('login','fallback_dn',false);
-$servers->setValue('login','string',null);
 $servers->setValue('login','class',null);
 $servers->setValue('server','read_only',false);
 $servers->setValue('appearance','show_create',true);

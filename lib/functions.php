@@ -208,19 +208,16 @@ function app_version() {
 		$CACHE = 'UNKNOWN';
 
 	else {
-		$f = fopen($version_file,'r');
-		$version = trim(fread($f, filesize($version_file)));
-		fclose($f);
+		$version = rtrim(file_get_contents($version_file));
 
 		$CACHE = preg_replace('/^RELEASE-([0-9\.]+(-.*)*)$/','$1',$version);
 
 		# Check if we are a CVS copy.
-		if (preg_match('/^$/',$CACHE))
-			$CACHE = 'CVS';
+		if (preg_match('/^(DEVEL)?$/',$CACHE))
+			$CACHE = 'DEVEL';
 
-		# Check if we are special CVS branch
-		elseif (preg_match('/^([a-zA-Z]+)?$/',$CACHE,$match))
-			$CACHE = $match[1];
+		# Check if we are special DEVEL version
+		elseif (preg_match('/^DEVEL-([0-9\.]+)+$/',$CACHE)) {}
 
 		# If return is still the same as version, then the tag is not one we expect.
 		elseif ($CACHE == $version)

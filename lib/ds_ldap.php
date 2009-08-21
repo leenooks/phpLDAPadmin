@@ -56,17 +56,6 @@ class ldap extends DS {
 			'desc'=>'Connect using TLS',
 			'default'=>false);
 
-/*
- * Not used by PLA
-		$this->default->login['dn'] = array(
-			'desc'=>'User Login DN',
-			'default'=>'');
-
-		$this->default->login['pass'] = array(
-			'desc'=>'User Login Password',
-			'default'=>'');
-*/
-
 		# Login Details
 		$this->default->login['attr'] = array(
 			'desc'=>'Attribute to use to find the users DN',
@@ -78,6 +67,14 @@ class ldap extends DS {
 
 		$this->default->login['allowed_dns'] = array(
 			'desc'=>'Limit logins to users who match any of the following LDAP filters',
+			'default'=>array());
+
+		$this->default->login['base'] = array(
+			'desc'=>'Limit logins to users who are in these base DNs',
+			'default'=>array());
+
+		$this->default->login['class'] = array(
+			'desc'=>'Strict login to users containing a specific objectClasses',
 			'default'=>array());
 
 		$this->default->proxy['attr'] = array(
@@ -146,7 +143,7 @@ class ldap extends DS {
 		$bind['pass'] = is_null($this->getPassword($method)) && $method != 'anon' ? $this->getPassword('user') : $this->getPassword($method);
 
 		# If our bind id is still null, we are not logged in.
-		if (is_null($bind['id']) && $method != 'anon')
+		if (is_null($bind['id']) && ! in_array($method,array('anon','login')))
 			return null;
 
 		# If we bound to the LDAP server with these details for a different connection, return that resource
@@ -260,7 +257,7 @@ class ldap extends DS {
 			if (($this->getValue('login','attr') == 'dn') || $method != 'user')
 				$userDN = $user;
 			else
-				$userDN = $this->getLoginID($user,'anon');
+				$userDN = $this->getLoginID($user,'login');
 
 			if (! $userDN)
 				return false;
@@ -473,18 +470,52 @@ class ldap extends DS {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-		$query['filter'] = sprintf('(&(uid=%s))',$user);
+		$query['filter'] = sprintf('(&(%s=%s)%s)',
+			$this->getValue('login','attr'),$user,
+			$this->getLoginClass() ? sprintf('(objectclass=%s)',join(')(objectclass=',$this->getLoginClass())) : '');
 		$query['attrs'] = array('dn');
-		$result = $this->query($query,$method);
 
-		if (count($result) > 1)
-			die('ERROR: should only have 1 result');
+		foreach ($this->getLoginBaseDN() as $base) {
+			$query['base'] = $base;
+			$result = $this->query($query,$method);
 
-		foreach ($result as $detail)
-			if (! isset($detail['dn']))
-				die('ERROR: DN missing?');
-			else
-				return $detail['dn'];
+			if (count($result) == 1)
+				break;
+		}
+
+		if (count($result) != 1)
+			return null;
+
+		$detail = array_shift($result);
+		
+		if (! isset($detail['dn']))
+			die('ERROR: DN missing?');
+		else
+			return $detail['dn'];
+	}
+
+	/**
+	 * Return the login base DNs
+	 * If no login base DNs are defined, then the LDAP server Base DNs are used.
+	 */
+	private function getLoginBaseDN() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,1,__FILE__,__LINE__,__METHOD__,$fargs);
+
+		if ($this->getValue('login','base'))
+			return $this->getValue('login','base');
+		else
+			return $this->getBaseDN();
+	}
+
+	/**
+	 * Return the login classes that a user must have to login
+	 */
+	private function getLoginClass() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,1,__FILE__,__LINE__,__METHOD__,$fargs);
+
+		return $this->getValue('login','class');
 	}
 
 	/**

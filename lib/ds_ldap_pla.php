@@ -119,7 +119,6 @@ class ldap_pla extends ldap {
 			'default'=>null);
 	}
 
-/** FUNCTIONS TO BE REWORKED BELOW HERE **/
 	/**
 	 * Gets whether the admin has configured phpLDAPadmin to show the "Create New" link in the tree viewer.
 	 * <code>
@@ -130,10 +129,10 @@ class ldap_pla extends ldap {
 	 *
 	 * The entry creation command must be available.
 	 * <code>
-	 *	$config->custom->commands['all'] = array('entry_create' => true);
+	 *	$config->custom->commands['script'] = array('create' => true);
 	 * </code>
 	 *
-	 * @return boolean True if the feature is enabled and false otherwise.
+	 * @return boolean true if the feature is enabled and false otherwise.
 	 */
 	function isShowCreateEnabled() {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
@@ -143,76 +142,6 @@ class ldap_pla extends ldap {
 			return false;
 		else
 			return $this->getValue('appearance','show_create');
-	}
-
-	/**
-	 * Fetches whether the login_attr feature is enabled for a specified server.
-	 *
-	 * This is configured in config.php thus:
-	 * <code>
-	 *	$servers->setValue('login','attr','<ldap attr>');
-	 * </code>
-	 *
-	 * By virtue of the fact that the login_attr is not blank and not 'dn', the
-	 * feature is configured to be enabled.
-	 *
-	 * @return boolean
-	 */
-	function isLoginAttrEnabled() {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-		if ((strcasecmp($this->getLoginAttr(),'dn') != 0) && trim($this->getLoginAttr()))
-			$return = true;
-		else
-			$return = false;
-
-		if (DEBUG_ENABLED)
-			debug_log('Returning (%s)',17,0,__FILE__,__LINE__,__METHOD__,$return);
-
-		return $return;
-	}
-
-	/**
-	 * Fetches whether the login_attr feature is enabled for a specified server.
-	 *
-	 * This is configured in config.php thus:
-	 * <code>
-	 *	$servers->setValue('login','attr','string');
-	 * </code>
-	 *
-	 * @return boolean
-	 */
-	function isLoginStringEnabled() {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-		if (! strcasecmp($this->getLoginAttr(),'string'))
-			$return = true;
-		else
-			$return = false;
-
-		if (DEBUG_ENABLED)
-			debug_log('Returning (%s)',17,0,__FILE__,__LINE__,__METHOD__,$return);
-
-		return $return;
-	}
-
-	/**
-	 * Fetches the login_attr string if enabled for a specified server.
-	 *
-	 * This is configured in config.php thus:
-	 * <code>
-	 *	$servers->setValue('login','login_string','uid=<username>,ou=People,dc=example,dc=com');
-	 * </code>
-	 *
-	 * @return string|false
-	 */
-	function getLoginString() {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-		return $this->login_string;
 	}
 
 	/**
@@ -265,14 +194,13 @@ class ldap_pla extends ldap {
 	 * Usage example:
 	 * <code>
 	 *	if ($ldapserver->isMultiLineAttr('postalAddress'))
-	 *		echo "<textarea name=\"postalAddress\"></textarea>";
+	 *		echo '<textarea name="postalAddress"></textarea>';
 	 *	else
-	 *		echo "<input name=\"postalAddress\" type=\"text\">";
+	 *		echo '<input name="postalAddress" type="text">';
 	 * </code>
 	 *
-	 * @param string $attr_name The name of the attribute of interestd (case insensivite)
-	 * @param string $val (optional) The current value of the attribute (speeds up the
-	 *               process by searching for carriage returns already in the attribute value)
+	 * @param string The name of the attribute of interested (case insensivite)
+	 * @param string (optional) The current value of the attribute (speeds up the process by searching for carriage returns already in the attribute value)
 	 * @return boolean
 	 */
 	function isMultiLineAttr($attr_name,$val=null) {
@@ -317,23 +245,15 @@ class ldap_pla extends ldap {
 	}
 
 	/**
-	 * Returns true if the specified attribute is configured as read only
-	 * in config.php.
-	 * Attributes are configured as read-only in config.php thus:
-	 * <code>
-	 *	$config->custom->appearance['readonly_attrs'] = array('objectClass');
-	 * </code>
+	 * Returns true if the specified attribute is configured according to
+	 * the test enabled in config.php
 	 *
-	 * @param string $attr The name of the attribute to test.
+	 * @param string The name of the attribute to test.
+	 * @param array The attributes to test against.
+	 * @param dn A DN that is exempt from these tests.
 	 * @return boolean
 	 */
-	public function isAttrReadOnly($attr) {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-		$attrs = $_SESSION[APPCONFIG]->getValue('appearance','readonly_attrs');
-		$except_dn = $_SESSION[APPCONFIG]->getValue('appearance','readonly_attrs_exempt');
-
+	private function isAttrTest($attr,$attrs,$except_dn) {
 		$attr = trim($attr);
 		if (! trim($attr) || ! count($attrs))
 			return false;
@@ -350,6 +270,27 @@ class ldap_pla extends ldap {
 	}
 
 	/**
+	 * Returns true if the specified attribute is configured as read only
+	 * in config.php.
+	 * Attributes are configured as read-only in config.php thus:
+	 * <code>
+	 *	$config->custom->appearance['readonly_attrs'] = array('objectClass');
+	 * </code>
+	 *
+	 * @param string The name of the attribute to test.
+	 * @return boolean
+	 */
+	public function isAttrReadOnly($attr) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
+		$attrs = $_SESSION[APPCONFIG]->getValue('appearance','readonly_attrs');
+		$except_dn = $_SESSION[APPCONFIG]->getValue('appearance','readonly_attrs_exempt');
+
+		return $this->isAttrTest($attr,$attrs,$except_dn);
+	}
+
+	/**
 	 * Returns true if the specified attribute is configured as hidden
 	 * in config.php.
 	 * Attributes are configured as hidden in config.php thus:
@@ -357,7 +298,7 @@ class ldap_pla extends ldap {
 	 *	$config->custom->appearance['hide_attrs'] = array('objectClass');
 	 * </code>
 	 *
-	 * @param string $attr The name of the attribute to test.
+	 * @param string The name of the attribute to test.
 	 * @return boolean
 	 */
 	public function isAttrHidden($attr) {
@@ -367,19 +308,7 @@ class ldap_pla extends ldap {
 		$attrs = $_SESSION[APPCONFIG]->getValue('appearance','hide_attrs');
 		$except_dn = $_SESSION[APPCONFIG]->getValue('appearance','hide_attrs_exempt');
 
-		$attr = trim($attr);
-		if (! trim($attr) || ! count($attrs))
-			return false;
-
-		# Is the user excluded?
-		if ($except_dn && $this->userIsMember($this->getLogin(),$except_dn))
-			return false;
-
-		foreach ($attrs as $attr_name)
-			if (strcasecmp($attr,trim($attr_name)) == 0)
-				return true;
-
-		return false;
+		return $this->isAttrTest($attr,$attrs,$except_dn);
 	}
 
 	/**

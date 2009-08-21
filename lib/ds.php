@@ -179,7 +179,8 @@ abstract class DS {
 			case 'http':
 			case 'session':
 				if (! isset($_SESSION['USER'][$this->index][$method]['name']))
-					return null;
+					# If our bind_id is set, we'll pass that back for logins.
+					return (! is_null($this->getValue('login','bind_id')) && $method == 'login') ? $this->getValue('login','bind_id') : null;
 				else
 					return blowfish_decrypt($_SESSION['USER'][$this->index][$method]['name']);
 
@@ -244,7 +245,8 @@ abstract class DS {
 			case 'http':
 			case 'session':
 				if (! isset($_SESSION['USER'][$this->index][$method]['pass']))
-					return null;
+					# If our bind_pass is set, we'll pass that back for logins.
+					return (! is_null($this->getValue('login','bind_pass')) && $method == 'login') ? $this->getValue('login','bind_pass') : null;
 				else
 					return blowfish_decrypt($_SESSION['USER'][$this->index][$method]['pass']);
 
