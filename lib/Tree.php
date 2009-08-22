@@ -301,6 +301,8 @@ abstract class Tree {
 		if ($nolimit)
 			@set_time_limit($_SESSION[APPCONFIG]->getValue('search','time_limit'));
 
+		$this->entries[$dnlower]->readingChildren(true);
+
 		foreach ($ldap['children'] as $child) {
 			if (DEBUG_ENABLED)
 				debug_log('Adding (%s)',64,0,__FILE__,__LINE__,__METHOD__,$child);
@@ -308,6 +310,8 @@ abstract class Tree {
 			if (! in_array($child,$this->entries[$dnlower]->getChildren()))
 				$this->entries[$dnlower]->addChild($child);
 		}
+
+		$this->entries[$dnlower]->readingChildren(false);
 
 		if (count($this->entries[$dnlower]->getChildren()) == $ldap['child_limit'])
 			$this->entries[$dnlower]->setSizeLimited();

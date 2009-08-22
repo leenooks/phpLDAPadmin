@@ -147,10 +147,8 @@ class AJAXTree extends HTMLTree {
 			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$children = array();
-		$pchildren = $parent_entry->getChildren();
-		usort($pchildren,'pla_compare_dns');
 
-		foreach ($pchildren as $child) {
+		foreach ($parent_entry->getChildren() as $child) {
 			if (! $this->getEntry($child))
 				$this->addEntry($child);
 

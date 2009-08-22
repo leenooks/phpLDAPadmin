@@ -33,6 +33,10 @@ class TreeItem {
 	private $size_limited = true;
 	# Last template used to edit this entry
 	private $template = null;
+	# Do we need to sort the children
+	private $childsort = true;
+	# Are we reading the children
+	private $reading_children = false;
 
 	public function __construct($server_id,$dn) {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
@@ -115,7 +119,36 @@ class TreeItem {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',33,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->children);
 
+		if ($this->childsort && ! $this->reading_children) {
+			usort($this->children,'pla_compare_dns');
+			$this->childsort = false;
+		}
+
 		return $this->children;
+	}
+
+	public function readingChildren($bool) {
+		$this->reading_children = $bool;
+	}
+
+	/**
+	 * Do the children require resorting
+	 */
+	public function isChildSorted() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->childsort);
+
+		return $this->childsort;
+	}
+
+	/**
+	 * Mark the children as sorted
+	 */
+	public function childSorted() {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',33,1,__FILE__,__LINE__,__METHOD__,$fargs);
+
+		$this->childsort = false;
 	}
 
 	/**
@@ -131,6 +164,7 @@ class TreeItem {
 			return;
 
 		array_push($this->children,$dn);
+		$this->childsort = true;
 	}
 
 	/**
