@@ -10,8 +10,96 @@ var http_request = null;
 var http_request_success_callback = '';
 var http_request_error_callback = '';
 
+function ajDISPLAY(div,urlParameters,display) {
+	var pageDiv = getDiv(div);
+
+	if (pageDiv)
+		includeHTML(pageDiv,'<img src="images/ajax-progress.gif"><br><small>'+display+'...</small>');
+	else
+		return true;
+
+	makeHttpRequest('cmd.php',urlParameters+'&meth=ajax','GET','alertAJ','cancelAJ',div);
+
+	return false;
+}
+
+function ajJUMP(url,title,index,prefix) {
+	var attr = prefix ? document.getElementById(prefix+index).value : index;
+
+	if (attr)
+		url += '&viewvalue='+attr;
+
+	return ajDISPLAY('BODY',url,'Loading '+title);
+}
+
+function ajSHOWTHIS(key,except,ctl) {
+	select = document.getElementById(key+except);
+
+	if (select.style.display == '')
+		return false;
+
+	hideall(key,except,ctl);
+
+	return false;
+};
+
+function ajSHOWSCHEMA(type,key,value) {
+	select = document.getElementById(type);
+
+	if (value != null) {
+		except = value;
+		select.value = value;
+	} else {
+		except = select.value;
+	}
+
+	if (! except) {
+		showall(key);
+	} else {
+		objectclass = document.getElementById(key+except);
+		objectclass.style.display = '';
+		hideall(key,except);
+	};
+
+	return false;
+};
+
+function hideall(key,except,ctl) {
+	items = items();
+
+	for (x in items) {
+		if (! isNaN(x) && except != items[x]) {
+			item = document.getElementById(key+items[x]);
+			item.style.display = 'none';
+
+			if (ctl && (item = document.getElementById(ctl+items[x]))) {
+				item.style.background = '#E0E0E0';
+			}
+
+		} else if (! isNaN(x) && except == items[x]) {
+			item = document.getElementById(key+items[x]);
+			item.style.display = '';
+
+			if (ctl && (item = document.getElementById(ctl+items[x]))) {
+				item.style.background = '#F0F0F0';
+			}
+		}
+	}
+}
+
+function showall(key) {
+	items = items();
+
+	for (x in items) {
+		if (! isNaN(x)) {
+			item = document.getElementById(key+items[x]);
+			item.style.display = '';
+		}
+	}
+}
+
 // include html into a component
-function includeHTML(component, html) {
+function includeHTML(component,html) {
 	if (typeof(component) != 'object' || typeof(html) != 'string') return;
 	component.innerHTML = html;
 
@@ -27,12 +115,12 @@ function includeHTML(component, html) {
 				    && typeof(scripts[i].attributes[j].nodeName) != 'undefined'
 				    && scripts[i].attributes[j].nodeValue != null
 				    && scripts[i].attributes[j].nodeValue != '') {
-					    scriptclone.setAttribute(scripts[i].attributes[j].nodeName, scripts[i].attributes[j].nodeValue);
+					    scriptclone.setAttribute(scripts[i].attributes[j].nodeName,scripts[i].attributes[j].nodeValue);
 				}
 			}
 		}
 		scriptclone.text = scripts[i].text;
-		scripts[i].parentNode.replaceChild(scriptclone, scripts[i]);
+		scripts[i].parentNode.replaceChild(scriptclone,scripts[i]);
 		eval(scripts[i].innerHTML);
 	}
 }
@@ -63,15 +151,6 @@ function cancelHttpRequest() {
 	}
 }
 
-// request
-function makeGETRequest(url,parameters,successCallbackFunctionName,errorCallbackFunctionName,div) {
-	makeHttpRequest(url,parameters,'GET',successCallbackFunctionName,errorCallbackFunctionName,div);
-}
-
-function makePOSTRequest(url,parameters,successCallbackFunctionName,errorCallbackFunctionName,div) {
-	makeHttpRequest(url,parameters,'POST',successCallbackFunctionName,errorCallbackFunctionName,div);
-}
-
 function makeHttpRequest(url,parameters,meth,successCallbackFunctionName,errorCallbackFunctionName,div) {
 	cancelHttpRequest(div);
 
@@ -87,10 +166,10 @@ function makeHttpRequest(url,parameters,meth,successCallbackFunctionName,errorCa
 
 	} else if (window.ActiveXObject) { // IE
 		try {
-			http_request = new ActiveXObject("Msxml2.XMLHTTP");
+			http_request = new ActiveXObject('Msxml2.XMLHTTP');
 		} catch (e) {
 			try {
-				http_request = new ActiveXObject("Microsoft.XMLHTTP");
+				http_request = new ActiveXObject('Microsoft.XMLHTTP');
 			} catch (e) {}
 		}
 	}
@@ -102,13 +181,12 @@ function makeHttpRequest(url,parameters,meth,successCallbackFunctionName,errorCa
 
 	http_request.onreadystatechange = window['alertHttpRequest'];
 	if (meth == 'GET') url = url + '?' + parameters;
-	http_request.open(meth, url, true);
+	http_request.open(meth,url,true);
 
-	http_request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	http_request.setRequestHeader("Content-length", parameters.length);
-	http_request.setRequestHeader("Connection", "close");
+	http_request.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+	http_request.setRequestHeader('Content-length',parameters.length);
+	http_request.setRequestHeader('Connection','close');
 
 	if (meth == 'GET') parameters = null;
 	http_request.send(parameters);
 }
-

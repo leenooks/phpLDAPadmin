@@ -78,7 +78,7 @@ if ($app['server']->getAuthType() == 'http') {
 
 	# If Anon bind allowed, then disable the form if the user choose to bind anonymously.
 	if ($app['server']->isAnonBindAllowed())
-		printf('<tr><td colspan="2"><small><b>%s</b></small> <input type="checkbox" name="anonymous_bind" onclick="toggle_disable_login_fields(this)" id="anonymous_bind_checkbox" /></td></tr>',
+		printf('<tr><td colspan="2"><small><b>%s</b></small> <input type="checkbox" name="anonymous_bind" onclick="form_field_toggle_enable(this,[\'login\',\'password\'],\'login\')" id="anonymous_bind_checkbox" /></td></tr>',
 			_('Anonymous'));
 
 	printf('<tr><td colspan="2"><center><input type="submit" name="submit" value="%s" /></center></td></tr>',
@@ -90,23 +90,9 @@ if ($app['server']->getAuthType() == 'http') {
 
 	echo '<br/>';
 
-	echo '<script type="text/javascript" language="javascript">document.getElementById(\'login\').focus()</script>';
+	echo '<script type="text/javascript" language="javascript">document.getElementById("login").focus()</script>';
 
-	if ($app['server']->isAnonBindAllowed() ) {
-?>
-<script type="text/javascript" language="javascript">
-function toggle_disable_login_fields(anon_checkbox) {
-	if (anon_checkbox.checked) {
-		anon_checkbox.form.login.disabled = true;
-		anon_checkbox.form.password.disabled = true;
-	} else {
-		anon_checkbox.form.login.disabled = false;
-		anon_checkbox.form.login.focus();
-		anon_checkbox.form.password.disabled = false;
-	}
-}
-</script>
-<?php
-	}
+	if ($app['server']->isAnonBindAllowed())
+		printf('<script type="text/javascript" language="javascript" src="%sform_field_toggle_enable.js"></script>',JSDIR);
 }
 ?>

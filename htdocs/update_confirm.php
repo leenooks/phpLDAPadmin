@@ -53,15 +53,8 @@ if (count($request['template']->getLDAPmodify(true))) {
 	echo "\n\n";
 
 	# If we skip objectclass changes, but there are new must/may attrs provided by the new objectclass, they need to be skip.
-	$mustattrs = array();
-	foreach ($request['template']->getAttribute('objectclass')->getValues() as $value) {
-		$soc = $app['server']->getSchemaObjectClass($value);
+	$mustattrs = getMustAttrs($request['template']->getAttribute('objectclass')->getValues());
 
-		if ($soc)
-			foreach ($soc->getMustAttrs() as $sma)
-				array_push($mustattrs,$sma->getName());
-	}
-			
 	$counter = 0;
 	foreach ($request['template']->getLDAPmodify(true) as $attribute) {
 		$counter++;
@@ -123,31 +116,39 @@ if (count($request['template']->getLDAPmodify(true))) {
 		if ($attribute->getName() == 'objectclass') {
 			$input_onclick = '';
 
+			# If there are attributes being force deleted...
 			if (count($request['template']->getForceDeleteAttrs()) > 0) {
 				$input_onclick = 'onclick="if (this.checked) {';
 
+				# And this OC is being skipped, then these attributes can be optionally deleted.
 				foreach ($request['template']->getForceDeleteAttrs() as $ad_name) {
-					$input_onclick .= sprintf("document.getElementById('skip_array_%s').disabled = false;",$ad_name->getName());
+					# Only if it is not a must attr by this objectclass now staying
+					if (! in_array($ad_name->getName(),getMustAttrs($attribute->getOldValues())))
+						$input_onclick .= sprintf("document.getElementById('skip_array_%s').disabled = false;",$ad_name->getName());
+
 					$input_onclick .= sprintf("document.getElementById('skip_array_%s').checked = true;",$ad_name->getName());
 					$input_onclick .= "\n";
 				}
 
 				$input_onclick .= '} else {';
 
+				# Otherwise the attributes must be deleted.
 				foreach ($request['template']->getForceDeleteAttrs() as $ad_name) {
 					$input_onclick .= sprintf("document.getElementById('skip_array_%s').checked = false;",$ad_name->getName());
 					$input_onclick .= sprintf("document.getElementById('skip_array_%s').disabled = true;",$ad_name->getName());
 					$input_onclick .= "\n";
 				}
 
-				$input_onclick .= '};'; 
+				$input_onclick .= '};';
 			}
 
+			# If the attributes arent force deleted...
 			if ($input_onclick)
 				$input_onclick .= 'if (this.checked) {';
 			else
 				$input_onclick = 'onclick="if (this.checked) {';
 
+			# IE: There are new objectclasses that result in new values.
 			foreach ($request['template']->getLDAPmodify(true) as $skipattr) {
 				if (! $skipattr->getOldValues()) {
 					if (! in_array($skipattr->getName(),$mustattrs))
@@ -215,5 +216,21 @@ if (count($request['template']->getLDAPmodify(true))) {
 
 	printf(' <a href="%s">%s</a>.',htmlspecialchars($href),_('Go back'));
 	echo '</center>';
+}
+
+function getMustAttrs($oclasses) {
+	global $app;
+
+	$mustattrs = array();
+
+	foreach ($oclasses as $value) {
+		$soc = $app['server']->getSchemaObjectClass($value);
+
+		if ($soc)
+			foreach ($soc->getMustAttrs() as $sma)
+				array_push($mustattrs,$sma->getName());
+	}
+
+	return $mustattrs;
 }
 ?>

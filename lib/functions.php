@@ -356,14 +356,14 @@ function cmd_control_pane($type) {
 				'purge'=>array(
 					'title'=>_('Purge caches'),
 					'enable'=>$_SESSION[APPCONFIG]->isCommandAvailable('script','purge_cache'),
-					'link'=>sprintf('href="cmd.php?cmd=purge_cache" onclick="return displayAJ(\'BODY\',\'cmd=purge_cache\',\'%s\');" title="%s"',
+					'link'=>sprintf('href="cmd.php?cmd=purge_cache" onclick="return ajDISPLAY(\'BODY\',\'cmd=purge_cache\',\'%s\');" title="%s"',
 						_('Clearing cache'),_('Purge caches')),
 					'image'=>sprintf('<img src="%s/trash-big.png" alt="%s" />',IMGDIR,_('Purge caches'))),
 
 				'hide_debug_info'=>array(
 					'title'=>_('Show Cache'),
 					'enable'=>$_SESSION[APPCONFIG]->isCommandAvailable('script','show_cache'),
-					'link'=>sprintf('href="cmd.php?cmd=show_cache" onclick="return displayAJ(\'BODY\',\'cmd=show_cache\',\'%s\');" title="%s"',
+					'link'=>sprintf('href="cmd.php?cmd=show_cache" onclick="return ajDISPLAY(\'BODY\',\'cmd=show_cache\',\'%s\');" title="%s"',
 						_('Loading'),_('Show Cache'),_('Show Cache')),
 					'image'=>sprintf('<img src="%s/debug-cache.png" alt="%s" />',IMGDIR,_('Show Cache'))),
 			);

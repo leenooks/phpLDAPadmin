@@ -78,6 +78,8 @@ usort($possible_members,'pla_compare_dns');
 # Modifications will be sent to update_confirm which takes care of rest of the processing
 echo '<br />';
 echo '<br />';
+
+printf('<script type="text/javascript" language="javascript" src="%smodify_member.js"></script>',JSDIR);
 echo '<form action="cmd.php" method="post" class="add_value" name="member">';
 if ($_SESSION[APPCONFIG]->getValue('confirm','update'))
 	echo '<input type="hidden" name="cmd" value="update_confirm" />';
@@ -147,18 +149,10 @@ printf('<input type="hidden" name="new_values[%s][]" value="" />',htmlspecialcha
 echo '</div>';
 
 # Submit values to update_confirm.php and when clicked, run addSelected
-printf('<input type="submit" name="save" value="%s" onClick="update_new_values(\'%s\',\'modifymember\')" />',_('Save changes'),$request['attr']);
+printf('<input type="submit" name="save" value="%s" onClick="update_new_values(\'%s\')" />',_('Save changes'),$request['attr']);
 echo '</td></tr>';
 
 echo '</table>';
 echo '</form>';
-
-# Variables for Javascript function that moves members from left to right
-echo '<script type="text/javascript" language="javascript">';
-echo 'var m1 = document.member.notmembers;';
-echo 'var m2 = document.member.members;';
-echo '</script>';
-printf('<script type="text/javascript" src="%smodify_member.js"></script>',JSDIR);
-
 echo '</body></html>';
 ?>

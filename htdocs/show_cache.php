@@ -92,7 +92,7 @@ if (! $_SESSION[APPCONFIG]->getValue('appearance','hide_debug_info')) {
 			poststr += "&global=on" + encodeURI(xx);
 		<?php } ?>
 		obj.innerHTML = '<img src="<?php echo IMGDIR ?>/ajax-spinner.gif" /> <?php echo _('Loading') ?>...';
-		makePOSTRequest('cmd.php',poststr,'alertCacheContents','cancelCacheContents');
+		makeHttpRequest('cmd.php',poststr,'POST','alertCacheContents','cancelCacheContents');
 	}
 
 	function close(key,xx) {

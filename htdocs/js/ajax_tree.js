@@ -63,7 +63,7 @@ function alertTreeNodeContents(html) {
 	updateNewStyle();
 }
 
-function opencloseTreeNode(nodeid, params) {
+function opencloseTreeNode(nodeid,params,imgdir) {
 	cancelHttpRequest(); // cancel last request
 
 	// get the node element
@@ -81,29 +81,29 @@ function opencloseTreeNode(nodeid, params) {
 	oldstyle = sonLayer.style.display;
 	oldimg = nodeLayer.src;
 	var action = 0; // (action = 1) => expand ; (action = 2) => collapse
-	if (oldimg.indexOf('js/phplayersmenu/menuimages/tree_expand.png') > -1) {
-		newimg = 'js/phplayersmenu/menuimages/tree_collapse.png';
+	if (oldimg.indexOf(imgdir+'/tree_expand.png') > -1) {
+		newimg = imgdir+'/tree_collapse.png';
 		action = 1;
-	} else if (oldimg.indexOf('js/phplayersmenu/menuimages/tree_expand_first.png') > -1) {
-		newimg = 'js/phplayersmenu/menuimages/tree_collapse_first.png';
+	} else if (oldimg.indexOf(imgdir+'/tree_expand_first.png') > -1) {
+		newimg = imgdir+'/tree_collapse_first.png';
 		action = 1;
-	} else if (oldimg.indexOf('js/phplayersmenu/menuimages/tree_expand_corner.png') > -1) {
-		newimg = 'js/phplayersmenu/menuimages/tree_collapse_corner.png';
+	} else if (oldimg.indexOf(imgdir+'/tree_expand_corner.png') > -1) {
+		newimg = imgdir+'/tree_collapse_corner.png';
 		action = 1;
-	} else if (oldimg.indexOf('js/phplayersmenu/menuimages/tree_expand_corner_first.png') > -1) {
-		newimg = 'js/phplayersmenu/menuimages/tree_collapse_corner_first.png';
+	} else if (oldimg.indexOf(imgdir+'/tree_expand_corner_first.png') > -1) {
+		newimg = imgdir+'/tree_collapse_corner_first.png';
 		action = 1;
-	} else if (oldimg.indexOf('js/phplayersmenu/menuimages/tree_collapse.png') > -1) {
-		newimg = 'js/phplayersmenu/menuimages/tree_expand.png';
+	} else if (oldimg.indexOf(imgdir+'/tree_collapse.png') > -1) {
+		newimg = imgdir+'/tree_expand.png';
 		action = 2;
-	} else if (oldimg.indexOf('js/phplayersmenu/menuimages/tree_collapse_first.png') > -1) {
-		newimg = 'js/phplayersmenu/menuimages/tree_expand_first.png';
+	} else if (oldimg.indexOf(imgdir+'/tree_collapse_first.png') > -1) {
+		newimg = imgdir+'/tree_expand_first.png';
 		action = 2;
-	} else if (oldimg.indexOf('js/phplayersmenu/menuimages/tree_collapse_corner.png') > -1) {
-		newimg = 'js/phplayersmenu/menuimages/tree_expand_corner.png';
+	} else if (oldimg.indexOf(imgdir+'/tree_collapse_corner.png') > -1) {
+		newimg = imgdir+'/tree_expand_corner.png';
 		action = 2;
-	} else if (oldimg.indexOf('js/phplayersmenu/menuimages/tree_collapse_corner_first.png') > -1) {
-		newimg = 'js/phplayersmenu/menuimages/tree_expand_corner_first.png';
+	} else if (oldimg.indexOf(imgdir+'/tree_collapse_corner_first.png') > -1) {
+		newimg = imgdir+'/tree_expand_corner_first.png';
 		action = 2;
 	}
 	nodeLayer.src = 'images/ajax-spinner.gif';
@@ -116,7 +116,7 @@ function opencloseTreeNode(nodeid, params) {
 	} else if (action == 1) {
 		newstyle = 'block';
 		if (sonLayer.innerHTML == '') {
-			makeGETRequest('cmd.php', params+'&cmd=draw_tree_node&action=1', 'alertTreeNodeContents', 'cancelNewStyle');
+			makeHttpRequest('cmd.php',params+'&cmd=draw_tree_node&action=1','GET','alertTreeNodeContents','cancelNewStyle');
 		} else {
 			updateNewStyle();
 		}
@@ -143,21 +143,28 @@ function cancelAJ(div) {
 	if (pageDiv) includeHTML(pageDiv, '');
 }
 
-function displayAJ(div,urlParameters,display) {
-	var pageDiv = getDiv(div);
-	if (pageDiv)
-		includeHTML(pageDiv, '<img src="images/ajax-progress.gif"><br><small>'+display+'...</small>');
-	else
-		return true;
-
-	makeGETRequest('cmd.php', urlParameters+'&meth=ajax', 'alertAJ', 'cancelAJ',div);
-	return false;
-}
-
 // close initial collapsed nodes
 // Cant figure out why, but this runs twice in AJAX mode when using "refresh".
 // Causing the collapsedNodes to be incorrect.
 readCollapsedNodes();
 for (k = 0; k < collapsedNodes.length; k++) {
-	opencloseTreeNode(collapsedNodes[k], '#');
+	opencloseTreeNode(collapsedNodes[k],'#','images/default');
+}
+
+var current;
+
+function tree_unhide(whichLayer,old) {
+	if (current == null) current = old;
+
+	var oldtree = document.getElementById('ajSID_'+current).style;
+	oldtree.display = 'none';
+
+	if (document.getElementById) {
+		// this is the way the standards work
+		var newtree = document.getElementById(whichLayer).value;
+		var newtree_div = document.getElementById('ajSID_'+newtree).style;
+		newtree_div.display = 'block';
+	}
+
+	current = newtree;
 }

@@ -164,7 +164,7 @@ if (get_request('meth','REQUEST') != 'ajax') {
 	echo '<table class="entry" cellspacing="0" align="center" border=0>';
 	echo '<td valign="top" align="center">';
 
-	printf('<select name="attr" onChange="displayAJ(\'%s\',\'cmd=add_value_form&server_id=%s&dn=%s&meth=ajax&attr=\'+this.value,\'%s\',\'append\');">',
+	printf('<select name="attr" onChange="ajDISPLAY(\'%s\',\'cmd=add_value_form&server_id=%s&dn=%s&meth=ajax&attr=\'+this.value,\'%s\',\'append\');">',
 		'ADDATTR',$app['server']->getIndex(),rawurlencode(get_request('dn','REQUEST')),_('Please Wait'));
 
 	printf('<option value="%s">%s</option>','','');

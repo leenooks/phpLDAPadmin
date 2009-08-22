@@ -60,10 +60,10 @@ if ($app['script_cmd'])
 
 # Refresh a frame - this is so that one frame can trigger another frame to be refreshed.
 if (isAjaxEnabled() && get_request('refresh','REQUEST') && get_request('refresh','REQUEST') != get_request('frame','REQUEST')) {
-	printf("
-<script type=\"text/javascript\" language=\"javascript\">
-	displayAJ('%s','cmd=refresh&server_id=%s&meth=ajax&noheader=%s','%s');
-</script>",get_request('refresh','REQUEST'),$app['server']->getIndex(),get_request('noheader','REQUEST',false,0),_('Auto refresh'));
+	echo '<script type="text/javascript" language="javascript">';
+	printf("ajDISPLAY('%s','cmd=refresh&server_id=%s&meth=ajax&noheader=%s','%s');",
+		get_request('refresh','REQUEST'),$app['server']->getIndex(),get_request('noheader','REQUEST',false,0),_('Auto refresh'));
+	echo '</script>';
 }
 
 # Capture the output and put into the body of the page.

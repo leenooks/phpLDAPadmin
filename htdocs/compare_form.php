@@ -28,6 +28,7 @@ $request['page']->accept();
 $request['page']->drawTitle(sprintf('%s <b>%s</b>',_('Compare another DN with'),get_rdn($request['dn'])));
 $request['page']->drawSubTitle();
 
+printf('<script type="text/javascript" language="javascript" src="%sdnChooserPopup.js"></script>',JSDIR);
 echo '<center>';
 printf('%s <b>%s</b> %s<br />',_('Compare'),get_rdn($request['dn']),_('with '));
 

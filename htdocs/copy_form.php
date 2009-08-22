@@ -27,6 +27,7 @@ $request['page']->accept();
 $request['page']->drawTitle(sprintf('%s <b>%s</b>',_('Copy'),get_rdn($request['dn'])));
 $request['page']->drawSubTitle();
 
+printf('<script type="text/javascript" language="javascript" src="%sdnChooserPopup.js"></script>',JSDIR);
 echo '<center>';
 printf('%s <b>%s</b> %s:<br /><br />',_('Copy'),get_rdn($request['dn']),_('to a new object'));
 
@@ -58,7 +59,7 @@ $request['children'] = $app['server']->getContainerContents($request['dn']);
 if (count($request['children']) > 0) {
 	echo '<tr>';
 	printf('<td><label for="recursive">%s</label>:</td>',_('Recursive copy'));
-	echo '<td><input type="checkbox" id="recursive" name="recursive" onClick="toggle_disable_filter_field(this)" />';
+	echo '<td><input type="checkbox" id="recursive" name="recursive" onClick="copy_field_toggle(this)" />';
 	printf('<small>(%s)</small></td>',_('Recursively copy all children of this object as well.'));
 	echo '</tr>';
 	echo "\n";
@@ -95,21 +96,6 @@ if ($_SESSION[APPCONFIG]->getValue('appearance','show_hints'))
 echo '</center>';
 
 # Draw the javascrpt to enable/disable the filter field if this may be a recursive copy
-if (count($request['children']) > 0) {
-?>
-	<script type="text/javascript" language="javascript">
-	function toggle_disable_filter_field(recursive_checkbox)
-	{
-		if (recursive_checkbox.checked) {
-			recursive_checkbox.form.remove.disabled = false;
-			recursive_checkbox.form.filter.disabled = false;
-		} else {
-			recursive_checkbox.form.remove.disabled = true;
-			recursive_checkbox.form.remove.checked = false;
-			recursive_checkbox.form.filter.disabled = true;
-		}
-	}
-	</script>
-<?php
-}
+if (count($request['children']) > 0)
+	printf('<script type="text/javascript" language="javascript" src="%sform_field_toggle_enable.js"></script>',JSDIR);
 ?>

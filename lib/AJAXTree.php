@@ -65,20 +65,13 @@ class AJAXTree extends HTMLTree {
 		if ($last_child)
 			$nb += 2;
 
-		$imgs['expand'] = array(JSDIR.'phplayersmenu/menuimages/tree_expand.png',
-			JSDIR.'phplayersmenu/menuimages/tree_expand.png',
-			JSDIR.'phplayersmenu/menuimages/tree_expand_corner.png',
-			($level > 0) ? JSDIR.'phplayersmenu/menuimages/tree_expand_corner.png' : JSDIR.'phplayersmenu/menuimages/tree_expand_corner_first.png');
+		$imgs['expand'] = array('tree_expand.png','tree_expand.png','tree_expand_corner.png',
+			($level > 0) ? 'tree_expand_corner.png' : 'tree_expand_corner_first.png');
 
-		$imgs['collapse'] = array(JSDIR.'phplayersmenu/menuimages/tree_collapse.png',
-			JSDIR.'phplayersmenu/menuimages/tree_collapse.png',
-			JSDIR.'phplayersmenu/menuimages/tree_collapse_corner.png',
-			($level > 0) ? JSDIR.'phplayersmenu/menuimages/tree_collapse_corner.png' : JSDIR.'phplayersmenu/menuimages/tree_collapse_corner_first.png');
+		$imgs['collapse'] = array('tree_collapse.png','tree_collapse.png','tree_collapse_corner.png',
+			($level > 0) ? 'tree_collapse_corner.png' : 'tree_collapse_corner_first.png');
 
-		$imgs['tree'] = array(JSDIR.'phplayersmenu/menuimages/tree_split.png',
-			JSDIR.'phplayersmenu/menuimages/tree_split.png',
-			JSDIR.'phplayersmenu/menuimages/tree_corner.png',
-			JSDIR.'phplayersmenu/menuimages/tree_corner.png');
+		$imgs['tree'] = array('tree_split.png','tree_split.png','tree_corner.png','tree_corner.png');
 
 		/** Information on array[$nb]
 		 * nb == 1 => the node is the first child
@@ -104,25 +97,25 @@ class AJAXTree extends HTMLTree {
 		echo $this->get_indentation($code);
 
 		if (! $child_count)
-			printf('<img align="top" border="0" class="imgs" id="jt%snode" src="%s" alt="--" />',$node_id,$imgs['tree'][$nb]);
+			printf('<img align="top" border="0" class="imgs" id="jt%snode" src="%s/%s" alt="--" />',$node_id,IMGDIR,$imgs['tree'][$nb]);
 
 		else {
-			printf('<a href="#" onclick="return opencloseTreeNode(\'%s\',\'%s\');">',$node_id,$parms['openclose']);
+			printf('<a href="#" onclick="return opencloseTreeNode(\'%s\',\'%s\',\'%s\');">',$node_id,$parms['openclose'],IMGDIR);
 
 			if ($entry->isOpened())
-				printf('<img align="top" border="0" class="imgs" id="jt%snode" src="%s" alt="+-" />',$node_id,$imgs['collapse'][$nb]);
+				printf('<img align="top" border="0" class="imgs" id="jt%snode" src="%s/%s" alt="+-" />',$node_id,IMGDIR,$imgs['collapse'][$nb]);
 			else
-				printf('<img align="top" border="0" class="imgs" id="jt%snode" src="%s" alt="+-" />',$node_id,$imgs['expand'][$nb]);
+				printf('<img align="top" border="0" class="imgs" id="jt%snode" src="%s/%s" alt="+-" />',$node_id,IMGDIR,$imgs['expand'][$nb]);
 
 			echo '</a>';
 		}
 
-		printf('<a href="%s" onclick="return displayAJ(\'BODY\',\'%s\',\'%s\');" title="%s" >',$href,$parms['edit'],_('Retrieving DN'),htmlspecialchars($item));
+		printf('<a href="%s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');" title="%s" >',$href,$parms['edit'],_('Retrieving DN'),htmlspecialchars($item));
 		printf('<span class="dnicon"><img align="top" border="0" class="imgs" id="jt%sfolder" src="%s/%s" alt="->" /></span>',$node_id,IMGDIR,$entry->getIcon($server));
 		echo '</a>';
 
 		echo '&nbsp;';
-		printf('<a href="%s" onclick="return displayAJ(\'BODY\',\'%s\',\'%s\');" title="%s" class="phplm">',$href,$parms['edit'],_('Retrieving DN'),htmlspecialchars($item));
+		printf('<a href="%s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');" title="%s" class="phplm">',$href,$parms['edit'],_('Retrieving DN'),htmlspecialchars($item));
 		echo $this->get_formatted_dn($entry,$level-1);
 		echo ($child_count ? (sprintf(' (%s%s)',$child_count,($entry->isSizeLimited() ? '+' : ''))) : '');
 		echo '</a>';
@@ -199,11 +192,11 @@ class AJAXTree extends HTMLTree {
 		for ($i=0; $i<strlen($code); $i++) {
 			switch ($code[$i]) {
 				case '0':
-					$indent .= sprintf('<img align="top" border="0" class="imgs" src="%s/phplayersmenu/menuimages/tree_space.png" alt="  " />',JSDIR);
+					$indent .= sprintf('<img align="top" border="0" class="imgs" src="%s/tree_space.png" alt="  " />',IMGDIR);
 					break;
 
 				case '1':
-					$indent .= sprintf('<img align="top" border="0" class="imgs" src="%s/phplayersmenu/menuimages/tree_vertline.png" alt="| " />',JSDIR);
+					$indent .= sprintf('<img align="top" border="0" class="imgs" src="%s/tree_vertline.png" alt="| " />',IMGDIR);
 					break;
 			}
 		}
@@ -218,8 +211,8 @@ class AJAXTree extends HTMLTree {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-		printf('<script type="text/javascript" language="javascript" src="%sphplayersmenu/libjs/layersmenu-browser_detection.js"></script>',JSDIR);
-		printf('<script type="text/javascript" language="javascript" src="%sajaxtree.js"></script>',JSDIR);
+		printf('<script type="text/javascript" language="javascript" src="%slayersmenu-browser_detection.js"></script>',JSDIR);
+		printf('<script type="text/javascript" language="javascript" src="%sajax_tree.js"></script>',JSDIR);
 	}
 
 	/**
@@ -237,7 +230,7 @@ class AJAXTree extends HTMLTree {
 
 		if (! $server->isReadOnly() && ! $entry->isLeaf() && (count($entry->getChildren()) > 10) && $this->getServer()->isShowCreateEnabled()
 			&& $_SESSION[APPCONFIG]->getValue('appearance','show_top_create'))
-			$output = $this->draw_create_new_entry($entry,$level,JSDIR.'phplayersmenu/menuimages/tree_split.png');
+			$output = $this->draw_create_new_entry($entry,$level,IMGDIR.'/tree_split.png');
 
 		return $output;
 	}
@@ -256,7 +249,7 @@ class AJAXTree extends HTMLTree {
 		$output = '';
 
 		if (! $server->isReadOnly() && ! $entry->isLeaf() && $this->getServer()->isShowCreateEnabled())
-			$output = $this->draw_create_new_entry($entry,$level,JSDIR.'phplayersmenu/menuimages/tree_corner.png');
+			$output = $this->draw_create_new_entry($entry,$level,IMGDIR.'/tree_corner.png');
 
 		return $output;
 	}
@@ -280,7 +273,7 @@ class AJAXTree extends HTMLTree {
 		$output .= '&nbsp;';
 
 		if (isAjaxEnabled())
-			$output .= sprintf('<a href="cmd.php?%s" title="%s" class="phplm" onclick="return displayAJ(\'BODY\',\'%s\',\'%s\');">',
+			$output .= sprintf('<a href="cmd.php?%s" title="%s" class="phplm" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');">',
 				htmlspecialchars($href),_('Create new entry here'),
 				htmlspecialchars($href),_('Loading'));
 		else

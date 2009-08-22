@@ -308,7 +308,7 @@ class HTMLTree extends Tree {
 		$href_parms = htmlspecialchars(sprintf('cmd=%s&server_id=%s%s',$menu['cmd'],$server->getIndex(),isset($menu['href']) ? $menu['href'] : ''));
 
 		if (isAjaxEnabled())
-			return sprintf('<a href="cmd.php?%s" onclick="return displayAJ(\'%s\',\'%s\',\'%s\');" title="%s %s"><img src="%s/%s" alt="%s" /><br />%s</a>',
+			return sprintf('<a href="cmd.php?%s" onclick="return ajDISPLAY(\'%s\',\'%s\',\'%s\');" title="%s %s"><img src="%s/%s" alt="%s" /><br />%s</a>',
 				$href_parms,$menu['div'],$href_parms,$menu['ajax'],$menu['title'],$server->getName(),IMGDIR,$menu['img'],$menu['name'],$menu['name']);
 		else
 			return sprintf('<a href="cmd.php?%s" title="%s %s"><img src="%s/%s" alt="%s" /><br />%s</a>',
@@ -513,9 +513,9 @@ class HTMLTree extends Tree {
 		echo '<tr class="option"><td class="spacer"></td>';
 
 		if (isAjaxEnabled()) {
-			printf('<td class="icon"><a href="cmd.php?%s" onclick="return displayAJ(\'BODY\',\'%s\',\'%s\');" title="%s %s"><img src="%s/%s" alt="%s" /></a></td>',
+			printf('<td class="icon"><a href="cmd.php?%s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');" title="%s %s"><img src="%s/%s" alt="%s" /></a></td>',
 				$href_parm,$href_parm,_('Loading Login'),_('Login to'),$server->getName(),IMGDIR,'login.png',_('login'));
-			printf('<td class="logged_in" colspan="%s"><a href="cmd.php?%s" onclick="return displayAJ(\'BODY\',\'%s\',\'%s\');" title="%s %s">%s</a></td>',
+			printf('<td class="logged_in" colspan="%s"><a href="cmd.php?%s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');" title="%s %s">%s</a></td>',
 				$this->getDepth()+3-2,$href_parm,$href_parm,_('Loading Login'),_('Login to'),$server->getName(),_('login'));
 
 		} else {

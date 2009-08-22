@@ -56,7 +56,7 @@ class TemplateRender extends PageRender {
 			$this->layout['hint'] = sprintf('<td class="icon"><img src="%s/light.png" alt="%s" /></td><td colspan="3"><span class="hint">%%s</span></td>',
 				IMGDIR,_('Hint'));
 			$this->layout['action'] = '<td class="icon"><img src="%s/%s" alt="%s" /></td><td><a href="cmd.php?%s" title="%s">%s</a></td>';
-			$this->layout['actionajax'] = '<td class="icon"><img src="%s/%s" alt="%s" /></td><td><a href="cmd.php?%s" title="%s" onclick="return displayAJ(\'BODY\',\'%s\',\'%s\');">%s</a></td>';
+			$this->layout['actionajax'] = '<td class="icon"><img src="%s/%s" alt="%s" /></td><td><a href="cmd.php?%s" title="%s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');">%s</a></td>';
 
 			# If we dont want to render this template automatically, we'll return here.
 			if ($norender)
@@ -657,7 +657,7 @@ class TemplateRender extends PageRender {
 
 			else {
 				if (isAjaxEnabled())
-					printf('<td><input type="radio" name="template" value="%s" id="%s" onclick="return displayAJ(\'BODY\',\'%s&amp;template=%s\',\'%s\');" /></td>',
+					printf('<td><input type="radio" name="template" value="%s" id="%s" onclick="return ajDISPLAY(\'BODY\',\'%s&amp;template=%s\',\'%s\');" /></td>',
 						htmlspecialchars($details->getID()),htmlspecialchars($details->getID()),htmlspecialchars($href_parms),$details->getID(),_('Retieving DN'));
 				else
 					printf('<td><input type="radio" name="template" value="%s" id="%s" onclick="document.forms.template_choice_form.submit()" /></td>',
@@ -694,7 +694,7 @@ class TemplateRender extends PageRender {
 
 			echo '<tr>';
 			if (isAjaxEnabled())
-				printf('<td><input type="radio" name="template" value="none" id="none" onclick="return displayAJ(\'BODY\',\'%s&amp;template=%s\',\'%s\');" /></td>',
+				printf('<td><input type="radio" name="template" value="none" id="none" onclick="return ajDISPLAY(\'BODY\',\'%s&amp;template=%s\',\'%s\');" /></td>',
 					htmlspecialchars($href_parms),'none',_('Retieving DN'));
 			else
 				echo '<td><input type="radio" name="template" value="none" id="none" onclick="document.forms.template_choice_form.submit()" /></td>';
@@ -1308,7 +1308,7 @@ class TemplateRender extends PageRender {
 			return '';
 
 		$href = sprintf('cmd=add_attr_form&%s',$this->url_base);
-		$layout = '<td class="icon"><img src="%s/%s" alt="%s" /></td><td><a href="cmd.php?%s" title="%s" onclick="getDiv(\'ADD\').style.display = \'block\';return displayAJ(\'ADD\',\'%s\',\'%s\');">%s</a></td>';
+		$layout = '<td class="icon"><img src="%s/%s" alt="%s" /></td><td><a href="cmd.php?%s" title="%s" onclick="getDiv(\'ADD\').style.display = \'block\';return ajDISPLAY(\'ADD\',\'%s\',\'%s\');">%s</a></td>';
 
 		if (isAjaxEnabled())
 			return sprintf($layout,IMGDIR,'add.png',_('Add'),
@@ -1674,7 +1674,9 @@ class TemplateRender extends PageRender {
 		printf('<!-- START: %s -->',__METHOD__);
 		echo "\n";
 
-		printf('<script type="text/javascript" language="javascript" src="%stemplaterender.js"></script>',JSDIR);
+		printf('<script type="text/javascript" language="javascript" src="%sTemplateRender.js"></script>',JSDIR);
+		printf('<script type="text/javascript" language="javascript" src="%stoAscii.js"></script>',JSDIR);
+		printf('<script type="text/javascript" language="javascript" src="%sdnChooserPopup.js"></script>',JSDIR);
 		echo "\n";
 
 		printf('<!-- START: MAIN FORM VALIDATION: %s -->',__METHOD__);
@@ -2117,7 +2119,7 @@ function fillRec(id,value) {
 			$this->getServerID(),rawurlencode($this->template->getDN()),rawurlencode($attribute->getName(false))));
 
 		if (isAjaxEnabled())
-			return sprintf('(<a href="cmd.php?%s" title="%s %s" onclick="return displayAJ(\'ADDVALUE%s\',\'%s&amp;raw=1\',\'%s\');">%s</a>)',
+			return sprintf('(<a href="cmd.php?%s" title="%s %s" onclick="return ajDISPLAY(\'ADDVALUE%s\',\'%s&amp;raw=1\',\'%s\');">%s</a>)',
 				$href_parm,_('Add an additional value to attribute'),$attribute->getName(false),$attribute->getName(),
 				$href_parm,_('Add Value to Attribute'),_('add value'));
 		else
@@ -2135,7 +2137,7 @@ function fillRec(id,value) {
 			$this->getServerID(),rawurlencode($this->template->getDN()),rawurlencode($attribute->getName()));
 
 		if (isAjaxEnabled())
-			return sprintf('(<a href="cmd.php?%s" title="%s: %s" onclick="return displayAJ(\'BODY\',\'%s\',\'%s\');">%s</a>)',
+			return sprintf('(<a href="cmd.php?%s" title="%s: %s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');">%s</a>)',
 				htmlspecialchars($href),_('Modify members for'),$this->template->getDN(),
 				htmlspecialchars($href),_('Modify group membership'),
 				_('modify group members'));

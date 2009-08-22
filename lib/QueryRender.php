@@ -233,41 +233,6 @@ class QueryRender extends PageRender {
 			);
 		}
 
-		# Display the Javascript that enables us to show/hide DV entries
-		echo '<script type="text/javascript" language="javascript">';
-		echo "
-function showthis(key,item) {
-	select = document.getElementById(key+item);
-	if (select.style.display == '')
-		return false;
-
-		hideall(key,item);
-
-		return false;
-};
-
-function hideall(key,except) {
-	items = items();
-	for (x in items) {
-		if (! isNaN(x) && except != items[x]) {
-			item = document.getElementById(key+items[x]);
-			item.style.display = 'none';
-			item = document.getElementById('CTL'+items[x]);
-			item.style.background = '#E0E0E0';
-
-		} else if (! isNaN(x) && except == items[x]) {
-			item = document.getElementById(key+items[x]);
-			item.style.display = '';
-			item = document.getElementById('CTL'+items[x]);
-			item.style.background = '#F0F0F0';
-		}
-	}
-}
-
-		";
-		echo '</script>';
-		echo "\n\n";
-
 		$this->drawBaseTabs();
 		$ado = $this->template->getAttrDisplayOrder();
 		$counter = 0;
@@ -434,7 +399,7 @@ function hideall(key,except) {
 					# Is mass action enabled.
 					if ($_SESSION[APPCONFIG]->getValue('mass','enabled')) {
 						printf('<tr class="%s">',++$j%2 ? 'odd' : 'even');
-						printf('<td><input type="checkbox" name="allbox" value="1" onclick="CheckAll(1,%s);" /></td>',$counter);
+						printf('<td><input type="checkbox" name="allbox" value="1" onclick="CheckAll(1,\'massform_\',%s);" /></td>',$counter);
 						printf('<td colspan=%s>',2+count(explode(',',$ado)));
 						echo '<select name="cmd" onChange="if (this.value) submit();" style="font-size: 12px">';
 
@@ -463,31 +428,8 @@ function hideall(key,except) {
 			echo "\n\n";
 		}
 
-			if (get_request('format','REQUEST',false,'table') == 'table') {
-				echo '<script type="text/javascript" language="javascript">'."\n";
-				echo "
-function CheckAll(setbgcolor,form) {
-	htmlform = document.getElementById('massform_'+form);
-
-	for (var i=0;i<htmlform.elements.length;i++) {
-		var e = htmlform.elements[i];
-		if (e.type == 'checkbox' && e.name != 'allbox') {
-			e.checked = htmlform.allbox.checked;
-			if (!document.layers && setbgcolor) {
-				var tr = document.getElementById('tr_'+e.id);
-				if (e.checked) {
-					tr.style.backgroundColor='#DDDDFF';
-				} else {
-					var id = e.id.substr(3);
-					tr.style.backgroundColor= id%2 ? '#E0E0E0' : '#F0F0F0';
-				}
-			}
-		}
-	}
-}
-";
-				echo '</script>';
-			}
+		if (get_request('format','REQUEST',false,'table') == 'table')
+			printf('<script type="text/javascript" language="javascript" src="%sCheckAll.js"></script>',JSDIR);
 	}
 
 	public function drawSubTitle($subtitle=null) {
@@ -546,7 +488,7 @@ function CheckAll(setbgcolor,form) {
 			if (! $show = get_request('show','REQUEST'))
 				$show = ($counter++ === 0 ? $this->getAjaxRef($base) : null);
 
-			printf('<td id="CTL%s" onclick="return showthis(\'DN\',\'%s\');" style="background-color: %s;">%s</td>',
+			printf('<td id="CTL%s" onclick="return ajSHOWTHIS(\'DN\',\'%s\',\'CTL\');" style="background-color: %s;">%s</td>',
 				$this->getAjaxRef($base),
 				$this->getAjaxRef($base),
 				($show == $this->getAjaxRef($base) ? '#F0F0F0' : '#E0E0E0'),
@@ -588,7 +530,7 @@ function CheckAll(setbgcolor,form) {
 				$query_string = htmlspecialchars(sprintf('%s&format=%s&show=%s&focusbase=%s',array_to_query_string($_GET,array('format','meth')),$f,$this->getAjaxRef($base),$base));
 
 				if (isAjaxEnabled())
-					printf('<a href="cmd.php?%s" onclick="return displayAJ(\'BODY\',\'%s\',\'%s\');">%s</a>',
+					printf('<a href="cmd.php?%s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');">%s</a>',
 						$query_string,$query_string,_('Loading Search'),_($f));
 				else
 					printf('<a href="cmd.php?%s">%s</a>',$query_string,_($f));

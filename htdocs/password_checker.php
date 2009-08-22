@@ -69,8 +69,8 @@ echo '</form>';
 # Pull our password from the form that opened this window.
 if ($request['componentid']) {
 	echo '<script type="text/javascript">';
-	printf('var c = window.opener.document.getElementById(\'%s\');',$request['componentid']);
-	printf('var h = document.getElementById(\'%s\');','hash');
+	printf('var c = window.opener.document.getElementById("%s");',$request['componentid']);
+	printf('var h = document.getElementById("%s");','hash');
 	echo 'if (c && h) { h.value = c.value; }';
 	echo '</script>';
 }

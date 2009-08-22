@@ -113,19 +113,15 @@ class page {
 		else
 			printf('<title>%s - %s</title>',$this->_app['title'],app_version());
 
+		echo '<link rel="shortcut icon" href="images/favicon.ico" type="image/vnd.microsoft.icon" />';
 		# Style sheet.
 		printf('<link type="text/css" rel="stylesheet" href="%s" />',$this->_app['urlcss']);
-		echo '<link rel="shortcut icon" href="images/favicon.ico" type="image/vnd.microsoft.icon" />';
 
 		if (defined('JSDIR')) {
 			printf('<link type="text/css" rel="stylesheet" media="all" href="%sjscalendar/calendar-blue.css" title="blue" />',JSDIR);
-			printf('<link type="text/css" rel="stylesheet" href="%s/phplayersmenu/layerstreemenu.css" />',JSDIR);
 			echo "\n";
-			printf('<script type="text/javascript" src="%spla_ajax.js"></script>',JSDIR);
-			printf('<script type="text/javascript" src="%stree_hide.js"></script>',JSDIR);
-			printf('<script type="text/javascript" src="%sentry_chooser.js"></script>',JSDIR);
-			printf('<script type="text/javascript" src="%sto_ascii.js"></script>',JSDIR);
-			printf('<script type="text/javascript" src="%sjscalendar/calendar.js"></script>',JSDIR);
+			printf('<script type="text/javascript" language="javascript" src="%sajax_functions.js"></script>',JSDIR);
+			printf('<script type="text/javascript" language="javascript" src="%sjscalendar/calendar.js"></script>',JSDIR);
 			echo "\n";
 		}
 

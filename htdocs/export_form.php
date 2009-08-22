@@ -36,6 +36,9 @@ $available_scopes = array(
 $request['page'] = new PageRender($app['server']->getIndex(),get_request('template','REQUEST',false,'none'));
 $request['page']->drawTitle(sprintf('<b>%s</b>',_('Export')));
 
+printf('<script type="text/javascript" language="javascript" src="%sdnChooserPopup.js"></script>',JSDIR);
+printf('<script type="text/javascript" language="javascript" src="%sform_field_toggle_enable.js"></script>',JSDIR);
+
 echo '<br />';
 echo '<center>';
 echo '<form name="export_form" action="cmd.php" method="post">';
@@ -50,7 +53,7 @@ echo '<fieldset>';
 printf('<legend>%s</legend>',_('Export'));
 
 echo '<table>';
-printf('<tr><td>%s</td><td>%s</td></tr>',_('Server'),server_select_list($app['server']->getIndex()));
+printf('<tr><td>%s</td><td>%s</td></tr>',_('Server'),$app['server']->getName());
 
 echo '<tr>';
 printf('<td style="white-space:nowrap">%s</td>',_('Base DN'));
@@ -83,7 +86,7 @@ printf('<tr><td>%s</td><td><input type="text" name="attributes" style="width:300
 printf('<tr><td>&nbsp;</td><td><input type="checkbox" name="sys_attr" id="sys_attr" %s/> <label for="sys_attr">%s</label></td></tr>',
 	$request['sys_attr'] ? 'checked="true" ' : '',_('Include system attributes'));
 
-printf('<tr><td>&nbsp;</td><td><input type="checkbox" id="save_as_file" name="save_as_file" onclick="toggle_disable_field_saveas(this)" /> <label for="save_as_file">%s</label></td></tr>',
+printf('<tr><td>&nbsp;</td><td><input type="checkbox" id="save_as_file" name="save_as_file" onclick="export_field_toggle(this)" /> <label for="save_as_file">%s</label></td></tr>',
 	_('Save as file'));
 
 printf('<tr><td>&nbsp;</td><td><input type="checkbox" id="compress" name="compress" disabled /> <label for="compress">%s</label></td></tr>',
@@ -208,15 +211,3 @@ function is_browser($type) {
 		return false;
 }
 ?>
-<script type="text/javascript" language="javascript">
-<!--
-function toggle_disable_field_saveas(id) {
-	if (id.checked) {
-		id.form.compress.disabled = false;
-	} else {
-		id.form.compress.disabled = true;
-		id.form.compress.checked = false;
-	}
-}
--->
-</script>
