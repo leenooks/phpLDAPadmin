@@ -27,6 +27,10 @@ class ldap_pla extends ldap {
 			'desc'=>'Whether to show the "Create new Entry here" in the tree browser',
 			'default'=>true);
 
+		$this->default->login['fallback_dn'] = array(
+			'desc'=>'If the attribute base login fails, see if a DN was entered',
+			'default'=>false);
+
 		$this->default->query['disable_default'] = array(
 			'desc'=>'Configuration to disable the default query template',
 			'default'=>false);

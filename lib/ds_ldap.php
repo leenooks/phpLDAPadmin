@@ -258,6 +258,9 @@ class ldap extends DS {
 			else
 				$userDN = $this->getLoginID($user,'login');
 
+			if (! $userDN && $this->getValue('login','fallback_dn'))
+				$userDN = $user;
+
 			if (! $userDN)
 				return false;
 
