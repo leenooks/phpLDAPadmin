@@ -128,6 +128,7 @@ abstract class Export {
 		$query['filter'] = get_request('filter','REQUEST',false,'objectclass=*');
 		$query['scope'] = get_request('scope','REQUEST',false,'base');
 		$query['deref'] = $_SESSION[APPCONFIG]->getValue('deref','export');
+		$query['size_limit'] = 0;
 		$attrs = get_request('attributes','REQUEST');
 
 		$attrs = preg_replace('/\s+/','',$attrs);
