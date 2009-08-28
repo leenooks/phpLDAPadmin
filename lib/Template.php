@@ -1113,7 +1113,7 @@ class Template extends xmlTemplate {
 					$sattr = $this->getServer()->getSchemaAttribute($checkattr);
 
 					# If the attribute is the same as in the XML file, then dont need to do anything.
-					if (! strcasecmp($sattr->getName(),$checkattr))
+					if (! $sattr || ! strcasecmp($sattr->getName(),$checkattr))
 						continue;
 
 					$formula = preg_replace("/$checkattr/",$sattr->getName(),$formula);

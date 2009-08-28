@@ -683,7 +683,7 @@ class Config {
 	}
 
 	public function configDefinition($key,$index,$config) {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',3,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		if (! is_array($config) || ! array_key_exists('desc',$config) || ! array_key_exists('default',$config))

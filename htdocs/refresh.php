@@ -30,7 +30,7 @@ if (get_request('purge','REQUEST')) {
 			$entry = $tree->getEntry($value);
 		}
 
-		$tree->readChildren($value);
+		$tree->readChildren($value,true);
 		$entry->open();
 	}
 

@@ -112,10 +112,10 @@ function includeHTML(component,html) {
 		if (scripts[i].attributes.length > 0) {
 			for (var j in scripts[i].attributes) {
 				if (typeof(scripts[i].attributes[j]) != 'undefined'
-				    && typeof(scripts[i].attributes[j].nodeName) != 'undefined'
-				    && scripts[i].attributes[j].nodeValue != null
-				    && scripts[i].attributes[j].nodeValue != '') {
-					    scriptclone.setAttribute(scripts[i].attributes[j].nodeName,scripts[i].attributes[j].nodeValue);
+					&& typeof(scripts[i].attributes[j].nodeName) != 'undefined'
+					&& scripts[i].attributes[j].nodeValue != null
+					&& scripts[i].attributes[j].nodeValue != '') {
+					scriptclone.setAttribute(scripts[i].attributes[j].nodeName,scripts[i].attributes[j].nodeValue);
 				}
 			}
 		}

@@ -39,7 +39,7 @@
 /* Useful important configuration overrides  */
 /*********************************************/
 
-/* If you are asked to put pla in debug mode, this is how you do it: */
+/* If you are asked to put PLA in debug mode, this is how you do it: */
 #  $config->custom->debug['level'] = 255;
 #  $config->custom->debug['syslog'] = true;
 #  $config->custom->debug['file'] = '/tmp/pla_debug.log';
@@ -92,7 +92,7 @@ $config->custom->commands['cmd'] = array(
 	'entry_refresh' => true,
 	'oslinks' => true,
 	'switch_template' => true
-	);
+);
 
 $config->custom->commands['script'] = array(
 	'add_attr_form' => true,
@@ -258,6 +258,9 @@ $config->custom->appearance['friendly_attrs'] = array(
 /*********************************************/
 
 $servers = new Datastore();
+
+/* $servers->NewServer('ldap_pla') must be called before each new LDAP server
+   declaration. */
 $servers->newServer('ldap_pla');
 
 /* A convenient name that will appear in the tree viewer and throughout
@@ -297,12 +300,12 @@ $servers->setValue('server','name','My LDAP Server');
 /* The DN of the user for phpLDAPadmin to bind with. For anonymous binds or
    'cookie' or 'session' auth_types, LEAVE THE LOGIN_DN AND LOGIN_PASS BLANK. If
    you specify a login_attr in conjunction with a cookie or session auth_type,
-   then you can also specify the bind_dn/bind_pass here for searching the
+   then you can also specify the bind_id/bind_pass here for searching the
    directory for users (ie, if your LDAP server does not allow anonymous binds. */
 // $servers->setValue('login','bind_id','');
 #  $servers->setValue('login','bind_id','cn=Manager,dc=example,dc=com');
 
-/* Your LDAP password. If you specified an empty bind_dn above, this MUST also
+/* Your LDAP password. If you specified an empty bind_id above, this MUST also
    be blank. */
 // $servers->setValue('login','bind_pass','');
 #  $servers->setValue('login','bind_pass','secret');
@@ -363,7 +366,7 @@ $servers->setValue('server','name','My LDAP Server');
    and log in as that user.
    Leave blank or specify 'dn' to use full DN for logging in. Note also that if
    your LDAP server requires you to login to perform searches, you can enter the
-   DN to use when searching in 'bind_dn' and 'bind_pass' above.
+   DN to use when searching in 'bind_id' and 'bind_pass' above.
 // $servers->setValue('login','attr','dn');
 
 /* Base DNs to used for logins. If this value is not set, then the LDAP server

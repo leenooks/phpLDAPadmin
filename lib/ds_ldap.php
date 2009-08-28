@@ -7,7 +7,7 @@
  */
 
 /**
- * This abstract class provides the basic variables and methods for LDAP datastores:wq
+ * This abstract class provides the basic variables and methods for LDAP datastores
  *
  * @package phpLDAPadmin
  * @subpackage DataStore
@@ -243,7 +243,6 @@ class ldap extends DS {
 	 * Login to the database with the application user/password
 	 *
 	 * @return boolean true|false for successful login.
-	 * @todo isLoginStringEnabled() based logins
 	 */
 	public function login($user=null,$pass=null,$method=null,$new=false) {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
@@ -487,7 +486,7 @@ class ldap extends DS {
 			return null;
 
 		$detail = array_shift($result);
-		
+
 		if (! isset($detail['dn']))
 			die('ERROR: DN missing?');
 		else

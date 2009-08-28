@@ -42,7 +42,7 @@ abstract class SchemaItem {
 
 	public function getOID() {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
+			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->oid);
 
 		return $this->oid;
 	}

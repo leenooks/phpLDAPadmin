@@ -486,8 +486,8 @@ function debug_log($msg,$level,$indent) {
 	static $debug_file;
 
 	# In case we are called before we are fully initialised or if debugging is not set.
-	if (! isset($_SESSION[APPCONFIG]) ||
-		! ($_SESSION[APPCONFIG]->getValue('debug','file') || $_SESSION[APPCONFIG]->getValue('debug','syslog')))
+	if (! isset($_SESSION[APPCONFIG])
+		|| ! ($_SESSION[APPCONFIG]->getValue('debug','file') || $_SESSION[APPCONFIG]->getValue('debug','syslog')))
 		return;
 
 	$debug_level = $_SESSION[APPCONFIG]->getValue('debug','level');
@@ -2860,6 +2860,7 @@ function binSIDtoText($binsid) {
  *                or true to have the returned array sorted by DN (uses ksort)
  *                or an array of attribute names to sort by attribute values
  * @return array Array of values keyed by $key.
+ * @todo sort is not being performed
  */
 function return_ldap_hash($base,$filter,$key,$attrs,$sort=true) {
 	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))

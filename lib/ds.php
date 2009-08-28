@@ -427,7 +427,7 @@ abstract class DS {
 	 */
 	public function isSessionValid() {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs,true);
+			debug_log('Entered (%%)',17,1,__FILE__,__LINE__,__METHOD__,$fargs,true);
 
 		return true;
 	}

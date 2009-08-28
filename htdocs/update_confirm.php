@@ -110,7 +110,7 @@ if (count($request['template']->getLDAPmodify(true))) {
 		$input_disabled = '';
 		$input_onclick = '';
 
-		if ($attribute->isForceDelete() || in_array($attribute->getName(),$mustattrs))
+		if ($attribute->isForceDelete() || (in_array($attribute->getName(),$mustattrs)) && $request['template']->getAttribute('objectclass')->justModified())
 			$input_disabled = 'disabled="disabled"';
 
 		if ($attribute->getName() == 'objectclass') {
