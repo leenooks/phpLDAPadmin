@@ -341,7 +341,7 @@ function check_config($config_file) {
  * @return array
  */
 function cmd_control_pane($type) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+	if (defined('DEBUG_ENABLED') && DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	switch ($type) {
@@ -355,14 +355,14 @@ function cmd_control_pane($type) {
 
 				'purge'=>array(
 					'title'=>_('Purge caches'),
-					'enable'=>$_SESSION[APPCONFIG]->isCommandAvailable('script','purge_cache'),
+					'enable'=>isset($_SESSION[APPCONFIG]) ? $_SESSION[APPCONFIG]->isCommandAvailable('script','purge_cache') : false,
 					'link'=>sprintf('href="cmd.php?cmd=purge_cache" onclick="return ajDISPLAY(\'BODY\',\'cmd=purge_cache\',\'%s\');" title="%s"',
 						_('Clearing cache'),_('Purge caches')),
 					'image'=>sprintf('<img src="%s/trash-big.png" alt="%s" />',IMGDIR,_('Purge caches'))),
 
 				'hide_debug_info'=>array(
 					'title'=>_('Show Cache'),
-					'enable'=>$_SESSION[APPCONFIG]->isCommandAvailable('script','show_cache'),
+					'enable'=>isset($_SESSION[APPCONFIG]) ? $_SESSION[APPCONFIG]->isCommandAvailable('script','show_cache') : false,
 					'link'=>sprintf('href="cmd.php?cmd=show_cache" onclick="return ajDISPLAY(\'BODY\',\'cmd=show_cache\',\'%s\');" title="%s"',
 						_('Loading'),_('Show Cache'),_('Show Cache')),
 					'image'=>sprintf('<img src="%s/debug-cache.png" alt="%s" />',IMGDIR,_('Show Cache'))),
@@ -374,31 +374,31 @@ function cmd_control_pane($type) {
 			return array(
 				'forum'=>array(
 					'title'=>_('Forum'),
-					'enable'=>$_SESSION[APPCONFIG]->isCommandAvailable('cmd','oslinks'),
+					'enable'=>isset($_SESSION[APPCONFIG]) ? $_SESSION[APPCONFIG]->isCommandAvailable('cmd','oslinks') : true,
 					'link'=>sprintf('href="%s" title="%s" target="_blank"',get_href('forum'),_('Forum')),
 					'image'=>sprintf('<img src="%s/forum-big.png" alt="%s" />',IMGDIR,_('Forum'))),
 
 				'feature'=>array(
 					'title'=>_('Request feature'),
-					'enable'=>$_SESSION[APPCONFIG]->isCommandAvailable('cmd','oslinks'),
+					'enable'=>isset($_SESSION[APPCONFIG]) ? $_SESSION[APPCONFIG]->isCommandAvailable('cmd','oslinks') : true,
 					'link'=>sprintf('href="%s" title="%s" target="_blank"',get_href('add_rfe'),_('Request feature')),
 					'image'=>sprintf('<img src="%s/request-feature-big.png" alt="%s" />',IMGDIR,_('Request feature'))),
 
 				'bug'=>array(
 					'title'=>_('Report a bug'),
-					'enable'=>$_SESSION[APPCONFIG]->isCommandAvailable('cmd','oslinks'),
+					'enable'=>isset($_SESSION[APPCONFIG]) ? $_SESSION[APPCONFIG]->isCommandAvailable('cmd','oslinks') : true,
 					'link'=>sprintf('href="%s" title="%s" target="_blank"',get_href('add_bug'),_('Report a bug')),
 					'image'=>sprintf('<img src="%s/bug-big.png" alt="%s" />',IMGDIR,_('Report a bug'))),
 
 				'donation'=>array(
 					'title'=>_('Donate'),
-					'enable'=>$_SESSION[APPCONFIG]->isCommandAvailable('cmd','oslinks'),
+					'enable'=>isset($_SESSION[APPCONFIG]) ? $_SESSION[APPCONFIG]->isCommandAvailable('cmd','oslinks') : true,
 					'link'=>sprintf('href="%s" title="%s" target="_blank"',get_href('donate'),_('Donate')),
 					'image'=>sprintf('<img src="%s/smile-big.png" alt="%s" />',IMGDIR,_('Donate'))),
 
 				'help'=>array(
 					'title'=>_('Help'),
-					'enable'=>$_SESSION[APPCONFIG]->isCommandAvailable('cmd','oslinks'),
+					'enable'=>isset($_SESSION[APPCONFIG]) ? $_SESSION[APPCONFIG]->isCommandAvailable('cmd','oslinks') : true,
 					'link'=>sprintf('href="%s" title="%s" target="_blank"',get_href('documentation'),_('Help')),
 					'image'=>sprintf('<img src="%s/help-big.png" alt="%s" />',IMGDIR,_('Help')))
 			);
