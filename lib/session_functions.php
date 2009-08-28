@@ -86,7 +86,7 @@ function app_session_start() {
 	 * prior to loading the SchemaItem (and descedants) class. Destroy the auto-started
 	 * session to prevent this problem.
 	 */
-	if (ini_get('session.auto_start'))
+	if (ini_get('session.auto_start') && ! array_key_exists(app_session_id_init,$_SESSION))
 		@session_destroy();
 
 	# Do we already have a session?
