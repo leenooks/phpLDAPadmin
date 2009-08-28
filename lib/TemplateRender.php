@@ -227,10 +227,11 @@ class TemplateRender extends PageRender {
 				break;
 
 			/**
+			 * PickList will query the LDAP server and provide a select list of values
 			 * MultiList will query the LDAP server and provide a multi select list of values
 			 * eg: <![CDATA[=php.MultiList(/;(objectClass=posixAccount);uid)]]>
 			 *
-			 * eg: <![CDATA[=php.MultiList(/;(&(objectClass=posixAccount)(uid=groupA*));uid;%cn/U% (%gidNumber%);memberUid;dmdName=users,root => cn=root;nobody => cn=nobody;gidNumber;10;(gidNuber=%gidNumber%);uid)]]>
+			 * eg: <![CDATA[=php.MultiList(/;(&(objectClass=posixAccount)(uid=groupA*));uid;%cn/U% (%gidNumber%);memberUid;dmdName=users;root => cn=root,nobody => cn=nobody;gidNumber;10)]]>
 			 *
 			 * Mandatory Arguments:
 			 * * arg 0
@@ -255,26 +256,16 @@ class TemplateRender extends PageRender {
 			 *   - container override
 			 *
 			 * * arg 6
-			 *   - csv list (, separator) of added values. syntax: key => display_attribute=value; key...
+			 *   - csv list (, separator) of added values. syntax: key => display_attribute=value, key...
 			 *
 			 * * arg 7
 			 *   - csv list (, separator) of sort attributes (less to more important)
 			 *
-			 * * arg 8
+			 * * arg 8 (for MultiList)
 			 *   - size of displayed list (default: 10 lines)
-			 *
-			 * * arg 9
-			 *   - preselected values filter. see arg 1.
-			 *
-			 * * arg 10
-			 *   - key of preselected values. replaced by arg 4 if not given. replaced by arg 2 if both are not given.
-			 *
-			 * * arg 11
-			 *   - base dn override for preselected values
-			 *
-			 * @todo This could probably be merged with PickList
 			 */
 			case 'MultiList':
+			case 'PickList':
 				$args[2] = strtolower($args[2]);
 
 				# arg5 overrides our container
@@ -283,10 +274,10 @@ class TemplateRender extends PageRender {
 				else
 					$container = $args[5];
 
-				# Process filter (arg 1), eventually replace %attr% by it's value setted in a previous page.
+				# Process filter (arg 1), eventually replace %attr% by it's value set in a previous page.
 				preg_match_all('/%(\w+)(\|.+)?(\/[lUC])?%/U',$args[1],$filtermatchall);
+				//print_r($matchall); // -1 = highlevel match, 1 = attr, 2 = subst, 3 = mod
 
-				# @todo this section needs to be validated/tested
 				if (isset($_REQUEST['form'])) {
 					$formvalues = array_change_key_case($_REQUEST['form']);
 
@@ -296,17 +287,18 @@ class TemplateRender extends PageRender {
 					}
 				}
 
-				$args[3] = ! empty($args[3]) ? $args[3] : "%{$args[2]}%";
+				if (empty($args[3]))
+					$args[3] = "%{$args[2]}%";
 
 				preg_match_all('/%(\w+)(\|.+)?(\/[lUC])?%/U',$args[3],$matchall);
 				//print_r($matchall); // -1 = highlevel match, 1 = attr, 2 = subst, 3 = mod
 
 				$attrs = array_unique(array_merge($matchall[1],array($args[2])));
 
-				 # arg7 is sort attributes
+				# arg7 is sort attributes
 				if (isset($args[7])) {
 					$sort_attrs = explode(',',$args[7]);
-					$attrs = array_merge($attrs,$sort_attrs);
+					$attrs = array_unique(array_merge($attrs,$sort_attrs));
 				}
 
 				$picklistvalues = return_ldap_hash($container,$args[1],$args[2],$attrs,(isset($args[7]) && ($args[7])) ? $sort_attrs : false);
@@ -322,29 +314,10 @@ class TemplateRender extends PageRender {
 						$fixedvalue = preg_split('/=\>/',$fixedvalue);
 						$displayvalue = explode('=',$fixedvalue[1]);
 
-						$newvalue[trim($fixedvalue[0])] = array($args[2]=>trim($fixedvalue[0]),
-							trim($displayvalue[0])=>trim($displayvalue[1]));
+						$newvalue[trim($fixedvalue[0])] = array($args[2]=>trim($fixedvalue[0]),trim($displayvalue[0])=>trim($displayvalue[1]));
 
 						$picklistvalues = array_merge($picklistvalues,$newvalue);
 					}
-				}
-
-				 /* arg 9 is the search filter for already selected values, with criteriai eventually
-				    coming from previous pages (eg: %uid%) */
-				if (isset($args[9])) {
-					preg_match_all('/%(\w+)(\|.+)?(\/[lUC])?%/U',$args[9],$matchallinlist);
-
-					foreach ($matchallinlist[1] as $arg) {
-						$value=$formvalues[strtolower($arg)];
-
-						$args[9] = preg_replace('/%('.$arg.')(\|.+)?(\/[lU])?%/U',$value,$args[9]);
-					}
-
-					# arg11 overrides container dn for selected values
-					if (! empty($args[11]))
-						$container = $args[11];
-
-					$inpicklistvalues = return_ldap_hash($container,$args[9],$args[2],$attrs);
 				}
 
 				$vals = array();
@@ -426,95 +399,6 @@ class TemplateRender extends PageRender {
 			 */
 			case 'PasswordEncryptionTypes':
 				$vals = password_types();
-
-				break;
-
-			/**
-			 * PickList will query the LDAP server and provide a select list of values
-			 * eg: <![CDATA[=php.PickList(/;(&(objectClass=posixGroup));gidNumber;%cn%)]]>
-			 *
-			 * eg: <![CDATA[=php.PickList(/;(&(objectClass=sambaGroupMapping)(|(cn=domain administrator)(cn=domain users)(cn=domain guests)))|sambaSID|%cn% (%sambaSID%)|sambaPrimaryGroupSID|dmdname=users,dmdName=groups,dc=example,dc=com|S-1-5-XX-YYY => cn=Administrators,S-1-5-XX-YYY => cn=Users,S-1-5-XX-YYY => cn=Guests,S-1-5-XX-YYY => cn=power users|cn)]]>
-			 *
-			 * Mandatory Arguments:
-			 * * arg 0
-			 *   - container, to query from current position
-			 *   - "/",".",".." => get container parent as usual
-			 *
-			 * * arg 1
-			 *   - LDAP filter.
-			 *
-			 * * arg2
-			 *   - list attribute key
-			 *
-			 * * arg3
-			 *   - select display
-			 *
-			 * Optional Arguments:
-			 * * arg4
-			 *   - output attribute
-			 *
-			 * * arg5
-			 *   - container override
-			 *
-			 * * arg6
-			 *   - csv list (, separator) of added values. syntax: key => display_attribute=value; key...
-			 *
-			 * * arg7
-			 *   - csv list (, separator) of sort attributes (less to more important)
-			 */
-			case 'PickList':
-				$args[2] = strtolower($args[2]);
-
-				# arg5 overrides our container
-				if (empty($args[5]))
-					$container = $server->getContainerPath($container,$args[0]);
-				else
-					$container = $args[5];
-
-				# Extract the attributes to use in the display
-				preg_match_all('/%(\w+)(\|.+)?(\/[lU])?%/U',$args[3],$matchall);
-				//print_r($matchall); // -1 = highlevel match, 1 = attr, 2 = subst, 3 = mod
-
-				$attrs = array_unique(array_merge($matchall[1],array($args[2])));
-
-				# The query results are sorted by arg7
-				if (! empty($args[7])) {
-					$sort_attrs = explode(',',$args[7]);
-					$attrs = array_merge($attrs,$sort_attrs);
-				}
-
-				$picklistvalues = return_ldap_hash($container,$args[1],$args[2],$attrs,(isset($args[7]) && ($args[7])) ? $sort_attrs : false);
-
-				if (! empty($args[6])) {
-					$fixedvalues = explode(',',$args[6]);
-
-					foreach ($fixedvalues as $fixedvalue) {
-						$fixedvalue = preg_split('/=\>/',$fixedvalue);
-						$displayvalue = explode('=',$fixedvalue[1]);
-
-						$newvalue[trim($fixedvalue[0])] = array($args[2]=>trim($fixedvalue[0]),
-							trim($displayvalue[0])=>trim($displayvalue[1]));
-
-						$picklistvalues = array_merge($picklistvalues,$newvalue);
-					}
-				}
-
-				$vals = array();
-
-				foreach ($picklistvalues as $key => $values) {
-					$display = $args[3];
-
-					foreach ($matchall[1] as $arg)
-						if (isset($values[$arg]))
-							$display = preg_replace("/%($arg)(\|.+)?(\/[lU])?%/U",$values[$arg],$display);
-						else
-							$display = preg_replace("/%($arg)(\|.+)?(\/[lU])?%/U",'',$display);
-
-					if (! isset($picklist[$values[$args[2]]])) {
-						$vals[$values[$args[2]]] = $display;
-						$picklist[$display] = true;
-					}
-				}
 
 				break;
 
