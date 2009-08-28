@@ -270,7 +270,7 @@ class ldap extends DS {
 
 			} else {
 				$userDN = $this->getLogin('user');
-				$pass = $this->getLogin('user');
+				$pass = $this->getPassword('user');
 			}
 		}
 
@@ -557,8 +557,16 @@ class ldap extends DS {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-		if (! $this->getValue('server','tls') || (function_exists('ldap_start_tls') && ! ldap_start_tls($resource)))
-			error(_('Could not start TLS. Please check your LDAP server configuration.'),'error',null,true);
+		if (! $this->getValue('server','tls') || (function_exists('ldap_start_tls') && ! @ldap_start_tls($resource))) {
+			system_message(array(
+				'title'=>sprintf('%s (%s)',_('Could not start TLS.'),$this->getName()),
+				'body'=>sprintf('<b>%s</b>: %s',_('Error'),_('Could not start TLS. Please check your LDAP server configuration.')),
+				'type'=>'error'));
+
+			return false;
+
+		} else
+			return true;
 	}
 
 	/**
