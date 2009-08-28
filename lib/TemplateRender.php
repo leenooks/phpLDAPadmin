@@ -2376,8 +2376,8 @@ function deleteAttribute(attrName,friendlyName,i)
 			$id,htmlspecialchars($attribute->getName()),$i,
 			$id,htmlspecialchars($attribute->getName()),$i);
 
-		foreach (password_types() as $v)
-			printf('<option value="%s" %s>%s</option>',$v,($v == $default) ? 'selected' : '',$v);
+		foreach (password_types() as $v => $display)
+			printf('<option value="%s" %s>%s</option>',$v,($v == $default) ? 'selected' : '',$display);
 
 		echo '</select>';
 	}

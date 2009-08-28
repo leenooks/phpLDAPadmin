@@ -2085,15 +2085,15 @@ function password_types() {
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	return array(
-		'blowfish',
-		'clear',
-		'crypt',
-		'ext_des',
-		'md5',
-		'md5crypt',
-		'sha',
-		'smd5',
-		'ssha'
+		'blowfish'=>'blowfish',
+		''=>'clear',
+		'crypt'=>'crypt',
+		'ext_des'=>'ext_des',
+		'md5'=>'md5',
+		'md5crypt'=>'md5crypt',
+		'sha'=>'sha',
+		'smd5'=>'smd5',
+		'ssha'=>'ssha'
 	);
 }
 
