@@ -194,7 +194,7 @@ class ldap extends DS {
 
 		# If SASL has been configured for binding, then start it now.
 		if ($this->isSASLEnabled())
-			$this->startSASL($resource,$method);
+			$bind['result'] = $this->startSASL($resource,$method);
 
 		# Normal bind...
 		else
@@ -603,10 +603,20 @@ class ldap extends DS {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-		error(__METHOD__.' has NOT been tested, please let us know if it works and which version of PHP you are using.','info');
 		static $CACHE = array();
 
-		if (! $this->getValue('server','sasl') || ! function_exists('ldap_start_tls'));
+		switch (strtolower($this->getValue('sasl','mech'))) {
+			case 'gssapi':
+				if (isset($_ENV['REDIRECT_KRB5CCNAME']))
+					putenv(sprintf('KRB5CCNAME={%s}',$_ENV['REDIRECT_KRB5CCNAME']));
+
+				break;
+
+			default:
+				error(sprintf('%s (%s) has NOT been tested, please let us know if it works and which version of PHP you are using.',__METHOD__,$this->getValue('sasl','mech')),'info');
+		}
+
+		if (! $this->getValue('server','sasl') || ! function_exists('ldap_start_tls'))
 			return false;
 
 		if (! isset($CACHE['login_dn'])) {
