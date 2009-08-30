@@ -715,7 +715,7 @@ class Attribute {
 				switch ($index) {
 					# Helpers should be accompanied with a <post> attribute.
 					case 'helper':
-						if (! isset($values['post']))
+						if (! isset($values['post']) && ! $_SESSION[APPCONFIG]->getValue('appearance','hide_template_warning'))
 							system_message(array(
 								'title'=>sprintf('%s [<i>%s</i>]',_('Missing [post] setting in XML file'),$index),
 								'body'=>_('[helper] needs an accompanying [post] action.'),
@@ -730,10 +730,11 @@ class Attribute {
 
 						foreach ($value as $i => $detail) {
 							if (! in_array($i,array('default','display','id','value'))) {
-								system_message(array(
-									'title'=>sprintf('%s [<i>%s</i>]',_('Unknown XML setting'),$i),
-									'body'=>sprintf('%s <small>[%s]</small>',_('Unknown XML type setting for helper will be ignored.'),$detail),
-									'type'=>'warn'));
+								if (! $_SESSION[APPCONFIG]->getValue('appearance','hide_template_warning'))
+									system_message(array(
+										'title'=>sprintf('%s [<i>%s</i>]',_('Unknown XML setting'),$i),
+										'body'=>sprintf('%s <small>[%s]</small>',_('Unknown XML type setting for helper will be ignored.'),$detail),
+										'type'=>'warn'));
 
 								unset($value[$i]);
 							}
@@ -751,7 +752,7 @@ class Attribute {
 
 					# Essentially, we ignore type, it is used to select an Attribute type in the Factory. But we'll generated a warning if there is an unknown type.
 					case 'type':
-						if (! in_array($value,array('password','multiselect','select','textarea')))
+						if (! in_array($value,array('password','multiselect','select','textarea')) && ! $_SESSION[APPCONFIG]->getValue('appearance','hide_template_warning'))
 							system_message(array(
 								'title'=>sprintf('%s [<i>%s</i>]',_('Unknown XML setting'),$index),
 								'body'=>sprintf('%s <small>[%s]</small>',_('Unknown XML type setting will be ignored.'),$value),
@@ -765,10 +766,11 @@ class Attribute {
 							$this->postvalue['args'] = $matches[2];
 
 						} else
-							system_message(array(
-								'title'=>sprintf('%s [<i>%s</i>]',_('Unknown XML setting'),$index),
-								'body'=>sprintf('%s <small>[%s]</small>',_('Unknown XML type setting will be ignored.'),$value),
-								'type'=>'warn'));
+							if (! $_SESSION[APPCONFIG]->getValue('appearance','hide_template_warning'))
+								system_message(array(
+									'title'=>sprintf('%s [<i>%s</i>]',_('Unknown XML setting'),$index),
+									'body'=>sprintf('%s <small>[%s]</small>',_('Unknown XML type setting will be ignored.'),$value),
+									'type'=>'warn'));
 
 					case 'value':
 						if (is_array($value))
@@ -810,10 +812,11 @@ class Attribute {
 						break;
 
 					default:
-						system_message(array(
-							'title'=>sprintf('%s [<i>%s</i>]',_('Unknown XML setting'),$index),
-							'body'=>sprintf('%s <small>[%s]</small>',_('Unknown attribute setting will be ignored.'),serialize($value)),
-							'type'=>'warn'));
+						if (! $_SESSION[APPCONFIG]->getValue('appearance','hide_template_warning'))
+							system_message(array(
+								'title'=>sprintf('%s [<i>%s</i>]',_('Unknown XML setting'),$index),
+								'body'=>sprintf('%s <small>[%s]</small>',_('Unknown attribute setting will be ignored.'),serialize($value)),
+								'type'=>'warn'));
 				}
 
 		elseif (is_string($values) && (strlen($values) > 0))

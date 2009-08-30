@@ -25,10 +25,11 @@ class AttributeFactory {
 						break;
 
 					default:
-						system_message(array(
-							'title'=>sprintf('%s [<i>%s</i>]',_('Unknown template [post] function'),$matches[1]),
-							'body'=>sprintf('%s <small>[%s]</small>',_('The template function is not known and will be ignored.'),$values['post']),
-							'type'=>'warn'));
+						if (! $_SESSION[APPCONFIG]->getValue('appearance','hide_template_warning'))
+							system_message(array(
+								'title'=>sprintf('%s [<i>%s</i>]',_('Unknown template [post] function'),$matches[1]),
+								'body'=>sprintf('%s <small>[%s]</small>',_('The template function is not known and will be ignored.'),$values['post']),
+								'type'=>'warn'));
 
 						unset($values['post']);
 				}
@@ -39,10 +40,11 @@ class AttributeFactory {
 		if (isset($values['helper']['value']) && ! is_array($values['helper']['value']))
 			if (preg_match('/^=php\.(\w+)\((.*)\)$/',$values['helper']['value'],$matches))
 				if (! in_array($matches[1],array('GetNextNumber','PasswordEncryptionTypes'))) {
-					system_message(array(
-						'title'=>sprintf('%s [<i>%s</i>]',_('Unknown template helper function'),$matches[1]),
-						'body'=>sprintf('%s <small>[%s]</small>',_('The template helper function is not known and will be ignored.'),$values['helper']['value']),
-						'type'=>'warn'));
+					if (! $_SESSION[APPCONFIG]->getValue('appearance','hide_template_warning'))
+						system_message(array(
+							'title'=>sprintf('%s [<i>%s</i>]',_('Unknown template helper function'),$matches[1]),
+							'body'=>sprintf('%s <small>[%s]</small>',_('The template helper function is not known and will be ignored.'),$values['helper']['value']),
+							'type'=>'warn'));
 
 					unset($values['helper']['value']);
 				}
@@ -67,10 +69,11 @@ class AttributeFactory {
 						break;
 
 					default:
-						system_message(array(
-							'title'=>sprintf('%s [<i>%s</i>]',_('Unknown template function'),$matches[1]),
-							'body'=>sprintf('%s <small>[%s]</small>',_('The template function is not known and will be ignored.'),$values['value']),
-							'type'=>'warn'));
+						if (! $_SESSION[APPCONFIG]->getValue('appearance','hide_template_warning'))
+							system_message(array(
+								'title'=>sprintf('%s [<i>%s</i>]',_('Unknown template function'),$matches[1]),
+								'body'=>sprintf('%s <small>[%s]</small>',_('The template function is not known and will be ignored.'),$values['value']),
+								'type'=>'warn'));
 
 						unset($values['value']);
 				}
