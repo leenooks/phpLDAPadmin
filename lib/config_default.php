@@ -526,7 +526,7 @@ class Config {
 			'default'=>true);
 
 		$this->default->password['no_random_crypt_salt'] = array(
-			'descr'=>'Disable random salt for crypt()',
+			'desc'=>'Disable random salt for crypt()',
 			'default'=>false);
 
 		/** Search display

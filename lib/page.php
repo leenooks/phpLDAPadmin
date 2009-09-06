@@ -126,7 +126,7 @@ class page {
 		}
 
 		# HTML head requirements.
-		if (is_array($this->_head) && count ($this->_head))
+		if (is_array($this->_head) && count($this->_head))
 			foreach ($this->_head as $line)
 				echo $line."\n";
 

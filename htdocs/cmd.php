@@ -12,6 +12,7 @@
 
 require_once './common.php';
 
+$www = array();
 $www['cmd'] = get_request('cmd','REQUEST');
 $www['meth'] = get_request('meth','REQUEST');
 
