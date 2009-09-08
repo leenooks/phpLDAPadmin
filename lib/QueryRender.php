@@ -80,6 +80,7 @@ class QueryRender extends PageRender {
 		$baseDNs = $server->getBaseDN();
 
 		echo '<center>';
+		printf('<script type="text/javascript" language="javascript" src="%sdnChooserPopup.js"></script>',JSDIR);
 		echo '<form action="cmd.php" name="advanced_search_form">';
 		echo '<input type="hidden" name="cmd" value="query_engine" />';
 		printf('<input type="hidden" name="server_id" value="%s" />',$server->getIndex());
