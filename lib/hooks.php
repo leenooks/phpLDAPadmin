@@ -117,7 +117,7 @@ function run_hook($hook_name,$args) {
  * @param rollback_function	Name of the php rollback function called upon failure.
  */
 function add_hook($hook_name,$hook_function,$priority=0,$rollback_function=null) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+	if (defined('DEBUG_ENABLED') && DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 		debug_log('Entered (%%)',257,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	# First, see if the hook function exists.
@@ -153,7 +153,7 @@ function add_hook($hook_name,$hook_function,$priority=0,$rollback_function=null)
  *			procedures that call this function as a rollback will be removed.
  */
 function remove_hook($hook_name,$hook_function,$priority,$rollback_function) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+	if (defined('DEBUG_ENABLED') && DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 		debug_log('Entered (%%)',257,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	if (array_key_exists($hook_name,$_SESSION[APPCONFIG]->hooks)) {
