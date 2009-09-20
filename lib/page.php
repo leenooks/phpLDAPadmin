@@ -106,6 +106,7 @@ class page {
 
 		# Page Title
 		echo '<head>';
+		printf('<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />');
 
 		if (isset($_SESSION[APPCONFIG]))
 			printf('<title>%s (%s) - %s</title>',
