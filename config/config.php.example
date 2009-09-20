@@ -6,6 +6,7 @@
 
 /**
  * The phpLDAPadmin config file
+ * See: http://phpldapadmin.sourceforge.net/wiki/index.php/Config.php
  *
  * This is where you can customise some of the phpLDAPadmin defaults
  * that are defined in config_default.php.
