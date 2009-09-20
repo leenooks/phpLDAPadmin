@@ -474,7 +474,7 @@ class ldap_pla extends ldap {
 			return false;
 
 		if (run_hook('pre_entry_modify',array('server_id'=>$this->index,'method'=>$method,'dn'=>$dn,'attrs'=>$attrs))) {
-			$result = @ldap_mod_replace($this->connect($method),$dn,$attrs);
+			$result = @ldap_modify($this->connect($method),$dn,$attrs);
 
 			if ($result) {
 				run_hook('post_entry_modify',array('server_id'=>$this->index,'method'=>$method,'dn'=>$dn,'attrs'=>$attrs));
