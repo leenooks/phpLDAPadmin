@@ -902,7 +902,7 @@ class TemplateRender extends PageRender {
 					return '';
 
 			case 'childcreate':
-				if ($_SESSION[APPCONFIG]->isCommandAvailable('script','create') && ! $this->template->isReadOnly())
+				if ($_SESSION[APPCONFIG]->isCommandAvailable('script','create') && ! $this->template->isReadOnly() && ! $this->template->isNoLeaf())
 					return $this->getMenuItemCreate();
 				else
 					return '';

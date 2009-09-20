@@ -87,6 +87,10 @@ class Config {
 			'desc'=>'Disabled the Default Template',
 			'default'=>false);
 
+		$this->default->appearance['disable_default_leaf'] = array(
+			'desc'=>'Disabled creating leaf entries in the Default Template',
+			'default'=>false);
+
 		$this->default->appearance['friendly_attrs'] = array(
 			'desc'=>'Friendly names for attributes',
 			'default'=>array());

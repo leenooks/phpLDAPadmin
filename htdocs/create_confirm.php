@@ -30,9 +30,6 @@ if (! $request['container'])
 
 $request['container'] = $tree->getEntry($request['template']->getContainer());
 
-if ($request['container']->isLeaf())
-	error(sprintf(_('The container (%s) is a leaf.'),$request['template']->getContainer()),'error','index.php');
-
 # Check our RDN
 if (! count($request['template']->getRDNAttrs()))
 	error(_('The were no attributes marked as an RDN attribute.'),'error','index.php');

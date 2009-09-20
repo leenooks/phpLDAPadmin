@@ -45,6 +45,8 @@ class Template extends xmlTemplate {
 	private $dn;
 	# Where this template will store its data
 	protected $container;
+	# Does this template prohibit children being created
+	private $noleaf = false;
 	# A regexp that determines if this template is valid in the container.
 	private $regexp;
 	# Template Title
@@ -53,6 +55,14 @@ class Template extends xmlTemplate {
 	private $icon;
 	# Template RDN attributes
 	private $rdn;
+
+	public function __construct($server_id,$name=null,$filename=null,$type=null,$id=null) {
+		parent::__construct($server_id,$name,$filename,$type,$id);
+
+		# If this is the default template, we might disable leafs by default.
+		if (is_null($filename))
+			$this->noleaf = $_SESSION[APPCONFIG]->getValue('appearance','disable_default_leaf');
+	}
 
 	public function __clone() {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
@@ -1500,6 +1510,10 @@ class Template extends xmlTemplate {
 
 		masort($attributes,'name');
 		return $attributes;
+	}
+
+	public function isNoLeaf() {
+		return $this->noleaf;
 	}
 }
 ?>
