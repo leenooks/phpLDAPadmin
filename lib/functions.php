@@ -563,7 +563,7 @@ function debug_log($msg,$level,$indent) {
 		fwrite($debug_file,$debug_message."\n");
 	}
 
-	if ($_SESSION[APPCONFIG]->getValue('debug','syslog'))
+	if ($_SESSION[APPCONFIG]->getValue('debug','syslog') && function_exists('syslog_notice'))
 		syslog_notice($debug_message);
 }
 
