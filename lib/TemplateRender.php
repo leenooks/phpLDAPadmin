@@ -1598,23 +1598,15 @@ function validateForm(silence) {
 
 		$this->drawTemplateJavascript();
 
-		# If we have a DateAttribute, we need to set some defaults for the js_calendar.
-		if (isset($_SESSION[APPCONFIG])) {
-			foreach ($this->template->getAttributesShown() as $attribute) {
-				if (array_key_exists($attribute->getName(),array_change_key_case($_SESSION[APPCONFIG]->getValue('appearance','date_attrs')))) {
-					echo '<!-- START: GLOBAL SETTINGS FOR THE js_calendar -->'."\n";
-					echo '<script type="text/javascript" language="javascript">'."\n";
-					echo 'var defaults = new Array();'."\n";
-					printf('var default_date_format = "%s";',$_SESSION[APPCONFIG]->getValue('appearance','date'));
-					echo "\n";
-					echo '</script>'."\n";
-					echo '<!-- END: GLOBAL SETTINGS FOR THE js_calendar -->'."\n";
-					echo "\n";
-
-					break;
-				}
-			}
-		}
+		# For DateAttributes, we need to set some defaults for the js_calendar.
+		echo '<!-- START: GLOBAL SETTINGS FOR THE js_calendar -->'."\n";
+		echo '<script type="text/javascript" language="javascript">'."\n";
+		echo 'var defaults = new Array();'."\n";
+		printf('var default_date_format = "%s";',$_SESSION[APPCONFIG]->getValue('appearance','date'));
+		echo "\n";
+		echo '</script>'."\n";
+		echo '<!-- END: GLOBAL SETTINGS FOR THE js_calendar -->'."\n";
+		echo "\n";
 
 		foreach ($this->template->getAttributesShown() as $attribute)
 			$this->draw('Javascript',$attribute);

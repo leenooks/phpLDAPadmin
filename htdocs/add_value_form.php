@@ -160,6 +160,7 @@ if (get_request('meth','REQUEST') != 'ajax') {
 
 		echo '<table class="entry" cellspacing="0" align="center" border=0>';
 		$request['page']->draw('Template',$attribute);
+		$request['page']->draw('Javascript',$attribute);
 		echo '</table>';
 
 	} else {
