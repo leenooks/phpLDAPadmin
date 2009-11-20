@@ -312,8 +312,6 @@ class ldap extends DS {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-		$size_limit = 500;
-		$time_limit = 0;
 		$attrs_only = 0;
 
 		# Defaults
@@ -335,7 +333,9 @@ class ldap extends DS {
 		if (! isset($query['scope']))
 			$query['scope'] = 'sub';
 		if (! isset($query['size_limit']))
-			$query['size_limit'] = $size_limit;
+			$query['size_limit'] = 0;
+		if (! isset($query['time_limit']))
+			$query['time_limit'] = 0;
 
 		if ($query['scope'] == 'base' && ! isset($query['baseok']))
 			system_message(array(
@@ -362,16 +362,16 @@ class ldap extends DS {
 
 		switch ($query['scope']) {
 			case 'base':
-				$search = @ldap_read($resource,$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$time_limit,$query['deref']);
+				$search = @ldap_read($resource,$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$query['time_limit'],$query['deref']);
 				break;
 
 			case 'one':
-				$search = @ldap_list($resource,$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$time_limit,$query['deref']);
+				$search = @ldap_list($resource,$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$query['time_limit'],$query['deref']);
 				break;
 
 			case 'sub':
 			default:
-				$search = @ldap_search($resource,$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$time_limit,$query['deref']);
+				$search = @ldap_search($resource,$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$query['time_limit'],$query['deref']);
 				break;
 		}
 
