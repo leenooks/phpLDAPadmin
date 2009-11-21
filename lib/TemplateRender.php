@@ -1852,14 +1852,16 @@ function fillRec(id,value) {
 		if ($attribute->needJS('blur')) {
 			printf('function blur_%s(component) {',$attribute->getName());
 			echo "\n";
+//echo ' alert("BLUR: ID:"+component.id+", V:"+pla_getComponentValue(component));';
 			$this->draw('BlurJavascript',$attribute,'component');
 			echo "};\n";
 		}
 
 		echo '// validate'."\n";
+		printf('function validate_%s(component,silence) {',$attribute->getName());
+		echo "\n";
+
 		if ($attribute->needJS('validate')) {
-			printf('function validate_%s(component,silence) {',$attribute->getName());
-			echo "\n";
 			echo '	var valid = true;';
 			echo "\n";
 			$this->draw('ValidateJavascript',$attribute,'component','silence','valid');
@@ -1867,8 +1869,12 @@ function fillRec(id,value) {
 			echo '	if (valid) { component.style.backgroundColor = "white"; component.style.color = "black"; }';
 			echo '	else { component.style.backgroundColor = \'#FFFFA0\'; component.style.color = "black"; }';
 			echo '	return valid;';
-			echo '}'."\n";
+
+		} else {
+			echo '	return true;'."\n";
 		}
+
+		echo '}'."\n";
 
 		echo '</script>'."\n";
 
@@ -2232,7 +2238,7 @@ function deleteAttribute(attrName,friendlyName,i)
 			$config['format'] = $config['date'][$attribute->getName()];
 
 		for ($i=0;$i<=$attribute->getValueCount();$i++) {
-			printf('<script type="text/javascript" language="javascript">defaults[\'f_date_%s_%s\'] = \'%s\';</script>',$attribute->getName(),$i,$config['format']);
+			printf('<script type="text/javascript" language="javascript">defaults[\'new_values_%s_%s\'] = \'%s\';</script>',$attribute->getName(),$i,$config['format']);
 
 			if (in_array_ignore_case($attribute->getName(),array_keys($config['time'])) && ($config['time'][$attribute->getName()]))
 				printf('<script type="text/javascript" language="javascript">defaults[\'f_time_%s_%s\'] = \'%s\';</script>',$attribute->getName(),$i,'true');

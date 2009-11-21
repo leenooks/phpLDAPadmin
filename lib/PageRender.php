@@ -702,7 +702,7 @@ class PageRender extends Visitor {
 		$val = $attribute->getValue($i);
 
 		echo '<span style="white-space: nowrap;">';
-		printf('<input type="text" class="value" id="f_date_%s_%s" name="new_values[%s][%s]" value="%s" %s%s %s %s/>&nbsp;',
+		printf('<input type="text" class="value" id="new_values_%s_%s" name="new_values[%s][%s]" value="%s" %s%s %s %s/>&nbsp;',
 			$attribute->getName(),$i,
 			htmlspecialchars($attribute->getName()),$i,htmlspecialchars($val),
 			$attribute->needJS('focus') ? sprintf('onFocus="focus_%s(this);" ',$attribute->getName()) : '',

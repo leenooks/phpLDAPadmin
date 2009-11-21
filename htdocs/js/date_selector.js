@@ -1,5 +1,5 @@
 function dateSelector(id) {
-	var el = document.getElementById('f_date_'+id);
+	var el = document.getElementById('new_values_'+id);
 	var format = gettype(el.id);
 	var epoch;
 	var parse = false;
