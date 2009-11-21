@@ -52,21 +52,15 @@ if ($result) {
 	# If the user password was changed, not tell the to relogin.
 	if ($mustRelogin) {
 			$app['server']->logout('user');
-			unset_lastactivity($app['server']);
-			echo '<body>';
+			unset($_SESSION['ACTIVITY'][$app['server']->getIndex()]);
 
-			echo '<br />';
-			echo '<center>';
-			printf('<b>%s</b>',_('Modification successful!'));
-			echo '<br /><br />';
-			echo _('Since you changed your password, you must now login again with your new password.');
-			echo '<br />';
-			printf('<a href="cmd.php?cmd=login_form&server_id=%s">%s...</a>',$app['server']->getIndex(), _('Login'));
-			echo '</center>';
-			echo '</body>';
-			echo '</html>';
+			system_message(array(
+				'title'=>_('Modification successful!'),
+				'body'=>_('Since you changed your password, you must now login again with your new password.'),
+				'type'=>'info'),
+				sprintf('cmd.php?cmd=login_form&server_id=%s',$app['server']->getIndex()));
 
-			exit;
+				exit;
 	}
 
 	$redirect_url = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',
