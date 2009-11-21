@@ -2882,11 +2882,12 @@ function return_ldap_hash($base,$filter,$key,$attrs,$sort=true) {
 			if (is_array($values[$key]))
 				foreach ($values[$key] as $i => $k)
 					foreach ($attrs as $attr) {
-						if (isset($values[$attr])) {
+						$lattr = strtolower($attr);
+						if (isset($values[$lattr])) {
 							$v = '';
 
-							if (is_array($values[$attr]) && isset($values[$attr][$i]))
-								$v = $values[$attr][$i];
+							if (is_array($values[$lattr]) && isset($values[$lattr][$i]))
+								$v = $values[$lattr][$i];
 
 							if (is_string($v) && (strlen($v) > 0))
 								$results[$k][$attr] = $v;
@@ -2894,9 +2895,11 @@ function return_ldap_hash($base,$filter,$key,$attrs,$sort=true) {
 					}
 
 			else
-				foreach ($attrs as $attr)
-					if (isset($values[$attr]))
-						$results[$values[$key]][$attr] = $values[$attr];
+				foreach ($attrs as $attr) {
+					$lattr = strtolower($attr);
+					if (isset($values[$lattr]))
+						$results[$values[$key]][$attr] = $values[$lattr];
+				}
 
 	return $results;
 }

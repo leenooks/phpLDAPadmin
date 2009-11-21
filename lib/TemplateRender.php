@@ -266,8 +266,6 @@ class TemplateRender extends PageRender {
 			 */
 			case 'MultiList':
 			case 'PickList':
-				$args[2] = strtolower($args[2]);
-
 				# arg5 overrides our container
 				if (empty($args[5]))
 					$container = $server->getContainerPath($container,$args[0]);
