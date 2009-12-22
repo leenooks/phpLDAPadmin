@@ -681,9 +681,9 @@ class Config {
 		$cmd = $this->getValue('commands',$index);
 
 		if (! is_string($a) || ! isset($cmd[$a]))
-			debug_dump(array('Unknown command '=>$a),1);
-
-		return $cmd[$a];
+			return false;
+		else
+			return $cmd[$a];
 	}
 
 	public function configDefinition($key,$index,$config) {

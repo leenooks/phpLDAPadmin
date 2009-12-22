@@ -51,9 +51,12 @@ if (trim($www['cmd'])) {
 		error(_('You cannot perform updates while server is in read-only mode'),'error','index.php');
 
 	# If this command has been disabled by the config.
-	if (! $_SESSION[APPCONFIG]->isCommandAvailable('script',$www['cmd']))
+	if (! $_SESSION[APPCONFIG]->isCommandAvailable('script',$www['cmd'])) {
 		system_message(array('title'=>_('Command disabled by the server configuration'),
 			_('Error'),'body'=>sprintf('%s: <b>%s</b>.',_('The command could not be run'),$www['cmd']),'type'=>'error'),'index.php');
+
+		$app['script_cmd'] = null;
+	}
 }
 
 if ($app['script_cmd'])

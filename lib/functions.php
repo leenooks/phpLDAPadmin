@@ -648,11 +648,11 @@ function error($msg,$type='note',$redirect=null,$fatal=false,$backtrace=false) {
 function get_request($attr,$type='POST',$die=false,$default=null) {
 	switch($type) {
 		case 'GET':
-			$value = isset($_GET[$attr]) ? (is_array($_GET[$attr]) ? $_GET[$attr] : rawurldecode($_GET[$attr])) : $default;
+			$value = isset($_GET[$attr]) ? (is_array($_GET[$attr]) ? $_GET[$attr] : trim(rawurldecode($_GET[$attr]))) : $default;
 			break;
 
 		case 'REQUEST':
-			$value = isset($_REQUEST[$attr]) ? (is_array($_REQUEST[$attr]) ? $_REQUEST[$attr] : rawurldecode($_REQUEST[$attr])) : $default;
+			$value = isset($_REQUEST[$attr]) ? (is_array($_REQUEST[$attr]) ? $_REQUEST[$attr] : trim(rawurldecode($_REQUEST[$attr]))) : $default;
 			break;
 
 		case 'SESSION':
@@ -661,7 +661,7 @@ function get_request($attr,$type='POST',$die=false,$default=null) {
 
 		case 'POST':
 		default:
-			$value = isset($_POST[$attr]) ? (is_array($_POST[$attr]) ? $_POST[$attr] : rawurldecode($_POST[$attr])) : $default;
+			$value = isset($_POST[$attr]) ? (is_array($_POST[$attr]) ? $_POST[$attr] : trim(rawurldecode($_POST[$attr]))) : $default;
 			break;
 	}
 
