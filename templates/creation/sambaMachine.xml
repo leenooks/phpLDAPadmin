@@ -37,7 +37,7 @@
 	<display>GID Number</display>
 	<order>3</order>
 	<page>1</page>
-	<value><![CDATA[=php.PickList(/;(&(objectClass=posixGroup));gidNumber;%cn%)]]></value>
+	<value><![CDATA[=php.PickList(/;(&(objectClass=posixGroup));gidNumber;%cn%;;;;cn)]]></value>
 </attribute>
 <attribute id="sambaSID">
 	<display>Samba SID</display>
@@ -48,7 +48,7 @@
 	<order>2</order>
 	<page>1</page>
 	<post>=php.Join(-;%sambaSID%,%sidsuffix%)</post>
-	<value><![CDATA[=php.PickList(/;(&(objectClass=sambaDomain));sambaSID;%sambaSID% (%sambaDomainName%))]]></value>
+	<value><![CDATA[=php.PickList(/;(&(objectClass=sambaDomain));sambaSID;%sambaSID% (%sambaDomainName%);;;;sambaDomainName)]]></value>
 </attribute>
 <attribute id="sambaAcctFlags">
 	<hidden>1</hidden>

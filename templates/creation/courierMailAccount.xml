@@ -60,7 +60,7 @@
 	<order>7</order>
 	<page>1</page>
 	<spacer>1</spacer>
-	<value><![CDATA[=php.PickList(/;(&(objectClass=posixGroup));gidNumber;%cn%)]]></value>
+	<value><![CDATA[=php.PickList(/;(&(objectClass=posixGroup));gidNumber;%cn%;;;;cn)]]></value>
 </attribute>
 <attribute id="homeDirectory">
 	<display>Home Directory</display>

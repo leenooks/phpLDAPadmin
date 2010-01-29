@@ -64,13 +64,13 @@
 	<!-- <onchange>=autoFill(homeDirectory;/home/users/%gidNumber|0-0/T%/%uid|3-%)</onchange> -->
 	<order>7</order>
 	<page>1</page>
-	<value><![CDATA[=php.PickList(/;(&(objectClass=posixGroup));gidNumber;%cn%)]]></value>
+	<value><![CDATA[=php.PickList(/;(&(objectClass=posixGroup));gidNumber;%cn%;;;;cn)]]></value>
 </attribute>
 <attribute id="loginShell">
 	<display>Login shell</display>
 	<order>9</order>
 	<page>1</page>
-	<!-- <value><![CDATA[=php.PickList(/;(&(objectClass=posixAccount));loginShell;%loginShell%)]]></value> -->
+	<!-- <value><![CDATA[=php.PickList(/;(&(objectClass=posixAccount));loginShell;%loginShell%;;;;loginShell)]]></value> -->
 	<type>select</type>
 	<value id="/bin/sh">/bin/sh</value>
 	<value id="/bin/csh">/bin/csh</value>

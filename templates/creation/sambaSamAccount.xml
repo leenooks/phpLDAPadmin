@@ -43,7 +43,7 @@
 	<onchange>=autoFill(uid;%gidNumber|0-0/T%-%givenName|0-1/l%%sn/l%)</onchange>
 	<order>4</order>
 	<page>1</page>
-	<value><![CDATA[=php.PickList(/;(&(objectClass=posixGroup));gidNumber;%cn%)]]></value>
+	<value><![CDATA[=php.PickList(/;(&(objectClass=posixGroup));gidNumber;%cn%;;;;cn)]]></value>
 </attribute>
 <attribute id="uid">
 	<display>User ID</display>
@@ -69,7 +69,7 @@
 	<page>1</page>
 	<post>=php.Join(-;%sambaSID%,%sidsuffix%)</post>
 	<spacer>1</spacer>
-	<value><![CDATA[=php.PickList(/;(&(objectClass=sambaDomain));sambaSID;%sambaSID% (%sambaDomainName%))]]></value>
+	<value><![CDATA[=php.PickList(/;(&(objectClass=sambaDomain));sambaSID;%sambaSID% (%sambaDomainName%);;;;sambaDomainName)]]></value>
 </attribute>
 <attribute id="userPassword">
 	<display>Password</display>
@@ -117,7 +117,7 @@
 	<page>1</page>
 	<post>=php.Join(-;%sambaPrimaryGroupSID%,%sidpgsuffix%)</post>
 	<spacer>1</spacer>
-	<value><![CDATA[=php.PickList(/;(&(objectClass=sambaGroupMapping));sambaSID;%sambaSID% (%cn%);sambaPrimaryGroupSID)]]></value>
+	<value><![CDATA[=php.PickList(/;(&(objectClass=sambaGroupMapping));sambaSID;%sambaSID% (%cn%);sambaPrimaryGroupSID;;;;cn)]]></value>
 </attribute>
 <attribute id="homeDirectory">
 	<display>Home directory</display>
