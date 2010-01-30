@@ -14,7 +14,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-09-06 03:48+0000\n"
+"X-Launchpad-Export-Date: 2010-01-30 05:04+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../../lib/TemplateRender.php:107
@@ -3534,7 +3534,7 @@ msgstr ""
 
 #: ../../lib/common.php:320
 msgid "min. of inactivity. You have been automatically logged out."
-msgstr ""
+msgstr "minutters inaktivitet. Du er automatisk blevet logget ud."
 
 #: ../../lib/TemplateRender.php:2143 ../../lib/TemplateRender.php:2146
 msgid "modify group members"
@@ -3546,19 +3546,19 @@ msgstr ""
 
 #: ../../lib/HTMLTree.php:499
 msgid "new"
-msgstr ""
+msgstr "ny"
 
 #: ../../htdocs/add_oclass_form.php:69
 msgid "new attributes"
-msgstr ""
+msgstr "nye attributter"
 
 #: ../../htdocs/schema.php:247
 msgid "no description"
-msgstr ""
+msgstr "ingen beskrivelse"
 
 #: ../../lib/functions.php:1962
 msgid "no description available"
-msgstr ""
+msgstr "ingen beskrivelse tilgængelig"
 
 #: ../../htdocs/entry_chooser.php:69
 msgid "no entries"
@@ -3579,20 +3579,20 @@ msgstr ""
 #: ../../htdocs/schema.php:608 ../../htdocs/schema.php:658
 #: ../../htdocs/schema.php:696
 msgid "none"
-msgstr ""
+msgstr "ingen"
 
 #: ../../lib/PageRender.php:1117
 msgid "none, remove value"
-msgstr ""
+msgstr "ingen, fjern værdi"
 
 #: ../../htdocs/schema.php:344
 msgid "not applicable"
-msgstr ""
+msgstr "ikke gældende"
 
 #: ../../htdocs/schema.php:282 ../../htdocs/schema.php:298
 #: ../../htdocs/schema.php:303 ../../htdocs/schema.php:337
 msgid "not specified"
-msgstr ""
+msgstr "ikke specificeret"
 
 #: ../../htdocs/mass_delete.php:95
 #, php-format
@@ -3624,7 +3624,7 @@ msgstr ""
 
 #: ../../htdocs/welcome.php:18
 msgid "phpLDAPadmin logo"
-msgstr ""
+msgstr "phpLDAPadmin logo"
 
 #: ../../lib/functions.php:2066
 msgid "pixels"
@@ -3632,11 +3632,11 @@ msgstr ""
 
 #: ../../lib/HTMLTree.php:55
 msgid "read only"
-msgstr ""
+msgstr "skrivebeskyttet"
 
 #: ../../lib/HTMLTree.php:246
 msgid "refresh"
-msgstr ""
+msgstr "opdater"
 
 #: ../../lib/Template.php:1327
 msgid "removed from template as it is not defined by an ObjectClass"
@@ -3648,31 +3648,31 @@ msgstr ""
 
 #: ../../lib/TemplateRender.php:2158
 msgid "rename"
-msgstr ""
+msgstr "omdøb"
 
 #: ../../lib/PageRender.php:453
 msgid "required"
-msgstr ""
+msgstr "påkrævet"
 
 #: ../../lib/HTMLTree.php:219
 msgid "schema"
-msgstr ""
+msgstr "skema"
 
 #: ../../lib/HTMLTree.php:232
 msgid "search"
-msgstr ""
+msgstr "søg"
 
 #: ../../lib/QueryRender.php:569
 msgid "seconds"
-msgstr ""
+msgstr "sekunder"
 
 #: ../../lib/TemplateRender.php:1373
 msgid "select the rdn attribute"
-msgstr ""
+msgstr "vælg rdn-attributen"
 
 #: ../../lib/PageRender.php:890
 msgid "structural"
-msgstr ""
+msgstr "strukturel"
 
 #: ../../lib/QueryRender.php:119
 msgid "table"
@@ -3680,23 +3680,23 @@ msgstr ""
 
 #: ../../htdocs/add_oclass_form.php:70
 msgid "that this objectClass requires."
-msgstr ""
+msgstr "som dette objectClass behøver."
 
 #: ../../htdocs/copy_form.php:33 ../../htdocs/rename_form.php:30
 msgid "to a new object"
-msgstr ""
+msgstr "til et nyt object"
 
 #: ../../lib/AttributeFactory.php:117
 msgid "true"
-msgstr ""
+msgstr "sand"
 
 #: ../../htdocs/add_value_form.php:39
 msgid "value to"
-msgstr ""
+msgstr "værdi til"
 
 #: ../../htdocs/add_value_form.php:66
 msgid "values for attribute"
-msgstr ""
+msgstr "værdier for attributter"
 
 #: ../../htdocs/delete_form.php:56
 msgid "view entries"
@@ -3704,8 +3704,8 @@ msgstr ""
 
 #: ../../htdocs/update_confirm.php:197
 msgid "will delete the attribute(s)"
-msgstr ""
+msgstr "vil slette attributterne"
 
 #: ../../htdocs/compare_form.php:34
 msgid "with "
-msgstr ""
+msgstr "med "

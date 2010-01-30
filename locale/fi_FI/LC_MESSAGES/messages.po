@@ -8,13 +8,13 @@ msgstr ""
 "Project-Id-Version: messages_fi\n"
 "Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sf.net\n"
 "POT-Creation-Date: 2009-08-19 22:27+1000\n"
-"PO-Revision-Date: 2009-08-20 07:20+0000\n"
-"Last-Translator: twrHarri <Unknown>\n"
+"PO-Revision-Date: 2009-10-02 21:06+0000\n"
+"Last-Translator: Christian Hellberg <Unknown>\n"
 "Language-Team: <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-08-21 13:24+0000\n"
+"X-Launchpad-Export-Date: 2010-01-30 05:04+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../../lib/TemplateRender.php:107
@@ -1310,7 +1310,7 @@ msgstr "Väärä PHP:n versio"
 
 #: ../../lib/HTMLTree.php:257
 msgid "Info"
-msgstr "Tietoja"
+msgstr "Tietoa"
 
 #: ../../htdocs/schema.php:645 ../../htdocs/schema.php:678
 msgid "Inherited from"

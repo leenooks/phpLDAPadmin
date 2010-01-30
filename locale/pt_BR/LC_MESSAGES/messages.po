@@ -4,13 +4,13 @@ msgstr ""
 "Project-Id-Version: messages\n"
 "Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sf.net\n"
 "POT-Creation-Date: 2009-08-19 22:27+1000\n"
-"PO-Revision-Date: 2009-08-06 13:48+0000\n"
-"Last-Translator: flaviove <flaviove@gmail.com>\n"
+"PO-Revision-Date: 2009-12-17 22:24+0000\n"
+"Last-Translator: Heder Dorneles <heder.to@gmail.com>\n"
 "Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-08-21 13:24+0000\n"
+"X-Launchpad-Export-Date: 2010-01-30 05:04+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../../lib/TemplateRender.php:107
@@ -95,7 +95,7 @@ msgstr "Inserir"
 
 #: ../../htdocs/add_attr_form.php:164
 msgid "Add Attribute"
-msgstr ""
+msgstr "Adicionar Atributo"
 
 #: ../../htdocs/add_value_form.php:148
 msgid "Add New Value"
@@ -3628,7 +3628,7 @@ msgstr "logo do phpLDAPadmin"
 
 #: ../../lib/functions.php:2066
 msgid "pixels"
-msgstr ""
+msgstr "pixels"
 
 #: ../../lib/HTMLTree.php:55
 msgid "read only"
@@ -3676,7 +3676,7 @@ msgstr "estrutural"
 
 #: ../../lib/QueryRender.php:119
 msgid "table"
-msgstr ""
+msgstr "tabela"
 
 #: ../../htdocs/add_oclass_form.php:70
 msgid "that this objectClass requires."

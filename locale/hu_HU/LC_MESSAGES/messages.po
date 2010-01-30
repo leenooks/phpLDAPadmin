@@ -4,13 +4,13 @@ msgstr ""
 "Project-Id-Version: messages\n"
 "Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sf.net\n"
 "POT-Creation-Date: 2009-08-19 22:27+1000\n"
-"PO-Revision-Date: 2009-07-21 07:50+0000\n"
-"Last-Translator: Deon George <Unknown>\n"
+"PO-Revision-Date: 2009-11-03 14:00+0000\n"
+"Last-Translator: Tamás Németh <nice@titanic.nyme.hu>\n"
 "Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2009-08-21 13:24+0000\n"
+"X-Launchpad-Export-Date: 2010-01-30 05:04+0000\n"
 "X-Generator: Launchpad (build Unknown)\n"
 
 #: ../../lib/TemplateRender.php:107
@@ -3643,7 +3643,7 @@ msgstr ""
 
 #: ../../lib/TemplateRender.php:2158
 msgid "rename"
-msgstr "ÃtnevezÃ©s"
+msgstr "átnevezés"
 
 #: ../../lib/PageRender.php:453
 msgid "required"
