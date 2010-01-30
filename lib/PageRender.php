@@ -474,7 +474,7 @@ class PageRender extends Visitor {
 
 		# Is there a hint for this attribute
 		if ($attribute->getHint())
-			return sprintf('<acronym title="%s">%s</acronym>',$attribute->getHint(),_('hint'));
+			return sprintf('<acronym title="%s">%s</acronym>',_($attribute->getHint()),_('hint'));
 		else
 			return '';
 	}
