@@ -811,6 +811,10 @@ class Attribute {
 					case 'verify': $this->$index = $value;
 						break;
 
+					case 'max':
+						if ($this->getMaxValueCount() == -1)
+							$this->setMaxValueCount($value);
+
 					default:
 						if (! $_SESSION[APPCONFIG]->getValue('appearance','hide_template_warning'))
 							system_message(array(
