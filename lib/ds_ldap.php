@@ -611,9 +611,6 @@ class ldap extends DS {
 					putenv(sprintf('KRB5CCNAME={%s}',$_ENV['REDIRECT_KRB5CCNAME']));
 
 				break;
-
-			default:
-				error(sprintf('%s (%s) has NOT been tested, please let us know if it works and which version of PHP you are using.',__METHOD__,$this->getValue('sasl','mech')),'info');
 		}
 
 		if (! $this->getValue('server','sasl') || ! function_exists('ldap_start_tls'))
@@ -658,7 +655,7 @@ class ldap extends DS {
 		return @ldap_sasl_bind($resource,$CACHE['login_dn'],$CACHE['login_pass'],
 			$this->getValue('sasl','mech'),
 			$this->getValue('sasl','realm'),
-			$CACH['authz_id'],
+			$CACHE['authz_id'],
 			$this->getValue('sasl','props'));
 	}
 
