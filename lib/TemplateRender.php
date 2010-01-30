@@ -1852,7 +1852,6 @@ function fillRec(id,value) {
 		if ($attribute->needJS('blur')) {
 			printf('function blur_%s(component) {',$attribute->getName());
 			echo "\n";
-//echo ' alert("BLUR: ID:"+component.id+", V:"+pla_getComponentValue(component));';
 			$this->draw('BlurJavascript',$attribute,'component');
 			echo "};\n";
 		}
@@ -1913,7 +1912,7 @@ function fillRec(id,value) {
 
 	protected function drawFillJavascriptAttribute($attribute,$component_id,$component_value) {
 		if ($attribute->needJS('validate'))
-			printf("\tvalidate_%s(pla_getComponentById(%s),false);\n",$attribute->getName(),$component_id);
+			printf("\tvalidate_%s(pla_getComponentById(%s),true);\n",$attribute->getName(),$component_id);
 	}
 
 	protected function drawValidateJavascriptAttribute($attribute,$component,$silence,$var_valid) {
