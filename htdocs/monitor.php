@@ -45,9 +45,14 @@ foreach (array(
 	'cn=Overlays,cn=Monitor' => 'cn=Overlay %s,%s'
 	) as $dn => $child) {
 
-	$description = implode(' ',$results[$dn]['description']);
+	if (isset($results[$dn]['description'])) {
+		$description = implode(' ',$results[$dn]['description']);
 
-	$description = preg_replace('/"/','\'',$description);
+		$description = preg_replace('/"/','\'',$description);
+	} else {
+		$description = '';
+	}
+
 	printf('<tr class="list_item"><td class="heading" rowspan=2><acronym title="%s">%s</acronym></td></tr>',$description,$dn);
 	echo '<tr class="list_item"><td class="value">';
 	echo '<table class="result"><tr><td>';
