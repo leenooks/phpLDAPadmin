@@ -1326,7 +1326,8 @@ class Template extends xmlTemplate {
 		# Check that attributes are defined by an ObjectClass
 		foreach ($this->getAttributes(true) as $index => $attribute)
 			if (! in_array($attribute->getName(),$allattrs) && (! array_intersect($attribute->getAliases(),$allattrs))
-				&& (! in_array_ignore_case('extensibleobject',$this->getObjectClasses()))) {
+				&& (! in_array_ignore_case('extensibleobject',$this->getObjectClasses()))
+				&& (! in_array_ignore_case($attribute->getName(),$server->getValue('server','custom_attrs')))) {
 				unset($this->attributes[$index]);
 
 				if (! $_SESSION[APPCONFIG]->getValue('appearance','hide_template_warning'))
