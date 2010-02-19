@@ -36,9 +36,9 @@
  * version of phpLDAPadmin.
  */
 
-/*********************************************/
-/* Useful important configuration overrides  */
-/*********************************************/
+/*********************************************
+ * Useful important configuration overrides  *
+ *********************************************/
 
 /* If you are asked to put PLA in debug mode, this is how you do it: */
 #  $config->custom->debug['level'] = 255;
@@ -80,9 +80,9 @@
 // $config->custom->appearance['timezone'] = null;
 #  $config->custom->appearance['timezone'] = 'Australia/Melbourne';
 
-/*********************************************/
-/* Commands                                  */
-/*********************************************/
+/*********************************************
+ * Commands                                  *
+ *********************************************/
 
 /* Command availability ; if you don't authorize a command the command
    links will not be shown and the command action will not be permitted.
@@ -138,9 +138,9 @@ $config->custom->commands['script'] = array(
 );
 */
 
-/*********************************************/
-/* Appearance                                */
-/*********************************************/
+/*********************************************
+ * Appearance                                *
+ *********************************************/
 
 /* If you want to choose the appearance of the tree, specify a class name which
    inherits from the Tree class. */
@@ -166,9 +166,9 @@ $config->custom->commands['script'] = array(
 // $config->custom->appearance['tree_width'] = null;
 #  $config->custom->appearance['tree_width'] = 250;
 
-/*********************************************/
-/* User-friendly attribute translation       */
-/*********************************************/
+/*********************************************
+ * User-friendly attribute translation       *
+ *********************************************/
 
 /* Use this array to map attribute names to user friendly names. For example, if
    you don't want to see "facsimileTelephoneNumber" but rather "Fax". */
@@ -182,9 +182,9 @@ $config->custom->appearance['friendly_attrs'] = array(
 	'userPassword'             => 'Password'
 );
 
-/*********************************************/
-/* Hidden attributes                         */
-/*********************************************/
+/*********************************************
+ * Hidden attributes                         *
+ *********************************************/
 
 /* You may want to hide certain attributes from being edited. If you want to
    hide attributes from the user, you should use your LDAP servers ACLs.
@@ -193,13 +193,13 @@ $config->custom->appearance['friendly_attrs'] = array(
 // $config->custom->appearance['hide_attrs'] = array();
 #  $config->custom->appearance['hide_attrs'] = array('objectClass');
 
-/* Members of this list will be exempt from the hidden attributes.*/
+/* Members of this list will be exempt from the hidden attributes. */
 // $config->custom->appearance['hide_attrs_exempt'] = null;
 #  $config->custom->appearance['hide_attrs_exempt'] = 'cn=PLA UnHide,ou=Groups,c=AU';
 
-/*********************************************/
-/* Read-only attributes                      */
-/*********************************************/
+/*********************************************
+ * Read-only attributes                      *
+ *********************************************/
 
 /* You may want to phpLDAPadmin to display certain attributes as read only,
    meaning that users will not be presented a form for modifying those
@@ -209,13 +209,13 @@ $config->custom->appearance['friendly_attrs'] = array(
    excluded. */
 // $config->custom->appearance['readonly_attrs'] = array();
 
-/* Members of this list will be exempt from the readonly attributes.*/
+/* Members of this list will be exempt from the readonly attributes. */
 // $config->custom->appearance['readonly_attrs_exempt'] = null;
 #  $config->custom->appearance['readonly_attrs_exempt'] = 'cn=PLA ReadWrite,ou=Groups,c=AU';
 
-/*********************************************/
-/* Group attributes                          */
-/*********************************************/
+/*********************************************
+ * Group attributes                          *
+ *********************************************/
 
 /* Add "modify group members" link to the attribute. */
 // $config->custom->modify_member['groupattr'] = array('member','uniqueMember','memberUid');
@@ -231,9 +231,9 @@ $config->custom->appearance['friendly_attrs'] = array(
 // $config->custom->modify_member['posixfilter'] = '(uid=*)';
 // $config->custom->modify_member['posixgroupattr'] = 'memberUid';
 
-/*********************************************/
-/* Support for attrs display order           */
-/*********************************************/
+/*********************************************
+ * Support for attrs display order           *
+ *********************************************/
 
 /* Use this array if you want to have your attributes displayed in a specific
    order. You can use default attribute names or their fridenly names.
@@ -254,9 +254,9 @@ $config->custom->appearance['friendly_attrs'] = array(
 #   'userPassword'
 #  );
 
-/*********************************************/
-/* Define your LDAP servers in this section  */
-/*********************************************/
+/*********************************************
+ * Define your LDAP servers in this section  *
+ *********************************************/
 
 $servers = new Datastore();
 
@@ -367,7 +367,7 @@ $servers->setValue('server','name','My LDAP Server');
    and log in as that user.
    Leave blank or specify 'dn' to use full DN for logging in. Note also that if
    your LDAP server requires you to login to perform searches, you can enter the
-   DN to use when searching in 'bind_id' and 'bind_pass' above.
+   DN to use when searching in 'bind_id' and 'bind_pass' above. */
 // $servers->setValue('login','attr','dn');
 
 /* Base DNs to used for logins. If this value is not set, then the LDAP server
@@ -413,7 +413,7 @@ $servers->setValue('server','name','My LDAP Server');
 #  $servers->setValue('auto_number','search_base','ou=People,dc=example,dc=com');
 
 /* The minimum number to use when searching for the next available number
-   (only when 'search' is used for auto_number */
+   (only when 'search' is used for auto_number. */
 // $servers->setValue('auto_number','min',array('uidNumber'=>1000,'gidNumber'=>500));
 
 /* If you set this, then phpldapadmin will bind to LDAP with this user ID when
@@ -451,7 +451,7 @@ $servers->setValue('server','name','My LDAP Server');
 #  $servers->setValue('login','timeout',30);
 
 /* Set this if you want phpldapadmin to perform rename operation on entry which
-   has children. Certain servers are known to allow it, certain are not */
+   has children. Certain servers are known to allow it, certain are not. */
 // $servers->setValue('server','branch_rename',false);
 
 /* If you set this, then phpldapadmin will show these attributes as
@@ -473,9 +473,9 @@ $servers->setValue('server','name','My LDAP Server');
 // $servers->setValue('force_may','attrs',array(''));
 #  $servers->setValue('force_may','attrs',array('uidNumber','gidNumber','sambaSID'));
 
-/*********************************************/
-/* Unique attributes                         */
-/*********************************************/
+/*********************************************
+ * Unique attributes                         *
+ *********************************************/
 
 /* You may want phpLDAPadmin to enforce some attributes to have unique values
    (ie: not belong to other entries in your tree. This (together with
