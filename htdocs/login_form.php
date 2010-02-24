@@ -17,13 +17,11 @@ echo '<br />';
 
 # Check for a secure connection
 if (! isset($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) != 'on') {
-	echo '<center>';
-	echo '<span style="color:red">';
+	echo '<div style="text-align: center; color:red">';
 	printf('<acronym title="%s"><b>%s: %s.</b></acronym>',
 		_('You are not using \'https\'. Web browser will transmit login information in clear text.'),
 		_('Warning'),_('This web connection is unencrypted'));
-	echo '</span>';
-	echo '</center>';
+	echo '</div>';
 
 	echo '<br />';
 }
@@ -54,15 +52,17 @@ if ($app['server']->getAuthType() == 'http') {
 
 # HTML Login Form
 } else {
-	echo '<form action="cmd.php" method="post" name="login_form">';
+	echo '<form action="cmd.php" method="post">';
+	echo '<div>';
 	echo '<input type="hidden" name="cmd" value="login" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 
 	if (get_request('redirect','GET',false,false))
 		printf('<input type="hidden" name="redirect" value="%s" />',rawurlencode(get_request('redirect','GET')));
 
-	echo '<center>';
-	echo '<table class="forminput">';
+	echo '</div>';
+
+	echo '<table class="forminput" style="margin-left: auto; margin-right: auto;">';
 
 	printf('<tr><td><b>%s:</b></td></tr>',
 		$app['server']->getValue('login','auth_text') ? $app['server']->getValue('login','auth_text') :
@@ -71,28 +71,27 @@ if ($app['server']->getAuthType() == 'http') {
 	printf('<tr><td><input type="text" id="login" name="login" size="40" value="%s" /></td></tr>',
 		$app['server']->getValue('login','attr',false) == 'dn' ? $app['server']->getValue('login','bind_id') : '');
 
-	echo '<tr><td colspan=2>&nbsp;</td></tr>';
+	echo '<tr><td colspan="2">&nbsp;</td></tr>';
 	printf('<tr><td><b>%s:</b></td></tr>',_('Password'));
 	echo '<tr><td><input type="password" id="password" size="40" value="" name="login_pass" /></td></tr>';
-	echo '<tr><td colspan=2>&nbsp;</td></tr>';
+	echo '<tr><td colspan="2">&nbsp;</td></tr>';
 
 	# If Anon bind allowed, then disable the form if the user choose to bind anonymously.
 	if ($app['server']->isAnonBindAllowed())
 		printf('<tr><td colspan="2"><small><b>%s</b></small> <input type="checkbox" name="anonymous_bind" onclick="form_field_toggle_enable(this,[\'login\',\'password\'],\'login\')" id="anonymous_bind_checkbox" /></td></tr>',
 			_('Anonymous'));
 
-	printf('<tr><td colspan="2"><center><input type="submit" name="submit" value="%s" /></center></td></tr>',
+	printf('<tr><td colspan="2" style="text-align: center;"><input type="submit" name="submit" value="%s" /></td></tr>',
 		_('Authenticate'));
 
 	echo '</table>';
-	echo '</center>';
 	echo '</form>';
 
 	echo '<br/>';
 
-	echo '<script type="text/javascript" language="javascript">document.getElementById("login").focus()</script>';
+	echo '<script type="text/javascript">document.getElementById("login").focus()</script>';
 
 	if ($app['server']->isAnonBindAllowed())
-		printf('<script type="text/javascript" language="javascript" src="%sform_field_toggle_enable.js"></script>',JSDIR);
+		printf('<script type="text/javascript" src="%sform_field_toggle_enable.js"></script>',JSDIR);
 }
 ?>

@@ -28,7 +28,7 @@ if (! is_null($entry['value'])) {
 	$entry['value'] = strtolower($entry['value']);
 }
 
-$schema_error_str = sprintf('%s <b>%s</b>.<br /><br /></center>%s<ul><li>%s</li><li>%s</li><li>%s</li><li>%s</li></ul>',
+$schema_error_str = sprintf('%s <b>%s</b>.<br /><br /></div>%s<ul><li>%s</li><li>%s</li><li>%s</li><li>%s</li></ul>',
 	_('Could not retrieve schema from'),$app['server']->getName(),
 	_('This could happen for several reasons, the most probable of which are:'),_('The server does not fully support the LDAP protocol.'),
 	_('Your version of PHP does not correctly perform the query.'),_('phpLDAPadmin doesn\'t know how to fetch the schema for your server.'),
@@ -43,7 +43,7 @@ $entry['schema_types'] = array(
 	'matching_rules'=>_('Matching Rules'));
 
 echo '<br />';
-echo '<center>';
+echo '<div style="text-align: center;">';
 
 $counter = 0;
 foreach ($entry['schema_types'] as $item => $value) {
@@ -57,22 +57,21 @@ foreach ($entry['schema_types'] as $item => $value) {
 
 	} else {
 		if (isAjaxEnabled())
-			printf('<a href="cmd.php?%s" onClick="return ajDISPLAY(\'BODY\',\'%s\',\'Loading %s\');" title="Loading %s">%s</a>',
+			printf('<a href="cmd.php?%s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'Loading %s\');" title="Loading %s">%s</a>',
 				htmlspecialchars($entry['href'][$item]),htmlspecialchars($entry['href'][$item]),$value,$value,$value);
 		else
 			printf('<a href="cmd.php?%s">%s</a>',htmlspecialchars($entry['href'][$item]),_($value));
 	}
 }
 
-echo '</center>';
+echo '</div>';
 echo '<br />';
 
 switch($entry['view']) {
 	case 'syntaxes':
 		$highlight_oid = get_request('highlight_oid','GET',false,false);
 
-		echo '<center>';
-		echo '<table class="result_table" border=0>';
+		echo '<table class="result_table" border="0" style="margin-left: auto; margin-right: auto;">';
 		printf('<tr class="heading"><td>%s</td><td>%s</td></tr>',_('Syntax OID'),_('Description'));
 
 		$counter = 1;
@@ -96,7 +95,6 @@ switch($entry['view']) {
 		}
 
 		echo '</table>';
-		echo '</center>';
 		break;
 
 	case 'attributes':
@@ -125,32 +123,34 @@ switch($entry['view']) {
 
 		printf('<small>%s:</small>',_('Jump to an attribute type'));
 		echo '<form action="cmd.php" method="get">';
+		echo '<div>';
 		echo '<input type="hidden" name="cmd" value="schema" />';
 		printf('<input type="hidden" name="view" value="%s" />',$entry['view']);
 		printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 
 		if (isAjaxEnabled()) {
 			drawJSItems($sattrs);
-			echo '<select name="viewvalue" onChange="ajSHOWSCHEMA(\'attributes\',\'at\')" id="attributes">';
+			echo '<select name="viewvalue" onchange="ajSHOWSCHEMA(\'attributes\',\'at\')" id="attributes">';
 		} else
-			echo '<select name="viewvalue" onChange="submit()">';
+			echo '<select name="viewvalue" onchange="submit()">';
 
 		echo '<option value=""> - all -</option>';
 		foreach ($sattrs as $name => $attr)
 			printf('<option value="%s" %s>%s</option>',
-				$name,$name == $entry['value'] ? 'selected ': '',$attr->getName(false));
+				$name,$name == $entry['value'] ? 'selected="selected" ': '',$attr->getName(false));
 		echo '</select>';
 
 		if (isAjaxEnabled())
-			printf('<input type="button" value="%s" onClick="ajSHOWSCHEMA(\'attributes\',\'at\')"/>',_('Go'));
+			printf('<input type="button" value="%s" onclick="ajSHOWSCHEMA(\'attributes\',\'at\')"/>',_('Go'));
 		else
 			printf('<input type="submit" value="%s" />',_('Go'));
+		echo '</div>';
 		echo '</form>';
 		echo '<br />';
 
 		foreach ($sattrs as $attr) {
-			if (isAjaxEnabled() || (is_null($entry['value']) || ! strcasecmp($entry['value'],$attr->getName()))) {
-				if (! is_null($entry['value']) && strcasecmp($entry['value'],$attr->getName()))
+			if (isAjaxEnabled() || (is_null($entry['value']) || ! trim($entry['value']) || $entry['value']==$attr->getName())) {
+				if ((! is_null($entry['value']) && $entry['value']==$attr->getName()) || ! trim($entry['value']))
 					$entry['viewed'] = true;
 
 				if (isAjaxEnabled() && $entry['value'])
@@ -158,8 +158,8 @@ switch($entry['view']) {
 				else
 					printf('<div id="at%s">',$attr->getName());
 
-				echo '<table class="result_table" width=100% border=0>';
-				printf('<tr class="heading"><td colspan=2><a name="%s">%s</a></td></tr>',
+				echo '<table class="result_table" width="100%" border="0">';
+				printf('<tr class="heading"><td colspan="2"><a name="%s">%s</a></td></tr>',
 					$attr->getName(),$attr->getName(false));
 
 				$counter = 0;
@@ -167,7 +167,7 @@ switch($entry['view']) {
 				foreach ($entry['attr_types'] as $item => $value) {
 
 					printf('<tr class="%s">',++$counter%2 ? 'odd' : 'even');
-					printf('<td class="title" width=30%%>%s</td>',$value);
+					printf('<td class="title" style="width: 30%%;">%s</td>',$value);
 
 					switch ($item) {
 						case 'desc':
@@ -195,7 +195,7 @@ switch($entry['view']) {
 							else {
 								$href = htmlspecialchars(sprintf('%s&viewvalue=%s',$entry['href']['attributes'],strtolower($attr->getSupAttribute())));
 								if (isAjaxEnabled())
-									printf('<a href="cmd.php?%s" onClick="return ajSHOWSCHEMA(\'attributes\',\'at\',\'%s\');">%s</a>',
+									printf('<a href="cmd.php?%s" onclick="return ajSHOWSCHEMA(\'attributes\',\'at\',\'%s\');">%s</a>',
 										$href,strtolower($attr->getSupAttribute()),$attr->getSupAttribute());
 								else
 									printf('<a href="cmd.php?%s">%s</a>',$href,$attr->getSupAttribute());
@@ -213,7 +213,7 @@ switch($entry['view']) {
 							else {
 								$href = htmlspecialchars(sprintf('%s&viewvalue=%s',$entry['href']['matching_rules'],$attr->getEquality()));
 								if (isAjaxEnabled())
-									printf('<a href="cmd.php?%s" onClick="return ajJUMP(\'%s\',\'%s\',\'%s\');">%s</a>',
+									printf('<a href="cmd.php?%s" onclick="return ajJUMP(\'%s\',\'%s\',\'%s\');">%s</a>',
 										$href,$href,_('Matching Rules'),$attr->getEquality(),$attr->getEquality());
 								else
 									printf('<a href="cmd.php?%s">%s</a>',$href,$attr->getEquality());
@@ -241,7 +241,7 @@ switch($entry['view']) {
 							} else {
 								$href = htmlspecialchars(sprintf('%s&highlight_oid=%s',$entry['href']['syntaxes'],$attr->getSyntaxOID()));
 								if (isAjaxEnabled())
-									printf('<a href="cmd.php?%s" onClick="return ajJUMP(\'%s\',\'%s\',\'%s\');">%s (%s)</a>',
+									printf('<a href="cmd.php?%s" onclick="return ajJUMP(\'%s\',\'%s\',\'%s\');">%s (%s)</a>',
 										$href,$href,_('Syntaxes'),'',$attr->getType(),$attr->getSyntaxOID());
 								else
 									printf('<a href="cmd.php?%s">%s (%s)</a>',$href,$attr->getType(),$attr->getSyntaxOID());
@@ -289,7 +289,7 @@ switch($entry['view']) {
 								foreach ($attr->getAliases() as $alias) {
 									$href = htmlspecialchars(sprintf('%s&viewvalue=%s',$entry['href']['attributes'],strtolower($alias)));
 									if (isAjaxEnabled())
-										printf('<a href="cmd.php?%s" onClick="return ajSHOWSCHEMA(\'attributes\',\'at\',\'%s\');">%s</a>',
+										printf('<a href="cmd.php?%s" onclick="return ajSHOWSCHEMA(\'attributes\',\'at\',\'%s\');">%s</a>',
 											$href,strtolower($alias),$alias);
 									else
 										printf('<a href="cmd.php?%s">%s</a>',$href,$alias);
@@ -308,7 +308,7 @@ switch($entry['view']) {
 								foreach ($attr->getUsedInObjectClasses() as $objectclass) {
 									$href = htmlspecialchars(sprintf('%s&viewvalue=%s',$entry['href']['objectclasses'],strtolower($objectclass)));
 									if (isAjaxEnabled())
-										printf('<a href="cmd.php?%s" onClick="return ajJUMP(\'%s\',\'%s\',\'%s\');">%s</a> ',
+										printf('<a href="cmd.php?%s" onclick="return ajJUMP(\'%s\',\'%s\',\'%s\');">%s</a> ',
 											$href,$href,_('ObjectClasses'),strtolower($objectclass),$objectclass);
 									else
 										printf('<a href="cmd.php?%s">%s</a> ',$href,$objectclass);
@@ -340,33 +340,35 @@ switch($entry['view']) {
 		printf('<small>%s</small><br />',_('Jump to a matching rule'));
 
 		echo '<form action="cmd.php" method="get">';
+		echo '<div>';
 		echo '<input type="hidden" name="cmd" value="schema" />';
 		printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 		echo '<input type="hidden" name="view" value="matching_rules" />';
 
 		if (isAjaxEnabled()) {
 			drawJSItems($schema_matching_rules);
-			echo '<select name="viewvalue" onChange="ajSHOWSCHEMA(\'matchingrules\',\'mr\')" id="matchingrules">';
+			echo '<select name="viewvalue" onchange="ajSHOWSCHEMA(\'matchingrules\',\'mr\')" id="matchingrules">';
 		} else
-			echo '<select name="viewvalue" onChange="submit()">';
+			echo '<select name="viewvalue" onchange="submit()">';
 
 		echo '<option value=""> - all -</option>';
 		foreach ($schema_matching_rules as $rule)
 			printf('<option value="%s" %s>%s</option>',
 				$rule->getName(),
-				($rule->getName() == $entry['value'] ? 'selected': ''),
+				($rule->getName() == $entry['value'] ? 'selected="selected"': ''),
 				$rule->getName(false));
 
 		echo '</select>';
 
 		if (isAjaxEnabled())
-			printf('<input type="button" value="%s" onClick="ajSHOWSCHEMA(\'matchingrules\',\'mr\')"/>',_('Go'));
+			printf('<input type="button" value="%s" onclick="ajSHOWSCHEMA(\'matchingrules\',\'mr\')"/>',_('Go'));
 		else
 			printf('<input type="submit" value="%s" />',_('Go'));
+		echo '</div>';
 		echo '</form>';
 		echo '<br />';
 
-		echo '<table class="result_table" width=100% border=0>';
+		echo '<table class="result_table" width="100%" border="0">';
 		printf('<tr class="heading"><td>%s</td><td>%s</td><td>%s</td></tr>',
 			_('Matching Rule OID'),_('Name'),_('Used by Attributes'));
 
@@ -377,8 +379,8 @@ switch($entry['view']) {
 			$oid = $rule->getOID();
 			$desc = $rule->getName(false);
 
-			if (isAjaxEnabled() || (is_null($entry['value']) || ! strcasecmp($entry['value'],$rule->getName()))) {
-				if (! is_null($entry['value']) && strcasecmp($entry['value'],$rule->getName()))
+			if (isAjaxEnabled() || (is_null($entry['value']) || ! trim($entry['value']) || $entry['value']==$rule->getName())) {
+				if ((! is_null($entry['value']) && $entry['value']==$rule->getName()) || ! trim($entry['value']))
 					$entry['viewed'] = true;
 
 				if (null != $rule->getDescription())
@@ -398,11 +400,12 @@ switch($entry['view']) {
 				echo '<td>';
 
 				if (count($rule->getUsedByAttrs()) == 0) {
-					printf('<center>(%s)</center><br /><br />',_('none'));
+					printf('<div style="text-align: center;">(%s)</div><br /><br />',_('none'));
 
 				} else {
-					echo '<table width=100% border=0><tr><td>';
+					echo '<table width="100%" border="0"><tr><td>';
 					echo '<form action="cmd.php" method="get">';
+					echo '<div>';
 					echo '<input type="hidden" name="cmd" value="schema" />';
 					printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 					echo '<input type="hidden" name="view" value="attributes" />';
@@ -413,10 +416,11 @@ switch($entry['view']) {
 					echo '</select><br />';
 
 					if (isAjaxEnabled())
-						printf('<input type="button" value="%s" onClick="return ajJUMP(\'cmd=schema&amp;view=attributes&amp;server_id=%s\',\'%s\',\'%s\',\'vv\');"/>',
+						printf('<input type="button" value="%s" onclick="return ajJUMP(\'cmd=schema&amp;view=attributes&amp;server_id=%s\',\'%s\',\'%s\',\'vv\');"/>',
 							_('Go'),$app['server']->getIndex(),_('Attributes'),$rule->getName());
 					else
 						printf('<input type="submit" value="%s" />',_('Go'));
+					echo '</div>';
 					echo '</form>';
 					echo '</td></tr></table>';
 				}
@@ -436,33 +440,35 @@ switch($entry['view']) {
 		printf('<small>%s:</small>',_('Jump to an objectClass'));
 
 		echo '<form action="cmd.php" method="get">';
+		echo '<div>';
 		echo '<input type="hidden" name="cmd" value="schema" />';
 		printf('<input type="hidden" name="view" value="%s" />',$entry['view']);
 		printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 
 		if (isAjaxEnabled()) {
 			drawJSItems($socs);
-			echo '<select name="viewvalue" onChange="ajSHOWSCHEMA(\'objectclasses\',\'oc\')" id="objectclasses">';
+			echo '<select name="viewvalue" onchange="ajSHOWSCHEMA(\'objectclasses\',\'oc\')" id="objectclasses">';
 		} else
-			echo '<select name="viewvalue" onChange="submit()">';
+			echo '<select name="viewvalue" onchange="submit()">';
 
 		echo '<option value=""> - all - </option>';
 		foreach ($socs as $name => $oclass)
 			printf('<option value="%s" %s>%s</option>',
-				$name,$name == $entry['value'] ? 'selected ': '',$oclass->getName(false));
+				$name,$name == $entry['value'] ? 'selected="selected" ': '',$oclass->getName(false));
 
 		echo '</select>';
 
 		if (isAjaxEnabled())
-			printf('<input type="button" value="%s" onClick="ajSHOWSCHEMA(\'objectclasses\',\'oc\')"/>',_('Go'));
+			printf('<input type="button" value="%s" onclick="ajSHOWSCHEMA(\'objectclasses\',\'oc\')"/>',_('Go'));
 		else
 			printf('<input type="submit" value="%s" />',_('Go'));
+		echo '</div>';
 		echo '</form>';
 		echo '<br />';
 
 		foreach ($socs as $name => $oclass) {
-			if (isAjaxEnabled() || (is_null($entry['value']) || ! strcasecmp($entry['value'],$oclass->getName()))) {
-				if (! is_null($entry['value']) && strcasecmp($entry['value'],$oclass->getName()))
+			if (isAjaxEnabled() || (is_null($entry['value']) || ! trim($entry['value']) || $entry['value']==$oclass->getName())) {
+				if ((! is_null($entry['value']) && $entry['value']==$oclass->getName()) || ! trim($entry['value']))
 					$entry['viewed'] = true;
 
 				if (isAjaxEnabled() && $entry['value'])
@@ -470,19 +476,19 @@ switch($entry['view']) {
 				else
 					printf('<div id="oc%s">',$oclass->getName());
 
-				echo '<table class="result_table" width=100% border=0>';
-				printf('<tr class="heading"><td colspan=4><a name="%s">%s</a></td></tr>',$name,$oclass->getName(false));
-				printf('<tr class="odd"><td colspan=4>%s: <b>%s</b></td></tr>',_('OID'),$oclass->getOID());
+				echo '<table class="result_table" width="100%" border="0">';
+				printf('<tr class="heading"><td colspan="4"><a name="%s">%s</a></td></tr>',$name,$oclass->getName(false));
+				printf('<tr class="odd"><td colspan="4">%s: <b>%s</b></td></tr>',_('OID'),$oclass->getOID());
 
 				if ($oclass->getDescription())
-					printf('<tr class="odd"><td colspan=4>%s: <b>%s</b></td></tr>',_('Description'),$oclass->getDescription());
+					printf('<tr class="odd"><td colspan="4">%s: <b>%s</b></td></tr>',_('Description'),$oclass->getDescription());
 
-				printf('<tr class="odd"><td colspan=4>%s: <b>%s</b></td></tr>',_('Type'),$oclass->getType());
+				printf('<tr class="odd"><td colspan="4">%s: <b>%s</b></td></tr>',_('Type'),$oclass->getType());
 
 				if ($oclass->getIsObsolete())
-					printf('<tr class="odd"><td colspan=4>%s</td></tr>',_('This objectClass is obsolete.'));
+					printf('<tr class="odd"><td colspan="4">%s</td></tr>',_('This objectClass is obsolete.'));
 
-				printf('<tr class="odd"><td colspan=4>%s: <b>',_('Inherits from'));
+				printf('<tr class="odd"><td colspan="4">%s: <b>',_('Inherits from'));
 				if (count($oclass->getSupClasses()) == 0)
 					printf('(%s)',_('none'));
 
@@ -490,7 +496,7 @@ switch($entry['view']) {
 					foreach ($oclass->getSupClasses() as $i => $object_class) {
 						$href = htmlspecialchars(sprintf('%s&viewvalue=%s',$entry['href']['objectclasses'],strtolower($object_class)));
 						if (isAjaxEnabled())
-							printf('<a href="cmd.php?%s" onClick="return ajSHOWSCHEMA(\'objectclasses\',\'oc\',\'%s\');">%s</a>',
+							printf('<a href="cmd.php?%s" onclick="return ajSHOWSCHEMA(\'objectclasses\',\'oc\',\'%s\');">%s</a>',
 								$href,strtolower($object_class),$object_class);
 						else
 							printf('<a href="cmd.php?%s&viewvalue=%s" title="%s">%s</a>',
@@ -501,11 +507,11 @@ switch($entry['view']) {
 					}
 				echo '</b></td></tr>';
 
-				printf('<tr class="odd"><td colspan=4>%s: <b>',_('Parent to'));
+				printf('<tr class="odd"><td colspan="4">%s: <b>',_('Parent to'));
 				if (strcasecmp($oclass->getName(),'top') == 0) {
 					$href = htmlspecialchars($entry['href']['objectclasses']);
 					if (isAjaxEnabled())
-						printf('<a href="cmd.php?%s" onClick="return ajSHOWSCHEMA(\'objectclasses\',\'oc\',\'\');">all</a>',
+						printf('<a href="cmd.php?%s" onclick="return ajSHOWSCHEMA(\'objectclasses\',\'oc\',\'\');">all</a>',
 							$href);
 					else
 						printf('(<a href="cmd.php?%s">all</a>)',$href);
@@ -517,7 +523,7 @@ switch($entry['view']) {
 					foreach ($oclass->getChildObjectClasses() as $i => $object_class) {
 						$href = htmlspecialchars(sprintf('%s&viewvalue=%s',$entry['href']['objectclasses'],strtolower($object_class)));
 						if (isAjaxEnabled())
-							printf('<a href="cmd.php?%s" title="%s" onClick="return ajSHOWSCHEMA(\'objectclasses\',\'oc\',\'%s\');">%s</a>',
+							printf('<a href="cmd.php?%s" title="%s" onclick="return ajSHOWSCHEMA(\'objectclasses\',\'oc\',\'%s\');">%s</a>',
 								$href,_('Jump to this objectClass definition'),strtolower($object_class),$object_class);
 						else
 							printf('<a href="cmd.php?%s" title="%s">%s</a>',$href,_('Jump to this objectClass definition'),$object_class);
@@ -527,7 +533,7 @@ switch($entry['view']) {
 					}
 				echo '</b></td></tr>';
 
-				printf('<tr class="even"><td class="blank" rowspan=2 width=5%%>&nbsp;</td><td width=45%%><b>%s</b></td><td width=45%%><b>%s</b></td><td class="blank" rowspan=2 width=5%%>&nbsp;</td></tr>',
+				printf('<tr class="even"><td class="blank" rowspan="2" style="width: 5%%;">&nbsp;</td><td style="width: 45%%;"><b>%s</b></td><td style="width: 45%%;"><b>%s</b></td><td class="blank" rowspan="2" style="width: 5%%;">&nbsp;</td></tr>',
 					_('Required Attributes'),_('Optional Attributes'));
 
 				echo '<tr class="odd">';
@@ -540,7 +546,7 @@ switch($entry['view']) {
 						echo '<li>';
 						$href = htmlspecialchars(sprintf('%s&viewvalue=%s',$entry['href']['attributes'],$attr->getName()));
 						if (isAjaxEnabled())
-							printf('<a href="cmd.php?%s" onClick="return ajJUMP(\'%s\',\'%s\',\'%s\');">%s</a>',
+							printf('<a href="cmd.php?%s" onclick="return ajJUMP(\'%s\',\'%s\',\'%s\');">%s</a>',
 								$href,$href,_('Attributes'),$attr->getName(),$attr->getName(false));
 						else
 							printf('<a href="cmd.php?%s">%s</a>',$href,$attr->getName(false));
@@ -550,7 +556,7 @@ switch($entry['view']) {
 							$href = htmlspecialchars(sprintf('%s&viewvalue=%s',$entry['href']['objectclasses'],strtolower($attr->getSource())));
 							printf('<small>(%s ',_('Inherited from'));
 							if (isAjaxEnabled())
-								printf('<a href="cmd.php?%s" title="%s" onClick="return ajSHOWSCHEMA(\'objectclasses\',\'oc\',\'%s\');">%s</a>',
+								printf('<a href="cmd.php?%s" title="%s" onclick="return ajSHOWSCHEMA(\'objectclasses\',\'oc\',\'%s\');">%s</a>',
 									$href,_('Jump to this objectClass definition'),strtolower($attr->getSource()),$attr->getSource());
 							else
 								printf('<a href="cmd.php?%s">%s</a>',$href,$attr->getSource());
@@ -573,7 +579,7 @@ switch($entry['view']) {
 						echo '<li>';
 						$href = htmlspecialchars(sprintf('%s&viewvalue=%s',$entry['href']['attributes'],$attr->getName()));
 						if (isAjaxEnabled())
-							printf('<a href="cmd.php?%s" onClick="return ajJUMP(\'%s\',\'%s\',\'%s\');">%s</a>',
+							printf('<a href="cmd.php?%s" onclick="return ajJUMP(\'%s\',\'%s\',\'%s\');">%s</a>',
 								$href,$href,_('Attributes'),$attr->getName(),$attr->getName(false));
 						else
 							printf('<a href="cmd.php?%s">%s</a>',$href,$attr->getName(false));
@@ -583,7 +589,7 @@ switch($entry['view']) {
 							$href = htmlspecialchars(sprintf('%s&viewvalue=%s',$entry['href']['objectclasses'],strtolower($attr->getSource())));
 							printf('<small>(%s ',_('Inherited from'));
 							if (isAjaxEnabled())
-								printf('<a href="cmd.php?%s" title="%s" onClick="return ajSHOWSCHEMA(\'objectclasses\',\'oc\',\'%s\');">%s</a>',
+								printf('<a href="cmd.php?%s" title="%s" onclick="return ajSHOWSCHEMA(\'objectclasses\',\'oc\',\'%s\');">%s</a>',
 									$href,_('Jump to this objectClass definition'),strtolower($attr->getSource()),$attr->getSource());
 							else
 								printf('<a href="cmd.php?%s">%s</a>',$href,$attr->getSource());
@@ -615,7 +621,7 @@ if (! is_null($entry['value']) && ! $entry['viewed'])
 	error(sprintf(_('No such schema item: "%s"'),$entry['value']),'error','index.php');
 
 function drawJSItems($object) {
-	echo '<script type="text/javascript" language="javascript">'."\n";
+	echo '<script type="text/javascript">'."\n";
 
 	echo "
 function items() {

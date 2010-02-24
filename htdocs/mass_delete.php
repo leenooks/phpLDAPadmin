@@ -46,27 +46,27 @@ printf('<h3 class="subtitle">%s: <b>%s</b></h3>',_('Server'),$app['server']->get
 echo "\n";
 
 echo '<center>';
-echo '<table class="forminput" border=0>';
+echo '<table class="forminput" border="0">';
 
 if (count($request['parent']) == 1)
-	printf('<tr><td colspan=4><b>%s</b></td></tr>',_('Are you sure you want to permanently delete this object?'));
+	printf('<tr><td colspan="4"><b>%s</b></td></tr>',_('Are you sure you want to permanently delete this object?'));
 else
-	printf('<tr><td colspan=4><b>%s</b></td></tr>',_('Are you sure you want to permanently delete these objects?'));
+	printf('<tr><td colspan="4"><b>%s</b></td></tr>',_('Are you sure you want to permanently delete these objects?'));
 
-echo '<tr><td colspan=4>&nbsp;</td></tr>';
-printf('<tr><td width=10%%>%s:</td><td colspan=3 width=75%%><b>%s</b></td></tr>',_('Server'),$app['server']->getName());
+echo '<tr><td colspan="4">&nbsp;</td></tr>';
+printf('<tr><td style="width: 10%%;">%s:</td><td colspan="3" style="width: 75%%;"><b>%s</b></td></tr>',_('Server'),$app['server']->getName());
 
 foreach ($request['parent'] as $dn)
-	printf('<tr><td width=10%%><acronym title="%s">%s</acronym></td><td colspan=3 width=75%%><b>%s</b></td></tr>',
+	printf('<tr><td style="width: 10%%;"><acronym title="%s">%s</acronym></td><td colspan="3" style="width: 75%%;"><b>%s</b></td></tr>',
 		_('Distinguished Name'),_('DN'),$dn);
 
-echo '<tr><td colspan=4>&nbsp;</td></tr>';
+echo '<tr><td colspan="4">&nbsp;</td></tr>';
 
 $request['delete'] = $request['parent'];
 
 if (count($request['children'])) {
-	printf('<tr><td colspan=4><b>%s</b></td></tr>',_('Permanently delete all children also?'));
-	echo '<tr><td colspan=4>&nbsp;</td></tr>';
+	printf('<tr><td colspan="4"><b>%s</b></td></tr>',_('Permanently delete all children also?'));
+	echo '<tr><td colspan="4">&nbsp;</td></tr>';
 
 	# We need to see if the children have children
 	$query = array();
@@ -85,28 +85,28 @@ if (count($request['children'])) {
 		array_push($request['delete'],$value['dn']);
 
 	echo '<tr>';
-	echo '<td colspan=4>';
+	echo '<td colspan="4">';
 	printf(_('This request also includes %s children entries.'),count($request['children']));
 	echo '</td></tr>';
 
-	printf('<tr><td colspan=4>%s</td></tr>',
+	printf('<tr><td colspan="4">%s</td></tr>',
 		sprintf(_('phpLDAPadmin can also recursively delete all %s of the child entries. See below for a list of all the entries that this action will delete. Do you want to do this?'),count($request['children'])));
 
-	echo '<tr><td colspan=4>&nbsp;</td></tr>';
+	echo '<tr><td colspan="4">&nbsp;</td></tr>';
 
-	printf('<tr><td colspan=4><small>%s</small></td></tr>',
+	printf('<tr><td colspan="4"><small>%s</small></td></tr>',
 		_('Note: this is potentially very dangerous and you do this at your own risk. This operation cannot be undone. Take into consideration aliases, referrals, and other things that may cause problems.'));
 	echo "\n";
 
-	echo '<tr><td colspan=4>&nbsp;</td></tr>';
+	echo '<tr><td colspan="4">&nbsp;</td></tr>';
 
 	echo "\n";
 
-	printf('<tr><td colspan=4><center><b>%s</b></center></td></tr>',_('List of entries to be deleted:'));
-	echo '<tr><td colspan=4>&nbsp;</td></tr>';
+	printf('<tr><td colspan="4"><center><b>%s</b></center></td></tr>',_('List of entries to be deleted:'));
+	echo '<tr><td colspan="4">&nbsp;</td></tr>';
 
 	$i = 0;
-	echo '<tr><td colspan=4><center>';
+	echo '<tr><td colspan="4"><center>';
 	printf('<select size="%s" multiple disabled style="background:white; color:black;width:500px" >',min(10,count($request['delete'])));
 	foreach ($request['delete'] as $key => $value)
 		printf('<option>%s. %s</option>',++$i,htmlspecialchars(dn_unescape($value)));
@@ -114,11 +114,11 @@ if (count($request['children'])) {
 	echo '</center></td></tr>';
 	echo "\n";
 
-	echo '<tr><td colspan=4>&nbsp;</td></tr>';
+	echo '<tr><td colspan="4">&nbsp;</td></tr>';
 }
 
 echo '<tr>';
-echo '<td width=50% colspan=2><center>';
+echo '<td colspan="2" style="width: 50%; text-align: center;">';
 echo '<form action="cmd.php" method="post">';
 echo '<input type="hidden" name="cmd" value="rdelete" />';
 printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
@@ -128,7 +128,7 @@ printf('<input type="submit" value="%s" />',sprintf(_('Delete all %s objects'),c
 echo '</form>';
 echo '</center></td>';
 
-echo '<td colspan=2 width=50%><center>';
+echo '<td colspan="2" style="width: 50%; text-align: center;">';
 
 echo '<form action="cmd.php" method="get">';
 echo '<input type="hidden" name="cmd" value="template_engine" />';

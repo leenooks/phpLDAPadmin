@@ -29,7 +29,7 @@ if (get_request('meth','REQUEST') != 'ajax') {
 	$request['page']->drawTitle(sprintf('%s <b>%s</b>',_('Add new attribute'),get_rdn($request['dn'])));
 	$request['page']->drawSubTitle();
 
-	echo '<center>';
+	echo '<div style="text-align: center;">';
 	if (count($request['template']->getAvailAttrs())) {
 		# If we have more than the configured entries, we'll separate our input to the old ways.
 		if (count($request['template']->getAvailAttrs()) > $_SESSION[APPCONFIG]->getValue('appearance','max_add_attrs')) {
@@ -50,6 +50,7 @@ if (get_request('meth','REQUEST') != 'ajax') {
 				echo '<br />';
 
 				echo '<form action="cmd.php" method="post">';
+				echo '<div>';
 
 				if ($_SESSION[APPCONFIG]->getValue('confirm','update'))
 					echo '<input type="hidden" name="cmd" value="update_confirm" />';
@@ -75,6 +76,7 @@ if (get_request('meth','REQUEST') != 'ajax') {
 
 				echo '<input type="text" name="single_item_value" size="20" />';
 				printf('<input type="submit" name="submit" value="%s" class="update_dn" />',_('Add'));
+				echo '</div>';
 				echo '</form>';
 
 			} else {
@@ -90,6 +92,7 @@ if (get_request('meth','REQUEST') != 'ajax') {
 
 				echo '<!-- Form to add a new BINARY attribute to this entry -->';
 				echo '<form action="cmd.php" method="post" enctype="multipart/form-data">';
+				echo '<div>';
 
 				if ($_SESSION[APPCONFIG]->getValue('confirm','update'))
 					echo '<input type="hidden" name="cmd" value="update_confirm" />';
@@ -124,6 +127,7 @@ if (get_request('meth','REQUEST') != 'ajax') {
 				else
 					printf('<br /><small><b>%s: %s</b></small><br />',_('Maximum file size'),ini_get('upload_max_filesize'));
 
+				echo '</div>';
 				echo '</form>';
 
 			} else {
@@ -138,7 +142,7 @@ if (get_request('meth','REQUEST') != 'ajax') {
 			printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 			printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($request['dn']));
 
-			echo '<table class="entry" cellspacing="0" align="center" border=0>';
+			echo '<table class="entry" cellspacing="0" align="center" border="0">';
 
 			foreach ($request['template']->getAvailAttrs() as $attribute)
 				$request['page']->draw('Template',$attribute);
@@ -153,7 +157,7 @@ if (get_request('meth','REQUEST') != 'ajax') {
 		printf('<small>(%s)</small>',_('no new attributes available for this entry'));
 	}
 
-	echo '</center>';
+	echo '</div>';
 
 # The ajax addition (it is going into an existing TemplateRendered page
 } else {
@@ -161,10 +165,10 @@ if (get_request('meth','REQUEST') != 'ajax') {
 	echo '<fieldset>';
 	printf('<legend>%s</legend>',_('Add Attribute'));
 	echo '<div id="ajADDATTR">';
-	echo '<table class="entry" cellspacing="0" align="center" border=0>';
+	echo '<table class="entry" cellspacing="0" align="center" border="0">';
 	echo '<td valign="top" align="center">';
 
-	printf('<select name="attr" onChange="ajDISPLAY(\'%s\',\'cmd=add_value_form&server_id=%s&dn=%s&meth=ajax&attr=\'+this.value,\'%s\',\'append\');">',
+	printf('<select name="attr" onchange="ajDISPLAY(\'%s\',\'cmd=add_value_form&server_id=%s&dn=%s&attr=\'+this.value,\'%s\',\'append\');">',
 		'ADDATTR',$app['server']->getIndex(),rawurlencode(get_request('dn','REQUEST')),_('Please Wait'));
 
 	printf('<option value="%s">%s</option>','','');

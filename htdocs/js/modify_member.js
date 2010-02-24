@@ -1,5 +1,5 @@
-var m1 = document.member.notmembers;
-var m2 = document.member.members;
+var m1 = document.getElementById('member').notmembers;
+var m2 = document.getElementById('member').members;
 
 /* This function generates hidden input array from new group members
  * when submit button is pressed.

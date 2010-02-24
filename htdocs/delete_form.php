@@ -46,43 +46,43 @@ if (count($request['children'])) {
 	$query['deref'] = LDAP_DEREF_NEVER;
 	$request['search'] = $app['server']->query($query,null);
 
-	echo '<table class="forminput" border=0>';
+	echo '<table class="forminput" border="0">';
 	echo '<tr>';
-	echo '<td colspan=2>';
+	echo '<td colspan="2">';
 	printf(_('This entry is the root of a sub-tree containing %s entries.'),count($request['search']));
 	printf(' <small>(<a href="%s">%s</a>)</small>',
 		$search['href'],_('view entries'));
 	echo '</td></tr>';
 
-	echo '<tr><td colspan=2>&nbsp;</td></tr>';
+	echo '<tr><td colspan="2">&nbsp;</td></tr>';
 
-	printf('<tr><td colspan=2>%s</td></tr>',
+	printf('<tr><td colspan="2">%s</td></tr>',
 		sprintf(_('phpLDAPadmin can recursively delete this entry and all %s of its children. See below for a list of all the entries that this action will delete. Do you want to do this?'),count($request['search'])));
 
-	echo '<tr><td colspan=2>&nbsp;</td></tr>';
+	echo '<tr><td colspan="2">&nbsp;</td></tr>';
 
-	printf('<tr><td colspan=2><small>%s</small></td></tr>',
+	printf('<tr><td colspan="2"><small>%s</small></td></tr>',
 		_('Note: this is potentially very dangerous and you do this at your own risk. This operation cannot be undone. Take into consideration aliases, referrals, and other things that may cause problems.'));
 	echo "\n";
 
 	echo '<tr>';
-	echo '<td width=50%><center>';
+	echo '<td style="width: 50%; text-align: center;">';
 	echo '<form action="cmd.php" method="post">';
 	echo '<input type="hidden" name="cmd" value="rdelete" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($request['dn']));
 	printf('<input type="submit" value="%s" />',sprintf(_('Delete all %s objects'),count($request['search'])));
 	echo '</form>';
-	echo '</center></td>';
+	echo '</td>';
 
-	echo '<td width=50%><center>';
+	echo '<td style="width: 50%; text-align: center;">';
 	echo '<form action="cmd.php" method="get">';
 	echo '<input type="hidden" name="cmd" value="template_engine" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($request['dn']));
 	printf('<input type="submit" name="submit" value="%s" />',_('Cancel'));
 	echo '</form>';
-	echo '</center></td>';
+	echo '</td>';
 	echo '</tr>';
 	echo "\n";
 
@@ -101,19 +101,19 @@ if (count($request['children'])) {
 	echo "\n";
 
 } else {
-	echo '<table class="forminput" border=0>';
+	echo '<table class="forminput" border="0">';
 
-	printf('<tr><td colspan=4>%s</td></tr>',_('Are you sure you want to permanently delete this object?'));
-	echo '<tr><td colspan=4>&nbsp;</td></tr>';
+	printf('<tr><td colspan="4">%s</td></tr>',_('Are you sure you want to permanently delete this object?'));
+	echo '<tr><td colspan="4">&nbsp;</td></tr>';
 
-	printf('<tr><td width=10%%>%s:</td><td colspan=3 width=75%%><b>%s</b></td></tr>',_('Server'),$app['server']->getName());
-	printf('<tr><td width=10%%><acronym title="%s">%s</acronym></td><td colspan=3 width=75%%><b>%s</b></td></tr>',
+	printf('<tr><td style="width: 10%%;">%s:</td><td colspan="3" style="width: 75%%;"><b>%s</b></td></tr>',_('Server'),$app['server']->getName());
+	printf('<tr><td style="width: 10%%;"><acronym title="%s">%s</acronym></td><td colspan="3" style="width: 75%%;"><b>%s</b></td></tr>',
 		_('Distinguished Name'),_('DN'),$request['dn']);
-	echo '<tr><td colspan=4>&nbsp;</td></tr>';
+	echo '<tr><td colspan="4">&nbsp;</td></tr>';
 	echo "\n";
 
 	echo '<tr>';
-	echo '<td colspan=2 width=50%><center>';
+	echo '<td colspan="2" style="width: 50%; text-align: center;">';
 	echo '<form action="cmd.php" method="post">';
 	echo '<input type="hidden" name="cmd" value="delete" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
@@ -121,8 +121,8 @@ if (count($request['children'])) {
 	printf('<input type="submit" name="submit" value="%s" />',_('Delete'));
 	echo '</form>';
 
-	echo '</center></td>';
-	echo '<td colspan=2 width=50%><center>';
+	echo '</td>';
+	echo '<td colspan="2" style="width: 50%; text-align: center;">';
 
 	echo '<form action="cmd.php" method="get">';
 	echo '<input type="hidden" name="cmd" value="template_engine" />';
@@ -131,7 +131,7 @@ if (count($request['children'])) {
 	printf('<input type="submit" name="submit" value="%s" />',_('Cancel'));
 	echo '</form>';
 
-	echo '</center></td>';
+	echo '</td>';
 	echo '</tr>';
 	echo '</table>';
 	echo "\n";

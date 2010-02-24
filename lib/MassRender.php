@@ -25,8 +25,8 @@ class MassRender extends TemplateRender {
 			$j,htmlspecialchars($attribute->getName()),$i,
 			$j,htmlspecialchars($attribute->getName()),$i,
 			htmlspecialchars($val),
-			$attribute->needJS('focus') ? sprintf('onFocus="focus_%s(this);" ',$attribute->getName()) : '',
-			$attribute->needJS('blur') ? sprintf('onBlur="blur_%s(this);" ',$attribute->getName()) : '',
+			$attribute->needJS('focus') ? sprintf('onfocus="focus_%s(this);" ',$attribute->getName()) : '',
+			$attribute->needJS('blur') ? sprintf('onblur="blur_%s(this);" ',$attribute->getName()) : '',
 			($attribute->getSize() > 0) ? sprintf('size="%s"',$attribute->getSize()) : '',
 			($attribute->getMaxLength() > 0) ? sprintf('maxlength="%s"',$attribute->getMaxLength()) : '');
 

@@ -79,14 +79,15 @@ class QueryRender extends PageRender {
 
 		$baseDNs = $server->getBaseDN();
 
-		echo '<center>';
-		printf('<script type="text/javascript" language="javascript" src="%sdnChooserPopup.js"></script>',JSDIR);
-		echo '<form action="cmd.php" name="advanced_search_form">';
+		printf('<script type="text/javascript" src="%sdnChooserPopup.js"></script>',JSDIR);
+		echo '<form action="cmd.php" id="advanced_search_form">';
+		echo '<div>';
 		echo '<input type="hidden" name="cmd" value="query_engine" />';
 		printf('<input type="hidden" name="server_id" value="%s" />',$server->getIndex());
+		echo '</div>';
 
-		echo '<table class="forminput" border=0>';
-		echo '<tr><td colspan=2>&nbsp;</td></tr>';
+		echo '<table class="forminput" border="0" style="margin-left: auto; margin-right: auto;">';
+		echo '<tr><td colspan="2">&nbsp;</td></tr>';
 
 		$templates = $this->getTemplates();
 
@@ -101,21 +102,22 @@ class QueryRender extends PageRender {
 			foreach ($templates->getTemplates() as $template)
 				printf('<option value="%s" %s>%s</option>',
 					$template->getID(),
-					($this->template_id == $template->getID() ? 'selected' : ''),
+					($this->template_id == $template->getID() ? 'selected="selected"' : ''),
 					$template->getDescription());
 			echo '</select>';
 			echo '</td>';
 			echo '</tr>';
 		}
 
+		echo '<tr>';
 		printf('<td><acronym title="%s">%s</acronym></td>',_('The format to show the query results'),_('Display Format'));
 		echo '<td>';
 		echo '<select name="format" style="width: 200px">';
 
 		printf('<option value="list" %s>%s</option>',
-			$_SESSION[APPCONFIG]->getValue('search','display') == 'list' ? 'selected' : '',_('list'));
+			$_SESSION[APPCONFIG]->getValue('search','display') == 'list' ? 'selected="selected"' : '',_('list'));
 		printf('<option value="table" %s>%s</option>',
-			$_SESSION[APPCONFIG]->getValue('search','display') == 'table' ? 'selected' : '',_('table'));
+			$_SESSION[APPCONFIG]->getValue('search','display') == 'table' ? 'selected="selected"' : '',_('table'));
 
 		echo '</select>';
 		echo '</td>';
@@ -135,17 +137,17 @@ class QueryRender extends PageRender {
 
 		echo '<tr>';
 
-		echo '<td colspan=2>';
+		echo '<td colspan="2">';
 		printf('<div id="customquery" style="display: %s">','block');
 		echo '<br/>';
 		echo '<fieldset>';
 		printf('<legend>%s</legend>',_('Custom Query'));
-		echo '<table border=0></tr>';
+		echo '<table border="0"><tr>';
 
 		printf('<td>%s</td>',_('Base DN'));
 		printf('<td><input type="text" name="base" value="%s" style="width: 200px" id="base" />',count($baseDNs) == 1 ? $baseDNs[0] : '');
 
-		draw_chooser_link('advanced_search_form.base');
+		draw_chooser_link('advanced_search_form','base');
 
 		echo '</td>';
 		echo '</tr>';
@@ -202,11 +204,10 @@ class QueryRender extends PageRender {
 		echo '</td>';
 		echo '</tr>';
 
-		printf('<tr><td colspan="2"><br /><center><input type="submit" name="search" value="%s" /></center></td></tr>',_('Search'));
+		printf('<tr><td colspan="2" style="text-align: center;"><br /><input type="submit" name="search" value="%s" /></td></tr>',_('Search'));
 
 		echo '</table>';
 		echo '</form>';
-		echo '</center>';
 	}
 
 	private function visitStart() {
@@ -248,7 +249,7 @@ class QueryRender extends PageRender {
 			printf('<div id="DN%s" style="display: %s">',
 				$this->getAjaxRef($base), ($show == $this->getAjaxRef($base) ? 'block' : 'none'));
 
-			echo '<table class="result_box" border=0 width=100%>';
+			echo '<table class="result_box" border="0" width="100%">';
 			echo '<tr><td>';
 			echo '<br/>';
 			echo '<br/>';
@@ -266,12 +267,12 @@ class QueryRender extends PageRender {
 						# Temporarily set our DN, for rendering that leverages our DN (eg: JpegPhoto)
 						$this->template->setDN($dndetails['dn']);
 
-						echo '<table class="result" border=0>';
+						echo '<table class="result" border="0">';
 
 						echo '<tr class="list_title">';
 						printf('<td class="icon"><img src="%s/%s" alt="icon" /></td>',IMGDIR,get_icon($server->getIndex(),$dndetails['dn']));
 
-						printf('<td colspan=2><a href="cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s">%s</a></td>',
+						printf('<td colspan="2"><a href="cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s">%s</a></td>',
 							$server->getIndex(),rawurlencode(dn_unescape($dndetails['dn'])),htmlspecialchars(get_rdn($dndetails['dn'])));
 						echo '</tr>';
 
@@ -323,12 +324,15 @@ class QueryRender extends PageRender {
 					}
 
 					printf('<form action="cmd.php" method="post" id="massform_%s">',$counter);
+					echo '<div>';
 					printf('<input type="hidden" name="server_id" value="%s" />',$server->getIndex());
 
 					foreach ($this->template->resultsdata[$base]['attrs'] as $attr)
 						printf('<input type="hidden" name="attrs[]" value="%s" />',$attr);
 
-					echo '<table class="result_table" border=0>';
+					echo '</div>';
+
+					echo '<table class="result_table" border="0">';
 
 					echo '<thead class="fixheader">';
 					echo '<tr class="heading">';
@@ -352,7 +356,7 @@ class QueryRender extends PageRender {
 						# Temporarily set our DN, for rendering that leverages our DN (eg: JpegPhoto)
 						$this->template->setDN($dndetails['dn']);
 
-						printf('<tr class="%s" id="tr_ma_%s" onClick="var cb=document.getElementById(\'ma_%s\'); cb.checked=!cb.checked;">',
+						printf('<tr class="%s" id="tr_ma_%s" onclick="var cb=document.getElementById(\'ma_%s\'); cb.checked=!cb.checked;">',
 							$j%2 ? 'even' : 'odd',$j,$j);
 
 						# Is mass action enabled.
@@ -401,8 +405,8 @@ class QueryRender extends PageRender {
 					if ($_SESSION[APPCONFIG]->getValue('mass','enabled')) {
 						printf('<tr class="%s">',++$j%2 ? 'odd' : 'even');
 						printf('<td><input type="checkbox" name="allbox" value="1" onclick="CheckAll(1,\'massform_\',%s);" /></td>',$counter);
-						printf('<td colspan=%s>',2+count(explode(',',$ado)));
-						echo '<select name="cmd" onChange="if (this.value) submit();" style="font-size: 12px">';
+						printf('<td colspan="%s">',2+count(explode(',',$ado)));
+						echo '<select name="cmd" onchange="if (this.value) submit();" style="font-size: 12px">';
 
 						foreach ($mass_actions as $action => $display)
 							printf('<option value="%s">%s</option>',$display,$action);
@@ -430,7 +434,7 @@ class QueryRender extends PageRender {
 		}
 
 		if (get_request('format','REQUEST',false,'table') == 'table')
-			printf('<script type="text/javascript" language="javascript" src="%sCheckAll.js"></script>',JSDIR);
+			printf('<script type="text/javascript" src="%sCheckAll.js"></script>',JSDIR);
 	}
 
 	public function drawSubTitle($subtitle=null) {
@@ -472,7 +476,7 @@ class QueryRender extends PageRender {
 
 	private function drawBaseTabs() {
 		# Setup the Javascript to show/hide our DIVs.
-		echo '<script type="text/javascript" language="javascript">';
+		echo '<script type="text/javascript">';
 		echo 'function items() {';
 		echo 'var $items = new Array();';
 		$counter = 0;
@@ -482,7 +486,7 @@ class QueryRender extends PageRender {
 		echo '}</script>';
 		echo "\n\n";
 
-		echo '<table class="result_table" border=0>';
+		echo '<table class="result_table" border="0">';
 		echo '<tr>';
 		$counter = 0;
 		foreach ($this->template->results as $base => $results) {
@@ -503,7 +507,7 @@ class QueryRender extends PageRender {
 	private function drawResultsTable($base,$results) {
 		$server = $this->getServer();
 
-		echo '<table class="result" border=0>';
+		echo '<table class="result" border="0">';
 
 		echo '<tr>';
 		printf('<td>%s: <b>%s</b><br/><br/><div class="execution_time">(%s %s)</div></td>',_('Entries found'),

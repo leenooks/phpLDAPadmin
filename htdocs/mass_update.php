@@ -71,12 +71,12 @@ if (count($request['update'])) {
 		foreach ($request['update'] as $j => $page)
 			printf('<input type="hidden" name="dn[%s]" value="%s" />',$j,$page->getTemplate()->getDN());
 
-		echo '<table class="result_box" width=100% border=1>';
+		echo '<table class="result_box" width="100%" border="1">';
 		echo '<tr><td>';
 
 		echo '<br/>';
 
-		echo '<table class="result" border=0>';
+		echo '<table class="result" border="0">';
 		echo '<tr><td>';
 		printf(_('There will be %s updates done with this mass update'),sprintf('<b>%s</b>',count($request['update'])));
 		echo '</td></tr>';
@@ -87,15 +87,15 @@ if (count($request['update'])) {
 		foreach ($request['update'] as $index => $page) {
 			$template = $page->getTemplate();
 
-			echo '<table class="result" border=0>';
+			echo '<table class="result" border="0">';
 			echo '<tr class="list_title">';
 			printf('<td class="icon"><img src="%s/%s" alt="icon" /></td>',IMGDIR,get_icon($app['server']->getIndex(),$template->getDN()));
 
-			printf('<td colspan=3><a href="cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s">%s</a></td>',
+			printf('<td colspan="3"><a href="cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s">%s</a></td>',
 				$app['server']->getIndex(),rawurlencode(dn_unescape($template->getDN())),htmlspecialchars(get_rdn($template->getDN())));
 			echo '</tr>';
 
-			printf('<tr class="list_item"><td class="blank">&nbsp;</td><td class="heading">dn</td><td class="value" width="45%%">%s</td><td class="value" width="45%%"><b>%s</b></td></tr>',
+			printf('<tr class="list_item"><td class="blank">&nbsp;</td><td class="heading">dn</td><td class="value" style="width: 45%%;">%s</td><td class="value" style="width: 45%%;"><b>%s</b></td></tr>',
 				htmlspecialchars(dn_unescape($template->getDN())),_('Old Value'));
 
 			foreach ($template->getLDAPmodify(true,$index) as $attribute) {

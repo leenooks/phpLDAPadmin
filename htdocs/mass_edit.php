@@ -64,13 +64,16 @@ $request['page'][0]->drawTitle(_('Bulk edit the following DNs'));
 $request['page'][0]->drawSubTitle(sprintf('%s: <b>%s</b>',_('Server'),$app['server']->getName()));
 
 echo '<form action="cmd.php" method="post">';
+echo '<div>';
 echo '<input type="hidden" name="cmd" value="mass_update" />';
 printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 
 foreach ($request['page'] as $j => $page)
 	printf('<input type="hidden" name="dn[%s]" value="%s" />',$j,$page->getTemplate()->getDN());
 
-echo '<table class="result_table" border=0>';
+echo '</div>';
+
+echo '<table class="result_table" border="0">';
 echo '<tr class="heading">';
 echo '<td>DN</td>';
 
@@ -122,7 +125,9 @@ foreach ($request['page'] as $j => $page) {
 }
 
 echo '</table>';
+echo '<div>';
 echo '<br/>';
 printf('<input type="submit" id="save_button" name="submit" value="%s" />',_('Update Values'));
+echo '</div>';
 echo '</form>';
 ?>

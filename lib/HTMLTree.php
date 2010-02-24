@@ -30,7 +30,7 @@ class HTMLTree extends Tree {
 
 		$server = $this->getServer();
 
-		echo '<table class="tree" border=0>';
+		echo '<table class="tree" border="0">';
 		if (! $onlytree)
 			$this->draw_server_name();
 
@@ -60,7 +60,7 @@ class HTMLTree extends Tree {
 					$server->getIndex());
 			}
 
-			echo '<table class="tree" border=0>';
+			echo '<table class="tree" border="0">';
 
 			if (! count($this->getBaseEntries())) {
 				# We didnt get any baseDN entries in our tree?
@@ -90,13 +90,13 @@ class HTMLTree extends Tree {
 					printf('<tr><td class="spacer"></td><td class="spacer"></td><td><img src="%s/unknown.png" /></td><td colspan="%s">%s</td></tr>',
 						IMGDIR,$this->getDepth()+3-3,pretty_print_dn($base->getDN()));
 
-					$this->javascript .= sprintf('<form name="create_base_form_%s" method="post" action="cmd.php?cmd=template_engine">',$javascript_id);
+					$this->javascript .= sprintf('<form id="create_base_form_%s" method="post" action="cmd.php?cmd=template_engine">',$javascript_id);
 					$this->javascript .= sprintf('<input type="hidden" name="server_id" value="%s" />',$server->getIndex());
 					$this->javascript .= sprintf('<input type="hidden" name="container" value="%s" />',htmlspecialchars($server->getContainer($base->getDN())));
 					$this->javascript .= sprintf('<input type="hidden" name="rdn" value="%s" />',get_rdn($base->getDN()));
 					$this->javascript .= sprintf('</form>');
 
-					printf('<tr><td class="spacer"></td><td class="spacer"></td><td class="spacer"></td><td colspan="%s"><small>%s<a href="javascript:document.create_base_form_%s.submit()">%s</a></small></td></tr>',
+					printf('<tr><td class="spacer"></td><td class="spacer"></td><td class="spacer"></td><td colspan="%s"><small>%s<a href="javascript:document.getElementById(\'create_base_form_%s\').submit()">%s</a></small></td></tr>',
 						$this->getDepth()+3-3,_('This base entry does not exist.'),$javascript_id,_('Create it?'));
 
 					echo '</table>';
@@ -163,7 +163,7 @@ class HTMLTree extends Tree {
 		if (! is_null($server->inactivityTime())) {
 			$m = sprintf(_('Inactivity will log you off at %s'),
 				strftime('%H:%M',$server->inactivityTime()));
-			printf(' <img width=14 height=14 src="%s/timeout.png" title="%s" alt="%s"/>',IMGDIR,$m,'Timeout');
+			printf(' <img width="14" height="14" src="%s/timeout.png" title="%s" alt="%s"/>',IMGDIR,$m,'Timeout');
 		}
 		echo '</td></tr>';
 	}
@@ -420,7 +420,7 @@ class HTMLTree extends Tree {
 		$href['edit'] = htmlspecialchars(sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',$server->getIndex(),$dnENCODE));
 
 		echo '<tr class="option">';
-		printf('<td class="spacer" colspan=%s></td>',$level+2);
+		printf('<td class="spacer" colspan="%s"></td>',$level+2);
 
 		# Is this node expanded? (deciding whether to draw "+" or "-")
 		if ($entry->isOpened())
@@ -437,7 +437,7 @@ class HTMLTree extends Tree {
 		printf('<td class="icon"><a href="%s" id="node_%s_%s"><img src="%s/%s" alt="img" /></a></td>',
 			$href['edit'],$server->getIndex(),preg_replace('/=/','_',base64_encode($item)),IMGDIR,$entry->getIcon());
 
-		printf('<td class="phplm" width=100%% colspan="%s"><span style="white-space: nowrap;">',$this->getDepth()+3-$level);
+		printf('<td class="phplm" colspan="%s" style="width: 100%%;"><span style="white-space: nowrap;">',$this->getDepth()+3-$level);
 		printf('<a href="%s">%s</a>',$href['edit'],$this->get_formatted_dn($entry,$level));
 
 		if ($child_count)
@@ -493,7 +493,7 @@ class HTMLTree extends Tree {
 		$href = htmlspecialchars(sprintf('cmd.php?cmd=template_engine&server_id=%s&container=%s',$this->getServerID(),$encoded_dn));
 
 		echo '<tr>';
-		printf('<td class="spacer" colspan=%s></td>',$level+3);
+		printf('<td class="spacer" colspan="%s"></td>',$level+3);
 		printf('<td class="icon"><a href="%s"><img src="%s/create.png" alt="%s" /></a></td>',$href,IMGDIR,_('new'));
 		printf('<td class="link" colspan="%s"><a href="%s" title="%s %s">%s</a></td>',
 			$this->getDepth()+3-$level,$href,_('Create a new entry in'),$rdn,_('Create new entry here'));
@@ -525,8 +525,8 @@ class HTMLTree extends Tree {
 
 		echo '</tr>';
 
-		printf('<tr><td class="blank" colspan="%s">&nbsp;</td>',$this->getDepth()+3);
-		printf('<tr><td class="blank" colspan="%s">&nbsp;</td>',$this->getDepth()+3);
+		printf('<tr><td class="blank" colspan="%s">&nbsp;</td></tr>',$this->getDepth()+3);
+		printf('<tr><td class="blank" colspan="%s">&nbsp;</td></tr>',$this->getDepth()+3);
 	}
 
 	/**

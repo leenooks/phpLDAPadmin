@@ -28,13 +28,13 @@ if (! isset($attrs['monitorcontext']) || ! count($results))
 printf('<h3 class="title">%s%s</h3>',_('Monitor info for: '),$app['server']->getName());
 printf('<h3 class="subtitle">%s</h3>',_('Server reports the following information about itself'));
 
-echo '<table class="result" border=0>';
+echo '<table class="result" border="0">';
 
 # cn=Monitor
-printf('<tr class="list_item"><td class="heading" rowspan=2>%s</td></tr>',_('LDAP Server'));
+printf('<tr class="list_item"><td class="heading" rowspan="2">%s</td></tr>',_('LDAP Server'));
 printf('<tr class="list_item"><td class="value">');
 
-echo '<table class="result" border=0>';
+echo '<table class="result" border="0">';
 printf('<tr><td>%s</td></tr>',$results[$attrs['monitorcontext'][0]]['monitoredinfo'][0]);
 echo '</table>';
 
@@ -53,10 +53,10 @@ foreach (array(
 		$description = '';
 	}
 
-	printf('<tr class="list_item"><td class="heading" rowspan=2><acronym title="%s">%s</acronym></td></tr>',$description,$dn);
+	printf('<tr class="list_item"><td class="heading" rowspan="2"><acronym title="%s">%s</acronym></td></tr>',$description,$dn);
 	echo '<tr class="list_item"><td class="value">';
 	echo '<table class="result"><tr><td>';
-	echo '<table class="result_table" border=0 width="100%">';
+	echo '<table class="result_table" border="0" width="100%">';
 
 	$attrs = array(
 		'monitorruntimeconfig',
@@ -64,10 +64,10 @@ foreach (array(
 		);
 
 	echo '<tr class="highlight">';
-	printf('<td width="10%%">%s</td><td width="20%%">%s</td>',_('Type'),'namingContext');
+	printf('<td style="width: 10%%;">%s</td><td style="width: 20%%;">%s</td>',_('Type'),'namingContext');
 
 	foreach ($attrs as $attr)
-		printf('<td width="20%%">%s</td>',$attr);
+		printf('<td style="width: 20%%;">%s</td>',$attr);
 
 	echo '</tr>';
 
@@ -129,14 +129,14 @@ foreach (array(
 }
 
 # cn=Connections,cn=Monitor
-printf('<tr class="list_item"><td class="heading" rowspan=2><acronym title="%s">%s</acronym></td></tr>',$results['cn=Connections,cn=Monitor']['description'],_('LDAP Connections'));
+printf('<tr class="list_item"><td class="heading" rowspan="2"><acronym title="%s">%s</acronym></td></tr>',$results['cn=Connections,cn=Monitor']['description'],_('LDAP Connections'));
 printf('<tr class="list_item"><td class="value">');
 echo '<table class="result"><tr><td>';
-echo '<table class="result_table" border=0 width="100%">';
+echo '<table class="result_table" border="0" width="100%">';
 
-printf('<tr class="highlight"><td class="20%%">%s</td><td class="value" width="80%%">%s</td></tr>',
+printf('<tr class="highlight"><td class="20%%">%s</td><td class="value" style="width: 80%%;">%s</td></tr>',
 	_('Total Connections'),$results['cn=Total,cn=Connections,cn=Monitor']['monitorcounter']);
-printf('<tr class="highlight"><td class="20%%">%s</td><td class="value" width="80%%">%s</td></tr>',
+printf('<tr class="highlight"><td class="20%%">%s</td><td class="value" style="width: 80%%;">%s</td></tr>',
 	_('Current Connections'),$results['cn=Current,cn=Connections,cn=Monitor']['monitorcounter']);
 
 # Look for some connections
@@ -146,7 +146,7 @@ foreach ($results as $key => $value) {
 		printf('<td>%s</td>',$results[$key]['cn'][0]);
 
 		echo '<td class="value">';
-		echo '<table class="result_table" border=0 width="100%">';
+		echo '<table class="result_table" border="0" width="100%">';
 
 		$counter = 0;
 		foreach (array(
@@ -171,7 +171,7 @@ foreach ($results as $key => $value) {
 
 			printf('<tr class="%s">',$counter++%2==0?'even':'odd');
 
-			printf('<td class="title" width="35%%">%s</td><td width="65%%">%s</td>',
+			printf('<td class="title" style="width: 35%%;">%s</td><td style="width: 65%%;">%s</td>',
 				$metric,isset($results[$key][$metric]) ? $results[$key][$metric][0] : '&nbsp;');
 			echo '</tr>';
 		}
@@ -201,29 +201,29 @@ foreach (array(
 	$description = implode(' ',$results[$dn]['description']);
 	$description = preg_replace('/"/','\'',$description);
 
-	printf('<tr class="list_item"><td class="heading" rowspan=2><acronym title="%s">%s</acronym></td></tr>',$description,$dn);
+	printf('<tr class="list_item"><td class="heading" rowspan="2"><acronym title="%s">%s</acronym></td></tr>',$description,$dn);
 	echo '<tr class="list_item"><td class="value">';
 	echo '<table class="result"><tr><td>';
-	echo '<table class="result_table" border=0 width="100%">';
+	echo '<table class="result_table" border="0" width="100%">';
 
 	if (isset($results[$dn]['monitoropinitiated']))
-		printf('<tr class="highlight"><td width="20%%">%s</td><td class="value" width="80%%">%s</td></tr>',
+		printf('<tr class="highlight"><td style="width: 20%%;">%s</td><td class="value" style="width: 80%%;">%s</td></tr>',
 			'monitorOpInitiated',$results[$dn]['monitoropinitiated'][0]);
 	if (isset($results[$dn]['monitoropcompleted']))
-		printf('<tr class="highlight"><td width="20%%">%s</td><td class="value" width="80%%">%s</td></tr>',
+		printf('<tr class="highlight"><td style="width: 20%%;">%s</td><td class="value" style="width: 80%%;">%s</td></tr>',
 			'monitorOpCompleted',$results[$dn]['monitoropcompleted'][0]);
 	if (isset($results[$dn]['monitoredinfo']))
-		printf('<tr class="highlight"><td width="20%%">%s</td><td class="value" width="80%%">%s</td></tr>',
+		printf('<tr class="highlight"><td style="width: 20%%;">%s</td><td class="value" style="width: 80%%;">%s</td></tr>',
 			'monitoredInfo',$results[$dn]['monitoredinfo'][0]);
 
 	# Look for some connecitons
 	foreach ($results as $key => $value) {
 		if (preg_match('/^.*,'.$dn.'$/',$key)) {
 			echo '<tr class="highlight">';
-			printf('<td width="20%%">%s</td>',$results[$key]['cn'][0]);
+			printf('<td style="width: 20%%;">%s</td>',$results[$key]['cn'][0]);
 
-			echo '<td class="value" width="80%">';
-			echo '<table class="result_table" border=0 width="100%">';
+			echo '<td class="value" style="width: 80%;">';
+			echo '<table class="result_table" border="0" width="100%">';
 
 			foreach (array(
 				'labeleduri',
@@ -238,7 +238,7 @@ foreach (array(
 				if (isset($results[$key][$metric])) {
 					printf('<tr class="%s">',$counter++%2==0?'even':'odd');
 
-					printf('<td class="title" width="35%%">%s</td><td width="65%%">%s</td>',
+					printf('<td class="title" style="width: 35%%;">%s</td><td style="width: 65%%;">%s</td>',
 						$metric,$results[$key][$metric][0]);
 
 					echo '</tr>';

@@ -27,25 +27,28 @@ $request['page']->accept();
 $request['page']->drawTitle(sprintf('%s <b>%s</b>',_('Copy'),get_rdn($request['dn'])));
 $request['page']->drawSubTitle();
 
-printf('<script type="text/javascript" language="javascript" src="%sdnChooserPopup.js"></script>',JSDIR);
-echo '<center>';
+printf('<script type="text/javascript" src="%sdnChooserPopup.js"></script>',JSDIR);
+echo '<div style="text-align: center;">';
 printf('%s <b>%s</b> %s:<br /><br />',_('Copy'),get_rdn($request['dn']),_('to a new object'));
+echo '</div>';
 
-echo '<form action="cmd.php" method="post" name="copy_form">';
+echo '<form action="cmd.php" method="post" id="copy_form">';
+echo '<div>';
 echo '<input type="hidden" name="cmd" value="copy" />';
 printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 printf('<input type="hidden" name="server_id_src" value="%s" />',$app['server']->getIndex());
 printf('<input type="hidden" name="dn_src" value="%s" />',htmlspecialchars($request['dn']));
+echo '</div>';
 echo "\n";
 
-echo '<table style="border-spacing: 10px">';
+echo '<table border="0" style="border-spacing: 10px; margin-left: auto; margin-right: auto;">';
 
 echo '<tr>';
 printf('<td><acronym title="%s">%s</acronym>:</td>',
 	_('The full DN of the new entry to be created when copying the source entry'),_('Destination DN'));
 echo '<td>';
 printf('<input type="text" name="dn_dst" size="45" value="%s" />',htmlspecialchars($request['dn']));
-draw_chooser_link('copy_form.dn_dst','true',get_rdn($request['dn']));
+draw_chooser_link('copy_form','dn_dst','true',get_rdn($request['dn']));
 echo '</td>';
 echo '</tr>';
 echo "\n";
@@ -59,7 +62,7 @@ $request['children'] = $app['server']->getContainerContents($request['dn']);
 if (count($request['children']) > 0) {
 	echo '<tr>';
 	printf('<td><label for="recursive">%s</label>:</td>',_('Recursive copy'));
-	echo '<td><input type="checkbox" id="recursive" name="recursive" onClick="copy_field_toggle(this)" />';
+	echo '<td><input type="checkbox" id="recursive" name="recursive" onclick="copy_field_toggle(this)" />';
 	printf('<small>(%s)</small></td>',_('Recursively copy all children of this object as well.'));
 	echo '</tr>';
 	echo "\n";
@@ -83,19 +86,18 @@ if (count($request['children']) > 0) {
 }
 echo "\n";
 
-printf('<tr><td colspan="2" align="right"><input type="submit" value="%s" /></td></tr>',_('Copy '));
+printf('<tr><td colspan="2" style="text-align: center;"><input type="submit" value="%s" /></td></tr>',_('Copy '));
 echo "\n";
 
 echo '</table>';
 echo '</form>';
 
 if ($_SESSION[APPCONFIG]->getValue('appearance','show_hints'))
-	printf('<small><img src="%s/light.png" alt="Light" /><span class="hint">%s</span></small>',
+	printf('<div style="text-align: center;"><small><img src="%s/light.png" alt="Light" /><span class="hint">%s</span></small></div>',
 		IMGDIR,_('Hint: Copying between different servers only works if there are no schema violations'));
 
-echo '</center>';
 
 # Draw the javascrpt to enable/disable the filter field if this may be a recursive copy
 if (count($request['children']) > 0)
-	printf('<script type="text/javascript" language="javascript" src="%sform_field_toggle_enable.js"></script>',JSDIR);
+	printf('<script type="text/javascript" src="%sform_field_toggle_enable.js"></script>',JSDIR);
 ?>

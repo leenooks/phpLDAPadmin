@@ -32,20 +32,23 @@ $request['page']->drawSubTitle();
 
 # Confirm the updates
 if (count($request['template']->getLDAPmodify(true))) {
-	echo '<center>';
+	echo '<div style="text-align: center;">';
 	echo _('Do you want to make these changes?');
 	echo '<br /><br />';
+	echo '</div>';
 
 	echo "\n\n";
 	echo '<form action="cmd.php" method="post">';
+	echo '<div>';
 	echo '<input type="hidden" name="cmd" value="update" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($request['dn']));
 	echo "\n";
 
 	$request['page']->drawHiddenAttributes();
+	echo '</div>';
 
-	echo '<table class="result_table">';
+	echo '<table class="result_table" style="margin-left: auto; margin-right: auto;">';
 	echo "\n";
 
 	printf('<tr class="heading"><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
@@ -182,9 +185,11 @@ if (count($request['template']->getLDAPmodify(true))) {
 
 	echo '</table>';
 
+	echo '<div style="text-align: center;">';
 	echo '<br />';
 	printf('<input type="submit" value="%s" />',_('Commit'));
 	printf('<input type="submit" name="cancel" value="%s" />',_('Cancel'));
+	echo '</div>';
 	echo '</form>';
 	echo '<br />';
 
@@ -206,16 +211,14 @@ if (count($request['template']->getLDAPmodify(true))) {
 		echo '</b></td></tr></table>';
 	}
 
-	echo '</center>';
-
 } else {
-	echo '<center>';
+	echo '<div style="text-align: center;">';
 	echo _('You made no changes');
 	$href = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',
 		 $app['server']->getIndex(),rawurlencode($request['dn']));
 
 	printf(' <a href="%s">%s</a>.',htmlspecialchars($href),_('Go back'));
-	echo '</center>';
+	echo '</div>';
 }
 
 function getMustAttrs($oclasses) {

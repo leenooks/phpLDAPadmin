@@ -79,12 +79,10 @@ class page {
 		ob_start();
 
 		# Initial Values
-		$this->_pageheader[] .= '<?xml version="1.0" encoding="utf-8"?>'."\n";
-		$this->_pageheader[] .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN"'."\n";
-		$this->_pageheader[] .= '"http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd">'."\n";
-		$this->_pageheader[] .= "\n";
-		$this->_pageheader[] .= '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="auto" lang="auto" dir="ltr">'."\n";
-		$this->_pageheader[] .= "\n";
+		#$this->_pageheader[] .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN"';
+		#$this->_pageheader[] .= '"http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd">'."\n";
+		$this->_pageheader[] = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+		$this->_pageheader[] .= '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="auto">'."\n";
 	}
 
 	/* Add to the HTML Header */
@@ -121,8 +119,8 @@ class page {
 		if (defined('JSDIR')) {
 			printf('<link type="text/css" rel="stylesheet" media="all" href="%sjscalendar/calendar-blue.css" title="blue" />',JSDIR);
 			echo "\n";
-			printf('<script type="text/javascript" language="javascript" src="%sajax_functions.js"></script>',JSDIR);
-			printf('<script type="text/javascript" language="javascript" src="%sjscalendar/calendar.js"></script>',JSDIR);
+			printf('<script type="text/javascript" src="%sajax_functions.js"></script>',JSDIR);
+			printf('<script type="text/javascript" src="%sjscalendar/calendar.js"></script>',JSDIR);
 			echo "\n";
 		}
 
@@ -146,8 +144,8 @@ class page {
 
 		echo '<tr class="pagehead">';
 
-		echo '<td colspan=3><div id="ajHEAD"><table width=100% border=0><tr>';
-		printf('<td align="left"><a href="%s" target="_blank"><img src="%s" alt="Logo" class="logo" /></a></td>',get_href('sf'),$this->_app['logo']);
+		echo '<td colspan="3"><div id="ajHEAD"><table width="100%" border="0"><tr>';
+		printf('<td style="text-align: left;"><a href="%s" onclick="target=\'_blank\';"><img src="%s" alt="Logo" class="logo" /></a></td>',get_href('sf'),$this->_app['logo']);
 
 		echo '<td class="imagetop">';
 		$empty = true;
@@ -175,7 +173,7 @@ class page {
 		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-		echo '<table class="control" width=100% border=0>';
+		echo '<table class="control" width="100%" border="0">';
 		echo '<tr><td>';
 
 		$empty = true;
@@ -210,7 +208,7 @@ class page {
 			$this->index = min(array_keys($_SESSION[APPCONFIG]->getServerList()));
 
 		if (count($_SESSION[APPCONFIG]->getServerList()) > 1) {
-			echo '<form name="server_select" action="cmd.php" method="post">';
+			echo '<form id="server_select" action="cmd.php" method="post">';
 			echo '<table class="server_select"><tr><td>';
 			printf('%s:<br />%s',_('Server Select'),
 				server_select_list($this->index,false,'index',true,sprintf("onchange=\"tree_unhide('index',%s)\"",$this->index)));
@@ -245,7 +243,7 @@ class page {
 		if (! isset($this->_block[$side]))
 			return;
 
-		printf('<td class="%s" colspan=2>',$side);
+		printf('<td class="%s" colspan="2">',$side);
 		foreach ($this->_block[$side] as $object)
 			echo $object->draw($side);
 		echo '</td>';
@@ -273,7 +271,7 @@ class page {
 				}
 
 				if (isset($details['title']))
-					printf('<tr><td class="icon" rowspan=2 align="right"><img src="%s" alt="%s" /></td><td class="head" align="right">%s</td></tr>',
+					printf('<tr><td class="icon" rowspan="2"><img src="%s" alt="%s" /></td><td class="head">%s</td></tr>',
 						$icon,$details['type'],$details['title']);
 
 				if (isset($details['body']))
@@ -317,10 +315,10 @@ class page {
 		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-		printf('<tr class="foot"><td><small>%s</small></td><td colspan=2><div id="ajFOOT">%s</div>%s</td></tr>',
+		printf('<tr class="foot"><td><small>%s</small></td><td colspan="2"><div id="ajFOOT">%s</div>%s</td></tr>',
 			isCompress() ? '[C]' : '&nbsp;',
 			app_version(),
-			get_href('logo') ? sprintf('<a href="%s"><img src="%s" border="0" alt="SourceForge.net Logo" /></a>',get_href('sf'),get_href('logo')) : '&nbsp;');
+			get_href('logo') ? sprintf('<a href="%s"><img src="%s" alt="SourceForge.net Logo" style="border: 0px;" /></a>',get_href('sf'),get_href('logo')) : '&nbsp;');
 	}
 
 	/**
@@ -382,14 +380,14 @@ class page {
 		# Page Header
 		echo '<body>';
 		echo "\n";
-		echo '<table class="page" border=0 width=100%>';
+		echo '<table class="page" border="0" width="100%">';
 
 		if ($display['HEAD'])
 			$this->head_print();
 
 		# Control Line
 		if ($display['CONTROL']) {
-			echo '<tr class="control"><td colspan=3>';
+			echo '<tr class="control"><td colspan="3">';
 			echo '<div id="ajCONTROL">';
 			$this->control_print();
 			echo '</div></td></tr>';
@@ -400,15 +398,15 @@ class page {
 		echo '<tr>';
 
 		if ($display['TREE']) {
-			echo '<td class="tree" colspan=2>';
-			printf('<acronym title="%s"><img src="%s/plus.png" align="right" onClick="if (document.getElementById(\'ajTREE\').style.display == \'none\') { document.getElementById(\'ajTREE\').style.display = \'block\' } else { document.getElementById(\'ajTREE\').style.display = \'none\' };"/></acronym>',_('Hide/Unhide the tree'),IMGDIR);
+			echo '<td class="tree" colspan="2">';
+			printf('<acronym title="%s"><img src="%s/plus.png" alt="" style="float: right;" onclick="if (document.getElementById(\'ajTREE\').style.display == \'none\') { document.getElementById(\'ajTREE\').style.display = \'block\' } else { document.getElementById(\'ajTREE\').style.display = \'none\' };"/></acronym>',_('Hide/Unhide the tree'),IMGDIR);
 			echo '<div id="ajTREE">';
 			$this->tree();
 			echo '</div>';
 			echo '</td>';
 		}
 
-		echo '<td class="body" width=80%>';
+		echo '<td class="body" style="width: 80%;">';
 		echo '<div id="ajBODY">';
 		echo "\n";
 		$this->body();

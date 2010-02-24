@@ -31,7 +31,7 @@ printf('<h3 class="subtitle">%s</h3>',_('Password Checker Tool'));
 echo '<form action="password_checker.php" method="post">';
 echo '<input type="hidden" name="action" value="compare" />';
 
-echo '<table class="forminput" width=100% border=0>';
+echo '<table class="forminput" width="100%" border="0">';
 
 echo '<tr>';
 printf('<td class="heading">%s</td>',_('Compare'));

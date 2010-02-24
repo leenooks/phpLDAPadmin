@@ -54,12 +54,14 @@ $request['page']->drawSubTitle(sprintf('%s: <b>%s</b>&nbsp;&nbsp;&nbsp;%s: <b>%s
 
 # Confirm the creation
 if (count($request['template']->getLDAPadd(true))) {
-	echo '<center>';
+	echo '<div style="text-align: center;">';
 	echo _('Do you want to create this entry?');
 	echo '<br /><br />';
+	echo '</div>';
 
 	echo "\n\n";
 	echo '<form action="cmd.php" method="post">';
+	echo '<div>';
 	echo '<input type="hidden" name="cmd" value="create" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 	printf('<input type="hidden" name="container" value="%s" />',htmlspecialchars($request['template']->getContainer()));
@@ -69,8 +71,9 @@ if (count($request['template']->getLDAPadd(true))) {
 	echo "\n";
 
 	$request['page']->drawHiddenAttributes();
+	echo '</div>';
 
-	echo '<table class="result_table">';
+	echo '<table class="result_table" style="margin-left: auto; margin-right: auto;">';
 	echo "\n";
 
 	printf('<tr class="heading"><td>%s</td><td>%s</td><td>%s</td></tr>',
@@ -78,7 +81,7 @@ if (count($request['template']->getLDAPadd(true))) {
 	echo "\n\n";
 
 	$counter = 0;
-	printf('<tr class="%s"><td colspan=3><center><b>%s</b></center></td><tr>',$counter%2 ? 'even' : 'odd',$request['template']->getDN());
+	printf('<tr class="%s"><td colspan="3" style="text-align: center;"><b>%s</b></td></tr>',$counter%2 ? 'even' : 'odd',$request['template']->getDN());
 
 	foreach ($request['template']->getLDAPadd(true) as $attribute) {
 		$counter++;
@@ -106,21 +109,21 @@ if (count($request['template']->getLDAPadd(true))) {
 
 	echo '</table>';
 
+	echo '<div style="text-align: center;">';
 	echo '<br />';
 	printf('<input type="submit" value="%s" />',_('Commit'));
 	printf('<input type="submit" name="cancel" value="%s" />',_('Cancel'));
+	echo '</div>';
 	echo '</form>';
 	echo '<br />';
 
-	echo '</center>';
-
 } else {
-	echo '<center>';
+	echo '<div style="text-align: center;">';
 	echo _('You made no changes');
 	$href = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',
 		$app['server']->getIndex(),rawurlencode($request['dn']));
 
 	printf(' <a href="%s">%s</a>.',htmlspecialchars($href),_('Go back'));
-	echo '</center>';
+	echo '</div>';
 }
 ?>

@@ -38,11 +38,13 @@ if (get_request('meth','REQUEST') != 'ajax') {
 	$request['page']->drawSubTitle();
 
 	if (! strcasecmp($request['attr'],'objectclass')) {
-		echo '<form action="cmd.php" method="post" class="new_value" name="entry_form">';
+		echo '<form action="cmd.php" method="post" class="new_value" id="entry_form">';
+		echo '<div>';
 		echo '<input type="hidden" name="cmd" value="add_oclass_form" />';
 
 	} else {
-		echo '<form action="cmd.php" method="post" class="new_value" name="entry_form" enctype="multipart/form-data" onSubmit="return submitForm(this)">';
+		echo '<form action="cmd.php" method="post" class="new_value" id="entry_form" enctype="multipart/form-data" onsubmit="return submitForm(this)">';
+		echo '<div>';
 		if ($_SESSION[APPCONFIG]->getValue('confirm','update'))
 			echo '<input type="hidden" name="cmd" value="update_confirm" />';
 		else
@@ -51,9 +53,9 @@ if (get_request('meth','REQUEST') != 'ajax') {
 
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($request['dn']));
+	echo '</div>';
 
-	echo '<center>';
-	echo '<table class="forminput" border=0>';
+	echo '<table class="forminput" border="0" style="margin-left: auto; margin-right: auto;">';
 	echo '<tr>';
 
 	$request['attribute'] = $request['template']->getAttribute($request['attr']);
@@ -66,7 +68,7 @@ if (get_request('meth','REQUEST') != 'ajax') {
 		echo '<td>';
 
 		# Display current attribute values
-		echo '<table border=0><tr><td>';
+		echo '<table border="0"><tr><td>';
 		for ($i=0;$i<$request['count'];$i++) {
 			if ($i > 0)
 				echo '<br/>';
@@ -97,9 +99,9 @@ if (get_request('meth','REQUEST') != 'ajax') {
 			unset($socs[strtolower($oclass)]);
 
 		# Draw objectClass selection
-		echo '<table border=0>';
+		echo '<table border="0">';
 		echo '<tr><td>';
-		echo '<select name="new_values[objectclass][]" multiple="true" size="15">';
+		echo '<select name="new_values[objectclass][]" multiple="multiple" size="15">';
 		foreach ($socs as $name => $oclass) {
 			# Exclude any structural ones, that are not in the heirachy, as they'll only generate an LDAP_OBJECT_CLASS_VIOLATION
 			if (($oclass->getType() == 'structural') && ! $oclass->isRelated($request['attribute']->getValues()))
@@ -117,16 +119,15 @@ if (get_request('meth','REQUEST') != 'ajax') {
 		echo '</tr>';
 
 		if ($_SESSION[APPCONFIG]->getValue('appearance','show_hints'))
-			printf('<tr><td colspan=2><small><br /><img src="%s/light.png" alt="Hint" /><span class="hint">%s</span></small></td></tr>',
+			printf('<tr><td colspan="2"><small><br /><img src="%s/light.png" alt="Hint" /><span class="hint">%s</span></small></td></tr>',
 				IMGDIR,_('Note: You may be required to enter new attributes that these objectClass(es) require'));
 
 		echo '</table>';
-		echo '</center>';
 		echo '</form>';
 
 	} else {
 		# Draw a blank field
-		echo '<table border=0><tr><td>';
+		echo '<table border="0"><tr><td>';
 		$request['page']->draw('FormValue',$request['attribute'],$request['count']);
 		echo '</td></tr><tr><td>';
 
@@ -148,7 +149,6 @@ if (get_request('meth','REQUEST') != 'ajax') {
 
 		echo '</td></tr>';
 		echo '</table>';
-		echo '</center>';
 		echo '</form>';
 	}
 
@@ -158,7 +158,7 @@ if (get_request('meth','REQUEST') != 'ajax') {
 		$attribute = $request['template']->getAttribute($request['attr']);
 		$attribute->show();
 
-		echo '<table class="entry" cellspacing="0" align="center" border=0>';
+		echo '<table class="entry" cellspacing="0" align="center" border="0">';
 		$request['page']->draw('Template',$attribute);
 		$request['page']->draw('Javascript',$attribute);
 		echo '</table>';

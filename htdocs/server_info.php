@@ -18,16 +18,16 @@ printf('<h3 class="subtitle">%s</h3>',_('Server reports the following informatio
 
 if (! count($attrs)) {
 	echo '<br /><br />';
-	printf('<center>%s</center>',_('This server has nothing to report.'));
+	printf('<div style="text-align: center;">%s</div>',_('This server has nothing to report.'));
 	return;
 }
 
-echo '<table class="result" border=0>';
+echo '<table class="result" border="0">';
 foreach ($attrs as $key => $values) {
 	if ($key == 'dn')
 		continue;
 
-	echo '<tr class="list_item"><td class="heading" rowspan=2>';
+	echo '<tr class="list_item"><td class="heading" rowspan="2">';
 
 	$sattr = $app['server']->getSchemaAttribute($key);
 
@@ -42,7 +42,7 @@ foreach ($attrs as $key => $values) {
 	echo '</td></tr>';
 
 	echo '<tr class="list_item"><td class="blank">&nbsp;</td><td class="value">';
-	echo '<table class="result" border=0>';
+	echo '<table class="result" border="0">';
 
 	if (is_array($values))
 		foreach ($values as $value) {
@@ -50,7 +50,7 @@ foreach ($attrs as $key => $values) {
 			print '<tr>';
 
 			if (preg_match('/^[0-9]+\.[0-9]+/',$value)) {
-				printf('<td width=5%% rowspan=2 style="vertical-align: top"><img src="%s/rfc.png" title="%s" alt="%s"/></td>',
+				printf('<td rowspan="2" style="width: 5%%; vertical-align: top"><img src="%s/rfc.png" title="%s" alt="%s"/></td>',
 					IMGDIR,$value,htmlspecialchars($value));
 
 				if ($oidtext = support_oid_to_text($value))
@@ -64,7 +64,7 @@ foreach ($attrs as $key => $values) {
 						printf('<td><small>%s</small></td>',$value);
 
 			} else {
-				printf('<td rowspan=2 colspan=2>%s</td>',$value);
+				printf('<td rowspan="2" colspan="2">%s</td>',$value);
 			}
 
 			print '</tr>';
@@ -75,11 +75,11 @@ foreach ($attrs as $key => $values) {
 				echo '<tr><td>&nbsp;</td></tr>';
 
 			if ($oidtext)
-				echo '<tr><td colspan=2>&nbsp;</td></tr>';
+				echo '<tr><td colspan="2">&nbsp;</td></tr>';
 		}
 
 	else
-		printf('<tr><td colspan=2>%s&nbsp;</td></tr>',$values);
+		printf('<tr><td colspan="2">%s&nbsp;</td></tr>',$values);
 
 
 	echo '</table>';

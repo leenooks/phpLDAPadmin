@@ -43,32 +43,34 @@ $request['pageSRC']->drawTitle(_('Comparing the following DNs'));
 
 echo '<br/>';
 
-echo '<table class="entry" width=100% border=0>';
+echo '<table class="entry" width="100%" border="0">';
 echo '<tr class="heading">';
 
 $href = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',
 	$ldap['SRC']->getIndex(),rawurlencode($request['dnSRC']));
-printf('<td colspan=2 width=40%%>%s: <b>%s</b><br />%s: <b><a href="%s">%s</a></b></td>',
+printf('<td colspan="2" style="width: 40%%;">%s: <b>%s</b><br />%s: <b><a href="%s">%s</a></b></td>',
 	_('Server'),$ldap['SRC']->getName(),_('Distinguished Name'),
 	htmlspecialchars($href),$request['dnSRC']);
 
 $href = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',
 	$ldap['DST']->getIndex(),rawurlencode($request['dnDST']));
-printf('<td colspan=2 width=40%%>%s: <b>%s</b><br />%s: <b><a href="%s">%s</a></b></td>',
+printf('<td colspan="2" style="width: 40%%;">%s: <b>%s</b><br />%s: <b><a href="%s">%s</a></b></td>',
 	_('Server'),$ldap['DST']->getName(),_('Distinguished Name'),
 	htmlspecialchars($href),$request['dnDST']);
 
 echo '</tr>';
 
 echo '<tr>';
-echo '<td colspan=4 align=right>';
-echo '<form action="cmd.php?cmd=compare" method="post" name="compare_form">';
+echo '<td colspan="4" style="text-align: right;">';
+echo '<form action="cmd.php?cmd=compare" method="post">';
+echo '<div>';
 printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 printf('<input type="hidden" name="server_id_src" value="%s" />',$ldap['DST']->getIndex());
 printf('<input type="hidden" name="server_id_dst" value="%s" />',$ldap['SRC']->getIndex());
 printf('<input type="hidden" name="dn_src" value="%s" />',htmlspecialchars($request['dnDST']));
 printf('<input type="hidden" name="dn_dst" value="%s" />',htmlspecialchars($request['dnSRC']));
 printf('<input type="submit" value="%s" />',_('Switch Entry'));
+echo '</div>';
 echo '</form>';
 echo '</td>';
 echo '</tr>';
@@ -110,13 +112,13 @@ foreach ($attrs_all as $attr) {
 						echo '<td class="title">&nbsp;</td>';
 
 					else {
-						echo '<td class="note" align="right">';
+						echo '<td class="note" style="text-align: right;">';
 						$request['pageSRC']->draw('Notes',$attributeSRC);
 						echo '</td>';
 					}
 
 				} else {
-					echo '<td colspan=2>&nbsp;</td>';
+					echo '<td colspan="2">&nbsp;</td>';
 				}
 
 				break;
@@ -132,12 +134,12 @@ foreach ($attrs_all as $attr) {
 						echo '</td>';
 					}
 
-					echo '<td class="note" align="right">';
+					echo '<td class="note" style="text-align: right;">';
 					$request['pageDST']->draw('Notes',$attributeDST);
 					echo '</td>';
 
 				} else {
-					echo '<td colspan=2>&nbsp;</td>';
+					echo '<td colspan="2">&nbsp;</td>';
 				}
 
 				break;
@@ -154,31 +156,30 @@ foreach ($attrs_all as $attr) {
 		echo '<tr>';
 
 	foreach (array('src','dst') as $side) {
+		echo '<td class="value" colspan="2"><table border="0">';
+		echo '<tr><td>';
+
 		switch ($side) {
 			case 'src':
-				echo '<td class="value" colspan=2><table border=0>';
 
 				if ($attributeSRC && count($attributeSRC->getValues()))
 					$request['pageSRC']->draw('CurrentValues',$attributeSRC);
 				else
-					echo '<tr><td>&nbsp;</td></tr>';
-
-				echo '</table></td>';
+					echo '&nbsp;';
 
 				break;
 
 			case 'dst':
-				echo '<td class="value" colspan=2><table>';
-
 				if ($attributeDST && count($attributeDST->getValues()))
 					$request['pageDST']->draw('CurrentValues',$attributeDST);
 				else
-					echo '<tr><td>&nbsp;</td></tr>';
-
-				echo '</table></td>';
+					echo '&nbsp;';
 
 				break;
 		}
+
+		echo '</td></tr>';
+		echo '</table></td>';
 	}
 
 	echo '</tr>';

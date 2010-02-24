@@ -167,7 +167,7 @@ function app_error_handler($errno,$errstr,$file,$lineno) {
 		$body .= sprintf('<tr><td>Web server:</td><td><b>%s</b></td></tr>',isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : 'SCRIPT');
 
 		if (function_exists('get_href'))
-			$body .= sprintf('<tr><td colspan="2"><a href="%s" target="_blank"><center>%s.</center></a></td></tr>',
+			$body .= sprintf('<tr><td colspan="2"><a href="%s" onclick="target=\'_blank\';"><center>%s.</center></a></td></tr>',
 				get_href('search_bug',"&summary_keyword=".rawurlencode($errstr)),
 				_('Please check and see if this bug has been reported'));
 		$body .= '</table>';
@@ -375,31 +375,31 @@ function cmd_control_pane($type) {
 				'forum'=>array(
 					'title'=>_('Forum'),
 					'enable'=>isset($_SESSION[APPCONFIG]) ? $_SESSION[APPCONFIG]->isCommandAvailable('cmd','oslinks') : true,
-					'link'=>sprintf('href="%s" title="%s" target="_blank"',get_href('forum'),_('Forum')),
+					'link'=>sprintf('href="%s" title="%s" onclick="target=\'_blank\';"',get_href('forum'),_('Forum')),
 					'image'=>sprintf('<img src="%s/forum-big.png" alt="%s" />',IMGDIR,_('Forum'))),
 
 				'feature'=>array(
 					'title'=>_('Request feature'),
 					'enable'=>isset($_SESSION[APPCONFIG]) ? $_SESSION[APPCONFIG]->isCommandAvailable('cmd','oslinks') : true,
-					'link'=>sprintf('href="%s" title="%s" target="_blank"',get_href('add_rfe'),_('Request feature')),
+					'link'=>sprintf('href="%s" title="%s" onclick="target=\'_blank\';"',get_href('add_rfe'),_('Request feature')),
 					'image'=>sprintf('<img src="%s/request-feature-big.png" alt="%s" />',IMGDIR,_('Request feature'))),
 
 				'bug'=>array(
 					'title'=>_('Report a bug'),
 					'enable'=>isset($_SESSION[APPCONFIG]) ? $_SESSION[APPCONFIG]->isCommandAvailable('cmd','oslinks') : true,
-					'link'=>sprintf('href="%s" title="%s" target="_blank"',get_href('add_bug'),_('Report a bug')),
+					'link'=>sprintf('href="%s" title="%s" onclick="target=\'_blank\';"',get_href('add_bug'),_('Report a bug')),
 					'image'=>sprintf('<img src="%s/bug-big.png" alt="%s" />',IMGDIR,_('Report a bug'))),
 
 				'donation'=>array(
 					'title'=>_('Donate'),
 					'enable'=>isset($_SESSION[APPCONFIG]) ? $_SESSION[APPCONFIG]->isCommandAvailable('cmd','oslinks') : true,
-					'link'=>sprintf('href="%s" title="%s" target="_blank"',get_href('donate'),_('Donate')),
+					'link'=>sprintf('href="%s" title="%s" onclick="target=\'_blank\';"',get_href('donate'),_('Donate')),
 					'image'=>sprintf('<img src="%s/smile-big.png" alt="%s" />',IMGDIR,_('Donate'))),
 
 				'help'=>array(
 					'title'=>_('Help'),
 					'enable'=>isset($_SESSION[APPCONFIG]) ? $_SESSION[APPCONFIG]->isCommandAvailable('cmd','oslinks') : true,
-					'link'=>sprintf('href="%s" title="%s" target="_blank"',get_href('documentation'),_('Help')),
+					'link'=>sprintf('href="%s" title="%s" onclick="target=\'_blank\';"',get_href('documentation'),_('Help')),
 					'image'=>sprintf('<img src="%s/help-big.png" alt="%s" />',IMGDIR,_('Help')))
 			);
 
@@ -615,7 +615,7 @@ function error($msg,$type='note',$redirect=null,$fatal=false,$backtrace=false) {
 				$display = strlen(serialize($line['args'])) < 50 ? htmlspecialchars(serialize($line['args'])) : htmlspecialchars(substr(serialize($line['args']),0,50)).'...<TRUNCATED>';
 				$_SESSION['backtrace'][$error]['args'] = $line['args'];
 				if (file_exists(LIBDIR.'../tools/unserialize.php'))
-					$body .= sprintf('&nbsp;(<a href="%s?index=%s" target="backtrace">%s</a>)',
+					$body .= sprintf('&nbsp;(<a href="%s?index=%s" onclick="target=\'backtrace\';">%s</a>)',
 						'../tools/unserialize.php',$error,$display);
 				else
 					$body .= sprintf('&nbsp;(%s)',$display);
@@ -1919,7 +1919,7 @@ function support_oid_to_text($key) {
 			if ($oid_id) {
 				$CACHE[$oid_id]['title'] = isset($entry[4]) ? $entry[4] : null;
 				$CACHE[$oid_id]['ref'] = isset($entry[6]) ? $entry[6] : null;
-				$desc = isset($entry[8]) ? $entry[8] : sprintf('<acryonym title="%s"><small>%s</small></acryonym>',$unknown['desc'],$unknown['title']);
+				$desc = isset($entry[8]) ? $entry[8] : sprintf('<acronym title="%s">%s</acronym>',$unknown['desc'],$unknown['title']);
 				$CACHE[$oid_id]['desc'] = preg_replace('/\s+/',' ',$desc);
 			}
 		}
@@ -1931,7 +1931,7 @@ function support_oid_to_text($key) {
 		return array(
 			'title'=>$key,
 			'ref'=>null,
-			'desc'=>sprintf('<acryonym title="%s"><small>%s</small></acryonym>',$unknown['desc'],$unknown['title']));
+			'desc'=>sprintf('<acronym title="%s">%s</acronym>',$unknown['desc'],$unknown['title']));
 }
 
 /**
@@ -1941,7 +1941,7 @@ function ldap_error_msg($msg,$errnum) {
 	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-	$body = '<table border=0>';
+	$body = '<table border="0">';
 
 	$errnum = ('0x'.str_pad(dechex($errnum),2,0,STR_PAD_LEFT));
 	$verbose_error = pla_verbose_error($errnum);
@@ -2386,15 +2386,11 @@ function get_enc_type($user_password) {
  *         "edit_form.member_uid". See /templates/modification/default.php for example usage.
  * @param boolean (optional) If true, the function draws the localized text "choose" to the right of the button.
  */
-function draw_chooser_link($form_element,$include_choose_text=true,$rdn='none') {
+function draw_chooser_link($form,$element,$include_choose_text=true,$rdn='none') {
 	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-	if ($rdn == 'none')
-		$href = sprintf("javascript:dnChooserPopup('%s','');",$form_element);
-	else
-		$href = sprintf("javascript:dnChooserPopup('%s','%s');",$form_element,$rdn);
-
+	$href = sprintf("javascript:dnChooserPopup('%s','%s','%s');",$form,$element,$rdn == 'none' ? '' : rawurlencode($rdn));
 	$title = _('Click to popup a dialog to select an entry (DN) graphically');
 
 	printf('<a href="%s" title="%s"><img class="chooser" src="%s/find.png" alt="Find" /></a>',$href,$title,IMGDIR);
@@ -2795,7 +2791,7 @@ function server_select_list($selected=null,$logged_on=false,$name='index',$isVis
 
 			$count++;
 			$server_menu_html .= sprintf('<option value="%s" %s>%s</option>',
-				$server->getIndex(),($server->getIndex() == $selected ? 'selected' : ''),$server->getName());
+				$server->getIndex(),($server->getIndex() == $selected ? 'selected="selected"' : ''),$server->getName());
 
 			# We will set this variable, in case there is only 1 hit.
 			$selected_server = $server;

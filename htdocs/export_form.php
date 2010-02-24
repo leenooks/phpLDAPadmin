@@ -36,16 +36,16 @@ $available_scopes = array(
 $request['page'] = new PageRender($app['server']->getIndex(),get_request('template','REQUEST',false,'none'));
 $request['page']->drawTitle(sprintf('<b>%s</b>',_('Export')));
 
-printf('<script type="text/javascript" language="javascript" src="%sdnChooserPopup.js"></script>',JSDIR);
-printf('<script type="text/javascript" language="javascript" src="%sform_field_toggle_enable.js"></script>',JSDIR);
+printf('<script type="text/javascript" src="%sdnChooserPopup.js"></script>',JSDIR);
+printf('<script type="text/javascript" src="%sform_field_toggle_enable.js"></script>',JSDIR);
 
 echo '<br />';
-echo '<center>';
-echo '<form name="export_form" action="cmd.php" method="post">';
+echo '<form id="export_form" action="cmd.php" method="post">';
+echo '<div>';
 echo '<input type="hidden" name="cmd" value="export" />';
 printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 
-echo '<table class="forminput">';
+echo '<table class="forminput" style="margin-left: auto; margin-right: auto;">';
 echo '<tr>';
 echo '<td>';
 
@@ -59,7 +59,7 @@ echo '<tr>';
 printf('<td style="white-space:nowrap">%s</td>',_('Base DN'));
 echo '<td><span style="white-space: nowrap;">';
 printf('<input type="text" name="dn" id="dn" style="width:230px" value="%s" />&nbsp;',htmlspecialchars($request['dn']));
-draw_chooser_link('export_form.dn');
+draw_chooser_link('export_form','dn');
 echo '</span></td>';
 echo '</tr>';
 
@@ -70,7 +70,7 @@ echo '<td>';
 
 foreach ($available_scopes as $id => $desc)
 	printf('<input type="radio" name="scope" value="%s" id="%s"%s /><label for="%s">%s</label><br />',
-		htmlspecialchars($id),$id,($id == $request['scope']) ? 'checked="true"' : '',
+		htmlspecialchars($id),$id,($id == $request['scope']) ? 'checked="checked"' : '',
 		htmlspecialchars($id),$desc);
 
 echo '</td>';
@@ -84,12 +84,12 @@ printf('<tr><td>%s</td><td><input type="text" name="attributes" style="width:300
 	_('Show Attributtes'),htmlspecialchars($request['attr']));
 
 printf('<tr><td>&nbsp;</td><td><input type="checkbox" name="sys_attr" id="sys_attr" %s/> <label for="sys_attr">%s</label></td></tr>',
-	$request['sys_attr'] ? 'checked="true" ' : '',_('Include system attributes'));
+	$request['sys_attr'] ? 'checked="checked" ' : '',_('Include system attributes'));
 
 printf('<tr><td>&nbsp;</td><td><input type="checkbox" id="save_as_file" name="save_as_file" onclick="export_field_toggle(this)" /> <label for="save_as_file">%s</label></td></tr>',
 	_('Save as file'));
 
-printf('<tr><td>&nbsp;</td><td><input type="checkbox" id="compress" name="compress" disabled /> <label for="compress">%s</label></td></tr>',
+printf('<tr><td>&nbsp;</td><td><input type="checkbox" id="compress" name="compress" disabled="disabled" /> <label for="compress">%s</label></td></tr>',
 	_('Compress'));
 
 echo '</table>';
@@ -109,9 +109,9 @@ printf('<legend>%s</legend>',_('Export format'));
 
 foreach (Exporter::types() as $index => $exporter) {
 	printf('<input type="radio" name="exporter_id" id="exporter_id_%s" value="%s"%s/>',
-		htmlspecialchars($exporter['type']),htmlspecialchars($exporter['type']),($exporter['type'] === $request['exporter_id']) ? ' checked="true"' : '');
+		htmlspecialchars($exporter['type']),htmlspecialchars($exporter['type']),($exporter['type'] === $request['exporter_id']) ? ' checked="checked"' : '');
 
-	printf('<label for="%s">%s</label><br />',
+	printf('<label for="exporter_id_%s">%s</label><br />',
 		htmlspecialchars($exporter['type']),$exporter['type']);
 }
 
@@ -124,7 +124,7 @@ echo '<fieldset style="height: 100px">';
 printf('<legend>%s</legend>',_('Line ends'));
 foreach ($available_formats as $id => $desc)
 	printf('<input type="radio" name="format" value="%s" id="%s"%s /><label for="%s">%s</label><br />',
-		htmlspecialchars($id),htmlspecialchars($id),($request['format']==$id) ? ' checked="true"' : '',
+		htmlspecialchars($id),htmlspecialchars($id),($request['format']==$id) ? ' checked="checked"' : '',
 		htmlspecialchars($id),$desc);
 
 echo '</fieldset>';
@@ -134,13 +134,13 @@ echo '</td>';
 
 echo '</tr>';
 
-printf('<tr><td colspan="2"><center><input type="submit" name="target" value="%s" /></center></td></tr>',
+printf('<tr><td colspan="2" style="text-align: center;"><input type="submit" name="target" value="%s" /></td></tr>',
 	htmlspecialchars(_('Proceed >>')));
 
 echo '</table>';
 
+echo '</div>';
 echo '</form>';
-echo '</center>';
 
 /**
  * Helper function for fetching the line end format.

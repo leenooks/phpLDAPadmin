@@ -60,7 +60,7 @@ if (count($ldap['attrs']['need']) > 0) {
 	$request['page']->drawTitle(sprintf('%s <b>%s</b>',_('Add new objectClass to'),get_rdn($request['dn'])));
 	$request['page']->drawSubTitle();
 
-	echo '<center>';
+	echo '<div style="text-align: center">';
 	printf('<small><b>%s: </b>%s <b>%s</b> %s %s</small>',
 		_('Instructions'),
 		_('In order to add these objectClass(es) to this entry, you must specify'),
@@ -69,7 +69,8 @@ if (count($ldap['attrs']['need']) > 0) {
 
 	echo '<br /><br />';
 
-	echo '<form action="cmd.php" method="post" name="entry_form">';
+	echo '<form action="cmd.php" method="post" id="entry_form">';
+	echo '<div>';
 
 	if ($_SESSION[APPCONFIG]->getValue('confirm','update'))
 		echo '<input type="hidden" name="cmd" value="update_confirm" />';
@@ -78,27 +79,25 @@ if (count($ldap['attrs']['need']) > 0) {
 
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($request['dn']));
+	echo '</div>';
 
-	echo '<table class="entry" cellspacing="0">';
+	echo '<table class="entry" cellspacing="0" border="0" style="margin-left: auto; margin-right: auto;">';
 	printf('<tr><th colspan="2">%s</th></tr>',_('New Required Attributes'));
 
 	$counter = 0;
-	foreach ($request['template']->getAttribute('objectclass')->getValues() as $value) {
-		echo '<tr><td colspan=2>';
+	echo '<tr><td colspan="2">';
+	foreach ($request['template']->getAttribute('objectclass')->getValues() as $value)
 		$request['page']->draw('HiddenValue',$request['template']->getAttribute('objectclass'),$counter++);
-		echo '</td></tr>';
-	}
+	echo '</td></tr>';
 
 	foreach ($ldap['attrs']['need'] as $count => $attr)
 		$request['page']->draw('Template',$attr);
 
 	echo '</table>';
 
-	echo '<br />';
-
-	printf('<center><input type="submit" value="%s" /></center>',_('Add ObjectClass and Attributes'));
+	printf('<div style="text-align: center;"><br /><input type="submit" value="%s" /></div>',_('Add ObjectClass and Attributes'));
 	echo '</form>';
-	echo '</center>';
+	echo '</div>';
 
 # There are no other required attributes, so we just need to add the objectclass to the DN.
 } else {

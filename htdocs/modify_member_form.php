@@ -79,12 +79,13 @@ usort($possible_members,'pla_compare_dns');
 echo '<br />';
 echo '<br />';
 
-printf('<script type="text/javascript" language="javascript" src="%smodify_member.js"></script>',JSDIR);
-echo '<form action="cmd.php" method="post" class="add_value" name="member">';
+echo '<form action="cmd.php" method="post" class="add_value" id="member">';
+echo '<div>';
 if ($_SESSION[APPCONFIG]->getValue('confirm','update'))
 	echo '<input type="hidden" name="cmd" value="update_confirm" />';
 else
 	echo '<input type="hidden" name="cmd" value="update" />';
+echo '</div>';
 
 echo '<table class="modify_members">';
 
@@ -96,20 +97,20 @@ echo '</tr>';
 # Generate select box from all possible members
 echo '<tr>';
 echo '<td>';
-echo '<select name="notmembers" size="10" multiple>';
+echo '<select name="notmembers" size="10" multiple="multiple">';
 
 foreach ($possible_members as $possible)
-	printf('<option>%s</option>',$possible);
+	printf('<option>%s</option>',htmlspecialchars($possible));
 
 echo '</select>';
 echo '</td>';
 
 # Generate select box from all current members
 echo '<td>';
-echo '<select name="members" size="10" multiple>';
+echo '<select name="members" size="10" multiple="multiple">';
 
 foreach ($current_members as $current)
-	printf('<option>%s</option>',$current);
+	printf('<option>%s</option>',htmlspecialchars($current));
 
 echo '</select>';
 echo '</td>';
@@ -119,11 +120,11 @@ echo '</tr>';
 # Show buttons which move users from left to right and vice versa
 echo '<tr>';
 echo '<td>';
-printf('<input type="button" onClick="one2two()" value="%s >>" />&nbsp;<input type="button" onClick="all2two()" value="%s >>" />',
+printf('<input type="button" onclick="one2two()" value="%s >>" />&nbsp;<input type="button" onclick="all2two()" value="%s >>" />',
 	_('Add selected'),_('Add all'));
 echo '</td>';
 echo '<td>';
-printf('<input type="button" onClick="two2one()" value="<< %s" />&nbsp;<input type="button" onClick="all2one()" value="<< %s" />',
+printf('<input type="button" onclick="two2one()" value="<< %s" />&nbsp;<input type="button" onclick="all2one()" value="<< %s" />',
 	_('Remove selected'),('Remove all'));
 echo '</td>';
 echo '</tr>';
@@ -149,10 +150,10 @@ printf('<input type="hidden" name="new_values[%s][]" value="" />',htmlspecialcha
 echo '</div>';
 
 # Submit values to update_confirm.php and when clicked, run addSelected
-printf('<input type="submit" name="save" value="%s" onClick="update_new_values(\'%s\')" />',_('Save changes'),$request['attr']);
+printf('<input type="submit" name="save" value="%s" onclick="update_new_values(\'%s\')" />',_('Save changes'),$request['attr']);
 echo '</td></tr>';
 
 echo '</table>';
 echo '</form>';
-echo '</body></html>';
+printf('<script type="text/javascript" src="%smodify_member.js"></script>',JSDIR);
 ?>
