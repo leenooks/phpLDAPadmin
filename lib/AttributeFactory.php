@@ -85,6 +85,7 @@ class AttributeFactory {
 				case 'password':
 					return $this->newPasswordAttribute($name,$values,$server_id,$source);
 
+				case 'multiselect':
 				case 'select':
 					return $this->newSelectionAttribute($name,$values,$server_id,$source);
 

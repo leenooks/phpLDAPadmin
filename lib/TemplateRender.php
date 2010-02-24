@@ -2042,6 +2042,9 @@ function fillRec(id,value) {
 	protected function drawValueAttribute($attribute,$i) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
+		if ($attribute->isMultiple() && $i > 0)
+			return;
+
 		$val = $attribute->getValue($i);
 
 		if ($attribute->isVisible()) {

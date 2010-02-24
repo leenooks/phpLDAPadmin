@@ -1011,6 +1011,9 @@ class PageRender extends Visitor {
 			$vals = $attribute->getValues();
 			$j = 0;
 
+			if (! $vals && ! is_array($vals = $attribute->getDefault()))
+				$vals = array($attribute->getDefault());
+
 			if (($attribute->getSize() > 0) && ($attribute->getSize() < $attribute->getOptionCount())) {
 
 				printf('<select name="new_values[%s][]" size="%s" multiple>',
@@ -1058,7 +1061,7 @@ class PageRender extends Visitor {
 
 				foreach ($vals as $val)
 					if (! isset($selected[$val]))
-						printf('<tr><td><input type="checkbox" id="%s" name="new_values[%s][]" value="%s" %s%s checked/></td><td><span style="white-space: nowrap;">&nbsp;%s</span></td></tr>',
+						printf('<tr><td><input type="checkbox" id="new_values_%s_%s" name="new_values[%s][]" value="%s" %s%s checked/></td><td><span style="white-space: nowrap;">&nbsp;%s</span></td></tr>',
 							htmlspecialchars($attribute->getName()),$j++,
 							htmlspecialchars($attribute->getName()),$val,
 							$attribute->needJS('focus') ? sprintf('onFocus="focus_%s(this);" ',$attribute->getName()) : '',

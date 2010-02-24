@@ -477,6 +477,10 @@ class Attribute {
 		$this->readonly = true;
 	}
 
+	public function isMultiple() {
+		return false;
+	}
+
 	public function isVisible() {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
