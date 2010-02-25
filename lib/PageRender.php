@@ -1011,7 +1011,7 @@ class PageRender extends Visitor {
 			$vals = $attribute->getValues();
 			$j = 0;
 
-			if (! $vals && ! is_array($vals = $attribute->getDefault()))
+			if (! $vals && ! is_null($attribute->getDefault()) && ! is_array($vals = $attribute->getDefault()))
 				$vals = array($attribute->getDefault());
 
 			if (($attribute->getSize() > 0) && ($attribute->getSize() < $attribute->getOptionCount())) {
