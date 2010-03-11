@@ -25,16 +25,17 @@ $request['page']->setContainer(get_request('container','REQUEST',true));
 $request['page']->accept();
 $request['template'] = $request['page']->getTemplate();
 
-if (! $request['template']->getContainer() || ! $app['server']->dnExists($request['template']->getContainer()))
+if ((! $request['template']->getContainer() || ! $app['server']->dnExists($request['template']->getContainer())) && ! get_request('create_base'))
 	error(sprintf(_('The container you specified (%s) does not exist. Please try again.'),$request['template']->getContainer()),'error','index.php');
 
 # Check if the container is a leaf - we shouldnt really return a hit here, the template engine shouldnt have allowed a user to attempt to create an entry...
 $tree = get_cached_item($app['server']->getIndex(),'tree');
-$request['container'] = $tree->getEntry($request['template']->getContainer());
-if (! $request['container'])
-	$tree->addEntry($request['template']->getContainer());
 
 $request['container'] = $tree->getEntry($request['template']->getContainer());
+if (! $request['container'] && ! get_request('create_base')) {
+	$tree->addEntry($request['template']->getContainer());
+	$request['container'] = $tree->getEntry($request['template']->getContainer());
+}
 
 # Check our RDN
 if (! count($request['template']->getRDNAttrs()))

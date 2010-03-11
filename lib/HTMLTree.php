@@ -28,6 +28,7 @@ class HTMLTree extends Tree {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
+		static $js_drawn = false;
 		$server = $this->getServer();
 
 		echo '<table class="tree" border="0">';
@@ -85,27 +86,28 @@ class HTMLTree extends Tree {
 			 */
 			foreach ($this->getBaseEntries() as $base) {
 				if (! $base->isInLDAP()) {
+					$js_drawn = false;
 					$javascript_id++;
 
-					printf('<tr><td class="spacer"></td><td class="spacer"></td><td><img src="%s/unknown.png" /></td><td colspan="%s">%s</td></tr>',
+					$rdn = split('=',get_rdn($base->getDN()));
+					printf('<tr><td class="spacer"></td><td class="spacer"></td><td><img src="%s/unknown.png" alt="" /></td><td colspan="%s">%s</td></tr>',
 						IMGDIR,$this->getDepth()+3-3,pretty_print_dn($base->getDN()));
 
-					$this->javascript .= sprintf('<form id="create_base_form_%s" method="post" action="cmd.php?cmd=template_engine">',$javascript_id);
+					$this->javascript .= sprintf('<form id="create_base_form_%s_%s" method="post" action="cmd.php">',$server->getIndex(),$javascript_id);
+					$this->javascript .= '<div>';
+					$this->javascript .= '<input type="hidden" name="cmd" value="template_engine" />';
 					$this->javascript .= sprintf('<input type="hidden" name="server_id" value="%s" />',$server->getIndex());
 					$this->javascript .= sprintf('<input type="hidden" name="container" value="%s" />',htmlspecialchars($server->getContainer($base->getDN())));
 					$this->javascript .= sprintf('<input type="hidden" name="rdn" value="%s" />',get_rdn($base->getDN()));
+					$this->javascript .= sprintf('<input type="hidden" name="rdn_attribute[]" value="%s" />',$rdn[0]);
+					$this->javascript .= sprintf('<input type="hidden" name="new_values[%s][]" value="%s" />',$rdn[0],$rdn[1]);
+					$this->javascript .= '<input type="hidden" name="template" value="none" />';
+					$this->javascript .= '<input type="hidden" name="create_base" value="true" />';
+					$this->javascript .= '</div>';
 					$this->javascript .= sprintf('</form>');
 
-					printf('<tr><td class="spacer"></td><td class="spacer"></td><td class="spacer"></td><td colspan="%s"><small>%s<a href="javascript:document.getElementById(\'create_base_form_%s\').submit()">%s</a></small></td></tr>',
-						$this->getDepth()+3-3,_('This base entry does not exist.'),$javascript_id,_('Create it?'));
-
-					echo '</table>';
-
-					if (! $onlytree)
-						echo '</div></td></tr>';
-
-					echo '</table>';
-					return;
+					printf('<tr><td class="spacer"></td><td class="spacer"></td><td class="spacer"></td><td colspan="%s"><small>%s <a href="javascript:document.getElementById(\'create_base_form_%s_%s\').submit()">%s</a></small></td></tr>',
+						$this->getDepth()+3-3,_('This base entry does not exist.'),$server->getIndex(),$javascript_id,_('Create it?'));
 
 				} else {
 					$this->draw_item($base->getDN(),-1);
@@ -137,8 +139,6 @@ class HTMLTree extends Tree {
 		# Tree Footer.
 		echo '</table>';
 		echo "\n\n";
-
-		static $js_drawn = false;
 
 		if (! $js_drawn) {
 			$this->draw_javascript();
@@ -540,6 +540,7 @@ class HTMLTree extends Tree {
 			echo "<!-- Forms for javascript submit to call to create base_dns -->\n";
 			echo $this->javascript;
 			echo "<!-- The end of the forms for javascript submit to call to create base_dns -->\n";
+			$this->javascript = '';
 		}
 	}
 

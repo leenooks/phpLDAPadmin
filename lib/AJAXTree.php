@@ -211,6 +211,7 @@ class AJAXTree extends HTMLTree {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',33,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
+		parent::draw_javascript();
 		printf('<script type="text/javascript" src="%slayersmenu-browser_detection.js"></script>',JSDIR);
 		printf('<script type="text/javascript" src="%sajax_tree.js"></script>',JSDIR);
 	}

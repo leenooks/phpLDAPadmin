@@ -439,6 +439,8 @@ class TemplateRender extends PageRender {
 			return 'modification';
 		elseif ($this->container)
 			return 'creation';
+		elseif (get_request('create_base'))
+			return 'creation';
 		else
 			debug_dump_backtrace(sprintf('Unknown mode for %s',__METHOD__),1);
 	}
@@ -677,7 +679,10 @@ class TemplateRender extends PageRender {
 
 		# Title
 		$this->drawTitle();
-		$this->drawSubTitle();
+		if (get_request('create_base'))
+			$this->drawSubTitle(sprintf('<b>%s</b>: %s',_('Creating Base DN'),$this->template->getDN()));
+		else
+			$this->drawSubTitle();
 		echo "\n";
 
 		# Menu
@@ -1287,6 +1292,10 @@ class TemplateRender extends PageRender {
 			echo '<tr><td colspan="2">';
 			foreach ($this->template->getRDNAttrs() as $rdn)
 				printf('<input type="hidden" name="rdn_attribute[]" value="%s" id="rdn_attribute"/>',htmlspecialchars($rdn));
+
+			if (get_request('create_base'))
+				echo '<input type="hidden" name="create_base" value="true" />';
+
 			echo '</td></tr>';
 		}
 	}
@@ -1299,8 +1308,13 @@ class TemplateRender extends PageRender {
 
 		echo '<tr>';
 		printf('<td class="heading">%s</td>',_('Container'));
-		printf('<td><input type="text" name="container" size="40" value="%s" />',htmlspecialchars($default_container));
-		draw_chooser_link('entry_form','container');
+		echo '<td>';
+		if (get_request('create_base'))
+			printf('%s<input type="hidden" name="container" size="40" value="%s" />',$default_container,htmlspecialchars($default_container));
+		else {
+			printf('<input type="text" name="container" size="40" value="%s" />',htmlspecialchars($default_container));
+			draw_chooser_link('entry_form','container');
+		}
 		echo '</td>';
 		echo '</tr>';
 	}
@@ -1395,6 +1409,17 @@ class TemplateRender extends PageRender {
 	public function drawFormEnd() {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
+		# Include the RDN details to support creating the base
+		if (get_request('create_base')) {
+			if (get_request('rdn')) {
+				$rdn = explode('=',get_request('rdn'));
+				echo '<div>';
+				printf('<input type="hidden" name="new_values[%s][]" value="%s" />',$rdn[0],$rdn[1]);
+				printf('<input type="hidden" name="rdn_attribute[]" value="%s" />',$rdn[0]);
+				echo '</div>';
+			}
+		}
+
 		echo '</form>';
 
 		# Javascript
@@ -1457,12 +1482,13 @@ class TemplateRender extends PageRender {
 
 		if (($this->template->isType('default') && $this->template->getContext() == 'create' && $page == 1) || $page < $this->pagelast) {
 			echo '<form action="cmd.php?cmd=template_engine" method="post" enctype="multipart/form-data" id="entry_form" onsubmit="return submitForm(this)">';
+			echo '<div>';
 
 		} else {
 			echo '<form action="cmd.php" method="post" enctype="multipart/form-data" id="entry_form" onsubmit="return submitForm(this)">';
 			echo '<div>';
 
-			if ($_SESSION[APPCONFIG]->getValue('confirm','create'))
+			if ($_SESSION[APPCONFIG]->getValue('confirm','create') && ! get_request('create_base'))
 				echo '<input type="hidden" name="cmd" value="create_confirm" />';
 			else
 				echo '<input type="hidden" name="cmd" value="create" />';
@@ -1475,6 +1501,8 @@ class TemplateRender extends PageRender {
 		printf('<input type="hidden" name="server_id" value="%s" />',$this->getServerID());
 		printf('<input type="hidden" name="template" value="%s" />',$this->template->getID());
 		printf('<input type="hidden" name="page" value="%s" />',$page+1);
+		if (get_request('create_base'))
+			echo '<input type="hidden" name="create_base" value="true" />';
 
 		$this->drawHiddenAttributes();
 

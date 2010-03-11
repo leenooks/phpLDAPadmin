@@ -330,6 +330,13 @@ class Template extends xmlTemplate {
 				unset($_REQUEST['new_values']['objectclass']);
 			}
 
+		} elseif (get_request('create_base')) {
+			if (get_request('rdn')) {
+				$rdn = explode('=',get_request('rdn'));
+				$attribute = $this->addAttribute($rdn[0],array('values'=>array($rdn[1])));
+				$attribute->setRDN(1);
+			}
+
 		} else {
 			debug_dump_backtrace('No DN or CONTAINER?',1);
 		}
@@ -535,7 +542,8 @@ class Template extends xmlTemplate {
 		# If this is the default creation template, we need to set some additional values
 		if ($this->isType('default') && $this->getContext() == 'create') {
 			# Load our schema, based on the objectclasses that may have already been defined.
-			$this->rebuildTemplateAttrs();
+			if (! get_request('create_base'))
+				$this->rebuildTemplateAttrs();
 
 			# Set the RDN attribute
 			$counter = 1;
@@ -620,6 +628,10 @@ class Template extends xmlTemplate {
 		# If DN is not set, our DN will be made from our RDN and Container.
 		elseif ($this->getRDN() && $this->getContainer())
 			return sprintf('%s,%s',$this->getRDN(),$this->GetContainer());
+
+		# If container is not set, we're probably creating the base
+		elseif ($this->getRDN() && get_request('create_base'))
+			return $this->getRDN();
 	}
 
 	/**

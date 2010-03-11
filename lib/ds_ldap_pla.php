@@ -337,6 +337,11 @@ class ldap_pla extends ldap {
 			if ($result) {
 				# Update the tree
 				$tree = get_cached_item($this->index,'tree');
+
+				# If we created the base, delete it, then add it back
+				if (get_request('create_base'))
+					$tree->delEntry($dn);
+
 				$tree->addEntry($dn);
 
 				set_cached_item($this->index,'tree','null',$tree);

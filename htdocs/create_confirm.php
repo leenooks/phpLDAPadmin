@@ -24,11 +24,12 @@ if (! $request['template']->getContainer() || ! $app['server']->dnExists($reques
 
 # Check if the container is a leaf - we shouldnt really return a hit here, the template engine shouldnt have allowed a user to attempt to create an entry...
 $tree = get_cached_item($app['server']->getIndex(),'tree');
-$request['container'] = $tree->getEntry($request['template']->getContainer());
-if (! $request['container'])
-	$tree->addEntry($request['template']->getContainer());
 
 $request['container'] = $tree->getEntry($request['template']->getContainer());
+if (! $request['container']) {
+	$tree->addEntry($request['template']->getContainer());
+	$request['container'] = $tree->getEntry($request['template']->getContainer());
+}
 
 # Check our RDN
 if (! count($request['template']->getRDNAttrs()))

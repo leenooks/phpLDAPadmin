@@ -1422,11 +1422,8 @@ function get_next_number($base,$attr,$increment=false,$filter=false,$startmin=nu
 			$query['filter'] = sprintf('(%s=*)',$attr);
 			$search = $server->query($query,'auto_number');
 
-			if (! count($search))
-				return;
-
 			# Construct a list of used numbers
-			$autonum = array();
+			$autonum = array(0);
 
 			foreach ($search as $dn => $values) {
 				$values = array_change_key_case($values);

@@ -501,7 +501,7 @@ class PageRender extends Visitor {
 			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		foreach ($this->template->getAttributes(true) as $attribute)
-			if ($attribute->hasbeenModified())
+			if ($attribute->hasbeenModified()) {
 				if ($attribute->getValues())
 					foreach ($attribute->getValues() as $index => $details)
 						$this->draw('HiddenValue',$attribute,$index);
@@ -509,6 +509,7 @@ class PageRender extends Visitor {
 				# We are deleting this attribute, so we need to display an empty value
 				else
 					$this->draw('HiddenValue',$attribute,0);
+			}
 	}
 
 	/**
