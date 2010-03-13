@@ -343,7 +343,7 @@ class Template extends xmlTemplate {
 						continue;
 
 					# If _REQUEST['skip_array'] with this attr set, we'll ignore this new_value
-					if (isset($_REQUEST['skip_array'][$attr]))
+					if (isset($_REQUEST['skip_array'][$attr]) && $_REQUEST['skip_array'][$attr] == 'on')
 						continue;
 
 					# Prune out entries with a blank value.

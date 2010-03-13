@@ -38,7 +38,7 @@ if (count($request['template']->getLDAPmodify(true))) {
 	echo '</div>';
 
 	echo "\n\n";
-	echo '<form action="cmd.php" method="post">';
+	echo '<form action="cmd.php" method="post" id="update_form">';
 	echo '<div>';
 	echo '<input type="hidden" name="cmd" value="update" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
@@ -187,14 +187,20 @@ if (count($request['template']->getLDAPmodify(true))) {
 
 	echo '<div style="text-align: center;">';
 	echo '<br />';
-	printf('<input type="submit" value="%s" />',_('Commit'));
-	printf('<input type="submit" name="cancel" value="%s" />',_('Cancel'));
+	printf('<input type="submit" value="%s" %s/>',
+		_('Commit'),
+		(isAjaxEnabled() ? sprintf('onclick="return ajSUBMIT(\'BODY\',document.getElementById(\'update_form\'),\'%s\');"',_('Updating Object')) : ''));
+
+	printf('<input type="submit" name="cancel" value="%s" %s/>',
+		_('Cancel'),
+		(isAjaxEnabled() ? sprintf('onclick="return ajDISPLAY(\'BODY\',\'cmd=template_engine&dn=%s\',\'%s\');"',htmlspecialchars($request['dn']),_('Retrieving DN')) : ''));
+
 	echo '</div>';
 	echo '</form>';
 	echo '<br />';
 
 	if (count($request['template']->getForceDeleteAttrs()) > 0) {
-		echo '<table class="result_table"><tr>';
+		echo '<table class="result_table" style="margin-left: auto; margin-right: auto;"><tr>';
 		printf('<td class="heading">%s:</td>',_('The deletion of objectClass(es)'));
 		printf('<td class="value"><b>%s</b></td>',implode('</b>, <b>',$request['template']->getAttribute('objectclass')->getRemovedValues()));
 		echo '</tr><tr>';
@@ -212,12 +218,18 @@ if (count($request['template']->getLDAPmodify(true))) {
 	}
 
 } else {
-	echo '<div style="text-align: center;">';
-	echo _('You made no changes');
-	$href = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',
+	$href = sprintf('cmd=template_engine&server_id=%s&dn=%s',
 		 $app['server']->getIndex(),rawurlencode($request['dn']));
 
-	printf(' <a href="%s">%s</a>.',htmlspecialchars($href),_('Go back'));
+	echo '<div style="text-align: center;">';
+	echo _('You made no changes');
+
+	if (isAjaxEnabled())
+		printf(' <a href="cmd.php?%s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');">%s</a>.',
+			htmlspecialchars($href),htmlspecialchars($href),_('Retrieving DN'),_('Go back'));
+	else
+		printf(' <a href="cmd.php?%s">%s</a>.',htmlspecialchars($href),_('Go back'));
+
 	echo '</div>';
 }
 

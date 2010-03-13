@@ -107,8 +107,11 @@ class page {
 		printf('<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />');
 
 		if (isset($_SESSION[APPCONFIG]))
-			printf('<title>%s (%s) - %s</title>',
-				$this->_app['title'],app_version(),$_SESSION[APPCONFIG]->getValue('appearance','page_title'));
+			printf('<title>%s (%s) - %s%s</title>',
+				$this->_app['title'],
+				app_version(),
+				(get_request('dn','REQUEST') ? htmlspecialchars(get_request('dn','REQUEST')).' ' : ''),
+				$_SESSION[APPCONFIG]->getValue('appearance','page_title'));
 		else
 			printf('<title>%s - %s</title>',$this->_app['title'],app_version());
 

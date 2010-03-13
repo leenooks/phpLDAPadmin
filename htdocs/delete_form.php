@@ -67,11 +67,14 @@ if (count($request['children'])) {
 
 	echo '<tr>';
 	echo '<td style="width: 50%; text-align: center;">';
-	echo '<form action="cmd.php" method="post">';
+	echo '<form action="cmd.php" method="post" id="delete_form">';
 	echo '<input type="hidden" name="cmd" value="rdelete" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($request['dn']));
-	printf('<input type="submit" value="%s" />',sprintf(_('Delete all %s objects'),count($request['search'])));
+	//@todo need to refresh the tree after a delete
+	printf('<input type="submit" value="%s" %s />',
+		sprintf(_('Delete all %s objects'),count($request['search'])),
+		(isAjaxEnabled() ? sprintf('onclick="return ajSUBMIT(\'BODY\',document.getElementById(\'delete_form\'),\'%s\');"',_('Deleting Object(s)')) : ''));
 	echo '</form>';
 	echo '</td>';
 
@@ -80,7 +83,9 @@ if (count($request['children'])) {
 	echo '<input type="hidden" name="cmd" value="template_engine" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($request['dn']));
-	printf('<input type="submit" name="submit" value="%s" />',_('Cancel'));
+	printf('<input type="submit" name="submit" value="%s" %s />',
+		_('Cancel'),
+		(isAjaxEnabled() ? sprintf('onclick="return ajDISPLAY(\'BODY\',\'cmd=template_engine&server_id=%s&dn=%s\',\'%s\');"',$app['server']->getIndex(),htmlspecialchars($request['dn']),_('Retrieving DN')) : ''));
 	echo '</form>';
 	echo '</td>';
 	echo '</tr>';
@@ -114,11 +119,14 @@ if (count($request['children'])) {
 
 	echo '<tr>';
 	echo '<td colspan="2" style="width: 50%; text-align: center;">';
-	echo '<form action="cmd.php" method="post">';
+	echo '<form action="cmd.php" method="post" id="delete_form">';
 	echo '<input type="hidden" name="cmd" value="delete" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($request['dn']));
-	printf('<input type="submit" name="submit" value="%s" />',_('Delete'));
+	//@todo need to refresh the tree after a delete
+	printf('<input type="submit" name="submit" value="%s" %s />',
+		_('Delete'),
+		(isAjaxEnabled() ? sprintf('onclick="return ajSUBMIT(\'BODY\',document.getElementById(\'delete_form\'),\'%s\');"',_('Deleting Object(s)')) : ''));
 	echo '</form>';
 
 	echo '</td>';
@@ -128,7 +136,9 @@ if (count($request['children'])) {
 	echo '<input type="hidden" name="cmd" value="template_engine" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
 	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($request['dn']));
-	printf('<input type="submit" name="submit" value="%s" />',_('Cancel'));
+	printf('<input type="submit" name="submit" value="%s" %s />',
+		_('Cancel'),
+		(isAjaxEnabled() ? sprintf('onclick="return ajDISPLAY(\'BODY\',\'cmd=template_engine&server_id=%s&dn=%s\',\'%s\');"',$app['server']->getIndex(),htmlspecialchars($request['dn']),_('Retrieving DN')) : ''));
 	echo '</form>';
 
 	echo '</td>';

@@ -107,6 +107,9 @@ if (count($ldap['attrs']['need']) > 0) {
 		$href = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s&modified_attrs[]=objectclass',
 			$app['server']->getIndex(),rawurlencode($request['dn']));
 
+		if (get_request('meth','REQUEST') == 'ajax')
+			$href .= '&meth=ajax';
+
 		header(sprintf('Location: %s',$href));
 		die();
 	}

@@ -69,6 +69,9 @@ if ($result) {
 	foreach ($request['template']->getLDAPmodify() as $attr => $junk)
 		$redirect_url .= sprintf('&modified_attrs[]=%s',$attr);
 
+	if (get_request('meth','REQUEST') == 'ajax')
+		$redirect_url .= '&meth=ajax';
+
 	header("Location: $redirect_url");
 	die();
 }

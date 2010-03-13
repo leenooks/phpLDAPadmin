@@ -32,7 +32,7 @@ if ($request['attribute']->isReadOnly())
 */
 
 # Render the form
-if (get_request('meth','REQUEST') != 'ajax') {
+if (! strcasecmp($request['attr'],'objectclass') || get_request('meth','REQUEST') != 'ajax') {
 	# Render the form.
 	$request['page']->drawTitle(sprintf('%s <b>%s</b> %s <b>%s</b>',_('Add new'),$request['attr'],_('value to'),get_rdn($request['dn'])));
 	$request['page']->drawSubTitle();
@@ -113,7 +113,9 @@ if (get_request('meth','REQUEST') != 'ajax') {
 		echo '</td></tr><tr><td>';
 
 		echo '<br />';
-		printf('<input id="save_button" type="submit" value="%s" />',_('Add new ObjectClass'));
+		printf('<input id="save_button" type="submit" value="%s" %s />',
+			_('Add new ObjectClass'),
+			(isAjaxEnabled() ? sprintf('onclick="return ajSUBMIT(\'BODY\',document.getElementById(\'entry_form\'),\'%s\');"',_('Updating Object')) : ''));
 		echo '</td></tr></table>';
 		echo '</td>';
 		echo '</tr>';

@@ -10,8 +10,26 @@ var http_request = null;
 var http_request_success_callback = '';
 var http_request_error_callback = '';
 
-function ajDISPLAY(div,urlParameters,display) {
+function ajSUBMIT(div,obj,display) {
 	var pageDiv = getDiv(div);
+
+	window.scrollTo(0,95);
+
+	if (pageDiv)
+		includeHTML(pageDiv,'<img src="images/ajax-progress.gif"><br><small>'+display+'...</small>');
+	else
+		return true;
+
+	makeHttpRequest('cmd.php',getParameters(obj.parentNode)+'meth=ajax','POST','alertAJ','cancelAJ',div);
+
+	return false;
+}
+
+function ajDISPLAY(div,urlParameters,display,ns) {
+	var pageDiv = getDiv(div);
+
+	if (! ns)
+		window.scrollTo(0,95);
 
 	if (pageDiv)
 		includeHTML(pageDiv,'<img src="images/ajax-progress.gif"><br><small>'+display+'...</small>');
@@ -189,4 +207,47 @@ function makeHttpRequest(url,parameters,meth,successCallbackFunctionName,errorCa
 
 	if (meth == 'GET') parameters = null;
 	http_request.send(parameters);
+}
+
+function getParameters(obj) {
+	var elements = ['input','select','textarea'];
+	var getstr = '';
+
+	for (var j in elements) {
+		for (i=0; i<obj.getElementsByTagName(elements[j]).length; i++) {
+			// Ignore submit variables
+			if (obj.getElementsByTagName(elements[j])[i].type == 'submit') {
+
+			} else if (obj.getElementsByTagName(elements[j])[i].type == 'text') {
+				getstr += obj.getElementsByTagName(elements[j])[i].name + '=' + encodeURIComponent(obj.getElementsByTagName(elements[j])[i].value) + '&';
+
+			} else if (obj.getElementsByTagName(elements[j])[i].type == 'checkbox') {
+				if (obj.getElementsByTagName(elements[j])[i].checked) {
+					getstr += obj.getElementsByTagName(elements[j])[i].name + '=' + encodeURIComponent(obj.getElementsByTagName(elements[j])[i].value) + '&';
+				} else {
+					getstr += obj.getElementsByTagName(elements[j])[i].name + '=&';
+				}
+
+			} else if (obj.getElementsByTagName(elements[j])[i].type == 'radio') {
+				if (obj.getElementsByTagName(elements[j])[i].checked) {
+					getstr += obj.getElementsByTagName(elements[j])[i].name + '=' + encodeURIComponent(obj.getElementsByTagName(elements[j])[i].value) + '&';
+				}
+
+			} else if (obj.getElementsByTagName(elements[j])[i].tagName == 'SELECT') {
+				var sel = obj.getElementsByTagName(elements[j])[i];
+				getstr += sel.name + '=' + encodeURIComponent(sel.options[sel.selectedIndex].value) + '&';
+
+			} else if (obj.getElementsByTagName(elements[j])[i].tagName == 'INPUT') {
+				getstr += obj.getElementsByTagName(elements[j])[i].name + '=' + encodeURIComponent(obj.getElementsByTagName(elements[j])[i].value) + '&';
+
+			} else if (obj.getElementsByTagName(elements[j])[i].tagName == 'TEXTAREA') {
+				getstr += obj.getElementsByTagName(elements[j])[i].name + '=' + encodeURIComponent(obj.getElementsByTagName(elements[j])[i].value) + '&';
+
+			} else {
+				alert('UNTRAPPED FORM tag:'+elements[j]+', n: '+obj.getElementsByTagName(elements[j])[i].tagName+', t:'+obj.getElementsByTagName(elements[j])[i].type);
+			}
+		}
+	}
+
+	return getstr;
 }

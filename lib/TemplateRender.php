@@ -1408,7 +1408,10 @@ class TemplateRender extends PageRender {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
 		if (! $this->template->isReadOnly())
-			printf('<tr><td colspan="2" style="text-align: center;"><input type="submit" id="create_button" name="submit" value="%s" /></td></tr>',_('Update Object'));
+			printf('<tr><td colspan="2" style="text-align: center;"><input type="submit" id="create_button" name="submit" value="%s" %s/></td></tr>',
+				_('Update Object'),
+				(isAjaxEnabled() ? sprintf('onclick="return ajSUBMIT(\'BODY\',document.getElementById(\'entry_form\'),\'%s\');"',_('Updating DN')) : ''),
+				_('Update Object'));
 	}
 
 	/** STEP FORM METHODS **/
@@ -1504,7 +1507,9 @@ class TemplateRender extends PageRender {
 		if ($page < $this->pagelast)
 			printf('<td>&nbsp;</td><td><input type="submit" id="create_button" value="%s" /></td>',_('Proceed &gt;&gt;'));
 		else
-			printf('<td style="text-align: center;"><input type="submit" id="create_button" name="submit" value="%s" /></td>',_('Create Object'));
+			printf('<td style="text-align: center;"><input type="submit" id="create_button" name="submit" value="%s" %s /></td>',
+				_('Create Object'),
+				(isAjaxEnabled() ? sprintf('onclick="return ajSUBMIT(\'BODY\',document.getElementById(\'entry_form\'),\'%s\');"',_('Creating Object')) : ''));
 		echo '</tr>';
 	}
 
@@ -2012,8 +2017,26 @@ function fillRec(id,value) {
 			$this->getServerID(),rawurlencode($this->template->getDN()),rawurlencode($attribute->getName(false))));
 
 		if (isAjaxEnabled())
-			return sprintf('(<a href="cmd.php?%s" title="%s %s" onclick="return ajDISPLAY(\'ADDVALUE%s\',\'%s&amp;raw=1\',\'%s\');">%s</a>)',
+			return sprintf('(<a href="cmd.php?%s" title="%s %s" onclick="return ajDISPLAY(\'ADDVALUE%s\',\'%s&amp;raw=1\',\'%s\',1);">%s</a>)',
 				$href_parm,_('Add an additional value to attribute'),$attribute->getName(false),$attribute->getName(),
+				$href_parm,_('Add Value to Attribute'),_('add value'));
+		else
+			return sprintf('(<a href="cmd.php?%s" title="%s %s">%s</a>)',
+				$href_parm,_('Add an additional value to attribute'),$attribute->getName(false),_('add value'));
+	}
+
+	protected function getAddValueMenuItemObjectClassAttribute($attribute) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
+		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
+
+		$href_parm = htmlspecialchars(sprintf('cmd=add_value_form&server_id=%s&dn=%s&attr=%s',
+			$this->getServerID(),rawurlencode($this->template->getDN()),rawurlencode($attribute->getName(false))));
+
+		if (isAjaxEnabled())
+			return sprintf('(<a href="cmd.php?%s" title="%s %s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');">%s</a>)',
+				$href_parm,_('Add an additional value to attribute'),$attribute->getName(false),
 				$href_parm,_('Add Value to Attribute'),_('add value'));
 		else
 			return sprintf('(<a href="cmd.php?%s" title="%s %s">%s</a>)',
