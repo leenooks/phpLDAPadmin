@@ -2,15 +2,15 @@
 # Copyright (c) 2009 Rosetta Contributors and Canonical Ltd 2009
 # This file is distributed under the same license as the phpldapadmin package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2009.
-#
+
 msgid ""
 msgstr ""
 "Project-Id-Version: phpldapadmin\n"
-"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-08-19 22:27+1000\n"
 "PO-Revision-Date: 2010-01-29 10:05+0000\n"
 "Last-Translator: hydra <Unknown>\n"
-"Language-Team: Slovak <sk@li.org>\n"
+"Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"

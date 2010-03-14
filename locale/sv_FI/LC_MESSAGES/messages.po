@@ -1,8 +1,10 @@
-# : $
+# phpLDAPadmin
+#
+
 msgid ""
 msgstr ""
-"Project-Id-Version: messages\n"
-"Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sf.net\n"
+"Project-Id-Version: phpldapadmin\n"
+"Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2009-08-19 22:27+1000\n"
 "PO-Revision-Date: 2009-07-21 07:47+0000\n"
 "Last-Translator: Deon George <Unknown>\n"

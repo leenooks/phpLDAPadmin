@@ -1,14 +1,14 @@
-# phpLDAPadmim
+# phpLDAPadmin
 #
 
 msgid ""
 msgstr ""
-"Project-Id-Version: phpldapadmin messages\n"
-"Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sf.net\n"
+"Project-Id-Version: phpldapadmin\n"
+"Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
 "POT-Creation-Date: 2004-01-14 17:45+0200\n"
 "PO-Revision-Date: 2004-01-14 17:45+0200\n"
-"Last-Translator: PUT YOUR NAME <myname@example.com>\n"
-"Language-Team: <phpldapadmin-devel@lists.sf.net>\n"
+"Last-Translator: Unknown <Unknown>\n"
+"Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"

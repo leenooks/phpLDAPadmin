@@ -17,7 +17,7 @@
 
 LOCALEDIR = ../../locale
 TEMPLATEFILES=`find ../../templates -iname *xml -exec echo -m {} \;`
-EXPORTFILE = $(shell echo $${EXPORTFILE:-/tmp/launchpad-export.tgz})
+EXPORTFILE = $(shell echo $${EXPORTFILE:-/tmp/launchpad-export.tar.gz})
 
 all:
 	@echo Please, specify a target [pot, xml-pot, all-mo, all-merge, all-merge-pot, launchpad-export]
