@@ -58,3 +58,8 @@ launchpad-extract:
 	rmdir $(LOCALEDIR)/phpldapadmin
 
 launchpad-export: launchpad-extract all-mo
+
+launchpad-import:
+	@[ -d /tmp/pla ] && rmdir /tmp/pla
+	@mkdir /tmp/pla
+	@for i in $(LOCALEDIR)/*/LC_MESSAGES/messages.po; do echo $$i; x=$${i##$(LOCALEDIR)/}; x=$${x/_??\/LC_MESSAGES\/messages/}; [ ! -e /tmp/pla/$$x ] && cp $$i /tmp/pla/$$x || echo "$$x Already exists!"; done
