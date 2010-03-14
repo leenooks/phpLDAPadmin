@@ -612,7 +612,7 @@ function error($msg,$type='note',$redirect=null,$fatal=false,$backtrace=false) {
 				_('Function'),$line['function']);
 
 			if (isset($line['args'])) {
-				$display = strlen(serialize($line['args'])) < 50 ? serialize($line['args']) : substr(serialize($line['args']),0,50).'...<TRUNCATED>';
+				$display = strlen(serialize($line['args'])) < 50 ? htmlspecialchars(serialize($line['args'])) : htmlspecialchars(substr(serialize($line['args']),0,50)).'...<TRUNCATED>';
 				$_SESSION['backtrace'][$error]['args'] = $line['args'];
 				if (file_exists(LIBDIR.'../tools/unserialize.php'))
 					$body .= sprintf('&nbsp;(<a href="%s?index=%s" target="backtrace">%s</a>)',

@@ -616,7 +616,7 @@ class Datastore {
 			$index = min($this->GetServerList())->getIndex();
 
 		if (! isset($this->objects[$index]))
-			debug_dump_backtrace("Error: Datastore instance [$index] doesnt exist?",1);
+			debug_dump_backtrace(sprintf('Error: Datastore instance [%s] doesnt exist?',htmlspecialchars($index)),1);
 
 		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED)
 			debug_log('Returning instance of database (%s)',3,0,__FILE__,__LINE__,__METHOD__,$index);

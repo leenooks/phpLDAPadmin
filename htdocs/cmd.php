@@ -53,7 +53,7 @@ if (trim($www['cmd'])) {
 	# If this command has been disabled by the config.
 	if (! $_SESSION[APPCONFIG]->isCommandAvailable('script',$www['cmd'])) {
 		system_message(array('title'=>_('Command disabled by the server configuration'),
-			_('Error'),'body'=>sprintf('%s: <b>%s</b>.',_('The command could not be run'),$www['cmd']),'type'=>'error'),'index.php');
+			_('Error'),'body'=>sprintf('%s: <b>%s</b>.',_('The command could not be run'),htmlspecialchars($www['cmd'])),'type'=>'error'),'index.php');
 
 		$app['script_cmd'] = null;
 	}
