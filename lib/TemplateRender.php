@@ -540,7 +540,7 @@ class TemplateRender extends PageRender {
 			else {
 				if (isAjaxEnabled())
 					printf('<td><input type="radio" name="template" value="%s" id="%s" onclick="return ajDISPLAY(\'BODY\',\'%s&amp;template=%s\',\'%s\');" /></td>',
-						htmlspecialchars($details->getID()),htmlspecialchars($details->getID()),htmlspecialchars($href_parms),$details->getID(),_('Retieving DN'));
+						htmlspecialchars($details->getID()),htmlspecialchars($details->getID()),htmlspecialchars($href_parms),$details->getID(),_('Retrieving DN'));
 				else
 					printf('<td><input type="radio" name="template" value="%s" id="%s" onclick="document.forms.template_choice_form.submit()" /></td>',
 						htmlspecialchars($details->getID()),htmlspecialchars($details->getID()));
@@ -577,7 +577,7 @@ class TemplateRender extends PageRender {
 			echo '<tr>';
 			if (isAjaxEnabled())
 				printf('<td><input type="radio" name="template" value="none" id="none" onclick="return ajDISPLAY(\'BODY\',\'%s&amp;template=%s\',\'%s\');" /></td>',
-					htmlspecialchars($href_parms),'none',_('Retieving DN'));
+					htmlspecialchars($href_parms),'none',_('Retrieving DN'));
 			else
 				echo '<td><input type="radio" name="template" value="none" id="none" onclick="document.forms.template_choice_form.submit()" /></td>';
 
