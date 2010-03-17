@@ -63,16 +63,43 @@ if ($request['recursive']) {
 	print '</small>';
 
 } else {
-	$copy_result = copy_dn($ldap['SRC'],$ldap['DST'],$request['dnSRC'],$request['dnDST'],$request['remove']);
+	if ($_SESSION[APPCONFIG]->getValue('confirm','copy')) {
+		$request['pageSRC'] = new TemplateRender($app['server']->getIndex(),get_request('template','REQUEST',false,null));
+		$request['pageSRC']->setDN($request['dnSRC']);
+		$request['pageSRC']->accept(true);
 
-	if ($copy_result)
-		$copy_message = sprintf('%s %s: <b>%s</b> %s',
-			$request['remove'] ? _('Move successful') : _('Copy successful'),
-			_('DN'),$request['dnDST'],_('has been created.'));
-	else
-		$copy_message = sprintf('%s %s: <b>%s</b> %s',
-			$request['remove'] ? _('Move NOT successful') : _('Copy NOT successful'),
-			_('DN'),$request['dnDST'],_('has NOT been created.'));
+		$request['pageDST'] = new TemplateRender($app['server']->getIndex(),get_request('template','REQUEST',false,'none'));
+		$request['pageDST']->setContainer($app['server']->getContainer($request['dnDST']));
+		$request['pageDST']->accept(true);
+
+		$request['templateSRC'] = $request['pageSRC']->getTemplate();
+		$request['templateDST'] = $request['pageDST']->getTemplate();
+
+		$request['templateDST']->copy($request['templateSRC'],get_rdn($request['dnDST']),true);
+
+		# Set all attributes with a values as shown, and remove the add value options
+		foreach ($request['templateDST']->getAttributes(true) as $sattribute)
+			if ($sattribute->getValues() && ! $sattribute->isInternal()) {
+				$sattribute->show();
+				$sattribute->setMaxValueCount(count($sattribute->getValues()));
+			}
+
+		$request['pageDST']->accept();
+
+		return;
+
+	} else {
+		$copy_result = copy_dn($ldap['SRC'],$ldap['DST'],$request['dnSRC'],$request['dnDST'],$request['remove']);
+
+		if ($copy_result)
+			$copy_message = sprintf('%s %s: <b>%s</b> %s',
+				$request['remove'] ? _('Move successful') : _('Copy successful'),
+				_('DN'),$request['dnDST'],_('has been created.'));
+		else
+			$copy_message = sprintf('%s %s: <b>%s</b> %s',
+				$request['remove'] ? _('Move NOT successful') : _('Copy NOT successful'),
+				_('DN'),$request['dnDST'],_('has NOT been created.'));
+	}
 }
 
 if ($copy_result) {

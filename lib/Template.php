@@ -656,7 +656,7 @@ class Template extends xmlTemplate {
 	/**
 	 * Copy a DN
 	 */
-	public function copy($template,$rdn) {
+	public function copy($template,$rdn,$asnew=false) {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
@@ -709,6 +709,11 @@ class Template extends xmlTemplate {
 			else
 				$attribute->setRDN($counter++);
 		}
+
+		# If we are copying into a new entry, we need to discard all the "old values"
+		if ($asnew)
+			foreach ($this->getAttributes(true) as $sattribute)
+				$sattribute->setOldValue(array());
 	}
 
 	/**
@@ -854,7 +859,9 @@ class Template extends xmlTemplate {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-		if ($this->getContainer())
+		if ($this->getContainer() && get_request('cmd','REQUEST') == 'copy')
+			return 'copyasnew';
+		elseif ($this->getContainer() || get_request('create_base'))
 			return 'create';
 		elseif ($this->getDN())
 			return 'edit';

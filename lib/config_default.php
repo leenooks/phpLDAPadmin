@@ -284,6 +284,10 @@ class Config {
 
 		/** Confirm actions
 		 */
+		$this->default->confirm['copy'] = array(
+			'desc'=>'Confirm copy actions',
+			'default'=>true);
+
 		$this->default->confirm['create'] = array(
 			'desc'=>'Confirm creation actions',
 			'default'=>true);

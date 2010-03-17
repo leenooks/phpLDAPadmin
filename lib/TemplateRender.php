@@ -49,7 +49,8 @@ class TemplateRender extends PageRender {
 		$this->page = get_request('page','REQUEST',false,1);
 
 		if ($this->template_id) {
-			parent::accept();
+			if (! $this->template)
+				parent::accept();
 
 			$this->url_base = sprintf('server_id=%s&dn=%s',
 				$this->getServerID(),rawurlencode($this->template->getDN()));
@@ -611,11 +612,11 @@ class TemplateRender extends PageRender {
 
 		# If we have a DN, then we are an editing template
 		if ($this->dn)
-			$this->template->setDN(get_request('dn','REQUEST'));
+			$this->template->setDN($this->dn);
 
 		# Else if we have a container, we are a creating template
-		elseif ($this->container)
-			$this->template->setContainer(get_request('container','REQUEST'));
+		elseif ($this->container || get_request('create_base'))
+			$this->template->setContainer($this->container);
 
 		else
 			debug_dump_backtrace('Dont know what type of template we are - no DN or CONTAINER?',1);
@@ -640,6 +641,15 @@ class TemplateRender extends PageRender {
 			$this->drawStepFormStart($this->page);
 			$this->drawStepForm($this->page);
 			$this->drawStepFormEnd();
+
+		} elseif ($this->template->getContext() == 'copyasnew') {
+			$this->drawStepFormStart($this->page);
+			printf('<input type="hidden" name="container" value="%s" />',htmlspecialchars($this->template->getContainer()));
+			echo '<div><table>';
+			$this->drawRDNChooser();
+			echo '</table></div>';
+			$this->drawForm(true);
+			$this->drawStepFormSubmitButton($this->page);
 
 		} else {
 			# Draw internal attributes
@@ -1360,7 +1370,7 @@ class TemplateRender extends PageRender {
 		echo '</div>';
 	}
 
-	protected function drawForm() {
+	protected function drawForm($nosubmit=false) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
 		echo '<div>';
@@ -1372,7 +1382,8 @@ class TemplateRender extends PageRender {
 		echo '<table class="entry" cellspacing="0" border="0" style="margin-left: auto; margin-right: auto;">';
 
 		$this->drawShownAttributes();
-		$this->drawFormSubmitButton();
+		if (! $nosubmit)
+			$this->drawFormSubmitButton();
 
 		echo '</table>';
 
