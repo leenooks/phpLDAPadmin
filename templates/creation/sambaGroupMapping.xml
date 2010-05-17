@@ -44,7 +44,7 @@
 	<order>4</order>
 	<post>=php.Join(-;%sambaSID%,%sidsuffix%)</post>
 	<page>1</page>
-	<value><![CDATA[=php.PickList(/;(&(objectClass=sambaDomain));sambaSID;%sambaSID% (%sambaDomainName%));;;;sambaDomainName]]></value>
+	<value><![CDATA[=php.PickList(/;(&(objectClass=sambaDomain));sambaSID;%sambaSID% (%sambaDomainName%);;;;sambaDomainName)]]></value>
 </attribute>
 <attribute id="sambaGroupType">
 	<display>Samba Group Type</display>
