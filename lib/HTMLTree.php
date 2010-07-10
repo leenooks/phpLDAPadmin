@@ -133,6 +133,7 @@ class HTMLTree extends Tree {
 
 				case 'config':
 				case 'proxy':
+				case 'sasl':
 					break;
 
 				default:

@@ -137,6 +137,7 @@ abstract class DS {
 			case 'http':
 			case 'proxy':
 			case 'session':
+			case 'sasl':
 				return $this->getValue('login','auth_type');
 
 			default:
@@ -178,6 +179,7 @@ abstract class DS {
 
 			case 'http':
 			case 'session':
+			case 'sasl':
 				if (! isset($_SESSION['USER'][$this->index][$method]['name']))
 					# If our bind_id is set, we'll pass that back for logins.
 					return (! is_null($this->getValue('login','bind_id')) && $method == 'login') ? $this->getValue('login','bind_id') : null;
@@ -208,6 +210,7 @@ abstract class DS {
 
 			case 'http':
 			case 'session':
+			case 'sasl':
 				$_SESSION['USER'][$this->index][$method]['name'] = blowfish_encrypt($user);
 				$_SESSION['USER'][$this->index][$method]['pass'] = blowfish_encrypt($pass);
 
@@ -244,6 +247,7 @@ abstract class DS {
 
 			case 'http':
 			case 'session':
+			case 'sasl':
 				if (! isset($_SESSION['USER'][$this->index][$method]['pass']))
 					# If our bind_pass is set, we'll pass that back for logins.
 					return (! is_null($this->getValue('login','bind_pass')) && $method == 'login') ? $this->getValue('login','bind_pass') : null;
@@ -329,6 +333,29 @@ abstract class DS {
 
 				break;
 
+			case 'sasl':
+				# Propogate any given Kerberos credential cache location
+				if (isset($_ENV['REDIRECT_KRB5CCNAME']))
+					putenv(sprintf('KRB5CCNAME=%s',$_ENV['REDIRECT_KRB5CCNAME']));
+				elseif (isset($_SERVER['KRB5CCNAME']))
+					putenv(sprintf('KRB5CCNAME=%s',$_SERVER['KRB5CCNAME']));
+
+				# Map the SASL auth ID to a DN
+				$regex = $this->getValue('login', 'sasl_dn_regex');
+				$replacement = $this->getValue('login', 'sasl_dn_replacement');
+
+				if ($regex && $replacement) {
+					$userDN = preg_replace($regex, $replacement, $_SERVER['REMOTE_USER']);
+
+					$CACHE[$this->index][$method] = $this->login($userDN, '', $method);
+				}
+				# Otherwise, use the user name as is
+				else {
+					$CACHE[$this->index][$method] = $this->login($_SERVER['REMOTE_USER'], '', $method);
+				}
+
+				break;
+
 			default:
 				$CACHE[$this->index][$method] = is_null($this->getLogin($method)) ? false : true;
 		}
@@ -354,6 +381,7 @@ abstract class DS {
 			case 'http':
 			case 'proxy':
 			case 'session':
+			case 'sasl':
 				if (isset($_SESSION['USER'][$this->index][$method]))
 					unset($_SESSION['USER'][$this->index][$method]);
 
@@ -525,6 +553,17 @@ class Datastore {
 		$this->default->login['timeout'] = array(
 			'desc'=>'Session timout in seconds',
 			'default'=>session_cache_expire()-1);
+
+		$this->default->login['sasl_dn_regex'] = array(
+			'desc'=>'SASL authorization id to user dn PCRE regular expression',
+			'untested'=>true,
+			'default'=>null);
+
+		$this->default->login['sasl_dn_replacement'] = array(
+			'desc'=>'SASL authorization id to user dn PCRE regular expression replacement string',
+			'untested'=>true,
+			'default'=>null);
+
 
 		# Prefix for custom pages
 		$this->default->custom['pages_prefix'] = array(

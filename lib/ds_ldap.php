@@ -605,14 +605,6 @@ class ldap extends DS {
 
 		static $CACHE = array();
 
-		switch (strtolower($this->getValue('sasl','mech'))) {
-			case 'gssapi':
-				if (isset($_ENV['REDIRECT_KRB5CCNAME']))
-					putenv(sprintf('KRB5CCNAME={%s}',$_ENV['REDIRECT_KRB5CCNAME']));
-
-				break;
-		}
-
 		if (! $this->getValue('server','sasl') || ! function_exists('ldap_start_tls'))
 			return false;
 
@@ -621,9 +613,11 @@ class ldap extends DS {
 			$CACHE['login_pass'] = is_null($this->getPassword($method)) ? $this->getPassword('user') : $this->getPassword($method);
 		}
 
+		$mech = strtolower($this->getValue('sasl','mech'));
+
 		# Do we need to rewrite authz_id?
 		if (! isset($CACHE['authz_id']))
-			if (! trim($this->getValue('sasl','authz_id'))) {
+			if (! trim($this->getValue('sasl','authz_id')) && $mech != 'gssapi') {
 
 			if (DEBUG_ENABLED)
 				debug_log('Rewriting bind DN [%s] -> authz_id with regex [%s] and replacement [%s].',9,0,__FILE__,__LINE__,__METHOD__,
