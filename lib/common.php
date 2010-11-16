@@ -193,7 +193,7 @@ if (isset($_SERVER['SERVER_SOFTWARE']) && ! isset($_SESSION[APPCONFIG])) {
 }
 
 # Check for safe mode.
-if (ini_get('safe_mode') && ! get_request('cmd','GET'))
+if (@ini_get('safe_mode') && ! get_request('cmd','GET'))
 	system_message(array(
 	'title'=>_('PHP Safe Mode'),
 	'body'=>_('You have PHP Safe Mode enabled. This application may work unexpectedly in Safe Mode.'),
@@ -215,11 +215,11 @@ if (DEBUG_ENABLED)
 		app_version(),$_REQUEST);
 
 # Set our PHP timelimit.
-if ($_SESSION[APPCONFIG]->getValue('session','timelimit') && ! ini_get('safe_mode'))
+if ($_SESSION[APPCONFIG]->getValue('session','timelimit') && ! @ini_get('safe_mode'))
 	set_time_limit($_SESSION[APPCONFIG]->getValue('session','timelimit'));
 
 # If debug mode is set, increase the time_limit, since we probably need it.
-if (DEBUG_ENABLED && $_SESSION[APPCONFIG]->getValue('session','timelimit') && ! ini_get('safe_mode'))
+if (DEBUG_ENABLED && $_SESSION[APPCONFIG]->getValue('session','timelimit') && ! @ini_get('safe_mode'))
 	set_time_limit($_SESSION[APPCONFIG]->getValue('session','timelimit') * 5);
 
 /**
@@ -227,7 +227,7 @@ if (DEBUG_ENABLED && $_SESSION[APPCONFIG]->getValue('session','timelimit') && ! 
  * Shall we attempt to auto-determine the language?
  */
 # If we are in safe mode, and LANG is not in the allowed vars, display an error.
-if (ini_get('safe_mode') && ! in_array('LANG',explode(',',ini_get('safe_mode_allowed_env_vars'))))
+if (@ini_get('safe_mode') && ! in_array('LANG',explode(',',@ini_get('safe_mode_allowed_env_vars'))))
 	error('You are running in SAFE_MODE, but LANG is not in the safe_mode_allowed_env_vars. Please add LANG to safe_mode_allowed_env_vars','error',true,false);
 
 $app['language'] = $_SESSION[APPCONFIG]->getValue('appearance','language');
@@ -296,7 +296,7 @@ if ($app['language'] == 'auto') {
  * Strip slashes from GET, POST, and COOKIE variables if this
  * PHP install is configured to automatically addslashes()
  */
-if (get_magic_quotes_gpc() && (! isset($slashes_stripped) || ! $slashes_stripped)) {
+if (@get_magic_quotes_gpc() && (! isset($slashes_stripped) || ! $slashes_stripped)) {
 	array_stripslashes($_REQUEST);
 	array_stripslashes($_GET);
 	array_stripslashes($_POST);
