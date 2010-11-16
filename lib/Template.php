@@ -1517,7 +1517,7 @@ class Template extends xmlTemplate {
 
 			foreach ($this->getObjectClasses() as $oc) {
 				$soc = $server->getSchemaObjectClass($oc);
-				$attrs = array_merge($attrs,$soc->getMustAttrNames(),$soc->getMayAttrNames());
+				$attrs = array_merge($attrs,$soc->getMustAttrNames(true),$soc->getMayAttrNames(true));
 				$attrs = array_unique($attrs);
 			}
 
