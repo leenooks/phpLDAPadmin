@@ -2530,7 +2530,12 @@ function get_href($type,$extra_info='') {
 		case 'forum':
 			return sprintf('%s/mailarchive/forum.php?forum_name=%s',$sf,$forum_id);
 		case 'logo':
-			return isset($_SESSION) && ! $_SESSION[APPCONFIG]->getValue('appearance','remoteurls') ? '' : sprintf('http://sflogo.sourceforge.net/sflogo.php?group_id=%s&amp;type=8',$group_id);
+			if (! isset($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) != 'on')
+				$proto = 'http';
+			else
+				$proto = 'https';
+
+			return isset($_SESSION) && ! $_SESSION[APPCONFIG]->getValue('appearance','remoteurls') ? '' : sprintf('%s://sflogo.sourceforge.net/sflogo.php?group_id=%s&amp;type=8',$proto,$group_id);
 		case 'sf':
 			return sprintf('%s/projects/phpldapadmin',$sf);
 		case 'web':
