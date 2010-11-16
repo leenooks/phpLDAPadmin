@@ -2174,7 +2174,7 @@ function password_hash($password_clear,$enc_type) {
 			if (function_exists('mhash') && function_exists('mhash_keygen_s2k')) {
 				mt_srand((double)microtime()*1000000);
 				$salt = mhash_keygen_s2k(MHASH_MD5,$password_clear,substr(pack('h*',md5(mt_rand())),0,8),4);
-				$new_value = spritnf('{SMD5}%s',base64_encode(mhash(MHASH_MD5,$password_clear.$salt).$salt));
+				$new_value = sprintf('{SMD5}%s',base64_encode(mhash(MHASH_MD5,$password_clear.$salt).$salt));
 
 			} else {
 				error(_('Your PHP install does not have the mhash() or mhash_keygen_s2k() function. Cannot do S2K hashes.'),'error','index.php');
