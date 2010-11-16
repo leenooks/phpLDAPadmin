@@ -99,8 +99,27 @@ echo '<tr>';
 echo '<td>';
 echo '<select name="notmembers" size="10" multiple="multiple">';
 
-foreach ($possible_members as $possible)
-	printf('<option>%s</option>',htmlspecialchars($possible));
+switch ($request['attr']) {
+	case 'nisnetgrouptriple':
+		foreach ($possible_members as $possible) {
+			// Added for output formating
+			$matches = preg_split('/[=,]/',$possible);
+			$possible = sprintf('(,%s,)',$matches[1]);
+
+			if (! in_array($possible,$current_members))
+				printf('<option>%s</option>',$possible);
+		}
+
+		break;
+
+	case ('memberuid' || 'member' || 'uniquemember'):
+		foreach ($possible_members as $possible) {
+			if (! in_array($possible,$current_members))
+				printf('<option>%s</option>',$possible);
+		}
+
+		break;
+}
 
 echo '</select>';
 echo '</td>';
