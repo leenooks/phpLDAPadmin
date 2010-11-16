@@ -89,7 +89,7 @@ class HTMLTree extends Tree {
 					$js_drawn = false;
 					$javascript_id++;
 
-					$rdn = split('=',get_rdn($base->getDN()));
+					$rdn = explode('=',get_rdn($base->getDN()));
 					printf('<tr><td class="spacer"></td><td class="spacer"></td><td><img src="%s/unknown.png" alt="" /></td><td colspan="%s">%s</td></tr>',
 						IMGDIR,$this->getDepth()+3-3,pretty_print_dn($base->getDN()));
 
@@ -106,8 +106,12 @@ class HTMLTree extends Tree {
 					$this->javascript .= '</div>';
 					$this->javascript .= sprintf('</form>');
 
-					printf('<tr><td class="spacer"></td><td class="spacer"></td><td class="spacer"></td><td colspan="%s"><small>%s <a href="javascript:document.getElementById(\'create_base_form_%s_%s\').submit()">%s</a></small></td></tr>',
-						$this->getDepth()+3-3,_('This base entry does not exist.'),$server->getIndex(),$javascript_id,_('Create it?'));
+					if (preg_match('/,/',$base->getDN()))
+						printf('<tr><td class="spacer"></td><td class="spacer"></td><td class="spacer"></td><td colspan="%s"><small>%s</small></td></tr>',
+							$this->getDepth()+3-3,_('This base cannot be created with PLA.'));
+					else
+						printf('<tr><td class="spacer"></td><td class="spacer"></td><td class="spacer"></td><td colspan="%s"><small>%s <a href="javascript:document.getElementById(\'create_base_form_%s_%s\').submit()">%s</a></small></td></tr>',
+							$this->getDepth()+3-3,_('This base entry does not exist.'),$server->getIndex(),$javascript_id,_('Create it?'));
 
 				} else {
 					$this->draw_item($base->getDN(),-1);
