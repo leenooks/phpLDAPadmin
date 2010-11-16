@@ -2293,7 +2293,7 @@ function password_check($cryptedpassword,$plainpassword) {
 				if (! defined('CRYPT_MD5') || CRYPT_MD5 == 0)
 					error(_('Your system crypt library does not support md5crypt encryption.'),'error','index.php');
 
-				list($type,$salt,$hash) = explode('$',$cryptedpassword);
+				list($dummy,$type,$salt,$hash) = explode('$',$cryptedpassword);
 
 				if (crypt($plainpassword,'$1$'.$salt) == $cryptedpassword)
 					return true;
