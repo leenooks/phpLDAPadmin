@@ -547,7 +547,7 @@ class TemplateRender extends PageRender {
 			else {
 				if (isAjaxEnabled())
 					printf('<td><input type="radio" name="template" value="%s" id="%s" onclick="return ajDISPLAY(\'BODY\',\'%s&amp;template=%s\',\'%s\');" /></td>',
-						htmlspecialchars($details->getID()),htmlspecialchars($details->getID()),htmlspecialchars($href_parms),$details->getID(),_('Retrieving DN'));
+						htmlspecialchars($details->getID()),htmlspecialchars($details->getID()),htmlspecialchars($href_parms),$details->getID(),str_replace('\'','\\\'',_('Retrieving DN')));
 				else
 					printf('<td><input type="radio" name="template" value="%s" id="%s" onclick="document.getElementById(\'template_choice_form\').submit()" /></td>',
 						htmlspecialchars($details->getID()),htmlspecialchars($details->getID()));
@@ -584,7 +584,7 @@ class TemplateRender extends PageRender {
 			echo '<tr>';
 			if (isAjaxEnabled())
 				printf('<td><input type="radio" name="template" value="none" id="none" onclick="return ajDISPLAY(\'BODY\',\'%s&amp;template=%s\',\'%s\');" /></td>',
-					htmlspecialchars($href_parms),'none',_('Retrieving DN'));
+					htmlspecialchars($href_parms),'none',str_replace('\'','\\\'',_('Retrieving DN')));
 			else
 				echo '<td><input type="radio" name="template" value="none" id="none" onclick="document.getElementById(\'template_choice_form\').submit()" /></td>';
 
@@ -1058,7 +1058,7 @@ class TemplateRender extends PageRender {
 
 		if (isAjaxEnabled())
 			return sprintf($this->layout['actionajax'],IMGDIR,'refresh.png',_('Refresh'),
-				htmlspecialchars($href),_('Refresh this entry'),htmlspecialchars($href),_('Reloading'),_('Refresh'));
+				htmlspecialchars($href),_('Refresh this entry'),htmlspecialchars($href),str_replace('\'','\\\'',_('Reloading')),_('Refresh'));
 		else
 			return sprintf($this->layout['action'],IMGDIR,'refresh.png',_('Refresh'),
 				htmlspecialchars($href),_('Refresh this entry'),_('Refresh'));
@@ -1072,7 +1072,7 @@ class TemplateRender extends PageRender {
 
 		if (isAjaxEnabled())
 			return sprintf($this->layout['actionajax'],IMGDIR,'switch.png',_('Switch Template'),
-				htmlspecialchars($href),_('Change to another template'),htmlspecialchars($href),_('Loading'),_('Switch Template'));
+				htmlspecialchars($href),_('Change to another template'),htmlspecialchars($href),str_replace('\'','\\\'',_('Loading')),_('Switch Template'));
 		else
 			return sprintf($this->layout['action'],IMGDIR,'switch.png',_('Switch Template'),
 				htmlspecialchars($href),_('Change to another template'),_('Switch Template'));
@@ -1088,7 +1088,7 @@ class TemplateRender extends PageRender {
 
 		if (isAjaxEnabled())
 			return sprintf($this->layout['actionajax'],IMGDIR,'export.png',_('Export'),
-				htmlspecialchars($href),_('Save a dump of this object'),htmlspecialchars($href),_('Loading'),_('Export'));
+				htmlspecialchars($href),_('Save a dump of this object'),htmlspecialchars($href),str_replace('\'','\\\'',_('Loading')),_('Export'));
 		else
 			return sprintf($this->layout['action'],IMGDIR,'export.png',_('Export'),
 				htmlspecialchars($href),_('Save a dump of this object'),_('Export'));
@@ -1105,7 +1105,7 @@ class TemplateRender extends PageRender {
 		if (isAjaxEnabled())
 			return sprintf($this->layout['actionajax'],IMGDIR,'cut.png',_('Cut'),
 				htmlspecialchars($href),_('Copy this object to another location, a new DN, or another server'),
-				htmlspecialchars($href),_('Loading'),_('Copy or move this entry'));
+				htmlspecialchars($href),str_replace('\'','\\\'',_('Loading')),_('Copy or move this entry'));
 		else
 			return sprintf($this->layout['action'],IMGDIR,'cut.png',_('Cut'),
 				htmlspecialchars($href),_('Copy this object to another location, a new DN, or another server'),
@@ -1143,7 +1143,7 @@ class TemplateRender extends PageRender {
 		if (isAjaxEnabled())
 			return sprintf($this->layout['actionajax'],IMGDIR,'trash.png',_('Trash'),
 				htmlspecialchars($href),_('You will be prompted to confirm this decision'),
-				htmlspecialchars($href),_('Loading'),_('Delete this entry'));
+				htmlspecialchars($href),str_replace('\'','\\\'',_('Loading')),_('Delete this entry'));
 		else
 			return sprintf($this->layout['action'],IMGDIR,'trash.png',_('Trash'),
 				htmlspecialchars($href),_('You will be prompted to confirm this decision'),_('Delete this entry'));
@@ -1159,7 +1159,7 @@ class TemplateRender extends PageRender {
 
 		if (isAjaxEnabled())
 			return sprintf($this->layout['actionajax'],IMGDIR,'rename.png',_('Rename'),
-				htmlspecialchars($href),_('Rename this entry'),htmlspecialchars($href),_('Loading'),_('Rename'));
+				htmlspecialchars($href),_('Rename this entry'),htmlspecialchars($href),str_replace('\'','\\\'',_('Loading')),_('Rename'));
 		else
 			return sprintf($this->layout['action'],IMGDIR,'rename.png',_('Rename'),
 				htmlspecialchars($href),_('Rename this entry'),_('Rename'));
@@ -1176,7 +1176,7 @@ class TemplateRender extends PageRender {
 		if (isAjaxEnabled())
 			return sprintf($this->layout['actionajax'],IMGDIR,'compare.png',_('Compare'),
 				htmlspecialchars($href),_('Compare this entry with another'),
-				htmlspecialchars($href),_('Loading'),_('Compare with another entry'));
+				htmlspecialchars($href),str_replace('\'','\\\'',_('Loading')),_('Compare with another entry'));
 		else
 			return sprintf($this->layout['action'],IMGDIR,'compare.png',_('Compare'),
 				htmlspecialchars($href),_('Compare this entry with another'),_('Compare with another entry'));
@@ -1193,7 +1193,7 @@ class TemplateRender extends PageRender {
 		if (isAjaxEnabled())
 			return sprintf($this->layout['actionajax'],IMGDIR,'create.png',_('Create'),
 				htmlspecialchars($href),_('Create a child entry'),
-				htmlspecialchars($href),_('Loading'),_('Create a child entry'));
+				htmlspecialchars($href),str_replace('\'','\\\'',_('Loading')),_('Create a child entry'));
 		else
 			return sprintf($this->layout['action'],IMGDIR,'create.png',_('Create'),
 				htmlspecialchars($href),_('Create a child entry'),_('Create a child entry'));
@@ -1214,7 +1214,7 @@ class TemplateRender extends PageRender {
 		if (isAjaxEnabled())
 			return sprintf($layout,IMGDIR,'add.png',_('Add'),
 				htmlspecialchars($href),_('Add new attribute to this object'),
-				htmlspecialchars($href),_('Add new attribute'),_('Add new attribute'));
+				htmlspecialchars($href),str_replace('\'','\\\'',_('Add new attribute')),_('Add new attribute'));
 		else
 			return sprintf($this->layout['action'],IMGDIR,'add.png',_('Add'),
 				htmlspecialchars($href),_('Add new attribute to this object'),_('Add new attribute'));
@@ -1232,7 +1232,7 @@ class TemplateRender extends PageRender {
 		if (isAjaxEnabled())
 			return sprintf($this->layout['actionajax'],IMGDIR,'children.png',_('Children'),
 				htmlspecialchars($href),_('View the children of this object'),
-				htmlspecialchars($href),_('Loading'),
+				htmlspecialchars($href),str_replace('\'','\\\'',_('Loading')),
 				($children_count == 1) ? _('View 1 child') : sprintf(_('View %s children'),$children_count));
 		else
 			return sprintf($this->layout['action'],IMGDIR,'children.png',_('Children'),
@@ -1251,7 +1251,7 @@ class TemplateRender extends PageRender {
 		if (isAjaxEnabled())
 			return sprintf($this->layout['actionajax'],IMGDIR,'export.png',_('Save'),
 				htmlspecialchars($href),_('Save a dump of this object and all of its children'),
-				htmlspecialchars($href),_('Loading'),_('Export subtree'));
+				htmlspecialchars($href),str_replace('\'','\\\'',_('Loading')),_('Export subtree'));
 		else
 			return sprintf($this->layout['action'],IMGDIR,'export.png',_('Save'),
 				htmlspecialchars($href),_('Save a dump of this object and all of its children'),_('Export subtree'));
@@ -2058,7 +2058,7 @@ function fillRec(id,value) {
 		if (isAjaxEnabled())
 			return sprintf('(<a href="cmd.php?%s" title="%s %s" onclick="return ajDISPLAY(\'ADDVALUE%s\',\'%s&amp;raw=1\',\'%s\',1);">%s</a>)',
 				$href_parm,_('Add an additional value to attribute'),$attribute->getName(false),$attribute->getName(),
-				$href_parm,_('Add Value to Attribute'),_('add value'));
+				$href_parm,str_replace('\'','\\\'',_('Add Value to Attribute')),_('add value'));
 		else
 			return sprintf('(<a href="cmd.php?%s" title="%s %s">%s</a>)',
 				$href_parm,_('Add an additional value to attribute'),$attribute->getName(false),_('add value'));
@@ -2076,7 +2076,7 @@ function fillRec(id,value) {
 		if (isAjaxEnabled())
 			return sprintf('(<a href="cmd.php?%s" title="%s %s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');">%s</a>)',
 				$href_parm,_('Add an additional value to attribute'),$attribute->getName(false),
-				$href_parm,_('Add Value to Attribute'),_('add value'));
+				$href_parm,str_replace('\'','\\\'',_('Add Value to Attribute')),_('add value'));
 		else
 			return sprintf('(<a href="cmd.php?%s" title="%s %s">%s</a>)',
 				$href_parm,_('Add an additional value to attribute'),$attribute->getName(false),_('add value'));
@@ -2094,7 +2094,7 @@ function fillRec(id,value) {
 		if (isAjaxEnabled())
 			return sprintf('(<a href="cmd.php?%s" title="%s: %s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');">%s</a>)',
 				htmlspecialchars($href),_('Modify members for'),$this->template->getDN(),
-				htmlspecialchars($href),_('Modify group membership'),
+				htmlspecialchars($href),str_replace('\'','\\\'',_('Modify group membership')),
 				_('modify group members'));
 		else
 			return sprintf('(<a href="cmd.php?%s" title="%s: %s">%s</a>)',
