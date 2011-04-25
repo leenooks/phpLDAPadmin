@@ -126,6 +126,7 @@ class HTMLTree extends Tree {
 		# We are not logged in, draw a login... link.
 		} else {
 			switch ($server->getAuthType()) {
+				case 'cookie':
 				case 'http':
 				case 'session':
 					$this->draw_login_link();

@@ -133,6 +133,7 @@ abstract class DS {
 			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		switch ($this->getValue('login','auth_type')) {
+			case 'cookie':
 			case 'config':
 			case 'http':
 			case 'proxy':
@@ -165,6 +166,13 @@ abstract class DS {
 				return null;
 
 		switch ($this->getAuthType()) {
+			case 'cookie':
+				if (! isset($_COOKIE[$method.'-USER']))
+					# If our bind_id is set, we'll pass that back for logins.
+					return (! is_null($this->getValue('login','bind_id')) && $method == 'login') ? $this->getValue('login','bind_id') : null;
+				else
+					return blowfish_decrypt($_COOKIE[$method.'-USER']);
+
 			case 'config':
 				if (! isset($_SESSION['USER'][$this->index][$method]['name']))
 					return $this->getValue('login','bind_id');
@@ -201,6 +209,11 @@ abstract class DS {
 		$method = $this->getMethod($method);
 
 		switch ($this->getAuthType()) {
+			case 'cookie':
+				set_cookie($method.'-USER',blowfish_encrypt($user),NULL,'/');
+				set_cookie($method.'-PASS',blowfish_encrypt($pass),NULL,'/');
+				return TRUE;
+
 			case 'config':
 				return true;
 
@@ -238,6 +251,13 @@ abstract class DS {
 				return null;
 
 		switch ($this->getAuthType()) {
+			case 'cookie':
+				if (! isset($_COOKIE[$method.'-PASS']))
+					# If our bind_id is set, we'll pass that back for logins.
+					return (! is_null($this->getValue('login','bind_pass')) && $method == 'login') ? $this->getValue('login','bind_pass') : null;
+				else
+					return blowfish_decrypt($_COOKIE[$method.'-PASS']);
+
 			case 'config':
 			case 'proxy':
 				if (! isset($_SESSION['USER'][$this->index][$method]['pass']))
@@ -375,6 +395,10 @@ abstract class DS {
 		unset ($_SESSION['cache'][$this->index]);
 
 		switch ($this->getAuthType()) {
+			case 'cookie':
+				set_cookie($method.'-USER','',time()-3600,'/');
+				set_cookie($method.'-PASS','',time()-3600,'/');
+
 			case 'config':
 				return true;
 
