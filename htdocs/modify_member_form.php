@@ -16,7 +16,7 @@ $request = array();
 $request['dn'] = get_request('dn','GET');
 $request['attr'] = get_request('attr','GET');
 
-$request['page'] = new TemplateRender($app['server']->getIndex(),get_request('template','REQUEST',false,'none'));
+$request['page'] = new TemplateRender($app['server']->getIndex(),get_request('template','REQUEST',false,null));
 $request['page']->setDN($request['dn']);
 $request['page']->accept(true);
 $request['template'] = $request['page']->getTemplate();

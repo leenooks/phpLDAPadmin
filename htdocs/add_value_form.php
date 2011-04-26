@@ -21,7 +21,7 @@ $request['attr'] = get_request('attr','GET',true);
 if (! $request['dn'] || ! $app['server']->dnExists($request['dn']))
 	error(sprintf(_('The entry (%s) does not exist.'),$request['dn']),'error','index.php');
 
-$request['page'] = new TemplateRender($app['server']->getIndex(),get_request('template','REQUEST',false,'none'));
+$request['page'] = new TemplateRender($app['server']->getIndex(),get_request('template','REQUEST',false,null));
 $request['page']->setDN($request['dn']);
 $request['page']->accept(true);
 $request['template'] = $request['page']->getTemplate();
