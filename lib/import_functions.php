@@ -295,7 +295,7 @@ class ImportLDIF extends Import {
 			return $current;
 
 		} else
-			return false;
+			return array();
 	}
 
 	/**
