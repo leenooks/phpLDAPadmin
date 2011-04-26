@@ -2274,9 +2274,9 @@ function fillRec(id,value) {
 function deleteAttribute(attrName,friendlyName,i)
 {
 	if (confirm("'._('Really delete value from attribute').' \'" + friendlyName + "\'?")) {
-		document.getElementById(\'delete_attribute_form\'.attr.value = attrName;
-		document.getElementById(\'delete_attribute_form\'.index.value = i;
-		document.getElementById(\'delete_attribute_form\'.submit();
+		document.getElementById(\'delete_attribute_form\').attr.value = attrName;
+		document.getElementById(\'delete_attribute_form\').index.value = i;
+		document.getElementById(\'delete_attribute_form\').submit();
 	}
 }
 </script>';
