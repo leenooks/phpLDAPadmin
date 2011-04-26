@@ -63,7 +63,7 @@ function pla_rdelete($server,$dn) {
 
 		} else {
 			system_message(array(
-				'title'=>_('Could not delete the entry.').sprintf(' (%s)',pretty_print_dn($request['dn'])),
+				'title'=>_('Could not delete the entry.').sprintf(' (%s)',pretty_print_dn($dn)),
 				'body'=>ldap_error_msg($server->getErrorMessage(null),$server->getErrorNum(null)),
 				'type'=>'error'));
 		}
@@ -80,7 +80,7 @@ function pla_rdelete($server,$dn) {
 
 		} else {
 			system_message(array(
-				'title'=>_('Could not delete the entry.').sprintf(' (%s)',pretty_print_dn($request['dn'])),
+				'title'=>_('Could not delete the entry.').sprintf(' (%s)',pretty_print_dn($dn)),
 				'body'=>ldap_error_msg($server->getErrorMessage(null),$server->getErrorNum(null)),
 				'type'=>'error'));
 		}

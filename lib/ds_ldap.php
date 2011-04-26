@@ -477,6 +477,7 @@ class ldap extends DS {
 			$this->getLoginClass() ? sprintf('(objectclass=%s)',join(')(objectclass=',$this->getLoginClass())) : '');
 		$query['attrs'] = array('dn');
 
+		$result = array();
 		foreach ($this->getLoginBaseDN() as $base) {
 			$query['base'] = $base;
 			$result = $this->query($query,$method);
