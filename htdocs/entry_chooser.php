@@ -70,7 +70,7 @@ if (isset($app['server']) && ! is_null($request['container'])) {
 
 	else
 		foreach ($request['children'] as $dn) {
-			$href['return'] = sprintf("javascript:returnDN('%s%s')",($request['rdn'] ? sprintf('%s,',$request['rdn']) : ''),rawurlencode($dn));
+			$href['return'] = sprintf("javascript:returnDN('%s%s')",($request['rdn'] ? sprintf('%s,',$request['rdn']) : ''),str_replace('\\','\\\\',$dn));
 			$href['expand'] = sprintf('entry_chooser.php?server_id=%s&form=%s&element=%s&rdn=%s&container=%s',
 				$app['server']->getIndex(),$request['form'],$request['element'],$request['rdn'],rawurlencode($dn));
 

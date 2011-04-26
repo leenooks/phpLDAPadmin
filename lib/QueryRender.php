@@ -273,7 +273,7 @@ class QueryRender extends PageRender {
 						printf('<td class="icon"><img src="%s/%s" alt="icon" /></td>',IMGDIR,get_icon($server->getIndex(),$dndetails['dn']));
 
 						printf('<td colspan="2"><a href="cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s">%s</a></td>',
-							$server->getIndex(),rawurlencode(dn_unescape($dndetails['dn'])),htmlspecialchars(get_rdn($dndetails['dn'])));
+							$server->getIndex(),rawurlencode($dndetails['dn']),htmlspecialchars(get_rdn($dndetails['dn'])));
 						echo '</tr>';
 
 						printf('<tr class="list_item"><td class="blank">&nbsp;</td><td class="heading">dn</td><td class="value">%s</td></tr>',
