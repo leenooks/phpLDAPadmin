@@ -2237,7 +2237,7 @@ function password_check($cryptedpassword,$plainpassword) {
 			# Check php mhash support before using it
 			if (function_exists('mhash')) {
 				$hash = base64_decode($cryptedpassword);
-				$salt = substr($hash,-4);
+				$salt = substr($hash,16);
 				$new_hash = base64_encode(mhash(MHASH_MD5,$plainpassword.$salt).$salt);
 
 				if (strcmp($cryptedpassword,$new_hash) == 0)
