@@ -56,6 +56,7 @@ if ($app['server']->getAuthType() == 'http') {
 	echo '<div>';
 	echo '<input type="hidden" name="cmd" value="login" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
+	echo '<input type="hidden" name="nodecode[login_pass]" value="1" />';
 
 	if (get_request('redirect','GET',false,false))
 		printf('<input type="hidden" name="redirect" value="%s" />',rawurlencode(get_request('redirect','GET')));

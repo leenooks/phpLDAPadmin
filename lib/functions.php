@@ -648,20 +648,20 @@ function error($msg,$type='note',$redirect=null,$fatal=false,$backtrace=false) {
 function get_request($attr,$type='POST',$die=false,$default=null) {
 	switch($type) {
 		case 'GET':
-			$value = isset($_GET[$attr]) ? (is_array($_GET[$attr]) ? $_GET[$attr] : trim(rawurldecode($_GET[$attr]))) : $default;
+			$value = isset($_GET[$attr]) ? (is_array($_GET[$attr]) ? $_GET[$attr] : (trim(empty($_GET['nodecode'][$attr]) ? rawurldecode($_GET[$attr]) : $_GET[$attr]))) : $default;
 			break;
 
 		case 'REQUEST':
-			$value = isset($_REQUEST[$attr]) ? (is_array($_REQUEST[$attr]) ? $_REQUEST[$attr] : trim(rawurldecode($_REQUEST[$attr]))) : $default;
+			$value = isset($_REQUEST[$attr]) ? (is_array($_REQUEST[$attr]) ? $_REQUEST[$attr] : trim(empty($_REQUEST['nodecode'][$attr]) ? rawurldecode($_REQUEST[$attr]) : $_REQUEST[$attr])) : $default;
 			break;
 
 		case 'SESSION':
-			$value = isset($_SESSION[$attr]) ? (is_array($_SESSION[$attr]) ? $_SESSION[$attr] : rawurldecode($_SESSION[$attr])) : $default;
+			$value = isset($_SESSION[$attr]) ? (is_array($_SESSION[$attr]) ? $_SESSION[$attr] : (empty($_SESSION['nodecode'][$attr]) ? rawurldecode($_SESSION[$attr]) : $_SESSION[$attr])) : $default;
 			break;
 
 		case 'POST':
 		default:
-			$value = isset($_POST[$attr]) ? (is_array($_POST[$attr]) ? $_POST[$attr] : trim(rawurldecode($_POST[$attr]))) : $default;
+			$value = isset($_POST[$attr]) ? (is_array($_POST[$attr]) ? $_POST[$attr] : trim(empty($_POST['nodecode'][$attr]) ? rawurldecode($_POST[$attr]) : $_POST[$attr])) : $default;
 			break;
 	}
 
