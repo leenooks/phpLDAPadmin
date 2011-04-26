@@ -675,7 +675,7 @@ class Datastore {
 			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		# If no index defined, then pick the lowest one.
-		if (is_null($index))
+		if (is_null($index) || ! trim($index) || ! is_numeric($index))
 			$index = min($this->GetServerList())->getIndex();
 
 		if (! isset($this->objects[$index]))
