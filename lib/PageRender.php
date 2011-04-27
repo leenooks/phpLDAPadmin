@@ -189,7 +189,10 @@ class PageRender extends Visitor {
 								$blank++;
 							}
 
-						} elseif (count($attribute2->getValues()) !=1) {
+						} elseif (count($attribute2->getValues()) == 0) {
+							return;
+
+						} elseif (count($attribute2->getValues()) != 1) {
 							array_push($values,'');
 							$blank++;
 
@@ -230,6 +233,9 @@ class PageRender extends Visitor {
 
 					return;
 				}
+
+				if (! $attribute->hasBeenModified())
+					return;
 
 				# Get the attribute.
 				if (preg_match_all('/%(\w+)(\|.+)?(\/[lU])?%/U',strtolower($args[1]),$matchall)) {
@@ -272,7 +278,7 @@ class PageRender extends Visitor {
 
 					case 'nt':
 						$sambapassword = new smbHash;
-						$vals[$i] = $sambapassword->nthash($passwordvalue); break;
+						$vals[$i] = $sambapassword->nthash($passwordvalue);
 
 						break;
 

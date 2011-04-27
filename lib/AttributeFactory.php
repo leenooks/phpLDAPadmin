@@ -83,7 +83,10 @@ class AttributeFactory {
 		if (isset($values['type']))
 			switch ($values['type']) {
 				case 'password':
-					return $this->newPasswordAttribute($name,$values,$server_id,$source);
+					if (! strcasecmp($name,'sambaLMPassword') || ! strcasecmp($name,'sambaNTPassword'))
+						return $this->newSambaPasswordAttribute($name,$values,$server_id,$source);
+					else
+						return $this->newPasswordAttribute($name,$values,$server_id,$source);
 
 				case 'multiselect':
 				case 'select':
