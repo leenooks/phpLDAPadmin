@@ -2878,7 +2878,6 @@ function binSIDtoText($binsid) {
  *                or true to have the returned array sorted by DN (uses ksort)
  *                or an array of attribute names to sort by attribute values
  * @return array Array of values keyed by $key.
- * @todo sort is not being performed
  */
 function return_ldap_hash($base,$filter,$key,$attrs,$sort=true) {
 	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
@@ -2918,6 +2917,9 @@ function return_ldap_hash($base,$filter,$key,$attrs,$sort=true) {
 					if (isset($values[$lattr]))
 						$results[$values[$key]][$attr] = $values[$lattr];
 				}
+
+	if ($sort)
+		masort($results,is_array($sort) ? implode(',',$sort) : 'dn');
 
 	return $results;
 }
