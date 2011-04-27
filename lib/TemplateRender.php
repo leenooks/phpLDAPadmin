@@ -2376,9 +2376,9 @@ function deleteAttribute(attrName,friendlyName,i)
 		# Add the javascript so we can call check password later.
 		echo '
 <script type="text/javascript">
-	function passwordComparePopup(component_id) {
+	function passwordComparePopup(component_id,attr) {
 		mywindow = open(\'password_checker.php\',\'myname\',\'resizable=no,width=500,height=200,scrollbars=1\');
-		mywindow.location.href = \'password_checker.php?componentid=\'+component_id;
+		mywindow.location.href = \'password_checker.php?componentid=\'+component_id+\'&attr=\'+attr;
 		if (mywindow.opener == null) mywindow.opener = self;
 	}
 </script>';
@@ -2391,8 +2391,8 @@ function deleteAttribute(attrName,friendlyName,i)
 	protected function drawCheckLinkPasswordAttribute($attribute,$component_id) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
-		printf('<small><a href="javascript:passwordComparePopup(\'%s\')">%s...</a></small><br />',
-			$component_id,_('Check password'));
+		printf('<small><a href="javascript:passwordComparePopup(\'%s\',\'%s\')">%s...</a></small><br />',
+			$component_id,$attribute->getName(),_('Check password'));
 	}
 
 	/** RANDOM PASSWORD **/

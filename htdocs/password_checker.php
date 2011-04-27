@@ -18,6 +18,7 @@ $request['componentid'] = get_request('componentid','REQUEST');
 $request['hash'] = get_request('hash','REQUEST');
 $request['password'] = get_request('check_password','REQUEST');
 $request['action'] = get_request('action','REQUEST');
+$request['attribute'] = get_request('attr','REQUEST');
 
 if (get_request('base64','REQUEST')) {
 	$request['hash'] = base64_decode($request['hash']);
@@ -30,6 +31,7 @@ printf('<h3 class="subtitle">%s</h3>',_('Password Checker Tool'));
 
 echo '<form action="password_checker.php" method="post">';
 echo '<input type="hidden" name="action" value="compare" />';
+printf('<input type="hidden" name="attr" value="%s" />',$request['attribute']);
 
 echo '<table class="forminput" width="100%" border="0">';
 
@@ -53,7 +55,7 @@ echo '<td><input type="submit" value="Compare" />';
 if ($request['action'] == 'compare') {
 	echo '&nbsp;&nbsp;&nbsp;&nbsp;<b>';
 
-	if (password_check($request['hash'],$request['password']))
+	if (password_check($request['hash'],$request['password'],$request['attribute']))
 		printf('<span class="good">%s</span>',_('Passwords match!'));
 	else
 		printf('<span class="bad">%s</span>',_('Passwords do not match!'));

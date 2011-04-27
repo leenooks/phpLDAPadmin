@@ -2198,9 +2198,29 @@ function password_hash($password_clear,$enc_type) {
  * @param String The password in clear text to test.
  * @return Boolean True if the clear password matches the hash, and false otherwise.
  */
-function password_check($cryptedpassword,$plainpassword) {
+function password_check($cryptedpassword,$plainpassword,$attribute='userpassword') {
 	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
+	if (in_array($attribute,array('sambalmpassword','sambantpassword'))) {
+		$smb = new smbHash;
+
+		switch($attribute) {
+			case 'sambalmpassword':
+				if (strcmp($smb->lmhash($plainpassword),$cryptedpassword) == 0)
+					return true;
+				else
+					return false;
+
+			case 'sambantpassword':
+				if (strcmp($smb->nthash($plainpassword),$cryptedpassword) == 0)
+					return true;
+				else
+					return false;
+		}
+
+		return false;
+	}
 
 	if (preg_match('/{([^}]+)}(.*)/',$cryptedpassword,$matches)) {
 		$cryptedpassword = $matches[2];
