@@ -1255,7 +1255,7 @@ class Template extends xmlTemplate {
 		# Collect our structural, MUST & MAY attributes.
 		$oclass_processed = array();
 		$superclasslist = array();
-		$allattrs = array();
+		$allattrs = array('objectclass');
 
 		foreach ($this->getObjectClasses() as $oclass) {
 			# If we get some superclasses - then we'll need to go through them too.
