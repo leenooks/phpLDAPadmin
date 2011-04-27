@@ -288,7 +288,7 @@ class PageRender extends Visitor {
 				$vals = $this->get('AutoPost',$attribute,$i);
 		}
 
-		if (! $vals)
+		if (! $vals || $vals == $attribute->getValues())
 			return;
 
 		$attribute->clearValue();

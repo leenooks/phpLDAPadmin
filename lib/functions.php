@@ -2082,8 +2082,8 @@ function password_types() {
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	return array(
-		'blowfish'=>'blowfish',
 		''=>'clear',
+		'blowfish'=>'blowfish',
 		'crypt'=>'crypt',
 		'ext_des'=>'ext_des',
 		'md5'=>'md5',
