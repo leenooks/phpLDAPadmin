@@ -2360,13 +2360,13 @@ function deleteAttribute(attrName,friendlyName,i)
 	/** PASSWORD ATTRIBUTES **/
 
 	protected function drawJavascriptPasswordAttribute($attribute) {
-		static $drawn = false;
+		static $drawn = array();
 
 		# This JS may have been rendered by multiple Binary attributes
-		if ($drawn)
+		if (isset($drawn[$attribute->getName()]) && $drawn[$attribute->getName()])
 			return;
 		else
-			$drawn = true;
+			$drawn[$attribute->getName()] = true;
 
 		printf('<!-- START: PASSWORD ATTRIBUTE %s (%s)-->',__METHOD__,$attribute->getName());
 		echo "\n";
