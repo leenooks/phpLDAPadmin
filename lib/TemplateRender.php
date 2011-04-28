@@ -1667,7 +1667,25 @@ function validateForm(silence) {
 		foreach ($this->template->getAttributesShown() as $attribute)
 			$this->draw('Javascript',$attribute);
 
-		echo '<script type="text/javascript">validateForm(true);</script>'."\n";
+		// @todo We need to sleep here a little bit, because our JS may not have loaded yet.
+		echo '<script type="text/javascript">
+		if (typeof getAttributeComponents == "undefined")
+			setTimeout("isJSComplete()",1000);
+		else
+			validateForm(true);
+
+		function isJSComplete() {
+			if (typeof getAttributeComponents == "undefined") {
+				alert("Our Javascript didnt load in time, you may need to reload this page");
+
+				// Sometimes the alert gives us enough time!
+				if (typeof getAttributeComponents != "undefined")
+					alert("Dont bother, our JS is loaded now!");
+			}
+
+			validateForm(true);
+		}
+		</script>'."\n";
 		printf('<!-- END: %s -->',__METHOD__);
 		echo "\n";
 	}
