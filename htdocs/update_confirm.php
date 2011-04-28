@@ -71,15 +71,16 @@ if (count($request['template']->getLDAPmodify(true))) {
 		if (! $attribute->getOldValues())
 			printf('<span style="color: green">[%s]</span>',_('attribute doesnt exist'));
 
+		$dv = $attribute->getRemovedValues();
 		foreach ($attribute->getOldValues() as $key => $value) {
 			# For multiple values, we'll highlight the changed ones
-			if ((count($attribute->getOldValues()) > 5) && in_array($value,$attribute->getRemovedValues()) && count($attribute->getValues()))
+			if ($x = ((count($attribute->getOldValues()) > 5) && count($attribute->getValues()) && in_array($value,$dv)))
 				echo '<span style="color:#880000; background:#FFFFA0">';
 
 			$request['page']->draw('OldValue',$attribute,$key);
 
 			# For multiple values, close the highlighting
-			if ((count($attribute->getOldValues()) > 5) && in_array($value,$attribute->getRemovedValues()) && count($attribute->getValues()))
+			if ($x)
 				echo '</span>';
 
 			echo '<br />';
@@ -93,15 +94,16 @@ if (count($request['template']->getLDAPmodify(true))) {
 		if (! $attribute->getValueCount() || $attribute->isForceDelete())
 			printf('<span style="color: red">[%s]</span>',_('attribute deleted'));
 
+		$dv = $attribute->getAddedValues();
 		foreach ($attribute->getValues() as $key => $value) {
 			# For multiple values, we'll highlight the changed ones
-			if ((count($attribute->getValues()) > 5) && in_array($value,$attribute->getAddedValues()))
+			if ($x = ((count($attribute->getValues()) > 5) && count($attribute->getOldValues()) && in_array($value,$dv)))
 				echo '<span style="color:#004400; background:#FFFFA0">';
 
 			$request['page']->draw('CurrentValue',$attribute,$key);
 
 			# For multiple values, close the highlighting
-			if ((count($attribute->getValues()) > 5) && in_array($value,$attribute->getAddedValues()))
+			if ($x)
 				echo '</span>';
 
 			echo '<br />';

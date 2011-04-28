@@ -838,13 +838,7 @@ class Attribute {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-		$return = array();
-
-		foreach ($this->getOldValues() as $value)
-			if (! in_array($value,$this->getValues()))
-				array_push($return,$value);
-
-		return $return;
+		return array_diff($this->getOldValues(),$this->getValues());
 	}
 
 	/**
@@ -854,13 +848,7 @@ class Attribute {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-		$return = array();
-
-		foreach ($this->getValues() as $value)
-			if (! in_array($value,$this->getOldValues()))
-				array_push($return,$value);
-
-		return $return;
+		return array_diff($this->getValues(),$this->getOldValues());
 	}
 
 	/**
