@@ -836,7 +836,10 @@ class PageRender extends Visitor {
 	}
 
 	protected function drawFormReadOnlyValueJpegAttribute($attribute,$i) {
-		draw_jpeg_photo($this->getServer(),$this->template->getDN(),$attribute->getName(),$i,false,false);
+		$this->draw('HiddenValue',$attribute,$i);
+		$_SESSION['tmp'][$attribute->getName()][$i] = $attribute->getValue($i);
+
+		draw_jpeg_photo(null,$this->template->getDN(),$attribute->getName(),$i,false,false);
 	}
 
 	protected function drawFormReadOnlyValueMultiLineAttribute($attribute,$i) {

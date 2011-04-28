@@ -187,9 +187,9 @@ if (count($request['template']->getLDAPmodify(true))) {
 
 	echo '<div style="text-align: center;">';
 	echo '<br />';
-	printf('<input type="submit" value="%s" %s/>',
-		_('Commit'),
-		(isAjaxEnabled() ? sprintf('onclick="return ajSUBMIT(\'BODY\',document.getElementById(\'update_form\'),\'%s\');"',_('Updating Object')) : ''));
+	// @todo cant use AJAX here, it affects file uploads.
+	printf('<input type="submit" value="%s" />',
+		_('Update Object'));
 
 	printf('<input type="submit" name="cancel" value="%s" %s/>',
 		_('Cancel'),

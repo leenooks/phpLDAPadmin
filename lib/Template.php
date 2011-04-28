@@ -708,6 +708,10 @@ class Template extends xmlTemplate {
 					}
 				}
 			}
+
+			// @todo If this is a Jpeg Attribute, we need to mark it read only, since it cant be deleted like text attributes can
+			if (strcasecmp(get_class($attribute),'jpegAttribute') == 0)
+				$attribute->setReadOnly();
 		}
 
 		# If we have any RDN values left over, there werent in the original entry and need to be added.

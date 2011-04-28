@@ -1444,9 +1444,8 @@ class TemplateRender extends PageRender {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
 		if (! $this->template->isReadOnly())
-			printf('<tr><td colspan="2" style="text-align: center;"><input type="submit" id="create_button" name="submit" value="%s" %s/></td></tr>',
-				_('Update Object'),
-				(isAjaxEnabled() ? sprintf('onclick="return ajSUBMIT(\'BODY\',document.getElementById(\'entry_form\'),\'%s\');"',_('Updating DN')) : ''),
+			// @todo cant use AJAX here, it affects file uploads.
+			printf('<tr><td colspan="2" style="text-align: center;"><input type="submit" id="create_button" name="submit" value="%s" /></td></tr>',
 				_('Update Object'));
 	}
 
@@ -1546,9 +1545,9 @@ class TemplateRender extends PageRender {
 		if ($page < $this->pagelast)
 			printf('<td>&nbsp;</td><td><input type="submit" id="create_button" value="%s" /></td>',_('Proceed &gt;&gt;'));
 		else
-			printf('<td style="text-align: center;"><input type="submit" id="create_button" name="submit" value="%s" %s /></td>',
-				_('Create Object'),
-				(isAjaxEnabled() ? sprintf('onclick="return ajSUBMIT(\'BODY\',document.getElementById(\'entry_form\'),\'%s\');"',_('Creating Object')) : ''));
+			// @todo cant use AJAX here, it affects file uploads.
+			printf('<td style="text-align: center;"><input type="submit" id="create_button" name="submit" value="%s" /></td>',
+				_('Create Object'));
 		echo '</tr>';
 	}
 
