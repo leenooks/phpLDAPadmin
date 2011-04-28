@@ -166,6 +166,16 @@ $config->custom->commands['script'] = array(
 // $config->custom->appearance['tree_width'] = null;
 #  $config->custom->appearance['tree_width'] = 250;
 
+/* Confirm create and update operations, allowing you to review the changes
+   and optionally skip attributes during the create/update operation. */
+// $config->custom->confirm['create'] = true;
+// $config->custom->confirm['update'] = true;
+
+/* Confirm copy operations, and treat them like create operations. This allows
+   you to edit the attributes (thus changing any that might conflict with
+   uniqueness) before creating the new entry. */
+// $config->custom->confirm['copy'] = true;
+
 /*********************************************
  * User-friendly attribute translation       *
  *********************************************/
