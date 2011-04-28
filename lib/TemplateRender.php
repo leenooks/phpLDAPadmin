@@ -1992,13 +1992,18 @@ function fillRec(id,value) {
 	protected function drawMenuAttribute($attribute) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
+		$result = '';
 		$item = '';
 
-		echo '<table class="entry" border="0"><tr><td style="width: 25px;">&nbsp;</td>';
-		echo '<td>';
 		foreach (array('add','modify','rename') as $action)
 			if ($item = $this->get('MenuItem',$attribute,$action))
-				printf('<div class="add_value">%s</div>',$item);
+				$result .= sprintf('<div class="add_value">%s</div>',$item);
+
+		if (! $result)
+			return;
+
+		echo '<table class="entry" border="0"><tr><td style="width: 25px;">&nbsp;</td>';
+		printf('<td>%s</td>',$result);
 		echo '</td>';
 		echo '</tr></table>';
 	}

@@ -2555,7 +2555,7 @@ function get_href($type,$extra_info='') {
 			else
 				$proto = 'https';
 
-			return isset($_SESSION) && ! $_SESSION[APPCONFIG]->getValue('appearance','remoteurls') ? '' : sprintf('%s://sflogo.sourceforge.net/sflogo.php?group_id=%s&amp;type=8',$proto,$group_id);
+			return isset($_SESSION) && ! $_SESSION[APPCONFIG]->getValue('appearance','remoteurls') ? '' : sprintf('%s://sflogo.sourceforge.net/sflogo.php?group_id=%s&amp;type=10',$proto,$group_id);
 		case 'sf':
 			return sprintf('%s/projects/phpldapadmin',$sf);
 		case 'web':
