@@ -2285,7 +2285,7 @@ function fillRec(id,value) {
 		echo '<!-- This form is submitted by JavaScript when the user clicks "Delete attribute" on a binary attribute -->';
 		echo '<form id="delete_attribute_form" action="cmd.php?cmd=delete_attr" method="post">';
 		printf('<input type="hidden" name="server_id" value="%s" />',$this->getServerID());
-		printf('<input type="hidden" name="dn" value="%s" />',$this->template->getDNEncode());
+		printf('<input type="hidden" name="dn" value="%s" />',$this->template->getDNEncode(false));
 		printf('<input type="hidden" name="template" value="%s" />',$this->template->getID());
 		echo '<input type="hidden" name="attr" value="FILLED IN BY JAVASCRIPT" />';
 		echo '<input type="hidden" name="index" value="FILLED IN BY JAVASCRIPT" />';
