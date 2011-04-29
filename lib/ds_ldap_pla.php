@@ -127,6 +127,19 @@ class ldap_pla extends ldap {
 			'default'=>null);
 	}
 
+	public function __get($key) {
+		switch ($key) {
+			case 'name':
+				return $this->getValue('server','name');
+
+			default:
+				system_message(array(
+					'title'=>_('Unknown request for Object value.'),
+					'body'=>sprintf(_('Attempt to obtain value %s from %s'),$key,get_class($this)),
+					'type'=>'error'));
+		}
+	}
+
 	/**
 	 * Gets whether the admin has configured phpLDAPadmin to show the "Create New" link in the tree viewer.
 	 * <code>

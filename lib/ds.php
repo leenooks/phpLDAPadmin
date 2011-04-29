@@ -661,6 +661,8 @@ class Datastore {
 			if (! $isVisible || ($isVisible && $server->getValue('server','visible')))
 				$CACHE[$isVisible][$id] = $server;
 
+		masort($CACHE[$isVisible],'name');
+
 		return $CACHE[$isVisible];
 	}
 

@@ -1000,7 +1000,7 @@ function get_custom_file($index,$filename,$path) {
  * @return array Sorted multi demension array.
  */
 function masort(&$data,$sortby,$rev=0) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+	if (defined('DEBUG_ENABLED') && DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	# if the array to sort is null or empty
