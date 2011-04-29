@@ -49,6 +49,9 @@
    to a big random string. */
 // $config->custom->session['blowfish'] = null;
 
+/* If your auth_type is http, you can override your HTTP Authentication Realm. */
+// $config->custom->session['http_realm'] = sprintf('%s %s',app_name(),'login');
+
 /* The language setting. If you set this to 'auto', phpLDAPadmin will attempt
    to determine your language automatically. Otherwise, available lanaguages
    are: 'ct', 'de', 'en', 'es', 'fr', 'it', 'nl', and 'ru'

@@ -41,7 +41,7 @@ if ($app['server']->getAuthType() == 'http') {
 		die();
 	}
 
-	header(sprintf('WWW-Authenticate: Basic realm="%s %s"',app_name(),_('login')));
+	header(sprintf('WWW-Authenticate: Basic realm="%s"',$_SESSION[APPCONFIG]->getValue('session','http_realm')));
 
 	if ($_SERVER['SERVER_PROTOCOL'] == 'HTTP/1.0')
 		header('HTTP/1.0 401 Unauthorized'); // http 1.0 method
