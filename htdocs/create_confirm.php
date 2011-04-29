@@ -65,7 +65,7 @@ if (count($request['template']->getLDAPadd(true))) {
 	echo '<div>';
 	echo '<input type="hidden" name="cmd" value="create" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
-	printf('<input type="hidden" name="container" value="%s" />',htmlspecialchars($request['template']->getContainer()));
+	printf('<input type="hidden" name="container" value="%s" />',$request['template']->getContainerEncode(false));
 	printf('<input type="hidden" name="template" value="%s" />',$request['template']->getID());
 	foreach ($request['template']->getRDNAttrs() as $rdn)
 		printf('<input type="hidden" name="rdn_attribute[]" value="%s" />',htmlspecialchars($rdn));
@@ -127,7 +127,7 @@ if (count($request['template']->getLDAPadd(true))) {
 
 } else {
 	$href = sprintf('cmd=template_engine&server_id=%s&dn=%s',
-		$app['server']->getIndex(),rawurlencode($request['dn']));
+		$app['server']->getIndex(),$request['template']->getDNEncode());
 
 	echo '<div style="text-align: center;">';
 	echo _('You made no changes');

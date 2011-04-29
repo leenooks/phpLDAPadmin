@@ -58,6 +58,10 @@ class TreeItem {
 		return $this->dn;
 	}
 
+	public function getDNEncode() {
+		return urlencode(preg_replace('/%([0-9a-fA-F]+)/',"%25\\1",$this->dn));
+	}
+
 	/**
 	 * Get the RDN of this tree items DN.
 	 *

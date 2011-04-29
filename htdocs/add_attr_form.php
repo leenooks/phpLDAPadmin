@@ -169,7 +169,7 @@ if (get_request('meth','REQUEST') != 'ajax') {
 	echo '<td valign="top" align="center">';
 
 	printf('<select name="attr" onchange="ajDISPLAY(\'%s\',\'cmd=add_value_form&server_id=%s&dn=%s&attr=\'+this.value,\'%s\',\'append\');">',
-		'ADDATTR',$app['server']->getIndex(),rawurlencode(get_request('dn','REQUEST')),_('Please Wait'));
+		'ADDATTR',$app['server']->getIndex(),$request['template']->getDNEncode(),_('Please Wait'));
 
 	printf('<option value="%s">%s</option>','','');
 	foreach ($request['template']->getAvailAttrs() as $attribute)

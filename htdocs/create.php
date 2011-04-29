@@ -64,11 +64,11 @@ if ($add_result) {
 
 	else if ($action_number == 2)
 		$redirect_url = sprintf('cmd.php?%s&template=%s&container=%s',
-			$href,'default',rawurlencode($request['template']->getContainer()));
+			$href,'default',$request['template']->getContainerEncode());
 
 	else
 		$redirect_url = sprintf('cmd.php?%s&template=%s&dn=%s',
-			$href,'default',rawurlencode($request['template']->getDN()));
+			$href,'default',$request['template']->getDNEncode());
 
 	if ($action_number == 1 || $action_number == 2)
 		printf('<meta http-equiv="refresh" content="0; url=%s" />',$redirect_url);

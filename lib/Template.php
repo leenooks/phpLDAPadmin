@@ -634,6 +634,14 @@ class Template extends xmlTemplate {
 			return $this->getRDN();
 	}
 
+	public function getDNEncode($url=true) {
+		// @todo Be nice to do all this in 1 location
+		if ($url)
+			return urlencode(preg_replace('/%([0-9a-fA-F]+)/',"%25\\1",$this->getDN()));
+		else
+			return preg_replace('/%([0-9a-fA-F]+)/',"%25\\1",$this->getDN());
+	}
+
 	/**
 	 * Set the container for this template, if we are creating entries
 	 *
@@ -663,6 +671,14 @@ class Template extends xmlTemplate {
 			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->container);
 
 		return $this->container;
+	}
+
+	public function getContainerEncode($url=true) {
+		// @todo Be nice to do all this in 1 location
+		if ($url)
+			return urlencode(preg_replace('/%([0-9a-fA-F]+)/',"%25\\1",$this->container));
+		else
+			return preg_replace('/%([0-9a-fA-F]+)/',"%25\\1",$this->container);
 	}
 
 	/**

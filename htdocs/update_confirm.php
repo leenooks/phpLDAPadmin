@@ -42,7 +42,7 @@ if (count($request['template']->getLDAPmodify(true))) {
 	echo '<div>';
 	echo '<input type="hidden" name="cmd" value="update" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
-	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($request['dn']));
+	printf('<input type="hidden" name="dn" value="%s" />',$request['template']->getDNEncode(false));
 	echo "\n";
 
 	$request['page']->drawHiddenAttributes();
@@ -221,7 +221,7 @@ if (count($request['template']->getLDAPmodify(true))) {
 
 } else {
 	$href = sprintf('cmd=template_engine&server_id=%s&dn=%s',
-		 $app['server']->getIndex(),rawurlencode($request['dn']));
+		 $app['server']->getIndex(),$request['template']->getDNEncode());
 
 	echo '<div style="text-align: center;">';
 	echo _('You made no changes');

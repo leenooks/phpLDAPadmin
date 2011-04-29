@@ -195,6 +195,14 @@ class Query extends xmlTemplate {
 		return $this->dn;
 	}
 
+	public function getDNEncode($url=true) {
+		// @todo Be nice to do all this in 1 location
+		if ($url)
+			return urlencode(preg_replace('/%([0-9a-fA-F]+)/',"%25\\1",$this->dn));
+		else
+			return preg_replace('/%([0-9a-fA-F]+)/',"%25\\1",$this->dn);
+	}
+
 	public function getAttrSortOrder() {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);

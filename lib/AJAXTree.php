@@ -57,7 +57,7 @@ class AJAXTree extends HTMLTree {
 			return '';
 
 		# Get our children.
-		$child_count = $this->readChildrenNumber($item);
+		$child_count = $this->readChildrenNumber($entry->getDN());
 
 		$nb = 0;
 		if ($first_child)
@@ -81,12 +81,12 @@ class AJAXTree extends HTMLTree {
 		$new_code = array('1','1','0','0');
 
 		# Links
-		$parms['openclose'] = htmlspecialchars(sprintf('server_id=%s&dn=%s&code=%s%s',$this->getServerID(),rawurlencode($item),$code,$new_code[$nb]));
-		$parms['edit'] = htmlspecialchars(sprintf('cmd=template_engine&server_id=%s&dn=%s',$this->getServerID(),rawurlencode($item)));
+		$parms['openclose'] = htmlspecialchars(sprintf('server_id=%s&dn=%s&code=%s%s',$this->getServerID(),$entry->getDNEncode(),$code,$new_code[$nb]));
+		$parms['edit'] = htmlspecialchars(sprintf('cmd=template_engine&server_id=%s&dn=%s',$this->getServerID(),$entry->getDNEncode()));
 		$href = sprintf('cmd.php?%s',$parms['edit']);
 
 		# Each node has a unique id based on dn
-		$node_id = sprintf('node%s',base64_encode(sprintf('%s-%s',$server->getIndex(),$item)));
+		$node_id = sprintf('node%s',base64_encode(sprintf('%s-%s',$server->getIndex(),$entry->getDN())));
 		$node_id = str_replace('=','_',$node_id);
 
 		if ($level == 0)
@@ -110,12 +110,12 @@ class AJAXTree extends HTMLTree {
 			echo '</a>';
 		}
 
-		printf('<a href="%s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');" title="%s" >',$href,$parms['edit'],_('Retrieving DN'),htmlspecialchars($item));
+		printf('<a href="%s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');" title="%s" >',$href,$parms['edit'],_('Retrieving DN'),htmlspecialchars($entry->getDN()));
 		printf('<span class="dnicon"><img id="jt%sfolder" src="%s/%s" alt="->" class="imgs" style="border: 0px; vertical-align:text-top;" /></span>',$node_id,IMGDIR,$entry->getIcon($server));
 		echo '</a>';
 
 		echo '&nbsp;';
-		printf('<a href="%s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');" title="%s" class="phplm">',$href,$parms['edit'],_('Retrieving DN'),htmlspecialchars($item));
+		printf('<a href="%s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');" title="%s" class="phplm">',$href,$parms['edit'],_('Retrieving DN'),htmlspecialchars($entry->getDN()));
 		echo $this->get_formatted_dn($entry,$level-1);
 		echo ($child_count ? (sprintf(' (%s%s)',$child_count,($entry->isSizeLimited() ? '+' : ''))) : '');
 		echo '</a>';
@@ -264,7 +264,7 @@ class AJAXTree extends HTMLTree {
 
 		$output = '';
 
-		$href = sprintf('cmd=template_engine&server_id=%s&container=%s',$this->getServerID(),rawurlencode($entry->getDN()));
+		$href = sprintf('cmd=template_engine&server_id=%s&container=%s',$this->getServerID(),$entry->getDNEncode());
 
 		$output .= $this->get_indentation($level);
 		$output .= sprintf('<img src="%s" alt="--" class="imgs" style="border: 0px; vertical-align:text-top;" />',$img);

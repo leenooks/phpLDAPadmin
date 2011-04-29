@@ -64,7 +64,7 @@ if ($result) {
 	}
 
 	$redirect_url = sprintf('cmd.php?cmd=template_engine&server_id=%s&dn=%s',
-		$app['server']->getIndex(),rawurlencode($request['dn']));
+		$app['server']->getIndex(),$request['template']->getDNEncode());
 
 	foreach ($request['template']->getLDAPmodify() as $attr => $junk)
 		$redirect_url .= sprintf('&modified_attrs[]=%s',$attr);

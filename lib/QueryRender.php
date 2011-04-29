@@ -273,7 +273,7 @@ class QueryRender extends PageRender {
 						printf('<td class="icon"><img src="%s/%s" alt="icon" /></td>',IMGDIR,get_icon($server->getIndex(),$dndetails['dn']));
 
 						printf('<td colspan="2"><a href="cmd.php?cmd=template_engine&amp;server_id=%s&amp;dn=%s">%s</a></td>',
-							$server->getIndex(),rawurlencode($dndetails['dn']),htmlspecialchars(get_rdn($dndetails['dn'])));
+							$server->getIndex(),$this->template->getDNEncode(),htmlspecialchars(get_rdn($dndetails['dn'])));
 						echo '</tr>';
 
 						printf('<tr class="list_item"><td class="blank">&nbsp;</td><td class="heading">dn</td><td class="value">%s</td></tr>',
@@ -363,7 +363,7 @@ class QueryRender extends PageRender {
 						if ($_SESSION[APPCONFIG]->getValue('mass','enabled'))
 							printf('<td><input type="checkbox" id="ma_%s" name="dn[]" value="%s" onclick="this.checked=!this.checked;" /></td>',$j,$dndetails['dn']);
 
-						$href = sprintf('cmd=template_engine&server_id=%s&dn=%s',$server->getIndex(),rawurlencode($dndetails['dn']));
+						$href = sprintf('cmd=template_engine&server_id=%s&dn=%s',$server->getIndex(),$this->template->getDNEncode());
 						printf('<td class="icon"><a href="cmd.php?%s"><img src="%s/%s" alt="icon" /></a></td>',
 							htmlspecialchars($href),
 							IMGDIR,get_icon($server->getIndex(),$dndetails['dn']));

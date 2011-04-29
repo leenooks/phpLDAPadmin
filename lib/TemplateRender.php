@@ -53,7 +53,7 @@ class TemplateRender extends PageRender {
 				parent::accept();
 
 			$this->url_base = sprintf('server_id=%s&dn=%s',
-				$this->getServerID(),rawurlencode($this->template->getDN()));
+				$this->getServerID(),$this->template->getDNEncode());
 			$this->layout['hint'] = sprintf('<td class="icon"><img src="%s/light.png" alt="%s" /></td><td colspan="3"><span class="hint">%%s</span></td>',
 				IMGDIR,_('Hint'));
 			$this->layout['action'] = '<td class="icon"><img src="%s/%s" alt="%s" /></td><td><a href="cmd.php?%s" title="%s">%s</a></td>';
@@ -646,7 +646,7 @@ class TemplateRender extends PageRender {
 
 		} elseif ($this->template->getContext() == 'copyasnew') {
 			$this->drawStepFormStart($this->page);
-			printf('<input type="hidden" name="container" value="%s" />',htmlspecialchars($this->template->getContainer()));
+			printf('<input type="hidden" name="container" value="%s" />',$this->template->getContainer(false));
 			echo '<div><table>';
 			$this->drawRDNChooser();
 			echo '</table></div>';
@@ -699,7 +699,7 @@ class TemplateRender extends PageRender {
 					break;
 
 				case 'modification':
-					$title = get_rdn($this->dn);
+					$title = htmlspecialchars(get_rdn($this->dn));
 					break;
 
 				default:
@@ -1188,7 +1188,7 @@ class TemplateRender extends PageRender {
 
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
-		$href = sprintf('cmd=template_engine&server_id=%s&container=%s',$this->getServerID(),rawurlencode($this->template->getDN()));
+		$href = sprintf('cmd=template_engine&server_id=%s&container=%s',$this->getServerID(),$this->template->getDNEncode());
 
 		if (isAjaxEnabled())
 			return sprintf($this->layout['actionajax'],IMGDIR,'create.png',_('Create'),
@@ -1227,7 +1227,7 @@ class TemplateRender extends PageRender {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
 		$href = sprintf('cmd=query_engine&server_id=%s&filter=%s&base=%s&scope=one&query=none&size_limit=0&search=true',
-			$this->getServerID(),rawurlencode('objectClass=*'),rawurlencode($this->template->getDN()));
+			$this->getServerID(),rawurlencode('objectClass=*'),$this->template->getDNEncode());
 
 		if (isAjaxEnabled())
 			return sprintf($this->layout['actionajax'],IMGDIR,'children.png',_('Children'),
@@ -1389,7 +1389,7 @@ class TemplateRender extends PageRender {
 
 		echo '<div>';
 		printf('<input type="hidden" name="server_id" value="%s" />',$this->getServerID());
-		printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($this->template->getDN()));
+		printf('<input type="hidden" name="dn" value="%s" />',$this->template->getDNEncode(false));
 		printf('<input type="hidden" name="template" value="%s" />',$this->template->getID());
 		echo '</div>';
 
@@ -1514,7 +1514,7 @@ class TemplateRender extends PageRender {
 				$this->drawObjectClassChooser();
 
 		} else {
-			printf('<input type="hidden" name="container" value="%s" />',htmlspecialchars($this->template->getContainer()));
+			printf('<input type="hidden" name="container" value="%s" />',$this->template->getContainerEncode(false));
 			echo '</div>';
 
 			echo '<table class="entry" cellspacing="0" border="0" style="margin-left: auto; margin-right: auto;">';
@@ -2075,7 +2075,7 @@ function fillRec(id,value) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
 		$href_parm = htmlspecialchars(sprintf('cmd=add_value_form&server_id=%s&dn=%s&attr=%s',
-			$this->getServerID(),rawurlencode($this->template->getDN()),rawurlencode($attribute->getName(false))));
+			$this->getServerID(),$this->template->getDNEncode(),rawurlencode($attribute->getName(false))));
 
 		if (isAjaxEnabled())
 			return sprintf('(<a href="cmd.php?%s" title="%s %s" onclick="return ajDISPLAY(\'ADDVALUE%s\',\'%s&amp;raw=1\',\'%s\',1);">%s</a>)',
@@ -2093,7 +2093,7 @@ function fillRec(id,value) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
 		$href_parm = htmlspecialchars(sprintf('cmd=add_value_form&server_id=%s&dn=%s&attr=%s',
-			$this->getServerID(),rawurlencode($this->template->getDN()),rawurlencode($attribute->getName(false))));
+			$this->getServerID(),$this->template->getDNEncode(),rawurlencode($attribute->getName(false))));
 
 		if (isAjaxEnabled())
 			return sprintf('(<a href="cmd.php?%s" title="%s %s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');">%s</a>)',
@@ -2111,7 +2111,7 @@ function fillRec(id,value) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
 		$href = sprintf('cmd=modify_member_form&server_id=%s&dn=%s&attr=%s',
-			$this->getServerID(),rawurlencode($this->template->getDN()),rawurlencode($attribute->getName()));
+			$this->getServerID(),$this->template->getDNEncode(),rawurlencode($attribute->getName()));
 
 		if (isAjaxEnabled())
 			return sprintf('(<a href="cmd.php?%s" title="%s: %s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');">%s</a>)',
@@ -2130,7 +2130,7 @@ function fillRec(id,value) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
 		$href = sprintf('cmd.php?cmd=rename_form&server_id=%s&dn=%s&template=%s',
-			$this->getServerID(),rawurlencode($this->template->getDN()),$this->template->getID());
+			$this->getServerID(),$this->template->getDNEncode(),$this->template->getID());
 
 		return sprintf('<small>(<a href="%s">%s</a>)</small>',htmlspecialchars($href),_('rename'));
 	}
@@ -2285,7 +2285,7 @@ function fillRec(id,value) {
 		echo '<!-- This form is submitted by JavaScript when the user clicks "Delete attribute" on a binary attribute -->';
 		echo '<form id="delete_attribute_form" action="cmd.php?cmd=delete_attr" method="post">';
 		printf('<input type="hidden" name="server_id" value="%s" />',$this->getServerID());
-		printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($this->template->getDN()));
+		printf('<input type="hidden" name="dn" value="%s" />',$this->template->getDNEncode());
 		printf('<input type="hidden" name="template" value="%s" />',$this->template->getID());
 		echo '<input type="hidden" name="attr" value="FILLED IN BY JAVASCRIPT" />';
 		echo '<input type="hidden" name="index" value="FILLED IN BY JAVASCRIPT" />';
