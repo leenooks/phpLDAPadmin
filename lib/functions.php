@@ -2000,7 +2000,7 @@ function draw_jpeg_photo($server,$dn,$attr_name='jpegphoto',$index,$draw_delete_
 			'type'=>'warn'));
 
 		# This should atleast generate some text that says "Image not available"
-		echo '<img src="view_jpeg_photo.php?location=session" alt="Photo" />';
+		printf('<img src="view_jpeg_photo.php?location=session&attr=%s" alt="Photo" />',$attr_name);
 
 		return;
 	}
@@ -2053,7 +2053,7 @@ function draw_jpeg_photo($server,$dn,$attr_name='jpegphoto',$index,$draw_delete_
 		$img_height = $height;
 	}
 
-	$href = sprintf('view_jpeg_photo.php?dn=%s&index=%s',rawurlencode($dn),$index);
+	$href = sprintf('view_jpeg_photo.php?dn=%s&index=%s&attr=%s',rawurlencode($dn),$index,$attr_name);
 
 	printf('<acronym title="%s %s. %s x %s %s.">',number_format($outjpeg),_('bytes'),$width,$height,_('pixels'));
 
