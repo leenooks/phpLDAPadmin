@@ -2087,6 +2087,7 @@ function password_types() {
 		'crypt'=>'crypt',
 		'ext_des'=>'ext_des',
 		'md5'=>'md5',
+		'k5key'=>'k5key',
 		'md5crypt'=>'md5crypt',
 		'sha'=>'sha',
 		'smd5'=>'smd5',
@@ -2109,6 +2110,15 @@ function password_hash($password_clear,$enc_type) {
 	$enc_type = strtolower($enc_type);
 
 	switch($enc_type) {
+		case 'blowfish':
+			if (! defined('CRYPT_BLOWFISH') || CRYPT_BLOWFISH == 0)
+				error(_('Your system crypt library does not support blowfish encryption.'),'error','index.php');
+
+			# Hardcoded to second blowfish version and set number of rounds
+			$new_value = sprintf('{CRYPT}%s',crypt($password_clear,'$2a$12$'.random_salt(13)));
+
+			break;
+
 		case 'crypt':
 			if ($_SESSION[APPCONFIG]->getValue('password', 'no_random_crypt_salt'))
 				$new_value = sprintf('{CRYPT}%s',crypt($password_clear,substr($password_clear,0,2)));
@@ -2126,25 +2136,26 @@ function password_hash($password_clear,$enc_type) {
 
 			break;
 
+		case 'k5key':
+			$new_value = sprintf('{K5KEY}%s',$password_clear);
+
+			system_message(array(
+				'title'=>_('Unable to Encrypt Password'),
+				'body'=>'phpLDAPadmin cannot encrypt K5KEY passwords',
+				'type'=>'warn'));
+
+			break;
+
+		case 'md5':
+			$new_value = sprintf('{MD5}%s',base64_encode(pack('H*',md5($password_clear))));
+			break;
+
 		case 'md5crypt':
 			if (! defined('CRYPT_MD5') || CRYPT_MD5 == 0)
 				error(_('Your system crypt library does not support md5crypt encryption.'),'error','index.php');
 
 			$new_value = sprintf('{CRYPT}%s',crypt($password_clear,'$1$'.random_salt(9)));
 
-			break;
-
-		case 'blowfish':
-			if (! defined('CRYPT_BLOWFISH') || CRYPT_BLOWFISH == 0)
-				error(_('Your system crypt library does not support blowfish encryption.'),'error','index.php');
-
-			# Hardcoded to second blowfish version and set number of rounds
-			$new_value = sprintf('{CRYPT}%s',crypt($password_clear,'$2a$12$'.random_salt(13)));
-
-			break;
-
-		case 'md5':
-			$new_value = sprintf('{MD5}%s',base64_encode(pack('H*',md5($password_clear))));
 			break;
 
 		case 'sha':
