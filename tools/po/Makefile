@@ -16,7 +16,7 @@
 # all-merge-pot	merge last POT with each current translations
 
 LOCALEDIR = ../../locale
-TEMPLATEFILES=`find ../../templates -iname *xml -exec echo -m {} \;`
+TEMPLATEFILES=`find ../../templates -iname *xml -exec echo -m {} \;|grep -v /test_|grep -v /custom_`
 EXPORTFILE = $(shell echo $${EXPORTFILE:-/tmp/launchpad-export.tar.gz})
 
 all:
