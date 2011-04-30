@@ -852,7 +852,7 @@ class Template extends xmlTemplate {
 				return '';
 
 			foreach ($vals as $val)
-				$rdn .= sprintf('%s=%s+',$attribute->getName(),$val);
+				$rdn .= sprintf('%s=%s+',$attribute->getName(false),$val);
 		}
 
 		# Chop the last plus sign off when returning
