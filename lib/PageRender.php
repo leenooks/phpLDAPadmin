@@ -1106,10 +1106,7 @@ class PageRender extends Visitor {
 
 			foreach ($attribute->getSelection() as $value => $description) {
 				printf('<option value="%s" %s>%s</option>',$value,
-					($value == $val) ? 'selected="selected"' : '',$description);
-
-				if ($value == $val)
-					$found = true;
+					((strcasecmp($value,$val) == 0) && $found = true) ? 'selected="selected"' : '',$description);
 
 				if ($value == '')
 					$empty_value = true;
