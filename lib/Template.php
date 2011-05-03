@@ -913,6 +913,14 @@ class Template extends xmlTemplate {
 		return $this->visible;
 	}
 
+	public function setVisible() {
+		$this->visible = true;
+	}
+
+	public function setInvisible() {
+		$this->visible = false;
+	}
+
 	public function getRegExp() {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->regexp);

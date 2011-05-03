@@ -107,6 +107,10 @@ class Config {
 			'desc'=>'Hide the features that may provide sensitive debugging information to the browser',
 			'default'=>true);
 
+		$this->default->appearance['hide_template_regexp'] = array(
+			'desc'=>'Templates that are disabled by their regex are not shown',
+			'default'=>false);
+
 		$this->default->appearance['hide_template_warning'] = array(
 			'desc'=>'Hide template errors from being displayed',
 			'default'=>false);
