@@ -15,6 +15,11 @@ require './common.php';
 $request = array();
 $request['dn'] = get_request('dn','GET');
 
+$request['page'] = new PageRender($app['server']->getIndex(),get_request('template','REQUEST',false,'none'));
+$request['page']->setDN($request['dn']);
+$request['page']->accept();
+$request['template'] = $request['page']->getTemplate();
+
 # Check if the entry exists.
 if (! $request['dn'] || ! $app['server']->dnExists($request['dn']))
 	system_message(array(
@@ -25,7 +30,7 @@ if (! $request['dn'] || ! $app['server']->dnExists($request['dn']))
 # We search all children, not only the visible children in the tree
 $request['children'] = $app['server']->getContainerContents($request['dn'],null,0,'(objectClass=*)',LDAP_DEREF_NEVER);
 
-printf('<h3 class="title">%s %s</h3>',_('Delete'),get_rdn($request['dn']));
+printf('<h3 class="title">%s %s</h3>',_('Delete'),htmlspecialchars(get_rdn($request['dn'])));
 printf('<h3 class="subtitle">%s: <b>%s</b> &nbsp;&nbsp;&nbsp; %s: <b>%s</b></h3>',
 	_('Server'),$app['server']->getName(),_('Distinguished Name'),$request['dn']);
 echo "\n";
@@ -70,7 +75,7 @@ if (count($request['children'])) {
 	echo '<form action="cmd.php" method="post" id="delete_form">';
 	echo '<input type="hidden" name="cmd" value="rdelete" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
-	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($request['dn']));
+	printf('<input type="hidden" name="dn" value="%s" />',$request['template']->getDNEncode(false));
 	//@todo need to refresh the tree after a delete
 	printf('<input type="submit" value="%s" %s />',
 		sprintf(_('Delete all %s objects'),count($request['search'])),
@@ -82,10 +87,10 @@ if (count($request['children'])) {
 	echo '<form action="cmd.php" method="get">';
 	echo '<input type="hidden" name="cmd" value="template_engine" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
-	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($request['dn']));
+	printf('<input type="hidden" name="dn" value="%s" />',$request['template']->getDNEncode(false));
 	printf('<input type="submit" name="submit" value="%s" %s />',
 		_('Cancel'),
-		(isAjaxEnabled() ? sprintf('onclick="return ajDISPLAY(\'BODY\',\'cmd=template_engine&server_id=%s&dn=%s\',\'%s\');"',$app['server']->getIndex(),htmlspecialchars($request['dn']),_('Retrieving DN')) : ''));
+		(isAjaxEnabled() ? sprintf('onclick="return ajDISPLAY(\'BODY\',\'cmd=template_engine&server_id=%s&dn=%s\',\'%s\');"',$app['server']->getIndex(),$request['template']->getDNEncode(),_('Retrieving DN')) : ''));
 	echo '</form>';
 	echo '</td>';
 	echo '</tr>';
@@ -122,7 +127,7 @@ if (count($request['children'])) {
 	echo '<form action="cmd.php" method="post" id="delete_form">';
 	echo '<input type="hidden" name="cmd" value="delete" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
-	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($request['dn']));
+	printf('<input type="hidden" name="dn" value="%s" />',$request['template']->getDNEncode(false));
 	//@todo need to refresh the tree after a delete
 	printf('<input type="submit" name="submit" value="%s" %s />',
 		_('Delete'),
@@ -135,10 +140,10 @@ if (count($request['children'])) {
 	echo '<form action="cmd.php" method="get">';
 	echo '<input type="hidden" name="cmd" value="template_engine" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
-	printf('<input type="hidden" name="dn" value="%s" />',htmlspecialchars($request['dn']));
+	printf('<input type="hidden" name="dn" value="%s" />',$request['template']->getDNEncode(false));
 	printf('<input type="submit" name="submit" value="%s" %s />',
 		_('Cancel'),
-		(isAjaxEnabled() ? sprintf('onclick="return ajDISPLAY(\'BODY\',\'cmd=template_engine&server_id=%s&dn=%s\',\'%s\');"',$app['server']->getIndex(),htmlspecialchars($request['dn']),_('Retrieving DN')) : ''));
+		(isAjaxEnabled() ? sprintf('onclick="return ajDISPLAY(\'BODY\',\'cmd=template_engine&server_id=%s&dn=%s\',\'%s\');"',$app['server']->getIndex(),$request['template']->getDNEncode(),_('Retrieving DN')) : ''));
 	echo '</form>';
 
 	echo '</td>';

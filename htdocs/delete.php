@@ -21,13 +21,18 @@ if (! $app['server']->dnExists($request['dn']))
 # Delete the entry.
 $result = $app['server']->delete($request['dn']);
 
-if ($result)
+if ($result) {
+	$redirect_url = '';
+
+	if (isAjaxEnabled())
+		$redirect_url .= sprintf('&refresh=SID_%s_nodes&noheader=1',$app['server']->getIndex());
+
 	system_message(array(
 		'title'=>_('Delete DN'),
 		'body'=>_('Successfully deleted DN ').sprintf('<b>%s</b>',$request['dn']),
 		'type'=>'info'),
-		sprintf('index.php?server_id=%s',$app['server']->getIndex()));
-else
+		sprintf('index.php?server_id=%s%s',$app['server']->getIndex(),$redirect_url));
+} else
 	system_message(array(
 		'title'=>_('Could not delete the entry.').sprintf(' (%s)',pretty_print_dn($request['dn'])),
 		'body'=>ldap_error_msg($app['server']->getErrorMessage(null),$app['server']->getErrorNum(null)),

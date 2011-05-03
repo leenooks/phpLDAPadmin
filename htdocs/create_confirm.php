@@ -82,7 +82,7 @@ if (count($request['template']->getLDAPadd(true))) {
 	echo "\n\n";
 
 	$counter = 0;
-	printf('<tr class="%s"><td colspan="3" style="text-align: center;"><b>%s</b></td></tr>',$counter%2 ? 'even' : 'odd',$request['template']->getDN());
+	printf('<tr class="%s"><td colspan="3" style="text-align: center;"><b>%s</b></td></tr>',$counter%2 ? 'even' : 'odd',htmlspecialchars($request['template']->getDN()));
 
 	foreach ($request['template']->getLDAPadd(true) as $attribute) {
 		$counter++;
