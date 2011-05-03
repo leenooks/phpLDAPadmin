@@ -212,7 +212,7 @@ abstract class DS {
 			case 'cookie':
 				set_cookie($method.'-USER',blowfish_encrypt($user),NULL,'/');
 				set_cookie($method.'-PASS',blowfish_encrypt($pass),NULL,'/');
-				return TRUE;
+				return true;
 
 			case 'config':
 				return true;
@@ -587,7 +587,6 @@ class Datastore {
 			'desc'=>'SASL authorization id to user dn PCRE regular expression replacement string',
 			'untested'=>true,
 			'default'=>null);
-
 
 		# Prefix for custom pages
 		$this->default->custom['pages_prefix'] = array(

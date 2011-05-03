@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE template SYSTEM "template.dtd">
-<!--This template doesnt work needs modification to the Engine.-->
 
 <template>
 <askcontainer>1</askcontainer>

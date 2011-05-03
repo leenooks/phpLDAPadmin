@@ -79,8 +79,6 @@ class page {
 		ob_start();
 
 		# Initial Values
-		#$this->_pageheader[] .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.0//EN"';
-		#$this->_pageheader[] .= '"http://www.w3.org/TR/xhtml-basic/xhtml-basic10.dtd">'."\n";
 		$this->_pageheader[] = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
 		$this->_pageheader[] .= '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="auto">'."\n";
 	}

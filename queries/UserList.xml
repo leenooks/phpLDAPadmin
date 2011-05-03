@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE template SYSTEM "query.dtd">
+<!DOCTYPE query SYSTEM "query.dtd">
+
 <query>
 <title>User List</title>
 <bases>
-<base></base>
+	<base></base>
 </bases>
 <filter><![CDATA[(&(objectClass=posixAccount)(uid=*))]]></filter>
 <description>User List</description>

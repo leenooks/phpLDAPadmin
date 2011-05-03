@@ -1,0 +1,35 @@
+<!--
+==========================================================================
+ This is the DTD for phpLDAPAdmin Queries.
+
+ Copyright (c) 2011
+
+ Temporary URI for the DTD: http://phpldapadmin.sf.net/release/templates/query.dtd
+ Validate your templates here: http://www.xmlvalidation.com
+==========================================================================
+-->
+
+<!-- Query Definition -->
+<!ELEMENT query (title,bases,filter,description,icon?,scope,visible?,attributes)>
+
+<!-- Bases Definition -->
+<!ELEMENT bases (base*)>
+
+<!-- Attributes Definition -->
+<!ELEMENT attributes (attribute*)>
+<!ELEMENT attribute (display?,order?,ordersort?)?>
+<!ATTLIST attribute id CDATA #REQUIRED>
+
+<!-- Header Parameters -->
+<!ELEMENT base (#PCDATA)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT filter (#PCDATA)>
+<!ELEMENT description (#PCDATA)>
+<!ELEMENT icon (#PCDATA)>
+<!ELEMENT scope (#PCDATA)>
+<!ELEMENT visible (#PCDATA)>
+
+<!-- Attribute Parameters -->
+<!ELEMENT display (#PCDATA)>
+<!ELEMENT order (#PCDATA)>
+<!ELEMENT ordersort (#PCDATA)>
