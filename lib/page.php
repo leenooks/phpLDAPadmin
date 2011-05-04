@@ -104,11 +104,15 @@ class page {
 		echo '<head>';
 		printf('<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />');
 
+		$DNs = get_request('dn','REQUEST');
+		if (is_array($DNs))
+			$DNs = '';
+
 		if (isset($_SESSION[APPCONFIG]))
 			printf('<title>%s (%s) - %s%s</title>',
 				$this->_app['title'],
 				app_version(),
-				(get_request('dn','REQUEST') ? htmlspecialchars(get_request('dn','REQUEST')).' ' : ''),
+				$DNs ? htmlspecialchars($DNs).' ' : '',
 				$_SESSION[APPCONFIG]->getValue('appearance','page_title'));
 		else
 			printf('<title>%s - %s</title>',$this->_app['title'],app_version());
