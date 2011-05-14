@@ -48,7 +48,7 @@ class TemplateRender extends PageRender {
 
 		$this->page = get_request('page','REQUEST',false,1);
 
-		if ($this->template_id) {
+		if ($this->template_id AND $this->template_id != 'invalid') {
 			if (! $this->template)
 				parent::accept();
 

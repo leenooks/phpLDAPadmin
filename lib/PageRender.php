@@ -331,7 +331,17 @@ class PageRender extends Visitor {
 			if (DEBUGTMP) printf('<font size=-2>%s:<u>%s</u></font><br />',__METHOD__,'Choosing the DEFAULT template, no other template applicable');
 
 			# Since getTemplate() returns a default template if the one we want doesnt exist, we can return $templates->getID(), it should be the default.
-			return $template->getID();
+			if ($_SESSION[APPCONFIG]->getValue('appearance','disable_default_template') AND $this->getMode() == 'creation') {
+
+				system_message(array(
+					'title'=>_('No available templates'),
+					'body'=>_('There are no available active templates for this container.'),
+					'type'=>'warn'));
+
+				return 'invalid';
+
+			} else
+				return $template->getID();
 
 		# If there is only 1 defined template, and no default available, then that is our template.
 		} elseif ((count($templates->getTemplates($this->getMode(),$this->getModeContainer(),true)) == 1) && ! $this->haveDefaultTemplate()) {
