@@ -458,6 +458,11 @@ $servers->setValue('server','name','My LDAP Server');
 /* Set this if you dont want this LDAP server to show in the tree */
 // $servers->setValue('server','visible',true);
 
+/* Set this if you want to hide the base DNs that dont exist instead of
+   displaying the message "The base entry doesnt exist, create it?"
+// $servers->setValue('server','hide_noaccess_base',false);
+#  $servers->setValue('server','hide_noaccess_base',true);
+
 /* This is the time out value in minutes for the server. After as many minutes
    of inactivity you will be automatically logged out. If not set, the default
    value will be ( session_cache_expire()-1 ) */

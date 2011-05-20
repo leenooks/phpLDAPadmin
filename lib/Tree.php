@@ -103,7 +103,7 @@ abstract class Tree {
 		$return = array();
 
 		foreach ($this->entries as $details)
-			if ($details->isBaseDN())
+			if ($details->isBaseDN() AND ((! $this->getServer()->getValue('server','hide_noaccess_base')) OR $details->isInLdap()))
 				array_push($return,$details);
 
 		return $return;

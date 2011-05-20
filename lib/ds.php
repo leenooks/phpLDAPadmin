@@ -542,6 +542,10 @@ class Datastore {
 			'desc'=>'Whether this server is visible',
 			'default'=>true);
 
+		$this->default->server['hide_noaccess_base'] = array(
+			'desc'=>'If base DNs are not accessible, hide them instead of showing create',
+			'default'=>false);
+
 		# Authentication Information
 		$this->default->login['auth_type'] = array(
 			'desc'=>'Authentication Type',
