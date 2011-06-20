@@ -368,11 +368,11 @@ abstract class DS {
 					$userDN = preg_replace($regex, $replacement, $_SERVER['REMOTE_USER']);
 
 					$CACHE[$this->index][$method] = $this->login($userDN, '', $method);
-				}
+
 				# Otherwise, use the user name as is
-				else {
-					$CACHE[$this->index][$method] = $this->login($_SERVER['REMOTE_USER'], '', $method);
-				}
+				# For GSSAPI Authentication + mod_auth_kerb and Basic Authentication
+				} else
+					$CACHE[$this->index][$method] = $this->login(isset($_SERVER['REMOTE_USER']) ? $_SERVER['REMOTE_USER'] : '', '', $method);
 
 				break;
 

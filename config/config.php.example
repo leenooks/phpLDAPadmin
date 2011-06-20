@@ -295,7 +295,7 @@ $servers->setValue('server','name','My LDAP Server');
    auto-detect it for you. */
 // $servers->setValue('server','base',array(''));
 
-/* Four options for auth_type:
+/* Five options for auth_type:
    1. 'cookie': you will login via a web form, and a client-side cookie will
       store your login dn and password.
    2. 'session': same as cookie but your login dn and password are stored on the
@@ -304,6 +304,8 @@ $servers->setValue('server','name','My LDAP Server');
       HTTP authentication.
    4. 'config': specify your login dn and password here in this config file. No
       login will be required to use phpLDAPadmin for this server.
+   5. 'sasl': login will be taken from the webserver's kerberos authentication.
+      Currently only GSSAPI has been tested (using mod_auth_kerb).
 
    Choose wisely to protect your authentication information appropriately for
    your situation. If you choose 'cookie', your cookie contents will be
@@ -312,10 +314,11 @@ $servers->setValue('server','name','My LDAP Server');
 // $servers->setValue('login','auth_type','session');
 
 /* The DN of the user for phpLDAPadmin to bind with. For anonymous binds or
-   'cookie' or 'session' auth_types, LEAVE THE LOGIN_DN AND LOGIN_PASS BLANK. If
-   you specify a login_attr in conjunction with a cookie or session auth_type,
-   then you can also specify the bind_id/bind_pass here for searching the
-   directory for users (ie, if your LDAP server does not allow anonymous binds. */
+   'cookie','session' or 'sasl' auth_types, LEAVE THE LOGIN_DN AND LOGIN_PASS
+   BLANK. If you specify a login_attr in conjunction with a cookie or session
+   auth_type, then you can also specify the bind_id/bind_pass here for searching
+   the directory for users (ie, if your LDAP server does not allow anonymous
+   binds. */
 // $servers->setValue('login','bind_id','');
 #  $servers->setValue('login','bind_id','cn=Manager,dc=example,dc=com');
 
@@ -334,7 +337,7 @@ $servers->setValue('server','name','My LDAP Server');
 /* Enable SASL authentication LDAP SASL authentication requires PHP 5.x
    configured with --with-ldap-sasl=DIR. If this option is disabled (ie, set to
    false), then all other sasl options are ignored. */
-// $servers->setValue('server','sasl_auth',false);
+// $servers->setValue('login','auth_type','sasl');
 
 /* SASL auth mechanism */
 // $servers->setValue('server','sasl_mech','PLAIN');
@@ -528,8 +531,8 @@ $servers->setValue('login','bind_pass','');
 $servers->setValue('server','tls',false);
 
 # SASL auth
-$servers->setValue('server','sasl_auth',true);
-$servers->setValue('server','sasl_mech','PLAIN');
+$servers->setValue('login','auth_type','sasl');
+$servers->setValue('server','sasl_mech','GSSAPI');
 $servers->setValue('server','sasl_realm','EXAMPLE.COM');
 $servers->setValue('server','sasl_authz_id',null);
 $servers->setValue('server','sasl_authz_id_regex','/^uid=([^,]+)(.+)/i');

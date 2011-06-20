@@ -745,7 +745,7 @@ function blowfish_encrypt($data,$secret=null) {
 	if (! trim($secret))
 		return $data;
 
-	if (function_exists('mcrypt_module_open')) {
+	if (function_exists('mcrypt_module_open') && trim($data)) {
 		$td = mcrypt_module_open(MCRYPT_BLOWFISH,'',MCRYPT_MODE_ECB,'');
 		$iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td),MCRYPT_DEV_URANDOM);
 		mcrypt_generic_init($td,substr($secret,0,mcrypt_enc_get_key_size($td)),$iv);
@@ -800,7 +800,7 @@ function blowfish_decrypt($encdata,$secret=null) {
 	if (! trim($secret))
 		return $encdata;
 
-	if (function_exists('mcrypt_module_open')) {
+	if (function_exists('mcrypt_module_open') && trim($encdata)) {
 		$td = mcrypt_module_open(MCRYPT_BLOWFISH,'',MCRYPT_MODE_ECB,'');
 		$iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td),MCRYPT_DEV_URANDOM);
 		mcrypt_generic_init($td,substr($secret,0,mcrypt_enc_get_key_size($td)),$iv);

@@ -82,14 +82,9 @@ class ldap extends DS {
 			'default'=>array());
 
 		# SASL configuration
-		$this->default->server['sasl'] = array(
-			'desc'=>'Use SASL authentication when binding LDAP server',
-			'default'=>false);
-
 		$this->default->sasl['mech'] = array(
 			'desc'=>'SASL mechanism used while binding LDAP server',
-			'untested'=>true,
-			'default'=>'PLAIN');
+			'default'=>'GSSAPI');
 
 		$this->default->sasl['realm'] = array(
 			'desc'=>'SASL realm name',
@@ -577,7 +572,7 @@ class ldap extends DS {
 	 *
 	 * Users may configure phpLDAPadmin to use SASL in config,php thus:
 	 * <code>
-	 *	$servers->setValue('server','sasl',true|false);
+	 *	$servers->setValue('login','auth_type','sasl');
 	 * </code>
 	 *
 	 * @return boolean
@@ -586,12 +581,17 @@ class ldap extends DS {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-		if ($this->getValue('server','sasl') && ! function_exists('ldap_sasl_bind')) {
-				error(_('SASL has been enabled in your config, but your PHP install does not support SASL. SASL will be disabled.'),'warn');
+		if ($this->getValue('login','auth_type') != 'sasl')
 			return false;
 
-		} else
-			return $this->getValue('server','sasl');
+		if (! function_exists('ldap_sasl_bind')) {
+			error(_('SASL has been enabled in your config, but your PHP install does not support SASL. SASL will be disabled.'),'warn');
+
+			return false;
+		}
+
+		# If we get here, SASL must be configured.
+		return true;
 	}
 
 	/**
@@ -606,48 +606,56 @@ class ldap extends DS {
 
 		static $CACHE = array();
 
-		if (! $this->getValue('server','sasl') || ! function_exists('ldap_start_tls'))
+		# We shouldnt be doing SASL binds for anonymous queries?
+		if ($method == 'anon')
 			return false;
 
-		if (! isset($CACHE['login_dn'])) {
-			$CACHE['login_dn'] = is_null($this->getLogin($method)) ? $this->getLogin('user') : $this->getLogin($method);
-			$CACHE['login_pass'] = is_null($this->getPassword($method)) ? $this->getPassword('user') : $this->getPassword($method);
+		# At the moment, we have only implemented GSSAPI
+		if (! in_array(strtolower($this->getValue('sasl','mech')),array('gssapi'))) {
+			system_message(array(
+				'title'=>_('SASL Method not implemented'),
+				'body'=>sprintf('<b>%s</b>: %s %s',_('Error'),$this->getValue('sasl','mech'),_('has not been implemented yet')),
+				'type'=>'error'));
+
+			return false;
 		}
 
-		$mech = strtolower($this->getValue('sasl','mech'));
+		if (! isset($CACHE['login_dn']))
+			$CACHE['login_dn'] = is_null($this->getLogin($method)) ? $this->getLogin('user') : $this->getLogin($method);
 
+		/*
 		# Do we need to rewrite authz_id?
 		if (! isset($CACHE['authz_id']))
-			if (! trim($this->getValue('sasl','authz_id')) && $mech != 'gssapi') {
+			if (! trim($this->getValue('sasl','authz_id')) && strtolower($this->getValue('sasl','mech')) != 'gssapi') {
+				if (DEBUG_ENABLED)
+					debug_log('Rewriting bind DN [%s] -> authz_id with regex [%s] and replacement [%s].',9,0,__FILE__,__LINE__,__METHOD__,
+						$CACHE['login_dn'],
+						$this->getValue('sasl','authz_id_regex'),
+						$this->getValue('sasl','authz_id_replacement'));
 
-			if (DEBUG_ENABLED)
-				debug_log('Rewriting bind DN [%s] -> authz_id with regex [%s] and replacement [%s].',9,0,__FILE__,__LINE__,__METHOD__,
-					$CACHE['login_dn'],
-					$this->getValue('sasl','authz_id_regex'),
-					$this->getValue('sasl','authz_id_replacement'));
+				$CACHE['authz_id'] = @preg_replace($this->getValue('sasl','authz_id_regex'),
+					$this->getValue('sasl','authz_id_replacement'),$CACHE['login_dn']);
 
-			$CACHE['authz_id'] = @preg_replace($this->getValue('sasl','authz_id_regex'),
-				$this->getValue('sasl','authz_id_replacement'),$CACHE['login_dn']);
+				# Invalid regex?
+				if (is_null($CACHE['authz_id']))
+					error(sprintf(_('It seems that sasl_authz_id_regex "%s" contains invalid PCRE regular expression. The error is "%s".'),
+						$this->getValue('sasl','authz_id_regex'),(isset($php_errormsg) ? $php_errormsg : '')),
+						'error','index.php');
 
-			# Invalid regex?
-			if (is_null($CACHE['authz_id']))
-				error(sprintf(_('It seems that sasl_authz_id_regex "%s" contains invalid PCRE regular expression. The error is "%s".'),
-					$this->getValue('sasl','authz_id_regex'),(isset($php_errormsg) ? $php_errormsg : '')),
-					'error','index.php');
-
-			if (DEBUG_ENABLED)
-				debug_log('Resource [%s], SASL OPTIONS: mech [%s], realm [%s], authz_id [%s], props [%s]',9,0,__FILE__,__LINE__,__METHOD__,
-					$resource,
-					$this->getValue('sasl','mech'),
-					$this->getValue('sasl','realm'),
-					$CACHE['authz_id'],
-					$this->getValue('sasl','props'));
+				if (DEBUG_ENABLED)
+					debug_log('Resource [%s], SASL OPTIONS: mech [%s], realm [%s], authz_id [%s], props [%s]',9,0,__FILE__,__LINE__,__METHOD__,
+						$resource,
+						$this->getValue('sasl','mech'),
+						$this->getValue('sasl','realm'),
+						$CACHE['authz_id'],
+						$this->getValue('sasl','props'));
 
 			} else
 				$CACHE['authz_id'] = $this->getValue('sasl','authz_id');
+		*/
 
 		# @todo this function is different in PHP5.1 and PHP5.2
-		return @ldap_sasl_bind($resource,$CACHE['login_dn'],$CACHE['login_pass'],
+		return @ldap_sasl_bind($resource,NULL,'',
 			$this->getValue('sasl','mech'),
 			$this->getValue('sasl','realm'),
 			$CACHE['authz_id'],
