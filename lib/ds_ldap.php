@@ -623,6 +623,8 @@ class ldap extends DS {
 		if (! isset($CACHE['login_dn']))
 			$CACHE['login_dn'] = is_null($this->getLogin($method)) ? $this->getLogin('user') : $this->getLogin($method);
 
+		$CACHE['authz_id'] = '';
+
 		/*
 		# Do we need to rewrite authz_id?
 		if (! isset($CACHE['authz_id']))

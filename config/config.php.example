@@ -340,19 +340,19 @@ $servers->setValue('server','name','My LDAP Server');
 // $servers->setValue('login','auth_type','sasl');
 
 /* SASL auth mechanism */
-// $servers->setValue('server','sasl_mech','PLAIN');
+// $servers->setValue('sasl','mech','GSSAPI');
 
 /* SASL authentication realm name */
-// $servers->setValue('server','sasl_realm','');
-#  $servers->setValue('server','sasl_realm','example.com');
+// $servers->setValue('sasl','realm','');
+#  $servers->setValue('sasl','realm','EXAMPLE.COM');
 
 /* SASL authorization ID name
    If this option is undefined, authorization id will be computed from bind DN,
-   using sasl_authz_id_regex and sasl_authz_id_replacement. */
-// $servers->setValue('server','sasl_authz_id', null);
+   using authz_id_regex and authz_id_replacement. */
+// $servers->setValue('sasl','authz_id', null);
 
 /* SASL authorization id regex and replacement
-   When sasl_authz_id property is not set (default), phpLDAPAdmin will try to
+   When authz_id property is not set (default), phpLDAPAdmin will try to
    figure out authorization id by itself from bind distinguished name (DN).
 
    This procedure is done by calling preg_replace() php function in the
@@ -364,14 +364,14 @@ $servers->setValue('server','name','My LDAP Server');
    For info about pcre regexes, see:
    - pcre(3), perlre(3)
    - http://www.php.net/preg_replace */
-// $servers->setValue('server','sasl_authz_id_regex',null);
-// $servers->setValue('server','sasl_authz_id_replacement',null);
-#  $servers->setValue('server','sasl_authz_id_regex','/^uid=([^,]+)(.+)/i');
-#  $servers->setValue('server','sasl_authz_id_replacement','$1');
+// $servers->setValue('sasl','authz_id_regex',null);
+// $servers->setValue('sasl','authz_id_replacement',null);
+#  $servers->setValue('sasl','authz_id_regex','/^uid=([^,]+)(.+)/i');
+#  $servers->setValue('sasl','authz_id_replacement','$1');
 
 /* SASL auth security props.
    See http://beepcore-tcl.sourceforge.net/tclsasl.html#anchor5 for explanation. */
-// $servers->setValue('server','sasl_props',null);
+// $servers->setValue('sasl','props',null);
 
 /* Default password hashing algorithm. One of md5, ssha, sha, md5crpyt, smd5,
    blowfish, crypt or leave blank for now default algorithm. */
@@ -532,12 +532,12 @@ $servers->setValue('server','tls',false);
 
 # SASL auth
 $servers->setValue('login','auth_type','sasl');
-$servers->setValue('server','sasl_mech','GSSAPI');
-$servers->setValue('server','sasl_realm','EXAMPLE.COM');
-$servers->setValue('server','sasl_authz_id',null);
-$servers->setValue('server','sasl_authz_id_regex','/^uid=([^,]+)(.+)/i');
-$servers->setValue('server','sasl_authz_id_replacement','$1');
-$servers->setValue('server','sasl_props',null);
+$servers->setValue('sasl','mech','GSSAPI');
+$servers->setValue('sasl','realm','EXAMPLE.COM');
+$servers->setValue('sasl','authz_id',null);
+$servers->setValue('sasl','authz_id_regex','/^uid=([^,]+)(.+)/i');
+$servers->setValue('sasl','authz_id_replacement','$1');
+$servers->setValue('sasl','props',null);
 
 $servers->setValue('appearance','password_hash','md5');
 $servers->setValue('login','attr','dn');
