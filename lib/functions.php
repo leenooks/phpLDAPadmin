@@ -1621,6 +1621,9 @@ function get_icon($server_id,$dn,$object_classes=array()) {
 	elseif (in_array('room',$object_classes))
 		return 'door.png';
 
+	elseif (in_array('iphost',$object_classes))
+		return 'host.png';
+
 	elseif (in_array('device',$object_classes))
 		return 'device.png';
 
@@ -1657,9 +1660,6 @@ function get_icon($server_id,$dn,$object_classes=array()) {
 
 	elseif (in_array('groupofuniquenames',$object_classes))
 		return 'ldap-uniquegroup.png';
-
-	elseif (in_array('iphost',$object_classes))
-		return 'host.png';
 
 	elseif (in_array('nlsproductcontainer',$object_classes))
 		return 'n.png';
