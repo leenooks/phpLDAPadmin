@@ -1066,6 +1066,11 @@ class PageRender extends Visitor {
 			} else {
 				echo '<table cellspacing="0" cellpadding="0" border="0">';
 
+				// For checkbox items, we need to render a blank entry, so that we detect an all-unselect situation
+				printf('<tr><td colspan="2"><input type="hidden" id="new_values_%s_%s" name="new_values[%s][]" value="%s"/></td></tr>',
+					htmlspecialchars($attribute->getName()),$j++,
+					htmlspecialchars($attribute->getName()),'');
+
 				foreach ($attribute->getSelection() as $value => $description) {
 					if (in_array($value,$vals))
 						$selected[$value] = true;
