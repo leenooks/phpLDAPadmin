@@ -19,10 +19,6 @@ $www['meth'] = get_request('meth','REQUEST');
 ob_start();
 
 switch ($www['cmd']) {
-	case '_debug':
-		debug_dump($_REQUEST,1);
-		break;
-
 	default:
 		if (defined('HOOKSDIR') && file_exists(HOOKSDIR.$www['cmd'].'.php'))
 			$app['script_cmd'] = HOOKSDIR.$www['cmd'].'.php';
