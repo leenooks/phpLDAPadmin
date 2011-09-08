@@ -19,8 +19,6 @@ class ldap extends DS {
 	private $_schema_entries = null;
 	# Schema DN
 	private $_schemaDN = null;
-	# Attributes that should be treated as MAY attributes, even though the scheme has them as MUST attributes.
-	private $force_may = array();
 
 	public function __construct($index) {
 		if (defined('DEBUG_ENABLED') && DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
@@ -1912,14 +1910,13 @@ class ldap extends DS {
 	 * This function determines if the specified attribute is contained in the force_may list
 	 * as configured in config.php.
 	 *
-	 * @return boolean True if the specified attribute is in the $force_may list and false
-	 *              otherwise.
+	 * @return boolean True if the specified attribute is configured to be force as a may attribute
 	 */
 	function isForceMay($attr_name) {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-		return in_array($attr_name,$this->force_may);
+		return in_array($attr_name,unserialize(strtolower(serialize($this->getValue('server','force_may')))));
 	}
 
 	/**

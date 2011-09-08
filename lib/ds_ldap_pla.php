@@ -13,9 +13,6 @@
  * @subpackage DataStore
  */
 class ldap_pla extends ldap {
-	# Attributes that should be treated as MAY attributes, even though the scheme has them as MUST attributes.
-	private $force_may = array();
-
 	function __construct($index) {
 		parent::__construct($index);
 
@@ -87,6 +84,11 @@ class ldap_pla extends ldap {
 				'dseType',
 				'+',
 				'*'
+			));
+
+		$this->default->server['force_may'] = array(
+			'desc'=>'Force server MUST attributes as MAY attributes',
+			'default'=>array(
 			));
 
 		# Settings for auto_number

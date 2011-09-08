@@ -491,8 +491,8 @@ $servers->setValue('server','name','My LDAP Server');
    server may automatically calculate a default value.
    In Fedora Directory Server using the DNA Plugin one could ignore uidNumber,
    gidNumber and sambaSID. */
-// $servers->setValue('force_may','attrs',array(''));
-#  $servers->setValue('force_may','attrs',array('uidNumber','gidNumber','sambaSID'));
+// $servers->setValue('server','force_may',array(''));
+#  $servers->setValue('server','force_may',array('uidNumber','gidNumber','sambaSID'));
 
 /*********************************************
  * Unique attributes                         *
@@ -564,6 +564,6 @@ $servers->setValue('login','timeout',30);
 $servers->setValue('server','branch_rename',false);
 $servers->setValue('server','custom_sys_attrs',array('passwordExpirationTime','passwordAllowChangeTime'));
 $servers->setValue('server','custom_attrs',array('nsRoleDN','nsRole','nsAccountLock'));
-$servers->setValue('force_may','attrs',array('uidNumber','gidNumber','sambaSID'));
+$servers->setValue('server','force_may',array('uidNumber','gidNumber','sambaSID'));
 */
 ?>
