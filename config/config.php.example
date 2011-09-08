@@ -53,10 +53,11 @@
 // $config->custom->session['http_realm'] = sprintf('%s %s',app_name(),'login');
 
 /* The language setting. If you set this to 'auto', phpLDAPadmin will attempt
-   to determine your language automatically. Otherwise, available lanaguages
-   are: 'ct', 'de', 'en', 'es', 'fr', 'it', 'nl', and 'ru'
-   Localization is not complete yet, but most strings have been translated.
-   Please help by writing language files. See lang/en.php for an example. */
+   to determine your language automatically.
+   If PLA doesnt show (all) strings in your language, then you can do some
+   translation at http://translations.launchpad.net/phpldapadmin and download
+   the translation files, replacing those provided with PLA.
+   (We'll pick up the translations before making the next release too!) */
 // $config->custom->appearance['language'] = 'auto';
 
 /* The temporary storage directory where we will put jpegPhoto data
