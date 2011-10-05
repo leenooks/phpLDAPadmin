@@ -9,7 +9,7 @@
 <noleaf>1</noleaf>
 <!--<regexp>^ou=People,o=.*,</regexp>-->
 <title>Generic: Address Book Entry</title>
-<visible>1</visible>
+<visible>0</visible>
 
 <objectClasses>
 <objectClass id="inetOrgPerson"></objectClass>

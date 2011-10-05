@@ -10,7 +10,7 @@
 <rdn>cn</rdn>
 <!-- <regexp>^ou=.*,</regexp> -->
 <title>Generic: Posix Group</title>
-<visible>1</visible>
+<visible>0</visible>
 
 <objectClasses>
 <objectClass id="posixGroup"></objectClass>
