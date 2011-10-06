@@ -215,7 +215,7 @@ class ImportLDIF extends Import {
 							return $this->error(sprintf('%s %s',_('DN does not exist'),$dn),$lines);
 
 						$this->template->setDN($dn);
-						$this->template->accept();
+						$this->template->accept(false,true);
 
 						return $this->getModifyDetails($lines);
 
@@ -511,7 +511,7 @@ class ImportLDIF extends Import {
 							case 'delete':
 								$deleteattr = false;
 
-								if ($key = array_search($attribute_value_part,$attribute->getValues()))
+								if (($key = array_search($attribute_value_part,$attribute->getValues())) !== false)
 									$attribute->delValue($key);
 								else
 									return $this->error(sprintf('%s %s',_('Delete value doesnt exist in DN'),$attribute_value_part),

@@ -258,7 +258,7 @@ class Template extends xmlTemplate {
 	 * or delete.
 	 * (OLD values are IGNORED, we will have got them when we build this object from the LDAP server DN.)
 	 */
-	public function accept($makeVisible=false) {
+	public function accept($makeVisible=false,$nocache=false) {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
@@ -275,7 +275,7 @@ class Template extends xmlTemplate {
 			$rdnarray = rdn_explode(strtolower(get_rdn(dn_escape($this->dn))));
 
 			$counter = 1;
-			foreach ($server->getDNAttrValues($this->dn,null,LDAP_DEREF_NEVER,array_merge(array('*'),$server->getValue('server','custom_attrs'))) as $attr => $values) {
+			foreach ($server->getDNAttrValues($this->dn,null,LDAP_DEREF_NEVER,array_merge(array('*'),$server->getValue('server','custom_attrs')),$nocache) as $attr => $values) {
 				# We ignore DNs.
 				if ($attr == 'dn')
 					continue;

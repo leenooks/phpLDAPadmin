@@ -2001,7 +2001,7 @@ class ldap extends DS {
 	 * @see getDNSysAttrs
 	 * @see getDNAttrValue
 	 */
-	public function getDNAttrValues($dn,$method=null,$deref=LDAP_DEREF_NEVER,$attrs=array('*','+')) {
+	public function getDNAttrValues($dn,$method=null,$deref=LDAP_DEREF_NEVER,$attrs=array('*','+'),$nocache=false) {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
@@ -2017,7 +2017,7 @@ class ldap extends DS {
 		elseif (in_array('*',$attrs))
 			$cacheindex = '*';
 
-		if (! is_null($cacheindex) && isset($CACHE[$this->index][$method][$dn][$cacheindex])) {
+		if (! $nocache && ! is_null($cacheindex) && isset($CACHE[$this->index][$method][$dn][$cacheindex])) {
 			$results = $CACHE[$this->index][$method][$dn][$cacheindex];
 
 			if (DEBUG_ENABLED)
