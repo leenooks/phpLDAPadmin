@@ -261,6 +261,11 @@ class Config {
 			'desc'=>'LDAP search filter for the tree entries',
 			'default'=>'(objectClass=*)');
 
+		# PLA will not display the header and footer parts in minimal mode.
+		$this->default->appearance['minimalMode'] = array(
+			'desc'=>'Minimal mode hides header and footer parts',
+			'default'=>false);
+
 		## Caching
 		$this->default->cache['schema'] = array(
 			'desc'=>'Cache Schema Activity',

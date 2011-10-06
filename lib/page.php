@@ -375,6 +375,15 @@ class page {
 			'TREE'=>true,
 			'FOOT'=>true
 		);
+		
+		if ($_SESSION[APPCONFIG]->getValue('appearance','minimalMode')) {
+			$display = array(
+				'HEAD'=>false,
+				'CONTROL'=>false,
+				'TREE'=>true,
+				'FOOT'=>false
+			);
+		}
 
 		$display = array_merge($display,$filter);
 

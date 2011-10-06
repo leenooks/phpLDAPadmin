@@ -160,6 +160,9 @@ $config->custom->commands['script'] = array(
 /* Hide the warnings for invalid objectClasses/attributes in templates. */
 // $config->custom->appearance['hide_template_warning'] = false;
 
+/* Set to true if you would like to hide header and footer parts. */
+// $config->custom->appearance['minimalMode'] = false;
+
 /* Configure what objects are shown in left hand tree */
 // $config->custom->appearance['tree_filter'] = '(objectclass=*)';
 
