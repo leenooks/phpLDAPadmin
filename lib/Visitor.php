@@ -55,20 +55,7 @@ abstract class Visitor {
 			printf('<font size=-2>Method Exists: %s::%s (%s)</font><br />',get_class($this),$call,$args);
 
 		if (method_exists($this,$call)) {
-			$call .= '(';
-
-			for ($i = 0; $i < count($args); $i++)
-				if ($i == 0)
-					$call .= sprintf('$args[%s]',$i);
-				else
-					$call .= sprintf(',$args[%s]',$i);
-
-			$call .= ');';
-
-			if (defined('DEBUGTMP') && DEBUGTMP)
-				printf('<font size=-2><b>Invoking Method: $this->%s</b></font><br />',$call);
-
-			eval('$r = $this->'.$call);
+			$r = call_user_func_array(array($this,$call),$args);
 
 			if (isset($r))
 				return $r;

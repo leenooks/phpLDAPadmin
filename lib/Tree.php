@@ -51,7 +51,7 @@ abstract class Tree {
 				return null;
 
 			$treeclass = $_SESSION[APPCONFIG]->getValue('appearance','tree');
-			eval('$tree = new '.$treeclass.'($server_id);');
+			$tree = new $treeclass($server_id);
 
 			# If we are not logged in, just return the empty tree.
 			if (is_null($server->getLogin(null)))
