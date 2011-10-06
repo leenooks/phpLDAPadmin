@@ -31,7 +31,7 @@ foreach ($attrs as $key => $values) {
 
 	$sattr = $app['server']->getSchemaAttribute($key);
 
-	if ($sattr) {
+	if ($sattr && $_SESSION[APPCONFIG]->isCommandAvailable('script','schema') && $_SESSION[APPCONFIG]->getValue('appearance','show_schema_link')) {
 		$href = sprintf('cmd.php?cmd=schema&amp;server_id=%s&amp;view=attributes&amp;viewvalue=%s',$app['server']->getIndex(),$sattr->getName());
 		printf('<a href="%s" title="%s: %s" >%s</a>',
 			$href,_('Click to view the schema definition for attribute type'),$sattr->getName(false),$sattr->getName(false));

@@ -2371,6 +2371,9 @@ function deleteAttribute(attrName,friendlyName,i)
 	protected function drawIconObjectClassAttribute($attribute,$val) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
+		if (! $_SESSION[APPCONFIG]->getValue('appearance','show_schema_link') || !$_SESSION[APPCONFIG]->isCommandAvailable('script','schema'))
+			return;
+
 		if (strlen($val) > 0) {
 			$href = sprintf('cmd.php?cmd=schema&server_id=%s&view=objectclasses&viewvalue=%s',
 				$this->getServerID(),$val);

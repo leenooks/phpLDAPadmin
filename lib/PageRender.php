@@ -378,7 +378,7 @@ class PageRender extends Visitor {
 		$href = sprintf('cmd.php?cmd=schema&server_id=%s&view=attributes&viewvalue=%s',
 			$this->getServerID(),$attribute->getName());
 
-		if (! $_SESSION[APPCONFIG]->getValue('appearance','show_schema_link'))
+		if (! $_SESSION[APPCONFIG]->getValue('appearance','show_schema_link') || !$_SESSION[APPCONFIG]->isCommandAvailable('script','schema'))
 			printf('%s',_($attribute->getFriendlyName()));
 
 		elseif ($attribute->getLDAPtype())
