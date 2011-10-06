@@ -437,6 +437,12 @@ abstract class xmlTemplate {
 		# Initialise the Attribute Factory.
 		$attribute_factory = new AttributeFactory();
 
+		if (preg_match('/;/',$name))
+			system_message(array(
+				'title'=>'phpLDAPadmin doesnt support RFC3866.',
+				'body'=>sprintf('%s {%s} (%s)','PLA might not do what you expect...',$name,(is_array($value) ? serialize($value) : $value)),
+				'type'=>'warn'));
+
 		# If there isnt a schema item for this attribute
 		$attribute = $attribute_factory->newAttribute($name,$value,$server->getIndex(),$source);
 
@@ -444,8 +450,6 @@ abstract class xmlTemplate {
 
 		if (is_null($attrid))
 			array_push($this->attributes,$attribute);
-		else
-			debug_dump_backtrace(sprintf('There was a request to add an attribute (%s), but it was already defined? (%s)',$attrid,__METHOD__),true);
 
 		return $attribute;
 	}
