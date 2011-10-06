@@ -1563,5 +1563,9 @@ class Template extends xmlTemplate {
 	public function isNoLeaf() {
 		return $this->noleaf;
 	}
+
+	public function sort() {
+		usort($this->attributes,'sortAttrs');
+	}
 }
 ?>

@@ -97,6 +97,9 @@ class PageRender extends Visitor {
 
 				$this->visit('',$attribute);
 			}
+
+			// Sort our attribute values for display.
+			$this->template->sort();
 		}
 	}
 

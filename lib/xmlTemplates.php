@@ -447,9 +447,6 @@ abstract class xmlTemplate {
 		else
 			debug_dump_backtrace(sprintf('There was a request to add an attribute (%s), but it was already defined? (%s)',$attrid,__METHOD__),true);
 
-		if ($this->getID() == 'none')
-			usort($this->attributes,'sortAttrs');
-
 		return $attribute;
 	}
 
