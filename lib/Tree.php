@@ -57,9 +57,16 @@ abstract class Tree {
 			if (is_null($server->getLogin(null)))
 				return $tree;
 
-			foreach ($server->getBaseDN(null) as $base)
-				if ($base)
+			foreach ($server->getBaseDN(null) as $base) {
+				if ($base) {
 					$tree->addEntry($base);
+
+					if ($server->getValue('appearance','open_tree')) {
+						$baseEntry = $tree->getEntry($base);
+						$baseEntry->open();
+					}
+				}
+			}
 
 			set_cached_item($server_id,'tree','null',$tree);
 		}

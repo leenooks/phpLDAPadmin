@@ -24,6 +24,10 @@ class ldap_pla extends ldap {
 			'desc'=>'Whether to show the "Create new Entry here" in the tree browser',
 			'default'=>true);
 
+		$this->default->appearance['open_tree'] = array(
+			'desc'=>'Whether to initially open each tree',
+			'default'=>false);
+
 		$this->default->login['fallback_dn'] = array(
 			'desc'=>'If the attribute base login fails, see if a DN was entered',
 			'default'=>false);

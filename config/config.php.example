@@ -414,6 +414,9 @@ $servers->setValue('server','name','My LDAP Server');
    in the tree viewer. */
 // $servers->setValue('appearance','show_create',true);
 
+/* Set to true if you would like to initially open the first level of each tree. */
+// $servers->setValue('appearance','open_tree',false);
+
 /* This feature allows phpLDAPadmin to automatically determine the next
    available uidNumber for a new entry. */
 // $servers->setValue('auto_number','enable',true);
