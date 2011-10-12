@@ -1375,6 +1375,40 @@ class ldap extends DS {
 			}
 		}
 
+		# Option 3: try cn=config
+		$olc_schema = 'olc'.$schema_to_fetch;
+		$old_schema_found = false;
+		if (is_null($schema_search)) {
+			if (DEBUG_ENABLED)
+				debug_log('Attempting cn=config work-around...',24,0,__FILE__,__LINE__,__METHOD__);
+
+			$ldap_dn = 'cn=schema,cn=config';
+			$ldap_filter = '(objectClass=*)';
+
+			$schema_search = @ldap_search($this->connect($method),$ldap_dn,$ldap_filter,array($olc_schema),false,0,10,LDAP_DEREF_NEVER);
+
+			if (! is_null($schema_search)) {
+				$schema_entries = @ldap_get_entries($this->connect($method),$schema_search);
+
+				if (DEBUG_ENABLED)
+					debug_log('Search returned [%s]',24,0,__FILE__,__LINE__,__METHOD__,$schema_entries);
+
+				if ($schema_entries) {
+					if (DEBUG_ENABLED)
+						debug_log('Found schema with filter of (%s) and attribute filter (%s)',24,0,__FILE__,__LINE__,__METHOD__,$ldap_filter,$olc_schema);
+
+					$olc_schema_found = true;
+
+				} else {
+					if (DEBUG_ENABLED)
+						debug_log('Didnt find schema with filter (%s) and attribute filter (%s)',24,0,__FILE__,__LINE__,__METHOD__,$ldap_filter,$olc_schema);
+
+					unset($schema_entries);
+					$schema_search = null;
+				}
+			}
+		}
+
 		if (is_null($schema_search)) {
 			/* Still cant find the schema, try with the RootDSE
 			 * Attempt to pull schema from Root DSE with scope "base", or
@@ -1444,9 +1478,35 @@ class ldap extends DS {
 			return $return;
 		}
 
-		if(! isset($schema_entries[0][$schema_to_fetch])) {
+		if ($olc_schema_found) {
+			unset ($schema_entries['count']);
+
+			foreach ($schema_entries as $entry) {
+				if (isset($entry[$olc_schema])) {
+					unset($entry[$olc_schema]['count']);
+
+					foreach ($entry[$olc_schema] as $schema_definition)
+						/* Schema definitions in child nodes prefix the schema entries with "{n}"
+						  the preg_replace call strips out this prefix. */
+						$schema[] = preg_replace('/^\{\d*\}\(/','(',$schema_definition);
+				}
+			}
+
+			if (isset($schema)) {
+				$this->_schema_entries[$olc_schema] = $schema;
+
+				if (DEBUG_ENABLED)
+					debug_log('Returning (%s)',25,0,__FILE__,__LINE__,__METHOD__,$schema);
+
+				return $schema;
+
+			} else
+				return null;
+		}
+
+		if (! isset($schema_entries[0][$schema_to_fetch])) {
 			if (in_array($schema_to_fetch,$schema_error_message_array)) {
-				error(sprintf('Our attempts to find your SCHEMA for "%s" has return UNEXPECTED results.<br /><br /><small>(We expected a "%s" in the $schema array but it wasnt there.)</small><br /><br />%s<br /><br />Dump of $schema_search:<hr /><pre><small>%s</small></pre>',
+				error(sprintf('Our attempts to find your SCHEMA for "%s" have return UNEXPECTED results.<br /><br /><small>(We expected a "%s" in the $schema array but it wasnt there.)</small><br /><br />%s<br /><br />Dump of $schema_search:<hr /><pre><small>%s</small></pre>',
 					$schema_to_fetch,gettype($schema_search),$schema_error_message,serialize($schema_entries)),'error','index.php');
 
 			} else {
