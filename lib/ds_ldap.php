@@ -1377,7 +1377,7 @@ class ldap extends DS {
 
 		# Option 3: try cn=config
 		$olc_schema = 'olc'.$schema_to_fetch;
-		$old_schema_found = false;
+		$olc_schema_found = false;
 		if (is_null($schema_search)) {
 			if (DEBUG_ENABLED)
 				debug_log('Attempting cn=config work-around...',24,0,__FILE__,__LINE__,__METHOD__);
