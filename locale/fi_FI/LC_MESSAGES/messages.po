@@ -4,29 +4,82 @@ msgid ""
 msgstr ""
 "Project-Id-Version: phpldapadmin\n"
 "Report-Msgid-Bugs-To: phpldapadmin-devel@lists.sourceforge.net\n"
-"POT-Creation-Date: 2010-03-15 07:21+1000\n"
+"POT-Creation-Date: 2011-04-29 17:57+1000\n"
 "PO-Revision-Date: 2010-09-20 11:18+0000\n"
 "Last-Translator: twrHarri <Unknown>\n"
 "Language-Team: phpLDAPadmin <phpldapadmin-devel@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2011-04-29 05:52+0000\n"
-"X-Generator: Launchpad (build 12915)\n"
+"X-Launchpad-Export-Date: 2011-10-12 21:24+0000\n"
+"X-Generator: Launchpad (build 14124)\n"
 
-#: ../../lib/TemplateRender.php:105
+#: ../../templates/creation/sambaGroupMapping.xml:42
+#, no-wrap
+msgid ""
+"=php.GetNextNumber(/;gidNumber;false;(&(objectClass=sambaDomain)(sambaDomainN"
+"ame=mysambadomain));*2,+1000)]]"
+msgstr ""
+
+#: ../../templates/creation/sambaGroupMapping.xml:36
+#, no-wrap
+msgid ""
+"=php.GetNextNumber(/;gidNumber;true;(&(objectClass=sambaDomain)(sambaDomainNa"
+"me=mysambadomain))]]"
+msgstr ""
+
+#: ../../templates/creation/posixGroup.xml:38
+#, no-wrap
+msgid "=php.MultiList(/;(&(objectClass=posixAccount));cn;%cn% (%uid|-4%))]]"
+msgstr ""
+
+#: ../../templates/creation/sambaGroupMapping.xml:65
+#, no-wrap
+msgid "=php.MultiList(/;(&(objectClass=posixAccount));uid)]]"
+msgstr ""
+
+#: ../../templates/modification/posixGroup.xml:39
+#, no-wrap
+msgid "=php.MultiList(/;(objectClass=posixAccount);uid;%cn% (%uid|-4%))]]"
+msgstr ""
+
+#: ../../templates/creation/posixAccount.xml:67
+#: ../../templates/creation/courierMailAccount.xml:63
+#: ../../templates/creation/sambaMachine.xml:40
+#: ../../templates/creation/sambaSamAccount.xml:46
+#, no-wrap
+msgid "=php.PickList(/;(&(objectClass=posixGroup));gidNumber;%cn%;;;;cn)]]"
+msgstr ""
+
+#: ../../templates/creation/sambaGroupMapping.xml:47
+#: ../../templates/creation/sambaMachine.xml:51
+#: ../../templates/creation/sambaSamAccount.xml:72
+#, no-wrap
+msgid ""
+"=php.PickList(/;(&(objectClass=sambaDomain));sambaSID;%sambaSID% "
+"(%sambaDomainName%);;;;sambaDomainName)]]"
+msgstr ""
+
+#: ../../templates/creation/sambaSamAccount.xml:120
+#, no-wrap
+msgid ""
+"=php.PickList(/;(&(objectClass=sambaGroupMapping));sambaSID;%sambaSID% "
+"(%cn%);sambaPrimaryGroupSID;;;;cn)]]"
+msgstr ""
+
+#: ../../lib/TemplateRender.php:106
 msgid "A call was made to getDefaultAttribute() with an unkown context"
 msgstr ""
 "getDefaultAttribute() -metodia kutsuttiin tuntemattomassa kontekstissa."
 
-#: ../../lib/functions.php:1366
+#: ../../lib/functions.php:1386
 msgid ""
 "A call was made to get_next_number(), however, it is disabled for this server"
 msgstr ""
 "get_next_number() -metodia kutsuttiin, mutta se ei ole käytössä tällä "
 "palvelimella."
 
-#: ../../lib/functions.php:1402
+#: ../../lib/functions.php:1422
 msgid ""
 "A call was made to get_next_number(), however, the base to search does not "
 "exist for this server."
@@ -34,7 +87,7 @@ msgstr ""
 "get_next_number() -metodia kutsuttiin, mutta haun lähtöpistettä (base) ei "
 "ole tällä palvelimella."
 
-#: ../../lib/functions.php:1390
+#: ../../lib/functions.php:1410
 msgid ""
 "A call was made to get_next_number(), however, the base to search is empty."
 msgstr ""
@@ -48,7 +101,7 @@ msgstr "Pilkuin eroteltu luettelo attribuuteista, jotka näytetään tuloksissa"
 msgid "A new template XML file has been loaded"
 msgstr "Uusi XML-pohja on ladattu."
 
-#: ../../lib/TemplateRender.php:2413
+#: ../../lib/TemplateRender.php:2446
 msgid "A random password was generated for you"
 msgstr "Sinulle luotiin satunnainen salasana"
 
@@ -69,32 +122,31 @@ msgid "A valid newsuperier attribute should be specified"
 msgstr "newsuper -attribuutti on määriteltävä."
 
 #: ../../templates/creation/mozillaOrgPerson.xml:48
-#: ../../templates/creation/test_mozillaOrgPerson.xml:48
 #, no-wrap
 msgid "AIM Nick"
 msgstr "AIM-pikaviestimen käyttäjänimi"
 
-#: ../../lib/functions.php:1375
+#: ../../lib/functions.php:1395
 msgid "AUTO_NUMBER invalid login/password"
 msgstr "AUTO_NUMBER väärä käyttäjätunnus/salasana."
 
-#: ../../lib/functions.php:1365
+#: ../../lib/functions.php:1385
 msgid "AUTO_NUMBER is disabled for this server"
 msgstr "AUTO_NUMER ei ole käytössä tällä palvelimella."
 
-#: ../../lib/functions.php:1487
+#: ../../lib/functions.php:1507
 msgid "AUTO_NUMBER pool filter didnt return any DNs"
 msgstr "AUTO_NUMBER pooli-suodin ei palauttanut yhtään DN:ää."
 
-#: ../../lib/functions.php:1495
+#: ../../lib/functions.php:1515
 msgid "AUTO_NUMBER pool filter returned too many DNs"
 msgstr "AUTO_NUBMER pooli-suodin palautti liian monta DN:ää."
 
-#: ../../lib/functions.php:1410
+#: ../../lib/functions.php:1430
 msgid "AUTO_NUMBER search attribute invalid"
 msgstr "AUTO_NUMER hakuattribuutti ei kelpaa."
 
-#: ../../lib/TemplateRender.php:1205 ../../lib/TemplateRender.php:1209
+#: ../../lib/TemplateRender.php:1215 ../../lib/TemplateRender.php:1219
 #: ../../htdocs/add_attr_form.php:78 ../../htdocs/add_attr_form.php:121
 msgid "Add"
 msgstr "Lisää"
@@ -111,16 +163,16 @@ msgstr "Lisää uusi arvo"
 msgid "Add ObjectClass and Attributes"
 msgstr "Lisää objektiluokka ja sen attribuutit"
 
-#: ../../lib/TemplateRender.php:2050 ../../lib/TemplateRender.php:2068
+#: ../../lib/TemplateRender.php:2083 ../../lib/TemplateRender.php:2101
 msgid "Add Value to Attribute"
 msgstr "Lisää attribuutille arvo"
 
-#: ../../htdocs/modify_member_form.php:124
+#: ../../htdocs/modify_member_form.php:143
 msgid "Add all"
 msgstr "Lisää kaikki"
 
-#: ../../lib/TemplateRender.php:2049 ../../lib/TemplateRender.php:2053
-#: ../../lib/TemplateRender.php:2067 ../../lib/TemplateRender.php:2071
+#: ../../lib/TemplateRender.php:2082 ../../lib/TemplateRender.php:2086
+#: ../../lib/TemplateRender.php:2100 ../../lib/TemplateRender.php:2104
 msgid "Add an additional value to attribute"
 msgstr "Lisää attribuutille ylimääräinen arvo."
 
@@ -132,12 +184,12 @@ msgstr "Lisää uusi"
 msgid "Add new ObjectClass"
 msgstr "Luo objektiluokka"
 
-#: ../../lib/TemplateRender.php:1207 ../../lib/TemplateRender.php:1210
+#: ../../lib/TemplateRender.php:1217 ../../lib/TemplateRender.php:1220
 #: ../../htdocs/add_attr_form.php:29 ../../htdocs/add_attr_form.php:48
 msgid "Add new attribute"
 msgstr "Uusi attribuutti"
 
-#: ../../lib/TemplateRender.php:1206 ../../lib/TemplateRender.php:1210
+#: ../../lib/TemplateRender.php:1216 ../../lib/TemplateRender.php:1220
 msgid "Add new attribute to this object"
 msgstr "Lisää uusi attribuutti tälle kohteelle"
 
@@ -149,7 +201,7 @@ msgstr "Uusi binäärinen attribuutti"
 msgid "Add new objectClass to"
 msgstr "Lisää uusi objektiluokka kohteelle"
 
-#: ../../htdocs/modify_member_form.php:124
+#: ../../htdocs/modify_member_form.php:143
 msgid "Add selected"
 msgstr "Lisää valitut"
 
@@ -163,13 +215,11 @@ msgid "Address"
 msgstr "Osoite"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:78
-#: ../../templates/creation/test_mozillaOrgPerson.xml:79
 #, no-wrap
 msgid "Address (personal)"
 msgstr "Kotiosoite"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:115
-#: ../../templates/creation/test_mozillaOrgPerson.xml:116
 #, no-wrap
 msgid "Address (professional)"
 msgstr "Työosoite"
@@ -186,12 +236,11 @@ msgstr "Alias"
 
 #: ../../templates/creation/alias.xml:22
 #: ../../templates/creation/sendmailMTACluster.xml:20
-#: ../../templates/creation/test_extensible.xml:22
 #, no-wrap
 msgid "Alias To"
 msgstr "Alias kohteelle"
 
-#: ../../lib/config_default.php:767
+#: ../../lib/config_default.php:775
 msgid "Alias for"
 msgstr "Alias kohdetta varten"
 
@@ -200,26 +249,25 @@ msgid "Aliases"
 msgstr "Aliakset"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:44
-#: ../../templates/creation/test_mozillaOrgPerson.xml:44
 #, no-wrap
 msgid "Alternative Email"
 msgstr "Vaihtoehtoinen sähköposti"
 
-#: ../../lib/TemplateRender.php:149
+#: ../../lib/TemplateRender.php:150
 msgid "An attempt was made to call a function that doesnt exist"
 msgstr "Kutsuttiin funktiota jota ei ole olemassa."
 
-#: ../../lib/TemplateRender.php:1017
+#: ../../lib/TemplateRender.php:1027
 #, php-format
 msgid "An attribute (%s) was modified and is highlighted below."
 msgstr "Muutettu attribuutti %s näkyy alla korostettuna."
 
-#: ../../lib/Template.php:1431
+#: ../../lib/Template.php:1458
 msgid "An entry should have one structural objectClass."
 msgstr ""
 "Kirjauksella (entry) pitää olla vähintään yksi rakentellinen objektiluokka."
 
-#: ../../htdocs/login_form.php:82
+#: ../../htdocs/login_form.php:83
 msgid "Anonymous"
 msgstr "Anonyymi"
 
@@ -235,6 +283,11 @@ msgstr "Haluatko varmasti poistaa tämän objektin?"
 #, no-wrap
 msgid "Associated Domain"
 msgstr "Toimialue"
+
+#: ../../lib/ds_ldap_pla.php:138
+#, php-format
+msgid "Attempt to obtain value %s from %s"
+msgstr ""
 
 #: ../../lib/import_functions.php:460
 msgid "Attempting to delete a non existant attribute"
@@ -267,11 +320,11 @@ msgstr "Attribuutti 3"
 msgid "Attribute Types"
 msgstr "Attribuuttityypit"
 
-#: ../../lib/ds_ldap.php:705
+#: ../../lib/ds_ldap.php:700
 msgid "Attribute doesnt exist"
 msgstr "Attribuuttia ei ole olemassa"
 
-#: ../../lib/ds_ldap_pla.php:439
+#: ../../lib/ds_ldap_pla.php:456
 msgid "Attribute not added"
 msgstr "Attribuuttia ei lisätty"
 
@@ -279,11 +332,11 @@ msgstr "Attribuuttia ei lisätty"
 msgid "Attribute not available"
 msgstr "Attribuuttia ei ole saatavilla"
 
-#: ../../lib/ds_ldap_pla.php:469
+#: ../../lib/ds_ldap_pla.php:486
 msgid "Attribute not deleted"
 msgstr "Attribuuttia ei tuhottu"
 
-#: ../../lib/ds_ldap_pla.php:453
+#: ../../lib/ds_ldap_pla.php:470
 msgid "Attribute not modified"
 msgstr "Attribuuttia ei muutettu"
 
@@ -291,7 +344,7 @@ msgstr "Attribuuttia ei muutettu"
 msgid "Attribute not valid"
 msgstr "Attibuutti ei kelpaa"
 
-#: ../../lib/ds_ldap_pla.php:598
+#: ../../lib/ds_ldap_pla.php:615
 msgid "Attribute value would not be unique"
 msgstr "Attribuutin arvo ei ole yksiköllinen"
 
@@ -300,12 +353,12 @@ msgstr "Attribuutin arvo ei ole yksiköllinen"
 msgid "Attributes"
 msgstr "Attribuutit"
 
-#: ../../htdocs/login_form.php:85
+#: ../../htdocs/login_form.php:86
 msgid "Authenticate"
 msgstr "Tunnistaudu"
 
-#: ../../htdocs/login.php:20 ../../htdocs/login.php:27
 #: ../../htdocs/login_form.php:15 ../../htdocs/login_form.php:36
+#: ../../htdocs/login.php:20 ../../htdocs/login.php:27
 #: ../../htdocs/logout.php:16
 msgid "Authenticate to server"
 msgstr "Tunnistaudu palvelimelle"
@@ -318,7 +371,7 @@ msgstr "Päivitä automaattisesti"
 msgid "Automatically determined"
 msgstr "Automaattisesti määritelty"
 
-#: ../../lib/Template.php:1347
+#: ../../lib/Template.php:1374
 msgid "Automatically removed attribute from template"
 msgstr "Attribuutti on automaattisesti poistettu  pohjasta"
 
@@ -343,7 +396,7 @@ msgstr "Base (vain base dn)"
 msgid "Base DN"
 msgstr "Base DN"
 
-#: ../../lib/PageRender.php:654 ../../lib/PageRender.php:658
+#: ../../lib/PageRender.php:660 ../../lib/PageRender.php:664
 msgid "Binary Value"
 msgstr "Binäärinen arvo"
 
@@ -364,46 +417,37 @@ msgid "Called to load a class that cant be found"
 msgstr "Kutsuttiin luokkatiedostoa, jota ei ole olemassa"
 
 #: ../../htdocs/delete_form.php:87 ../../htdocs/delete_form.php:140
-#: ../../htdocs/create_confirm.php:121 ../../htdocs/mass_delete.php:136
-#: ../../htdocs/update_confirm.php:195
+#: ../../htdocs/mass_delete.php:136 ../../htdocs/create_confirm.php:121
+#: ../../htdocs/update_confirm.php:197
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: ../../lib/TemplateRender.php:1065 ../../lib/TemplateRender.php:1068
+#: ../../lib/TemplateRender.php:1075 ../../lib/TemplateRender.php:1078
 msgid "Change to another template"
 msgstr "Vaihda toiseen pohjaan"
 
-#: ../../lib/TemplateRender.php:2384
+#: ../../lib/TemplateRender.php:2417
 msgid "Check password"
 msgstr "Tarkista salasana"
 
-#: ../../lib/TemplateRender.php:1223 ../../lib/TemplateRender.php:1228
+#: ../../lib/TemplateRender.php:1233 ../../lib/TemplateRender.php:1238
 msgid "Children"
 msgstr "Lapset"
 
 #: ../../templates/creation/organizationalRole.xml:52
 #: ../../templates/creation/inetOrgPerson.xml:58
 #: ../../templates/creation/kolabPerson.xml:78
-#: ../../templates/creation/test_inetOrgPerson.xml:65
 #: ../../templates/modification/inetOrgPerson.xml:54
-#: ../../templates/modification/test_inetOrgPerson.xml:65
 #, no-wrap
 msgid "City"
 msgstr "Kaupunki"
 
-#: ../../templates/creation/test_normal.xml:73
-#, no-wrap
-msgid "City (Hidden with 2 values)"
-msgstr "Kaupunki (kahdella piilotetulla arvolla)"
-
 #: ../../templates/creation/mozillaOrgPerson.xml:82
-#: ../../templates/creation/test_mozillaOrgPerson.xml:83
 #, no-wrap
 msgid "City (personal)"
 msgstr "Kotikaupunki"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:119
-#: ../../templates/creation/test_mozillaOrgPerson.xml:120
 #, no-wrap
 msgid "City (professional)"
 msgstr "Kaupunki (työpaikan)"
@@ -412,15 +456,15 @@ msgstr "Kaupunki (työpaikan)"
 msgid "Clearing cache"
 msgstr "Tyhjennän välimuistia"
 
-#: ../../lib/TemplateRender.php:2325
+#: ../../lib/TemplateRender.php:2358
 msgid "Click to popup a dialog to select a date graphically"
 msgstr "Napsauta tästä valitaksesi päivämäärän valikosta"
 
-#: ../../lib/functions.php:2391
+#: ../../lib/functions.php:2442
 msgid "Click to popup a dialog to select an entry (DN) graphically"
 msgstr "Napsauta tästä valitaksesi merkinnän (DN) valikosta"
 
-#: ../../lib/PageRender.php:368 ../../htdocs/server_info.php:37
+#: ../../lib/PageRender.php:374 ../../htdocs/server_info.php:37
 msgid "Click to view the schema definition for attribute type"
 msgstr "Paina nähdäksesi attribuuttityypin skeemamäärittely"
 
@@ -437,7 +481,7 @@ msgstr "Toiminto on estetty palvelimen konfiguraatiossa"
 msgid "Comments"
 msgstr "Kommentit"
 
-#: ../../htdocs/create_confirm.php:117 ../../htdocs/update_confirm.php:191
+#: ../../htdocs/create_confirm.php:117
 msgid "Commit"
 msgstr "Hyväksy"
 
@@ -447,28 +491,14 @@ msgstr "Hyväksy"
 #: ../../templates/creation/inetOrgPerson.xml:33
 #: ../../templates/creation/kolabPerson.xml:31
 #: ../../templates/creation/sambaSamAccount.xml:35
-#: ../../templates/creation/test_uid1200.xml:37
-#: ../../templates/creation/test_uid1010.xml:37
-#: ../../templates/creation/test_function.xml:20
-#: ../../templates/creation/test_jsdate.xml:36
-#: ../../templates/creation/test_uid150220.xml:37
-#: ../../templates/creation/test_uid150218.xml:37
-#: ../../templates/creation/test_inetOrgPerson.xml:40
 #: ../../templates/modification/inetOrgPerson.xml:31
-#: ../../templates/modification/test_inetOrgPerson.xml:40
 #, no-wrap
 msgid "Common Name"
 msgstr "Yleinen nimi (Common name)"
 
-#: ../../templates/creation/test_normal.xml:53
-#: ../../templates/creation/test_picklist.xml:53
-#, no-wrap
-msgid "Common Name (RDN + ReadOnly)"
-msgstr "Common Name (RDN + ReadOnly)"
-
-#: ../../lib/TemplateRender.php:1167 ../../lib/TemplateRender.php:1171
+#: ../../lib/TemplateRender.php:1177 ../../lib/TemplateRender.php:1181
 #: ../../htdocs/compare_form.php:33 ../../htdocs/compare_form.php:60
-#: ../../htdocs/password_checker.php:37
+#: ../../htdocs/password_checker.php:39
 msgid "Compare"
 msgstr "Vertaa"
 
@@ -480,11 +510,11 @@ msgstr "Vertaa DN:ä kohteeseen"
 msgid "Compare this DN with another"
 msgstr "Vertaa DN:ä toiseen"
 
-#: ../../lib/TemplateRender.php:1168 ../../lib/TemplateRender.php:1172
+#: ../../lib/TemplateRender.php:1178 ../../lib/TemplateRender.php:1182
 msgid "Compare this entry with another"
 msgstr "Vertaa tätä tietuetta toiseen"
 
-#: ../../lib/TemplateRender.php:1169 ../../lib/TemplateRender.php:1172
+#: ../../lib/TemplateRender.php:1179 ../../lib/TemplateRender.php:1182
 msgid "Compare with another entry"
 msgstr "Vertaa toiseen tietueeseen"
 
@@ -504,12 +534,12 @@ msgstr "Asetusvälimuisti vanhentunut."
 msgid "Configuration setting already defined."
 msgstr "Konfiguraatiomääre on jo olemassa."
 
-#: ../../lib/TemplateRender.php:712 ../../lib/TemplateRender.php:1300
+#: ../../lib/TemplateRender.php:722 ../../lib/TemplateRender.php:1310
 #: ../../htdocs/create_confirm.php:54
 msgid "Container"
 msgstr "Säilö"
 
-#: ../../lib/TemplateRender.php:1457
+#: ../../lib/TemplateRender.php:1467
 msgid "Container and ObjectClass(es)"
 msgstr "Säiliö ja objektiluokka (-luokat)"
 
@@ -521,24 +551,24 @@ msgstr "Kopioi"
 msgid "Copy "
 msgstr "Kopioi "
 
-#: ../../htdocs/copy.php:83
+#: ../../htdocs/copy.php:110
 msgid "Copy Entry"
 msgstr "Kopio tietue"
 
-#: ../../htdocs/copy.php:74 ../../htdocs/copy.php:133
+#: ../../htdocs/copy.php:100 ../../htdocs/copy.php:160
 msgid "Copy NOT successful"
 msgstr "Kopiointi EI onnistunut"
 
-#: ../../lib/TemplateRender.php:1098 ../../lib/TemplateRender.php:1102
+#: ../../lib/TemplateRender.php:1108 ../../lib/TemplateRender.php:1112
 msgid "Copy or move this entry"
 msgstr "Kopioi tai siirrä tietue"
 
-#: ../../htdocs/copy.php:70 ../../htdocs/copy.php:105
-#: ../../htdocs/copy.php:129
+#: ../../htdocs/copy.php:96 ../../htdocs/copy.php:132
+#: ../../htdocs/copy.php:156
 msgid "Copy successful"
 msgstr "Kopionti onnistui"
 
-#: ../../lib/TemplateRender.php:1097 ../../lib/TemplateRender.php:1101
+#: ../../lib/TemplateRender.php:1107 ../../lib/TemplateRender.php:1111
 msgid "Copy this object to another location, a new DN, or another server"
 msgstr ""
 "Kopioi objekti toiseen paikkaan, toiselle DN:lle tai toiselle palvelimelle"
@@ -551,7 +581,7 @@ msgstr "Kopioidaan "
 msgid "Could not add object"
 msgstr "Objektia ei voitu lisätä"
 
-#: ../../lib/ds_ldap_pla.php:353
+#: ../../lib/ds_ldap_pla.php:370
 msgid "Could not add the object to the LDAP server."
 msgstr "Objektin lisääminen LDAP-palvelimelle epäonnistui."
 
@@ -581,7 +611,7 @@ msgstr "LDAP-puun juurta ei löytynyt."
 msgid "Could not fetch binary data from LDAP server for attribute [%s]."
 msgstr "Binääridataa ei voitu noutaa LDAP-palvelimelta attribuutille [%s]."
 
-#: ../../lib/functions.php:1999
+#: ../../lib/functions.php:2019
 msgid "Could not fetch jpeg data for attribute"
 msgstr "Jpeg-muotoista dataa ei voitu ladata attribuutille"
 
@@ -599,7 +629,7 @@ msgstr "Objektia ei voitu muokata"
 msgid "Could not obtain the monitor context for this server"
 msgstr "Monitor-kontekstia ei voitu noutaa palvelimelta."
 
-#: ../../lib/ds_ldap_pla.php:511
+#: ../../lib/ds_ldap_pla.php:528
 msgid "Could not perform ldap_modify operation."
 msgstr "Toiminto ldap_modify epäonnistui."
 
@@ -615,23 +645,21 @@ msgstr "Tietueen uudelleen nimeäminen epäonnistui"
 msgid "Could not retrieve schema from"
 msgstr "Ei voitu noutaa skeema kohteesta"
 
-#: ../../lib/ds_ldap.php:564
+#: ../../lib/ds_ldap.php:565
 msgid "Could not start TLS."
 msgstr "TLS-kättelyä ei voitu ottaa käyttöön."
 
-#: ../../lib/ds_ldap.php:565
+#: ../../lib/ds_ldap.php:566
 msgid "Could not start TLS. Please check your LDAP server configuration."
 msgstr ""
 "TLS:n käyttöönotto ei onnistunut. Tarkista LDAP-palvelimesi asetukset."
 
 #: ../../templates/creation/mozillaOrgPerson.xml:94
-#: ../../templates/creation/test_mozillaOrgPerson.xml:95
 #, no-wrap
 msgid "Country (personal)"
 msgstr "Kotimaa"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:131
-#: ../../templates/creation/test_mozillaOrgPerson.xml:132
 #, no-wrap
 msgid "Country (professional)"
 msgstr "Maa (työpaikain)"
@@ -646,7 +674,7 @@ msgstr "Kuriiriposti: Tili"
 msgid "Courier Mail: Alias"
 msgstr "Kuriiriposti: Alias"
 
-#: ../../lib/TemplateRender.php:1184 ../../lib/TemplateRender.php:1188
+#: ../../lib/TemplateRender.php:1194 ../../lib/TemplateRender.php:1198
 msgid "Create"
 msgstr "Luo uusi"
 
@@ -658,22 +686,16 @@ msgstr "Luo tietue"
 msgid "Create LDAP Entry"
 msgstr "Luo uusi LDAP-tietue"
 
-#: ../../lib/TemplateRender.php:688 ../../lib/TemplateRender.php:1539
+#: ../../lib/TemplateRender.php:698 ../../lib/TemplateRender.php:1550
 msgid "Create Object"
 msgstr "Luo objekti"
 
-#: ../../templates/creation/test_account.xml:20
-#: ../../templates/modification/test_account.xml:20
-#, no-wrap
-msgid "Create Timestamp"
-msgstr "Luo aikaleima"
-
-#: ../../lib/TemplateRender.php:1185 ../../lib/TemplateRender.php:1186
-#: ../../lib/TemplateRender.php:1189
+#: ../../lib/TemplateRender.php:1195 ../../lib/TemplateRender.php:1196
+#: ../../lib/TemplateRender.php:1199
 msgid "Create a child entry"
 msgstr "Uusi alitietue"
 
-#: ../../lib/HTMLTree.php:499
+#: ../../lib/HTMLTree.php:505
 msgid "Create a new entry in"
 msgstr "Uusi tietue kohteeseen"
 
@@ -681,22 +703,18 @@ msgstr "Uusi tietue kohteeseen"
 msgid "Create another entry"
 msgstr "Luo uusi tietue"
 
-#: ../../lib/HTMLTree.php:110
+#: ../../lib/HTMLTree.php:114
 msgid "Create it?"
 msgstr "Luo pohjatietue nyt."
 
-#: ../../lib/AJAXTree.php:278 ../../lib/AJAXTree.php:281
-#: ../../lib/AJAXTree.php:283 ../../lib/HTMLTree.php:499
+#: ../../lib/HTMLTree.php:505 ../../lib/AJAXTree.php:278
+#: ../../lib/AJAXTree.php:281 ../../lib/AJAXTree.php:283
 msgid "Create new entry here"
 msgstr "Uusi tietue"
 
-#: ../../lib/TemplateRender.php:673
+#: ../../lib/TemplateRender.php:683
 msgid "Creating Base DN"
 msgstr "Luo base DN"
-
-#: ../../lib/TemplateRender.php:1540
-msgid "Creating Object"
-msgstr "Luo objekti"
 
 #: ../../htdocs/create.php:78
 msgid "Creation successful!"
@@ -715,25 +733,21 @@ msgid "Current list of"
 msgstr "Tällä hetkellä"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:140
-#: ../../templates/creation/test_mozillaOrgPerson.xml:141
 #, no-wrap
 msgid "Custom 1"
 msgstr "Oma 1"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:144
-#: ../../templates/creation/test_mozillaOrgPerson.xml:145
 #, no-wrap
 msgid "Custom 2"
 msgstr "Oma 2"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:148
-#: ../../templates/creation/test_mozillaOrgPerson.xml:149
 #, no-wrap
 msgid "Custom 3"
 msgstr "Oma 3"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:152
-#: ../../templates/creation/test_mozillaOrgPerson.xml:153
 #, no-wrap
 msgid "Custom 4"
 msgstr "Oma 4"
@@ -742,14 +756,15 @@ msgstr "Oma 4"
 msgid "Custom Query"
 msgstr "Mukautettu haku"
 
-#: ../../lib/TemplateRender.php:1096 ../../lib/TemplateRender.php:1100
+#: ../../lib/TemplateRender.php:1106 ../../lib/TemplateRender.php:1110
 msgid "Cut"
 msgstr "Leikkaa"
 
-#: ../../htdocs/copy.php:71 ../../htdocs/copy.php:75 ../../htdocs/copy.php:105
-#: ../../htdocs/copy.php:121 ../../htdocs/copy.php:130
-#: ../../htdocs/copy.php:134 ../../htdocs/delete_form.php:116
-#: ../../htdocs/create.php:78 ../../htdocs/mass_delete.php:61
+#: ../../htdocs/copy.php:97 ../../htdocs/copy.php:101
+#: ../../htdocs/copy.php:132 ../../htdocs/copy.php:148
+#: ../../htdocs/copy.php:157 ../../htdocs/copy.php:161
+#: ../../htdocs/delete_form.php:116 ../../htdocs/create.php:78
+#: ../../htdocs/mass_delete.php:61
 msgid "DN"
 msgstr "DN"
 
@@ -757,7 +772,7 @@ msgstr "DN"
 msgid "DN does not exist"
 msgstr "DN:ää ei ole olemassa"
 
-#: ../../lib/TemplateRender.php:1847
+#: ../../lib/TemplateRender.php:1875
 msgid "DN not available"
 msgstr "DN:ää ei ole saatavilla"
 
@@ -773,8 +788,8 @@ msgstr "Tieto (data)"
 msgid "Debug"
 msgstr "Virheenjäljitys"
 
-#: ../../lib/QueryRender.php:448 ../../lib/TemplateRender.php:591
-#: ../../lib/TemplateRender.php:716 ../../lib/TemplateRender.php:730
+#: ../../lib/QueryRender.php:448 ../../lib/TemplateRender.php:592
+#: ../../lib/TemplateRender.php:726 ../../lib/TemplateRender.php:740
 msgid "Default"
 msgstr "Oletus"
 
@@ -799,15 +814,15 @@ msgstr "Poista kopioinnin jälkeen (siirto):"
 msgid "Delete all %s objects"
 msgstr "Poista kaikki %s objektia"
 
-#: ../../lib/functions.php:2072
+#: ../../lib/functions.php:2092
 msgid "Delete photo"
 msgstr "Poista valokuva"
 
-#: ../../htdocs/copy.php:121
+#: ../../htdocs/copy.php:148
 msgid "Delete successful"
 msgstr "Poisto onnistui"
 
-#: ../../lib/TemplateRender.php:1136 ../../lib/TemplateRender.php:1139
+#: ../../lib/TemplateRender.php:1146 ../../lib/TemplateRender.php:1149
 msgid "Delete this entry"
 msgstr "Poista tietue"
 
@@ -825,27 +840,18 @@ msgid "Deleting Object(s)"
 msgstr "Objekti tai objekteja tuhotaan"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:107
-#: ../../templates/creation/test_mozillaOrgPerson.xml:108
 #, no-wrap
 msgid "Department (professional)"
 msgstr "Osasto (ammatillinen)"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:156
-#: ../../templates/creation/test_sudorole.xml:44
-#: ../../templates/creation/test_mozillaOrgPerson.xml:157
-#: ../../templates/modification/test_sudorole.xml:43
-#: ../../lib/functions.php:1950 ../../lib/functions.php:1954
+#: ../../lib/functions.php:1970 ../../lib/functions.php:1974
 #: ../../htdocs/add_value_form.php:139 ../../htdocs/import.php:101
 #: ../../htdocs/schema.php:75 ../../htdocs/schema.php:102
 #: ../../htdocs/schema.php:484
 #, no-wrap
 msgid "Description"
 msgstr "Kuvaus"
-
-#: ../../templates/creation/test_function.xml:27
-#, no-wrap
-msgid "Description (output from function)"
-msgstr "Kuvaus (funktion tulosteet)"
 
 #: ../../htdocs/compare_form.php:49 ../../htdocs/copy_form.php:48
 msgid "Destination DN"
@@ -868,7 +874,6 @@ msgid "Display Format"
 msgstr "Näyttömuoto"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:31
-#: ../../templates/creation/test_mozillaOrgPerson.xml:31
 #, no-wrap
 msgid "Display Name"
 msgstr "Näytettävä nimi"
@@ -877,7 +882,7 @@ msgstr "Näytettävä nimi"
 msgid "Display the new created entry"
 msgstr "Näytä uusi luotu tietue"
 
-#: ../../lib/PageRender.php:110 ../../lib/TemplateRender.php:726
+#: ../../lib/PageRender.php:110 ../../lib/TemplateRender.php:736
 #: ../../htdocs/compare.php:52 ../../htdocs/compare.php:58
 #: ../../htdocs/delete_form.php:30 ../../htdocs/delete_form.php:116
 #: ../../htdocs/create.php:92 ../../htdocs/mass_delete.php:61
@@ -915,22 +920,13 @@ msgstr "Tee lahjoitus"
 #: ../../templates/creation/inetOrgPerson.xml:90
 #: ../../templates/creation/kolabPerson.xml:35
 #: ../../templates/creation/mozillaOrgPerson.xml:40
-#: ../../templates/creation/test_mozillaOrgPerson.xml:40
-#: ../../templates/creation/test_inetOrgPerson.xml:97
 #: ../../templates/modification/inetOrgPerson.xml:80
-#: ../../templates/modification/test_inetOrgPerson.xml:97
 #, no-wrap
 msgid "Email"
 msgstr "Sähköpostiosoite"
 
-#: ../../templates/creation/test_normal.xml:69
-#, no-wrap
-msgid "Email (Verify)"
-msgstr "Sähköposti (Varmista)"
-
 #: ../../templates/creation/sendmailMTAAliasObject.xml:32
 #: ../../templates/creation/sendmailVirtualUser.xml:36
-#: ../../templates/creation/test_sendmailMTAAliasObject.xml:32
 #, no-wrap
 msgid "Email alias"
 msgstr "Sähköpostin tunniste"
@@ -944,11 +940,6 @@ msgstr "Sähköpostidomain"
 #: ../../lib/export_functions.php:164
 msgid "Encountered an error while performing search."
 msgstr "Haku törmäsi virheeseen."
-
-#: ../../templates/creation/test_randompassword.xml:31
-#, no-wrap
-msgid "Encryption"
-msgstr "Salaus"
 
 #: ../../htdocs/add_value_form.php:91
 msgid "Enter the value(s) you would like to add:"
@@ -989,20 +980,20 @@ msgstr "Tietuetta ei ole olemassa"
 msgid "Equality"
 msgstr "Vastaavuudet"
 
-#: ../../lib/ds_ldap.php:217 ../../lib/ds_ldap.php:565
-#: ../../lib/ds_ldap.php:691 ../../lib/ds_ldap.php:705
-#: ../../lib/ds_ldap.php:739 ../../lib/ds_ldap.php:757
-#: ../../lib/ds_ldap.php:1425 ../../lib/functions.php:162
-#: ../../lib/functions.php:586 ../../lib/functions.php:588
+#: ../../lib/functions.php:162 ../../lib/functions.php:586
+#: ../../lib/functions.php:588 ../../lib/ds_ldap.php:217
+#: ../../lib/ds_ldap.php:566 ../../lib/ds_ldap.php:686
+#: ../../lib/ds_ldap.php:700 ../../lib/ds_ldap.php:734
+#: ../../lib/ds_ldap.php:752 ../../lib/ds_ldap.php:1420
 #: ../../htdocs/cmd.php:56 ../../htdocs/import.php:79
 msgid "Error"
 msgstr "Virhe"
 
-#: ../../lib/functions.php:1949 ../../lib/functions.php:1953
+#: ../../lib/functions.php:1969 ../../lib/functions.php:1973
 msgid "Error number"
 msgstr "Virhenumero"
 
-#: ../../lib/functions.php:2026
+#: ../../lib/functions.php:2046
 msgid "Error writing to jpeg tmp directory"
 msgstr "Virhe kirjoitettaeesa jpeg-dataa väliaikaishakemistoon"
 
@@ -1011,9 +1002,9 @@ msgstr "Virhe kirjoitettaeesa jpeg-dataa väliaikaishakemistoon"
 msgid "Example entry"
 msgstr "Esimerkkitietue"
 
-#: ../../lib/HTMLTree.php:298 ../../lib/TemplateRender.php:1080
-#: ../../lib/TemplateRender.php:1081 ../../lib/TemplateRender.php:1083
-#: ../../lib/TemplateRender.php:1084 ../../htdocs/export_form.php:37
+#: ../../lib/HTMLTree.php:304 ../../lib/TemplateRender.php:1090
+#: ../../lib/TemplateRender.php:1091 ../../lib/TemplateRender.php:1093
+#: ../../lib/TemplateRender.php:1094 ../../htdocs/export_form.php:37
 #: ../../htdocs/export_form.php:53
 msgid "Export"
 msgstr "Vie"
@@ -1022,7 +1013,7 @@ msgstr "Vie"
 msgid "Export format"
 msgstr "Viennin tiedostomuoto"
 
-#: ../../lib/TemplateRender.php:1244 ../../lib/TemplateRender.php:1247
+#: ../../lib/TemplateRender.php:1254 ../../lib/TemplateRender.php:1257
 msgid "Export subtree"
 msgstr "Vie LDAP-haara"
 
@@ -1041,15 +1032,12 @@ msgstr "Uloskirjautuminen palvelimelta epäonnistui"
 #: ../../templates/creation/organizationalRole.xml:30
 #: ../../templates/creation/inetOrgPerson.xml:80
 #: ../../templates/creation/kolabPerson.xml:100
-#: ../../templates/creation/test_inetOrgPerson.xml:87
 #: ../../templates/modification/inetOrgPerson.xml:72
-#: ../../templates/modification/test_inetOrgPerson.xml:87
 #, no-wrap
 msgid "Fax"
 msgstr "Faksi"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:65
-#: ../../templates/creation/test_mozillaOrgPerson.xml:66
 #, no-wrap
 msgid "Fax Number"
 msgstr "Telefaksin numero"
@@ -1068,7 +1056,6 @@ msgid "Filter performed"
 msgstr "Suodatus tehty"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:21
-#: ../../templates/creation/test_mozillaOrgPerson.xml:21
 #, no-wrap
 msgid "First Name"
 msgstr "Etunimi"
@@ -1077,23 +1064,10 @@ msgstr "Etunimi"
 #: ../../templates/creation/inetOrgPerson.xml:20
 #: ../../templates/creation/kolabPerson.xml:20
 #: ../../templates/creation/sambaSamAccount.xml:22
-#: ../../templates/creation/test_uid1200.xml:21
-#: ../../templates/creation/test_uid1010.xml:21
-#: ../../templates/creation/test_jsdate.xml:22
-#: ../../templates/creation/test_uid150220.xml:21
-#: ../../templates/creation/test_uid150218.xml:21
-#: ../../templates/creation/test_inetOrgPerson.xml:20
 #: ../../templates/modification/inetOrgPerson.xml:20
-#: ../../templates/modification/test_inetOrgPerson.xml:20
 #, no-wrap
 msgid "First name"
 msgstr "Etunimi"
-
-#: ../../templates/creation/test_normal.xml:25
-#: ../../templates/creation/test_picklist.xml:21
-#, no-wrap
-msgid "First name (JS OnChange)"
-msgstr "Etunimi (JS OnChange)"
 
 #: ../../htdocs/schema.php:116
 msgid "Force as MAY by config"
@@ -1112,15 +1086,15 @@ msgstr "Keskustelualue"
 msgid "Function"
 msgstr "Toiminto"
 
-#: ../../lib/TemplateRender.php:148
+#: ../../lib/TemplateRender.php:149
 msgid "Function doesnt exist"
 msgstr "Toimintoa ei ole olemassa"
 
-#: ../../lib/TemplateRender.php:135
+#: ../../lib/TemplateRender.php:136
 msgid "Function() only takes two arguments and more than two were specified"
 msgstr "Funkto() ottaa kaksi argumenttia ja useampia määriteltiin"
 
-#: ../../lib/PageRender.php:198
+#: ../../lib/PageRender.php:201
 msgid "Function() variable expansion can only handle 1 value"
 msgstr "Funktio() muutujan laajennos voi käsitellä vain yhden arvon"
 
@@ -1130,14 +1104,6 @@ msgstr "Funktio() muutujan laajennos voi käsitellä vain yhden arvon"
 #: ../../templates/creation/courierMailAccount.xml:57
 #: ../../templates/creation/sambaMachine.xml:37
 #: ../../templates/creation/sambaSamAccount.xml:41
-#: ../../templates/creation/test_uid1200.xml:63
-#: ../../templates/creation/test_uid1010.xml:63
-#: ../../templates/creation/test_invalidattrs.xml:20
-#: ../../templates/creation/test_multilist.xml:25
-#: ../../templates/creation/test_normal.xml:35
-#: ../../templates/creation/test_picklist.xml:29
-#: ../../templates/creation/test_uid150220.xml:63
-#: ../../templates/creation/test_uid150218.xml:63
 #: ../../templates/modification/posixGroup.xml:26
 #, no-wrap
 msgid "GID Number"
@@ -1202,17 +1168,16 @@ msgid "Go"
 msgstr "Siirry"
 
 #: ../../htdocs/create_confirm.php:137 ../../htdocs/create_confirm.php:139
-#: ../../htdocs/update_confirm.php:229 ../../htdocs/update_confirm.php:231
+#: ../../htdocs/update_confirm.php:231 ../../htdocs/update_confirm.php:233
 msgid "Go back"
 msgstr "Takaisin"
 
-#: ../../lib/TemplateRender.php:1845
+#: ../../lib/TemplateRender.php:1873
 msgid "Go to"
 msgstr "Siirry"
 
 #: ../../templates/creation/posixGroup.xml:20
 #: ../../templates/creation/sambaGroupMapping.xml:21
-#: ../../templates/creation/test_multilist.xml:20
 #: ../../templates/modification/posixGroup.xml:21
 #, no-wrap
 msgid "Group"
@@ -1223,7 +1188,6 @@ msgid "Group members"
 msgstr "Ryhmän jäsenet"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:52
-#: ../../templates/creation/test_mozillaOrgPerson.xml:52
 #, no-wrap
 msgid "HTML Email Format"
 msgstr "HTML Sähköpostin muoto"
@@ -1233,23 +1197,23 @@ msgstr "HTML Sähköpostin muoto"
 msgid "Help"
 msgstr "Ohje"
 
-#: ../../lib/TemplateRender.php:2160 ../../lib/TemplateRender.php:2171
+#: ../../lib/TemplateRender.php:2193 ../../lib/TemplateRender.php:2204
 msgid ""
 "Helper attribute has too many DISPLAY values, only the first one is used"
 msgstr ""
 "Apuattribuutilla (helper) on liian monta DISPLAY-arvoa, vain ensimmäistä "
 "käytetään"
 
-#: ../../lib/TemplateRender.php:2149
+#: ../../lib/TemplateRender.php:2182
 msgid "Helper attribute has too many ID values, only the first one is used"
 msgstr ""
 "Apuattribuutilla (helper) on liian monta ID-arvoa, vain ensimmäistä käytetään"
 
-#: ../../lib/TemplateRender.php:1114
+#: ../../lib/TemplateRender.php:1124
 msgid "Hide"
 msgstr "Piilota"
 
-#: ../../lib/TemplateRender.php:1115
+#: ../../lib/TemplateRender.php:1125
 msgid "Hide internal attributes"
 msgstr "Piilota sisäiset attribuutit"
 
@@ -1257,7 +1221,7 @@ msgstr "Piilota sisäiset attribuutit"
 msgid "Hide/Unhide the tree"
 msgstr "Piilota/Näytä hakemistopuu"
 
-#: ../../lib/TemplateRender.php:57
+#: ../../lib/TemplateRender.php:58
 msgid "Hint"
 msgstr "Vihje"
 
@@ -1269,18 +1233,18 @@ msgstr ""
 "Vihje: Tietojen kopiointi palvelimien välillä onnistuu vain, jos skeemat "
 "vastaavat toisiaan"
 
-#: ../../lib/TemplateRender.php:1004
+#: ../../lib/TemplateRender.php:1014
 msgid "Hint: To delete an attribute, empty the text field and click save."
 msgstr ""
 "Vihje: Poistaaksesi attribuutin tyhjennä tekstikenttä ja napsauta \"Tallenna "
 "muutokset\"."
 
-#: ../../lib/TemplateRender.php:1036
+#: ../../lib/TemplateRender.php:1046
 msgid "Hint: To view the schema for an attribute, click the attribute name."
 msgstr ""
 "Vihje: Näyttääksesi attribuutin käyttämän skeeman, napsauta sen nimeä."
 
-#: ../../lib/TemplateRender.php:1341
+#: ../../lib/TemplateRender.php:1351
 msgid ""
 "Hint: You must choose exactly one structural objectClass (shown in bold "
 "above)"
@@ -1299,18 +1263,12 @@ msgid "Home Directory"
 msgstr "Kotihakemisto"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:61
-#: ../../templates/creation/test_mozillaOrgPerson.xml:62
 #, no-wrap
 msgid "Home Phone Number"
 msgstr "Kotipuhelinnumero"
 
 #: ../../templates/creation/posixAccount.xml:49
 #: ../../templates/creation/sambaSamAccount.xml:123
-#: ../../templates/creation/test_uid1200.xml:49
-#: ../../templates/creation/test_uid1010.xml:49
-#: ../../templates/creation/test_jsdate.xml:48
-#: ../../templates/creation/test_uid150220.xml:49
-#: ../../templates/creation/test_uid150218.xml:49
 #, no-wrap
 msgid "Home directory"
 msgstr "Kotihakemisto"
@@ -1319,15 +1277,15 @@ msgstr "Kotihakemisto"
 msgid "Hook function does not exist"
 msgstr "Hook-funktiota ei ole olemassa"
 
-#: ../../lib/ds_ldap_pla.php:440
+#: ../../lib/ds_ldap_pla.php:457
 msgid "Hook pre_attr_add prevented attribute from being added"
 msgstr "Hook pre_attr_add esti lisäämästä attribuuttia"
 
-#: ../../lib/ds_ldap_pla.php:470
+#: ../../lib/ds_ldap_pla.php:487
 msgid "Hook pre_attr_delete prevented attribute from being deleted"
 msgstr "Hook pre_attr_add esti poistamasta attribuuttia"
 
-#: ../../lib/ds_ldap_pla.php:454
+#: ../../lib/ds_ldap_pla.php:471
 msgid "Hook pre_attr_modify prevented attribute from being modified"
 msgstr "Hook pre_attr_add esti muokkaamasta attribuuttia"
 
@@ -1340,7 +1298,7 @@ msgstr "Isäntä/Verkko/Osoite"
 msgid "Image not available"
 msgstr "Kuvaa ei ole"
 
-#: ../../lib/HTMLTree.php:285 ../../htdocs/import_form.php:19
+#: ../../lib/HTMLTree.php:291 ../../htdocs/import_form.php:19
 #: ../../htdocs/import.php:45
 msgid "Import"
 msgstr "Tuo"
@@ -1359,7 +1317,7 @@ msgstr "XML-tiedostossa (%s), [%s] tuntematon avain"
 msgid "In the XML file (%s), [%s] is an array, it must be a string."
 msgstr "XML-tiedostossa (%s), [%s] on taulukko, sen pitää olla merkkijono."
 
-#: ../../lib/HTMLTree.php:164
+#: ../../lib/HTMLTree.php:170
 #, php-format
 msgid "Inactivity will log you off at %s"
 msgstr "Toimeton istunto katkaistaan %s"
@@ -1372,7 +1330,7 @@ msgstr "Ota mukaan järjestelmän attribuutit"
 msgid "Incorrect version of PHP"
 msgstr "Väärä PHP:n versio"
 
-#: ../../lib/HTMLTree.php:255
+#: ../../lib/HTMLTree.php:261
 msgid "Info"
 msgstr "Tietoa"
 
@@ -1392,19 +1350,13 @@ msgstr "Ohjeet"
 msgid "Internal"
 msgstr "Sisäinen"
 
-#: ../../lib/functions.php:1520
+#: ../../lib/functions.php:1540
 msgid "Invalid AUTO_NUMBER mechanism"
 msgstr "virheellinen AUTO_NUMER mekanismi"
 
 #: ../../lib/ds_ldap.php:348
 msgid "Invalid BASE for query"
 msgstr "Virheellinen lähtökohta (BASE) kyselyssä"
-
-#: ../../templates/creation/test_invalidoc.xml:6
-#: ../../templates/creation/test_invalidoc2.xml:6
-#, no-wrap
-msgid "Invalid Object Class"
-msgstr "Virheellinen objektiluokka"
 
 #: ../../htdocs/rename.php:42
 msgid "Invalid RDN value"
@@ -1414,7 +1366,7 @@ msgstr "Virheellinen RDN-arvo"
 msgid "Invalid Username or Password."
 msgstr "Virheellinen käyttäjätunnus tai salasana"
 
-#: ../../lib/PageRender.php:227
+#: ../../lib/PageRender.php:230
 msgid "Invalid argument count for PasswordEncrypt"
 msgstr "Määreiden lukumäärä virheellinen PasswordEncryptille"
 
@@ -1422,11 +1374,11 @@ msgstr "Määreiden lukumäärä virheellinen PasswordEncryptille"
 msgid "Invalid entry"
 msgstr "Virheellinen tietue"
 
-#: ../../lib/PageRender.php:238 ../../lib/PageRender.php:255
+#: ../../lib/PageRender.php:244 ../../lib/PageRender.php:261
 msgid "Invalid value count for PasswordEncrypt"
 msgstr "PasswordEncryptin arvojen lukumäärä virheellinen"
 
-#: ../../lib/PageRender.php:197
+#: ../../lib/PageRender.php:200
 msgid "Invalid value count for [post] processing"
 msgstr "Virheellinen lukumäärä [post] käsittelylle"
 
@@ -1437,11 +1389,11 @@ msgstr ""
 "Vaikuttaa siltä, että LDAP-palvelin on asetettu piilottamaan "
 "juurihakemistonsa."
 
-#: ../../lib/functions.php:2033
+#: ../../lib/functions.php:2053
 msgid "It appears that the jpeg image may not be a jpeg image"
 msgstr "Vaikuttaa siltä, että jpeg-kuva ei mahdollisesti ole jpeg-kuva."
 
-#: ../../lib/ds_ldap.php:639
+#: ../../lib/ds_ldap.php:634
 #, php-format
 msgid ""
 "It seems that sasl_authz_id_regex \"%s\" contains invalid PCRE regular "
@@ -1481,7 +1433,7 @@ msgstr "LDAP Yhteydet"
 msgid "LDAP Server"
 msgstr "LDAP Palvelin"
 
-#: ../../lib/functions.php:1946
+#: ../../lib/functions.php:1966
 msgid "LDAP said"
 msgstr "LDAP vastasi"
 
@@ -1507,7 +1459,6 @@ msgid "LM Password"
 msgstr "LM Salasana"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:26
-#: ../../templates/creation/test_mozillaOrgPerson.xml:26
 #, no-wrap
 msgid "Last Name"
 msgstr "Sukunimi"
@@ -1518,30 +1469,16 @@ msgstr "Sukunimi"
 #: ../../templates/creation/inetOrgPerson.xml:27
 #: ../../templates/creation/kolabPerson.xml:26
 #: ../../templates/creation/sambaSamAccount.xml:29
-#: ../../templates/creation/test_uid1200.xml:29
-#: ../../templates/creation/test_uid1010.xml:29
-#: ../../templates/creation/test_jsdate.xml:30
-#: ../../templates/creation/test_uid150220.xml:29
-#: ../../templates/creation/test_uid150218.xml:29
-#: ../../templates/creation/test_inetOrgPerson.xml:27
 #: ../../templates/modification/inetOrgPerson.xml:26
-#: ../../templates/modification/test_inetOrgPerson.xml:27
 #, no-wrap
 msgid "Last name"
 msgstr "Sukunimi"
-
-#: ../../templates/creation/test_normal.xml:46
-#: ../../templates/creation/test_picklist.xml:46
-#, no-wrap
-msgid "Last name (JS OnChange)"
-msgstr "Sukunimi (JS OnChange)"
 
 #: ../../templates/creation/sendmailMTAAliasObject.xml:27
 #: ../../templates/creation/sendmailMTAClass.xml:27
 #: ../../templates/creation/sendmailMTAMapObject.xml:31
 #: ../../templates/creation/sendmailVirtualDomain.xml:27
 #: ../../templates/creation/sendmailVirtualUser.xml:31
-#: ../../templates/creation/test_sendmailMTAAliasObject.xml:27
 #, no-wrap
 msgid "Leave Blank"
 msgstr "Jätä tyhjäksi"
@@ -1558,70 +1495,66 @@ msgstr "Rivin loppu"
 msgid "List of entries to be deleted:"
 msgstr "Luettelo poistettavista merkinnöistä:"
 
-#: ../../lib/AJAXTree.php:279 ../../lib/functions.php:367
-#: ../../lib/TemplateRender.php:1065 ../../lib/TemplateRender.php:1081
-#: ../../lib/TemplateRender.php:1098 ../../lib/TemplateRender.php:1136
-#: ../../lib/TemplateRender.php:1152 ../../lib/TemplateRender.php:1169
-#: ../../lib/TemplateRender.php:1186 ../../lib/TemplateRender.php:1225
-#: ../../lib/TemplateRender.php:1244 ../../htdocs/show_cache.php:94
+#: ../../lib/functions.php:367 ../../lib/AJAXTree.php:279
+#: ../../lib/TemplateRender.php:1075 ../../lib/TemplateRender.php:1091
+#: ../../lib/TemplateRender.php:1108 ../../lib/TemplateRender.php:1146
+#: ../../lib/TemplateRender.php:1162 ../../lib/TemplateRender.php:1179
+#: ../../lib/TemplateRender.php:1196 ../../lib/TemplateRender.php:1235
+#: ../../lib/TemplateRender.php:1254 ../../htdocs/show_cache.php:94
 msgid "Loading"
 msgstr "Ladataan"
 
-#: ../../lib/HTMLTree.php:296
+#: ../../lib/HTMLTree.php:302
 msgid "Loading Export"
 msgstr "Lataa vientiä"
 
-#: ../../lib/HTMLTree.php:283
+#: ../../lib/HTMLTree.php:289
 msgid "Loading Import"
 msgstr "Lataa tuontia"
 
-#: ../../lib/HTMLTree.php:253
+#: ../../lib/HTMLTree.php:259
 msgid "Loading Info"
 msgstr "Lataa tietoja"
 
-#: ../../lib/HTMLTree.php:517 ../../lib/HTMLTree.php:519
+#: ../../lib/HTMLTree.php:523 ../../lib/HTMLTree.php:525
 msgid "Loading Login"
 msgstr "Ladataan sisäänkirjautumista"
 
-#: ../../lib/HTMLTree.php:270
+#: ../../lib/HTMLTree.php:276
 msgid "Loading Monitor Info"
 msgstr "Ladataan Monitor-infoa"
 
-#: ../../lib/HTMLTree.php:213
+#: ../../lib/HTMLTree.php:219
 msgid "Loading Schema"
 msgstr "Ladataan skeema"
 
-#: ../../lib/HTMLTree.php:226 ../../lib/QueryRender.php:539
+#: ../../lib/QueryRender.php:539 ../../lib/HTMLTree.php:232
 msgid "Loading Search"
 msgstr "Ladataan hakua"
 
-#: ../../lib/HTMLTree.php:344
+#: ../../lib/HTMLTree.php:350
 msgid "Logged in as"
 msgstr "Kirjautunut sisään tunnuksella"
 
-#: ../../lib/HTMLTree.php:523
+#: ../../lib/HTMLTree.php:529
 msgid "Login"
 msgstr "Kirjaudu"
 
-#: ../../htdocs/login_form.php:69
+#: ../../htdocs/login_form.php:70
 msgid "Login DN"
 msgstr "Kirjaudu sisään käyttäen DN:ää"
 
 #: ../../templates/creation/posixAccount.xml:70
 #: ../../templates/creation/sambaSamAccount.xml:100
-#: ../../templates/creation/test_uid1200.xml:70
-#: ../../templates/creation/test_uid1010.xml:70
-#: ../../templates/creation/test_uid150220.xml:70
-#: ../../templates/creation/test_uid150218.xml:70
 #, no-wrap
 msgid "Login shell"
 msgstr "Login shell"
 
-#: ../../lib/HTMLTree.php:517 ../../lib/HTMLTree.php:519
+#: ../../lib/HTMLTree.php:523 ../../lib/HTMLTree.php:525
 msgid "Login to"
 msgstr "Kirjaudu sisään"
 
-#: ../../lib/HTMLTree.php:329
+#: ../../lib/HTMLTree.php:335
 msgid "Logout of this server"
 msgstr "Kirjaudu ulos palvelimelta"
 
@@ -1634,7 +1567,7 @@ msgstr "Haetaan"
 msgid "Machine Name"
 msgstr "Koneen nimi"
 
-#: ../../lib/TemplateRender.php:1853
+#: ../../lib/TemplateRender.php:1881
 msgid "Mail"
 msgstr "Sähköposti"
 
@@ -1668,7 +1601,7 @@ msgstr "Täsmäyssäännöt"
 msgid "Maximum Length"
 msgstr "Maksimipituus"
 
-#: ../../htdocs/add_attr_form.php:128 ../../htdocs/import_form.php:37
+#: ../../htdocs/import_form.php:37 ../../htdocs/add_attr_form.php:128
 msgid "Maximum file size"
 msgstr "Tiedoston maksimikoko"
 
@@ -1706,10 +1639,7 @@ msgstr "Puuttuva pakollinen laajennus"
 #: ../../templates/creation/inetOrgPerson.xml:85
 #: ../../templates/creation/kolabPerson.xml:104
 #: ../../templates/creation/mozillaOrgPerson.xml:73
-#: ../../templates/creation/test_mozillaOrgPerson.xml:74
-#: ../../templates/creation/test_inetOrgPerson.xml:92
 #: ../../templates/modification/inetOrgPerson.xml:76
-#: ../../templates/modification/test_inetOrgPerson.xml:92
 #, no-wrap
 msgid "Mobile"
 msgstr "Matkapuhelin"
@@ -1726,11 +1656,11 @@ msgstr "Muutos onnistui!"
 msgid "Modify group"
 msgstr "Muokkaa ryhmää"
 
-#: ../../lib/TemplateRender.php:2086
+#: ../../lib/TemplateRender.php:2119
 msgid "Modify group membership"
 msgstr "Muokkaa ryhmän jäsenyyttä"
 
-#: ../../lib/TemplateRender.php:2085 ../../lib/TemplateRender.php:2090
+#: ../../lib/TemplateRender.php:2118 ../../lib/TemplateRender.php:2123
 msgid "Modify members for"
 msgstr "Muokkaa jäseniä ryhmälle"
 
@@ -1738,7 +1668,7 @@ msgstr "Muokkaa jäseniä ryhmälle"
 msgid "Modifying"
 msgstr "Muokataan"
 
-#: ../../lib/HTMLTree.php:272
+#: ../../lib/HTMLTree.php:278
 msgid "Monitor"
 msgstr "Monitor"
 
@@ -1750,11 +1680,11 @@ msgstr "Tarkkailutieto: "
 msgid "Monitoring context does not exist"
 msgstr "Tarkkailtua kontekstia ei ole"
 
-#: ../../htdocs/copy.php:74 ../../htdocs/copy.php:133
+#: ../../htdocs/copy.php:100 ../../htdocs/copy.php:160
 msgid "Move NOT successful"
 msgstr "Siirto EI onnistunut"
 
-#: ../../htdocs/copy.php:70 ../../htdocs/copy.php:129
+#: ../../htdocs/copy.php:96 ../../htdocs/copy.php:156
 msgid "Move successful"
 msgstr "Siirto onnistui"
 
@@ -1769,8 +1699,6 @@ msgstr "Nimi"
 
 #: ../../templates/creation/inetOrgPerson.xml:6
 #: ../../templates/creation/kolabPerson.xml:6
-#: ../../templates/creation/test_inetOrgPerson.xml:6
-#: ../../templates/modification/test_inetOrgPerson.xml:6
 #, no-wrap
 msgid "New Address Book Entry"
 msgstr "Uusi osoitekirjan tietue"
@@ -1790,13 +1718,7 @@ msgstr "Uusi kuriiripostialias"
 msgid "New DNS Entry"
 msgstr "Uusi DNS-tietue"
 
-#: ../../templates/creation/test_function.xml:6
-#, no-wrap
-msgid "New Device"
-msgstr "Uusi laite"
-
 #: ../../templates/creation/alias.xml:7
-#: ../../templates/creation/test_extensible.xml:7
 #, no-wrap
 msgid "New LDAP Alias"
 msgstr "Uusi LDAP Alias"
@@ -1812,7 +1734,6 @@ msgid "New Organisational Unit"
 msgstr "Uusi organisaatioyksikkö (OU)"
 
 #: ../../templates/creation/posixGroup.xml:6
-#: ../../templates/creation/test_multilist.xml:6
 #: ../../templates/modification/posixGroup.xml:6
 #, no-wrap
 msgid "New Posix Group"
@@ -1843,7 +1764,6 @@ msgid "New Samba3 Machine"
 msgstr "Uusi Samba3-tietokone"
 
 #: ../../templates/creation/sendmailMTAAliasObject.xml:6
-#: ../../templates/creation/test_sendmailMTAAliasObject.xml:6
 #, no-wrap
 msgid "New Sendmail Alias"
 msgstr "Uusi Sendmail Alias"
@@ -1870,32 +1790,20 @@ msgid "New Sendmail Virtual User"
 msgstr "Uusi Sendmail-Virtuaalikäyttäjä"
 
 #: ../../templates/creation/simpleSecurityObject.xml:6
-#: ../../templates/creation/test_randompassword.xml:6
 #, no-wrap
 msgid "New Simple Security Object"
 msgstr "Uusi Simple Security -objekti"
-
-#: ../../templates/creation/test_sudorole.xml:7
-#, no-wrap
-msgid "New Sudo Role"
-msgstr "Uusi Sudo-rooli"
 
 #: ../../lib/xmlTemplates.php:96
 msgid "New Template XML found."
 msgstr "Uusi XML-pohja löydetty."
 
 #: ../../templates/creation/mozillaOrgPerson.xml:6
-#: ../../templates/creation/test_mozillaOrgPerson.xml:6
 #, no-wrap
 msgid "New Thunderbird Address Book Entry"
 msgstr "Uusi Thunderbird-osoitekirjatietue"
 
 #: ../../templates/creation/posixAccount.xml:6
-#: ../../templates/creation/test_uid1200.xml:6
-#: ../../templates/creation/test_uid1010.xml:6
-#: ../../templates/creation/test_jsdate.xml:6
-#: ../../templates/creation/test_uid150220.xml:6
-#: ../../templates/creation/test_uid150218.xml:6
 #, no-wrap
 msgid "New User Account"
 msgstr "Uusi käyttäjätili"
@@ -1905,7 +1813,6 @@ msgid "New Value"
 msgstr "Uusi arvo"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:35
-#: ../../templates/creation/test_mozillaOrgPerson.xml:35
 #, no-wrap
 msgid "NickName"
 msgstr "Nimimerkki"
@@ -1916,11 +1823,11 @@ msgstr "Nimimerkki"
 msgid "No"
 msgstr "Ei"
 
-#: ../../lib/functions.php:1389
+#: ../../lib/functions.php:1409
 msgid "No AUTO_NUMBER search_base configured for this server"
 msgstr "Ei AUTO_NUMBER search_base -määritystä asetettu tälle palvelmelle"
 
-#: ../../lib/functions.php:1401
+#: ../../lib/functions.php:1421
 msgid "No AUTO_NUMBER search_base exists for this server"
 msgstr ""
 "Ei AUTO_NUMBER search_base -määritystä ole olemassa tälle palvelimelle"
@@ -1961,7 +1868,7 @@ msgstr "Ei kuvaa saatavilla"
 msgid "No import input"
 msgstr "Ei tuotua tietoa"
 
-#: ../../lib/TemplateRender.php:1353
+#: ../../lib/TemplateRender.php:1363
 msgid "No internal attributes"
 msgstr "Ei sisäisiä attribuutteja"
 
@@ -1979,7 +1886,7 @@ msgstr "Tietuetta ei löydetty."
 msgid "No such schema item: \"%s\""
 msgstr "Skeemasta puuttuu kohta: \"%s\""
 
-#: ../../lib/PageRender.php:408
+#: ../../lib/PageRender.php:414
 msgid "Note"
 msgstr "Huomautus"
 
@@ -2008,7 +1915,7 @@ msgstr "Ei vietävää kohdetta"
 msgid "OID"
 msgstr "OID"
 
-#: ../../lib/TemplateRender.php:1323 ../../htdocs/schema.php:40
+#: ../../lib/TemplateRender.php:1333 ../../htdocs/schema.php:40
 #: ../../htdocs/schema.php:312
 msgid "ObjectClasses"
 msgstr "Objektiluokat"
@@ -2034,7 +1941,7 @@ msgstr "Vanha arvo"
 msgid "One (one level beneath base)"
 msgstr "One (yksi taso päätason alapuolella)"
 
-#: ../../lib/TemplateRender.php:1574 ../../htdocs/schema.php:537
+#: ../../lib/TemplateRender.php:1584 ../../htdocs/schema.php:537
 msgid "Optional Attributes"
 msgstr "Valinnaiset attribuutit"
 
@@ -2056,9 +1963,7 @@ msgstr "Järjestys"
 
 #: ../../templates/creation/inetOrgPerson.xml:44
 #: ../../templates/creation/kolabPerson.xml:56
-#: ../../templates/creation/test_inetOrgPerson.xml:51
 #: ../../templates/modification/inetOrgPerson.xml:42
-#: ../../templates/modification/test_inetOrgPerson.xml:51
 #, no-wrap
 msgid "Organisation"
 msgstr "Organisaatio"
@@ -2074,12 +1979,11 @@ msgid "Organisational unit"
 msgstr "Organisaatioyksikkö (OU)"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:111
-#: ../../templates/creation/test_mozillaOrgPerson.xml:112
 #, no-wrap
 msgid "Organization (professional)"
 msgstr "Organisaatio (työpaikan)"
 
-#: ../../lib/ds_ldap.php:1424
+#: ../../lib/ds_ldap.php:1419
 msgid "Our attempts to find your SCHEMA have failed"
 msgstr "Skeemojen haku epäonnistui"
 
@@ -2088,7 +1992,6 @@ msgid "PHP Safe Mode"
 msgstr "PHP:n Safe Mode"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:69
-#: ../../templates/creation/test_mozillaOrgPerson.xml:70
 #, no-wrap
 msgid "Pager"
 msgstr "Hakulaite"
@@ -2106,29 +2009,24 @@ msgstr "Jäsennysvirhe"
 #: ../../templates/creation/kolabPerson.xml:39
 #: ../../templates/creation/sambaSamAccount.xml:75
 #: ../../templates/creation/simpleSecurityObject.xml:28
-#: ../../templates/creation/test_uid1200.xml:80
-#: ../../templates/creation/test_uid1010.xml:80
-#: ../../templates/creation/test_randompassword.xml:28
-#: ../../templates/creation/test_uid150220.xml:80
-#: ../../templates/creation/test_uid150218.xml:80
-#: ../../htdocs/login_form.php:75
+#: ../../htdocs/login_form.php:76
 #, no-wrap
 msgid "Password"
 msgstr "Salasana"
 
-#: ../../htdocs/password_checker.php:29
+#: ../../htdocs/password_checker.php:30
 msgid "Password Checker Tool"
 msgstr "Salasanan tarkistustyökalu"
 
-#: ../../lib/PageRender.php:228
+#: ../../lib/PageRender.php:231
 msgid "PasswordEncrypt() only accepts two arguments"
 msgstr "PasswordEncrypt() sallii vain kaksi argumenttia"
 
-#: ../../htdocs/password_checker.php:59
+#: ../../htdocs/password_checker.php:61
 msgid "Passwords do not match!"
 msgstr "Salasanat eivät täsmää!"
 
-#: ../../htdocs/password_checker.php:57
+#: ../../htdocs/password_checker.php:59
 msgid "Passwords match!"
 msgstr "Salasanat täsmäävät!"
 
@@ -2137,23 +2035,16 @@ msgid "Permanently delete all children also?"
 msgstr "Poista lopullisesti myös kaikki alamerkinnät?"
 
 #: ../../templates/creation/inetOrgPerson.xml:39
-#: ../../templates/creation/test_inetOrgPerson.xml:46
 #: ../../templates/modification/inetOrgPerson.xml:37
-#: ../../templates/modification/test_inetOrgPerson.xml:46
 #, no-wrap
 msgid "Photo"
 msgstr "Valokuva"
-
-#: ../../templates/creation/test_normal.xml:62
-#, no-wrap
-msgid "Photo (Binary)"
-msgstr "Valokuva (Binääri)"
 
 #: ../../htdocs/add_attr_form.php:172
 msgid "Please Wait"
 msgstr "Odota hetki"
 
-#: ../../lib/functions.php:1488 ../../lib/functions.php:1496
+#: ../../lib/functions.php:1508 ../../lib/functions.php:1516
 msgid ""
 "Please change your filter parameter, or check your auto_number,search_base "
 "configuration"
@@ -2164,7 +2055,7 @@ msgstr ""
 msgid "Please check and see if this bug has been reported"
 msgstr "Tarkista onko tämä virhe jo raportoitu"
 
-#: ../../lib/functions.php:2027
+#: ../../lib/functions.php:2047
 #, php-format
 msgid ""
 "Please check jpeg,tmpdir is a writable directory in the phpLDAPadmin "
@@ -2181,7 +2072,7 @@ msgstr "Palaa takaisin ja yritä uudelleen"
 msgid "Please report this error to the admins."
 msgstr "Raportoi tämä virhe ylläpidolle."
 
-#: ../../lib/functions.php:2016
+#: ../../lib/functions.php:2036
 msgid ""
 "Please set jpeg,tmpdir to a writable directory in the phpLDAPadmin config.php"
 msgstr ""
@@ -2191,17 +2082,6 @@ msgstr ""
 #: ../../lib/HTMLTree.php:72
 msgid "Please specify it in config.php"
 msgstr "Määritettävä tiedostossa config.php"
-
-#: ../../templates/creation/test_sudorole.xml:18
-#: ../../templates/modification/test_sudorole.xml:18
-#, no-wrap
-msgid "Policy Name"
-msgstr "Oikeuden nimi"
-
-#: ../../templates/creation/test_normal.xml:82
-#, no-wrap
-msgid "Post Code (Option selection)"
-msgstr "Postinumero (Vapaaehtoinen valinta)"
 
 #: ../../templates/creation/kolabPerson.xml:74
 #, no-wrap
@@ -2216,9 +2096,7 @@ msgstr "Postiosoite"
 #: ../../templates/creation/organizationalRole.xml:60
 #: ../../templates/creation/inetOrgPerson.xml:68
 #: ../../templates/creation/kolabPerson.xml:86
-#: ../../templates/creation/test_inetOrgPerson.xml:75
 #: ../../templates/modification/inetOrgPerson.xml:62
-#: ../../templates/modification/test_inetOrgPerson.xml:75
 #, no-wrap
 msgid "Postal code"
 msgstr "Postinumero"
@@ -2232,11 +2110,11 @@ msgstr "Esimääritetty kysely"
 msgid "Primary Group ID"
 msgstr "Pääryhmä ryhmätunnus (Primary Group ID)"
 
-#: ../../lib/Template.php:1115
+#: ../../lib/Template.php:1142
 msgid "Problem with autoFill() in template"
 msgstr "Ongelma pohjan autoFill()-toiminnossa"
 
-#: ../../lib/TemplateRender.php:1536
+#: ../../lib/TemplateRender.php:1546
 msgid "Proceed &gt;&gt;"
 msgstr "Eteenpäin &gt;&gt;"
 
@@ -2258,7 +2136,7 @@ msgstr "Tyhjennä välimuistit"
 msgid "Purged %s bytes of cache."
 msgstr "Tyhjennetty %s tavua välimuistista."
 
-#: ../../lib/Template.php:796
+#: ../../lib/Template.php:821
 #, php-format
 msgid ""
 "RDN attribute sequence [%s] is already used by attribute [%s] and cant be "
@@ -2267,17 +2145,16 @@ msgstr ""
 "RDN attribuuttisisältö [%s] on jo käytössä attribuutilla [%s] ja ei voi olla "
 "samaan aikaan käytössä attribuutilla [%s]."
 
-#: ../../lib/Template.php:793
+#: ../../lib/Template.php:818
 msgid "RDN attribute sequence already defined"
 msgstr "RDN attribuuttisisältö on jo käytössä"
 
-#: ../../lib/TemplateRender.php:2265
+#: ../../lib/TemplateRender.php:2298
 msgid "Really delete value from attribute"
 msgstr "Haluatko todella tuhota arvon attribuutilta"
 
 #: ../../templates/creation/sendmailMTAAliasObject.xml:37
 #: ../../templates/creation/sendmailVirtualUser.xml:42
-#: ../../templates/creation/test_sendmailMTAAliasObject.xml:37
 #, no-wrap
 msgid "Recipient Addresses"
 msgstr "Vastaanottajan osoitteet"
@@ -2298,17 +2175,17 @@ msgstr "Rekursiivinen poisto käynnissä"
 msgid "Recursively copy all children of this object as well."
 msgstr "Kopioi kaikki objektin alaluokat rekursiivisesti."
 
-#: ../../lib/HTMLTree.php:242 ../../lib/TemplateRender.php:1050
-#: ../../lib/TemplateRender.php:1051 ../../lib/TemplateRender.php:1053
-#: ../../lib/TemplateRender.php:1054
+#: ../../lib/HTMLTree.php:248 ../../lib/TemplateRender.php:1060
+#: ../../lib/TemplateRender.php:1061 ../../lib/TemplateRender.php:1063
+#: ../../lib/TemplateRender.php:1064
 msgid "Refresh"
 msgstr "Päivitä"
 
-#: ../../lib/TemplateRender.php:1051 ../../lib/TemplateRender.php:1054
+#: ../../lib/TemplateRender.php:1061 ../../lib/TemplateRender.php:1064
 msgid "Refresh this entry"
 msgstr "Päivitä tietue"
 
-#: ../../lib/HTMLTree.php:240
+#: ../../lib/HTMLTree.php:246
 msgid "Refreshing Tree"
 msgstr "Päivitetään puurakenne"
 
@@ -2317,16 +2194,16 @@ msgstr "Päivitetään puurakenne"
 msgid "Registered Address"
 msgstr "Rekisteröidyt osoitteet"
 
-#: ../../lib/TemplateRender.php:1051
+#: ../../lib/TemplateRender.php:1061
 msgid "Reloading"
 msgstr "Ladataan uudelleen"
 
-#: ../../htdocs/modify_member_form.php:128
+#: ../../htdocs/modify_member_form.php:147
 msgid "Remove selected"
 msgstr "Poista valitut"
 
-#: ../../lib/TemplateRender.php:1151 ../../lib/TemplateRender.php:1152
-#: ../../lib/TemplateRender.php:1154 ../../lib/TemplateRender.php:1155
+#: ../../lib/TemplateRender.php:1161 ../../lib/TemplateRender.php:1162
+#: ../../lib/TemplateRender.php:1164 ../../lib/TemplateRender.php:1165
 #: ../../htdocs/rename_form.php:24 ../../htdocs/rename_form.php:28
 #: ../../htdocs/rename_form.php:35
 msgid "Rename"
@@ -2340,7 +2217,7 @@ msgstr "Nimeä tietue uudelleen"
 msgid "Rename successful!"
 msgstr "Uudelleen nimeäminen onnistui!"
 
-#: ../../lib/TemplateRender.php:1152 ../../lib/TemplateRender.php:1155
+#: ../../lib/TemplateRender.php:1162 ../../lib/TemplateRender.php:1165
 msgid "Rename this entry"
 msgstr "Nimeä tietue uudelleen"
 
@@ -2358,19 +2235,19 @@ msgstr "Raportoi bugi"
 msgid "Request feature"
 msgstr "Tee muutosehdotus"
 
-#: ../../lib/TemplateRender.php:1566 ../../htdocs/schema.php:537
+#: ../../lib/TemplateRender.php:1576 ../../htdocs/schema.php:537
 msgid "Required Attributes"
 msgstr "Pakolliset attribuutit"
 
-#: ../../lib/PageRender.php:451
+#: ../../lib/PageRender.php:457
 msgid "Required attribute for objectClass(es)"
 msgstr "Objektiluokan(-luokkien)  pakollinen attribuutti"
 
 #: ../../lib/AJAXTree.php:113 ../../lib/AJAXTree.php:118
-#: ../../lib/TemplateRender.php:549 ../../lib/TemplateRender.php:586
+#: ../../lib/TemplateRender.php:550 ../../lib/TemplateRender.php:587
 #: ../../htdocs/delete_form.php:88 ../../htdocs/delete_form.php:141
 #: ../../htdocs/create_confirm.php:122 ../../htdocs/create_confirm.php:137
-#: ../../htdocs/update_confirm.php:196 ../../htdocs/update_confirm.php:229
+#: ../../htdocs/update_confirm.php:198 ../../htdocs/update_confirm.php:231
 msgid "Retrieving DN"
 msgstr "Noudetaan DN:ää"
 
@@ -2388,7 +2265,7 @@ msgstr "Huoneen numero"
 msgid "Run a predefined query"
 msgstr "Aja esimääritetty haku"
 
-#: ../../lib/ds_ldap.php:589
+#: ../../lib/ds_ldap.php:590
 msgid ""
 "SASL has been enabled in your config, but your PHP install does not support "
 "SASL. SASL will be disabled."
@@ -2439,15 +2316,15 @@ msgstr "Samba: Ryhmän liitokset (Group mapping)"
 msgid "Samba: Machine"
 msgstr "Samba: Tietokone"
 
-#: ../../lib/TemplateRender.php:1242 ../../lib/TemplateRender.php:1246
+#: ../../lib/TemplateRender.php:1252 ../../lib/TemplateRender.php:1256
 msgid "Save"
 msgstr "Tallenna"
 
-#: ../../lib/TemplateRender.php:1081 ../../lib/TemplateRender.php:1084
+#: ../../lib/TemplateRender.php:1091 ../../lib/TemplateRender.php:1094
 msgid "Save a dump of this object"
 msgstr "Tee objektista vedos"
 
-#: ../../lib/TemplateRender.php:1243 ../../lib/TemplateRender.php:1247
+#: ../../lib/TemplateRender.php:1253 ../../lib/TemplateRender.php:1257
 msgid "Save a dump of this object and all of its children"
 msgstr "Tee objektista ja sen alaobjekteista vedos"
 
@@ -2455,7 +2332,7 @@ msgstr "Tee objektista ja sen alaobjekteista vedos"
 msgid "Save as file"
 msgstr "Tallenna tiedostona"
 
-#: ../../htdocs/modify_member_form.php:153
+#: ../../htdocs/modify_member_form.php:172
 msgid "Save changes"
 msgstr "Tallenna muutokset"
 
@@ -2463,8 +2340,8 @@ msgstr "Tallenna muutokset"
 msgid "Schema for server"
 msgstr "Skeema palvelimelle"
 
-#: ../../lib/HTMLTree.php:228 ../../lib/ds_ldap_pla.php:602
 #: ../../lib/QueryRender.php:75 ../../lib/QueryRender.php:207
+#: ../../lib/HTMLTree.php:234 ../../lib/ds_ldap_pla.php:619
 msgid "Search"
 msgstr "Etsi"
 
@@ -2482,7 +2359,7 @@ msgstr "Haun tulokset"
 msgid "Search Scope"
 msgstr "Hakualue (scope)"
 
-#: ../../lib/ds_ldap.php:739
+#: ../../lib/ds_ldap.php:734
 msgid "Search for DN returned the incorrect number of results"
 msgstr "DN:n haku palautti virheellisen tulosjoukon"
 
@@ -2496,11 +2373,11 @@ msgstr "Haku ei palauttanut tuloksia"
 msgid "Security error: The file being uploaded may be malicious."
 msgstr "Tietoturvavaroitus: Kopioitava tiedosto saattaa olla vahingollinen."
 
-#: ../../lib/TemplateRender.php:493
+#: ../../lib/TemplateRender.php:494
 msgid "Select a template for the creation process"
 msgstr "Valitse luonnissa käytettävä malli"
 
-#: ../../lib/TemplateRender.php:497
+#: ../../lib/TemplateRender.php:498
 msgid "Select a template to edit the entry"
 msgstr "Valitse pohja tietueen muokkausta varten"
 
@@ -2513,7 +2390,6 @@ msgstr "Valitse LDIF-tiedosto"
 #: ../../templates/creation/sendmailMTAMapObject.xml:24
 #: ../../templates/creation/sendmailVirtualDomain.xml:20
 #: ../../templates/creation/sendmailVirtualUser.xml:24
-#: ../../templates/creation/test_sendmailMTAAliasObject.xml:20
 #, no-wrap
 msgid "Sendmail Cluster Name"
 msgstr "Sendmail-klusterin Nimi"
@@ -2523,7 +2399,6 @@ msgstr "Sendmail-klusterin Nimi"
 #: ../../templates/creation/sendmailMTAMapObject.xml:30
 #: ../../templates/creation/sendmailVirtualDomain.xml:26
 #: ../../templates/creation/sendmailVirtualUser.xml:30
-#: ../../templates/creation/test_sendmailMTAAliasObject.xml:26
 #, no-wrap
 msgid "Sendmail Hostname"
 msgstr "Sendmail palvelinnimi (hostname)"
@@ -2558,17 +2433,17 @@ msgstr "Sendmail: Virtuaalinen toimialue (Virtual Domain)"
 msgid "Sendmail: Virtual Users"
 msgstr "Sendmail: Virtuaaliset käyttäjät (Virtual Users)"
 
-#: ../../lib/HTMLTree.php:159 ../../lib/PageRender.php:110
-#: ../../lib/QueryRender.php:444 ../../lib/export_functions.php:205
-#: ../../lib/TemplateRender.php:711 ../../lib/TemplateRender.php:725
+#: ../../lib/QueryRender.php:444 ../../lib/HTMLTree.php:165
+#: ../../lib/PageRender.php:110 ../../lib/export_functions.php:205
+#: ../../lib/TemplateRender.php:721 ../../lib/TemplateRender.php:735
 #: ../../htdocs/compare.php:52 ../../htdocs/compare.php:58
 #: ../../htdocs/delete_form.php:30 ../../htdocs/delete_form.php:114
-#: ../../htdocs/create.php:92 ../../htdocs/export_form.php:56
-#: ../../htdocs/create_confirm.php:54 ../../htdocs/import_form.php:20
-#: ../../htdocs/import.php:47 ../../htdocs/mass_delete.php:45
-#: ../../htdocs/mass_delete.php:57 ../../htdocs/entry_chooser.php:35
-#: ../../htdocs/entry_chooser.php:90 ../../htdocs/mass_edit.php:64
-#: ../../htdocs/mass_update.php:49
+#: ../../htdocs/export_form.php:56 ../../htdocs/create.php:92
+#: ../../htdocs/import_form.php:20 ../../htdocs/import.php:47
+#: ../../htdocs/mass_delete.php:45 ../../htdocs/mass_delete.php:57
+#: ../../htdocs/entry_chooser.php:35 ../../htdocs/entry_chooser.php:90
+#: ../../htdocs/mass_edit.php:64 ../../htdocs/mass_update.php:49
+#: ../../htdocs/create_confirm.php:54
 msgid "Server"
 msgstr "Palvelin"
 
@@ -2592,17 +2467,7 @@ msgstr "Istunto aikakatkaistiin"
 msgid "Set the search results to 0 to retrieve all available records"
 msgstr "Jos haluat nähdä kaikki hakutulokset, aseta hakutulosten määräksi 0"
 
-#: ../../templates/creation/test_jsdate.xml:59
-#, no-wrap
-msgid "Shadow Last Change"
-msgstr "Viimeisin Shadow-muutos"
-
-#: ../../templates/creation/test_jsdate.xml:54
-#, no-wrap
-msgid "Shadow Max"
-msgstr "Shadow maksimi"
-
-#: ../../lib/TemplateRender.php:1120
+#: ../../lib/TemplateRender.php:1130
 msgid "Show"
 msgstr "Näytä"
 
@@ -2623,7 +2488,7 @@ msgstr "Näytä välimuistin sisältö"
 msgid "Show Results"
 msgstr "Näytä tulokset"
 
-#: ../../lib/TemplateRender.php:1121
+#: ../../lib/TemplateRender.php:1131
 msgid "Show internal attributes"
 msgstr "Näytä sisäiset attribuutit"
 
@@ -2642,13 +2507,13 @@ msgstr "Vain yksi arvo"
 msgid "Skip"
 msgstr "Ohita"
 
-#: ../../lib/TemplateRender.php:1018
+#: ../../lib/TemplateRender.php:1028
 #, php-format
 msgid "Some attributes (%s) were modified and are highlighted below."
 msgstr ""
 "Joitain attribuutteja (%s) on muutettu ja ne näkyvät alla korostettuna."
 
-#: ../../lib/TemplateRender.php:1459
+#: ../../lib/TemplateRender.php:1469
 msgid "Specify attributes and values"
 msgstr "Määrittele attribuutit ja arvot"
 
@@ -2660,34 +2525,28 @@ msgstr ""
 #: ../../templates/creation/organizationalRole.xml:56
 #: ../../templates/creation/inetOrgPerson.xml:63
 #: ../../templates/creation/kolabPerson.xml:82
-#: ../../templates/creation/test_inetOrgPerson.xml:70
 #: ../../templates/modification/inetOrgPerson.xml:58
-#: ../../templates/modification/test_inetOrgPerson.xml:70
 #, no-wrap
 msgid "State"
 msgstr "Kunta"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:86
-#: ../../templates/creation/test_mozillaOrgPerson.xml:87
 #, no-wrap
 msgid "State (personal)"
 msgstr "Kotikunta"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:123
-#: ../../templates/creation/test_mozillaOrgPerson.xml:124
 #, no-wrap
 msgid "State (professional)"
 msgstr "Kunta (työpaikan)"
 
-#: ../../lib/TemplateRender.php:1454 ../../lib/TemplateRender.php:1466
+#: ../../lib/TemplateRender.php:1464 ../../lib/TemplateRender.php:1476
 #, php-format
 msgid "Step %s of %s"
 msgstr "Vaihe %s / %s"
 
 #: ../../templates/creation/inetOrgPerson.xml:50
-#: ../../templates/creation/test_inetOrgPerson.xml:57
 #: ../../templates/modification/inetOrgPerson.xml:47
-#: ../../templates/modification/test_inetOrgPerson.xml:57
 #, no-wrap
 msgid "Street"
 msgstr "Katuosoite"
@@ -2714,7 +2573,7 @@ msgstr "Onnistui"
 msgid "Successfully deleted DN "
 msgstr "DN tuhottu onnistuneesti "
 
-#: ../../htdocs/login.php:28 ../../htdocs/login_form.php:37
+#: ../../htdocs/login_form.php:37 ../../htdocs/login.php:28
 msgid "Successfully logged into server."
 msgstr "Palvelimelle kirjautuminen onnistui"
 
@@ -2722,35 +2581,12 @@ msgstr "Palvelimelle kirjautuminen onnistui"
 msgid "Successfully logged out of server."
 msgstr "Palvelimelta uloskirjautuminen onnistui"
 
-#: ../../templates/creation/test_sudorole.xml:23
-#: ../../templates/modification/test_sudorole.xml:23
-#, no-wrap
-msgid "Sudo Command"
-msgstr "Sudo-komento (command)"
-
-#: ../../templates/creation/test_sudorole.xml:36
-#: ../../templates/modification/test_sudorole.xml:35
-#, no-wrap
-msgid "Sudo Hosts"
-msgstr "Sudo-palvelimet (hosts)"
-
-#: ../../templates/modification/test_sudorole.xml:7
-#, no-wrap
-msgid "Sudo Policy"
-msgstr "Sudo määritykset (policy)"
-
-#: ../../templates/creation/test_sudorole.xml:29
-#: ../../templates/modification/test_sudorole.xml:29
-#, no-wrap
-msgid "Sudo Users"
-msgstr "Sudo-käyttäjät (users)"
-
 #: ../../htdocs/compare.php:72
 msgid "Switch Entry"
 msgstr "Vaihda tietuetta"
 
-#: ../../lib/TemplateRender.php:1064 ../../lib/TemplateRender.php:1065
-#: ../../lib/TemplateRender.php:1067 ../../lib/TemplateRender.php:1068
+#: ../../lib/TemplateRender.php:1074 ../../lib/TemplateRender.php:1075
+#: ../../lib/TemplateRender.php:1077 ../../lib/TemplateRender.php:1078
 msgid "Switch Template"
 msgstr "Vaihdettu pohjaa"
 
@@ -2766,13 +2602,7 @@ msgstr "OID"
 msgid "Syntaxes"
 msgstr "Syntaksit"
 
-#: ../../templates/creation/test_account.xml:24
-#: ../../templates/modification/test_account.xml:24
-#, no-wrap
-msgid "System Access"
-msgstr "Järjestelmään pääsy"
-
-#: ../../lib/ds_ldap.php:548
+#: ../../lib/ds_ldap.php:549
 msgid ""
 "TLS has been enabled in your config, but your PHP install does not support "
 "TLS. TLS will be disabled."
@@ -2780,11 +2610,11 @@ msgstr ""
 "TSL on kytketty päälle asetuksissa, mutta PHP-asennuksesi ei tue TSL:ää. TSL "
 "on otettu pois päältä."
 
-#: ../../lib/TemplateRender.php:716 ../../lib/TemplateRender.php:730
+#: ../../lib/TemplateRender.php:726 ../../lib/TemplateRender.php:740
 msgid "Template"
 msgstr "Pohja"
 
-#: ../../lib/PageRender.php:1088
+#: ../../lib/PageRender.php:1097
 msgid "Template Value Error"
 msgstr "Määrittelyvirhe pohjassa"
 
@@ -2804,150 +2634,9 @@ msgstr "XML-Pohjatiedostoa on poistettu"
 msgid "Template XML file removed."
 msgstr "XML-Pohjatiedosto poistettiin."
 
-#: ../../lib/TemplateRender.php:519
+#: ../../lib/TemplateRender.php:520
 msgid "Templates"
 msgstr "Pohjat"
-
-#: ../../templates/creation/test_account.xml:6
-#: ../../templates/modification/test_account.xml:6
-#, no-wrap
-msgid "Test Account"
-msgstr "Testitunnus"
-
-#: ../../templates/creation/test_nordn.xml:6
-#: ../../templates/creation/test_invalidattrs.xml:6
-#: ../../templates/creation/test_noattrs.xml:6
-#, no-wrap
-msgid "Test Template"
-msgstr "Testipohja"
-
-#: ../../templates/creation/test_automount.xml:6
-#, no-wrap
-msgid "Test Template (automount)"
-msgstr "Testipohja (automount)"
-
-#: ../../templates/creation/test_normal.xml:6
-#: ../../templates/creation/test_picklist.xml:6
-#, no-wrap
-msgid "Test Template (no definitions for wsVPN)"
-msgstr "Testipohja (ei määrityksiä wsVPN:ää varten)"
-
-#: ../../templates/creation/test_account.xml:11
-#: ../../templates/modification/test_account.xml:11
-#, no-wrap
-msgid "Test Template: Account (host)"
-msgstr "Testipohja: Tili (isäntä)"
-
-#: ../../templates/creation/test_inetOrgPerson.xml:11
-#: ../../templates/modification/test_inetOrgPerson.xml:11
-#, no-wrap
-msgid "Test Template: Address Book Entry (with Multiselect)"
-msgstr "Testipohja: Osoitekirjamerkintä (monivalinnalla)"
-
-#: ../../templates/creation/test_normal.xml:11
-#, no-wrap
-msgid "Test Template: All Functions"
-msgstr "Testipohja: Kaikki toiminnot"
-
-#: ../../templates/creation/test_picklist.xml:11
-#, no-wrap
-msgid "Test Template: AutoFill/GetNextNumber/PickList"
-msgstr "Testipohja: AutoFill/GetNextNumber/PickList"
-
-#: ../../templates/creation/test_automount.xml:11
-#, no-wrap
-msgid "Test Template: Automount"
-msgstr "Testipohja: Automount"
-
-#: ../../templates/creation/test_extensible.xml:12
-#, no-wrap
-msgid "Test Template: Extensible Object (attribute not defined)"
-msgstr "Testipohja: Laajennettu objekti (attribuuttia ei määritelty)"
-
-#: ../../templates/creation/test_function.xml:11
-#, no-wrap
-msgid "Test Template: Function"
-msgstr "Testipohja: Funktio"
-
-#: ../../templates/creation/test_multilist.xml:11
-#, no-wrap
-msgid "Test Template: GetNextNumber/MultList"
-msgstr "Testipohja: GetNextNumber/MultiList"
-
-#: ../../templates/creation/test_randompassword.xml:11
-#, no-wrap
-msgid "Test Template: Helper/RandomPassword"
-msgstr "Testipohja: Helper/RandomPassword"
-
-#: ../../templates/creation/test_invalidattrs.xml:12
-#, no-wrap
-msgid "Test Template: Invalid Attributes"
-msgstr "Testipohja: Virheelliset attribuutit"
-
-#: ../../templates/creation/test_invalidoc.xml:11
-#, no-wrap
-msgid "Test Template: Invalid Object Class"
-msgstr "Testipohja: Virheellinen objektiluokka"
-
-#: ../../templates/creation/test_noattrs.xml:11
-#, no-wrap
-msgid "Test Template: No Attributes"
-msgstr "Testipohja: Ei attribuutteja"
-
-#: ../../templates/creation/test_nordn.xml:11
-#, no-wrap
-msgid "Test Template: No RDN, No Attributes"
-msgstr "Testipohja: Ei RDN:ää, Ei attribuutteja"
-
-#: ../../templates/creation/test_jsdate.xml:11
-#, no-wrap
-msgid "Test Template: Test JS Date"
-msgstr "Testipohja: Testaa JS Date (päiväys)"
-
-#: ../../templates/creation/test_uid1010.xml:11
-#, no-wrap
-msgid "Test Template: User Account (UID > 1010)"
-msgstr "Testipohja: Käyttäjätili (UID > 1010)"
-
-#: ../../templates/creation/test_uid1200.xml:11
-#, no-wrap
-msgid "Test Template: User Account (UID > 1200)"
-msgstr "Testipohja: Käyttäjäntili (UID > 1200)"
-
-#: ../../templates/creation/test_uid150218.xml:11
-#, no-wrap
-msgid "Test Template: User Account (UID > 150218)"
-msgstr "Testipohja: Käyttäjätili (UID > 150218)"
-
-#: ../../templates/creation/test_uid150220.xml:11
-#, no-wrap
-msgid "Test Template: User Account (UID > 150220)"
-msgstr "Testipohja: Käyttäjätili (UID > 150220)"
-
-#: ../../templates/creation/test_invalidoc2.xml:11
-#, no-wrap
-msgid "Test Template: Valid and Invalid Object Class"
-msgstr "Testipohja: Kelvollinen ja virheellinen objektiluokka"
-
-#: ../../templates/creation/test_mozillaOrgPerson.xml:11
-#, no-wrap
-msgid "Test: Address Book Entry"
-msgstr "Testi: Osoitekirjamerkintä"
-
-#: ../../templates/creation/test_sendmailMTAAliasObject.xml:11
-#, no-wrap
-msgid "Test: Sendmail Alias"
-msgstr "Testi: Sendmail Alias"
-
-#: ../../templates/modification/test_sudorole.xml:4
-#, no-wrap
-msgid "Test: Sudo Policy"
-msgstr "Testi: Sudo määritys (policy)"
-
-#: ../../templates/creation/test_sudorole.xml:4
-#, no-wrap
-msgid "Test: Sudo Role"
-msgstr "Testi: Sudo-Rooli (role)"
 
 #: ../../htdocs/create.php:44 ../../htdocs/create_confirm.php:38
 msgid "The RDN field is empty?"
@@ -2979,7 +2668,7 @@ msgstr "Komentoa ei voitu suorittaa"
 msgid "The container you specified (%s) does not exist. Please try again."
 msgstr "Määrittämääsi säilöä (%s) ei ole olemassa. Yritä uudelleen."
 
-#: ../../htdocs/update_confirm.php:204
+#: ../../htdocs/update_confirm.php:206
 msgid "The deletion of objectClass(es)"
 msgstr "Objektiluokan(-luokkien) poisto"
 
@@ -2993,10 +2682,10 @@ msgstr "Kohdesäilöä (%s) ei ole olemassa."
 msgid "The destination entry (%s) already exists."
 msgstr "Kohdetietue (%s) on jo olemassa."
 
-#: ../../htdocs/add_attr_form.php:20 ../../htdocs/add_oclass_form.php:24
-#: ../../htdocs/add_value_form.php:22 ../../htdocs/compare_form.php:21
-#: ../../htdocs/copy_form.php:20 ../../htdocs/download_binary_attr.php:24
-#: ../../htdocs/update.php:27 ../../htdocs/update_confirm.php:23
+#: ../../htdocs/add_oclass_form.php:24 ../../htdocs/add_value_form.php:22
+#: ../../htdocs/compare_form.php:21 ../../htdocs/copy_form.php:20
+#: ../../htdocs/download_binary_attr.php:24 ../../htdocs/update.php:27
+#: ../../htdocs/add_attr_form.php:20 ../../htdocs/update_confirm.php:23
 #, php-format
 msgid "The entry (%s) does not exist."
 msgstr "Tietuetta (%s) ei ole olemassa"
@@ -3053,7 +2742,7 @@ msgstr "Haku keskeytettiin, koska haun lähtökohta (base) oli virheellinen."
 msgid "The scope in which to search"
 msgstr "Alue (scope), johon haku kohdistetaan"
 
-#: ../../lib/functions.php:1411
+#: ../../lib/functions.php:1431
 msgid ""
 "The search attribute for AUTO_NUMBER is invalid, expecting a single valid "
 "attribute."
@@ -3089,12 +2778,12 @@ msgstr "RDN-attribuutteja ei ollut merkitty"
 msgid "There are"
 msgstr "Löytyi"
 
-#: ../../lib/Template.php:795
+#: ../../lib/Template.php:820
 #, php-format
 msgid "There is a problem in template [%s]."
 msgstr "Ongelma pohjassa [%s]."
 
-#: ../../lib/Template.php:1116
+#: ../../lib/Template.php:1143
 msgid "There is only 1 argument, when there should be two"
 msgstr ""
 "Löydettiin vain yksi argumentti vaikka niitä olisi pitänyt olla kaksi."
@@ -3109,23 +2798,27 @@ msgid ""
 "This attribute has been forced as a MAY attribute by the configuration"
 msgstr "Tämä attribuutti on pakotettu vapaaehtoiseksi asetuksissa"
 
-#: ../../lib/PageRender.php:490
+#: ../../lib/PageRender.php:496
 msgid "This attribute has been marked as Read Only."
 msgstr "Tätä attribuuttia voi vain lukea (Read Only)"
 
-#: ../../lib/PageRender.php:370
+#: ../../lib/PageRender.php:376
 msgid "This attribute is not defined in the LDAP schema"
 msgstr "Tätä attribuuttia ei ole määritelty LDAP:in skeemassa"
 
-#: ../../lib/TemplateRender.php:1969
+#: ../../lib/TemplateRender.php:1997
 msgid "This attribute is required"
 msgstr "Tämä attribuutti on pakollinen"
 
-#: ../../lib/PageRender.php:464
+#: ../../lib/PageRender.php:470
 msgid "This attribute is required for the RDN."
 msgstr "Attribuutti tarvitaan RND:ä varten."
 
-#: ../../lib/HTMLTree.php:110
+#: ../../lib/HTMLTree.php:111
+msgid "This base cannot be created with PLA."
+msgstr ""
+
+#: ../../lib/HTMLTree.php:114
 msgid "This base entry does not exist."
 msgstr "Pohjatietue puuttuu."
 
@@ -3147,13 +2840,7 @@ msgstr "Tietueella on %s alitietuetta."
 msgid "This is a development version of phpLDAPadmin"
 msgstr "Tämä on phpLDAPadmin-ohjelman kehitysversio"
 
-#: ../../templates/creation/test_normal.xml:55
-#: ../../templates/creation/test_picklist.xml:55
-#, no-wrap
-msgid "This is a hint"
-msgstr "Tämä on vihjeteksti"
-
-#: ../../lib/PageRender.php:888
+#: ../../lib/PageRender.php:897
 msgid "This is a structural ObjectClass and cannot be removed."
 msgstr "Tämä on rakenteellinen objektiluokka eikä sitä voi poistaa."
 
@@ -3184,7 +2871,7 @@ msgstr "Palvelin ei raportoi mitään."
 msgid "This template is not valid in this container"
 msgstr "Tämä pohja on virheellinen tässä säiliössä"
 
-#: ../../lib/ds_ldap_pla.php:600
+#: ../../lib/ds_ldap_pla.php:617
 msgid ""
 "This update has been or will be cancelled, it would result in an attribute "
 "value not being unique. You might like to search the LDAP server for the "
@@ -3209,17 +2896,16 @@ msgid "Title"
 msgstr "Titteli"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:103
-#: ../../templates/creation/test_mozillaOrgPerson.xml:104
 #, no-wrap
 msgid "Title (professional)"
 msgstr "Titteli (ammatillinen)"
 
-#: ../../htdocs/password_checker.php:43
+#: ../../htdocs/password_checker.php:45
 msgid "To"
 msgstr "Vastaanottaja"
 
-#: ../../lib/TemplateRender.php:134 ../../lib/TemplateRender.php:2148
-#: ../../lib/TemplateRender.php:2159 ../../lib/TemplateRender.php:2170
+#: ../../lib/TemplateRender.php:135 ../../lib/TemplateRender.php:2181
+#: ../../lib/TemplateRender.php:2192 ../../lib/TemplateRender.php:2203
 msgid "Too many arguments"
 msgstr "Liikaa argumentteja"
 
@@ -3231,7 +2917,7 @@ msgstr "Yhteyksien kokonaismäärä"
 msgid "Total Entries"
 msgstr "Merkintöjä yhteensä"
 
-#: ../../lib/TemplateRender.php:1134 ../../lib/TemplateRender.php:1138
+#: ../../lib/TemplateRender.php:1144 ../../lib/TemplateRender.php:1148
 msgid "Trash"
 msgstr "Roskakori"
 
@@ -3243,28 +2929,27 @@ msgstr "Tyyppi"
 #: ../../templates/creation/courierMailAccount.xml:49
 #: ../../templates/creation/sambaMachine.xml:30
 #: ../../templates/creation/sambaSamAccount.xml:56
-#: ../../templates/creation/test_uid1200.xml:55
-#: ../../templates/creation/test_uid1010.xml:55
-#: ../../templates/creation/test_picklist.xml:38
-#: ../../templates/creation/test_uid150220.xml:55
-#: ../../templates/creation/test_uid150218.xml:55
 #, no-wrap
 msgid "UID Number"
 msgstr "UID Numero"
 
-#: ../../lib/ds_ldap_pla.php:563
+#: ../../lib/ds_ldap_pla.php:580
 msgid "UNIQUE invalid login/password"
 msgstr "Virheellinen yksilöllinen (UNIQUE) käyttäjätunnus/salasana"
 
-#: ../../lib/TemplateRender.php:1864
+#: ../../lib/TemplateRender.php:1892
 msgid "URL"
 msgstr "URL-osoite"
+
+#: ../../lib/functions.php:2163
+msgid "Unable to Encrypt Password"
+msgstr ""
 
 #: ../../lib/ds_ldap.php:216
 msgid "Unable to connect to LDAP server"
 msgstr "Kirjautuminen LDAP-palvelimeen ei onnistu"
 
-#: ../../lib/functions.php:1376
+#: ../../lib/functions.php:1396
 msgid ""
 "Unable to connect to LDAP server with the auto_number login/password, please "
 "check your configuration."
@@ -3272,7 +2957,7 @@ msgstr ""
 "Kirjautuminen LDAP-palvelimeen ei onnistu käyttäen (auto_number "
 "login/password), tarkista asetukset."
 
-#: ../../lib/ds_ldap_pla.php:564
+#: ../../lib/ds_ldap_pla.php:581
 msgid ""
 "Unable to connect to LDAP server with the unique login/password, please "
 "check your configuration."
@@ -3284,11 +2969,11 @@ msgstr ""
 msgid "Unable to delete entry, it does not exist"
 msgstr "Tietueen poisto epäonnistui, sillä sitä ei ole olemassa."
 
-#: ../../lib/PageRender.php:239 ../../lib/PageRender.php:256
+#: ../../lib/PageRender.php:245 ../../lib/PageRender.php:262
 msgid "Unable to get the attribute value for PasswordEncrypt()"
 msgstr "Attribuutin arvoa PasswordEncrypt():ille ei saatu"
 
-#: ../../lib/ds.php:279 ../../lib/ds.php:304 ../../lib/ds.php:315
+#: ../../lib/ds.php:303 ../../lib/ds.php:328 ../../lib/ds.php:339
 msgid "Unable to login."
 msgstr "Sisäänkirjautuminen epäonnistui."
 
@@ -3300,20 +2985,20 @@ msgstr "Tiedoston avaaminen epäonnistui tiedostolle"
 msgid "Unable to read file for"
 msgstr "Tiedoston lukeminen epäonnistui tiedostolle"
 
-#: ../../lib/functions.php:1997
+#: ../../lib/functions.php:2017
 msgid "Unable to retrieve image"
 msgstr "Kuvan noutaminen epäonnistui"
 
-#: ../../lib/ds_ldap.php:690 ../../lib/ds_ldap.php:704
-#: ../../lib/ds_ldap.php:738 ../../lib/ds_ldap.php:756
+#: ../../lib/ds_ldap.php:685 ../../lib/ds_ldap.php:699
+#: ../../lib/ds_ldap.php:733 ../../lib/ds_ldap.php:751
 msgid "Unable to start proxy connection"
 msgstr "Yhteyttä välityspalvelimen kautta ei voida muodostaa"
 
-#: ../../lib/functions.php:2015
+#: ../../lib/functions.php:2035
 msgid "Unable to write to jpeg tmp directory"
 msgstr "Jpeg-tiedoston kirjoitus väliaikaishakemistoon epäonnistui"
 
-#: ../../lib/TemplateRender.php:104
+#: ../../lib/TemplateRender.php:105
 msgid "Unknown Default Attribute context"
 msgstr "Tuntematon oletusattribuuttikonteksti"
 
@@ -3342,6 +3027,10 @@ msgstr "Tuntematon XML-tyyppiasetus ohitetaan."
 msgid "Unknown attribute setting will be ignored."
 msgstr "Tuntematon attribuuttiasetus ohitetaan."
 
+#: ../../lib/ds_ldap_pla.php:137
+msgid "Unknown request for Object value."
+msgstr ""
+
 #: ../../lib/AttributeFactory.php:30
 msgid "Unknown template [post] function"
 msgstr "Tuntematon pohjan [post] -funktio"
@@ -3362,7 +3051,7 @@ msgstr "Tuntematon muutostyyppi"
 msgid "Unrecognized error number"
 msgstr "Tuntematon virhekoodi"
 
-#: ../../lib/TemplateRender.php:1437 ../../lib/TemplateRender.php:1439
+#: ../../lib/TemplateRender.php:1449 ../../htdocs/update_confirm.php:194
 msgid "Update Object"
 msgstr "Päivitä objekti"
 
@@ -3370,12 +3059,7 @@ msgstr "Päivitä objekti"
 msgid "Update Values"
 msgstr "Päivitä arvot"
 
-#: ../../lib/TemplateRender.php:1438
-msgid "Updating DN"
-msgstr "Päivitetään DN:ää"
-
 #: ../../htdocs/add_value_form.php:118 ../../htdocs/create_confirm.php:118
-#: ../../htdocs/update_confirm.php:192
 msgid "Updating Object"
 msgstr "Päivitetään objektia"
 
@@ -3404,12 +3088,6 @@ msgstr "Käytössä objektiluokissa"
 #: ../../templates/creation/posixAccount.xml:42
 #: ../../templates/creation/courierMailAccount.xml:41
 #: ../../templates/creation/sambaSamAccount.xml:49
-#: ../../templates/creation/test_uid1200.xml:42
-#: ../../templates/creation/test_uid1010.xml:42
-#: ../../templates/creation/test_extensible.xml:27
-#: ../../templates/creation/test_jsdate.xml:41
-#: ../../templates/creation/test_uid150220.xml:42
-#: ../../templates/creation/test_uid150218.xml:42
 #, no-wrap
 msgid "User ID"
 msgstr "Käyttäjätunnus"
@@ -3419,19 +3097,12 @@ msgid "User Modification"
 msgstr "Käyttäjän muokattavissa"
 
 #: ../../templates/creation/simpleSecurityObject.xml:21
-#: ../../templates/creation/test_randompassword.xml:21
 #, no-wrap
 msgid "User Name"
 msgstr "Käyttäjänimi"
 
-#: ../../templates/creation/test_normal.xml:65
-#, no-wrap
-msgid "UserPassword (Verify)"
-msgstr "Käyttäjän salasana (Varmista)"
-
 #: ../../templates/creation/posixGroup.xml:34
 #: ../../templates/creation/sambaGroupMapping.xml:60
-#: ../../templates/creation/test_multilist.xml:34
 #: ../../templates/modification/posixGroup.xml:35
 #, no-wrap
 msgid "Users"
@@ -3441,28 +3112,28 @@ msgstr "Käyttäjät"
 msgid "VCARD 2.1 Export"
 msgstr "VCARD 2.1 Vienti"
 
-#: ../../lib/TemplateRender.php:1226 ../../lib/TemplateRender.php:1230
+#: ../../lib/TemplateRender.php:1236 ../../lib/TemplateRender.php:1240
 #, php-format
 msgid "View %s children"
 msgstr "%s alitietuetta"
 
-#: ../../lib/TemplateRender.php:1226 ../../lib/TemplateRender.php:1230
+#: ../../lib/TemplateRender.php:1236 ../../lib/TemplateRender.php:1240
 msgid "View 1 child"
 msgstr "1 alitietue"
 
-#: ../../lib/HTMLTree.php:215
+#: ../../lib/HTMLTree.php:221
 msgid "View schema for"
 msgstr "Näytä skeema kohteelle"
 
-#: ../../lib/TemplateRender.php:1224 ../../lib/TemplateRender.php:1229
+#: ../../lib/TemplateRender.php:1234 ../../lib/TemplateRender.php:1239
 msgid "View the children of this object"
 msgstr "Näytä tämän tietueen lapset"
 
-#: ../../lib/TemplateRender.php:2345
+#: ../../lib/TemplateRender.php:2378
 msgid "View the schema description for this objectClass"
 msgstr "Näytä tämänobjektiluokan skeeman kuvaus"
 
-#: ../../lib/TemplateRender.php:1027
+#: ../../lib/TemplateRender.php:1037
 msgid "Viewing entry in read-only mode."
 msgstr "Näytetään tietue \"vain luku\" -tilassa."
 
@@ -3481,13 +3152,11 @@ msgid "Warning"
 msgstr "Varoitus"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:135
-#: ../../templates/creation/test_mozillaOrgPerson.xml:136
 #, no-wrap
 msgid "Web Page (professional)"
 msgstr "Kotisivu (ammatillinen)"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:98
-#: ../../templates/creation/test_mozillaOrgPerson.xml:99
 #, no-wrap
 msgid "Web page (personal)"
 msgstr "Kotisivu (henkilökohtainen)"
@@ -3506,7 +3175,6 @@ msgid "Windows Name"
 msgstr "Windows-käyttäjätunnus"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:57
-#: ../../templates/creation/test_mozillaOrgPerson.xml:58
 #, no-wrap
 msgid "Work Phone Number"
 msgstr "Työpuhelinnumero"
@@ -3514,9 +3182,7 @@ msgstr "Työpuhelinnumero"
 #: ../../templates/creation/organizationalRole.xml:25
 #: ../../templates/creation/inetOrgPerson.xml:74
 #: ../../templates/creation/kolabPerson.xml:95
-#: ../../templates/creation/test_inetOrgPerson.xml:81
 #: ../../templates/modification/inetOrgPerson.xml:67
-#: ../../templates/modification/test_inetOrgPerson.xml:81
 #, no-wrap
 msgid "Work phone"
 msgstr "Työpuhelin"
@@ -3578,8 +3244,8 @@ msgstr "Salasana -kentän arvo puuttuu."
 msgid "You left the value blank for required attribute (%s)."
 msgstr "Pakollisen attribuutin (%s) arvo puuttuu."
 
-#: ../../htdocs/create_confirm.php:133 ../../htdocs/mass_update.php:172
-#: ../../htdocs/update_confirm.php:225
+#: ../../htdocs/mass_update.php:172 ../../htdocs/create_confirm.php:133
+#: ../../htdocs/update_confirm.php:227
 msgid "You made no changes"
 msgstr "Et tehnyt mitään muutoksia"
 
@@ -3596,15 +3262,15 @@ msgstr ""
 "Konfiguroi %s. Muokkaa tiedostoa \"%s\". Esimerkkitiedosto löytyy "
 "\"%s.example\"."
 
-#: ../../lib/TemplateRender.php:1135 ../../lib/TemplateRender.php:1139
+#: ../../lib/TemplateRender.php:1145 ../../lib/TemplateRender.php:1149
 msgid "You will be prompted to confirm this decision"
 msgstr "Tähän toimintoon tullaan pyytämään vahvistus"
 
-#: ../../lib/ds.php:316
+#: ../../lib/ds.php:340
 msgid "Your HTTP based authentication is not accepted by the LDAP server"
 msgstr "HTTP-pohjaista autentikaatiota ei hyväksiytä LDAP-palvelimessa."
 
-#: ../../lib/ds_ldap.php:691
+#: ../../lib/ds_ldap.php:686
 msgid "Your LDAP server doesnt seem to support this control"
 msgstr "LDAP-palvelin ei tue tätä protokollaa."
 
@@ -3616,8 +3282,8 @@ msgstr ""
 "Tiedostojen kopiointi on estetty PHP:n asetustiedostossa. Tarkista php.ini "
 "ennenkuin jatkat."
 
-#: ../../lib/functions.php:2157 ../../lib/functions.php:2230
-#: ../../lib/functions.php:2249
+#: ../../lib/functions.php:2188 ../../lib/functions.php:2281
+#: ../../lib/functions.php:2300
 msgid ""
 "Your PHP install does not have the mhash() function. Cannot do SHA hashes."
 msgstr ""
@@ -3629,7 +3295,7 @@ msgid ""
 msgstr ""
 "PHP-asennuksessa ei ole mhash()-funktiota. Se ei voi tehdä hash-toimintoja."
 
-#: ../../lib/functions.php:2168 ../../lib/functions.php:2180
+#: ../../lib/functions.php:2199 ../../lib/functions.php:2211
 msgid ""
 "Your PHP install does not have the mhash() or mhash_keygen_s2k() function. "
 "Cannot do S2K hashes."
@@ -3649,7 +3315,7 @@ msgstr ""
 msgid "Your Session timed out after"
 msgstr "Istunto aikakatkaistiin kun oli kulunut"
 
-#: ../../lib/functions.php:1521
+#: ../../lib/functions.php:1541
 msgid "Your config file specifies an unknown AUTO_NUMBER search mechanism."
 msgstr "Konfiguraatiosi määrittää tuntemattoman AUTO_NUMBER -hakumenettelyn"
 
@@ -3661,7 +3327,7 @@ msgstr ""
 "Tiedostossa config.php puuttuu palvelinmääreet. Katso esimerkkiä "
 "config/config.php.example-tiedostosta."
 
-#: ../../lib/ds.php:280
+#: ../../lib/ds.php:304
 msgid ""
 "Your configuration file has authentication set to CONFIG based "
 "authentication, however, the userid/password failed to login"
@@ -3669,7 +3335,7 @@ msgstr ""
 "Konfiguraatiotiedostossa tunnistautuminen on asetettu CONFIG-pohjaiseksi, "
 "mutta sisäänkirjautuminen (käyttäjätunnus/salasana) epäonnistui."
 
-#: ../../lib/ds.php:305
+#: ../../lib/ds.php:329
 msgid ""
 "Your configuration file has authentication set to HTTP based authentication, "
 "however, there was none presented"
@@ -3681,15 +3347,15 @@ msgstr ""
 msgid "Your configuration has been automatically refreshed."
 msgstr "Konfiguraatiotiedosto on päivitetty automaattisesti."
 
-#: ../../lib/functions.php:2139 ../../lib/functions.php:2279
+#: ../../lib/functions.php:2135 ../../lib/functions.php:2330
 msgid "Your system crypt library does not support blowfish encryption."
 msgstr "Käyttöjärjestelmäsi salauskirjasto ei tue blowfish-salausta."
 
-#: ../../lib/functions.php:2123 ../../lib/functions.php:2309
+#: ../../lib/functions.php:2153 ../../lib/functions.php:2360
 msgid "Your system crypt library does not support extended DES encryption."
 msgstr "Käyttöjärjestelmäsi salauskirjasto ei tue laajennettua DES-salausta."
 
-#: ../../lib/functions.php:2131 ../../lib/functions.php:2294
+#: ../../lib/functions.php:2175 ../../lib/functions.php:2345
 msgid "Your system crypt library does not support md5crypt encryption."
 msgstr "Käyttöjärjestelmäsi salauskirjasto ei tue md5crypt-salausta."
 
@@ -3698,13 +3364,11 @@ msgid "Your version of PHP does not correctly perform the query."
 msgstr "Käytössä oleva PHP:n versio ei suorita kyselyä oikeaoppisesti."
 
 #: ../../templates/creation/mozillaOrgPerson.xml:90
-#: ../../templates/creation/test_mozillaOrgPerson.xml:91
 #, no-wrap
 msgid "Zip (personal)"
 msgstr "Kodin postinumero"
 
 #: ../../templates/creation/mozillaOrgPerson.xml:127
-#: ../../templates/creation/test_mozillaOrgPerson.xml:128
 #, no-wrap
 msgid "Zip (professional)"
 msgstr "Työpaikan postinumero"
@@ -3713,16 +3377,16 @@ msgstr "Työpaikan postinumero"
 msgid "[helper] needs an accompanying [post] action."
 msgstr "[helper] tarvitsee myös [post] - toiminnon."
 
-#: ../../lib/TemplateRender.php:2050 ../../lib/TemplateRender.php:2053
-#: ../../lib/TemplateRender.php:2068 ../../lib/TemplateRender.php:2071
+#: ../../lib/TemplateRender.php:2083 ../../lib/TemplateRender.php:2086
+#: ../../lib/TemplateRender.php:2101 ../../lib/TemplateRender.php:2104
 msgid "add value"
 msgstr "lisää arvo"
 
-#: ../../lib/PageRender.php:408
+#: ../../lib/PageRender.php:414
 msgid "alias"
 msgstr "alias"
 
-#: ../../htdocs/mass_update.php:113 ../../htdocs/update_confirm.php:94
+#: ../../htdocs/mass_update.php:113 ../../htdocs/update_confirm.php:95
 msgid "attribute deleted"
 msgstr "attribuutti tuhottu"
 
@@ -3730,11 +3394,11 @@ msgstr "attribuutti tuhottu"
 msgid "attribute doesnt exist"
 msgstr "attribuuttia ei ole olemassa"
 
-#: ../../lib/functions.php:2396
+#: ../../lib/functions.php:2447
 msgid "browse"
 msgstr "selaa"
 
-#: ../../lib/functions.php:2058 ../../htdocs/import.php:48
+#: ../../lib/functions.php:2078 ../../htdocs/import.php:48
 msgid "bytes"
 msgstr "tavua"
 
@@ -3750,11 +3414,11 @@ msgstr "kirjain"
 msgid "characters"
 msgstr "kirjaimet"
 
-#: ../../lib/PageRender.php:629 ../../lib/PageRender.php:995
+#: ../../lib/PageRender.php:635 ../../lib/PageRender.php:1004
 msgid "confirm"
 msgstr "Vahvista"
 
-#: ../../lib/functions.php:2032
+#: ../../lib/functions.php:2052
 msgid "contains errors"
 msgstr "sisältää virheitä"
 
@@ -3762,7 +3426,7 @@ msgstr "sisältää virheitä"
 msgid "delete"
 msgstr "poista"
 
-#: ../../lib/PageRender.php:687
+#: ../../lib/PageRender.php:693
 msgid "delete attribute"
 msgstr "poista attribuutti"
 
@@ -3771,7 +3435,7 @@ msgstr "poista attribuutti"
 msgid "don't include \"ou=\""
 msgstr "älä sisällytä \"ou=\""
 
-#: ../../lib/PageRender.php:674
+#: ../../lib/PageRender.php:680
 msgid "download value"
 msgstr "latausarvo"
 
@@ -3779,7 +3443,7 @@ msgstr "latausarvo"
 msgid "edit"
 msgstr "muokkaa"
 
-#: ../../lib/HTMLTree.php:300
+#: ../../lib/HTMLTree.php:306
 msgid "export"
 msgstr "vie"
 
@@ -3787,7 +3451,7 @@ msgstr "vie"
 msgid "export results"
 msgstr "viennin tulos"
 
-#: ../../lib/AttributeFactory.php:120
+#: ../../lib/AttributeFactory.php:123
 msgid "false"
 msgstr "epätosi"
 
@@ -3795,32 +3459,32 @@ msgstr "epätosi"
 msgid "for"
 msgstr "kohteelle"
 
-#: ../../htdocs/copy.php:75 ../../htdocs/copy.php:134
+#: ../../htdocs/copy.php:101 ../../htdocs/copy.php:161
 msgid "has NOT been created."
 msgstr "EI ole luotu."
 
-#: ../../htdocs/copy.php:71 ../../htdocs/copy.php:105
-#: ../../htdocs/copy.php:130 ../../htdocs/create.php:78
+#: ../../htdocs/copy.php:97 ../../htdocs/copy.php:132
+#: ../../htdocs/copy.php:157 ../../htdocs/create.php:78
 msgid "has been created."
 msgstr "on luotu."
 
-#: ../../htdocs/copy.php:121
+#: ../../htdocs/copy.php:148
 msgid "has been deleted."
 msgstr "on tuhottu"
 
-#: ../../lib/PageRender.php:477
+#: ../../lib/PageRender.php:483
 msgid "hint"
 msgstr "vihje"
 
-#: ../../lib/HTMLTree.php:287
+#: ../../lib/HTMLTree.php:293
 msgid "import"
 msgstr "tuo"
 
-#: ../../lib/HTMLTree.php:257
+#: ../../lib/HTMLTree.php:263
 msgid "info"
 msgstr "info"
 
-#: ../../lib/PageRender.php:408
+#: ../../lib/PageRender.php:414
 msgid "is an alias for"
 msgstr "on alias kohteelle"
 
@@ -3832,13 +3496,13 @@ msgstr "rivi"
 msgid "list"
 msgstr "lista"
 
-#: ../../lib/HTMLTree.php:517 ../../lib/HTMLTree.php:519
-#: ../../lib/HTMLTree.php:522 ../../lib/ds.php:294
-#: ../../htdocs/login_form.php:44
+#: ../../lib/HTMLTree.php:523 ../../lib/HTMLTree.php:525
+#: ../../lib/HTMLTree.php:528 ../../lib/ds.php:318
+#: ../../lib/config_default.php:490
 msgid "login"
 msgstr "kirjaudu"
 
-#: ../../lib/HTMLTree.php:329
+#: ../../lib/HTMLTree.php:335
 msgid "logout"
 msgstr "kirjaudu ulos"
 
@@ -3850,15 +3514,15 @@ msgstr "jäsentä ryhmässä"
 msgid "min. of inactivity. You have been automatically logged out."
 msgstr "min. toimettomana. Istunto aikakatkaistiin."
 
-#: ../../lib/TemplateRender.php:2087 ../../lib/TemplateRender.php:2090
+#: ../../lib/TemplateRender.php:2120 ../../lib/TemplateRender.php:2123
 msgid "modify group members"
 msgstr "muokkaa ryhmän jäseniä"
 
-#: ../../lib/HTMLTree.php:274
+#: ../../lib/HTMLTree.php:280
 msgid "monitor"
 msgstr "monitoroi"
 
-#: ../../lib/HTMLTree.php:497
+#: ../../lib/HTMLTree.php:503
 msgid "new"
 msgstr "uusi"
 
@@ -3870,7 +3534,7 @@ msgstr "uudet attribuutit"
 msgid "no description"
 msgstr "ei kuvausta"
 
-#: ../../lib/functions.php:1954
+#: ../../lib/functions.php:1974
 msgid "no description available"
 msgstr "kuvausta ei ole saatavilla"
 
@@ -3886,8 +3550,8 @@ msgstr "tietueeseen ei voi liittää enempää attribuutteja"
 msgid "no new binary attributes available for this entry"
 msgstr "tietueeseen ei voi liittää enempää attribuutteja"
 
-#: ../../lib/functions.php:2752 ../../lib/TemplateRender.php:1572
-#: ../../lib/TemplateRender.php:1580 ../../htdocs/schema.php:193
+#: ../../lib/functions.php:2808 ../../lib/TemplateRender.php:1582
+#: ../../lib/TemplateRender.php:1590 ../../htdocs/schema.php:193
 #: ../../htdocs/schema.php:286 ../../htdocs/schema.php:305
 #: ../../htdocs/schema.php:403 ../../htdocs/schema.php:493
 #: ../../htdocs/schema.php:520 ../../htdocs/schema.php:570
@@ -3895,7 +3559,7 @@ msgstr "tietueeseen ei voi liittää enempää attribuutteja"
 msgid "none"
 msgstr "ei käytössä"
 
-#: ../../lib/PageRender.php:1119
+#: ../../lib/PageRender.php:1128
 msgid "none, remove value"
 msgstr "ei käytössä, poista arvo"
 
@@ -3946,7 +3610,7 @@ msgstr "phpLDAPadmin-ohjelmaa ei ole konfiguroitu tähän tuontityyppiin"
 msgid "phpLDAPadmin logo"
 msgstr "phpLDAPadminin logo"
 
-#: ../../lib/functions.php:2058
+#: ../../lib/functions.php:2078
 msgid "pixels"
 msgstr "kuvapistettä"
 
@@ -3954,11 +3618,11 @@ msgstr "kuvapistettä"
 msgid "read only"
 msgstr "vain luku"
 
-#: ../../lib/HTMLTree.php:244
+#: ../../lib/HTMLTree.php:250
 msgid "refresh"
 msgstr "päivitä"
 
-#: ../../lib/Template.php:1348
+#: ../../lib/Template.php:1375
 msgid "removed from template as it is not defined by an ObjectClass"
 msgstr "postettu pohjasta sillä sitä ei ole määritetty objektiluokassa"
 
@@ -3966,19 +3630,19 @@ msgstr "postettu pohjasta sillä sitä ei ole määritetty objektiluokassa"
 msgid "removed from template as it is not defined in the schema"
 msgstr "poistettu pohjasta sillä sitä ei ole määritelty skeemassa"
 
-#: ../../lib/TemplateRender.php:2102
+#: ../../lib/TemplateRender.php:2135
 msgid "rename"
 msgstr "nimeä uudelleen"
 
-#: ../../lib/PageRender.php:451
+#: ../../lib/PageRender.php:457
 msgid "required"
 msgstr "pakollinen"
 
-#: ../../lib/HTMLTree.php:217
+#: ../../lib/HTMLTree.php:223
 msgid "schema"
 msgstr "skeema"
 
-#: ../../lib/HTMLTree.php:230
+#: ../../lib/HTMLTree.php:236
 msgid "search"
 msgstr "Etsi"
 
@@ -3986,11 +3650,11 @@ msgstr "Etsi"
 msgid "seconds"
 msgstr "sekuntia"
 
-#: ../../lib/TemplateRender.php:1262
+#: ../../lib/TemplateRender.php:1272
 msgid "select the rdn attribute"
 msgstr "valitse rdn attribuutti"
 
-#: ../../lib/PageRender.php:889
+#: ../../lib/PageRender.php:898
 msgid "structural"
 msgstr "rakenteellinen"
 
@@ -4006,7 +3670,7 @@ msgstr "jota tämä objektiluokka vaatii."
 msgid "to a new object"
 msgstr "uuteen objektiin"
 
-#: ../../lib/AttributeFactory.php:119
+#: ../../lib/AttributeFactory.php:122
 msgid "true"
 msgstr "tosi"
 
@@ -4032,7 +3696,7 @@ msgstr "arvoa attribuutille"
 msgid "view entries"
 msgstr "näytä merkinnät"
 
-#: ../../htdocs/update_confirm.php:207
+#: ../../htdocs/update_confirm.php:209
 msgid "will delete the attribute(s)"
 msgstr "tulee tuhomaan yhden tai useamman attribuutin."
 
@@ -4042,220 +3706,6 @@ msgstr "ja "
 
 #~ msgid "(Session timed out. Automatically logged out.)"
 #~ msgstr "(Istunto aikakatkaistiin)"
-
-#~ msgid "(Auto evaluated on submission.)"
-#~ msgstr "(Tarkistetaan automaattisesti lähetettäessä.)"
-
-#~ msgid "(example: cn=MyNewPerson)"
-#~ msgstr "(esimerkki: cn=MattiMalli)"
-
-#~ msgid ""
-#~ "<center><table class='notice'><tr><td colspan='2'><center><img "
-#~ "src='images/warning.png' height='12' width='13' alt=\"Warning\" />\n"
-#~ "             <b>You found a non-fatal phpLDAPadmin "
-#~ "bug!</b></td></tr><tr><td>Error:</td><td><b>%s</b> "
-#~ "(<b>%s</b>)</td></tr><tr><td>File:</td>\n"
-#~ "             <td><b>%s</b> line <b>%s</b>, caller "
-#~ "<b>%s</b></td></tr><tr><td>Versions:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, "
-#~ "SAPI: <b>%s</b>\n"
-#~ "             </td></tr><tr><td>Web server:</td><td><b>%s</b></td></tr>\n"
-#~ "\t<tr><td colspan='2'><center><a target='new' href='%s'>Please check and see "
-#~ "if this bug has been reported here</a>.</center></td></tr>\n"
-#~ "\t<tr><td colspan='2'><center><a target='new' href='%s'>If it hasnt been "
-#~ "reported, you may report this bug by clicking here</a>.</center></td></tr>\n"
-#~ "\t</table></center><br />"
-#~ msgstr ""
-#~ "<center><table class='notice'><tr><td colspan='2'><center><img "
-#~ "src='images/warning.png' height='12' width='13' alt=\"Warning\" />\n"
-#~ "             <b>Löysit bugin "
-#~ "phpLDAPadminista!</b></td></tr><tr><td>Virhe:</td><td><b>%s</b> "
-#~ "(<b>%s</b>)</td></tr><tr><td>Tiedosto:</td>\n"
-#~ "             <td><b>%s</b> rivi <b>%s</b>, kutsuja "
-#~ "<b>%s</b></td></tr><tr><td>Versiot:</td><td>PLA: <b>%s</b>, PHP: <b>%s</b>, "
-#~ "SAPI: <b>%s</b>\n"
-#~ "             </td></tr><tr><td>Www-palvelin:</td><td><b>%s</b></td></tr>\n"
-#~ "\t<tr><td colspan='2'><center><a target='new' href='%s'>Tarkistathan ensin "
-#~ "tästä napsauttamalla, ettei bugia ole jo raportoitu</a>.</center></td></tr>\n"
-#~ "\t<tr><td colspan='2'><center><a target='new' href='%s'>Napsauta tästä Jos "
-#~ "bugia ei ole vielä raportoitu. Bugiraportit pitää tehdä "
-#~ "englanniksi</a>.</center></td></tr>\n"
-#~ "\t</table></center><br />"
-
-#~ msgid ""
-#~ "Attribute [%s] is a HIDDEN attribute, however, it is missing a VALUE in your "
-#~ "template."
-#~ msgstr ""
-#~ "Attribuutti %s on merkitty piilotetuksi (HIDDEN), mutta mallissa siltä "
-#~ "puuttuu arvo (VALUE)."
-
-#~ msgid "Attribute [%s] is a MUST attribute, so it cannot be disabled."
-#~ msgstr ""
-#~ "Attribuutti %s on merkitty pakolliseksi (MUST), joten sitä ei voi poistaa "
-#~ "käytöstä."
-
-#~ msgid "Base DN: "
-#~ msgstr "Base DN: "
-
-#~ msgid "Binary value not displayed"
-#~ msgstr "Binääriarvoa ei näytetä"
-
-#~ msgid "Click here to go to the login form"
-#~ msgstr "Napsauta tästä päästäksesi kirjautumisikkunaan"
-
-#~ msgid ""
-#~ "Congratulations! You found a bug in phpLDAPadmin.<br /><br />\n"
-#~ "\t     <table class='bug'>\n"
-#~ "\t     <tr><td>Error:</td><td><b>%s</b></td></tr>\n"
-#~ "\t     <tr><td>Level:</td><td><b>%s</b></td></tr>\n"
-#~ "\t     <tr><td>File:</td><td><b>%s</b></td></tr>\n"
-#~ "\t     <tr><td>Line:</td><td><b>%s</b></td></tr>\n"
-#~ "\t\t <tr><td>Caller:</td><td><b>%s</b></td></tr>\n"
-#~ "\t     <tr><td>PLA Version:</td><td><b>%s</b></td></tr>\n"
-#~ "\t     <tr><td>PHP Version:</td><td><b>%s</b></td></tr>\n"
-#~ "\t     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>\n"
-#~ "\t     <tr><td>Web server:</td><td><b>%s</b></td></tr>\n"
-#~ "\t     </table>\n"
-#~ "\t     <br />\n"
-#~ "\t     Please report this bug by clicking below!"
-#~ msgstr ""
-#~ "Onnittelut! Olet löytänyt bugin PHPLDAPadminista.<br /><br />\n"
-#~ "\t     <table class='bug'>\n"
-#~ "\t     <tr><td>Virhe:</td><td><b>%s</b></td></tr>\n"
-#~ "\t     <tr><td>Taso:</td><td><b>%s</b></td></tr>\n"
-#~ "\t     <tr><td>Tiedosto:</td><td><b>%s</b></td></tr>\n"
-#~ "\t     <tr><td>Rivi:</td><td><b>%s</b></td></tr>\n"
-#~ "\t\t <tr><td>Kutsuja:</td><td><b>%s</b></td></tr>\n"
-#~ "\t     <tr><td>PLA:n versio:</td><td><b>%s</b></td></tr>\n"
-#~ "\t     <tr><td>PHP:n versio:</td><td><b>%s</b></td></tr>\n"
-#~ "\t     <tr><td>PHP SAPI:</td><td><b>%s</b></td></tr>\n"
-#~ "\t     <tr><td>Www-palvelin:</td><td><b>%s</b></td></tr>\n"
-#~ "\t     </table>\n"
-#~ "\t     <br />\n"
-#~ "\t     Raportoi bugi (englanniksi) napsauttamalla alta!"
-
-#~ msgid "Copy successful! Would you like to "
-#~ msgstr "Kopiointi onnistui! Haluatko "
-
-#~ msgid "Could not bind to the LDAP server."
-#~ msgstr "Yhdistäminen LDAP-palvelimeen epäonnistui."
-
-#~ msgid "DN \"%s\" is not an LDAP distinguished name."
-#~ msgstr "LDAP ei tunnista DN:ä \"%s\"."
-
-#~ msgid "Description: %s <br /><br />"
-#~ msgstr "Kuvaus: %s<br /><br />"
-
-#~ msgid "Description: (no description available)<br />"
-#~ msgstr "Kuvaus: (ei kuvausta saatavilla)<br />"
-
-#~ msgid "Error number: %s<br /><br />"
-#~ msgstr "Virheen numero: %s<br /><br />"
-
-#~ msgid ""
-#~ "Error: You have an error in your config file. The only three allowed values\n"
-#~ "                                    for auth_type in the $servers section "
-#~ "are 'session', 'cookie', and 'config'. You entered '%s',\n"
-#~ "                                    which is not allowed. "
-#~ msgstr ""
-#~ "Virhe: asetustiedoston osassa $servers kentän auth_type arvoksi on\n"
-#~ "                                      annettu'%s'. Ainoastaan arvot "
-#~ "'session', 'cookie' ja config'\n"
-#~ "                                      ovat sallittuja. "
-
-#~ msgid "Is this a phpLDAPadmin bug? If so, please <a href='%s'>report it</a>."
-#~ msgstr ""
-#~ "Onkohan tämä phpLDAPadminin bugi? Jos on, <a href='%s'>tee bugiraportti</a>."
-
-#~ msgid "Logged out successfully from server <b>%s</b>"
-#~ msgstr "Kirjauduttiin ulos palvelimelta <b>%s</b>"
-
-#~ msgid "Maximum file size: %s"
-#~ msgstr "Tiedoston maksimikoko: %s"
-
-#~ msgid "Next Page"
-#~ msgstr "Seuraava sivu"
-
-#~ msgid "No DISPLAY/DESCRIPTION attribute in template file"
-#~ msgstr "Mallitiedostosta puuttuu attribuutti DISPLAY/DESCRIPTION"
-
-#~ msgid "No such file: "
-#~ msgstr "Tiedosto puuttuu: "
-
-#~ msgid "Note: '%s' is an alias for '%s'"
-#~ msgstr "Huom: '%s' on alias '%s':lle"
-
-#~ msgid ""
-#~ "Note: You will get an \"inappropriate matching\" error if you have not setup "
-#~ "an EQUALITY rule on your LDAP server for this attribute."
-#~ msgstr ""
-#~ "Huom: Saat virheilmoituksen \"inappropriate matching\" ellet ole määrittänyt "
-#~ "tälle attribuutille EQUALITY-sääntöä LDAP-palvelimen asetuksissa."
-
-#~ msgid "RDN"
-#~ msgstr "RDN"
-
-#~ msgid "Redirecting..."
-#~ msgstr "Uudelleenohjataan..."
-
-#~ msgid "Relative Distinguished Name"
-#~ msgstr "Relative Distinguished Name"
-
-#~ msgid "Search performed by phpLDAPadmin in"
-#~ msgstr "Haun teki phpLDAPadmin kohteessa"
-
-#~ msgid "Searching..."
-#~ msgstr "Etsitään..."
-
-#~ msgid "This template has been disabled in the XML file."
-#~ msgstr "Malli on poistettu käytöstä XML-tiedostossa."
-
-#~ msgid "Unsafe file name: "
-#~ msgstr "Turvaton tiedostonimi: "
-
-#~ msgid "We are missing a page for [%s] attributes."
-#~ msgstr "Joistain attribuuteista [%s] puuttuu sivu."
-
-#~ msgid ""
-#~ "You specified an invalid value for auto_uid_number_mechanism (\"%s\")\n"
-#~ "                                   in your configration. Only \"uidpool\" "
-#~ "and \"search\" are valid.\n"
-#~ "                                   Please correct this problem."
-#~ msgstr ""
-#~ "Muuttujalla auto_uid_number_mechanism on virheellinen arvo (\"%s\")\n"
-#~ "                                   asetustiedostoissa. Muuttujan arvoksi "
-#~ "kelpaavat vain \"uidpool\" ja \"search\".\n"
-#~ "                                   Ole hyvä ja korjaa asia."
-
-#~ msgid ""
-#~ "You specified the \"auto_uid_number_mechanism\" as \"search\" in your\n"
-#~ "                              configuration for server <b>%s</b>, but you "
-#~ "did not specify the\n"
-#~ "                              \"auto_uid_number_search_base\". Please "
-#~ "specify it before proceeding."
-#~ msgstr ""
-#~ "Muuttujalle \"auto_uid_number_mechanism\" on arvo  \"search\",\n"
-#~ "                              palvelimen <b>%s</b> asetustiedostossa, mutta "
-#~ "et ole määrittänyt muuttujaa\n"
-#~ "                              \"auto_uid_number_search_base\"."
-
-#~ msgid ""
-#~ "Your config.php specifies an invalid value for $default_search_display: %s. "
-#~ "Please fix it"
-#~ msgstr ""
-#~ "Tiedostossa config.php on määritetty virheellinen arvo (%s) muuttujalle "
-#~ "$default_search_display"
-
-#~ msgid "using template"
-#~ msgstr "käytetään mallia"
-
-#~ msgid "List"
-#~ msgstr "Luettelo"
-
-#~ msgid "Retieving DN"
-#~ msgstr "Noudetaan DN:ää"
-
-#~ msgid "Table"
-#~ msgstr "Taulukko"
 
 #, php-format
 #~ msgid "The container (%s) is a leaf."
