@@ -497,7 +497,7 @@ class QueryRender extends PageRender {
 				$this->getAjaxRef($base),
 				$this->getAjaxRef($base),
 				($show == $this->getAjaxRef($base) ? '#F0F0F0' : '#E0E0E0'),
-				$base);
+				htmlspecialchars($base));
 		}
 		echo '</tr>';
 		echo '</table>';
@@ -545,7 +545,7 @@ class QueryRender extends PageRender {
 		echo ' ]</small>';
 
 		echo '<br />';
-		printf('<small>%s: <b>%s</b></small>',_('Base DN'),$base);
+		printf('<small>%s: <b>%s</b></small>',_('Base DN'),htmlspecialchars($base));
 
 		echo '<br />';
 		printf('<small>%s: <b>%s</b></small>',_('Filter performed'),htmlspecialchars($this->template->resultsdata[$base]['filter']));
