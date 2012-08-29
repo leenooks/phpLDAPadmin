@@ -229,7 +229,6 @@ class QueryRender extends PageRender {
 		# If Mass Actions Enabled
 		if ($_SESSION[APPCONFIG]->getValue('mass','enabled')) {
 			$mass_actions = array(
-				'&nbsp;' => '',
 				_('delete') => 'mass_delete',
 				_('edit') => 'mass_edit'
 			);
@@ -406,12 +405,10 @@ class QueryRender extends PageRender {
 						printf('<tr class="%s">',++$j%2 ? 'odd' : 'even');
 						printf('<td><input type="checkbox" name="allbox" value="1" onclick="CheckAll(1,\'massform_\',%s);" /></td>',$counter);
 						printf('<td colspan="%s">',2+count(explode(',',$ado)));
-						echo '<select name="cmd" onchange="if (this.value) submit();" style="font-size: 12px">';
 
-						foreach ($mass_actions as $action => $display)
-							printf('<option value="%s">%s</option>',$display,$action);
+						foreach ($mass_actions as $display => $action)
+							printf('<button type="submit" name="cmd" value="%s">%s</button>&nbsp;&nbsp;',$action,$display);
 
-						echo '</select>';
 						echo '</td>';
 						echo '</tr>';
 					}
