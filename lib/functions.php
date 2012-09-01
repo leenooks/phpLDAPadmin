@@ -1471,10 +1471,10 @@ function get_next_number($base,$attr,$increment=false,$filter=false,$startmin=nu
 			for ($i=0;$i<count($autonum);$i++) {
 				$num = $autonum[$i] < $minNumber ? $minNumber : $autonum[$i];
 
-				/* If we're at the end of the list, or we've found a gap between this number and the 
-				   following, use the next available number in the gap. */ 
-				if ($i+1 == count($autonum) || $autonum[$i+1] > $num+1) 
-					return $autonum[$i] >= $num ? $num+1 : $num; 
+				/* If we're at the end of the list, or we've found a gap between this number and the
+				   following, use the next available number in the gap. */
+				if ($i+1 == count($autonum) || $autonum[$i+1] > $num+1)
+					return $autonum[$i] >= $num ? $num+1 : $num;
 			}
 
 			# If we didnt find a suitable gap and are all above the minNumber, we'll just return the $minNumber
@@ -2114,7 +2114,8 @@ function password_types() {
 		'md5crypt'=>'md5crypt',
 		'sha'=>'sha',
 		'smd5'=>'smd5',
-		'ssha'=>'ssha'
+		'ssha'=>'ssha',
+		'sha512'=>'sha512',
 	);
 }
 
@@ -2123,7 +2124,7 @@ function password_types() {
  *
  * @param string The password to hash in clear text.
  * @param string Standard LDAP encryption type which must be one of
- *        crypt, ext_des, md5crypt, blowfish, md5, sha, smd5, ssha, or clear.
+ *        crypt, ext_des, md5crypt, blowfish, md5, sha, smd5, ssha, sha512, or clear.
  * @return string The hashed password.
  */
 function password_hash($password_clear,$enc_type) {
@@ -2212,6 +2213,16 @@ function password_hash($password_clear,$enc_type) {
 
 			} else {
 				error(_('Your PHP install does not have the mhash() or mhash_keygen_s2k() function. Cannot do S2K hashes.'),'error','index.php');
+			}
+
+			break;
+
+		case 'sha512':
+			if (function_exists('openssl_digest') && function_exists('base64_encode')) {
+				$new_value = sprintf('{SHA512}%s', base64_encode(openssl_digest($password_clear, 'sha512', true)));
+
+			} else {
+				error(_('Your PHP install doest not have the openssl_digest() or base64_encode() function. Cannot do SHA512 hashes. '),'error','index.php');
 			}
 
 			break;
@@ -2376,6 +2387,15 @@ function password_check($cryptedpassword,$plainpassword,$attribute='userpassword
 				else
 					return false;
 			}
+
+			break;
+
+		# SHA512 crypted passwords
+		case 'sha512':
+			if (strcasecmp(password_hash($plainpassword,'sha512'),'{SHA512}'.$cryptedpassword) == 0)
+				return true;
+			else
+				return false;
 
 			break;
 
@@ -2782,7 +2802,7 @@ function draw_formatted_dn($server,$entry) {
 
 	$formats = $_SESSION[APPCONFIG]->getValue('appearance','tree_display_format');
 
-	foreach ($formats as $format) { 
+	foreach ($formats as $format) {
 		$has_none = false;
 		preg_match_all('/%[a-zA-Z_0-9]+/',$format,$tokens);
 		$tokens = $tokens[0];
