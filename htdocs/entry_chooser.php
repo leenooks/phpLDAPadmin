@@ -39,6 +39,7 @@ if ($request['container']) {
 
 # Has the user already begun to descend into a specific server tree?
 if (isset($app['server']) && ! is_null($request['container'])) {
+	$tree = get_cached_item($app['server']->getIndex(),'tree');
 
 	$request['children'] = $app['server']->getContainerContents($request['container'],null,0,'(objectClass=*)',$_SESSION[APPCONFIG]->getValue('deref','tree'));
 	sort($request['children']);
@@ -78,7 +79,18 @@ if (isset($app['server']) && ! is_null($request['container'])) {
 			echo '<td class="blank">&nbsp;</td>';
 			printf('<td class="icon"><a href="%s"><img src="%s/plus.png" alt="Plus" /></a></td>',$href['expand'],IMGDIR);
 
-			printf('<td colspan="2"><a href="%s">%s</a></td>',$href['return'],$dn);
+			$entry = $tree->getEntry($dn);
+			if (is_null($entry)) {
+				$tree->addEntry($dn);
+				$entry = $tree->getEntry($dn);
+			}
+
+			if ($entry)
+				$item = draw_formatted_dn($app['server'], $entry);
+			else
+				$item = $dn;
+
+			printf('<td colspan="2"><a href="%s">%s</a></td>',$href['return'], $item );
 			echo '</tr>';
 			echo "\n\n";
 		}
