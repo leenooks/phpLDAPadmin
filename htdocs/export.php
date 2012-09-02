@@ -29,12 +29,12 @@ if ($request['file']) {
 
 	header('Content-type: application/download');
 	header(sprintf('Content-Disposition: inline; filename="%s.%s"','export',$types['extension'].($request['export']->isCompressed() ? '.gz' : '')));
-	$request['export']->export();
+	echo $request['export']->export();
 	die();
 
 } else {
 	print '<span style="font-size: 14px; font-family: courier;"><pre>';
-	$request['export']->export();
+	echo htmlspecialchars($request['export']->export());
 	print '</pre></span>';
 }
 ?>

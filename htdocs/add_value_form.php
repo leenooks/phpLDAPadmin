@@ -34,7 +34,7 @@ if ($request['attribute']->isReadOnly())
 # Render the form
 if (! strcasecmp($request['attr'],'objectclass') || get_request('meth','REQUEST') != 'ajax') {
 	# Render the form.
-	$request['page']->drawTitle(sprintf('%s <b>%s</b> %s <b>%s</b>',_('Add new'),$request['attr'],_('value to'),get_rdn($request['dn'])));
+	$request['page']->drawTitle(sprintf('%s <b>%s</b> %s <b>%s</b>',_('Add new'),htmlspecialchars($request['attr']),_('value to'),htmlspecialchars(get_rdn($request['dn']))));
 	$request['page']->drawSubTitle();
 
 	if (! strcasecmp($request['attr'],'objectclass')) {
