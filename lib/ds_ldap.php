@@ -2277,6 +2277,8 @@ class ldap extends DS {
 			strcasecmp($attr_name,'objectSID') == 0 ||
 			strcasecmp($attr_name,'auditingPolicy') == 0 ||
 			strcasecmp($attr_name,'jpegPhoto') == 0 ||
+			strcasecmp($attr_name,'krbExtraData') == 0 ||
+			strcasecmp($attr_name,'krbPrincipalKey') == 0 ||
 			$syntax == '1.3.6.1.4.1.1466.115.121.1.10' ||
 			$syntax == '1.3.6.1.4.1.1466.115.121.1.28' ||
 			$syntax == '1.3.6.1.4.1.1466.115.121.1.5' ||

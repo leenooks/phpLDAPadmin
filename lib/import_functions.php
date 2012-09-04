@@ -589,7 +589,7 @@ class ImportLDIF extends Import {
 							$attrs['newsuperior'] = $attrvalue[1];
 
 						} else
-							return $this->error(_('A valid newsuperier attribute should be specified'),$lines);
+							return $this->error(_('A valid newsuperior attribute should be specified'),$lines);
 
 					} else
 						$attrs['newsuperior'] = $server->getContainer($this->template->getDN());
