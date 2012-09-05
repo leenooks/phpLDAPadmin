@@ -247,8 +247,8 @@ class Query extends xmlTemplate {
 		# If our display order is empty, then dynamically build it
 		if (! count($result)) {
 			foreach ($this->results as $details)
-					foreach ($details as $attrs)
-						$result = array_merge($result,array_keys(array_change_key_case($attrs)));
+				foreach ($details as $attrs)
+					$result = array_merge($result,array_keys(array_change_key_case($attrs)));
 
 			$result = array_unique($result);
 			sort($result);

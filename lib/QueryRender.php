@@ -280,6 +280,8 @@ class QueryRender extends PageRender {
 
 						# Iterate over each attribute for this entry
 						foreach (explode(',',$ado) as $attr) {
+							$attr = strtolower($attr);
+
 							# Ignore DN, we've already displayed it.
 							if ($attr == 'dn')
 								continue;
@@ -459,7 +461,7 @@ class QueryRender extends PageRender {
 		$results = array();
 
 		foreach (explode(',',$this->template->getAttrDisplayOrder()) as $attr)
-			$results[$attr] = $attribute_factory->newAttribute($attr,array('values'=>array()),$this->getServerID());
+			$results[strtolower($attr)] = $attribute_factory->newAttribute($attr,array('values'=>array()),$this->getServerID());
 
 		return $results;
 	}
