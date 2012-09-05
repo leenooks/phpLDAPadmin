@@ -41,7 +41,7 @@ class SelectionAttribute extends Attribute {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-		$this->addOption($new_val,$new_val);
+		$this->addOption($new_val,$i);
 	}
 
 	public function getOptionCount() {

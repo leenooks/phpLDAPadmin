@@ -778,7 +778,7 @@ class Attribute {
 
 					case 'value':
 						if (is_array($value))
-							foreach ($value as $y) {
+							foreach ($value as $x => $y) {
 								if (! $this->haveMoreValues()) {
 									system_message(array(
 									'title'=>_('Automatically removed attribute values from template'),
@@ -790,7 +790,7 @@ class Attribute {
 									break;
 
 								} else
-									$this->addValue($y);
+									$this->addValue($x,$y);
 							}
 
 						else
