@@ -64,11 +64,11 @@ if ($request['recursive']) {
 
 } else {
 	if ($_SESSION[APPCONFIG]->getValue('confirm','copy')) {
-		$request['pageSRC'] = new TemplateRender($app['server']->getIndex(),get_request('template','REQUEST',false,null));
+		$request['pageSRC'] = new TemplateRender($ldap['SRC']->getIndex(),get_request('template','REQUEST',false,null));
 		$request['pageSRC']->setDN($request['dnSRC']);
 		$request['pageSRC']->accept(true);
 
-		$request['pageDST'] = new TemplateRender($app['server']->getIndex(),get_request('template','REQUEST',false,'none'));
+		$request['pageDST'] = new TemplateRender($ldap['DST']->getIndex(),get_request('template','REQUEST',false,'none'));
 		$request['pageDST']->setContainer($app['server']->getContainer($request['dnDST']));
 		$request['pageDST']->accept(true);
 
