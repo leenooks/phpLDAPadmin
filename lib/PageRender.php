@@ -98,8 +98,9 @@ class PageRender extends Visitor {
 				$this->visit('',$attribute);
 			}
 
-			// Sort our attribute values for display.
-			$this->template->sort();
+			// Sort our attribute values for display, if we are the custom template.
+			if ($this->template->getID() == 'none')
+				$this->template->sort();
 		}
 	}
 
