@@ -578,6 +578,7 @@ class ExportVCARD extends Export {
 	 */
 	function export() {
 		$server = $this->getServer();
+		$output = '';
 
 		# Sift through the entries.
 		foreach ($this->results as $base => $results) {
@@ -591,10 +592,11 @@ class ExportVCARD extends Export {
 						$addr .= $dndetails[$attr];
 						unset($dndetails[$attr]);
 					}
+
 					$addr .= ';';
 				}
 
-				$output = sprintf('BEGIN:VCARD%s',$this->br);
+				$output .= sprintf('BEGIN:VCARD%s',$this->br);
 
 				# Loop for the attributes
 				foreach ($dndetails as $key => $attr) {
