@@ -1342,7 +1342,7 @@ class Template extends xmlTemplate {
 							continue;
 
 						if (! $this->isAttrType($objectclassattr,'may'))
-							$this->setAttrLDAPtype($sattr->getName(false),'optional');
+							$this->setAttrLDAPtype($sattr->getName(false),'may');
 
 						if (! in_array($objectclassattr,$allattrs))
 							array_push($allattrs,$objectclassattr);
