@@ -2252,13 +2252,13 @@ function password_check($cryptedpassword,$plainpassword,$attribute='userpassword
 
 		switch($attribute) {
 			case 'sambalmpassword':
-				if (strcmp($smb->lmhash($plainpassword),$cryptedpassword) == 0)
+				if (strcmp($smb->lmhash($plainpassword),strtoupper($cryptedpassword)) == 0)
 					return true;
 				else
 					return false;
 
 			case 'sambantpassword':
-				if (strcmp($smb->nthash($plainpassword),$cryptedpassword) == 0)
+				if (strcmp($smb->nthash($plainpassword),strtoupper($cryptedpassword)) == 0)
 					return true;
 				else
 					return false;
