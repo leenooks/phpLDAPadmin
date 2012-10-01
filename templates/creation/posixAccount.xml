@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE template SYSTEM "template.dtd">
+<!DOCTYPE template SYSTEM "../template.dtd">
 
 <template>
 <askcontainer>1</askcontainer>
@@ -72,9 +72,9 @@
 	<page>1</page>
 	<!-- <value><![CDATA[=php.PickList(/;(&(objectClass=posixAccount));loginShell;%loginShell%;;;;loginShell)]]></value> -->
 	<type>select</type>
-	<value id="/bin/sh">/bin/sh</value>
-	<value id="/bin/csh">/bin/csh</value>
-	<value id="/bin/tsh">/bin/tsh</value>
+	<value id="/bin/sh">Bash</value>
+	<value id="/bin/csh">C Shell</value>
+	<value id="/bin/tsh">Turbo C Shell</value>
 </attribute>
 <attribute id="userPassword">
 	<display>Password</display>
