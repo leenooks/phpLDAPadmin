@@ -939,7 +939,7 @@ class ldap extends DS {
 					$dn = $this->getContainer($dn);
 
 				if ($dn == $top)
-					break;
+					continue;
 
 			} elseif($value)
 				$dn = sprintf('%s,%s',$value,$dn);

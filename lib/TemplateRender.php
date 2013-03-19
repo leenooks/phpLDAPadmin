@@ -264,6 +264,9 @@ class TemplateRender extends PageRender {
 			 *
 			 * * arg 8 (for MultiList)
 			 *   - size of displayed list (default: 10 lines)
+			 *
+			 * * arg 9
+			 *   - if whether to include parent in sub query TRUE|FALSE
 			 */
 			case 'MultiList':
 			case 'PickList':
@@ -322,6 +325,9 @@ class TemplateRender extends PageRender {
 				$vals = array();
 
 				foreach ($picklistvalues as $key => $values) {
+					if (! empty($args[9]) && $container == $key)
+						continue;
+
 					$display = $args[3];
 
 					foreach ($matchall[1] as $key => $arg) {
