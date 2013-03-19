@@ -184,10 +184,15 @@ class HTMLTree extends Tree {
 
 		$links = '';
 
+		$i = 0;
+		$icons = $_SESSION[APPCONFIG]->getValue('appearance','tree_icons');
 		if (is_array($_SESSION[APPCONFIG]->getValue('menu','session')))
 			foreach ($_SESSION[APPCONFIG]->getValue('menu','session') as $link => $title) {
 				if ($this->get_menu_item($link))
 					$links .= sprintf('<td class="server_links">%s</td>',$this->get_menu_item($link));
+
+				if ($icons && ++$i%$icons == 0)
+					$links .= '</tr><tr>';
 			}
 
 		# Finally add our logout link.

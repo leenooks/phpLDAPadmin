@@ -261,6 +261,10 @@ class Config {
 			'desc'=>'LDAP search filter for the tree entries',
 			'default'=>'(objectClass=*)');
 
+		$this->default->appearance['tree_icons'] = array(
+			'desc'=>'Number of Tree Icons to display on a row',
+			'default'=>0);
+
 		# PLA will not display the header and footer parts in minimal mode.
 		$this->default->appearance['minimalMode'] = array(
 			'desc'=>'Minimal mode hides header and footer parts',
