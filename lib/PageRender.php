@@ -287,7 +287,7 @@ class PageRender extends Visitor {
 						break;
 
 					default:
-						$vals[$i] = password_hash($passwordvalue,$enc);
+						$vals[$i] = pla_password_hash($passwordvalue,$enc);
 				}
 
 				$vals = array_unique($vals);
