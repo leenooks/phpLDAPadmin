@@ -72,9 +72,13 @@
 	<page>1</page>
 	<!-- <value><![CDATA[=php.PickList(/;(&(objectClass=posixAccount));loginShell;%loginShell%;;;;loginShell)]]></value> -->
 	<type>select</type>
-	<value id="/bin/sh">Bash</value>
+	<value id="/bin/bash">Bash</value>
 	<value id="/bin/csh">C Shell</value>
+	<value id="/bin/dash">Dash</value>
+	<value id="/bin/sh">Shell</value>
 	<value id="/bin/tsh">Turbo C Shell</value>
+	<value id="/bin/false">False</value>
+	<value id="/usr/sbin/nologin">No Login</value>
 </attribute>
 <attribute id="userPassword">
 	<display>Password</display>
