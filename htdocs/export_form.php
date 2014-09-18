@@ -81,7 +81,7 @@ printf('<tr><td>%s</td><td><input type="text" name="filter" style="width:300px" 
 	_('Search Filter'),htmlspecialchars($request['filter']));
 
 printf('<tr><td>%s</td><td><input type="text" name="attributes" style="width:300px" value="%s" /></td></tr>',
-	_('Show Attributtes'),htmlspecialchars($request['attr']));
+	_('Show Attributes'),htmlspecialchars($request['attr']));
 
 printf('<tr><td>&nbsp;</td><td><input type="checkbox" name="sys_attr" id="sys_attr" %s/> <label for="sys_attr">%s</label></td></tr>',
 	$request['sys_attr'] ? 'checked="checked" ' : '',_('Include system attributes'));
