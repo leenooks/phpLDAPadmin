@@ -59,7 +59,7 @@ class TemplateRender extends PageRender {
 			$this->layout['action'] = '<td class="icon"><img src="%s/%s" alt="%s" /></td><td><a href="cmd.php?%s" title="%s">%s</a></td>';
 			$this->layout['actionajax'] = '<td class="icon"><img src="%s/%s" alt="%s" /></td><td><a href="cmd.php?%s" title="%s" onclick="return ajDISPLAY(\'BODY\',\'%s\',\'%s\');">%s</a></td>';
 
-			# If we dont want to render this template automatically, we'll return here.
+			# If we don't want to render this template automatically, we'll return here.
 			if ($norender)
 				return;
 
@@ -273,7 +273,7 @@ class TemplateRender extends PageRender {
 				else
 					$container = $args[5];
 
-				# Process filter (arg 1), eventually replace %attr% by it's value set in a previous page.
+				# Process filter (arg 1), eventually replace %attr% by its value set in a previous page.
 				preg_match_all('/%(\w+)(\|.+)?(\/[lUC])?%/U',$args[1],$filtermatchall);
 				//print_r($matchall); // -1 = highlevel match, 1 = attr, 2 = subst, 3 = mod
 
@@ -1679,7 +1679,7 @@ function validateForm(silence) {
 
 				// Sometimes the alert gives us enough time!
 				if (typeof getAttributeComponents != "undefined")
-					alert("Dont bother, our JS is loaded now!");
+					alert("Don't bother, our JS is loaded now!");
 			}
 
 			validateForm(true);
