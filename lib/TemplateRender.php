@@ -1679,7 +1679,7 @@ function validateForm(silence) {
 
 				// Sometimes the alert gives us enough time!
 				if (typeof getAttributeComponents != "undefined")
-					alert("Don't bother, our JS is loaded now!");
+					alert("Don\'t bother, our JS is loaded now!");
 			}
 
 			validateForm(true);
