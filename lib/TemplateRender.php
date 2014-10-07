@@ -2466,7 +2466,7 @@ function deleteAttribute(attrName,friendlyName,i)
 		if ($val = $attribute->getValue($i))
 			$default = get_enc_type($val);
 		else
-			$default = $this->getServer()->getValue('appearance','password_hash');
+			$default = $this->getServer()->getValue('appearance','pla_password_hash');
 
 		if (! $attribute->getPostValue())
 			printf('<input type="hidden" name="post_value[%s][]" value="%s" />',$attribute->getName(),$i);

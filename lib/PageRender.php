@@ -957,7 +957,7 @@ class PageRender extends Visitor {
 		if (trim($val))
 			$enc_type = get_enc_type($val);
 		else
-			$enc_type = $server->getValue('appearance','password_hash');
+			$enc_type = $server->getValue('appearance','pla_password_hash');
 
 		$obfuscate_password = obfuscate_password_display($enc_type);
 
@@ -982,7 +982,7 @@ class PageRender extends Visitor {
 		if (trim($val))
 			$enc_type = get_enc_type($val);
 		else
-			$enc_type = $server->getValue('appearance','password_hash');
+			$enc_type = $server->getValue('appearance','pla_password_hash');
 
 		echo '<table cellspacing="0" cellpadding="0"><tr><td valign="top">';
 
