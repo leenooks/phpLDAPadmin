@@ -129,15 +129,15 @@ foreach (array(
 }
 
 # cn=Connections,cn=Monitor
-printf('<tr class="list_item"><td class="heading" rowspan="2"><acronym title="%s">%s</acronym></td></tr>',$results['cn=Connections,cn=Monitor']['description'],_('LDAP Connections'));
+printf('<tr class="list_item"><td class="heading" rowspan="2"><acronym title="%s">%s</acronym></td></tr>',$results['cn=Connections,cn=Monitor']['description'][0],_('LDAP Connections'));
 printf('<tr class="list_item"><td class="value">');
 echo '<table class="result"><tr><td>';
 echo '<table class="result_table" border="0" width="100%">';
 
 printf('<tr class="highlight"><td class="20%%">%s</td><td class="value" style="width: 80%%;">%s</td></tr>',
-	_('Total Connections'),$results['cn=Total,cn=Connections,cn=Monitor']['monitorcounter']);
+	_('Total Connections'),$results['cn=Total,cn=Connections,cn=Monitor']['monitorcounter'][0]);
 printf('<tr class="highlight"><td class="20%%">%s</td><td class="value" style="width: 80%%;">%s</td></tr>',
-	_('Current Connections'),$results['cn=Current,cn=Connections,cn=Monitor']['monitorcounter']);
+	_('Current Connections'),$results['cn=Current,cn=Connections,cn=Monitor']['monitorcounter'][0]);
 
 # Look for some connections
 foreach ($results as $key => $value) {
