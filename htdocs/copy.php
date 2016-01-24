@@ -63,7 +63,7 @@ if ($request['recursive']) {
 	print '</small>';
 
 } else {
-	if ($_SESSION[APPCONFIG]->getValue('confirm','copy')) {
+	if ($_SESSION[APPCONFIG]->getValue('confirm','copy') && !$request['remove']) {
 		$request['pageSRC'] = new TemplateRender($ldap['SRC']->getIndex(),get_request('template','REQUEST',false,null));
 		$request['pageSRC']->setDN($request['dnSRC']);
 		$request['pageSRC']->accept(true);
