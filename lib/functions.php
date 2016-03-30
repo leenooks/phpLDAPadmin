@@ -2567,7 +2567,7 @@ function dn_unescape($dn) {
 		foreach ($dn as $key => $rdn)
 			$a[$key] = preg_replace_callback('/\\\([0-9A-Fa-f]{2})/',
 				function ($r) {
-					return "''.chr(hexdec('$r[1]')).''";
+					return chr(hexdec($r[1]));
 				},
 				$rdn
 			);
@@ -2577,7 +2577,7 @@ function dn_unescape($dn) {
 	} else {
 		return preg_replace_callback('/\\\([0-9A-Fa-f]{2})/',
 			function ($r) {
-				return "''.chr(hexdec('$r[1]')).''";
+				return chr(hexdec($r[1]));
 			},
 			$dn
 		);
