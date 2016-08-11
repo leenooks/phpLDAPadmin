@@ -25,7 +25,7 @@ if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') {
 # Check if a proxy server downstream does encryption for us
 elseif (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && strtolower($_SERVER['HTTP_X_FORWARDED_SSL'])
 == 'on') {
-        $isHTTPS = false;
+        $isHTTPS = true;
 }
 
 if (!$isHTTPS) {
