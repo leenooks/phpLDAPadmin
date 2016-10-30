@@ -16,7 +16,19 @@ printf('<h3 class="title">%s %s</h3>',_('Authenticate to server'),$app['server']
 echo '<br />';
 
 # Check for a secure connection
-if (! isset($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) != 'on') {
+$isHTTPS = false;
+
+# Check if the current connection is encrypted
+if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') {
+        $isHTTPS = true;
+}
+# Check if a proxy server downstream does encryption for us
+elseif (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && strtolower($_SERVER['HTTP_X_FORWARDED_SSL'])
+== 'on') {
+        $isHTTPS = true;
+}
+
+if (!$isHTTPS) {
 	echo '<div style="text-align: center; color:red">';
 	printf('<acronym title="%s"><b>%s: %s.</b></acronym>',
 		_('You are not using \'https\'. Web browser will transmit login information in clear text.'),
@@ -25,6 +37,7 @@ if (! isset($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) != 'on') {
 
 	echo '<br />';
 }
+unset($isSecure);
 
 # HTTP Basic Auth Form.
 if ($app['server']->getAuthType() == 'http') {

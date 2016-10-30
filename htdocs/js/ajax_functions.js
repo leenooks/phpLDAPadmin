@@ -202,8 +202,6 @@ function makeHttpRequest(url,parameters,meth,successCallbackFunctionName,errorCa
 	http_request.open(meth,url,true);
 
 	http_request.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-	http_request.setRequestHeader('Content-length',parameters.length);
-	http_request.setRequestHeader('Connection','close');
 
 	if (meth == 'GET') parameters = null;
 	http_request.send(parameters);
