@@ -2116,6 +2116,8 @@ function password_types() {
 		'smd5'=>'smd5',
 		'ssha'=>'ssha',
 		'sha512'=>'sha512',
+		'sha256crypt'=>'sha256crypt',
+		'sha512crypt'=>'sha512crypt',
 	);
 }
 
@@ -2124,7 +2126,8 @@ function password_types() {
  *
  * @param string The password to hash in clear text.
  * @param string Standard LDAP encryption type which must be one of
- *        crypt, ext_des, md5crypt, blowfish, md5, sha, smd5, ssha, sha512, or clear.
+ *        crypt, ext_des, md5crypt, blowfish, md5, sha, smd5, ssha, sha512,
+ *        sha256crypt, sha512crypt, or clear.
  * @return string The hashed password.
  */
 function pla_password_hash($password_clear,$enc_type) {
@@ -2224,6 +2227,20 @@ function pla_password_hash($password_clear,$enc_type) {
 			} else {
 				error(_('Your PHP install doest not have the openssl_digest() or base64_encode() function. Cannot do SHA512 hashes. '),'error','index.php');
 			}
+
+			break;
+
+		case 'sha256crypt':
+			if (! defined('CRYPT_SHA256') || CRYPT_SHA256 == 0)
+				error(_('Your system crypt library does not support sha256crypt encryption.'),'error','index.php');
+			$new_value = sprintf('{CRYPT}%s',crypt($password_clear,'$5$'.random_salt(8)));
+
+			break;
+
+		case 'sha512crypt':
+			if (! defined('CRYPT_SHA512') || CRYPT_SHA512 == 0)
+				error(_('Your system crypt library does not support sha512crypt encryption.'),'error','index.php');
+			$new_value = sprintf('{CRYPT}%s',crypt($password_clear,'$6$'.random_salt(8)));
 
 			break;
 
