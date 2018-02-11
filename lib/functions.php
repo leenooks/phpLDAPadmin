@@ -745,6 +745,11 @@ function blowfish_encrypt($data,$secret=null) {
 	if (! trim($secret))
 		return $data;
 
+	if (! empty($data) && function_exists('openssl_encrypt') && in_array('bf-ecb', openssl_get_cipher_methods())) {
+		$keylen = openssl_cipher_iv_length('bf-ecb') * 2;
+		return openssl_encrypt($data, 'bf-ecb', substr($secret,0,$keylen));
+	}
+
 	if (function_exists('mcrypt_module_open') && ! empty($data)) {
 		$td = mcrypt_module_open(MCRYPT_BLOWFISH,'',MCRYPT_MODE_ECB,'');
 		$iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td),MCRYPT_DEV_URANDOM);
@@ -800,6 +805,11 @@ function blowfish_decrypt($encdata,$secret=null) {
 	# If the secret isnt set, then just return the data.
 	if (! trim($secret))
 		return $encdata;
+
+	if (! empty($encdata) && function_exists('openssl_encrypt') && in_array('bf-ecb', openssl_get_cipher_methods())) {
+		$keylen = openssl_cipher_iv_length('bf-ecb') * 2;
+		return trim(openssl_decrypt($encdata, 'bf-ecb', substr($secret,0,$keylen)));
+	}
 
 	if (function_exists('mcrypt_module_open') && ! empty($encdata)) {
 		$td = mcrypt_module_open(MCRYPT_BLOWFISH,'',MCRYPT_MODE_ECB,'');
