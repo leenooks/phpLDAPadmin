@@ -25,7 +25,7 @@
 	<display>GID Number</display>
 	<order>2</order>
 	<page>1</page>
-	<readonly>1</readonly>
+<!--	<readonly>1</readonly> -->
 	<spacer>1</spacer>
 	<value>=php.GetNextNumber(/;gidNumber)</value>
 	<!-- <value><![CDATA[=php.GetNextNumber(/;gidNumber;false;(&(objectClass=posixGroup));*2,+1000)]]></value> -->
