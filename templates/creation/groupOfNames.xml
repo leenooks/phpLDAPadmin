@@ -3,19 +3,15 @@
 
 <template>
 <askcontainer>1</askcontainer>
-<description>New Posix Group</description>
+<description>New rfc2307bis Group Of Names</description>
 <icon>ldap-ou.png</icon>
 <invalid>0</invalid>
 <rdn>cn</rdn>
 <!-- <regexp>^ou=.*,</regexp> -->
-<title>Generic: Posix Group</title>
+<title>Generic: Group Of Names</title>
 <visible>1</visible>
 
 <objectClasses>
-<!-- 
-<objectClass id="posixGroup"></objectClass>
--->
-
 <objectClass id="groupOfNames"></objectClass>
 <objectClass id="posixGroup"></objectClass>
 </objectClasses>
@@ -37,10 +33,17 @@
 </attribute>
 <attribute id="memberUid">
 	<display>Users</display>
-	<hidden>0</hidden>
+	<hidden>1</hidden>
 	<order>3</order>
 	<page>1</page>
-	<value><![CDATA[=php.MultiList(/;(&(objectClass=posixAccount));uid;%cn% (%uid|-4%))]]></value>
+	<value><![CDATA[=php.MultiList(/;(&(objectClass=posixAccount));uid;%cn% (%uid%))]]></value>
+</attribute>
+<attribute id="member">
+	<display>members</display>
+	<hidden>0</hidden>
+	<order>4</order>
+	<page>1</page>
+	<value><![CDATA[=php.MultiList(/;(&(objectClass=posixAccount));dn;%cn% (%uid%))]]></value>
 </attribute>
 </attributes>
 
