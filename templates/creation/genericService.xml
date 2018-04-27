@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE template SYSTEM "template.dtd">
+
+<template>
+<askcontainer>1</askcontainer>
+<description>New generic service</description>
+<icon>ldap-dc.png</icon>
+<invalid>0</invalid>
+<rdn>cn</rdn>
+<!--<regexp>^ou=People,o=.*,</regexp>-->
+<title>Generic: service</title>
+<visible>1</visible>
+
+<objectClasses>
+<objectClass id="genericService"></objectClass>
+</objectClasses>
+
+<attributes>
+<attribute id="cn">
+	<display>Service Name</display>
+    <onchange>=autoFill(genericServiceName;%cn%)</onchange>
+	<order>1</order>
+	<page>1</page>
+</attribute>
+<attribute id="genericServiceName">
+	<display>Generic Service Name</display>
+	<order>2</order>
+	<page>1</page>
+</attribute>
+<attribute id="ipServicePort">
+	<display>port</display>
+	<order>3</order>
+	<page>1</page>
+</attribute>
+<attribute id="ipServiceProtocol">
+	<display>Protocol</display>
+	<order>4</order>
+	<page>1</page>
+</attribute>
+</attributes>
+
+</template>

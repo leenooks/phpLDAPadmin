@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE template SYSTEM "template.dtd">
+
+<template>
+<askcontainer>1</askcontainer>
+<description>New host</description>
+<icon>server.png</icon>
+<invalid>0</invalid>
+<rdn>cn</rdn>
+<!-- <regexp>^ou=.*,</regexp> -->
+<title>Generic: HOST</title>
+<visible>1</visible>
+
+<objectClasses>
+<objectClass id="top"></objectClass>
+<objectClass id="device"></objectClass>
+<objectClass id="ipHost"></objectClass>
+<objectClass id="authorizedServiceObject"></objectClass>
+</objectClasses>
+
+<attributes>
+<attribute id="cn">
+	<display>hostname</display>
+	<order>1</order>
+	<page>1</page>
+</attribute>
+<attribute id="ipHostNumber">
+	<display>IP address</display>
+	<order>2</order>
+	<page>1</page>
+<!--	<readonly>1</readonly> -->
+	<spacer>1</spacer>
+	<value>=php.GetNextNumber(/;gidNumber)</value>
+	<!-- <value><![CDATA[=php.GetNextNumber(/;gidNumber;false;(&(objectClass=posixGroup));*2,+1000)]]></value> -->
+</attribute>
+<attribute id="authorizedService">
+	<display>Services</display>
+	<hidden>0</hidden>
+	<order>4</order>
+	<page>1</page>
+<!--	<value><![CDATA[=php.MultiList(/;(&(objectClass=posixAccount));dn;%cn% (%uid%))]]></value> -->
+</attribute>
+</attributes>
+
+</template>
