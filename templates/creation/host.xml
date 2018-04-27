@@ -30,7 +30,7 @@
 	<page>1</page>
 <!--	<readonly>1</readonly> -->
 	<spacer>1</spacer>
-	<value>=php.GetNextNumber(/;gidNumber)</value>
+	<value>1.1.1.1</value>
 	<!-- <value><![CDATA[=php.GetNextNumber(/;gidNumber;false;(&(objectClass=posixGroup));*2,+1000)]]></value> -->
 </attribute>
 <attribute id="authorizedService">
@@ -38,7 +38,8 @@
 	<hidden>0</hidden>
 	<order>4</order>
 	<page>1</page>
-<!--	<value><![CDATA[=php.MultiList(/;(&(objectClass=posixAccount));dn;%cn% (%uid%))]]></value> -->
+	<!-- <value><![CDATA[=php.MultiList(/;(|(objectClass=genericService)(objectClass=ipService);cn;%cn%)]]></value> -->
+	<value><![CDATA[=php.MultiList(/;(|(objectClass=ipService)(objectClass=genericService));cn;%cn%)]]></value>
 </attribute>
 </attributes>
 

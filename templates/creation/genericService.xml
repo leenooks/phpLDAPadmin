@@ -27,14 +27,19 @@
 	<order>2</order>
 	<page>1</page>
 </attribute>
+<attribute id="description">
+	<display>Service Description</display>
+	<order>3</order>
+	<page>1</page>
+</attribute>
 <attribute id="ipServicePort">
 	<display>port</display>
-	<order>3</order>
+	<order>4</order>
 	<page>1</page>
 </attribute>
 <attribute id="ipServiceProtocol">
 	<display>Protocol</display>
-	<order>4</order>
+	<order>5</order>
 	<page>1</page>
 </attribute>
 </attributes>
