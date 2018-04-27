@@ -43,7 +43,7 @@
 <attribute id="uid">
 	<display>User ID</display>
 	<onchange>=autoFill(homeDirectory;/home/users/%uid%)</onchange>
-	<order>4</order>
+	<order>5</order>
 	<page>1</page>
 	<spacer>1</spacer>
 </attribute>
@@ -55,7 +55,7 @@
 </attribute>
 <attribute id="sshpublickey">
 	<display>Public SSH key</display>
-	<order>8</order>
+	<order>9</order>
 	<page>1</page>
 </attribute>
 <attribute id="uidNumber">
@@ -99,11 +99,12 @@
 </attribute>
 <attribute id="userPassword">
 	<display>Password</display>
-	<!-- <helper>
+	<helper>
 		<display>Encryption</display>
 		<id>enc</id>
 		<value>=php.PasswordEncryptionTypes()</value>
-	</helper> -->
+		<default>ssha</default>
+	</helper>
 	<icon>lock.png</icon>
 	<order>5</order>
 	<page>1</page>

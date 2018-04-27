@@ -43,7 +43,7 @@
 	<hidden>0</hidden>
 	<order>4</order>
 	<page>1</page>
-	<value><![CDATA[=php.MultiList(/;(&(objectClass=posixAccount));dn;%cn% (%uid%))]]></value>
+	<value><![CDATA[=php.MultiList(/;(&(objectClass=posixAccount));dn;%cn%)]]></value>
 </attribute>
 </attributes>
 
