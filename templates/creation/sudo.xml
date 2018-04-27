@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE template SYSTEM "template.dtd">
 <template>
 <title>Sudo Policy</title>
@@ -27,15 +27,14 @@
 </attribute>
 <attribute id="sudoUser">
         <display>Sudo Users</display>
-        <option>=php.MultiList(/,(objectClass=posixAccount),uid,%uid%
-(%cn%),sudoUser)</option>
+        <!-- <option>=php.MultiList(/;(objectClass=posixAccount);uid;%uid% (%cn%))</option> -->
+		<value><![CDATA[=php.MultiList(/;(&(objectClass=posixAccount));uid;%uid% (%cn%))]]></value>
         <order>3</order>
         <page>1</page>
         <spacer>1</spacer>
 </attribute>
 <attribute id="sudoHost">
         <display>Sudo Hosts</display>
-        <array>10</array>
         <order>3</order>
         <page>1</page>
         <spacer>1</spacer>
