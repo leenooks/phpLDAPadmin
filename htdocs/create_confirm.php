@@ -41,7 +41,8 @@ if (! $request['template']->getRDN())
 foreach ($request['template']->getAttributes() as $attribute) {
 	# Check that our Required Attributes have a value - we shouldnt really return a hit here, the template engine shouldnt have allowed this to slip through.
 	# @todo this isIgnoredAttr() function is missing?
-	if ($attribute->isRequired() && ! count($attribute->getValues()) && ! $app['server']->isIgnoredAttr($attr->getName()))
+	#if ($attribute->isRequired() && ! count($attribute->getValues()) && ! $app['server']->isIgnoredAttr($attr->getName()))
+	if ($attribute->isRequired() && ! count($attribute->getValues()))
 		error(sprintf(_('You left the value blank for required attribute (%s).'),
 			$attribute->getName(false)),'error','index.php');
 }
