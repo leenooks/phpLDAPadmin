@@ -2488,6 +2488,30 @@ function draw_chooser_link($form,$element,$include_choose_text=true,$rdn='none')
 }
 
 /**
+ * http://php.net/manual/en/function.ldap-explode-dn.php#34724
+ * fixed for:
+ * Keep attention on UTF8 encoded DNs. Since openLDAP >=2.1.2
+ * ldap_explode_dn turns unprintable chars (in the ASCII sense, UTF8
+ * encoded) into \<hexcode>.
+ */
+function ldap_explode_dn_patch( $dn, $with_attrib ) {
+        $result = ldap_explode_dn( $dn, $with_attrib );
+        if (! $result ) return null;
+        # translate hex code into ascii again
+        foreach ( $result as $key => $value ) {
+                $result[ $key ] = preg_replace_callback(
+                        "/\\\([0-9A-Fa-f]{2})/",
+                        function ( $matches) {
+                                return chr( hexdec( $matches[1] ) );
+                        },
+                        $value
+                );
+        }
+        return ( $result );
+
+}
+
+/**
  * Explode a DN into an array of its RDN parts.
  *
  * NOTE: When a multivalue RDN is passed to ldap_explode_dn, the results returns with 'value + value';
@@ -2522,8 +2546,8 @@ function pla_explode_dn($dn,$with_attributes=0) {
 	$dn = addcslashes($dn,'<>+";');
 
 	# split the dn
-	$result[0] = ldap_explode_dn(dn_escape($dn),0);
-	$result[1] = ldap_explode_dn(dn_escape($dn),1);
+	$result[0] = ldap_explode_dn_patch(dn_escape($dn),0);
+	$result[1] = ldap_explode_dn_patch(dn_escape($dn),1);
 	if (! $result[$with_attributes]) {
 		if (DEBUG_ENABLED)
 			debug_log('Returning NULL - NO result.',1,0,__FILE__,__LINE__,__METHOD__);
