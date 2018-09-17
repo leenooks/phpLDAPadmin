@@ -120,8 +120,10 @@ if (! $config = check_config($app['config_file'])) {
 	$_SESSION[APPCONFIG] = $config;
 }
 
-if ($uri = get_request('URI','GET'))
+if ($uri = get_request('URI','GET')) {
 	header(sprintf('Location: cmd.php?%s',base64_decode($uri)));
+        exit;
+}
 
 if (! preg_match('/^([0-9]+\.?)+/',app_version())) {
 	system_message(array(
