@@ -15,9 +15,9 @@ $www['page'] = new page();
 
 $request = array();
 $request['container'] = get_request('container','GET');
-$request['form'] = get_request('form','GET');
-$request['element'] = get_request('element','GET');
-$request['rdn'] = get_request('rdn','GET');
+$request['form'] = htmlspecialchars(addslashes(get_request('form','GET')));
+$request['element'] = htmlspecialchars(addslashes(get_request('element','GET')));
+$request['rdn'] = htmlspecialchars(addslashes(get_request('rdn','GET')));
 
 echo '<div class="popup">';
 printf('<h3 class="subtitle">%s</h3>',_('Entry Chooser'));
@@ -33,7 +33,7 @@ echo '</script>';
 echo '<table class="forminput" width="100%" border="0">';
 if ($request['container']) {
 	printf('<tr><td class="heading" colspan="3">%s:</td><td>%s</td></tr>',_('Server'),$app['server']->getName());
-	printf('<tr><td class="heading" colspan="3">%s:</td><td>%s</td></tr>',_('Looking in'),$request['container']);
+	printf('<tr><td class="heading" colspan="3">%s:</td><td>%s</td></tr>',_('Looking in'),htmlspecialchars($request['container']));
 	echo '<tr><td class="blank" colspan="4">&nbsp;</td></tr>';
 }
 
