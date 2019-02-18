@@ -171,19 +171,19 @@ abstract class DS {
 					# If our bind_id is set, we'll pass that back for logins.
 					return (! is_null($this->getValue('login','bind_id')) && $method == 'login') ? $this->getValue('login','bind_id') : null;
 				else
-					return blowfish_decrypt($_COOKIE[$method.'-USER']);
+					return encrypt_decrypt('decrypt', $_COOKIE[$method.'-USER']);
 
 			case 'config':
 				if (! isset($_SESSION['USER'][$this->index][$method]['name']))
 					return $this->getValue('login','bind_id');
 				else
-					return blowfish_decrypt($_SESSION['USER'][$this->index][$method]['name']);
+					return encrypt_decrypt('decrypt', $_SESSION['USER'][$this->index][$method]['name']);
 
 			case 'proxy':
 				if (! isset($_SESSION['USER'][$this->index][$method]['proxy']))
 					return $this->getValue('login','bind_id');
 				else
-					return blowfish_decrypt($_SESSION['USER'][$this->index][$method]['proxy']);
+					return encrypt_decrypt('decrypt', $_SESSION['USER'][$this->index][$method]['proxy']);
 
 			case 'http':
 			case 'session':
@@ -192,7 +192,7 @@ abstract class DS {
 					# If our bind_id is set, we'll pass that back for logins.
 					return (! is_null($this->getValue('login','bind_id')) && $method == 'login') ? $this->getValue('login','bind_id') : null;
 				else
-					return blowfish_decrypt($_SESSION['USER'][$this->index][$method]['name']);
+					return encrypt_decrypt('decrypt', $_SESSION['USER'][$this->index][$method]['name']);
 
 			default:
 				die(sprintf('Error: %s hasnt been configured for auth_type %s',__METHOD__,$this->getAuthType()));
@@ -210,8 +210,8 @@ abstract class DS {
 
 		switch ($this->getAuthType()) {
 			case 'cookie':
-				set_cookie($method.'-USER',blowfish_encrypt($user),NULL,'/');
-				set_cookie($method.'-PASS',blowfish_encrypt($pass),NULL,'/');
+				set_cookie($method.'-USER',encrypt_decrypt('encrypt', $user),NULL,'/');
+				set_cookie($method.'-PASS',encrypt_decrypt('encrypt', $pass),NULL,'/');
 				return true;
 
 			case 'config':
@@ -224,8 +224,8 @@ abstract class DS {
 			case 'http':
 			case 'session':
 			case 'sasl':
-				$_SESSION['USER'][$this->index][$method]['name'] = blowfish_encrypt($user);
-				$_SESSION['USER'][$this->index][$method]['pass'] = blowfish_encrypt($pass);
+				$_SESSION['USER'][$this->index][$method]['name'] = encrypt_decrypt('encrypt', $user);
+				$_SESSION['USER'][$this->index][$method]['pass'] = encrypt_decrypt('encrypt', $pass);
 
 				return true;
 
@@ -256,14 +256,14 @@ abstract class DS {
 					# If our bind_id is set, we'll pass that back for logins.
 					return (! is_null($this->getValue('login','bind_pass')) && $method == 'login') ? $this->getValue('login','bind_pass') : null;
 				else
-					return blowfish_decrypt($_COOKIE[$method.'-PASS']);
+					return encrypt_decrypt('decrypt', $_COOKIE[$method.'-PASS']);
 
 			case 'config':
 			case 'proxy':
 				if (! isset($_SESSION['USER'][$this->index][$method]['pass']))
 					return $this->getValue('login','bind_pass');
 				else
-					return blowfish_decrypt($_SESSION['USER'][$this->index][$method]['pass']);
+					return encrypt_decrypt('decrypt', $_SESSION['USER'][$this->index][$method]['pass']);
 
 			case 'http':
 			case 'session':
@@ -272,7 +272,7 @@ abstract class DS {
 					# If our bind_pass is set, we'll pass that back for logins.
 					return (! is_null($this->getValue('login','bind_pass')) && $method == 'login') ? $this->getValue('login','bind_pass') : null;
 				else
-					return blowfish_decrypt($_SESSION['USER'][$this->index][$method]['pass']);
+					return encrypt_decrypt('decrypt', $_SESSION['USER'][$this->index][$method]['pass']);
 
 			default:
 				die(sprintf('Error: %s hasnt been configured for auth_type %s',__METHOD__,$this->getAuthType()));

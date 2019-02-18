@@ -51,7 +51,7 @@ if (file_exists(LIBDIR.'functions.custom.php'))
 /**
  * Loads class definition
  */
-function __autoload($className) {
+spl_autoload_register(function($className) {
 	if (file_exists(HOOKSDIR."classes/$className.php"))
 		require_once(HOOKSDIR."classes/$className.php");
 	elseif (file_exists(LIBDIR."$className.php"))
@@ -64,7 +64,7 @@ function __autoload($className) {
 			'body'=>sprintf('%s: %s [%s]',
 				__METHOD__,_('Called to load a class that cant be found'),$className),
 			'type'=>'error'));
-}
+});
 
 /**
  * Strips all slashes from the specified array in place (pass by ref).
@@ -726,107 +726,29 @@ function system_message($msg,$redirect=null) {
  */
 
 /**
- * Encryption using blowfish algorithm
- *
- * @param string Original data
- * @param string The secret
- * @return string The encrypted result
- * @author lem9 (taken from the phpMyAdmin source)
- */
-function blowfish_encrypt($data,$secret=null) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
+ * Replacement for the old deprecated blowfish style (mcrypt_module_open)
+ * @author joashp (taken from https://gist.github.com/joashp/a1ae9cb30fa533f4ad94)
+ * Change implemented by https://gist.github.com/barreljan
+*/
 
-	# If our secret is null or blank, get the default.
-	if ($secret === null || ! trim($secret))
-		$secret = $_SESSION[APPCONFIG]->getValue('session','blowfish') ? $_SESSION[APPCONFIG]->getValue('session','blowfish') : session_id();
+function encrypt_decrypt($action, $string) {
+	$output = false;
+	$encrypt_method = "AES-256-CBC";
+	$secret_key = 'This is my secret key';
+	$secret_iv = 'This is my secret iv';
+	// hash
+	$key = hash('sha256', $secret_key);
 
-	# If the secret isnt set, then just return the data.
-	if (! trim($secret))
-		return $data;
-
-	if (function_exists('mcrypt_module_open') && ! empty($data)) {
-		$td = mcrypt_module_open(MCRYPT_BLOWFISH,'',MCRYPT_MODE_ECB,'');
-		$iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td),MCRYPT_DEV_URANDOM);
-		mcrypt_generic_init($td,substr($secret,0,mcrypt_enc_get_key_size($td)),$iv);
-		$encrypted_data = base64_encode(mcrypt_generic($td,$data));
-		mcrypt_generic_deinit($td);
-
-		return $encrypted_data;
+	// iv - encrypt method AES-256-CBC expects 16 bytes - else you will get a warning
+	$iv = substr(hash('sha256', $secret_iv), 0, 16);
+	if ( $action == 'encrypt' ) {
+		$output = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+		$output = base64_encode($output);
+	} else if( $action == 'decrypt' ) {
+		$output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
 	}
 
-	if (file_exists(LIBDIR.'blowfish.php'))
-		require_once LIBDIR.'blowfish.php';
-	else
-		return $data;
-
-	$pma_cipher = new Horde_Cipher_blowfish;
-	$encrypt = '';
-
-	for ($i=0; $i<strlen($data); $i+=8) {
-		$block = substr($data, $i, 8);
-
-		if (strlen($block) < 8)
-			$block = full_str_pad($block,8,"\0", 1);
-
-		$encrypt .= $pma_cipher->encryptBlock($block, $secret);
-	}
-
-	return base64_encode($encrypt);
-}
-
-/**
- * Decryption using blowfish algorithm
- *
- * @param string Encrypted data
- * @param string The secret
- * @return string Original data
- * @author lem9 (taken from the phpMyAdmin source)
- */
-function blowfish_decrypt($encdata,$secret=null) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-	# This cache gives major speed up for stupid callers :)
-	static $CACHE = array();
-
-	if (isset($CACHE[$encdata]))
-		return $CACHE[$encdata];
-
-	# If our secret is null or blank, get the default.
-	if ($secret === null || ! trim($secret))
-		$secret = $_SESSION[APPCONFIG]->getValue('session','blowfish') ? $_SESSION[APPCONFIG]->getValue('session','blowfish') : session_id();
-
-	# If the secret isnt set, then just return the data.
-	if (! trim($secret))
-		return $encdata;
-
-	if (function_exists('mcrypt_module_open') && ! empty($encdata)) {
-		$td = mcrypt_module_open(MCRYPT_BLOWFISH,'',MCRYPT_MODE_ECB,'');
-		$iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td),MCRYPT_DEV_URANDOM);
-		mcrypt_generic_init($td,substr($secret,0,mcrypt_enc_get_key_size($td)),$iv);
-		$decrypted_data = trim(mdecrypt_generic($td,base64_decode($encdata)));
-		mcrypt_generic_deinit($td);
-
-		return $decrypted_data;
-	}
-
-	if (file_exists(LIBDIR.'blowfish.php'))
-		require_once LIBDIR.'blowfish.php';
-	else
-		return $encdata;
-
-	$pma_cipher = new Horde_Cipher_blowfish;
-	$decrypt = '';
-	$data = base64_decode($encdata);
-
-	for ($i=0; $i<strlen($data); $i+=8)
-		$decrypt .= $pma_cipher->decryptBlock(substr($data, $i, 8), $secret);
-
-	// Strip off our \0's that were added.
-	$return = preg_replace("/\\0*$/",'',$decrypt);
-	$CACHE[$encdata] = $return;
-	return $return;
+	return $output;
 }
 
 /**
@@ -1080,7 +1002,11 @@ function masort(&$data,$sortby,$rev=0) {
 
 		$code .= 'return $c;';
 
-		$CACHE[$sortby] = create_function('$a, $b',$code);
+		if (version_compare(PHP_VERSION, '5.4') >= 0) {
+			$CACHE[$sortby] = function($a, $b) {$code;};
+		} else {
+			$CACHE[$sortby] = create_function('$a, $b',$code);
+		}
 	}
 
 	uasort($data,$CACHE[$sortby]);

@@ -763,7 +763,7 @@ class ldap extends DS {
 			return false;
 		}
 
-		$_SESSION['USER'][$this->index][$method]['proxy'] = blowfish_encrypt($dn);
+		$_SESSION['USER'][$this->index][$method]['proxy'] = encrypt_decrypt('encrypt', $dn);
 
 		return true;
 	}
