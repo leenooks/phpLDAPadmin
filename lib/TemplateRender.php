@@ -1212,7 +1212,7 @@ class TemplateRender extends PageRender {
 		$layout = '<td class="icon"><img src="%s/%s" alt="%s" /></td><td><a href="cmd.php?%s" title="%s" onclick="getDiv(\'ADD\').style.display = \'block\';return ajDISPLAY(\'ADD\',\'%s\',\'%s\');">%s</a></td>';
 
 		if (isAjaxEnabled())
-			return sprintf($layout,IMGDIR,'add.png',_('Add'),
+			return sprintf($this->layout['actionajax'],IMGDIR,'add.png',_('Add'),
 				htmlspecialchars($href),_('Add new attribute to this object'),
 				htmlspecialchars($href),str_replace('\'','\\\'',_('Add new attribute')),_('Add new attribute'));
 		else
