@@ -51,7 +51,7 @@ if (file_exists(LIBDIR.'functions.custom.php'))
 /**
  * Loads class definition
  */
-function __autoload($className) {
+spl_autoload_register(function ($className) {
 	if (file_exists(HOOKSDIR."classes/$className.php"))
 		require_once(HOOKSDIR."classes/$className.php");
 	elseif (file_exists(LIBDIR."$className.php"))
@@ -64,7 +64,7 @@ function __autoload($className) {
 			'body'=>sprintf('%s: %s [%s]',
 				__METHOD__,_('Called to load a class that cant be found'),$className),
 			'type'=>'error'));
-}
+});
 
 /**
  * Strips all slashes from the specified array in place (pass by ref).
@@ -1090,7 +1090,7 @@ function masort(&$data,$sortby,$rev=0) {
 
 		$code .= 'return $c;';
 
-		$CACHE[$sortby] = create_function('$a, $b',$code);
+		$CACHE[$sortby] = function($a, $b) { global $code; return $code; };
 	}
 
 	uasort($data,$CACHE[$sortby]);
