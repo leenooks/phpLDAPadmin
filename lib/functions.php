@@ -51,7 +51,7 @@ if (file_exists(LIBDIR.'functions.custom.php'))
 /**
  * Loads class definition
  */
-spl_autoload_register(function ($className) {
+function pla_autoload($className) {
 	if (file_exists(HOOKSDIR."classes/$className.php"))
 		require_once(HOOKSDIR."classes/$className.php");
 	elseif (file_exists(LIBDIR."$className.php"))
@@ -64,7 +64,13 @@ spl_autoload_register(function ($className) {
 			'body'=>sprintf('%s: %s [%s]',
 				__METHOD__,_('Called to load a class that cant be found'),$className),
 			'type'=>'error'));
-});
+}
+
+if (version_compare(phpversion(), '7.0', '>=')) {
+	spl_autoload_register('pla_autoload');
+} else {
+	eval('function __autoload($className) {pla_autoload($className);}');
+}
 
 /**
  * Strips all slashes from the specified array in place (pass by ref).
@@ -1004,6 +1010,23 @@ function get_custom_file($index,$filename,$path) {
 }
 
 /**
+ * Replacement for create_function() which is deprecated as of php 7.2
+ *
+ * @param string The function arguments
+ * @param string The function code
+ */
+function pla_create_function($args, $code) {
+	if (version_compare(phpversion(),'7.0','>=')) {
+		# anonymous functions were introduced in PHP 5.3.0
+		return eval("return function(".$args."){".$code."};");
+
+	} else {
+		# create_function is deprecated in php 7.2
+		return create_function($args, $code);
+	}
+}
+
+/**
  * Sort a multi dimensional array.
  *
  * @param array Multi demension array passed by reference
@@ -1090,7 +1113,7 @@ function masort(&$data,$sortby,$rev=0) {
 
 		$code .= 'return $c;';
 
-		$CACHE[$sortby] = function($a, $b) { global $code; return $code; };
+		$CACHE[$sortby] = pla_create_function('$a, $b',$code);
 	}
 
 	uasort($data,$CACHE[$sortby]);
