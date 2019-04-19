@@ -181,6 +181,14 @@ class ldap extends DS {
 		 * specifies deref behavior for each ldap_search operation. */
 		ldap_set_option($resource,LDAP_OPT_REFERRALS,0);
 
+		/* Enabling manageDsaIt to be able to browse through glued entries
+		 * 2.16.840.1.113730.3.4.2 :  "ManageDsaIT Control" "RFC 3296" "The client may provide
+		 * the ManageDsaIT control with an operation to indicate that the operation is intended
+		 * to manage objects within the DSA (server) Information Tree. The control causes
+		 * Directory-specific entries (DSEs), regardless of type, to be treated as normal entries
+		 * allowing clients to interrogate and update these entries using LDAP operations." */
+		ldap_set_option($resource,LDAP_OPT_SERVER_CONTROLS,array(array('oid'=>'2.16.840.1.113730.3.4.2')));
+
 		# Try to fire up TLS is specified in the config
 		if ($this->isTLSEnabled())
 			$this->startTLS($resource);
