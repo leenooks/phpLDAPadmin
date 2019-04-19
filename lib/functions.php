@@ -69,7 +69,7 @@ spl_autoload_register(function ($className) {
 /**
  * Strips all slashes from the specified array in place (pass by ref).
  * @param Array The array to strip slashes from, typically one of
- *                     $_GET, $_POST, or $_COOKIE.
+ *        $_GET, $_POST, or $_COOKIE.
  */
 function array_stripslashes(&$array) {
 	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
@@ -2504,21 +2504,23 @@ function draw_chooser_link($form,$element,$include_choose_text=true,$rdn='none')
  * ldap_explode_dn turns unprintable chars (in the ASCII sense, UTF8
  * encoded) into \<hexcode>.
  */
-function ldap_explode_dn_patch( $dn, $with_attrib ) {
-        $result = ldap_explode_dn( $dn, $with_attrib );
-        if (! $result ) return null;
-        # translate hex code into ascii again
-        foreach ( $result as $key => $value ) {
-                $result[ $key ] = preg_replace_callback(
-                        "/\\\([0-9A-Fa-f]{2})/",
-                        function ( $matches) {
-                                return chr( hexdec( $matches[1] ) );
-                        },
-                        $value
-                );
-        }
-        return ( $result );
+function ldap_explode_dn_patch($dn,$with_attrib) {
+	$result = ldap_explode_dn($dn,$with_attrib);
+	if (! $result)
+		return null;
 
+	# translate hex code into ascii again
+	foreach ($result as $key => $value) {
+		$result[$key] = preg_replace_callback(
+			"/\\\([0-9A-Fa-f]{2})/",
+			function ($matches) {
+				return chr(hexdec($matches[1]));
+			},
+			$value
+		);
+	}
+
+	return $result;
 }
 
 /**
