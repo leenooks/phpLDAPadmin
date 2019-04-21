@@ -368,7 +368,7 @@ function cmd_control_pane($type) {
 
 				'hide_debug_info'=>array(
 					'title'=>_('Show Cache'),
-					'enable'=>isset($_SESSION[APPCONFIG]) ? $_SESSION[APPCONFIG]->isCommandAvailable('script','show_cache') : false,
+					'enable'=>isset($_SESSION[APPCONFIG]) ? ($_SESSION[APPCONFIG]->isCommandAvailable('script','show_cache')) && (! $_SESSION[APPCONFIG]->getValue('appearance','hide_debug_info')) : false,
 					'link'=>sprintf('href="cmd.php?cmd=show_cache" onclick="return ajDISPLAY(\'BODY\',\'cmd=show_cache\',\'%s\');" title="%s"',
 						_('Loading'),_('Show Cache'),_('Show Cache')),
 					'image'=>sprintf('<img src="%s/debug-cache.png" alt="%s" />',IMGDIR,_('Show Cache'))),
@@ -2669,30 +2669,21 @@ function dn_unescape($dn) {
  * @return string The URL to the requested item.
  */
 function get_href($type,$extra_info='') {
-	$sf = 'https://sourceforge.net';
 	$pla = 'http://phpldapadmin.sourceforge.net';
-	$group_id = '61828';
-	$bug_atid = '498546';
-	$rfe_atid = '498549';
-	$forum_id = 'phpldapadmin-users';
 
 	switch($type) {
 		case 'add_bug':
-			return sprintf('%s/tracker/?func=add&amp;group_id=%s&amp;atid=%s',$sf,$group_id,$bug_atid);
+			return 'https://github.com/leenooks/phpLDAPadmin/issues';
 		case 'add_rfe':
-			return sprintf('%s/tracker/?func=add&amp;group_id=%s&amp;atid=%s',$sf,$group_id,$rfe_atid);
+			return 'https://github.com/leenooks/phpLDAPadmin/issues';
 		case 'credits':
 			return sprintf('%s/Credits',$pla);
 		case 'documentation':
 			return sprintf('%s/Documentation',$pla);
 		case 'donate':
-			return sprintf('%s/donate/index.php?group_id=%s',$sf,$group_id);
+			return 'https://sourceforge.net/donate/index.php?group_id=61828';
 		case 'forum':
-			return sprintf('%s/mailarchive/forum.php?forum_name=%s',$sf,$forum_id);
-		case 'logo':
-			return isset($_SESSION) && ! $_SESSION[APPCONFIG]->getValue('appearance','remoteurls') ? '' : sprintf('//sflogo.sourceforge.net/sflogo.php?group_id=%s&amp;type=10',$group_id);
-		case 'sf':
-			return sprintf('%s/projects/phpldapadmin',$sf);
+			return 'https://stackoverflow.com/questions/tagged/phpldapadmin';
 		case 'web':
 			return sprintf('%s',$pla);
 		default:

@@ -323,7 +323,7 @@ class page {
 		printf('<tr class="foot"><td><small>%s</small></td><td colspan="2"><div id="ajFOOT">%s</div>%s</td></tr>',
 			isCompress() ? '[C]' : '&nbsp;',
 			app_version(),
-			get_href('logo') ? sprintf('<a href="%s"><img src="%s" alt="SourceForge.net Logo" style="border: 0px;" /></a>',get_href('sf'),get_href('logo')) : '&nbsp;');
+			'&nbsp;');
 	}
 
 	/**
