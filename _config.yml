@@ -1,0 +1,8 @@
+title: phpldapadmin
+description: phpLDAPadmin - Web based LDAP administration tool
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-minimal
+
+gems:
+  - jekyll-mentions
