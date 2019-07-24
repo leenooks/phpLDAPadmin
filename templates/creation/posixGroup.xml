@@ -12,12 +12,8 @@
 <visible>1</visible>
 
 <objectClasses>
-<!-- 
-<objectClass id="posixGroup"></objectClass>
--->
-
-<objectClass id="groupOfNames"></objectClass>
-<objectClass id="posixGroup"></objectClass>
+    <objectClass id="groupOfNames"></objectClass>
+    <objectClass id="posixGroup"></objectClass>
 </objectClasses>
 
 <attributes>
