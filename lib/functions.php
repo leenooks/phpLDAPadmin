@@ -675,7 +675,7 @@ function get_request($attr,$type='POST',$die=false,$default=null,$preventXSS=fal
 		system_message(array(
 			'title'=>_('Generic Error'),
 			'body'=>sprintf('%s: Called "%s" without "%s" using "%s"',
-				basename($_SERVER['PHP_SELF']),get_request('cmd','REQUEST'),preventXSS($attr),preventXSS($type)),
+				basename($_SERVER['PHP_SELF']),get_request('cmd','REQUEST',false,null,true),preventXSS($attr),preventXSS($type)),
 			'type'=>'error'),
 			'index.php');
 	if($preventXSS && !is_null($value))
