@@ -651,7 +651,7 @@ function error($msg,$type='note',$redirect=null,$fatal=false,$backtrace=false) {
  *
  * @return The form GET/REQUEST/SESSION/POST variable value or its default
  */
-function get_request($attr,$type='POST',$die=false,$default=null) {
+function get_request($attr,$type='POST',$die=false,$default=null,$preventXSS=false) {
 	switch($type) {
 		case 'GET':
 			$value = isset($_GET[$attr]) ? (is_array($_GET[$attr]) ? $_GET[$attr] : (empty($_GET['nodecode'][$attr]) ? rawurldecode($_GET[$attr]) : $_GET[$attr])) : $default;
@@ -670,7 +670,7 @@ function get_request($attr,$type='POST',$die=false,$default=null) {
 			$value = isset($_POST[$attr]) ? (is_array($_POST[$attr]) ? $_POST[$attr] : (empty($_POST['nodecode'][$attr]) ? rawurldecode($_POST[$attr]) : $_POST[$attr])) : $default;
 			break;
 	}
-
+	
 	if ($die && is_null($value))
 		system_message(array(
 			'title'=>_('Generic Error'),
@@ -678,7 +678,8 @@ function get_request($attr,$type='POST',$die=false,$default=null) {
 				basename($_SERVER['PHP_SELF']),get_request('cmd','REQUEST'),$attr,$type),
 			'type'=>'error'),
 			'index.php');
-
+	if(!is_null($value))
+		$value = htmlspecialchars(addslashes($value), ENT_QUOTES, 'UTF-8');
 	return $value;
 }
 
