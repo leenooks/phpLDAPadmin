@@ -683,13 +683,12 @@ function get_request($attr,$type='POST',$die=false,$default=null,$preventXSS=fal
 	return $value;
 }
 /**
-*  Prevent XSS function
-*
+*  Prevent XSS function. This function can usage has preventXSS(get_request('cmd','REQUEST'))
+*  Return valor escape XSS.
 */
 function preventXSS($value){
 	return htmlspecialchars(addslashes($value), ENT_QUOTES, 'UTF-8');
 }
-
 
  * Record a system message.
  * This function can be used as an alternative to generate a system message, if page hasnt yet been defined.
