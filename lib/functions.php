@@ -675,15 +675,22 @@ function get_request($attr,$type='POST',$die=false,$default=null,$preventXSS=fal
 		system_message(array(
 			'title'=>_('Generic Error'),
 			'body'=>sprintf('%s: Called "%s" without "%s" using "%s"',
-				basename($_SERVER['PHP_SELF']),get_request('cmd','REQUEST'),$attr,$type),
+				basename($_SERVER['PHP_SELF']),get_request('cmd','REQUEST'),preventXSS($attr),preventXSS($type)),
 			'type'=>'error'),
 			'index.php');
-	if(!is_null($value))
-		$value = htmlspecialchars(addslashes($value), ENT_QUOTES, 'UTF-8');
+	if($preventXSS && !is_null($value))
+		$value = preventXSS($value);
 	return $value;
 }
-
 /**
+*  Prevent XSS function
+*
+*/
+function preventXSS($value){
+	return htmlspecialchars(addslashes($value), ENT_QUOTES, 'UTF-8');
+}
+
+
  * Record a system message.
  * This function can be used as an alternative to generate a system message, if page hasnt yet been defined.
  */
