@@ -651,7 +651,7 @@ function error($msg,$type='note',$redirect=null,$fatal=false,$backtrace=false) {
  *
  * @return The form GET/REQUEST/SESSION/POST variable value or its default
  */
-function get_request($attr,$type='POST',$die=false,$default=null,$preventXSS=false) {
+function get_request($attr,$type='POST',$die=false,$default=null,$preventXSS=true) {
 	switch($type) {
 		case 'GET':
 			$value = isset($_GET[$attr]) ? (is_array($_GET[$attr]) ? $_GET[$attr] : (empty($_GET['nodecode'][$attr]) ? rawurldecode($_GET[$attr]) : $_GET[$attr])) : $default;
@@ -690,6 +690,7 @@ function preventXSS($value){
 	return htmlspecialchars(addslashes($value), ENT_QUOTES, 'UTF-8');
 }
 
+/**
  * Record a system message.
  * This function can be used as an alternative to generate a system message, if page hasnt yet been defined.
  */
