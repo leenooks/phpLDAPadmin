@@ -651,7 +651,7 @@ function error($msg,$type='note',$redirect=null,$fatal=false,$backtrace=false) {
  *
  * @return The form GET/REQUEST/SESSION/POST variable value or its default
  */
-function get_request($attr,$type='POST',$die=false,$default=null,$preventXSS=false) {
+function get_request($attr,$type='POST',$die=false,$default=null,$preventXSS=true) {
 	switch($type) {
 		case 'GET':
 			$value = isset($_GET[$attr]) ? (is_array($_GET[$attr]) ? $_GET[$attr] : (empty($_GET['nodecode'][$attr]) ? rawurldecode($_GET[$attr]) : $_GET[$attr])) : $default;
@@ -675,7 +675,7 @@ function get_request($attr,$type='POST',$die=false,$default=null,$preventXSS=fal
 		system_message(array(
 			'title'=>_('Generic Error'),
 			'body'=>sprintf('%s: Called "%s" without "%s" using "%s"',
-				basename($_SERVER['PHP_SELF']),get_request('cmd','REQUEST',false,null,true),preventXSS($attr),preventXSS($type)),
+				basename($_SERVER['PHP_SELF']),get_request('cmd','REQUEST'),preventXSS($attr),preventXSS($type)),
 			'type'=>'error'),
 			'index.php');
 	if($preventXSS && !is_null($value))
@@ -686,10 +686,20 @@ function get_request($attr,$type='POST',$die=false,$default=null,$preventXSS=fal
 *  Prevent XSS function. This function can usage has preventXSS(get_request('cmd','REQUEST'))
 *  Return valor escape XSS.
 */
-function preventXSS($value){
-	return htmlspecialchars(addslashes($value), ENT_QUOTES, 'UTF-8');
+ function preventXSS($data){
+        if (gettype($data) == 'array') {
+            foreach ($data as $key => $value) {
+                if (gettype($value) == 'array')
+                    $data[$key] = preventXSS($value);
+                else
+                    $data[$key] = htmlspecialchars($value);
+            }
+            return $data;
+        }
+        return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
 }
 
+/*
  * Record a system message.
  * This function can be used as an alternative to generate a system message, if page hasnt yet been defined.
  */
