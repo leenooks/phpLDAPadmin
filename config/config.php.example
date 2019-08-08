@@ -573,4 +573,17 @@ $servers->setValue('server','custom_sys_attrs',array('passwordExpirationTime','p
 $servers->setValue('server','custom_attrs',array('nsRoleDN','nsRole','nsAccountLock'));
 $servers->setValue('server','force_may',array('uidNumber','gidNumber','sambaSID'));
 */
+
+
+/**************************************************************************
+ * If you want to configure Google reCAPTCHA on autentication form, do so below.
+ * Remove the commented lines and use this section as a template for all  *
+ * reCAPTCHA v2 *
+ **************************************************************************/
+
+/**/
+$config->custom->session['reCAPTCHA-enable'] =false;
+$config->custom->session['reCAPTCHA-key-site'] ='<put-here-key-site>';
+$config->custom->session['reCAPTCHA-key-server'] ='<put-here-key-server>';
+/**/
 ?>
