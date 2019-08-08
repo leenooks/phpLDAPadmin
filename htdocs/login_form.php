@@ -90,6 +90,13 @@ if ($app['server']->getAuthType() == 'http') {
 	echo '<tr><td><input type="password" id="password" size="40" value="" name="login_pass" /></td></tr>';
 	echo '<tr><td colspan="2">&nbsp;</td></tr>';
 
+	#reCAPTCHA
+	if ($_SESSION[APPCONFIG]->getValue('session', 'reCAPTCHA-enable')) {
+		echo '<script src="https://www.google.com/recaptcha/api.js"></script>';
+		echo '<tr><td><div class="g-recaptcha" data-sitekey="'.$_SESSION[APPCONFIG]->getValue('session', 'reCAPTCHA-key-site').'"></div></td></tr>';
+		echo '<tr><td colspan="2">&nbsp;</td></tr>';
+	}
+
 	# If Anon bind allowed, then disable the form if the user choose to bind anonymously.
 	if ($app['server']->isAnonBindAllowed())
 		printf('<tr><td colspan="2"><small><b>%s</b></small> <input type="checkbox" name="anonymous_bind" onclick="form_field_toggle_enable(this,[\'login\',\'password\'],\'login\')" id="anonymous_bind_checkbox" /></td></tr>',
