@@ -575,11 +575,13 @@ $servers->setValue('server','force_may',array('uidNumber','gidNumber','sambaSID'
 */
 
 
-/**************************************************************************
- * If you want to configure Google reCAPTCHA on autentication form, do so below.
- * Remove the commented lines and use this section as a template for all  *
- * reCAPTCHA v2 *
- **************************************************************************/
+/***********************************************************************************
+ * If you want to configure Google reCAPTCHA on autentication form, do so below.   *
+ * Remove the commented lines and use this section as a template for all           *
+ * reCAPTCHA v2  Generate on https://www.google.com/recaptcha/                     *
+ *                                                                                 *
+ * IMPORTANT: Select reCAPTCHA v2   on  Type of reCAPTCHA                          *
+ ***********************************************************************************/
 
 
 $config->custom->session['reCAPTCHA-enable'] = false;
