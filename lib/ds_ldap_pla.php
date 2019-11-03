@@ -28,6 +28,10 @@ class ldap_pla extends ldap {
 			'desc'=>'Whether to initially open each tree',
 			'default'=>false);
 
+		$this->default->appearance['show_authz'] = array(
+			'desc'=>'Enable display of authorization ID as login',
+			'default'=>false);
+
 		$this->default->login['fallback_dn'] = array(
 			'desc'=>'If the attribute base login fails, see if a DN was entered',
 			'default'=>false);
@@ -654,6 +658,24 @@ class ldap_pla extends ldap {
 
 		$_SESSION['ACTIVITY'][$this->getIndex()] = $this->inactivityTime();
 		return true;
+	}
+
+	/**
+	 * Return login, or authorization ID if show_authz enabled
+	 */
+	public function displayLogin($method=null) {
+		// check for whoami function, added in 7.2
+		if ($this->getValue('appearance', 'show_authz') && function_exists('ldap_exop_whoami')) {
+			$result = @ldap_exop_whoami($this->connect($method));
+			if ($result) // strip any dn: or u: prefix
+				$result = preg_replace('/^(u|dn):/i', '', $result);
+			else // fall back to login on error
+				$result = $this->getLogin($method);
+			return $result;
+		}
+		else {
+			return $this->getLogin($method);
+		}
 	}
 }
 ?>

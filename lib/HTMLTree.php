@@ -45,7 +45,8 @@ class HTMLTree extends Tree {
 			if (! $onlytree) {
 				$this->draw_menu();
 
-				if ($server->getAuthType() != 'config')
+				if (($server->getAuthType() != 'config') ||
+				    $server->getValue('appearance', 'show_authz'))
 					$this->draw_logged_in_user();
 				else
 					printf('<tr><td class="blank" colspan="%s">&nbsp;</td></tr>',$this->getDepth()+3);
@@ -344,7 +345,7 @@ class HTMLTree extends Tree {
 
 		$server = $this->getServer();
 
-		$logged_in_dn = $server->getLogin(null);
+		$logged_in_dn = $server->displayLogin(null);
 		echo '<tr>';
 		echo '<td class="spacer"></td>';
 		printf('<td class="logged_in" colspan="%s">%s: ',$this->getDepth()+3-1,_('Logged in as'));

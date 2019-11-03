@@ -420,6 +420,9 @@ $servers->setValue('server','name','My LDAP Server');
 /* Set to true if you would like to initially open the first level of each tree. */
 // $servers->setValue('appearance','open_tree',false);
 
+/* Set to true to display authorization ID in place of login dn (PHP 7.2+) */
+// $servers->setValue('appearance','show_authz',false);
+
 /* This feature allows phpLDAPadmin to automatically determine the next
    available uidNumber for a new entry. */
 // $servers->setValue('auto_number','enable',true);
