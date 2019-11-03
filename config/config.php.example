@@ -341,10 +341,15 @@ $servers->setValue('server','name','My LDAP Server');
 /* Enable SASL authentication LDAP SASL authentication requires PHP 5.x
    configured with --with-ldap-sasl=DIR. If this option is disabled (ie, set to
    false), then all other sasl options are ignored. */
-// $servers->setValue('login','auth_type','sasl');
+#  $servers->setValue('login','auth_type','sasl');
 
-/* SASL auth mechanism */
+/* SASL GSSAPI auth mechanism (requires auth_type of sasl) */
 // $servers->setValue('sasl','mech','GSSAPI');
+
+/* SASL PLAIN support... this mech converts simple binds to SASL
+   PLAIN binds using any auth_type (or other bind_id/pass) as credentials.
+   NOTE: auth_type must be simple auth compatible (ie not sasl) */
+#  $servers->setValue('sasl','mech','PLAIN');
 
 /* SASL authentication realm name */
 // $servers->setValue('sasl','realm','');
