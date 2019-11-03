@@ -136,6 +136,7 @@ class HTMLTree extends Tree {
 				case 'config':
 				case 'proxy':
 				case 'sasl':
+				case 'sasl_external':
 					break;
 
 				default:
@@ -334,7 +335,7 @@ class HTMLTree extends Tree {
 		$server = $this->getServer();
 		$href = sprintf('cmd.php?cmd=logout&server_id=%s',$server->getIndex());
 
-		if (! $_SESSION[APPCONFIG]->isCommandAvailable('script','logout') || in_array($server->getAuthType(),array('config','http','proxy','sasl')))
+		if (! $_SESSION[APPCONFIG]->isCommandAvailable('script','logout') || in_array($server->getAuthType(),array('config','http','proxy','sasl','sasl_external')))
 			return '';
 		else
 			return sprintf('<a href="%s" title="%s"><img src="%s/%s" alt="%s" /><br />%s</a>',

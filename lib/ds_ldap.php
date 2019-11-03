@@ -590,6 +590,8 @@ class ldap extends DS {
 	 *	$servers->setValue('login','auth_type','sasl');
 	 * OR
 	 *      $servers->setValue('sasl','mech','PLAIN');
+	 * OR
+	 *	$servers->setValue('login','auth_type','sasl_external');
 	 * </code>
 	 *
 	 * @return boolean
@@ -598,7 +600,7 @@ class ldap extends DS {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-		if (! in_array($this->getValue('login','auth_type'), array('sasl'))) {
+		if (! in_array($this->getValue('login','auth_type'), array('sasl','sasl_external'))) {
 			// check if SASL mech uses login from other auth_types
 			if (! in_array(strtolower($this->getValue('sasl', 'mech')), array('plain')))
 				return false;
@@ -629,6 +631,13 @@ class ldap extends DS {
 		# We shouldnt be doing SASL binds for anonymous queries?
 		if ($method == 'anon')
 			return false;
+
+		# EXTERNAL mech is really a different authType
+		if ($this->getAuthType() == 'sasl_external') {
+			return @ldap_sasl_bind($resource,NULL,NULL,
+					       'EXTERNAL',NULL,NULL,
+					       $this->getValue('sasl','props'));
+		}
 
 		# At the moment, we have only implemented GSSAPI and PLAIN
 		if (! in_array(strtolower($this->getValue('sasl','mech')),array('gssapi','plain'))) {
