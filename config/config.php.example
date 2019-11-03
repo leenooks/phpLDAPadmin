@@ -311,6 +311,7 @@ $servers->setValue('server','name','My LDAP Server');
       login will be required to use phpLDAPadmin for this server.
    5. 'sasl': login will be taken from the webserver's kerberos authentication.
       Currently only GSSAPI has been tested (using mod_auth_kerb).
+   6. 'sasl_external': login will be taken from SASL external mechanism.
 
    Choose wisely to protect your authentication information appropriately for
    your situation. If you choose 'cookie', your cookie contents will be
@@ -351,6 +352,9 @@ $servers->setValue('server','name','My LDAP Server');
    PLAIN binds using any auth_type (or other bind_id/pass) as credentials.
    NOTE: auth_type must be simple auth compatible (ie not sasl) */
 #  $servers->setValue('sasl','mech','PLAIN');
+
+/* SASL EXTERNAL support... really a different auth_type */
+#  $servers->setValue('login','auth_type','sasl_external');
 
 /* SASL authentication realm name */
 // $servers->setValue('sasl','realm','');

@@ -139,6 +139,7 @@ abstract class DS {
 			case 'proxy':
 			case 'session':
 			case 'sasl':
+			case 'sasl_external':
 				return $this->getValue('login','auth_type');
 
 			default:
@@ -194,6 +195,8 @@ abstract class DS {
 				else
 					return blowfish_decrypt($_SESSION['USER'][$this->index][$method]['name']);
 
+			case 'sasl_external':
+				return 'external';
 			default:
 				die(sprintf('Error: %s hasnt been configured for auth_type %s',__METHOD__,$this->getAuthType()));
 		}
@@ -215,6 +218,7 @@ abstract class DS {
 				return true;
 
 			case 'config':
+			case 'sasl_external':
 				return true;
 
 			case 'proxy':
@@ -274,6 +278,8 @@ abstract class DS {
 				else
 					return blowfish_decrypt($_SESSION['USER'][$this->index][$method]['pass']);
 
+			case 'sasl_external':
+				return '';
 			default:
 				die(sprintf('Error: %s hasnt been configured for auth_type %s',__METHOD__,$this->getAuthType()));
 		}
@@ -400,6 +406,7 @@ abstract class DS {
 				set_cookie($method.'-PASS','',time()-3600,'/');
 
 			case 'config':
+			case 'sasl_external':
 				return true;
 
 			case 'http':
