@@ -54,6 +54,22 @@ class ldap extends DS {
 			'desc'=>'Connect using TLS',
 			'default'=>false);
 
+		$this->default->server['tls_cacert'] = array(
+			'desc'=>'TLS Certificate Authority',
+			'default'=>null);
+
+		$this->default->server['tls_cacertdir'] = array(
+			'desc'=>'TLS Certificate Authority Directory',
+			'default'=>null);
+
+		$this->default->server['tls_cert'] = array(
+			'desc'=>'TLS Client Certificate',
+			'default'=>null);
+
+		$this->default->server['tls_key'] = array(
+			'desc'=>'TLS Client Certificate Key',
+			'default'=>null);
+
 		# Login Details
 		$this->default->login['attr'] = array(
 			'desc'=>'Attribute to use to find the users DN',
@@ -111,6 +127,35 @@ class ldap extends DS {
 	}
 
 	/**
+	 * Set LDAP option with error checking...
+	 *
+	 * @param resource Connection resource
+	 * @param string Name of option to set
+	 * @param mixed Option value
+	 * @return boolean false if error
+	 */
+	private function setLdapOption($resource, $option, $value) {
+		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+			debug_log('Entered (%%)',16,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
+		if (! defined($option)) {
+			system_message(array(
+				'title'=>sprintf('%s',_('Undefined LDAP option')),
+				'body'=>sprintf('<b>%s</b>: %s <b>%s</b>',_('Error'),_('Required LDAP option not defined'),$option),
+				'type'=>'error'));
+			return false;
+		}
+		if (! @ldap_set_option($resource,constant($option),$value)) {
+			system_message(array(
+				'title'=>sprintf('%s',_('Failed to set LDAP option')),
+				'body'=>sprintf('<b>%s</b>: %s <b>%s</b>',_('Error'),_('Failed to set LDAP option'),$option),
+				'type'=>'error'));
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Required ABSTRACT functions
 	 */
 	/**
@@ -164,6 +209,7 @@ class ldap extends DS {
 		else
 			$resource = ldap_connect($this->getValue('server','host'));
 
+		$this->noconnect = false;
 		$CACHE[$this->index][$method] = $resource;
 
 		if (DEBUG_ENABLED)
@@ -174,12 +220,14 @@ class ldap extends DS {
 			debug_dump_backtrace('UNHANDLED, $resource is not a resource',1);
 
 		# Go with LDAP version 3 if possible (needed for renaming and Novell schema fetching)
-		ldap_set_option($resource,LDAP_OPT_PROTOCOL_VERSION,3);
+		if (! $this->setLdapOption($resource,'LDAP_OPT_PROTOCOL_VERSION',3))
+			$this->noconnect = true;
 
 		/* Disabling this makes it possible to browse the tree for Active Directory, and seems
 		 * to not affect other LDAP servers (tested with OpenLDAP) as phpLDAPadmin explicitly
 		 * specifies deref behavior for each ldap_search operation. */
-		ldap_set_option($resource,LDAP_OPT_REFERRALS,0);
+		elseif (! $this->setLdapOption($resource,'LDAP_OPT_REFERRALS',0))
+			$this->noconnect = true;
 
 		/* Enabling manageDsaIt to be able to browse through glued entries
 		 * 2.16.840.1.113730.3.4.2 :  "ManageDsaIT Control" "RFC 3296" "The client may provide
@@ -187,14 +235,18 @@ class ldap extends DS {
 		 * to manage objects within the DSA (server) Information Tree. The control causes
 		 * Directory-specific entries (DSEs), regardless of type, to be treated as normal entries
 		 * allowing clients to interrogate and update these entries using LDAP operations." */
-		ldap_set_option($resource,LDAP_OPT_SERVER_CONTROLS,array(array('oid'=>'2.16.840.1.113730.3.4.2')));
+		elseif (! $this->setLdapOption($resource,'LDAP_OPT_SERVER_CONTROLS',array(array('oid'=>'2.16.840.1.113730.3.4.2'))))
+			$this->noconnect = true;
 
 		# Try to fire up TLS is specified in the config
-		if ($this->isTLSEnabled())
-			$this->startTLS($resource);
+		if ($this->isTLSEnabled() && !$this->noconnect)
+			if(! $this->startTLS($resource))
+				$this->noconnect = true;
 
 		# If SASL has been configured for binding, then start it now.
-		if ($this->isSASLEnabled())
+		if ($this->noconnect)
+			$bind['result'] = false;
+		elseif ($this->isSASLEnabled())
 			$bind['result'] = $this->startSASL($resource,$method,$bind['id'],$bind['pass']);
 
 		# Normal bind...
@@ -211,17 +263,16 @@ class ldap extends DS {
 			if (DEBUG_ENABLED)
 				debug_log('Leaving with FALSE, bind FAILed',16,0,__FILE__,__LINE__,__METHOD__);
 
-			$this->noconnect = true;
-
-			system_message(array(
-				'title'=>sprintf('%s %s',_('Unable to connect to LDAP server'),$this->getName()),
-				'body'=>sprintf('<b>%s</b>: %s (%s) for <b>%s</b>',_('Error'),$this->getErrorMessage($method),$this->getErrorNum($method),$method),
-				'type'=>'error'));
-
+			if (! $this->noconnect) {
+				$this->noconnect = true;
+				system_message(array(
+					'title'=>sprintf('%s %s',_('Unable to connect to LDAP server'),$this->getName()),
+					'body'=>sprintf('<b>%s</b>: %s (%s) for <b>%s</b>',_('Error'),$this->getErrorMessage($method),$this->getErrorNum($method),$method),
+					'type'=>'error'));
+			}
 			$CACHE[$this->index][$method] = null;
 
 		} else {
-			$this->noconnect = false;
 
 			# If this is a proxy session, we need to switch to the proxy user
 			if ($this->isProxyEnabled() && $bind['id'] && $method != 'anon')
@@ -570,10 +621,41 @@ class ldap extends DS {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-		if (! $this->getValue('server','tls') || (function_exists('ldap_start_tls') && ! @ldap_start_tls($resource))) {
+		// LDAP_OPT_X_TLS_ options must be set globally ($res = null)
+		// until LDAP_OPT_X_TLS_NEWCTX is exported,
+		// NOTE: new values will require php-fpm or other stateful
+		// php servers to be restarted, and are global for all php
+		// users in the process pool!
+		$val = $this->getValue('server','tls_cacert');
+		if (! empty($val))
+			if (! $this->setLdapOption(null, 'LDAP_OPT_X_TLS_CACERTFILE', $val))
+				return false;
+
+		$val = $this->getValue('server','tls_cacertdir');
+		if (! empty($val))
+			if (! $this->setLdapOption(null, 'LDAP_OPT_X_TLS_CACERTDIR', $val))
+				return false;
+
+		$val = $this->getValue('server','tls_cert');
+		if (! empty($val))
+			if (! $this->setLdapOption(null, 'LDAP_OPT_X_TLS_CERTFILE', $val))
+				return false;
+
+		$val = $this->getValue('server','tls_key');
+		if (! empty($val))
+			if (! $this->setLdapOption(null, 'LDAP_OPT_X_TLS_KEYFILE', $val))
+				return false;
+
+		if (! @ldap_start_tls($resource)) {
+			$diag_error='';
+			ldap_get_option($resource, LDAP_OPT_DIAGNOSTIC_MESSAGE, $diag_error);
+			if (! empty($diag_error)) {
+				$diag_error = '<br>'.$diag_error;
+			}
+			$error = ldap_error($resource);
 			system_message(array(
 				'title'=>sprintf('%s (%s)',_('Could not start TLS.'),$this->getName()),
-				'body'=>sprintf('<b>%s</b>: %s',_('Error'),_('Could not start TLS. Please check your LDAP server configuration.')),
+				'body'=>sprintf('<b>%s</b>: %s %s%s',_('Error'),_('Could not start TLS.'),$error,$diag_error),
 				'type'=>'error'));
 
 			return false;
@@ -783,7 +865,7 @@ class ldap extends DS {
 			'value'=>sprintf('dn:%s',$dn),
 			'iscritical' => true);
 
-		if (! ldap_set_option($resource,LDAP_OPT_SERVER_CONTROLS,array($ctrl))) {
+		if (! @ldap_set_option($resource,LDAP_OPT_SERVER_CONTROLS,array($ctrl))) {
 			system_message(array(
 				'title'=>sprintf('%s %s',_('Unable to start proxy connection'),$this->getName()),
 				'body'=>sprintf('<b>%s</b>: %s (%s) for <b>%s</b>',_('Error'),$this->getErrorMessage($method),$this->getErrorNum($method),$method),

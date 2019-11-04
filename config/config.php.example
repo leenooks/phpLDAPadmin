@@ -335,6 +335,22 @@ $servers->setValue('server','name','My LDAP Server');
 /* Use TLS (Transport Layer Security) to connect to the LDAP server. */
 // $servers->setValue('server','tls',false);
 
+/* TLS Certificate Authority file (overrides ldap.conf, PHP 7.1+) */
+// $servers->setValue('server','tls_cacert',null);
+#  $servers->setValue('server','tls_cacert','/etc/openldap/certs/ca.crt');
+
+/* TLS Certificate Authority hashed directory (overrides ldap.conf, PHP 7.1+) */
+// $servers->setValue('server','tls_cacertdir',null);
+#  $servers->setValue('server','tls_cacertdir','/etc/openldap/certs');
+
+/* TLS Client Certificate file (PHP 7.1+) */
+// $servers->setValue('server','tls_cert',null);
+#  $servers->setValue('server','tls_cert','/etc/pki/tls/certs/ldap_user.crt');
+
+/* TLS Client Certificate Key file (PHP 7.1+) */
+// $servers->setValue('server','tls_key',null);
+#  $servers->setValue('server','tls_key','/etc/pki/tls/private/ldap_user.key');
+
 /************************************
  *      SASL Authentication         *
  ************************************/
