@@ -1638,7 +1638,7 @@ function get_icon($server_id,$dn,$object_classes=array()) {
 
 	# Return icon filename based upon objectClass value
 	if (in_array('sambaaccount',$object_classes) &&
-		'$' == $rdn{ strlen($rdn) - 1 })
+		'$' == $rdn[ strlen($rdn) - 1 ])
 		return 'nt_machine.png';
 
 	if (in_array('sambaaccount',$object_classes))

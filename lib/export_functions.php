@@ -223,7 +223,7 @@ abstract class Export {
 	 */
 	protected function isSafeAscii($str) {
 		for ($i=0;$i<strlen($str);$i++)
-			if (ord($str{$i}) < 32 || ord($str{$i}) > 127)
+			if (ord($str[$i]) < 32 || ord($str[$i]) > 127)
 				return false;
 
 		return true;
