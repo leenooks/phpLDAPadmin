@@ -32,7 +32,7 @@
  * element priority. 1 otherwise.
  */
 function sort_array_by_priority($a,$b) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+	if (defined('DEBUG_ENABLED') && DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 		debug_log('Entered (%%)',257,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	return (($a['priority'] < $b['priority']) ? -1 : 1 );
