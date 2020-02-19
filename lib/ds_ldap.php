@@ -195,7 +195,7 @@ class ldap extends DS {
 
 		# If SASL has been configured for binding, then start it now.
 		if ($this->isSASLEnabled())
-			$bind['result'] = $this->startSASL($resource,$method);
+			$bind['result'] = $this->startSASL($resource,$method,$bind['id'],$bind['pass']);
 
 		# Normal bind...
 		else
@@ -588,6 +588,8 @@ class ldap extends DS {
 	 * Users may configure phpLDAPadmin to use SASL in config,php thus:
 	 * <code>
 	 *	$servers->setValue('login','auth_type','sasl');
+	 * OR
+	 *      $servers->setValue('sasl','mech','PLAIN');
 	 * </code>
 	 *
 	 * @return boolean
@@ -596,8 +598,11 @@ class ldap extends DS {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-		if ($this->getValue('login','auth_type') != 'sasl')
-			return false;
+		if (! in_array($this->getValue('login','auth_type'), array('sasl'))) {
+			// check if SASL mech uses login from other auth_types
+			if (! in_array(strtolower($this->getValue('sasl', 'mech')), array('plain')))
+				return false;
+		}
 
 		if (! function_exists('ldap_sasl_bind')) {
 			error(_('SASL has been enabled in your config, but your PHP install does not support SASL. SASL will be disabled.'),'warn');
@@ -615,7 +620,7 @@ class ldap extends DS {
 	 *
 	 * @todo This has not been tested, please let the developers know if this function works as expected.
 	 */
-	private function startSASL($resource,$method) {
+	private function startSASL($resource,$method,$login,$pass) {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
@@ -625,8 +630,8 @@ class ldap extends DS {
 		if ($method == 'anon')
 			return false;
 
-		# At the moment, we have only implemented GSSAPI
-		if (! in_array(strtolower($this->getValue('sasl','mech')),array('gssapi'))) {
+		# At the moment, we have only implemented GSSAPI and PLAIN
+		if (! in_array(strtolower($this->getValue('sasl','mech')),array('gssapi','plain'))) {
 			system_message(array(
 				'title'=>_('SASL Method not implemented'),
 				'body'=>sprintf('<b>%s</b>: %s %s',_('Error'),$this->getValue('sasl','mech'),_('has not been implemented yet')),
@@ -635,8 +640,15 @@ class ldap extends DS {
 			return false;
 		}
 
+		if (strtolower($this->getValue('sasl','mech')) == 'plain') {
+			return @ldap_sasl_bind($resource,NULL,$pass,'PLAIN',
+					       $this->getValue('sasl','realm'),
+					       $login,
+					       $this->getValue('sasl','props'));
+		}
+
 		if (! isset($CACHE['login_dn']))
-			$CACHE['login_dn'] = is_null($this->getLogin($method)) ? $this->getLogin('user') : $this->getLogin($method);
+			$CACHE['login_dn'] = $login;
 
 		$CACHE['authz_id'] = '';
 
