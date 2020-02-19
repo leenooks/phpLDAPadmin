@@ -574,6 +574,20 @@ class Config {
 		$this->default->search['time_limit'] = array(
 			'desc'=>'Maximum time to allow unlimited size_limit searches to the ldap server',
 			'default'=>120);
+
+		/* reCAPTCHA Login */
+
+		$this->default->session['reCAPTCHA-enable'] = array(
+			'desc'=>'Status reCAPTCHA (true | false)',
+			'default'=>false);
+
+		$this->default->session['reCAPTCHA-key-site'] = array(
+			'desc'=>'Site Key',
+			'default'=>"<put-here-key-site>");
+
+		$this->default->session['reCAPTCHA-key-server'] = array(
+			'desc'=>'Server key',
+			'default'=>"<put-here-key-server>");
 	}
 
 	/**
