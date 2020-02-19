@@ -400,6 +400,12 @@ $servers->setValue('server','name','My LDAP Server');
    setup. */
 // $servers->setValue('login','class',array());
 
+/* If login_attr was set to 'dn', it is possible to specify a template string to
+   build the DN from. Use '%s' where user input should be inserted. A user may
+   still enter the complete DN. In this case the template will not be used. */
+// $servers->setValue('login','bind_dn_template',null);
+#  $servers->setValue('login','bind_dn_template','cn=%s,ou=people,dc=example,dc=com');
+
 /* If you specified something different from 'dn', for example 'uid', as the
    login_attr above, you can optionally specify here to fall back to
    authentication with dn.

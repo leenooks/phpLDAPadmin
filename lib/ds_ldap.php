@@ -255,7 +255,7 @@ class ldap extends DS {
 		if (! is_null($user)) {
 			# If login,attr is set to DN, then user should be a DN
 			if (($this->getValue('login','attr') == 'dn') || $method != 'user')
-				$userDN = $user;
+				$userDN = $this->getValue('login', 'bind_dn_template') ? $this->fillDNTemplate($user) : $user;
 			else
 				$userDN = $this->getLoginID($user,'login');
 
@@ -510,6 +510,15 @@ class ldap extends DS {
 			return $this->getValue('login','base');
 		else
 			return $this->getBaseDN();
+	}
+
+	private function fillDNTemplate($user) {
+		foreach($this->getLoginBaseDN() as $base)
+			if(substr_compare($user, $base, -strlen($base)) === 0)
+				return $user; // $user already passed as DN
+
+		// fill template
+		return sprintf($this->getValue('login', 'bind_dn_template'), preg_replace('/([,\\\\#+<>;"=])/', '\\\\$1', $user));
 	}
 
 	/**

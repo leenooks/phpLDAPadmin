@@ -574,6 +574,10 @@ class Datastore {
 			'desc'=>'User Login ID to bind to this DS',
 			'default'=>null);
 
+		$this->default->login['bind_dn_template'] = array(
+			'desc'=>'Template string for user login DN to bind to this DS. Use \'%s\' where user input should be inserted.',
+			'default'=>null);
+
 		$this->default->login['bind_pass'] = array(
 			'desc'=>'User Login Password to bind to this DS',
 			'default'=>null);
