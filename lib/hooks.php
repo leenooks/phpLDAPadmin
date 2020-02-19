@@ -32,7 +32,7 @@
  * element priority. 1 otherwise.
  */
 function sort_array_by_priority($a,$b) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
+	if (defined('DEBUG_ENABLED') && DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 		debug_log('Entered (%%)',257,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	return (($a['priority'] < $b['priority']) ? -1 : 1 );
@@ -68,7 +68,7 @@ function run_hook($hook_name,$args) {
 	/* Execution of procedures attached is done using a numeric order
 	 * since all procedures have been attached to the hook with a
 	 * numerical weight. */
-	while (list($key,$hook) = each($hooks[$hook_name])) {
+	foreach ($hooks[$hook_name] as $key=>$hook) {
 		if (DEBUG_ENABLED)
 			debug_log('Calling HOOK Function (%s)(%s)',257,0,__FILE__,__LINE__,__METHOD__,
 				$hook['hook_function'],$args);
@@ -159,7 +159,7 @@ function remove_hook($hook_name,$hook_function,$priority,$rollback_function) {
 	if (array_key_exists($hook_name,$_SESSION[APPCONFIG]->hooks)) {
 		reset($_SESSION[APPCONFIG]->hooks[$hook_name]);
 
-		while (list($key,$hook) = each($_SESSION[APPCONFIG]->hooks[$hook_name])) {
+		foreach ($_SESSION[APPCONFIG]->hooks[$hook_name] as $key=>$hook) {
 			if (($priority >= 0 && $priority == $hook['priority']) ||
 				($hook_function && $hook_function == $hook['hook_function']) ||
 				($rollback_function && $rollback_function == $hook['rollback_function'])) {
