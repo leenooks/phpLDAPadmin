@@ -444,7 +444,7 @@ class Config {
 		 */
 		$this->default->modify_member['groupattr'] = array(
 			'desc'=>'Group member attributes',
-			'default'=>array('member','uniqueMember','memberUid'));
+			'default'=>array('member','uniqueMember','memberUid','uid'));
 
 		/**
 		 * Attribute that is added to the group member attribute. For groupOfNames or groupOfUniqueNames this is dn,

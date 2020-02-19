@@ -65,7 +65,7 @@ for ($i=0;$i<count($possible_values);$i++) {
 	if (preg_match("/^".$request['attr']."$/i",$_SESSION[APPCONFIG]->getValue('modify_member','posixgroupattr')))
 		$possible_members[$i] = $possible_values[$i][$_SESSION[APPCONFIG]->getValue('modify_member','posixattr')][0];
 	else
-		$possible_members[$i] = $possible_values[$i][$_SESSION[APPCONFIG]->getValue('modify_member','attr')];
+		$possible_members[$i] = $possible_values[$i][$_SESSION[APPCONFIG]->getValue('modify_member','attr')][0];
 }
 
 # Show only user that are not already in group.

@@ -235,13 +235,14 @@ $config->custom->appearance['friendly_attrs'] = array(
  *********************************************/
 
 /* Add "modify group members" link to the attribute. */
-// $config->custom->modify_member['groupattr'] = array('member','uniqueMember','memberUid');
+// $config->custom->modify_member['groupattr'] = array('member','uniqueMember','memberUid','sudoUser');
 
 /* Configure filter for member search. This only applies to "modify group members" feature */
 // $config->custom->modify_member['filter'] = '(objectclass=Person)';
 
 /* Attribute that is added to the group member attribute. */
 // $config->custom->modify_member['attr'] = 'dn';
+
 
 /* For Posix attributes */
 // $config->custom->modify_member['posixattr'] = 'uid';
