@@ -2156,7 +2156,8 @@ function password_types() {
 
 	return array(
 		''=>'clear',
-		'blowfish'=>'blowfish',
+		'bcrypt'=>'bcrypt',
+                'blowfish'=>'blowfish',
 		'crypt'=>'crypt',
 		'ext_des'=>'ext_des',
 		'md5'=>'md5',
@@ -2257,6 +2258,19 @@ function pla_password_hash($password_clear,$enc_type) {
 			}
 
 			break;
+
+                case 'bcrypt':
+                        $options = [
+                                    'cost' => 8,
+                                   ];
+                        #Checking if password_hash() function is available.
+                        if (function_exists('password_hash'))
+                                $new_value = sprintf('{BCRYPT}%s',base64_encode(password_hash($password_clear, PASSWORD_BCRYPT, $options)));
+                        else
+                                error(_('Your PHP install does not have the password_hash() function. Cannot do BCRYPT hashes.'),'error','index.php');
+
+                        break;
+
 
 		case 'smd5':
 			if (function_exists('mhash') && function_exists('mhash_keygen_s2k')) {
@@ -2363,6 +2377,23 @@ function password_check($cryptedpassword,$plainpassword,$attribute='userpassword
 			}
 
 			break;
+                 
+                #BCRYPT hashed passwords
+                case 'bcrypt':
+                        # Check php password_verify support before using it
+                        if (function_exists('password_verify')) {
+                                $hash = base64_decode($cryptedpassword);
+                                if (password_verify($plainpassword, $hash)) {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+
+                        } else {
+                                error(_('Your PHP install does not have the password_verify() function. Cannot do Bcrypt hashes.'),'error','index.php');
+                        }
+
+                        break;
 
 		# Salted MD5
 		case 'smd5':
