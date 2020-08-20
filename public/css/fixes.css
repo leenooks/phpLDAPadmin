@@ -1,0 +1,65 @@
+/* Fixes for data tables */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 0em 0em;
+    margin-left: 0px;
+    border: 0px solid;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    border: 0px solid;
+    background: #fff;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:active {
+    box-shadow: 0 0 0px #fff;
+    background-color: #fff;
+}
+
+table.dataTable thead .sorting_asc {
+    background-image: none !important;
+}
+
+table.dataTable thead .sorting_desc {
+    background-image: none !important;
+}
+
+table.dataTable thead .sorting {
+    background-image: none !important;
+}
+
+/* Remove blue border from chrome on buttons */
+/* Remove outline for non-keyboard :focus */
+*:focus:not(.focus-visible) {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Optional: Customize .focus-visible */
+.focus-visible {
+    outline-color: lightgreen;
+}
+
+div.login-box .input-group .input-group-append span.fa {
+    line-height: 0;
+}
+
+*:disabled {
+    cursor: not-allowed;
+}
+
+/* Login Box, icons when inputs disabled */
+div.login-box .input-group-append .fa {
+    width: 2.5em;
+}
+
+#favourite.selected {
+    color: orange;
+}
+
+#favourite:hover {
+    cursor: pointer;
+}
+
+body {
+    font-size: 0.85em;
+}

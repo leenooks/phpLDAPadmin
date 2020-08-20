@@ -12,7 +12,8 @@
         "adldap2/adldap2-laravel": "^6.0",
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
-        "laravel/tinker": "^1.0"
+        "laravel/tinker": "^1.0",
+        "leenooks/laravel": "^0.3.7"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",
@@ -46,6 +47,12 @@
             "Tests\\": "tests/"
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://dev.leenooks.net/leenooks/laravel"
+        }
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {

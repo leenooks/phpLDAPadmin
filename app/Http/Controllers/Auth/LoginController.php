@@ -36,4 +36,17 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    public function username()
+    {
+        return 'mail';
+    }
+
+    /**
+     * Show our themed login page
+     */
+    public function showLoginForm()
+    {
+        return view('adminlte::auth.login');
+    }
 }

@@ -11,6 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Auth::routes([
+	'reset' => false,
+	'verify' => false,
+	'register' => false,
+]);
+
+Route::get('/home','HomeController@home');

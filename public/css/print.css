@@ -1,0 +1,19 @@
+@media print {
+        body {
+                color: #333;
+                font-weight: 400;
+                font-size: 12px;
+        }
+
+        label {
+                font-weight: bold;
+        }
+
+        tr    { page-break-inside:avoid; }
+        thead { display:table-header-group; }
+        tfoot { display:table-footer-group; }
+
+        .table-responsive {
+                overflow: visible !important;
+        }
+}
