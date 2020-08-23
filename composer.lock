@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7da3e0ebffd2d4cf4bc001dba98c3fba",
+    "content-hash": "959ed9e0a5a540cea83879b015a2a00c",
     "packages": [
         {
             "name": "adldap2/adldap2",
@@ -1453,43 +1453,6 @@
                 "leenooks"
             ],
             "time": "2020-08-04T06:14:35+00:00"
-        },
-        {
-            "name": "leenooks/ldap",
-            "version": "dev-SANDPIT",
-            "dist": {
-                "type": "path",
-                "url": "ldap",
-                "reference": "2d5349d22b5d248bdf7377b67ac65ae53bd9b882"
-            },
-            "require": {
-                "adldap2/adldap2-laravel": "^6.0",
-                "ext-ldap": "*",
-                "php": ">=7.2"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Leenooks\\LDAP\\LaravelServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Leenooks\\LDAP\\": "src/"
-                }
-            },
-            "authors": [
-                {
-                    "name": "Deon George",
-                    "email": "deon@leenooks.net"
-                }
-            ],
-            "description": "LDAP Library",
-            "transport-options": {
-                "relative": true
-            }
         },
         {
             "name": "monolog/monolog",
@@ -6208,6 +6171,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2019-09-17T06:23:10+00:00"
         },
         {
@@ -7163,9 +7127,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "leenooks/ldap": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use Leenooks\LDAP;
+use App\Classes\LDAP\Server;
 
 class HomeController extends Controller
 {
 	public function home() {
-		$o = new LDAP\Server;
+		$o = new Server;
 
 		return view('home')
 			->with('server',config('ldap.connections.default.name'))		// @todo This connection name should be a config item

@@ -1,6 +1,6 @@
 <?php
 
-namespace Leenooks\LDAP;
+namespace App\Classes\LDAP;
 
 use Adldap\Adldap;
 use Adldap\Models\Entry;
@@ -40,6 +40,8 @@ class Server
 	protected function getDNAttrValues(string $dn,array $attrs=['*','+'],int $deref=LDAP_DEREF_NEVER): ?Entry
 	{
 		try {
+			dump(config('ldap.connections.default.settings'));
+
 			return ($x=(new Adldap)
 				->addProvider(config('ldap.connections.default.settings'))
 				->search()
@@ -48,7 +50,7 @@ class Server
 
 		// @todo Tidy up this exception
 		} catch (\Exception $e) {
-			dd(['e'=>$e,'s'=>$s]);
+			dd(['e'=>$e]);
 		}
 	}
 }

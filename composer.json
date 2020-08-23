@@ -14,8 +14,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.22.2",
-        "leenooks/laravel": "^7.0",
-        "leenooks/ldap": "dev-SANDPIT"
+        "leenooks/laravel": "^7.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
@@ -53,10 +52,6 @@
         {
             "type": "vcs",
             "url": "https://dev.leenooks.net/leenooks/laravel"
-        },
-        {
-            "type": "path",
-            "url": "ldap"
         }
     ],
     "minimum-stability": "dev",
