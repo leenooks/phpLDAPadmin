@@ -22,8 +22,8 @@
 				</div>
 
 				<div class="col-12 col-sm-6">
-					<h3 class="my-3">Welcome to phpLDAPadmin</h3>
-					<h4 class="my-3">Updated to v2</h4>
+					<h3 class="mb-1">Welcome to phpLDAPadmin</h3>
+					<h4 class="mb-3"><small>{{ config('app.version') }}</small></h4>
 					<p>phpLDAPadmin (or PLA for short) is an LDAP data management tool for administrators.</p>
 					<p>PLA aims to adhere to the LDAP standards (RFC4511) so that it can interact with any LDAP server that implements those standards.</p>
 					<hr>

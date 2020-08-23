@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,10 +13,12 @@
 |
 */
 
+/*
 Auth::routes([
 	'reset' => false,
 	'verify' => false,
 	'register' => false,
 ]);
+*/
 
 Route::get('/home','HomeController@home');

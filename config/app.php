@@ -15,6 +15,7 @@ return [
 
     'name' => env('APP_NAME', 'phpLDAPadmin'),
     'name_html_long' => env('APP_NAME_HTML_LONG', '<b>php</b>LDAPadmin'),
+    'version' => trim(file_get_contents(__DIR__.'/../public/VERSION')),
 
     /*
     |--------------------------------------------------------------------------
@@ -40,7 +41,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', false),
+    'debug' => (bool) env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -179,9 +180,10 @@ return [
         /*
          * Other Service Providers...
          */
-        Acacha\User\Providers\GuestUserServiceProvider::class,
         Orchestra\Asset\AssetServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        //\SocialiteProviders\Manager\ServiceProvider::class,
+
     ],
 
     /*
@@ -214,8 +216,8 @@ return [
         'Event' => Illuminate\Support\Facades\Event::class,
         'File' => Illuminate\Support\Facades\File::class,
         'Gate' => Illuminate\Support\Facades\Gate::class,
-        'Gravatar' => Creativeorange\Gravatar\Facades\Gravatar::class,
         'Hash' => Illuminate\Support\Facades\Hash::class,
+        'Http' => Illuminate\Support\Facades\Http::class,
         'Lang' => Illuminate\Support\Facades\Lang::class,
         'Log' => Illuminate\Support\Facades\Log::class,
         'Mail' => Illuminate\Support\Facades\Mail::class,

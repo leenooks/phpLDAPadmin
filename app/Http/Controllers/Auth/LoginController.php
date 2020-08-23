@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -25,7 +26,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -37,16 +38,16 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function username()
-    {
-        return 'mail';
-    }
+	/**
+	 * Show our themed login page
+	 */
+	public function showLoginForm()
+	{
+		$login_note = '';
 
-    /**
-     * Show our themed login page
-     */
-    public function showLoginForm()
-    {
-        return view('adminlte::auth.login');
-    }
+		if (file_exists('login_note.txt'))
+			$login_note = file_get_contents('login_note.txt');
+
+		return view('adminlte::auth.login')->with('login_note',$login_note);
+	}
 }
