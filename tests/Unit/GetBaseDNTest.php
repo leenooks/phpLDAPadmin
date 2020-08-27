@@ -7,18 +7,18 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-use Leenooks\LDAP\Server;
+use App\Classes\LDAP\Server;
 
 class GetBaseDNTest extends TestCase
 {
-    /**
-     * Test that we can get the Base DN of an LDAP server
-     *
-     * @return void
-     */
-    public function testBaseDNExists()
-    {
-		$o = new Server;
+	/**
+	 * Test that we can get the Base DN of an LDAP server
+	 *
+	 * @return void
+	 */
+	public function testBaseDNExists()
+	{
+		$o = new Server();
 		$x = $o->getBaseDN();
 
 		$this->assertIsObject($x);

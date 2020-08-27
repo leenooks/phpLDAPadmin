@@ -50,4 +50,14 @@ class LoginController extends Controller
 
 		return view('adminlte::auth.login')->with('login_note',$login_note);
 	}
+
+	/**
+	 * Get the login username to be used by the controller.
+	 *
+	 * @return string
+	 */
+	public function username()
+	{
+		return config('ldap_auth.identifiers.ldap.locate_users_by');
+	}
 }

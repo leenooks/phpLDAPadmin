@@ -14,11 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 /*
+*/
 Auth::routes([
 	'reset' => false,
 	'verify' => false,
 	'register' => false,
 ]);
-*/
-
-Route::get('/home','HomeController@home');
+Route::get('logout','Auth\LoginController@logout');
+Route::get('home','HomeController@home');

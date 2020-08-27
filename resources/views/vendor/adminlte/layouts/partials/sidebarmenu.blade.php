@@ -1,5 +1,7 @@
 <li class="nav-header">{{ $server ?? 'Server Name' }}</li>
 
+<div id="tree"></div>
+
 @foreach (($bases ?? []) as $base)
 <li class="nav-item has-treeview">
 	<a href="#" class="nav-link">
@@ -10,8 +12,5 @@
 		</p>
 	</a>
 
-	<ul class="nav nav-treeview">
-		<div id="{{ $base }}">
-	</ul>
 </li>
 @endforeach

@@ -14,6 +14,8 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
         "laravel/framework": "^7.22.2",
+        "laravel/passport": "^9.3",
+        "laravel/ui": "^2.1",
         "leenooks/laravel": "^7.0"
     },
     "require-dev": {

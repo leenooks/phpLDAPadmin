@@ -4,6 +4,7 @@ namespace App\Classes\LDAP;
 
 use Adldap\Adldap;
 use Adldap\Models\Entry;
+use Illuminate\Support\Collection;
 
 class Server
 {
@@ -15,7 +16,7 @@ class Server
 	 * @return array array|NULL The root DN(s) of the server on success (string) or NULL if it cannot be determine.
 	 * @todo Sort the entries, so that they are in the correct DN order.
 	 */
-	public function getBaseDN(): ?array
+	public function getBaseDN(): ?Collection
 	{
 		// If the base is set in the configuration file, then just return that after validating it exists.
 		// @todo
@@ -25,7 +26,7 @@ class Server
 		} else {
 			$result = $this->getDNAttrValues('',['namingcontexts']);
 
-			return $result ? $result->namingcontexts : NULL;
+			return $result ? collect($result->namingcontexts) : NULL;
 		}
 	}
 

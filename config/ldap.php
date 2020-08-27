@@ -101,7 +101,8 @@ return [
                 |
                 */
 
-                'schema' => Adldap\Schemas\OpenLDAP::class,
+                //'schema' => Adldap\Schemas\OpenLDAP::class,
+                'schema' => App\Schema\Adldap::class,
 
                 /*
                 |--------------------------------------------------------------------------

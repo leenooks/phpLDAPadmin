@@ -39,3 +39,134 @@
 		</div>
 	</div>
 @endsection
+
+@section('page-scripts')
+	@js('https://code.jquery.com/ui/1.12.1/jquery-ui.min.js','jquery-ui')
+	@js('https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.36.1/jquery.fancytree-all.min.js','fancytree-js-all')
+	@css('https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.36.1/skin-bootstrap-n/ui.fancytree.min.css','fancytree-css')
+
+	<script type="text/javascript">
+		function expandChildren(node) {
+			if (node.data.autoExpand && !node.isExpanded()) {
+				node.setExpanded(true);
+			}
+			if (node.children && node.children.length > 0) {
+				try {
+					node.children.forEach(expandChildren);
+				} catch (error) {
+				}
+			}
+		};
+
+		$(document).ready(function() {
+			// Attach the fancytree widget to an existing <div id="tree"> element
+			// and pass the tree options as an argument to the fancytree() function:
+			$('#tree').fancytree({
+				clickFolderMode: 3,
+				extensions: ['glyph'],
+				aria: true, // Enable WAI-ARIA support.
+				autoActivate: false, // Automatically activate a node when it is focused (using keys).
+				autoCollapse: true, // Automatically collapse all siblings, when a node is expanded.
+				autoScroll: false, // Automatically scroll nodes into visible area.
+				focusOnSelect: true, // Set focus when node is checked by a mouse click
+				keyboard: true, // Support keyboard navigation.
+				glyph: {
+					preset: 'awesome5',
+					map: {
+						//doc: "fas fa-file-o fa-lg",
+						//docOpen: "fas fa-file-o fa-lg",
+						error: "fas fa-bomb fa-lg fa-fw",
+						expanderClosed: "far fa-plus-square fa-lg fa-fw",
+						expanderLazy: "far fa-plus-square fa-lg fa-fw",
+						expanderOpen: "far fa-minus-square fa-lg fa-fw",
+						//folder: "fas fa-folder fa-lg",
+						//folderOpen: "fas fa-folder-open fa-lg",
+						loading: "fas fa-spinner fa-pulse"
+					}
+				},
+				click: function(event, data) {
+					console.log(data);
+					if (data.targetType == 'title')
+						return false;
+				},
+				init: function(event, data) {
+					expandChildren(data.tree.rootNode);
+				},
+				icon: function(event, data) {
+					return ! data.node.isTopLevel();
+				},
+				source: {
+					url: "{{ url('api/bases') }}"
+				},
+				lazyLoad: function(event,data) {
+					data.result = {
+						url: "{{ url('api/branch') }}",
+						data: {key: data.node.data.item}
+					};
+
+					expandChildren(data.tree.rootNode);
+				},
+				keydown: function(event, data){
+					switch( $.ui.fancytree.eventToString(data.originalEvent) ) {
+						case "return":
+						case "space":
+							data.node.toggleExpanded();
+							break;
+					}
+				}
+			});
+
+			/*
+			// For our demo: toggle auto-collapse mode:
+			$("input[name=autoCollapse]").on("change", function(e){
+				$.ui.fancytree.getTree().options.autoCollapse = $(this).is(":checked");
+			});
+
+			 */
+		});
+
+	</script>
+	<style>
+		.fancytree-node {
+			display: flex !important;
+			align-items: center;
+		}
+		.fancytree-exp-nl .fancytree-expander,
+		.fancytree-exp-n .fancytree-expander {
+			visibility: hidden;
+		}
+		.fancytree-exp-nl + ul,
+		.fancytree-exp-n + ul {
+			display: none !important;
+		}
+		span.fancytree-expander,
+		span.fancytree-icon,
+		span.fancytree-title {
+			line-height: 1em;
+		}
+		span.fancytree-expander {
+			text-align: center;
+		}
+		span.fancytree-icon {
+			margin-left: 10px;
+		}
+		span.fancytree-title {
+			margin-left: 2px;
+			padding: 2px;
+			box-sizing: border-box;
+			border: 1px solid transparent;
+		}
+		.fancytree-focused span.fancytree-title {
+			border: 1px solid #999;
+		}
+		.fancytree-active span.fancytree-title {
+			background-color: #ddd;
+		}
+		ul.fancytree-container ul {
+			padding: 2px 0 0 0px;
+		}
+		ul.fancytree-container li {
+			padding: 2px 0;
+		}
+	</style>
+@append
