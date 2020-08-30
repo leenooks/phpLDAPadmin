@@ -2311,6 +2311,7 @@ function pla_password_hash($password_clear,$enc_type) {
  * @return Boolean True if the clear password matches the hash, and false otherwise.
  */
 function password_check($cryptedpassword,$plainpassword,$attribute='userpassword') {
+    $plainpassword = htmlspecialchars_decode($plainpassword);
 	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
