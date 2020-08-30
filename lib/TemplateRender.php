@@ -200,7 +200,7 @@ class TemplateRender extends PageRender {
 					$next_number = $vals;
 
 					foreach ($mod as $calc) {
-						$operand = $calc{0};
+						$operand = $calc[0];
 						$operator = substr ($calc,1);
 
 						switch ($operand) {
