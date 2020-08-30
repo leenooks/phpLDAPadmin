@@ -65,7 +65,7 @@ if ($app['server']->getAuthType() == 'http') {
 
 # HTML Login Form
 } else {
-	echo '<form action="cmd.php" method="post">';
+	echo '<form action="cmd.php" method="post" autocomplete="off">';
 	echo '<div>';
 	echo '<input type="hidden" name="cmd" value="login" />';
 	printf('<input type="hidden" name="server_id" value="%s" />',$app['server']->getIndex());
