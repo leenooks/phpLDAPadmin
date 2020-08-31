@@ -18,6 +18,7 @@ class Server
 	 */
 	public function getBaseDN(): ?Collection
 	{
+		//findBaseDn()?
 		// If the base is set in the configuration file, then just return that after validating it exists.
 		// @todo
 		if (false) {
@@ -41,8 +42,6 @@ class Server
 	protected function getDNAttrValues(string $dn,array $attrs=['*','+'],int $deref=LDAP_DEREF_NEVER): ?Entry
 	{
 		try {
-			dump(config('ldap.connections.default.settings'));
-
 			return ($x=(new Adldap)
 				->addProvider(config('ldap.connections.default.settings'))
 				->search()
@@ -50,6 +49,29 @@ class Server
 				->findByDn($dn)) ? $x : NULL;
 
 		// @todo Tidy up this exception
+		} catch (\Exception $e) {
+			dd(['e'=>$e]);
+		}
+	}
+
+	/**
+	 * Query the server for a DN
+	 *
+	 * @param string $dn
+	 * @return |null
+	 */
+	public function query(string $dn)
+	{
+		try {
+			return ($x=(new Adldap)
+				->addProvider(config('ldap.connections.default.settings'))
+				->search()
+				->setBaseDn($dn)
+				//->select($attrs)
+				->listing()
+				->get()) ? $x : NULL;
+
+			// @todo Tidy up this exception
 		} catch (\Exception $e) {
 			dd(['e'=>$e]);
 		}

@@ -16,9 +16,7 @@
 			<div class="row">
 				<div class="col-12 col-sm-4">
 					<h3 class="d-inline-block d-sm-none">phpLDAPadmin</h3>
-					<div class="col-12">
-						<img src="img/logo.png" class="product-image" alt="PLA Logo">
-					</div>
+					<img src="img/logo.png" class="logo-image col-12" alt="PLA Logo">
 				</div>
 
 				<div class="col-12 col-sm-8">
@@ -64,12 +62,9 @@
 			$('#tree').fancytree({
 				clickFolderMode: 3,
 				extensions: ['glyph'],
-				aria: true, // Enable WAI-ARIA support.
-				autoActivate: false, // Automatically activate a node when it is focused (using keys).
 				autoCollapse: true, // Automatically collapse all siblings, when a node is expanded.
-				autoScroll: false, // Automatically scroll nodes into visible area.
+				autoScroll: true, // Automatically scroll nodes into visible area.
 				focusOnSelect: true, // Set focus when node is checked by a mouse click
-				keyboard: true, // Support keyboard navigation.
 				glyph: {
 					preset: 'awesome5',
 					map: {
@@ -100,8 +95,8 @@
 				},
 				lazyLoad: function(event,data) {
 					data.result = {
-						url: "{{ url('api/branch') }}",
-						data: {key: data.node.data.item}
+						url: "{{ url('api/query') }}",
+						data: {key: data.node.data.item,depth: 1}
 					};
 
 					expandChildren(data.tree.rootNode);
@@ -126,6 +121,7 @@
 		});
 
 	</script>
+	{{--
 	<style>
 		.fancytree-node {
 			display: flex !important;
@@ -169,4 +165,5 @@
 			padding: 2px 0;
 		}
 	</style>
+	--}}
 @append

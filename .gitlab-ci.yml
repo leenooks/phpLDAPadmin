@@ -18,6 +18,10 @@ variables:
    LDAP_ADMIN_PASSWORD: test
 #  LDAP_SEED_INTERNAL_SCHEMA_PATH: "${CI_PROJECT_DIR}/tests/server/openldap/schema"
 
+stages:
+- test
+- deploy
+
 # This folder is cached between builds
 # http://docs.gitlab.com/ce/ci/yaml/README.html#cache
 cache:
@@ -55,10 +59,42 @@ test:
 
   script:
   # run laravel tests
-  - php vendor/bin/phpunit --coverage-text --colors=never 
+  - php vendor/bin/phpunit --coverage-text --colors=never
 
   # run frontend tests
   # if you have any task for testing frontend
   # set it in your package.json script
   # comment this out if you don't have a frontend test
   # npm test
+
+docker:
+  before_script:
+  - docker info
+  - docker version
+  - echo "$CI_JOB_TOKEN" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
+  - if [ -n "$GITHUB_TOKEN" ]; then cat $GITHUB_TOKEN |base64 -d > auth.json; fi
+
+  variables:
+    VERSION: latest
+    CACHETAG: build-${VERSION}
+    DOCKER_HOST: tcp://docker:2375
+
+  stage: deploy
+  image: docker:latest
+  services:
+  - docker:dind
+
+  script:
+  - if [ -f init ]; then chmod 500 init; fi
+  - ([ -z "$REFRESH" ] && docker pull ${CI_REGISTRY_IMAGE}:${CACHETAG}) || echo "true"
+  - echo -n ${CI_COMMIT_SHORT_SHA} > VERSION
+  - docker build --cache-from ${CI_REGISTRY_IMAGE}:${CACHETAG} -t ${CI_REGISTRY_IMAGE}:${VERSION} -t ${CI_REGISTRY_IMAGE}:${CACHETAG} .
+  - docker push ${CI_REGISTRY_IMAGE}:${VERSION}
+  - docker push ${CI_REGISTRY_IMAGE}:${CACHETAG}
+
+  tags:
+  - docker
+  - x86_64
+
+  only:
+  - BRANCH-2.0
