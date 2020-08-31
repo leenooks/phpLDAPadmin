@@ -24,10 +24,8 @@ class APIController extends Controller
 				return [
 					'title'=>$item,
 					'item'=>Crypt::encryptString($item),
-					//'folder'=>TRUE,
 					'lazy'=>TRUE,
-					//'key'=>0,
-					//'autoexpand'=>TRUE,
+					'icon'=>'fa-fw fas fa-sitemap',
 				];
 			});
 	}
@@ -45,10 +43,8 @@ class APIController extends Controller
 				return [
 					'title'=>$item->getDistinguishedName(),
 					'item'=>Crypt::encryptString($item->getDistinguishedName()),
-					//'folder'=>TRUE,
+					'icon'=>'fa-fw fas fa-sitemap',
 					'lazy'=>TRUE,
-					//'key'=>0,
-					//'autoexpand'=>TRUE,
 				];
 			});
 
