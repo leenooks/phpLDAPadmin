@@ -20,5 +20,6 @@ Auth::routes([
 	'verify' => false,
 	'register' => false,
 ]);
+Route::redirect('/','home');
 Route::get('logout','Auth\LoginController@logout');
 Route::get('home','HomeController@home');

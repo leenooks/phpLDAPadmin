@@ -58,3 +58,48 @@ table.dataTable thead .sorting {
 body {
 	font-size: 0.85em;
 }
+
+/** Remove the border around the tree **/
+ul.fancytree-container {
+	border: 0px;
+}
+/** Remove the Cyan vertical line from the tree **/
+.vertical-nav-menu #tree ul:before {
+	opacity: 0;
+}
+/** Tree Icon Placement **/
+#tree > ul {
+	padding-left: 0px;
+}
+.closed-sidebar #tree {
+	display: none;
+}
+.closed-sidebar:hover .app-sidebar:hover #tree, .sidebar-mobile-open #tree {
+	display: block;
+}
+.app-sidebar #treeicon, .closed-sidebar:hover .app-sidebar:hover #treeicon, .sidebar-mobile-open #treeicon {
+	display: none;
+}
+.closed-sidebar .app-sidebar #treeicon {
+	display: initial;
+	position: relative;
+}
+/** Fix position of tree expander and checkbox */
+span.fancytree-checkbox, span.fancytree-custom-icon, span.fancytree-expander, span.fancytree-icon {
+	margin-top: 4px;
+}
+ul.fancytree-container ul {
+	padding: 0 0 0 20px;
+}
+/** Fix elipse icon (top right) on small display */
+.closed-sidebar .app-header.header-text-light .app-header__menu .mobile-toggle-header-nav {
+	background: #343a40;
+}
+/** Fix tree rendering **/
+.fancytree-node {
+	line-height: 1.75em;
+}
+/** Dont render when hoving on the tree **/
+.vertical-nav-menu li a.no-hover:hover {
+	background: #ffffff;
+}

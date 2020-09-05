@@ -48,7 +48,7 @@ class LoginController extends Controller
 		if (file_exists('login_note.txt'))
 			$login_note = file_get_contents('login_note.txt');
 
-		return view('adminlte::auth.login')->with('login_note',$login_note);
+		return view('architect::auth.login')->with('login_note',$login_note);
 	}
 
 	/**
