@@ -26,6 +26,7 @@ class APIController extends Controller
 					'item'=>Crypt::encryptString($item),
 					'lazy'=>TRUE,
 					'icon'=>'fa-fw fas fa-sitemap',
+					'tooltip'=>$item,
 				];
 			});
 	}
@@ -39,12 +40,12 @@ class APIController extends Controller
 		return (new Server())
 			->query($dn)
 			->transform(function($item) {
-				//dd($item->getDistinguishedName(),$item);
 				return [
 					'title'=>$item->getDistinguishedName(),
 					'item'=>Crypt::encryptString($item->getDistinguishedName()),
 					'icon'=>'fa-fw fas fa-sitemap',
 					'lazy'=>TRUE,
+					'tooltip'=>$item->getDistinguishedName(),
 				];
 			});
 

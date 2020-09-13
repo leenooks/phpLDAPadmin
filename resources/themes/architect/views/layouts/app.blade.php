@@ -15,13 +15,17 @@
 
 				<div class="app-main__outer">
 					<div class="app-main__inner">
-						@include('architect::layouts.partials.contentheader')
+						<div class="main-content">
+							@if (trim($__env->yieldContent('page_title')))
+								@include('architect::layouts.partials.contentheader')
+							@endif
 
-						<!-- Main content -->
-						<div class="row">
-							<div class="col-12">
-								<!-- Your Page Content Here -->
-								@yield('main-content')
+							<!-- Main content -->
+							<div class="row">
+								<div class="col-12">
+									<!-- Your Page Content Here -->
+									@yield('main-content')
+								</div>
 							</div>
 						</div>
 					</div>

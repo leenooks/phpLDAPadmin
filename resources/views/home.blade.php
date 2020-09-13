@@ -4,10 +4,12 @@
 	Home
 @endsection
 
-@section('contentheader_title')
-	Home
+@section('page_title')
 @endsection
-@section('contentheader_description')
+@section('page_subtitle')
+	Content Header - Description
+@endsection
+@section('page_icon')
 @endsection
 
 @section('main-content')
@@ -38,4 +40,8 @@
 	</div>
 @endsection
 
-
+@section('page-scripts')
+	<script>
+		var basedn = {!! $bases->toJson() !!};
+	</script>
+@append

@@ -55,6 +55,27 @@ class Server
 	}
 
 	/**
+	 * Fetch a DN from the server
+	 *
+	 * @param $dn
+	 * @return |null
+	 */
+	public function fetch(string $dn,array $attributes=['*'])
+	{
+		try {
+			return ($x=(new Adldap)
+				->addProvider(config('ldap.connections.default.settings'))
+				->search()
+				->select($attributes)
+				->findByDn($dn)) ? $x : NULL;
+
+		// @todo Tidy up this exception
+		} catch (\Exception $e) {
+			dd(['e'=>$e]);
+		}
+	}
+
+	/**
 	 * Query the server for a DN
 	 *
 	 * @param string $dn

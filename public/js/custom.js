@@ -12,6 +12,13 @@ function expandChildren(node) {
 }
 
 $(document).ready(function() {
+	// If our bases have been set, we'll render them directly
+	if (typeof basedn !== 'undefined') {
+		sources = basedn;
+	} else {
+		sources = { url: 'api/bases' };
+	}
+
 	// Attach the fancytree widget to an existing <div id="tree"> element
 	// and pass the tree options as an argument to the fancytree() function:
 	$('#tree').fancytree({
@@ -20,16 +27,24 @@ $(document).ready(function() {
 		autoCollapse: true, // Automatically collapse all siblings, when a node is expanded.
 		autoScroll: true, // Automatically scroll nodes into visible area.
 		focusOnSelect: true, // Set focus when node is checked by a mouse click
-		click: function(event, data) {
-			if (data.targetType == 'title')
-				return false;
+		click: function(event,data) {
+			if (data.targetType == 'title') {
+				$.ajax({
+					url: 'render',
+					method: 'POST',
+					data: { key: data.node.data.item },
+					dataType: 'html',
+
+				}).done(function(html) {
+					console.log(data);
+					$('.main-content').empty().append(html);
+
+				}).fail(function() {
+					alert('Failed');
+				});
+			}
 		},
-		init: function(event, data) {
-			expandChildren(data.tree.rootNode);
-		},
-		source: {
-			url: "api/bases"
-		},
+		source: sources,
 		lazyLoad: function(event,data) {
 			data.result = {
 				url: "api/query",
