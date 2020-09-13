@@ -26,7 +26,7 @@ With that PLA is going under a major revamp in preparation for v2 and will aim t
 
 Some of the creations planned to be used in v2 include:
 * Laravel (https://laravel.com)
-* adldap2/adldap2 (https://github.com/Adldap2/Adldap2)
+* directorytree/ldaprecord-laravel (https://ldaprecord.com/)
 * JQuery (https://jquery.com)
 * FancyTree (https://github.com/mar10/fancytree)
 * ArchitectUI (https://architectui.com)

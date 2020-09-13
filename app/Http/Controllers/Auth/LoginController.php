@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -38,6 +39,14 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+	protected function credentials(Request $request): array
+	{
+		return [
+			'mail' => $request->get('email'),
+			'password' => $request->get('password'),
+		];
+	}
+
 	/**
 	 * Show our themed login page
 	 */
@@ -49,15 +58,5 @@ class LoginController extends Controller
 			$login_note = file_get_contents('login_note.txt');
 
 		return view('architect::auth.login')->with('login_note',$login_note);
-	}
-
-	/**
-	 * Get the login username to be used by the controller.
-	 *
-	 * @return string
-	 */
-	public function username()
-	{
-		return config('ldap_auth.identifiers.ldap.locate_users_by');
 	}
 }

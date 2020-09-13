@@ -2,8 +2,7 @@
 
 namespace App\Classes\LDAP;
 
-use Adldap\Adldap;
-use Adldap\Models\Entry;
+use App\Ldap\Entry;
 use Illuminate\Support\Collection;
 
 class Server
@@ -42,11 +41,10 @@ class Server
 	protected function getDNAttrValues(string $dn,array $attrs=['*','+'],int $deref=LDAP_DEREF_NEVER): ?Entry
 	{
 		try {
-			return ($x=(new Adldap)
-				->addProvider(config('ldap.connections.default.settings'))
-				->search()
+			return ($x=(new Entry)
+				->query()
 				->select($attrs)
-				->findByDn($dn)) ? $x : NULL;
+				->find($dn)) ? $x : NULL;
 
 		// @todo Tidy up this exception
 		} catch (\Exception $e) {
@@ -60,14 +58,13 @@ class Server
 	 * @param $dn
 	 * @return |null
 	 */
-	public function fetch(string $dn,array $attributes=['*'])
+	public function fetch(string $dn,array $attrs=['*','+'])
 	{
 		try {
-			return ($x=(new Adldap)
-				->addProvider(config('ldap.connections.default.settings'))
-				->search()
-				->select($attributes)
-				->findByDn($dn)) ? $x : NULL;
+			return ($x=(new Entry)
+				->query()
+				->select($attrs)
+				->find($dn)) ? $x : NULL;
 
 		// @todo Tidy up this exception
 		} catch (\Exception $e) {
@@ -84,11 +81,9 @@ class Server
 	public function query(string $dn)
 	{
 		try {
-			return ($x=(new Adldap)
-				->addProvider(config('ldap.connections.default.settings'))
-				->search()
-				->setBaseDn($dn)
-				//->select($attrs)
+			return ($x=(new Entry)
+				->query()
+				->setDn($dn)
 				->listing()
 				->get()) ? $x : NULL;
 

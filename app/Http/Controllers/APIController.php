@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
+use LdapRecord\Query\Collection;
 
 use App\Classes\LDAP\Server;
 
@@ -31,6 +31,10 @@ class APIController extends Controller
 			});
 	}
 
+	/**
+	 * @param Request $request
+	 * @return Collection
+	 */
 	public function query(Request $request): Collection
 	{
 		$levels = $request->query('depth',1);
@@ -41,14 +45,12 @@ class APIController extends Controller
 			->query($dn)
 			->transform(function($item) {
 				return [
-					'title'=>$item->getDistinguishedName(),
-					'item'=>Crypt::encryptString($item->getDistinguishedName()),
+					'title'=>$item->getDn(),
+					'item'=>Crypt::encryptString($item->getDn()),
 					'icon'=>'fa-fw fas fa-sitemap',
 					'lazy'=>TRUE,
-					'tooltip'=>$item->getDistinguishedName(),
+					'tooltip'=>$item->getDn(),
 				];
 			});
-
-		Log::debug(sprintf('%s: Query [%s] - Levels [%d]: %s',__METHOD__,$dn,$levels,serialize($x)));
 	}
 }

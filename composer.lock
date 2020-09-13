@@ -4,121 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6af914ca38690bee00357e0090846450",
+    "content-hash": "3305fba3e359e4cd7e2d41c6a65c7437",
     "packages": [
-        {
-            "name": "adldap2/adldap2",
-            "version": "v10.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Adldap2/Adldap2.git",
-                "reference": "1294c92746e3fb3bb59cd7756ca7838a1e705a2a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Adldap2/Adldap2/zipball/1294c92746e3fb3bb59cd7756ca7838a1e705a2a",
-                "reference": "1294c92746e3fb3bb59cd7756ca7838a1e705a2a",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "ext-ldap": "*",
-                "illuminate/contracts": "~5.0|~6.0|~7.0",
-                "php": ">=7.0",
-                "psr/log": "~1.0",
-                "psr/simple-cache": "~1.0",
-                "tightenco/collect": "~5.0|~6.0|~7.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "~1.0",
-                "phpunit/phpunit": "~6.0"
-            },
-            "suggest": {
-                "ext-fileinfo": "fileinfo is required when retrieving user encoded thumbnails"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Adldap\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Steve Bauman",
-                    "email": "steven_bauman@outlook.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A PHP LDAP Package for humans.",
-            "keywords": [
-                "active directory",
-                "ad",
-                "adLDAP",
-                "adldap2",
-                "directory",
-                "ldap",
-                "windows"
-            ],
-            "time": "2020-05-04T21:10:15+00:00"
-        },
-        {
-            "name": "adldap2/adldap2-laravel",
-            "version": "v6.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Adldap2/Adldap2-Laravel.git",
-                "reference": "c72a2e3757919c39d6a03bd345ec4e586284825c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Adldap2/Adldap2-Laravel/zipball/c72a2e3757919c39d6a03bd345ec4e586284825c",
-                "reference": "c72a2e3757919c39d6a03bd345ec4e586284825c",
-                "shasum": ""
-            },
-            "require": {
-                "adldap2/adldap2": "^10.1",
-                "illuminate/support": "~5.5|~6.0|~7.0",
-                "php": ">=7.1"
-            },
-            "require-dev": {
-                "mockery/mockery": "~1.0",
-                "orchestra/testbench": "~3.7",
-                "phpunit/phpunit": "~7.0"
-            },
-            "type": "project",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Adldap\\Laravel\\AdldapServiceProvider",
-                        "Adldap\\Laravel\\AdldapAuthServiceProvider"
-                    ],
-                    "aliases": {
-                        "Adldap": "Adldap\\Laravel\\Facades\\Adldap"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Adldap\\Laravel\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "LDAP Authentication & Management for Laravel.",
-            "keywords": [
-                "adLDAP",
-                "adldap2",
-                "laravel",
-                "ldap"
-            ],
-            "time": "2020-06-02T00:45:05+00:00"
-        },
         {
             "name": "asm89/stack-cors",
             "version": "v2.0.1",
@@ -344,6 +231,130 @@
                 "symmetric key cryptography"
             ],
             "time": "2018-07-24T23:27:56+00:00"
+        },
+        {
+            "name": "directorytree/ldaprecord",
+            "version": "v1.10.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DirectoryTree/LdapRecord.git",
+                "reference": "601e2fb47802795b27ea6052e78557c56f397082"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DirectoryTree/LdapRecord/zipball/601e2fb47802795b27ea6052e78557c56f397082",
+                "reference": "601e2fb47802795b27ea6052e78557c56f397082",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-ldap": "*",
+                "illuminate/contracts": "^5.0|^6.0|^7.0|^8.0",
+                "nesbot/carbon": "^1.0|^2.0",
+                "php": ">=7.2",
+                "psr/log": "^1.0",
+                "psr/simple-cache": "^1.0",
+                "tightenco/collect": "^5.0|^6.0|^7.0|^8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "phpunit/phpunit": "^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LdapRecord\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Steve Bauman",
+                    "email": "steven_bauman@outlook.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A fully-featured LDAP ORM.",
+            "homepage": "https://www.ldaprecord.com",
+            "keywords": [
+                "active directory",
+                "ad",
+                "adLDAP",
+                "adldap2",
+                "directory",
+                "ldap",
+                "ldaprecord",
+                "orm",
+                "windows"
+            ],
+            "funding": [
+                {
+                    "url": "https://github.com/stevebauman",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-09-08T16:57:58+00:00"
+        },
+        {
+            "name": "directorytree/ldaprecord-laravel",
+            "version": "v1.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/DirectoryTree/LdapRecord-Laravel.git",
+                "reference": "98e6698057321aef9d777bfe312bd1d968a5d67e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/DirectoryTree/LdapRecord-Laravel/zipball/98e6698057321aef9d777bfe312bd1d968a5d67e",
+                "reference": "98e6698057321aef9d777bfe312bd1d968a5d67e",
+                "shasum": ""
+            },
+            "require": {
+                "directorytree/ldaprecord": "^1.8.2",
+                "ext-ldap": "*",
+                "illuminate/support": "^5.6|^6.0|^7.0|^8.0",
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "mockery/mockery": "~1.0",
+                "orchestra/testbench": "~3.7|~4.0|~5.0|~6.0",
+                "phpunit/phpunit": "~7.0|~8.0|~9.0"
+            },
+            "type": "project",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LdapRecord\\Laravel\\LdapServiceProvider",
+                        "LdapRecord\\Laravel\\LdapAuthServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LdapRecord\\Laravel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "LDAP Authentication & Management for Laravel.",
+            "keywords": [
+                "adldap2",
+                "laravel",
+                "ldap",
+                "ldaprecord"
+            ],
+            "funding": [
+                {
+                    "url": "https://github.com/stevebauman",
+                    "type": "github"
+                }
+            ],
+            "time": "2020-09-08T18:14:11+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -2141,16 +2152,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.39.1",
+            "version": "2.39.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "7af467873250583cc967a59ee9df29fabab193c1"
+                "reference": "326efde1bc09077a26cb77f6e2e32e13f06c27f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/7af467873250583cc967a59ee9df29fabab193c1",
-                "reference": "7af467873250583cc967a59ee9df29fabab193c1",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/326efde1bc09077a26cb77f6e2e32e13f06c27f2",
+                "reference": "326efde1bc09077a26cb77f6e2e32e13f06c27f2",
                 "shasum": ""
             },
             "require": {
@@ -2226,7 +2237,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-09-04T13:11:37+00:00"
+            "time": "2020-09-10T12:16:42+00:00"
         },
         {
             "name": "nyholm/psr7",
@@ -5389,16 +5400,16 @@
         },
         {
             "name": "symfony/translation-contracts",
-            "version": "v2.1.3",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation-contracts.git",
-                "reference": "616a9773c853097607cf9dd6577d5b143ffdcd63"
+                "reference": "77ce1c3627c9f39643acd9af086631f842c50c4d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/616a9773c853097607cf9dd6577d5b143ffdcd63",
-                "reference": "616a9773c853097607cf9dd6577d5b143ffdcd63",
+                "url": "https://api.github.com/repos/symfony/translation-contracts/zipball/77ce1c3627c9f39643acd9af086631f842c50c4d",
+                "reference": "77ce1c3627c9f39643acd9af086631f842c50c4d",
                 "shasum": ""
             },
             "require": {
@@ -5410,7 +5421,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev"
+                    "dev-master": "2.2-dev"
                 },
                 "thanks": {
                     "name": "symfony/contracts",
@@ -5460,7 +5471,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-07-06T13:23:11+00:00"
+            "time": "2020-09-07T11:33:47+00:00"
         },
         {
             "name": "symfony/var-dumper",
@@ -5554,16 +5565,16 @@
         },
         {
             "name": "tightenco/collect",
-            "version": "v7.26.1",
+            "version": "v8.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/tightenco/collect.git",
-                "reference": "5e460929279ad806e59fc731e649e9b25fc8774a"
+                "url": "https://github.com/tighten/collect.git",
+                "reference": "90aa058ca9250eebc3e07f25377949f43855ecae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tightenco/collect/zipball/5e460929279ad806e59fc731e649e9b25fc8774a",
-                "reference": "5e460929279ad806e59fc731e649e9b25fc8774a",
+                "url": "https://api.github.com/repos/tighten/collect/zipball/90aa058ca9250eebc3e07f25377949f43855ecae",
+                "reference": "90aa058ca9250eebc3e07f25377949f43855ecae",
                 "shasum": ""
             },
             "require": {
@@ -5600,7 +5611,7 @@
                 "collection",
                 "laravel"
             ],
-            "time": "2020-09-05T00:05:48+00:00"
+            "time": "2020-09-08T16:43:13+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
