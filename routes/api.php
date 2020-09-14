@@ -20,6 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 */
 Route::group([],function() {
-	Route::get('/bases', 'APIController@bases');
-	Route::get('/query', 'APIController@query');
+	Route::get('/bases','APIController@bases');
+	Route::get('/children','APIController@children');
 });

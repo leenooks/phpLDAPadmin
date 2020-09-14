@@ -78,16 +78,17 @@ class Server
 	 * @param string $dn
 	 * @return |null
 	 */
-	public function query(string $dn)
+	public function children(string $dn)
 	{
 		try {
 			return ($x=(new Entry)
 				->query()
+				->select(['dn','hassubordinates'])
 				->setDn($dn)
 				->listing()
 				->get()) ? $x : NULL;
 
-			// @todo Tidy up this exception
+		// @todo Tidy up this exception
 		} catch (\Exception $e) {
 			dd(['e'=>$e]);
 		}

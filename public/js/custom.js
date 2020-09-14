@@ -47,7 +47,7 @@ $(document).ready(function() {
 		source: sources,
 		lazyLoad: function(event,data) {
 			data.result = {
-				url: "api/query",
+				url: 'api/children',
 				data: {key: data.node.data.item,depth: 1}
 			};
 
@@ -55,8 +55,8 @@ $(document).ready(function() {
 		},
 		keydown: function(event, data){
 			switch( $.ui.fancytree.eventToString(data.originalEvent) ) {
-				case "return":
-				case "space":
+				case 'return':
+				case 'space':
 					data.node.toggleExpanded();
 					break;
 			}

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use LdapRecord\Query\Collection;
@@ -35,20 +36,20 @@ class APIController extends Controller
 	 * @param Request $request
 	 * @return Collection
 	 */
-	public function query(Request $request): Collection
+	public function children(Request $request): Collection
 	{
 		$levels = $request->query('depth',1);
 		$dn = Crypt::decryptString($request->query('key'));
 		Log::debug(sprintf('%s: Query [%s] - Levels [%d]',__METHOD__,$dn,$levels));
 
 		return (new Server())
-			->query($dn)
+			->children($dn)
 			->transform(function($item) {
 				return [
-					'title'=>$item->getDn(),
+					'title'=>$item->getRdn(),
 					'item'=>Crypt::encryptString($item->getDn()),
 					'icon'=>'fa-fw fas fa-sitemap',
-					'lazy'=>TRUE,
+					'lazy'=>Arr::get($item->getAttribute('hassubordinates'),0) == 'TRUE',
 					'tooltip'=>$item->getDn(),
 				];
 			});
