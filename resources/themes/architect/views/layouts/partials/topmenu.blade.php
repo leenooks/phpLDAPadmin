@@ -54,35 +54,34 @@
 			<div class="header-btn-lg pr-0">
 				<div class="widget-content p-0">
 					<div class="widget-content-wrapper">
-						<div class="widget-content-left">
-							<div class="btn-group">
-								<a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn">
-									<img width="42" class="rounded-circle" src="assets/images/avatars/1.jpg" alt="">
-									<i class="fas fa-angle-down ml-2 opacity-8"></i>
-								</a>
-								<div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-									{{--
-									<button type="button" tabindex="0" class="dropdown-item">User Account</button>
-									<h6 tabindex="-1" class="dropdown-header">Header</h6>
-									<button type="button" tabindex="0" class="dropdown-item">Actions</button>
-									<div tabindex="-1" class="dropdown-divider"></div>
-									<button type="button" tabindex="0" class="dropdown-item">Dividers</button>
-									--}}
-								</div>
-							</div>
-						</div>
-						<div class="widget-content-left  ml-3 header-user-info">
+						<div class="widget-content-left ml-3 header-user-info">
 							<div class="widget-heading">
-								{{ $user->name ?? 'John Smith' }}
+								{{ $user->exists ? Arr::get($user->getAttribute('cn'),0,'Anonymous') : 'Anonymous' }}
 							</div>
 							<div class="widget-subheading">
-								{{ $user->title ?? 'Primary Developer' }}
+								{{ $user->exists ? Arr::get($user->getAttribute('mail'),0,'') : '' }}
 							</div>
 						</div>
-						<div class="widget-content-right header-user-info ml-3">
-							<button type="button" class="btn-shadow p-1 btn btn-primary btn-sm show-toastr-example">
-								<i class="fas text-white fa-calendar pr-1 pl-1"></i>
-							</button>
+						<div class="widget-content-right">
+							<div class="btn-group">
+								<a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn">
+									<i class="fas fa-angle-down ml-2 opacity-8"></i>
+									<img width="35" height="35" class="rounded" src="{{ url('user/image') }}" alt="" style="background-color: #eee;padding: 2px;">
+								</a>
+								<div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+									@if ($user->exists)
+										<h6 tabindex="-1" class="dropdown-header text-center">User Menu</h6>
+										<div tabindex="-1" class="dropdown-divider"></div>
+										<a href="{{ url('logout') }}" tabindex="0" class="dropdown-item">
+											<i class="fas fa-fw fa-sign-out-alt mr-2"></i> Sign Out
+										</a>
+									@else
+										<a href="{{ url('login') }}" tabindex="0" class="dropdown-item">
+											<i class="fas fa-fw fa-sign-in-alt mr-2"></i> Sign In
+										</a>
+									@endif
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -1,7 +1,4 @@
 <script src="{{ asset('/js/app.js') }}" type="text/javascript"></script>
-{{--
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
---}}
 <!-- Architect -->
 <script src="{{ asset('/js/architect.min.js') }}"></script>
 

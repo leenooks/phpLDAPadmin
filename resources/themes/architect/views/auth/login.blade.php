@@ -5,33 +5,23 @@
 @endsection
 
 @section('content')
-	@if(isset($login_note) AND $login_note)
-		<div class="alert alert-info alert-dismissible m-auto">
-			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-			<h5><i class="icon fas fa-info"></i> NOTE!</h5>
-			{!! $login_note !!}
-		</div>
-		<br>
-	@endisset
-
-	@if (Session::has('error'))
-		<div class="alert alert-danger">
-			<strong>Hmm...</strong> {{ trans('message.someproblems') }}<br><br>
-			<ul>
-				<li>{{ Session::get('error') }}</li>
-			</ul>
-		</div>
-	@endif
-
 	<!-- /.login-logo -->
 	<div class="app-container app-theme-white body-tabs-shadow">
 		<div class="app-container">
 			<div class="h-100 bg-animation">
 				<div class="d-flex h-100 justify-content-center align-items-center">
 					<div class="mx-auto app-login-box col-md-8">
+						@if(asset('login-note.txt'))
+							<div class="mx-auto card text-white card-body bg-primary w-50">
+								<h5 class="text-white card-title"><i class="icon fa-2x fas fa-info pr-3"></i><span class="font-size-xlg">NOTE</span></h5>
+								<span class="w-100 pb-0">
+									{!! file_get_contents('login-note.txt') !!}
+								</span>
+							</div>
+						@endif
 						<div class="modal-dialog w-100 mx-auto">
 							<div class="modal-content">
-								<form method="post">
+								<form class="needs-validation" novalidate method="post">
 									{{ csrf_field() }}
 
 									<div class="modal-body">
@@ -43,22 +33,24 @@
 										</div>
 
 										<div class="form-row">
-											<div class="col-md-12">
-												<div class="position-relative form-group">
-													<input name="email" id="user" placeholder="Email..." type="email" class="form-control">
+											<div class="col-md-12 mt-3">
+												<label class="mb-1">Email</label>
+												<input name="email" id="user" placeholder="" type="email" class="form-control" required="">
+												<div class="invalid-feedback">
+													Please enter your email.
 												</div>
 											</div>
-											<div class="col-md-12">
-												<div class="position-relative form-group">
-													<input name="password" id="password" placeholder="Password..." type="password" class="form-control">
+
+											<div class="col-md-12 mt-2">
+												<label class="mb-1">Password</label>
+												<input name="password" id="password" placeholder="" type="password" class="form-control" required>
+												<div class="invalid-feedback">
+													Please enter your password.
 												</div>
 											</div>
 										</div>
-										{{--
-										<div class="divider"></div>
-										<h6 class="mb-0">No account? <a href="javascript:void(0);" class="text-primary">Sign up now</a></h6>
-										--}}
 									</div>
+
 									<div class="modal-footer">
 										@if (count($errors) > 0)
 											<div class="alert alert-danger w-100">
@@ -70,11 +62,6 @@
 												</ul>
 											</div>
 										@endif
-										{{--
-										<div class="float-left">
-											<a href="javascript:void(0);" class="btn-lg btn btn-link">Recover Password</a>
-										</div>
-										--}}
 										<div class="float-right">
 											<button class="btn btn-primary btn-lg">Login</button>
 										</div>
@@ -88,3 +75,39 @@
 		</div>
 	</div>
 @endsection
+
+@section('page-scripts')
+	<style>
+		label {
+			text-transform: uppercase;
+			letter-spacing: 0.05em;
+			font-size: 85%;
+			font-weight: bold;
+		}
+
+		table.table tr:last-child {
+			border-bottom: 1px solid #e9ecef;
+		}
+	</style>
+
+	<script>
+		// Example starter JavaScript for disabling form submissions if there are invalid fields
+		(function () {
+			'use strict';
+			window.addEventListener('load',function () {
+				// Fetch all the forms we want to apply custom Bootstrap validation styles to
+				var forms = document.getElementsByClassName('needs-validation');
+				// Loop over them and prevent submission
+				var validation = Array.prototype.filter.call(forms, function (form) {
+					form.addEventListener('submit', function (event) {
+						if (form.checkValidity() === false) {
+							event.preventDefault();
+							event.stopPropagation();
+						}
+						form.classList.add('was-validated');
+					}, false);
+				});
+			}, false);
+		})();
+	</script>
+@append

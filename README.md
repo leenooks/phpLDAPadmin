@@ -30,6 +30,7 @@ Some of the creations planned to be used in v2 include:
 * JQuery (https://jquery.com)
 * FancyTree (https://github.com/mar10/fancytree)
 * ArchitectUI (https://architectui.com)
+* Fontawesome Icons (https://fontawesome.com)
 
 PLA v1.2.x will be archived into [BRANCH-1.2](https://github.com/leenooks/phpLDAPadmin/tree/BRANCH-1.2), and `master` will be changed to reflect the new v2 work and effort.
 

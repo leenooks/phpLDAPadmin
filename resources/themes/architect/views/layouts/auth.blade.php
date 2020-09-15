@@ -11,6 +11,8 @@
 
 @section('scripts')
 	@include('architect::auth.partials.scripts')
+
+	@yield('page-scripts')
 @show
 </body>
 </html>
