@@ -1928,66 +1928,6 @@ function pla_verbose_error($key) {
 }
 
 /**
- * Given an LDAP OID number, returns a verbose description of the OID.
- * This function parses ldap_supported_oids.txt and looks up the specified
- * OID, and returns the verbose message defined in that file.
- *
- * <code>
- *  Array (
- *    [title] => All Operational Attribute
- *    [ref] => RFC 3673
- *    [desc] => An LDAP extension which clients may use to request the return of all operational attributes.
- *  )
- * </code>
- *
- * @param string The OID number (ie, "1.3.6.1.4.1.4203.1.5.1") of the OID of interest.
- * @return array An associative array contianing the OID title and description like so:
- */
-function support_oid_to_text($key) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-	static $CACHE = array();
-
-	$unknown = array();
-	$unknown['desc'] = 'We have no description for this OID, if you know what this OID provides, please let us know. Please also include an RFC reference if it is available.';
-	$unknown['title'] = 'Can you help with this OID info?';
-
-	if (! count($CACHE)) {
-		$source_file = LIBDIR.'ldap_supported_oids.txt';
-
-		if (! file_exists($source_file) || ! is_readable($source_file) || ! ($f = fopen($source_file,'r')))
-			return false;
-
-		$contents = fread($f,filesize($source_file));
-		fclose($f);
-		$entries = array();
-		preg_match_all("/[0-9]\..+\s+\"[^\"]*\"\n/",$contents,$entries);
-
-		foreach ($entries[0] as $values) {
-			$entry = array();
-			preg_match("/([0-9]\.([0-9]+\.)*[0-9]+)(\s+\"([^\"]*)\")?(\s+\"([^\"]*)\")?(\s+\"([^\"]*)\")?/",$values,$entry);
-			$oid_id = isset($entry[1]) ? $entry[1] : null;
-
-			if ($oid_id) {
-				$CACHE[$oid_id]['title'] = isset($entry[4]) ? $entry[4] : null;
-				$CACHE[$oid_id]['ref'] = isset($entry[6]) ? $entry[6] : null;
-				$desc = isset($entry[8]) ? $entry[8] : sprintf('<acronym title="%s">%s</acronym>',$unknown['desc'],$unknown['title']);
-				$CACHE[$oid_id]['desc'] = preg_replace('/\s+/',' ',$desc);
-			}
-		}
-	}
-
-	if (isset($CACHE[$key]))
-		return $CACHE[$key];
-	else
-		return array(
-			'title'=>$key,
-			'ref'=>null,
-			'desc'=>sprintf('<acronym title="%s">%s</acronym>',$unknown['desc'],$unknown['title']));
-}
-
-/**
  * Print an LDAP error message
  */
 function ldap_error_msg($msg,$errnum) {

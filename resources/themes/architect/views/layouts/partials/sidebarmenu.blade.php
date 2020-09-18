@@ -34,6 +34,12 @@
 			<ul class="vertical-nav-menu">
 				<li class="app-sidebar__heading">{{ $server ?? 'Server Name' }}</li>
 				<li>
+					<div class="font-icon-wrapper float-left mr-1">
+						<a class="p-0 m-0 server-icon" href="{{ url('info') }}" style="display: contents;"><i class="fas fa-fw fa-info pr-1 pl-1"></i></a>
+					</div>
+					<div class="clearfix"></div>
+				</li>
+				<li>
 					<i id="treeicon" class="metismenu-icon fa-fw fas fa-sitemap"></i>
 					<span id="tree"></span>
 				</li>
@@ -41,3 +47,39 @@
 		</div>
 	</div>
 </div>
+
+@section('page-scripts')
+	<script>
+		$(document).ready(function() {
+			$('.server-icon').click(function(e) {
+				var content;
+
+				$.ajax({
+					url: $(this).attr('href'),
+					method: 'GET',
+					dataType: 'html',
+					statusCode: {
+						404: function() {
+							$('.main-content').empty().append(content);
+						}
+					},
+					beforeSend: function() {
+						content = $('.main-content').contents();
+						$('.main-content').empty().append('<div class="fa-3x"><i class="fas fa-spinner fa-pulse"></i></div>');
+					}
+
+				}).done(function(html) {
+					$('.main-content').empty().append(html);
+
+				}).fail(function() {
+					//alert('Failed');
+				});
+
+				e.stopPropagation();
+
+				console.log($(this).attr('href'));
+				return false;
+			});
+		});
+	</script>
+@append

@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
-
-use App\Classes\LDAP\Server;
 use Illuminate\Support\Facades\File;
+
+use App\Ldap\Entry;
+use App\Classes\LDAP\Server;
 
 class HomeController extends Controller
 {
-	public function home() {
+	public function home()
+	{
 		$o = new Server;
 
 		return view('home')
@@ -28,12 +31,49 @@ class HomeController extends Controller
 			}));
 	}
 
-	public function render(Request $request) {
+	public function info()
+	{
+		$attrs = collect((new Entry)->rootDSE()->getAttributes())
+			->transform(function($item,$key) {
+				foreach ($item as $k=>$v) {
+					if (preg_match('/[0-9]+\.[0-9]+\.[0-9]+/',$v)) {
+						$format = sprintf(
+							'<abbr class="pb-1" title="%s"><i class="fas fa-list-ol pr-2"></i>%s</abbr>%s<p class="mb-0">%s</p>',
+							$v,
+							Server::getOID($v,'title'),
+							($x=Server::getOID($v,'ref')) ? sprintf('<abbr class="pl-2" title="%s"><i class="fas fa-comment-dots"></i></abbr>',$x) : '',
+							Server::getOID($v,'desc'),
+						);
+						$item[$k] = $format;
+					}
+				}
+				return $item;
+			});
+
+		return view('widgets.dn')
+			->with('dn','Server Info')
+			->with('attributes',$this->sortAttrs($attrs));
+	}
+
+	public function render(Request $request)
+	{
 		$dn = Crypt::decryptString($request->post('key'));
 
 		return view('widgets.dn')
 			->with('dn',$dn)
-			->with('leaf',(new Server())->fetch($dn));
+			->with('leaf',$x=(new Server())->fetch($dn))
+			->with('attributes',$this->sortAttrs(collect($x->getAttributes())));
+	}
+
+	/**
+	 * Sort the attributes
+	 *
+	 * @param Collection $attrs
+	 * @return Collection
+	 */
+	private function sortAttrs(Collection $attrs): Collection
+	{
+		return $attrs->sortKeys();
 	}
 
 	/**

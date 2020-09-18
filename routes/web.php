@@ -23,6 +23,7 @@ Auth::routes([
 Route::redirect('/','home');
 Route::get('logout','Auth\LoginController@logout');
 Route::get('home','HomeController@home');
+Route::get('info','HomeController@info');
 Route::post('render','HomeController@render');
 
 Route::group(['prefix'=>'user'],function() {

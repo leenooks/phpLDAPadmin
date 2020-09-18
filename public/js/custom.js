@@ -34,9 +34,12 @@ $(document).ready(function() {
 					method: 'POST',
 					data: { key: data.node.data.item },
 					dataType: 'html',
+					beforeSend: function() {
+						content = $('.main-content').contents();
+						$('.main-content').empty().append('<div class="fa-3x"><i class="fas fa-spinner fa-pulse"></i></div>');
+					}
 
 				}).done(function(html) {
-					console.log(data);
 					$('.main-content').empty().append(html);
 
 				}).fail(function() {
