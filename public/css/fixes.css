@@ -80,9 +80,16 @@ ul.fancytree-container {
 .app-sidebar #treeicon, .closed-sidebar:hover .app-sidebar:hover #treeicon, .sidebar-mobile-open #treeicon {
 	display: none;
 }
-.closed-sidebar .app-sidebar #treeicon {
+.closed-sidebar .app-sidebar #treeicon :not(.sidebar-mobile-open) {
 	display: initial;
 	position: relative;
+}
+/** Server icons **/
+.closed-sidebar .server-icon {
+	display: none;
+}
+.closed-sidebar .app-sidebar:hover .server-icon, .sidebar-mobile-open .server-icon {
+	display: flex;
 }
 /** Fix position of tree expander and checkbox */
 span.fancytree-checkbox, span.fancytree-custom-icon, span.fancytree-expander, span.fancytree-icon {

@@ -50,6 +50,7 @@
 1.3.6.1.1.13.1:Pre-Read Controls::The Pre-Read request control, indicates that a copy of the entry before application of update is to be returned.
 1.3.6.1.1.13.2:Post-Read Controls::The Pre-Read request control, indicates that a copy of the entry before application of update is to be returned.
 1.3.6.1.1.14:Modify-Increment Extension:RFC 4525:An extension to the Lightweight Directory Access Protocol (LDAP) Modify operation to support an increment capability.
+1.3.6.1.1.22:Dont Use Copy Control:RFC 6171:When the control is attached to an LDAP request, the requested operation MUST NOT be performed on copied information.  That is, the requested operation MUST be performed on original information.
 1.3.6.1.4.1.42.2.27.8.5.1:passwordPolicyRequest
 1.3.6.1.4.1.42.2.27.9.5.2:GetEffectiveRights control::May be used to determine what operations a given user may perform on a specified entry.
 1.3.6.1.4.1.1466.101.119.1:Dynamic Directory Services Refresh Request:RFC 2589
