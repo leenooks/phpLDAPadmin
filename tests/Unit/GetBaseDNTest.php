@@ -3,9 +3,9 @@
 namespace Tests\Unit;
 
 use Illuminate\Support\Collection;
-use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 use App\Classes\LDAP\Server;
 

@@ -16,7 +16,8 @@
         "laravel/framework": "^7.22.2",
         "laravel/passport": "^9.3",
         "laravel/ui": "^2.1",
-        "leenooks/laravel": "7.0"
+        "leenooks/laravel": "7.0",
+        "mcamara/laravel-localization": "^1.6"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

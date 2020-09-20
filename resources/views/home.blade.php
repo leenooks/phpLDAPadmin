@@ -1,13 +1,10 @@
 @extends('architect::layouts.app')
 
 @section('htmlheader_title')
-	Home
+	@lang('Home')
 @endsection
 
 @section('page_title')
-@endsection
-@section('page_subtitle')
-	Content Header - Description
 @endsection
 @section('page_icon')
 @endsection
@@ -18,7 +15,7 @@
 			<div class="row">
 				<div class="col-12 col-sm-4">
 					<h3 class="d-inline-block d-sm-none">phpLDAPadmin</h3>
-					<img src="img/logo.png" class="logo-image col-12" alt="PLA Logo">
+					<img src="/img/logo.png" class="logo-image col-12" alt="PLA Logo">
 				</div>
 
 				<div class="col-12 col-sm-8">

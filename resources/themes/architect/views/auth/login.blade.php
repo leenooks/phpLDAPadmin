@@ -29,7 +29,7 @@
 										<div class="h5 modal-title text-center">
 											<h4 class="mt-2">
 												<div class="app-logo mx-auto mb-3"><img class="w-75" src="{{ url('img/logo-h-lg.png') }}"></div>
-												<small>Please sign in to your account below.</small>
+												<small>@lang('Sign in to <strong>:server</strong>',['server'=>'Foo'])</small>
 											</h4>
 										</div>
 
@@ -38,15 +38,15 @@
 												<label class="mb-1">Email</label>
 												<input name="email" id="user" placeholder="" type="email" class="form-control" required="">
 												<div class="invalid-feedback">
-													Please enter your email.
+													@lang('Please enter your email')
 												</div>
 											</div>
 
 											<div class="col-md-12 mt-2">
-												<label class="mb-1">Password</label>
+												<label class="mb-1">@lang('Password')</label>
 												<input name="password" id="password" placeholder="" type="password" class="form-control" required>
 												<div class="invalid-feedback">
-													Please enter your password.
+													@lang('Please enter your password')
 												</div>
 											</div>
 										</div>

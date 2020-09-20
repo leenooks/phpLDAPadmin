@@ -51,7 +51,7 @@ class HomeController extends Controller
 			});
 
 		return view('widgets.dn')
-			->with('dn','Server Info')
+			->with('dn',__('Server Info'))
 			->with('attributes',$this->sortAttrs($attrs));
 	}
 

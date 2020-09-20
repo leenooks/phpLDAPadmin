@@ -50,7 +50,7 @@ $(document).ready(function() {
 		source: sources,
 		lazyLoad: function(event,data) {
 			data.result = {
-				url: 'api/children',
+				url: '/api/children',
 				data: {key: data.node.data.item,depth: 1}
 			};
 

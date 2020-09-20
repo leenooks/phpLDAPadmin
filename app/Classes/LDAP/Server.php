@@ -59,6 +59,7 @@ class Server
 	 *
 	 * @return Collection|null array|NULL The root DN(s) of the server on success (string) or NULL if it cannot be determine.
 	 * @todo Sort the entries, so that they are in the correct DN order.
+	 * @testedby GetBaseDNTest::testBaseDNExists()
 	 */
 	public function getBaseDN(): ?Collection
 	{
@@ -113,6 +114,7 @@ class Server
 	 * @param string $oid The OID number (ie, "1.3.6.1.4.1.4203.1.5.1") of the OID of interest.
 	 * @param string $key The title|ref|desc to return
 	 * @return string|null
+	 * @testedby TranslateOidTest::testRootDSE()
 	 */
 	public static function getOID(string $oid,string $key): ?string
 	{
@@ -149,7 +151,7 @@ class Server
 		return Arr::get(
 			($oids ? $oids->get($oid) : []),
 			$key,
-			($key == 'desc' ? 'No description available, can you help with one?' : ($key == 'title' ? $oid : ''))
+			($key == 'desc' ? 'No description available, can you help with one?' : ($key == 'title' ? $oid : NULL))
 		);
 	}
 }

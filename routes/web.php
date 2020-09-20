@@ -13,18 +13,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*
-*/
-Auth::routes([
-	'reset' => false,
-	'verify' => false,
-	'register' => false,
-]);
+Route::group(['prefix' => LaravelLocalization::setLocale()], function() {
+	Auth::routes([
+		'login' => TRUE,
+		'logout' => TRUE,
+		'reset' => FALSE,
+		'confirm' => FALSE,
+		'verify' => FALSE,
+		'register' => FALSE,
+	]);
+
+	Route::get('home','HomeController@home');
+	Route::get('info','HomeController@info');
+	Route::post('render','HomeController@render');
+});
+
 Route::redirect('/','home');
 Route::get('logout','Auth\LoginController@logout');
-Route::get('home','HomeController@home');
-Route::get('info','HomeController@info');
-Route::post('render','HomeController@render');
 
 Route::group(['prefix'=>'user'],function() {
 	Route::get('image','HomeController@user_image');

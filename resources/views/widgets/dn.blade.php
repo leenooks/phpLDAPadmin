@@ -1,9 +1,5 @@
 @extends('architect::layouts.dn')
 
-@section('htmlheader_title')
-	Home
-@endsection
-
 @section('page_title')
 	{{ $dn }}
 @endsection
