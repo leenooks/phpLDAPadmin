@@ -2,33 +2,32 @@
 
 namespace App\Classes\LDAP;
 
-use App\Ldap\Entry;
+use Exception;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+
+use LdapRecord\Models\Model;
+use LdapRecord\Query\Collection;
+use LdapRecord\Query\Model\Builder;
+
+use App\Ldap\Entry;
 
 class Server
 {
 	/**
-	 * Query the server for a DN
+	 * Query the server for a DN and return it's children and if those children have children.
 	 *
 	 * @param string $dn
-	 * @return array|\LdapRecord\Query\Collection|null
+	 * @return array|Collection|null
 	 */
-	public function children(string $dn)
+	public function children(string $dn): ?Collection
 	{
-		try {
-			return ($x=(new Entry)
-				->query()
-				->select(['dn','hassubordinates'])
-				->setDn($dn)
-				->listing()
-				->get()) ? $x : NULL;
-
-		// @todo Tidy up this exception
-		} catch (\Exception $e) {
-			dd(['e'=>$e]);
-		}
+		return ($x=(new Entry)
+			->query()
+			->select(['*','hassubordinates'])
+			->setDn($dn)
+			->listing()
+			->get()) ? $x : NULL;
 	}
 
 	/**
@@ -36,66 +35,14 @@ class Server
 	 *
 	 * @param string $dn
 	 * @param array $attrs
-	 * @return array|\LdapRecord\Models\Model|\LdapRecord\Query\Collection|\LdapRecord\Query\Model\Builder|null
+	 * @return array|Model|Collection|Builder|null
 	 */
-	public function fetch(string $dn,array $attrs=['*','+'])
+	public function fetch(string $dn,array $attrs=['*','+']): ?Entry
 	{
-		try {
-			return ($x=(new Entry)
-				->query()
-				->select($attrs)
-				->find($dn)) ? $x : NULL;
-
-		// @todo Tidy up this exception
-		} catch (\Exception $e) {
-			dd(['e'=>$e]);
-		}
-	}
-
-	/**
-	 * Gets the root DN of the specified LDAPServer, or NULL if it
-	 * can't find it (ie, the server won't give it to us, or it isnt
-	 * specified in the configuration file).
-	 *
-	 * @return Collection|null array|NULL The root DN(s) of the server on success (string) or NULL if it cannot be determine.
-	 * @todo Sort the entries, so that they are in the correct DN order.
-	 * @testedby GetBaseDNTest::testBaseDNExists()
-	 */
-	public function getBaseDN(): ?Collection
-	{
-		//findBaseDn()?
-		// If the base is set in the configuration file, then just return that after validating it exists.
-		// @todo
-		if (false) {
-
-		// We need to work out the baseDN
-		} else {
-			$result = $this->getDNAttrValues('',['namingcontexts']);
-
-			return $result ? collect($result->namingcontexts) : NULL;
-		}
-	}
-
-	/**
-	 * Search for a DN and return its attributes
-	 *
-	 * @param $dn
-	 * @param array $attrs
-	 * @param int $deref		 // @todo
-	 * @return Entry|bool
-	 */
-	protected function getDNAttrValues(string $dn,array $attrs=['*','+'],int $deref=LDAP_DEREF_NEVER): ?Entry
-	{
-		try {
-			return ($x=(new Entry)
-				->query()
-				->select($attrs)
-				->find($dn)) ? $x : NULL;
-
-		// @todo Tidy up this exception
-		} catch (\Exception $e) {
-			dd(['e'=>$e]);
-		}
+		return ($x=(new Entry)
+			->query()
+			->select($attrs)
+			->find($dn)) ? $x : NULL;
 	}
 
 	/**
@@ -119,11 +66,10 @@ class Server
 	public static function getOID(string $oid,string $key): ?string
 	{
 		$oids = Cache::remember('oids',86400,function() {
-
 			try {
 				$f = fopen(config_path('ldap_supported_oids.txt'),'r');
 
-			} catch (\Exception $e) {
+			} catch (Exception $e) {
 				return NULL;
 			}
 
@@ -153,5 +99,38 @@ class Server
 			$key,
 			($key == 'desc' ? 'No description available, can you help with one?' : ($key == 'title' ? $oid : NULL))
 		);
+	}
+
+	public static function icon(Entry $dn): string
+	{
+		$objectclasses = array_map('strtolower',$dn->objectclass);
+
+		// Return icon based upon objectClass value
+		if (in_array('person',$objectclasses) ||
+			in_array('organizationalperson',$objectclasses) ||
+			in_array('inetorgperson',$objectclasses) ||
+			in_array('account',$objectclasses) ||
+			in_array('posixaccount',$objectclasses))
+
+			return 'fas fa-user';
+
+		elseif (in_array('organization',$objectclasses))
+			return 'fas fa-university';
+
+		elseif (in_array('organizationalunit',$objectclasses))
+			return 'fas fa-object-group';
+
+		elseif (in_array('dcobject',$objectclasses) ||
+			in_array('domainrelatedobject',$objectclasses) ||
+			in_array('domain',$objectclasses) ||
+			in_array('builtindomain',$objectclasses))
+
+			return 'fas fa-network-wired';
+
+		elseif (in_array('country',$objectclasses))
+			return sprintf('flag %s',strtolower(Arr::get($dn->c,0)));
+
+		// Default
+		return 'fa-fw fas fa-cog';
 	}
 }

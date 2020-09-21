@@ -11,16 +11,20 @@ use Illuminate\Support\Facades\File;
 
 use App\Ldap\Entry;
 use App\Classes\LDAP\Server;
+use LdapRecord\Models\ModelNotFoundException;
 
 class HomeController extends Controller
 {
 	public function home()
 	{
-		$o = new Server;
+		$base = (new Entry)->baseDN();
+
+		if (! $base)
+			$base = collect();
 
 		return view('home')
 			->with('server',config('ldap.connections.default.name'))
-			->with('bases',$o->getBaseDN()->transform(function($item) {
+			->with('bases',$base->transform(function($item) {
 				return [
 					'title'=>$item,
 					'item'=>Crypt::encryptString($item),
@@ -33,22 +37,28 @@ class HomeController extends Controller
 
 	public function info()
 	{
-		$attrs = collect((new Entry)->rootDSE()->getAttributes())
-			->transform(function($item,$key) {
-				foreach ($item as $k=>$v) {
-					if (preg_match('/[0-9]+\.[0-9]+\.[0-9]+/',$v)) {
-						$format = sprintf(
-							'<abbr class="pb-1" title="%s"><i class="fas fa-list-ol pr-2"></i>%s</abbr>%s<p class="mb-0">%s</p>',
-							$v,
-							Server::getOID($v,'title'),
-							($x=Server::getOID($v,'ref')) ? sprintf('<abbr class="pl-2" title="%s"><i class="fas fa-comment-dots"></i></abbr>',$x) : '',
-							Server::getOID($v,'desc'),
+		try {
+			$attrs = collect((new Entry)->rootDSE()->getAttributes())
+				->transform(function($item,$key) {
+					foreach ($item as $k=>$v) {
+						if (preg_match('/[0-9]+\.[0-9]+\.[0-9]+/',$v)) {
+							$format = sprintf(
+								'<abbr class="pb-1" title="%s"><i class="fas fa-list-ol pr-2"></i>%s</abbr>%s<p class="mb-0">%s</p>',
+								$v,
+								Server::getOID($v,'title'),
+								($x=Server::getOID($v,'ref')) ? sprintf('<abbr class="pl-2" title="%s"><i class="fas fa-comment-dots"></i></abbr>',$x) : '',
+								Server::getOID($v,'desc'),
 						);
-						$item[$k] = $format;
+							$item[$k] = $format;
+						}
 					}
-				}
-				return $item;
-			});
+					return $item;
+				});
+
+		// @todo If we cant get server info, we should probably show a nice error dialog
+		} catch (ModelNotFoundException $e) {
+			$attrs = collect();
+		}
 
 		return view('widgets.dn')
 			->with('dn',__('Server Info'))
@@ -62,7 +72,7 @@ class HomeController extends Controller
 		return view('widgets.dn')
 			->with('dn',$dn)
 			->with('leaf',$x=(new Server())->fetch($dn))
-			->with('attributes',$this->sortAttrs(collect($x->getAttributes())));
+			->with('attributes',$x ? $this->sortAttrs(collect($x->getAttributes())) : []);
 	}
 
 	/**

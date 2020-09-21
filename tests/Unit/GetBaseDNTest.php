@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-use App\Classes\LDAP\Server;
+use App\Ldap\Entry;
 
 class GetBaseDNTest extends TestCase
 {
@@ -15,14 +15,15 @@ class GetBaseDNTest extends TestCase
 	 * Test that we can get the Base DN of an LDAP server
 	 *
 	 * @return void
+	 * @throws \LdapRecord\Models\ModelNotFoundException
+	 * @covers \App\Ldap\Entry::baseDN()
 	 */
 	public function testBaseDNExists()
 	{
-		$o = new Server();
-		$x = $o->getBaseDN();
+		$o = (new Entry)->baseDN();
 
-		$this->assertIsObject($x);
-		$this->assertCount(1,$x->toArray());
-		$this->assertContains('dc=Test',$x->toArray());
+		$this->assertIsObject($o);
+		$this->assertCount(1,$o->toArray());
+		$this->assertContains('dc=Test',$o->toArray());
 	}
 }

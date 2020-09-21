@@ -15,7 +15,8 @@ class TranslateOidTest extends TestCase
 	 * A basic feature test example.
 	 *
 	 * @return void
-	 * @covers Server::getOID()
+	 * @throws \LdapRecord\Models\ModelNotFoundException
+	 * @covers \App\Classes\LDAP\Server::getOID()
 	 */
 	public function testRootDSE()
 	{
