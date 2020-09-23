@@ -247,7 +247,6 @@ $config->custom->appearance['friendly_attrs'] = array(
 /* Attribute that is added to the group member attribute. */
 // $config->custom->modify_member['attr'] = 'dn';
 
-
 /* For Posix attributes */
 // $config->custom->modify_member['posixattr'] = 'uid';
 // $config->custom->modify_member['posixfilter'] = '(uid=*)';
