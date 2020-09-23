@@ -13,26 +13,6 @@ use App\Classes\LDAP\Server;
 class APIController extends Controller
 {
 	/**
-	 * Get the LDAP server BASE DNs
-	 *
-	 * @return array|null
-	 */
-	public function bases(): Collection
-	{
-		return (new Server())
-			->getBaseDN()
-			->transform(function($item) {
-				return [
-					'title'=>$item,
-					'item'=>Crypt::encryptString($item),
-					'lazy'=>TRUE,
-					'icon'=>'fa-fw fas fa-sitemap',
-					'tooltip'=>$item,
-				];
-			});
-	}
-
-	/**
 	 * @param Request $request
 	 * @return Collection
 	 */
@@ -48,7 +28,7 @@ class APIController extends Controller
 				return [
 					'title'=>$item->getRdn(),
 					'item'=>Crypt::encryptString($item->getDn()),
-					'icon'=>'fa-fw fas fa-sitemap',
+					'icon'=>$item->icon(),
 					'lazy'=>Arr::get($item->getAttribute('hassubordinates'),0) == 'TRUE',
 					'tooltip'=>$item->getDn(),
 				];

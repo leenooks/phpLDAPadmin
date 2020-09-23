@@ -7,7 +7,7 @@
 	{{ $leaf->entryuuid[0] ?? '' }}
 @endsection
 @section('page_icon')
-	fas fa-cog
+	{{ $leaf->icon() }}
 @endsection
 
 @section('main-content')

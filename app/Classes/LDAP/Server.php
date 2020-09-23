@@ -100,37 +100,4 @@ class Server
 			($key == 'desc' ? 'No description available, can you help with one?' : ($key == 'title' ? $oid : NULL))
 		);
 	}
-
-	public static function icon(Entry $dn): string
-	{
-		$objectclasses = array_map('strtolower',$dn->objectclass);
-
-		// Return icon based upon objectClass value
-		if (in_array('person',$objectclasses) ||
-			in_array('organizationalperson',$objectclasses) ||
-			in_array('inetorgperson',$objectclasses) ||
-			in_array('account',$objectclasses) ||
-			in_array('posixaccount',$objectclasses))
-
-			return 'fas fa-user';
-
-		elseif (in_array('organization',$objectclasses))
-			return 'fas fa-university';
-
-		elseif (in_array('organizationalunit',$objectclasses))
-			return 'fas fa-object-group';
-
-		elseif (in_array('dcobject',$objectclasses) ||
-			in_array('domainrelatedobject',$objectclasses) ||
-			in_array('domain',$objectclasses) ||
-			in_array('builtindomain',$objectclasses))
-
-			return 'fas fa-network-wired';
-
-		elseif (in_array('country',$objectclasses))
-			return sprintf('flag %s',strtolower(Arr::get($dn->c,0)));
-
-		// Default
-		return 'fa-fw fas fa-cog';
-	}
 }

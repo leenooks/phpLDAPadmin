@@ -1627,69 +1627,14 @@ function get_icon($server_id,$dn,$object_classes=array()) {
 	if (in_array('sambaaccount',$object_classes))
 		return 'nt_user.png';
 
-	elseif (in_array('person',$object_classes) ||
-		in_array('organizationalperson',$object_classes) ||
-		in_array('inetorgperson',$object_classes) ||
-		in_array('account',$object_classes) ||
-		in_array('posixaccount',$object_classes))
-
-		return 'ldap-user.png';
-
-	elseif (in_array('organization',$object_classes))
-		return 'ldap-o.png';
-
-	elseif (in_array('organizationalunit',$object_classes))
-		return 'ldap-ou.png';
-
 	elseif (in_array('organizationalrole',$object_classes))
 		return 'ldap-uid.png';
-
-	elseif (in_array('dcobject',$object_classes) ||
-		in_array('domainrelatedobject',$object_classes) ||
-		in_array('domain',$object_classes) ||
-		in_array('builtindomain',$object_classes))
-
-		return 'ldap-dc.png';
-
-	elseif (in_array('alias',$object_classes))
-		return 'ldap-alias.png';
-
-	elseif (in_array('room',$object_classes))
-		return 'door.png';
-
-	elseif (in_array('iphost',$object_classes))
-		return 'host.png';
-
-	elseif (in_array('device',$object_classes))
-		return 'device.png';
-
-	elseif (in_array('document',$object_classes))
-		return 'document.png';
-
-	elseif (in_array('country',$object_classes)) {
-		$tmp = pla_explode_dn($dn);
-		$cval = explode('=',$tmp[0],2);
-		$cval = isset($cval[1]) ? $cval[1] : false;
-		if ($cval && false === strpos($cval,'..') &&
-			file_exists(realpath(sprintf('%s/../countries/%s.png',IMGDIR,strtolower($cval)))))
-
-			return sprintf('../countries/%s.png',strtolower($cval));
-
-		else
-			return 'country.png';
-	}
 
 	elseif (in_array('jammvirtualdomain',$object_classes))
 		return 'mail.png';
 
 	elseif (in_array('locality',$object_classes))
 		return 'locality.png';
-
-	elseif (in_array('posixgroup',$object_classes) ||
-		in_array('groupofnames',$object_classes) ||
-		in_array('group',$object_classes))
-
-		return 'ldap-ou.png';
 
 	elseif (in_array('applicationprocess',$object_classes))
 		return 'process.png';
@@ -1702,9 +1647,6 @@ function get_icon($server_id,$dn,$object_classes=array()) {
 
 	elseif (in_array('ndspkikeymaterial',$object_classes))
 		return 'lock.png';
-
-	elseif (in_array('server',$object_classes))
-		return 'server-small.png';
 
 	elseif (in_array('volume',$object_classes))
 		return 'hard-drive.png';

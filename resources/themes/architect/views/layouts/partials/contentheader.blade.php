@@ -2,7 +2,7 @@
 	<div class="page-title-wrapper">
 		<div class="page-title-heading">
 			@if (trim($__env->yieldContent('page_icon')))
-				<div class="page-title-icon">
+				<div class="page-title-icon f32">
 					<i class="@yield('page_icon','')"></i>
 				</div>
 			@endif

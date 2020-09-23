@@ -33,6 +33,10 @@
 	<!-- Fancy Tree -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.36.1/skin-xp/ui.fancytree.min.css">
 
+	<!-- Country Flags -->
+	<link rel="stylesheet" href="{{ url('/css/flags16-both.css') }}">
+	<link rel="stylesheet" href="{{ url('/css/flags32-both.css') }}">
+
 	<!-- STYLESHEETS -->
 	{!! Asset::styles() !!}
 

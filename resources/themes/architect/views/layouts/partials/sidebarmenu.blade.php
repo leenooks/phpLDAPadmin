@@ -44,7 +44,7 @@
 				</li>
 				<li>
 					<i id="treeicon" class="metismenu-icon fa-fw fas fa-sitemap"></i>
-					<span id="tree"></span>
+					<span class="f16" id="tree"></span>
 				</li>
 			</ul>
 		</div>

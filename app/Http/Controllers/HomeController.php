@@ -17,17 +17,14 @@ class HomeController extends Controller
 {
 	public function home()
 	{
-		$base = (new Entry)->baseDN();
-
-		if (! $base)
-			$base = collect();
+		$base = (new Entry)->baseDN() ?: collect();
 
 		return view('home')
 			->with('server',config('ldap.connections.default.name'))
 			->with('bases',$base->transform(function($item) {
 				return [
-					'title'=>$item,
-					'item'=>Crypt::encryptString($item),
+					'title'=>$item->getRdn(),
+					'item'=>Crypt::encryptString($item->getDn()),
 					'lazy'=>TRUE,
 					'icon'=>'fa-fw fas fa-sitemap',
 					'tooltip'=>$item,
