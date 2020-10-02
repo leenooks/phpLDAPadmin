@@ -59,7 +59,7 @@ The following instructions will be for PLA v2 when its commited to GIT. Checkbac
 #### Installation
 1. Checkout the code from github
    ```bash
-   git checkout https://github.com/leenooks/phpLDAPadmin.git
+   git clone https://github.com/leenooks/phpLDAPadmin.git
    ```
 
 1. Install composer dependencies.
