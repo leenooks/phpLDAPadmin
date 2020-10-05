@@ -1146,6 +1146,7 @@ class Template extends xmlTemplate {
 				into domain and domain-local part).
 			l:	Make the result lower case.
 			U:	Make the result upper case.
+			A:	Remap special characters to their corresponding ASCII value
 			*/
 			case 'autoFill':
 				if (! preg_match('/;/',$arg)) {
