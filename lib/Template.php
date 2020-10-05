@@ -1267,7 +1267,7 @@ class Template extends xmlTemplate {
 					# Matchfor ending entry.
 					$formula = preg_replace('/%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[KklTUA]+)?(?:\|(.))?%$/U','\' + $1 ',$formula);
 					# Match for entries not at begin/end.
-					$formula = preg_replace('/%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[:lTUA]+)?(?:\|(.))?%/U','\' + $1 + \'',$formula);
+					$formula = preg_replace('/%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[KklTUA]+)?(?:\|(.))?%/U','\' + $1 + \'',$formula);
 					$attribute->js['autoFill'] .= "\n";
 				}
 
