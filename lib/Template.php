@@ -1123,10 +1123,11 @@ class Template extends xmlTemplate {
 		switch ($command) {
 			/*
 			autoFill:string
-			string is a literal string, and may contain many fields like %attr|start-end/flags%
+			string is a literal string, and may contain many fields like %attr|start-end/flags|additionalcontrolchar%
 				to substitute values read from other fields.
 			|start-end is optional, but must be present if the k flag is used.
 			/flags is optional.
+			|additionalcontrolchar is optional.
 
 			flags may be:
 			T:	Read display text from selection item (drop-down list), otherwise, read the value of the field
@@ -1141,6 +1142,8 @@ class Template extends xmlTemplate {
 					The string read will be split into fields, using : as a delimiter
 					"start" indicates which field number to pass through.
 			K:	The string read will be split into fields, using ' ' as a delimiter "start" indicates which field number to pass through.
+				If additionalcontrolchar is given, it will be used as delimiter (e.g. this allows for splitting e-mail addresses 
+				into domain and domain-local part).
 			l:	Make the result lower case.
 			U:	Make the result upper case.
 			*/
@@ -1155,8 +1158,8 @@ class Template extends xmlTemplate {
 				}
 
 				list($attr,$string) = preg_split('(([^,]+);(.*))',$arg,-1,PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-				preg_match_all('/%(\w+)(\|[0-9]*-[0-9]*)?(\/[KklTUA]+)?%/U',$string,$matchall);
-				//print"<PRE>";print_r($matchall); //0 = highlevel match, 1 = attr, 2 = subst, 3 = mod
+				preg_match_all('/%(\w+)(\|[0-9]*-[0-9]*)?(\/[KklTUA]+)?(?:\|(.))?%/U',$string,$matchall);
+				//print"<PRE>";print_r($matchall); //0 = highlevel match, 1 = attr, 2 = subst, 3 = mod, 4 = delimiter
 
 				if (! isset($attribute->js['autoFill']))
 					$attribute->js['autoFill'] = '';
@@ -1183,6 +1186,7 @@ class Template extends xmlTemplate {
 					$match_attr = strtolower($matchall[1][$index]);
 					$match_subst = $matchall[2][$index];
 					$match_mod = $matchall[3][$index];
+					$match_delim = $matchall[4][$index];
 
 					$substrarray = array();
 
@@ -1220,13 +1224,19 @@ class Template extends xmlTemplate {
 						$attribute->js['autoFill'] .= sprintf("   %s = %s.split(':')[%s];\n",$match_attr,$match_attr,$tok_idx);
 
 					} elseif (strstr($match_mod,'K')) {
-						preg_match_all('/([0-9]+)/',trim($match_subst),$substrarray); 
-						if (isset($substrarray[1][0])) { 
-							$tok_idx = $substrarray[1][0]; 
-						} else { 
-							$tok_idx = '0'; 
-						} 
-						$attribute->js['autoFill'] .= sprintf("   %s = %s.split(' ')[%s];\n",$match_attr,$match_attr,$tok_idx); 
+						preg_match_all('/([0-9]+)/',trim($match_subst),$substrarray);
+						if (isset($substrarray[1][0])) {
+							$tok_idx = $substrarray[1][0];
+						} else {
+							$tok_idx = '0';
+						}
+
+						if ($match_delim == '') {
+							$delimiter = ' ';
+						} else {
+							$delimiter = preg_quote($match_delim);
+						}
+						$attribute->js['autoFill'] .= sprintf("   %s = %s.split('%s')[%s];\n",$match_attr,$match_attr,$delimiter,$tok_idx);
 
 					} else {
 						preg_match_all('/([0-9]*)-([0-9]*)/',trim($match_subst),$substrarray);
@@ -1251,13 +1261,13 @@ class Template extends xmlTemplate {
 					# Matchfor only entry without modifiers.
 					$formula = preg_replace('/^%('.$match_attr.')%$/U','$1 + \'\'',$formula);
 					# Matchfor only entry with modifiers.
-					$formula = preg_replace('/^%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[KklTUA]+)?%$/U','$1 + \'\'',$formula);
+					$formula = preg_replace('/^%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[KklTUA]+)?(?:\|(.))?%$/U','$1 + \'\'',$formula);
 					# Matchfor begining entry.
-					$formula = preg_replace('/^%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[KklTUA]+)?%/U','$1 + \'',$formula);
+					$formula = preg_replace('/^%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[KklTUA]+)?(?:\|(.))?%/U','$1 + \'',$formula);
 					# Matchfor ending entry.
-					$formula = preg_replace('/%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[KklTUA]+)?%$/U','\' + $1 ',$formula);
+					$formula = preg_replace('/%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[KklTUA]+)?(?:\|(.))?%$/U','\' + $1 ',$formula);
 					# Match for entries not at begin/end.
-					$formula = preg_replace('/%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[:lTUA]+)?%/U','\' + $1 + \'',$formula);
+					$formula = preg_replace('/%('.$match_attr.')(\|[0-9]*-[0-9]*)?(\/[:lTUA]+)?(?:\|(.))?%/U','\' + $1 + \'',$formula);
 					$attribute->js['autoFill'] .= "\n";
 				}
 
