@@ -139,16 +139,23 @@ class TemplateRender extends PageRender {
 					return;
 				}
 
-				$function_args = explode(',',$args[0]);
-
-				if (function_exists($function))
-					$vals = call_user_func_array($function,$function_args);
-
+				if (!empty($args[0]))
+					$function_args = explode(',',$args[0]);
 				else
+					$function_args = '';
+
+				if (function_exists($function)) {
+					if (empty($function_args))
+                                                $vals = call_user_func($function);
+					else
+						$vals = call_user_func_array($function,$function_args);
+
+				} else {
 					system_message(array(
 						'title'=>_('Function doesnt exist'),
 						'body'=>sprintf('%s (<b>%s</b>)',_('An attempt was made to call a function that doesnt exist'),$function),
 						'type'=>'warn'));
+				}
 
 				break;
 
