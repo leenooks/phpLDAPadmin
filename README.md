@@ -57,7 +57,7 @@ In summary, for the time being, expect `master` to be buggy and broken, and I'll
 #### Installation
 1. Checkout the code from github
    ```bash
-   git checkout https://github.com/leenooks/phpLDAPadmin.git
+   git clone https://github.com/leenooks/phpLDAPadmin.git
    ```
 
 1. Install composer dependencies.

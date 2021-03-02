@@ -34,8 +34,10 @@ class HomeController extends Controller
 
 	public function info()
 	{
+		$root = (new Entry)->rootDSE();
+
 		try {
-			$attrs = collect((new Entry)->rootDSE()->getAttributes())
+			$attrs = collect($root->getAttributes())
 				->transform(function($item,$key) {
 					foreach ($item as $k=>$v) {
 						if (preg_match('/[0-9]+\.[0-9]+\.[0-9]+/',$v)) {
@@ -59,6 +61,7 @@ class HomeController extends Controller
 
 		return view('widgets.dn')
 			->with('dn',__('Server Info'))
+			->with('leaf',$root)
 			->with('attributes',$this->sortAttrs($attrs));
 	}
 
@@ -68,7 +71,7 @@ class HomeController extends Controller
 
 		return view('widgets.dn')
 			->with('dn',$dn)
-			->with('leaf',$x=(new Server())->fetch($dn))
+			->with('leaf',$x=(new Server)->fetch($dn))
 			->with('attributes',$x ? $this->sortAttrs(collect($x->getAttributes())) : []);
 	}
 

@@ -102,6 +102,9 @@ class Entry extends Model
 		elseif (in_array('server',$objectclasses))
 			return 'fas fa-server';
 
+		elseif (in_array('openldaprootdse',$objectclasses))
+			return 'fas fa-info';
+
 		// Default
 		return 'fa-fw fas fa-cog';
 	}
