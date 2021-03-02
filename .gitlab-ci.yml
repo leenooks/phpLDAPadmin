@@ -1,100 +1,14 @@
-# This file is a template, and might need editing before it works on your project.
-# Official framework image. Look for the different tagged releases at:
-# https://hub.docker.com/r/library/php
-image: registry.leenooks.net/leenooks/php:7.4-fpm-mp-test
-
-# Pick zero or more services to be used on all builds.
-# Only needed when using a docker container to run your tests in.
-# Check out: http://docs.gitlab.com/ce/ci/docker/using_docker_images.html#what-is-a-service
-services:
-  - name: osixia/openldap:latest
-    alias: ldap
-    command: ["--loglevel","debug"]
-
-variables:
-   LDAP_SEED_INTERNAL_LDIF_PATH: "${CI_PROJECT_DIR}/tests/server/openldap/ldif"
-   LDAP_BASE_DN: "dc=Test"
-   LDAP_DOMAIN: "Test"
-   LDAP_ADMIN_PASSWORD: test
-#  LDAP_SEED_INTERNAL_SCHEMA_PATH: "${CI_PROJECT_DIR}/tests/server/openldap/schema"
-
 stages:
-- test
-- deploy
+  - test
+  - build
 
 # This folder is cached between builds
 # http://docs.gitlab.com/ce/ci/yaml/README.html#cache
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
-  - vendor/
+    - vendor/
 
-# This is a basic example for a gem or script which doesn't use
-# services such as redis or postgres
-before_script:
-  # Install Composer and project dependencies.
-  - mkdir -p /root/.composer
-  - if [ -n "$GITHUB_TOKEN" ]; then cat $GITHUB_TOKEN |base64 -d > /root/.composer/auth.json ; fi
-  - composer install
-
-  # Copy over testing configuration.
-  # Don't forget to set the database config in .env.testing correctly
-  # DB_HOST=mysql
-  # DB_DATABASE=project_name
-  # DB_USERNAME=root
-  # DB_PASSWORD=secret
-
-  # Generate an application key. Re-cache.
-  - php artisan key:generate --env=testing
-  - php artisan config:cache --env=testing
-
-test:
-  variables:
-     LDAP_HOST: ldap
-     LDAP_PORT: 389
-  tags:
-   - php
-  only:
-   - BRANCH-2.0
-
-  script:
-  # run laravel tests
-  - php vendor/bin/phpunit --coverage-text --colors=never
-
-  # run frontend tests
-  # if you have any task for testing frontend
-  # set it in your package.json script
-  # comment this out if you don't have a frontend test
-  # npm test
-
-docker:
-  before_script:
-  - docker info
-  - docker version
-  - echo "$CI_JOB_TOKEN" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
-  - if [ -n "$GITHUB_TOKEN" ]; then cat $GITHUB_TOKEN |base64 -d > auth.json; fi
-
-  variables:
-    VERSION: latest
-    CACHETAG: build-${VERSION}
-    DOCKER_HOST: tcp://docker:2375
-
-  stage: deploy
-  image: docker:latest
-  services:
-  - docker:dind
-
-  script:
-  - if [ -f init ]; then chmod 500 init; fi
-  - ([ -z "$REFRESH" ] && docker pull ${CI_REGISTRY_IMAGE}:${CACHETAG}) || echo "true"
-  - echo -n ${CI_COMMIT_SHORT_SHA} > VERSION
-  - docker build --cache-from ${CI_REGISTRY_IMAGE}:${CACHETAG} -t ${CI_REGISTRY_IMAGE}:${VERSION} -t ${CI_REGISTRY_IMAGE}:${CACHETAG} .
-  - docker push ${CI_REGISTRY_IMAGE}:${VERSION}
-  - docker push ${CI_REGISTRY_IMAGE}:${CACHETAG}
-
-  tags:
-  - docker
-  - x86_64
-
-  only:
-  - BRANCH-2.0
+include:
+  - .gitlab-test.yml
+  - .gitlab-docker-x86_64.yml

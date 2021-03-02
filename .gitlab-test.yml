@@ -1,0 +1,44 @@
+test:
+  image: ${CI_REGISTRY}/leenooks/php:7.4-fpm-mp-test
+
+  stage: test
+
+  services:
+    - name: osixia/openldap:latest
+      alias: ldap
+      command: ["--loglevel","debug"]
+
+  variables:
+    LDAP_SEED_INTERNAL_LDIF_PATH: "${CI_PROJECT_DIR}/tests/server/openldap/ldif"
+    LDAP_BASE_DN: "dc=Test"
+    LDAP_DOMAIN: "Test"
+    LDAP_ADMIN_PASSWORD: test
+#   LDAP_SEED_INTERNAL_SCHEMA_PATH: "${CI_PROJECT_DIR}/tests/server/openldap/schema"
+    LDAP_HOST: ldap
+    LDAP_PORT: 389
+
+  tags:
+    - php
+  only:
+    - BRANCH-2.0
+
+  before_script:
+    - mv .env.testing .env
+
+    # Install Composer and project dependencies.
+    - mkdir -p /root/.composer
+    - if [ -n "$GITHUB_TOKEN" ]; then cat $GITHUB_TOKEN |base64 -d > /root/.composer/auth.json ; fi
+    - composer install
+
+    # Generate an application key. Re-cache.
+    - php artisan key:generate
+
+  script:
+    # run laravel tests
+    - XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text --colors=never
+
+    # run frontend tests
+    # if you have any task for testing frontend
+    # set it in your package.json script
+    # comment this out if you don't have a frontend test
+    # npm test

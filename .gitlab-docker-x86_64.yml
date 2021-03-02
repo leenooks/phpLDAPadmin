@@ -1,0 +1,34 @@
+docker:
+  image: docker:latest
+
+  stage: build
+
+  services:
+    - docker:dind
+
+  variables:
+    VERSION: latest
+    CACHETAG: build-${VERSION}
+    DOCKER_HOST: tcp://docker:2375
+
+  tags:
+    - docker
+    - x86_64
+  only:
+    - BRANCH-2.0
+
+  before_script:
+    - docker info
+    - docker version
+    - echo "$CI_JOB_TOKEN" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
+    - if [ -n "$GITHUB_TOKEN" ]; then cat $GITHUB_TOKEN |base64 -d > auth.json; fi
+    - ls -al vendor/
+
+  script:
+    - ls -al vendor/
+    - if [ -f init ]; then chmod 500 init; fi
+    - ([ -z "$REFRESH" ] && docker pull ${CI_REGISTRY_IMAGE}:${CACHETAG}) || echo "true"
+    - echo -n ${CI_COMMIT_SHORT_SHA} > VERSION
+    - docker build --cache-from ${CI_REGISTRY_IMAGE}:${CACHETAG} -t ${CI_REGISTRY_IMAGE}:${VERSION} -t ${CI_REGISTRY_IMAGE}:${CACHETAG} .
+    - docker push ${CI_REGISTRY_IMAGE}:${VERSION}
+    - docker push ${CI_REGISTRY_IMAGE}:${CACHETAG}
