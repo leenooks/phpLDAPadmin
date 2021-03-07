@@ -43,11 +43,12 @@ table.dataTable thead .sorting {
 	cursor: not-allowed;
 }
 
-#favourite.selected {
+/* A selected indicator - used with icons */
+.tag-selected {
 	color: orange;
 }
 
-#favourite:hover {
+.tag-selected:hover {
 	cursor: pointer;
 }
 
@@ -59,54 +60,88 @@ body {
 	font-size: 0.85em;
 }
 
+/** SIDEBAR FIXES **/
+
+/**
+ The sidebar has a few states:
+ + Wide Screen
+    - Open (app-container fixed-sidebar) &
+    - Closed (app-container fixed-sidebar closed-sidebar) &
+    - Hover Open (app-sidebar:hover)
+ + Medium Screen
+    - Closed (app-container fixed-sidebar closed-sidebar-mobile closed-sidebar) &
+    - Hover Open (app-sidebar:hover)
+ + Small Screen
+    - Missing (?) &
+    - Click Open (app-container fixed-sidebar closed-sidebar-mobile closed-sidebar sidebar-mobile-open)
+ */
+
+/* Fancy Tree Fixes */
 /** Remove the border around the tree **/
 ul.fancytree-container {
 	border: 0px;
 }
+
+/** Tree Placement **/
+#tree > ul {
+	padding-left: 0px;
+}
+/** Fix tree rendering **/
+.fancytree-node {
+	line-height: 1.75em;
+}
+/** Fix position of tree expander and checkbox */
+span.fancytree-checkbox, span.fancytree-custom-icon, span.fancytree-expander, span.fancytree-icon {
+	margin-top: 4px;
+}
+/* Position branch center of icon */
+ul.fancytree-container ul {
+	padding: 0 0 0 20px;
+}
+
+/* Show treeicon when collapsed and remove it when open */
+/* @todo treeicon appears when not hovering on page in small mode */
+.sidebar-mobile-open:hover #treeicon, /* small */
+.fixed-sidebar #treeicon, /* wide */
+.fixed-sidebar .app-sidebar:hover #treeicon /* wide & closed:hover */
+{
+	display: none;
+}
+
+.closed-sidebar #treeicon
+{
+	opacity: 1;
+	display: inline;
+}
+
+/* Architect Fixes */
 /** Remove the Cyan vertical line from the tree **/
 .vertical-nav-menu #tree ul:before {
 	opacity: 0;
 }
-/** Tree Icon Placement **/
-#tree > ul {
-	padding-left: 0px;
+
+/** Fix elipse icon (top right) on small display */
+.closed-sidebar .app-header.header-text-light .app-header__menu .mobile-toggle-header-nav {
+	background: #343a40;
 }
+
+/* Hide tree when collapsed and show it when open */
+/* @todo tree disappears when not hovering on page in small mode - related to #treeicon - see server icons they work? */
+.sidebar-mobile-open:hover #tree, /* small */
+.fixed-sidebar #tree, /* wide */
+.fixed-sidebar .app-sidebar:hover #tree /* wide & closed:hover */
+{
+	display: block;
+}
+
 .closed-sidebar #tree {
 	display: none;
 }
-.closed-sidebar:hover .app-sidebar:hover #tree, .sidebar-mobile-open #tree {
-	display: block;
-}
-.app-sidebar #treeicon, .closed-sidebar:hover .app-sidebar:hover #treeicon, .sidebar-mobile-open #treeicon {
-	display: none;
-}
-.closed-sidebar .app-sidebar #treeicon :not(.sidebar-mobile-open) {
-	display: initial;
-	position: relative;
-}
+
 /** Server icons **/
 .closed-sidebar .server-icon {
 	display: none;
 }
 .closed-sidebar .app-sidebar:hover .server-icon, .sidebar-mobile-open .server-icon {
 	display: flex;
-}
-/** Fix position of tree expander and checkbox */
-span.fancytree-checkbox, span.fancytree-custom-icon, span.fancytree-expander, span.fancytree-icon {
-	margin-top: 4px;
-}
-ul.fancytree-container ul {
-	padding: 0 0 0 20px;
-}
-/** Fix elipse icon (top right) on small display */
-.closed-sidebar .app-header.header-text-light .app-header__menu .mobile-toggle-header-nav {
-	background: #343a40;
-}
-/** Fix tree rendering **/
-.fancytree-node {
-	line-height: 1.75em;
-}
-/** Dont render when hoving on the tree **/
-.vertical-nav-menu li a.no-hover:hover {
-	background: #ffffff;
 }

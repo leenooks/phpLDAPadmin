@@ -3,6 +3,8 @@ test:
 
   stage: test
 
+  # NOTE: This service is dependant on project file configuration, which is not there if the cache was deleted
+  #       resulting in the testing to fail on the first run.
   services:
     - name: osixia/openldap:latest
       alias: ldap
