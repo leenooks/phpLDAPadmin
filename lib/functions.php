@@ -687,16 +687,16 @@ function get_request($attr,$type='POST',$die=false,$default=null,$preventXSS=tru
 *  Return valor escape XSS.
 */
  function preventXSS($data){
-        if (gettype($data) == 'array') {
-            foreach ($data as $key => $value) {
-                if (gettype($value) == 'array')
-                    $data[$key] = preventXSS($value);
-                else
-                    $data[$key] = htmlspecialchars($value);
-            }
-            return $data;
-        }
-        return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
+		if (gettype($data) == 'array') {
+			foreach ($data as $key => $value) {
+				if (gettype($value) == 'array')
+					$data[$key] = preventXSS($value);
+				else
+					$data[$key] = htmlspecialchars($value);
+			}
+			return $data;
+		}
+		return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
 }
 
 /*
@@ -1298,29 +1298,29 @@ function is_url_string($str) {
 /**
  * Compares 2 DNs. If they are equivelant, returns 0, otherwise,
  * returns their sorting order (similar to strcmp()):
- *      Returns < 0 if dn1 is less than dn2.
- *      Returns > 0 if dn1 is greater than dn2.
+ *		Returns < 0 if dn1 is less than dn2.
+ *		Returns > 0 if dn1 is greater than dn2.
  *
  * The comparison is performed starting with the top-most element
  * of the DN. Thus, the following list:
- *    <code>
- *       ou=people,dc=example,dc=com
- *       cn=Admin,ou=People,dc=example,dc=com
- *       cn=Joe,ou=people,dc=example,dc=com
- *       dc=example,dc=com
- *       cn=Fred,ou=people,dc=example,dc=org
- *       cn=Dave,ou=people,dc=example,dc=org
- *    </code>
+ *	<code>
+ *		ou=people,dc=example,dc=com
+ *		cn=Admin,ou=People,dc=example,dc=com
+ *		cn=Joe,ou=people,dc=example,dc=com
+ *		dc=example,dc=com
+ *		cn=Fred,ou=people,dc=example,dc=org
+ *		cn=Dave,ou=people,dc=example,dc=org
+ *	</code>
  * Will be sorted thus using usort( $list, "pla_compare_dns" ):
- *    <code>
- *       dc=com
- *       dc=example,dc=com
- *       ou=people,dc=example,dc=com
- *       cn=Admin,ou=People,dc=example,dc=com
- *       cn=Joe,ou=people,dc=example,dc=com
- *       cn=Dave,ou=people,dc=example,dc=org
- *       cn=Fred,ou=people,dc=example,dc=org
- *    </code>
+ *	<code>
+ *		dc=com
+ *		dc=example,dc=com
+ *		ou=people,dc=example,dc=com
+ *		cn=Admin,ou=People,dc=example,dc=com
+ *		cn=Joe,ou=people,dc=example,dc=com
+ *		cn=Dave,ou=people,dc=example,dc=org
+ *		cn=Fred,ou=people,dc=example,dc=org
+ *	</code>
  *
  * @param string The first of two DNs to compare
  * @param string The second of two DNs to compare
@@ -2157,7 +2157,7 @@ function password_types() {
 	return array(
 		''=>'clear',
 		'bcrypt'=>'bcrypt',
-                'blowfish'=>'blowfish',
+		'blowfish'=>'blowfish',
 		'crypt'=>'crypt',
 		'ext_des'=>'ext_des',
 		'md5'=>'md5',
@@ -2259,17 +2259,17 @@ function pla_password_hash($password_clear,$enc_type) {
 
 			break;
 
-                case 'bcrypt':
-                        $options = [
-                                    'cost' => 8,
-                                   ];
-                        #Checking if password_hash() function is available.
-                        if (function_exists('password_hash'))
-                                $new_value = sprintf('{BCRYPT}%s',base64_encode(password_hash($password_clear, PASSWORD_BCRYPT, $options)));
-                        else
-                                error(_('Your PHP install does not have the password_hash() function. Cannot do BCRYPT hashes.'),'error','index.php');
+		case 'bcrypt':
+				$options = [
+							'cost' => 8,
+						   ];
+				#Checking if password_hash() function is available.
+				if (function_exists('password_hash'))
+						$new_value = sprintf('{BCRYPT}%s',base64_encode(password_hash($password_clear, PASSWORD_BCRYPT, $options)));
+				else
+						error(_('Your PHP install does not have the password_hash() function. Cannot do BCRYPT hashes.'),'error','index.php');
 
-                        break;
+				break;
 
 
 		case 'smd5':
@@ -2325,7 +2325,7 @@ function pla_password_hash($password_clear,$enc_type) {
  * @return Boolean True if the clear password matches the hash, and false otherwise.
  */
 function password_check($cryptedpassword,$plainpassword,$attribute='userpassword') {
-    $plainpassword = htmlspecialchars_decode($plainpassword);
+	$plainpassword = htmlspecialchars_decode($plainpassword);
 	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
@@ -2378,23 +2378,23 @@ function password_check($cryptedpassword,$plainpassword,$attribute='userpassword
 			}
 
 			break;
-                 
-                #BCRYPT hashed passwords
-                case 'bcrypt':
-                        # Check php password_verify support before using it
-                        if (function_exists('password_verify')) {
-                                $hash = base64_decode($cryptedpassword);
-                                if (password_verify($plainpassword, $hash)) {
-                                    return true;
-                                } else {
-                                    return false;
-                                }
 
-                        } else {
-                                error(_('Your PHP install does not have the password_verify() function. Cannot do Bcrypt hashes.'),'error','index.php');
-                        }
+		#BCRYPT hashed passwords
+		case 'bcrypt':
+				# Check php password_verify support before using it
+				if (function_exists('password_verify')) {
+						$hash = base64_decode($cryptedpassword);
+						if (password_verify($plainpassword, $hash)) {
+							return true;
+						} else {
+							return false;
+						}
 
-                        break;
+				} else {
+						error(_('Your PHP install does not have the password_verify() function. Cannot do Bcrypt hashes.'),'error','index.php');
+				}
+
+				break;
 
 		# Salted MD5
 		case 'smd5':
@@ -3262,7 +3262,7 @@ function IsRobot($gResponse){
 	$options = array(
 		'http' => array (
 			'method' => 'POST','header' =>
-	        'Content-Type: application/x-www-form-urlencoded',
+			'Content-Type: application/x-www-form-urlencoded',
 			'content' => http_build_query($data)
 		)
 	);
