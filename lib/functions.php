@@ -2161,6 +2161,7 @@ function password_types() {
 		'smd5'=>'smd5',
 		'ssha'=>'ssha',
 		'sha512'=>'sha512',
+		'ssha512'=>'ssha512',
 		'sha256crypt'=>'sha256crypt',
 		'sha512crypt'=>'sha512crypt',
 	);
@@ -2262,6 +2263,12 @@ function pla_password_hash($password_clear,$enc_type) {
 
 		case 'sha512':
 			$new_value = sprintf('{SHA512}%s', base64_encode(hash('sha512', $password_clear, true)));
+
+			break;
+
+		case 'ssha512':
+			$salt = hex2bin(random_salt(8));
+			$new_value = sprintf('{SSHA512}%s', base64_encode(hash('sha512', $password_clear.$salt, true).$salt));
 
 			break;
 
@@ -2451,6 +2458,19 @@ function password_check($cryptedpassword,$plainpassword,$attribute='userpassword
 		# SHA512 crypted passwords
 		case 'sha512':
 			if (strcasecmp(pla_password_hash($plainpassword,'sha512'),'{SHA512}'.$cryptedpassword) == 0)
+				return true;
+			else
+				return false;
+
+			break;
+
+		# Salted SHA512 crypted passwords
+		case 'ssha512':
+			$hash = base64_decode($cryptedpassword);
+			$salt = substr($hash,64);
+			$new_hash = base64_encode(hash('sha512', $plainpassword.$salt, true).$salt);
+
+			if (strcmp($cryptedpassword,$new_hash) == 0)
 				return true;
 			else
 				return false;
