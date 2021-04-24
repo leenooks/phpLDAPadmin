@@ -2219,7 +2219,7 @@ function pla_password_hash($password_clear,$enc_type) {
 			break;
 
 		case 'md5':
-			$new_value = sprintf('{MD5}%s',base64_encode(pack('H*',md5($password_clear))));
+			$new_value = sprintf('{MD5}%s',base64_encode(md5($password_clear, true)));
 			break;
 
 		case 'md5crypt':
@@ -2231,25 +2231,13 @@ function pla_password_hash($password_clear,$enc_type) {
 			break;
 
 		case 'sha':
-			# Use php 4.3.0+ sha1 function, if it is available.
-			if (function_exists('sha1'))
-				$new_value = sprintf('{SHA}%s',base64_encode(pack('H*',sha1($password_clear))));
-			elseif (function_exists('mhash'))
-				$new_value = sprintf('{SHA}%s',base64_encode(mhash(MHASH_SHA1,$password_clear)));
-			else
-				error(_('Your PHP install does not have the mhash() function. Cannot do SHA hashes.'),'error','index.php');
+			$new_value = sprintf('{SHA}%s',base64_encode(sha1($password_clear, true)));
 
 			break;
 
 		case 'ssha':
-			if (function_exists('mhash') && function_exists('mhash_keygen_s2k')) {
-				mt_srand((double)microtime()*1000000);
-				$salt = mhash_keygen_s2k(MHASH_SHA1,$password_clear,substr(pack('h*',md5(mt_rand())),0,8),4);
-				$new_value = sprintf('{SSHA}%s',base64_encode(mhash(MHASH_SHA1,$password_clear.$salt).$salt));
-
-			} else {
-				error(_('Your PHP install does not have the mhash() or mhash_keygen_s2k() function. Cannot do S2K hashes.'),'error','index.php');
-			}
+			$salt = hex2bin(random_salt(8));
+			$new_value = sprintf('{SSHA}%s',base64_encode(sha1($password_clear.$salt, true).$salt));
 
 			break;
 
@@ -2267,14 +2255,8 @@ function pla_password_hash($password_clear,$enc_type) {
 
 
 		case 'smd5':
-			if (function_exists('mhash') && function_exists('mhash_keygen_s2k')) {
-				mt_srand((double)microtime()*1000000);
-				$salt = mhash_keygen_s2k(MHASH_MD5,$password_clear,substr(pack('h*',md5(mt_rand())),0,8),4);
-				$new_value = sprintf('{SMD5}%s',base64_encode(mhash(MHASH_MD5,$password_clear.$salt).$salt));
-
-			} else {
-				error(_('Your PHP install does not have the mhash() or mhash_keygen_s2k() function. Cannot do S2K hashes.'),'error','index.php');
-			}
+			$salt = hex2bin(random_salt(8));
+			$new_value = sprintf('{SMD5}%s',base64_encode(md5($password_clear.$salt, true).$salt));
 
 			break;
 
@@ -2354,22 +2336,16 @@ function password_check($cryptedpassword,$plainpassword,$attribute='userpassword
 	switch($cypher) {
 		# SSHA crypted passwords
 		case 'ssha':
-			# Check php mhash support before using it
-			if (function_exists('mhash')) {
-				$hash = base64_decode($cryptedpassword);
+			$hash = base64_decode($cryptedpassword);
 
-				# OpenLDAP uses a 4 byte salt, SunDS uses an 8 byte salt - both from char 20.
-				$salt = substr($hash,20);
-				$new_hash = base64_encode(mhash(MHASH_SHA1,$plainpassword.$salt).$salt);
+			# OpenLDAP uses a 4 byte salt, SunDS uses an 8 byte salt - both from char 20.
+			$salt = substr($hash,20);
+			$new_hash = base64_encode(sha1($plainpassword.$salt, true).$salt);
 
-				if (strcmp($cryptedpassword,$new_hash) == 0)
-					return true;
-				else
-					return false;
-
-			} else {
-				error(_('Your PHP install does not have the mhash() function. Cannot do SHA hashes.'),'error','index.php');
-			}
+			if (strcmp($cryptedpassword,$new_hash) == 0)
+				return true;
+			else
+				return false;
 
 			break;
 
@@ -2392,20 +2368,14 @@ function password_check($cryptedpassword,$plainpassword,$attribute='userpassword
 
 		# Salted MD5
 		case 'smd5':
-			# Check php mhash support before using it
-			if (function_exists('mhash')) {
-				$hash = base64_decode($cryptedpassword);
-				$salt = substr($hash,16);
-				$new_hash = base64_encode(mhash(MHASH_MD5,$plainpassword.$salt).$salt);
+			$hash = base64_decode($cryptedpassword);
+			$salt = substr($hash,16);
+			$new_hash = base64_encode(md5($plainpassword.$salt).$salt, true);
 
-				if (strcmp($cryptedpassword,$new_hash) == 0)
-					return true;
-				else
-					return false;
-
-			} else {
-				error(_('Your PHP install does not have the mhash() function. Cannot do SHA hashes.'),'error','index.php');
-			}
+			if (strcmp($cryptedpassword,$new_hash) == 0)
+				return true;
+			else
+				return false;
 
 			break;
 
