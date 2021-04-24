@@ -2160,6 +2160,10 @@ function password_types() {
 		'sha'=>'sha',
 		'smd5'=>'smd5',
 		'ssha'=>'ssha',
+		'sha256'=>'sha256',
+		'ssha256'=>'ssha256',
+		'sha384'=>'sha384',
+		'ssha384'=>'ssha384',
 		'sha512'=>'sha512',
 		'ssha512'=>'ssha512',
 		'sha256crypt'=>'sha256crypt',
@@ -2258,6 +2262,28 @@ function pla_password_hash($password_clear,$enc_type) {
 		case 'smd5':
 			$salt = hex2bin(random_salt(8));
 			$new_value = sprintf('{SMD5}%s',base64_encode(md5($password_clear.$salt, true).$salt));
+
+			break;
+
+		case 'sha256':
+			$new_value = sprintf('{SHA256}%s', base64_encode(hash('sha256', $password_clear, true)));
+
+			break;
+
+		case 'ssha256':
+			$salt = hex2bin(random_salt(8));
+			$new_value = sprintf('{SSHA256}%s', base64_encode(hash('sha256', $password_clear.$salt, true).$salt));
+
+			break;
+
+		case 'sha384':
+			$new_value = sprintf('{SHA384}%s', base64_encode(hash('sha384', $password_clear, true)));
+
+			break;
+
+		case 'ssha384':
+			$salt = hex2bin(random_salt(8));
+			$new_value = sprintf('{SSHA384}%s', base64_encode(hash('sha384', $password_clear.$salt, true).$salt));
 
 			break;
 
@@ -2452,6 +2478,50 @@ function password_check($cryptedpassword,$plainpassword,$attribute='userpassword
 				else
 					return false;
 			}
+
+			break;
+
+		# SHA256 crypted passwords
+		case 'sha256':
+			if (strcasecmp(pla_password_hash($plainpassword,'sha256'),'{SHA256}'.$cryptedpassword) == 0)
+				return true;
+			else
+				return false;
+
+			break;
+
+		# Salted SHA256 crypted passwords
+		case 'ssha256':
+			$hash = base64_decode($cryptedpassword);
+			$salt = substr($hash,64);
+			$new_hash = base64_encode(hash('sha256', $plainpassword.$salt, true).$salt);
+
+			if (strcmp($cryptedpassword,$new_hash) == 0)
+				return true;
+			else
+				return false;
+
+			break;
+
+		# SHA384 crypted passwords
+		case 'sha384':
+			if (strcasecmp(pla_password_hash($plainpassword,'sha384'),'{SHA384}'.$cryptedpassword) == 0)
+				return true;
+			else
+				return false;
+
+			break;
+
+		# Salted SHA384 crypted passwords
+		case 'ssha384':
+			$hash = base64_decode($cryptedpassword);
+			$salt = substr($hash,64);
+			$new_hash = base64_encode(hash('sha384', $plainpassword.$salt, true).$salt);
+
+			if (strcmp($cryptedpassword,$new_hash) == 0)
+				return true;
+			else
+				return false;
 
 			break;
 
