@@ -2312,12 +2312,7 @@ function pla_password_hash($password_clear,$enc_type) {
 			break;
 
 		case 'sha512':
-			if (function_exists('openssl_digest') && function_exists('base64_encode')) {
-				$new_value = sprintf('{SHA512}%s', base64_encode(openssl_digest($password_clear, 'sha512', true)));
-
-			} else {
-				error(_('Your PHP install doest not have the openssl_digest() or base64_encode() function. Cannot do SHA512 hashes. '),'error','index.php');
-			}
+			$new_value = sprintf('{SHA512}%s', base64_encode(hash('sha512', $password_clear, true)));
 
 			break;
 
