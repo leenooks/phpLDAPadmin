@@ -8,7 +8,7 @@
  */
 
 /** The minimum version of PHP required to run phpLDAPadmin. */
-define('REQUIRED_PHP_VERSION','5.5.0');
+define('REQUIRED_PHP_VERSION','7.0.0');
 
 /**
  * The config class contains all our configuration settings for a session.

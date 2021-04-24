@@ -1828,15 +1828,9 @@ function random_salt($length) {
 	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-	$possible = '0123456789'.
-		'abcdefghijklmnopqrstuvwxyz'.
-		'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.
-		'./';
-	$str = '';
-	mt_srand((double)microtime() * 1000000);
-
-	while (strlen($str) < $length)
-		$str .= substr($possible,(rand()%strlen($possible)),1);
+	$str = bin2hex(random_bytes(ceil($length/2)));
+	if ($length % 2 == 1)
+		return substr($str, 0, -1);
 
 	return $str;
 }
