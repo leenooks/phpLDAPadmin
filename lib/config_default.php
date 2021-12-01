@@ -550,6 +550,25 @@ class Config {
 			'desc'=>'Disable random salt for crypt()',
 			'default'=>false);
 
+		$this->default->password['available_types'] = array(
+			'desc'=>'List of available password types used for encryption',
+			'default'=>array(
+				''=>'clear',
+				'bcrypt'=>'bcrypt',
+				'blowfish'=>'blowfish',
+				'crypt'=>'crypt',
+				'ext_des'=>'ext_des',
+				'md5'=>'md5',
+				'k5key'=>'k5key',
+				'md5crypt'=>'md5crypt',
+				'sha'=>'sha',
+				'smd5'=>'smd5',
+				'ssha'=>'ssha',
+				'sha512'=>'sha512',
+				'sha256crypt'=>'sha256crypt',
+				'sha512crypt'=>'sha512crypt',
+			));
+
 		/** Search display
 		 * By default, when searching you may display a list or a table of results.
 		 * Set this to 'table' to see table formatted results.

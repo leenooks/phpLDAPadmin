@@ -2154,22 +2154,7 @@ function password_types() {
 	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-	return array(
-		''=>'clear',
-		'bcrypt'=>'bcrypt',
-                'blowfish'=>'blowfish',
-		'crypt'=>'crypt',
-		'ext_des'=>'ext_des',
-		'md5'=>'md5',
-		'k5key'=>'k5key',
-		'md5crypt'=>'md5crypt',
-		'sha'=>'sha',
-		'smd5'=>'smd5',
-		'ssha'=>'ssha',
-		'sha512'=>'sha512',
-		'sha256crypt'=>'sha256crypt',
-		'sha512crypt'=>'sha512crypt',
-	);
+	return $_SESSION[APPCONFIG]->getValue('password', 'available_types');
 }
 
 /**
