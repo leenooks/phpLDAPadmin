@@ -1,4 +1,4 @@
-@extends('architect::layouts.dn')
+@extends('layouts.dn')
 
 @section('page_title')
 	{{ $dn }}

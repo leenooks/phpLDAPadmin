@@ -59,7 +59,7 @@ class HomeController extends Controller
 			$attrs = collect();
 		}
 
-		return view('widgets.dn')
+		return view('frames.dn')
 			->with('dn',__('Server Info'))
 			->with('leaf',$root)
 			->with('attributes',$this->sortAttrs($attrs));
@@ -69,7 +69,7 @@ class HomeController extends Controller
 	{
 		$dn = Crypt::decryptString($request->post('key'));
 
-		return view('widgets.dn')
+		return view('frames.dn')
 			->with('dn',$dn)
 			->with('leaf',$x=(new Server)->fetch($dn))
 			->with('attributes',$x ? $this->sortAttrs(collect($x->getAttributes())) : []);

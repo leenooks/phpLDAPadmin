@@ -1,4 +1,4 @@
-FROM registry.leenooks.net/leenooks/php:7.4-fpm-mp
+FROM registry.leenooks.net/leenooks/php:8.0-fpm-latest
 
 COPY . /var/www/html/
 

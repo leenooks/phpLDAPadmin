@@ -2,9 +2,6 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Support\Collection;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 use App\Ldap\Entry;
@@ -24,6 +21,6 @@ class GetBaseDNTest extends TestCase
 
 		$this->assertIsObject($o);
 		$this->assertCount(1,$o->toArray());
-		$this->assertContains('dc=Test',$o->toArray());
+		$this->assertEquals('dc=Test',$o->first()->getDn());
 	}
 }

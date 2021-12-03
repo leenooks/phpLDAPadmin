@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+use App\Http\Controllers\APIController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group([],function() {
-	Route::get('/bases','APIController@bases');
-	Route::get('/children','APIController@children');
+	Route::get('/bases',[APIController::class,'bases']);
+	Route::get('/children',[APIController::class,'children']);
 });
 
 Route::group(['middleware'=>'auth:api','prefix'=>'user'],function() {

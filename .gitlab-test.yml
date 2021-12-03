@@ -1,5 +1,5 @@
 test:
-  image: ${CI_REGISTRY}/leenooks/php:7.4-fpm-mp-test
+  image: ${CI_REGISTRY}/leenooks/php:8.0-fpm-latest-test
 
   stage: test
 

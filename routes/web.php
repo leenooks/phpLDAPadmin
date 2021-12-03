@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Auth\LoginController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,14 +26,14 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function() {
 		'register' => FALSE,
 	]);
 
-	Route::get('home','HomeController@home');
-	Route::get('info','HomeController@info');
-	Route::post('render','HomeController@render');
+	Route::get('home',[HomeController::class,'home']);
+	Route::get('info',[HomeController::class,'info']);
+	Route::post('render',[HomeController::class,'render']);
 });
 
 Route::redirect('/','home');
-Route::get('logout','Auth\LoginController@logout');
+Route::get('logout',[LoginController::class,'logout']);
 
 Route::group(['prefix'=>'user'],function() {
-	Route::get('image','HomeController@user_image');
+	Route::get('image',[HomeController::class,'user_image']);
 });

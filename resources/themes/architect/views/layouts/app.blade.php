@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 	@section('htmlheader')
 		@include('architect::layouts.partials.htmlheader')
 	@show

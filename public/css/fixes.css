@@ -1,20 +1,26 @@
+body {
+       font-size: 0.85em;
+}
+
 /* Fixes for data tables */
+/* Fix pagination buttons */
 .dataTables_wrapper .dataTables_paginate .paginate_button {
-	padding: 0em 0em;
-	margin-left: 0px;
-	border: 0px solid;
+	padding: 0 0;
+	margin-left: 0;
+	border: 0 solid;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-	border: 0px solid;
+	border: 0 solid;
 	background: #fff;
 }
 
 .dataTables_wrapper .dataTables_paginate .paginate_button:active {
-	box-shadow: 0 0 0px #fff;
+	box-shadow: 0 0 0 #fff;
 	background-color: #fff;
 }
 
+/* Remove multiple sorting images on tables */
 table.dataTable thead .sorting_asc {
 	background-image: none !important;
 }
@@ -56,10 +62,6 @@ table.dataTable thead .sorting {
 	font-size: 1.0rem;
 }
 
-body {
-	font-size: 0.85em;
-}
-
 /** SIDEBAR FIXES **/
 
 /**
@@ -79,12 +81,12 @@ body {
 /* Fancy Tree Fixes */
 /** Remove the border around the tree **/
 ul.fancytree-container {
-	border: 0px;
+	border: 0;
 }
 
 /** Tree Placement **/
 #tree > ul {
-	padding-left: 0px;
+	padding-left: 0;
 }
 /** Fix tree rendering **/
 .fancytree-node {
