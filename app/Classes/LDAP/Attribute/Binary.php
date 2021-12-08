@@ -1,10 +1,8 @@
 <?php
-/**
- * Classes and functions for the template engine.
- *
- * @author The phpLDAPadmin development team
- * @package phpLDAPadmin
- */
+
+namespace App\Classes\LDAP\Attribute;
+
+use App\Classes\LDAP\Attribute;
 
 /**
  * Represents an attribute whose values are binary
@@ -12,7 +10,9 @@
  * @package phpLDAPadmin
  * @subpackage Templates
  */
-class BinaryAttribute extends Attribute {
+class Binary extends Attribute
+{
+	/*
 	protected $filepaths;
 	protected $filenames;
 
@@ -56,5 +56,5 @@ class BinaryAttribute extends Attribute {
 			$this->filepaths[$i] = $path;
 		}
 	}
+	*/
 }
-?>

@@ -1,26 +1,23 @@
 <?php
-/**
- * Classes and functions for the template engine.
- *
- * @author The phpLDAPadmin development team
- * @package phpLDAPadmin
- */
+
+namespace App\Classes\LDAP;
 
 /**
- * Represents an attribute of a template.
- *
- * @package phpLDAPadmin
- * @subpackage Templates
+ * Represents an attribute of an LDAP Object
  */
-class Attribute {
+class Attribute
+{
 	# Attribute Name
-	public $name;
+	public string $name;
+	/*
 	# Source of this attribute definition
 	protected $source;
+	*/
 
 	# Current and Old Values
+	protected array $values;
+	/*
 	protected $oldvalues = array();
-	protected $values = array();
 
 	# MIN/MAX number of values
 	protected $min_value_count = -1;
@@ -77,37 +74,13 @@ class Attribute {
 	# Configuration for automatically generated values
 	protected $autovalue = array();
 	protected $postvalue = array();
+	*/
 
-	public function __construct($name,$values,$server_id,$source=null) {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
+	public function __construct(string $name,array $values) {
+		$this->name = $name;
+		$this->values = $values;
 
-		$server = $_SESSION[APPCONFIG]->getServer($server_id);
-
-		$sattr = $server->getSchemaAttribute($name);
-		if ($sattr) {
-			$this->name = $sattr->getName(false);
-			$this->setLDAPdetails($sattr);
-
-		} else
-			$this->name = $name;
-
-		$this->source = $source;
-
-		# XML attributes are shown by default
-		switch ($source) {
-			case 'XML': $this->show();
-				$this->setXML($values);
-
-				break;
-
-			default:
-				if (! isset($values['values']))
-					debug_dump_backtrace('no index "values"',1);
-
-				$this->initValue($values['values']);
-		}
-
+		/*
 		# Should this attribute be hidden
 		if ($server->isAttrHidden($this->name))
 			$this->forcehide = true;
@@ -119,6 +92,12 @@ class Attribute {
 		# Should this attribute value be unique
 		if ($server->isAttrUnique($this->name))
 			$this->unique = true;
+		*/
+	}
+
+	public function __toString(): string
+	{
+		return join('<br>',$this->values);
 	}
 
 	/**
@@ -127,7 +106,7 @@ class Attribute {
 	 * @param boolean $lower - Return the attribute in normal or lower case (default lower)
 	 * @param boolean $real - Return the real attribute name (with ;binary, or just the name)
 	 * @return string Attribute name
-	 */
+	 *
 	public function getName($lower=true,$real=false) {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs,$this->name);
@@ -168,7 +147,7 @@ class Attribute {
 
 	/**
 	 * Autovalue is called after the attribute is initialised, and thus the values from the ldap server will be set.
-	 */
+	 *
 	public function autoValue($new_val) {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
@@ -648,7 +627,7 @@ class Attribute {
 	 * Return if this attribute is an RDN attribute
 	 *
 	 * @return boolean
-	 */
+	 *
 	public function isRDN() {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs,$this->rdn);
@@ -660,7 +639,7 @@ class Attribute {
 	 * Capture all the LDAP details we are interested in
 	 *
 	 * @param sattr Schema Attribute
-	 */
+	 *
 	private function setLDAPdetails($sattr) {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
@@ -680,7 +659,7 @@ class Attribute {
 	/**
 	 * Return a list of aliases for this Attribute (as defined by the schema)
 	 * This list will be lowercase.
-	 */
+	 *
 	public function getAliases() {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->aliases);
@@ -846,7 +825,7 @@ class Attribute {
 
 	/**
 	 * Display the values removed in an attribute.
-	 */
+	 *
 	public function getRemovedValues() {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
@@ -856,7 +835,7 @@ class Attribute {
 
 	/**
 	 * Display the values removed in an attribute.
-	 */
+	 *
 	public function getAddedValues() {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
@@ -872,7 +851,7 @@ class Attribute {
 	 *
 	 * @param string $attr_name The name of the attribute to examine.
 	 * @return string
-	 */
+	 *
 	private function real_attr_name() {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->name);
@@ -882,7 +861,7 @@ class Attribute {
 
 	/**
 	 * Does this attribute need supporting JS
-	 */
+	 *
 	public function needJS($type=null) {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
@@ -913,5 +892,5 @@ class Attribute {
 		} else
 			debug_dump_backtrace(sprintf('Unknown JS request %s',$type),1);
 	}
+	 */
 }
-?>

@@ -15,6 +15,9 @@ use LdapRecord\Models\ModelNotFoundException;
 
 class HomeController extends Controller
 {
+	/**
+	 * Application home page
+	 */
 	public function home()
 	{
 		$base = (new Entry)->baseDN() ?: collect();
@@ -27,18 +30,24 @@ class HomeController extends Controller
 					'item'=>Crypt::encryptString($item->getDn()),
 					'lazy'=>TRUE,
 					'icon'=>'fa-fw fas fa-sitemap',
-					'tooltip'=>$item,
+					'tooltip'=>$item->getDn(),
 				];
 			}));
 	}
 
+	/**
+	 * LDAP Server INFO
+	 *
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+	 * @throws ModelNotFoundException
+	 */
 	public function info()
 	{
 		$root = (new Entry)->rootDSE();
 
 		try {
 			$attrs = collect($root->getAttributes())
-				->transform(function($item,$key) {
+				->transform(function($item) {
 					foreach ($item as $k=>$v) {
 						if (preg_match('/[0-9]+\.[0-9]+\.[0-9]+/',$v)) {
 							$format = sprintf(
@@ -60,19 +69,23 @@ class HomeController extends Controller
 		}
 
 		return view('frames.dn')
-			->with('dn',__('Server Info'))
-			->with('leaf',$root)
-			->with('attributes',$this->sortAttrs($attrs));
+			->with('o',$root)
+			->with('dn',__('Server Info'));
 	}
 
-	public function render(Request $request)
+	/**
+	 * Render a specific DN
+	 *
+	 * @param Request $request
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+	 */
+	public function dn_frame(Request $request)
 	{
 		$dn = Crypt::decryptString($request->post('key'));
 
 		return view('frames.dn')
-			->with('dn',$dn)
-			->with('leaf',$x=(new Server)->fetch($dn))
-			->with('attributes',$x ? $this->sortAttrs(collect($x->getAttributes())) : []);
+			->with('o',(new Server)->fetch($dn))
+			->with('dn',$dn);
 	}
 
 	/**

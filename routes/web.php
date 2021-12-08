@@ -28,7 +28,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function() {
 
 	Route::get('home',[HomeController::class,'home']);
 	Route::get('info',[HomeController::class,'info']);
-	Route::post('render',[HomeController::class,'render']);
+	Route::post('dn',[HomeController::class,'dn_frame']);
 });
 
 Route::redirect('/','home');

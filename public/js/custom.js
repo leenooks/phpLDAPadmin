@@ -30,7 +30,7 @@ $(document).ready(function() {
 		click: function(event,data) {
 			if (data.targetType == 'title') {
 				$.ajax({
-					url: 'render',
+					url: 'dn',
 					method: 'POST',
 					data: { key: data.node.data.item },
 					dataType: 'html',

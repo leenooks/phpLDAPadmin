@@ -8,6 +8,8 @@ use LdapRecord\Models\Model;
 use LdapRecord\Models\ModelNotFoundException;
 use LdapRecord\Query\Model\Builder;
 
+use App\Classes\LDAP\Attribute\Factory;
+
 class Entry extends Model
 {
     /**
@@ -41,6 +43,16 @@ class Entry extends Model
 		}
 
 		return $result;
+	}
+
+	public function getAttributes(): array
+	{
+		$result = collect();
+		foreach (parent::getAttributes() as $attribute => $value) {
+			$result->put($attribute,Factory::create($attribute,$value));
+		}
+
+		return $result->toArray();
 	}
 
 	/**
