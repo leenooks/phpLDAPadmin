@@ -7,19 +7,24 @@ use Illuminate\Support\Facades\Log;
 
 use App\Classes\LDAP\{Attribute};
 
+/**
+ * This factory is used to return LDAP attributes as an object
+ *
+ * If there is no specific Attribute defined, then the default Attribute::class is return
+ */
 class Factory
 {
 	private const LOGKEY = 'LAf';
 
 	/**
-	 * @var array event type to event class mapping
+	 * Map of attributes to appropriate class
 	 */
 	public const map = [
 		'jpegphoto'=>Attribute\Binary\JpegPhoto::class,
 	];
 
 	/**
-	 * Returns new event instance
+	 * Create the new Object for an attribute
 	 *
 	 * @param string $attribute
 	 * @param array $values

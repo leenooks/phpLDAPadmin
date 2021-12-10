@@ -95,6 +95,11 @@ class Attribute
 		*/
 	}
 
+	/**
+	 * Determine how we render this attribute's value
+	 *
+	 * @return string
+	 */
 	public function __toString(): string
 	{
 		return join('<br>',$this->values);
