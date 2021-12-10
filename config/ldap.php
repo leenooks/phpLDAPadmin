@@ -37,6 +37,7 @@ return [
             'timeout' => env('LDAP_TIMEOUT', 5),
             'use_ssl' => env('LDAP_SSL', false),
             'use_tls' => env('LDAP_TLS', false),
+            'name' => env('LDAP_NAME','LDAP Server'),
         ],
 
     ],

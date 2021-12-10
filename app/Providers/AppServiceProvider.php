@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use LdapRecord\Configuration\DomainConfiguration;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+		// Add a new option available to be set in the configuration:
+		DomainConfiguration::extend('name', $default = null);
     }
 
     /**

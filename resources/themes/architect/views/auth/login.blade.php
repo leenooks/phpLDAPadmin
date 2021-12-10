@@ -29,7 +29,7 @@
 										<div class="h5 modal-title text-center">
 											<h4 class="mt-2">
 												<div class="app-logo mx-auto mb-3"><img class="w-75" src="{{ url('img/logo-h-lg.png') }}"></div>
-												<small>@lang('Sign in to <strong>:server</strong>',['server'=>'Foo'])</small>
+												<small>@lang('Sign in to <strong>:server</strong>',['server'=>config('ldap.connections.default.name')])</small>
 											</h4>
 										</div>
 

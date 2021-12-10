@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.4|^8.0",
-        "directorytree/ldaprecord-laravel": "^1.7",
+        "directorytree/ldaprecord-laravel": "^2",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
