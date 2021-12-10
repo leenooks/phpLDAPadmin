@@ -599,7 +599,12 @@ class ldap_pla extends ldap {
 
 		# Build our search filter to double check each attribute.
 		$query['filter'] = '(|';
-		foreach ($checkattrs as $attr)
+		foreach ($checkattrs as $attr) {
+			if (!is_array($attrs[$attr])) {
+				$val = $attrs[$attr];
+				$query['filter'] .= sprintf('(%s=%s)',$attr,$val);
+				continue;
+			}
 			foreach ($attrs[$attr] as $val)
 				if ($val)
 					$query['filter'] .= sprintf('(%s=%s)',$attr,$val);
