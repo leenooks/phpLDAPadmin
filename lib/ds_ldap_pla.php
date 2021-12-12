@@ -608,6 +608,7 @@ class ldap_pla extends ldap {
 			foreach ($attrs[$attr] as $val)
 				if ($val)
 					$query['filter'] .= sprintf('(%s=%s)',$attr,$val);
+		}
 		$query['filter'] .= ')';
 
 		$query['attrs'] = $checkattrs;
