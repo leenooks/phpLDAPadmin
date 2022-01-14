@@ -12,7 +12,7 @@
  * @package phpLDAPadmin
  * @subpackage Templates
  */
-class Attribute {
+class PLAAttribute {
 	# Attribute Name
 	public $name;
 	# Source of this attribute definition

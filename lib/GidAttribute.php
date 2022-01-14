@@ -12,6 +12,6 @@
  * @package phpLDAPadmin
  * @subpackage Templates
  */
-class GidAttribute extends Attribute {
+class GidAttribute extends PLAAttribute {
 }
 ?>
