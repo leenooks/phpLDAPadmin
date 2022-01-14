@@ -12,7 +12,7 @@
  * @package phpLDAPadmin
  * @subpackage Templates
  */
-class BinaryAttribute extends Attribute {
+class BinaryAttribute extends PLAAttribute {
 	protected $filepaths;
 	protected $filenames;
 
