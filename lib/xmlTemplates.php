@@ -140,7 +140,7 @@ abstract class xmlTemplates {
 
 		if ($changed) {
 			masort($this->templates,'title');
-			set_cached_item($server_id,$class['item'],'null',$this->templates);
+			set_cached_item($server_id,$this->templates,$class['item'],'null');
 		}
 	}
 
