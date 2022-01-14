@@ -50,7 +50,7 @@ if ($request['dn']) {
 }
 
 if ($treesave)
-	set_cached_item($app['server']->getIndex(),'tree','null',$tree);
+	set_cached_item($app['server']->getIndex(),$tree,'tree','null');
 
 if ($request['dn'])
 	echo $tree->draw_children($dnentry,$request['code']);
