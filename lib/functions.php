@@ -130,12 +130,13 @@ function app_error_handler($errno,$errstr,$file,$lineno) {
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	/**
-	 * error_reporting will be 0 if the error context occurred
-	 * within a function call with '@' preprended (ie, @ldap_bind() );
+	 * error_reporting will be only the non-ignorable error number bits
+	 * if the error context occurred within a function call with '@'
+	 * preprended (ie, @ldap_bind() );
 	 * So, don't report errors if the caller has specifically
 	 * disabled them with '@'
 	 */
-	if (ini_get('error_reporting') == 0 || error_reporting() == 0)
+	if (!(ini_get('error_reporting') & error_reporting() & $errno))
 		return;
 
 	$file = basename($file);
