@@ -259,15 +259,16 @@ if ($app['language'] == 'auto') {
 
 			if ((substr($lang,0,2) == 'en') ||
 				(file_exists($app['language_dir']) && is_readable($app['language_dir']))) {
-
-				# Set language
-				putenv('LANG='.$lang); # e.g. LANG=de_DE
-				$lang .= '.UTF-8';
-				setlocale(LC_ALL,$lang); # set LC_ALL to de_DE
-				bindtextdomain('messages',LANGDIR);
-				bind_textdomain_codeset('messages','UTF-8');
-				textdomain('messages');
-				header('Content-type: text/html; charset=UTF-8',true);
+				if (extension_loaded('gettext')) {
+					# Set language
+					putenv('LANG='.$lang); # e.g. LANG=de_DE
+					$lang .= '.UTF-8';
+					setlocale(LC_ALL,$lang); # set LC_ALL to de_DE
+					bindtextdomain('messages',LANGDIR);
+					bind_textdomain_codeset('messages','UTF-8');
+					textdomain('messages');
+					header('Content-type: text/html; charset=UTF-8',true);
+				}
 				break;
 			}
 		}
