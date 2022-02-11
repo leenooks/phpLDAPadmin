@@ -376,7 +376,7 @@ class page {
 			'FOOT'=>true
 		);
 		
-		if ($_SESSION[APPCONFIG]->getValue('appearance','minimalMode')) {
+		if (isset($_SESSION) && $_SESSION[APPCONFIG]->getValue('appearance','minimalMode')) {
 			$display = array(
 				'HEAD'=>false,
 				'CONTROL'=>false,
