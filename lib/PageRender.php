@@ -1196,7 +1196,8 @@ class PageRender extends Visitor {
 		else
 			return false;
 
-		return $shadow_date*24*3600;
+		$shadow_date_seconds = $shadow_date*24*3600;
+		return ($shadow_date_seconds > PHP_INT_MAX) ? PHP_INT_MAX: $shadow_date_seconds;
 	}
 
 	protected function drawShadowDateShadowAttribute($attribute) {
