@@ -2299,6 +2299,20 @@ function pla_password_hash($password_clear,$enc_type) {
 
 			break;
 
+		case 'argon2i':
+			if (! defined('PASSWORD_ARGON2I'))
+				error(_('Your system does not support argon2i encryption (PHP 7.2 or upper is required).'),'error','index.php');
+			$new_value = sprintf('{ARGON2}%s',password_hash($password_clear,PASSWORD_ARGON2I));
+
+			break;
+
+		case 'argon2id':
+			if (! defined('PASSWORD_ARGON2ID'))
+				error(_('Your system does not support argon2id encryption (PHP 7.3 or upper is required).'),'error','index.php');
+			$new_value = sprintf('{ARGON2}%s',password_hash($password_clear,PASSWORD_ARGON2ID));
+
+			break;
+
 		case 'clear':
 		default:
 			$new_value = $password_clear;
@@ -2534,6 +2548,14 @@ function password_check($cryptedpassword,$plainpassword,$attribute='userpassword
 
 			break;
 
+		# Argon2 crypted passwords
+		case 'argon2':
+			if (password_verify($plainpassword, $cryptedpassword))
+				return true;
+			else
+				return false;
+			break;
+
 		# No crypt is given assume plaintext passwords are used
 		default:
 			if ($plainpassword == $cryptedpassword)
@@ -2577,6 +2599,16 @@ function get_enc_type($user_password) {
 
 		elseif (preg_match('/{[^}]+}_+/',$user_password))
 			$enc_type = 'ext_des';
+
+	}
+	elseif (strcasecmp($enc_type,'argon2') == 0) {
+
+		if (preg_match('/{ARGON2}\$argon2i\$/',$user_password))
+			$enc_type = 'argon2i';
+
+		elseif (preg_match('/{ARGON2}\$argon2id\$/',$user_password))
+			$enc_type = 'argon2id';
+
 	}
 
 	return $enc_type;

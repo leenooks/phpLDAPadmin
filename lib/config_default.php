@@ -576,6 +576,8 @@ class Config {
 				'ssha512'=>'ssha512',
 				'sha256crypt'=>'sha256crypt',
 				'sha512crypt'=>'sha512crypt',
+				'argon2i'=>'argon2i',
+				'argon2id'=>'argon2id',
 			));
 
 		/** Search display
