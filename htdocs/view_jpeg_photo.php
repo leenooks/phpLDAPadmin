@@ -40,7 +40,7 @@ switch ($request['location']) {
 if (! isset($jpeg_data[$request['attr']][$request['index']])) {
 	if (function_exists('imagecreate')) {
 		$im = imagecreate(160,30);
-		if (is_resource($im)) {
+		if ($im) {
 			header('Content-type: image/png');
 
 			# Set the background
