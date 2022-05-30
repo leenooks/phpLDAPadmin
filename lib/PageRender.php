@@ -1215,15 +1215,15 @@ class PageRender extends Visitor {
 		echo '<br/><small>';
 		if (($today < $shadow_date) && in_array(strtolower($attribute->getName()),$shadow_before_today_attrs))
 			printf('<span style="color:red">(%s)</span>',
-				strftime($_SESSION[APPCONFIG]->getValue('appearance','date'),$shadow_date));
+				date($_SESSION[APPCONFIG]->getValue('appearance','date'),$shadow_date));
 
 		elseif (($today > $shadow_date) && in_array(strtolower($attribute->getName()),$shadow_after_today_attrs))
 			printf('<span style="color:red">(%s)</span>',
-				strftime($_SESSION[APPCONFIG]->getValue('appearance','date'),$shadow_date));
+				date($_SESSION[APPCONFIG]->getValue('appearance','date'),$shadow_date));
 
 		else
 			printf('(%s)',
-				strftime($_SESSION[APPCONFIG]->getValue('appearance','date'),$shadow_date));
+				date($_SESSION[APPCONFIG]->getValue('appearance','date'),$shadow_date));
 
 		echo '</small><br />';
 	}
