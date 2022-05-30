@@ -170,7 +170,7 @@ class ldap extends DS {
 			debug_log('LDAP Resource [%s], Host [%s], Port [%s]',16,0,__FILE__,__LINE__,__METHOD__,
 				$resource,$this->getValue('server','host'),$this->getValue('server','port'));
 
-		if (! is_resource($resource))
+		if (!$resource)
 			debug_dump_backtrace('UNHANDLED, $resource is not a resource',1);
 
 		# Go with LDAP version 3 if possible (needed for renaming and Novell schema fetching)
@@ -286,7 +286,7 @@ class ldap extends DS {
 		$connect = $this->connect($method,false,$new);
 
 		# If we didnt log in...
-		if (! is_resource($connect) || $this->noconnect || ! $this->userIsAllowedLogin($userDN)) {
+		if (!$connect || $this->noconnect || ! $this->userIsAllowedLogin($userDN)) {
 			$this->logout($method);
 
 			return false;
@@ -359,22 +359,24 @@ class ldap extends DS {
 		if ($debug)
 			debug_dump(array('query'=>$query,'server'=>$this->getIndex(),'con'=>$this->connect($method)));
 
+		$search = null;
 		$resource = $this->connect($method,$debug);
 
-		switch ($query['scope']) {
-			case 'base':
-				$search = @ldap_read($resource,$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$query['time_limit'],$query['deref']);
-				break;
+		if ($resource)
+			switch ($query['scope']) {
+				case 'base':
+					$search = @ldap_read($resource,$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$query['time_limit'],$query['deref']);
+					break;
 
-			case 'one':
-				$search = @ldap_list($resource,$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$query['time_limit'],$query['deref']);
-				break;
+				case 'one':
+					$search = @ldap_list($resource,$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$query['time_limit'],$query['deref']);
+					break;
 
-			case 'sub':
-			default:
-				$search = @ldap_search($resource,$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$query['time_limit'],$query['deref']);
-				break;
-		}
+				case 'sub':
+				default:
+					$search = @ldap_search($resource,$query['base'],$query['filter'],$query['attrs'],$attrs_only,$query['size_limit'],$query['time_limit'],$query['deref']);
+					break;
+			}
 
 		if ($debug)
 			debug_dump(array('method'=>$method,'search'=>$search,'error'=>$this->getErrorMessage()));
@@ -1197,7 +1199,7 @@ class ldap extends DS {
 		$search = @ldap_read($this->connect($method),$dn,'objectclass=*',array('subschemaSubentry'),false,0,10,LDAP_DEREF_NEVER);
 
 		if (DEBUG_ENABLED)
-			debug_log('Search returned (%s)',24,0,__FILE__,__LINE__,__METHOD__,is_resource($search));
+			debug_log('Search returned (%s)',24,0,__FILE__,__LINE__,__METHOD__,!!$search);
 
 		# Fix for broken ldap.conf configuration.
 		if (! $search && ! $dn) {
@@ -1210,7 +1212,7 @@ class ldap extends DS {
 
 					if (DEBUG_ENABLED)
 						debug_log('Search returned (%s) for base (%s)',24,0,__FILE__,__LINE__,__METHOD__,
-							is_resource($search),$base);
+							!!$search,$base);
 
 					if ($search)
 						break;
