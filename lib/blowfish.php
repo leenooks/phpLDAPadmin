@@ -315,7 +315,7 @@ class Horde_Cipher_blowfish {
         $keyLen = count($key);
         for ($i = 0; $i < $iMax; $i++) {
             for ($t = 0; $t < 4; $t++) {
-                $keyXor = ($keyXor << 8) | (($key[$keyPos]) & 0x0ff);
+                $keyXor = (($keyXor << 8) | (($key[$keyPos]) & 0x0ff)) & 0xFFFFFFFF;
                 if (++$keyPos == $keyLen) {
                     $keyPos = 0;
                 }
@@ -390,6 +390,37 @@ class Horde_Cipher_blowfish {
     }
 
     /**
+     * Perform an encryption/decryption step.
+     *
+     * @param Int $x   The bits source for the S tables indexing.
+     *
+     * @return Int     The 32-bit step result.
+     */
+    function _cryptStep($x)
+    {
+	if (PHP_INT_SIZE > 4)
+            return ((($this->s1[($x >> 24) & 0xFF] + $this->s2[($x >> 16) & 0xFF]) ^ $this->s3[($x >> 8) & 0xFF]) + $this->s4[$x & 0xFF]) & 0xFFFF;
+
+	/* For 32-bit machines, split values into 16-bit high and low parts
+	   to avoid negative values and 32-bit overflows. */
+	$a = $this->s1[($x >> 24) & 0xFF];
+	$b = $this->s2[($x >> 16) & 0xFF];
+	$h = (($a >> 16) & 0xFFFF) + (($b >> 16) & 0xFFFF);
+	$l = ($a & 0xFFFF) + ($b & 0xFFFF);
+	if ($l & ~0xFFFF)
+	    $h++;
+	$a = $this->s3[($x >> 8) & 0xFF];
+	$h ^= $a >> 16;
+	$l ^= $a;
+	$a = $this->s4[$x & 0xFF];
+	$h = ($h & 0xFFFF) + (($a >> 16) & 0xFFFF);
+	$l = ($l & 0xFFFF) + ($a & 0xFFFF);
+	if ($l & ~0xFFFF)
+	    $h++;
+	return (($h & 0xFFFF) << 16) | ($l & 0xFFFF);
+    }
+
+    /**
      * Encrypt a block on data.
      *
      * @param String $L  The data to encrypt.
@@ -400,22 +431,22 @@ class Horde_Cipher_blowfish {
     function _encryptBlock($L, $R)
     {
         $L ^= $this->p[0];
-        $R ^= ((($this->s1[($L >> 24) & 0xFF] + $this->s2[($L >> 16) & 0x0ff]) ^ $this->s3[($L >> 8) & 0x0ff]) + $this->s4[$L & 0x0ff]) ^ $this->p[1];
-        $L ^= ((($this->s1[($R >> 24) & 0xFF] + $this->s2[($R >> 16) & 0x0ff]) ^ $this->s3[($R >> 8) & 0x0ff]) + $this->s4[$R & 0x0ff]) ^ $this->p[2];
-        $R ^= ((($this->s1[($L >> 24) & 0xFF] + $this->s2[($L >> 16) & 0x0ff]) ^ $this->s3[($L >> 8) & 0x0ff]) + $this->s4[$L & 0x0ff]) ^ $this->p[3];
-        $L ^= ((($this->s1[($R >> 24) & 0xFF] + $this->s2[($R >> 16) & 0x0ff]) ^ $this->s3[($R >> 8) & 0x0ff]) + $this->s4[$R & 0x0ff]) ^ $this->p[4];
-        $R ^= ((($this->s1[($L >> 24) & 0xFF] + $this->s2[($L >> 16) & 0x0ff]) ^ $this->s3[($L >> 8) & 0x0ff]) + $this->s4[$L & 0x0ff]) ^ $this->p[5];
-        $L ^= ((($this->s1[($R >> 24) & 0xFF] + $this->s2[($R >> 16) & 0x0ff]) ^ $this->s3[($R >> 8) & 0x0ff]) + $this->s4[$R & 0x0ff]) ^ $this->p[6];
-        $R ^= ((($this->s1[($L >> 24) & 0xFF] + $this->s2[($L >> 16) & 0x0ff]) ^ $this->s3[($L >> 8) & 0x0ff]) + $this->s4[$L & 0x0ff]) ^ $this->p[7];
-        $L ^= ((($this->s1[($R >> 24) & 0xFF] + $this->s2[($R >> 16) & 0x0ff]) ^ $this->s3[($R >> 8) & 0x0ff]) + $this->s4[$R & 0x0ff]) ^ $this->p[8];
-        $R ^= ((($this->s1[($L >> 24) & 0xFF] + $this->s2[($L >> 16) & 0x0ff]) ^ $this->s3[($L >> 8) & 0x0ff]) + $this->s4[$L & 0x0ff]) ^ $this->p[9];
-        $L ^= ((($this->s1[($R >> 24) & 0xFF] + $this->s2[($R >> 16) & 0x0ff]) ^ $this->s3[($R >> 8) & 0x0ff]) + $this->s4[$R & 0x0ff]) ^ $this->p[10];
-        $R ^= ((($this->s1[($L >> 24) & 0xFF] + $this->s2[($L >> 16) & 0x0ff]) ^ $this->s3[($L >> 8) & 0x0ff]) + $this->s4[$L & 0x0ff]) ^ $this->p[11];
-        $L ^= ((($this->s1[($R >> 24) & 0xFF] + $this->s2[($R >> 16) & 0x0ff]) ^ $this->s3[($R >> 8) & 0x0ff]) + $this->s4[$R & 0x0ff]) ^ $this->p[12];
-        $R ^= ((($this->s1[($L >> 24) & 0xFF] + $this->s2[($L >> 16) & 0x0ff]) ^ $this->s3[($L >> 8) & 0x0ff]) + $this->s4[$L & 0x0ff]) ^ $this->p[13];
-        $L ^= ((($this->s1[($R >> 24) & 0xFF] + $this->s2[($R >> 16) & 0x0ff]) ^ $this->s3[($R >> 8) & 0x0ff]) + $this->s4[$R & 0x0ff]) ^ $this->p[14];
-        $R ^= ((($this->s1[($L >> 24) & 0xFF] + $this->s2[($L >> 16) & 0x0ff]) ^ $this->s3[($L >> 8) & 0x0ff]) + $this->s4[$L & 0x0ff]) ^ $this->p[15];
-        $L ^= ((($this->s1[($R >> 24) & 0xFF] + $this->s2[($R >> 16) & 0x0ff]) ^ $this->s3[($R >> 8) & 0x0ff]) + $this->s4[$R & 0x0ff]) ^ $this->p[16];
+	$R ^= $this->_cryptStep($L) ^ $this->p[1];
+	$L ^= $this->_cryptStep($R) ^ $this->p[2];
+	$R ^= $this->_cryptStep($L) ^ $this->p[3];
+	$L ^= $this->_cryptStep($R) ^ $this->p[4];
+	$R ^= $this->_cryptStep($L) ^ $this->p[5];
+	$L ^= $this->_cryptStep($R) ^ $this->p[6];
+	$R ^= $this->_cryptStep($L) ^ $this->p[7];
+	$L ^= $this->_cryptStep($R) ^ $this->p[8];
+	$R ^= $this->_cryptStep($L) ^ $this->p[9];
+	$L ^= $this->_cryptStep($R) ^ $this->p[10];
+	$R ^= $this->_cryptStep($L) ^ $this->p[11];
+	$L ^= $this->_cryptStep($R) ^ $this->p[12];
+	$R ^= $this->_cryptStep($L) ^ $this->p[13];
+	$L ^= $this->_cryptStep($R) ^ $this->p[14];
+	$R ^= $this->_cryptStep($L) ^ $this->p[15];
+	$L ^= $this->_cryptStep($R) ^ $this->p[16];
         $R ^= $this->p[17];
 
         return array('L' => $R, 'R' => $L);
@@ -445,23 +476,22 @@ class Horde_Cipher_blowfish {
         list($L, $R) = array_values($unpack);
 
         $L ^= $this->p[17];
-        $R ^= ((($this->s1[($L >> 24) & 0xFF] + $this->s2[($L >> 16) & 0x0ff]) ^ $this->s3[($L >> 8) & 0x0ff]) + $this->s4[$L & 0x0ff]) ^ $this->p[16];
-        $L ^= ((($this->s1[($R >> 24) & 0xFF] + $this->s2[($R >> 16) & 0x0ff]) ^ $this->s3[($R >> 8) & 0x0ff]) + $this->s4[$R & 0x0ff]) ^ $this->p[15];
-        $R ^= ((($this->s1[($L >> 24) & 0xFF] + $this->s2[($L >> 16) & 0x0ff]) ^ $this->s3[($L >> 8) & 0x0ff]) + $this->s4[$L & 0x0ff]) ^ $this->p[14];
-        $L ^= ((($this->s1[($R >> 24) & 0xFF] + $this->s2[($R >> 16) & 0x0ff]) ^ $this->s3[($R >> 8) & 0x0ff]) + $this->s4[$R & 0x0ff]) ^ $this->p[13];
-        $R ^= ((($this->s1[($L >> 24) & 0xFF] + $this->s2[($L >> 16) & 0x0ff]) ^ $this->s3[($L >> 8) & 0x0ff]) + $this->s4[$L & 0x0ff]) ^ $this->p[12];
-        $L ^= ((($this->s1[($R >> 24) & 0xFF] + $this->s2[($R >> 16) & 0x0ff]) ^ $this->s3[($R >> 8) & 0x0ff]) + $this->s4[$R & 0x0ff]) ^ $this->p[11];
-        $R ^= ((($this->s1[($L >> 24) & 0xFF] + $this->s2[($L >> 16) & 0x0ff]) ^ $this->s3[($L >> 8) & 0x0ff]) + $this->s4[$L & 0x0ff]) ^ $this->p[10];
-        $L ^= ((($this->s1[($R >> 24) & 0xFF] + $this->s2[($R >> 16) & 0x0ff]) ^ $this->s3[($R >> 8) & 0x0ff]) + $this->s4[$R & 0x0ff]) ^ $this->p[9];
-        $R ^= ((($this->s1[($L >> 24) & 0xFF] + $this->s2[($L >> 16) & 0x0ff]) ^ $this->s3[($L >> 8) & 0x0ff]) + $this->s4[$L & 0x0ff]) ^ $this->p[8];
-        $L ^= ((($this->s1[($R >> 24) & 0xFF] + $this->s2[($R >> 16) & 0x0ff]) ^ $this->s3[($R >> 8) & 0x0ff]) + $this->s4[$R & 0x0ff]) ^ $this->p[7];
-        $R ^= ((($this->s1[($L >> 24) & 0xFF] + $this->s2[($L >> 16) & 0x0ff]) ^ $this->s3[($L >> 8) & 0x0ff]) + $this->s4[$L & 0x0ff]) ^ $this->p[6];
-        $L ^= ((($this->s1[($R >> 24) & 0xFF] + $this->s2[($R >> 16) & 0x0ff]) ^ $this->s3[($R >> 8) & 0x0ff]) + $this->s4[$R & 0x0ff]) ^ $this->p[5];
-        $R ^= ((($this->s1[($L >> 24) & 0xFF] + $this->s2[($L >> 16) & 0x0ff]) ^ $this->s3[($L >> 8) & 0x0ff]) + $this->s4[$L & 0x0ff]) ^ $this->p[4];
-        $L ^= ((($this->s1[($R >> 24) & 0xFF] + $this->s2[($R >> 16) & 0x0ff]) ^ $this->s3[($R >> 8) & 0x0ff]) + $this->s4[$R & 0x0ff]) ^ $this->p[3];
-        $R ^= ((($this->s1[($L >> 24) & 0xFF] + $this->s2[($L >> 16) & 0x0ff]) ^ $this->s3[($L >> 8) & 0x0ff]) + $this->s4[$L & 0x0ff]) ^ $this->p[2];
-        $L ^= ((($this->s1[($R >> 24) & 0xFF] + $this->s2[($R >> 16) & 0x0ff]) ^ $this->s3[($R >> 8) & 0x0ff]) + $this->s4[$R & 0x0ff]) ^ $this->p[1];
-
+	$R ^= $this->_cryptStep($L) ^ $this->p[16];
+	$L ^= $this->_cryptStep($R) ^ $this->p[15];
+	$R ^= $this->_cryptStep($L) ^ $this->p[14];
+	$L ^= $this->_cryptStep($R) ^ $this->p[13];
+	$R ^= $this->_cryptStep($L) ^ $this->p[12];
+	$L ^= $this->_cryptStep($R) ^ $this->p[11];
+	$R ^= $this->_cryptStep($L) ^ $this->p[10];
+	$L ^= $this->_cryptStep($R) ^ $this->p[9];
+	$R ^= $this->_cryptStep($L) ^ $this->p[8];
+	$L ^= $this->_cryptStep($R) ^ $this->p[7];
+	$R ^= $this->_cryptStep($L) ^ $this->p[6];
+	$L ^= $this->_cryptStep($R) ^ $this->p[5];
+	$R ^= $this->_cryptStep($L) ^ $this->p[4];
+	$L ^= $this->_cryptStep($R) ^ $this->p[3];
+	$R ^= $this->_cryptStep($L) ^ $this->p[2];
+	$L ^= $this->_cryptStep($R) ^ $this->p[1];
         $decrypted = pack("NN", $R ^ $this->p[0], $L);
         return $decrypted;
     }
