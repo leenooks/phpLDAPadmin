@@ -56,7 +56,7 @@ class Template extends xmlTemplate {
 	# Template RDN attributes
 	private $rdn;
 
-	public function __construct($server_id,$name=null,$filename=null,$type=null,$id=null) {
+	public function __construct($server_id,$name='',$filename=null,$type=null,$id=null) {
 		parent::__construct($server_id,$name,$filename,$type,$id);
 
 		# If this is the default template, we might disable leafs by default.
@@ -636,10 +636,13 @@ class Template extends xmlTemplate {
 
 	public function getDNEncode($url=true) {
 		// @todo Be nice to do all this in 1 location
+		$dn = $this->getDN();
+		if (is_null($dn))
+			$dn = '';
 		if ($url)
-			return urlencode(preg_replace('/%([0-9a-fA-F]+)/',"%25\\1",$this->getDN()));
+			return urlencode(preg_replace('/%([0-9a-fA-F]+)/',"%25\\1",$dn));
 		else
-			return preg_replace('/%([0-9a-fA-F]+)/',"%25\\1",$this->getDN());
+			return preg_replace('/%([0-9a-fA-F]+)/',"%25\\1",$dn);
 	}
 
 	/**

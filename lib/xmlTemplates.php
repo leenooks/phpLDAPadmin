@@ -230,7 +230,7 @@ abstract class xmlTemplates {
 				return clone $template;
 
 		# If we get here, the template ID didnt exist, so return a blank template, which be interpreted as the default template
-		$object = new $class['name']($this->server_id,null,null,'default');
+		$object = new $class['name']($this->server_id,'',null,'default');
 		return $object;
 	}
 
@@ -272,7 +272,7 @@ abstract class xmlTemplate {
 	# The TEMPLATE attributes as per the template definition, or the DN entry
 	protected $attributes = array();
 
-	public function __construct($server_id,$name=null,$filename=null,$type=null,$id=null) {
+	public function __construct($server_id,$name='',$filename=null,$type=null,$id=null) {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
 

@@ -13,7 +13,7 @@ require './common.php';
 require LIBDIR.'export_functions.php';
 
 $request = array();
-$request['dn'] = get_request('dn','GET');
+$request['dn'] = get_request('dn','GET',false,'');
 $request['format'] = get_request('format','GET',false,get_line_end_format());
 $request['scope'] = get_request('scope','GET',false,'base');
 $request['exporter_id'] = get_request('exporter_id','GET',false,'LDIF');

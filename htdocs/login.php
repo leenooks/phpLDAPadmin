@@ -19,8 +19,7 @@ if ($_SESSION[APPCONFIG]->getValue('session', 'reCAPTCHA-enable')) {
 if ($pass) {
     $user             = array();
     $user['login']    = get_request('login');
-    $user['password'] = get_request('login_pass');
-    $user['password'] = html_entity_decode($user['password'], ENT_QUOTES);
+    $user['password'] = get_request('login_pass', 'POST', false, '');
 
     if ($user['login'] && !strlen($user['password'])) {
         system_message(array(

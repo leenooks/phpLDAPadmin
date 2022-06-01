@@ -15,8 +15,8 @@ $www['page'] = new page();
 
 $request = array();
 $request['componentid'] = get_request('componentid','REQUEST');
-$request['hash'] = get_request('hash','REQUEST');
-$request['password'] = get_request('check_password','REQUEST');
+$request['hash'] = get_request('hash','REQUEST',false,'');
+$request['password'] = get_request('check_password','REQUEST',false,'');
 $request['action'] = get_request('action','REQUEST');
 $request['attribute'] = get_request('attr','REQUEST');
 

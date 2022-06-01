@@ -258,14 +258,14 @@ class PLAAttribute {
 		}
 	}
 
-	public function getValue($i) {
+	public function getValue($i, $default=null) {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		if (isset($this->values[$i]))
 			return $this->values[$i];
 		else
-			return null;
+			return $default;
 	}
 
 	public function getOldValue($i) {
