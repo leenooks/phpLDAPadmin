@@ -18,11 +18,11 @@
  */
 abstract class SchemaItem {
 	# The schema item's name.
-	protected $name = null;
+	protected $name = '';
 	# The OID of this schema item.
 	private $oid = null;
 	# The description of this schema item.
-	protected $description = null;
+	protected $description = '';
 	# Boolean value indicating whether this objectClass is obsolete
 	private $is_obsolete = false;
 
@@ -703,7 +703,7 @@ class ObjectClass_ObjectClassAttribute {
  */
 class AttributeType extends SchemaItem {
 	# The attribute from which this attribute inherits (if any)
-	private $sup_attribute = null;
+	private $sup_attribute = '';
 	# The equality rule used
 	private $equality = null;
 	# The ordering of the attributeType
@@ -711,8 +711,8 @@ class AttributeType extends SchemaItem {
 	# Boolean: supports substring matching?
 	private $sub_str = null;
 	# The full syntax string, ie 1.2.3.4{16}
-	private $syntax = null;
-	private $syntax_oid = null;
+	private $syntax = '';
+	private $syntax_oid = '';
 	# boolean: is single valued only?
 	private $is_single_value = false;
 	# boolean: is collective?
@@ -726,7 +726,7 @@ class AttributeType extends SchemaItem {
 	# The max number of characters this attribute can be
 	private $max_length = null;
 	# A string description of the syntax type (taken from the LDAPSyntaxes)
-	private $type = null;
+	private $type = '';
 	# An array of objectClasses which use this attributeType (must be set by caller)
 	private $used_in_object_classes = array();
 	# A list of object class names that require this attribute type.
@@ -1327,7 +1327,7 @@ class Syntax extends SchemaItem {
  */
 class MatchingRule extends SchemaItem {
 	# This rule's syntax OID
-	private $syntax = null;
+	private $syntax = '';
 	# An array of attribute names who use this MatchingRule
 	private $used_by_attrs = array();
 

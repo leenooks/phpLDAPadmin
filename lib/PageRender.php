@@ -538,7 +538,7 @@ class PageRender extends Visitor {
 	final protected function drawHiddenValueAttribute($attribute,$i) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
-		$val = $attribute->getValue($i);
+		$val = $attribute->getValue($i, '');
 
 		printf('<input type="hidden" name="new_values[%s][%s]" id="new_values_%s_%s" value="%s" />',
 			htmlspecialchars($attribute->getName()),$i,htmlspecialchars($attribute->getName()),$i,
@@ -607,7 +607,7 @@ class PageRender extends Visitor {
 	protected function drawFormReadOnlyValueAttribute($attribute,$i) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
-		$val = $attribute->getValue($i);
+		$val = $attribute->getValue($i, '');
 
 		printf('<input type="text" class="roval" name="new_values[%s][%s]" id="new_values_%s_%s" value="%s" readonly="readonly" />',
 			htmlspecialchars($attribute->getName()),$i,htmlspecialchars($attribute->getName()),$i,htmlspecialchars($val));
@@ -616,7 +616,7 @@ class PageRender extends Visitor {
 	protected function drawFormReadWriteValueAttribute($attribute,$i) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
-		$val = $attribute->getValue($i);
+		$val = $attribute->getValue($i, '');
 
 		if ($attribute->getHelper() || $attribute->getVerify())
 			echo '<table cellspacing="0" cellpadding="0" border="0"><tr><td valign="top">';
@@ -720,7 +720,7 @@ class PageRender extends Visitor {
 	protected function drawFormReadWriteValueDateAttribute($attribute,$i) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
-		$val = $attribute->getValue($i);
+		$val = $attribute->getValue($i, '');
 
 		echo '<span style="white-space: nowrap;">';
 		printf('<input type="text" class="value" id="new_values_%s_%s" name="new_values[%s][%s]" value="%s" %s%s %s %s/>&nbsp;',
@@ -738,7 +738,7 @@ class PageRender extends Visitor {
 	protected function drawFormReadWriteValueDnAttribute($attribute,$i) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
-		$val = $attribute->getValue($i);
+		$val = $attribute->getValue($i, '');
 
 		if ($attribute->getHelper())
 			echo '<table cellspacing="0" cellpadding="0"><tr><td valign="top">';
@@ -952,7 +952,7 @@ class PageRender extends Visitor {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
 		$server = $this->getServer();
-		$val = $attribute->getValue($i);
+		$val = $attribute->getValue($i, '');
 
 		if (trim($val))
 			$enc_type = get_enc_type($val);
@@ -974,7 +974,7 @@ class PageRender extends Visitor {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
 		$server = $this->getServer();
-		$val = $attribute->getValue($i);
+		$val = $attribute->getValue($i, '');
 
 		$enc_type = get_enc_type($val);
 
@@ -1102,7 +1102,7 @@ class PageRender extends Visitor {
 
 		# This is a single value attribute
 		} else {
-			$val = $attribute->getValue($i) ? $attribute->getValue($i) : $attribute->getDefault();
+			$val = $attribute->getValue($i) ? $attribute->getValue($i) : (is_null($attribute->getDefault())? '': $attribute->getDefault());
 
 			if ($attribute->getHelper())
 				echo '<table cellspacing="0" cellpadding="0"><tr><td valign="top">';

@@ -2143,7 +2143,7 @@ function fillRec(id,value) {
 		if ($attribute->isMultiple() && $i > 0)
 			return;
 
-		$val = $attribute->getValue($i);
+		$val = $attribute->getValue($i, '');
 
 		if ($attribute->isVisible()) {
 			echo '<table cellspacing="0" cellpadding="0" width="100%" border="0"><tr><td class="icon" style="width: 25px;">';

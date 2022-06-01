@@ -150,7 +150,7 @@ switch($entry['view']) {
 
 		foreach ($sattrs as $attr) {
 			if (isAjaxEnabled() || (is_null($entry['value']) || ! trim($entry['value']) || $entry['value']==$attr->getName())) {
-				if ((! is_null($entry['value']) && $entry['value']==$attr->getName()) || ! trim($entry['value']))
+				if (!is_string($entry['value']) || $entry['value']==$attr->getName() || !trim($entry['value']))
 					$entry['viewed'] = true;
 
 				if (isAjaxEnabled() && $entry['value'])
@@ -380,7 +380,7 @@ switch($entry['view']) {
 			$desc = $rule->getName(false);
 
 			if (isAjaxEnabled() || (is_null($entry['value']) || ! trim($entry['value']) || $entry['value']==$rule->getName())) {
-				if ((! is_null($entry['value']) && $entry['value']==$rule->getName()) || ! trim($entry['value']))
+				if (!is_string($entry['value']) || $entry['value']==$rule->getName() || !trim($entry['value']))
 					$entry['viewed'] = true;
 
 				if (null != $rule->getDescription())
@@ -468,7 +468,7 @@ switch($entry['view']) {
 
 		foreach ($socs as $name => $oclass) {
 			if (isAjaxEnabled() || (is_null($entry['value']) || ! trim($entry['value']) || $entry['value']==$oclass->getName())) {
-				if ((! is_null($entry['value']) && $entry['value']==$oclass->getName()) || ! trim($entry['value']))
+				if (!is_string($entry['value']) || $entry['value']==$oclass->getName() || !trim($entry['value']))
 					$entry['viewed'] = true;
 
 				if (isAjaxEnabled() && $entry['value'])

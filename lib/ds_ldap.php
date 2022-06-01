@@ -2227,7 +2227,7 @@ class ldap extends DS {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',17,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
-		$type = ($sattr = $this->getSchemaAttribute($attr_name)) ? $sattr->getType() : null;
+		$type = ($sattr = $this->getSchemaAttribute($attr_name)) ? $sattr->getType() : '';
 
 		if (! strcasecmp('boolean',$type) ||
 			! strcasecmp('isCriticalSystemObject',$attr_name) ||
@@ -2292,8 +2292,8 @@ class ldap extends DS {
 
 			/* Strangely, some attributeTypes may not show up in the server
 			 * schema. This behavior has been observed in MS Active Directory.*/
-			$type = null;
-			$syntax = null;
+			$type = '';
+			$syntax = '';
 
 		} else {
 			$type = $sattr->getType();

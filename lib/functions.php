@@ -1270,6 +1270,9 @@ function is_mail_string($str) {
 	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
+	if (is_null($str))
+		return false;
+
 	$mail_regex = "/^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*$/";
 
 	if (preg_match($mail_regex,$str))
@@ -1287,6 +1290,9 @@ function is_mail_string($str) {
 function is_url_string($str) {
 	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
+
+	if (is_null($str))
+		return false;
 
 	$url_regex = '/^(ftp|https?):\/\/+[\w\.\-\/\?\=\&]*\w+/';
 
@@ -2619,6 +2625,9 @@ function pla_explode_dn($dn,$with_attributes=0) {
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	global $CACHE;
+
+	if (is_null($dn))
+		$dn = '';
 
 	if (isset($CACHE['explode'][$dn][$with_attributes])) {
 		if (DEBUG_ENABLED)

@@ -136,7 +136,7 @@ class Query extends xmlTemplate {
 			$bases = get_request('base','REQUEST',false,null);
 			$query['filter'] = get_request('filter','REQUEST',false,'objectClass=*');
 			$query['scope'] = get_request('scope','REQUEST',false,'sub');
-			$attrs = get_request('display_attrs','REQUEST');
+			$attrs = get_request('display_attrs','REQUEST',false,'');
 
 			$attrs = preg_replace('/\s+/','',$attrs);
 			if ($attrs)
