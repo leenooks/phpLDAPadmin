@@ -41,7 +41,7 @@ $request['recursive'] = (get_request('recursive') == 'on') ? true : false;
 $request['remove'] = (get_request('remove') == 'yes') ? true : false;
 
 if ($request['recursive']) {
-	$filter = get_request('filter','POST',false,'(objectClass=*)');
+	$filter = get_request('filter','POST',false,'(objectClass=*)',false);
 
 	# Build a tree similar to that of the tree browser to give to r_copy_dn
 	$ldap['tree'] = array();

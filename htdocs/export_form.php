@@ -17,7 +17,7 @@ $request['dn'] = get_request('dn','GET',false,'');
 $request['format'] = get_request('format','GET',false,get_line_end_format());
 $request['scope'] = get_request('scope','GET',false,'base');
 $request['exporter_id'] = get_request('exporter_id','GET',false,'LDIF');
-$request['filter'] = get_request('filter','GET',false,'(objectClass=*)');
+$request['filter'] = get_request('filter','GET',false,'(objectClass=*)',false);
 $request['attr'] = get_request('attributes','GET',false,'*');
 $request['sys_attr'] = get_request('sys_attr','GET') ? true: false;
 
