@@ -170,7 +170,7 @@ class HTMLTree extends Tree {
 
 		if (! is_null($server->inactivityTime())) {
 			$m = sprintf(_('Inactivity will log you off at %s'),
-				date('%H:%M',$server->inactivityTime()));
+				date('H:i',$server->inactivityTime()));
 			printf(' <img width="14" height="14" src="%s/timeout.png" title="%s" alt="%s"/>',IMGDIR,$m,'Timeout');
 		}
 		echo '</td></tr>';
