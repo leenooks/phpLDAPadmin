@@ -125,7 +125,7 @@ abstract class Export {
 		$query = array();
 		$base = get_request('dn','REQUEST');
 		$query['baseok'] = true;
-		$query['filter'] = get_request('filter','REQUEST',false,'objectclass=*');
+		$query['filter'] = get_request('filter','REQUEST',false,'objectclass=*',false);
 		$query['scope'] = get_request('scope','REQUEST',false,'base');
 		$query['deref'] = $_SESSION[APPCONFIG]->getValue('deref','export');
 		$query['size_limit'] = 0;

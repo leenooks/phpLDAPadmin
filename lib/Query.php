@@ -134,7 +134,7 @@ class Query extends xmlTemplate {
 		# If this is a custom search, we need to populate are paramters
 		if ($this->getID() == 'none') {
 			$bases = get_request('base','REQUEST',false,null);
-			$query['filter'] = get_request('filter','REQUEST',false,'objectClass=*');
+			$query['filter'] = get_request('filter','REQUEST',false,'objectClass=*',false);
 			$query['scope'] = get_request('scope','REQUEST',false,'sub');
 			$attrs = get_request('display_attrs','REQUEST',false,'');
 
