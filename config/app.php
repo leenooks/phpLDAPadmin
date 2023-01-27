@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'phpLDAPadmin'),
-    'name_html_long' => env('APP_NAME_HTML_LONG', '<b>php</b>LDAPadmin'),
+    'name' => 'PLA',
+    'name_html_long' => '<b>php</b>LDAPadmin',
     'version' => trim(file_get_contents(__DIR__.'/../public/VERSION')),
 
     /*

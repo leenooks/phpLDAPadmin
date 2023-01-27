@@ -1,5 +1,6 @@
 @extends('architect::layouts.app')
 
+{{--
 @section('htmlheader_title')
 	@lang('Home')
 @endsection
@@ -8,6 +9,7 @@
 @endsection
 @section('page_icon')
 @endsection
+--}}
 
 @section('main-content')
 	<div class="card card-solid">

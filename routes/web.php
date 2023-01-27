@@ -26,12 +26,11 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function() {
 		'register' => FALSE,
 	]);
 
-	Route::get('home',[HomeController::class,'home']);
+	Route::get('/',[HomeController::class,'home']);
 	Route::get('info',[HomeController::class,'info']);
 	Route::post('dn',[HomeController::class,'dn_frame']);
 });
 
-Route::redirect('/','home');
 Route::get('logout',[LoginController::class,'logout']);
 
 Route::group(['prefix'=>'user'],function() {

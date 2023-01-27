@@ -13,11 +13,12 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta http-equiv="Content-Language" content="en">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-	<title>{{ config('app.name') }} - @yield('htmlheader_title','Your title here')</title>
+	<title>{{ config('app.name') }} - @yield('htmlheader_title','🥇 The BEST ldap admin tool!')</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
 
 	<meta name="description" content="phpLDAPadmin - A web interface into LDAP data management">
 	<meta name="msapplication-tap-highlight" content="no">
+	<link rel="shortcut icon" href="{{ config('app.favicon','favicon.ico') }}" />
 
 	<!-- CSRF Token -->
 	<meta name="csrf-token" content="{{ csrf_token() }}">
