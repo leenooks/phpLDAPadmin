@@ -5,8 +5,7 @@ namespace App\Ldap;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use LdapRecord\Models\Model;
-use LdapRecord\Models\ModelNotFoundException;
-use LdapRecord\Query\Model\Builder;
+use LdapRecord\Query\ObjectNotFoundException;
 
 use App\Classes\LDAP\Attribute\Factory;
 
@@ -19,16 +18,30 @@ class Entry extends Model
      */
     public static $objectClasses = [];
 
+	/* OVERRIDES */
+
+	public function getAttributes(): array
+	{
+		$result = collect();
+		foreach (parent::getAttributes() as $attribute => $value) {
+			$result->put($attribute,Factory::create($attribute,$value));
+		}
+
+		return $result->toArray();
+	}
+
+	/* STATIC METHODS */
+
 	/**
 	 * Gets the root DN of the specified LDAPServer, or throws an exception if it
 	 * can't find it.
 	 *
 	 * @param null $connection
 	 * @return Collection
-	 * @throws ModelNotFoundException
+	 * @throws ObjectNotFoundException
 	 * @testedin GetBaseDNTest::testBaseDNExists();
 	 */
-    public function baseDN($connection = NULL): ?Collection
+    public static function baseDN($connection = NULL): ?Collection
 	{
 		$base = static::on($connection ?? (new static)->getConnectionName())
 			->in(NULL)
@@ -45,15 +58,20 @@ class Entry extends Model
 		return $result;
 	}
 
-	public function getAttributes(): array
-	{
-		$result = collect();
-		foreach (parent::getAttributes() as $attribute => $value) {
-			$result->put($attribute,Factory::create($attribute,$value));
-		}
+	/* ATTRIBUTES */
 
-		return $result->toArray();
+	/**
+	 * Return a key to use for sorting
+	 *
+	 * @todo This should be the DN in reverse order
+	 * @return string
+	 */
+	public function getSortKeyAttribute(): string
+	{
+		return $this->getDn();
 	}
+
+	/* METHODS */
 
 	/**
 	 * Return an icon for a DN based on objectClass
@@ -126,7 +144,7 @@ class Entry extends Model
 	 *
 	 * @param null $connection
 	 * @return Entry|null
-	 * @throws ModelNotFoundException
+	 * @throws ObjectNotFoundException
 	 * @testedin TranslateOidTest::testRootDSE();
 	 */
 	public function rootDSE($connection = NULL): ?Entry

@@ -8,13 +8,23 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
+use LdapRecord\Models\ModelNotFoundException;
 
 use App\Ldap\Entry;
 use App\Classes\LDAP\Server;
-use LdapRecord\Models\ModelNotFoundException;
 
 class HomeController extends Controller
 {
+	/**
+	 * Debug Page
+	 *
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+	 */
+	public function debug()
+	{
+		return view('debug');
+	}
+
 	/**
 	 * Application home page
 	 */

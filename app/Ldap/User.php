@@ -17,4 +17,11 @@ class User extends Model
     public static $objectClasses = [
     	'posixAccount',
 	];
+
+	/* METHODS */
+
+	public function getDn(): string
+	{
+		return $this->exists ? parent::getDn() : 'Anonymous';
+	}
 }

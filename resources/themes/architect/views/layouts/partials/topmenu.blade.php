@@ -51,6 +51,10 @@
 		</div>
 
 		<div class="app-header-right">
+			@if(! request()->isSecure())
+				<span class="badge badge-danger">WARNING - SESSION NOT SECURE</span>
+			@endif
+
 			<div class="header-btn-lg pr-0">
 				<div class="widget-content p-0">
 					<div class="widget-content-wrapper">
