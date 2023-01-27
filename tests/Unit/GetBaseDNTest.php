@@ -12,15 +12,15 @@ class GetBaseDNTest extends TestCase
 	 * Test that we can get the Base DN of an LDAP server
 	 *
 	 * @return void
-	 * @throws \LdapRecord\Models\ModelNotFoundException
+	 * @throws \LdapRecord\Query\ObjectNotFoundException
 	 * @covers \App\Ldap\Entry::baseDN()
 	 */
-	public function testBaseDNExists()
+	public function testBaseDnExists()
 	{
 		$o = (new Entry)->baseDN();
 
 		$this->assertIsObject($o);
-		$this->assertCount(1,$o->toArray());
+		$this->assertCount(6,$o->toArray());
 		$this->assertEquals('dc=Test',$o->first()->getDn());
 	}
 }
