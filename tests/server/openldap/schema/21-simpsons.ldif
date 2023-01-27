@@ -1,0 +1,11 @@
+dn: olcDatabase=mdb,cn=config
+changetype: add
+objectClass: olcDatabaseConfig
+olcDatabase: mdb
+olcLastMod: TRUE
+olcMonitoring: TRUE
+olcSuffix: o=Simpsons
+olcAccess: to dn.base="" by dn="cn=admin,dc=Test" write by * read
+olcAccess: to * by dn="cn=admin,o=Simpsons" write by dn="cn=admin,dc=Test" write by * read
+olcRootDN: cn=admin,o=Simpsons
+olcRootPW: {SSHA}e8xGdXmL+mSD3u/389YHeM+dpqFCUSyq

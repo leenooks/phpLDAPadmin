@@ -1,8 +1,0 @@
-dn: olcDatabase={1}mdb,cn=config
-changetype: modify
-delete: olcAccess
--
-add: olcAccess
-olcAccess: to attrs=userPassword,shadowLastChange by self write by dn="cn=admin,dc=Test" write by anonymous auth by * read
-olcAccess: to * by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage by * break
-olcAccess: to * by self write by dn="cn=admin,dc=Test" write by * read
