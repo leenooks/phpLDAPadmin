@@ -2,27 +2,25 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": [ "framework", "laravel" ],
+    "keywords": ["framework","laravel"],
     "license": "MIT",
     "require": {
-        "php": "^7.4|^8.0",
+        "php": "^8.0.2",
         "directorytree/ldaprecord-laravel": "^2",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
-        "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.54",
+        "guzzlehttp/guzzle": "^7.2",
+        "laravel/framework": "^9.19",
         "laravel/passport": "^10.1",
         "laravel/ui": "^3.2",
-        "mcamara/laravel-localization": "^1.6",
-        "orchestra/asset": "^6.1"
+        "mcamara/laravel-localization": "^1.7"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.5",
-        "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
-        "mockery/mockery": "^1.4.2",
-        "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3"
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^6.1",
+        "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
         "psr-4": {
@@ -64,6 +62,6 @@
         "preferred-install": "dist",
         "sort-packages": true
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

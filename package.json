@@ -11,8 +11,16 @@
     },
     "devDependencies": {
         "axios": "^0.21",
+        "jquery": "^3.6.3",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
-        "postcss": "^8.1.14"
+        "mix": "^0.0.1",
+        "postcss": "^8.1.14",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.57.1",
+        "sass-loader": "^12.1.0",
+        "yarn": "^1.22.19"
+    },
+    "dependencies": {
     }
 }

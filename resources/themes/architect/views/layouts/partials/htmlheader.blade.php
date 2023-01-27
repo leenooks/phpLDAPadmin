@@ -38,9 +38,6 @@
 	<link rel="stylesheet" href="{{ url('/css/flags16-both.css') }}">
 	<link rel="stylesheet" href="{{ url('/css/flags32-both.css') }}">
 
-	<!-- STYLESHEETS -->
-	{!! Asset::styles() !!}
-
 	<!-- Theme style -->
 	<link rel="stylesheet" href="{{ asset('/css/architect.min.css') }}">
 

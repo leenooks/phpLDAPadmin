@@ -38,9 +38,6 @@
 		@section('scripts')
 			@include('architect::layouts.partials.scripts')
 
-			{{-- Scripts --}}
-			{!! Asset::scripts() !!}
-
 			@yield('page-scripts')
 		@show
 	</body>
