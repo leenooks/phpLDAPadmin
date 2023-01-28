@@ -30,7 +30,7 @@ class HomeController extends Controller
 	 */
 	public function home()
 	{
-		$base = (new Entry)->baseDN() ?: collect();
+		$base = (new Entry)->baseDNs() ?: collect();
 
 		return view('home')
 			->with('server',config('ldap.connections.default.name'))

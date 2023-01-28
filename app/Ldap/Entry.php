@@ -2,8 +2,11 @@
 
 namespace App\Ldap;
 
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Config;
+use LdapRecord\LdapRecordException;
 use LdapRecord\Models\Model;
 use LdapRecord\Query\ObjectNotFoundException;
 
@@ -41,18 +44,33 @@ class Entry extends Model
 	 * @throws ObjectNotFoundException
 	 * @testedin GetBaseDNTest::testBaseDNExists();
 	 */
-    public static function baseDN($connection = NULL): ?Collection
+    public static function baseDNs($connection = NULL): ?Collection
 	{
-		$base = static::on($connection ?? (new static)->getConnectionName())
-			->in(NULL)
-			->read()
-			->select(['namingcontexts'])
-			->whereHas('objectclass')
-			->firstOrFail();
+		$cachetime = Carbon::now()->addSeconds(Config::get('ldap.cache.time'));
 
+		try {
+			$base = static::on($connection ?? (new static)->getConnectionName())
+				->cache($cachetime)
+				->in(NULL)
+				->read()
+				->select(['namingcontexts'])
+				->whereHas('objectclass')
+				->firstOrFail();
+
+		// If we cannot get to our LDAP server we'll head straight to the error page
+		} catch (LdapRecordException $e) {
+			abort(597,$e->getMessage());
+		}
+
+		/**
+		 * @note While we are caching our baseDNs, it seems if we have more than 1,
+		 * our caching doesnt generate a hit on a subsequent call to this function (before the cache expires).
+		 * IE: If we have 5 baseDNs, it takes 5 calls to this function to case them all.
+		 * @todo Possibly a bug wtih ldaprecord, so need to investigate
+		 */
 		$result = collect();
 		foreach ($base->namingcontexts as $dn) {
-			$result->push((new self)->findOrFail($dn));
+			$result->push((new self)->cache($cachetime)->findOrFail($dn));
 		}
 
 		return $result;

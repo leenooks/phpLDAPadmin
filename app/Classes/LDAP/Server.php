@@ -2,10 +2,11 @@
 
 namespace App\Classes\LDAP;
 
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
-
+use Illuminate\Support\Facades\Config;
 use LdapRecord\Models\Model;
 use LdapRecord\Query\Collection;
 use LdapRecord\Query\Model\Builder;
@@ -24,6 +25,7 @@ class Server
 	{
 		return ($x=(new Entry)
 			->query()
+			->cache(Carbon::now()->addSeconds(Config::get('ldap.cache.time')))
 			->select(['*','hassubordinates'])
 			->setDn($dn)
 			->listing()
@@ -41,6 +43,7 @@ class Server
 	{
 		return ($x=(new Entry)
 			->query()
+			->cache(Carbon::now()->addSeconds(Config::get('ldap.cache.time')))
 			->select($attrs)
 			->find($dn)) ? $x : NULL;
 	}

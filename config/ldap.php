@@ -69,6 +69,7 @@ return [
     'cache' => [
         'enabled' => env('LDAP_CACHE', false),
         'driver' => env('CACHE_DRIVER', 'file'),
+        'time' => env('LDAP_CACHE_TIME',5*60),		// Seconds
     ],
 
 ];
