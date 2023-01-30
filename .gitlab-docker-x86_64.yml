@@ -27,6 +27,6 @@ docker:
     - if [ -f init ]; then chmod 500 init; fi
     - ([ -z "$REFRESH" ] && docker pull ${CI_REGISTRY_IMAGE}:${CACHETAG}) || echo "true"
     - echo -n ${CI_COMMIT_SHORT_SHA} > VERSION
-    - docker build --cache-from ${CI_REGISTRY_IMAGE}:${CACHETAG} -t ${CI_REGISTRY_IMAGE}:${VERSION} -t ${CI_REGISTRY_IMAGE}:${CACHETAG} .
+    - docker build -f docker/Dockerfile --cache-from ${CI_REGISTRY_IMAGE}:${CACHETAG} -t ${CI_REGISTRY_IMAGE}:${VERSION} -t ${CI_REGISTRY_IMAGE}:${CACHETAG} .
     - docker push ${CI_REGISTRY_IMAGE}:${VERSION}
     - docker push ${CI_REGISTRY_IMAGE}:${CACHETAG}
