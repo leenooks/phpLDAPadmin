@@ -24,9 +24,9 @@
 						<td>BaseDN(s)</td>
 						<td>
 							<table class="table table-sm table-borderless">
-								@foreach(\App\Ldap\Entry::baseDN()->sort(function($item) { return $item->sortKey; }) as $item)
+								@foreach(\App\Ldap\Entry::baseDNs()->sort(function($item) { return $item->sortKey; }) as $item)
 									<tr>
-										<td>{{ $item->getDn() }}</td>
+										<td class="pl-0">{{ $item->getDn() }}</td>
 									</tr>
 								@endforeach
 							</table>

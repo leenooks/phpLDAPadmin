@@ -3,9 +3,9 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-use Laravel\Passport\Http\Middleware\CreateFreshApiToken;
 
 use App\Http\Middleware\GuestUser;
+use App\Http\Middleware\SwapinAuthUser;
 
 class Kernel extends HttpKernel
 {
@@ -36,7 +36,8 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
-            // \Illuminate\Session\Middleware\AuthenticateSession::class,
+            SwapinAuthUser::class,
+            \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
@@ -46,6 +47,8 @@ class Kernel extends HttpKernel
 
         'api' => [
             'throttle:60,1',
+            \App\Http\Middleware\EncryptCookies::class,
+            SwapinAuthUser::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
@@ -49,6 +51,35 @@ class LoginController extends Controller
 	}
 
 	/**
+	 * We need to delete our encrypted username/password cookies
+	 *
+	 * @note The rest of this function is the same as a normal laravel logout as in AuthenticatesUsers::class
+	 * @param Request $request
+	 * @return \Illuminate\Contracts\Foundation\Application|JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|mixed
+	 */
+	public function logout(Request $request)
+	{
+		// Delete our LDAP authentication cookies
+		Cookie::queue(Cookie::forget('username_encrypt'));
+		Cookie::queue(Cookie::forget('password_encrypt'));
+
+		$this->guard()->logout();
+
+		$request->session()->invalidate();
+
+		$request->session()->regenerateToken();
+
+		if ($response = $this->loggedOut($request)) {
+			return $response;
+		}
+
+		return $request->wantsJson()
+			? new JsonResponse([], 204)
+			: redirect('/');
+	}
+
+	/**
+	 *
 	 * Show our themed login page
 	 */
 	public function showLoginForm()
