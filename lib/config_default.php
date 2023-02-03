@@ -504,7 +504,7 @@ class Config {
 
 		$this->default->session['memorylimit'] = array(
 			'desc'=>'Set the PHP memorylimit warning threshold.',
-			'default'=>24);
+			'default'=>'24M');
 
 		$this->default->session['timelimit'] = array(
 			'desc'=>'Set the PHP timelimit.',
