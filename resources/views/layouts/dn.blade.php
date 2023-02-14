@@ -9,3 +9,5 @@
 		@yield('main-content')
 	</div>
 </div>
+
+@yield('page-scripts')

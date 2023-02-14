@@ -50,7 +50,7 @@
 @endsection
 
 @section('page-scripts')
-	<script>
+	<script type="text/javascript">
 		var basedn = {!! $bases->toJson() !!};
 	</script>
 @append

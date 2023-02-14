@@ -32,6 +32,12 @@
 							</table>
 						</td>
 					</tr>
+
+					<!-- Schema DN -->
+					<tr>
+						<td>Schema DN</td>
+						<td>{{ \App\Ldap\Entry::schemaDN() }}</td>
+					</tr>
 					</tbody>
 				</table>
 			</div>

@@ -34,4 +34,31 @@ class APIController extends Controller
 				];
 			});
 	}
+
+	public function schema_view(Request $request)
+	{
+		$server = new Server;
+
+		switch($request->type) {
+			case 'objectclasses':
+				return view('frames.schema.objectclasses')
+					->with('objectclasses',$server->schema('objectclasses')->sortBy(function($item) { return strtolower($item->name); }));
+
+			case 'attributetypes':
+				return view('frames.schema.attributetypes')
+					->with('server',$server)
+					->with('attributetypes',$server->schema('attributetypes')->sortBy(function($item) { return strtolower($item->name); }));
+
+			case 'ldapsyntaxes':
+				return view('frames.schema.ldapsyntaxes')
+					->with('ldapsyntaxes',$server->schema('ldapsyntaxes')->sortBy(function($item) { return strtolower($item->description); }));
+
+			case 'matchingrules':
+				return view('frames.schema.matchingrules')
+					->with('matchingrules',$server->schema('matchingrules')->sortBy(function($item) { return strtolower($item->name); }));
+
+			default:
+				abort(404);
+		}
+	}
 }

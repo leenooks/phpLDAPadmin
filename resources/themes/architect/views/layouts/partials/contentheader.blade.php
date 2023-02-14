@@ -18,13 +18,13 @@
 			<div class="page-title-actions">
 				{{--
 				<button type="button" data-toggle="tooltip" title="Example Tooltip" data-placement="bottom" class="btn-shadow mr-3 btn btn-dark">
-					<i class="fa fa-star"></i>
+					<i class="fas fa-star"></i>
 				</button>
 				--}}
 				<div class="d-inline-block dropdown">
 					<button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-shadow dropdown-toggle btn btn-info">
 						<span class="btn-icon-wrapper pr-2 opacity-7">
-							<i class="fa fa-business-time fa-w-20"></i>
+							<i class="fas fa-business-time fa-w-20"></i>
 						</span>
 						Item Menu
 					</button>

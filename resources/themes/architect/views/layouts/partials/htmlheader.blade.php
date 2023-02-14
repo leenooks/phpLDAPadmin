@@ -44,6 +44,9 @@
 	<!-- Theme style -->
 	<link rel="stylesheet" href="{{ asset('/css/architect.min.css') }}">
 
+	<!-- Select 2 -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+
 	@if(file_exists('css/fixes.css'))
 		<!-- CSS Fixes -->
 		<link rel="stylesheet" href="{{ asset('/css/fixes.css') }}">

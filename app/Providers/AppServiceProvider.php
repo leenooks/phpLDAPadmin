@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use LdapRecord\Configuration\DomainConfiguration;
 use LdapRecord\Laravel\LdapRecord;
@@ -32,5 +33,12 @@ class AppServiceProvider extends ServiceProvider
 	public function boot()
 	{
 		$this->loadViewsFrom(__DIR__.'/../../resources/themes/architect/views/','architect');
+
+		// Enable pluck on collections to work on private values
+		Collection::macro('ppluck', function ($attr) {
+			return $this->map(function (object $item) use ($attr) {
+				return $item->{$attr};
+			})->values();
+		});
 	}
 }

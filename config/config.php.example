@@ -492,15 +492,6 @@ $servers->setValue('server','name','My LDAP Server');
 // $servers->setValue('server','custom_attrs',array(''));
 #  $servers->setValue('server','custom_attrs',array('nsRoleDN','nsRole','nsAccountLock'));
 
-/* These attributes will be forced to MAY attributes and become option in the
-   templates. If they are not defined in the templates, then they wont appear
-   as per normal template processing. You may want to do this because your LDAP
-   server may automatically calculate a default value.
-   In Fedora Directory Server using the DNA Plugin one could ignore uidNumber,
-   gidNumber and sambaSID. */
-// $servers->setValue('server','force_may',array(''));
-#  $servers->setValue('server','force_may',array('uidNumber','gidNumber','sambaSID'));
-
 /*********************************************
  * Unique attributes                         *
  *********************************************/

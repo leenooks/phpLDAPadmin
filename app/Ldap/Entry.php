@@ -14,13 +14,6 @@ use App\Classes\LDAP\Attribute\Factory;
 
 class Entry extends Model
 {
-    /**
-     * The object classes of the LDAP model.
-     *
-     * @var array
-     */
-    public static $objectClasses = [];
-
 	/* OVERRIDES */
 
 	public function getAttributes(): array
@@ -39,23 +32,18 @@ class Entry extends Model
 	 * Gets the root DN of the specified LDAPServer, or throws an exception if it
 	 * can't find it.
 	 *
-	 * @param null $connection
+	 * @param null $connection Return a collection of baseDNs
+	 * @param bool $objects Return a collection of Entry Models
 	 * @return Collection
 	 * @throws ObjectNotFoundException
 	 * @testedin GetBaseDNTest::testBaseDNExists();
 	 */
-    public static function baseDNs($connection = NULL): Collection
+    public static function baseDNs($connection=NULL,bool $objects=TRUE): Collection
 	{
 		$cachetime = Carbon::now()->addSeconds(Config::get('ldap.cache.time'));
 
 		try {
-			$base = static::on($connection ?? (new static)->getConnectionName())
-				->cache($cachetime)
-				->in(NULL)
-				->read()
-				->select(['namingcontexts'])
-				->whereHas('objectclass')
-				->firstOrFail();
+			$base = self::rootDSE($connection,$cachetime);
 
 		/**
 		 * LDAP Error Codes:
@@ -160,6 +148,9 @@ class Entry extends Model
 			}
 		}
 
+		if (! $objects)
+			return collect($base->namingcontexts);
+
 		/**
 		 * @note While we are caching our baseDNs, it seems if we have more than 1,
 		 * our caching doesnt generate a hit on a subsequent call to this function (before the cache expires).
@@ -172,6 +163,32 @@ class Entry extends Model
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Obtain the rootDSE for the server, that gives us server information
+	 *
+	 * @param null $connection
+	 * @return Entry|null
+	 * @throws ObjectNotFoundException
+	 * @testedin TranslateOidTest::testRootDSE();
+	 */
+	public static function rootDSE($connection=NULL,Carbon $cachetime=NULL): ?Model
+	{
+		return static::on($connection ?? (new static)->getConnectionName())
+			->cache($cachetime)
+			->in(NULL)
+			->read()
+			->select(['+'])
+			->whereHas('objectclass')
+			->firstOrFail();
+	}
+
+	public static function schemaDN($connection = NULL): string
+	{
+		$cachetime = Carbon::now()->addSeconds(Config::get('ldap.cache.time'));
+
+		return collect(self::rootDSE($connection,$cachetime)->subschemasubentry)->first();
 	}
 
 	/* ATTRIBUTES */
@@ -253,23 +270,5 @@ class Entry extends Model
 
 		// Default
 		return 'fa-fw fas fa-cog';
-	}
-
-	/**
-	 * Obtain the rootDSE for the server, that gives us server information
-	 *
-	 * @param null $connection
-	 * @return Entry|null
-	 * @throws ObjectNotFoundException
-	 * @testedin TranslateOidTest::testRootDSE();
-	 */
-	public function rootDSE($connection = NULL): ?Entry
-	{
-		return static::on($connection ?? (new static)->getConnectionName())
-			->in(NULL)
-			->read()
-			->select(['+'])
-			->whereHas('objectclass')
-			->firstOrFail();
 	}
 }

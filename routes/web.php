@@ -30,6 +30,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function() {
 	Route::get('info',[HomeController::class,'info']);
 	Route::post('dn',[HomeController::class,'dn_frame']);
 	Route::get('debug',[HomeController::class,'debug']);
+	Route::get('schema',[HomeController::class,'schema_frame']);
 });
 
 Route::get('logout',[LoginController::class,'logout']);

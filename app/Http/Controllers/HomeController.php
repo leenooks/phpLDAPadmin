@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
-use LdapRecord\Models\ModelNotFoundException;
+use LdapRecord\Query\ObjectNotFoundException;
 
 use App\Ldap\Entry;
 use App\Classes\LDAP\Server;
@@ -49,7 +49,7 @@ class HomeController extends Controller
 	 * LDAP Server INFO
 	 *
 	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-	 * @throws ModelNotFoundException
+	 * @throws ObjectNotFoundException
 	 */
 	public function info()
 	{
@@ -74,7 +74,7 @@ class HomeController extends Controller
 				});
 
 		// @todo If we cant get server info, we should probably show a nice error dialog
-		} catch (ModelNotFoundException $e) {
+		} catch (ObjectNotFoundException $e) {
 			$attrs = collect();
 		}
 
@@ -96,6 +96,11 @@ class HomeController extends Controller
 		return view('frames.dn')
 			->with('o',(new Server)->fetch($dn))
 			->with('dn',$dn);
+	}
+
+	public function schema_frame()
+	{
+		return view('frames.schema');
 	}
 
 	/**

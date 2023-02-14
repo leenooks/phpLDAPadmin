@@ -37,11 +37,9 @@
 					<div class="font-icon-wrapper float-left mr-1 server-icon">
 						<a class="p-0 m-0" href="{{ LaravelLocalization::localizeUrl('info') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-info"></i></a>
 					</div>
-					{{--
 					<div class="font-icon-wrapper float-left ml-1 mr-1 server-icon">
 						<a class="p-0 m-0" href="{{ LaravelLocalization::localizeUrl('schema') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-fingerprint"></i></a>
 					</div>
-					--}}
 					@env(['local'])
 						<div class="font-icon-wrapper float-right ml-1 server-icon">
 							<a class="p-0 m-0" href="{{ LaravelLocalization::localizeUrl('debug') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-toolbox"></i></a>

@@ -16,8 +16,9 @@ use App\Http\Controllers\APIController;
 */
 
 Route::group([],function() {
-	Route::get('/bases',[APIController::class,'bases']);
-	Route::get('/children',[APIController::class,'children']);
+	Route::get('bases',[APIController::class,'bases']);
+	Route::get('children',[APIController::class,'children']);
+	Route::post('schema/view',[APIController::class,'schema_view']);
 });
 
 Route::group(['middleware'=>'auth:api','prefix'=>'user'],function() {
