@@ -21,7 +21,7 @@ define('TMPLDIR',sprintf('%s/',realpath(LIBDIR.'../templates/')));
 define('DOCDIR',sprintf('%s/',realpath(LIBDIR.'../doc/')));
 define('HOOKSDIR',sprintf('%s/',realpath(LIBDIR.'../hooks/')));
 define('JSDIR','js/');
-define('SESSION_CIPHER','aes256-gcm');
+define('SESSION_CIPHER','aes-256-gcm');
 
 /**
  * Supplimental functions
