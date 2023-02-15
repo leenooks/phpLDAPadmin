@@ -333,14 +333,36 @@ function check_config($config_file) {
 	$config->setServers($servers);
 
 	# Check the memory limit parameter.
-	if ((ini_get('memory_limit') > -1) && ini_get('memory_limit') < $config->getValue('session','memorylimit'))
-		system_message(array(
-			'title'=>_('Memory Limit low.'),
-			'body'=>sprintf('Your php memory limit is low - currently %s, you should increase it to atleast %s. This is normally controlled in /etc/php.ini.',
-				ini_get('memory_limit'),$config->getValue('session','memorylimit')),
-			'type'=>'error'));
-
+	$limit = memory_str_to_int(ini_get('memory_limit'));
+	if ($limit != -1) {
+		$threshold = memory_str_to_int($config->getValue('session','memorylimit'));
+		if ($limit < $threshold) {
+			system_message(array(
+				'title' => _('Memory Limit low.'),
+				'body' => sprintf('Your php memory limit is low - currently %s (%s), you should increase it to atleast %s (%s). This is normally controlled in /etc/php.ini.',
+					ini_get('memory_limit'), $limit, $config->getValue('session','memorylimit'), $threshold),
+				'type'=>'error'
+			));
+		}
+	}
 	return $config;
+}
+
+/**
+ * Converts shorthand memory notation string to an integer that represents the
+ * given amount in bytes (ie. "128M" -> 134217728).
+ *
+ * @param string|int $value
+ * @return int
+ */
+function memory_str_to_int($value) {
+	$value = trim(strtolower($value));
+	if (intval($value) > 0 && preg_match('/^(\d+)([kmg])?$/', $value, $match, PREG_UNMATCHED_AS_NULL)) {
+		[$int, $mod] = [intval($match[1]), $match[2]];
+		$pow = [NULL => 0, 'k' => 1, 'm' => 2, 'g' => 3][$mod];
+		return $int * 1024 ** $pow;
+	}
+	return intval($value);
 }
 
 /**
