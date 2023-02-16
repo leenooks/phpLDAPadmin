@@ -2,6 +2,28 @@ body {
        font-size: 0.85em;
 }
 
+/* Trim our sidebar down to 250px */
+.app-sidebar {
+	width: 250px;
+	min-width: 250px;
+}
+
+.app-header__logo {
+	width: 250px;
+}
+
+.fixed-sidebar:not(.fixed-header) .app-header {
+	margin-left: 250px;
+}
+
+.fixed-sidebar .app-main .app-main__outer {
+	padding-left: 250px;
+}
+
+.font-icon-wrapper i {
+	font-size: 1.2rem;
+}
+
 /* Fixes for data tables */
 /* Fix pagination buttons */
 .dataTables_wrapper .dataTables_paginate .paginate_button {
