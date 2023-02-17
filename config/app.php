@@ -17,7 +17,7 @@ return [
 
     'name' => 'PLA',
     'name_html_long' => '<b>php</b>LDAPadmin',
-    'version' => trim(file_get_contents(__DIR__.'/../public/VERSION')),
+    'version' => (trim(file_get_contents(__DIR__.'/../public/VERSION')) ?? 'UNKNOWN').'-'.(trim(file_get_contents(__DIR__.'/../VERSION')) ?? 'UNKNOWN'),
 
     /*
     |--------------------------------------------------------------------------
