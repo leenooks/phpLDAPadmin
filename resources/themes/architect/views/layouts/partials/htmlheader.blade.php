@@ -24,7 +24,10 @@
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 
 	<!-- Google Font: Source Sans Pro -->
-	<link href="https://fonts.googleapis.com/css2?family={{ str_replace(' ','+',config('app.font') ?: 'IBM Plex Sans') }}:wght@300&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ str_replace(' ','+',config('app.font') ?: 'IBM Plex Sans') }}:wght@300&display=swap">
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
 	@if(file_exists('css/print.css'))
 		<!-- Printing Modifications -->

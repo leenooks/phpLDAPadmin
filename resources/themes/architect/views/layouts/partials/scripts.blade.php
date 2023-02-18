@@ -1,6 +1,10 @@
 <script src="{{ asset('/js/app.js') }}" type="text/javascript"></script>
+<!-- bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 <!-- Architect -->
 <script src="{{ asset('/js/architect.min.js') }}"></script>
+<!-- Select2 -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script type="text/javascript">
 	// Our CSRF token to each interaction
