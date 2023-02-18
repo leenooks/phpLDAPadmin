@@ -4,7 +4,6 @@ namespace App\Classes\LDAP\Schema;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
-use LdapRecord\Connection;
 
 use App\Classes\LDAP\Server;
 use App\Exceptions\InvalidUsage;
@@ -19,7 +18,6 @@ use App\Ldap\Entry;
 class ObjectClass extends Base {
 	// The server ID that this objectclass belongs to.
 	private Server $server;
-	private Connection $connection;
 
 	// Array of objectClass names from which this objectClass inherits
 	private Collection $sup_classes;
@@ -51,7 +49,7 @@ class ObjectClass extends Base {
 	 *
 	 * eg: ( 2.5.6.0 NAME 'top' DESC 'top of the superclass chain' ABSTRACT MUST objectClass )
 	 */
-	public function __construct(string $line,Entry $entry,Server $server)
+	public function __construct(string $line,Server $server)
 	{
 		parent::__construct($line);
 
@@ -60,7 +58,6 @@ class ObjectClass extends Base {
 		$strings = preg_split('/[\s,]+/',$line,-1,PREG_SPLIT_DELIM_CAPTURE);
 
 		// Init
-		$this->connection = $entry->getConnection();
 		$this->server = $server;
 		$this->may_attrs = collect();
 		$this->may_force = collect();
