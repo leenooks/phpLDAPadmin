@@ -20,7 +20,11 @@ class Factory
 	 * Map of attributes to appropriate class
 	 */
 	public const map = [
-		'jpegphoto'=>Attribute\Binary\JpegPhoto::class,
+		'jpegphoto' => Binary\JpegPhoto::class,
+		'supportedcontrol' => OID::class,
+		'supportedextension' => OID::class,
+		'supportedfeatures' => OID::class,
+		'supportedsaslmechanisms' => Mechanisms::class,
 	];
 
 	/**

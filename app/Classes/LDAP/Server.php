@@ -256,62 +256,6 @@ class Server
 	}
 
 	/**
-	 * Given an LDAP OID number, returns a verbose description of the OID.
-	 * This function parses ldap_supported_oids.txt and looks up the specified
-	 * OID, and returns the verbose message defined in that file.
-	 *
-	 * <code>
-	 *  Array (
-	 *    [title] => All Operational Attribute
-	 *    [ref] => RFC 3673
-	 *    [desc] => An LDAP extension which clients may use to request the return of all operational attributes.
-	 *  )
-	 * </code>
-	 *
-	 * @param string $oid The OID number (ie, "1.3.6.1.4.1.4203.1.5.1") of the OID of interest.
-	 * @param string $key The title|ref|desc to return
-	 * @return string|null
-	 * @testedby TranslateOidTest::testRootDSE()
-	 */
-	public static function getOID(string $oid,string $key): ?string
-	{
-		$oids = Cache::remember('oids',86400,function() {
-			try {
-				$f = fopen(config_path('ldap_supported_oids.txt'),'r');
-
-			} catch (Exception $e) {
-				return NULL;
-			}
-
-			$result = collect();
-
-			while (! feof($f)) {
-				$line = trim(fgets($f));
-
-				if (! $line OR preg_match('/^#/',$line))
-					continue;
-
-				$fields = explode(':',$line);
-
-				$result->put(Arr::get($fields,0),[
-					'title'=>Arr::get($fields,1),
-					'ref'=>Arr::get($fields,2),
-					'desc'=>Arr::get($fields,3),
-				]);
-			}
-			fclose($f);
-
-			return $result;
-		});
-
-		return Arr::get(
-			($oids ? $oids->get($oid) : []),
-			$key,
-			($key == 'desc' ? 'No description available, can you help with one?' : ($key == 'title' ? $oid : NULL))
-		);
-	}
-
-	/**
 	 * This function determines if the specified attribute is contained in the force_may list
 	 * as configured in config.php.
 	 *

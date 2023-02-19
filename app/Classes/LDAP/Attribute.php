@@ -2,20 +2,24 @@
 
 namespace App\Classes\LDAP;
 
+use Illuminate\Support\Collection;
+
 /**
  * Represents an attribute of an LDAP Object
  */
 class Attribute
 {
-	# Attribute Name
-	public string $name;
+	// Attribute Name
+	protected string $name;
+
 	/*
 	# Source of this attribute definition
 	protected $source;
 	*/
 
-	# Current and Old Values
-	protected array $values;
+	// Current and Old Values
+	protected Collection $values;
+
 	/*
 	protected $oldvalues = array();
 
@@ -76,9 +80,10 @@ class Attribute
 	protected $postvalue = array();
 	*/
 
-	public function __construct(string $name,array $values) {
+	public function __construct(string $name,array $values)
+	{
 		$this->name = $name;
-		$this->values = $values;
+		$this->values = collect($values);
 
 		/*
 		# Should this attribute be hidden
@@ -102,7 +107,7 @@ class Attribute
 	 */
 	public function __toString(): string
 	{
-		return join('<br>',$this->values);
+		return $this->values->join('<br>');
 	}
 
 	/**

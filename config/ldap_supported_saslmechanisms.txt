@@ -1,0 +1,16 @@
+# If you find some reliable and more meaningful descriptions to these SASL Mechanisms,
+# then please let the phpldapadmin development know so that this file can be
+# more descriptive.
+
+# Format
+# Mechanisms:Title:RFC Ref:Detail
+SCRAM-SHA-1:Salted Challenge Response Authentication Mechanism (SCRAM) SHA1:RFC 5802:This specification describes a family of authentication mechanisms called the Salted Challenge Response Authentication Mechanism (SCRAM) which addresses the requirements necessary to deploy a challenge- response mechanism more widely than past attempts.
+SCRAM-SHA-256:Salted Challenge Response Authentication Mechanism (SCRAM) SHA256:RFC 7677:The SCRAM-SHA-256 and SCRAM-SHA-256-PLUS SASL mechanisms are defined in the same way that SCRAM-SHA-1 and SCRAM-SHA-1-PLUS are defined in [RFC5802], except that the hash function for HMAC() and H() uses SHA-256 instead of SHA-1 [RFC6234].
+GS2-IAKERB:Initial and Pass Through Authentication Using Kerberos V5 and the GSS-API:draft-ietf-krb-wg-iakerb-02:Extends [RFC4120] and [RFC4121] such that the client can communicate with the KDC using a Generic Security Service Application Program Interface (GSS-API) [RFC2743] acceptor as the proxy.
+GS2-KRB5:Family of mechanisms supports arbitrary GSS-API mechanisms in SASL::GS2 is a protocol bridge between GSS-API and SASL, and allows every GSS-API mechanism that supports mutual authentication and channel bindings to be used as a SASL mechanism. This implements Kerberos V5 authentication.
+GSSAPI:Generic Security Services Application Program Interface:RFC 2744:The Generic Security Service Application Program Interface (GSSAPI, also GSS-API) is an application programming interface for programs to access security services.
+GSS-SPNEGO:GSS-SPNEGO security mechanism for LDAP bind requests:RFC 4178:The DC accepts the GSS-SPNEGO security mechanism for LDAP bind requests. This mechanism is documented in [RFC4178]. Active Directory supports Kerberos (see [MS-KILE]) and NTLM (see [MS-NLMP]) when using GSS-SPNEGO.
+DIGEST-MD5:HTTP Digest compatible (partially) challenge-response scheme based upon MD5, offering a data security layer:RFC 2831:In Digest-MD5, the LDAP server sends data that includes various authentication options that it is willing to support plus a special token to the LDAP client. The client responds by sending an encrypted response that indicates the authentication options that it has selected. The response is encrypted in such a way that proves that the client knows its password. The LDAP server then decrypts and verifies the client's response.
+OTP:One-Time Password Mechanism:RFC 2444:
+CRAM-MD5:Simple challenge-response scheme based on HMAC-MD5:RFC 2195:When using the CRAM-MD5 mechanism, the LDAP server sends some data to the LDAP client. The client responds by encrypting the data with its password by using the MD5 algorithm. The LDAP server then uses the client's stored password to determine whether the client used the right password.
+NTLM:MS Windows NT LAN Manager authentication mechanism:MS Proprietary:
