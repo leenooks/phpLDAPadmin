@@ -4,7 +4,7 @@
 	<table class="table table-borderless">
 		<tr>
 			<td style="border-radius: 5px;"><div class="page-title-icon f32"><i class="fas fa-fingerprint"></i></div></td>
-			<td class="top text-right align-text-top p-0 pt-2"><strong>{{ \App\Ldap\Entry::schemaDN() }}</strong><br><small>{{ $o->entryuuid[0] ?? '' }}</small></td>
+			<td class="top text-right align-text-top p-0 pt-2"><strong>{{ \App\Classes\LDAP\Server::schemaDN() }}</strong></td>
 		</tr>
 	</table>
 @endsection

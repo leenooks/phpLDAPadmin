@@ -14,7 +14,7 @@
 		<table class="table">
 			@foreach ($o->getAttributes() as $attribute => $value)
 				<tr>
-					<th>{{ $attribute }}</th>
+					<th class="w-25">{{ $attribute }}</th>
 					<td>{!! $value !!}</td>
 				</tr>
 			@endforeach

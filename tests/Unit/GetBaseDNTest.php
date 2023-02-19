@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 
-use App\Ldap\Entry;
+use App\Classes\LDAP\Server;
 
 class GetBaseDNTest extends TestCase
 {
@@ -13,11 +13,11 @@ class GetBaseDNTest extends TestCase
 	 *
 	 * @return void
 	 * @throws \LdapRecord\Query\ObjectNotFoundException
-	 * @covers \App\Ldap\Entry::baseDNs()
+	 * @covers \App\Classes\LDAP\Server::baseDNs()
 	 */
 	public function testBaseDnExists()
 	{
-		$o = (new Entry)->baseDNs();
+		$o = Server::baseDNs();
 
 		$this->assertIsObject($o);
 		$this->assertCount(6,$o->toArray());

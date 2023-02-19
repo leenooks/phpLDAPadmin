@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
+use LdapRecord\Query\ObjectNotFoundException;
 use Tests\TestCase;
 
 use App\Classes\LDAP\Server;
-use App\Ldap\Entry;
 
 class TranslateOidTest extends TestCase
 {
@@ -13,12 +13,12 @@ class TranslateOidTest extends TestCase
 	 * A basic feature test example.
 	 *
 	 * @return void
-	 * @throws \LdapRecord\Query\ObjectNotFoundException
 	 * @covers \App\Classes\LDAP\Server::getOID()
+	 * @throws ObjectNotFoundException
 	 */
 	public function testRootDse()
 	{
-		$dse = (new Entry)->rootDSE();
+		$dse = Server::rootDSE();
 
 		// Test our rootDSE returns an objectclass attribute
 		$this->assertIsArray($dse->objectclass);

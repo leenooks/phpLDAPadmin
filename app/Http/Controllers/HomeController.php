@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
 use LdapRecord\Query\ObjectNotFoundException;
 
-use App\Ldap\Entry;
 use App\Classes\LDAP\Server;
+use App\Exceptions\InvalidUsage;
 
 class HomeController extends Controller
 {
@@ -30,7 +30,7 @@ class HomeController extends Controller
 	 */
 	public function home()
 	{
-		$base = (new Entry)->baseDNs() ?: collect();
+		$base = Server::baseDNs() ?: collect();
 
 		return view('home')
 			->with('server',config('ldap.connections.default.name'))
@@ -53,34 +53,13 @@ class HomeController extends Controller
 	 */
 	public function info()
 	{
-		$root = (new Entry)->rootDSE();
+		// Load our attributes
+		$s = new Server;
+		$s->schema('objectclasses');
+		$s->schema('attributetypes');
 
-		try {
-			$attrs = collect($root->getAttributes())
-				->transform(function($item) {
-					foreach ($item as $k=>$v) {
-						if (preg_match('/[0-9]+\.[0-9]+\.[0-9]+/',$v)) {
-							$format = sprintf(
-								'<abbr class="pb-1" title="%s"><i class="fas fa-list-ol pr-2"></i>%s</abbr>%s<p class="mb-0">%s</p>',
-								$v,
-								Server::getOID($v,'title'),
-								($x=Server::getOID($v,'ref')) ? sprintf('<abbr class="pl-2" title="%s"><i class="fas fa-comment-dots"></i></abbr>',$x) : '',
-								Server::getOID($v,'desc'),
-						);
-							$item[$k] = $format;
-						}
-					}
-					return $item;
-				});
-
-		// @todo If we cant get server info, we should probably show a nice error dialog
-		} catch (ObjectNotFoundException $e) {
-			$attrs = collect();
-		}
-
-		return view('frames.dn')
-			->with('o',$root)
-			->with('dn',__('Server Info'));
+		return view('frames.info')
+			->with('s',$s);
 	}
 
 	/**
@@ -98,9 +77,25 @@ class HomeController extends Controller
 			->with('dn',$dn);
 	}
 
-	public function schema_frame()
+	/**
+	 * Show the Schema Viewer
+	 *
+	 * @note Our route will validate that types are valid.
+	 * @param Request $request
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+	 * @throws InvalidUsage
+	 */
+	public function schema_frame(Request $request)
 	{
-		return view('frames.schema');
+		$s = new Server;
+
+		// If an invalid key, we'll 404
+		if ($request->type && $request->key && ($s->schema($request->type)->has($request->key) === FALSE))
+			abort(404);
+
+		return view('frames.schema')
+			->with('type',$request->type)
+			->with('key',$request->key);
 	}
 
 	/**

@@ -24,7 +24,7 @@
 						<td>BaseDN(s)</td>
 						<td>
 							<table class="table table-sm table-borderless">
-								@foreach(\App\Ldap\Entry::baseDNs()->sort(function($item) { return $item->sortKey; }) as $item)
+								@foreach(\App\Classes\LDAP\Server::baseDNs()->sort(function($item) { return $item->sortKey; }) as $item)
 									<tr>
 										<td class="pl-0">{{ $item->getDn() }}</td>
 									</tr>
@@ -36,7 +36,7 @@
 					<!-- Schema DN -->
 					<tr>
 						<td>Schema DN</td>
-						<td>{{ \App\Ldap\Entry::schemaDN() }}</td>
+						<td>{{ \App\Classes\LDAP\Server::schemaDN() }}</td>
 					</tr>
 					</tbody>
 				</table>

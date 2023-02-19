@@ -5,11 +5,14 @@ namespace App\Classes\LDAP;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection as ArrayCollection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
-use LdapRecord\Query\Collection;
+use LdapRecord\LdapRecordException;
+use LdapRecord\Models\Model;
+use LdapRecord\Query\Collection as LDAPCollection;
+use LdapRecord\Query\ObjectNotFoundException;
 
 use App\Classes\LDAP\Schema\{AttributeType,Base,LDAPSyntax,MatchingRule,MatchingRuleUse,ObjectClass};
 use App\Exceptions\InvalidUsage;
@@ -18,11 +21,11 @@ use App\Ldap\Entry;
 class Server
 {
 	// This servers schema objectclasses
-	private ArrayCollection $attributetypes;
-	private ArrayCollection $ldapsyntaxes;
-	private ArrayCollection $matchingrules;
-	private ArrayCollection $matchingruleuse;
-	private ArrayCollection $objectclasses;
+	private Collection $attributetypes;
+	private Collection $ldapsyntaxes;
+	private Collection $matchingrules;
+	private Collection $matchingruleuse;
+	private Collection $objectclasses;
 
 	// Valid items that can be fetched
 	public const schema_types = [
@@ -45,13 +48,187 @@ class Server
 		}
 	}
 
+	/* STATIC METHODS */
+
+	/**
+	 * Gets the root DN of the specified LDAPServer, or throws an exception if it
+	 * can't find it.
+	 *
+	 * @param null $connection Return a collection of baseDNs
+	 * @param bool $objects Return a collection of Entry Models
+	 * @return Collection
+	 * @throws ObjectNotFoundException
+	 * @testedin GetBaseDNTest::testBaseDNExists();
+	 */
+	public static function baseDNs($connection=NULL,bool $objects=TRUE): Collection
+	{
+		$cachetime = Carbon::now()->addSeconds(Config::get('ldap.cache.time'));
+
+		try {
+			$base = self::rootDSE($connection,$cachetime);
+
+			/**
+			 * LDAP Error Codes:
+			 * https://ldap.com/ldap-result-code-reference/
+			 * + success						0
+			 * + operationsError				1
+			 * + protocolError					2
+			 * + timeLimitExceeded				3
+			 * + sizeLimitExceeded				4
+			 * + compareFalse					5
+			 * + compareTrue					6
+			 * + authMethodNotSupported			7
+			 * + strongerAuthRequired			8
+			 * + referral						10
+			 * + adminLimitExceeded				11
+			 * + unavailableCriticalExtension	12
+			 * + confidentialityRequired		13
+			 * + saslBindInProgress				14
+			 * + noSuchAttribute				16
+			 * + undefinedAttributeType			17
+			 * + inappropriateMatching			18
+			 * + constraintViolation			19
+			 * + attributeOrValueExists			20
+			 * + invalidAttributeSyntax			21
+			 * + noSuchObject					32
+			 * + aliasProblem					33
+			 * + invalidDNSyntax				34
+			 * + isLeaf							35
+			 * + aliasDereferencingProblem		36
+			 * + inappropriateAuthentication	48
+			 * + invalidCredentials				49
+			 * + insufficientAccessRights		50
+			 * + busy							51
+			 * + unavailable					52
+			 * + unwillingToPerform				53
+			 * + loopDetect						54
+			 * + sortControlMissing				60
+			 * + offsetRangeError				61
+			 * + namingViolation				64
+			 * + objectClassViolation			65
+			 * + notAllowedOnNonLeaf			66
+			 * + notAllowedOnRDN				67
+			 * + entryAlreadyExists				68
+			 * + objectClassModsProhibited		69
+			 * + resultsTooLarge				70
+			 * + affectsMultipleDSAs			71
+			 * + virtualListViewError or controlError	76
+			 * + other							80
+			 * + serverDown						81
+			 * + localError						82
+			 * + encodingError					83
+			 * + decodingError					84
+			 * + timeout						85
+			 * + authUnknown					86
+			 * + filterError					87
+			 * + userCanceled					88
+			 * + paramError						89
+			 * + noMemory						90
+			 * + connectError					91
+			 * + notSupported					92
+			 * + controlNotFound				93
+			 * + noResultsReturned				94
+			 * + moreResultsToReturn			95
+			 * + clientLoop						96
+			 * + referralLimitExceeded			97
+			 * + invalidResponse				100
+			 * + ambiguousResponse				101
+			 * + tlsNotSupported				112
+			 * + intermediateResponse			113
+			 * + unknownType					114
+			 * + canceled						118
+			 * + noSuchOperation				119
+			 * + tooLate						120
+			 * + cannotCancel					121
+			 * + assertionFailed				122
+			 * + authorizationDenied			123
+			 * + e-syncRefreshRequired			4096
+			 * + noOperation					16654
+			 *
+			 * LDAP Tag Codes:
+			 * + A client bind operation				97
+			 * + The entry for which you were searching	100
+			 * + The result from a search operation		101
+			 * + The result from a modify operation		103
+			 * + The result from an add operation		105
+			 * + The result from a delete operation		107
+			 * + The result from a modify DN operation	109
+			 * + The result from a compare operation	111
+			 * + A search reference when the entry you perform your search on holds a referral to the entry you require.
+			 * +   Search references are expressed in terms of a referral.
+			 * 											115
+			 * + A result from an extended operation	120
+			 */
+			// If we cannot get to our LDAP server we'll head straight to the error page
+		} catch (LdapRecordException $e) {
+			switch ($e->getDetailedError()->getErrorCode()) {
+				case 49:
+					abort(401,$e->getDetailedError()->getErrorMessage());
+
+				default:
+					abort(597,$e->getDetailedError()->getErrorMessage());
+			}
+		}
+
+		if (! $objects)
+			return collect($base->namingcontexts);
+
+		/**
+		 * @note While we are caching our baseDNs, it seems if we have more than 1,
+		 * our caching doesnt generate a hit on a subsequent call to this function (before the cache expires).
+		 * IE: If we have 5 baseDNs, it takes 5 calls to this function to case them all.
+		 * @todo Possibly a bug wtih ldaprecord, so need to investigate
+		 */
+		$result = collect();
+		foreach ($base->namingcontexts as $dn) {
+			$result->push((new Entry)->cache($cachetime)->findOrFail($dn));
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Obtain the rootDSE for the server, that gives us server information
+	 *
+	 * @param null $connection
+	 * @return Entry|null
+	 * @throws ObjectNotFoundException
+	 * @testedin TranslateOidTest::testRootDSE();
+	 */
+	public static function rootDSE($connection=NULL,Carbon $cachetime=NULL): ?Model
+	{
+		$e = new Entry;
+
+		return Entry::on($connection ?? $e->getConnectionName())
+			->cache($cachetime)
+			->in(NULL)
+			->read()
+			->select(['+'])
+			->whereHas('objectclass')
+			->firstOrFail();
+	}
+
+	/**
+	 * Get the Schema DN
+	 *
+	 * @param $connection
+	 * @return string
+	 * @throws ObjectNotFoundException
+	 */
+	public static function schemaDN($connection=NULL): string
+	{
+		$cachetime = Carbon::now()->addSeconds(Config::get('ldap.cache.time'));
+
+		return collect(self::rootDSE($connection,$cachetime)->subschemasubentry)->first();
+	}
+
 	/**
 	 * Query the server for a DN and return its children and if those children have children.
 	 *
 	 * @param string $dn
-	 * @return Collection|null
+	 * @return LDAPCollection|NULL
 	 */
-	public function children(string $dn): ?Collection
+	public function children(string $dn): ?LDAPCollection
 	{
 		return ($x=(new Entry)
 			->query()
@@ -150,10 +327,10 @@ class Server
 	 *
 	 * @param string $item Schema Item to Fetch
 	 * @param string|null $key
-	 * @return ArrayCollection|Base
+	 * @return Collection|Base|NULL
 	 * @throws InvalidUsage
 	 */
-	public function schema(string $item,string $key=NULL): ArrayCollection|Base|NULL
+	public function schema(string $item,string $key=NULL): Collection|Base|NULL
 	{
 		// Ensure our item to fetch is lower case
 		$item = strtolower($item);
@@ -215,8 +392,8 @@ class Server
 			}
 
 			// Try to get the schema DN from the specified entry.
-			$schema_dn = Entry::schemaDN();
-			$schema = (new Server)->fetch($schema_dn);
+			$schema_dn = $this->schemaDN();
+			$schema = $this->fetch($schema_dn);
 
 			switch ($item) {
 				case 'attributetypes':

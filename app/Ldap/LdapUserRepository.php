@@ -8,6 +8,8 @@ use LdapRecord\Laravel\Events\Auth\DiscoveredWithCredentials;
 use LdapRecord\Laravel\LdapUserRepository as LdapUserRepositoryBase;
 use LdapRecord\Models\Model;
 
+use App\Classes\LDAP\Server;
+
 class LdapUserRepository extends LdapUserRepositoryBase
 {
 	/**
@@ -25,7 +27,7 @@ class LdapUserRepository extends LdapUserRepositoryBase
 		}
 
 		// Look for a user using all our baseDNs
-		foreach ((new Entry)->baseDNs() as $base) {
+		foreach (Server::baseDNs() as $base) {
 			$query = $this->query()->setBaseDn($base);
 
 			foreach ($credentials as $key => $value) {
@@ -61,7 +63,7 @@ class LdapUserRepository extends LdapUserRepositoryBase
 	public function findByGuid($guid): ?Model
 	{
 		// Look for a user using all our baseDNs
-		foreach ((new Entry)->baseDNs() as $base) {
+		foreach (Server::baseDNs() as $base) {
 			$user = $this->query()->setBaseDn($base)->findByGuid($guid);
 
 			if ($user)
