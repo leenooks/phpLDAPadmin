@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Classes\LDAP\Attribute;
+namespace App\Classes\LDAP\Attribute\Schema;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
-
-use App\Classes\LDAP\Attribute;
+use App\Classes\LDAP\Attribute\Schema;
 
 /**
  * Represents an attribute whose values are binary
  */
-class Mechanisms extends Attribute
+final class Mechanisms extends Schema
 {
 	public function __toString(): string
 	{
@@ -44,37 +41,8 @@ class Mechanisms extends Attribute
 	 * @param string $key The title|ref|desc to return
 	 * @return string|NULL
 	 */
-	private static function get(string $string,string $key): ?string
+	protected static function get(string $string,string $key): ?string
 	{
-		$array = Cache::remember('saslmechanisms',86400,function() {
-			try {
-				$f = fopen(config_path('ldap_supported_saslmechanisms.txt'),'r');
-
-			} catch (\Exception $e) {
-				return NULL;
-			}
-
-			$result = collect();
-
-			while (! feof($f)) {
-				$line = trim(fgets($f));
-
-				if (! $line OR preg_match('/^#/',$line))
-					continue;
-
-				$fields = explode(':',$line);
-
-				$result->put($x=Arr::get($fields,0),[
-					'title'=>Arr::get($fields,1,$x),
-					'ref'=>Arr::get($fields,2),
-					'desc'=>Arr::get($fields,3,__('No description available, can you help with one?')),
-				]);
-			}
-			fclose($f);
-
-			return $result;
-		});
-
-		return Arr::get(($array ? $array->get($string) : []),$key);
+		return parent::_get(config_path('ldap_supported_saslmechanisms.txt'),$string,$key);
 	}
 }

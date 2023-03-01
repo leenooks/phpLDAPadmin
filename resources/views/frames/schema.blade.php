@@ -11,7 +11,9 @@
 
 @section('main-content')
 	<div class="main-card mb-3 card">
-		<div class="card-body"><h5 class="card-title">{{ __('Schema Information') }}</h5>
+		<div class="card-body">
+			<h5 class="card-title">{{ __('Schema Information') }}</h5>
+
 			<ul class="nav nav-tabs">
 				<li class="nav-item"><a data-toggle="tab" href="#objectclasses" class="nav-link">{{ __('Object Classes') }}</a></li>
 				<li class="nav-item"><a data-toggle="tab" href="#attributetypes" class="nav-link">{{ __('Attribute Types') }}</a></li>

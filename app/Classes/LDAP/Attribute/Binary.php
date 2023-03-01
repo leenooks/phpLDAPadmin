@@ -7,6 +7,6 @@ use App\Classes\LDAP\Attribute;
 /**
  * Represents an attribute whose values are binary
  */
-class Binary extends Attribute
+abstract class Binary extends Attribute
 {
 }

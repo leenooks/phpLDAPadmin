@@ -20,6 +20,12 @@ class Attribute
 	// Current and Old Values
 	protected Collection $values;
 
+	// Can this attribute be deleted
+	protected bool $deletable = FALSE;
+
+	// Is this attribute an internal attribute
+	protected bool $internal;
+
 	/*
 	protected $oldvalues = array();
 
@@ -27,8 +33,6 @@ class Attribute
 	protected $min_value_count = -1;
 	protected $max_value_count = -1;
 
-	# Is the attribute internal
-	protected $internal = false;
 	# Has the attribute been modified
 	protected $modified = false;
 	# Is the attribute being deleted because of an object class removal
@@ -98,6 +102,20 @@ class Attribute
 		if ($server->isAttrUnique($this->name))
 			$this->unique = true;
 		*/
+	}
+
+	public function __get(string $key): mixed
+	{
+		switch ($key) {
+			case 'name':
+				return $this->{$key};
+
+			case 'internal': return isset($this->{$key}) && $this->{$key};
+			case 'name_lc': return strtolower($this->name);
+
+			default:
+				throw new \Exception('Unknown key:'.$key);
+		}
 	}
 
 	/**
@@ -903,4 +921,18 @@ class Attribute
 			debug_dump_backtrace(sprintf('Unknown JS request %s',$type),1);
 	}
 	 */
+
+	/**
+	 * Return an instance of this attribute that is deletable.
+	 * This is primarily used for rendering to know if to render delete options.
+	 *
+	 * @return Attribute
+	 */
+	public function deletable(): self
+	{
+		$clone = clone $this;
+		$clone->deletable = TRUE;
+
+		return $clone;
+	}
 }

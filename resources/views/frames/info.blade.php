@@ -12,14 +12,14 @@
 @section('main-content')
 	<div class="bg-white p-3">
 		<table class="table">
-			@foreach ($s->rootDSE()->getAttributes() as $attribute => $value)
+			@foreach ($s->rootDSE()->getAttributes() as $attribute => $ao)
 				<tr>
 					<th class="w-25">
 						{!! ($x=$s->schema('attributetypes',$attribute))
 							? sprintf('<a class="attributetype" id="strtolower(%s)" href="%s">%s</a>',$x->name_lc,url('schema/attributetypes',$x->name_lc),$x->name)
 							: $attribute !!}
 					</th>
-					<td>{!! $value !!}</td>
+					<td>{!! $ao !!}</td>
 				</tr>
 			@endforeach
 		</table>

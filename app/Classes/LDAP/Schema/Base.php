@@ -42,7 +42,7 @@ abstract class Base {
 			case 'oid': return $this->oid;
 
 			default:
-				throw new InvalidUsage('Unknown key: '.$key);
+				throw new InvalidUsage('Unknown key:'.$key);
 		}
 	}
 

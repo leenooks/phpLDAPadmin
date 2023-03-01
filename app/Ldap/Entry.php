@@ -3,6 +3,7 @@
 namespace App\Ldap;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use LdapRecord\Models\Model;
 
 use App\Classes\LDAP\Attribute\Factory;
@@ -14,6 +15,7 @@ class Entry extends Model
 	public function getAttributes(): array
 	{
 		$result = collect();
+
 		foreach (parent::getAttributes() as $attribute => $value) {
 			$result->put($attribute,Factory::create($attribute,$value));
 		}
@@ -35,6 +37,13 @@ class Entry extends Model
 	}
 
 	/* METHODS */
+
+	public function getVisibleAttributes(): Collection
+	{
+		return collect($this->getAttributes())->filter(function($item) {
+			return ! $item->internal;
+		});
+	}
 
 	/**
 	 * Return an icon for a DN based on objectClass
