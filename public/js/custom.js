@@ -42,8 +42,21 @@ $(document).ready(function() {
 				}).done(function(html) {
 					$('.main-content').empty().append(html);
 
-				}).fail(function() {
-					alert('Failed');
+				}).fail(function(item) {
+					switch(item.status) {
+						case 404:
+							$('.main-content').empty().append(item.responseText);
+							break;
+						case 419:
+							alert('Session has expired, reloading the page and try again...');
+							location.reload();
+							break;
+						case 500:
+							$('.main-content').empty().append(item.responseText);
+							break;
+						default:
+							alert(item.status+': Well that didnt work?');
+					}
 				});
 			}
 		},

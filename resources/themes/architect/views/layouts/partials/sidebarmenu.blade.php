@@ -80,7 +80,7 @@
 					$('.main-content').empty().append(html);
 
 				}).fail(function() {
-					//alert('Failed');
+					alert('Well that didnt work?');
 				});
 
 				e.stopPropagation();
