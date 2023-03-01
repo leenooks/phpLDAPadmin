@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 use App\Http\Middleware\GuestUser;
 use App\Http\Middleware\SwapinAuthUser;
+use App\Http\Middleware\CheckUpdate;
 
 class Kernel extends HttpKernel
 {
@@ -43,6 +44,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
             GuestUser::class,
+            CheckUpdate::class,
         ],
 
         'api' => [
