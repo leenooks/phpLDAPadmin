@@ -20,7 +20,33 @@ class Entry extends Model
 			$result->put($attribute,Factory::create($attribute,$value));
 		}
 
-		return $result->toArray();
+		$sort = collect(config('ldap.attr_display_order',[]))->transform(function($item) { return strtolower($item); });
+
+		// Order the attributes
+		return $result->sortBy([function($a,$b) use ($sort) {
+			if (! $sort->count() || $a === $b)
+				return 0;
+
+			// Check if $a/$b are in the configuration to be sorted first, if so get it's key
+			$a_key = $sort->search($a->name_lc);
+			$b_key = $sort->search($b->name_lc);
+
+			// If the keys were not in the sort list, set the key to be the count of elements (ie: so it is last to be sorted)
+			if ($a_key === FALSE)
+				$a_key = $sort->count()+1;
+
+			if ($b_key === FALSE)
+				$b_key = $sort->count()+1;
+
+			// Case where neither $a, nor $b are in ldap.attr_display_order, $a_key = $b_key = one greater than num elements.
+			// So we sort them alphabetically
+			if ($a_key === $b_key)
+				return strcasecmp($a->name,$b->name);
+
+			// Case where at least one attribute or its friendly name is in $attrs_display_order
+			// return -1 if $a before $b in $attrs_display_order
+			return ($a_key < $b_key) ? -1 : 1;
+		} ])->toArray();
 	}
 
 	/* ATTRIBUTES */

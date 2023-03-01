@@ -249,29 +249,6 @@ $config->custom->appearance['friendly_attrs'] = array(
 // $config->custom->modify_member['posixgroupattr'] = 'memberUid';
 
 /*********************************************
- * Support for attrs display order           *
- *********************************************/
-
-/* Use this array if you want to have your attributes displayed in a specific
-   order. You can use default attribute names or their fridenly names.
-   For example, "sn" will be displayed right after "givenName". All the other
-   attributes that are not specified in this array will be displayed after in
-   alphabetical order. */
-// $config->custom->appearance['attr_display_order'] = array();
-#  $config->custom->appearance['attr_display_order'] = array(
-#   'givenName',
-#   'sn',
-#   'cn',
-#   'displayName',
-#   'uid',
-#   'uidNumber',
-#   'gidNumber',
-#   'homeDirectory',
-#   'mail',
-#   'userPassword'
-#  );
-
-/*********************************************
  * Define your LDAP servers in this section  *
  *********************************************/
 

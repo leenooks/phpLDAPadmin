@@ -2659,41 +2659,6 @@ function pla_reverse_dn($dn) {
 }
 
 /**
- * Attribute sorting
- */
-function sortAttrs($a,$b) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-	if ($a == $b)
-		return 0;
-
-	$server = $_SESSION[APPCONFIG]->getServer(get_request('server_id','REQUEST'));
-	$attrs_display_order = arrayLower($_SESSION[APPCONFIG]->getValue('appearance','attr_display_order'));
-
-	# Check if $a is in $attrs_display_order, get its key
-	$a_key = array_search($a->getName(),$attrs_display_order);
-	$b_key = array_search($b->getName(),$attrs_display_order);
-
-	if ((! $a_key) && ($a_key !== 0))
-		if ((! $a_key = array_search(strtolower($a->getFriendlyName()),$attrs_display_order)) && ($a_key !== 0))
-			$a_key = count($attrs_display_order)+1;
-
-	if ((! $b_key) && ($b_key !== 0))
-		if ((! $b_key = array_search(strtolower($b->getFriendlyName()),$attrs_display_order)) && ($b_key !== 0))
-			$b_key = count($attrs_display_order)+1;
-
-	# Case where neither $a, nor $b are in $attrs_display_order, $a_key = $b_key = one greater than num elements.
-	# So we sort them alphabetically
-	if ($a_key === $b_key)
-		return strcasecmp($a->getFriendlyName(),$b->getFriendlyName());
-
-	# Case where at least one attribute or its friendly name is in $attrs_display_order
-	# return -1 if $a before $b in $attrs_display_order
-	return ($a_key < $b_key) ? -1 : 1;
-}
-
-/**
  * Reads an array and returns the array values back in lower case
  *
  * @param array $array The array to convert the values to lowercase.
