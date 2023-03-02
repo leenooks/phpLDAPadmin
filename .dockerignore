@@ -1,0 +1,8 @@
+.dockerignore
+.editorconfig
+.env.testing
+.git*
+package.json
+phpunit.xml
+webpack.mix.js
+yarn.lock
