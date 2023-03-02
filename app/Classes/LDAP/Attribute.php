@@ -35,13 +35,11 @@ class Attribute
 
 	protected Collection $required_by;
 
+	// MIN/MAX number of values
+	protected int $min_values_count = 0;
+	protected int $max_values_count = 0;
+
 	/*
-	protected $oldvalues = array();
-
-	# MIN/MAX number of values
-	protected $min_value_count = -1;
-	protected $max_value_count = -1;
-
 	# Has the attribute been modified
 	protected $modified = false;
 	# Is the attribute being deleted because of an object class removal
@@ -118,7 +116,7 @@ class Attribute
 	{
 		return match ($key) {
 			// Can this attribute have more values
-			'can_addvalues' => FALSE,	// @todo
+			'can_addvalues' => $this->schema && (! $this->schema->is_single_value) && ((! $this->max_values_count) || ($this->values->count() < $this->max_values_count)),
 			// Schema attribute description
 			'description' => $this->schema ? $this->schema->{$key} : NULL,
 			// Attribute hints
@@ -339,64 +337,6 @@ class Attribute
 			$this->values = array_values($this->values);
 			$this->justModified();
 		}
-	}
-
-	public function getValue($i) {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-		if (isset($this->values[$i]))
-			return $this->values[$i];
-		else
-			return null;
-	}
-
-	public function getOldValue($i) {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-		if (isset($this->oldvalues[$i]))
-			return $this->oldvalues[$i];
-		else
-			return null;
-	}
-
-	public function getMinValueCount() {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->min_value_count);
-
-		return $this->min_value_count;
-	}
-
-	public function setMinValueCount($min) {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs);
-
-		$this->min_value_count = $min;
-	}
-
-	public function getMaxValueCount() {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->max_value_count);
-
-		return $this->max_value_count;
-	}
-
-	public function setMaxValueCount($max) {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs);
-
-		$this->max_value_count = $max;
-	}
-
-	public function haveMoreValues() {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-		if ($this->getMaxValueCount() < 0 || ($this->getValueCount() < $this->getMaxValueCount()))
-			return true;
-		else
-			return false;
 	}
 
 	public function justModified() {
