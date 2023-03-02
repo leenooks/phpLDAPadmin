@@ -17,7 +17,16 @@ class Entry extends Model
 		$result = collect();
 
 		foreach (parent::getAttributes() as $attribute => $value) {
-			$result->put($attribute,Factory::create($attribute,$value));
+			$o = Factory::create($attribute,$value);
+
+			// Set the rdn flag
+			if (preg_match('/^'.$attribute.'=/i',$this->dn))
+				$o->setRDN();
+
+			// Set required flag
+			$o->required_by(collect($this->getAttribute('objectclass')));
+
+			$result->put($attribute,$o);
 		}
 
 		$sort = collect(config('ldap.attr_display_order',[]))->transform(function($item) { return strtolower($item); });
@@ -67,7 +76,7 @@ class Entry extends Model
 	public function getVisibleAttributes(): Collection
 	{
 		return collect($this->getAttributes())->filter(function($item) {
-			return ! $item->internal;
+			return ! $item->is_internal;
 		});
 	}
 

@@ -9,5 +9,5 @@ use App\Classes\LDAP\Attribute;
  */
 abstract class Internal extends Attribute
 {
-	protected bool $internal = TRUE;
+	protected bool $is_internal = TRUE;
 }

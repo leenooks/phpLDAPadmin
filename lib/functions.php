@@ -1767,34 +1767,6 @@ function random_salt($length) {
 }
 
 /**
- * Given a DN string, this returns the 'RDN' portion of the string.
- * For example. given 'cn=Manager,dc=example,dc=com', this function returns
- * 'cn=Manager' (it is really the exact opposite of ds_ldap::getContainer()).
- *
- * @param string The DN whose RDN to return.
- * @param boolean If true, include attributes in the RDN string. See http://php.net/ldap_explode_dn for details
- * @return string The RDN
- */
-function get_rdn($dn,$include_attrs=0,$decode=false) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-	if (is_null($dn))
-		return null;
-
-	$rdn = pla_explode_dn($dn,$include_attrs);
-	if (! count($rdn) || ! isset($rdn[0]))
-		return $dn;
-
-	if ($decode)
-		$rdn = dn_unescape($rdn[0]);
-	else
-		$rdn = $rdn[0];
-
-	return $rdn;
-}
-
-/**
  * Split an RDN into its attributes
  */
 function rdn_explode($rdn) {

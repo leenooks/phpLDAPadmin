@@ -430,49 +430,6 @@ class PageRender extends Visitor {
 			return '';
 	}
 
-	#@todo this function shouldnt re-calculate requiredness, it should be known in the template already - need to set the ldaptype when initiating the attribute.
-	protected function getNoteRequiredAttribute($attribute) {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
-
-		$required_by = '';
-		$sattr_required = '';
-
-		# Is this attribute required by an objectClass ?
-		$sattr = $this->getServer()->getSchemaAttribute($attribute->getName());
-		if ($sattr)
-			$sattr_required = $sattr->getRequiredByObjectClasses();
-
-		if ($sattr_required) {
-			$oc = $this->template->getAttribute('objectclass');
-
-			if ($oc)
-				foreach ($oc->getValues() as $objectclass) {
-					# If this objectclass is in our required list
-					if (in_array_ignore_case($objectclass,$sattr_required)) {
-						$required_by .= sprintf('%s ',$objectclass);
-						continue;
-					}
-
-					# If not, see if it is in our parent.
-					$sattr = $this->getServer()->getSchemaObjectClass($objectclass);
-
-					if (array_intersect($sattr->getParents(),$sattr_required))
-						$required_by .= sprintf('%s ',$objectclass);
-				}
-
-			else
-				debug_dump_backtrace('How can there be no objectclasses?',1);
-		}
-
-		if ($required_by)
-			return sprintf('<acronym title="%s %s">%s</acronym>',_('Required attribute for objectClass(es)'),$required_by,_('required'));
-		else
-			return '';
-	}
-
 	protected function getNoteRDNAttribute($attribute) {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 			debug_log('Entered (%%)',129,0,__FILE__,__LINE__,__METHOD__,$fargs);

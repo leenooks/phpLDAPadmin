@@ -28,17 +28,24 @@
 								<table class="table">
 									@foreach ($o->getVisibleAttributes() as $ao)
 										<tr class="bg-light text-dark small">
-											<th class="w-25" colspan="2">
-												{{ $ao->name }}
+											<th class="w-25">
+												<abbr title="{{ $ao->description }}">{{ $ao->name }}</abbr>
 												<!-- Attribute Hints -->
-												<span class="float-right"></span>
+												<span class="float-right">
+													@foreach($ao->hints as $name => $description)
+														@if ($loop->index),@endif
+														<abbr title="{{ $description }}">{{ $name }}</abbr>
+													@endforeach
+												</span>
 											</th>
 										</tr>
 										<tr>
 											<td class="pl-5">
 												{!! $ao->deletable() !!}<br>
-												<span class="p-0 m-0" id="add{{ $ao->name_lc }}"></span>
-												<span class="btn btn-sm btn-outline-primary mt-3 mb-3"><i class="fas fa-plus"></i> {{ __('Add Value') }}</span>
+												@if ($ao->can_addvalues)
+													<span class="p-0 m-0" id="add{{ $ao->name_lc }}"></span>
+													<span class="btn btn-sm btn-outline-primary mt-3 mb-3"><i class="fas fa-plus"></i> {{ __('Add Value') }}</span>
+												@endif
 											</td>
 											{{--
 											<td>@dump($ao)</td>

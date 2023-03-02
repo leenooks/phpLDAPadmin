@@ -262,6 +262,7 @@ class AttributeType extends Base {
 			case 'equality': return $this->equality;
 			case 'max_length': return $this->max_length;
 			case 'ordering': return $this->ordering;
+			case 'required_by_object_classes': return $this->required_by_object_classes;
 			case 'sub_str_rule': return $this->sub_str_rule;
 			case 'sup_attribute': return $this->sup_attribute;
 			case 'syntax': return $this->syntax;
@@ -526,6 +527,17 @@ class AttributeType extends Base {
 	{
 		if (($x=$this->aliases->search($alias)) !== FALSE)
 			$this->aliases->forget($x);
+	}
+
+	/**
+	 * Given a list of object classes, determine if this is a required attribute
+	 *
+	 * @param Collection $oc List of objectclasses to compare.
+	 * @return Collection
+	 */
+	public function required_by(Collection $oc): Collection
+	{
+		return $oc->diff($this->required_by_object_classes);
 	}
 
 	/**

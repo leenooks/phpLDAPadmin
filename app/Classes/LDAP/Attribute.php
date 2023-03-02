@@ -4,6 +4,8 @@ namespace App\Classes\LDAP;
 
 use Illuminate\Support\Collection;
 
+use App\Classes\LDAP\Schema\AttributeType;
+
 /**
  * Represents an attribute of an LDAP Object
  */
@@ -11,6 +13,8 @@ class Attribute
 {
 	// Attribute Name
 	protected string $name;
+
+	protected ?AttributeType $schema;
 
 	/*
 	# Source of this attribute definition
@@ -21,10 +25,15 @@ class Attribute
 	protected Collection $values;
 
 	// Can this attribute be deleted
-	protected bool $deletable = FALSE;
+	protected bool $is_deletable = FALSE;
 
 	// Is this attribute an internal attribute
-	protected bool $internal;
+	protected bool $is_internal;
+
+	// Is this attribute the RDN?
+	protected bool $is_rdn = FALSE;
+
+	protected Collection $required_by;
 
 	/*
 	protected $oldvalues = array();
@@ -74,7 +83,6 @@ class Attribute
 	public $page = 1;
 	public $order = 255;
 	public $ordersort = 255;
-	public $rdn = false;
 
 	# Schema Aliases for this attribute (stored in lowercase)
 	protected $aliases = array();
@@ -88,6 +96,8 @@ class Attribute
 	{
 		$this->name = $name;
 		$this->values = collect($values);
+
+		$this->schema = config('server')->schema('attributetypes',$name);
 
 		/*
 		# Should this attribute be hidden
@@ -106,16 +116,24 @@ class Attribute
 
 	public function __get(string $key): mixed
 	{
-		switch ($key) {
-			case 'name':
-				return $this->{$key};
+		return match ($key) {
+			// Can this attribute have more values
+			'can_addvalues' => FALSE,	// @todo
+			// Schema attribute description
+			'description' => $this->schema ? $this->schema->{$key} : NULL,
+			// Attribute hints
+			'hints' => $this->hints(),
+			// Is this an internal attribute
+			'is_internal' => isset($this->{$key}) && $this->{$key},
+			// We prefer the name as per the schema if it exists
+			'name' => $this->schema ? $this->schema->{$key} : $this->{$key},
+			// Attribute name in lower case
+			'name_lc' => strtolower($this->name),
+			// Is this attribute the RDN
+			'rdn' => $this->is_rdn,
 
-			case 'internal': return isset($this->{$key}) && $this->{$key};
-			case 'name_lc': return strtolower($this->name);
-
-			default:
-				throw new \Exception('Unknown key:'.$key);
-		}
+			default => throw new \Exception('Unknown key:' . $key),
+		};
 	}
 
 	/**
@@ -126,6 +144,64 @@ class Attribute
 	public function __toString(): string
 	{
 		return $this->values->join('<br>');
+	}
+
+	/**
+	 * Return an instance of this attribute that is deletable.
+	 * This is primarily used for rendering to know if to render delete options.
+	 *
+	 * @return Attribute
+	 */
+	public function deletable(): self
+	{
+		$clone = clone $this;
+
+		if (! $this->required_by->count())
+			$clone->is_deletable = TRUE;
+
+		return $clone;
+	}
+
+	/**
+	 * Return the hints about this attribute, ie: RDN, Required, etc
+	 *
+	 * @return array
+	 */
+	public function hints(): array
+	{
+		$result = collect();
+
+		// Is this Attribute an RDN
+		if ($this->is_rdn)
+			$result->put(__('rdn'),__('This attribute is required for the RDN'));
+
+		// If this attribute name is an alias for the schema attribute name
+		// @todo
+
+		// objectClasses requiring this attribute
+		// eg: $result->put('required','Required by objectClasses: a,b');
+		if ($this->required_by->count())
+			$result->put(__('required'),sprintf('%s: %s',__('Required Attribute by ObjectClass(es)'),$this->required_by->join(',')));
+
+		return $result->toArray();
+	}
+
+	/**
+	 * Set the objectclasses that require this attribute
+	 *
+	 * @param Collection $oc
+	 * @return Collection
+	 */
+	public function required_by(Collection $oc): Collection
+	{
+		return $this->required_by = ($this->schema
+			? $oc->intersect($this->schema->required_by_object_classes)
+			: collect());
+	}
+
+	public function setRDN(): void
+	{
+		$this->is_rdn = TRUE;
 	}
 
 	/**
@@ -352,20 +428,6 @@ class Attribute
 		$this->oldvalues = $this->values;
 		$this->values = array();
 		$this->justModified();
-	}
-
-	public function isInternal() {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->internal);
-
-		return $this->internal;
-	}
-
-	public function setInternal() {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs);
-
-		$this->internal = true;
 	}
 
 	public function isRequired() {
@@ -644,25 +706,6 @@ class Attribute
 		return $this->verify;
 	}
 
-	public function setRDN($rdn) {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',5,1,__FILE__,__LINE__,__METHOD__,$fargs);
-
-		$this->rdn = $rdn;
-	}
-
-	/**
-	 * Return if this attribute is an RDN attribute
-	 *
-	 * @return boolean
-	 *
-	public function isRDN() {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',5,0,__FILE__,__LINE__,__METHOD__,$fargs,$this->rdn);
-
-		return $this->rdn;
-	}
-
 	/**
 	 * Capture all the LDAP details we are interested in
 	 *
@@ -921,18 +964,4 @@ class Attribute
 			debug_dump_backtrace(sprintf('Unknown JS request %s',$type),1);
 	}
 	 */
-
-	/**
-	 * Return an instance of this attribute that is deletable.
-	 * This is primarily used for rendering to know if to render delete options.
-	 *
-	 * @return Attribute
-	 */
-	public function deletable(): self
-	{
-		$clone = clone $this;
-		$clone->deletable = TRUE;
-
-		return $clone;
-	}
 }

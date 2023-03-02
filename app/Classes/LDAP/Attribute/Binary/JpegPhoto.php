@@ -30,7 +30,7 @@ final class JpegPhoto extends Binary
 					$result .= sprintf('<td><img class="jpegphoto" src="data:%s;base64, %s" />%s</td>',
 						$x,
 						base64_encode($value),
-						$this->deletable ? sprintf('<br><span class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> %s</span>',__('Delete')) : '');
+						$this->is_deletable ? sprintf('<br><span class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> %s</span>',__('Delete')) : '');
 			}
 		}
 
