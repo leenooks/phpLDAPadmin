@@ -6,6 +6,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use LdapRecord\Models\Model;
 
+use App\Classes\LDAP\Attribute;
 use App\Classes\LDAP\Attribute\Factory;
 
 class Entry extends Model
@@ -14,48 +15,54 @@ class Entry extends Model
 
 	public function getAttributes(): array
 	{
-		$result = collect();
+		static $result = NULL;
 
-		foreach (parent::getAttributes() as $attribute => $value) {
-			$o = Factory::create($attribute,$value);
+		if (is_null($result)) {
+			$result = collect();
 
-			// Set the rdn flag
-			if (preg_match('/^'.$attribute.'=/i',$this->dn))
-				$o->setRDN();
+			foreach (parent::getAttributes() as $attribute => $value) {
+				$o = Factory::create($attribute,$value);
 
-			// Set required flag
-			$o->required_by(collect($this->getAttribute('objectclass')));
+				// Set the rdn flag
+				if (preg_match('/^'.$attribute.'=/i',$this->dn))
+					$o->setRDN();
 
-			$result->put($attribute,$o);
+				// Set required flag
+				$o->required_by(collect($this->getAttribute('objectclass')));
+
+				$result->put($attribute,$o);
+			}
+
+			$sort = collect(config('ldap.attr_display_order',[]))->transform(function($item) { return strtolower($item); });
+
+			// Order the attributes
+			$result = $result->sortBy([function(Attribute $a,Attribute $b) use ($sort): int {
+				if ($a === $b)
+					return 0;
+
+				// Check if $a/$b are in the configuration to be sorted first, if so get it's key
+				$a_key = $sort->search($a->name_lc);
+				$b_key = $sort->search($b->name_lc);
+
+				// If the keys were not in the sort list, set the key to be the count of elements (ie: so it is last to be sorted)
+				if ($a_key === FALSE)
+					$a_key = $sort->count()+1;
+
+				if ($b_key === FALSE)
+					$b_key = $sort->count()+1;
+
+				// Case where neither $a, nor $b are in ldap.attr_display_order, $a_key = $b_key = one greater than num elements.
+				// So we sort them alphabetically
+				if ($a_key === $b_key)
+					return strcasecmp($a->name,$b->name);
+
+				// Case where at least one attribute or its friendly name is in $attrs_display_order
+				// return -1 if $a before $b in $attrs_display_order
+				return ($a_key < $b_key) ? -1 : 1;
+			} ])->toArray();
 		}
 
-		$sort = collect(config('ldap.attr_display_order',[]))->transform(function($item) { return strtolower($item); });
-
-		// Order the attributes
-		return $result->sortBy([function($a,$b) use ($sort) {
-			if (! $sort->count() || $a === $b)
-				return 0;
-
-			// Check if $a/$b are in the configuration to be sorted first, if so get it's key
-			$a_key = $sort->search($a->name_lc);
-			$b_key = $sort->search($b->name_lc);
-
-			// If the keys were not in the sort list, set the key to be the count of elements (ie: so it is last to be sorted)
-			if ($a_key === FALSE)
-				$a_key = $sort->count()+1;
-
-			if ($b_key === FALSE)
-				$b_key = $sort->count()+1;
-
-			// Case where neither $a, nor $b are in ldap.attr_display_order, $a_key = $b_key = one greater than num elements.
-			// So we sort them alphabetically
-			if ($a_key === $b_key)
-				return strcasecmp($a->name,$b->name);
-
-			// Case where at least one attribute or its friendly name is in $attrs_display_order
-			// return -1 if $a before $b in $attrs_display_order
-			return ($a_key < $b_key) ? -1 : 1;
-		} ])->toArray();
+		return $result;
 	}
 
 	/* ATTRIBUTES */
@@ -73,6 +80,23 @@ class Entry extends Model
 
 	/* METHODS */
 
+	/**
+	 * Return a list of LDAP internal attributes
+	 *
+	 * @return Collection
+	 */
+	public function getInternalAttributes(): Collection
+	{
+		return collect($this->getAttributes())->filter(function($item) {
+			return $item->is_internal;
+		});
+	}
+
+	/**
+	 * Return this list of user attributes
+	 *
+	 * @return Collection
+	 */
 	public function getVisibleAttributes(): Collection
 	{
 		return collect($this->getAttributes())->filter(function($item) {

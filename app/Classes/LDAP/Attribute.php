@@ -14,7 +14,7 @@ class Attribute
 	// Attribute Name
 	protected string $name;
 
-	protected ?AttributeType $schema;
+	protected ?AttributeType $schema = NULL;
 
 	/*
 	# Source of this attribute definition
@@ -28,7 +28,7 @@ class Attribute
 	protected bool $is_deletable = FALSE;
 
 	// Is this attribute an internal attribute
-	protected bool $is_internal;
+	protected bool $is_internal = FALSE;
 
 	// Is this attribute the RDN?
 	protected bool $is_rdn = FALSE;
@@ -95,7 +95,9 @@ class Attribute
 		$this->name = $name;
 		$this->values = collect($values);
 
-		$this->schema = config('server')->schema('attributetypes',$name);
+		// No need to load our schema for internal attributes
+		if (! $this->is_internal)
+			$this->schema = config('server')->schema('attributetypes',$name);
 
 		/*
 		# Should this attribute be hidden

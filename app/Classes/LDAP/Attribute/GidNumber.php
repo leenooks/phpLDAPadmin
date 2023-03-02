@@ -5,8 +5,8 @@ namespace App\Classes\LDAP\Attribute;
 use App\Classes\LDAP\Attribute;
 
 /**
- * Represents an attribute whose values are binary
+ * Represents an GidNumber Attribute
  */
-class Binary extends Attribute
+final class GidNumber extends Attribute
 {
 }

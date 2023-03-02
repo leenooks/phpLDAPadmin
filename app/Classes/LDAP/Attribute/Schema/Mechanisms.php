@@ -5,7 +5,7 @@ namespace App\Classes\LDAP\Attribute\Schema;
 use App\Classes\LDAP\Attribute\Schema;
 
 /**
- * Represents an attribute whose values are binary
+ * Represents a Mechanisms Attribute
  */
 final class Mechanisms extends Schema
 {

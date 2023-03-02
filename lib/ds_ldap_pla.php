@@ -52,10 +52,6 @@ class ldap_pla extends ldap {
 			'desc'=>'Custom operational attributes to be treated as internal attributes',
 			'default'=>array('+'));
 
-		$this->default->server['jpeg_attributes'] = array(
-			'desc'=>'Additional attributes to treat as Jpeg Attributes',
-			'default'=>array());
-
 		# This was added in case the LDAP server doesnt provide them with a base +,* query.
 		$this->default->server['root_dse_attributes'] = array(
 			'desc'=>'RootDSE attributes for use when displaying server info',

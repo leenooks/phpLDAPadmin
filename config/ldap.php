@@ -102,4 +102,13 @@ return [
 	],
 	*/
 
+	/*
+	 |--------------------------------------------------------------------------
+	 | Custom Date Format
+	 |--------------------------------------------------------------------------
+	 |
+	 | Configuration to determine how date fields will be displayed.
+	 |
+	 */
+	'datetime_format' => 'Y-m-d H:i:s',
 ];

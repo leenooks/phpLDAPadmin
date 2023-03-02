@@ -5,7 +5,7 @@ namespace App\Classes\LDAP\Attribute\Binary;
 use App\Classes\LDAP\Attribute\Binary;
 
 /**
- * Represents an attribute whose values are jpeg pictures
+ * Represents an JpegPhoto Attribute
  */
 final class JpegPhoto extends Binary
 {

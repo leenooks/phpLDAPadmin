@@ -5,8 +5,8 @@ namespace App\Classes\LDAP\Attribute\Internal;
 use App\Classes\LDAP\Attribute\Internal;
 
 /**
- * Represents an EntryUUID Attribute
+ * Represents an EntryDN Attribute
  */
-final class EntryUUID extends Internal
+final class EntryDN extends Internal
 {
 }

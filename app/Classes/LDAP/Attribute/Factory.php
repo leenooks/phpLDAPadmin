@@ -20,13 +20,24 @@ class Factory
 	 * Map of attributes to appropriate class
 	 */
 	public const map = [
+		'createtimestamp' => Internal\Timestamp::class,
+		'creatorsname' => Internal\EntryDN::class,
+		'entrycsn' => Internal\EntryCSN::class,
+		'entrydn' => Internal\EntryDN::class,
 		'entryuuid' => Internal\EntryUUID::class,
+		'gidnumber' => GidNumber::class,
+		'hassubordinates' => Internal\HasSubordinates::class,
 		'jpegphoto' => Binary\JpegPhoto::class,
+		'modifytimestamp' => Internal\Timestamp::class,
+		'modifiersname' => Internal\EntryDN::class,
 		'objectclass' => ObjectClass::class,
+		'structuralobjectclass' => Internal\StructuralObjectClass::class,
+		'subschemasubentry' => Internal\SubschemaSubentry::class,
 		'supportedcontrol' => Schema\OID::class,
 		'supportedextension' => Schema\OID::class,
 		'supportedfeatures' => Schema\OID::class,
 		'supportedsaslmechanisms' => Schema\Mechanisms::class,
+		'userpassword' => Password::class,
 	];
 
 	/**
