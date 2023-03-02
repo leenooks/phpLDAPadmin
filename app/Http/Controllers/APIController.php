@@ -22,7 +22,7 @@ class APIController extends Controller
 		$dn = Crypt::decryptString($request->query('key'));
 		Log::debug(sprintf('%s: Query [%s] - Levels [%d]',__METHOD__,$dn,$levels));
 
-		return (new Server())
+		return (config('server'))
 			->children($dn)
 			->transform(function($item) {
 				return [

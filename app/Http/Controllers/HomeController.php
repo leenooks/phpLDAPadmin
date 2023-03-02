@@ -54,7 +54,7 @@ class HomeController extends Controller
 	public function info()
 	{
 		// Load our attributes
-		$s = new Server;
+		$s = config('server');
 		$s->schema('objectclasses');
 		$s->schema('attributetypes');
 
@@ -73,7 +73,7 @@ class HomeController extends Controller
 		$dn = Crypt::decryptString($request->post('key'));
 
 		return view('frames.dn')
-			->with('o',(new Server)->fetch($dn))
+			->with('o',config('server')->fetch($dn))
 			->with('dn',$dn);
 	}
 
@@ -87,7 +87,7 @@ class HomeController extends Controller
 	 */
 	public function schema_frame(Request $request)
 	{
-		$s = new Server;
+		$s = config('server');
 
 		// If an invalid key, we'll 404
 		if ($request->type && $request->key && ($s->schema($request->type)->has($request->key) === FALSE))
