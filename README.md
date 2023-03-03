@@ -6,6 +6,9 @@ If you come across an LDAP server, where PLA exhibits problems, please open an i
 
 For up to date information on PLA, please head to the [wiki](https://github.com/leenooks/phpLDAPadmin/wiki).
 
+## Demo
+If you havent seen PLA in action, you can head here to the [demo](https://demo.phpldapadmin.org) site.
+
 ## Getting Help
 The best place to get help with PLA (new and old) is on [Stack Overflow](https://stackoverflow.com/tags/phpldapadmin/info).
 
