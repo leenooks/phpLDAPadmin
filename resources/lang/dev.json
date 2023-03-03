@@ -1,0 +1,10 @@
+{
+	"Email": "DEV:Email",
+	"Home": "DEV:Home",
+	"Password": "DEV:Password",
+	"Please enter your email": "DEV:Please enter your email",
+	"Please enter your password": "DEV:Please enter your password",
+	"Server Info": "DEV:Server Info",
+	"Server Name": "DEV:Server Name",
+	"Sign in to <strong>:server</strong>": "DEV:Sign in to <strong>:server</strong>"
+}

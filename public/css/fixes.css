@@ -1,0 +1,171 @@
+body {
+       font-size: 0.85em;
+}
+
+/* Trim our sidebar down to 250px */
+.app-sidebar {
+	width: 250px;
+	min-width: 250px;
+}
+
+.app-header__logo {
+	width: 250px;
+}
+
+.fixed-sidebar:not(.fixed-header) .app-header {
+	margin-left: 250px;
+}
+
+.fixed-sidebar .app-main .app-main__outer {
+	padding-left: 250px;
+}
+
+.font-icon-wrapper i {
+	font-size: 1.2rem;
+}
+
+/* Fixes for data tables */
+/* Fix pagination buttons */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+	padding: 0 0;
+	margin-left: 0;
+	border: 0 solid;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+	border: 0 solid;
+	background: #fff;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:active {
+	box-shadow: 0 0 0 #fff;
+	background-color: #fff;
+}
+
+/* Remove multiple sorting images on tables */
+table.dataTable thead .sorting_asc {
+	background-image: none !important;
+}
+
+table.dataTable thead .sorting_desc {
+	background-image: none !important;
+}
+
+table.dataTable thead .sorting {
+	background-image: none !important;
+}
+
+/* Remove blue border from chrome on buttons */
+/* Remove outline for non-keyboard :focus */
+*:focus:not(.focus-visible) {
+	outline: none !important;
+	box-shadow: none !important;
+}
+
+/* Optional: Customize .focus-visible */
+.focus-visible {
+	outline-color: lightgreen;
+}
+
+*:disabled {
+	cursor: not-allowed;
+}
+
+/* A selected indicator - used with icons */
+.tag-selected {
+	color: orange;
+}
+
+.tag-selected:hover {
+	cursor: pointer;
+}
+
+.card-header h3.card-title {
+	font-size: 1.0rem;
+}
+
+/** SIDEBAR FIXES **/
+
+/**
+ The sidebar has a few states:
+ + Wide Screen
+    - Open (app-container fixed-sidebar) &
+    - Closed (app-container fixed-sidebar closed-sidebar) &
+    - Hover Open (app-sidebar:hover)
+ + Medium Screen
+    - Closed (app-container fixed-sidebar closed-sidebar-mobile closed-sidebar) &
+    - Hover Open (app-sidebar:hover)
+ + Small Screen
+    - Missing (?) &
+    - Click Open (app-container fixed-sidebar closed-sidebar-mobile closed-sidebar sidebar-mobile-open)
+ */
+
+/* Fancy Tree Fixes */
+/** Remove the border around the tree **/
+ul.fancytree-container {
+	border: 0;
+}
+
+/** Tree Placement **/
+#tree > ul {
+	padding-left: 0;
+}
+/** Fix tree rendering **/
+.fancytree-node {
+	line-height: 1.75em;
+}
+/** Fix position of tree expander and checkbox */
+span.fancytree-checkbox, span.fancytree-custom-icon, span.fancytree-expander, span.fancytree-icon {
+	margin-top: 4px;
+}
+/* Position branch center of icon */
+ul.fancytree-container ul {
+	padding: 0 0 0 20px;
+}
+
+/* Show treeicon when collapsed and remove it when open */
+/* @todo treeicon appears when not hovering on page in small mode */
+.sidebar-mobile-open:hover #treeicon, /* small */
+.fixed-sidebar #treeicon, /* wide */
+.fixed-sidebar .app-sidebar:hover #treeicon /* wide & closed:hover */
+{
+	display: none;
+}
+
+.closed-sidebar #treeicon
+{
+	opacity: 1;
+	display: inline;
+}
+
+/* Architect Fixes */
+/** Remove the Cyan vertical line from the tree **/
+.vertical-nav-menu #tree ul:before {
+	opacity: 0;
+}
+
+/** Fix elipse icon (top right) on small display */
+.closed-sidebar .app-header.header-text-light .app-header__menu .mobile-toggle-header-nav {
+	background: #343a40;
+}
+
+/* Hide tree when collapsed and show it when open */
+/* @todo tree disappears when not hovering on page in small mode - related to #treeicon - see server icons they work? */
+.sidebar-mobile-open:hover #tree, /* small */
+.fixed-sidebar #tree, /* wide */
+.fixed-sidebar .app-sidebar:hover #tree /* wide & closed:hover */
+{
+	display: block;
+}
+
+.closed-sidebar #tree {
+	display: none;
+}
+
+/** Server icons **/
+.closed-sidebar .server-icon {
+	display: none;
+}
+.closed-sidebar .app-sidebar:hover .server-icon, .sidebar-mobile-open .server-icon {
+	display: flex;
+}

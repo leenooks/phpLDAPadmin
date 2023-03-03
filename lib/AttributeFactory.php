@@ -96,17 +96,8 @@ class AttributeFactory {
 					return $this->newMultiLineAttribute($name,$values,$server_id,$source);
 			}
 
-		if (! strcasecmp($name,'objectClass')) {
-			return $this->newObjectClassAttribute($name,$values,$server_id,$source);
-
-		} elseif ($app['server']->isJpegPhoto($name) || in_array($name,$app['server']->getValue('server','jpeg_attributes'))) {
-			return $this->newJpegAttribute($name,$values,$server_id,$source);
-
-		} elseif ($app['server']->isAttrBinary($name)) {
+		if ($app['server']->isAttrBinary($name)) {
 			return $this->newBinaryAttribute($name,$values,$server_id,$source);
-
-		} elseif (! strcasecmp($name,'userPassword')) {
-			return $this->newPasswordAttribute($name,$values,$server_id,$source);
 
 		} elseif (! strcasecmp($name,'sambaLMPassword') || ! strcasecmp($name,'sambaNTPassword')) {
 			return $this->newSambaPasswordAttribute($name,$values,$server_id,$source);
@@ -129,24 +120,9 @@ class AttributeFactory {
 		} elseif ($app['server']->isMultiLineAttr($name)) {
 			return $this->newMultiLineAttribute($name,$values,$server_id,$source);
 
-		} elseif (! strcasecmp($name,'gidNumber')) {
-			return $this->newGidAttribute($name,$values,$server_id,$source);
-
 		} else {
 			return new Attribute($name,$values,$server_id,$source);
 		}
-	}
-
-	private function newJpegAttribute($name,$values,$server_id,$source) {
-		return new JpegAttribute($name,$values,$server_id,$source);
-	}
-
-	private function newBinaryAttribute($name,$values,$server_id,$source) {
-		return new BinaryAttribute($name,$values,$server_id,$source);
-	}
-
-	private function newPasswordAttribute($name,$values,$server_id,$source) {
-		return new PasswordAttribute($name,$values,$server_id,$source);
 	}
 
 	private function newSambaPasswordAttribute($name,$values,$server_id,$source) {
@@ -167,22 +143,6 @@ class AttributeFactory {
 
 	private function newMultiLineAttribute($name,$values,$server_id,$source) {
 		return new MultiLineAttribute($name,$values,$server_id,$source);
-	}
-
-	private function newDateAttribute($name,$values,$server_id,$source) {
-		return new DateAttribute($name,$values,$server_id,$source);
-	}
-
-	private function newObjectClassAttribute($name,$values,$server_id,$source) {
-		return new ObjectClassAttribute($name,$values,$server_id,$source);
-	}
-
-	private function newDnAttribute($name,$values,$server_id,$source) {
-		return new DnAttribute($name,$values,$server_id,$source);
-	}
-
-	private function newGidAttribute($name,$values,$server_id,$source) {
-		return new GidAttribute($name,$values,$server_id,$source);
 	}
 }
 ?>

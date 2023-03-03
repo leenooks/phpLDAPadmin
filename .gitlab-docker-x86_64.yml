@@ -1,0 +1,27 @@
+docker:
+  variables:
+    VERSION: latest
+    DOCKER_HOST: tcp://docker:2375
+
+  stage: build
+
+  image: docker:latest
+  services:
+  - docker:dind
+
+  before_script:
+  - docker info && docker version
+  - echo "$CI_JOB_TOKEN" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
+  - if [ -n "$GITHUB_TOKEN" ]; then cat $GITHUB_TOKEN |base64 -d > auth.json; fi
+
+  script:
+  - if [ -f init ]; then chmod 500 init; fi
+  - echo -n ${CI_COMMIT_SHORT_SHA} > VERSION
+  - rm -rf vendor/ database/schema database/seeders database/factories/*
+  - docker build -f docker/Dockerfile -t ${CI_REGISTRY_IMAGE}:${VERSION} .
+  - docker push ${CI_REGISTRY_IMAGE}:${VERSION}
+  tags:
+  - docker
+  - x86_64
+  only:
+  - BRANCH-2.0

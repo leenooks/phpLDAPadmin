@@ -1,0 +1,22 @@
+# LDIF Export for o=Test
+
+#version: 1
+
+# This entry already exists as a result of configuring the LDAP server
+#dn: dc=Test
+#dc: Test
+#objectclass: dNSDomain
+
+dn: cn=AdminUser,dc=Test
+cn: Admin User
+givenname: Admin
+mail: admin@test
+objectclass: posixAccount
+objectclass: inetOrgPerson
+objectclass: top
+sn: User
+uid: admin
+uidNumber: 0
+gidNumber: 0
+homeDirectory: /home/admin
+userpassword: password

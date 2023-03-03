@@ -1644,69 +1644,14 @@ function get_icon($server_id,$dn,$object_classes=array()) {
 	if (in_array('sambaaccount',$object_classes))
 		return 'nt_user.png';
 
-	elseif (in_array('person',$object_classes) ||
-		in_array('organizationalperson',$object_classes) ||
-		in_array('inetorgperson',$object_classes) ||
-		in_array('account',$object_classes) ||
-		in_array('posixaccount',$object_classes))
-
-		return 'ldap-user.png';
-
-	elseif (in_array('organization',$object_classes))
-		return 'ldap-o.png';
-
-	elseif (in_array('organizationalunit',$object_classes))
-		return 'ldap-ou.png';
-
 	elseif (in_array('organizationalrole',$object_classes))
 		return 'ldap-uid.png';
-
-	elseif (in_array('dcobject',$object_classes) ||
-		in_array('domainrelatedobject',$object_classes) ||
-		in_array('domain',$object_classes) ||
-		in_array('builtindomain',$object_classes))
-
-		return 'ldap-dc.png';
-
-	elseif (in_array('alias',$object_classes))
-		return 'ldap-alias.png';
-
-	elseif (in_array('room',$object_classes))
-		return 'door.png';
-
-	elseif (in_array('iphost',$object_classes))
-		return 'host.png';
-
-	elseif (in_array('device',$object_classes))
-		return 'device.png';
-
-	elseif (in_array('document',$object_classes))
-		return 'document.png';
-
-	elseif (in_array('country',$object_classes)) {
-		$tmp = pla_explode_dn($dn);
-		$cval = explode('=',$tmp[0],2);
-		$cval = isset($cval[1]) ? $cval[1] : false;
-		if ($cval && false === strpos($cval,'..') &&
-			file_exists(realpath(sprintf('%s/../countries/%s.png',IMGDIR,strtolower($cval)))))
-
-			return sprintf('../countries/%s.png',strtolower($cval));
-
-		else
-			return 'country.png';
-	}
 
 	elseif (in_array('jammvirtualdomain',$object_classes))
 		return 'mail.png';
 
 	elseif (in_array('locality',$object_classes))
 		return 'locality.png';
-
-	elseif (in_array('posixgroup',$object_classes) ||
-		in_array('groupofnames',$object_classes) ||
-		in_array('group',$object_classes))
-
-		return 'ldap-ou.png';
 
 	elseif (in_array('applicationprocess',$object_classes))
 		return 'process.png';
@@ -1719,9 +1664,6 @@ function get_icon($server_id,$dn,$object_classes=array()) {
 
 	elseif (in_array('ndspkikeymaterial',$object_classes))
 		return 'lock.png';
-
-	elseif (in_array('server',$object_classes))
-		return 'server-small.png';
 
 	elseif (in_array('volume',$object_classes))
 		return 'hard-drive.png';
@@ -1842,34 +1784,6 @@ function random_salt($length) {
 }
 
 /**
- * Given a DN string, this returns the 'RDN' portion of the string.
- * For example. given 'cn=Manager,dc=example,dc=com', this function returns
- * 'cn=Manager' (it is really the exact opposite of ds_ldap::getContainer()).
- *
- * @param string The DN whose RDN to return.
- * @param boolean If true, include attributes in the RDN string. See http://php.net/ldap_explode_dn for details
- * @return string The RDN
- */
-function get_rdn($dn,$include_attrs=0,$decode=false) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-	if (is_null($dn))
-		return null;
-
-	$rdn = pla_explode_dn($dn,$include_attrs);
-	if (! count($rdn) || ! isset($rdn[0]))
-		return $dn;
-
-	if ($decode)
-		$rdn = dn_unescape($rdn[0]);
-	else
-		$rdn = $rdn[0];
-
-	return $rdn;
-}
-
-/**
  * Split an RDN into its attributes
  */
 function rdn_explode($rdn) {
@@ -1942,66 +1856,6 @@ function pla_verbose_error($key) {
 		return $CACHE[$key];
 	else
 		return array('title' => null,'desc' => null);
-}
-
-/**
- * Given an LDAP OID number, returns a verbose description of the OID.
- * This function parses ldap_supported_oids.txt and looks up the specified
- * OID, and returns the verbose message defined in that file.
- *
- * <code>
- *  Array (
- *    [title] => All Operational Attribute
- *    [ref] => RFC 3673
- *    [desc] => An LDAP extension which clients may use to request the return of all operational attributes.
- *  )
- * </code>
- *
- * @param string The OID number (ie, "1.3.6.1.4.1.4203.1.5.1") of the OID of interest.
- * @return array An associative array contianing the OID title and description like so:
- */
-function support_oid_to_text($key) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-	static $CACHE = array();
-
-	$unknown = array();
-	$unknown['desc'] = 'We have no description for this OID, if you know what this OID provides, please let us know. Please also include an RFC reference if it is available.';
-	$unknown['title'] = 'Can you help with this OID info?';
-
-	if (! count($CACHE)) {
-		$source_file = LIBDIR.'ldap_supported_oids.txt';
-
-		if (! file_exists($source_file) || ! is_readable($source_file) || ! ($f = fopen($source_file,'r')))
-			return false;
-
-		$contents = fread($f,filesize($source_file));
-		fclose($f);
-		$entries = array();
-		preg_match_all("/[0-9]\..+\s+\"[^\"]*\"\n/",$contents,$entries);
-
-		foreach ($entries[0] as $values) {
-			$entry = array();
-			preg_match("/([0-9]\.([0-9]+\.)*[0-9]+)(\s+\"([^\"]*)\")?(\s+\"([^\"]*)\")?(\s+\"([^\"]*)\")?/",$values,$entry);
-			$oid_id = isset($entry[1]) ? $entry[1] : null;
-
-			if ($oid_id) {
-				$CACHE[$oid_id]['title'] = isset($entry[4]) ? $entry[4] : null;
-				$CACHE[$oid_id]['ref'] = isset($entry[6]) ? $entry[6] : null;
-				$desc = isset($entry[8]) ? $entry[8] : sprintf('<acronym title="%s">%s</acronym>',$unknown['desc'],$unknown['title']);
-				$CACHE[$oid_id]['desc'] = preg_replace('/\s+/',' ',$desc);
-			}
-		}
-	}
-
-	if (isset($CACHE[$key]))
-		return $CACHE[$key];
-	else
-		return array(
-			'title'=>$key,
-			'ref'=>null,
-			'desc'=>sprintf('<acronym title="%s">%s</acronym>',$unknown['desc'],$unknown['title']));
 }
 
 /**
@@ -2823,41 +2677,6 @@ function pla_reverse_dn($dn) {
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	return (implode(',',array_reverse(pla_explode_dn($dn))));
-}
-
-/**
- * Attribute sorting
- */
-function sortAttrs($a,$b) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-	if ($a == $b)
-		return 0;
-
-	$server = $_SESSION[APPCONFIG]->getServer(get_request('server_id','REQUEST'));
-	$attrs_display_order = arrayLower($_SESSION[APPCONFIG]->getValue('appearance','attr_display_order'));
-
-	# Check if $a is in $attrs_display_order, get its key
-	$a_key = array_search($a->getName(),$attrs_display_order);
-	$b_key = array_search($b->getName(),$attrs_display_order);
-
-	if ((! $a_key) && ($a_key !== 0))
-		if ((! $a_key = array_search(strtolower($a->getFriendlyName()),$attrs_display_order)) && ($a_key !== 0))
-			$a_key = count($attrs_display_order)+1;
-
-	if ((! $b_key) && ($b_key !== 0))
-		if ((! $b_key = array_search(strtolower($b->getFriendlyName()),$attrs_display_order)) && ($b_key !== 0))
-			$b_key = count($attrs_display_order)+1;
-
-	# Case where neither $a, nor $b are in $attrs_display_order, $a_key = $b_key = one greater than num elements.
-	# So we sort them alphabetically
-	if ($a_key === $b_key)
-		return strcasecmp($a->getFriendlyName(),$b->getFriendlyName());
-
-	# Case where at least one attribute or its friendly name is in $attrs_display_order
-	# return -1 if $a before $b in $attrs_display_order
-	return ($a_key < $b_key) ? -1 : 1;
 }
 
 /**

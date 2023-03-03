@@ -250,29 +250,6 @@ $config->custom->appearance['friendly_attrs'] = array(
 // $config->custom->modify_member['posixgroupattr'] = 'memberUid';
 
 /*********************************************
- * Support for attrs display order           *
- *********************************************/
-
-/* Use this array if you want to have your attributes displayed in a specific
-   order. You can use default attribute names or their fridenly names.
-   For example, "sn" will be displayed right after "givenName". All the other
-   attributes that are not specified in this array will be displayed after in
-   alphabetical order. */
-// $config->custom->appearance['attr_display_order'] = array();
-#  $config->custom->appearance['attr_display_order'] = array(
-#   'givenName',
-#   'sn',
-#   'cn',
-#   'displayName',
-#   'uid',
-#   'uidNumber',
-#   'gidNumber',
-#   'homeDirectory',
-#   'mail',
-#   'userPassword'
-#  );
-
-/*********************************************
  * Define your LDAP servers in this section  *
  *********************************************/
 
@@ -506,15 +483,6 @@ $servers->setValue('server','name','My LDAP Server');
    objects, even if they are not defined in your schema. */
 // $servers->setValue('server','custom_attrs',array(''));
 #  $servers->setValue('server','custom_attrs',array('nsRoleDN','nsRole','nsAccountLock'));
-
-/* These attributes will be forced to MAY attributes and become option in the
-   templates. If they are not defined in the templates, then they wont appear
-   as per normal template processing. You may want to do this because your LDAP
-   server may automatically calculate a default value.
-   In Fedora Directory Server using the DNA Plugin one could ignore uidNumber,
-   gidNumber and sambaSID. */
-// $servers->setValue('server','force_may',array(''));
-#  $servers->setValue('server','force_may',array('uidNumber','gidNumber','sambaSID'));
 
 /*********************************************
  * Unique attributes                         *
