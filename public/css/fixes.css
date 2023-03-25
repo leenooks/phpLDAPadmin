@@ -1,61 +1,41 @@
+/*
 body {
        font-size: 0.85em;
 }
+*/
 
-/* Trim our sidebar down to 250px */
-.app-sidebar {
-	width: 250px;
-	min-width: 250px;
+.logo-src {
+	background: url('/images/logo-h.png');
+	width: 152px !important;
 }
 
-.app-header__logo {
-	width: 250px;
-}
-
-.fixed-sidebar:not(.fixed-header) .app-header {
-	margin-left: 250px;
-}
-
-.fixed-sidebar .app-main .app-main__outer {
-	padding-left: 250px;
-}
-
-.font-icon-wrapper i {
-	font-size: 1.2rem;
-}
-
-/* Fixes for data tables */
+/** Fixes for data tables **/
 /* Fix pagination buttons */
 .dataTables_wrapper .dataTables_paginate .paginate_button {
 	padding: 0 0;
 	margin-left: 0;
 	border: 0 solid;
 }
-
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
 	border: 0 solid;
 	background: #fff;
 }
-
 .dataTables_wrapper .dataTables_paginate .paginate_button:active {
 	box-shadow: 0 0 0 #fff;
 	background-color: #fff;
 }
-
 /* Remove multiple sorting images on tables */
 table.dataTable thead .sorting_asc {
 	background-image: none !important;
 }
-
 table.dataTable thead .sorting_desc {
 	background-image: none !important;
 }
-
 table.dataTable thead .sorting {
 	background-image: none !important;
 }
 
-/* Remove blue border from chrome on buttons */
+/** Remove blue border from chrome on buttons **/
 /* Remove outline for non-keyboard :focus */
 *:focus:not(.focus-visible) {
 	outline: none !important;
@@ -63,30 +43,18 @@ table.dataTable thead .sorting {
 }
 
 /* Optional: Customize .focus-visible */
+/*
 .focus-visible {
 	outline-color: lightgreen;
 }
+*/
 
 *:disabled {
 	cursor: not-allowed;
 }
 
-/* A selected indicator - used with icons */
-.tag-selected {
-	color: orange;
-}
-
-.tag-selected:hover {
-	cursor: pointer;
-}
-
-.card-header h3.card-title {
-	font-size: 1.0rem;
-}
-
 /** SIDEBAR FIXES **/
-
-/**
+/*
  The sidebar has a few states:
  + Wide Screen
     - Open (app-container fixed-sidebar) &
@@ -98,66 +66,91 @@ table.dataTable thead .sorting {
  + Small Screen
     - Missing (?) &
     - Click Open (app-container fixed-sidebar closed-sidebar-mobile closed-sidebar sidebar-mobile-open)
- */
+*/
 
-/* Fancy Tree Fixes */
-/** Remove the border around the tree **/
-ul.fancytree-container {
-	border: 0;
-}
-
-/** Tree Placement **/
+/** Fancy Tree Fixes **/
+/*
+@todo The unopened lazy branches off the tree are off by 5px. see *-cdl. below
+@todo The last node is missing some dots, connecting to the previous node
+*/
+/* Tree Placement */
 #tree > ul {
 	padding-left: 0;
 }
-/** Fix tree rendering **/
-.fancytree-node {
-	line-height: 1.75em;
-}
-/** Fix position of tree expander and checkbox */
-span.fancytree-checkbox, span.fancytree-custom-icon, span.fancytree-expander, span.fancytree-icon {
-	margin-top: 4px;
+/* Remove the border around the tree */
+ul.fancytree-container {
+	border: 0 !important;
 }
 /* Position branch center of icon */
 ul.fancytree-container ul {
-	padding: 0 0 0 20px;
+	padding: 0 0 0 20px !important;
 }
-
-/* Show treeicon when collapsed and remove it when open */
-/* @todo treeicon appears when not hovering on page in small mode */
+/* Fix tree rendering */
+.fancytree-node {
+	line-height: 1.75em;
+}
+/* Fix position of tree expander and checkbox */
+.fancytree-exp-cl span.fancytree-expander {	/* last link closed */
+	margin-top: 2px;
+	background-position: 0 -93px !important;
+}
+.fancytree-exp-el span.fancytree-expander {	/* last link expanded */
+	margin-top: 2px;
+	background-position: -32px -93px !important;
+}
+.fancytree-lazy.fancytree-exp-cd.fancytree-ico-c span.fancytree-expander,
+.fancytree-lazy.fancytree-exp-cdl.fancytree-ico-c span.fancytree-expander { /* last link not opened */
+	margin-top: 5px;
+	/* had to disable this - as we loose our spinner
+	background-position: -80px -93px;
+	*/
+}
+.fancytree-exp-c span.fancytree-expander {	/* link closed */
+	background-position: -16px -76px !important;
+}
+.fancytree-exp-e span.fancytree-expander {	/* link expanded */
+	background-position: -32px -76px !important;
+}
+.fancytree-node.fancytree-exp-n span.fancytree-expander,
+.fancytree-node.fancytree-exp-n span.fancytree-expander:hover { /* node */
+	margin-top: 4px;
+	background-position: 0 -63px;
+}
+.fancytree-node.fancytree-exp-nl span.fancytree-expander { /* node last */
+	margin-top: 3px;
+	background-position: -16px -62px !important;
+}
+/** Show treeicon when collapsed and remove it when open **/
 .sidebar-mobile-open:hover #treeicon, /* small */
 .fixed-sidebar #treeicon, /* wide */
 .fixed-sidebar .app-sidebar:hover #treeicon /* wide & closed:hover */
 {
 	display: none;
 }
-
 .closed-sidebar #treeicon
 {
 	opacity: 1;
 	display: inline;
 }
 
-/* Architect Fixes */
-/** Remove the Cyan vertical line from the tree **/
+/** Architect Fixes **/
+/* Remove the Cyan vertical line from the tree */
 .vertical-nav-menu #tree ul:before {
 	opacity: 0;
 }
 
-/** Fix elipse icon (top right) on small display */
+/* Fix ellipsis icon (top right) on small display with the light background */
 .closed-sidebar .app-header.header-text-light .app-header__menu .mobile-toggle-header-nav {
 	background: #343a40;
 }
 
 /* Hide tree when collapsed and show it when open */
-/* @todo tree disappears when not hovering on page in small mode - related to #treeicon - see server icons they work? */
 .sidebar-mobile-open:hover #tree, /* small */
 .fixed-sidebar #tree, /* wide */
 .fixed-sidebar .app-sidebar:hover #tree /* wide & closed:hover */
 {
 	display: block;
 }
-
 .closed-sidebar #tree {
 	display: none;
 }
@@ -169,3 +162,58 @@ ul.fancytree-container ul {
 .closed-sidebar .app-sidebar:hover .server-icon, .sidebar-mobile-open .server-icon {
 	display: flex;
 }
+.font-icon-wrapper {
+	text-align: center;
+	border: #e9ecef solid 1px;
+	border-radius: 0.25rem;
+	margin: 0 0 10px 0;
+	padding: 5px;
+}
+.font-icon-wrapper:hover {
+	background: #f8f9fa;
+	color: #3f6ad8;
+}
+.font-icon-wrapper i {
+	font-size: 1.2rem;
+}
+
+/*
+.font-icon-wrapper {
+	text-align: center;
+	border: $gray-200 solid 1px;
+	@include border-radius($border-radius);
+	margin: 0 0 10px;
+	padding: 5px;
+
+&.font-icon-lg {
+	 float: left;
+	 padding: 10px;
+	 text-align: center;
+	 margin-right: 15px;
+	 min-width: 64px;
+
+i {
+	font-size: $h1-font-size;
+}
+}
+
+&:hover {
+	 background: $gray-100;
+	 color: $primary;
+
+p {
+	color: $gray-600;
+}
+}
+
+i {
+	font-size: ($font-size-base * 1.5);
+}
+
+p {
+	color: $gray-500;
+	font-size: calc($font-size-sm / 1.2);
+	margin: 5px 0 0;
+}
+}
+*/

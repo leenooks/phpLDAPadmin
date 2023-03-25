@@ -1,5 +1,4 @@
 {
-    "private": true,
     "scripts": {
         "dev": "npm run development",
         "development": "mix",
@@ -9,18 +8,23 @@
         "prod": "npm run production",
         "production": "mix --production"
     },
-    "devDependencies": {
-        "axios": "^0.21",
-        "jquery": "^3.6.3",
-        "laravel-mix": "^6.0.6",
-        "lodash": "^4.17.19",
-        "mix": "^0.0.1",
-        "postcss": "^8.1.14",
-        "resolve-url-loader": "^5.0.0",
-        "sass": "^1.57.1",
-        "sass-loader": "^12.1.0",
-        "yarn": "^1.22.19"
-    },
+    "resolutions": {},
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^6.3.0",
+        "@popperjs/core": "^2.11.6",
+        "animate-sass": "^0.8.2",
+        "axios": "^1.3.4",
+        "bootstrap": "^5.2.3",
+        "jquery": "^3.6.3",
+        "jquery-ui": "^1.13.2",
+        "jquery.fancytree": "^2.38.3",
+        "laravel-mix": "^6.0.49",
+        "less-loader": "^11.1.0",
+        "metismenu": "^3.0.7",
+        "pe7-icon": "^1.0.4",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.58.3",
+        "sass-loader": "^13.2.0",
+        "select2": "^4.1.0-rc.0"
     }
 }

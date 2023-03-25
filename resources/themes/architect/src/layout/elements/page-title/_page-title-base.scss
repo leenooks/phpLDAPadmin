@@ -1,0 +1,94 @@
+// Page title
+
+.app-page-title {
+  padding: $grid-gutter-width;
+  margin: (-$grid-gutter-width) (-$grid-gutter-width) $grid-gutter-width;
+  position: relative;
+
+  & + .body-tabs-layout {
+    margin-top: (-($grid-gutter-width)) !important;
+  }
+
+  .page-title-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .page-title-heading,
+  .page-title-subheading {
+    margin: 0;
+    padding: 0;
+  }
+
+  .page-title-heading {
+    font-size: $h5-font-size;
+    font-weight: 400;
+    display: flex;
+    align-content: center;
+    align-items: center;
+  }
+
+  .page-title-subheading {
+    padding: 3px 0 0;
+    font-size: $font-size-base;
+    opacity: .6;
+
+    .breadcrumb {
+      padding: 0;
+      margin: 3px 0 0;
+      background: transparent;
+    }
+  }
+
+  .page-title-actions {
+    margin-left: auto;
+
+    .breadcrumb {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+    }
+  }
+
+  .page-title-icon {
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    padding: calc($layout-spacer-x / 1.8);
+    margin: 0 ($grid-gutter-width) 0 0;
+    background: $white;
+    box-shadow: $box-shadow-default;
+    @include border-radius($border-radius);
+    width: 60px;
+    height: 60px;
+
+    i {
+      margin: auto;
+    }
+
+    &.rounded-circle {
+      margin: 0 calc($grid-gutter-width / 1.5) 0 0;
+    }
+  }
+
+  & + .RRT__container {
+    margin-top: calc($grid-gutter-width / -1.3);
+  }
+
+  &.app-page-title-simple {
+    margin: 0;
+    background: none !important;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+  }
+}
+
+.page-title-icon-rounded {
+  .page-title-icon {
+    @include border-radius(50px);
+  }
+}

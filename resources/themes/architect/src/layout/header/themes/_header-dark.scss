@@ -1,0 +1,119 @@
+// Header Dark
+
+.app-header {
+  &.header-text-dark {
+    .app-header-left > .nav > li > .nav-link {
+      color: rgba(0, 0, 0, .7);
+
+      .nav-link-icon {
+        color: rgba(0, 0, 0, .8);
+      }
+
+      &:hover {
+        color: rgba(0, 0, 0, 1);
+      }
+    }
+
+    .app-header-right {
+      .icon-wrapper-alt {
+
+        .fa,
+        .icon {
+          color: rgba(0, 0, 0, .7) !important;
+          transition: all .2s;
+        }
+
+        .icon-wrapper-bg {
+          background: rgba(0, 0, 0, .1) !important;
+          transition: all .2s;
+          opacity: 1;
+        }
+
+        &:hover {
+          .fa,
+          .icon {
+            color: rgba(0, 0, 0, .95) !important;
+          }
+
+          .icon-wrapper-bg {
+            background: rgba(0, 0, 0, .15) !important;
+          }
+        }
+
+        .badge-dot {
+          border-color: transparent;
+        }
+      }
+
+      & > .header-btn-lg {
+
+        & .widget-content-left .btn-group > .btn,
+        .widget-heading,
+        .widget-subheading {
+          color: rgba(0, 0, 0, .8);
+        }
+
+        .header-user-info {
+          & > .btn-shadow {
+            box-shadow: 0 0.125rem 0.625rem rgba(0, 0, 0, .1), 0 0.0625rem 0.125rem rgba(0, 0, 0, .2);
+          }
+        }
+      }
+    }
+
+    .search-wrapper {
+      .input-holder {
+        .search-icon {
+          background: rgba(0, 0, 0, .1);
+        }
+      }
+
+      &.active {
+        .input-holder {
+          background: rgba(0, 0, 0, .1);
+
+          .search-input {
+            color: rgba(0, 0, 0, .8);
+          }
+
+          .search-icon {
+            background: rgba(0, 0, 0, .1);
+          }
+        }
+      }
+    }
+
+    .header-btn-lg {
+      &::before {
+        background: rgba(0, 0, 0, .2);
+      }
+    }
+
+    .header-btn-lg,
+    .header__pane {
+      .hamburger-inner,
+      .hamburger.is-active .hamburger-inner,
+      .hamburger-inner::before,
+      .hamburger-inner::after {
+        background-color: rgba(0, 0, 0, .8) !important;
+      }
+    }
+
+    .search-wrapper .input-holder .search-icon span::after {
+      border-color: rgba(0, 0, 0, .8);
+    }
+
+    .search-wrapper .btn-close::before,
+    .search-wrapper .btn-close::after,
+    .search-wrapper .input-holder .search-icon span::before {
+      background: rgba(0, 0, 0, .8);
+    }
+
+    .app-header__logo {
+      .logo-src {
+      }
+    }
+
+  }
+
+}

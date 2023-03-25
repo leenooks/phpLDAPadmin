@@ -4,7 +4,7 @@
 	<table class="table table-borderless">
 		<tr>
 			<td style="border-radius: 5px;"><div class="page-title-icon f32"><i class="fas fa-fingerprint"></i></div></td>
-			<td class="top text-right align-text-top p-0 pt-2"><strong>{{ \App\Classes\LDAP\Server::schemaDN() }}</strong></td>
+			<td class="top text-end align-text-top p-0 pt-2"><strong>{{ \App\Classes\LDAP\Server::schemaDN() }}</strong></td>
 		</tr>
 	</table>
 @endsection
@@ -15,10 +15,10 @@
 			<h5 class="card-title">{{ __('Schema Information') }}</h5>
 
 			<ul class="nav nav-tabs">
-				<li class="nav-item"><a data-toggle="tab" href="#objectclasses" class="nav-link">{{ __('Object Classes') }}</a></li>
-				<li class="nav-item"><a data-toggle="tab" href="#attributetypes" class="nav-link">{{ __('Attribute Types') }}</a></li>
-				<li class="nav-item"><a data-toggle="tab" href="#ldapsyntaxes" class="nav-link">{{ __('Syntaxes') }}</a></li>
-				<li class="nav-item"><a data-toggle="tab" href="#matchingrules" class="nav-link">{{ __('Matching Rules') }}</a></li>
+				<li class="nav-item"><a data-bs-toggle="tab" href="#objectclasses" class="nav-link">{{ __('Object Classes') }}</a></li>
+				<li class="nav-item"><a data-bs-toggle="tab" href="#attributetypes" class="nav-link">{{ __('Attribute Types') }}</a></li>
+				<li class="nav-item"><a data-bs-toggle="tab" href="#ldapsyntaxes" class="nav-link">{{ __('Syntaxes') }}</a></li>
+				<li class="nav-item"><a data-bs-toggle="tab" href="#matchingrules" class="nav-link">{{ __('Matching Rules') }}</a></li>
 			</ul>
 			<div class="tab-content">
 				<!-- Object Classes -->
@@ -50,7 +50,7 @@
 		var loaded = [];
 
 		$(document).ready(function() {
-			$('a[data-toggle="tab"]').on('shown.bs.tab', function (item) {
+			$('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (item) {
 				// activated tab
 				var type = $(item.target).attr('href').substring(1);
 				if (loaded[type])

@@ -1,0 +1,44 @@
+// Common Comps Animations
+
+$base-duration: .2s;
+$base-distance: 10px;
+$base-fill-mode: both;
+
+// Dropdown Animation
+
+.dropdown-menu {
+  &.show {
+    animation: fade-in2 .2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  }
+}
+
+.popover {
+  &:not([data-placement^="top"]).show {
+    animation: fade-in2 .2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  }
+}
+
+.dropdown-menu {
+  &[data-placement^="top"].show {
+    animation: fade-in3 .2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+    bottom: auto !important;
+    top: auto !important;
+  }
+}
+
+@keyframes fade-in2 {
+  0% {
+    margin-top: -50px;
+    visibility: hidden;
+    opacity: 0;
+  }
+  100% {
+    margin-top: 0px;
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.form-control {
+  transition: all .2s;
+}

@@ -10,11 +10,11 @@
 
 	<div class="col-12 col-xl-9">
 		@foreach ($matchingrules as $o)
-			<span id="mr-{{ $o->name_lc }}">
+			<span id="me-{{ $o->name_lc }}">
 				<table class="schema table table-sm table-bordered table-striped">
 					<thead>
 					<tr>
-						<th class="table-dark" colspan="2">{{ $o->name }}<span class="float-right"><abbr title="{{ $o->line }}"><i class="fas fa-fw fa-file-contract"></i></abbr></span></th>
+						<th class="table-dark" colspan="2">{{ $o->name }}<span class="float-end"><abbr title="{{ $o->line }}"><i class="fas fa-fw fa-file-contract"></i></abbr></span></th>
 					</tr>
 					</thead>
 
@@ -90,7 +90,7 @@
 						if ($(this)[0].id.match(/select2/) || (! $(this)[0].id))
 							return;
 
-						if ('mr-'+item.target.value === $(this)[0].id)
+						if ('me-'+item.target.value === $(this)[0].id)
 							$(this).show();
 						else
 							$(this).hide();

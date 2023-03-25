@@ -15,7 +15,7 @@
 				<table class="schema table table-sm table-bordered table-striped">
 					<thead>
 					<tr>
-						<th class="table-dark" colspan="2">{{ $o->name }}<span class="float-right"><abbr title="{{ $o->line }}"><i class="fas fa-fw fa-file-contract"></i></abbr></span></th>
+						<th class="table-dark" colspan="2">{{ $o->name }}<span class="float-end"><abbr title="{{ $o->line }}"><i class="fas fa-fw fa-file-contract"></i></abbr></span></th>
 					</tr>
 					</thead>
 

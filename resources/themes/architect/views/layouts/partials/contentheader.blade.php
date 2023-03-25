@@ -17,13 +17,13 @@
 		@isset($page_actions)
 			<div class="page-title-actions">
 				{{--
-				<button type="button" data-toggle="tooltip" title="Example Tooltip" data-placement="bottom" class="btn-shadow mr-3 btn btn-dark">
+				<button type="button" data-bs-toggle="tooltip" title="Example Tooltip" data-bs-placement="bottom" class="btn-shadow me-3 btn btn-dark">
 					<i class="fas fa-star"></i>
 				</button>
 				--}}
 				<div class="d-inline-block dropdown">
-					<button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-shadow dropdown-toggle btn btn-info">
-						<span class="btn-icon-wrapper pr-2 opacity-7">
+					<button type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-shadow dropdown-toggle btn btn-info">
+						<span class="btn-icon-wrapper pe-2 opacity-7">
 							<i class="fas fa-business-time fa-w-20"></i>
 						</span>
 						Item Menu
@@ -36,7 +36,7 @@
 								<a href="javascript:void(0);" class="nav-link">
 									<i class="nav-link-icon lnr-inbox"></i>
 									<span>Inbox</span>
-									<div class="ml-auto badge badge-pill badge-secondary">86</div>
+									<div class="ms-auto badge rounded-pill bg-secondary">86</div>
 								</a>
 							</li>
 							--}}

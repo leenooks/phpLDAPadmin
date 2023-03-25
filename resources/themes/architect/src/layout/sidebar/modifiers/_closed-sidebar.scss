@@ -1,0 +1,217 @@
+// Closed Sidebar
+
+// Sidebar Menu Hover
+
+.closed-sidebar {
+  .app-sidebar {
+    transition: all .3s ease;
+    width: $app-sidebar-width-collapsed;
+    min-width: $app-sidebar-width-collapsed;
+    flex: 0 0 $app-sidebar-width-collapsed;
+    z-index: 13;
+
+    .app-sidebar__inner {
+
+      .app-sidebar__heading {
+        text-indent: -999em;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 0;
+          width: 100%;
+          height: 1px;
+          background: $dropdown-link-hover-bg;
+          text-indent: 1px;
+        }
+      }
+
+      ul li a {
+        text-indent: -99rem;
+        padding: 0;
+      }
+
+      .metismenu-icon {
+        text-indent: 0;
+        left: 50%;
+        margin-left: -17px;
+      }
+
+      .metismenu-state-icon {
+        visibility: hidden;
+      }
+
+      ul {
+        &::before {
+          display: none;
+        }
+
+        &.mm-show {
+          padding: 0;
+
+          & > li > a {
+            height: 0;
+          }
+        }
+      }
+    }
+
+    &:hover {
+      flex: 0 0 $app-sidebar-width !important;
+      width: $app-sidebar-width !important;
+
+      .app-sidebar__inner {
+
+        .app-sidebar__heading {
+          text-indent: initial;
+          &::before {
+            display: none;
+          }
+        }
+
+        ul {
+          &::before {
+            display: block;
+          }
+
+          li a {
+            text-indent: initial;
+            padding: 0 $layout-spacer-x 0 45px;
+          }
+        }
+
+        .metismenu-icon {
+          text-indent: initial;
+          left: 5px;
+          margin-left: 0;
+        }
+
+        .metismenu-state-icon {
+          visibility: visible;
+        }
+
+        ul {
+          &.mm-show {
+            padding: .5em 0 0 2rem;
+
+            & > li > a {
+              height: 2.3em;
+            }
+          }
+
+          ul {
+            li a {
+              padding-left: 1em;
+            }
+          }
+
+        }
+      }
+    }
+  }
+
+  &:not(.sidebar-mobile-open) {
+
+    .app-sidebar {
+      .scrollbar-sidebar {
+        position: static;
+        height: auto;
+        overflow: initial !important;
+      }
+
+      &:hover {
+        .scrollbar-sidebar {
+          position: absolute;
+          height: 100%;
+          overflow: hidden !important;
+        }
+      }
+    }
+  }
+
+  &:not(.closed-sidebar-mobile) {
+    .app-header {
+      .app-header__logo {
+        width: $app-sidebar-width-collapsed;
+
+        .logo-src {
+          display: none;
+        }
+
+        .header__pane {
+          margin-right: auto;
+        }
+      }
+    }
+
+  }
+
+  &.fixed-sidebar {
+    .app-main__outer {
+      padding-left: $app-sidebar-width-collapsed;
+    }
+  }
+
+  &.fixed-header:not(.fixed-sidebar) {
+    .app-sidebar {
+      .app-header__logo {
+        visibility: hidden;
+      }
+    }
+  }
+
+  &.closed-sidebar-mobile {
+    .app-sidebar,
+    .app-header {
+      .app-header__logo {
+        width: auto;
+        display: flex;
+
+        .header__pane {
+          display: none;
+        }
+      }
+    }
+
+    .app-sidebar {
+      .app-header__logo {
+        display: flex;
+        width: $app-sidebar-width-collapsed;
+        padding: 0 $layout-spacer-x !important;
+
+        .logo-src {
+          display: block !important;
+          margin: 0 auto;
+          width: $logo-width - 76;
+        }
+
+        .header__pane {
+          display: none;
+        }
+      }
+
+      &:hover {
+        .app-header__logo {
+          width: $app-sidebar-width;
+
+          .logo-src {
+            width: $logo-width;
+            margin: 0;
+
+          }
+        }
+      }
+    }
+
+    .app-header {
+      margin-left: 0 !important;
+    }
+  }
+
+  &.fixed-footer {
+    .app-footer__inner {
+      margin-left: 0 !important;
+    }
+  }
+}

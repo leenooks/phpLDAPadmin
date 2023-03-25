@@ -1,0 +1,63 @@
+// Buttons
+
+// Dropdown toggle
+
+.dropdown-toggle {
+  &::after {
+    position: relative;
+    top: 2px;
+    opacity: .8;
+  }
+}
+
+.dropright {
+  .dropdown-toggle {
+    &::after {
+      top: 0;
+    }
+  }
+}
+
+.dropdown-toggle-split {
+  border-left: rgba(255, 255, 255, .1) solid 1px;
+}
+
+// Links
+
+$link-color: $primary;
+$link-hover-color: darken($link-color, 15%);
+
+@each $color, $value in $theme-colors {
+  .btn-outline-#{$color} {
+    @include button-outline-variant($value);
+
+    &.btn-shadow {
+      box-shadow: 0 0.125rem 0.625rem rgba($value, .4), 0 0.0625rem 0.125rem rgba($value, .5);
+
+      &.active:hover,
+      &.disabled:hover,
+      &:active:hover,
+      &:disabled:hover {
+        box-shadow: 0 0.125rem 0.625rem rgba($value, .5), 0 0.0625rem 0.125rem rgba($value, .6);
+      }
+
+      &:hover {
+        box-shadow: (0px 5px 15px 2px rgba($value, 0.19));
+      }
+    }
+  }
+}
+
+.btn {
+  position: relative;
+  @include transition($btn-transition);
+  font-size: $font-size-xs;
+}
+
+.btn-light {
+  border-color: darken(#f5f5f5, 10%);
+}
+
+.btn-outline-light {
+  color: darken(#f5f5f5, 40%);
+}

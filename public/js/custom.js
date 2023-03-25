@@ -27,6 +27,10 @@ $(document).ready(function() {
 		autoCollapse: true, // Automatically collapse all siblings, when a node is expanded.
 		autoScroll: true, // Automatically scroll nodes into visible area.
 		focusOnSelect: true, // Set focus when node is checked by a mouse click
+		glyph: {
+			preset: 'bootstrap3',	// @todo look at changing this to awesome5
+			map: {}
+		},
 		click: function(event,data) {
 			if (data.targetType == 'title') {
 				$.ajax({

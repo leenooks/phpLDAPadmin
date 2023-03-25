@@ -1,0 +1,71 @@
+// Fixed Sidebar
+
+.fixed-sidebar {
+  .app-sidebar {
+    position: fixed;
+    height: 100vh;
+  }
+
+  .app-main {
+
+    .app-main__outer {
+      z-index: 9;
+      padding-left: $app-sidebar-width;
+    }
+
+  }
+
+  &.fixed-header {
+    .app-sidebar {
+      .app-header__logo {
+        display: none;
+      }
+    }
+  }
+
+  &:not(.fixed-header) {
+    .app-sidebar {
+      .app-header__logo {
+        display: flex;
+      }
+    }
+
+    .app-header {
+
+      margin-left: $app-sidebar-width;
+
+      .app-header__logo {
+        display: none;
+      }
+    }
+
+    .app-main {
+      //z-index: 12;
+    }
+  }
+
+  &.closed-sidebar {
+    &:not(.fixed-header) {
+
+      .app-header {
+        margin-left: $app-sidebar-width-collapsed;
+      }
+
+      .app-sidebar {
+
+        .app-header__logo {
+          width: $app-sidebar-width-collapsed;
+          padding: 0;
+
+          .logo-src {
+            display: none;
+          }
+
+          .header__pane {
+            margin-right: auto;
+          }
+        }
+      }
+    }
+  }
+}

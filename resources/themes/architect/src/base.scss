@@ -1,0 +1,112 @@
+/*!
+ =========================================================
+ * ArchitectUI HTML Theme Dashboard - v2.0.0
+ =========================================================
+ * Product Page: https://dashboardpack.com
+ * Copyright 2021 DashboardPack (https://dashboardpack.com)
+ * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
+ =========================================================
+ * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ */
+
+// BOOTSTRAP 5 VARIABLES
+
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "components/bootstrap5/functions";
+
+// 2. Include any default variable overrides here
+
+@import "themes/layout-variables";
+
+// 3. Include remainder of required Bootstrap stylesheets
+
+@import "components/bootstrap5/variables";
+@import "components/bootstrap5/mixins";
+@import "components/bootstrap5/utilities";
+
+// BOOTSTRAP 5 IMPORTS
+
+@import "components/bootstrap5/root";
+@import "components/bootstrap5/reboot";
+@import "components/bootstrap5/type";
+@import "components/bootstrap5/images";
+@import "components/bootstrap5/containers";
+@import "components/bootstrap5/grid";
+@import "components/bootstrap5/tables";
+@import "components/bootstrap5/forms";
+@import "components/bootstrap5/buttons";
+@import "components/bootstrap5/transitions";
+@import "components/bootstrap5/dropdown";
+@import "components/bootstrap5/button-group";
+@import "components/bootstrap5/nav";
+@import "components/bootstrap5/navbar";
+@import "components/bootstrap5/card";
+// @import "components/bootstrap5/accordion";
+@import "components/bootstrap5/breadcrumb";
+@import "components/bootstrap5/pagination";
+@import "components/bootstrap5/badge";
+@import "components/bootstrap5/alert";
+// @import "components/bootstrap5/progress";
+@import "components/bootstrap5/list-group";
+@import "components/bootstrap5/close";
+// @import "components/bootstrap5/toasts";
+@import "components/bootstrap5/modal";
+@import "components/bootstrap5/tooltip";
+// @import "components/bootstrap5/popover";
+// @import "components/bootstrap5/carousel";
+// @import "components/bootstrap5/spinners";
+// @import "components/bootstrap5/offcanvas";
+// @import "components/bootstrap5/jumbotron";
+@import "components/bootstrap5/helpers";
+@import "components/bootstrap5/utilities/api";
+// LAYOUT
+
+@import "layout/layout";
+
+// UTILS
+
+@import "utils/helpers";
+@import "utils/backgrounds";
+@import "utils/animate";
+@import "utils/comps-animations";
+
+// ELEMENTS
+
+@import "elements/buttons";
+@import "elements/dropdown";
+@import "elements/badges";
+@import "elements/cards";
+@import "elements/tabs";
+// @import "elements/accordions";
+@import "elements/modals";
+@import "elements/navs";
+@import "elements/listgroup";
+@import "elements/forms";
+@import "elements/pagination";
+
+// DASHBOARD BOXES
+
+@import "widgets/content-boxes/content-boxes";
+
+// COMPONENTS
+// Perfect Scrollbar
+// @import "components/perfect-scrollbar/perfect-scrollbar";
+
+// FontAwesome
+@import "components/icons/fontawesome/fontawesome";
+// P7 Icons
+@import "components/icons/p7icons";
+// Hamburger button
+@import "components/hamburgers/hamburgers";
+// Notifications
+// @import "components/notifications/toastr";
+// Popovers & Tooltips
+@import "components/popovers-tooltips/popovers-tooltips";
+// Calendar
+// @import "components/calendar/calendar";
+// Maps
+// @import "components/maps/vector-maps";
+// Responsive
+@import "layout/responsive/responsive-base";
+// DEMO
+// @import "demo-ui/demo";

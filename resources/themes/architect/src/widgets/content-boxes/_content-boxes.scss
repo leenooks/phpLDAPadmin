@@ -1,0 +1,79 @@
+// Content Boxes
+
+// Variables
+
+$widget-spacer: $spacer;
+
+.widget-content {
+  padding: $widget-spacer;
+  flex-direction: row;
+  align-items: center;
+
+  .widget-content-wrapper {
+    display: flex;
+    flex: 1;
+    position: relative;
+    align-items: center;
+  }
+
+  .widget-content-left {
+
+    .widget-heading {
+      opacity: .8;
+      font-weight: bold;
+    }
+
+    .widget-subheading {
+      opacity: .5;
+    }
+  }
+
+  .widget-content-right {
+    margin-left: auto;
+  }
+
+  .widget-numbers {
+    font-weight: bold;
+    font-size: 1.8rem;
+    display: block;
+  }
+
+  .widget-content-outer {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+
+  .widget-progress-wrapper {
+    margin-top: $widget-spacer;
+
+    .progress-sub-label {
+      margin-top: calc($widget-spacer / 3);
+      opacity: .5;
+      display: flex;
+      align-content: center;
+      align-items: center;
+
+      .sub-label-right {
+        margin-left: auto;
+      }
+    }
+  }
+
+  .widget-content-right {
+    &.widget-content-actions {
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity .2s;
+    }
+  }
+
+  &:hover {
+    .widget-content-right {
+      &.widget-content-actions {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+}

@@ -17,7 +17,7 @@
 			<div class="row">
 				<div class="col-12 col-sm-4">
 					<h3 class="d-inline-block d-sm-none">phpLDAPadmin</h3>
-					<img src="{{ url('/img/logo.png') }}" class="logo-image col-12" alt="PLA Logo">
+					<img src="{{ url('/images/logo.png') }}" class="logo-image col-12" alt="PLA Logo">
 				</div>
 
 				<div class="col-12 col-sm-8">
@@ -41,7 +41,7 @@
 	@if(file_exists('home-note.html'))
 		<hr>
 		<div class="mx-auto card text-white card-body bg-primary w-50">
-			<h5 class="text-white card-title"><i class="icon fa-2x fas fa-info pr-3"></i><span class="font-size-xlg">NOTE</span></h5>
+			<h5 class="text-white card-title"><i class="icon fa-2x fas fa-info pe-3"></i><span class="font-size-xlg">NOTE</span></h5>
 			<span class="w-100 pb-0">
 				{!! file_get_contents('home-note.html') !!}
 			</span>

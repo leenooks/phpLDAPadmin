@@ -7,7 +7,7 @@
 						<strong>{{ config('app.version') }}</strong>
 					</li>
 					@if(($x=Config::get('update_available')) && $x->action !== 'current')
-						<li class="nav-item ml-2">
+						<li class="nav-item ms-2">
 							@switch($x->action)
 								@case('unable')
 									<abbr title="Upstream Version Unavailable"><i class="fas fa-exclamation text-alternate"></i></abbr>
@@ -36,7 +36,7 @@
 					{{--
 					<li class="nav-item">
 						<a href="javascript:void(0);" class="nav-link">
-							<div class="badge badge-success mr-1 ml-0">
+							<div class="badge badge-success me-1 ms-0">
 								<small>NEW</small>
 							</div>
 							Footer Link

@@ -17,7 +17,7 @@
 							<div class="modal-content">
 
 								<div class="modal-header">
-									<div class="app-logo"><img class="w-50" src="{{ url('img/logo-h-lg.png') }}"></div>
+									<div class="app-logo"><img class="w-50" src="{{ url('images/logo-h-lg.png') }}"></div>
 								</div>
 
 								<div class="modal-body">

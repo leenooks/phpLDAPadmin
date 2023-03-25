@@ -1,7 +1,7 @@
 <div class="app-sidebar sidebar-shadow">
 	<div class="app-header__logo">
 		<div class="logo-src"></div>
-		<div class="header__pane ml-auto">
+		<div class="header__pane ms-auto">
 			<div>
 				<button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
 					<span class="hamburger-box">
@@ -29,19 +29,19 @@
 			</button>
 		</span>
 	</div>
-	<div class="scrollbar-sidebar scrollbar-container">
+	<div class="scrollbar-sidebar">
 		<div class="app-sidebar__inner">
 			<ul class="vertical-nav-menu">
 				<li class="app-sidebar__heading">{{ $server ?? __('Server Name') }}</li>
 				<li>
-					<div class="font-icon-wrapper float-left mr-1 server-icon">
+					<div class="font-icon-wrapper float-start me-1 server-icon">
 						<a class="p-0 m-0" href="{{ LaravelLocalization::localizeUrl('info') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-info"></i></a>
 					</div>
-					<div class="font-icon-wrapper float-left ml-1 mr-1 server-icon">
+					<div class="font-icon-wrapper float-start ms-1 me-1 server-icon">
 						<a class="p-0 m-0" href="{{ LaravelLocalization::localizeUrl('schema') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-fingerprint"></i></a>
 					</div>
 					@env(['local'])
-						<div class="font-icon-wrapper float-right ml-1 server-icon">
+						<div class="font-icon-wrapper float-end ms-1 server-icon">
 							<a class="p-0 m-0" href="{{ LaravelLocalization::localizeUrl('debug') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-toolbox"></i></a>
 						</div>
 					@endenv

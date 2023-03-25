@@ -1,1 +1,8 @@
-// @import "node_modules/bootstrap/scss/bootstrap";
+// Architect UI
+@import "resources/themes/architect/src/base.scss";
+
+// Fancy Tree
+@import "jquery.fancytree/dist/skin-xp/ui.fancytree";
+
+// Select2
+@import "select2/dist/css/select2";

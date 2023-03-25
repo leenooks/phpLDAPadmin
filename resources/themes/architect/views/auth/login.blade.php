@@ -13,7 +13,7 @@
 					<div class="mx-auto app-login-box col-md-8">
 						@if(file_exists('login-note.html'))
 							<div class="mx-auto card text-white card-body bg-primary w-50">
-								<h5 class="text-white card-title"><i class="icon fa-2x fas fa-info pr-3"></i><span class="font-size-xlg">NOTE</span></h5>
+								<h5 class="text-white card-title"><i class="icon fa-2x fas fa-info pe-3"></i><span class="font-size-xlg">NOTE</span></h5>
 								<span class="w-100 pb-0">
 									{!! file_get_contents('login-note.html') !!}
 								</span>
@@ -28,7 +28,7 @@
 									<div class="modal-body">
 										<div class="h5 modal-title text-center">
 											<h4 class="mt-2">
-												<div class="app-logo mx-auto mb-3"><img class="w-75" src="{{ url('img/logo-h-lg.png') }}"></div>
+												<div class="app-logo mx-auto mb-3"><img class="w-75" src="{{ url('images/logo-h-lg.png') }}"></div>
 												<small>@lang('Sign in to <strong>:server</strong>',['server'=>config('ldap.connections.default.name')])</small>
 											</h4>
 										</div>
@@ -63,7 +63,7 @@
 												</ul>
 											</div>
 										@endif
-										<div class="float-right">
+										<div class="float-end">
 											<button class="btn btn-primary btn-lg">Login</button>
 										</div>
 									</div>

@@ -14,7 +14,7 @@
 				<table class="schema table table-sm table-bordered table-striped">
 					<thead>
 					<tr>
-						<th class="table-dark" colspan="4">{{ $o->name }}<span class="float-right"><abbr title="{{ $o->line }}"><i class="fas fa-fw fa-file-contract"></i></abbr></span></th>
+						<th class="table-dark" colspan="4">{{ $o->name }}<span class="float-end"><abbr title="{{ $o->line }}"><i class="fas fa-fw fa-file-contract"></i></abbr></span></th>
 					</tr>
 					</thead>
 
@@ -74,7 +74,7 @@
 								<tbody>
 								<tr>
 									<td>
-										<ul class="pl-3" style="list-style-type: square;">
+										<ul class="ps-3" style="list-style-type: square;">
 											@foreach ($o->getMustAttrs(TRUE) as $oo)
 												<li>{{ $oo->name }} @if($oo->source !== $o->name)[<strong><a class="objectclass" id="{{ strtolower($oo->source) }}" href="#{{ strtolower($oo->source) }}">{{ $oo->source }}</a></strong>]@endif</li>
 											@endforeach
@@ -96,7 +96,7 @@
 								<tbody>
 								<tr>
 									<td>
-										<ul class="pl-3" style="list-style-type: square;">
+										<ul class="ps-3" style="list-style-type: square;">
 											@foreach ($o->getMayAttrs(TRUE) as $oo)
 												<li>{{ $oo->name }} @if($oo->source !== $o->name)[<strong><a class="objectclass" id="{{ strtolower($oo->source) }}" href="#{{ strtolower($oo->source) }}">{{ $oo->source }}</a></strong>]@endif</li>
 											@endforeach

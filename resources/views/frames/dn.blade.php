@@ -4,7 +4,7 @@
 	<table class="table table-borderless">
 		<tr>
 			<td class="{{ ($x=Arr::get($o->getAttributes(),'jpegphoto')) ? 'border' : '' }}" rowspan="2">{!! $x ?: sprintf('<div class="page-title-icon f32"><i class="%s"></i></div>',$o->icon() ?? "fas fa-info") !!}</td>
-			<td class="text-right align-text-top p-0 {{ $x ? 'pl-5' : 'pt-2' }}"><strong>{{ $dn }}</strong></td>
+			<td class="text-end align-text-top p-0 {{ $x ? 'ps-5' : 'pt-2' }}"><strong>{{ $dn }}</strong></td>
 		</tr>
 		<tr>
 			<td class="line-height-1" style="font-size: 55%;vertical-align: bottom;" colspan="2">
@@ -32,13 +32,13 @@
 		<div class="card-body">
 			<div class="card-header-tabs">
 				<ul class="nav nav-tabs">
-					<li class="nav-item"><a data-toggle="tab" href="#attributes" class="nav-link active">{{ __('Attributes') }}</a></li>
+					<li class="nav-item"><a data-bs-toggle="tab" href="#attributes" class="nav-link active">{{ __('Attributes') }}</a></li>
 					{{--
-					<li class="nav-item"><a data-toggle="tab" href="#placeholder" class="nav-link">placeholder</a></li>
+					<li class="nav-item"><a data-bs-toggle="tab" href="#placeholder" class="nav-link">placeholder</a></li>
 					--}}
-					<li class="nav-item"><a data-toggle="tab" href="#internal" class="nav-link">{{ __('Internal') }}</a></li>
+					<li class="nav-item"><a data-bs-toggle="tab" href="#internal" class="nav-link">{{ __('Internal') }}</a></li>
 					{{--
-					<li class="nav-item"><a data-toggle="tab" href="#addtemplate" class="nav-link">{{ __('Add Template') }}</a></li>
+					<li class="nav-item"><a data-bs-toggle="tab" href="#addtemplate" class="nav-link">{{ __('Add Template') }}</a></li>
 					--}}
 				</ul>
 
@@ -53,7 +53,7 @@
 											<th class="w-25">
 												<abbr title="{{ $ao->description }}">{{ $ao->name }}</abbr>
 												<!-- Attribute Hints -->
-												<span class="float-right">
+												<span class="float-end">
 													@foreach($ao->hints as $name => $description)
 														@if ($loop->index),@endif
 														<abbr title="{{ $description }}">{{ $name }}</abbr>
@@ -62,7 +62,7 @@
 											</th>
 										</tr>
 										<tr>
-											<td class="pl-5">
+											<td class="ps-5">
 												{!! $ao->deletable() !!}<br>
 												@if ($ao->can_addvalues)
 													<span class="p-0 m-0" id="add{{ $ao->name_lc }}"></span>
@@ -95,7 +95,7 @@
 											</th>
 										</tr>
 										<tr>
-											<td class="pl-5">
+											<td class="ps-5">
 												{!! $ao !!}
 											</td>
 										</tr>
@@ -115,6 +115,4 @@
 			</div>
 		</div>
 	</div>
-
-
 @endsection

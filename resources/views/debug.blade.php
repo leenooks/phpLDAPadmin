@@ -26,7 +26,7 @@
 							<table class="table table-sm table-borderless">
 								@foreach(\App\Classes\LDAP\Server::baseDNs()->sort(function($item) { return $item->sortKey; }) as $item)
 									<tr>
-										<td class="pl-0">{{ $item->getDn() }}</td>
+										<td class="ps-0">{{ $item->getDn() }}</td>
 									</tr>
 								@endforeach
 							</table>

@@ -1,0 +1,25 @@
+// Forms Legend
+
+legend {
+  font-size: $font-size-base;
+  font-weight: bold;
+}
+
+// Headings
+
+.form-heading {
+  font-size: $font-size-lg;
+  margin: 0;
+  color: $primary;
+
+  p {
+    color: $gray-600;
+    padding: 0.3rem 0 0;
+    font-size: $font-size-base;
+  }
+}
+
+.custom-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}

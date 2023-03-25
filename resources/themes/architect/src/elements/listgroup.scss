@@ -1,0 +1,19 @@
+// List Group
+
+.list-group-flush + .card-footer {
+  border-top: 0;
+}
+
+.rm-list-borders {
+  .list-group-item {
+    border: 0;
+    padding: calc($card-spacer-y / 1.5) 0;
+  }
+}
+
+.rm-list-borders-scroll {
+  .list-group-item {
+    border: 0;
+    padding-right: ($card-spacer-y * 1.5);
+  }
+}

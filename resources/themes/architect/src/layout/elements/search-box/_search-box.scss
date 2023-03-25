@@ -1,0 +1,163 @@
+// Search Box
+
+$search-box-size: 42px;
+
+.search-wrapper {
+  position: relative;
+  margin-right: calc($nav-link-padding-x / 1.5);
+
+  .input-holder {
+    height: $search-box-size;
+    width: $search-box-size;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+
+    .search-input {
+      width: 100%;
+      padding: 0 70px 0 20px;
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: transparent;
+      box-sizing: border-box;
+      border: none;
+      outline: none;
+      transform: translate(0, 60px);
+      transition: all .3s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+      transition-delay: 0.3s;
+      font-size: $font-size-base;
+    }
+
+    .search-icon {
+      width: $search-box-size;
+      height: $search-box-size;
+      border: none;
+      padding: 0;
+      outline: none;
+      position: relative;
+      z-index: 2;
+      float: right;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      background: rgba(0, 0, 0, .06);
+      @include border-radius(30px);
+
+      span {
+        width: 22px;
+        height: 22px;
+        display: inline-block;
+        vertical-align: middle;
+        position: relative;
+        transform: rotate(45deg);
+        transition: all .4s cubic-bezier(0.650, -0.600, 0.240, 1.650);
+
+        &::before,
+        &::after {
+          position: absolute;
+          content: '';
+        }
+
+        &::before {
+          width: 4px;
+          height: 11px;
+          left: 9px;
+          top: 13px;
+          border-radius: 2px;
+          background: $primary;
+        }
+
+        &::after {
+          width: 14px;
+          height: 14px;
+          left: 4px;
+          top: 0;
+          border-radius: 16px;
+          border: 2px solid $primary;
+        }
+      }
+    }
+  }
+
+  .btn-close {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    margin-top: -10px;
+    cursor: pointer;
+    opacity: 0 !important;
+    // transform: rotate(-180deg);
+    transition: all .2s cubic-bezier(0.285, -0.450, 0.935, 0.110);
+    transition-delay: 0.1s;
+
+    &::before,
+    &::after {
+      position: absolute;
+      // content: '';
+      background: $primary;
+      border-radius: 2px;
+    }
+
+    &::before {
+      width: 2px;
+      height: 20px;
+      left: 9px;
+      top: 0;
+    }
+
+    &::after {
+      width: 20px;
+      height: 2px;
+      left: 0;
+      top: 9px;
+    }
+  }
+
+  &.active {
+    width: 330px;
+
+    .input-holder {
+      width: 290px;
+      border-radius: 50px;
+      background: rgba(0, 0, 0, 0.05);
+      transition: all .5s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+
+      .search-input {
+        opacity: 1;
+        transform: translate(0, 11px);
+      }
+
+      .search-icon {
+        width: $search-box-size;
+        height: $search-box-size;
+        margin: 0;
+        border-radius: 30px;
+
+        span {
+          transform: rotate(-45deg);
+        }
+      }
+    }
+
+    .btn-close {
+      left: 300px;
+      opacity: .6 !important;
+      // transform: rotate(45deg);
+      transition: all .6s cubic-bezier(0.000, 0.105, 0.035, 1.570);
+      transition-delay: 0.5s;
+
+      &:hover {
+        opacity: 1 !important;
+      }
+    }
+
+    & + .header-menu {
+      opacity: 0;
+    }
+
+  }
+}

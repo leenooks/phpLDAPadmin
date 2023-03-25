@@ -1,5 +1,7 @@
 const mix = require('laravel-mix');
 
+const webpack = require('webpack')
+
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -11,5 +13,9 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js(['resources/js/app.js','resources/js/bootstrap3-typeahead.js'],'public/js')
-   .sass('resources/sass/app.scss','public/css');
+mix.js([
+		'resources/js/app.js',
+		'resources/js/bootstrap3-typeahead.js',
+		'resources/themes/architect/src/init.js'
+	],'public/js').extract()
+	.sass('resources/sass/app.scss','public/css');

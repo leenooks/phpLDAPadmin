@@ -1,0 +1,24 @@
+// Main Base
+
+.app-main {
+  flex: 1;
+  display: flex;
+  z-index: 8;
+  position: relative;
+
+  .app-main__outer {
+    flex: 1;
+    flex-direction: column;
+    display: flex;
+    z-index: 12;
+  }
+
+  .app-main__inner {
+    padding: $grid-gutter-width $grid-gutter-width 0;
+    flex: 1;
+  }
+}
+
+// Themes
+
+@import "themes/main-white";

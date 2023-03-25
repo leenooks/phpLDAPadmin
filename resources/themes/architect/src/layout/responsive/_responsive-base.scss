@@ -1,0 +1,443 @@
+// Responsive
+
+@media only screen and (max-width: 1320px) {
+  .header-user-info {
+    display: none;
+  }
+}
+
+@include media-breakpoint-down(md) {
+
+  .app-main {
+    display: block;
+  }
+
+  .dropdown-menu {
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+
+  .app-sidebar {
+    flex: 0 0 $app-sidebar-width !important;
+    width: $app-sidebar-width !important;
+    transform: translateX(-$app-sidebar-width);
+    position: fixed;
+
+    .app-header__logo {
+      display: none;
+    }
+  }
+
+  .sidebar-mobile-open {
+
+    .app-sidebar {
+
+      transform: translateX(0);
+
+      .app-sidebar__inner {
+
+        .app-sidebar__heading {
+          text-indent: initial;
+          &::before {
+            display: none;
+          }
+        }
+
+        ul li a {
+          text-indent: initial;
+          padding: 0 $layout-spacer-x 0 45px;
+        }
+
+        .metismenu-icon {
+          text-indent: initial;
+          left: 5px;
+          margin-left: 0;
+        }
+
+        .metismenu-state-icon {
+          visibility: visible;
+        }
+
+        ul {
+          &::before {
+            display: block;
+          }
+
+          ul li a {
+            padding-left: 1em;
+          }
+
+          &.mm-show {
+            padding: .5em 0 0 2rem;
+
+            & > li > a {
+              height: 2rem;
+              line-height: 2rem;
+            }
+          }
+        }
+      }
+
+      .app-header__logo {
+        width: auto !important;
+
+        .logo-src {
+          width: $logo-width !important;
+          margin-left: auto;
+          margin-right: 0;
+        }
+      }
+    }
+
+    .fixed-sidebar .app-sidebar {
+      height: 100%;
+    }
+
+    .sidebar-mobile-overlay {
+      display: block;
+    }
+  }
+
+  .app-main {
+
+    .app-main__outer {
+      padding-left: 0 !important;
+    }
+  }
+
+  .app-header {
+    justify-content: space-between;
+
+    .app-header__logo {
+      display: none;
+      order: 2;
+      background: transparent !important;
+      border: 0 !important;
+    }
+
+    .app-header__content {
+      visibility: hidden;
+      opacity: 0;
+      box-shadow: $box-shadow-default;
+      position: absolute;
+      left: 5%;
+      width: 90%;
+      top: 0;
+      transition: all .2s;
+      background: $white;
+      @include border-radius(50px);
+      padding: 0 10px;
+      overflow: hidden;
+
+      .header-btn-lg {
+        margin-left: .5rem;
+        padding: 0 .5rem;
+      }
+
+      .app-header-left {
+        .nav {
+          display: none;
+        }
+      }
+
+      &.header-mobile-open {
+        visibility: visible;
+        opacity: 1;
+        top: $app-header-height + 20;
+      }
+    }
+
+    .app-header__mobile-menu {
+      display: flex;
+      order: 1;
+    }
+
+    .app-header__menu {
+      display: flex;
+      order: 3;
+    }
+
+    &.header-text-light {
+      .app-header__menu {
+        & > span .btn,
+        & > .btn {
+          background: rgba(255, 255, 255, .1);
+          border-color: rgba(255, 255, 255, .1);
+        }
+      }
+
+      .header-mobile-open {
+        background: $gray-800;
+      }
+
+    }
+  }
+
+  .popover,
+  .dropdown-menu {
+    position: fixed !important;
+    z-index: 50;
+    left: 5% !important;
+    top: 50% !important;
+    width: 90% !important;
+    transform: translateY(-50%) !important;
+    min-width: 10px !important;
+
+    .btn-icon-vertical .btn-icon-wrapper {
+      display: none;
+    }
+
+  }
+
+  .popover {
+    max-width: initial;
+    .arrow {
+      display: none !important;
+    }
+  }
+
+  .app-page-title {
+    text-align: center;
+
+    .page-title-heading,
+    .page-title-wrapper {
+      margin: 0 auto;
+      display: block;
+    }
+
+    .page-title-actions {
+      margin: calc($grid-gutter-width / 2) auto 0;
+    }
+
+    .page-title-actions,
+    .page-title-subheading {
+      .breadcrumb-item,
+      .breadcrumb {
+        display: inline-block;
+      }
+    }
+  }
+
+  // Footer
+
+  .app-footer .app-footer__inner {
+    .app-footer-right {
+      display: none;
+    }
+
+    .app-footer-left {
+      width: 100%;
+
+      .footer-dots {
+        margin: 0 auto;
+      }
+    }
+  }
+
+  // Components
+
+  .widget-content {
+    .widget-numbers {
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+  }
+
+  .slick-slider-sm {
+    .slick-slider {
+      max-width: 650px !important;
+    }
+  }
+
+  .bg-transparent.list-group-item {
+    border-color: transparent;
+  }
+
+  .tabs-lg-alternate.card-header {
+
+    & > .nav .nav-item {
+      .widget-number {
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+  .page-title-head {
+    display: block;
+  }
+}
+
+@include media-breakpoint-between(xs, md) {
+
+  .app-page-title .page-title-icon,
+  .ui-theme-settings {
+    display: none;
+  }
+
+  .card-header {
+    &.responsive-center {
+      display: block;
+      text-align: center;
+      height: auto;
+      padding: $layout-spacer-x;
+
+      .nav,
+      .btn-actions-pane-right {
+        margin: calc($layout-spacer-x / 2) 0 0;
+
+        .d-inline-block.ml-2 {
+          width: 100% !important;
+          text-align: left;
+          margin: 0 !important;
+        }
+      }
+    }
+  }
+
+  .slick-slider-sm {
+    .slick-slider {
+      max-width: 650px !important;
+    }
+  }
+}
+
+@include media-breakpoint-up(lg) {
+
+  .slick-slider-sm {
+    .slick-slider {
+      max-width: 850px !important;
+    }
+  }
+}
+
+@include media-breakpoint-down(lg) {
+
+  .-hide-paging .-pagination .-center {
+    display: none;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .app-main .app-main__inner {
+    padding: 15px 15px 0;
+  }
+
+  .mbg-3,
+  body .card.mb-3 {
+    margin-bottom: calc($grid-gutter-width / 2) !important;
+  }
+
+  .app-page-title {
+    padding: calc($grid-gutter-width / 2);
+    margin: calc($grid-gutter-width / -2) calc($grid-gutter-width / -2) calc($grid-gutter-width / 2);
+
+    & + .body-tabs-layout {
+      margin-top: (calc($grid-gutter-width / -2)) !important;
+    }
+  }
+
+  .body-tabs-line .body-tabs-layout {
+    margin-bottom: calc($grid-gutter-width / 2);
+    margin-left: calc($grid-gutter-width / -2);
+    margin-right: calc($grid-gutter-width / -2);
+    padding: 0 15px;
+  }
+
+  .body-tabs {
+    padding: 0 calc($grid-gutter-width / 2);
+    display: block;
+
+    .nav-item {
+      .nav-link {
+        margin: 0;
+      }
+    }
+  }
+
+  .popover,
+  .dropdown-menu {
+    width: 80%;
+    left: 10%;
+  }
+
+  body .card-header {
+    height: auto;
+    display: block;
+    padding: calc($layout-spacer-x / 2) $layout-spacer-x;
+    text-align: center;
+
+    .btn-actions-pane-right {
+      padding: calc($layout-spacer-x / 2) 0 0;
+    }
+
+    .actions-icon-btn {
+      padding: 0;
+    }
+  }
+
+  .card-header {
+    &.card-header-tab {
+      .card-header-title {
+        display: inline-flex !important;
+        line-height: 1;
+      }
+
+      & > .nav {
+        margin: calc($layout-spacer-x / 2) 0 calc($layout-spacer-x / -2);
+        display: table !important;
+        width: 100%;
+
+        .nav-item {
+          display: table-cell;
+        }
+      }
+    }
+  }
+
+  .header-icon {
+    display: none;
+  }
+
+  .profile-responsive-sm,
+  .profile-responsive {
+    .dropdown-menu-header .menu-header-content.btn-pane-right {
+      display: block;
+      text-align: center;
+
+      .avatar-icon-wrapper {
+        margin-right: 0 !important;
+      }
+
+      .menu-header-btn-pane {
+        margin-top: 1rem;
+      }
+    }
+  }
+
+  .slick-slider-sm .slick-slider .slick-prev {
+    left: calc($grid-gutter-width / 2);
+  }
+
+  .slick-slider-sm .slick-slider .slick-next {
+    right: calc($grid-gutter-width / 2);
+  }
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1500px) {
+  .profile-responsive {
+    .dropdown-menu-header .menu-header-content.btn-pane-right {
+      display: block;
+      text-align: center;
+
+      .avatar-icon-wrapper {
+        margin-right: 0 !important;
+      }
+
+      .menu-header-btn-pane {
+        margin-top: 1rem;
+      }
+    }
+  }
+}

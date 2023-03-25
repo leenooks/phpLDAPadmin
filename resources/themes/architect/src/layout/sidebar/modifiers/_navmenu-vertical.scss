@@ -1,0 +1,144 @@
+// Navigation Menu Vertical
+
+.vertical-nav-menu {
+  margin: 0;
+  padding: 0;
+  position: relative;
+  list-style: none;
+
+  &::after {
+    content: " ";
+    pointer-events: none;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+  }
+
+  .mm-collapse:not(.mm-show) {
+    display: none;
+  }
+
+  .mm-collapsing {
+    position: relative;
+    height: 0;
+    overflow: hidden;
+    transition-timing-function: ease;
+    transition-duration: .25s;
+    transition-property: height, visibility;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    list-style: none;
+  }
+
+  &:before {
+    opacity: 0;
+    transition: opacity 300ms;
+  }
+
+  li {
+    a {
+      display: block;
+      line-height: 2.4rem;
+      height: 2.4rem;
+      padding: 0 $layout-spacer-x 0 45px;
+      position: relative;
+      @include border-radius($border-radius);
+      color: $gray-800;
+      white-space: nowrap;
+      transition: all .2s;
+      margin: .1rem 0;
+
+      &:hover {
+        background: $dropdown-link-hover-bg;
+        text-decoration: none;
+
+        i.metismenu-icon {
+          opacity: .6;
+        }
+
+        i.metismenu-state-icon {
+          opacity: 1;
+        }
+      }
+    }
+
+    &.mm-active > a {
+      font-weight: bold;
+
+      i.metismenu-state-icon {
+        transform: rotate(-180deg);
+      }
+    }
+
+    a.mm-active {
+      color: $gray-800;
+      background: $dropdown-link-hover-bg;
+      font-weight: bold;
+    }
+  }
+
+  i.metismenu-state-icon,
+  i.metismenu-icon {
+    text-align: center;
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    margin-top: -17px;
+    font-size: 1.5rem;
+    opacity: .3;
+    transition: color 300ms;
+  }
+
+  i.metismenu-state-icon {
+    transition: transform 300ms;
+    left: auto;
+    right: 0;
+  }
+
+  ul {
+    transition: padding 300ms;
+    padding: .5em 0 0 2rem;
+
+    &:before {
+      content: '';
+      height: 100%;
+      opacity: 1;
+      width: 3px;
+      background: $dropdown-link-hover-bg;
+      position: absolute;
+      left: 20px;
+      top: 0;
+      @include border-radius(15px);
+    }
+
+    & > li > a {
+      color: $gray-600;
+      height: 2rem;
+      line-height: 2rem;
+      padding: 0 $layout-spacer-x 0;
+
+      &:hover {
+        color: $primary;
+      }
+
+      .metismenu-icon {
+        display: none;
+      }
+
+      &.mm-active {
+        color: $primary;
+        background: $dropdown-link-hover-bg;
+        font-weight: bold;
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+// Tooltips & Popovers
+
+.popover,
+.tooltip {
+  opacity: 0;
+  transition: opacity .2s ease;
+
+  &.show {
+    opacity: 1;
+  }
+}
+
+// Popover
+
+.popover {
+  box-shadow: $box-shadow-default;
+}
+
+.rm-pointers {
+  .popover {
+    .arrow {
+      display: none !important;
+    }
+  }
+}

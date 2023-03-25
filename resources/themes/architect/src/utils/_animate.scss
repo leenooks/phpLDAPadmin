@@ -1,0 +1,101 @@
+////////////////////////////////////////////////////////////
+// Import everything to generate your animate sass module //
+////////////////////////////////////////////////////////////
+
+$use-all: true;
+
+@import "~animate-sass/helpers/mixins",
+"~animate-sass/helpers/settings",
+"~animate-sass/helpers/base";
+
+// ATTENTION
+@import "~animate-sass/animations/attention-seekers/bounce",
+"~animate-sass/animations/attention-seekers/flash",
+"~animate-sass/animations/attention-seekers/pulse",
+"~animate-sass/animations/attention-seekers/shake",
+"~animate-sass/animations/attention-seekers/swing",
+"~animate-sass/animations/attention-seekers/wiggle",
+"~animate-sass/animations/attention-seekers/wobble",
+"~animate-sass/animations/attention-seekers/tada";
+
+// BOUNCE
+@import "~animate-sass/animations/bounce-enter/bounceIn",
+"~animate-sass/animations/bounce-enter/bounceInDown",
+"~animate-sass/animations/bounce-enter/bounceInLeft",
+"~animate-sass/animations/bounce-enter/bounceInRight",
+"~animate-sass/animations/bounce-enter/bounceInUp",
+"~animate-sass/animations/bounce-exit/bounceOut",
+"~animate-sass/animations/bounce-exit/bounceOutDown",
+"~animate-sass/animations/bounce-exit/bounceOutLeft",
+"~animate-sass/animations/bounce-exit/bounceOutRight",
+"~animate-sass/animations/bounce-exit/bounceOutUp";
+
+// FADE
+@import "~animate-sass/animations/fade-enter/fadeIn",
+"~animate-sass/animations/fade-enter/fadeInDown",
+"~animate-sass/animations/fade-enter/fadeInDownBig",
+"~animate-sass/animations/fade-enter/fadeInLeft",
+"~animate-sass/animations/fade-enter/fadeInLeftBig",
+"~animate-sass/animations/fade-enter/fadeInRight",
+"~animate-sass/animations/fade-enter/fadeInRightBig",
+"~animate-sass/animations/fade-enter/fadeInUp",
+"~animate-sass/animations/fade-enter/fadeInUpBig",
+"~animate-sass/animations/fade-exit/fadeOut",
+"~animate-sass/animations/fade-exit/fadeOutDown",
+"~animate-sass/animations/fade-exit/fadeOutDownBig",
+"~animate-sass/animations/fade-exit/fadeOutLeft",
+"~animate-sass/animations/fade-exit/fadeOutLeftBig",
+"~animate-sass/animations/fade-exit/fadeOutRight",
+"~animate-sass/animations/fade-exit/fadeOutRightBig",
+"~animate-sass/animations/fade-exit/fadeOutUp",
+"~animate-sass/animations/fade-exit/fadeOutUpBig";
+
+// FLIP
+@import "~animate-sass/animations/flippers/flip",
+"~animate-sass/animations/flippers/flipInX",
+"~animate-sass/animations/flippers/flipInY",
+"~animate-sass/animations/flippers/flipOutX",
+"~animate-sass/animations/flippers/flipOutY";
+
+// LIGHTSPEED
+@import "~animate-sass/animations/lightspeed/lightSpeedIn",
+"~animate-sass/animations/lightspeed/lightSpeedOut";
+
+// ROTATE
+@import "~animate-sass/animations/rotate-enter/rotateIn",
+"~animate-sass/animations/rotate-enter/rotateInDownLeft",
+"~animate-sass/animations/rotate-enter/rotateInDownRight",
+"~animate-sass/animations/rotate-enter/rotateInUpLeft",
+"~animate-sass/animations/rotate-enter/rotateInUpRight",
+"~animate-sass/animations/rotate-exit/rotateOut",
+"~animate-sass/animations/rotate-exit/rotateOutDownLeft",
+"~animate-sass/animations/rotate-exit/rotateOutDownRight",
+"~animate-sass/animations/rotate-exit/rotateOutUpLeft",
+"~animate-sass/animations/rotate-exit/rotateOutUpRight";
+
+// SLIDE
+@import "~animate-sass/animations/slide-enter/slideInDown",
+"~animate-sass/animations/slide-enter/slideInLeft",
+"~animate-sass/animations/slide-enter/slideInRight",
+"~animate-sass/animations/slide-enter/slideInUp",
+"~animate-sass/animations/slide-exit/slideOutDown",
+"~animate-sass/animations/slide-exit/slideOutLeft",
+"~animate-sass/animations/slide-exit/slideOutRight",
+"~animate-sass/animations/slide-exit/slideOutUp";
+
+// SPECIAL
+@import "~animate-sass/animations/special/hinge",
+"~animate-sass/animations/special/rollIn",
+"~animate-sass/animations/special/rollOut";
+
+// ZOOM
+@import "~animate-sass/animations/zoom-enter/zoomIn",
+"~animate-sass/animations/zoom-enter/zoomInDown",
+"~animate-sass/animations/zoom-enter/zoomInLeft",
+"~animate-sass/animations/zoom-enter/zoomInRight",
+"~animate-sass/animations/zoom-enter/zoomInUp",
+"~animate-sass/animations/zoom-exit/zoomOut",
+"~animate-sass/animations/zoom-exit/zoomOutDown",
+"~animate-sass/animations/zoom-exit/zoomOutLeft",
+"~animate-sass/animations/zoom-exit/zoomOutRight",
+"~animate-sass/animations/zoom-exit/zoomOutUp";

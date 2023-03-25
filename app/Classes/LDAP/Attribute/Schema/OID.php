@@ -14,10 +14,10 @@ final class OID extends Schema
 		return $this->values
 			->transform(function($item) {
 				if (preg_match('/[0-9]+\.[0-9]+\.[0-9]+/',$item)) {
-					$format = sprintf('<abbr class="pb-1" title="%s"><i class="fas fa-list-ol pr-2"></i>%s</abbr>%s<p class="mb-0">%s</p>',
+					$format = sprintf('<abbr class="pb-1" title="%s"><i class="fas fa-list-ol pe-2"></i>%s</abbr>%s<p class="mb-0">%s</p>',
 						$item,
 						static::get($item,'title'),
-						($x=static::get($item,'ref')) ? sprintf('<abbr class="pl-2" title="%s"><i class="fas fa-comment-dots"></i></abbr>',$x) : '',
+						($x=static::get($item,'ref')) ? sprintf('<abbr class="ps-2" title="%s"><i class="fas fa-comment-dots"></i></abbr>',$x) : '',
 						static::get($item,'desc'),
 					);
 

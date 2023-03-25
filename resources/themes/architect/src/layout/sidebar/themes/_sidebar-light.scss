@@ -1,0 +1,88 @@
+// Sidebar Light
+
+.app-sidebar {
+  &.sidebar-text-light {
+    border-right: 0 !important;
+
+    .app-sidebar__heading {
+      color: rgba(255, 255, 255, .6);
+
+      &::before {
+        background: rgba(255, 255, 255, 0.5) !important;
+      }
+    }
+
+    .vertical-nav-menu {
+      li {
+        a {
+          color: rgba(255, 255, 255, 0.7);
+          i.metismenu-icon {
+            opacity: .5;
+          }
+
+          i.metismenu-state-icon {
+            opacity: .5;
+          }
+
+          &:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 1);
+
+            i.metismenu-icon {
+              opacity: .8;
+            }
+
+            i.metismenu-state-icon {
+              opacity: 1;
+            }
+          }
+        }
+
+        a.mm-active {
+          color: rgba(255, 255, 255, 0.7);
+          background: rgba(255, 255, 255, 0.15);
+        }
+      }
+
+      ul {
+        &:before {
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        & > li > a {
+          color: rgba(255, 255, 255, 0.6);
+
+          &:hover {
+            color: rgba(255, 255, 255, 1);
+          }
+
+          &.mm-active {
+            color: rgba(255, 255, 255, 1);
+            background: rgba(255, 255, 255, 0.15);
+          }
+        }
+      }
+    }
+
+    .ps__thumb-y {
+      background: rgba(255, 255, 255, .3);
+    }
+
+    .ps__rail-y:hover {
+      .ps__thumb-y {
+        background: rgba(255, 255, 255, .2);
+      }
+    }
+
+    .app-header__logo {
+      .logo-src {
+      }
+
+      .hamburger-inner,
+      .hamburger-inner::before,
+      .hamburger-inner::after {
+        background-color: rgba(255, 255, 255, .8);
+      }
+    }
+  }
+}

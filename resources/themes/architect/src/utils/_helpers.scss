@@ -1,0 +1,277 @@
+// Helpers imports
+@import "helpers/opacity";
+// @import "helpers/grayscale";
+
+// Resets
+
+.br-tl {
+  border-top-left-radius: $border-radius !important;
+}
+
+.br-tr {
+  border-top-right-radius: $border-radius !important;
+}
+
+.br-bl {
+  border-bottom-left-radius: $border-radius !important;
+}
+
+.br-br {
+  border-bottom-right-radius: $border-radius !important;
+}
+
+.b-radius-0 {
+  border-radius: 0 !important;
+}
+
+.rm-border {
+  border-width: 0 !important;
+}
+
+.br-a {
+  @include border-radius($border-radius);
+}
+
+// Center Elements
+
+.margin-h-center {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.center-svg {
+  margin: 0 auto;
+
+  svg {
+    margin: 0 auto;
+  }
+}
+
+.apexcharts-canvas {
+  margin: 0 auto;
+}
+
+.apexcharts-donut {
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+
+// .alert-dismissible {
+//   .btn-close {
+//     top: 0;
+//     right: 5px;
+//     padding: 5px;
+//   }
+// }
+
+// Gradient Icons
+
+.icon-gradient {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+// Font sizes
+
+.font-size-xlg {
+  font-size: 1.3rem !important;
+}
+
+.font-size-md {
+  font-size: .9rem !important;
+}
+
+.font-size-lg {
+  font-size: 1.1rem !important;
+}
+
+// No Shadow
+
+.no-shadow {
+  box-shadow: 0 0 0 transparent !important;
+}
+
+// Layout
+
+.h-100 {
+  height: 100vh !important;
+}
+
+.he-auto {
+  height: auto !important;
+}
+
+.he-100 {
+  height: 100%;
+}
+
+.h-sm {
+  height: 150px;
+}
+
+.text-nowrap {
+  white-space: nowrap;
+}
+
+// Font size
+
+.fsize-1 {
+  font-size: .95rem !important;
+}
+
+.fsize-2 {
+  font-size: 1.3rem !important;
+}
+
+.fsize-3 {
+  font-size: 1.6rem !important;
+}
+
+.fsize-4 {
+  font-size: 2rem !important;
+}
+
+.z-index-6 {
+  z-index: 6;
+}
+
+.line-height-1 {
+  line-height: 1;
+}
+
+// Center element
+
+.center-elem {
+  display: flex;
+  align-items: center;
+  align-content: center;
+}
+
+.flex2 {
+  flex: 2;
+}
+
+// Divider
+
+.divider {
+  margin-top: $spacer;
+  margin-bottom: $spacer;
+  height: 1px;
+  overflow: hidden;
+  background: $gray-200;
+}
+
+.list-group-item:hover {
+  z-index: initial;
+}
+
+// No Results
+
+.no-results {
+  padding: ($spacer * 1.5);
+  text-align: center;
+
+  .results-title {
+    color: $gray-700;
+    font-size: $h5-font-size;
+  }
+
+  .results-subtitle {
+    color: $gray-500;
+    font-size: $font-size-lg;
+  }
+}
+
+// Background Color Animation
+
+.bg-animation {
+  animation: bg-pan-left 8s both;
+}
+
+@-webkit-keyframes bg-pan-left {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes bg-pan-left {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+// Width 100%
+
+.w-100 {
+  width: 100%;
+}
+
+.mb--2 {
+  margin-bottom: -1.5rem;
+}
+
+// Margins
+
+.mbg-3 {
+  margin-bottom: $grid-gutter-width;
+}
+
+.circle-progress {
+  position: relative;
+
+  small {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    font-weight: bold;
+    left: 0;
+    top: 0;
+    vertical-align: middle;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    align-content: center;
+
+    span {
+      margin: 0 auto;
+    }
+  }
+
+  canvas {
+    display: block;
+  }
+}
+
+.btn-info, .btn-success {
+  color:#fff !important;
+}
+
+.bg-warning {
+  color: #212529;
+}
+
+.list-group-item {
+  border: 1px solid rgba(0,0,0,0.125);
+}
+
+.btn-link, a {
+  text-decoration: none !important;
+}
+
+.bg-light {
+  color: #212529;
+  // background: #fff;
+}
+
+.table {
+  --bs-table-accent-bg: none;
+}
