@@ -28,6 +28,10 @@ test:
   before_script:
   - mv .env.testing .env
 
+  # Install npm and dependancies
+  - npm i
+  - npm run prod
+
   # Install Composer and project dependencies.
   - mkdir -p ${COMPOSER_HOME}
   - if [ -n "$GITHUB_TOKEN" ]; then cat $GITHUB_TOKEN |base64 -d > ${COMPOSER_HOME}/auth.json; fi
