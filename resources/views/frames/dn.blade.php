@@ -37,9 +37,9 @@
 					<li class="nav-item"><a data-bs-toggle="tab" href="#placeholder" class="nav-link">placeholder</a></li>
 					--}}
 					<li class="nav-item"><a data-bs-toggle="tab" href="#internal" class="nav-link">{{ __('Internal') }}</a></li>
-					{{--
-					<li class="nav-item"><a data-bs-toggle="tab" href="#addtemplate" class="nav-link">{{ __('Add Template') }}</a></li>
-					--}}
+					@env(['local'])
+						<li class="nav-item"><a data-bs-toggle="tab" href="#debug" class="nav-link">{{ __('Debug') }}</a></li>
+					@endenv
 				</ul>
 
 				<div class="tab-content">
@@ -104,6 +104,19 @@
 							</div>
 						</div>
 					</div>
+
+					<!-- Debug -->
+					<div class="tab-pane" id="debug" role="tabpanel">
+						<div class="row">
+							<div class="col-6">
+								@dump($o)
+							</div>
+							<div class="col-6">
+								@dump($o->getAttributes())
+							</div>
+						</div>
+					</div>
+
 
 					{{--
 					<!-- Add Template -->
