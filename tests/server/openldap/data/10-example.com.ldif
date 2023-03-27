@@ -18,12 +18,20 @@ objectclass: dNSDomain
 dn: c=AU,dc=example,dc=com
 c: AU
 description: Australia
+description: Ozzieland
+description;lang-fr: Australie
+description;lang-en: Australia
+description;lang-en: New Holland
+description;lang-en;lang-aussie: Stralia
+description;lang-cn: 澳大利亚
+description;lang-jp: オーストラリア
 objectclass: country
 objectclass: top
 
 # Entry 3: c=CN,dc=example,dc=com
 dn: c=CN,dc=example,dc=com
 c: CN
+description;lang-cn:中国
 objectclass: country
 objectclass: top
 
@@ -51,6 +59,7 @@ objectclass: top
 dn: c=FR,dc=example,dc=com
 c: FR
 description: France
+description;lang-fr: Le français est parlé ici
 objectclass: country
 objectclass: top
 

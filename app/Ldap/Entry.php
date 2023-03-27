@@ -21,16 +21,29 @@ class Entry extends Model
 			$result = collect();
 
 			foreach (parent::getAttributes() as $attribute => $value) {
-				$o = Factory::create($attribute,$value);
+				// If the attribute name has language tags
+				$matches = [];
+				if (preg_match('/^([a-zA-Z]+)(;([a-zA-Z-;]+))+/',$attribute,$matches)) {
+					$attribute = $matches[1];
 
-				// Set the rdn flag
-				if (preg_match('/^'.$attribute.'=/i',$this->dn))
-					$o->setRDN();
+					// If the attribute doesnt exist we'll create it
+					$o = Arr::get($result,$attribute,Factory::create($attribute,[]));
+					$o->setLangTag($matches[3],$value);
 
-				// Set required flag
-				$o->required_by(collect($this->getAttribute('objectclass')));
+				} else {
+					$o = Factory::create($attribute,$value);
+				}
 
-				$result->put($attribute,$o);
+				if (! $result->has($attribute)) {
+					// Set the rdn flag
+					if (preg_match('/^'.$attribute.'=/i',$this->dn))
+						$o->setRDN();
+
+					// Set required flag
+					$o->required_by(collect($this->getAttribute('objectclass')));
+
+					$result->put($attribute,$o);
+				}
 			}
 
 			$sort = collect(config('ldap.attr_display_order',[]))->transform(function($item) { return strtolower($item); });

@@ -33,11 +33,15 @@ class Attribute
 	// Is this attribute the RDN?
 	protected bool $is_rdn = FALSE;
 
+	// Objectclasses that require this attribute
 	protected Collection $required_by;
 
 	// MIN/MAX number of values
 	protected int $min_values_count = 0;
 	protected int $max_values_count = 0;
+
+	// RFC3866 Language Tags
+	protected Collection $lang_tags;
 
 	/*
 	# Has the attribute been modified
@@ -94,6 +98,7 @@ class Attribute
 	{
 		$this->name = $name;
 		$this->values = collect($values);
+		$this->lang_tags = collect();
 
 		// No need to load our schema for internal attributes
 		if (! $this->is_internal)
@@ -183,6 +188,10 @@ class Attribute
 		if ($this->required_by->count())
 			$result->put(__('required'),sprintf('%s: %s',__('Required Attribute by ObjectClass(es)'),$this->required_by->join(',')));
 
+		// This attribute has language tags
+		if ($this->lang_tags->count())
+			$result->put(__('language tags'),sprintf('%s: %d',__('This Attribute has Language Tags'),$this->lang_tags->count()));
+
 		return $result->toArray();
 	}
 
@@ -197,6 +206,18 @@ class Attribute
 		return $this->required_by = ($this->schema
 			? $oc->intersect($this->schema->required_by_object_classes)
 			: collect());
+	}
+
+	/**
+	 * If this attribute has RFC3866 Language Tags, this will enable those values to be captured
+	 *
+	 * @param string $tag
+	 * @param array $value
+	 * @return void
+	 */
+	public function setLangTag(string $tag,array $value): void
+	{
+		$this->lang_tags->put($tag,$value);
 	}
 
 	public function setRDN(): void

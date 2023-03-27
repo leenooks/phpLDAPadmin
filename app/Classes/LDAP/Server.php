@@ -267,6 +267,18 @@ class Server
 	}
 
 	/**
+	 * Does this server support RFC3666 language tags
+	 * OID: 1.3.6.1.4.1.4203.1.5.4
+	 *
+	 * @return bool
+	 * @throws ObjectNotFoundException
+	 */
+	public function isLanguageTags(): bool
+	{
+		return in_array('1.3.6.1.4.1.4203.1.5.4',$this->rootDSE()->supportedfeatures);
+	}
+
+	/**
 	 * Return the server's schema
 	 *
 	 * @param string $item Schema Item to Fetch
@@ -513,6 +525,13 @@ class Server
 		return is_null($key) ? $result : $result->get($key);
 	}
 
+	/**
+	 * Given an OID, return the ldapsyntax for the OID
+	 *
+	 * @param string $oid
+	 * @return LDAPSyntax|null
+	 * @throws InvalidUsage
+	 */
 	public function schemaSyntaxName(string $oid): ?LDAPSyntax
 	{
 		return $this->schema('ldapsyntaxes',$oid);
