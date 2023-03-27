@@ -23,13 +23,30 @@ $(document).ready(function() {
 	// and pass the tree options as an argument to the fancytree() function:
 	$('#tree').fancytree({
 		clickFolderMode: 3,
-		extensions: ['glyph'],
+		extensions: ['glyph','persist'],
 		autoCollapse: true, // Automatically collapse all siblings, when a node is expanded.
 		autoScroll: true, // Automatically scroll nodes into visible area.
 		focusOnSelect: true, // Set focus when node is checked by a mouse click
 		glyph: {
 			preset: 'bootstrap3',	// @todo look at changing this to awesome5
 			map: {}
+		},
+		persist: {
+			// Available options with their default:
+			cookieDelimiter: '~',    // character used to join key strings
+			cookiePrefix: undefined, // 'fancytree-<treeId>-' by default
+			cookie: { // settings passed to jquery.cookie plugin
+				raw: false,
+				expires: '',
+				path: '',
+				domain: '',
+				secure: false
+			},
+			expandLazy: true, // true: recursively expand and load lazy nodes
+			expandOpts: undefined, // optional `opts` argument passed to setExpanded()
+			overrideSource: true,  // true: cookie takes precedence over `source` data attributes.
+			store: 'auto',     // 'cookie': use cookie, 'local': use localStore, 'session': use sessionStore
+			types: 'active expanded focus selected'  // which status types to store
 		},
 		click: function(event,data) {
 			if (data.targetType == 'title') {
