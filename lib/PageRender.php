@@ -556,7 +556,7 @@ class PageRender extends Visitor {
 	final protected function drawOldValueAttribute($attribute,$i) {
 		if (DEBUGTMP) printf('<font size=-2>%s</font><br />',__METHOD__);
 
-		echo $attribute->getOldValue($i);
+		echo htmlspecialchars($attribute->getOldValue($i));
 	}
 
 	/** DRAW DISPLAYED CURRENT VALUES **/
