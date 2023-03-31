@@ -12,6 +12,7 @@
  * @package phpLDAPadmin
  * @subpackage Templates
  */
+#[\AllowDynamicProperties]
 class PLAAttribute {
 	# Attribute Name
 	public $name;

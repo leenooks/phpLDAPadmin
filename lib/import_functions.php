@@ -144,6 +144,7 @@ abstract class Import {
  * @package phpLDAPadmin
  * @subpackage Import
  */
+#[\AllowDynamicProperties]
 class ImportLDIF extends Import {
 	private $_currentLineNumber = 0;
 	private $_currentLine = '';

@@ -15,6 +15,8 @@
 class TemplateRender extends PageRender {
 	# Page number
 	private $pagelast;
+	private $url_base;
+	private $layout;
 
 	/** CORE FUNCTIONS **/
 
