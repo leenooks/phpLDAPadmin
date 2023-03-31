@@ -8,10 +8,14 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
+use LdapRecord\Exceptions\InsufficientAccessException;
+use LdapRecord\LdapRecordException;
 use LdapRecord\Query\ObjectNotFoundException;
 
 use App\Classes\LDAP\Server;
 use App\Exceptions\InvalidUsage;
+use App\Http\Requests\EntryRequest;
 
 class HomeController extends Controller
 {
@@ -26,23 +30,91 @@ class HomeController extends Controller
 	}
 
 	/**
+	 * Render a specific DN
+	 *
+	 * @param Request $request
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+	 */
+	public function dn_frame(Request $request)
+	{
+		$dn = Crypt::decryptString($request->post('key'));
+
+		return view('frames.dn')
+			->with('o',config('server')->fetch($dn))
+			->with('dn',$dn);
+	}
+
+	public function entry_update(EntryRequest $request)
+	{
+		$dn = Crypt::decryptString($request->dn);
+
+		$o = config('server')->fetch($dn);
+
+		foreach ($request->except(['_token','dn']) as $key => $value)
+			$o->{$key} = array_filter($value);
+
+		Session::put('dn',$request->dn);
+
+		if (! $dirty=$o->getDirty())
+			return back()->with(['note'=>__('No attributes changed')]);
+
+		try {
+			$o->update($request->except(['_token','dn']));
+
+		} catch (InsufficientAccessException $e) {
+			$request->flash();
+
+			switch ($x=$e->getDetailedError()->getErrorCode()) {
+				case 50:
+					return back()->withErrors(sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
+
+				default:
+					abort(599,$e->getDetailedError()->getErrorMessage());
+			}
+
+		} catch (LdapRecordException $e) {
+			$request->flash();
+
+			switch ($x=$e->getDetailedError()->getErrorCode()) {
+				case 8:
+					return back()->withErrors(sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
+
+				default:
+					abort(599,$e->getDetailedError()->getErrorMessage());
+			}
+		}
+
+		return back()
+			->with(['success'=>__('Entry updated')])
+			->with(['updated'=>$dirty]);
+	}
+
+	/**
 	 * Application home page
 	 */
 	public function home()
 	{
 		$base = Server::baseDNs() ?: collect();
 
-		return view('home')
-			->with('server',config('ldap.connections.default.name'))
-			->with('bases',$base->transform(function($item) {
-				return [
-					'title'=>$item->getRdn(),
-					'item'=>Crypt::encryptString($item->getDn()),
-					'lazy'=>TRUE,
-					'icon'=>'fa-fw fas fa-sitemap',
-					'tooltip'=>$item->getDn(),
-				];
-			}));
+		$bases = $base->transform(function($item) {
+			return [
+				'title'=>$item->getRdn(),
+				'item'=>$item->getDNSecure(),
+				'lazy'=>TRUE,
+				'icon'=>'fa-fw fas fa-sitemap',
+				'tooltip'=>$item->getDn(),
+			];
+		});
+
+		if (Session::has('dn'))
+			return view('dn')
+				->with('bases',$bases)
+				->with('o',config('server')->fetch($dn=Crypt::decryptString(Session::pull('dn'))))
+				->with('dn',$dn);
+		else
+			return view('home')
+				->with('bases',$bases)
+				->with('server',config('ldap.connections.default.name'));
 	}
 
 	/**
@@ -60,21 +132,6 @@ class HomeController extends Controller
 
 		return view('frames.info')
 			->with('s',$s);
-	}
-
-	/**
-	 * Render a specific DN
-	 *
-	 * @param Request $request
-	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-	 */
-	public function dn_frame(Request $request)
-	{
-		$dn = Crypt::decryptString($request->post('key'));
-
-		return view('frames.dn')
-			->with('o',config('server')->fetch($dn))
-			->with('dn',$dn);
 	}
 
 	/**

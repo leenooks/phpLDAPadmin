@@ -27,7 +27,7 @@ class APIController extends Controller
 			->transform(function($item) {
 				return [
 					'title'=>$item->getRdn(),
-					'item'=>Crypt::encryptString($item->getDn()),
+					'item'=>$item->getDNSecure(),
 					'icon'=>$item->icon(),
 					'lazy'=>Arr::get($item->getAttribute('hassubordinates'),0) == 'TRUE',
 					'tooltip'=>$item->getDn(),

@@ -2,6 +2,7 @@
 
 namespace App\Classes\LDAP;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Schema\AttributeType;
@@ -130,12 +131,14 @@ class Attribute
 			'hints' => $this->hints(),
 			// Is this an internal attribute
 			'is_internal' => isset($this->{$key}) && $this->{$key},
+			// Is this attribute the RDN
+			'is_rdn' => $this->is_rdn,
 			// We prefer the name as per the schema if it exists
 			'name' => $this->schema ? $this->schema->{$key} : $this->{$key},
 			// Attribute name in lower case
 			'name_lc' => strtolower($this->name),
-			// Is this attribute the RDN
-			'rdn' => $this->is_rdn,
+			// Attribute values
+			'values' => $this->values,
 
 			default => throw new \Exception('Unknown key:' . $key),
 		};
@@ -149,22 +152,6 @@ class Attribute
 	public function __toString(): string
 	{
 		return $this->values->join('<br>');
-	}
-
-	/**
-	 * Return an instance of this attribute that is deletable.
-	 * This is primarily used for rendering to know if to render delete options.
-	 *
-	 * @return Attribute
-	 */
-	public function deletable(): self
-	{
-		$clone = clone $this;
-
-		if (! $this->required_by->count())
-			$clone->is_deletable = TRUE;
-
-		return $clone;
 	}
 
 	/**
@@ -193,6 +180,13 @@ class Attribute
 			$result->put(__('language tags'),sprintf('%s: %d',__('This Attribute has Language Tags'),$this->lang_tags->count()));
 
 		return $result->toArray();
+	}
+
+	public function render(bool $edit): View
+	{
+		return view('components.attribute')
+			->with('edit',$edit)
+			->with('o',$this);
 	}
 
 	/**

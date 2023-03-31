@@ -4,6 +4,7 @@ namespace App\Ldap;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Crypt;
 use LdapRecord\Models\Model;
 
 use App\Classes\LDAP\Attribute;
@@ -92,6 +93,15 @@ class Entry extends Model
 	}
 
 	/* METHODS */
+
+	/**
+	 * Return a secure version of the DN
+	 * @return string
+	 */
+	public function getDNSecure(): string
+	{
+		return Crypt::encryptString($this->getDn());
+	}
 
 	/**
 	 * Return a list of LDAP internal attributes

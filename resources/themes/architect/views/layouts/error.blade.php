@@ -15,9 +15,9 @@
 
 						<div class="modal-dialog w-100 mx-auto">
 							<div class="modal-content">
-
 								<div class="modal-header">
-									<div class="app-logo"><img class="w-50" src="{{ url('images/logo-h-lg.png') }}"></div>
+									<img class="w-25" src="{{ url('images/logo-h-lg.png') }}">
+									<span class="card-header-title text-danger ms-auto fs-4">@yield('title')</span>
 								</div>
 
 								<div class="modal-body">

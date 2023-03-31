@@ -38,3 +38,5 @@ Route::get('logout',[LoginController::class,'logout']);
 Route::group(['prefix'=>'user'],function() {
 	Route::get('image',[HomeController::class,'user_image']);
 });
+
+Route::post('entry/update',[HomeController::class,'entry_update']);
