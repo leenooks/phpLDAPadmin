@@ -955,7 +955,7 @@ function get_cached_item($index,$item,$subitem='null') {
  *
  * Returns true on success of false on failure.
  */
-function set_cached_item($index,$item,$subitem='null',$data) {
+function set_cached_item($index,$item,$subitem,$data) {
 	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
@@ -2079,7 +2079,7 @@ function ldap_error_msg($msg,$errnum) {
  * @param array Specifies optional image and CSS style attributes for the table tag. Supported keys are
  *                fixed_width, fixed_height, img_opts.
  */
-function draw_jpeg_photo($server,$dn,$attr_name='jpegphoto',$index,$draw_delete_buttons=false,$options=array()) {
+function draw_jpeg_photo($server,$dn,$attr_name,$index,$draw_delete_buttons=false,$options=array()) {
 	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
