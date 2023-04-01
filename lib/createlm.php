@@ -284,8 +284,8 @@ private $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12
 		$key2 = $this->str_to_key($key);
 	
 		for ($i = 0; $i < 64; $i++) {
-			$inb[$i] = ($in[$i/8] & (1<<(7-($i%8)))) ? 1:0;
-			$keyb[$i] = ($key2[$i/8] & (1<<(7-($i%8)))) ? 1:0;
+			$inb[$i] = ($in[intdiv($i, 8)] & (1<<(7-($i%8)))) ? 1:0;
+			$keyb[$i] = ($key2[intdiv($i, 8)] & (1<<(7-($i%8)))) ? 1:0;
 			$outb[$i] = 0;
 		}
 		$outb = $this->doHash($inb, $keyb, $forw);
@@ -294,7 +294,7 @@ private $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12
 		}
 		for ($i = 0; $i < 64; $i++) {
 			if ( $outb[$i] )  {
-				$out[$i/8] |= (1<<(7-($i%8)));
+				$out[intdiv($i, 8)] |= (1<<(7-($i%8)));
 			}
 		}
 		return $out;
