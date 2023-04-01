@@ -297,7 +297,7 @@ if ($app['language'] == 'auto') {
  * Strip slashes from GET, POST, and COOKIE variables if this
  * PHP install is configured to automatically addslashes()
  */
-if (@get_magic_quotes_gpc() && (! isset($slashes_stripped) || ! $slashes_stripped)) {
+if ((! isset($slashes_stripped) || ! $slashes_stripped)) {
 	array_stripslashes($_REQUEST);
 	array_stripslashes($_GET);
 	array_stripslashes($_POST);
