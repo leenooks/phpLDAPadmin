@@ -793,8 +793,10 @@ function blowfish_encrypt($data,$secret=null) {
 		return $data;
 
 	if (! empty($data) && function_exists('openssl_encrypt') && in_array(SESSION_CIPHER, openssl_get_cipher_methods())) {
+		$iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length(SESSION_CIPHER));
 		$keylen = openssl_cipher_iv_length(SESSION_CIPHER) * 2;
-		return openssl_encrypt($data, SESSION_CIPHER, substr($secret,0,$keylen));
+		$encrypted = openssl_encrypt($data, SESSION_CIPHER, substr($secret,0,$keylen), $options=0, $iv, $tag);
+		return base64_encode($encrypted . '::' . $iv . '::' . $tag);
 	}
 
 	if (function_exists('mcrypt_module_open') && ! empty($data)) {
@@ -855,7 +857,8 @@ function blowfish_decrypt($encdata,$secret=null) {
 
 	if (! empty($encdata) && function_exists('openssl_encrypt') && in_array(SESSION_CIPHER, openssl_get_cipher_methods())) {
 		$keylen = openssl_cipher_iv_length(SESSION_CIPHER) * 2;
-		return trim(openssl_decrypt($encdata, SESSION_CIPHER, substr($secret,0,$keylen)));
+		list($encryptedData, $iv, $tag) = explode('::', base64_decode($encdata), 3);
+		return trim(openssl_decrypt($encryptedData, SESSION_CIPHER, substr($secret,0,$keylen), $options=0, $iv, $tag));
 	}
 
 	if (function_exists('mcrypt_module_open') && ! empty($encdata)) {
