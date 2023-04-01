@@ -34,7 +34,7 @@ if (get_request('purge','REQUEST')) {
 		$entry->open();
 	}
 
-	set_cached_item($app['server']->getIndex(),$tree,'tree','null');
+	set_cached_item($app['server']->getIndex(),'tree','null',$tree);
 }
 
 if (get_request('meth','REQUEST') == 'ajax') 

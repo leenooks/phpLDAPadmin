@@ -68,7 +68,7 @@ abstract class Tree {
 				}
 			}
 
-			set_cached_item($server_id,$tree,'tree','null');
+			set_cached_item($server_id,'tree','null',$tree);
 		}
 
 		return $tree;

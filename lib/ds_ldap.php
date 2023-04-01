@@ -1770,7 +1770,7 @@ class ldap extends DS {
 			ksort($return);
 
 			# cache the schema to prevent multiple schema fetches from LDAP server
-			set_cached_item($this->index,$return,'schema','objectclasses');
+			set_cached_item($this->index,'schema','objectclasses',$return);
 		}
 
 		if (DEBUG_ENABLED)
@@ -1955,7 +1955,7 @@ class ldap extends DS {
 			$return = $attrs;
 
 			# cache the schema to prevent multiple schema fetches from LDAP server
-			set_cached_item($this->index,$return,'schema','attributes');
+			set_cached_item($this->index,'schema','attributes',$return);
 		}
 
 		if (DEBUG_ENABLED)
@@ -2031,7 +2031,7 @@ class ldap extends DS {
 			$return = $rules;
 
 			# cache the schema to prevent multiple schema fetches from LDAP server
-			set_cached_item($this->index,$return,'schema','matchingrules');
+			set_cached_item($this->index,'schema','matchingrules',$return);
 		}
 
 		if (DEBUG_ENABLED)
@@ -2080,7 +2080,7 @@ class ldap extends DS {
 			ksort($return);
 
 			# cache the schema to prevent multiple schema fetches from LDAP server
-			set_cached_item($this->index,$return,'schema','syntaxes');
+			set_cached_item($this->index,'schema','syntaxes',$return);
 		}
 
 		if (DEBUG_ENABLED)
