@@ -917,7 +917,12 @@ class PageRender extends Visitor {
 
 	protected function getAutoPostPasswordAttribute($attribute,$i) {
 		# If the password is already encoded, then we'll return
-		if (preg_match('/^\{.+\}.+/',$attribute->getValue($i)))
+		$value = $attribute->getValue($i);
+		if ($value === null) {
+			return;
+		}
+
+		if (preg_match('/^\{.+\}.+/', $value))
 			return;
 
 		$attribute->setPostValue(array('function'=>'PasswordEncrypt','args'=>sprintf('%%enc%%;%%%s%%',$attribute->getName())));

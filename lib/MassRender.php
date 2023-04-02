@@ -24,7 +24,7 @@ class MassRender extends TemplateRender {
 		printf('<input type="text" class="value" name="mass_values[%s][%s][%s]" id="new_values_%s_%s_%s" value="%s" %s%s %s %s/>',
 			$j,htmlspecialchars($attribute->getName()),$i,
 			$j,htmlspecialchars($attribute->getName()),$i,
-			htmlspecialchars($val),
+			$val === null ? '' : htmlspecialchars($val),
 			$attribute->needJS('focus') ? sprintf('onfocus="focus_%s(this);" ',$attribute->getName()) : '',
 			$attribute->needJS('blur') ? sprintf('onblur="blur_%s(this);" ',$attribute->getName()) : '',
 			($attribute->getSize() > 0) ? sprintf('size="%s"',$attribute->getSize()) : '',
