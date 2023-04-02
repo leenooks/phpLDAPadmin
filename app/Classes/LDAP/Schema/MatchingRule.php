@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
  * @package phpLDAPadmin
  * @subpackage Schema
  */
-class MatchingRule extends Base {
+final class MatchingRule extends Base {
 	// This rule's syntax OID
 	private ?string $syntax = NULL;
 

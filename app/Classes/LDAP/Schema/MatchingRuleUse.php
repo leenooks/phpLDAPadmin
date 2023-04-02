@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
  * @package phpLDAPadmin
  * @subpackage Schema
  */
-class MatchingRuleUse extends Base {
+final class MatchingRuleUse extends Base {
 	// An array of attribute names who use this MatchingRule
 	private Collection $used_by_attrs;
 

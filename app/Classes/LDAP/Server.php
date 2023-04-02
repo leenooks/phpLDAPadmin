@@ -18,7 +18,7 @@ use App\Classes\LDAP\Schema\{AttributeType,Base,LDAPSyntax,MatchingRule,Matching
 use App\Exceptions\InvalidUsage;
 use App\Ldap\Entry;
 
-class Server
+final class Server
 {
 	// This servers schema objectclasses
 	private Collection $attributetypes;
@@ -59,6 +59,7 @@ class Server
 	 * @return Collection
 	 * @throws ObjectNotFoundException
 	 * @testedin GetBaseDNTest::testBaseDNExists();
+	 * @todo Need to allow for the scenario if the baseDN is not readable by ACLs
 	 */
 	public static function baseDNs($connection=NULL,bool $objects=TRUE): Collection
 	{

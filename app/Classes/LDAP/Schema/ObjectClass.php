@@ -15,7 +15,7 @@ use App\Ldap\Entry;
  * @package phpLDAPadmin
  * @subpackage Schema
  */
-class ObjectClass extends Base {
+final class ObjectClass extends Base {
 	// The server ID that this objectclass belongs to.
 	private Server $server;
 

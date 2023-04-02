@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
  * @package phpLDAPadmin
  * @subpackage Schema
  */
-class LDAPSyntax extends Base {
+final class LDAPSyntax extends Base {
 	// Is human readable?
 	private ?bool $is_not_human_readable = NULL;
 

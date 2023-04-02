@@ -13,7 +13,7 @@ namespace App\Classes\LDAP\Schema;
  * specified it. This class is therefore used by the class ObjectClass to determine
  * inheritance.
  */
-class ObjectClassAttribute extends Base {
+final class ObjectClassAttribute extends Base {
 	// This Attribute's root.
 	private string $source;
 

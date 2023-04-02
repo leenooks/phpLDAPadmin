@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
  * @package phpLDAPadmin
  * @subpackage Schema
  */
-class AttributeType extends Base {
+final class AttributeType extends Base {
 	// The attribute from which this attribute inherits (if any)
 	private ?string $sup_attribute = NULL;
 
@@ -246,7 +246,7 @@ class AttributeType extends Base {
 
 	public function __clone()
 	{
-		// When we clone, we need to break the reference to
+		// When we clone, we need to break the reference too
 		$this->aliases = clone $this->aliases;
 	}
 
