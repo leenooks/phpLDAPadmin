@@ -83,7 +83,7 @@ function array_stripslashes(&$array) {
 		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
 
 	if (is_array($array))
-		while (list($key) = each($array))
+		foreach ($array as $key => $values)
 			if (is_array($array[$key]) && $key != $array)
 				array_stripslashes($array[$key]);
 			else
