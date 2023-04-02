@@ -7,7 +7,7 @@ test:
   #       resulting in the testing to fail on the first run.
   services:
   - name: osixia/openldap:latest
-    alias: ldap
+    alias: test_ldap
     command: ["--loglevel","debug"]
 
   variables:
@@ -16,8 +16,6 @@ test:
     LDAP_BASE_DN: "dc=Test"
     LDAP_DOMAIN: "Test"
     LDAP_ADMIN_PASSWORD: test
-    LDAP_HOST: ldap
-    LDAP_PORT: 389
     #CI_DEBUG_SERVICES: "true"
 
   tags:
