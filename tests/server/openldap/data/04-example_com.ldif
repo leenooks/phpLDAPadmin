@@ -13,3 +13,4 @@ cn: group
 gidnumber: 100
 objectclass: posixGroup
 objectclass: top
+
