@@ -12,13 +12,13 @@ Initially created in 2002 by David Smith, it was taken over by Deon George (aka 
 Since 2003 many things have changed - initial development was done in CVS and the project was hosted on Sourceforge.
 In 2009, CVS was swapped out for GIT, and in around 2011 the project was moved to Github.
 
-The PLA v1.2.x stream was created in July 2009.
+The PLA v1.2.x stream was created in July 2009 and takes place on the branch named: `BRANCH-1.2`.
 
 Work on PLA v2 has started and some information on that is below. Soon `master` will be updated and `BRANCH-2.0` will be visible in git. Until then, a sneak peak of v2 is available [here](https://phpldapadmin.servio.leenooks.net)
 
 ## THANK YOU
 Over the years, many, many, many people have supported PLA with either their time, their coding or with financial donations.
-I have tried to send an email to acknowledge each contribution, and if you havent seen anything personally from me, I am sorry, but please know that I do appreciate all the help I get, in whatever form it is provided.
+I have tried to send an email to acknowledge each contribution, and if you have not seen anything personally from me, I am sorry, but please know that I do appreciate all the help I get, in whatever form it is provided.
 
 Again, Thank You.
 
@@ -46,13 +46,13 @@ The [demo](http://demo.phpldapadmin.org) site, will also be running the same doc
 In summary, for the time being, expect `master` to be buggy and broken, and I'll update this readme as enhancements progress.
 
 ## Installation
-The following instructions will be for PLA v2 when its commited to GIT. Checkback regularly, as it will be pushed when its is semi functional.
+The following instructions will be for PLA v2 when its committed to GIT. Checkback regularly, as it will be pushed when its is semi functional.
 
 ### Installation on your server
 
 #### Prerequisites
 * A HTTP server (eg: Apache, Nginx)
-* PHP (minimum version 7.2) https://www.php.net
+* PHP (minimum version 7.0, supported versions up to: 8.2) https://www.php.net
 * Composer https://getcomposer.org
 * GIT
 
@@ -82,7 +82,7 @@ The best place to get help with PLA (new and old) is on Stack Overflow (https://
 ## Found a bug?
 If you have found a bug, and can provide detailed instructions so that it can be reproduced, please open an [issue](https://github.com/leenooks/phpLDAPadmin/issues) and provide those details.
 
-Before opening a ticket, please check to see if it hasnt already been reported, and if it has, please provide any additional information that will help it be fixed.
+Before opening a ticket, please check to see if it has not already been reported, and if it has, please provide any additional information that will help it be fixed.
 
 *TIP*: Issues opened with reproducible details accompanied with a patch (or a pull request) to fix the problem will be looked at first.
 

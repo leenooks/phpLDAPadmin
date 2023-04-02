@@ -1,11 +1,11 @@
 For install instructions in non-English languages, see the wiki:
-    http://phpldapadmin.sourceforge.net
+    https://phpldapadmin.sourceforge.net
 
 * Requirements
 
   phpLDAPadmin requires the following:
       a. A web server (Apache, IIS, etc).
-      b. PHP 7.0.0 or newer (with LDAP support)
+      b. PHP 7.0 or newer up to 8.2 (with LDAP support)
 
 * To install
 
@@ -17,7 +17,7 @@ For install instructions in non-English languages, see the wiki:
 * For additional help
 
   See the wiki:
-    http://phpldapadmin.sourceforge.net
+    https://phpldapadmin.sourceforge.net/
 
-  Join our mailing list: 
+  Join our mailing list:
     https://lists.sourceforge.net/lists/listinfo/phpldapadmin-devel
