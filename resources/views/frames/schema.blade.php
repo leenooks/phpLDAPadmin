@@ -12,13 +12,13 @@
 @section('main-content')
 	<div class="main-card mb-3 card">
 		<div class="card-body">
-			<h5 class="card-title">{{ __('Schema Information') }}</h5>
+			<h5 class="card-title">@lang('Schema Information')</h5>
 
 			<ul class="nav nav-tabs">
-				<li class="nav-item"><a data-bs-toggle="tab" href="#objectclasses" class="nav-link">{{ __('Object Classes') }}</a></li>
-				<li class="nav-item"><a data-bs-toggle="tab" href="#attributetypes" class="nav-link">{{ __('Attribute Types') }}</a></li>
-				<li class="nav-item"><a data-bs-toggle="tab" href="#ldapsyntaxes" class="nav-link">{{ __('Syntaxes') }}</a></li>
-				<li class="nav-item"><a data-bs-toggle="tab" href="#matchingrules" class="nav-link">{{ __('Matching Rules') }}</a></li>
+				<li class="nav-item"><a data-bs-toggle="tab" href="#objectclasses" class="nav-link">@lang('Object Classes')</a></li>
+				<li class="nav-item"><a data-bs-toggle="tab" href="#attributetypes" class="nav-link">@lang('Attribute Types')</a></li>
+				<li class="nav-item"><a data-bs-toggle="tab" href="#ldapsyntaxes" class="nav-link">@lang('Syntaxes')</a></li>
+				<li class="nav-item"><a data-bs-toggle="tab" href="#matchingrules" class="nav-link">@lang('Matching Rules')</a></li>
 			</ul>
 			<div class="tab-content">
 				<!-- Object Classes -->

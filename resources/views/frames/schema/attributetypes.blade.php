@@ -21,24 +21,24 @@
 
 					<tbody>
 					<tr>
-						<td class="w-25">{{ __('Description') }}</td><td><strong>{{ __($o->description ?: '(no description)') }}</strong></td>
+						<td class="w-25">@lang('Description')</td><td><strong>{{ $o->description ?: __('(no description)')}}</strong></td>
 					</tr>
 					<tr>
-						<td><abbr title="{{  __('Object Identifier') }}">OID</abbr></td><td><strong>{{ $o->oid }}</strong></td>
+						<td><abbr title="@lang('Object Identifier')">OID</abbr></td><td><strong>{{ $o->oid }}</strong></td>
 					</tr>
 					<tr>
-						<td>{{ __('Obsolete') }}</td><td><strong>{{ $o->is_obsolete ? __('Yes') : __('No') }}</strong></td>
+						<td>@lang('Obsolete')</td><td><strong>@lang($o->is_obsolete ? 'Yes' : 'No')</strong></td>
 					</tr>
 					<tr>
-						<td>{{ __('Inherits from') }}</td>
-						<td><strong>@if ($o->sup_attribute)<a class="attributetype" id="{{ strtolower($o->sup_attribute) }}" href="#{{ strtolower($o->sup_attribute) }}">{{ $o->sup_attribute }}</a>@else {{ __('(none)') }}@endif</strong></td>
+						<td>@lang('Inherits from')</td>
+						<td><strong>@if ($o->sup_attribute)<a class="attributetype" id="{{ strtolower($o->sup_attribute) }}" href="#{{ strtolower($o->sup_attribute) }}">{{ $o->sup_attribute }}</a>@else @lang('(none)')@endif</strong></td>
 					</tr>
 					<tr>
-						<td>{{ __('Parent to') }}</td>
+						<td>@lang('Parent to')</td>
 						<td>
 							<strong>
 								@if (! $o->children->count())
-									{{ __('(none)') }}
+									@lang('(none)')
 								@else
 									@foreach ($o->children->sort() as $child)
 										@if($loop->index)</strong> <strong>@endif
@@ -49,34 +49,34 @@
 						</td>
 					</tr>
 					<tr>
-						<td>{{ __('Equality') }}</td><td><strong>{{ $o->equality ?: __('(not specified)') }}</strong></td>
+						<td>@lang('Equality')</td><td><strong>{{ $o->equality ?: __('(not specified)') }}</strong></td>
 					</tr>
 					<tr>
-						<td>{{ __('Ordering') }}</td><td><strong>{{ $o->ordering ?: __('(not specified)') }}</strong></td>
+						<td>@lang('Ordering')</td><td><strong>{{ $o->ordering ?: __('(not specified)') }}</strong></td>
 					</tr>
 					<tr>
-						<td>{{ __('Substring Rule') }}</td><td><strong>{{ $o->sub_str_rule ?: __('(not specified)') }}</strong></td>
+						<td>@lang('Substring Rule')</td><td><strong>{{ $o->sub_str_rule ?: __('(not specified)') }}</strong></td>
 					</tr>
 					<tr>
-						<td>{{ __('Syntax') }}</td><td><strong>{{ ($o->syntax_oid && $x=$server->schemaSyntaxName($o->syntax_oid)) ? $x->description : __('(unknown syntax)') }} @if($o->syntax_oid)({{ $o->syntax_oid }})@endif</strong></td>
+						<td>@lang('Syntax')</td><td><strong>{{ ($o->syntax_oid && $x=$server->schemaSyntaxName($o->syntax_oid)) ? $x->description : __('(unknown syntax)') }} @if($o->syntax_oid)({{ $o->syntax_oid }})@endif</strong></td>
 					</tr>
 					<tr>
-						<td>{{ __('Single Valued') }}</td><td><strong>{{ $o->is_single_value ? __('Yes') : __('No') }}</strong></td>
+						<td>@lang('Single Valued')</td><td><strong>@lang($o->is_single_value ? 'Yes' : 'No')</strong></td>
 					</tr>
 					<tr>
-						<td>{{ __('Collective') }}</td><td><strong>{{ $o->is_collective ? __('Yes') : __('No') }}</strong></td>
+						<td>@lang('Collective')</td><td><strong>@lang($o->is_collective ? 'Yes' : 'No')</strong></td>
 					</tr>
 					<tr>
-						<td>{{ __('User Modification') }}</td><td><strong>{{ $o->is_no_user_modification ? __('Yes') : __('No') }}</strong></td>
+						<td>@lang('User Modification')</td><td><strong>@lang($o->is_no_user_modification ? 'Yes' : 'No')</strong></td>
 					</tr>
 					<tr>
-						<td>{{ __('Usage') }}</td><td><strong>{{ $o->usage ?: __('(not specified)') }}</strong></td>
+						<td>@lang('Usage')</td><td><strong>{{ $o->usage ?: __('(not specified)') }}</strong></td>
 					</tr>
 					<tr>
-						<td>{{ __('Maximum Length') }}</td><td><strong>{{ is_null($o->max_length) ? __('(not applicable)') : sprintf('%s %s',number_format($o->max_length),Str::plural('character',$o->max_length)) }}</strong></td>
+						<td>@lang('Maximum Length')</td><td><strong>{{ is_null($o->max_length) ? __('(not applicable)') : sprintf('%s %s',number_format($o->max_length),Str::plural('character',$o->max_length)) }}</strong></td>
 					</tr>
 					<tr>
-						<td>{{ __('Aliases') }}</td>
+						<td>@lang('Aliases')</td>
 						<td><strong>
 							@if ($o->aliases->count())
 								@foreach ($o->aliases as $alias)
@@ -84,12 +84,12 @@
 									<a class="attributetype" id="{{ strtolower($alias) }}" href="#{{ strtolower($alias) }}">{{ $alias }}</a>
 								@endforeach
 							@else
-								{{ __('(none)') }}
+								@lang('(none)')
 							@endif
 						</strong></td>
 					</tr>
 					<tr>
-						<td>{{ __('Used by ObjectClasses') }}</td>
+						<td>@lang('Used by ObjectClasses')</td>
 						<td><strong>
 							@if ($o->used_in_object_classes->count())
 								@foreach ($o->used_in_object_classes as $class)
@@ -97,12 +97,12 @@
 									<a class="objectclass" id="{{ strtolower($class) }}" href="#{{ strtolower($class) }}">{{ $class }}</a>
 								@endforeach
 							@else
-								{{ __('(none)') }}
+								@lang('(none)')
 							@endif
 						</strong></td>
 					</tr>
 					<tr>
-						<td>{{ __('Force as MAY by config') }}</td><td><strong>{{ $o->forced_as_may ? __('Yes') : __('No') }}</strong></td>
+						<td>@lang('Force as MAY by config')</td><td><strong>@lang($o->forced_as_may ? 'Yes' : 'No')</strong></td>
 					</tr>
 					</tbody>
 				</table>

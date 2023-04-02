@@ -3,7 +3,7 @@
 		<table class="schema table table-sm table-bordered table-striped">
 			<thead>
 			<tr>
-				<th class="table-dark">{{ __('Description') }}</th>
+				<th class="table-dark">@lang('Description')</th>
 				<th class="table-dark">OID</th>
 			</tr>
 			</thead>

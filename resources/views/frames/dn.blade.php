@@ -65,10 +65,10 @@
 		<div class="card-body">
 			<div class="card-header-tabs">
 				<ul class="nav nav-tabs">
-					<li class="nav-item"><a data-bs-toggle="tab" href="#attributes" class="nav-link active">{{ __('Attributes') }}</a></li>
-					<li class="nav-item"><a data-bs-toggle="tab" href="#internal" class="nav-link">{{ __('Internal') }}</a></li>
+					<li class="nav-item"><a data-bs-toggle="tab" href="#attributes" class="nav-link active">@lang('Attributes')</a></li>
+					<li class="nav-item"><a data-bs-toggle="tab" href="#internal" class="nav-link">@lang('Internal')</a></li>
 					@env(['local'])
-						<li class="nav-item"><a data-bs-toggle="tab" href="#debug" class="nav-link">{{ __('Debug') }}</a></li>
+						<li class="nav-item"><a data-bs-toggle="tab" href="#debug" class="nav-link">@lang('Debug')</a></li>
 					@endenv
 				</ul>
 
@@ -108,8 +108,8 @@
 
 							<div class="row">
 								<div class="col-12 offset-sm-2 col-sm-4 col-lg-2">
-									<span id="form-reset" class="btn btn-outline-danger">{{ __('Reset') }}</span>
-									<span id="form-submit" class="btn btn-success">{{ __('Update') }}</span>
+									<span id="form-reset" class="btn btn-outline-danger">@lang('Reset')</span>
+									<span id="form-submit" class="btn btn-success">@lang('Update')</span>
 								</div>
 							</div>
 						</form>

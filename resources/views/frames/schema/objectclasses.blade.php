@@ -20,20 +20,20 @@
 
 					<tbody>
 					<tr>
-						<td class="w-25">{{ __('Description') }}</td><td colspan="3"><strong>{{ __($o->description ?: '(no description)') }}</strong></td>
+						<td class="w-25">@lang('Description')</td><td colspan="3"><strong>{{ $o->description ?: __('(no description)') }}</strong></td>
 					</tr>
 					<tr>
-						<td class="w-25"><abbr title="{{ __('Object Identifier') }}">OID</abbr></td><td colspan="3"><strong>{{ $o->oid }}</strong></td>
+						<td class="w-25"><abbr title="@lang('Object Identifier')">OID</abbr></td><td colspan="3"><strong>{{ $o->oid }}</strong></td>
 					</tr>
 					<tr>
-						<td>{{ __('Type') }}</td><td colspan="3"><strong>{{ __($o->type_name) }}</strong></td>
+						<td>@lang('Type')</td><td colspan="3"><strong>{{ $o->type_name }}</strong></td>
 					</tr>
 					<tr>
-						<td>{{ __('Inherits from') }}</td>
+						<td>@lang('Inherits from')</td>
 						<td colspan="3">
 							<strong>
 								@if ($o->sup->count() === 0)
-									{{ __('(none)') }}
+									@lang('(none)')
 								@else
 									@foreach ($o->sup as $sup)
 										@if($loop->index)</strong> <strong>@endif
@@ -45,13 +45,13 @@
 					</tr>
 
 					<tr>
-						<td>{{ __('Parent to') }}</td>
+						<td>@lang('Parent to')</td>
 						<td colspan="3">
 							<strong>
 								@if (strtolower($o->name) === 'top')
 									<a class="objectclass" id="-all-">(all)</a>
 								@elseif (! $o->getChildObjectClasses()->count())
-									{{ __('(none)') }}
+									@lang('(none)')
 								@else
 									@foreach ($o->getChildObjectClasses() as $childoc)
 										@if($loop->index)</strong> <strong>@endif
@@ -67,7 +67,7 @@
 							<table class="clearfix table table-sm table-borderless">
 								<thead>
 								<tr>
-									<th class="table-primary">{{ __('Required Attributes') }}</th>
+									<th class="table-primary">@lang('Required Attributes')</th>
 								</tr>
 								</thead>
 
@@ -89,7 +89,7 @@
 							<table class="clearfix table table-sm table-borderless">
 								<thead>
 								<tr>
-									<th class="table-primary">{{ __('Optional Attributes') }}</th>
+									<th class="table-primary">@lang('Optional Attributes')</th>
 								</tr>
 								</thead>
 
