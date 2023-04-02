@@ -2,6 +2,8 @@
 
 namespace App\Classes\LDAP\Attribute\Schema;
 
+use Illuminate\Contracts\View\View;
+
 use App\Classes\LDAP\Attribute\Schema;
 
 /**
@@ -9,25 +11,6 @@ use App\Classes\LDAP\Attribute\Schema;
  */
 final class OID extends Schema
 {
-	public function __toString(): string
-	{
-		return $this->values
-			->transform(function($item) {
-				if (preg_match('/[0-9]+\.[0-9]+\.[0-9]+/',$item)) {
-					$format = sprintf('<abbr class="pb-1" title="%s"><i class="fas fa-list-ol pe-2"></i>%s</abbr>%s<p class="mb-0">%s</p>',
-						$item,
-						static::get($item,'title'),
-						($x=static::get($item,'ref')) ? sprintf('<abbr class="ps-2" title="%s"><i class="fas fa-comment-dots"></i></abbr>',$x) : '',
-						static::get($item,'desc'),
-					);
-
-					return $format;
-
-				} else
-					return $item;
-			})->join('<br>');
-	}
-
 	/**
 	 * Given an LDAP OID number, returns a verbose description of the OID.
 	 * This function parses ldap_supported_oids.txt and looks up the specified
@@ -46,8 +29,15 @@ final class OID extends Schema
 	 * @return string|null
 	 * @testedby TranslateOidTest::testRootDSE()
 	 */
-	protected static function get(string $string,string $key): ?string
+	public static function get(string $string,string $key): ?string
 	{
 		return parent::_get(config_path('ldap_supported_oids.txt'),$string,$key);
+	}
+
+	public function render(bool $edit=FALSE): View
+	{
+		// @note Schema attributes cannot be edited
+		return view('components.attribute.schema.oid')
+			->with('o',$this);
 	}
 }

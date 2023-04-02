@@ -5,6 +5,7 @@
     "keywords": ["framework","laravel"],
     "license": "MIT",
     "require": {
+        "ext-fileinfo": "*",
         "php": "^8.0.2",
         "directorytree/ldaprecord-laravel": "^2",
         "fideloper/proxy": "^4.4",

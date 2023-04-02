@@ -19,7 +19,9 @@
 							? sprintf('<a class="attributetype" id="strtolower(%s)" href="%s">%s</a>',$x->name_lc,url('schema/attributetypes',$x->name_lc),$x->name)
 							: $attribute !!}
 					</th>
-					<td>{!! $ao !!}</td>
+					<td>
+						<x-attribute :edit="false" :o="$ao"/>
+					</td>
 				</tr>
 			@endforeach
 		</table>

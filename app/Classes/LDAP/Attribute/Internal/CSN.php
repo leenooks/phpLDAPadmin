@@ -5,8 +5,8 @@ namespace App\Classes\LDAP\Attribute\Internal;
 use App\Classes\LDAP\Attribute\Internal;
 
 /**
- * Represents an EntryCSN Attribute
+ * Represents an CSN Attribute
  */
-final class EntryCSN extends Internal
+final class CSN extends Internal
 {
 }

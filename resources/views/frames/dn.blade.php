@@ -3,7 +3,7 @@
 @section('page_title')
 	<table class="table table-borderless">
 		<tr>
-			<td class="{{ ($x=Arr::get($o->getAttributes(),'jpegphoto')) ? 'border' : '' }}" rowspan="2">{!! $x ?: sprintf('<div class="page-title-icon f32"><i class="%s"></i></div>',$o->icon() ?? "fas fa-info") !!}</td>
+			<td class="{{ ($x=Arr::get($o->getAttributes(),'jpegphoto')) ? 'border' : '' }}" rowspan="2">{!! $x ? $x->render() : sprintf('<div class="page-title-icon f32"><i class="%s"></i></div>',$o->icon() ?? "fas fa-info") !!}</td>
 			<td class="text-end align-text-top p-0 {{ $x ? 'ps-5' : 'pt-2' }}"><strong>{{ $dn }}</strong></td>
 		</tr>
 		<tr>
@@ -11,11 +11,11 @@
 				<table>
 					<tr>
 						<td class="p-1 m-1">Created</td>
-						<th class="p-1 m-1">{{ ($x=Arr::get($o->getAttributes(),'createtimestamp')) ? $x : __('Unknown') }} [{{ ($x=Arr::get($o->getAttributes(),'creatorsname')) ? $x : __('Unknown') }}]</th>
+						<th class="p-1 m-1">{{ ($x=Arr::get($o->getAttributes(),'createtimestamp')) ? $x->render() : __('Unknown') }} [{{ ($x=Arr::get($o->getAttributes(),'creatorsname')) ? $x->render() : __('Unknown') }}]</th>
 					</tr>
 					<tr>
 						<td class="p-1 m-1">Modified</td>
-						<th class="p-1 m-1">{{ ($x=Arr::get($o->getAttributes(),'modifytimestamp')) ? $x : __('Unknown') }} [{{ ($x=Arr::get($o->getAttributes(),'modifiersname')) ? $x : __('Unknown') }}]</th>
+						<th class="p-1 m-1">{{ ($x=Arr::get($o->getAttributes(),'modifytimestamp')) ? $x->render() : __('Unknown') }} [{{ ($x=Arr::get($o->getAttributes(),'modifiersname')) ? $x->render() : __('Unknown') }}]</th>
 					</tr>
 					<tr>
 						<td class="p-1 m-1">UUID</td>

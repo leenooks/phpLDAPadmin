@@ -2,7 +2,7 @@
 
 namespace App\Classes\LDAP\Attribute\Internal;
 
-use Carbon\Carbon;
+use Illuminate\Contracts\View\View;
 
 use App\Classes\LDAP\Attribute\Internal;
 
@@ -11,8 +11,10 @@ use App\Classes\LDAP\Attribute\Internal;
  */
 final class Timestamp extends Internal
 {
-	public function __toString(): string
+	public function render(bool $edit=FALSE): View
 	{
-		return Carbon::createFromTimestamp(strtotime($this->values[0]))->format(config('ldap.datetime_format','Y-m-d H:i:s'));
+		// @note Internal attributes cannot be edited
+		return view('components.attribute.internal.timestamp')
+			->with('o',$this);
 	}
 }

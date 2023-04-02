@@ -2,6 +2,8 @@
 
 namespace App\Classes\LDAP\Attribute;
 
+use Illuminate\Contracts\View\View;
+
 use App\Classes\LDAP\Attribute;
 
 /**
@@ -10,4 +12,11 @@ use App\Classes\LDAP\Attribute;
 abstract class Internal extends Attribute
 {
 	protected bool $is_internal = TRUE;
+
+	public function render(bool $edit=FALSE): View
+	{
+		// @note Internal attributes cannot be edited
+		return view('components.attribute.internal')
+			->with('o',$this);
+	}
 }

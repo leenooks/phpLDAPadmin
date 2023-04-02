@@ -145,16 +145,6 @@ class Attribute
 	}
 
 	/**
-	 * Determine how we render this attribute's value
-	 *
-	 * @return string
-	 */
-	public function __toString(): string
-	{
-		return $this->values->join('<br>');
-	}
-
-	/**
 	 * Return the hints about this attribute, ie: RDN, Required, etc
 	 *
 	 * @return array
@@ -182,7 +172,13 @@ class Attribute
 		return $result->toArray();
 	}
 
-	public function render(bool $edit): View
+	/**
+	 * Display the attribute value
+	 *
+	 * @param bool $edit
+	 * @return View
+	 */
+	public function render(bool $edit=FALSE): View
 	{
 		return view('components.attribute')
 			->with('edit',$edit)

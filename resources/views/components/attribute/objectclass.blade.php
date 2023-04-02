@@ -3,10 +3,10 @@
 	<div class="col-12">
 		<div id="{{ $o->name_lc }}">
 			@foreach (old($o->name_lc,$o->values) as $value)
-				@if ($edit && ! $o->is_rdn)
+				@if ($edit && ! $o->is_structural)
 					<input class="form-control mb-1 @if($x=($o->values->search($value) === FALSE)) border-danger @endif" type="text" name="{{ $o->name_lc }}[]" value="{{ $value }}" @if($x)placeholder="{{ Arr::get($o->values,$loop->index) }}"@endif>
 				@else
-					{{ $value }}<br>
+					{{ $value }}@if ($o->is_structural)@lang('structural')@endif<br>
 				@endif
 			@endforeach
 		</div>

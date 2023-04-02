@@ -2,6 +2,8 @@
 
 namespace App\Classes\LDAP\Attribute\Binary;
 
+use Illuminate\Contracts\View\View;
+
 use App\Classes\LDAP\Attribute\Binary;
 
 /**
@@ -16,26 +18,11 @@ final class JpegPhoto extends Binary
 		$this->internal = FALSE;
 	}
 
-	public function __toString(): string
+	public function render(bool $edit=FALSE): View
 	{
-		// We'll use finfo to try and figure out what type of image is stored
-		$f = new \finfo;
-
-		$result = '<table class="table table-borderless p-0 m-0"><tr>';
-
-		foreach ($this->values as $value) {
-			switch ($x=$f->buffer($value,FILEINFO_MIME_TYPE)) {
-				case 'image/jpeg':
-				default:
-					$result .= sprintf('<td><img class="jpegphoto" src="data:%s;base64, %s" />%s</td>',
-						$x,
-						base64_encode($value),
-						$this->is_deletable ? sprintf('<br><span class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> %s</span>',__('Delete')) : '');
-			}
-		}
-
-		$result .= '</tr></table>';
-
-		return $result;
+		return view('components.attribute.binary.jpegphoto')
+			->with('edit',$edit)
+			->with('o',$this)
+			->with('f',new \finfo);
 	}
 }

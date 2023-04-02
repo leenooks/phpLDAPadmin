@@ -2,16 +2,19 @@
 
 namespace App\Classes\LDAP\Attribute;
 
+use Illuminate\Contracts\View\View;
+
 use App\Classes\LDAP\Attribute;
 
 /**
  * Represents an attribute whose values are passwords
  */
-class Password extends Attribute
+final class Password extends Attribute
 {
-	public function __toString(): string
+	public function render(bool $edit=FALSE): View
 	{
-		return str_repeat('*',10)
-			.sprintf('<br><span class="btn btn-sm btn-outline-dark"><i class="fas fa-user-check"></i> %s</span>',__('Check Password'));
+		return view('components.attribute.password')
+			->with('edit',$edit)
+			->with('o',$this);
 	}
 }

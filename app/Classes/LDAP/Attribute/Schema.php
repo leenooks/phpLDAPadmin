@@ -2,6 +2,7 @@
 
 namespace App\Classes\LDAP\Attribute;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
@@ -46,5 +47,12 @@ abstract class Schema extends Attribute
 		});
 
 		return Arr::get(($array ? $array->get($string) : []),$key);
+	}
+
+	public function render(bool $edit=FALSE): View
+	{
+		// @note Schema attributes cannot be edited
+		return view('components.attribute.internal')
+			->with('o',$this);
 	}
 }
