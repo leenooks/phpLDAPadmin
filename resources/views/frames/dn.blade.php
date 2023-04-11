@@ -81,7 +81,7 @@
 							<input type="hidden" name="dn" value="{{ $o->getDNSecure() }}">
 
 							<div class="row">
-								<div class="offset-2 col-8">
+								<div class="col-12 offset-lg-2 col-lg-8">
 									<table class="table">
 										@foreach ($o->getVisibleAttributes() as $ao)
 											<tr class="bg-light text-dark small">
@@ -106,7 +106,7 @@
 								</div>
 							</div>
 
-							<div class="row">
+							<div class="row d-none">
 								<div class="col-12 offset-sm-2 col-sm-4 col-lg-2">
 									<span id="form-reset" class="btn btn-outline-danger">@lang('Reset')</span>
 									<span id="form-submit" class="btn btn-success">@lang('Update')</span>
@@ -118,7 +118,7 @@
 					<!-- Internal Attributes -->
 					<div class="tab-pane" id="internal" role="tabpanel">
 						<div class="row">
-							<div class="offset-2 col-8">
+							<div class="col-12 offset-lg-2 col-lg-8">
 								<table class="table">
 									@foreach ($o->getInternalAttributes() as $ao)
 										<tr class="bg-light text-dark small">
@@ -155,7 +155,20 @@
 @endsection
 
 @section('page-scripts')
-	<script>
+	<script type="text/javascript">
+		function editmode() {
+			$('button[id=entry-edit]').addClass('active').removeClass('btn-outline-dark').addClass('btn-outline-light');
+
+			// Find all input items and turn off readonly
+			$('input.form-control').each(function() {
+				$(this).attr('readonly',false);
+			});
+
+			$('.row.d-none').removeClass('d-none');
+			$('.addable.d-none').removeClass('d-none');
+			$('.deletable.d-none').removeClass('d-none');
+		}
+
 		$(document).ready(function() {
 			$('#reset').click(function() {
 				$('#form-entry')[0].reset();
@@ -168,9 +181,22 @@
 			// Create a new entry when Add Value clicked
 			$('.addable').click(function(item) {
 				var cln = $(this).parent().parent().find('input:last').clone();
-				cln.val('').attr('placeholder',undefined);
+				cln.val('').attr('placeholder','[@lang('NEW')]');
 				cln.appendTo('#'+item.currentTarget.id)
-			})
+			});
+
+			$('button[id=entry-edit]').on('click',function(item) {
+				item.preventDefault();
+
+				if ($(this).hasClass('active'))
+					return;
+
+				editmode();
+			});
+
+			@if(old())
+				editmode();
+			@endif
 		});
 	</script>
 @append

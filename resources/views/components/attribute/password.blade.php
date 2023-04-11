@@ -4,7 +4,7 @@
 		<div id="{{ $o->name_lc }}">
 			@foreach (old($o->name_lc,$o->values) as $value)
 				@if ($edit)
-					<input type="password" class="form-control mb-1 @if($x=($o->values->search($value) === FALSE)) border-danger @endif" type="text" name="{{ $o->name_lc }}[]" value="{{ str_repeat('*',10) }}">
+					<input type="password" class="form-control mb-1 @if($x=($o->values->search($value) === FALSE)) border-focus @endif" type="text" name="{{ $o->name_lc }}[]" value="{{ str_repeat('*',10) }}" readonly="true">
 				@else
 					{{ $value }}<br>
 				@endif

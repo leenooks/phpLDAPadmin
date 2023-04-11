@@ -39,9 +39,12 @@ class HomeController extends Controller
 	{
 		$dn = Crypt::decryptString($request->post('key'));
 
+		$page_actions = collect(['edit'=>TRUE,'copy'=>TRUE]);
+
 		return view('frames.dn')
 			->with('o',config('server')->fetch($dn))
-			->with('dn',$dn);
+			->with('dn',$dn)
+			->with('page_actions',$page_actions);
 	}
 
 	public function entry_update(EntryRequest $request)
@@ -56,7 +59,8 @@ class HomeController extends Controller
 		Session::put('dn',$request->dn);
 
 		if (! $dirty=$o->getDirty())
-			return back()->with(['note'=>__('No attributes changed')]);
+			return back()
+				->with('note',__('No attributes changed'));
 
 		try {
 			$o->update($request->except(['_token','dn']));
@@ -66,7 +70,8 @@ class HomeController extends Controller
 
 			switch ($x=$e->getDetailedError()->getErrorCode()) {
 				case 50:
-					return back()->withErrors(sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
+					return back()
+						->withErrors(sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
 
 				default:
 					abort(599,$e->getDetailedError()->getErrorMessage());
@@ -77,7 +82,8 @@ class HomeController extends Controller
 
 			switch ($x=$e->getDetailedError()->getErrorCode()) {
 				case 8:
-					return back()->withErrors(sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
+					return back()
+						->withErrors(sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
 
 				default:
 					abort(599,$e->getDetailedError()->getErrorMessage());
@@ -85,8 +91,8 @@ class HomeController extends Controller
 		}
 
 		return back()
-			->with(['success'=>__('Entry updated')])
-			->with(['updated'=>$dirty]);
+			->with('success',__('Entry updated'))
+			->with('updated',$dirty);
 	}
 
 	/**

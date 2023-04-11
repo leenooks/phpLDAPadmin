@@ -3,6 +3,7 @@
 namespace App\Classes\LDAP\Attribute;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Attribute;
 
@@ -11,13 +12,31 @@ use App\Classes\LDAP\Attribute;
  */
 final class ObjectClass extends Attribute
 {
-	public function __get(string $key): mixed
+	// Which of the values is the structural object class
+	protected Collection $structural;
+
+	public function __construct(string $name,array $values)
 	{
-		switch ($key) {
-			case 'is_structural': return FALSE;	// @todo - need to determine which of the values is the structural objectclass value(s)
-			default:
-				return parent::__get($key);
+		parent::__construct($name,$values);
+
+		$this->structural = collect();
+
+		// Determine which of the values is the structural objectclass
+		foreach ($values as $oc) {
+			if (config('server')->schema('objectclasses',$oc)->isStructural())
+				$this->structural->push($oc);
 		}
+	}
+
+	/**
+	 * Is a specific value the structural objectclass
+	 *
+	 * @param string $value
+	 * @return bool
+	 */
+	public function isStructural(string $value): bool
+	{
+		return $this->structural->search($value) !== FALSE;
 	}
 
 	public function render(bool $edit=FALSE): View

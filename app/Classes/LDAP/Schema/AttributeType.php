@@ -257,6 +257,7 @@ final class AttributeType extends Base {
 			case 'children': return $this->children;
 			case 'forced_as_may': return $this->forced_as_may;
 			case 'is_collective': return $this->is_collective;
+			case 'is_editable': return ! $this->is_no_user_modification;
 			case 'is_no_user_modification': return $this->is_no_user_modification;
 			case 'is_single_value': return $this->is_single_value;
 			case 'equality': return $this->equality;

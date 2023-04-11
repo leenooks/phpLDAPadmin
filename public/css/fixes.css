@@ -217,3 +217,19 @@ p {
 }
 }
 */
+
+/** Ensure our DN menu is at the top **/
+.app-page-title .page-title-wrapper {
+	align-items: start;
+}
+
+/** Change the background on our read-only form items **/
+.form-control:disabled, .form-control[readonly] {
+	background-color: #f9f9f9;
+}
+
+/** Make our placeholder text on forms lighter **/
+
+.form-control::placeholder {
+	color: #a0aec0;
+}

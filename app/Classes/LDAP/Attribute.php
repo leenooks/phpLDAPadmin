@@ -25,9 +25,6 @@ class Attribute
 	// Current and Old Values
 	protected Collection $values;
 
-	// Can this attribute be deleted
-	protected bool $is_deletable = FALSE;
-
 	// Is this attribute an internal attribute
 	protected bool $is_internal = FALSE;
 
@@ -129,6 +126,8 @@ class Attribute
 			'description' => $this->schema ? $this->schema->{$key} : NULL,
 			// Attribute hints
 			'hints' => $this->hints(),
+			// Can this attribute be edited
+			'is_editable' => $this->schema ? $this->schema->{$key} : NULL,
 			// Is this an internal attribute
 			'is_internal' => isset($this->{$key}) && $this->{$key},
 			// Is this attribute the RDN

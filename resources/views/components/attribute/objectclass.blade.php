@@ -3,10 +3,15 @@
 	<div class="col-12">
 		<div id="{{ $o->name_lc }}">
 			@foreach (old($o->name_lc,$o->values) as $value)
-				@if ($edit && ! $o->is_structural)
-					<input class="form-control mb-1 @if($x=($o->values->search($value) === FALSE)) border-danger @endif" type="text" name="{{ $o->name_lc }}[]" value="{{ $value }}" @if($x)placeholder="{{ Arr::get($o->values,$loop->index) }}"@endif>
+				@if ($edit && ($value === NULL || (! $o->isStructural($value))))
+					<input class="form-control mb-1 @if($o->values->search($value) === FALSE) border-focus @endif" type="text" name="{{ $o->name_lc }}[]" value="{{ $value }}" placeholder="{{ Arr::get($o->values,$loop->index) ?: '['.__('NEW').']' }}" readonly="true">
 				@else
-					{{ $value }}@if ($o->is_structural)@lang('structural')@endif<br>
+					{{ $value }}
+					@if ($o->isStructural($value))
+						<input type="hidden" name="{{ $o->name_lc }}[]" value="{{ $value }}">
+						<span class="float-end mb-2">@lang('structural')</span>
+					@endif
+					<br>
 				@endif
 			@endforeach
 		</div>
@@ -16,7 +21,7 @@
 		@if($o->is_rdn)
 			<span class="btn btn-sm btn-outline-focus mt-3 mb-3"><i class="fas fa-fw fa-exchange"></i> @lang('Rename')</span>
 		@elseif($edit && $o->can_addvalues)
-			<div class="p-0 m-0 addable" id="{{ $o->name_lc }}">
+			<div class="p-0 m-0 addable d-none" id="{{ $o->name_lc }}">
 				<span class="btn btn-sm btn-outline-primary mt-3 mb-3"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</span>
 			</div>
 		@endif

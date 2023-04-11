@@ -57,7 +57,7 @@
 </div>
 
 @section('page-scripts')
-	<script>
+	<script type="text/javascript">
 		$(document).ready(function() {
 			$('.server-icon').click(function(e) {
 				var content;
