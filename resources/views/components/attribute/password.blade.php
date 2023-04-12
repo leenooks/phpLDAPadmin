@@ -4,7 +4,14 @@
 		<div id="{{ $o->name_lc }}">
 			@foreach (old($o->name_lc,$o->values) as $value)
 				@if ($edit)
-					<input type="password" class="form-control mb-1 @if($x=($o->values->search($value) === FALSE)) border-focus @endif" type="text" name="{{ $o->name_lc }}[]" value="{{ str_repeat('*',10) }}" readonly="true">
+					<div class="input-group has-validation">
+						<input type="password" class="form-control @if($e=$errors->get($o->name_lc.'.'.$loop->index))is-invalid @endif mb-1 @if($o->values->search($value) === FALSE) border-focus @endif" name="{{ $o->name_lc }}[]" value="{{ str_repeat('*',10) }}" readonly="true">
+						<div class="invalid-feedback pb-2">
+							@if($e)
+								{{ join('|',$e) }}
+							@endif
+						</div>
+					</div>
 				@else
 					{{ $value }}<br>
 				@endif

@@ -229,7 +229,11 @@ p {
 }
 
 /** Make our placeholder text on forms lighter **/
-
 .form-control::placeholder {
 	color: #a0aec0;
+}
+
+/** Force our validation color to have a higher priority than any specified border **/
+.was-validated .form-control:invalid, .form-control.is-invalid {
+	border-color: #d92550 !important;
 }

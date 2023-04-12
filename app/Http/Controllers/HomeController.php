@@ -112,10 +112,10 @@ class HomeController extends Controller
 			];
 		});
 
-		if (Session::has('dn'))
+		if (old('dn'))
 			return view('dn')
 				->with('bases',$bases)
-				->with('o',config('server')->fetch($dn=Crypt::decryptString(Session::pull('dn'))))
+				->with('o',config('server')->fetch($dn=Crypt::decryptString(old('dn'))))
 				->with('dn',$dn);
 		else
 			return view('home')

@@ -23,9 +23,12 @@ class EntryRequest extends FormRequest
 	 */
 	public function rules()
 	{
-		return [
-			'dn'=>'string|min:3',
-			'objectclass'=>'array|min:1',
-		];
+		return config('server')
+			->schema('attributetypes')
+			->intersectByKeys($this->request)
+			->transform(function($item) { return $item->validation; })
+			->filter()
+			->flatMap(function($item) { return $item; })
+			->toArray();
 	}
 }

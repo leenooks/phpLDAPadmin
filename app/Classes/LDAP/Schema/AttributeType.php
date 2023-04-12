@@ -2,6 +2,7 @@
 
 namespace App\Classes\LDAP\Schema;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
@@ -271,6 +272,7 @@ final class AttributeType extends Base {
 			case 'type': return $this->type;
 			case 'usage': return $this->usage;
 			case 'used_in_object_classes': return $this->used_in_object_classes;
+			case 'validation': return Arr::get(config('ldap.validation'),$this->name_lc);
 
 			default: return parent::__get($key);
 		}

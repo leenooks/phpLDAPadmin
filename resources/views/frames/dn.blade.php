@@ -75,7 +75,7 @@
 				<div class="tab-content">
 					<!-- All Attributes -->
 					<div class="tab-pane active" id="attributes" role="tabpanel">
-						<form id="form-entry" method="POST" action="{{ url('entry/update') }}">
+						<form id="form-entry" method="POST" class="needs-validation" action="{{ url('entry/update') }}" novalidate>
 							@csrf
 
 							<input type="hidden" name="dn" value="{{ $o->getDNSecure() }}">

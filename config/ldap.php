@@ -111,4 +111,19 @@ return [
 	 |
 	 */
 	'datetime_format' => 'Y-m-d H:i:s',
+
+	/*
+	 |--------------------------------------------------------------------------
+	 | Validation
+	 |--------------------------------------------------------------------------
+	 |
+	 | Default validation used for data input.
+	 |
+	 */
+	'validation' => [
+		'objectclass' => ['objectclass'=>['array','min:1']],
+		'gidnumber' => ['gidnumber'=>['sometimes','array','max:1'],'gidnumber.*'=>['integer','max:65535']],
+		'mail' => ['mail'=>['sometimes','array','min:1'],'mail.*'=>['email']],
+		'uidnumber' => ['uidnumber'=>['sometimes','array','max:1'],'uidnumber.*'=>['integer','max:65535']],
+	],
 ];
