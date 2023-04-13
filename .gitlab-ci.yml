@@ -7,6 +7,10 @@ stages:
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
+  - public/css/app.css
+  - public/js/app.js
+  - public/js/manifest.js
+  - public/js/vendor.js
   - public/*/vendor/
   - node_modules/
   - vendor/
