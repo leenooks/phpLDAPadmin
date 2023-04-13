@@ -2,7 +2,9 @@
 .editorconfig
 .env.testing
 .git*
+docker/
 package.json
+package-lock.json
 phpunit.xml
 webpack.mix.js
 yarn.lock

@@ -7,4 +7,4 @@ RUN mkdir -p ${COMPOSER_HOME} && \
 	touch .composer.refresh && \
 	mv .env.example .env && \
 	FORCE_PERMS=1 NGINX_START=FALSE /sbin/init && \
-	rm -rf ${COMPOSER_HOME}/* composer.lock package-lock.json
+	rm -rf ${COMPOSER_HOME}/* composer.lock
