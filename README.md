@@ -13,6 +13,17 @@ For up to date information on PLA, please head to the [wiki](https://github.com/
 ## Demo
 If you havent seen PLA in action, you can head here to the [demo](https://demo.phpldapadmin.org) site.
 
+## Running the docker image
+PLA v2 is available via docker for preview. (PLA v2 is still under heavy development.)
+
+The container is the same one used for the demo site - but you'll be able to point it to your local LDAP server and see how things work.
+
+Take a look at the [Docker Container](https://github.com/leenooks/phpLDAPadmin/wiki/Docker-Container) page for more details.
+
+> Please let me know if you have any troubles with the container image, eg: usage of the container itself, or usage when it is pointing to your LDAP server.
+>
+> Open an issue (details below) with enough information for me to be able to recreate the problem. An `LDIF` will be invaluable if it is not handling data correctly.
+
 ## Getting Help
 The best place to get help with PLA (new and old) is on [Stack Overflow](https://stackoverflow.com/tags/phpldapadmin/info).
 
