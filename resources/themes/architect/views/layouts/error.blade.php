@@ -22,7 +22,7 @@
 
 								<div class="modal-body">
 									<div class="text-center">
-										<span class="badge badge-danger fsize-2 mb-3 ">@yield('error')</span>
+										<span class="badge text-danger fsize-2 mb-3">@yield('error')</span>
 									</div>
 									<table class="table">
 										<tr>

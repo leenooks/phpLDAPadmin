@@ -4,11 +4,12 @@ namespace App\Classes\LDAP;
 
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use LdapRecord\LdapRecordException;
 use LdapRecord\Models\Model;
 use LdapRecord\Query\Collection as LDAPCollection;
@@ -68,102 +69,112 @@ final class Server
 		try {
 			$base = self::rootDSE($connection,$cachetime);
 
-			/**
-			 * LDAP Error Codes:
-			 * https://ldap.com/ldap-result-code-reference/
-			 * + success						0
-			 * + operationsError				1
-			 * + protocolError					2
-			 * + timeLimitExceeded				3
-			 * + sizeLimitExceeded				4
-			 * + compareFalse					5
-			 * + compareTrue					6
-			 * + authMethodNotSupported			7
-			 * + strongerAuthRequired			8
-			 * + referral						10
-			 * + adminLimitExceeded				11
-			 * + unavailableCriticalExtension	12
-			 * + confidentialityRequired		13
-			 * + saslBindInProgress				14
-			 * + noSuchAttribute				16
-			 * + undefinedAttributeType			17
-			 * + inappropriateMatching			18
-			 * + constraintViolation			19
-			 * + attributeOrValueExists			20
-			 * + invalidAttributeSyntax			21
-			 * + noSuchObject					32
-			 * + aliasProblem					33
-			 * + invalidDNSyntax				34
-			 * + isLeaf							35
-			 * + aliasDereferencingProblem		36
-			 * + inappropriateAuthentication	48
-			 * + invalidCredentials				49
-			 * + insufficientAccessRights		50
-			 * + busy							51
-			 * + unavailable					52
-			 * + unwillingToPerform				53
-			 * + loopDetect						54
-			 * + sortControlMissing				60
-			 * + offsetRangeError				61
-			 * + namingViolation				64
-			 * + objectClassViolation			65
-			 * + notAllowedOnNonLeaf			66
-			 * + notAllowedOnRDN				67
-			 * + entryAlreadyExists				68
-			 * + objectClassModsProhibited		69
-			 * + resultsTooLarge				70
-			 * + affectsMultipleDSAs			71
-			 * + virtualListViewError or controlError	76
-			 * + other							80
-			 * + serverDown						81
-			 * + localError						82
-			 * + encodingError					83
-			 * + decodingError					84
-			 * + timeout						85
-			 * + authUnknown					86
-			 * + filterError					87
-			 * + userCanceled					88
-			 * + paramError						89
-			 * + noMemory						90
-			 * + connectError					91
-			 * + notSupported					92
-			 * + controlNotFound				93
-			 * + noResultsReturned				94
-			 * + moreResultsToReturn			95
-			 * + clientLoop						96
-			 * + referralLimitExceeded			97
-			 * + invalidResponse				100
-			 * + ambiguousResponse				101
-			 * + tlsNotSupported				112
-			 * + intermediateResponse			113
-			 * + unknownType					114
-			 * + canceled						118
-			 * + noSuchOperation				119
-			 * + tooLate						120
-			 * + cannotCancel					121
-			 * + assertionFailed				122
-			 * + authorizationDenied			123
-			 * + e-syncRefreshRequired			4096
-			 * + noOperation					16654
-			 *
-			 * LDAP Tag Codes:
-			 * + A client bind operation				97
-			 * + The entry for which you were searching	100
-			 * + The result from a search operation		101
-			 * + The result from a modify operation		103
-			 * + The result from an add operation		105
-			 * + The result from a delete operation		107
-			 * + The result from a modify DN operation	109
-			 * + The result from a compare operation	111
-			 * + A search reference when the entry you perform your search on holds a referral to the entry you require.
-			 * +   Search references are expressed in terms of a referral.
-			 * 											115
-			 * + A result from an extended operation	120
-			 */
-			// If we cannot get to our LDAP server we'll head straight to the error page
+		/**
+		 * LDAP Error Codes:
+		 * https://ldap.com/ldap-result-code-reference/
+		 * + success						0
+		 * + operationsError				1
+		 * + protocolError					2
+		 * + timeLimitExceeded				3
+		 * + sizeLimitExceeded				4
+		 * + compareFalse					5
+		 * + compareTrue					6
+		 * + authMethodNotSupported			7
+		 * + strongerAuthRequired			8
+		 * + referral						10
+		 * + adminLimitExceeded				11
+		 * + unavailableCriticalExtension	12
+		 * + confidentialityRequired		13
+		 * + saslBindInProgress				14
+		 * + noSuchAttribute				16
+		 * + undefinedAttributeType			17
+		 * + inappropriateMatching			18
+		 * + constraintViolation			19
+		 * + attributeOrValueExists			20
+		 * + invalidAttributeSyntax			21
+		 * + noSuchObject					32
+		 * + aliasProblem					33
+		 * + invalidDNSyntax				34
+		 * + isLeaf							35
+		 * + aliasDereferencingProblem		36
+		 * + inappropriateAuthentication	48
+		 * + invalidCredentials				49
+		 * + insufficientAccessRights		50
+		 * + busy							51
+		 * + unavailable					52
+		 * + unwillingToPerform				53
+		 * + loopDetect						54
+		 * + sortControlMissing				60
+		 * + offsetRangeError				61
+		 * + namingViolation				64
+		 * + objectClassViolation			65
+		 * + notAllowedOnNonLeaf			66
+		 * + notAllowedOnRDN				67
+		 * + entryAlreadyExists				68
+		 * + objectClassModsProhibited		69
+		 * + resultsTooLarge				70
+		 * + affectsMultipleDSAs			71
+		 * + virtualListViewError or controlError	76
+		 * + other							80
+		 * + serverDown						81
+		 * + localError						82
+		 * + encodingError					83
+		 * + decodingError					84
+		 * + timeout						85
+		 * + authUnknown					86
+		 * + filterError					87
+		 * + userCanceled					88
+		 * + paramError						89
+		 * + noMemory						90
+		 * + connectError					91
+		 * + notSupported					92
+		 * + controlNotFound				93
+		 * + noResultsReturned				94
+		 * + moreResultsToReturn			95
+		 * + clientLoop						96
+		 * + referralLimitExceeded			97
+		 * + invalidResponse				100
+		 * + ambiguousResponse				101
+		 * + tlsNotSupported				112
+		 * + intermediateResponse			113
+		 * + unknownType					114
+		 * + canceled						118
+		 * + noSuchOperation				119
+		 * + tooLate						120
+		 * + cannotCancel					121
+		 * + assertionFailed				122
+		 * + authorizationDenied			123
+		 * + e-syncRefreshRequired			4096
+		 * + noOperation					16654
+		 *
+		 * LDAP Tag Codes:
+		 * + A client bind operation				97
+		 * + The entry for which you were searching	100
+		 * + The result from a search operation		101
+		 * + The result from a modify operation		103
+		 * + The result from an add operation		105
+		 * + The result from a delete operation		107
+		 * + The result from a modify DN operation	109
+		 * + The result from a compare operation	111
+		 * + A search reference when the entry you perform your search on holds a referral to the entry you require.
+		 * +   Search references are expressed in terms of a referral.
+		 * 											115
+		 * + A result from an extended operation	120
+		 */
+		// If we cannot get to our LDAP server we'll head straight to the error page
 		} catch (LdapRecordException $e) {
 			switch ($e->getDetailedError()->getErrorCode()) {
 				case 49:
+					// Since we failed authentication, we should delete our auth cookie
+					if (Cookie::has('password_encrypt')) {
+						Log::alert('Clearing user credentials and logging out');
+
+						Cookie::queue(Cookie::forget('password_encrypt'));
+						Cookie::queue(Cookie::forget('username_encrypt'));
+
+						Session::invalidate();
+					}
+
 					abort(401,$e->getDetailedError()->getErrorMessage());
 
 				default:

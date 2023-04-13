@@ -1,7 +1,7 @@
 @extends('architect::layouts.error')
 
 @section('error')
-	597: @lang('LDAP Server Unavailable')
+	401: @lang('LDAP Authentication Error')
 @endsection
 
 @section('content')
