@@ -137,6 +137,9 @@ jpegphoto:: /9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBhQSERUUEhMUFRQVGRUXGBYWFxgY
  s9UUUV6eBRRRQH/9k=
 l: Bedrock
 loginshell: /bin/sh
+mail: bammbamm.rubble@flintsones.example.com
+mailHost: flintstone.host
+objectclass: inetLocalMailRecipient
 objectclass: inetOrgPerson
 objectclass: posixAccount
 objectclass: top
@@ -254,6 +257,9 @@ jpegphoto:: /9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8L
  QDRqOCjhp7mNtl1LNJJ4inYaNGjVpRI0aNGhC//2Q==
 l: Bedrock
 loginshell: /bin/sh
+mail: barney.rubble@flintsones.example.com
+mailHost: flintstone.host
+objectclass: inetLocalMailRecipient
 objectclass: inetOrgPerson
 objectclass: posixAccount
 objectclass: top
@@ -372,6 +378,9 @@ jpegphoto:: /9j/4AAQSkZJRgABAQEASABIAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8L
  cZhFwkuFhpSihrmJPwga2QnQ6VOR3rksLT2Slw855s3XFXjT3YOaUpXaaBSlKAUpSgP/Z
 l: Bedrock
 loginshell: /bin/sh
+mail: betty.rubble@flintsones.example.com
+mailHost: flintstone.host
+objectclass: inetLocalMailRecipient
 objectclass: inetOrgPerson
 objectclass: posixAccount
 objectclass: top
@@ -557,6 +566,9 @@ jpegphoto:: /9j/4AAQSkZJRgABAQEASABIAAD//gA7Q1JFQVRPUjogZ2QtanBlZyB2MS4wICh1
  EFZAKtieQxViUpTVjGsGGjRQnOLjkpSlK9LC/9k=
 l: Bedrock
 loginshell: /bin/sh
+mail: fred.flintstone@flintsones.example.com
+mailHost: flintstone.host
+objectclass: inetLocalMailRecipient
 objectclass: inetOrgPerson
 objectclass: posixAccount
 objectclass: top
@@ -658,6 +670,9 @@ jpegphoto:: /9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBhQQERUSExQWFBUWGBoZGBgXGBke
  DEL9i0pFFLDYWgqZYwR3tY/Lqe2NAxXocuigTlwxpEnXTGqqu/ooAxYwQqXuxG6mJiYmIuV//Z
 l: Bedrock
 loginshell: /bin/sh
+mail: pebbles.flintstone@flintsones.example.com
+mailHost: flintstone.host
+objectclass: inetLocalMailRecipient
 objectclass: inetOrgPerson
 objectclass: posixAccount
 objectclass: top
@@ -742,6 +757,9 @@ jpegphoto:: /9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBhQSERQUEhMWFBUUGRkXGRUXGRcf
  pHOaGnZKUpWizSlKUIX//Z
 l: Bedrock
 loginshell: /bin/sh
+mail: wilma.flintstone@flintsones.example.com
+mailHost: flintstone.host
+objectclass: inetLocalMailRecipient
 objectclass: inetOrgPerson
 objectclass: posixAccount
 objectclass: top

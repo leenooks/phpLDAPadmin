@@ -98,8 +98,11 @@ jpegphoto:: /9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkS
  Jns7l4EPtGd4H30UVM17m/pNkx8bJBZ4B6rXpFjonUGsro8OmTW0uVk+lS3bSlQrBuEwq547nOP
  Q05bKyt9PtEtrWPZEuSBkkkk5JJPJJJJJPJJoopOc5xu43SZGyMWYLDuXRRRRTU9f//Z
 l: Springfield
-mail: bart.simpson@example.com
+mail: bart.simpson@simpsons.example.com
+mailHost: simpsons.host
+mailRoutingAddress: bsimpson@simpsons.example.com
 o: The Simpsons
+objectclass: inetLocalMailRecipient
 objectclass: inetOrgPerson
 objectclass: posixAccount
 objectclass: top
@@ -185,8 +188,11 @@ jpegphoto:: /9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0V
  AN7FjHrtcD8rHxaDuQvASFML9+vfHvfFYp+PMiECLUVzNKoszCF7MRtq6d+vxxJ8/eHP66/2D/5
  YVpKp1N81zDOvTlf+8yfzHGYjzOZKnNKueI3jlnd1NrXBYkYzD1Kv/9k=
 l: Springfield
-mail: homer.simpson@example.com
+mail: homer.simpson@simpsons.example.com
+mailHost: simpsons.host
+mailRoutingAddress: hsimpson@simpsons.example.com
 o: The Simpsons
+objectclass: inetLocalMailRecipient
 objectclass: inetOrgPerson
 objectclass: posixAccount
 objectclass: top
@@ -266,8 +272,11 @@ jpegphoto:: /9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0V
  o0035+XyVRwfw2/E2crFIh8jTkPVN0I6R/Nv2Fz2vt6gKoVQAALADpiHk+TUWRZbHQUEWiJNyTu
  zt1Zj1J/wDtsTcHQxCJtll8Rr3105kOg4DkF//Z
 l: Springfield
-mail: lisa.simpson@example.com
+mail: lisa.simpson@simpsons.example.com
+mailHost: simpsons.host
+mailRoutingAddress: lsimpson@simpsons.example.com
 o: The Simpsons
+objectclass: inetLocalMailRecipient
 objectclass: inetOrgPerson
 objectclass: posixAccount
 objectclass: top
@@ -333,8 +342,11 @@ jpegphoto:: /9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0V
  k1VVk9Et/oHzlsn7EfasP7H3v/Nbf/wm/wDrRRQ38Td+qMH5fi/oE2w+DBJlb7UWljPDRwwiMMO
  4JJY889CPtVoUBVCgYAGAKKKqexnO2O5oqorpGqxqf//Z
 l: Springfield
-mail: maggie.simpson@example.com
+mail: maggie.simpson@simpsons.example.com
+mailHost: simpsons.host
+mailLocalAddress: msimpson@simpsons.example.com
 o: The Simpsons
+objectclass: inetLocalMailRecipient
 objectclass: inetOrgPerson
 objectclass: posixAccount
 objectclass: top
@@ -419,8 +431,11 @@ jpegphoto:: R0lGODlhhABwAIcAAAAAAAICBQIEAgUFAQUFBAICCwYICw4EBAsJAgkJCAgJDQ4N
  DgveohM+iSSq/IKGIALlNIIGmWMeGQMWizwjnbWBnUjDL7AASJyeR55EUEQhi6JLiMACf0SCbsk
  lBDxlFAZlVI5lVIZEAA7
 l: Springfield
-mail: marge.simpson@example.com
+mail: marge.simpson@simpsons.example.com
+mailHost: simpsons.host
+mailRoutingAddress: msimpson@simpsons.example.com
 o: The Simpsons
+objectclass: inetLocalMailRecipient
 objectclass: inetOrgPerson
 objectclass: posixAccount
 objectclass: top
