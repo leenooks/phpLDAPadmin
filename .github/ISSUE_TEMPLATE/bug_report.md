@@ -21,11 +21,11 @@ Steps to reproduce the behavior:
 A clear and concise description of what you expected to happen.
 
 **Screenshots**
-If applicable, add screenshots to help explain your problem.
+If applicable, add screenshots to help explain your problem. Also include any logs or backtrace information
 
-**Desktop (please complete the following information):**
+**LDAP Server details (please complete the following information):**
  - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
+ - Server Name [e.g. OpenLDAP, Windows AD,...]
  - Version [e.g. 22]
 
 **Smartphone (please complete the following information):**
