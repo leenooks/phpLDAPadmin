@@ -37,6 +37,8 @@ class Template extends xmlTemplate {
 	private $invalid_reason;
 	# The TEMPLATE structural objectclasses
 	protected $structural_oclass = array();
+	# The objectclasses for which this template is the default
+	protected $defaultfor_oclass = array();
 	protected $description = '';
 	# Is this a read-only template (only valid in modification templates)
 	private $readonly = false;
@@ -124,6 +126,31 @@ class Template extends xmlTemplate {
 
 					break;
 
+				# Record our defaultFor object Classes from the Template.
+				case ('defaultforobjectclasses'):
+					if (DEBUG_ENABLED)
+						debug_log('Case [%s]',4,0,__FILE__,__LINE__,__METHOD__,$xml_key);
+
+					if (isset($xmldata['template'][$xml_key]['defaultforobjectclass']))
+						if (is_array($xmldata['template'][$xml_key]['defaultforobjectclass'])) {
+							foreach ($xmldata['template'][$xml_key]['defaultforobjectclass'] as $index => $details) {
+
+								# If we havent recorded this objectclass already, do so now.
+								if (! in_array($details,$this->defaultfor_oclass))
+									array_push($this->defaultfor_oclass,$details);
+							}
+
+						} else {
+							# XML files with only 1 objectClass dont have a numeric index.
+							$soc = $xmldata['template'][$xml_key]['defaultforobjectclass'];
+
+							# If we havent recorded this objectclass already, do so now.
+							if (! in_array($soc,$this->defaultfor_oclass))
+								array_push($this->defaultfor_oclass,$soc);
+						}
+
+					break;
+
 				# Build our attribute list from the DN and Template.
 				case ('attributes'):
 					if (DEBUG_ENABLED)
@@ -179,6 +206,7 @@ class Template extends xmlTemplate {
 
 					if ($xml_key == 'invalid' && $xml_value)
 						$this->setInvalid(_('Disabled by XML configuration'),true);
+
 			}
 		}
 
@@ -919,6 +947,15 @@ class Template extends xmlTemplate {
 
 	public function setInvisible() {
 		$this->visible = false;
+	}
+
+	/**
+	 * Get the objectclasses for which this template is the default
+	 *
+	 * @return array The objectclasses
+	 */
+	public function getDefaultForObjectClass() {
+		return $this->defaultfor_oclass;
 	}
 
 	public function getRegExp() {
