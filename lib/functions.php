@@ -2425,7 +2425,7 @@ function password_check($cryptedpassword,$plainpassword,$attribute='userpassword
 		case 'smd5':
 			$hash = base64_decode($cryptedpassword);
 			$salt = substr($hash,16);
-			$new_hash = base64_encode(md5($plainpassword.$salt).$salt, true);
+			$new_hash = base64_encode(md5($plainpassword.$salt, true).$salt);
 
 			if (strcmp($cryptedpassword,$new_hash) == 0)
 				return true;
