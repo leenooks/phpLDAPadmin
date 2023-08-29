@@ -73,6 +73,10 @@ table.dataTable thead .sorting {
 @todo The unopened lazy branches off the tree are off by 5px. see *-cdl. below
 @todo The last node is missing some dots, connecting to the previous node
 */
+/* So our tree can be longer than the frame */
+.scrollbar-sidebar {
+	overflow: auto;
+}
 /* Tree Placement */
 #tree > ul {
 	padding-left: 0;
