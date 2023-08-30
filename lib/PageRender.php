@@ -360,6 +360,32 @@ class PageRender extends Visitor {
 			else
 				$this->drawTemplateChoice();
 
+		# If mode is modification, use a DefaultForObjectClass template if exaclty 1 matches. Propose the template choice otherwise.
+		} elseif (($this->getMode() == 'modification') && (! isset($_REQUEST['template']))) {
+			if (DEBUGTMP) printf('<font size=-2>%s:<u>%s</u></font><br />',__METHOD__,'DEFAULTFOROBJECTCLASS template if only 1 template matches.');
+
+			$dn = $this->getModeContainer();
+			$server = $this->getServer();
+			$dnojcs = $server->getDNAttrValue($dn,'objectClass');
+			$matchingtmplIDs = array();
+			$unmatchingtmplIDs = array();
+			$tpldefojc = array();
+			foreach ($templates->getTemplates($this->getMode(),$this->getModeContainer(),true) as $tpl) {
+				$tpldefojc = $tpl->getDefaultForObjectClass();
+				if (array_intersect($tpldefojc,$dnojcs)) {
+					array_push($matchingtmplIDs,$tpl->getID());
+				} else {
+					array_push($unmatchingtmplIDs,$tpl->getID());
+				}
+			}
+			if (count($matchingtmplIDs) == 0)       # No matching DefaultForObjectClass found,
+				return 'none';                      # so we use the default template.
+			elseif (count($matchingtmplIDs) == 1)   # Exactly 1 matching DefaultForObjectClass found,
+				return $matchingtmplIDs[0];         # so we use it.
+			elseif (count($unmatchingtmplIDs) == 0) # No template found at all,
+				return 'none';                      # so we use the default template.
+			else                                    # Multiple templates found,
+				$this->drawTemplateChoice();        # so propose the template choice.
 		} else {
 			if (DEBUGTMP) printf('<font size=-2>%s:<u>%s</u></font><br />',__METHOD__,'SELECT a template to use.');
 
