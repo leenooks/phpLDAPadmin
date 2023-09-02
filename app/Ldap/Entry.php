@@ -104,6 +104,21 @@ class Entry extends Model
 	}
 
 	/**
+	 * Return a list of available attributes - as per the objectClass entry of the record
+	 *
+	 * @return Collection
+	 */
+	public function getAvailableAttributes(): Collection
+	{
+		$result = collect();
+
+		foreach ($this->objectclass as $oc)
+			$result = $result->merge(config('server')->schema('objectclasses',$oc)->attributes);
+
+		return $result;
+	}
+
+	/**
 	 * Return a list of LDAP internal attributes
 	 *
 	 * @return Collection
@@ -113,6 +128,16 @@ class Entry extends Model
 		return collect($this->getAttributes())->filter(function($item) {
 			return $item->is_internal;
 		});
+	}
+
+	/**
+	 * Return a list of attributes without any values
+	 *
+	 * @return Collection
+	 */
+	public function getMissingAttributes(): Collection
+	{
+		return $this->getAvailableAttributes()->diff($this->getVisibleAttributes());
 	}
 
 	/**

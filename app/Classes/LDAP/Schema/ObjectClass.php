@@ -200,6 +200,9 @@ final class ObjectClass extends Base {
 	public function __get(string $key): mixed
 	{
 		switch ($key) {
+			case 'attributes':
+				return $this->getAllAttrs();
+
 			case 'sup':
 				return $this->sup_classes;
 
@@ -217,6 +220,16 @@ final class ObjectClass extends Base {
 	}
 
 	/**
+	 * Return a list of attributes that this objectClass provides
+	 *
+	 * @return Collection
+	 */
+	public function getAllAttrs(): Collection
+	{
+		return $this->getMustAttrs()->merge($this->getMayAttrs());
+	}
+
+	/**
 	 * Adds an objectClass to the list of objectClasses that inherit
 	 * from this objectClass.
 	 *
@@ -227,6 +240,17 @@ final class ObjectClass extends Base {
 		if ($this->child_objectclasses->search($name) === FALSE) {
 			$this->child_objectclasses->push($name);
 		}
+	}
+
+	/**
+	 * Returns the array of objectClass names which inherit from this objectClass.
+	 *
+	 * @return Collection Names of objectClasses which inherit from this objectClass.
+	 * @deprecated use $this->child_objectclasses
+	 */
+	public function getChildObjectClasses(): Collection
+	{
+		return $this->child_objectclasses;
 	}
 
 	/**
@@ -398,6 +422,27 @@ final class ObjectClass extends Base {
 	}
 
 	/**
+	 * Gets the objectClass names from which this objectClass inherits.
+	 *
+	 * @return Collection An array of objectClass names (strings)
+	 * @deprecated use $this->sup_classes;
+	 */
+	public function getSupClasses(): Collection
+	{
+		return $this->sup_classes;
+	}
+
+	/**
+	 * Gets the type of this objectClass: STRUCTURAL, ABSTRACT, or AUXILIARY.
+	 *
+	 * @deprecated use $this->type_name
+	 */
+	public function getType()
+	{
+		return $this->type;
+	}
+
+	/**
 	 * Determine if an array is listed in the may_force attrs
 	 */
 	public function isForceMay(string $attr): bool
@@ -491,36 +536,5 @@ final class ObjectClass extends Base {
 		$attrs = $attrs->sort();
 
 		return $i;
-	}
-
-	/**
-	 * Returns the array of objectClass names which inherit from this objectClass.
-	 *
-	 * @return Collection Names of objectClasses which inherit from this objectClass.
-	 * @deprecated use $this->child_objectclasses
-	 */
-	public function getChildObjectClasses(): Collection
-	{
-		return $this->child_objectclasses;
-	}
-
-	/**
-	 * Gets the objectClass names from which this objectClass inherits.
-	 *
-	 * @return array An array of objectClass names (strings)
-	 * @deprecated use $this->sup_classes;
-	 */
-	public function getSupClasses() {
-		return $this->sup_classes;
-	}
-
-	/**
-	 * Gets the type of this objectClass: STRUCTURAL, ABSTRACT, or AUXILIARY.
-	 *
-	 * @deprecated use $this->type_name
-	 */
-	public function getType()
-	{
-		return $this->type;
 	}
 }

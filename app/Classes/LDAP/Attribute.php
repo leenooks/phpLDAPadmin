@@ -120,6 +120,8 @@ class Attribute
 	public function __get(string $key): mixed
 	{
 		return match ($key) {
+			// List all the attributes
+			'attributes' => $this->attributes(),
 			// Can this attribute have more values
 			'can_addvalues' => $this->schema && (! $this->schema->is_single_value) && ((! $this->max_values_count) || ($this->values->count() < $this->max_values_count)),
 			// Schema attribute description
@@ -141,6 +143,11 @@ class Attribute
 
 			default => throw new \Exception('Unknown key:' . $key),
 		};
+	}
+
+	public function __toString(): string
+	{
+		return $this->__get('name');
 	}
 
 	/**

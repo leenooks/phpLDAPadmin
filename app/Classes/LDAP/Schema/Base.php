@@ -46,6 +46,16 @@ abstract class Base {
 		}
 	}
 
+	public function __isset(string $key): bool
+	{
+		return isset($this->{$key});
+	}
+
+	public function __toString(): string
+	{
+		return $this->name;
+	}
+
 	/**
 	 * @return string
 	 * @deprecated replace with $class->description
