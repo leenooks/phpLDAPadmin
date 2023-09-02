@@ -13,7 +13,7 @@ function expandChildren(node) {
 
 function getNode(item) {
 	$.ajax({
-		url: 'dn',
+		url: '/dn',
 		method: 'POST',
 		data: { key: item },
 		dataType: 'html',

@@ -18,10 +18,11 @@ final class JpegPhoto extends Binary
 		$this->internal = FALSE;
 	}
 
-	public function render(bool $edit=FALSE): View
+	public function render(bool $edit=FALSE,bool $blank=FALSE): View
 	{
 		return view('components.attribute.binary.jpegphoto')
 			->with('edit',$edit)
+			->with('blank',$blank)
 			->with('o',$this)
 			->with('f',new \finfo);
 	}

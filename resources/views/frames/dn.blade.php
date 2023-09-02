@@ -49,6 +49,7 @@
 		</div>
 	@endif
 
+	<!-- @todo If we are redirected here, check old() and add back any attributes that were in the original submission -->
 	@if($errors->any())
 		<div class="alert alert-danger">
 			<h4 class="alert-heading"><i class="fas fa-fw fa-thumbs-down"></i> Error?</h4>
@@ -75,38 +76,48 @@
 				<div class="tab-content">
 					<!-- All Attributes -->
 					<div class="tab-pane active" id="attributes" role="tabpanel">
-						<form id="form-entry" method="POST" class="needs-validation" action="{{ url('entry/update') }}" novalidate>
+						<form id="dn-edit" method="POST" class="needs-validation" action="{{ url('entry/update/pending') }}" novalidate>
 							@csrf
 
 							<input type="hidden" name="dn" value="{{ $o->getDNSecure() }}">
 
+							@foreach ($o->getVisibleAttributes() as $ao)
+								<x-attribute-type :edit="true" :o="$ao"/>
+							@endforeach
+
+							<div id="newattrs"></div>
+
+							<!-- Add new attributes -->
 							<div class="row">
-								<div class="col-12 offset-lg-2 col-lg-8">
-									<table class="table">
-										@foreach ($o->getVisibleAttributes() as $ao)
-											<tr class="bg-light text-dark small">
-												<th class="w-25">
-													<abbr title="{{ $ao->description }}">{{ $ao->name }}</abbr>
-													<!-- Attribute Hints -->
-													<span class="float-end">
-														@foreach($ao->hints as $name => $description)
-															@if ($loop->index),@endif
-															<abbr title="{{ $description }}">{{ $name }}</abbr>
-														@endforeach
-													</span>
-												</th>
-											</tr>
-											<tr>
-												<td class="ps-5">
-													<x-attribute :edit="true" :o="$ao"/>
-												</td>
-											</tr>
-										@endforeach
-									</table>
+								<div class="col-12 col-sm-1 col-md-2"></div>
+								<div class="col-12 col-sm-10 col-md-8">
+									<div class="d-none" id="newattr-select">
+
+									@if($o->getMissingAttributes()->count())
+										<div class="row">
+											<div class="col-12 bg-dark text-light p-2">
+												<i class="fas fa-plus-circle"></i> Add New Attribute
+											</div>
+										</div>
+
+										<div class="row">
+											<div class="col-12 pt-2">
+												<label for="newattr" class="form-label">Select from...</label>
+												<select class="form-select" id="newattr">
+													<option value="">&nbsp;</option>
+													@foreach ($o->getMissingAttributes() as $ao)
+														<option value="{{ $ao->name_lc }}">{{ $ao->name }}</option>
+													@endforeach
+												</select>
+											</div>
+										</div>
+									@endif
+									</div>
 								</div>
+								<div class="col-2"></div>
 							</div>
 
-							<div class="row d-none">
+							<div class="row d-none pt-3">
 								<div class="col-12 offset-sm-2 col-sm-4 col-lg-2">
 									<span id="form-reset" class="btn btn-outline-danger">@lang('Reset')</span>
 									<span id="form-submit" class="btn btn-success">@lang('Update')</span>
@@ -140,11 +151,14 @@
 					<!-- Debug -->
 					<div class="tab-pane" id="debug" role="tabpanel">
 						<div class="row">
-							<div class="col-6">
+							<div class="col-4">
 								@dump($o)
 							</div>
-							<div class="col-6">
+							<div class="col-4">
 								@dump($o->getAttributes())
+							</div>
+							<div class="col-4">
+								@dump(['available'=>$o->getAvailableAttributes()->pluck('name'),'missing'=>$o->getMissingAttributes()->pluck('name')])
 							</div>
 						</div>
 					</div>
@@ -167,22 +181,43 @@
 			$('.row.d-none').removeClass('d-none');
 			$('.addable.d-none').removeClass('d-none');
 			$('.deletable.d-none').removeClass('d-none');
+
+			@if($o->getMissingAttributes()->count())
+				$('#newattr-select.d-none').removeClass('d-none');
+			@endif
 		}
 
 		$(document).ready(function() {
-			$('#reset').click(function() {
-				$('#form-entry')[0].reset();
+			$('#form-reset').click(function() {
+				$('#dn-edit')[0].reset();
 			})
 
 			$('#form-submit').click(function() {
-				$('#form-entry')[0].submit();
+				$('#dn-edit')[0].submit();
 			})
 
-			// Create a new entry when Add Value clicked
-			$('.addable').click(function(item) {
-				var cln = $(this).parent().parent().find('input:last').clone();
-				cln.val('').attr('placeholder','[@lang('NEW')]');
-				cln.appendTo('#'+item.currentTarget.id)
+			$('#newattr').on('change',function(item) {
+				$.ajax({
+					type: 'GET',
+					beforeSend: function() {
+					},
+					success: function(data) {
+						$('#newattrs').append(data);
+					},
+					error: function(e) {
+						if (e.status != 412)
+							alert('That didnt work? Please try again....');
+					},
+					url: '{{ url('entry/newattr') }}/'+item.target.value,
+					cache: false
+				})
+
+				// Remove the option from the list
+				$(this).find('[value="'+item.target.value+'"]').remove()
+
+				// If there are no more options
+				if ($(this).find("option").length === 1)
+					$('#newattr-select').remove();
 			});
 
 			$('button[id=entry-edit]').on('click',function(item) {

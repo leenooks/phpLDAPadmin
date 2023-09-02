@@ -39,4 +39,6 @@ Route::group(['prefix'=>'user'],function() {
 	Route::get('image',[HomeController::class,'user_image']);
 });
 
-Route::post('entry/update',[HomeController::class,'entry_update']);
+Route::post('entry/update/commit',[HomeController::class,'entry_update']);
+Route::post('entry/update/pending',[HomeController::class,'entry_pending_update']);
+Route::get('entry/newattr/{id}',[HomeController::class,'entry_newattr']);

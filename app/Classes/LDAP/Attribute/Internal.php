@@ -13,7 +13,7 @@ abstract class Internal extends Attribute
 {
 	protected bool $is_internal = TRUE;
 
-	public function render(bool $edit=FALSE): View
+	public function render(bool $edit=FALSE,bool $blank=FALSE): View
 	{
 		// @note Internal attributes cannot be edited
 		return view('components.attribute.internal')

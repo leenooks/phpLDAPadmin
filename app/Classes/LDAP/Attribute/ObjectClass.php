@@ -39,7 +39,7 @@ final class ObjectClass extends Attribute
 		return $this->structural->search($value) !== FALSE;
 	}
 
-	public function render(bool $edit=FALSE): View
+	public function render(bool $edit=FALSE,bool $blank=FALSE): View
 	{
 		return view('components.attribute.objectclass')
 			->with('edit',$edit)

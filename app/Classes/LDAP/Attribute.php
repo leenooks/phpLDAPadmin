@@ -97,6 +97,7 @@ class Attribute
 		$this->name = $name;
 		$this->values = collect($values);
 		$this->lang_tags = collect();
+		$this->required_by = collect();
 
 		// No need to load our schema for internal attributes
 		if (! $this->is_internal)
@@ -182,9 +183,10 @@ class Attribute
 	 * Display the attribute value
 	 *
 	 * @param bool $edit
+	 * @param bool $blank
 	 * @return View
 	 */
-	public function render(bool $edit=FALSE): View
+	public function render(bool $edit=FALSE,bool $blank=FALSE): View
 	{
 		return view('components.attribute')
 			->with('edit',$edit)

@@ -8,14 +8,16 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redirect;
 use LdapRecord\Exceptions\InsufficientAccessException;
 use LdapRecord\LdapRecordException;
 use LdapRecord\Query\ObjectNotFoundException;
 
-use App\Classes\LDAP\Server;
+use App\Classes\LDAP\{Attribute,Server};
 use App\Exceptions\InvalidUsage;
 use App\Http\Requests\EntryRequest;
+use App\View\Components\AttributeType;
 
 class HomeController extends Controller
 {
@@ -47,7 +49,20 @@ class HomeController extends Controller
 			->with('page_actions',$page_actions);
 	}
 
-	public function entry_update(EntryRequest $request)
+	public function entry_newattr(string $id)
+	{
+		$x = new AttributeType(new Attribute($id,[]),TRUE);
+		return $x->render();
+	}
+
+	/**
+	 * Show a confirmation to update a DN
+	 *
+	 * @param EntryRequest $request
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse
+	 * @throws ObjectNotFoundException
+	 */
+	public function entry_pending_update(EntryRequest $request)
 	{
 		$dn = Crypt::decryptString($request->dn);
 
@@ -56,10 +71,60 @@ class HomeController extends Controller
 		foreach ($request->except(['_token','dn']) as $key => $value)
 			$o->{$key} = array_filter($value);
 
-		Session::put('dn',$request->dn);
+		if (! $o->getDirty())
+			return back()
+				->withInput()
+				->with('note',__('No attributes changed'));
+
+		$base = Server::baseDNs() ?: collect();
+
+		$bases = $base->transform(function($item) {
+			return [
+				'title'=>$item->getRdn(),
+				'item'=>$item->getDNSecure(),
+				'lazy'=>TRUE,
+				'icon'=>'fa-fw fas fa-sitemap',
+				'tooltip'=>$item->getDn(),
+			];
+		});
+
+		return view('frames.update')
+			->with('bases',$bases)
+			->with('dn',$dn)
+			->with('o',$o);
+	}
+
+	/**
+	 * Update a DN entry
+	 *
+	 * @param EntryRequest $request
+	 * @return \Illuminate\Http\RedirectResponse
+	 * @throws ObjectNotFoundException
+	 */
+	public function entry_update(EntryRequest $request)
+	{
+		$base = Server::baseDNs() ?: collect();
+
+		$bases = $base->transform(function($item) {
+			return [
+				'title'=>$item->getRdn(),
+				'item'=>$item->getDNSecure(),
+				'lazy'=>TRUE,
+				'icon'=>'fa-fw fas fa-sitemap',
+				'tooltip'=>$item->getDn(),
+			];
+		});
+
+		$dn = Crypt::decryptString($request->dn);
+
+		$o = config('server')->fetch($dn);
+
+		foreach ($request->except(['_token','dn']) as $key => $value)
+			$o->{$key} = array_filter($value);
 
 		if (! $dirty=$o->getDirty())
 			return back()
+				->withInput()
 				->with('note',__('No attributes changed'));
 
 		try {
@@ -70,7 +135,8 @@ class HomeController extends Controller
 
 			switch ($x=$e->getDetailedError()->getErrorCode()) {
 				case 50:
-					return back()
+					return Redirect::to('/')
+						->withInput()
 						->withErrors(sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
 
 				default:
@@ -82,7 +148,8 @@ class HomeController extends Controller
 
 			switch ($x=$e->getDetailedError()->getErrorCode()) {
 				case 8:
-					return back()
+					return Redirect::to('/')
+						->withInput()
 						->withErrors(sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
 
 				default:
@@ -90,7 +157,8 @@ class HomeController extends Controller
 			}
 		}
 
-		return back()
+		return Redirect::to('/')
+			->withInput()
 			->with('success',__('Entry updated'))
 			->with('updated',$dirty);
 	}
