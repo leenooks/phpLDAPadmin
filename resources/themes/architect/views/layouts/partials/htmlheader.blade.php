@@ -11,7 +11,7 @@
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 
 	<title>{{ config('app.name') }} - @yield('htmlheader_title','🥇 The BEST ldap admin tool!')</title>
-	<link rel="shortcut icon" href="{{ config('app.favicon','favicon.ico') }}" />
+	<link rel="shortcut icon" href="/{{ config('app.favicon','favicon.ico') }}" />
 
 	<!-- App CSS -->
 	<link rel="stylesheet" href="{{ asset('/css/app.css') }}">
