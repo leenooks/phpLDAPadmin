@@ -991,7 +991,7 @@ class ldap extends DS {
 		$return = $dn;
 
 		foreach ($this->getBaseDN() as $base) {
-			if (preg_match("/${base}$/i",$dn)) {
+			if (preg_match('/' . $base . '$/i',$dn)) {
 				$return = $base;
 				break;
 			}
