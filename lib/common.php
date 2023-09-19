@@ -134,6 +134,7 @@ if (function_exists('app_error_handler'))
 	set_error_handler('app_error_handler');
 
 # Disable error reporting until all our required functions are loaded.
+$errorlevel = error_reporting();
 error_reporting(0);
 
 /**
@@ -153,7 +154,7 @@ if (ob_get_level())
 	ob_end_clean();
 
 # We are now ready for error reporting.
-error_reporting(E_ALL);
+error_reporting($errorlevel);
 
 # Start our session.
 app_session_start();
