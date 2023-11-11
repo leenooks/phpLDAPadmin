@@ -13,7 +13,7 @@
         "@fortawesome/fontawesome-free": "^6.3.0",
         "@popperjs/core": "^2.11.6",
         "animate-sass": "^0.8.2",
-        "axios": "^1.3.4",
+        "axios": "^1.6.0",
         "bootstrap": "^5.2.3",
         "jquery": "^3.6.3",
         "jquery-ui": "^1.13.2",
