@@ -541,7 +541,7 @@ class ImportLDIF extends Import {
 						array_merge(array($currentLine),$lines));
 
 				$currentLine = array_shift($lines);
-				if (trim($currentLine))
+				if (is_string($currentLine) && trim($currentLine) !== '')
 					$processline = true;
 			}
 
