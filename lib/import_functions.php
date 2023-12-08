@@ -181,7 +181,7 @@ class ImportLDIF extends Import {
 			$server = $this->getServer();
 
 			# The first line should be the DN
-			if (preg_match('/^dn:/',$lines[0])) {
+			if (array_key_exists(0, $lines) && preg_match('/^dn:/', $lines[0])) {
 				list($text,$dn) = $this->getAttrValue(array_shift($lines));
 
 				# The second line should be our changetype
@@ -263,7 +263,7 @@ class ImportLDIF extends Import {
 	/**
 	 * Get the lines of the next entry
 	 *
-	 * @return The lines (unfolded) of the next entry
+	 * @return array The lines (unfolded) of the next entry
 	 */
 	private function nextLines() {
 		$current = array();
