@@ -103,6 +103,16 @@ return [
 	*/
 
 	/*
+	 * If 'login,attr' is used above such that phpLDAPadmin will search for your DN
+	 * at login, you may restrict the search to a specific objectClasses. EG, set this
+	 * to array('posixAccount') or array('inetOrgPerson',..), depending upon your
+	 * setup.
+	 */
+	'login' => [
+		'objectclass' => explode(',',env('LDAP_LOGIN_OBJECTCLASS', 'posixAccount')),		// Objectclass that users must contain to login
+	],
+
+	/*
 	 |--------------------------------------------------------------------------
 	 | Custom Date Format
 	 |--------------------------------------------------------------------------

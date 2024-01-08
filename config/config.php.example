@@ -377,12 +377,6 @@ $servers->setValue('server','name','My LDAP Server');
    Base DNs are used. */
 // $servers->setValue('login','base',array());
 
-/* If 'login,attr' is used above such that phpLDAPadmin will search for your DN
-   at login, you may restrict the search to a specific objectClasses. EG, set this
-   to array('posixAccount') or array('inetOrgPerson',..), depending upon your
-   setup. */
-// $servers->setValue('login','class',array());
-
 /* If login_attr was set to 'dn', it is possible to specify a template string to
    build the DN from. Use '%s' where user input should be inserted. A user may
    still enter the complete DN. In this case the template will not be used. */
