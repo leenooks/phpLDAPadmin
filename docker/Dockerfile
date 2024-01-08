@@ -1,4 +1,4 @@
-FROM registry.dege.au/leenooks/php:8.1-fpm-alpine-ldap
+FROM registry.dege.au/leenooks/php:8.1-fpm-ldap
 
 COPY . /var/www/html/
 
