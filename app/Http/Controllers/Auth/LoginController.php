@@ -45,7 +45,7 @@ class LoginController extends Controller
 	protected function credentials(Request $request): array
 	{
 		return [
-			'mail' => $request->get('email'),
+			login_attr_name() => $request->get(login_attr_name()),
 			'password' => $request->get('password'),
 		];
 	}
@@ -90,5 +90,15 @@ class LoginController extends Controller
 			$login_note = file_get_contents('login_note.txt');
 
 		return view('architect::auth.login')->with('login_note',$login_note);
+	}
+
+	/**
+	 * Get the login username to be used by the controller.
+	 *
+	 * @return string
+	 */
+	public function username()
+	{
+		return login_attr_name();
 	}
 }

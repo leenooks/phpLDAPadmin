@@ -109,6 +109,7 @@ return [
 	 * setup.
 	 */
 	'login' => [
+		'attr' => [env('LDAP_LOGIN_ATTR','uid') => env('LDAP_LOGIN_ATTR_DESC','User ID')],	// Attribute used to find user for login
 		'objectclass' => explode(',',env('LDAP_LOGIN_OBJECTCLASS', 'posixAccount')),		// Objectclass that users must contain to login
 	],
 

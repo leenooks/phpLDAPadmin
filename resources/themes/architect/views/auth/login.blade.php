@@ -35,10 +35,10 @@
 
 										<div class="form-row">
 											<div class="col-md-12 mt-3">
-												<label class="mb-1">Email</label>
-												<input name="email" id="user" placeholder="" type="email" class="form-control" required="">
+												<label class="mb-1">{{ login_attr_description() }}</label>
+												<input name="{{ login_attr_name() }}" id="user" placeholder="" type="@if(in_array(login_attr_name(),['mail','email'])) email @else text @endif" class="form-control" required="">
 												<div class="invalid-feedback">
-													@lang('Please enter your email')
+													@lang('Please enter your '.strtolower(login_attr_description()))
 												</div>
 											</div>
 
