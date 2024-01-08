@@ -9,13 +9,11 @@ class User extends Model
 {
 	use HasApiTokens;
 
-    /**
-     * The object classes of the LDAP model.
-     *
-     * @var array
-     */
-    public static $objectClasses = [
-    	'posixAccount',
+	/**
+	 * The object classes of the LDAP model.
+	 */
+	public static array $objectClasses = [
+		'posixAccount',
 	];
 
 	/* METHODS */

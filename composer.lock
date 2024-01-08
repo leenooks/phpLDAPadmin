@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5e0b94cce52b70713ef8a539068f372b",
+    "content-hash": "dd86911a178e14a3543bf4096ba93328",
     "packages": [
         {
             "name": "brick/math",
@@ -274,30 +274,32 @@
         },
         {
             "name": "directorytree/ldaprecord",
-            "version": "v2.20.5",
+            "version": "v3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DirectoryTree/LdapRecord.git",
-                "reference": "5bd0a5a9d257cf1049ae83055dbba4c3479ddf16"
+                "reference": "17540a7740964418c1eba251d31369a276a48a76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DirectoryTree/LdapRecord/zipball/5bd0a5a9d257cf1049ae83055dbba4c3479ddf16",
-                "reference": "5bd0a5a9d257cf1049ae83055dbba4c3479ddf16",
+                "url": "https://api.github.com/repos/DirectoryTree/LdapRecord/zipball/17540a7740964418c1eba251d31369a276a48a76",
+                "reference": "17540a7740964418c1eba251d31369a276a48a76",
                 "shasum": ""
             },
             "require": {
+                "ext-iconv": "*",
                 "ext-json": "*",
                 "ext-ldap": "*",
-                "illuminate/contracts": "^5.0|^6.0|^7.0|^8.0|^9.0|^10.0",
-                "nesbot/carbon": "^1.0|^2.0",
-                "php": ">=7.3",
-                "psr/log": "^1.0|^2.0|^3.0",
-                "psr/simple-cache": "^1.0|^2.0",
-                "symfony/polyfill-php80": "^1.25",
-                "tightenco/collect": "^5.6|^6.0|^7.0|^8.0|^9.0"
+                "illuminate/collections": "^8.0|^9.0|^10.0",
+                "illuminate/contracts": "^8.0|^9.0|^10.0",
+                "nesbot/carbon": "*",
+                "php": ">=8.1",
+                "psr/log": "*",
+                "psr/simple-cache": "^1.0|^2.0|^3.0"
             },
             "require-dev": {
+                "fakerphp/faker": "^1.21",
+                "laravel/pint": "^1.6",
                 "mockery/mockery": "^1.0",
                 "phpunit/phpunit": "^9.0",
                 "spatie/ray": "^1.24"
@@ -344,35 +346,36 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-10-11T16:34:34+00:00"
+            "time": "2023-11-08T20:58:22+00:00"
         },
         {
             "name": "directorytree/ldaprecord-laravel",
-            "version": "v2.7.3",
+            "version": "v3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/DirectoryTree/LdapRecord-Laravel.git",
-                "reference": "5f36d4ba6edbf56d97211fb892188aa6f9aceabc"
+                "reference": "aaaa1adee6109267c01e9a48518175a56b390b75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/DirectoryTree/LdapRecord-Laravel/zipball/5f36d4ba6edbf56d97211fb892188aa6f9aceabc",
-                "reference": "5f36d4ba6edbf56d97211fb892188aa6f9aceabc",
+                "url": "https://api.github.com/repos/DirectoryTree/LdapRecord-Laravel/zipball/aaaa1adee6109267c01e9a48518175a56b390b75",
+                "reference": "aaaa1adee6109267c01e9a48518175a56b390b75",
                 "shasum": ""
             },
             "require": {
-                "directorytree/ldaprecord": "^2.4.4",
+                "directorytree/ldaprecord": "^v3.3",
                 "ext-json": "*",
                 "ext-ldap": "*",
-                "illuminate/support": "^5.6|^6.0|^7.0|^8.0|^9.0|^10.0",
-                "php": ">=7.3",
+                "illuminate/support": "^8.0|^9.0|^10.0",
+                "php": ">=8.1",
                 "ramsey/uuid": "*"
             },
             "require-dev": {
+                "laravel/pint": "^1.9",
                 "laravel/sanctum": "*",
                 "mockery/mockery": "^1.0",
-                "orchestra/testbench": "^3.7|^4.0|^5.0|^6.0|^7.0",
-                "phpunit/phpunit": "^7.0|^8.0|^9.0",
+                "orchestra/testbench": "^6.0|^7.0|^8.0",
+                "phpunit/phpunit": "^8.0|^9.0|^10.0",
                 "spatie/ray": "^1.28"
             },
             "type": "project",
@@ -402,7 +405,7 @@
             ],
             "support": {
                 "issues": "https://github.com/DirectoryTree/LdapRecord-Laravel/issues",
-                "source": "https://github.com/DirectoryTree/LdapRecord-Laravel/tree/v2.7.3"
+                "source": "https://github.com/DirectoryTree/LdapRecord-Laravel/tree/v3.1.2"
             },
             "funding": [
                 {
@@ -410,7 +413,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-02-09T14:29:14+00:00"
+            "time": "2023-11-09T14:51:25+00:00"
         },
         {
             "name": "doctrine/inflector",
@@ -3885,16 +3888,16 @@
         },
         {
             "name": "psr/simple-cache",
-            "version": "2.0.0",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/simple-cache.git",
-                "reference": "8707bf3cea6f710bf6ef05491234e3ab06f6432a"
+                "reference": "764e0b3939f5ca87cb904f570ef9be2d78a07865"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/8707bf3cea6f710bf6ef05491234e3ab06f6432a",
-                "reference": "8707bf3cea6f710bf6ef05491234e3ab06f6432a",
+                "url": "https://api.github.com/repos/php-fig/simple-cache/zipball/764e0b3939f5ca87cb904f570ef9be2d78a07865",
+                "reference": "764e0b3939f5ca87cb904f570ef9be2d78a07865",
                 "shasum": ""
             },
             "require": {
@@ -3903,7 +3906,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.0.x-dev"
+                    "dev-master": "3.0.x-dev"
                 }
             },
             "autoload": {
@@ -3930,9 +3933,9 @@
                 "simple-cache"
             ],
             "support": {
-                "source": "https://github.com/php-fig/simple-cache/tree/2.0.0"
+                "source": "https://github.com/php-fig/simple-cache/tree/3.0.0"
             },
-            "time": "2021-10-29T13:22:09+00:00"
+            "time": "2021-10-29T13:26:27+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -6504,60 +6507,6 @@
                 }
             ],
             "time": "2023-12-28T19:16:56+00:00"
-        },
-        {
-            "name": "tightenco/collect",
-            "version": "v9.52.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tighten/collect.git",
-                "reference": "b15143cd11fe01a700fcc449df61adc64452fa6d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tighten/collect/zipball/b15143cd11fe01a700fcc449df61adc64452fa6d",
-                "reference": "b15143cd11fe01a700fcc449df61adc64452fa6d",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.0",
-                "symfony/var-dumper": "^3.4 || ^4.0 || ^5.0 || ^6.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.0",
-                "nesbot/carbon": "^2.23.0",
-                "phpunit/phpunit": "^8.3"
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/Collect/Support/helpers.php",
-                    "src/Collect/Support/alias.php"
-                ],
-                "psr-4": {
-                    "Tightenco\\Collect\\": "src/Collect"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylorotwell@gmail.com"
-                }
-            ],
-            "description": "Collect - Illuminate Collections as a separate package.",
-            "keywords": [
-                "collection",
-                "laravel"
-            ],
-            "support": {
-                "issues": "https://github.com/tighten/collect/issues",
-                "source": "https://github.com/tighten/collect/tree/v9.52.7"
-            },
-            "time": "2023-04-14T21:51:36+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

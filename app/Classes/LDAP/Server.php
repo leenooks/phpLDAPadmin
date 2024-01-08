@@ -247,7 +247,7 @@ final class Server
 			->cache(Carbon::now()->addSeconds(Config::get('ldap.cache.time')))
 			->select(['*','hassubordinates'])
 			->setDn($dn)
-			->listing()
+			->list()
 			->get()) ? $x : NULL;
 	}
 

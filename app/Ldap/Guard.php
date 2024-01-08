@@ -8,7 +8,7 @@ use LdapRecord\Auth\Guard as GuardBase;
 
 class Guard extends GuardBase
 {
-	public function attempt($username, $password, $stayBound = false)
+	public function attempt(string $username, string $password, bool $stayBound = false): bool
 	{
 		if ($result = parent::attempt($username,$password,$stayBound)) {
 			/*

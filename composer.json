@@ -7,7 +7,7 @@
     "require": {
         "ext-fileinfo": "*",
         "php": "^8.1|8.2",
-        "directorytree/ldaprecord-laravel": "^2",
+        "directorytree/ldaprecord-laravel": "^3.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.0",
         "laravel/passport": "^11.0",
