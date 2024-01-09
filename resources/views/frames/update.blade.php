@@ -90,7 +90,7 @@
 										@endif
 
 										<td>{{ Arr::get(Arr::get($o->getOriginal(),$key),$xx,'['.strtoupper(__('New Value')).']') }}</td>
-										<td>{{ $y=Arr::get($value,$xx) }}<input type="hidden" name="{{ $key }}[]" value="{{ $y }}"></td>
+										<td>{{ ($y=Arr::get($value,$xx)) ?: '['.strtoupper(__('Deleted')).']' }}<input type="hidden" name="{{ $key }}[]" value="{{ $y }}"></td>
 									@endfor
 								</tr>
 							@endforeach

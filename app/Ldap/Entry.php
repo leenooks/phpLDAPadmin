@@ -138,7 +138,8 @@ class Entry extends Model
 					$o->required_by(collect($this->getAttribute('objectclass')));
 
 					// Store our original value to know if this attribute has changed
-					$o->oldValues(Arr::get($this->original,$attribute));
+					if ($x=Arr::get($this->original,$attribute))
+						$o->oldValues($x);
 
 					$result->put($attribute,$o);
 				}
