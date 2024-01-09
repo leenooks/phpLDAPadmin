@@ -16,6 +16,100 @@ class Entry extends Model
 
 	public function getAttributes(): array
 	{
+		return $this->getAttributesAsObjects()->toArray();
+	}
+
+	/**
+	 * Determine if the new and old values for a given key are equivalent.
+	 */
+	protected function originalIsEquivalent(string $key): bool
+	{
+		if (! array_key_exists($key, $this->original)) {
+			return false;
+		}
+
+		$current = $this->attributes[$key];
+		$original = $this->original[$key];
+
+		if ($current === $original) {
+			return true;
+		}
+
+		//dump(['key'=>$key,'current'=>$current,'original'=>$this->original[$key],'objectvalue'=>$this->getAttributeAsObject($key)->isDirty()]);
+		return ! $this->getAttributeAsObject($key)->isDirty();
+	}
+
+	public function getOriginal(): array
+	{
+		static $result = NULL;
+
+		if (is_null($result)) {
+			$result = collect();
+
+			// @todo Optimise this foreach with getAttributes()
+			foreach (parent::getOriginal() as $attribute => $value) {
+				// If the attribute name has language tags
+				$matches = [];
+				if (preg_match('/^([a-zA-Z]+)(;([a-zA-Z-;]+))+/',$attribute,$matches)) {
+					$attribute = $matches[1];
+
+					// If the attribute doesnt exist we'll create it
+					$o = Arr::get($result,$attribute,Factory::create($attribute,[]));
+					$o->setLangTag($matches[3],$value);
+
+				} else {
+					$o = Factory::create($attribute,$value);
+				}
+
+				if (! $result->has($attribute)) {
+					// Set the rdn flag
+					if (preg_match('/^'.$attribute.'=/i',$this->dn))
+						$o->setRDN();
+
+					// Set required flag
+					$o->required_by(collect($this->getAttribute('objectclass')));
+
+					$result->put($attribute,$o);
+				}
+			}
+		}
+
+		return $result->toArray();
+	}
+
+	/* ATTRIBUTES */
+
+	/**
+	 * Return a key to use for sorting
+	 *
+	 * @todo This should be the DN in reverse order
+	 * @return string
+	 */
+	public function getSortKeyAttribute(): string
+	{
+		return $this->getDn();
+	}
+
+	/* METHODS */
+
+	/**
+	 * Get an attribute as an object
+	 *
+	 * @param string $key
+	 * @return Attribute|null
+	 */
+	public function getAttributeAsObject(string $key): Attribute|null
+	{
+		return Arr::get($this->getAttributesAsObjects(),$key);
+	}
+
+	/**
+	 * Convert all our attribute values into an array of Objects
+	 *
+	 * @return Collection
+	 */
+	protected function getAttributesAsObjects(): Collection
+	{
 		static $result = NULL;
 
 		if (is_null($result)) {
@@ -42,6 +136,9 @@ class Entry extends Model
 
 					// Set required flag
 					$o->required_by(collect($this->getAttribute('objectclass')));
+
+					// Store our original value to know if this attribute has changed
+					$o->oldValues(Arr::get($this->original,$attribute));
 
 					$result->put($attribute,$o);
 				}
@@ -73,34 +170,10 @@ class Entry extends Model
 				// Case where at least one attribute or its friendly name is in $attrs_display_order
 				// return -1 if $a before $b in $attrs_display_order
 				return ($a_key < $b_key) ? -1 : 1;
-			} ])->toArray();
+			} ]);
 		}
 
 		return $result;
-	}
-
-	/* ATTRIBUTES */
-
-	/**
-	 * Return a key to use for sorting
-	 *
-	 * @todo This should be the DN in reverse order
-	 * @return string
-	 */
-	public function getSortKeyAttribute(): string
-	{
-		return $this->getDn();
-	}
-
-	/* METHODS */
-
-	/**
-	 * Return a secure version of the DN
-	 * @return string
-	 */
-	public function getDNSecure(): string
-	{
-		return Crypt::encryptString($this->getDn());
 	}
 
 	/**
@@ -116,6 +189,15 @@ class Entry extends Model
 			$result = $result->merge(config('server')->schema('objectclasses',$oc)->attributes);
 
 		return $result;
+	}
+
+	/**
+	 * Return a secure version of the DN
+	 * @return string
+	 */
+	public function getDNSecure(): string
+	{
+		return Crypt::encryptString($this->getDn());
 	}
 
 	/**

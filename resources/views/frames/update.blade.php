@@ -3,7 +3,7 @@
 @section('page_title')
 	<table class="table table-borderless">
 		<tr>
-			<td class="{{ ($x=Arr::get($o->getAttributes(),'jpegphoto')) ? 'border' : '' }}" rowspan="2">{!! $x ? $x->render() : sprintf('<div class="page-title-icon f32"><i class="%s"></i></div>',$o->icon() ?? "fas fa-info") !!}</td>
+			<td class="{{ ($x=Arr::get($o->getOriginal(),'jpegphoto')) ? 'border' : '' }}" rowspan="2">{!! $x ? $x->render() : sprintf('<div class="page-title-icon f32"><i class="%s"></i></div>',$o->icon() ?? "fas fa-info") !!}</td>
 			<td class="text-end align-text-top p-0 {{ $x ? 'ps-5' : 'pt-2' }}"><strong>{{ $dn }}</strong></td>
 		</tr>
 		<tr>
@@ -89,7 +89,7 @@
 											</tr><tr>
 										@endif
 
-										<td>{{ Arr::get(Arr::get($o->getOriginal(),$key,['['.strtoupper(__('New Value')).']']),$xx) }}</td>
+										<td>{{ Arr::get(Arr::get($o->getOriginal(),$key),$xx,'['.strtoupper(__('New Value')).']') }}</td>
 										<td>{{ $y=Arr::get($value,$xx) }}<input type="hidden" name="{{ $key }}[]" value="{{ $y }}"></td>
 									@endfor
 								</tr>

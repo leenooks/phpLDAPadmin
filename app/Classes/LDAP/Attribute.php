@@ -10,7 +10,7 @@ use App\Classes\LDAP\Schema\AttributeType;
 /**
  * Represents an attribute of an LDAP Object
  */
-class Attribute
+class Attribute implements \Countable, \ArrayAccess
 {
 	// Attribute Name
 	protected string $name;
@@ -40,6 +40,9 @@ class Attribute
 
 	// RFC3866 Language Tags
 	protected Collection $lang_tags;
+
+	// The old values for this attribute - helps with isDirty() to determine if there is an update pending
+	protected Collection $oldValues;
 
 	/*
 	# Has the attribute been modified
@@ -98,6 +101,7 @@ class Attribute
 		$this->values = collect($values);
 		$this->lang_tags = collect();
 		$this->required_by = collect();
+		$this->oldValues = collect();
 
 		// No need to load our schema for internal attributes
 		if (! $this->is_internal)
@@ -151,6 +155,31 @@ class Attribute
 		return $this->__get('name');
 	}
 
+	public function count(): int
+	{
+		return $this->values->count();
+	}
+
+	public function offsetExists(mixed $offset): bool
+	{
+		return ! is_null($this->values->get($offset));
+	}
+
+	public function offsetGet(mixed $offset): mixed
+	{
+		return $this->values->get($offset);
+	}
+
+	public function offsetSet(mixed $offset, mixed $value): void
+	{
+		// We cannot set new values using array syntax
+	}
+
+	public function offsetUnset(mixed $offset): void
+	{
+		// We cannot clear values using array syntax
+	}
+
 	/**
 	 * Return the hints about this attribute, ie: RDN, Required, etc
 	 *
@@ -180,6 +209,24 @@ class Attribute
 	}
 
 	/**
+	 * Determine if this attribute has changes
+	 *
+	 * @return bool
+	 */
+	public function isDirty(): bool
+	{
+		if ($this->oldValues->count() !== $this->values->count())
+			return TRUE;
+
+		return $this->values->diff($this->oldValues)->count() !== 0;
+	}
+
+	public function oldValues(array $array): void
+	{
+		$this->oldValues = collect($array);
+	}
+
+	/**
 	 * Display the attribute value
 	 *
 	 * @param bool $edit
@@ -190,6 +237,7 @@ class Attribute
 	{
 		return view('components.attribute')
 			->with('edit',$edit)
+			->with('new',FALSE)
 			->with('o',$this);
 	}
 
