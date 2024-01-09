@@ -26,6 +26,10 @@ class LdapUserRepository extends LdapUserRepositoryBase
 			return NULL;
 		}
 
+		// For DN based logins
+		if (! empty($credentials['dn']))
+			return $this->query()->find($credentials['dn']);
+
 		// Look for a user using all our baseDNs
 		foreach (Server::baseDNs() as $base) {
 			$query = $this->query()->setBaseDn($base);
