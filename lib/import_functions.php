@@ -175,7 +175,9 @@ class ImportLDIF extends Import {
 					return $this->error(sprintf('%s %s',_('LDIF import only suppports version 1'),$version),$lines);
 
 				$haveVersion = true;
-				$lines = $this->nextLines();
+
+				if (! $lines)
+					$lines = $this->nextLines();
 			}
 
 			$server = $this->getServer();

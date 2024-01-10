@@ -660,6 +660,8 @@ class Template extends xmlTemplate {
 		# If container is not set, we're probably creating the base
 		elseif ($this->getRDN() && get_request('create_base'))
 			return $this->getRDN();
+
+		return '';
 	}
 
 	public function getDNEncode($url=true) {
