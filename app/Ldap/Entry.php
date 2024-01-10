@@ -2,21 +2,50 @@
 
 namespace App\Ldap;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Crypt;
+use LdapRecord\Support\Arr;
 use LdapRecord\Models\Model;
+use LdapRecord\Query\Model\Builder;
 
 use App\Classes\LDAP\Attribute;
 use App\Classes\LDAP\Attribute\Factory;
+use App\Classes\LDAP\Export\LDIF;
+use App\Exceptions\Import\AttributeException;
 
 class Entry extends Model
 {
+	private Collection $objects;
+	private bool $noObjectAttributes = FALSE;
+
 	/* OVERRIDES */
 
+	public function __construct(array $attributes = [])
+	{
+		$this->objects = collect();
+
+		parent::__construct($attributes);
+	}
+
+	public function discardChanges(): static
+	{
+		parent::discardChanges();
+
+		// If we are discharging changes, we need to reset our $objects;
+		$this->objects = $this->getAttributesAsObjects($this->attributes);
+
+		return $this;
+	}
+
+	/**
+	 * This function overrides getAttributes to use our collection of Attribute objects instead of the models attributes.
+	 *
+	 * @return array
+	 * @note $this->attributes may not be updated with changes
+	 */
 	public function getAttributes(): array
 	{
-		return $this->getAttributesAsObjects()->toArray();
+		return $this->objects->map(function($item) { return $item->values->toArray(); })->toArray();
 	}
 
 	/**
@@ -24,57 +53,80 @@ class Entry extends Model
 	 */
 	protected function originalIsEquivalent(string $key): bool
 	{
-		if (! array_key_exists($key, $this->original)) {
-			return false;
+		$key = $this->normalizeAttributeKey($key);
+
+		if ((! array_key_exists($key, $this->original)) && (! $this->objects->has($key))) {
+			return TRUE;
 		}
 
 		$current = $this->attributes[$key];
-		$original = $this->original[$key];
+		$original = $this->objects->get($key)->values;
 
 		if ($current === $original) {
 			return true;
 		}
 
-		//dump(['key'=>$key,'current'=>$current,'original'=>$this->original[$key],'objectvalue'=>$this->getAttributeAsObject($key)->isDirty()]);
-		return ! $this->getAttributeAsObject($key)->isDirty();
+		return ! $this->getObject($key)->isDirty();
 	}
 
-	public function getOriginal(): array
+	public static function query(bool $noattrs=false): Builder
 	{
-		static $result = NULL;
+		$o = new static;
 
-		if (is_null($result)) {
-			$result = collect();
+		if ($noattrs)
+			$o->noObjectAttributes();
 
-			// @todo Optimise this foreach with getAttributes()
-			foreach (parent::getOriginal() as $attribute => $value) {
-				// If the attribute name has language tags
-				$matches = [];
-				if (preg_match('/^([a-zA-Z]+)(;([a-zA-Z-;]+))+/',$attribute,$matches)) {
-					$attribute = $matches[1];
+		return $o->newQuery();
+	}
 
-					// If the attribute doesnt exist we'll create it
-					$o = Arr::get($result,$attribute,Factory::create($attribute,[]));
-					$o->setLangTag($matches[3],$value);
+	/**
+	 * As attribute values are updated, or new ones created, we need to mirror that
+	 * into our $objects
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 * @return $this
+	 */
+	public function setAttribute(string $key, mixed $value): static
+	{
+		parent::setAttribute($key,$value);
 
-				} else {
-					$o = Factory::create($attribute,$value);
-				}
+		$key = $this->normalizeAttributeKey($key);
 
-				if (! $result->has($attribute)) {
-					// Set the rdn flag
-					if (preg_match('/^'.$attribute.'=/i',$this->dn))
-						$o->setRDN();
+		if ((! $this->objects->get($key)) && $value) {
+			$o = new Attribute($key,[]);
+			$o->value = $value;
 
-					// Set required flag
-					$o->required_by(collect($this->getAttribute('objectclass')));
+			$this->objects->put($key,$o);
 
-					$result->put($attribute,$o);
-				}
-			}
+		} elseif ($this->objects->get($key)) {
+			$this->objects->get($key)->value = $this->attributes[$key];
 		}
 
-		return $result->toArray();
+		return $this;
+	}
+
+	/**
+	 * We'll shadow $this->attributes to $this->objects - a collection of Attribute objects
+	 *
+	 * Using the objects, it'll make it easier to work with attribute values
+	 *
+	 * @param array $attributes
+	 * @return $this
+	 */
+	public function setRawAttributes(array $attributes = []): static
+	{
+		parent::setRawAttributes($attributes);
+
+		// We only set our objects on DN entries (otherwise we might get into a recursion loop if this is the schema DN)
+		if ($this->dn && (! in_array($this->dn,Arr::get($this->attributes,'subschemasubentry',[])))) {
+			$this->objects = $this->getAttributesAsObjects($this->attributes);
+
+		} else {
+			$this->objects = collect();
+		}
+
+		return $this;
 	}
 
 	/* ATTRIBUTES */
@@ -92,87 +144,88 @@ class Entry extends Model
 
 	/* METHODS */
 
-	/**
-	 * Get an attribute as an object
-	 *
-	 * @param string $key
-	 * @return Attribute|null
-	 */
-	public function getAttributeAsObject(string $key): Attribute|null
+	public function addAttribute(string $key,mixed $value): void
 	{
-		return Arr::get($this->getAttributesAsObjects(),$key);
+		$key = $this->normalizeAttributeKey($key);
+
+		if (config('server')->schema('attributetypes')->has($key) === FALSE)
+			throw new AttributeException('Schema doesnt have attribute [%s]',$key);
+
+		if ($x=$this->objects->get($key)) {
+			$x->addValue($value);
+
+		} else {
+			$this->objects->put($key,Attribute\Factory::create($key,Arr::wrap($value)));
+		}
 	}
 
 	/**
 	 * Convert all our attribute values into an array of Objects
 	 *
+	 * @param array $attributes
 	 * @return Collection
 	 */
-	protected function getAttributesAsObjects(): Collection
+	protected function getAttributesAsObjects(array $attributes): Collection
 	{
-		static $result = NULL;
+		$result = collect();
 
-		if (is_null($result)) {
-			$result = collect();
+		foreach ($attributes as $attribute => $value) {
+			// If the attribute name has language tags
+			$matches = [];
+			if (preg_match('/^([a-zA-Z]+)(;([a-zA-Z-;]+))+/',$attribute,$matches)) {
+				$attribute = $matches[1];
 
-			foreach (parent::getAttributes() as $attribute => $value) {
-				// If the attribute name has language tags
-				$matches = [];
-				if (preg_match('/^([a-zA-Z]+)(;([a-zA-Z-;]+))+/',$attribute,$matches)) {
-					$attribute = $matches[1];
+				// If the attribute doesnt exist we'll create it
+				$o = Arr::get($result,$attribute,Factory::create($attribute,[]));
+				$o->setLangTag($matches[3],$value);
 
-					// If the attribute doesnt exist we'll create it
-					$o = Arr::get($result,$attribute,Factory::create($attribute,[]));
-					$o->setLangTag($matches[3],$value);
-
-				} else {
-					$o = Factory::create($attribute,$value);
-				}
-
-				if (! $result->has($attribute)) {
-					// Set the rdn flag
-					if (preg_match('/^'.$attribute.'=/i',$this->dn))
-						$o->setRDN();
-
-					// Set required flag
-					$o->required_by(collect($this->getAttribute('objectclass')));
-
-					// Store our original value to know if this attribute has changed
-					if ($x=Arr::get($this->original,$attribute))
-						$o->oldValues($x);
-
-					$result->put($attribute,$o);
-				}
+			} else {
+				$o = Factory::create($attribute,$value);
 			}
 
-			$sort = collect(config('ldap.attr_display_order',[]))->transform(function($item) { return strtolower($item); });
+			if (! $result->has($attribute)) {
+				// Set the rdn flag
+				if (preg_match('/^'.$attribute.'=/i',$this->dn))
+					$o->setRDN();
 
-			// Order the attributes
-			$result = $result->sortBy([function(Attribute $a,Attribute $b) use ($sort): int {
-				if ($a === $b)
-					return 0;
+				// Set required flag
+				$o->required_by(collect($this->getAttribute('objectclass')));
 
-				// Check if $a/$b are in the configuration to be sorted first, if so get it's key
-				$a_key = $sort->search($a->name_lc);
-				$b_key = $sort->search($b->name_lc);
+				// Store our original value to know if this attribute has changed
+				if ($x=Arr::get($this->original,$attribute))
+					$o->oldValues($x);
 
-				// If the keys were not in the sort list, set the key to be the count of elements (ie: so it is last to be sorted)
-				if ($a_key === FALSE)
-					$a_key = $sort->count()+1;
-
-				if ($b_key === FALSE)
-					$b_key = $sort->count()+1;
-
-				// Case where neither $a, nor $b are in ldap.attr_display_order, $a_key = $b_key = one greater than num elements.
-				// So we sort them alphabetically
-				if ($a_key === $b_key)
-					return strcasecmp($a->name,$b->name);
-
-				// Case where at least one attribute or its friendly name is in $attrs_display_order
-				// return -1 if $a before $b in $attrs_display_order
-				return ($a_key < $b_key) ? -1 : 1;
-			} ]);
+				$result->put($attribute,$o);
+			}
 		}
+
+		$sort = collect(config('ldap.attr_display_order',[]))->transform(function($item) { return strtolower($item); });
+
+		// Order the attributes
+		$result = $result->sortBy([function(Attribute $a,Attribute $b) use ($sort): int {
+			if ($a === $b)
+				return 0;
+
+			// Check if $a/$b are in the configuration to be sorted first, if so get it's key
+			$a_key = $sort->search($a->name_lc);
+			$b_key = $sort->search($b->name_lc);
+
+			// If the keys were not in the sort list, set the key to be the count of elements (ie: so it is last to be sorted)
+			if ($a_key === FALSE)
+				$a_key = $sort->count()+1;
+
+			if ($b_key === FALSE)
+				$b_key = $sort->count()+1;
+
+			// Case where neither $a, nor $b are in ldap.attr_display_order, $a_key = $b_key = one greater than num elements.
+			// So we sort them alphabetically
+			if ($a_key === $b_key)
+				return strcasecmp($a->name,$b->name);
+
+			// Case where at least one attribute or its friendly name is in $attrs_display_order
+			// return -1 if $a before $b in $attrs_display_order
+			return ($a_key < $b_key) ? -1 : 1;
+		} ]);
 
 		return $result;
 	}
@@ -208,9 +261,29 @@ class Entry extends Model
 	 */
 	public function getInternalAttributes(): Collection
 	{
-		return collect($this->getAttributes())->filter(function($item) {
+		return $this->objects->filter(function($item) {
 			return $item->is_internal;
 		});
+	}
+
+	/**
+	 * Get an attribute as an object
+	 *
+	 * @param string $key
+	 * @return Attribute|null
+	 */
+	public function getObject(string $key): Attribute|null
+	{
+		return $this->objects->get($this->normalizeAttributeKey($key));
+	}
+
+	public function getObjects(): Collection
+	{
+		// In case we havent built our objects yet (because they werent available while determining the schema DN)
+		if ((! $this->objects->count()) && $this->attributes)
+			$this->objects = $this->getAttributesAsObjects($this->attributes);
+
+		return $this->objects;
 	}
 
 	/**
@@ -230,9 +303,44 @@ class Entry extends Model
 	 */
 	public function getVisibleAttributes(): Collection
 	{
-		return collect($this->getAttributes())->filter(function($item) {
+		return $this->objects->filter(function($item) {
 			return ! $item->is_internal;
 		});
+	}
+
+	public function hasAttribute(int|string $key): bool
+	{
+		return $this->objects->has($key);
+	}
+
+	/**
+	 * Export this record
+	 *
+	 * @param string $method
+	 * @param string $scope
+	 * @return string
+	 * @throws \Exception
+	 */
+	public function export(string $method,string $scope): string
+	{
+		// @todo To implement
+		switch ($scope) {
+			case 'base':
+			case 'one':
+			case 'sub':
+				break;
+
+			default:
+				throw new \Exception('Export scope unknown:'.$scope);
+		}
+
+		switch ($method) {
+			case 'ldif':
+				return new LDIF(collect($this));
+
+			default:
+				throw new \Exception('Export method not implemented:'.$method);
+		}
 	}
 
 	/**
@@ -299,5 +407,17 @@ class Entry extends Model
 
 		// Default
 		return 'fa-fw fas fa-cog';
+	}
+
+	/**
+	 * Dont convert our $this->attributes to $this->objects when creating a new Entry::class
+	 *
+	 * @return $this
+	 */
+	public function noObjectAttributes(): static
+	{
+		$this->noObjectAttributes = TRUE;
+
+		return $this;
 	}
 }

@@ -40,6 +40,9 @@
 					<div class="font-icon-wrapper float-start ms-1 me-1 server-icon">
 						<a class="p-0 m-0" href="{{ LaravelLocalization::localizeUrl('schema') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-fingerprint"></i></a>
 					</div>
+					<div class="font-icon-wrapper float-start ms-1 me-1 server-icon">
+						<a class="p-0 m-0" href="{{ LaravelLocalization::localizeUrl('import') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-upload"></i></a>
+					</div>
 					@env(['local'])
 						<div class="font-icon-wrapper float-end ms-1 server-icon">
 							<a class="p-0 m-0" href="{{ LaravelLocalization::localizeUrl('debug') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-toolbox"></i></a>

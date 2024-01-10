@@ -35,6 +35,8 @@
 			</div>
 		</div>
 
+		@yield('page-modals')
+
 		@section('scripts')
 			@include('architect::layouts.partials.scripts')
 

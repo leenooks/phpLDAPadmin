@@ -1,0 +1,3 @@
+<pre>
+{{ $result }}
+</pre>

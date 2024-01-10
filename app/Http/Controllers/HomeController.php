@@ -8,19 +8,38 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use LdapRecord\Exceptions\InsufficientAccessException;
 use LdapRecord\LdapRecordException;
 use LdapRecord\Query\ObjectNotFoundException;
 
 use App\Classes\LDAP\{Attribute,Server};
+use App\Classes\LDAP\Import\LDIF as LDIFImport;
+use App\Classes\LDAP\Export\LDIF as LDIFExport;
+use App\Exceptions\Import\{GeneralException,VersionException};
 use App\Exceptions\InvalidUsage;
-use App\Http\Requests\EntryRequest;
+use App\Http\Requests\{EntryRequest,ImportRequest};
+use App\Ldap\Entry;
 use App\View\Components\AttributeType;
+use Nette\NotImplementedException;
 
 class HomeController extends Controller
 {
+	private function bases()
+	{
+		$base = Server::baseDNs() ?: collect();
+
+		return $base->transform(function($item) {
+			return [
+				'title'=>$item->getRdn(),
+				'item'=>$item->getDNSecure(),
+				'lazy'=>TRUE,
+				'icon'=>'fa-fw fas fa-sitemap',
+				'tooltip'=>$item->getDn(),
+			];
+		});
+	}
+
 	/**
 	 * Debug Page
 	 *
@@ -47,6 +66,22 @@ class HomeController extends Controller
 			->with('o',config('server')->fetch($dn))
 			->with('dn',$dn)
 			->with('page_actions',$page_actions);
+	}
+
+	public function entry_export(Request $request,string $id)
+	{
+		$dn = Crypt::decryptString($id);
+
+		$result = (new Entry)
+			->query()
+			//->cache(Carbon::now()->addSeconds(Config::get('ldap.cache.time')))
+			//->select(['*'])
+			->setDn($dn)
+			->recursive()
+			->get();
+
+		return view('fragment.export')
+			->with('result',new LDIFExport($result));
 	}
 
 	public function entry_newattr(string $id)
@@ -76,20 +111,8 @@ class HomeController extends Controller
 				->withInput()
 				->with('note',__('No attributes changed'));
 
-		$base = Server::baseDNs() ?: collect();
-
-		$bases = $base->transform(function($item) {
-			return [
-				'title'=>$item->getRdn(),
-				'item'=>$item->getDNSecure(),
-				'lazy'=>TRUE,
-				'icon'=>'fa-fw fas fa-sitemap',
-				'tooltip'=>$item->getDn(),
-			];
-		});
-
-		return view('frames.update')
-			->with('bases',$bases)
+		return view('update')
+			->with('bases',$this->bases())
 			->with('dn',$dn)
 			->with('o',$o);
 	}
@@ -103,18 +126,6 @@ class HomeController extends Controller
 	 */
 	public function entry_update(EntryRequest $request)
 	{
-		$base = Server::baseDNs() ?: collect();
-
-		$bases = $base->transform(function($item) {
-			return [
-				'title'=>$item->getRdn(),
-				'item'=>$item->getDNSecure(),
-				'lazy'=>TRUE,
-				'icon'=>'fa-fw fas fa-sitemap',
-				'tooltip'=>$item->getDn(),
-			];
-		});
-
 		$dn = Crypt::decryptString($request->dn);
 
 		$o = config('server')->fetch($dn);
@@ -168,51 +179,75 @@ class HomeController extends Controller
 	 */
 	public function home()
 	{
-		$base = Server::baseDNs() ?: collect();
-
-		$bases = $base->transform(function($item) {
-			return [
-				'title'=>$item->getRdn(),
-				'item'=>$item->getDNSecure(),
-				'lazy'=>TRUE,
-				'icon'=>'fa-fw fas fa-sitemap',
-				'tooltip'=>$item->getDn(),
-			];
-		});
-
 		if (old('dn'))
 			return view('frame')
 				->with('subframe','dn')
-				->with('bases',$bases)
+				->with('bases',$this->bases())
 				->with('o',config('server')->fetch($dn=Crypt::decryptString(old('dn'))))
 				->with('dn',$dn);
 
 		elseif (old('frame'))
 			return view('frame')
 				->with('subframe',old('frame'))
-				->with('bases',$bases);
+				->with('bases',$this->bases());
 
 		else
 			return view('home')
-				->with('bases',$bases)
+				->with('bases',$this->bases())
 				->with('server',config('ldap.connections.default.name'));
+	}
+
+	/**
+	 * Process the incoming LDIF file or LDIF text
+	 *
+	 * @param ImportRequest $request
+	 * @param string $type
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+	 * @throws GeneralException
+	 * @throws VersionException
+	 */
+	public function import(ImportRequest $request,string $type)
+	{
+		switch ($type) {
+			case 'ldif':
+				$import = new LDIFImport($x=($request->text ?: $request->file->get()));
+				break;
+
+			default:
+				abort(404,'Unknown import type: '.$type);
+		}
+
+		try {
+			$result = $import->process();
+
+		} catch (NotImplementedException $e) {
+			abort(555,$e->getMessage());
+
+		} catch (\Exception $e) {
+			abort(598,$e->getMessage());
+		}
+
+		return view('frame')
+			->with('subframe','import_result')
+			->with('bases',$this->bases())
+			->with('result',$result)
+			->with('ldif',htmlspecialchars($x));
+	}
+
+	public function import_frame()
+	{
+		return view('frames.import');
 	}
 
 	/**
 	 * LDAP Server INFO
 	 *
 	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-	 * @throws ObjectNotFoundException
 	 */
 	public function info()
 	{
-		// Load our attributes
-		$s = config('server');
-		$s->schema('objectclasses');
-		$s->schema('attributetypes');
-
 		return view('frames.info')
-			->with('s',$s);
+			->with('s',config('server'));
 	}
 
 	/**

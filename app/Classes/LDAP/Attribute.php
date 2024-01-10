@@ -168,6 +168,11 @@ class Attribute implements \Countable, \ArrayAccess
 		return $this->name;
 	}
 
+	public function addValue(string $value): void
+	{
+		$this->values->push($value);
+	}
+
 	public function count(): int
 	{
 		return $this->values->count();

@@ -50,7 +50,7 @@ class Factory
 	 */
 	public static function create(string $attribute,array $values): Attribute
 	{
-		$class = Arr::get(self::map,$attribute,Attribute::class);
+		$class = Arr::get(self::map,strtolower($attribute),Attribute::class);
 		Log::debug(sprintf('%s:Creating LDAP Attribute [%s] as [%s]',static::LOGKEY,$attribute,$class));
 
 		return new $class($attribute,$values);

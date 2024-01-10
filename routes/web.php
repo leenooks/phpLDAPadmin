@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\{HomeController,ImportController};
 use App\Http\Controllers\Auth\LoginController;
 
 /*
@@ -30,6 +30,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale()], function() {
 	Route::get('info',[HomeController::class,'info']);
 	Route::post('dn',[HomeController::class,'dn_frame']);
 	Route::get('debug',[HomeController::class,'debug']);
+	Route::get('import',[HomeController::class,'import_frame']);
 	Route::get('schema',[HomeController::class,'schema_frame']);
 });
 
@@ -42,3 +43,6 @@ Route::group(['prefix'=>'user'],function() {
 Route::post('entry/update/commit',[HomeController::class,'entry_update']);
 Route::post('entry/update/pending',[HomeController::class,'entry_pending_update']);
 Route::get('entry/newattr/{id}',[HomeController::class,'entry_newattr']);
+Route::get('entry/export/{id}',[HomeController::class,'entry_export']);
+
+Route::post('import/process/{type}',[HomeController::class,'import']);

@@ -3,7 +3,7 @@
 @section('page_title')
 	<table class="table table-borderless">
 		<tr>
-			<td class="{{ ($x=Arr::get($o->getAttributes(),'jpegphoto')) ? 'border' : '' }}" rowspan="2">{!! $x ? $x->render() : sprintf('<div class="page-title-icon f32"><i class="%s"></i></div>',$o->icon() ?? "fas fa-info") !!}</td>
+			<td class="{{ ($x=$o->getObject('jpegphoto')) ? 'border' : '' }}" rowspan="2">{!! $x ? $x->render() : sprintf('<div class="page-title-icon f32"><i class="%s"></i></div>',$o->icon() ?? "fas fa-info") !!}</td>
 			<td class="text-end align-text-top p-0 {{ $x ? 'ps-5' : 'pt-2' }}"><strong>{{ $dn }}</strong></td>
 		</tr>
 		<tr>
@@ -11,11 +11,11 @@
 				<table>
 					<tr>
 						<td class="p-1 m-1">Created</td>
-						<th class="p-1 m-1">{{ ($x=Arr::get($o->getAttributes(),'createtimestamp')) ? $x->render() : __('Unknown') }} [{{ ($x=Arr::get($o->getAttributes(),'creatorsname')) ? $x->render() : __('Unknown') }}]</th>
+						<th class="p-1 m-1">{{ ($x=$o->getObject('createtimestamp')) ? $x->render() : __('Unknown') }} [{{ ($x=$o->getObject('creatorsname')) ? $x->render() : __('Unknown') }}]</th>
 					</tr>
 					<tr>
 						<td class="p-1 m-1">Modified</td>
-						<th class="p-1 m-1">{{ ($x=Arr::get($o->getAttributes(),'modifytimestamp')) ? $x->render() : __('Unknown') }} [{{ ($x=Arr::get($o->getAttributes(),'modifiersname')) ? $x->render() : __('Unknown') }}]</th>
+						<th class="p-1 m-1">{{ ($x=$o->getObject('modifytimestamp')) ? $x->render() : __('Unknown') }} [{{ ($x=$o->getObject('modifiersname')) ? $x->render() : __('Unknown') }}]</th>
 					</tr>
 					<tr>
 						<td class="p-1 m-1">UUID</td>
@@ -168,8 +168,43 @@
 	</div>
 @endsection
 
+@section('page-modals')
+	<!-- Modal -->
+	<div class="modal fade" id="entry-export-modal" tabindex="-1" aria-labelledby="entry-export-label" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-fullscreen-xl-down">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="entry-export-label">LDIF for {{ $dn }}</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+
+				<div class="modal-body">
+					<div id="entry-export"><div class="fa-3x"><i class="fas fa-spinner fa-pulse fa-sm"></i></div></div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+					<button id="entry-export-download" type="button" class="btn btn-primary btn-sm">Download</button>
+				</div>
+			</div>
+		</div>
+	</div>
+@endsection
+
 @section('page-scripts')
 	<script type="text/javascript">
+		function download(filename,text) {
+			var element = document.createElement('a');
+
+			element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+			element.setAttribute('download', filename);
+			element.style.display = 'none';
+			document.body.appendChild(element);
+
+			element.click();
+			document.body.removeChild(element);
+		}
+
 		function editmode() {
 			$('button[id=entry-edit]').addClass('active').removeClass('btn-outline-dark').addClass('btn-outline-light');
 
@@ -190,17 +225,16 @@
 		$(document).ready(function() {
 			$('#form-reset').click(function() {
 				$('#dn-edit')[0].reset();
-			})
+			});
 
 			$('#form-submit').click(function() {
 				$('#dn-edit')[0].submit();
-			})
+			});
 
 			$('#newattr').on('change',function(item) {
 				$.ajax({
 					type: 'GET',
-					beforeSend: function() {
-					},
+					beforeSend: function() {},
 					success: function(data) {
 						$('#newattrs').append(data);
 					},
@@ -210,7 +244,7 @@
 					},
 					url: '{{ url('entry/newattr') }}/'+item.target.value,
 					cache: false
-				})
+				});
 
 				// Remove the option from the list
 				$(this).find('[value="'+item.target.value+'"]').remove()
@@ -228,6 +262,29 @@
 
 				editmode();
 			});
+
+			$('#entry-export-download').on('click',function(item) {
+				item.preventDefault();
+
+				let ldif = $('#entry-export').find('pre:first'); // update this selector in your local version
+				download('ldap-export.ldif',ldif.html());
+			});
+
+			$('#entry-export-modal').on('shown.bs.modal', function () {
+				$.ajax({
+					type: 'GET',
+					beforeSend: function() {},
+					success: function(data) {
+						$('#entry-export').empty().append(data);
+					},
+					error: function(e) {
+						if (e.status != 412)
+							alert('That didnt work? Please try again....');
+					},
+					url: '{{ url('entry/export',$o->getDNSecure()) }}/',
+					cache: false
+				})
+			})
 
 			@if(old())
 				editmode();

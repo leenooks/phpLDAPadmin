@@ -10,4 +10,5 @@
 	</div>
 </div>
 
+@yield('page-modals')
 @yield('page-scripts')

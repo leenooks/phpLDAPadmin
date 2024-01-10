@@ -1,9 +1,11 @@
-@extends('dn')
+@extends('home')
 
 @section('page_title')
 	<table class="table table-borderless">
 		<tr>
-			<td class="{{ ($x=Arr::get($o->getOriginal(),'jpegphoto')) ? 'border' : '' }}" rowspan="2">{!! $x ? $x->render() : sprintf('<div class="page-title-icon f32"><i class="%s"></i></div>',$o->icon() ?? "fas fa-info") !!}</td>
+			<td class="{{ ($x=$o->getObject('jpegphoto')) ? 'border' : '' }}" rowspan="2">
+				{!! $x ? $x->render(FALSE,TRUE) : sprintf('<div class="page-title-icon f32"><i class="%s"></i></div>',$o->icon() ?? "fas fa-info") !!}
+			</td>
 			<td class="text-end align-text-top p-0 {{ $x ? 'ps-5' : 'pt-2' }}"><strong>{{ $dn }}</strong></td>
 		</tr>
 		<tr>
@@ -11,11 +13,15 @@
 				<table>
 					<tr>
 						<td class="p-1 m-1">Created</td>
-						<th class="p-1 m-1">{{ ($x=Arr::get($o->getAttributes(),'createtimestamp')) ? $x->render() : __('Unknown') }} [{{ ($x=Arr::get($o->getAttributes(),'creatorsname')) ? $x->render() : __('Unknown') }}]</th>
+						<th class="p-1 m-1">
+							{{ ($x=$o->getObject('createtimestamp')) ? $x->render() : __('Unknown') }} [{{ ($x=$o->getObject('creatorsname')) ? $x->render() : __('Unknown') }}]
+						</th>
 					</tr>
 					<tr>
 						<td class="p-1 m-1">Modified</td>
-						<th class="p-1 m-1">{{ ($x=Arr::get($o->getAttributes(),'modifytimestamp')) ? $x->render() : __('Unknown') }} [{{ ($x=Arr::get($o->getAttributes(),'modifiersname')) ? $x->render() : __('Unknown') }}]</th>
+						<th class="p-1 m-1">
+							{{ ($x=$o->getObject('modifytimestamp')) ? $x->render() : __('Unknown') }} [{{ ($x=$o->getObject('modifiersname')) ? $x->render() : __('Unknown') }}]
+						</th>
 					</tr>
 					<tr>
 						<td class="p-1 m-1">UUID</td>
@@ -62,13 +68,13 @@
 	@endif
 
 	<div class="main-card mb-3 card">
-		<div class="card-body">
-			<div class="row">
-				<div class="col-12 col-lg-6 col-xl-4 mx-auto pt-3">
-					<form id="dn-edit" method="POST" class="needs-validation" action="{{ url('entry/update/commit') }}" novalidate>
-						@csrf
+		<form id="dn-update" method="POST" class="needs-validation" action="{{ url('entry/update/commit') }}" novalidate>
+			@csrf
 
-						<input type="hidden" name="dn" value="{{ $o->getDNSecure() }}">
+			<input type="hidden" name="dn" value="{{ $o->getDNSecure() }}">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-12 col-lg-6 col-xl-4 mx-auto pt-3">
 
 						<div class="card-title"><h3>@lang('Do you want to make the following changes?')</h3></div>
 						<table class="table table-bordered table-striped">
@@ -96,7 +102,7 @@
 							@endforeach
 							</tbody>
 						</table>
-					</form>
+					</div>
 				</div>
 
 				<div class="row pt-3">
@@ -106,6 +112,20 @@
 					</div>
 				</div>
 			</div>
-		</div>
+		</form>
 	</div>
 @endsection
+
+@section('page-scripts')
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#form-reset').click(function() {
+				$('#dn-update')[0].reset();
+			});
+
+			$('#form-submit').click(function() {
+				$('#dn-update')[0].submit();
+			});
+		});
+	</script>
+@append

@@ -27,23 +27,31 @@
 
 						<div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
 							<ul class="nav flex-column">
-								@if ((isset($page_actions) && $page_actions->search('edit') !== FALSE) || old())
+								@if ((isset($page_actions) && ($page_actions->search('edit') !== FALSE)) || old())
 									<li class="nav-item">
 										<span class="nav-link pt-0 pb-1">
 											<button id="entry-edit" class="p-2 m-0 border-0 btn-transition btn btn-outline-dark w-100 text-start">
-												<i class="fas fa-fw fa-edit me-2"></i>
-												@lang('Edit')
+												<i class="fas fa-fw fa-edit me-2"></i> @lang('Edit')
 											</button>
 										</span>
 									</li>
 								@endif
 
-								@if (isset($page_actions) && $page_actions->search('copy') !== FALSE)
+								@if (isset($page_actions) && ($page_actions->search('export') !== FALSE))
+									<li class="nav-item">
+										<a class="nav-link pt-0 pb-1">
+											<button type="button" class="p-2 m-0 border-0 btn-transition btn btn-outline-dark w-100 text-start" data-bs-toggle="modal" data-bs-target="#entry-export-modal" {{--data-bs-whatever="ldif"--}}>
+												<i class="fas fa-fw fa-file-export me-2"></i> @lang('Export')
+											</button>
+										</a>
+									</li>
+								@endif
+
+								@if (isset($page_actions) && ($page_actions->search('copy') !== FALSE))
 									<li class="nav-item">
 										<a class="nav-link pt-0 pb-1">
 											<button class="p-2 m-0 border-0 btn-transition btn btn-outline-dark w-100 text-start">
-												<i class="fas fa-fw fa-truck-moving me-2"></i>
-												@lang('Copy or Move')
+												<i class="fas fa-fw fa-truck-moving me-2"></i> @lang('Copy or Move')
 											</button>
 										</a>
 									</li>
