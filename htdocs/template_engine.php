@@ -36,7 +36,7 @@ So:
 require './common.php';
 
 $request = array();
-$request['dn'] = get_request('dn','REQUEST');
+$request['dn'] = get_request('dn','REQUEST', false, null, false);
 $request['page'] = new TemplateRender($app['server']->getIndex(),get_request('template','REQUEST',false,null));
 
 # If we have a DN, then this is to edit the entry.

@@ -13,7 +13,7 @@
 require './common.php';
 
 $request = array();
-$request['dn'] = get_request('dn','REQUEST',true);
+$request['dn'] = get_request('dn','REQUEST',true,null,false);
 
 # If cancel was submited, got back to the edit display.
 if (get_request('cancel','REQUEST')) {
