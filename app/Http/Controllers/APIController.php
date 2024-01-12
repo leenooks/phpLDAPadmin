@@ -6,12 +6,33 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
-use LdapRecord\Query\Collection;
+use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Server;
 
 class APIController extends Controller
 {
+	/**
+	 * Get the LDAP server BASE DNs
+	 *
+	 * @return Collection
+	 * @throws LdapRecord\Query\ObjectNotFoundException
+	 */
+	public function bases(): Collection
+	{
+		$base = Server::baseDNs() ?: collect();
+
+		return $base->transform(function($item) {
+			return [
+				'title'=>$item->getRdn(),
+				'item'=>$item->getDNSecure(),
+				'lazy'=>TRUE,
+				'icon'=>'fa-fw fas fa-sitemap',
+				'tooltip'=>$item->getDn(),
+			];
+		});
+	}
+
 	/**
 	 * @param Request $request
 	 * @return Collection
