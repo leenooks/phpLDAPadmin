@@ -56,5 +56,19 @@
 @section('page-scripts')
 	<script type="text/javascript">
 		var basedn = {!! $bases->toJson() !!};
+
+		var subpage = window.location.hash;
+
+		$(document).ready(function() {
+			// Enable navigating to a page via a URL fragment, and that fragment is defined with a server-icon
+			var valid = Object.values($('.server-icon > a').map(function(item) {
+				return $(this).attr('id');
+			})).indexOf(subpage.substring(1));
+
+			if (valid !== -1 && subpage) {
+				// The click() event wont have been registered yet, so we need to delay us clicking it
+				setTimeout(function() { $(subpage).click(); },250);
+			}
+		});
 	</script>
 @append
