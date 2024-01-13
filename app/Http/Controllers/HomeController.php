@@ -181,10 +181,17 @@ class HomeController extends Controller
 		});
 
 		if (old('dn'))
-			return view('dn')
+			return view('frame')
+				->with('subframe','dn')
 				->with('bases',$bases)
 				->with('o',config('server')->fetch($dn=Crypt::decryptString(old('dn'))))
 				->with('dn',$dn);
+
+		elseif (old('frame'))
+			return view('frame')
+				->with('subframe',old('frame'))
+				->with('bases',$bases);
+
 		else
 			return view('home')
 				->with('bases',$bases)

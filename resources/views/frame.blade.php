@@ -1,18 +1,7 @@
 @extends('architect::layouts.app')
 
-{{--
-@section('htmlheader_title')
-	@lang('Home')
-@endsection
-
-@section('page_title')
-@endsection
-@section('page_icon')
-@endsection
---}}
-
 @section('main-content')
-	@include('frames.dn')
+	@include('frames.'.$subframe)
 @endsection
 
 @section('page-scripts')
