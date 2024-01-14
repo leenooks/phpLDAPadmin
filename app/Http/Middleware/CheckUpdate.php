@@ -39,14 +39,20 @@ class CheckUpdate
 
 			$client = new Client;
 
-			$response = $client->request('POST',sprintf('%s/%s',self::UPDATE_SERVER,strtolower(config('app.version'))));
+			try {
 
-			if ($response->getStatusCode() === 200) {
-				$result = json_decode($response->getBody());
+				$response = $client->request('POST',sprintf('%s/%s',self::UPDATE_SERVER,strtolower(config('app.version'))));
 
-				Log::debug(sprintf('CU_:- Update server returned...'),['update'=>$result]);
+				if ($response->getStatusCode() === 200) {
+					$result = json_decode($response->getBody());
 
-				return $result;
+					Log::debug(sprintf('CU_:- Update server returned...'),['update'=>$result]);
+
+					return $result;
+				}
+
+			} catch (\Exception $e) {
+				Log::debug(sprintf('CU_:- Exception connecting to update server'),['e'=>get_class($e)]);
 			}
 
 			return NULL;
