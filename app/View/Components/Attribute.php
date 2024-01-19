@@ -11,16 +11,18 @@ class Attribute extends Component
 	public LDAPAttribute $o;
 	public bool $edit;
 	public bool $new;
+	public bool $old;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(bool $edit,LDAPAttribute $o,bool $new=FALSE)
+    public function __construct(LDAPAttribute $o,bool $edit,bool $old=FALSE,bool $new=FALSE)
     {
-		$this->edit = $edit;
 		$this->o = $o;
+		$this->edit = $edit;
+		$this->old = $old;
 		$this->new = $new;
     }
 
@@ -31,6 +33,6 @@ class Attribute extends Component
      */
     public function render()
     {
-		return $this->o->render($this->edit,$this->new);
+		return $this->o->render($this->edit,$this->old,$this->new);
     }
 }

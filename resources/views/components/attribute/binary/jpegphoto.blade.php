@@ -1,8 +1,8 @@
-<!-- @todo We are not handling redirect backs with updated photos -->
+<!-- @todo We are not handling redirect backs yet with updated photos -->
 <!-- $o=Binary\JpegPhoto::class -->
 <x-attribute.layout :edit="$edit" :new="false" :o="$o">
 	<table class="table table-borderless p-0 m-0">
-		@foreach ($o->values as $value)
+		@foreach (($old ? $o->old_values : $o->values) as $value)
 			<tr>
 				@switch ($x=$f->buffer($value,FILEINFO_MIME_TYPE))
 					@case('image/jpeg')

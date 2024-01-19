@@ -14,11 +14,12 @@ final class Password extends Attribute
 {
 	use MD5Updates;
 
-	public function render(bool $edit=FALSE,bool $blank=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
 	{
 		return view('components.attribute.password')
+			->with('o',$this)
 			->with('edit',$edit)
-			->with('blank',$blank)
-			->with('o',$this);
+			->with('old',$old)
+			->with('new',$new);
 	}
 }

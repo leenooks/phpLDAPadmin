@@ -21,12 +21,13 @@ final class JpegPhoto extends Binary
 		$this->internal = FALSE;
 	}
 
-	public function render(bool $edit=FALSE,bool $blank=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
 	{
 		return view('components.attribute.binary.jpegphoto')
-			->with('edit',$edit)
-			->with('blank',$blank)
 			->with('o',$this)
+			->with('edit',$edit)
+			->with('old',$old)
+			->with('new',$new)
 			->with('f',new \finfo);
 	}
 }

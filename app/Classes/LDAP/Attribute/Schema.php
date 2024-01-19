@@ -49,7 +49,7 @@ abstract class Schema extends Attribute
 		return Arr::get(($array ? $array->get($string) : []),$key);
 	}
 
-	public function render(bool $edit=FALSE,bool $blank=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
 	{
 		// @note Schema attributes cannot be edited
 		return view('components.attribute.internal')

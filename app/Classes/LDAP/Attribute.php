@@ -101,7 +101,7 @@ class Attribute implements \Countable, \ArrayAccess
 		$this->values = collect($values);
 		$this->lang_tags = collect();
 		$this->required_by = collect();
-		$this->oldValues = collect();
+		$this->oldValues = collect($values);
 
 		// No need to load our schema for internal attributes
 		if (! $this->is_internal)
@@ -143,6 +143,8 @@ class Attribute implements \Countable, \ArrayAccess
 			'name' => $this->schema ? $this->schema->{$key} : $this->{$key},
 			// Attribute name in lower case
 			'name_lc' => strtolower($this->name),
+			// Old Values
+			'old_values' => $this->oldValues,
 			// Attribute values
 			'values' => $this->values,
 
@@ -150,9 +152,20 @@ class Attribute implements \Countable, \ArrayAccess
 		};
 	}
 
+	public function __set(string $key,mixed $values): void
+	{
+		switch ($key) {
+			case 'value':
+				$this->values = collect($values);
+				break;
+
+			default:
+		}
+	}
+
 	public function __toString(): string
 	{
-		return $this->__get('name');
+		return $this->name;
 	}
 
 	public function count(): int
@@ -230,15 +243,17 @@ class Attribute implements \Countable, \ArrayAccess
 	 * Display the attribute value
 	 *
 	 * @param bool $edit
-	 * @param bool $blank
+	 * @param bool $old
+	 * @param bool $new
 	 * @return View
 	 */
-	public function render(bool $edit=FALSE,bool $blank=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
 	{
 		return view('components.attribute')
+			->with('o',$this)
 			->with('edit',$edit)
-			->with('new',FALSE)
-			->with('o',$this);
+			->with('old',$old)
+			->with('new',$new);
 	}
 
 	/**
