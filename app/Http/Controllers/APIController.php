@@ -62,20 +62,20 @@ class APIController extends Controller
 
 		switch($request->type) {
 			case 'objectclasses':
-				return view('frames.schema.objectclasses')
+				return view('fragment.schema.objectclasses')
 					->with('objectclasses',$server->schema('objectclasses')->sortBy(function($item) { return strtolower($item->name); }));
 
 			case 'attributetypes':
-				return view('frames.schema.attributetypes')
+				return view('fragment.schema.attributetypes')
 					->with('server',$server)
 					->with('attributetypes',$server->schema('attributetypes')->sortBy(function($item) { return strtolower($item->name); }));
 
 			case 'ldapsyntaxes':
-				return view('frames.schema.ldapsyntaxes')
+				return view('fragment.schema.ldapsyntaxes')
 					->with('ldapsyntaxes',$server->schema('ldapsyntaxes')->sortBy(function($item) { return strtolower($item->description); }));
 
 			case 'matchingrules':
-				return view('frames.schema.matchingrules')
+				return view('fragment.schema.matchingrules')
 					->with('matchingrules',$server->schema('matchingrules')->sortBy(function($item) { return strtolower($item->name); }));
 
 			default:
