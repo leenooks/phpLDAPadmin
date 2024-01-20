@@ -20,9 +20,9 @@ class ApplicationSession
 	 */
 	public function handle($request,Closure $next)
 	{
-		view()->share('user', auth()->user() ?: new User);
-
 		\Config::set('server',new Server);
+
+		view()->share('user', auth()->user() ?: new User);
 
 		return $next($request);
 	}
