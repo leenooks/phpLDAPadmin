@@ -59,11 +59,11 @@
 @section('page-scripts')
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$('.server-icon').click(function(e) {
+			$('.server-icon > a').on('click',function(item) {
 				var content;
 
 				$.ajax({
-					url: $(this).children('a:first-child').attr('href'),
+					url: $(this).attr('href'),
 					method: 'GET',
 					dataType: 'html',
 					statusCode: {
@@ -83,7 +83,7 @@
 					alert('Well that didnt work?');
 				});
 
-				e.stopPropagation();
+				item.stopPropagation();
 
 				return false;
 			});
