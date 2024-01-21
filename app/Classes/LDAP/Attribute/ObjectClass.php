@@ -5,7 +5,7 @@ namespace App\Classes\LDAP\Attribute;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 
-use App\Classes\LDAP\Attribute;
+use App\Classes\LDAP\{Attribute,Server};
 
 /**
  * Represents an ObjectClass Attribute
@@ -23,7 +23,7 @@ final class ObjectClass extends Attribute
 
 		// Determine which of the values is the structural objectclass
 		foreach ($values as $oc) {
-			if (config('server')->schema('objectclasses',$oc)->isStructural())
+			if ((new Server)->schema('objectclasses',$oc)->isStructural())
 				$this->structural->push($oc);
 		}
 	}

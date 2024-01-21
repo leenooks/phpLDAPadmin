@@ -105,7 +105,7 @@ class Attribute implements \Countable, \ArrayAccess
 
 		// No need to load our schema for internal attributes
 		if (! $this->is_internal)
-			$this->schema = config('server')->schema('attributetypes',$name);
+			$this->schema = (new Server)->schema('attributetypes',$name);
 
 		/*
 		# Should this attribute be hidden
