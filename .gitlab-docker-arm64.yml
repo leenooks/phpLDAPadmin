@@ -1,6 +1,6 @@
-x86_64:build:
+arm64:build:
   variables:
-    ARCH: x86_64
+    ARCH: arm64
 
   stage: build
 
@@ -13,6 +13,6 @@ x86_64:build:
 
   tags:
   - docker
-  - x86_64
+  - arm64
   only:
   - master

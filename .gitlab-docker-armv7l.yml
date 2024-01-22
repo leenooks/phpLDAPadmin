@@ -1,6 +1,6 @@
-x86_64:build:
+armv7l:build:
   variables:
-    ARCH: x86_64
+    ARCH: armv7l
 
   stage: build
 
@@ -13,6 +13,6 @@ x86_64:build:
 
   tags:
   - docker
-  - x86_64
+  - armv7l
   only:
   - master

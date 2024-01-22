@@ -1,5 +1,5 @@
 test:
-  image: ${CI_REGISTRY}/leenooks/php:8.1-fpm-alpine-ldap-test
+  image: ${CI_REGISTRY}/leenooks/php:8.3-fpm-ldap-test
 
   stage: test
 
@@ -21,7 +21,7 @@ test:
   tags:
   - php
   only:
-  - BRANCH-2.0
+  - master
 
   before_script:
   - mv .env.testing .env

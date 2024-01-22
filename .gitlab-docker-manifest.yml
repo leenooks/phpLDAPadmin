@@ -1,0 +1,10 @@
+x86_64:build-manifest:
+  stage: build-manifest
+  script:
+  - docker manifest create ${CI_REGISTRY_IMAGE}:${VERSION} ${CI_REGISTRY_IMAGE}:${VERSION}-x86_64 ${CI_REGISTRY_IMAGE}:${VERSION}-armv7l ${CI_REGISTRY_IMAGE}:${VERSION}-arm64
+  - docker manifest push --purge ${CI_REGISTRY_IMAGE}:${VERSION}
+  tags:
+  - docker
+  - x86_64
+  only:
+  - master

@@ -1,6 +1,12 @@
 stages:
 - test
 - build
+- build-manifest
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  VERSION: latest
+  VERSIONARCH: ${VERSION}-${ARCH}
 
 # This folder is cached between builds
 # http://docs.gitlab.com/ce/ci/yaml/README.html#cache
@@ -15,6 +21,18 @@ cache:
   - node_modules/
   - vendor/
 
+image: docker:latest
+services:
+- docker:dind
+
+before_script:
+- docker info && docker version
+- echo "$CI_JOB_TOKEN" | docker login -u "$CI_REGISTRY_USER" "$CI_REGISTRY" --password-stdin
+- if [ -n "$GITHUB_TOKEN" ]; then cat $GITHUB_TOKEN |base64 -d > auth.json; fi
+
 include:
 - .gitlab-test.yml
 - .gitlab-docker-x86_64.yml
+- .gitlab-docker-armv7l.yml
+- .gitlab-docker-arm64.yml
+- .gitlab-docker-manifest.yml
