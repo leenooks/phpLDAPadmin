@@ -27,6 +27,7 @@ test:
   - mv .env.testing .env
 
   # Install npm and dependancies
+  - apk add --no-cache npm
   - npm i
   - npm run prod
 
