@@ -145,7 +145,7 @@ function app_error_handler($errno,$errstr,$file,$lineno) {
 	$errtype = '';
 
 	switch ($errno) {
-		case E_STRICT: $errtype = 'E_STRICT'; break;
+		case E_DEPRECATED: $errtype = 'E_DEPRECATED'; break;
 		case E_ERROR: $errtype = 'E_ERROR'; break;
 		case E_WARNING: $errtype = 'E_WARNING'; break;
 		case E_PARSE: $errtype = 'E_PARSE'; break;
