@@ -1,135 +1,135 @@
-# LDIF Export for o=Test
+# LDIF Export for dc=Test
 
 #version: 1
 
-dn: o=Test
-o: Test
-objectclass: organization
+#dn: dc=Test
+#o: Test
+#objectclass: organization
 
-dn: cn=user,o=Test
+dn: cn=user,dc=Test
 cn: user
 sn: Doe
 objectclass: inetOrgPerson
 objectclass: top
 
-dn: ou=Bad DNs,o=Test
+dn: ou=Bad DNs,dc=Test
 objectclass: organizationalUnit
 ou: Bad DNs
 
-#dn: c=double plus ++,ou=Bad DNs,o=Test
+#dn: c=double plus ++,ou=Bad DNs,dc=Test
 #c: double plus ++
 #objectclass: country
 
-#dn: c=end dollar$,ou=Bad DNs,o=Test
+#dn: c=end dollar$,ou=Bad DNs,dc=Test
 #c: end dollar$
 #objectclass: country
 
-dn: sn=sign@at+uid=multi-mixed,ou=Bad DNs,o=Test
+dn: sn=sign@at+uid=multi-mixed,ou=Bad DNs,dc=Test
 cn: Test
 objectclass: inetOrgPerson
 sn: sign@at
 uid: multi-mixed
 
-dn: uid=angle\3Cleft,ou=Bad DNs,o=Test
+dn: uid=angle\3Cleft,ou=Bad DNs,dc=Test
 cn: Test
 objectclass: inetOrgPerson
 sn: Test
 uid: angle<left
 
-dn: uid=angle\3Eright,ou=Bad DNs,o=Test
+dn: uid=angle\3Eright,ou=Bad DNs,dc=Test
 cn: Test
 objectclass: inetOrgPerson
 sn: Test
 uid: angle>right
 
-dn: uid=brace(left,ou=Bad DNs,o=Test
+dn: uid=brace(left,ou=Bad DNs,dc=Test
 cn: Test
 objectclass: inetOrgPerson
 sn: Test
 uid: brace(left
 
-dn: uid=brace)right,ou=Bad DNs,o=Test
+dn: uid=brace)right,ou=Bad DNs,dc=Test
 cn: Test
 objectclass: inetOrgPerson
 sn: Test
 uid: brace)right
 
-dn: uid=colon:full,ou=Bad DNs,o=Test
+dn: uid=colon:full,ou=Bad DNs,dc=Test
 cn: Test
 objectclass: inetOrgPerson
 sn: Test
 uid: colon:full
 
-dn: uid=colon\3Bsemi,ou=Bad DNs,o=Test
+dn: uid=colon\3Bsemi,ou=Bad DNs,dc=Test
 cn: Test
 objectclass: inetOrgPerson
 sn: Test
 uid: colon;semi
 
-#dn: uid=multi+uid=sign@at,ou=Bad DNs,o=Test
+#dn: uid=multi+uid=sign@at,ou=Bad DNs,dc=Test
 #cn: Test
 #objectclass: inetOrgPerson
 #sn: Test
 #uid: multi
 #uid: sign@at
 
-#dn: uid=multi+uid=value,ou=Bad DNs,o=Test
+#dn: uid=multi+uid=value,ou=Bad DNs,dc=Test
 #cn: Test
 #objectclass: inetOrgPerson
 #sn: Test
 #uid: multi
 #uid: value
 
-dn: uid=quote\22double,ou=Bad DNs,o=Test
+dn: uid=quote\22double,ou=Bad DNs,dc=Test
 cn: Test
 objectclass: inetOrgPerson
 sn: Test
 uid: quote"double
 
-dn: uid=quote'single,ou=Bad DNs,o=Test
+dn: uid=quote'single,ou=Bad DNs,dc=Test
 cn: Test
 objectclass: inetOrgPerson
 sn: Test
 uid: quote'single
 
-dn: uid=sign%percent,ou=Bad DNs,o=Test
+dn: uid=sign%percent,ou=Bad DNs,dc=Test
 cn: Test
 objectclass: inetOrgPerson
 sn: Test
 uid: sign%percent
 
-dn: uid=sign\2Bplus,ou=Bad DNs,o=Test
+dn: uid=sign\2Bplus,ou=Bad DNs,dc=Test
 cn: Test
 objectclass: inetOrgPerson
 sn: Test
 uid: sign+plus
 
-dn: uid=sign\2Ccomma,ou=Bad DNs,o=Test
+dn: uid=sign\2Ccomma,ou=Bad DNs,dc=Test
 cn: Test
 objectclass: inetOrgPerson
 sn: Test
 uid: sign,comma
 
-dn: uid=sign\3Bsemicolon@at,ou=Bad DNs,o=Test
+dn: uid=sign\3Bsemicolon@at,ou=Bad DNs,dc=Test
 cn: Test
 objectclass: inetOrgPerson
 sn: Test
 uid: sign;semicolon@at
 
-dn: uid=sign\3Dequal,ou=Bad DNs,o=Test
+dn: uid=sign\3Dequal,ou=Bad DNs,dc=Test
 cn: Test
 objectclass: inetOrgPerson
 sn: Test
 uid: sign=equal
 
-dn: uid=sign?question,ou=Bad DNs,o=Test
+dn: uid=sign?question,ou=Bad DNs,dc=Test
 cn: Test
 objectclass: inetOrgPerson
 sn: Test
 uid: sign?question
 
-dn: uid=sign@at,ou=Bad DNs,o=Test
-cn: Test
-objectclass: inetOrgPerson
-sn: Test
-uid: sign@at
+#dn: uid=sign@at,ou=Bad DNs,dc=Test
+#cn: Test
+#objectclass: inetOrgPerson
+#sn: Test
+#uid: sign@at

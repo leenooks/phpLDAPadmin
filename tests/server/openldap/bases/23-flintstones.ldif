@@ -1,6 +1,7 @@
 dn: olcDatabase=mdb,cn=config
-changetype: add
 objectClass: olcDatabaseConfig
+objectClass: olcMdbConfig
+olcDbDirectory: /var/lib/openldap/data
 olcDatabase: mdb
 olcLastMod: TRUE
 olcMonitoring: TRUE

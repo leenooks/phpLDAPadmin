@@ -3,9 +3,9 @@
 #version: 1
 
 # This entry already exists as a result of configuring the LDAP server
-#dn: dc=Test
-#dc: Test
-#objectclass: dNSDomain
+dn: dc=Test
+dc: Test
+objectclass: dNSDomain
 
 dn: cn=AdminUser,dc=Test
 cn: Admin User
