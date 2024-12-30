@@ -72,7 +72,8 @@ final class AttributeType extends Base {
 	 * eg: ( 2.5.4.0 NAME 'objectClass' DESC 'RFC4512: object classes of the entity' EQUALITY objectIdentifierMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.38 )
 	 */
 	public function __construct(string $line) {
-		Log::debug(sprintf('Parsing AttributeType [%s]',$line));
+		if (static::DEBUG_VERBOSE)
+			Log::debug(sprintf('Parsing AttributeType [%s]',$line));
 
 		parent::__construct($line);
 
@@ -94,7 +95,7 @@ final class AttributeType extends Base {
 					// @note Some schema's return a (' instead of a ( '
 					if ($strings[$i+1] != '(' && ! preg_match('/^\(/',$strings[$i+1])) {
 						do {
-							$this->name .= (strlen($this->name) ? ' ' : '').$strings[++$i];
+							$this->name .= ($this->name ? ' ' : '').$strings[++$i];
 
 						} while (! preg_match("/\'$/s",$strings[$i]));
 
@@ -111,7 +112,7 @@ final class AttributeType extends Base {
 							else
 								$i++;
 
-							$this->name .= (strlen($this->name) ? ' ' : '').$strings[++$i];
+							$this->name .= ($this->name ? ' ' : '').$strings[++$i];
 
 						} while (! preg_match("/\'$/s",$strings[$i]));
 
@@ -125,55 +126,63 @@ final class AttributeType extends Base {
 
 					$this->name = preg_replace("/^\'(.*)\'$/",'$1',$this->name);
 
-					Log::debug(sprintf('- Case NAME returned (%s)',$this->name),['aliases'=>$this->aliases]);
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case NAME returned (%s)',$this->name),['aliases'=>$this->aliases]);
 					break;
 
 				case 'DESC':
 					do {
-						$this->description .= (strlen($this->description) ? ' ' : '').$strings[++$i];
+						$this->description .= ($this->description ? ' ' : '').$strings[++$i];
 
 					} while (! preg_match("/\'$/s",$strings[$i]));
 
 					$this->description = preg_replace("/^\'(.*)\'$/",'$1',$this->description);
 
-					Log::debug(sprintf('- Case DESC returned (%s)',$this->description));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case DESC returned (%s)',$this->description));
 					break;
 
 				case 'OBSOLETE':
 					$this->is_obsolete = TRUE;
 
-					Log::debug(sprintf('- Case OBSOLETE returned (%s)',$this->is_obsolete));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case OBSOLETE returned (%s)',$this->is_obsolete));
 					break;
 
 				case 'SUP':
 					$i++;
 					$this->sup_attribute = preg_replace("/^\'(.*)\'$/",'$1',$strings[$i]);
 
-					Log::debug(sprintf('- Case SUP returned (%s)',$this->sup_attribute));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case SUP returned (%s)',$this->sup_attribute));
 					break;
 
 				case 'EQUALITY':
 					$this->equality = $strings[++$i];
 
-					Log::debug(sprintf('- Case EQUALITY returned (%s)',$this->equality));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case EQUALITY returned (%s)',$this->equality));
 					break;
 
 				case 'ORDERING':
 					$this->ordering = $strings[++$i];
 
-					Log::debug(sprintf('- Case ORDERING returned (%s)',$this->ordering));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case ORDERING returned (%s)',$this->ordering));
 					break;
 
 				case 'SUBSTR':
 					$this->sub_str_rule = $strings[++$i];
 
-					Log::debug(sprintf('- Case SUBSTR returned (%s)',$this->sub_str_rule));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case SUBSTR returned (%s)',$this->sub_str_rule));
 					break;
 
 				case 'SYNTAX':
 					$this->syntax = $strings[++$i];
 					$this->syntax_oid = preg_replace('/{\d+}$/','',$this->syntax);
-					Log::debug(sprintf('/ Evaluating SYNTAX returned (%s) [%s]',$this->syntax,$this->syntax_oid));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('/ Evaluating SYNTAX returned (%s) [%s]',$this->syntax,$this->syntax_oid));
 
 					// Does this SYNTAX string specify a max length (ie, 1.2.3.4{16})
 					$m = [];
@@ -190,36 +199,42 @@ final class AttributeType extends Base {
 					$this->syntax = preg_replace("/^\'(.*)\'$/",'$1',$this->syntax);
 					$this->syntax_oid = preg_replace("/^\'(.*)\'$/",'$1',$this->syntax_oid);
 
-					Log::debug(sprintf('- Case SYNTAX returned (%s) [%s] {%d}',$this->syntax,$this->syntax_oid,$this->max_length));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case SYNTAX returned (%s) [%s] {%d}',$this->syntax,$this->syntax_oid,$this->max_length));
 					break;
 
 				case 'SINGLE-VALUE':
 					$this->is_single_value = TRUE;
 
-					Log::debug(sprintf('- Case SINGLE-VALUE returned (%s)',$this->is_single_value));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case SINGLE-VALUE returned (%s)',$this->is_single_value));
 					break;
 
 				case 'COLLECTIVE':
 					$this->is_collective = TRUE;
 
-					Log::debug(sprintf('- Case COLLECTIVE returned (%s)',$this->is_collective));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case COLLECTIVE returned (%s)',$this->is_collective));
 					break;
 
 				case 'NO-USER-MODIFICATION':
 					$this->is_no_user_modification = TRUE;
 
-					Log::debug(sprintf('- Case NO-USER-MODIFICATION returned (%s)',$this->is_no_user_modification));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case NO-USER-MODIFICATION returned (%s)',$this->is_no_user_modification));
 					break;
 
 				case 'USAGE':
 					$this->usage = $strings[++$i];
 
-					Log::debug(sprintf('- Case USAGE returned (%s)',$this->usage));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case USAGE returned (%s)',$this->usage));
 					break;
 
 				// @note currently not captured
 				case 'X-ORDERED':
-					Log::error(sprintf('- Case X-ORDERED returned (%s)',$strings[++$i]));
+					if (static::DEBUG_VERBOSE)
+						Log::error(sprintf('- Case X-ORDERED returned (%s)',$strings[++$i]));
 					break;
 
 				// @note currently not captured
@@ -227,17 +242,19 @@ final class AttributeType extends Base {
 					$value = '';
 
 					do {
-						$value .= (strlen($value) ? ' ' : '').$strings[++$i];
+						$value .= ($value ? ' ' : '').$strings[++$i];
 
 					} while (! preg_match("/\'$/s",$strings[$i]));
 
-					Log::error(sprintf('- Case X-ORIGIN returned (%s)',$value));
+					if (static::DEBUG_VERBOSE)
+						Log::error(sprintf('- Case X-ORIGIN returned (%s)',$value));
 					break;
 
 				default:
 					if (preg_match('/[\d\.]+/i',$strings[$i]) && ($i === 1)) {
 						$this->oid = $strings[$i];
-						Log::debug(sprintf('- Case default returned (%s)',$this->oid));
+						if (static::DEBUG_VERBOSE)
+							Log::debug(sprintf('- Case default returned (%s)',$this->oid));
 
 					} elseif ($strings[$i])
 						Log::alert(sprintf('! Case default discovered a value NOT parsed (%s)',$strings[$i]),['line'=>$line]);

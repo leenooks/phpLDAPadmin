@@ -53,7 +53,8 @@ final class ObjectClass extends Base {
 	{
 		parent::__construct($line);
 
-		Log::debug(sprintf('Parsing ObjectClass [%s]',$line));
+		if (static::DEBUG_VERBOSE)
+			Log::debug(sprintf('Parsing ObjectClass [%s]',$line));
 
 		$strings = preg_split('/[\s,]+/',$line,-1,PREG_SPLIT_DELIM_CAPTURE);
 
@@ -93,7 +94,8 @@ final class ObjectClass extends Base {
 
 					$this->name = preg_replace("/^\'(.*)\'$/",'$1',$this->name);
 
-					Log::debug(sprintf(sprintf('- Case NAME returned (%s)',$this->name)));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf(sprintf('- Case NAME returned (%s)',$this->name)));
 					break;
 
 				case 'DESC':
@@ -104,13 +106,15 @@ final class ObjectClass extends Base {
 
 					$this->description = preg_replace("/^\'(.*)\'$/",'$1',$this->description);
 
-					Log::debug(sprintf('- Case DESC returned (%s)',$this->description));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case DESC returned (%s)',$this->description));
 					break;
 
 				case 'OBSOLETE':
 					$this->is_obsolete = TRUE;
 
-					Log::debug(sprintf('- Case OBSOLETE returned (%s)',$this->is_obsolete));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case OBSOLETE returned (%s)',$this->is_obsolete));
 					break;
 
 				case 'SUP':
@@ -129,25 +133,29 @@ final class ObjectClass extends Base {
 						} while (! preg_match('/\)+\)?/',$strings[$i+1]));
 					}
 
-					Log::debug(sprintf('- Case SUP returned (%s)',$this->sup_classes->join(',')));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case SUP returned (%s)',$this->sup_classes->join(',')));
 					break;
 
 				case 'ABSTRACT':
 					$this->type = self::OC_ABSTRACT;
 
-					Log::debug(sprintf('- Case ABSTRACT returned (%s)',$this->type));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case ABSTRACT returned (%s)',$this->type));
 					break;
 
 				case 'STRUCTURAL':
 					$this->type = self::OC_STRUCTURAL;
 
-					Log::debug(sprintf('- Case STRUCTURAL returned (%s)',$this->type));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case STRUCTURAL returned (%s)',$this->type));
 					break;
 
 				case 'AUXILIARY':
 					$this->type = self::OC_AUXILIARY;
 
-					Log::debug(sprintf('- Case AUXILIARY returned (%s)',$this->type));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case AUXILIARY returned (%s)',$this->type));
 					break;
 
 				case 'MUST':
@@ -155,7 +163,8 @@ final class ObjectClass extends Base {
 
 					$i = $this->parseList(++$i,$strings,$attrs);
 
-					Log::debug(sprintf('= parseList returned %d (%s)',$i,$attrs->join(',')));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('= parseList returned %d (%s)',$i,$attrs->join(',')));
 
 					foreach ($attrs as $string) {
 						$attr = new ObjectClassAttribute($string,$this->name);
@@ -168,7 +177,8 @@ final class ObjectClass extends Base {
 							$this->must_attrs->push($attr);
 					}
 
-					Log::debug(sprintf('- Case MUST returned (%s) (%s)',$this->must_attrs->join(','),$this->may_force->join(',')));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case MUST returned (%s) (%s)',$this->must_attrs->join(','),$this->may_force->join(',')));
 					break;
 
 				case 'MAY':
@@ -176,20 +186,23 @@ final class ObjectClass extends Base {
 
 					$i = $this->parseList(++$i,$strings,$attrs);
 
-					Log::debug(sprintf('parseList returned %d (%s)',$i,$attrs->join(',')));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('parseList returned %d (%s)',$i,$attrs->join(',')));
 
 					foreach ($attrs as $string) {
 						$attr = new ObjectClassAttribute($string,$this->name);
 						$this->may_attrs->push($attr);
 					}
 
-					Log::debug(sprintf('- Case MAY returned (%s)',$this->may_attrs->join(',')));
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('- Case MAY returned (%s)',$this->may_attrs->join(',')));
 					break;
 
 				default:
 					if (preg_match('/[\d\.]+/i',$strings[$i]) && ($i === 1)) {
 						$this->oid = $strings[$i];
-						Log::debug(sprintf('- Case default returned (%s)',$this->oid));
+						if (static::DEBUG_VERBOSE)
+							Log::debug(sprintf('- Case default returned (%s)',$this->oid));
 
 					} elseif ($strings[$i])
 						Log::alert(sprintf('! Case default discovered a value NOT parsed (%s)',$strings[$i]),['line'=>$line]);

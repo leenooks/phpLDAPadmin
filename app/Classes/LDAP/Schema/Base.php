@@ -11,17 +11,19 @@ use App\Exceptions\InvalidUsage;
  * All schema items have at least two things in common: An OID and a Description.
  */
 abstract class Base {
+	protected const DEBUG_VERBOSE = FALSE;
+
 	// Record the LDAP String
 	private string $line;
 
 	// The schema item's name.
-	protected ?string $name = NULL;
+	protected string $name = '';
 
 	// The OID of this schema item.
 	protected string $oid;
 
 	# The description of this schema item.
-	protected ?string $description = NULL;
+	protected string $description = '';
 
 	// Boolean value indicating whether this objectClass is obsolete
 	private bool $is_obsolete = FALSE;
