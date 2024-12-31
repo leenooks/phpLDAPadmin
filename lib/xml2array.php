@@ -33,10 +33,9 @@ class xml2array {
 
 	public function parseXML($strInputXML,$filename) {
 		$this->resParser = xml_parser_create();
-		xml_set_object($this->resParser,$this);
-		xml_set_element_handler($this->resParser,'tagOpen','tagClosed');
+		xml_set_element_handler($this->resParser, [$this, 'tagOpen'], [$this, 'tagClosed']);
 
-		xml_set_character_data_handler($this->resParser,'tagData');
+		xml_set_character_data_handler($this->resParser, [$this, 'tagData']);
 
 		$this->push_pos($this->arrOutput);
 
