@@ -642,8 +642,17 @@ function error($msg,$type='note',$redirect=null,$fatal=false,$backtrace=false) {
 				_('Function'),$line['function']);
 
 			if (isset($line['args'])) {
-				$display = strlen(serialize($line['args'])) < 50 ? htmlspecialchars(serialize($line['args'])) : htmlspecialchars(substr(serialize($line['args']),0,50)).'...<TRUNCATED>';
-				$_SESSION['backtrace'][$error]['args'] = $line['args'];
+				$args = $line['args'];
+				// Filter out SensitiveParameterValue objects
+				$args = array_map(function ($arg) {
+					if ($arg instanceof \SensitiveParameterValue) {
+						return '**SENSITIVE**';
+					}
+					return $arg;
+				}, $args);
+
+				$display = strlen(serialize($args)) < 50 ? htmlspecialchars(serialize($args)) : htmlspecialchars(substr(serialize($args),0,50)).'...<TRUNCATED>';
+				$_SESSION['backtrace'][$error]['args'] = $args;
 				if (file_exists(LIBDIR.'../tools/unserialize.php'))
 					$body .= sprintf('&nbsp;(<a href="%s?index=%s" onclick="target=\'backtrace\';">%s</a>)',
 						'../tools/unserialize.php',$error,$display);
