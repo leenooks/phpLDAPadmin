@@ -3,7 +3,8 @@
 .env.testing
 .idea
 .git*
-docker/
+.phpunit.result.cache
+.styleci.yml
 node_modules/
 package.json
 package-lock.json

@@ -13,7 +13,7 @@ ENV COMPOSER_HOME=/var/cache/composer
 
 ENV SITE_USER=www-data
 
-COPY init-docker /sbin/init-docker
+COPY docker/init-docker /sbin/init-docker
 RUN chmod 550 /sbin/init-docker && chown ${SITE_USER}:0 /sbin/init-docker
 
 COPY . /var/www/html/

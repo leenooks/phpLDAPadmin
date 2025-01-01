@@ -1,0 +1,144 @@
+name: Create Docker Image
+run-name: ${{ gitea.actor }} Building Docker Image 🐳
+on: [push]
+env:
+  VERSION: latest
+  DOCKER_HOST: tcp://127.0.0.1:2375
+
+jobs:
+#  test:
+#    strategy:
+#      matrix:
+#        arch:
+#        - x86_64
+#        # arm64
+#
+#    name: Test Application
+#    runs-on: docker-${{ matrix.arch }}
+#    container:
+#      image: gitea.dege.au/docker/php:8.3-fpm-ldap-test
+#
+#    steps:
+#    - name: Environment Setup
+#      run: |
+#        # If we have a proxy use it
+#        if [ -n "${HTTP_PROXY}" ]; then echo "HTTP PROXY [${HTTP_PROXY}]"; sed -i -e s'/https/http/' /etc/apk/repositories; fi
+#        # Some pre-reqs
+#        apk add git nodejs
+#        ## Some debugging info
+#        # env|sort
+#
+#    - name: Code Checkout
+#      uses: actions/checkout@v4
+#
+#    - name: Run Tests
+#      run: |
+#        mv .env.testing .env
+#        # Install Composer and project dependencies.
+#        mkdir -p ${COMPOSER_HOME}
+#        if [ -n "${{ secrets.COMPOSER_GITHUB_TOKEN }}" ]; then echo ${{ secrets.COMPOSER_GITHUB_TOKEN }} > ${COMPOSER_HOME}/auth.json; fi
+#        composer install
+#        # Generate an application key. Re-cache.
+#        php artisan key:generate
+#        php artisan migrate
+#        php artisan db:seed
+#        # run laravel tests
+#        touch storage/app/test/*ZIP storage/app/test/file/*
+#        XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text --colors=never
+
+  build:
+    strategy:
+      matrix:
+        arch:
+        - x86_64
+        - arm64
+#    needs: [test]
+
+    name: Build Docker Image
+    runs-on: docker-${{ matrix.arch }}
+    container:
+      image: docker:dind
+      privileged: true
+    env:
+      ARCH: ${{ matrix.arch }}
+      VERSIONARCH: ${{ env.VERSION }}-${{ env.ARCH }}
+
+    steps:
+    - name: Environment Setup
+      run: |
+        # If we have a proxy use it
+        if [ -n "${HTTP_PROXY}" ]; then echo "HTTP PROXY [${HTTP_PROXY}]"; sed -i -e s'/https/http/' /etc/apk/repositories; fi
+        # Some pre-reqs
+        apk add git curl nodejs
+        # Start docker
+        ( dockerd --host=tcp://0.0.0.0:2375 --tls=false & ) && sleep 3
+        ## Some debugging info
+        # docker info && docker version
+        # env|sort
+
+    - name: Registry FQDN Setup
+      id: registry
+      run: |
+        registry=${{ github.server_url }}
+        echo "registry=${registry##http*://}" >> "$GITHUB_OUTPUT"
+
+    - name: Container Registry Login
+      uses: docker/login-action@v2
+      with:
+        registry: ${{ steps.registry.outputs.registry }}
+        username: ${{ gitea.actor }}
+        password: ${{ secrets.PKG_WRITE_TOKEN }}
+
+    - name: Code Checkout
+      uses: actions/checkout@v4
+
+    - name: Record version and Delete Unnecessary files
+      run: |
+        echo ${GITHUB_SHA::8} > VERSION
+        rm -rf .git* tests/ storage/app/test/
+
+    - name: Build and Push Docker Image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: docker/Dockerfile
+        push: true
+        tags: "${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSIONARCH }}"
+
+  manifest:
+    name: Final Docker Image Manifest
+    runs-on: docker-x86_64
+    container:
+      image: docker:dind
+      privileged: true
+    needs: [build]
+
+    steps:
+    - name: Environment Setup
+      run: |
+        # If we have a proxy use it
+        if [ -n "${HTTP_PROXY}" ]; then echo "HTTP PROXY [${HTTP_PROXY}]"; sed -i -e s'/https/http/' /etc/apk/repositories; fi
+        # Some pre-reqs
+        apk add git curl nodejs
+        # Start docker
+        ( dockerd --host=tcp://0.0.0.0:2375 --tls=false & ) && sleep 3
+
+    - name: Registry FQDN Setup
+      id: registry
+      run: |
+        registry=${{ github.server_url }}
+        echo "registry=${registry##http*://}" >> "$GITHUB_OUTPUT"
+
+    - name: Container Registry Login
+      uses: docker/login-action@v2
+      with:
+        registry: ${{ steps.registry.outputs.registry }}
+        username: ${{ gitea.actor }}
+        password: ${{ secrets.PKG_WRITE_TOKEN }}
+
+    - name: Build Docker Manifest
+      run: |
+        docker manifest create ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }} \
+          ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }}-x86_64 \
+          ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }}-arm64
+        docker manifest push --purge ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }}
