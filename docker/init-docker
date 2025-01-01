@@ -1,0 +1,173 @@
+#!/bin/bash
+
+set -e
+role=${CONTAINER_ROLE:-app}
+env=${APP_ENV:-production}
+php=${PHP_DIR:-/var/www/html}
+composer=${COMPOSER_HOME:-/var/cache/composer}
+
+RUN_USER=$(id -u -n)
+SITE_USER=${SITE_USER:-www-data}
+MEMCACHED_START=${MEMCACHED_START:-FALSE}
+[ "${RUN_USER}" = "deon" ] && USE_SU=1
+
+# To run a local queue, running jobs from the queue "hostname"
+LOCAL_QUEUE=${LOCAL_QUEUE:-FALSE}
+# Optional additional queues to run for
+#LOCAL_QUEUES=
+
+function mp() {
+	set +e
+	mountpoint -q $1
+	local mp=$?
+	set -e
+	echo ${mp}
+}
+
+function wait_for_db() {
+	# Wait for DB to be active
+	if [ -n "${DB_HOST}" -a -n "${DB_PORT}" ]; then
+		while ! wait-for-it -h ${DB_HOST} -p ${DB_PORT} -t 5 -q; do
+			echo "? Waiting for database at ${DB_HOST}:${DB_PORT}"
+			sleep 1;
+		done
+		echo "- DB is active on ${DB_HOST}:${DB_PORT}"
+	fi
+}
+
+echo "* Started with [$@]"
+
+# Run any container setup
+[ -x /sbin/init-container ] && /sbin/init-container
+
+# General Setup
+if [ -x /usr/bin/memcached -a "${MEMCACHED_START}" == "TRUE" ]; then
+	echo "* Starting MEMCACHED..."
+	/usr/bin/memcached -d -P /run/memcached/memcached.pid -u memcached
+fi
+
+# Laravel Specific
+if [ -r artisan -a -e ${php}/.env ]; then
+	echo "* Laravel Setup..."
+	mp=$(mp ${php})
+	echo "  - [${php}] is a mount point [${mp}]"
+
+	# Only adjust perms if this is an external mountpoint
+	if [ -n "${FORCE_PERMS}" -o ${mp} -eq 0 ]; then
+		if [ -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ]; then
+			echo "  - Setting Permissions..."
+			# Make sure our permissions are appropraite
+			find ${php} -type f -exec chmod 640 {} \;
+			find ${php} -type d -exec chmod 750 {} \;
+			find ${php}/public -type f -exec chmod 644 {} \;
+			find ${php}/public -type d -exec chmod 755 {} \;
+			chmod o+rx ${php}
+			chmod a+rx ${php}/artisan
+			chown -R ${SITE_USER}:www-data ${php}
+
+			#if [ "${SITE_USER}" -ne "www-data" ]; then
+			#	echo " - Extended Permissions for ${SITE_USER}..."
+			#	chown -R www-data:www-data ${php}/storage ${php}/bootstrap ${php}/composer.*
+			#	[ -e ${php}/vendor ] && chown -R www-data:www-data ${php}/vendor
+			#fi
+		fi
+	fi
+
+	# See if we need to refresh our dependancies (only need if web dir is externally mounted)
+	if [[ -r composer.json && ( -e .composer.refresh || ! -d vendor ) ]]; then
+		echo "  - Composer installing dependancies..."
+
+		rm -f ${php}/bootstrap/cache/*.php
+		if [ "${env}" != "local" ]; then
+			NODEV="--no-dev"
+		fi
+
+		mp=$(mp ${composer})
+		echo "  - [${composer}] is a mount point [${mp}]"
+
+		if [ -n "${FORCE_PERMS}" -o ${mp} -eq 0 ]; then
+			[ -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ] && chown -R ${SITE_USER}:www-data ${composer}
+			[ ! -d ${php}/vendor ] && mkdir -m 750 ${php}/vendor && chown ${SITE_USER}:www-data ${php}/vendor
+			[ -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ] && chmod g+w ${php}
+		fi
+
+		CMD="composer install --optimize-autoloader ${NODEV}"
+		(( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}) && ( test -e .composer.refresh && rm -f .composer.refresh )
+		[ -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ] && [ ${mp} -eq 0 ] && chmod g-w ${php}
+	fi
+
+	# We only check for non mount points, in case this container has the app inside
+	mp=$(mp ${php})
+	if [ ${mp} -eq 1 ]; then
+		echo "  - Caching configuration..."
+		CMD="php artisan optimize"
+		( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}
+	fi
+
+	if [ "${role}" = "app" ]; then
+		if [ "${env}" != "local" ]; then
+			if [ -z "${IGNORE_MIGRATION}" ]; then
+				if [ -r .migrate ]; then
+					echo "  - Running migration..."
+					# If DB_HOST not set, source the env file
+					[ -z "${DB_HOST}" -a -r .env ] && . .env
+
+					wait_for_db
+
+					CMD="php artisan migrate"
+					(( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}) && rm -f .migrate
+				fi
+			else
+				[ -r .migrate ] && echo "! NOTE: Migration ignored due to IGNORE_MIGRATION"
+			fi
+
+			# If passport is installed
+			if [ -d ${php}/vendor/laravel/passport ]; then
+				echo "  - Generating OAUTH keys ..."
+				set +e
+				CMD="php artisan passport:keys"
+				( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}
+				set -e
+			fi
+		fi
+
+		if [ "${LOCAL_QUEUE}" = "TRUE" ]; then
+			echo "  - Starting local queue for [$(hostname)${LOCAL_QUEUES:+,${LOCAL_QUEUES}}] with job timeout of [${WORK_TIMEOUT:-90}], trying [${WORK_TRIES:-1}] times..."
+			CMD="(while true; do php ${PHP_OPTIONS} artisan queue:work --verbose --tries=${WORK_TRIES:-1} --timeout=${WORK_TIMEOUT:-90} --queue=$(hostname)${LOCAL_QUEUES:+,${LOCAL_QUEUES}} ${WORK_MEMORY:+--memory=${WORK_MEMORY}} ${WORK_ONCE:+--once}; done) &"
+			( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}
+		fi
+
+		set +e
+		[ -x init-php.sh ] && (( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "init-php.sh &" ) || init-php.sh &)
+
+		exec /usr/local/bin/docker-php-entrypoint "$@"
+
+	elif [ "$role" = "queue" ]; then
+		QUEUE_CMD=work
+
+		if [ "${env}" == "local" ]; then
+			QUEUE_CMD=listen
+		fi
+
+		echo "  - Running the queue..."
+		# We'll delay starting in case the app is caching
+		sleep 15
+
+		wait_for_db
+
+		CMD="while true; do php ${PHP_OPTIONS} artisan queue:${QUEUE_CMD} --verbose --tries=${WORK_TRIES:-1} --timeout=${WORK_TIMEOUT:-90} ${WORK_QUEUES:+--queue=${WORK_QUEUES}} ${WORK_MEMORY:+--memory=${WORK_MEMORY}} ${WORK_ONCE:+--once}; done"
+		( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}
+
+	elif [ "$role" = "scheduler" ]; then
+		echo "  - Running the scheduler..."
+		# We'll delay starting in case the app is caching
+		sleep 15
+
+		CMD="while true; do php ${PHP_OPTIONS} artisan schedule:work --verbose --no-interaction; done"
+		( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}
+	fi
+
+else
+	echo "? NO container role \"${role}\", AND/OR no laravel install, just starting php-fpm"
+	exec /usr/local/bin/docker-php-entrypoint "$@"
+fi

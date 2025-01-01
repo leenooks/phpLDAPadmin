@@ -1,10 +1,40 @@
-FROM registry.dege.au/leenooks/php:8.3-fpm-ldap
+FROM dunglas/frankenphp:latest-php8.3-alpine
+
+# Base
+RUN apk add --no-cache bash
+
+# Additional extensions:
+RUN install-php-extensions \
+    ldap \
+    memcached
+
+RUN curl -4 https://getcomposer.org/installer|php -- --install-dir=/usr/local/bin --filename=composer
+ENV COMPOSER_HOME=/var/cache/composer
+
+ENV SITE_USER=www-data
+
+COPY init-docker /sbin/init-docker
+RUN chmod 550 /sbin/init-docker && chown ${SITE_USER}:0 /sbin/init-docker
 
 COPY . /var/www/html/
+WORKDIR /var/www/html
 
-RUN mkdir -p ${COMPOSER_HOME} && \
-	([ -r auth.json ] && mv auth.json ${COMPOSER_HOME}) || true && \
-	touch .composer.refresh && \
-	mv .env.example .env && \
-	FORCE_PERMS=1 NGINX_START=FALSE /sbin/init && \
-	rm -rf ${COMPOSER_HOME}/* composer.lock
+RUN mkdir -p ${COMPOSER_HOME} \
+	&& ([ -r auth.json ] && mv auth.json ${COMPOSER_HOME}) || true \
+	&& touch .composer.refresh \
+	&& mv .env.example .env \
+	&& FORCE_PERMS=1 /sbin/init-docker \
+	&& rm -rf ${COMPOSER_HOME}/* composer.lock
+
+# Fix start up items
+RUN sed -i -e 's/^{$CADDY_EXTRA_CONFIG}$/{$CADDY_EXTRA_CONFIG} /' /etc/caddy/Caddyfile
+RUN chown ${SITE_USER} /config/caddy /data/caddy
+
+USER ${SITE_USER}
+
+# Control which port to open
+ENV SERVER_NAME=:8080
+EXPOSE 8080
+
+ENTRYPOINT [ "/sbin/init-docker" ]
+CMD [ "--config","/etc/caddy/Caddyfile","--adapter","caddyfile" ]
