@@ -16,7 +16,8 @@ jobs:
 #    name: Test Application
 #    runs-on: docker-${{ matrix.arch }}
 #    container:
-#      image: gitea.dege.au/docker/php:8.3-fpm-ldap-test
+#      image: docker:dind
+#      privileged: true
 #
 #    steps:
 #    - name: Environment Setup
@@ -24,7 +25,7 @@ jobs:
 #        # If we have a proxy use it
 #        if [ -n "${HTTP_PROXY}" ]; then echo "HTTP PROXY [${HTTP_PROXY}]"; sed -i -e s'/https/http/' /etc/apk/repositories; fi
 #        # Some pre-reqs
-#        apk add git nodejs
+#        apk add git nodejs npm
 #        ## Some debugging info
 #        # env|sort
 #
@@ -36,15 +37,17 @@ jobs:
 #        mv .env.testing .env
 #        # Install Composer and project dependencies.
 #        mkdir -p ${COMPOSER_HOME}
-#        if [ -n "${{ secrets.COMPOSER_GITHUB_TOKEN }}" ]; then echo ${{ secrets.COMPOSER_GITHUB_TOKEN }} > ${COMPOSER_HOME}/auth.json; fi
+#        if [ -n "${{ secrets.COMPOSER_GITHUB_TOKEN }}" ]; then composer config github-oauth.github.com ${{ secrets.COMPOSER_GITHUB_TOKEN }}; fi
 #        composer install
 #        # Generate an application key. Re-cache.
 #        php artisan key:generate
 #        php artisan migrate
 #        php artisan db:seed
+#        # Build assets
+#        npm i
+#        npm run prod
 #        # run laravel tests
-#        touch storage/app/test/*ZIP storage/app/test/file/*
-#        XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text --colors=never
+#        # XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text --colors=never
 
   build:
     strategy:
@@ -69,7 +72,7 @@ jobs:
         # If we have a proxy use it
         if [ -n "${HTTP_PROXY}" ]; then echo "HTTP PROXY [${HTTP_PROXY}]"; sed -i -e s'/https/http/' /etc/apk/repositories; fi
         # Some pre-reqs
-        apk add git curl nodejs
+        apk add git curl nodejs npm
         # Start docker
         ( dockerd --host=tcp://0.0.0.0:2375 --tls=false & ) && sleep 3
         ## Some debugging info
@@ -91,6 +94,12 @@ jobs:
 
     - name: Code Checkout
       uses: actions/checkout@v4
+
+    - name: Build Assets
+      run: |
+        # Build assets
+        npm i
+        npm run prod
 
     - name: Record version and Delete Unnecessary files
       run: |
