@@ -6,32 +6,38 @@ env:
   DOCKER_HOST: tcp://127.0.0.1:2375
 
 jobs:
-#  test:
-#    strategy:
-#      matrix:
-#        arch:
-#        - x86_64
-#        # arm64
-#
-#    name: Test Application
-#    runs-on: docker-${{ matrix.arch }}
-#    container:
-#      image: docker:dind
-#      privileged: true
-#
-#    steps:
-#    - name: Environment Setup
-#      run: |
-#        # If we have a proxy use it
-#        if [ -n "${HTTP_PROXY}" ]; then echo "HTTP PROXY [${HTTP_PROXY}]"; sed -i -e s'/https/http/' /etc/apk/repositories; fi
-#        # Some pre-reqs
-#        apk add git nodejs npm
-#        ## Some debugging info
-#        # env|sort
-#
-#    - name: Code Checkout
-#      uses: actions/checkout@v4
-#
+  test:
+    strategy:
+      matrix:
+        arch:
+        - x86_64
+        # arm64
+
+    name: Test Application
+    runs-on: docker-${{ matrix.arch }}
+    container:
+      image: docker:dind
+      privileged: true
+
+    steps:
+    - name: Environment Setup
+      run: |
+        # If we have a proxy use it
+        if [ -n "${HTTP_PROXY}" ]; then echo "HTTP PROXY [${HTTP_PROXY}]"; sed -i -e s'/https/http/' /etc/apk/repositories; fi
+        # Some pre-reqs
+        apk add git nodejs npm tar zstd
+        ## Some debugging info
+        # env|sort
+
+    - name: Code Checkout
+      uses: actions/checkout@v4
+
+    - name: Build Assets
+      run: |
+        # Build assets
+        npm i
+        npm run prod
+
 #    - name: Run Tests
 #      run: |
 #        mv .env.testing .env
@@ -43,11 +49,26 @@ jobs:
 #        php artisan key:generate
 #        php artisan migrate
 #        php artisan db:seed
-#        # Build assets
-#        npm i
-#        npm run prod
 #        # run laravel tests
 #        # XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text --colors=never
+
+    - name: Cache page assets
+      id: cache-page-assets
+      uses: actions/cache@v3
+#      env:
+#        cache-name: page-assets
+      with:
+        path: |
+          public/css/app.css
+          public/fonts
+          public/images
+          public/js/app.js
+          public/js/manifest.js
+          public/js/vendor.js
+        #key: build-pla-page-assets-${{ hashFiles('**/package-lock.json') }}
+        key: build-pla-page-assets
+        #restore-keys: |
+        #  build-pla-page-assets-
 
   build:
     strategy:
@@ -55,7 +76,7 @@ jobs:
         arch:
         - x86_64
         - arm64
-#    needs: [test]
+    needs: [test]
 
     name: Build Docker Image
     runs-on: docker-${{ matrix.arch }}
@@ -72,7 +93,7 @@ jobs:
         # If we have a proxy use it
         if [ -n "${HTTP_PROXY}" ]; then echo "HTTP PROXY [${HTTP_PROXY}]"; sed -i -e s'/https/http/' /etc/apk/repositories; fi
         # Some pre-reqs
-        apk add git curl nodejs npm
+        apk add git curl nodejs npm tar zstd
         # Start docker
         ( dockerd --host=tcp://0.0.0.0:2375 --tls=false & ) && sleep 3
         ## Some debugging info
@@ -95,16 +116,38 @@ jobs:
     - name: Code Checkout
       uses: actions/checkout@v4
 
-    - name: Build Assets
+    - name: Cache page assets
+      id: cache-page-assets
+      uses: actions/cache@v3
+#      env:
+#        cache-name: page-assets
+      with:
+        path: |
+          public/css/app.css
+          public/fonts
+          public/images
+          public/js/app.js
+          public/js/manifest.js
+          public/js/vendor.js
+        #key: build-pla-page-assets-${{ hashFiles('**/package-lock.json') }}
+        key: build-pla-page-assets
+        #restore-keys: |
+        #  build-pla-page-assets-
+
+    - if: ${{ steps.cache-page-assets.outputs.cache-hit != 'true' }}
+      name: List the state of page assets
+      continue-on-error: false
       run: |
-        # Build assets
-        npm i
-        npm run prod
+        echo CACHE-HIT:${{ steps.cache-page-assets.outputs.cache-hit }}
+        ls -al public/css/
+        ls -al public/js/
 
     - name: Record version and Delete Unnecessary files
       run: |
         echo ${GITHUB_SHA::8} > VERSION
         rm -rf .git* tests/ storage/app/test/
+        ls -al public/css/
+        ls -al public/js/
 
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v5
