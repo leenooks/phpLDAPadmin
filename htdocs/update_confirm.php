@@ -17,7 +17,7 @@
 require './common.php';
 
 $request = array();
-$request['dn'] = get_request('dn','REQUEST',true);
+$request['dn'] = get_request('dn','REQUEST',true,null,false);
 
 if (! $request['dn'] || ! $app['server']->dnExists($request['dn']))
 	error(sprintf(_('The entry (%s) does not exist.'),$request['dn']),'error','index.php');
