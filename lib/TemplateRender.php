@@ -2452,8 +2452,10 @@ function deleteAttribute(attrName,friendlyName,i)
 
 		printf("\n<!-- %s -->\n",__METHOD__);
 		echo '<script type="text/javascript">'."\n";
-		echo 'var i = 0;'."\n";
-		printf('var component = document.getElementById(\'new_values_%s_\'+i);',$attribute->getName());
+		$index_name = $attribute->getName().'_index';
+		printf('var %s = 0;',$index_name);
+		echo "\n";
+		printf('var component = document.getElementById(\'new_values_%s_\'+%s);',$attribute->getName(),$index_name);
 		echo "\n";
 		echo 'while (component) {'."\n";
 		echo '	if (!component.value) {'."\n";
@@ -2462,11 +2464,8 @@ function deleteAttribute(attrName,friendlyName,i)
 		printf('		alert(\'%s:\n%s\');',_('A random password was generated for you'),$pwd);
 		echo "\n";
 		echo '	};'."\n";
-		echo '	i++;'."\n";
-		printf('	component = document.getElementById(\'new_values_%s_\'+i);',$attribute->getName());
-		echo "\n";
-		# It seems that JS gets stuck in a loop if there isnt a command here? - normally this alert isnt shown.
-		printf('alert("It seems another element was found, PLA hasnt been configured for this situation Component: "+component.value+" I:"+i);',$attribute->getName());
+		printf('        %s++;'."\n", $index_name);
+		printf('        component = document.getElementById(\'new_values_%s_\'+%s);',$attribute->getName(),$index_name);
 		echo "\n";
 		echo '}'."\n";
 		echo '</script>';
