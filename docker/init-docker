@@ -50,10 +50,11 @@ fi
 if [ -r artisan -a -e ${php}/.env ]; then
 	echo "* Laravel Setup..."
 	mp=$(mp ${php})
-	echo "  - [${php}] is a mount point [${mp}]"
 
 	# Only adjust perms if this is an external mountpoint
 	if [ -n "${FORCE_PERMS}" -o ${mp} -eq 0 ]; then
+		echo "  - ${mp} is an external mount point"
+
 		if [ -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ]; then
 			echo "  - Setting Permissions..."
 			# Make sure our permissions are appropraite
@@ -95,6 +96,12 @@ if [ -r artisan -a -e ${php}/.env ]; then
 		(( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}) && ( test -e .composer.refresh && rm -f .composer.refresh )
 		[ -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ] && [ ${mp} -eq 0 ] && chmod g-w ${php}
 	fi
+
+	# Generate our Encryption Key
+	[ -z ${BUILD} ] && [ -z ${APP_KEY} ] \
+		&& grep -qe '^APP_KEY=$' .env \
+		&& echo '  + Encryption Key auto created, replace with with "artisan key:generate --force"' \
+		&& ./artisan key:generate
 
 	# We only check for non mount points, in case this container has the app inside
 	mp=$(mp ${php})

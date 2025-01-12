@@ -8,6 +8,10 @@ RUN install-php-extensions \
     ldap \
     memcached
 
+RUN sed -i -e 's/^{$CADDY_EXTRA_CONFIG}$/{$CADDY_EXTRA_CONFIG} /' /etc/caddy/Caddyfile
+RUN sed -i -e 's/^memory_limit = 128M/memory_limit = 1G/' /usr/local/etc/php/php.ini-production
+RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
+
 RUN curl -4 https://getcomposer.org/installer|php -- --install-dir=/usr/local/bin --filename=composer
 ENV COMPOSER_HOME=/var/cache/composer
 
@@ -23,13 +27,10 @@ RUN mkdir -p ${COMPOSER_HOME} \
 	&& ([ -r auth.json ] && mv auth.json ${COMPOSER_HOME}) || true \
 	&& touch .composer.refresh \
 	&& mv .env.example .env \
-	&& FORCE_PERMS=1 /sbin/init-docker \
+	&& FORCE_PERMS=1 BUILD=1 /sbin/init-docker \
 	&& rm -rf ${COMPOSER_HOME}/* composer.lock
 
 # Fix start up items
-RUN sed -i -e 's/^{$CADDY_EXTRA_CONFIG}$/{$CADDY_EXTRA_CONFIG} /' /etc/caddy/Caddyfile
-RUN sed -i -e 's/^memory_limit = 128M/memory_limit = 1G/' /usr/local/etc/php/php.ini-production
-RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 RUN chown ${SITE_USER} /config/caddy /data/caddy
 
 USER ${SITE_USER}
