@@ -13,10 +13,8 @@ class AppServiceProvider extends ServiceProvider
 {
 	/**
 	 * Register any application services.
-	 *
-	 * @return void
 	 */
-	public function register()
+	public function register(): void
 	{
 		// Add a new option available to be set in the configuration:
 		DomainConfiguration::extend('name', $default = null);
@@ -27,10 +25,8 @@ class AppServiceProvider extends ServiceProvider
 
 	/**
 	 * Bootstrap any application services.
-	 *
-	 * @return void
 	 */
-	public function boot()
+	public function boot(): void
 	{
 		$this->loadViewsFrom(__DIR__.'/../../resources/themes/architect/views/','architect');
 

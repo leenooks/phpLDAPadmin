@@ -28,6 +28,8 @@ RUN mkdir -p ${COMPOSER_HOME} \
 
 # Fix start up items
 RUN sed -i -e 's/^{$CADDY_EXTRA_CONFIG}$/{$CADDY_EXTRA_CONFIG} /' /etc/caddy/Caddyfile
+RUN sed -i -e 's/^memory_limit = 128M/memory_limit = 1G/' /usr/local/etc/php/php.ini-production
+RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 RUN chown ${SITE_USER} /config/caddy /data/caddy
 
 USER ${SITE_USER}

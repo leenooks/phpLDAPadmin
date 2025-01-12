@@ -2,7 +2,7 @@
 
 namespace App\Ldap;
 
-use Laravel\Passport\HasApiTokens;
+use Laravel\Sanctum\HasApiTokens;
 use LdapRecord\Models\OpenLDAP\User as Model;
 
 use App\Ldap\Rules\LoginObjectclassRule;
