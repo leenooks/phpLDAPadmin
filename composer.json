@@ -11,8 +11,7 @@
         "directorytree/ldaprecord-laravel": "^3.0",
         "laravel/framework": "^11.9",
         "laravel/sanctum": "^4.0",
-        "laravel/ui": "^4.5",
-        "mcamara/laravel-localization": "^2.0"
+        "laravel/ui": "^4.5"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

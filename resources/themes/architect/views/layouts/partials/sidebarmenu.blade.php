@@ -35,17 +35,17 @@
 				<li class="app-sidebar__heading">{{ $server ?? __('Server Name') }}</li>
 				<li>
 					<div class="font-icon-wrapper float-start me-1 server-icon">
-						<a class="p-0 m-0" href="{{ LaravelLocalization::localizeUrl('info') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-info"></i></a>
+						<a class="p-0 m-0" href="{{ url('info') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-info"></i></a>
 					</div>
 					<div class="font-icon-wrapper float-start ms-1 me-1 server-icon">
-						<a class="p-0 m-0" href="{{ LaravelLocalization::localizeUrl('schema') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-fingerprint"></i></a>
+						<a class="p-0 m-0" href="{{ url('schema') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-fingerprint"></i></a>
 					</div>
 					<div class="font-icon-wrapper float-start ms-1 me-1 server-icon">
-						<a class="p-0 m-0" href="{{ LaravelLocalization::localizeUrl('import') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-upload"></i></a>
+						<a class="p-0 m-0" href="{{ url('import') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-upload"></i></a>
 					</div>
 					@env(['local'])
 						<div class="font-icon-wrapper float-end ms-1 server-icon">
-							<a class="p-0 m-0" href="{{ LaravelLocalization::localizeUrl('debug') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-toolbox"></i></a>
+							<a class="p-0 m-0" href="{{ url('debug') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-toolbox"></i></a>
 						</div>
 					@endenv
 					<div class="clearfix"></div>

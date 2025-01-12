@@ -16,23 +16,21 @@ use App\Http\Controllers\Auth\LoginController;
 |
 */
 
-Route::group(['prefix' => LaravelLocalization::setLocale()], function() {
-	Auth::routes([
-		'login' => TRUE,
-		'logout' => TRUE,
-		'reset' => FALSE,
-		'confirm' => FALSE,
-		'verify' => FALSE,
-		'register' => FALSE,
-	]);
+Auth::routes([
+	'login' => TRUE,
+	'logout' => TRUE,
+	'reset' => FALSE,
+	'confirm' => FALSE,
+	'verify' => FALSE,
+	'register' => FALSE,
+]);
 
-	Route::get('/',[HomeController::class,'home']);
-	Route::get('info',[HomeController::class,'info']);
-	Route::post('dn',[HomeController::class,'dn_frame']);
-	Route::get('debug',[HomeController::class,'debug']);
-	Route::get('import',[HomeController::class,'import_frame']);
-	Route::get('schema',[HomeController::class,'schema_frame']);
-});
+Route::get('/',[HomeController::class,'home']);
+Route::get('info',[HomeController::class,'info']);
+Route::post('dn',[HomeController::class,'dn_frame']);
+Route::get('debug',[HomeController::class,'debug']);
+Route::get('import',[HomeController::class,'import_frame']);
+Route::get('schema',[HomeController::class,'schema_frame']);
 
 Route::get('logout',[LoginController::class,'logout']);
 
