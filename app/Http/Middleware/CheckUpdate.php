@@ -3,7 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Config;
 use GuzzleHttp\Client;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
@@ -15,13 +17,13 @@ class CheckUpdate
 	/**
 	 * Handle an incoming request.
 	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  \Closure  $next
+	 * @param  Request  $request
+	 * @param  Closure  $next
 	 * @return mixed
 	 */
-	public function handle($request, Closure $next)
+	public function handle(Request $request, Closure $next): mixed
 	{
-		\Config::set('update_available',Cache::get('upstream_version'));
+		Config::set('update_available',Cache::get('upstream_version'));
 
 		return $next($request);
 	}
@@ -31,7 +33,7 @@ class CheckUpdate
 	 *
 	 * @return void
 	 */
-	public function terminate()
+	public function terminate(): void
 	{
 		Cache::remember('upstream_version',self::UPDATE_TIME,function() {
 			// CURL call to URL to see if there is a new version
@@ -40,7 +42,6 @@ class CheckUpdate
 			$client = new Client;
 
 			try {
-
 				$response = $client->request('POST',sprintf('%s/%s',self::UPDATE_SERVER,strtolower(config('app.version'))));
 
 				if ($response->getStatusCode() === 200) {

@@ -21,6 +21,9 @@ use App\Ldap\Entry;
 
 final class Server
 {
+	// Connection information used for these object and children
+	private ?string $connection;
+
 	// This servers schema objectclasses
 	private Collection $attributetypes;
 	private Collection $ldapsyntaxes;
@@ -28,25 +31,26 @@ final class Server
 	private Collection $matchingruleuse;
 	private Collection $objectclasses;
 
-	// Valid items that can be fetched
-	public const schema_types = [
-		'objectclasses',
-		'attributetypes',
-		'ldapsyntaxes',
-		'matchingrules',
-	];
+	/* ObjectClass Types */
+	public const OC_STRUCTURAL = 0x01;
+	public const OC_ABSTRACT = 0x02;
+	public const OC_AUXILIARY = 0x03;
+
+	public function __construct(string $connection=NULL)
+	{
+		$this->connection = $connection;
+	}
 
 	public function __get(string $key): mixed
 	{
-		switch ($key) {
-			case 'attributetypes': return $this->attributetypes;
-			case 'ldapsyntaxes': return $this->ldapsyntaxes;
-			case 'matchingrules': return $this->matchingrules;
-			case 'objectclasses': return $this->objectclasses;
-
-			default:
-				throw new Exception('Unknown key:'.$key);
-		}
+		return match($key) {
+			'attributetypes' => $this->attributetypes,
+			'connection' => $this->connection,
+			'ldapsyntaxes' => $this->ldapsyntaxes,
+			'matchingrules' => $this->matchingrules,
+			'objectclasses' => $this->objectclasses,
+			default => throw new Exception('Unknown key:' . $key),
+		};
 	}
 
 	/* STATIC METHODS */
@@ -62,9 +66,10 @@ final class Server
 	 * @testedin GetBaseDNTest::testBaseDNExists();
 	 * @todo Need to allow for the scenario if the baseDN is not readable by ACLs
 	 */
-	public static function baseDNs($connection=NULL,bool $objects=TRUE): Collection
+	public static function baseDNs(string $connection='default',bool $objects=TRUE): Collection
 	{
-		$cachetime = Carbon::now()->addSeconds(Config::get('ldap.cache.time'));
+		$cachetime = Carbon::now()
+			->addSeconds(Config::get('ldap.cache.time'));
 
 		try {
 			$base = self::rootDSE($connection,$cachetime);
@@ -163,7 +168,7 @@ final class Server
 		 */
 		// If we cannot get to our LDAP server we'll head straight to the error page
 		} catch (LdapRecordException $e) {
-			switch ($e->getDetailedError()->getErrorCode()) {
+			switch ($e->getDetailedError()?->getErrorCode()) {
 				case 49:
 					// Since we failed authentication, we should delete our auth cookie
 					if (Cookie::has('password_encrypt')) {
@@ -178,7 +183,7 @@ final class Server
 					abort(401,$e->getDetailedError()->getErrorMessage());
 
 				default:
-					abort(597,$e->getDetailedError()->getErrorMessage());
+					abort(597,$e->getDetailedError()?->getErrorMessage() ?: $e->getMessage());
 			}
 		}
 
@@ -192,9 +197,8 @@ final class Server
 		 * @todo Possibly a bug wtih ldaprecord, so need to investigate
 		 */
 		$result = collect();
-		foreach ($base->namingcontexts as $dn) {
+		foreach ($base->namingcontexts as $dn)
 			$result->push((new Entry)->cache($cachetime)->findOrFail($dn));
-		}
 
 		return $result;
 	}
@@ -207,7 +211,7 @@ final class Server
 	 * @throws ObjectNotFoundException
 	 * @testedin TranslateOidTest::testRootDSE();
 	 */
-	public static function rootDSE($connection=NULL,Carbon $cachetime=NULL): ?Model
+	public static function rootDSE(string $connection=NULL,Carbon $cachetime=NULL): ?Model
 	{
 		$e = new Entry;
 
@@ -227,7 +231,7 @@ final class Server
 	 * @return string
 	 * @throws ObjectNotFoundException
 	 */
-	public static function schemaDN($connection=NULL): string
+	public static function schemaDN(string $connection=NULL): string
 	{
 		$cachetime = Carbon::now()->addSeconds(Config::get('ldap.cache.time'));
 
@@ -243,7 +247,7 @@ final class Server
 	public function children(string $dn): ?LDAPCollection
 	{
 		return ($x=(new Entry)
-			->query()
+			->on($this->connection)
 			->cache(Carbon::now()->addSeconds(Config::get('ldap.cache.time')))
 			->select(['*','hassubordinates'])
 			->setDn($dn)
@@ -261,7 +265,7 @@ final class Server
 	public function fetch(string $dn,array $attrs=['*','+']): ?Entry
 	{
 		return ($x=(new Entry)
-			->query()
+			->on($this->connection)
 			->cache(Carbon::now()->addSeconds(Config::get('ldap.cache.time')))
 			->select($attrs)
 			->find($dn)) ? $x : NULL;
@@ -298,16 +302,12 @@ final class Server
 	 * @return Collection|Base|NULL
 	 * @throws InvalidUsage
 	 */
-	public function schema(string $item,string $key=NULL): Collection|Base|NULL
+	public function schema(string $item,string $key=NULL): Collection|LDAPSyntax|Base|NULL
 	{
 		// Ensure our item to fetch is lower case
 		$item = strtolower($item);
 		if ($key)
 			$key = strtolower($key);
-
-		// This error message is not localized as only developers should ever see it
-		if (! in_array($item,self::schema_types))
-			throw new InvalidUsage('Invalid request to fetch schema: '.$item);
 
 		$result = Cache::remember('schema'.$item,config('ldap.cache.time'),function() use ($item) {
 			// First pass if we have already retrieved the schema item
@@ -354,13 +354,13 @@ final class Server
 
 					break;
 
-				// Shouldnt get here
+				// This error message is not localized as only developers should ever see it
 				default:
 					throw new InvalidUsage('Invalid request to fetch schema: '.$item);
 			}
 
 			// Try to get the schema DN from the specified entry.
-			$schema_dn = $this->schemaDN();
+			$schema_dn = $this->schemaDN('default');
 			$schema = $this->fetch($schema_dn);
 
 			switch ($item) {
@@ -526,11 +526,16 @@ final class Server
 					foreach ($this->objectclasses as $o)
 						foreach ($o->getSupClasses() as $parent) {
 							$parent = strtolower($parent);
-							if ($this->objectclasses->has($parent) !== FALSE)
+
+							if (! $this->objectclasses->contains($parent))
 								$this->objectclasses[$parent]->addChildObjectClass($o->name);
 						}
 
 					return $this->objectclasses;
+
+				// Shouldnt get here
+				default:
+					throw new InvalidUsage('Invalid request to fetch schema: '.$item);
 			}
 		});
 

@@ -9,7 +9,7 @@ RUN install-php-extensions \
     memcached
 
 RUN sed -i -e 's/^{$CADDY_EXTRA_CONFIG}$/{$CADDY_EXTRA_CONFIG} /' /etc/caddy/Caddyfile
-RUN sed -i -e 's/^memory_limit = 128M/memory_limit = 1G/' /usr/local/etc/php/php.ini-production
+RUN sed -i -e 's/^memory_limit = 128M/memory_limit = 256M/' /usr/local/etc/php/php.ini-production
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 
 RUN curl -4 https://getcomposer.org/installer|php -- --install-dir=/usr/local/bin --filename=composer

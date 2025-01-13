@@ -2,12 +2,12 @@
 
 namespace App\Classes\LDAP\Schema;
 
+use Config;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 use App\Classes\LDAP\Server;
 use App\Exceptions\InvalidUsage;
-use App\Ldap\Entry;
 
 /**
  * Represents an LDAP Schema objectClass
@@ -15,10 +15,8 @@ use App\Ldap\Entry;
  * @package phpLDAPadmin
  * @subpackage Schema
  */
-final class ObjectClass extends Base {
-	// The server ID that this objectclass belongs to.
-	private Server $server;
-
+final class ObjectClass extends Base
+{
 	// Array of objectClass names from which this objectClass inherits
 	private Collection $sup_classes;
 
@@ -39,15 +37,14 @@ final class ObjectClass extends Base {
 
 	private bool $is_obsolete;
 
-	/* ObjectClass Types */
-	private const OC_STRUCTURAL = 0x01;
-	private const OC_ABSTRACT = 0x02;
-	private const OC_AUXILIARY = 0x03;
-
 	/**
 	 * Creates a new ObjectClass object given a raw LDAP objectClass string.
 	 *
 	 * eg: ( 2.5.6.0 NAME 'top' DESC 'top of the superclass chain' ABSTRACT MUST objectClass )
+	 *
+	 * @param string $line Schema Line
+	 * @param Server $server
+	 * @todo Change $server to $connection, no need to store the server object here
 	 */
 	public function __construct(string $line,Server $server)
 	{
@@ -59,7 +56,6 @@ final class ObjectClass extends Base {
 		$strings = preg_split('/[\s,]+/',$line,-1,PREG_SPLIT_DELIM_CAPTURE);
 
 		// Init
-		$this->server = $server;
 		$this->may_attrs = collect();
 		$this->may_force = collect();
 		$this->must_attrs = collect();
@@ -138,21 +134,21 @@ final class ObjectClass extends Base {
 					break;
 
 				case 'ABSTRACT':
-					$this->type = self::OC_ABSTRACT;
+					$this->type = Server::OC_ABSTRACT;
 
 					if (static::DEBUG_VERBOSE)
 						Log::debug(sprintf('- Case ABSTRACT returned (%s)',$this->type));
 					break;
 
 				case 'STRUCTURAL':
-					$this->type = self::OC_STRUCTURAL;
+					$this->type = Server::OC_STRUCTURAL;
 
 					if (static::DEBUG_VERBOSE)
 						Log::debug(sprintf('- Case STRUCTURAL returned (%s)',$this->type));
 					break;
 
 				case 'AUXILIARY':
-					$this->type = self::OC_AUXILIARY;
+					$this->type = Server::OC_AUXILIARY;
 
 					if (static::DEBUG_VERBOSE)
 						Log::debug(sprintf('- Case AUXILIARY returned (%s)',$this->type));
@@ -212,34 +208,29 @@ final class ObjectClass extends Base {
 
 	public function __get(string $key): mixed
 	{
-		switch ($key) {
-			case 'attributes':
-				return $this->getAllAttrs();
-
-			case 'sup':
-				return $this->sup_classes;
-
-			case 'type_name':
-				switch ($this->type) {
-					case self::OC_STRUCTURAL: return 'Structural';
-					case self::OC_ABSTRACT: return 'Abstract';
-					case self::OC_AUXILIARY: return 'Auxiliary';
-					default:
-						throw new InvalidUsage('Unknown ObjectClass Type: '.$this->type);
-				}
-
-			default: return parent::__get($key);
-		}
+		return match ($key) {
+			'attributes' => $this->getAllAttrs(),
+			'sup' => $this->sup_classes,
+			'type_name' => match ($this->type) {
+				Server::OC_STRUCTURAL => 'Structural',
+				Server::OC_ABSTRACT => 'Abstract',
+				Server::OC_AUXILIARY => 'Auxiliary',
+				default => throw new InvalidUsage('Unknown ObjectClass Type: ' . $this->type),
+			},
+			default => parent::__get($key),
+		};
 	}
 
 	/**
 	 * Return a list of attributes that this objectClass provides
 	 *
 	 * @return Collection
+	 * @throws InvalidUsage
 	 */
 	public function getAllAttrs(): Collection
 	{
-		return $this->getMustAttrs()->merge($this->getMayAttrs());
+		return $this->getMustAttrs()
+			->merge($this->getMayAttrs());
 	}
 
 	/**
@@ -250,9 +241,8 @@ final class ObjectClass extends Base {
 	 */
 	public function addChildObjectClass(string $name): void
 	{
-		if ($this->child_objectclasses->search($name) === FALSE) {
+		if (! $this->child_objectclasses->has($name))
 			$this->child_objectclasses->push($name);
-		}
 	}
 
 	/**
@@ -321,14 +311,13 @@ final class ObjectClass extends Base {
 	{
 		// If we dont need our parents, then we'll just return ours.
 		if (! $parents)
-			return $this->may_attrs->sortBy(function($item) { return strtolower($item->name.$item->source); });
+			return $this->may_attrs
+				->sortBy(fn($item)=>strtolower($item->name.$item->source));
 
 		$attrs = $this->may_attrs;
 
-		foreach ($this->getParents() as $object_class) {
-			$sc = $this->server->schema('objectclasses',$object_class);
-			$attrs = $attrs->merge($sc->getMayAttrs($parents));
-		}
+		foreach ($this->getParents() as $object_class)
+			$attrs = $attrs->merge($object_class->getMayAttrs($parents));
 
 		// Remove any duplicates
 		$attrs = $attrs->unique(function($item) { return $item->name; });
@@ -378,10 +367,8 @@ final class ObjectClass extends Base {
 
 		$attrs = $this->must_attrs;
 
-		foreach ($this->getParents() as $object_class) {
-			$sc = $this->server->schema('objectclasses',$object_class);
-			$attrs = $attrs->merge($sc->getMustAttrs($parents));
-		}
+		foreach ($this->getParents() as $object_class)
+			$attrs = $attrs->merge($object_class->getMustAttrs($parents));
 
 		// Remove any duplicates
 		$attrs = $attrs->unique(function($item) { return $item->name; });
@@ -423,12 +410,13 @@ final class ObjectClass extends Base {
 		$result = collect();
 
 		foreach ($this->sup_classes as $object_class) {
-			$result->push($object_class);
+			$oc = Config::get('server')
+				->schema('objectclasses',$object_class);
 
-			$oc = $this->server->schema('objectclasses',$object_class);
-
-			if ($oc)
+			if ($oc) {
+				$result->push($oc);
 				$result = $result->merge($oc->getParents());
+			}
 		}
 
 		return $result;
@@ -476,19 +464,16 @@ final class ObjectClass extends Base {
 		if (in_array_ignore_case($this->name,$oclass))
 			return FALSE;
 
-		foreach ($oclass as $object_class) {
-			$oc = $this->server->schema('objectclasses',$object_class);
-
-			if ($oc->isStructural() && in_array_ignore_case($this->name,$oc->getParents()))
+		foreach ($oclass as $object_class)
+			if ($object_class->isStructural() && in_array_ignore_case($this->name,$object_class->getParents()->pluck('name')))
 				return TRUE;
-		}
 
 		return FALSE;
 	}
 
 	public function isStructural(): bool
 	{
-		return $this->type === self::OC_STRUCTURAL;
+		return $this->type === Server::OC_STRUCTURAL;
 	}
 
 	/**
