@@ -349,7 +349,7 @@ private $sbox = array(array(array(14,  4, 13,  1,  2, 15, 11,  8,  3, 10,  6, 12
 	*/
 	public function nthash($password = "") {
 		if (function_exists('mhash'))
-			if (defined('MHASH_MD4'))
+			if (defined('MHASH_MD4') && phpversion() < '8.2')
 				return strtoupper(bin2hex(mhash(MHASH_MD4,iconv('UTF-8','UTF-16LE',$password))));
 			else
 				return strtoupper(hash('md4', iconv("UTF-8","UTF-16LE",$password)));
