@@ -28,6 +28,7 @@
  * @todo RDN attributes need to be checked that are included in the schema, otherwise mark it is invalid
  * @todo askcontainer is no longer used?
  */
+#[AllowDynamicProperties]
 class Template extends xmlTemplate {
 	# If this template visible on the template choice list
 	private $visible = true;

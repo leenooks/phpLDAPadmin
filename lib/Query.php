@@ -12,6 +12,7 @@
  * @package phpLDAPadmin
  * @subpackage Queries
  */
+#[AllowDynamicProperties]
 class Query extends xmlTemplate {
 	protected $description = '';
 	public $results = array();

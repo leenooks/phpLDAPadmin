@@ -12,6 +12,7 @@
  * @package phpLDAPadmin
  * @subpackage Templates
  */
+#[AllowDynamicProperties]
 class TemplateRender extends PageRender {
 	# Page number
 	private $pagelast;
