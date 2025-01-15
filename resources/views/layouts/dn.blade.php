@@ -12,3 +12,4 @@
 
 @yield('page-modals')
 @yield('page-scripts')
+@yield('page-styles')

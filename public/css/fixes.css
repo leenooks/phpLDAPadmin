@@ -269,3 +269,25 @@ pre code .line::before {
 	display: inline-block;
 	border-right: 1px solid rgba(0, 0, 0, .5);
 }
+
+/** select2 rendering fixes */
+/* The opened input box */
+.select2-container--bootstrap-5 .select2-dropdown .select2-search .select2-search__field {
+	line-height: 1.0;
+	border: 1px solid #aaa;
+}
+
+.select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option {
+	padding: 0.3rem 0.2rem 0.3rem 0.4rem;
+	font-size: 95%;
+}
+
+select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__clear, .select2-container--bootstrap-5 .select2-selection--single .select2-selection__clear {
+	width: 0.5rem;
+	height: 0.5rem;
+}
+
+.select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered .select2-selection__placeholder {
+	line-height: 1.0;
+	font-size: 90%;
+}

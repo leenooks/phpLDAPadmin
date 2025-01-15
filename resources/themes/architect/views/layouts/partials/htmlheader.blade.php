@@ -33,6 +33,8 @@
 		<link rel="stylesheet" href="{{ asset('/css/custom.css') }}">
 	@endif
 
+	<!-- Page Styles -->
+	@yield('page-styles')
 	{{--
 	@if(file_exists('css/print.css'))
 		<!-- Printing Modifications -->
