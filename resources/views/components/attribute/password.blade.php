@@ -4,7 +4,7 @@
 	@foreach ($o->values as $value)
 		@if ($edit)
 			<div class="input-group has-validation">
-				<input type="password" class="form-control @if($e=$errors->get($o->name_lc.'.'.$loop->index))is-invalid @endif mb-1 @if($o->values->search($value) === FALSE) border-focus @endif" name="{{ $o->name_lc }}[]" value="{{ md5($value) }}" readonly="true">
+				<input type="password" @class(['form-control','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$loop->index)),'mb-1','border-focus'=>$o->values->contains($value)]) name="{{ $o->name_lc }}[]" value="{{ md5($value) }}" @readonly(true)>
 
 				<div class="invalid-feedback pb-2">
 					@if($e)

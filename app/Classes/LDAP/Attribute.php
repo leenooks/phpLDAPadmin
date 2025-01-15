@@ -247,9 +247,9 @@ class Attribute implements \Countable, \ArrayAccess
 	/**
 	 * Display the attribute value
 	 *
-	 * @param bool $edit
-	 * @param bool $old
-	 * @param bool $new
+	 * @param bool $edit Render an edit form
+	 * @param bool $old Use old value
+	 * @param bool $new Enable adding values
 	 * @return View
 	 */
 	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View

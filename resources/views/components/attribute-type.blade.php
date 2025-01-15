@@ -15,6 +15,6 @@
 			</div>
 		</div>
 
-		<x-attribute :o="$o" :edit="true" :new="$new"/>
+		<x-attribute :o="$o" :edit="true" :new="$new ?? FALSE"/>
 	</div>
 </div>

@@ -8,22 +8,22 @@ use App\Classes\LDAP\Attribute as LDAPAttribute;
 
 class Attribute extends Component
 {
-	public LDAPAttribute $o;
+	public ?LDAPAttribute $o;
 	public bool $edit;
 	public bool $new;
 	public bool $old;
+	public ?string $na;
 
     /**
      * Create a new component instance.
-     *
-     * @return void
      */
-    public function __construct(LDAPAttribute $o,bool $edit,bool $old=FALSE,bool $new=FALSE)
+    public function __construct(?LDAPAttribute $o,bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $na=NULL)
     {
 		$this->o = $o;
 		$this->edit = $edit;
 		$this->old = $old;
 		$this->new = $new;
+		$this->na = $na;
     }
 
     /**
@@ -33,6 +33,9 @@ class Attribute extends Component
      */
     public function render()
     {
-		return $this->o->render($this->edit,$this->old,$this->new);
+		return $this->o
+			? $this->o
+				->render($this->edit,$this->old,$this->new)
+			: $this->na;
     }
 }

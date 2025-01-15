@@ -9,7 +9,7 @@
 					@default
 						<td>
 							<input type="hidden" name="{{ $o->name_lc }}[]" value="{{ md5($value) }}">
-							<img class="jpegphoto @if($e=$errors->get($o->name_lc.'.'.$loop->index))is-invalid @endif" src="data:{{ $x }};base64, {{ base64_encode($value) }}" />
+							<img @class(['jpegphoto','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$loop->index))]) src="data:{{ $x }};base64, {{ base64_encode($value) }}" />
 
 							@if ($edit)
 								<br>

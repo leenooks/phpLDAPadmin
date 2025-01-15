@@ -45,7 +45,9 @@ class Entry extends Model
 	 */
 	public function getAttributes(): array
 	{
-		return $this->objects->map(function($item) { return $item->values->toArray(); })->toArray();
+		return $this->objects
+			->map(fn($item)=>$item->values->toArray())
+			->toArray();
 	}
 
 	/**
@@ -55,16 +57,14 @@ class Entry extends Model
 	{
 		$key = $this->normalizeAttributeKey($key);
 
-		if ((! array_key_exists($key, $this->original)) && (! $this->objects->has($key))) {
+		if ((! array_key_exists($key,$this->original)) && (! $this->objects->has($key)))
 			return TRUE;
-		}
 
 		$current = $this->attributes[$key];
 		$original = $this->objects->get($key)->values;
 
-		if ($current === $original) {
-			return true;
-		}
+		if ($current === $original)
+			return TRUE;
 
 		return ! $this->getObject($key)->isDirty();
 	}
@@ -134,8 +134,8 @@ class Entry extends Model
 	/**
 	 * Return a key to use for sorting
 	 *
-	 * @todo This should be the DN in reverse order
 	 * @return string
+	 * @todo This should be the DN in reverse order
 	 */
 	public function getSortKeyAttribute(): string
 	{
@@ -148,7 +148,7 @@ class Entry extends Model
 	{
 		$key = $this->normalizeAttributeKey($key);
 
-		if (config('server')->schema('attributetypes')->has($key) === FALSE)
+		if (! config('server')->schema('attributetypes')->contains($key))
 			throw new AttributeException('Schema doesnt have attribute [%s]',$key);
 
 		if ($x=$this->objects->get($key)) {
@@ -199,10 +199,10 @@ class Entry extends Model
 			}
 		}
 
-		$sort = collect(config('ldap.attr_display_order',[]))->transform(function($item) { return strtolower($item); });
+		$sort = collect(config('ldap.attr_display_order',[]))->map(fn($item)=>strtolower($item));
 
 		// Order the attributes
-		$result = $result->sortBy([function(Attribute $a,Attribute $b) use ($sort): int {
+		return $result->sortBy([function(Attribute $a,Attribute $b) use ($sort): int {
 			if ($a === $b)
 				return 0;
 
@@ -225,9 +225,7 @@ class Entry extends Model
 			// Case where at least one attribute or its friendly name is in $attrs_display_order
 			// return -1 if $a before $b in $attrs_display_order
 			return ($a_key < $b_key) ? -1 : 1;
-		} ]);
-
-		return $result;
+		}]);
 	}
 
 	/**
@@ -261,9 +259,8 @@ class Entry extends Model
 	 */
 	public function getInternalAttributes(): Collection
 	{
-		return $this->objects->filter(function($item) {
-			return $item->is_internal;
-		});
+		return $this->objects
+			->filter(fn($item)=>$item->is_internal);
 	}
 
 	/**
@@ -274,7 +271,8 @@ class Entry extends Model
 	 */
 	public function getObject(string $key): Attribute|null
 	{
-		return $this->objects->get($this->normalizeAttributeKey($key));
+		return $this->objects
+			->get($this->normalizeAttributeKey($key));
 	}
 
 	public function getObjects(): Collection
@@ -293,7 +291,8 @@ class Entry extends Model
 	 */
 	public function getMissingAttributes(): Collection
 	{
-		return $this->getAvailableAttributes()->diff($this->getVisibleAttributes());
+		return $this->getAvailableAttributes()
+			->diff($this->getVisibleAttributes());
 	}
 
 	/**
@@ -303,14 +302,14 @@ class Entry extends Model
 	 */
 	public function getVisibleAttributes(): Collection
 	{
-		return $this->objects->filter(function($item) {
-			return ! $item->is_internal;
-		});
+		return $this->objects
+			->filter(fn($item)=>! $item->is_internal);
 	}
 
 	public function hasAttribute(int|string $key): bool
 	{
-		return $this->objects->has($key);
+		return $this->objects
+			->has($key);
 	}
 
 	/**
