@@ -28,39 +28,11 @@
 @endsection
 
 @section('main-content')
-	@if(session()->has('note'))
-		<div class="alert alert-info">
-			<h4 class="alert-heading"><i class="fas fa-fw fa-note-sticky"></i> Note:</h4>
-			<hr>
-			<p>{{ session()->pull('note') }}</p>
-		</div>
-	@endif
-
-	@if(session()->has('success'))
-		<div class="alert alert-success">
-			<h4 class="alert-heading"><i class="fas fa-fw fa-thumbs-up"></i> Success!</h4>
-			<hr>
-			<p>{{ session()->pull('success') }}</p>
-			<ul style="list-style-type: square;">
-				@foreach (session()->pull('updated') as $key => $values)
-					<li>{{ $key }}: {{ join(',',$values) }}</li>
-				@endforeach
-			</ul>
-		</div>
-	@endif
+	<x-note/>
+	<x-success/>
+	<x-error/>
 
 	<!-- @todo If we are redirected here, check old() and add back any attributes that were in the original submission -->
-	@if($errors->any())
-		<div class="alert alert-danger">
-			<h4 class="alert-heading"><i class="fas fa-fw fa-thumbs-down"></i> Error?</h4>
-			<hr>
-			<ul style="list-style-type: square;">
-				@foreach ($errors->all() as $error)
-					<li>{{ $error }}</li>
-				@endforeach
-			</ul>
-		</div>
-	@endif
 
 	<div class="main-card mb-3 card">
 		<div class="card-body">
@@ -116,14 +88,14 @@
 								</div>
 								<div class="col-2"></div>
 							</div>
-
-							<div class="row d-none pt-3">
-								<div class="col-12 offset-sm-2 col-sm-4 col-lg-2">
-									<span id="form-reset" class="btn btn-outline-danger">@lang('Reset')</span>
-									<span id="form-submit" class="btn btn-success">@lang('Update')</span>
-								</div>
-							</div>
 						</form>
+
+						<div class="row d-none pt-3">
+							<div class="col-12 offset-sm-2 col-sm-4 col-lg-2">
+								<x-form.reset form="dn-edit"/>
+								<x-form.submit action="Update" form="dn-edit"/>
+							</div>
+						</div>
 					</div>
 
 					<!-- Internal Attributes -->
@@ -223,14 +195,6 @@
 		}
 
 		$(document).ready(function() {
-			$('#form-reset').click(function() {
-				$('#dn-edit')[0].reset();
-			});
-
-			$('#form-submit').click(function() {
-				$('#dn-edit')[0].submit();
-			});
-
 			$('#newattr').on('change',function(item) {
 				$.ajax({
 					type: 'GET',

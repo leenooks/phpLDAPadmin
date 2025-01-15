@@ -11,14 +11,7 @@
 			<div class="h-100 bg-animation">
 				<div class="d-flex h-100 justify-content-center align-items-center">
 					<div class="mx-auto app-login-box col-md-8">
-						@if(file_exists('login-note.html'))
-							<div class="mx-auto card text-white card-body bg-primary w-50">
-								<h5 class="text-white card-title"><i class="icon fa-2x fas fa-info pe-3"></i><span class="font-size-xlg">NOTE</span></h5>
-								<span class="w-100 pb-0">
-									{!! file_get_contents('login-note.html') !!}
-								</span>
-							</div>
-						@endif
+						<x-file-note file="login-note.html"/>
 
 						<div class="modal-dialog w-100 mx-auto">
 							<div class="modal-content">

@@ -12,7 +12,7 @@
 --}}
 
 @section('main-content')
-	<div class="card card-solid">
+	<div class="card card-solid mb-3">
 		<div class="card-body">
 			<div class="row">
 				<div class="col-12 col-sm-4">
@@ -38,19 +38,7 @@
 		</div>
 	</div>
 
-	@if(file_exists('home-note.html'))
-		<hr>
-		<div class="row">
-			<div class="col-12 offset-lg-2 col-lg-8">
-				<div class="mx-auto card text-white card-body bg-primary">
-					<h5 class="text-white card-title"><i class="icon fa-2x fas fa-info pe-3"></i><span class="font-size-xlg">NOTE</span></h5>
-					<span class="w-100 pb-0">
-						{!! file_get_contents('home-note.html') !!}
-					</span>
-				</div>
-			</div>
-		</div>
-	@endif
+	<x-file-note file="home-note.html"/>
 @endsection
 
 @section('page-scripts')

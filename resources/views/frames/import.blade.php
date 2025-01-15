@@ -52,13 +52,13 @@
 							</div>
 						</div>
 					</div>
-
-					<div class="card-footer">
-						<span class="ms-auto">
-							<button type="submit" class="btn btn-success btn-sm">Process</button>
-						</span>
-					</div>
 				</form>
+
+				<div class="card-footer">
+					<span class="ms-auto">
+						<x-form.submit action="Process" form="import-form"/>
+					</span>
+				</div>
 			</div>
 		</div>
 	</div>
