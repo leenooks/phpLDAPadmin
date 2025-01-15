@@ -11,9 +11,6 @@ trait MD5Updates
 {
 	public function isDirty(): bool
 	{
-		if (! parent::isDirty())
-			return TRUE;
-
 		foreach ($this->values->diff($this->oldValues) as $key => $value)
 			if (md5(Arr::get($this->oldValues,$key)) !== $value)
 				return TRUE;

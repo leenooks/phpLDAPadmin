@@ -57,16 +57,8 @@ class Entry extends Model
 	{
 		$key = $this->normalizeAttributeKey($key);
 
-		if ((! array_key_exists($key,$this->original)) && (! $this->objects->has($key)))
-			return TRUE;
-
-		$current = $this->attributes[$key];
-		$original = $this->objects->get($key)->values;
-
-		if ($current === $original)
-			return TRUE;
-
-		return ! $this->getObject($key)->isDirty();
+		return ((! array_key_exists($key,$this->original)) && (! $this->objects->has($key)))
+			|| (! $this->getObject($key)->isDirty());
 	}
 
 	public static function query(bool $noattrs=false): Builder

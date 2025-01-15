@@ -14,13 +14,6 @@ final class JpegPhoto extends Binary
 {
 	use MD5Updates;
 
-	public function __construct(string $name,array $values)
-	{
-		parent::__construct($name,$values);
-
-		$this->internal = FALSE;
-	}
-
 	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
 	{
 		return view('components.attribute.binary.jpegphoto')

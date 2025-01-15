@@ -233,10 +233,8 @@ class Attribute implements \Countable, \ArrayAccess
 	 */
 	public function isDirty(): bool
 	{
-		if ($this->oldValues->count() !== $this->values->count())
-			return TRUE;
-
-		return $this->values->diff($this->oldValues)->count() !== 0;
+		return ($this->oldValues->count() !== $this->values->count())
+			|| ($this->values->diff($this->oldValues)->count() !== 0);
 	}
 
 	public function oldValues(array $array): void
