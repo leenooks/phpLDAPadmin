@@ -241,7 +241,7 @@ final class ObjectClass extends Base
 	 */
 	public function addChildObjectClass(string $name): void
 	{
-		if (! $this->child_objectclasses->has($name))
+		if (! $this->child_objectclasses->contains($name))
 			$this->child_objectclasses->push($name);
 	}
 

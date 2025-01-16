@@ -324,7 +324,7 @@ final class AttributeType extends Base {
 	 */
 	public function addRequiredByObjectClass(string $name): void
 	{
-		if ($this->required_by_object_classes->search($name) === FALSE)
+		if (! $this->required_by_object_classes->contains($name))
 			$this->required_by_object_classes->push($name);
 	}
 
@@ -336,7 +336,7 @@ final class AttributeType extends Base {
 	 */
 	public function addUsedInObjectClass(string $name): void
 	{
-		if ($this->used_in_object_classes->search($name) === FALSE)
+		if (! $this->used_in_object_classes->contains($name))
 			$this->used_in_object_classes->push($name);
 	}
 

@@ -36,7 +36,7 @@ final class ObjectClass extends Attribute
 	 */
 	public function isStructural(string $value): bool
 	{
-		return $this->structural->search($value) !== FALSE;
+		return $this->structural->contains($value);
 	}
 
 	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View

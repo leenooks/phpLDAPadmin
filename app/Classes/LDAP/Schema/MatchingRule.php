@@ -115,7 +115,7 @@ final class MatchingRule extends Base {
 	{
 		$name = trim($name);
 
-		if ($this->used_by_attrs->search($name) === FALSE)
+		if (! $this->used_by_attrs->contains($name))
 			$this->used_by_attrs->push($name);
 	}
 
