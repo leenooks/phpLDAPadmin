@@ -3,6 +3,7 @@
 namespace App\Classes\LDAP\Attribute;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Arr;
 
 use App\Classes\LDAP\Attribute;
 use App\Traits\MD5Updates;
@@ -21,5 +22,15 @@ final class Password extends Attribute
 			->with('edit',$edit)
 			->with('old',$old)
 			->with('new',$new);
+	}
+
+	public function render_item_old(int $key): ?string
+	{
+		return Arr::get($this->oldValues,$key) ? str_repeat('x',8) : NULL;
+	}
+
+	public function render_item_new(int $key): ?string
+	{
+		return Arr::get($this->values,$key) ? str_repeat('x',8) : NULL;
 	}
 }

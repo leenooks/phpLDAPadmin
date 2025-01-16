@@ -32,7 +32,7 @@ class Entry extends Model
 		parent::discardChanges();
 
 		// If we are discharging changes, we need to reset our $objects;
-		$this->objects = $this->getAttributesAsObjects($this->attributes);
+		$this->objects = $this->getAttributesAsObjects();
 
 		return $this;
 	}
@@ -112,7 +112,7 @@ class Entry extends Model
 
 		// We only set our objects on DN entries (otherwise we might get into a recursion loop if this is the schema DN)
 		if ($this->dn && (! in_array($this->dn,Arr::get($this->attributes,'subschemasubentry',[])))) {
-			$this->objects = $this->getAttributesAsObjects($this->attributes);
+			$this->objects = $this->getAttributesAsObjects();
 
 		} else {
 			$this->objects = collect();
@@ -157,11 +157,11 @@ class Entry extends Model
 	 * @param array $attributes
 	 * @return Collection
 	 */
-	protected function getAttributesAsObjects(array $attributes): Collection
+	public function getAttributesAsObjects(): Collection
 	{
 		$result = collect();
 
-		foreach ($attributes as $attribute => $value) {
+		foreach ($this->attributes as $attribute => $value) {
 			// If the attribute name has language tags
 			$matches = [];
 			if (preg_match('/^([a-zA-Z]+)(;([a-zA-Z-;]+))+/',$attribute,$matches)) {
@@ -271,7 +271,7 @@ class Entry extends Model
 	{
 		// In case we havent built our objects yet (because they werent available while determining the schema DN)
 		if ((! $this->objects->count()) && $this->attributes)
-			$this->objects = $this->getAttributesAsObjects($this->attributes);
+			$this->objects = $this->getAttributesAsObjects();
 
 		return $this->objects;
 	}

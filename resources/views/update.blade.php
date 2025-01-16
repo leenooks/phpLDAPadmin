@@ -16,10 +16,10 @@
 
 			<div class="card-body">
 				<div class="row">
-					<div class="col-12 col-lg-6 col-xl-4 mx-auto pt-3">
+					<div class="col-12 col-lg-6 mx-auto pt-3">
 
 						<div class="card-title"><h3>@lang('Do you want to make the following changes?')</h3></div>
-						<table class="table table-bordered table-striped">
+						<table class="table table-bordered table-striped w-100">
 							<thead>
 							<tr>
 								<th>Attribute</th>
@@ -29,16 +29,18 @@
 							</thead>
 
 							<tbody>
-							@foreach ($o->getDirty() as $key => $value)
+							@foreach ($o->getAttributesAsObjects()->filter(fn($item)=>$item->isDirty()) as $key => $oo)
 								<tr>
-									<th rowspan="{{ $x=max(count($value),count(Arr::get($o->getOriginal(),$key,[])))}}">{{ $key }}</th>
+									<th rowspan="{{ $x=max($oo->values->keys()->max(),$oo->old_values->keys()->max())+1}}">
+										<abbr title="{{ $oo->description }}">{{ $oo->name }}</abbr>
+									</th>
 									@for($xx=0;$xx<$x;$xx++)
 										@if($xx)
 											</tr><tr>
 										@endif
 
-										<td>{{ Arr::get(Arr::get($o->getOriginal(),$key),$xx,'['.strtoupper(__('New Value')).']') }}</td>
-										<td>{{ ($y=Arr::get($value,$xx)) ?: '['.strtoupper(__('Deleted')).']' }}<input type="hidden" name="{{ $key }}[]" value="{{ $y }}"></td>
+										<td>{{ $oo->render_item_old($xx) ?: '['.strtoupper(__('New Value')).']' }}</td>
+										<td>{{ $oo->render_item_new($xx) ?: '['.strtoupper(__('Deleted')).']' }}<input type="hidden" name="{{ $key }}[]" value="{{ Arr::get($oo->values,$xx) }}"></td>
 									@endfor
 								</tr>
 							@endforeach

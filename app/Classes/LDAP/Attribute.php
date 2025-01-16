@@ -3,6 +3,7 @@
 namespace App\Classes\LDAP;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Schema\AttributeType;
@@ -257,6 +258,16 @@ class Attribute implements \Countable, \ArrayAccess
 			->with('edit',$edit)
 			->with('old',$old)
 			->with('new',$new);
+	}
+
+	public function render_item_old(int $key): ?string
+	{
+		return Arr::get($this->old_values,$key);
+	}
+
+	public function render_item_new(int $key): ?string
+	{
+		return Arr::get($this->values,$key);
 	}
 
 	/**
