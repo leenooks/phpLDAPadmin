@@ -13,7 +13,7 @@
 				// Create a new entry when Add Value clicked
 				$('#{{ $o->name_lc }}.addable').click(function (item) {
 					var cln = $(this).parent().parent().find('input:last').clone();
-					cln.val('').attr('placeholder', '[@lang('NEW')]');
+					cln.attr('value','').attr('placeholder', '[@lang('NEW')]');
 					cln.appendTo('#' + item.currentTarget.id)
 				});
 			});

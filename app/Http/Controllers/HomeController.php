@@ -123,7 +123,7 @@ class HomeController extends Controller
 		$o = config('server')->fetch($dn);
 
 		foreach ($request->except(['_token','dn','userpassword_hash','userpassword']) as $key => $value)
-			$o->{$key} = array_filter($value);
+			$o->{$key} = array_filter($value,fn($item)=>! is_null($item));
 
 		// We need to process and encrypt the password
 		$passwords = [];
