@@ -11,10 +11,11 @@ use App\Classes\LDAP\Schema\AttributeType;
 /**
  * Represents an attribute of an LDAP Object
  */
-class Attribute implements \Countable, \ArrayAccess
+class Attribute implements \Countable, \ArrayAccess, \Iterator
 {
 	// Attribute Name
 	protected string $name;
+	private int $counter = 0;
 
 	protected ?AttributeType $schema = NULL;
 
@@ -174,6 +175,31 @@ class Attribute implements \Countable, \ArrayAccess
 		$this->values->push($value);
 	}
 
+	public function current(): mixed
+	{
+		return $this->values->get($this->counter);
+	}
+
+	public function next(): void
+	{
+		$this->counter++;
+	}
+
+	public function key(): mixed
+	{
+		return $this->counter;
+	}
+
+	public function valid(): bool
+	{
+		return $this->values->has($this->counter);
+	}
+
+	public function rewind(): void
+	{
+		$this->counter = 0;
+	}
+
 	public function count(): int
 	{
 		return $this->values->count();
@@ -181,7 +207,7 @@ class Attribute implements \Countable, \ArrayAccess
 
 	public function offsetExists(mixed $offset): bool
 	{
-		return ! is_null($this->values->get($offset));
+		return ! is_null($this->values->has($offset));
 	}
 
 	public function offsetGet(mixed $offset): mixed

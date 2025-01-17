@@ -153,11 +153,23 @@ return [
 		'mail' => [
 			'mail'=>[
 				'sometimes',
-				'array','min:1'
+				'array',
+				'min:1'
 			],
 			'mail.*' => [
 				'nullable',
 				'email'
+			]
+		],
+		'userpassword' => [
+			'userpassword' => [
+				'sometimes',
+				'array',
+				'min:1'
+			],
+			'userpassword.*' => [
+				'nullable',
+				'min:8'
 			]
 		],
 		'uidnumber' => [

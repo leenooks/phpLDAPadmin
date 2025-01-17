@@ -112,7 +112,7 @@
 @endsection
 
 @section('page-modals')
-	<!-- Modal -->
+	<!-- EXPORT -->
 	<div class="modal fade" id="entry-export-modal" tabindex="-1" aria-labelledby="entry-export-label" aria-hidden="true">
 		<div class="modal-dialog modal-lg modal-fullscreen-xl-down">
 			<div class="modal-content">
@@ -127,11 +127,47 @@
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-					<button id="entry-export-download" type="button" class="btn btn-primary btn-sm">Download</button>
+					<button type="button" class="btn btn-primary btn-sm" id="entry-export-download">Download</button>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	@if($up=$o->getObject('userpassword'))
+		<!-- CHECK USERPASSWORD -->
+		<div class="modal fade" id="userpassword-check-modal" tabindex="-1" aria-labelledby="userpassword-check-label" aria-hidden="true">
+			<div class="modal-dialog modal-md modal-fullscreen-md-down">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h1 class="modal-title fs-5" id="userpassword-check-label">Check Passwords for {{ $dn }}</h1>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+
+					<div class="modal-body">
+						<table class="table table-bordered p-1">
+							@foreach($up->values as $key => $value)
+								<tr>
+									<th>Check</th>
+									<td>{{ (($xx=$up->hash_id($value)) && ($xx !== 'Clear')) ? sprintf('{%s}',$xx) : '' }}{{ str_repeat('x',8) }}</td>
+									<td>
+										<input type="password" style="width: 90%" name="password[{{$key}}]"> <i class="fas fa-fw fa-lock"></i>
+										<div class="invalid-feedback pb-2">
+											Invalid Password
+										</div>
+									</td>
+								</tr>
+							@endforeach
+						</table>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary btn-sm" id="userpassword_check_submit"><i class="fas fa-fw fa-spinner fa-spin d-none"></i> Check</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	@endif
 @endsection
 
 @section('page-scripts')
@@ -155,6 +191,11 @@
 			$('input.form-control').each(function() {
 				$(this).attr('readonly',false);
 			});
+
+			// Our password type
+			$('div#userpassword .form-select').each(function() {
+				$(this).prop('disabled',false);
+			})
 
 			$('.row.d-none').removeClass('d-none');
 			$('.addable.d-none').removeClass('d-none');
@@ -205,10 +246,9 @@
 				download('ldap-export.ldif',ldif.html());
 			});
 
-			$('#entry-export-modal').on('shown.bs.modal', function () {
+			$('#entry-export-modal').on('shown.bs.modal',function() {
 				$.ajax({
 					type: 'GET',
-					beforeSend: function() {},
 					success: function(data) {
 						$('#entry-export').empty().append(data);
 					},
@@ -220,6 +260,65 @@
 					cache: false
 				})
 			})
+
+			@if($up)
+				$('button[id=userpassword_check_submit]').on('click',function(item) {
+					var that = $(this);
+
+					var passwords = $('#userpassword-check-modal')
+						.find('input[name^="password["')
+						.map((key,item)=>item.value);
+
+					if (passwords.length === 0) return false;
+
+					$.ajax({
+						type: 'POST',
+						beforeSend: function() {
+							// Disable submit, add spinning icon
+							that.prop('disabled',true);
+							that.find('i').removeClass('d-none');
+						},
+						complete: function() {
+							that.prop('disabled',false);
+							that.find('i').addClass('d-none');
+						},
+						success: function(data) {
+							data.forEach(function(item,key) {
+								var i = $('#userpassword-check-modal')
+									.find('input[name="password['+key+']')
+									.siblings('i');
+
+								var feedback = $('#userpassword-check-modal')
+									.find('input[name="password['+key+']')
+									.siblings('div.invalid-feedback');
+
+								console.log(feedback.attr('display'));
+
+								if (item === 'OK') {
+									i.removeClass('text-danger').addClass('text-success').removeClass('fa-lock').addClass('fa-lock-open');
+									if (feedback.is(':visible'))
+										feedback.hide();
+								} else {
+									i.removeClass('text-success').addClass('text-danger').removeClass('fa-lock-open').addClass('fa-lock');
+									if (! feedback.is(':visible'))
+										feedback.show();
+								}
+							})
+						},
+						error: function(e) {
+							if (e.status != 412)
+								alert('That didnt work? Please try again....');
+						},
+						url: '{{ url('entry/password/check') }}',
+						data: {
+							dn: '{{ $o->getDNSecure() }}',
+							password: Array.from(passwords),
+						},
+						dataType: 'json',
+						cache: false
+					})
+				});
+			@endif
 
 			@if(old())
 				editmode();

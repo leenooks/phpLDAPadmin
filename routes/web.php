@@ -42,5 +42,6 @@ Route::post('entry/update/commit',[HomeController::class,'entry_update']);
 Route::post('entry/update/pending',[HomeController::class,'entry_pending_update']);
 Route::get('entry/newattr/{id}',[HomeController::class,'entry_newattr']);
 Route::get('entry/export/{id}',[HomeController::class,'entry_export']);
+Route::post('entry/password/check/',[HomeController::class,'entry_password_check']);
 
 Route::post('import/process/{type}',[HomeController::class,'import']);

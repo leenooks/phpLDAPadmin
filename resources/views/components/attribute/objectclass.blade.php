@@ -14,7 +14,7 @@
 			{{ $value }}
 			@if ($o->isStructural($value))
 				<input type="hidden" name="{{ $o->name_lc }}[]" value="{{ $value }}">
-				<span class="float-end mb-2">@lang('structural')</span>
+				<span class="float-end">@lang('structural')</span>
 			@endif
 			<br>
 		@endif

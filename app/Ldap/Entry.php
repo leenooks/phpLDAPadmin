@@ -52,10 +52,16 @@ class Entry extends Model
 
 	/**
 	 * Determine if the new and old values for a given key are equivalent.
+	 *
+	 * @todo This function barfs on language tags, eg: key = givenname;lang-ja
 	 */
 	protected function originalIsEquivalent(string $key): bool
 	{
 		$key = $this->normalizeAttributeKey($key);
+
+		// @todo Silently ignore keys of language tags - we should work with them
+		if (str_contains($key,';'))
+			return TRUE;
 
 		return ((! array_key_exists($key,$this->original)) && (! $this->objects->has($key)))
 			|| (! $this->getObject($key)->isDirty());

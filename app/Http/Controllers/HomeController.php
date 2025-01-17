@@ -90,6 +90,25 @@ class HomeController extends Controller
 		return $x->render();
 	}
 
+	public function entry_password_check(Request $request)
+	{
+		$dn = Crypt::decryptString($request->dn);
+		$o = config('server')->fetch($dn);
+
+		$password = $o->getObject('userpassword');
+
+		$result = collect();
+		foreach ($password as $key => $value) {
+			$type = $password->hash_id($value);
+			$compare = Arr::get($request->password,$key);
+			//Log::debug(sprintf('comparing [%s] with [%s] type [%s]',$value,$compare,$type));
+
+			$result->push((($compare !== NULL) && Attribute\Password::hash($type)->compare($value,$compare)) ? 'OK' :'FAIL');
+		}
+
+		return $result;
+	}
+
 	/**
 	 * Show a confirmation to update a DN
 	 *
@@ -103,8 +122,18 @@ class HomeController extends Controller
 
 		$o = config('server')->fetch($dn);
 
-		foreach ($request->except(['_token','dn']) as $key => $value)
+		foreach ($request->except(['_token','dn','userpassword_hash','userpassword']) as $key => $value)
 			$o->{$key} = array_filter($value);
+
+		// We need to process and encrypt the password
+		$passwords = [];
+		foreach ($request->userpassword as $key => $value) {
+			if ($value) {
+				$type = Arr::get($request->userpassword_hash,$key);
+				array_push($passwords,Attribute\Password::hash($type)->encode($value));
+			}
+		}
+		$o->userpassword = $passwords;
 
 		if (! $o->getDirty())
 			return back()

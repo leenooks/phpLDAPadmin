@@ -1,9 +1,9 @@
-<!-- @todo We are not handling redirect backs with updated values -->
 <!-- $o=Password::class -->
-<x-attribute.layout :edit="$edit" :new="$new" :o="$o">
+<x-attribute.layout :edit="$edit ?? FALSE" :new="$new ?? FALSE" :o="$o">
 	@foreach($o->values as $value)
 		@if($edit)
-			<div class="input-group has-validation">
+			<div class="input-group has-validation mb-3">
+				<x-form.select class="password" id="userpassword_hash_{{$loop->index}}" name="userpassword_hash[]" :value="$o->hash_id($value)" :options="$helpers" allowclear="false" disabled="true"/>
 				<input type="password" @class(['form-control','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$loop->index)),'mb-1','border-focus'=>$o->values->contains($value)]) name="{{ $o->name_lc }}[]" value="{{ md5($value) }}" @readonly(true)>
 
 				<div class="invalid-feedback pb-2">
@@ -13,13 +13,17 @@
 				</div>
 			</div>
 		@else
-			{{ str_repeat('x',8) }}
+			{{ (($x=$o->hash_id($value)) && ($x !== 'Clear')) ? sprintf('{%s}',$x) : '' }}{{ str_repeat('x',8) }}
 		@endif
 	@endforeach
-
-	@if($edit)
-		<span class="p-0 m-0">
-			<span class="btn btn-sm btn-outline-dark mt-3"><i class="fas fa-user-check"></i> @lang('Check Password')</span>
-		</span>
-	@endif
 </x-attribute.layout>
+
+@if($edit)
+	<div class="row">
+		<div class="offset-1 col-4 p-2">
+			<span class="p-0 m-0">
+				<button type="button" class="btn btn-transition btn-sm btn-outline-dark mt-3" data-bs-toggle="modal" data-bs-target="#userpassword-check-modal"><i class="fas fa-user-check"></i> @lang('Check Password')</button>
+			</span>
+		</div>
+	</div>
+@endif
