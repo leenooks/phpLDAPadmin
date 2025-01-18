@@ -10,7 +10,7 @@ abstract class Base
 
 	public static function id(): string
 	{
-		return static::key.(static::subkey ? ':'.static::subkey : '');
+		return static::subkey ? strtoupper(static::subkey) : static::key;
 	}
 
 	/**

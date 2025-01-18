@@ -5,7 +5,7 @@ namespace App\Classes\LDAP\Attribute\Password;
 final class Argon2id extends Base
 {
 	public const key = 'ARGON2';
-	protected const subkey = 'id';
+	protected const subkey = 'argon2id';
 	protected const identifier = '$argon2id';
 
 	public static function subid(string $password): bool

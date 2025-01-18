@@ -49,7 +49,7 @@ final class Password extends Attribute
 
 		$hash = Arr::get($m,1,'*clear*');
 
-		if (($potential=static::helpers()->filter(fn($hasher)=>str_starts_with($hasher::id(),$hash)))->count() > 1) {
+		if (($potential=static::helpers()->filter(fn($hasher)=>str_starts_with($hasher::key,$hash)))->count() > 1) {
 			foreach ($potential as $item) {
 				if ($item::subid($password))
 					return new $item;
@@ -82,7 +82,7 @@ final class Password extends Attribute
 			->with('edit',$edit)
 			->with('old',$old)
 			->with('new',$new)
-			->with('helpers',static::helpers()->map(fn($item,$key)=>['id'=>$key,'value'=>$key]));
+			->with('helpers',static::helpers()->map(fn($item,$key)=>['id'=>$key,'value'=>$key])->sort());
 	}
 
 	public function render_item_old(int $key): ?string

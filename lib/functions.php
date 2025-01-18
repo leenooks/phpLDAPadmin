@@ -749,120 +749,6 @@ function system_message($msg,$redirect=null) {
  */
 
 /**
- * Encryption using blowfish algorithm
- *
- * @param string Original data
- * @param string The secret
- * @return string The encrypted result
- * @author lem9 (taken from the phpMyAdmin source)
- */
-function blowfish_encrypt($data,$secret=null) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-	# If our secret is null or blank, get the default.
-	if ($secret === null || ! trim($secret))
-		$secret = $_SESSION[APPCONFIG]->getValue('session','blowfish') ? $_SESSION[APPCONFIG]->getValue('session','blowfish') : session_id();
-
-	# If the secret isnt set, then just return the data.
-	if (! trim($secret))
-		return $data;
-
-	if (! empty($data) && function_exists('openssl_encrypt') && in_array('bf-ecb', openssl_get_cipher_methods())) {
-		$keylen = openssl_cipher_iv_length('bf-ecb') * 2;
-		return openssl_encrypt($data, 'bf-ecb', substr($secret,0,$keylen));
-	}
-
-	if (function_exists('mcrypt_module_open') && ! empty($data)) {
-		$td = mcrypt_module_open(MCRYPT_BLOWFISH,'',MCRYPT_MODE_ECB,'');
-		$iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td),MCRYPT_DEV_URANDOM);
-		mcrypt_generic_init($td,substr($secret,0,mcrypt_enc_get_key_size($td)),$iv);
-		$encrypted_data = base64_encode(mcrypt_generic($td,$data));
-		mcrypt_generic_deinit($td);
-
-		return $encrypted_data;
-	}
-
-	if (file_exists(LIBDIR.'blowfish.php'))
-		require_once LIBDIR.'blowfish.php';
-	else
-		return $data;
-
-	$pma_cipher = new Horde_Cipher_blowfish;
-	$encrypt = '';
-
-	for ($i=0; $i<strlen($data); $i+=8) {
-		$block = substr($data, $i, 8);
-
-		if (strlen($block) < 8)
-			$block = full_str_pad($block,8,"\0", 1);
-
-		$encrypt .= $pma_cipher->encryptBlock($block, $secret);
-	}
-
-	return base64_encode($encrypt);
-}
-
-/**
- * Decryption using blowfish algorithm
- *
- * @param string Encrypted data
- * @param string The secret
- * @return string Original data
- * @author lem9 (taken from the phpMyAdmin source)
- */
-function blowfish_decrypt($encdata,$secret=null) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-	# This cache gives major speed up for stupid callers :)
-	static $CACHE = array();
-
-	if (isset($CACHE[$encdata]))
-		return $CACHE[$encdata];
-
-	# If our secret is null or blank, get the default.
-	if ($secret === null || ! trim($secret))
-		$secret = $_SESSION[APPCONFIG]->getValue('session','blowfish') ? $_SESSION[APPCONFIG]->getValue('session','blowfish') : session_id();
-
-	# If the secret isnt set, then just return the data.
-	if (! trim($secret))
-		return $encdata;
-
-	if (! empty($encdata) && function_exists('openssl_encrypt') && in_array('bf-ecb', openssl_get_cipher_methods())) {
-		$keylen = openssl_cipher_iv_length('bf-ecb') * 2;
-		return trim(openssl_decrypt($encdata, 'bf-ecb', substr($secret,0,$keylen)));
-	}
-
-	if (function_exists('mcrypt_module_open') && ! empty($encdata)) {
-		$td = mcrypt_module_open(MCRYPT_BLOWFISH,'',MCRYPT_MODE_ECB,'');
-		$iv = mcrypt_create_iv(mcrypt_enc_get_iv_size($td),MCRYPT_DEV_URANDOM);
-		mcrypt_generic_init($td,substr($secret,0,mcrypt_enc_get_key_size($td)),$iv);
-		$decrypted_data = trim(mdecrypt_generic($td,base64_decode($encdata)));
-		mcrypt_generic_deinit($td);
-
-		return $decrypted_data;
-	}
-
-	if (file_exists(LIBDIR.'blowfish.php'))
-		require_once LIBDIR.'blowfish.php';
-	else
-		return $encdata;
-
-	$pma_cipher = new Horde_Cipher_blowfish;
-	$decrypt = '';
-	$data = base64_decode($encdata);
-
-	for ($i=0; $i<strlen($data); $i+=8)
-		$decrypt .= $pma_cipher->decryptBlock(substr($data, $i, 8), $secret);
-
-	// Strip off our \0's that were added.
-	$return = preg_replace("/\\0*$/",'',$decrypt);
-	$CACHE[$encdata] = $return;
-	return $return;
-}
-
-/**
  * String padding
  *
  * @param string Input string
@@ -1148,42 +1034,6 @@ function isCompress() {
 /**
  * PLA specific Functions
  */
-
-/**
- * Fetches whether the user has configured phpLDAPadmin to obfuscate passwords
- * with "*********" when displaying them.
- *
- * This is configured in config.php thus:
- * <code>
- *  $config->custom->appearance['obfuscate_password_display'] = true;
- * </code>
- *
- * Or if it is OK to show encrypted passwords but not clear text passwords
- * <code>
- *  $config->custom->appearance['show_clear_password'] = false;
- * </code>
- *
- * @param string Password encoding type
- * @return boolean
- */
-function obfuscate_password_display($enc=null) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-	if ($_SESSION[APPCONFIG]->getValue('appearance','obfuscate_password_display'))
-		$return = true;
-
-	elseif (! $_SESSION[APPCONFIG]->getValue('appearance','show_clear_password') && (is_null($enc) || $enc == 'clear'))
-		$return = true;
-
-	else
-		$return = false;
-
-	if (DEBUG_ENABLED)
-		debug_log('Returning (%s)',1,0,__FILE__,__LINE__,__METHOD__,$return);
-
-	return $return;
-}
 
 /**
  * Returns an HTML-beautified version of a DN.
@@ -1971,45 +1821,6 @@ function draw_jpeg_photo($server,$dn,$attr_name='jpegphoto',$index,$draw_delete_
 		# <!-- JavaScript function deleteJpegPhoto() to be defined later by calling script -->
 		printf('<br/><a href="javascript:deleteAttribute(\'%s\');" style="color:red; font-size: 75%%">%s</a>',
 			$attr_name,_('Delete photo'));
-}
-
-/**
- * Detects password encryption type
- *
- * Returns crypto string listed in braces. If it is 'crypt' password,
- * returns crypto detected in password hash. Function should detect
- * md5crypt, blowfish and extended DES crypt. If function fails to detect
- * encryption type, it returns NULL.
- * @param string Hashed password
- * @return string
- */
-function get_enc_type($user_password) {
-	if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-		debug_log('Entered (%%)',1,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-	# Capture the stuff in the { } to determine if this is crypt, md5, etc.
-	$enc_type = null;
-
-	if (preg_match('/{([^}]+)}/',$user_password,$enc_type))
-		$enc_type = strtolower($enc_type[1]);
-	else
-		return null;
-
-	# Handle crypt types
-	if (strcasecmp($enc_type,'crypt') == 0) {
-
-		# No need to check for standard crypt, because enc_type is already equal to 'crypt'.
-		if (preg_match('/{[^}]+}\\$1\\$+/',$user_password))
-			$enc_type = 'md5crypt';
-
-		elseif (preg_match('/{[^}]+}\\$2+/',$user_password))
-			$enc_type = 'blowfish';
-
-		elseif (preg_match('/{[^}]+}_+/',$user_password))
-			$enc_type = 'ext_des';
-	}
-
-	return $enc_type;
 }
 
 /**
