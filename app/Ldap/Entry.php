@@ -197,7 +197,7 @@ class Entry extends Model
 			}
 		}
 
-		$sort = collect(config('ldap.attr_display_order',[]))->map(fn($item)=>strtolower($item));
+		$sort = collect(config('pla.attr_display_order',[]))->map(fn($item)=>strtolower($item));
 
 		// Order the attributes
 		return $result->sortBy([function(Attribute $a,Attribute $b) use ($sort): int {
@@ -215,7 +215,7 @@ class Entry extends Model
 			if ($b_key === FALSE)
 				$b_key = $sort->count()+1;
 
-			// Case where neither $a, nor $b are in ldap.attr_display_order, $a_key = $b_key = one greater than num elements.
+			// Case where neither $a, nor $b are in pla.attr_display_order, $a_key = $b_key = one greater than num elements.
 			// So we sort them alphabetically
 			if ($a_key === $b_key)
 				return strcasecmp($a->name,$b->name);

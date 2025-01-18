@@ -74,57 +74,6 @@ return [
 
 	/*
 	 |--------------------------------------------------------------------------
-	 | Support for attrs display order
-	 |--------------------------------------------------------------------------
-	 |
-	 | Use this array if you want to have your attributes displayed in a specific
-	 | order. Case is not important.
-	 |
-	 | For example, "sn" will be displayed right after "givenName". All the other
-	 | attributes that are not specified in this array will be displayed after in
-	 | alphabetical order.
-	 |
-	 */
-
-	'attr_display_order' => [],
-	/*
-	'attr_display_order' => [
-		'givenName',
-		'sn',
-		'cn',
-		'displayName',
-		'uid',
-		'uidNumber',
-		'gidNumber',
-		'homeDirectory',
-		'mail',
-		'userPassword'
-	],
-	*/
-
-	/*
-	 * If 'login,attr' is used above such that phpLDAPadmin will search for your DN
-	 * at login, you may restrict the search to a specific objectClasses. EG, set this
-	 * to array('posixAccount') or array('inetOrgPerson',..), depending upon your
-	 * setup.
-	 */
-	'login' => [
-		'attr' => [env('LDAP_LOGIN_ATTR','uid') => env('LDAP_LOGIN_ATTR_DESC','User ID')],	// Attribute used to find user for login
-		'objectclass' => explode(',',env('LDAP_LOGIN_OBJECTCLASS', 'posixAccount')),		// Objectclass that users must contain to login
-	],
-
-	/*
-	 |--------------------------------------------------------------------------
-	 | Custom Date Format
-	 |--------------------------------------------------------------------------
-	 |
-	 | Configuration to determine how date fields will be displayed.
-	 |
-	 */
-	'datetime_format' => 'Y-m-d H:i:s',
-
-	/*
-	 |--------------------------------------------------------------------------
 	 | Validation
 	 |--------------------------------------------------------------------------
 	 |

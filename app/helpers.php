@@ -4,12 +4,12 @@ use Illuminate\Support\Arr;
 
 function login_attr_description(): string
 {
-	return Arr::get(config('ldap.login.attr'),login_attr_name());
+	return Arr::get(config('pla.login.attr'),login_attr_name());
 }
 
 function login_attr_name(): string
 {
-	return key(config('ldap.login.attr'));
+	return key(config('pla.login.attr'));
 }
 
 /**
