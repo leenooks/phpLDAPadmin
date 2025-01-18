@@ -24,6 +24,40 @@ Take a look at the [Docker Container](https://github.com/leenooks/phpLDAPadmin/w
 >
 > Open an issue (details below) with enough information for me to be able to recreate the problem. An `LDIF` will be invaluable if it is not handling data correctly.
 
+## Version 2 Progress
+
+The update to v2 is progressing well - here is a list of work to do and done:
+
+- [ ] Creating new LDAP entries
+- [X] Updating existing LDAP Entries
+  - [X] Password attributes
+    - [X] Support different password hash options
+    - [X] Validate password is correct
+  - [ ] JpegPhoto Create/Delete
+  - [X] JpegPhoto Display
+  - [ ] ObjectClass Add/Remove
+    - [ ] Add additional required attributes (for ObjectClass Addition)
+    - [ ] Remove existing required attributes (for ObjectClass Removal)
+  - [X] Add additional values to Attributes that support multiple values
+  - [X] Delete extra values for Attributes that support multiple values
+  - [ ] Delete Attributes
+- [ ] Templates to enable entries to conform to a custom standard
+- [X] Login to LDAP server
+  - [X] Configure login by a specific attribute
+- [X] Logout LDAP server
+- [X] Export entries as an LDAP
+- [ ] Import LDIF
+- [X] Schema Browser
+- [ ] Is there something missing?
+
+Support is known for these LDAP servers:
+- [X] OpenLDAP
+- [ ] Microsoft Active Directory
+
+If there is an LDAP server that you have that you would like to have supported, please open an issue to request it.
+You might need to provide access, provide a copy or instructions to get an environment for testing. If you have enabled 
+support for an LDAP server not listed above, please provide a pull request for consideration.
+
 ## Getting Help
 The best place to get help with PLA (new and old) is on [Stack Overflow](https://stackoverflow.com/tags/phpldapadmin/info).
 
