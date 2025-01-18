@@ -3,7 +3,7 @@
 	@foreach($o->values as $value)
 		@if($edit)
 			<div class="input-group has-validation mb-3">
-				<x-form.select class="password" id="userpassword_hash_{{$loop->index}}" name="userpassword_hash[]" :value="$o->hash_id($value)" :options="$helpers" allowclear="false" disabled="true"/>
+				<x-form.select id="userpassword_hash_{{$loop->index}}" name="userpassword_hash[]" :value="$o->hash($value)->id()" :options="$helpers" allowclear="false" disabled="true"/>
 				<input type="password" @class(['form-control','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$loop->index)),'mb-1','border-focus'=>$o->values->contains($value)]) name="{{ $o->name_lc }}[]" value="{{ md5($value) }}" @readonly(true)>
 
 				<div class="invalid-feedback pb-2">
@@ -13,7 +13,7 @@
 				</div>
 			</div>
 		@else
-			{{ (($x=$o->hash_id($value)) && ($x !== 'Clear')) ? sprintf('{%s}',$x) : '' }}{{ str_repeat('x',8) }}
+			{{ (($x=$o->hash($value)) && ($x::id() !== '*clear*')) ? sprintf('{%s}',$x::shortid()) : '' }}{{ str_repeat('*',16) }}
 		@endif
 	@endforeach
 </x-attribute.layout>

@@ -99,11 +99,11 @@ class HomeController extends Controller
 
 		$result = collect();
 		foreach ($password as $key => $value) {
-			$type = $password->hash_id($value);
+			$hash = $password->hash($value);
 			$compare = Arr::get($request->password,$key);
-			//Log::debug(sprintf('comparing [%s] with [%s] type [%s]',$value,$compare,$type));
+			//Log::debug(sprintf('comparing [%s] with [%s] type [%s]',$value,$compare,$hash::id()),['object'=>$hash]);
 
-			$result->push((($compare !== NULL) && Attribute\Password::hash($type)->compare($value,$compare)) ? 'OK' :'FAIL');
+			$result->push((($compare !== NULL) && $hash->compare($value,$compare)) ? 'OK' :'FAIL');
 		}
 
 		return $result;
@@ -128,9 +128,15 @@ class HomeController extends Controller
 		// We need to process and encrypt the password
 		$passwords = [];
 		foreach ($request->userpassword as $key => $value) {
+			// If the password is still the MD5 of the old password, then it hasnt changed
+			if (($old=Arr::get($o->userpassword,$key)) && ($value === md5($old))) {
+				array_push($passwords,$old);
+				continue;
+			}
+
 			if ($value) {
 				$type = Arr::get($request->userpassword_hash,$key);
-				array_push($passwords,Attribute\Password::hash($type)->encode($value));
+				array_push($passwords,Attribute\Password::hash_id($type)->encode($value));
 			}
 		}
 		$o->userpassword = $passwords;
@@ -199,8 +205,7 @@ class HomeController extends Controller
 
 		return Redirect::to('/')
 			->withInput()
-			->with('success',__('Entry updated'))
-			->with('updated',$dirty);
+			->with('updated',collect($dirty)->map(fn($key,$item)=>$o->getObject($item)));
 	}
 
 	/**

@@ -1,6 +1,6 @@
 <x-form.base {{ $attributes }}>
 	@isset($name)
-		<input type="hidden" id="{{ $name }}_disabled" name="{{ $name }}" value="" disabled>
+		<input type="hidden" id="{{ $id ?? $name }}_disabled" name="{{ $name }}" value="" disabled>
 	@endisset
 	<select style="width: 80%" class="form-select @isset($name)@error((! empty($old)) ? $old : $name) is-invalid @enderror @endisset" id="{{ $id ?? $name }}" @isset($name)name="{{ $name }}"@endisset @required(isset($required) && $required) @disabled(isset($disabled) && $disabled)>
 		@if(empty($value) || isset($addnew) || isset($choose))

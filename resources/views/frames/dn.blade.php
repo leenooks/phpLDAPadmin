@@ -6,7 +6,7 @@
 
 @section('main-content')
 	<x-note/>
-	<x-success/>
+	<x-updated/>
 	<x-error/>
 
 	<!-- @todo If we are redirected here, check old() and add back any attributes that were in the original submission -->
@@ -136,7 +136,7 @@
 	@if($up=$o->getObject('userpassword'))
 		<!-- CHECK USERPASSWORD -->
 		<div class="modal fade" id="userpassword-check-modal" tabindex="-1" aria-labelledby="userpassword-check-label" aria-hidden="true">
-			<div class="modal-dialog modal-md modal-fullscreen-md-down">
+			<div class="modal-dialog modal-lg modal-fullscreen-lg-down">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h1 class="modal-title fs-5" id="userpassword-check-label">Check Passwords for {{ $dn }}</h1>
@@ -148,7 +148,7 @@
 							@foreach($up->values as $key => $value)
 								<tr>
 									<th>Check</th>
-									<td>{{ (($xx=$up->hash_id($value)) && ($xx !== 'Clear')) ? sprintf('{%s}',$xx) : '' }}{{ str_repeat('x',8) }}</td>
+									<td>{{ $up->render_item_old($key) }}</td>
 									<td>
 										<input type="password" style="width: 90%" name="password[{{$key}}]"> <i class="fas fa-fw fa-lock"></i>
 										<div class="invalid-feedback pb-2">

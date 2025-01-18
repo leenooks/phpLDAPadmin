@@ -6,7 +6,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
-use App\Classes\LDAP\Attribute\Password\Base;
 use App\Classes\LDAP\Attribute;
 use App\Traits\MD5Updates;
 
@@ -28,39 +27,52 @@ final class Password extends Attribute
 				continue;
 
 			$class = self::commands.preg_replace('/\.php$/','',$file);
-			if ($helpers->count())
-				$helpers->push('');
 
 			$helpers = $helpers
 				->merge([$class::id()=>$class]);
 		}
 
-		return $helpers;
+		return $helpers->sort();
+	}
+
+	/**
+	 * Given an LDAP password syntax {xxx}yyyyyy, this function will return the object for xxx
+	 *
+	 * @param string $password
+	 * @return Attribute\Password\Base|null
+	 * @throws \Exception
+	 */
+	public static function hash(string $password): ?Attribute\Password\Base
+	{
+		$m = [];
+		preg_match('/^{([A-Z0-9]+)}(.*)$/',$password,$m);
+
+		$hash = Arr::get($m,1,'*clear*');
+
+		if (($potential=static::helpers()->filter(fn($hasher)=>str_starts_with($hasher::id(),$hash)))->count() > 1) {
+			foreach ($potential as $item) {
+				if ($item::subid($password))
+					return new $item;
+			}
+
+			throw new \Exception(sprintf('Couldnt figure out a password hash for %s',$password));
+
+		} elseif (! $potential->count()) {
+			throw new \Exception(sprintf('Couldnt figure out a password hash for %s',$password));
+		}
+
+		return new ($potential->pop());
 	}
 
 	/**
 	 * Return the object that will process a password
 	 *
 	 * @param string $id
-	 * @return Base|null
+	 * @return Attribute\Password\Base|null
 	 */
-	public static function hash(string $id): ?Attribute\Password\Base
+	public static function hash_id(string $id): ?Attribute\Password\Base
 	{
 		return ($helpers=static::helpers())->has($id) ? new ($helpers->get($id)) : NULL;
-	}
-
-	/**
-	 * Given an LDAP password syntax {xxx}yyyyyy, this function will return xxx
-	 *
-	 * @param string $password
-	 * @return string
-	 */
-	public static function hash_id(string $password): string
-	{
-		$m = [];
-		preg_match('/^{([A-Z]+)}(.*)$/',$password,$m);
-
-		return Arr::get($m,1,'Clear');
 	}
 
 	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
@@ -75,11 +87,17 @@ final class Password extends Attribute
 
 	public function render_item_old(int $key): ?string
 	{
-		return Arr::get($this->oldValues,$key) ? str_repeat('x',8) : NULL;
+		$pw = Arr::get($this->oldValues,$key);
+		return $pw
+			? (((($x=$this->hash($pw)) && ($x::id() !== '*clear*')) ? sprintf('{%s}',$x::shortid()) : '').str_repeat('*',16))
+			: NULL;
 	}
 
 	public function render_item_new(int $key): ?string
 	{
-		return Arr::get($this->values,$key) ? str_repeat('x',8) : NULL;
+		$pw = Arr::get($this->values,$key);
+		return $pw
+			? (((($x=$this->hash($pw)) && ($x::id() !== '*clear*')) ? sprintf('{%s}',$x::shortid()) : '').str_repeat('*',16))
+			: NULL;
 	}
 }
