@@ -1,0 +1,7 @@
+
+dn: cn=tech_staff,dc=example.com
+cn: tech_staff
+labeleduri: ldap:///ou=People,o=Simpsons?uid?one?(&(sn=Simpson)(|(uidNumber
+ =1000)(uidNumber=1001)))
+objectclass: nisMailAlias
+objectclass: labeledURIObject
