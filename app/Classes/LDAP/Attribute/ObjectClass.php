@@ -5,27 +5,31 @@ namespace App\Classes\LDAP\Attribute;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 
-use App\Classes\LDAP\{Attribute,Server};
+use App\Classes\LDAP\Attribute;
 
 /**
  * Represents an ObjectClass Attribute
  */
 final class ObjectClass extends Attribute
 {
-	// Which of the values is the structural object class
-	protected Collection $structural;
+	// The schema ObjectClasses for this objectclass of a DN
+	protected Collection $oc_schema;
 
 	public function __construct(string $name,array $values)
 	{
 		parent::__construct($name,$values);
 
-		$this->structural = collect();
+		$this->oc_schema = config('server')
+			->schema('objectclasses')
+			->filter(fn($item)=>$this->values->contains($item->name));
+	}
 
-		// Determine which of the values is the structural objectclass
-		foreach ($values as $oc) {
-			if ((new Server)->schema('objectclasses',$oc)->isStructural())
-				$this->structural->push($oc);
-		}
+	public function __get(string $key): mixed
+	{
+		return match ($key) {
+			'structural' => $this->oc_schema->filter(fn($item) => $item->isStructural()),
+			default => parent::__get($key),
+		};
 	}
 
 	/**
@@ -36,7 +40,9 @@ final class ObjectClass extends Attribute
 	 */
 	public function isStructural(string $value): bool
 	{
-		return $this->structural->contains($value);
+		return $this->structural
+			->map(fn($item)=>$item->name)
+			->contains($value);
 	}
 
 	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View

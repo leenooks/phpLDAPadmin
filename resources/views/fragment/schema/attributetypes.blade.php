@@ -90,16 +90,21 @@
 					</tr>
 					<tr>
 						<td>@lang('Used by ObjectClasses')</td>
-						<td><strong>
+						<td>
 							@if ($o->used_in_object_classes->count())
-								@foreach ($o->used_in_object_classes as $class)
-									@if ($loop->index)</strong> <strong>@endif
+								@foreach ($o->used_in_object_classes as $class => $structural)
+									@if($structural)
+										<strong>
+									@endif
 									<a class="objectclass" id="{{ strtolower($class) }}" href="#{{ strtolower($class) }}">{{ $class }}</a>
+									@if($structural)
+										</strong>
+									@endif
 								@endforeach
 							@else
 								@lang('(none)')
 							@endif
-						</strong></td>
+						</td>
 					</tr>
 					<tr>
 						<td>@lang('Force as MAY by config')</td><td><strong>@lang($o->forced_as_may ? 'Yes' : 'No')</strong></td>

@@ -334,10 +334,10 @@ final class AttributeType extends Base {
 	 *
 	 * @param string $name The name of the objectClass to add.
 	 */
-	public function addUsedInObjectClass(string $name): void
+	public function addUsedInObjectClass(string $name,bool $structural): void
 	{
-		if (! $this->used_in_object_classes->contains($name))
-			$this->used_in_object_classes->push($name);
+		if (! $this->used_in_object_classes->has($name))
+			$this->used_in_object_classes->put($name,$structural);
 	}
 
 	/**

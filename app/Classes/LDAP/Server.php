@@ -442,7 +442,7 @@ final class Server
 						// Add Used In.
 						foreach ($oclass_attrs as $attr_name)
 							if ($this->attributetypes->has(strtolower($attr_name)))
-								$this->attributetypes[strtolower($attr_name)]->addUsedInObjectClass($object_class->name);
+								$this->attributetypes[strtolower($attr_name)]->addUsedInObjectClass($object_class->name,$object_class->isStructural());
 
 						// Add Required By.
 						foreach ($must_attrs as $attr_name)
