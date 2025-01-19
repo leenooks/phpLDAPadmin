@@ -40,7 +40,7 @@
 								@if (isset($page_actions) && $page_actions->contains('export'))
 									<li class="nav-item">
 										<a class="nav-link pt-0 pb-1">
-											<button type="button" class="p-2 m-0 border-0 btn-transition btn btn-outline-dark w-100 text-start" data-bs-toggle="modal" data-bs-target="#entry-export-modal" {{--data-bs-whatever="ldif"--}}>
+											<button type="button" class="p-2 m-0 border-0 btn-transition btn btn-outline-dark w-100 text-start" data-bs-toggle="modal" data-bs-target="#entry_export-modal">
 												<i class="fas fa-fw fa-file-export me-2"></i> @lang('Export')
 											</button>
 										</a>

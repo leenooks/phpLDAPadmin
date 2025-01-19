@@ -28,7 +28,7 @@
 						<form id="dn-edit" method="POST" class="needs-validation" action="{{ url('entry/update/pending') }}" novalidate>
 							@csrf
 
-							<input type="hidden" name="dn" value="{{ $o->getDNSecure() }}">
+							<input type="hidden" name="dn" value="">
 
 							@foreach ($o->getVisibleAttributes() as $ao)
 								<x-attribute-type :edit="true" :o="$ao"/>
@@ -113,21 +113,21 @@
 
 @section('page-modals')
 	<!-- EXPORT -->
-	<div class="modal fade" id="entry-export-modal" tabindex="-1" aria-labelledby="entry-export-label" aria-hidden="true">
+	<div class="modal fade" id="entry_export-modal" tabindex="-1" aria-labelledby="entry_export-label" aria-hidden="true">
 		<div class="modal-dialog modal-lg modal-fullscreen-xl-down">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="entry-export-label">LDIF for {{ $dn }}</h1>
+					<h1 class="modal-title fs-5" id="entry_export-label">LDIF for {{ $dn }}</h1>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 
 				<div class="modal-body">
-					<div id="entry-export"><div class="fa-3x"><i class="fas fa-spinner fa-pulse fa-sm"></i></div></div>
+					<div id="entry_export"><div class="fa-3x"><i class="fas fa-spinner fa-pulse fa-sm"></i></div></div>
 				</div>
 
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary btn-sm" id="entry-export-download">Download</button>
+					<button type="button" class="btn btn-primary btn-sm" id="entry_export-download">Download</button>
 				</div>
 			</div>
 		</div>
@@ -135,11 +135,11 @@
 
 	@if($up=$o->getObject('userpassword'))
 		<!-- CHECK USERPASSWORD -->
-		<div class="modal fade" id="userpassword-check-modal" tabindex="-1" aria-labelledby="userpassword-check-label" aria-hidden="true">
+		<div class="modal fade" id="userpassword_check-modal" tabindex="-1" aria-labelledby="userpassword_check-label" aria-hidden="true">
 			<div class="modal-dialog modal-lg modal-fullscreen-lg-down">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h1 class="modal-title fs-5" id="userpassword-check-label">Check Passwords for {{ $dn }}</h1>
+						<h1 class="modal-title fs-5" id="userpassword_check-label">Check Passwords for {{ $dn }}</h1>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 
@@ -162,7 +162,7 @@
 
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary btn-sm" id="userpassword_check_submit"><i class="fas fa-fw fa-spinner fa-spin d-none"></i> Check</button>
+						<button type="button" class="btn btn-primary btn-sm" id="userpassword_check-submit"><i class="fas fa-fw fa-spinner fa-spin d-none"></i> Check</button>
 					</div>
 				</div>
 			</div>
@@ -172,6 +172,8 @@
 
 @section('page-scripts')
 	<script type="text/javascript">
+		var dn = '{{ $o->getDNSecure() }}';
+
 		function download(filename,text) {
 			var element = document.createElement('a');
 
@@ -185,6 +187,8 @@
 		}
 
 		function editmode() {
+			$('#dn-edit input[name="dn"]').val(dn);
+
 			$('button[id=entry-edit]').addClass('active').removeClass('btn-outline-dark').addClass('btn-outline-light');
 
 			// Find all input items and turn off readonly
@@ -239,33 +243,33 @@
 				editmode();
 			});
 
-			$('#entry-export-download').on('click',function(item) {
+			$('#entry_export-download').on('click',function(item) {
 				item.preventDefault();
 
-				let ldif = $('#entry-export').find('pre:first'); // update this selector in your local version
+				let ldif = $('#entry_export').find('pre:first'); // update this selector in your local version
 				download('ldap-export.ldif',ldif.html());
 			});
 
-			$('#entry-export-modal').on('shown.bs.modal',function() {
+			$('#entry_export-modal').on('shown.bs.modal',function() {
 				$.ajax({
 					type: 'GET',
 					success: function(data) {
-						$('#entry-export').empty().append(data);
+						$('#entry_export').empty().append(data);
 					},
 					error: function(e) {
 						if (e.status != 412)
 							alert('That didnt work? Please try again....');
 					},
-					url: '{{ url('entry/export',$o->getDNSecure()) }}/',
+					url: '{{ url('entry/export') }}/'+dn,
 					cache: false
 				})
 			})
 
 			@if($up)
-				$('button[id=userpassword_check_submit]').on('click',function(item) {
+				$('button[id=userpassword_check-submit]').on('click',function(item) {
 					var that = $(this);
 
-					var passwords = $('#userpassword-check-modal')
+					var passwords = $('#userpassword_check-modal')
 						.find('input[name^="password["')
 						.map((key,item)=>item.value);
 
@@ -284,15 +288,13 @@
 						},
 						success: function(data) {
 							data.forEach(function(item,key) {
-								var i = $('#userpassword-check-modal')
+								var i = $('#userpassword_check-modal')
 									.find('input[name="password['+key+']')
 									.siblings('i');
 
-								var feedback = $('#userpassword-check-modal')
+								var feedback = $('#userpassword_check-modal')
 									.find('input[name="password['+key+']')
 									.siblings('div.invalid-feedback');
-
-								console.log(feedback.attr('display'));
 
 								if (item === 'OK') {
 									i.removeClass('text-danger').addClass('text-success').removeClass('fa-lock').addClass('fa-lock-open');
@@ -311,7 +313,7 @@
 						},
 						url: '{{ url('entry/password/check') }}',
 						data: {
-							dn: '{{ $o->getDNSecure() }}',
+							dn: dn,
 							password: Array.from(passwords),
 						},
 						dataType: 'json',
