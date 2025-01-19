@@ -2,7 +2,6 @@
 
 namespace App\Classes\LDAP\Schema;
 
-use Config;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
@@ -410,7 +409,7 @@ final class ObjectClass extends Base
 		$result = collect();
 
 		foreach ($this->sup_classes as $object_class) {
-			$oc = Config::get('server')
+			$oc = config('server')
 				->schema('objectclasses',$object_class);
 
 			if ($oc) {
