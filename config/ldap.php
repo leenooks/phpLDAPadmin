@@ -13,7 +13,7 @@ return [
 	|
 	*/
 
-	'default' => env('LDAP_CONNECTION', 'default'),
+	'default' => env('LDAP_CONNECTION', 'openldap'),
 
 	/*
 	|--------------------------------------------------------------------------
@@ -28,7 +28,7 @@ return [
 
 	'connections' => [
 
-		'default' => [
+		'openldap' => [
 			'hosts' => [env('LDAP_HOST', '127.0.0.1')],
 			'username' => env('LDAP_USERNAME', 'cn=user,dc=local,dc=com'),
 			'password' => env('LDAP_PASSWORD', 'secret'),
@@ -38,6 +38,18 @@ return [
 			'use_ssl' => env('LDAP_SSL', false),
 			'use_tls' => env('LDAP_TLS', false),
 			'name' => env('LDAP_NAME','LDAP Server'),
+		],
+
+		'opendj' => [
+			'hosts' => ['opendj'],
+			'username' => 'cn=Directory Manager',
+			'password' => 'password',
+			'port' => 1389,
+			'base_dn' => 'dc=example,dc=com',
+			'timeout' => env('LDAP_TIMEOUT', 5),
+			'use_ssl' => env('LDAP_SSL', false),
+			'use_tls' => env('LDAP_TLS', false),
+			'name' => 'OpenDJ Server',
 		],
 
 	],

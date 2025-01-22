@@ -59,14 +59,14 @@ final class Server
 	 * Gets the root DN of the specified LDAPServer, or throws an exception if it
 	 * can't find it.
 	 *
-	 * @param null $connection Return a collection of baseDNs
+	 * @param string|null $connection Return a collection of baseDNs
 	 * @param bool $objects Return a collection of Entry Models
 	 * @return Collection
 	 * @throws ObjectNotFoundException
 	 * @testedin GetBaseDNTest::testBaseDNExists();
 	 * @todo Need to allow for the scenario if the baseDN is not readable by ACLs
 	 */
-	public static function baseDNs(string $connection='default',bool $objects=TRUE): Collection
+	public static function baseDNs(string $connection=NULL,bool $objects=TRUE): Collection
 	{
 		$cachetime = Carbon::now()
 			->addSeconds(Config::get('ldap.cache.time'));
@@ -360,8 +360,12 @@ final class Server
 			}
 
 			// Try to get the schema DN from the specified entry.
-			$schema_dn = $this->schemaDN('default');
+			$schema_dn = $this->schemaDN($this->connection);
 			$schema = $this->fetch($schema_dn);
+
+			// If our schema's null, we didnt find it.
+			if (! $schema)
+				throw new Exception('Couldnt find schema at:'.$schema_dn);
 
 			switch ($item) {
 				case 'attributetypes':
