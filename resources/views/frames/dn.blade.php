@@ -126,8 +126,8 @@
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary btn-sm" id="entry_export-download">Download</button>
+					<button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-sm btn-primary" id="entry_export-download">Download</button>
 				</div>
 			</div>
 		</div>
@@ -161,8 +161,8 @@
 					</div>
 
 					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary btn-sm" id="userpassword_check-submit"><i class="fas fa-fw fa-spinner fa-spin d-none"></i> Check</button>
+						<button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-sm btn-primary" id="userpassword_check-submit"><i class="fas fa-fw fa-spinner fa-spin d-none"></i> Check</button>
 					</div>
 				</div>
 			</div>
@@ -193,6 +193,10 @@
 
 			// Find all input items and turn off readonly
 			$('input.form-control').each(function() {
+				// Except for objectClass - @todo show an "X" instead
+				if ($(this)[0].name.match(/^objectclass/))
+					return;
+
 				$(this).attr('readonly',false);
 			});
 
@@ -222,7 +226,7 @@
 						if (e.status != 412)
 							alert('That didnt work? Please try again....');
 					},
-					url: '{{ url('entry/newattr') }}/'+item.target.value,
+					url: '{{ url('entry/attr/add') }}/'+item.target.value,
 					cache: false
 				});
 

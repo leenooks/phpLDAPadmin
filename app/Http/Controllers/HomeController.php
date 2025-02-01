@@ -68,6 +68,28 @@ class HomeController extends Controller
 			->with('page_actions',$page_actions);
 	}
 
+	/**
+	 * Render a new attribute view
+	 *
+	 * @param Request $request
+	 * @param string $id
+	 * @return \Closure|\Illuminate\Contracts\View\View|string
+	 */
+	public function entry_attr_add(Request $request,string $id)
+	{
+		$xx = new \stdClass();
+		$xx->index = 0;
+
+		$x = $request->noheader
+			? (string)view(sprintf('components.attribute.widget.%s',$id))
+				->with('o',new Attribute($id,[]))
+				->with('value',$request->value)
+				->with('loop',$xx)
+			: (new AttributeType(new Attribute($id,[]),TRUE))->render();
+
+		return $x;
+	}
+
 	public function entry_export(Request $request,string $id)
 	{
 		$dn = Crypt::decryptString($id);
@@ -84,10 +106,33 @@ class HomeController extends Controller
 			->with('result',new LDIFExport($result));
 	}
 
-	public function entry_newattr(string $id)
+	/**
+	 * Render an available list of objectclasses for an Entry
+	 *
+	 * @param string $id
+	 * @return mixed
+	 */
+	public function entry_objectclass_add(string $id)
 	{
-		$x = new AttributeType(new Attribute($id,[]),TRUE);
-		return $x->render();
+		$dn = Crypt::decryptString($id);
+		$o = config('server')->fetch($dn);
+
+		$ocs = $o->getObject('objectclass')
+			->structural
+			->map(fn($item)=>$item->getParents())
+			->flatten()
+			->merge(
+				config('server')->schema('objectclasses')
+					->filter(fn($item)=>$item->isAuxiliary())
+			)
+			->sortBy(fn($item)=>$item->name);
+
+		return $ocs->groupBy(fn($item)=>$item->isStructural())
+			->map(fn($item,$key) =>
+				[
+					'text' => sprintf('%s Object Class',$key ? 'Structural' : 'Auxiliary'),
+					'children' => $item->map(fn($item)=>['id'=>$item->name,'text'=>$item->name]),
+				]);
 	}
 
 	public function entry_password_check(Request $request)
@@ -126,20 +171,22 @@ class HomeController extends Controller
 			$o->{$key} = array_filter($value,fn($item)=>! is_null($item));
 
 		// We need to process and encrypt the password
-		$passwords = [];
-		foreach ($request->userpassword as $key => $value) {
-			// If the password is still the MD5 of the old password, then it hasnt changed
-			if (($old=Arr::get($o->userpassword,$key)) && ($value === md5($old))) {
-				array_push($passwords,$old);
-				continue;
-			}
+		if ($request->userpassword) {
+			$passwords = [];
+			foreach ($request->userpassword as $key => $value) {
+				// If the password is still the MD5 of the old password, then it hasnt changed
+				if (($old=Arr::get($o->userpassword,$key)) && ($value === md5($old))) {
+					array_push($passwords,$old);
+					continue;
+				}
 
-			if ($value) {
-				$type = Arr::get($request->userpassword_hash,$key);
-				array_push($passwords,Attribute\Password::hash_id($type)->encode($value));
+				if ($value) {
+					$type = Arr::get($request->userpassword_hash,$key);
+					array_push($passwords,Attribute\Password::hash_id($type)->encode($value));
+				}
 			}
+			$o->userpassword = $passwords;
 		}
-		$o->userpassword = $passwords;
 
 		if (! $o->getDirty())
 			return back()
@@ -294,10 +341,8 @@ class HomeController extends Controller
 	 */
 	public function schema_frame(Request $request)
 	{
-		$s = config('server');
-
 		// If an invalid key, we'll 404
-		if ($request->type && $request->key && ($s->schema($request->type)->has($request->key) === FALSE))
+		if ($request->type && $request->key && (! config('server')->schema($request->type)->has($request->key)))
 			abort(404);
 
 		return view('frames.schema')

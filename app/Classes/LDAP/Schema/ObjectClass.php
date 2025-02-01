@@ -443,6 +443,16 @@ final class ObjectClass extends Base
 	}
 
 	/**
+	 * Return if this objectclass is auxiliary
+	 *
+	 * @return bool
+	 */
+	public function isAuxiliary(): bool
+	{
+		return $this->type === Server::OC_AUXILIARY;
+	}
+
+	/**
 	 * Determine if an array is listed in the may_force attrs
 	 */
 	public function isForceMay(string $attr): bool

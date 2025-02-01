@@ -291,3 +291,8 @@ select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__
 	line-height: 1.0;
 	font-size: 90%;
 }
+
+.select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option[role=group] .select2-results__group {
+	color: #212529;
+	font-weight: 800;
+}

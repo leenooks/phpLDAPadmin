@@ -2,14 +2,7 @@
 <x-attribute.layout :edit="$edit" :new="$new" :o="$o">
 	@foreach (old($o->name_lc,$o->values) as $value)
 		@if ($edit && ($value === NULL || (! $o->isStructural($value))))
-			<div class="input-group has-validation">
-				<input type="text" @class(['form-control','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$loop->index)),'mb-1','border-focus'=>$o->values->contains($value)]) name="{{ $o->name_lc }}[]" value="{{ $value }}" placeholder="{{ ! is_null($x=Arr::get($o->values,$loop->index)) ? $x : '['.__('NEW').']' }}" @readonly(true)>
-				<div class="invalid-feedback pb-2">
-					@if($e)
-						{{ join('|',$e) }}
-					@endif
-				</div>
-			</div>
+			<x-attribute.widget.objectclass :o="$o" :edit="$edit" :new="$new" :loop="$loop" :value="$value"/>
 		@else
 			{{ $value }}
 			@if ($o->isStructural($value))

@@ -38,10 +38,11 @@ Route::group(['prefix'=>'user'],function() {
 	Route::get('image',[HomeController::class,'user_image']);
 });
 
-Route::post('entry/update/commit',[HomeController::class,'entry_update']);
-Route::post('entry/update/pending',[HomeController::class,'entry_pending_update']);
-Route::get('entry/newattr/{id}',[HomeController::class,'entry_newattr']);
 Route::get('entry/export/{id}',[HomeController::class,'entry_export']);
 Route::post('entry/password/check/',[HomeController::class,'entry_password_check']);
+Route::get('entry/attr/add/{id}',[HomeController::class,'entry_attr_add']);
+Route::post('entry/objectclass/add/{id}',[HomeController::class,'entry_objectclass_add']);
+Route::post('entry/update/commit',[HomeController::class,'entry_update']);
+Route::post('entry/update/pending',[HomeController::class,'entry_pending_update']);
 
 Route::post('import/process/{type}',[HomeController::class,'import']);
