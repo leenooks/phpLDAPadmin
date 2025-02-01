@@ -57,7 +57,7 @@
 											</div>
 										@endif
 										<div class="float-end">
-											<button class="btn btn-primary btn-lg">Login</button>
+											<button class="btn btn-lg btn-primary">Login</button>
 										</div>
 									</div>
 								</form>

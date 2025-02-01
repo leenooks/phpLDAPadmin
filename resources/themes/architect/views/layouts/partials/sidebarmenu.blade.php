@@ -22,7 +22,7 @@
 	</div>
 	<div class="app-header__menu">
 		<span>
-			<button type="button" class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+			<button type="button" class="btn-icon btn-icon-only btn btn-sm btn-primary mobile-toggle-header-nav">
 				<span class="btn-icon-wrapper">
 					<i class="fas fa-ellipsis-v fa-w-6"></i>
 				</span>

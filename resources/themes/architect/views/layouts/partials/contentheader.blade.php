@@ -30,7 +30,7 @@
 								@if ((isset($page_actions) && $page_actions->contains('edit')) || old())
 									<li class="nav-item">
 										<span class="nav-link pt-0 pb-1">
-											<button id="entry-edit" class="p-2 m-0 border-0 btn-transition btn btn-outline-dark w-100 text-start">
+											<button id="entry-edit" class="p-2 m-0 border-0 btn btn-transition btn-outline-dark w-100 text-start">
 												<i class="fas fa-fw fa-edit me-2"></i> @lang('Edit')
 											</button>
 										</span>
@@ -40,7 +40,7 @@
 								@if (isset($page_actions) && $page_actions->contains('export'))
 									<li class="nav-item">
 										<a class="nav-link pt-0 pb-1">
-											<button type="button" class="p-2 m-0 border-0 btn-transition btn btn-outline-dark w-100 text-start" data-bs-toggle="modal" data-bs-target="#entry_export-modal">
+											<button type="button" class="p-2 m-0 border-0 btn btn-transition btn-outline-dark w-100 text-start" data-bs-toggle="modal" data-bs-target="#entry_export-modal">
 												<i class="fas fa-fw fa-file-export me-2"></i> @lang('Export')
 											</button>
 										</a>
@@ -50,7 +50,7 @@
 								@if (isset($page_actions) && $page_actions->contains('copy'))
 									<li class="nav-item">
 										<a class="nav-link pt-0 pb-1">
-											<button class="p-2 m-0 border-0 btn-transition btn btn-outline-dark w-100 text-start">
+											<button class="p-2 m-0 border-0 btn btn-transition btn-outline-dark w-100 text-start">
 												<i class="fas fa-fw fa-truck-moving me-2"></i> @lang('Copy or Move')
 											</button>
 										</a>
