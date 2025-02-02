@@ -290,7 +290,7 @@ class Entry extends Model
 	public function getMissingAttributes(): Collection
 	{
 		return $this->getAvailableAttributes()
-			->diff($this->getVisibleAttributes());
+			->filter(fn($a)=>(! $this->getVisibleAttributes()->contains(fn($b)=>($a->name === $b->name))));
 	}
 
 	/**
