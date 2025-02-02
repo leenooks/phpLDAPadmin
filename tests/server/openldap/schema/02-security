@@ -1,9 +1,0 @@
-# At the moment we want to override osixia/ldap to enable anonymous reads
-dn: olcDatabase={1}{{ LDAP_BACKEND }},cn=config
-changetype: modify
-delete: olcAccess
--
-add: olcAccess
-olcAccess: to * by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage by * break
-olcAccess: to attrs=userPassword,shadowLastChange by self read by dn="cn=admin,{{ LDAP_BASE_DN }}" write by anonymous read by * read
-olcAccess: to * by self read by dn="cn=admin,{{ LDAP_BASE_DN }}" write by * read
