@@ -68,42 +68,97 @@
 								var newadded = $('select#newoc').val();
 
 								// If nothing selected, we dont have anything to do
-								if (! newadded.length)
+								if (added_oc.sort().join('|') == newadded.sort().join('|'))
 									return;
+
+								var attrs = $('[data-attr-name]').map(function() {
+									return $(this).data('attrName');
+								});
 
 								// Find out what was selected, and add them
 								newadded.forEach(function (item) {
 									if (added_oc.indexOf(item) !== -1)
 										return;
 
+									// Add attribute to the page
 									$.ajax({
-										type: 'GET',
+										type: 'POST',
 										beforeSend: function() {},
 										success: function(data) {
-											console.log(data);
 											$('#{{ $o->name_lc }}').append(data);
-											console.log('set to:'+item);
 										},
 										error: function(e) {
 											if (e.status != 412)
 												alert('That didnt work? Please try again....');
 										},
 										url: '{{ url('entry/attr/add',[$o->name_lc]) }}',
-										data: {noheader: true,value: item,loop: c++},	// @todo can we omit loop and c
+										data: {
+											noheader: true,
+											value: item,
+											objectclasses: oc,
+											loop: c++, // @todo can we omit loop and c
+										},
 										cache: false
 									});
 
-									// @todo add any required attributes that are defined required as a result of adding this OC
-									// @todo Add attributes to "Add new Attribute" that are now available
+									$.ajax({
+										type: 'POST',
+										beforeSend: function() {},
+										success: function(data) {
+											// Render any must attributes
+											if (data.must.length) {
+												data.must.forEach(function(item) {
+													// Add attribute to the page
+													$.ajax({
+														type: 'POST',
+														beforeSend: function() {},
+														success: function(data) {
+															$('#newattrs').append(data);
+														},
+														error: function(e) {
+															if (e.status != 412)
+																alert('That didnt work? Please try again....');
+														},
+														url: '{{ url('entry/attr/add') }}/'+item,
+														data: {
+															value: item,
+															objectclasses: oc,
+															loop: c++, // @todo can we omit loop and c
+														},
+														cache: false
+													});
+												})
+											}
+
+											// Add attributes to "Add new Attribute" that are now available
+											if (data.may.length) {
+												var newattr = $('select#newattr');
+
+												// @todo It might be nice to resort this options
+												data.may.forEach(function(item) {
+													newattr.append(new Option(item,item,false,false));
+												});
+											}
+										},
+										error: function(e) {
+											if (e.status != 412)
+												alert('That didnt work? Please try again....');
+										},
+										url: '{{ url('api/schema/objectclass/attrs') }}/'+item,
+										cache: false
+									});
+
 								});
 
 								// Loop through added_oc, and remove anything not in newadded
 								added_oc.forEach(function(item) {
 									if (newadded.indexOf(item) === -1) {
-										$('input[value="'+item+'"]').parent().empty();
+										$('span#objectclass_'+item).empty();
 
 										// @todo remove any required attributes that are no longer defined as a result of removing this OC
+										console.log('Remove required attributes of:'+item);
 										// @todo Remove attributes from "Add new Attribute" that are no longer available
+										console.log('Remove additional attributes of:'+item);
 									}
 								});
 

@@ -33,9 +33,6 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	// Is this attribute the RDN?
 	protected bool $is_rdn = FALSE;
 
-	// Objectclasses that require this attribute
-	protected Collection $required_by;
-
 	// MIN/MAX number of values
 	protected int $min_values_count = 0;
 	protected int $max_values_count = 0;
@@ -102,7 +99,6 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 		$this->name = $name;
 		$this->values = collect($values);
 		$this->lang_tags = collect();
-		$this->required_by = collect();
 		$this->oldValues = collect($values);
 
 		// No need to load our schema for internal attributes
@@ -149,6 +145,10 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 			'old_values' => $this->oldValues,
 			// Attribute values
 			'values' => $this->values,
+			// Required by Object Classes
+			'required_by' => $this->schema->required_by_object_classes,
+			// Used in Object Classes
+			'used_in' => $this->schema->used_in_object_classes,
 
 			default => throw new \Exception('Unknown key:' . $key),
 		};
@@ -294,19 +294,6 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	public function render_item_new(int $key): ?string
 	{
 		return Arr::get($this->values,$key);
-	}
-
-	/**
-	 * Set the objectclasses that require this attribute
-	 *
-	 * @param Collection $oc
-	 * @return Collection
-	 */
-	public function required_by(Collection $oc): Collection
-	{
-		return $this->required_by = ($this->schema
-			? $oc->intersect($this->schema->required_by_object_classes)
-			: collect());
 	}
 
 	/**

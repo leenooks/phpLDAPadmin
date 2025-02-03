@@ -85,7 +85,7 @@ class HomeController extends Controller
 				->with('o',new Attribute($id,[]))
 				->with('value',$request->value)
 				->with('loop',$xx)
-			: (new AttributeType(new Attribute($id,[]),TRUE))->render();
+			: (new AttributeType(new Attribute($id,[]),TRUE,collect($request->oc ?: [])))->render();
 
 		return $x;
 	}

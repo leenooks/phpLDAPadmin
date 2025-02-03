@@ -82,4 +82,21 @@ class APIController extends Controller
 				abort(404);
 		}
 	}
+
+	/**
+	 * Return the required and additional attributes for an object class
+	 *
+	 * @param Request $request
+	 * @param string $objectclass
+	 * @return array
+	 */
+	public function schema_objectclass_attrs(Request $request,string $objectclass): array
+	{
+		$oc = config('server')->schema('objectclasses',$objectclass);
+
+		return [
+			'must' => $oc->getMustAttrs()->pluck('name'),
+			'may' => $oc->getMayAttrs()->pluck('name'),
+		];
+	}
 }

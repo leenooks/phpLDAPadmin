@@ -35,8 +35,8 @@ The update to v2 is progressing well - here is a list of work to do and done:
     - [X] Validate password is correct
   - [ ] JpegPhoto Create/Delete
   - [X] JpegPhoto Display
-  - [ ] ObjectClass Add/Remove
-    - [ ] Add additional required attributes (for ObjectClass Addition)
+  - [X] ObjectClass Add/Remove
+    - [X] Add additional required attributes (for ObjectClass Addition)
     - [ ] Remove existing required attributes (for ObjectClass Removal)
   - [X] Add additional values to Attributes that support multiple values
   - [X] Delete extra values for Attributes that support multiple values

@@ -550,17 +550,6 @@ final class AttributeType extends Base {
 	}
 
 	/**
-	 * Given a list of object classes, determine if this is a required attribute
-	 *
-	 * @param Collection $oc List of objectclasses to compare.
-	 * @return Collection
-	 */
-	public function required_by(Collection $oc): Collection
-	{
-		return $oc->diff($this->required_by_object_classes);
-	}
-
-	/**
 	 * Sets this attribute's list of aliases.
 	 *
 	 * @param Collection $aliases The array of alias names (strings)

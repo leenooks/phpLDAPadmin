@@ -19,6 +19,7 @@ Route::group([],function() {
 	Route::get('bases',[APIController::class,'bases']);
 	Route::get('children',[APIController::class,'children']);
 	Route::post('schema/view',[APIController::class,'schema_view']);
+	Route::post('schema/objectclass/attrs/{id}',[APIController::class,'schema_objectclass_attrs']);
 });
 
 Route::group(['middleware'=>'auth:api','prefix'=>'user'],function() {

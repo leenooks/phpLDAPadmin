@@ -31,7 +31,7 @@
 							<input type="hidden" name="dn" value="">
 
 							@foreach ($o->getVisibleAttributes() as $ao)
-								<x-attribute-type :edit="true" :o="$ao"/>
+								<x-attribute-type :edit="true" :o="$ao" :oc="collect($o->objectclass)"/>
 							@endforeach
 
 							<div id="newattrs"></div>
@@ -173,6 +173,7 @@
 @section('page-scripts')
 	<script type="text/javascript">
 		var dn = '{{ $o->getDNSecure() }}';
+		var oc = {!! $o->getObject('objectclass')->values !!};
 
 		function download(filename,text) {
 			var element = document.createElement('a');
@@ -217,7 +218,7 @@
 		$(document).ready(function() {
 			$('#newattr').on('change',function(item) {
 				$.ajax({
-					type: 'GET',
+					type: 'POST',
 					beforeSend: function() {},
 					success: function(data) {
 						$('#newattrs').append(data);
@@ -227,6 +228,9 @@
 							alert('That didnt work? Please try again....');
 					},
 					url: '{{ url('entry/attr/add') }}/'+item.target.value,
+					data: {
+						objectclasses: oc,
+					},
 					cache: false
 				});
 

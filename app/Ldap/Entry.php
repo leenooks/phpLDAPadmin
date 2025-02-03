@@ -186,12 +186,8 @@ class Entry extends Model
 				if (preg_match('/^'.$attribute.'=/i',$this->dn))
 					$o->setRDN();
 
-				// Set required flag
-				$o->required_by(collect($this->getAttribute('objectclass')));
-
 				// Store our original value to know if this attribute has changed
-				if ($x=Arr::get($this->original,$attribute))
-					$o->oldValues($x);
+				$o->oldValues(Arr::get($this->original,$attribute,[]));
 
 				$result->put($attribute,$o);
 			}
