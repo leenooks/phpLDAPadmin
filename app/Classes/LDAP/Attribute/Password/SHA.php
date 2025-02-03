@@ -10,4 +10,9 @@ final class SHA extends Base
 	{
 		return sprintf('{%s}%s',self::key,base64_encode(hash('sha1',$password,true)));
 	}
+
+	public static function subid(string $password): bool
+	{
+		return preg_match('/^{'.static::key.'}/',$password);
+	}
 }

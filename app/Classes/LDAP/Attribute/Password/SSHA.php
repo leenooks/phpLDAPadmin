@@ -16,4 +16,9 @@ final class SSHA extends Base
 	{
 		return sprintf('{%s}%s',self::key,$this->salted_hash($password,'sha1',self::salt,$salt));
 	}
+
+	public static function subid(string $password): bool
+	{
+		return preg_match('/^{'.static::key.'}/',$password);
+	}
 }
