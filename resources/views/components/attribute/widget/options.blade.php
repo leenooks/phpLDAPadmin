@@ -39,27 +39,32 @@
 					<script type="text/javascript">
 						$(document).ready(function() {
 							var added_oc = [];	// Object classes being added to this entry
+							var rendered = false;
 
 							// Show our ObjectClass modal so that we can add more objectclasses
 							$('#new_objectclass-modal').on('shown.bs.modal',function() {
-								$.ajax({
-									type: 'POST',
-									success: function(data) {
-										$('select#newoc').select2({
-											dropdownParent: $('#new_objectclass-modal'),
-											theme: 'bootstrap-5',
-											allowClear: true,
-											multiple: true,
-											data: data,
-										});
-									},
-									error: function(e) {
-										if (e.status != 412)
-											alert('That didnt work? Please try again....');
-									},
-									url: '{{ url('entry/objectclass/add') }}/'+dn,
-									cache: false
-								});
+								if (! rendered)
+									$.ajax({
+										type: 'POST',
+										// @todo When this is opened a second time, the data is appended.
+										success: function(data) {
+											$('select#newoc').select2({
+												dropdownParent: $('#new_objectclass-modal'),
+												theme: 'bootstrap-5',
+												allowClear: true,
+												multiple: true,
+												data: data,
+											});
+										},
+										error: function(e) {
+											if (e.status != 412)
+												alert('That didnt work? Please try again....');
+										},
+										url: '{{ url('entry/objectclass/add') }}/'+dn,
+										cache: false
+									});
+
+								rendered = true;
 							})
 
 							// When the ObjectClass modal is closed, process what was selected
@@ -134,7 +139,7 @@
 											if (data.may.length) {
 												var newattr = $('select#newattr');
 
-												// @todo It might be nice to resort this options
+												// @todo It might be nice to re-sort these options
 												data.may.forEach(function(item) {
 													newattr.append(new Option(item,item,false,false));
 												});
@@ -155,10 +160,39 @@
 									if (newadded.indexOf(item) === -1) {
 										$('span#objectclass_'+item).empty();
 
-										// @todo remove any required attributes that are no longer defined as a result of removing this OC
-										console.log('Remove required attributes of:'+item);
 										// @todo Remove attributes from "Add new Attribute" that are no longer available
-										console.log('Remove additional attributes of:'+item);
+										$.ajax({
+											type: 'POST',
+											beforeSend: function() {},
+											success: function(data) {
+												var attrs = [];
+
+												// Remove attributes from "Add new Attribute" that are no longer available
+												if (data.may.length) {
+													data.may.forEach(function(mayitem) {
+														var x = $("select#newattr option[value='"+mayitem+"']");
+
+														if (x.length) {
+															x.remove();
+
+														// Add this to the must attrs list, because its been rendered
+														} else {
+															attrs.push(mayitem);
+														}
+													});
+												}
+
+												// @todo remove any required attributes that are no longer defined as a result of removing this OC
+												console.log('Remove required attributes of:'+item);
+												console.log(attrs);
+											},
+											error: function(e) {
+												if (e.status != 412)
+													alert('That didnt work? Please try again....');
+											},
+											url: '{{ url('api/schema/objectclass/attrs') }}/'+item,
+											cache: false
+										});
 									}
 								});
 

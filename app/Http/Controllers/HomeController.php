@@ -116,8 +116,9 @@ class HomeController extends Controller
 	{
 		$dn = Crypt::decryptString($id);
 		$o = config('server')->fetch($dn);
+		$oc = $o->getObject('objectclass');
 
-		$ocs = $o->getObject('objectclass')
+		$ocs = $oc
 			->structural
 			->map(fn($item)=>$item->getParents())
 			->flatten()
@@ -125,6 +126,8 @@ class HomeController extends Controller
 				config('server')->schema('objectclasses')
 					->filter(fn($item)=>$item->isAuxiliary())
 			)
+			// Remove the original objectlcasses
+			->filter(fn($item)=>(! $oc->values->contains($item)))
 			->sortBy(fn($item)=>$item->name);
 
 		return $ocs->groupBy(fn($item)=>$item->isStructural())
