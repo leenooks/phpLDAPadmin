@@ -1,7 +1,7 @@
 <div class="row pt-2">
 	<div @class(['col-1','d-none'=>(! $edit)])></div>
 	<div class="col-10 p-2">
-		<div id="{{ $o->name_lc }}">
+		<div id="{{ $o->name }}">
 			{{ $slot }}
 		</div>
 

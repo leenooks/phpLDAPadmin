@@ -297,7 +297,7 @@ select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__
 	font-weight: 800;
 }
 
-div#objectclass .input-group-delete {
+div#objectClass .input-group-delete {
 	position: relative;
 	float: inline-end;
 	bottom: 30px;

@@ -90,7 +90,7 @@
 										type: 'POST',
 										beforeSend: function() {},
 										success: function(data) {
-											$('#{{ $o->name_lc }}').append(data);
+											$('#{{ $o->name }}').append(data);
 										},
 										error: function(e) {
 											if (e.status != 412)
@@ -182,9 +182,15 @@
 													});
 												}
 
+												data.must.concat(attrs).forEach(function(attr) {
+													var x = $('#'+attr).find('input');
+
+													x.css('background-color','#f0c0c0').attr('readonly',true).attr('placeholder',x.val()).val('');
+												});
+
+												// remove the Add Values box
+												// Remove any keyed in values
 												// @todo remove any required attributes that are no longer defined as a result of removing this OC
-												console.log('Remove required attributes of:'+item);
-												console.log(attrs);
 											},
 											error: function(e) {
 												if (e.status != 412)
@@ -206,17 +212,17 @@
 			@case('App\Classes\LDAP\Attribute')
 			@default
 				@php($clone=TRUE)
-				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name_lc }}"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</span>
+				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name }}-addnew"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</span>
 
 				@section('page-scripts')
 					@if($clone && $edit && $o->can_addvalues)
 						<script type="text/javascript">
 							$(document).ready(function() {
 								// Create a new entry when Add Value clicked
-								$('#{{ $o->name_lc }}.addable').click(function (item) {
+								$('#{{ $o->name }}-addnew.addable').click(function (item) {
 									var cln = $(this).parent().parent().find('input:last').parent().clone();
 									cln.find('input:last').attr('value','').attr('placeholder', '[@lang('NEW')]');
-									cln.appendTo('#' + item.currentTarget.id)
+									cln.appendTo('#'+item.currentTarget.id.replace('-addnew',''));
 								});
 							});
 						</script>
