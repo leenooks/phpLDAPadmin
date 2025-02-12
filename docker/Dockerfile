@@ -8,16 +8,20 @@ RUN install-php-extensions \
     ldap \
     igbinary msgpack memcached
 
-RUN sed -i -e 's/^memory_limit = 128M/memory_limit = 256M/' /usr/local/etc/php/php.ini-production
+# Tune PHP
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
+RUN sed -i -e 's/^memory_limit = 128M/memory_limit = 256M/' /usr/local/etc/php/php.ini
+RUN sed -i -e 's/^expose_php = On/expose_php = Off/' /usr/local/etc/php/php.ini
 
+# Add composer
 RUN curl -4 https://getcomposer.org/installer|php -- --install-dir=/usr/local/bin --filename=composer
 ENV COMPOSER_HOME=/var/cache/composer
 
 ENV SITE_USER=www-data
 
+# Startup for ${SITE_USER}
 COPY docker/init-docker /sbin/init-docker
-RUN chmod 550 /sbin/init-docker && chown ${SITE_USER}:0 /sbin/init-docker
+RUN chmod 550 /sbin/init-docker && chown ${SITE_USER}:0 /sbin/init-docker && chown -R ${SITE_USER}:0 ${XDG_DATA_HOME} ${XDG_CONFIG_HOME}
 
 COPY . /app
 
@@ -28,9 +32,7 @@ RUN mkdir -p ${COMPOSER_HOME} \
 	&& FORCE_PERMS=1 BUILD=1 /sbin/init-docker \
 	&& rm -rf ${COMPOSER_HOME}/* composer.lock
 
-# Fix start up items
-RUN chown ${SITE_USER} /config/caddy /data/caddy
-
+WORKDIR /app
 USER ${SITE_USER}
 
 # Control which port to open

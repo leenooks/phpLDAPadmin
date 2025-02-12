@@ -6,10 +6,10 @@ env=${APP_ENV:-production}
 php=${PHP_DIR:-/app}
 composer=${COMPOSER_HOME:-/var/cache/composer}
 
-RUN_USER=$(id -u -n)
 SITE_USER=${SITE_USER:-www-data}
 MEMCACHED_START=${MEMCACHED_START:-FALSE}
-[ "${RUN_USER}" = "deon" ] && USE_SU=1
+RUN_USER=$(id -u)
+[ "${RUN_USER}" = "0" ] && USE_SU=1
 
 # To run a local queue, running jobs from the queue "hostname"
 LOCAL_QUEUE=${LOCAL_QUEUE:-FALSE}
@@ -50,12 +50,11 @@ fi
 if [ -r artisan -a -e ${php}/.env ]; then
 	echo "* Laravel Setup..."
 	mp=$(mp ${php})
+	echo "  - ${php} is an external mount point ${mp}"
 
 	# Only adjust perms if this is an external mountpoint
-	if [ -n "${FORCE_PERMS}" -o ${mp} -eq 0 ]; then
-		echo "  - ${mp} is an external mount point"
-
-		if [ -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ]; then
+	if [ -n "${BUILD}" -o -n "${FORCE_PERMS}" -o ${mp} -eq 0 ]; then
+		if [ -n "${BUILD}" -o -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ]; then
 			echo "  - Setting Permissions..."
 			# Make sure our permissions are appropraite
 			find ${php} -type f -exec chmod 640 {} \;
@@ -86,26 +85,26 @@ if [ -r artisan -a -e ${php}/.env ]; then
 		mp=$(mp ${composer})
 		echo "  - [${composer}] is a mount point [${mp}]"
 
-		if [ -n "${FORCE_PERMS}" -o ${mp} -eq 0 ]; then
-			[ -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ] && chown -R ${SITE_USER}:www-data ${composer}
+		if [ -n "${BUILD}" -o -n "${FORCE_PERMS}" -o ${mp} -eq 0 ]; then
+			[ -n "${BUILD}" -o -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ] && chown -R ${SITE_USER}:www-data ${composer}
 			[ ! -d ${php}/vendor ] && mkdir -m 750 ${php}/vendor && chown ${SITE_USER}:www-data ${php}/vendor
-			[ -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ] && chmod g+w ${php}
+			[ -n "${BUILD}" -o -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ] && chmod g+w ${php}
 		fi
 
 		CMD="composer install --optimize-autoloader ${NODEV}"
 		(( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}) && ( test -e .composer.refresh && rm -f .composer.refresh )
-		[ -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ] && [ ${mp} -eq 0 ] && chmod g-w ${php}
+		[ -n "${BUILD}" -o -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ] && [ ${mp} -eq 0 ] && chmod g-w ${php}
 	fi
 
 	# Generate our Encryption Key
-	[ -z ${BUILD} ] && [ -z ${APP_KEY} ] \
+	[ -z "${BUILD}" ] && [ -z "${APP_KEY}" ] \
 		&& grep -qe '^APP_KEY=$' .env \
 		&& echo '  + Encryption Key auto created, replace with with "artisan key:generate --force"' \
 		&& ./artisan key:generate
 
 	# We only check for non mount points, in case this container has the app inside
 	mp=$(mp ${php})
-	if [ ${mp} -eq 1 ]; then
+	if [ -z "${BUILD}" -a ${mp} -eq 1 ]; then
 		echo "  - Caching configuration..."
 		CMD="php artisan optimize"
 		( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}
