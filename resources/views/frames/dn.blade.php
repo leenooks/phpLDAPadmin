@@ -202,7 +202,7 @@
 			});
 
 			// Our password type
-			$('div#userpassword .form-select').each(function() {
+			$('div#userPassword .form-select').each(function() {
 				$(this).prop('disabled',false);
 			})
 

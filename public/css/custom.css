@@ -5,7 +5,7 @@ img.jpegphoto {
 }
 
 /** ensure our userpassword has select is next to the password input */
-div#userpassword .select2-container--bootstrap-5 .select2-selection {
+div#userPassword .select2-container--bootstrap-5 .select2-selection {
 	font-size: inherit;
 	border-bottom-right-radius: unset;
 	border-top-right-radius: unset;
