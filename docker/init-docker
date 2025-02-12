@@ -3,7 +3,7 @@
 set -e
 role=${CONTAINER_ROLE:-app}
 env=${APP_ENV:-production}
-php=${PHP_DIR:-/var/www/html}
+php=${PHP_DIR:-/app}
 composer=${COMPOSER_HOME:-/var/cache/composer}
 
 RUN_USER=$(id -u -n)

@@ -20,8 +20,7 @@ ENV SITE_USER=www-data
 COPY docker/init-docker /sbin/init-docker
 RUN chmod 550 /sbin/init-docker && chown ${SITE_USER}:0 /sbin/init-docker
 
-COPY . /var/www/html/
-WORKDIR /var/www/html
+COPY . /app
 
 RUN mkdir -p ${COMPOSER_HOME} \
 	&& ([ -r auth.json ] && mv auth.json ${COMPOSER_HOME}) || true \
