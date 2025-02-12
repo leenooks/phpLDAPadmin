@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp:php8.3-alpine
+FROM dunglas/frankenphp:php8.4-alpine
 
 # Base
 RUN apk add --no-cache bash
@@ -6,9 +6,8 @@ RUN apk add --no-cache bash
 # Additional extensions:
 RUN install-php-extensions \
     ldap \
-    memcached
+    igbinary msgpack memcached
 
-RUN sed -i -e 's/^{$CADDY_EXTRA_CONFIG}$/{$CADDY_EXTRA_CONFIG} /' /etc/caddy/Caddyfile
 RUN sed -i -e 's/^memory_limit = 128M/memory_limit = 256M/' /usr/local/etc/php/php.ini-production
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 
