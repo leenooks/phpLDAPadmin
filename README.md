@@ -46,7 +46,7 @@ The update to v2 is progressing well - here is a list of work to do and done:
   - [X] Configure login by a specific attribute
 - [X] Logout LDAP server
 - [X] Export entries as an LDAP
-- [ ] Import LDIF
+- [X] Import LDIF
 - [X] Schema Browser
 - [ ] Is there something missing?
 

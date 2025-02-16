@@ -146,8 +146,8 @@ class Entry extends Model
 	{
 		$key = $this->normalizeAttributeKey($key);
 
-		if (! config('server')->schema('attributetypes')->contains($key))
-			throw new AttributeException('Schema doesnt have attribute [%s]',$key);
+		if (! config('server')->schema('attributetypes')->has($key))
+			throw new AttributeException(sprintf('Schema doesnt have attribute [%s]',$key));
 
 		if ($x=$this->objects->get($key)) {
 			$x->addValue($value);
