@@ -19,7 +19,7 @@ final class MD5crypt extends Base
 		return hash_equals($cp=self::password($source),crypt($compare,$cp));
 	}
 
-	public function encode(string $password,string $salt=NULL): string
+	public function encode(string $password,?string $salt=NULL): string
 	{
 		if (is_null($salt))
 			$salt = sprintf('%s$%s',self::identifier,random_salt(self::salt));

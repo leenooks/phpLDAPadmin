@@ -17,7 +17,7 @@ class Attribute extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct(?LDAPAttribute $o,bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $na=NULL)
+    public function __construct(?LDAPAttribute $o,bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,?string $na=NULL)
     {
 		$this->o = $o;
 		$this->edit = $edit;

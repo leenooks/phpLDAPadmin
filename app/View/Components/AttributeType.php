@@ -18,7 +18,7 @@ class AttributeType extends Component
 	/**
 	 * Create a new component instance.
 	 */
-	public function __construct(LDAPAttribute $o,bool $new=FALSE,Collection $oc=NULL)
+	public function __construct(LDAPAttribute $o,bool $new=FALSE,?Collection $oc=NULL)
 	{
 		$this->o = $o;
 		$this->oc = $oc;

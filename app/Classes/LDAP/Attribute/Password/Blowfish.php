@@ -20,7 +20,7 @@ final class Blowfish extends Base
 		return hash_equals($cp=self::password($source),crypt($compare,$cp));
 	}
 
-	public function encode(string $password,string $salt=NULL): string
+	public function encode(string $password,?string $salt=NULL): string
 	{
 		if (is_null($salt))
 			$salt = sprintf('%s%d$%s',self::identifier,self::cost,random_salt(self::salt));

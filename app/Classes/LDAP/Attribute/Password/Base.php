@@ -52,7 +52,7 @@ abstract class Base
 		return $source === $this->encode($compare);
 	}
 
-	protected function salted_hash(string $password,string $algo,int $salt_size=8,string $salt=NULL): string
+	protected function salted_hash(string $password,string $algo,int $salt_size=8,?string $salt=NULL): string
 	{
 		if (is_null($salt))
 			$salt = hex2bin(random_salt($salt_size));
