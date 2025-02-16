@@ -4,6 +4,7 @@ namespace App\Classes\LDAP;
 
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
@@ -36,7 +37,7 @@ final class Server
 	public const OC_ABSTRACT = 0x02;
 	public const OC_AUXILIARY = 0x03;
 
-	public function __construct(string $connection=NULL)
+	public function __construct(?string $connection=NULL)
 	{
 		$this->connection = $connection;
 	}
@@ -49,6 +50,8 @@ final class Server
 			'ldapsyntaxes' => $this->ldapsyntaxes,
 			'matchingrules' => $this->matchingrules,
 			'objectclasses' => $this->objectclasses,
+			'config' => config('ldap.connections.'.config('ldap.default')),
+			'name' => Arr::get($this->config,'name',__('No Server Name Yet')),
 			default => throw new Exception('Unknown key:' . $key),
 		};
 	}
@@ -66,7 +69,7 @@ final class Server
 	 * @testedin GetBaseDNTest::testBaseDNExists();
 	 * @todo Need to allow for the scenario if the baseDN is not readable by ACLs
 	 */
-	public static function baseDNs(string $connection=NULL,bool $objects=TRUE): Collection
+	public static function baseDNs(?string $connection=NULL,bool $objects=TRUE): Collection
 	{
 		$cachetime = Carbon::now()
 			->addSeconds(Config::get('ldap.cache.time'));
@@ -211,7 +214,7 @@ final class Server
 	 * @throws ObjectNotFoundException
 	 * @testedin TranslateOidTest::testRootDSE();
 	 */
-	public static function rootDSE(string $connection=NULL,Carbon $cachetime=NULL): ?Model
+	public static function rootDSE(?string $connection=NULL,Carbon $cachetime=NULL): ?Model
 	{
 		$e = new Entry;
 
@@ -231,7 +234,7 @@ final class Server
 	 * @return string
 	 * @throws ObjectNotFoundException
 	 */
-	public static function schemaDN(string $connection=NULL): string
+	public static function schemaDN(?string $connection=NULL): string
 	{
 		$cachetime = Carbon::now()->addSeconds(Config::get('ldap.cache.time'));
 
@@ -299,10 +302,9 @@ final class Server
 	 *
 	 * @param string $item Schema Item to Fetch
 	 * @param string|null $key
-	 * @return Collection|Base|NULL
-	 * @throws InvalidUsage
+	 * @return Collection|LDAPSyntax|Base|NULL
 	 */
-	public function schema(string $item,string $key=NULL): Collection|LDAPSyntax|Base|NULL
+	public function schema(string $item,?string $key=NULL): Collection|LDAPSyntax|Base|NULL
 	{
 		// Ensure our item to fetch is lower case
 		$item = strtolower($item);

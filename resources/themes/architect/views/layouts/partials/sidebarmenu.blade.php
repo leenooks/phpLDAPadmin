@@ -32,7 +32,7 @@
 	<div class="scrollbar-sidebar">
 		<div class="app-sidebar__inner">
 			<ul class="vertical-nav-menu">
-				<li class="app-sidebar__heading">{{ $server ?? __('Server Name') }}</li>
+				<li class="app-sidebar__heading">{{ config('server')->name }}</li>
 				<li>
 					<div class="font-icon-wrapper float-start me-1 server-icon">
 						<a class="p-0 m-0" href="{{ url('info') }}" onclick="return false;" style="display: contents;"><i class="fas fa-fw fa-info"></i></a>

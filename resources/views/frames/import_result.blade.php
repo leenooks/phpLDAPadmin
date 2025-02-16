@@ -2,7 +2,7 @@
 	<table class="table table-borderless">
 		<tr>
 			<td style="border-radius: 5px;"><div class="page-title-icon f32"><i class="fas fa-upload"></i></div></td>
-			<td class="top text-start align-text-top p-0 pt-2"><strong>@lang('LDIF Import Result')</strong><br><small>To Server XXX</small></td>
+			<td class="top text-start align-text-top p-0 pt-2"><strong>@lang('LDIF Import Result')</strong><br><small>@lang('To Server') <strong>{{ config('server')->name }}</strong></small></td>
 		</tr>
 	</table>
 @endsection
