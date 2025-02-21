@@ -9,9 +9,12 @@ RUN install-php-extensions \
     igbinary msgpack memcached
 
 # Tune PHP
-RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
-RUN sed -i -e 's/^memory_limit = 128M/memory_limit = 256M/' /usr/local/etc/php/php.ini
-RUN sed -i -e 's/^expose_php = On/expose_php = Off/' /usr/local/etc/php/php.ini
+RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini \
+	&& sed -i -e 's/^memory_limit = 128M/memory_limit = 256M/' /usr/local/etc/php/php.ini \
+	&& sed -i -e 's/^expose_php = On/expose_php = Off/' /usr/local/etc/php/php.ini
+
+# Support for LDAPS queries
+RUN echo "TLS_REQCERT never" >> /etc/openldap/ldap.conf
 
 # Add composer
 RUN curl -4 https://getcomposer.org/installer|php -- --install-dir=/usr/local/bin --filename=composer
