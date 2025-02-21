@@ -71,24 +71,9 @@
 
 					<!-- Internal Attributes -->
 					<div class="tab-pane" id="internal" role="tabpanel">
-						<div class="row">
-							<div class="col-12 offset-lg-2 col-lg-8">
-								<table class="table">
-									@foreach ($o->getInternalAttributes() as $ao)
-										<tr class="bg-light text-dark small">
-											<th class="w-25">
-												<abbr title="{{ $ao->description }}">{{ $ao->name }}</abbr>
-											</th>
-										</tr>
-										<tr>
-											<td class="ps-5">
-												<x-attribute :edit="false" :o="$ao"/>
-											</td>
-										</tr>
-									@endforeach
-								</table>
-							</div>
-						</div>
+						@foreach ($o->getInternalAttributes() as $ao)
+							<x-attribute-type :o="$ao"/>
+						@endforeach
 					</div>
 
 					<!-- Debug -->

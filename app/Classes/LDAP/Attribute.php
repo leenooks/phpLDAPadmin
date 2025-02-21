@@ -101,9 +101,8 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 		$this->lang_tags = collect();
 		$this->oldValues = collect($values);
 
-		// No need to load our schema for internal attributes
-		if (! $this->is_internal)
-			$this->schema = (new Server)->schema('attributetypes',$name);
+		$this->schema = (new Server)
+			->schema('attributetypes',$name);
 
 		/*
 		# Should this attribute be hidden
