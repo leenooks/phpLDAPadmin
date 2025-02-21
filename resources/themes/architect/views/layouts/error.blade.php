@@ -31,7 +31,7 @@
 										</tr>
 										<tr>
 											<th>Host</th>
-											<td>{{ ($y=collect(config('ldap.connections.'.$x.'.hosts')))->join(',') }} (IP: <strong>{!! $y->transform(function($item) { return collect(dns_get_record($item))->transform(function($item) { return Arr::get($item,'ip',Arr::get($item,'ipv6')); })->filter()->join('</strong>,<strong>'); })->join(',') !!}</strong>)</td>
+											<td>{{ ($y=collect(config('ldap.connections.'.$x.'.hosts')))->join(',') }} (IP: <strong>{!! $y->transform(function($item) { return collect(@dns_get_record($item))->transform(function($item) { return Arr::get($item,'ip',Arr::get($item,'ipv6')); })->filter()->join('</strong>,<strong>'); })->join(',') !!}</strong>)</td>
 										</tr>
 										<tr>
 											<th>Port</th>
