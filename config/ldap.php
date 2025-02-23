@@ -48,8 +48,20 @@ return [
 			'base_dn' => env('LDAP_BASE_DN', 'dc=local,dc=com'),
 			'timeout' => env('LDAP_TIMEOUT', 5),
 			'use_ssl' => env('LDAP_SSL', true),
-			'use_tls' => env('LDAP_TLS', true),
+			'use_tls' => env('LDAP_TLS', false),
 			'name' => env('LDAP_NAME','LDAPS Server'),
+		],
+
+		'openldaptls' => [
+			'hosts' => [env('LDAP_HOST', '127.0.0.1')],
+			'username' => env('LDAP_USERNAME', 'cn=user,dc=local,dc=com'),
+			'password' => env('LDAP_PASSWORD', 'secret'),
+			'port' => env('LDAP_PORT', 389),
+			'base_dn' => env('LDAP_BASE_DN', 'dc=local,dc=com'),
+			'timeout' => env('LDAP_TIMEOUT', 5),
+			'use_ssl' => env('LDAP_SSL', false),
+			'use_tls' => env('LDAP_TLS', true),
+			'name' => env('LDAP_NAME','LDAP-TLS Server'),
 		],
 
 		'opendj' => [
