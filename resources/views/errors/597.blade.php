@@ -21,7 +21,7 @@
 				</tr>
 				<tr>
 					<td>
-						<ul>
+						<ul class="ps-3">
 							<li>@lang('Your LDAP server is not connectable')</li>
 							<li>@lang('Your LDAP server hostname is incorrect')</li>
 							<li>@lang('Your DNS server cannot resolve that hostname')</li>
