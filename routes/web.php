@@ -32,8 +32,8 @@ Route::controller(HomeController::class)->group(function() {
 	Route::middleware(AllowAnonymous::class)->group(function() {
 		Route::get('/','home');
 		Route::get('info','info');
-		Route::post('dn','dn_frame');
 		Route::get('debug','debug');
+		Route::post('frame','frame');
 		Route::get('import','import_frame');
 		Route::get('schema','schema_frame');
 
@@ -41,10 +41,12 @@ Route::controller(HomeController::class)->group(function() {
 			Route::get('image','user_image');
 		});
 
+		Route::match(['get','post'],'entry/add','entry_add');
+		Route::post('entry/create','entry_create');
 		Route::get('entry/export/{id}','entry_export');
 		Route::post('entry/password/check/','entry_password_check');
 		Route::post('entry/attr/add/{id}','entry_attr_add');
-		Route::post('entry/objectclass/add/{id}','entry_objectclass_add');
+		Route::post('entry/objectclass/add','entry_objectclass_add');
 		Route::post('entry/update/commit','entry_update');
 		Route::post('entry/update/pending','entry_pending_update');
 

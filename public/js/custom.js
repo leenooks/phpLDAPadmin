@@ -13,32 +13,41 @@ function expandChildren(node) {
 
 function getNode(item) {
 	$.ajax({
-		url: '/dn',
+		url: '/frame',
 		method: 'POST',
 		data: { key: item },
 		dataType: 'html',
 		beforeSend: function() {
-			content = $('.main-content').contents();
-			$('.main-content').empty().append('<div class="fa-3x"><i class="fas fa-spinner fa-pulse"></i></div>');
+			content = $('.main-content')
+				.contents();
+
+			$('.main-content')
+				.empty()
+				.append('<div class="fa-3x"><i class="fas fa-spinner fa-pulse"></i></div>');
 		}
 
 	}).done(function(html) {
-		$('.main-content').empty().append(html);
+		$('.main-content')
+			.empty()
+			.append(html);
 
-	}).fail(function(item) {
-		switch(item.status) {
+	}).fail(function(e) {
+		switch(e.status) {
 			case 404:
-				$('.main-content').empty().append(item.responseText);
+				$('.main-content').empty().append(e.responseText);
+				break;
+			case 409:
+				location.replace('/#'+item);
 				break;
 			case 419:
 				alert('Session has expired, reloading the page and try again...');
 				location.reload();
 				break;
 			case 500:
-				$('.main-content').empty().append(item.responseText);
+				$('.main-content').empty().append(e.responseText);
 				break;
 			default:
-				alert(item.status+': Well that didnt work?');
+				alert('Well that didnt work? Code ['+e.status+']');
 		}
 	});
 }

@@ -15,7 +15,7 @@
 		{{ $slot }}
 		@isset($name)
 			<span class="invalid-feedback">
-				@error((! empty($old)) ? $old : $name)
+				@error((! empty($old)) ? $old : ($id ?? $name))
 					{{ $message }}
 				@elseif(isset($feedback))
 					{{ $feedback }}

@@ -2,7 +2,7 @@
 	@isset($name)
 		<input type="hidden" id="{{ $id ?? $name }}_disabled" name="{{ $name }}" value="" disabled>
 	@endisset
-	<select class="form-select @isset($name)@error((! empty($old)) ? $old : $name) is-invalid @enderror @endisset" id="{{ $id ?? $name }}" @isset($name)name="{{ $name }}"@endisset @required(isset($required) && $required) @disabled(isset($disabled) && $disabled)>
+	<select class="form-select @isset($name)@error((! empty($old)) ? $old : ($id ?? $name)) is-invalid @enderror @endisset" id="{{ $id ?? $name }}" @isset($name)name="{{ $name }}"@endisset @required(isset($required) && $required) @disabled(isset($disabled) && $disabled)>
 		@if((empty($value) && ! empty($options)) || isset($addnew) || isset($choose))
 			<option value=""></option>
 			@isset($addnew)
@@ -54,10 +54,24 @@
 				width: 'style',
 				allowClear: {{ $allowclear ?? 'false' }},
 				placeholder: '{{ $placeholder ?? '' }}',
+				multiple: {{ $multiple ?? 'false' }},
 				@isset($addvalues)
 					tags: true,
 				@endisset
 			});
+
+			@if(isset($multiple) && (! $multiple))
+				$('#{{ $id ?? $name }}').val(' ');
+				$('#{{ $id ?? $name }}').trigger('change');
+			@endif
+
+			@isset($options)
+				@if($options->count() === 1)
+					$('#{{ $id ?? $name }}')
+						.val('{{ $options->first()['id'] }}')
+						.trigger("change")
+				@endif
+			@endisset
 		});
 	</script>
 @append

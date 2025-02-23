@@ -145,9 +145,9 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 			// Attribute values
 			'values' => $this->values,
 			// Required by Object Classes
-			'required_by' => $this->schema->required_by_object_classes,
+			'required_by' => $this->schema?->required_by_object_classes ?: collect(),
 			// Used in Object Classes
-			'used_in' => $this->schema->used_in_object_classes,
+			'used_in' => $this->schema?->used_in_object_classes ?: collect(),
 
 			default => throw new \Exception('Unknown key:' . $key),
 		};

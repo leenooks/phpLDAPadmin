@@ -304,3 +304,7 @@ div#objectClass .input-group-delete {
 	right: 10px;
 	height: 5px;
 }
+
+.input-group-text {
+	background-color: #fafafa;
+}

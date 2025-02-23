@@ -208,7 +208,7 @@ final class ObjectClass extends Base
 	public function __get(string $key): mixed
 	{
 		return match ($key) {
-			'attributes' => $this->getAllAttrs(),
+			'attributes' => $this->getAllAttrs(TRUE),
 			'sup' => $this->sup_classes,
 			'type_name' => match ($this->type) {
 				Server::OC_STRUCTURAL => 'Structural',
@@ -223,13 +223,18 @@ final class ObjectClass extends Base
 	/**
 	 * Return a list of attributes that this objectClass provides
 	 *
+	 * @param bool $parents
 	 * @return Collection
 	 * @throws InvalidUsage
 	 */
-	public function getAllAttrs(): Collection
+	public function getAllAttrs(bool $parents=FALSE): Collection
 	{
-		return $this->getMustAttrs()
-			->merge($this->getMayAttrs());
+		return $this->getMustAttrs($parents)
+			->transform(function($item) {
+				$item->required = true;
+				return $item;
+			})
+			->merge($this->getMayAttrs($parents));
 	}
 
 	/**

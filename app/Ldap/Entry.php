@@ -12,11 +12,14 @@ use App\Classes\LDAP\Attribute;
 use App\Classes\LDAP\Attribute\Factory;
 use App\Classes\LDAP\Export\LDIF;
 use App\Exceptions\Import\AttributeException;
+use App\Exceptions\InvalidUsage;
 
 class Entry extends Model
 {
 	private Collection $objects;
 	private bool $noObjectAttributes = FALSE;
+	// For new entries, this is the container that this entry will be stored in
+	private string $rdnbase;
 
 	/* OVERRIDES */
 
@@ -46,7 +49,7 @@ class Entry extends Model
 	public function getAttributes(): array
 	{
 		return $this->objects
-			->map(fn($item)=>$item->values->toArray())
+			->map(fn($item)=>$item->values)
 			->toArray();
 	}
 
@@ -92,10 +95,7 @@ class Entry extends Model
 		$key = $this->normalizeAttributeKey($key);
 
 		if ((! $this->objects->get($key)) && $value) {
-			$o = new Attribute($key,[]);
-			$o->value = $value;
-
-			$this->objects->put($key,$o);
+			$this->objects->put($key,Factory::create($key,$value));
 
 		} elseif ($this->objects->get($key)) {
 			$this->objects->get($key)->value = $this->attributes[$key];
@@ -265,8 +265,12 @@ class Entry extends Model
 	 */
 	public function getObject(string $key): Attribute|null
 	{
-		return $this->objects
-			->get($this->normalizeAttributeKey($key));
+		return match ($key) {
+			'rdn' => $this->getRDNObject(),
+
+			default => $this->objects
+				->get($this->normalizeAttributeKey($key))
+		};
 	}
 
 	public function getObjects(): Collection
@@ -287,6 +291,16 @@ class Entry extends Model
 	{
 		return $this->getAvailableAttributes()
 			->filter(fn($a)=>(! $this->getVisibleAttributes()->contains(fn($b)=>($a->name === $b->name))));
+	}
+
+	private function getRDNObject(): Attribute\RDN
+	{
+		$o = new Attribute\RDN('dn',['']);
+		// @todo for an existing object, return the base.
+		$o->setBase($this->rdnbase);
+		$o->setAttributes($this->getAvailableAttributes()->filter(fn($item)=>$item->required));
+
+		return $o;
 	}
 
 	/**
@@ -412,5 +426,13 @@ class Entry extends Model
 		$this->noObjectAttributes = TRUE;
 
 		return $this;
+	}
+
+	public function setRDNBase(string $bdn): void
+	{
+		if ($this->exists)
+			throw new InvalidUsage('Cannot set RDN base on existing entries');
+
+		$this->rdnbase = $bdn;
 	}
 }

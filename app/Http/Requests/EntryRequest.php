@@ -7,26 +7,16 @@ use Illuminate\Foundation\Http\FormRequest;
 class EntryRequest extends FormRequest
 {
 	/**
-	 * Determine if the user is authorized to make this request.
-	 *
-	 * @return bool
-	 */
-	public function authorize()
-	{
-		return TRUE;
-	}
-
-	/**
 	 * Get the validation rules that apply to the request.
 	 *
 	 * @return array<string, mixed>
 	 */
-	public function rules()
+	public function rules(): array
 	{
 		return config('server')
 			->schema('attributetypes')
 			->intersectByKeys($this->request)
-			->map(fn($item)=>$item->validation(request()->get('objectclass')))
+			->map(fn($item)=>$item->validation(request()?->get('objectclass') ?: []))
 			->filter()
 			->flatMap(fn($item)=>$item)
 			->toArray();

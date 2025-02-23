@@ -6,15 +6,9 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ImportRequest extends FormRequest
 {
-	public function authorize()
-	{
-		return TRUE;
-	}
-
-	public function rules()
+	public function rules(): array
 	{
 		return [
-			'frame' => 'required|string|in:import',
 			'file' => 'nullable|extensions:ldif|required_without:text',
 			'text'=> 'nullable|prohibits:file|string|min:16',
 		];

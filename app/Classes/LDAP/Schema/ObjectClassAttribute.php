@@ -16,6 +16,7 @@ namespace App\Classes\LDAP\Schema;
 final class ObjectClassAttribute extends Base {
 	// This Attribute's root.
 	private string $source;
+	public bool $required = FALSE;
 
 	/**
 	 * Creates a new ObjectClassAttribute with specified name and source objectClass.
@@ -31,11 +32,9 @@ final class ObjectClassAttribute extends Base {
 
 	public function __get(string $key): mixed
 	{
-		switch ($key) {
-			case 'source':
-				return $this->source;
-
-			default: return parent::__get($key);
-		}
+		return match ($key) {
+			'source' => $this->source,
+			default => parent::__get($key),
+		};
 	}
 }

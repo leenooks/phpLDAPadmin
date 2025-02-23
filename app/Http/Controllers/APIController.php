@@ -16,21 +16,21 @@ class APIController extends Controller
 	 * Get the LDAP server BASE DNs
 	 *
 	 * @return Collection
-	 * @throws LdapRecord\Query\ObjectNotFoundException
+	 * @throws \LdapRecord\Query\ObjectNotFoundException
 	 */
 	public function bases(): Collection
 	{
 		$base = Server::baseDNs() ?: collect();
 
-		return $base->transform(function($item) {
-			return [
-				'title'=>$item->getRdn(),
-				'item'=>$item->getDNSecure(),
-				'lazy'=>TRUE,
-				'icon'=>'fa-fw fas fa-sitemap',
-				'tooltip'=>$item->getDn(),
-			];
-		});
+		return $base
+			->transform(fn($item)=>
+				[
+					'title'=>$item->getRdn(),
+					'item'=>$item->getDNSecure(),
+					'lazy'=>TRUE,
+					'icon'=>'fa-fw fas fa-sitemap',
+					'tooltip'=>$item->getDn(),
+				]);
 	}
 
 	/**
@@ -41,19 +41,31 @@ class APIController extends Controller
 	{
 		$levels = $request->query('depth',1);
 		$dn = Crypt::decryptString($request->query('key'));
+
+		// Sometimes our key has a command, so we'll ignore it
+		if (str_starts_with($dn,'*') && ($x=strpos($dn,'|')))
+			$dn = substr($dn,$x+1);
+
 		Log::debug(sprintf('%s: Query [%s] - Levels [%d]',__METHOD__,$dn,$levels));
 
 		return (config('server'))
 			->children($dn)
-			->transform(function($item) {
-				return [
+			->transform(fn($item)=>
+				[
 					'title'=>$item->getRdn(),
 					'item'=>$item->getDNSecure(),
 					'icon'=>$item->icon(),
 					'lazy'=>Arr::get($item->getAttribute('hassubordinates'),0) == 'TRUE',
 					'tooltip'=>$item->getDn(),
-				];
-			});
+				])
+			->prepend(
+				[
+					'title'=>sprintf('[%s]',__('Create Entry')),
+					'item'=>Crypt::encryptString(sprintf('*%s|%s','create',$dn)),
+					'lazy'=>FALSE,
+					'icon'=>'fas fa-fw fa-square-plus text-warning',
+					'tooltip'=>__('Create new LDAP item here'),
+				]);
 	}
 
 	public function schema_view(Request $request)
@@ -63,20 +75,20 @@ class APIController extends Controller
 		switch($request->type) {
 			case 'objectclasses':
 				return view('fragment.schema.objectclasses')
-					->with('objectclasses',$server->schema('objectclasses')->sortBy(function($item) { return strtolower($item->name); }));
+					->with('objectclasses',$server->schema('objectclasses')->sortBy(fn($item)=>strtolower($item->name)));
 
 			case 'attributetypes':
 				return view('fragment.schema.attributetypes')
 					->with('server',$server)
-					->with('attributetypes',$server->schema('attributetypes')->sortBy(function($item) { return strtolower($item->name); }));
+					->with('attributetypes',$server->schema('attributetypes')->sortBy(fn($item)=>strtolower($item->name)));
 
 			case 'ldapsyntaxes':
 				return view('fragment.schema.ldapsyntaxes')
-					->with('ldapsyntaxes',$server->schema('ldapsyntaxes')->sortBy(function($item) { return strtolower($item->description); }));
+					->with('ldapsyntaxes',$server->schema('ldapsyntaxes')->sortBy(fn($item)=>strtolower($item->description)));
 
 			case 'matchingrules':
 				return view('fragment.schema.matchingrules')
-					->with('matchingrules',$server->schema('matchingrules')->sortBy(function($item) { return strtolower($item->name); }));
+					->with('matchingrules',$server->schema('matchingrules')->sortBy(fn($item)=>strtolower($item->name)));
 
 			default:
 				abort(404);

@@ -46,12 +46,15 @@
 								if (! rendered)
 									$.ajax({
 										type: 'POST',
-										// @todo When this is opened a second time, the data is appended.
+										cache: false,
+										url: '{{ url('entry/objectclass/add') }}',
+										data: {
+											oc: oc,
+										},
 										success: function(data) {
 											$('select#newoc').select2({
 												dropdownParent: $('#new_objectclass-modal'),
 												theme: 'bootstrap-5',
-												allowClear: true,
 												multiple: true,
 												data: data,
 											});
@@ -60,8 +63,6 @@
 											if (e.status != 412)
 												alert('That didnt work? Please try again....');
 										},
-										url: '{{ url('entry/objectclass/add') }}/'+dn,
-										cache: false
 									});
 
 								rendered = true;

@@ -7,9 +7,12 @@ img.jpegphoto {
 /** ensure our userpassword has select is next to the password input */
 div#userPassword .select2-container--bootstrap-5 .select2-selection {
 	font-size: inherit;
-	border-bottom-right-radius: unset;
-	border-top-right-radius: unset;
 	width: 9em;
 	border: #444054 1px solid;
 	background-color: #f0f0f0;
+}
+
+.input-group:first-child .select2-container--bootstrap-5 .select2-selection {
+	border-bottom-right-radius: unset;
+	border-top-right-radius: unset;
 }

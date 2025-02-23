@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -12,20 +13,21 @@ use Illuminate\Support\Facades\Redirect;
 use LdapRecord\Exceptions\InsufficientAccessException;
 use LdapRecord\LdapRecordException;
 use LdapRecord\Query\ObjectNotFoundException;
+use Nette\NotImplementedException;
 
+use App\Classes\LDAP\Attribute\Factory;
 use App\Classes\LDAP\{Attribute,Server};
 use App\Classes\LDAP\Import\LDIF as LDIFImport;
 use App\Classes\LDAP\Export\LDIF as LDIFExport;
 use App\Exceptions\Import\{GeneralException,VersionException};
 use App\Exceptions\InvalidUsage;
-use App\Http\Requests\{EntryRequest,ImportRequest};
+use App\Http\Requests\{EntryRequest,EntryAddRequest,ImportRequest};
 use App\Ldap\Entry;
 use App\View\Components\AttributeType;
-use Nette\NotImplementedException;
 
 class HomeController extends Controller
 {
-	private function bases()
+	private function bases(): Collection
 	{
 		$base = Server::baseDNs() ?: collect();
 
@@ -51,21 +53,38 @@ class HomeController extends Controller
 	}
 
 	/**
-	 * Render a specific DN
+	 * Create a new object in the LDAP server
 	 *
-	 * @param Request $request
+	 * @param EntryAddRequest $request
 	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+	 * @throws InvalidUsage
 	 */
-	public function dn_frame(Request $request)
+	public function entry_add(EntryAddRequest $request)
 	{
-		$dn = Crypt::decryptString($request->post('key'));
+		if (! old('step',$request->validated('step')))
+			abort(404);
 
-		$page_actions = collect(['edit'=>TRUE,'copy'=>TRUE]);
+		$key = $this->request_key($request,collect(old()));
 
-		return view('frames.dn')
-			->with('o',config('server')->fetch($dn))
-			->with('dn',$dn)
-			->with('page_actions',$page_actions);
+		$o = new Entry;
+
+		if (count(array_filter($x=old('objectclass',$request->objectclass)))) {
+			$o->objectclass = $x;
+
+			foreach($o->getAvailableAttributes()->filter(fn($item)=>$item->required) as $ao)
+				$o->addAttribute($ao,'');
+
+			$o->setRDNBase($key['dn']);
+		}
+
+		$step = $request->step ? $request->step+1 : old('step');
+
+		return view('frame')
+			->with('subframe','create')
+			->with('bases',$this->bases())
+			->with('o',$o)
+			->with('step',$step)
+			->with('container',old('container',$key['dn']));
 	}
 
 	/**
@@ -75,7 +94,7 @@ class HomeController extends Controller
 	 * @param string $id
 	 * @return \Closure|\Illuminate\Contracts\View\View|string
 	 */
-	public function entry_attr_add(Request $request,string $id)
+	public function entry_attr_add(Request $request,string $id): string
 	{
 		$xx = new \stdClass();
 		$xx->index = 0;
@@ -88,6 +107,53 @@ class HomeController extends Controller
 			: (new AttributeType(new Attribute($id,[]),TRUE,collect($request->oc ?: [])))->render();
 
 		return $x;
+	}
+
+	public function entry_create(EntryAddRequest $request)
+	{
+		$key = $this->request_key($request,collect(old()));
+
+		$dn = sprintf('%s=%s,%s',$request->rdn,$request->rdn_value,$key['dn']);
+
+		$o = new Entry;
+		$o->setDn($dn);
+
+		foreach ($request->except(['_token','key','step','rdn','rdn_value']) as $key => $value)
+			$o->{$key} = array_filter($value);
+
+		try {
+			$o->save();
+
+		} catch (InsufficientAccessException $e) {
+			$request->flash();
+
+			switch ($x=$e->getDetailedError()->getErrorCode()) {
+				case 50:
+					return Redirect::to('/')
+						->withInput()
+						->withErrors(sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
+
+				default:
+					abort(599,$e->getDetailedError()->getErrorMessage());
+			}
+
+		// @todo To test and valide this Exception is caught
+		} catch (LdapRecordException $e) {
+			$request->flash();
+
+			switch ($x=$e->getDetailedError()->getErrorCode()) {
+				case 8:
+					return Redirect::to('/')
+						->withInput()
+						->withErrors(sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
+
+				default:
+					abort(599,$e->getDetailedError()->getErrorMessage());
+			}
+		}
+
+		return Redirect::to('/')
+			->withFragment($o->getDNSecure());
 	}
 
 	public function entry_export(Request $request,string $id)
@@ -112,11 +178,9 @@ class HomeController extends Controller
 	 * @param string $id
 	 * @return mixed
 	 */
-	public function entry_objectclass_add(string $id)
+	public function entry_objectclass_add(Request $request)
 	{
-		$dn = Crypt::decryptString($id);
-		$o = config('server')->fetch($dn);
-		$oc = $o->getObject('objectclass');
+		$oc = Factory::create('objectclass',$request->oc);
 
 		$ocs = $oc
 			->structural
@@ -259,26 +323,51 @@ class HomeController extends Controller
 	}
 
 	/**
-	 * Application home page
+	 * Render a frame, normally as a result of an AJAX call
+	 * This will render the right frame.
+	 *
+	 * @param Request $request
+	 * @param Collection|null $old
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|View
 	 */
-	public function home()
+	public function frame(Request $request,?Collection $old=NULL): View
 	{
-		if (old('dn'))
-			return view('frame')
-				->with('subframe','dn')
-				->with('bases',$this->bases())
-				->with('o',config('server')->fetch($dn=Crypt::decryptString(old('dn'))))
-				->with('dn',$dn);
+		// If our index was not render from a root url, then redirect to it
+		if (($request->root().'/' !== url()->previous()) && $request->method() === 'POST')
+			abort(409);
 
-		elseif (old('frame'))
-			return view('frame')
-				->with('subframe',old('frame'))
+		$key = $this->request_key($request,$old);
+
+		$view = ($old
+			? view('frame')->with('subframe',$key['cmd'])
+			: view('frames.'.$key['cmd']))
+			->with('bases',$this->bases());
+
+		return match ($key['cmd']) {
+			'create' => $view
+				->with('container',old('container',$key['dn']))
+				->with('step',1),
+
+			'dn' => $view
+				->with('dn',$key['dn'])
+				->with('page_actions',collect(['edit'=>TRUE,'copy'=>TRUE])),
+
+			'import' => $view,
+
+			default => abort(404),
+		};
+	}
+
+	/**
+	 * This is the main page render function
+	 */
+	public function home(Request $request)
+	{
+		// Did we come here as a result of a redirect
+		return count(old())
+			? $this->frame($request,collect(old()))
+			: view('home')
 				->with('bases',$this->bases());
-
-		else
-			return view('home')
-				->with('bases',$this->bases())
-				->with('server',config('ldap.connections.default.name'));
 	}
 
 	/**
@@ -332,6 +421,39 @@ class HomeController extends Controller
 	{
 		return view('frames.info')
 			->with('s',config('server'));
+	}
+
+	/**
+	 * For any incoming request, work out the command and DN involved
+	 *
+	 * @param Request $request
+	 * @param Collection|null $old
+	 * @return array
+	 */
+	private function request_key(Request $request,?Collection $old=NULL): array
+	{
+		// Setup
+		$cmd = NULL;
+		$dn = NULL;
+		$key = $request->get('key',old('key'))
+			? Crypt::decryptString($request->get('key',old('key')))
+			: NULL;
+
+		// Determine if our key has a command
+		if (str_contains($key,'|')) {
+			$m = [];
+
+			if (preg_match('/\*([a-z_]+)\|(.+)$/',$key,$m)) {
+				$cmd = $m[1];
+				$dn = ($m[2] !== '_NOP') ? $m[2] : NULL;
+			}
+
+		} elseif (old('dn',$request->get('key'))) {
+			$cmd = 'dn';
+			$dn = Crypt::decryptString(old('dn',$request->get('key')));
+		}
+
+		return ['cmd'=>$cmd,'dn'=>$dn];
 	}
 
 	/**

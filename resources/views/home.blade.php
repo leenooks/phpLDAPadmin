@@ -17,7 +17,7 @@
 			<div class="row">
 				<div class="col-12 col-sm-4">
 					<h3 class="d-inline-block d-sm-none">phpLDAPadmin</h3>
-					<img src="{{ url('/images/logo.png') }}" class="logo-image col-12" alt="PLA Logo">
+					<img src="{{ url('images/logo.png') }}" class="logo-image col-12" alt="PLA Logo">
 				</div>
 
 				<div class="col-12 col-sm-8">
@@ -48,14 +48,23 @@
 		var subpage = window.location.hash;
 
 		$(document).ready(function() {
-			// Enable navigating to a page via a URL fragment, and that fragment is defined with a server-icon
-			var valid = Object.values($('.server-icon > a').map(function(item) {
-				return $(this).attr('id');
-			})).indexOf(subpage.substring(1));
+			if (subpage) {
+				// Enable navigating to a page via a URL fragment, and that fragment is defined with a server-icon
+				var valid = Object.values($('.server-icon > a').map(function() {
+					return $(this).attr('id');
+				})).indexOf(subpage.substring(1));
 
-			if (valid !== -1 && subpage) {
-				// The click() event wont have been registered yet, so we need to delay us clicking it
-				setTimeout(function() { $(subpage).click(); },250);
+				if (valid !== -1) {
+					// @todo this condition can probably be removed
+					console.log('teleporting...:'+subpage.substring(1));
+					// The click() event wont have been registered yet, so we need to delay us clicking it
+					setTimeout(function() { $(subpage).click(); },250);
+
+				} else if (valid === -1) {
+					// Clear the hash
+					history.replaceState(null,null,' ');
+					getNode(subpage.substring(1));
+				}
 			}
 		});
 	</script>
