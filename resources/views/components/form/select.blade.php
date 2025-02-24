@@ -52,7 +52,7 @@
 				theme: 'bootstrap-5',
 				dropdownAutoWidth: true,
 				width: 'style',
-				allowClear: {{ $allowclear ?? 'true' }},
+				allowClear: {{ $allowclear ?? 'false' }},
 				placeholder: '{{ $placeholder ?? '' }}',
 				@isset($addvalues)
 					tags: true,

@@ -31,7 +31,7 @@
 							<input type="hidden" name="dn" value="">
 
 							@foreach ($o->getVisibleAttributes() as $ao)
-								<x-attribute-type :edit="true" :o="$ao" :oc="collect($o->objectclass)"/>
+								<x-attribute-type :edit="true" :o="$ao"/>
 							@endforeach
 
 							<div id="newattrs"></div>

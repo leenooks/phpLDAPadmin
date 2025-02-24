@@ -76,10 +76,6 @@
 								if (added_oc.sort().join('|') == newadded.sort().join('|'))
 									return;
 
-								var attrs = $('[data-attr-name]').map(function() {
-									return $(this).data('attrName');
-								});
-
 								// Find out what was selected, and add them
 								newadded.forEach(function (item) {
 									if (added_oc.indexOf(item) !== -1)
@@ -152,7 +148,6 @@
 										url: '{{ url('api/schema/objectclass/attrs') }}/'+item,
 										cache: false
 									});
-
 								});
 
 								// Loop through added_oc, and remove anything not in newadded

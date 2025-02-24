@@ -4,7 +4,7 @@
 	<div class="col-12 col-sm-10 col-md-8">
 		<div class="row">
 			<div class="col-12 bg-light text-dark p-2">
-				<strong><abbr title="{{ $o->description }}" data-attr-name="{{ $o->name_lc }}" data-attr-required="{{ $o->required_by->intersect($oc)->join('|') }}" data-oc="{{ $oc->count() ? $o->required_by->keys()->intersect($oc)->join('|') : $o->used_in->keys()->join('|') }}">{{ $o->name }}</abbr></strong>
+				<strong><abbr title="{{ $o->description }}">{{ $o->name }}</abbr></strong>
 				<!-- Attribute Hints -->
 				<span class="float-end small">
 					@foreach($o->hints as $name => $description)
