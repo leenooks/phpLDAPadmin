@@ -143,7 +143,10 @@ jobs:
         ls -al public/js/
 
     - name: Record version and Delete Unnecessary files
+      id: prebuild
       run: |
+        echo "version=$(cat public/VERSION)" >> "$GITHUB_OUTPUT"
+        echo "revision=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
         echo ${GITHUB_SHA::8} > VERSION
         rm -rf .git* tests/ storage/app/test/
         ls -al public/css/
@@ -156,6 +159,9 @@ jobs:
         file: docker/Dockerfile
         push: true
         tags: "${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSIONARCH }}"
+        build-args: |
+          BUILD_REVISION=${{ steps.prebuild.outputs.revision }}
+          BUILD_VERSION=${{ steps.prebuild.outputs.version }}
 
   manifest:
     name: Final Docker Image Manifest

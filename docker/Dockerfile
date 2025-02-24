@@ -1,5 +1,17 @@
 FROM dunglas/frankenphp:php8.4-alpine
 
+ARG BUILD_VERSION=2.0.0-dev
+ARG BUILD_REVISION=00000000
+
+LABEL org.opencontainers.image.vendor="Deon George"
+LABEL org.opencontainers.image.licenses=GPLv2
+LABEL org.opencontainers.image.source=https://github.com/leenooks/phpldapadmin
+LABEL org.opencontainers.image.title=phpLDAPadmin
+LABEL org.opencontainers.image.description="An LDAP Administration Tool"
+LABEL org.opencontainers.image.url=https://phpldapadmin.org
+LABEL org.opencontainers.image.version=${BUILD_VERSION}
+LABEL org.opencontainers.image.revision=${BUILD_REVISION}
+
 # Base
 RUN apk add --no-cache bash
 
