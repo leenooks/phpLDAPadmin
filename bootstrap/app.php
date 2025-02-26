@@ -16,15 +16,15 @@ return Application::configure(basePath: dirname(__DIR__))
 	)
 	->withMiddleware(function (Middleware $middleware) {
 		$middleware->appendToGroup('web', [
-			SwapinAuthUser::class,
 			ApplicationSession::class,
+			SwapinAuthUser::class,
 			CheckUpdate::class,
 		]);
 
 		$middleware->prependToGroup('api', [
 			EncryptCookies::class,
-			SwapinAuthUser::class,
 			ApplicationSession::class,
+			SwapinAuthUser::class,
 		]);
 
 		$middleware->trustProxies(at: [

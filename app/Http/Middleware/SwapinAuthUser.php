@@ -40,10 +40,10 @@ class SwapinAuthUser
 			Config::set('ldap.connections.'.$key.'.password',Cookie::get('password_encrypt'));
 
 			Log::debug('Swapping out configured LDAP credentials with the user\'s cookie.',['key'=>$key,'user'=>Cookie::get('username_encrypt')]);
-
-			// We need to override our Connection object so that we can store and retrieve the logged in user and swap out the credentials to use them.
-			Container::getInstance()->addConnection(new Connection(config('ldap.connections.'.$key)),$key);
 		}
+
+		// We need to override our Connection object so that we can store and retrieve the logged in user and swap out the credentials to use them.
+		Container::getInstance()->addConnection(new Connection(config('ldap.connections.'.$key)),$key);
 
 		return $next($request);
 	}
