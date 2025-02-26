@@ -214,7 +214,7 @@ final class Server
 	 * @throws ObjectNotFoundException
 	 * @testedin TranslateOidTest::testRootDSE();
 	 */
-	public static function rootDSE(?string $connection=NULL,Carbon $cachetime=NULL): ?Model
+	public static function rootDSE(?string $connection=NULL,?Carbon $cachetime=NULL): ?Model
 	{
 		$e = new Entry;
 

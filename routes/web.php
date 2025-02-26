@@ -2,8 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\{HomeController,ImportController};
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Middleware\AllowAnonymous;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,24 +26,28 @@ Auth::routes([
 	'register' => FALSE,
 ]);
 
-Route::get('/',[HomeController::class,'home']);
-Route::get('info',[HomeController::class,'info']);
-Route::post('dn',[HomeController::class,'dn_frame']);
-Route::get('debug',[HomeController::class,'debug']);
-Route::get('import',[HomeController::class,'import_frame']);
-Route::get('schema',[HomeController::class,'schema_frame']);
-
 Route::get('logout',[LoginController::class,'logout']);
 
-Route::group(['prefix'=>'user'],function() {
-	Route::get('image',[HomeController::class,'user_image']);
+Route::controller(HomeController::class)->group(function() {
+	Route::middleware(AllowAnonymous::class)->group(function() {
+		Route::get('/','home');
+		Route::get('info','info');
+		Route::post('dn','dn_frame');
+		Route::get('debug','debug');
+		Route::get('import','import_frame');
+		Route::get('schema','schema_frame');
+
+		Route::group(['prefix'=>'user'],function() {
+			Route::get('image','user_image');
+		});
+
+		Route::get('entry/export/{id}','entry_export');
+		Route::post('entry/password/check/','entry_password_check');
+		Route::post('entry/attr/add/{id}','entry_attr_add');
+		Route::post('entry/objectclass/add/{id}','entry_objectclass_add');
+		Route::post('entry/update/commit','entry_update');
+		Route::post('entry/update/pending','entry_pending_update');
+
+		Route::post('import/process/{type}','import');
+	});
 });
-
-Route::get('entry/export/{id}',[HomeController::class,'entry_export']);
-Route::post('entry/password/check/',[HomeController::class,'entry_password_check']);
-Route::post('entry/attr/add/{id}',[HomeController::class,'entry_attr_add']);
-Route::post('entry/objectclass/add/{id}',[HomeController::class,'entry_objectclass_add']);
-Route::post('entry/update/commit',[HomeController::class,'entry_update']);
-Route::post('entry/update/pending',[HomeController::class,'entry_pending_update']);
-
-Route::post('import/process/{type}',[HomeController::class,'import']);
