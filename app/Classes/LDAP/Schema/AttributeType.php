@@ -289,7 +289,6 @@ final class AttributeType extends Base {
 			case 'type': return $this->type;
 			case 'usage': return $this->usage;
 			case 'used_in_object_classes': return $this->used_in_object_classes;
-			case 'validation': return Arr::get(config('ldap.validation'),$this->name_lc);
 
 			default: return parent::__get($key);
 		}
@@ -600,5 +599,35 @@ final class AttributeType extends Base {
 			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs);
 
 		$this->type = $type;
+	}
+
+	/**
+	 * Return Request validation array
+	 *
+	 * This will merge configured validation with schema required attributes
+	 *
+	 * @param array $array
+	 * @return array|null
+	 */
+	public function validation(array $array): ?array
+	{
+		// For each item in array, we need to get the OC heirachy
+		$heirachy = collect($array)
+			->filter()
+			->map(fn($item)=>config('server')
+				->schema('objectclasses',$item)
+				->getSupClasses()
+				->push($item))
+			->flatten()
+			->unique();
+
+		$validation = collect(Arr::get(config('ldap.validation'),$this->name_lc,[]));
+		if (($heirachy->intersect($this->required_by_object_classes)->count() > 0)
+			&& (! collect($validation->get($this->name_lc))->contains('required'))) {
+			$validation->put($this->name_lc,array_merge(['required','min:1'],$validation->get($this->name_lc,[])))
+				->put($this->name_lc.'.*',array_merge(['required','min:1'],$validation->get($this->name_lc.'.*',[])));
+		}
+
+		return $validation->toArray();
 	}
 }

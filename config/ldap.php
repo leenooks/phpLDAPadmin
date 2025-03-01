@@ -1,5 +1,7 @@
 <?php
 
+use App\Rules\HasStructuralObjectClass;
+
 return [
 
 	/*
@@ -119,8 +121,10 @@ return [
 	'validation' => [
 		'objectclass' => [
 			'objectclass'=>[
+				'required',
 				'array',
-				'min:1'
+				'min:1',
+				new HasStructuralObjectClass,
 			]
 		],
 		'gidnumber' => [

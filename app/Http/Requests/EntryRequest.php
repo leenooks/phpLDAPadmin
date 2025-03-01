@@ -26,9 +26,9 @@ class EntryRequest extends FormRequest
 		return config('server')
 			->schema('attributetypes')
 			->intersectByKeys($this->request)
-			->transform(function($item) { return $item->validation; })
+			->map(fn($item)=>$item->validation(request()->get('objectclass')))
 			->filter()
-			->flatMap(function($item) { return $item; })
+			->flatMap(fn($item)=>$item)
 			->toArray();
 	}
 }
