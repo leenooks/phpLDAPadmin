@@ -338,16 +338,6 @@ final class Server
 
 					break;
 
-				/*
-				case 'matchingruleuse':
-					if (isset($this->matchingruleuse))
-						return is_null($key) ? $this->matchingruleuse : $this->matchingruleuse->get($key);
-					else
-						$this->matchingruleuse = collect();
-
-				break;
-				*/
-
 				case 'objectclasses':
 					if (isset($this->objectclasses))
 						return $this->objectclasses;
@@ -381,21 +371,6 @@ final class Server
 
 						$o = new AttributeType($line);
 						$this->attributetypes->put($o->name_lc,$o);
-
-						/*
-						if (isset($syntaxes[$attr->getSyntaxOID()])) {
-							$syntax = $syntaxes[$attr->getSyntaxOID()];
-							$attr->setType($syntax->getDescription());
-						}
-						$this->attributetypes[$attr->getName()] = $attr;
-						*/
-
-						/**
-						 * bug 856832: create an entry in the $attrs_oid array too. This
-						 * will be a ref to the $attrs entry for maintenance and performance
-						 * reasons
-						 */
-						//$attrs_oid[$attr->getOID()] = &$attrs[$attr->getName()];
 					}
 
 					// go back and add data from aliased attributeTypes

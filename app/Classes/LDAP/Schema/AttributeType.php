@@ -419,18 +419,6 @@ final class AttributeType extends Base {
 	}
 
 	/**
-	 * Gets the list of "required by" objectClasses, that is the list of objectClasses
-	 * which provide must have attribute.
-	 *
-	 * @return array An array of names of objectclasses (strings) which provide this attribute
-	 */
-	public function getRequiredByObjectClasses() {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->required_by_object_classes);
-
-		return $this->required_by_object_classes;
-	}
-	/**
 	 * Gets this attribute's substring matching specification
 	 *
 	 * @return string
@@ -466,29 +454,6 @@ final class AttributeType extends Base {
 	}
 
 	/**
-	 * Gets this attribute's raw syntax string (ie: "1.2.3.4{16}").
-	 *
-	 * @return string The raw syntax string
-	 */
-	public function getSyntaxString() {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs,$this->syntax);
-
-		return $this->syntax;
-	}
-
-	/**
-	 * Gets this attribute's type
-	 *
-	 * @return string The attribute's type.
-	 * @deprecated use $this->type;
-	 */
-	public function getType()
-	{
-		return $this->type;
-	}
-
-	/**
 	 * Gets this attribute's usage string as defined by the LDAP server
 	 *
 	 * @return string
@@ -509,23 +474,6 @@ final class AttributeType extends Base {
 	public function getUsedInObjectClasses(): Collection
 	{
 		return $this->used_in_object_classes;
-	}
-
-	/**
-	 * Returns whether the specified attribute is an alias for this one (based on this attribute's alias list).
-	 *
-	 * @param string $attr_name The name of the attribute to check.
-	 * @return boolean TRUE if the specified attribute is an alias for this one, or FALSE otherwise.
-	 */
-	public function isAliasFor($attr_name) {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',9,0,__FILE__,__LINE__,__METHOD__,$fargs);
-
-		foreach ($this->aliases as $alias_attr_name)
-			if (strcasecmp($alias_attr_name,$attr_name) == 0)
-				return TRUE;
-
-		return FALSE;
 	}
 
 	/**
@@ -563,9 +511,6 @@ final class AttributeType extends Base {
 	 * This function will mark this attribute as a forced MAY attribute
 	 */
 	public function setForceMay() {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs);
-
 		$this->forced_as_may = TRUE;
 	}
 
@@ -587,18 +532,6 @@ final class AttributeType extends Base {
 	public function setSupAttribute(string $attr): void
 	{
 		$this->sup_attribute = trim($attr);
-	}
-
-	/**
-	 * Sets this attribute's type.
-	 *
-	 * @param string $type The new type.
-	 */
-	public function setType($type) {
-		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
-			debug_log('Entered (%%)',9,1,__FILE__,__LINE__,__METHOD__,$fargs);
-
-		$this->type = $type;
 	}
 
 	/**
