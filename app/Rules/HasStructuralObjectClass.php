@@ -7,6 +7,12 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class HasStructuralObjectClass implements ValidationRule
 {
+	// Required for artisan optimize
+	public static function __set_state(array $array): self
+	{
+		return new self;
+	}
+
     /**
      * Run the validation rule.
      *
