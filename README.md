@@ -6,21 +6,24 @@ If you come across an LDAP server, where PLA exhibits problems, please open an i
 
 For up to date information on PLA, please head to the [wiki](https://github.com/leenooks/phpLDAPadmin/wiki).
 
-> **NOTE**: GIT **master** is currently in active development, and as such functionality may be missing, broken or not working as expected.
+> **NOTE**
+> PLA v2 is a complete rewrite of PLA.
 >
-> If you are after a working version of PLA, please use one of the tagged releases.
+> PLA v1.2 was written well over 10 years ago for PHP 5, and over time has been patched to work with later versions of PHP. There are logged vulnerabilities with v1.2 that have not been addressed.
+>
+> Not all PLA v1.2 functionality has been included in v2 (yet) - see below for details
+>
+> **The release of PHP v2 officially deprecates v1.2, which is no longer supported or enhanced/fixed.** It is recommended to upgrade to v2.
 
 ## Demo
 If you havent seen PLA in action, you can head here to the [demo](https://demo.phpldapadmin.org) site.
 
-## Running the docker image
-PLA v2 is available via docker for preview. (PLA v2 is still under heavy development.)
-
-The container is the same one used for the demo site - but you'll be able to point it to your local LDAP server and see how things work.
+## Running PLA
+PLA v2 is now available as a docker container. You can also download the code and install it yourself on your PHP server, or even build your own docker container.
 
 Take a look at the [Docker Container](https://github.com/leenooks/phpLDAPadmin/wiki/Docker-Container) page for more details.
 
-> Please let me know if you have any troubles with the container image, eg: usage of the container itself, or usage when it is pointing to your LDAP server.
+> If you come across any bugs/issues, it would be helpful if you could reproduce those issues using the docker container (or the demo website). This should help confirm that there isnt a site related issue with the issue you are having.
 >
 > Open an issue (details below) with enough information for me to be able to recreate the problem. An `LDIF` will be invaluable if it is not handling data correctly.
 
