@@ -144,6 +144,10 @@ class Entry extends Model
 
 	public function addAttribute(string $key,mixed $value): void
 	{
+		// While $value is mixed, it can only be a string
+		if (! is_string($value))
+			throw new \Exception('value should be a string');
+
 		$key = $this->normalizeAttributeKey($key);
 
 		if (! config('server')->schema('attributetypes')->has($key))
@@ -239,11 +243,12 @@ class Entry extends Model
 
 	/**
 	 * Return a secure version of the DN
+	 * @param string $cmd
 	 * @return string
 	 */
-	public function getDNSecure(): string
+	public function getDNSecure(string $cmd=''): string
 	{
-		return Crypt::encryptString($this->getDn());
+		return Crypt::encryptString(($cmd ? sprintf('*%s|',$cmd) : '').$this->getDn());
 	}
 
 	/**
