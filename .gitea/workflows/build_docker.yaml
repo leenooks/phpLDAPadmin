@@ -2,8 +2,8 @@ name: Create Docker Image
 run-name: ${{ gitea.actor }} Building Docker Image 🐳
 on: [push]
 env:
-  VERSION: latest
   DOCKER_HOST: tcp://127.0.0.1:2375
+  ASSETS: 41d6948
 
 jobs:
   test:
@@ -66,7 +66,7 @@ jobs:
           public/js/manifest.js
           public/js/vendor.js
         #key: build-pla-page-assets-${{ hashFiles('**/package-lock.json') }}
-        key: build-pla-page-assets-29f7ce2
+        key: build-pla-page-assets-${{ env.ASSETS }}
         #restore-keys: |
         #  build-pla-page-assets-
 
@@ -85,7 +85,6 @@ jobs:
       privileged: true
     env:
       ARCH: ${{ matrix.arch }}
-      VERSIONARCH: ${{ env.VERSION }}-${{ env.ARCH }}
 
     steps:
     - name: Environment Setup
@@ -130,7 +129,7 @@ jobs:
           public/js/manifest.js
           public/js/vendor.js
         #key: build-pla-page-assets-${{ hashFiles('**/package-lock.json') }}
-        key: build-pla-page-assets-29f7ce2
+        key: build-pla-page-assets-${{ env.ASSETS }}
         #restore-keys: |
         #  build-pla-page-assets-
 
@@ -145,12 +144,12 @@ jobs:
     - name: Record version and Delete Unnecessary files
       id: prebuild
       run: |
-        echo "version=$(cat public/VERSION)" >> "$GITHUB_OUTPUT"
-        echo "revision=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
         echo ${GITHUB_SHA::8} > VERSION
+        # [ "${GITHUB_REF_TYPE}" -eq "tag" ] && echo v${GITHUB_REF_NAME}-rel > public/VERSION
         rm -rf .git* tests/ storage/app/test/
-        ls -al public/css/
-        ls -al public/js/
+        cat VERSION public/VERSION
+        # ls -al public/css/
+        # ls -al public/js/
 
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v5
@@ -158,10 +157,10 @@ jobs:
         context: .
         file: docker/Dockerfile
         push: true
-        tags: "${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSIONARCH }}"
+        tags: "${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.GITHUB_REF_NAME }}-${{ env.ARCH }}"
         build-args: |
-          BUILD_REVISION=${{ steps.prebuild.outputs.revision }}
-          BUILD_VERSION=${{ steps.prebuild.outputs.version }}
+          BUILD_REVISION=${{ env.GITHUB_SHA }}
+          BUILD_VERSION=v${{ env.GITHUB_REF_NAME }}
 
   manifest:
     name: Final Docker Image Manifest
@@ -196,7 +195,8 @@ jobs:
 
     - name: Build Docker Manifest
       run: |
-        docker manifest create ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }} \
-          ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }}-x86_64 \
-          ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }}-arm64
-        docker manifest push --purge ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }}
+        docker manifest create ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.GITHUB_REF_NAME }} \
+          ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.GITHUB_REF_NAME }}-x86_64 \
+          ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.GITHUB_REF_NAME }}-arm64
+        docker manifest push --purge ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.GITHUB_REF_NAME }}
+        echo "Built container: ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.GITHUB_REF_NAME }}"
