@@ -72,11 +72,14 @@ $(document).ready(() => {
 
     var resizeClass = function () {
         var win = document.body.clientWidth;
-        if (win < 1250) {
+        if (win < 768) {
+            $('.app-container').addClass("closed-sidebar closed-sidebar-mobile");
+            $('.app-header').addClass("header-text-light bg-light").removeClass("bg-dark header-text-dark");
+        } else if (win < 1250) {
             $('.app-container').addClass('closed-sidebar-mobile closed-sidebar');
-            $('.app-header').removeClass("heard-text-light bg-dark").addClass("bg-light header-text-dark");
+            $('.app-header').removeClass("header-text-light bg-dark").addClass("bg-light header-text-dark");
         } else {
-            $('.app-header').addClass("heard-text-light bg-dark").removeClass("bg-light header-text-dark");
+            $('.app-header').addClass("header-text-light bg-dark").removeClass("bg-light header-text-dark");
             $('.app-container').removeClass('closed-sidebar-mobile closed-sidebar');
         }
     };
