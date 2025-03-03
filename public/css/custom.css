@@ -16,3 +16,15 @@ div#userPassword .select2-container--bootstrap-5 .select2-selection {
 	border-bottom-right-radius: unset;
 	border-top-right-radius: unset;
 }
+
+div#objectClass .input-group-end:not(input.form-control) {
+	position: absolute;
+	right: 1em;
+	top: 0.5em;
+	z-index: 5;
+}
+
+input.form-control.input-group-end {
+	border-bottom-right-radius: 4px !important;
+	border-top-right-radius: 4px !important;
+}

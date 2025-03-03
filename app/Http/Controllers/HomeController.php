@@ -15,8 +15,8 @@ use LdapRecord\LdapRecordException;
 use LdapRecord\Query\ObjectNotFoundException;
 use Nette\NotImplementedException;
 
-use App\Classes\LDAP\Attribute\Factory;
-use App\Classes\LDAP\{Attribute,Server};
+use App\Classes\LDAP\Attribute\{Factory,Password};
+use App\Classes\LDAP\Server;
 use App\Classes\LDAP\Import\LDIF as LDIFImport;
 use App\Classes\LDAP\Export\LDIF as LDIFExport;
 use App\Exceptions\Import\{GeneralException,VersionException};
@@ -101,10 +101,10 @@ class HomeController extends Controller
 
 		$x = $request->noheader
 			? (string)view(sprintf('components.attribute.widget.%s',$id))
-				->with('o',new Attribute($id,[]))
+				->with('o',Factory::create($id,[]))
 				->with('value',$request->value)
 				->with('loop',$xx)
-			: (new AttributeType(new Attribute($id,[]),TRUE,collect($request->oc ?: [])))->render();
+			: (new AttributeType(Factory::create($id,[]),TRUE,collect($request->oc ?: [])))->render();
 
 		return $x;
 	}
@@ -249,7 +249,7 @@ class HomeController extends Controller
 
 				if ($value) {
 					$type = Arr::get($request->userpassword_hash,$key);
-					array_push($passwords,Attribute\Password::hash_id($type)->encode($value));
+					array_push($passwords,Password::hash_id($type)->encode($value));
 				}
 			}
 			$o->userpassword = $passwords;
