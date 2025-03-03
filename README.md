@@ -52,6 +52,7 @@ The update to v2 is progressing well - here is a list of work to do and done:
 - [X] Export entries as an LDAP
 - [X] Import LDIF
 - [X] Schema Browser
+- [ ] Searching
 - [ ] Is there something missing?
 
 Support is known for these LDAP servers:
