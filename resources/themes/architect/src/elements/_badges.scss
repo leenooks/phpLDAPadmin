@@ -17,14 +17,91 @@
   background: $white;
 }
 
+.badge-dot {
+  text-indent: -999em;
+  padding: 0;
+  width: 8px;
+  height: 8px;
+  border: transparent solid 1px;
+  @include border-radius(30px);
+  min-width: 2px;
+}
+
+.badge-dot-lg {
+  width: 10px;
+  height: 10px;
+}
+
+.badge-dot-xl {
+  width: 18px;
+  height: 18px;
+  position: relative;
+
+  &::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    @include border-radius($border-radius);
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -5px 0 0 -5px;
+    background: $white;
+  }
+}
+
+.badge-dot-sm {
+  width: 6px;
+  height: 6px;
+}
 
 .btn {
   .badge {
     margin-left: 8px;
   }
+
+  .badge-dot {
+    position: absolute;
+    border: $white solid 2px;
+    top: -5px;
+    right: -5px;
+    width: 11px;
+    height: 11px;
+
+    &.badge-dot-lg {
+      width: 14px;
+      height: 14px;
+    }
+
+    &.badge-dot-sm {
+      width: 8px;
+      height: 8px;
+      border-width: 1px;
+    }
+  }
+
+  .badge-dot-inside {
+    top: 10px;
+    right: 10px;
+  }
 }
 
 .btn-sm {
+  .badge-dot-sm {
+    top: 1px;
+    right: 4px;
+  }
+
+  .badge-dot {
+    top: 0px;
+    right: 2px;
+  }
+
+  .badge-dot-lg {
+    top: -3px;
+    right: -2px;
+  }
+
   .rounded-pill {
     position: absolute;
     top: -4px;
@@ -36,4 +113,249 @@
   position: absolute;
   right: -3px;
   top: -3px;
+}
+
+// Avatars
+
+.avatar-icon-wrapper {
+  display: inline-block;
+  margin-right: .1rem;
+  position: relative;
+
+  .badge {
+    position: absolute;
+    right: -2px;
+    top: -2px;
+
+    &:empty {
+      display: block;
+    }
+
+    &.badge-bottom {
+      top: auto;
+      right: -2px;
+      bottom: -2px;
+    }
+  }
+
+  .badge-dot {
+    width: 10px;
+    height: 10px;
+    border: $white solid 2px;
+
+    &.badge-dot-lg {
+      width: 14px;
+      height: 14px;
+      border: $white solid 2px;
+      top: 0;
+      right: 0;
+
+      &.badge-bottom {
+        top: auto;
+        right: 0;
+        bottom: 0;
+      }
+    }
+  }
+}
+
+.avatar-icon-add {
+
+  .avatar-icon {
+    background: $dropdown-link-hover-bg;
+    border: tint-color($primary, 15%) dashed 1px;
+    color: $primary;
+    text-align: center;
+    opacity: .6;
+
+    i {
+      font-style: normal;
+      vertical-align: middle;
+      font-size: $h4-font-size;
+      display: block;
+      height: 100%;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+
+    .avatar-icon {
+      opacity: 1;
+    }
+  }
+}
+
+a.avatar-icon-wrapper {
+  &:hover {
+
+    .avatar-icon {
+      opacity: .8;
+    }
+  }
+}
+
+.avatar-icon {
+  display: block;
+  width: 44px;
+  height: 44px;
+  transition: all .2s;
+  opacity: 1;
+  @include border-radius(50px);
+
+  &.rounded {
+    @include border-radius(($border-radius-lg * 1.3) !important);
+  }
+}
+
+.avatar-icon-xl {
+  .avatar-icon {
+    width: 64px;
+    height: 64px;
+  }
+
+  &.avatar-icon-add {
+    i {
+      font-size: $h2-font-size;
+    }
+  }
+}
+
+.avatar-icon-lg {
+  .avatar-icon {
+    width: 54px;
+    height: 54px;
+  }
+
+  &.avatar-icon-add {
+    i {
+      font-size: $h3-font-size;
+    }
+  }
+}
+
+.avatar-icon-sm {
+  .avatar-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  &.avatar-icon-add {
+    i {
+      font-size: $font-size-lg;
+    }
+  }
+}
+
+.avatar-icon-xs {
+  .avatar-icon {
+    width: 26px;
+    height: 26px;
+    transition: transform .2s;
+  }
+
+  &.avatar-icon-add {
+    i {
+      line-height: 26px;
+      font-size: $font-size-base;
+    }
+  }
+
+  &:hover {
+    .avatar-icon {
+      transform: scale(2);
+    }
+  }
+}
+
+.avatar-icon {
+  border: $white solid 3px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.avatar-wrapper-overlap {
+  .avatar-icon-wrapper {
+    z-index: 5;
+    margin-left: -18px;
+
+    &:hover {
+      z-index: 7;
+    }
+
+    &.avatar-icon-xl {
+      margin-left: -30px;
+    }
+    &.avatar-icon-lg {
+      margin-left: -24px;
+    }
+    &.avatar-icon-sm {
+      margin-left: -14px;
+    }
+    &.avatar-icon-xs {
+      margin-left: -10px;
+    }
+
+    &.avatar-icon-add,
+    &:first-child {
+      margin-left: 0 !important;
+    }
+  }
+}
+
+// Badge Pulse
+
+@-webkit-keyframes sploosh {
+  0% {
+    box-shadow: 0 0 0 0px rgba(#333, .2);
+  }
+  100% {
+    box-shadow: 0 0 0 8px rgba(#333, 0);
+  }
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-transform: scale(1);
+  }
+  16.5% {
+    -webkit-transform: scale(1.2);
+  }
+  33% {
+    -webkit-transform: scale(1.1);
+  }
+  100% {
+    -webkit-transform: scale(1);
+  }
+}
+
+.badge-pulse {
+  -webkit-animation: pulse 2s ease-out;
+  -webkit-animation-iteration-count: infinite;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 0;
+
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+
+    -webkit-animation: sploosh 2s cubic-bezier(0.165, 0.84, 0.44, 1);
+    -webkit-animation-iteration-count: infinite;
+  }
+
+  &::after {
+    -webkit-animation-delay: .33s;
+    -webkit-animation-duration: 2.2s;
+  }
 }

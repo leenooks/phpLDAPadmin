@@ -4,7 +4,7 @@
    */
   .hamburger--elastic {
     .hamburger-inner {
-      top: calc($hamburger-layer-height / 2);
+      top: divide($hamburger-layer-height, 2);
       transition-duration: 0.275s;
       transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 

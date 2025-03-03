@@ -1,9 +1,9 @@
 /*!
  =========================================================
- * ArchitectUI HTML Theme Dashboard - v2.0.0
+ * ArchitectUI HTML Theme Dashboard - v4.0.0
  =========================================================
  * Product Page: https://dashboardpack.com
- * Copyright 2021 DashboardPack (https://dashboardpack.com)
+ * Copyright 2023 DashboardPack (https://dashboardpack.com)
  * Licensed under MIT (https://github.com/DashboardPack/architectui-html-theme-free/blob/master/LICENSE)
  =========================================================
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
@@ -21,6 +21,8 @@
 // 3. Include remainder of required Bootstrap stylesheets
 
 @import "components/bootstrap5/variables";
+@import "components/bootstrap5/variables-dark";
+@import "components/bootstrap5/maps";
 @import "components/bootstrap5/mixins";
 @import "components/bootstrap5/utilities";
 
@@ -56,9 +58,10 @@
 // @import "components/bootstrap5/carousel";
 // @import "components/bootstrap5/spinners";
 // @import "components/bootstrap5/offcanvas";
-// @import "components/bootstrap5/jumbotron";
+// @import "components/bootstrap5/placeholders";
 @import "components/bootstrap5/helpers";
 @import "components/bootstrap5/utilities/api";
+
 // LAYOUT
 
 @import "layout/layout";

@@ -32,6 +32,16 @@
   @include border-radius($border-radius);
 }
 
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.flex-truncate {
+  min-width: 0 !important;
+}
+
 // Center Elements
 
 .margin-h-center {
@@ -57,13 +67,13 @@
   align-content: center;
 }
 
-// .alert-dismissible {
-//   .btn-close {
-//     top: 0;
-//     right: 5px;
-//     padding: 5px;
-//   }
-// }
+.alert-dismissible {
+  .btn-close {
+    top: 0;
+    right: 5px;
+    padding: 5px;
+  }
+}
 
 // Gradient Icons
 
@@ -270,6 +280,12 @@
 .bg-light {
   color: #212529;
   // background: #fff;
+}
+
+.tabs-animated {
+  .nav-item {
+    margin: 0 divide($layout-spacer-x, 2) 0 0;
+  }
 }
 
 .table {

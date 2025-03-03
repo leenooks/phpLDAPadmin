@@ -14,12 +14,151 @@
 
 .popover {
   box-shadow: $box-shadow-default;
+
+  .grid-menu {
+    margin-bottom: -$popover-body-padding-y;
+    padding: 1px;
+
+    [class*="col-"] {
+      padding: $popover-body-padding-y;
+    }
+
+    & + .nav {
+      .nav-item-btn {
+        margin-bottom: $popover-body-padding-y;
+      }
+    }
+  }
+
+  .grid-menu-xl {
+    margin-bottom: divide($popover-body-padding-y, -1.35);
+
+    [class*="col-"] {
+      padding: 0;
+    }
+  }
+
+  .popover-inner {
+    .dropdown-menu-header {
+      @include border-top-radius($popover-border-radius);
+      overflow: hidden;
+      margin-top: -1px;
+      margin-left: -1px;
+      margin-right: -1px;
+    }
+  }
+}
+
+.rm-max-width {
+  .popover {
+    max-width: initial !important;
+
+    .popover-body {
+      padding: 0;
+    }
+  }
 }
 
 .rm-pointers {
   .popover {
     .arrow {
       display: none !important;
+    }
+  }
+}
+
+@mixin bg-popover($parent, $color) {
+  #{$parent} {
+    background-color: $color !important;
+  }
+}
+
+@each $color, $value in $theme-colors {
+  @include bg-popover(".popover-#{$color}", $value);
+}
+
+.popover-custom {
+  min-width: 220px;
+  max-width: none;
+
+  .popover-body {
+    padding-top: 0;
+    padding-left: 0;
+    padding-right: 0;
+
+    .dropdown-menu-header {
+      margin-top: 0;
+      @include border-top-radius($popover-border-radius);
+      overflow: hidden;
+
+      .menu-header-content {
+        padding: 0 $layout-spacer-x;
+      }
+
+      .dropdown-menu-header-inner.bg-light {
+        color: rgba(0, 0, 0, .8);
+      }
+    }
+  }
+
+  &.popover-custom-lg {
+    min-width: 22rem;
+  }
+
+  &.popover-custom-xl {
+    min-width: 25rem;
+  }
+
+  &.popover-custom-sm {
+    min-width: 15rem;
+  }
+}
+
+.popover-bg {
+  border: 0;
+
+  .arrow {
+    display: none;
+  }
+
+  .popover-header {
+    background: rgba(255, 255, 255, .1);
+    border-bottom: 0;
+    color: rgba(255, 255, 255, 1);
+
+    &::before {
+      display: none;
+    }
+  }
+
+  .popover-body {
+    color: rgba(255, 255, 255, .7);
+  }
+
+  &.text-dark {
+    .popover-header {
+      color: rgba(0, 0, 0, .8);
+    }
+
+    .popover-body {
+      color: rgba(0, 0, 0, .7);
+    }
+  }
+}
+
+// Tooltip
+
+.tooltip {
+  &.tooltip-light {
+    .tooltip-inner {
+      background: $white;
+      color: $gray-800;
+      box-shadow: $box-shadow-default;
+      border: $popover-border-color solid 1px;
+    }
+
+    .arrow {
+      display: none;
     }
   }
 }

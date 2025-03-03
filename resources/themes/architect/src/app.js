@@ -7,7 +7,6 @@ import 'metismenu';
 // Stylesheets
 
 // import './assets/base.scss';
-// import '../../themes/architect/src/base.scss';
 
 $(document).ready(() => {
 

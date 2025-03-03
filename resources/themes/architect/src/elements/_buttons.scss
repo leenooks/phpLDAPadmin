@@ -1,5 +1,263 @@
 // Buttons
 
+// 2x Outline Border
+$btn-block-spacing-y:         .5rem !default;
+
+.btn-outline-2x {
+  border-width: 2px;
+}
+
+.btn-group {
+  .btn {
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+
+  .btn-outline-2x + .btn-outline-2x {
+    margin-left: -2px;
+  }
+
+  .btn-square {
+    @include border-radius(0);
+  }
+}
+
+.btn {
+  font-size: 0.8rem;
+  font-weight: 500;
+
+  // Pills Buttons
+
+  &.btn-pill.btn-wide,
+  &.btn-pill {
+    @include border-start-radius(50px);
+    @include border-end-radius(50px);
+  }
+
+}
+
+// Dashed Border
+
+.btn-dashed {
+  border-style: dashed;
+}
+
+// Icon Buttons
+
+.btn-icon {
+  vertical-align: bottom;
+
+  &.btn-icon-right {
+    .btn-icon-wrapper {
+      margin-left: divide($spacer, 2);
+      margin-right: 0;
+    }
+  }
+
+  .btn-icon-wrapper {
+    margin-right: divide($spacer, 2);
+    margin-left: 0;
+    margin-top: 0;
+    font-size: 17px;
+    vertical-align: middle;
+    transition: color .1s;
+    display: inline-block;
+  }
+
+  &.btn-link {
+    text-decoration: none;
+  }
+
+  &.btn-lg:not(.btn-block) {
+    .btn-icon-wrapper {
+      font-size: 25px;
+    }
+  }
+
+  &.btn-sm:not(.btn-block) {
+    .btn-icon-wrapper {
+      font-size: 16px;
+    }
+  }
+}
+
+.btn-icon-only {
+  .btn-icon-wrapper {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+// Hover Shine {
+
+.btn-hover-shine {
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.4);
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
+  }
+
+  &:hover:after {
+    width: 120%;
+    background-color: rgba(255, 255, 255, 0);
+    transition: all 0.4s ease-in-out;
+  }
+
+  &.btn-pill {
+    &::after {
+      @include border-start-radius(50px);
+      @include border-end-radius(50px);
+    }
+  }
+}
+
+// Vertical Icons {
+
+.btn-icon-vertical {
+  padding-top: ($btn-block-spacing-y * 2);
+  padding-bottom: ($btn-block-spacing-y * 2);
+
+  .btn-icon-wrapper {
+    display: block;
+    font-size: 200%;
+    margin: 5px 0;
+    opacity: .6;
+  }
+
+  &.btn-link {
+    text-decoration: none;
+  }
+
+  &.btn-lg:not(.btn-block) {
+    .btn-icon-wrapper {
+      font-size: 25px;
+    }
+  }
+
+  &.btn-sm:not(.btn-block) {
+    .btn-icon-wrapper {
+      font-size: 16px;
+    }
+  }
+
+  &:active,
+  &.active,
+  &:hover {
+    .btn-icon-wrapper {
+      opacity: 1;
+    }
+  }
+
+  &.btn-icon-bottom {
+    .btn-icon-wrapper {
+      margin: divide($spacer, 5) 0 5px;
+    }
+  }
+
+  &.btn-transition-text {
+    .btn-icon-wrapper {
+      transition: all .2s !important;
+    }
+
+    &:hover {
+      .btn-icon-wrapper {
+        transform: scale(1.3);
+      }
+    }
+
+    &.btn-transition-alt {
+
+      &:hover {
+        .btn-icon-wrapper {
+          color: $white !important;
+        }
+      }
+    }
+  }
+}
+
+.btn-icon-lg {
+  font-size: $h1-font-size !important;
+}
+
+// Buttons Transitions
+
+.btn-transition {
+  color: $gray-600;
+  border-color: $gray-200;
+  background-color: none;
+
+  &.btn-outline-link {
+    border-color: transparent;
+    background-color: transparent;
+
+    &:hover {
+      color: $primary;
+      background: $gray-100;
+    }
+  }
+
+  &.disabled,
+  &:disabled {
+    color: $gray-600;
+    border-color: $gray-200;
+  }
+
+  &:hover {
+    .btn-icon-wrapper {
+      transition: none;
+    }
+  }
+}
+
+.btn-transition-alt {
+  &:hover {
+    .icon-gradient {
+      -webkit-background-clip: initial;
+      -webkit-text-fill-color: initial;
+      background-clip: initial;
+      text-fill-color: initial;
+      background: none !important;
+      color: $white;
+    }
+  }
+}
+
+// Square Buttons
+
+.btn-square {
+  @include border-radius(0 !important);
+}
+
+// Wide buttons
+
+.btn {
+  &.btn-wide {
+    @include button-size($btn-padding-y, ($btn-padding-x * 2), $font-size-xs, $btn-border-radius);
+  }
+}
+
+.btn-lg {
+  &.btn-wide {
+    @include button-size($btn-padding-y-lg, ($btn-padding-x-lg * 2), $font-size-lg, $btn-border-radius-lg);
+  }
+}
+
+.btn-sm {
+  &.btn-wide {
+    @include button-size($btn-padding-y-sm, ($btn-padding-x-sm * 2), $font-size-xs, $btn-border-radius-sm);
+  }
+}
+
 // Dropdown toggle
 
 .dropdown-toggle {
@@ -22,10 +280,155 @@
   border-left: rgba(255, 255, 255, .1) solid 1px;
 }
 
+// Buttons Gradients
+
+$btn-gradients: ();
+
+$gradient-primary: $brand;
+$gradient-secondary: $gray-600;
+$gradient-success: $green;
+$gradient-info: $cyan;
+$gradient-warning: $yellow;
+$gradient-danger: $red;
+$gradient-light: $blue-light;
+$gradient-dark: $gray-800;
+$gradient-focus: $indigo;
+$gradient-alt: $purple;
+
+$gradinet-percent: 15%;
+
+$btn-gradients: map_merge(
+                (
+                        "primary": (
+                                shade-color($gradient-primary, $gradinet-percent), // color-start
+                                $gradient-primary, // color-end
+                                0%, // gr-start
+                        ),
+                        "secondary": (
+                                shade-color($gradient-secondary, $gradinet-percent), // color-start
+                                $gradient-secondary, // color-end
+                                0%, // gr-start
+                        ),
+                        "success": (
+                                shade-color($gradient-success, $gradinet-percent), // color-start
+                                $gradient-success, // color-end
+                                0%, // gr-start
+                        ),
+                        "info": (
+                                shade-color($gradient-info, $gradinet-percent), // color-start
+                                $gradient-info, // color-end
+                                0%, // gr-start
+                        ),
+                        "warning": (
+                                shade-color($gradient-warning, $gradinet-percent), // color-start
+                                $gradient-warning, // color-end
+                                0%, // gr-start
+                        ),
+                        "danger": (
+                                shade-color($gradient-danger, $gradinet-percent), // color-start
+                                $gradient-danger, // color-end
+                                0%, // gr-start
+                        ),
+                        "focus": (
+                                shade-color($gradient-focus, $gradinet-percent), // color-start
+                                $gradient-focus, // color-end
+                                0%, // gr-start
+                        ),
+                        "alternate": (
+                                shade-color($gradient-alt, $gradinet-percent), // color-start
+                                $gradient-alt, // color-end
+                                0%, // gr-start
+                        ),
+                        "light": (
+                                shade-color($gradient-light, $gradinet-percent), // color-start
+                                $gradient-light, // color-end
+                                0%, // gr-start
+                        ),
+                        "dark": (
+                                shade-color($gradient-dark, $gradinet-percent), // color-start
+                                $gradient-dark, // color-end
+                                0%, // gr-start
+                        ),
+                ),
+                $btn-gradients
+);
+
+@mixin btn-grad-variant($color-start, $color-end, $gr-start) {
+  background-image: linear-gradient(140deg, $color-start -30%, $color-end 90%);
+  background-color: $color-start;
+  border-color: $color-start;
+  color: color-yiq(shade-color($color-start, 10%));
+
+  &.active,
+  &:active,
+  &:not(:disabled):not(.disabled):hover {
+    background-image: linear-gradient(120deg, shade-color($color-start, 3%) 0%, shade-color($color-end, 3%) 100%);
+    color: color-yiq(shade-color($color-start, 10%));
+    border-color: shade-color($color-start, 10%);
+  }
+
+  &:focus,
+  &.focus,
+  &:active,
+  &.active {
+    color: color-yiq(shade-color($color-start, 10%)) !important;
+    border-color: shade-color($color-end, 20%) !important;
+  }
+
+}
+
+@each $grad, $colors in $btn-gradients {
+  $color: nth($colors, 1);
+  $color1: nth($colors, 2);
+  $color2: nth($colors, 3);
+
+  .btn-gradient-#{$grad} {
+    @include btn-grad-variant($color, $color1, $color2);
+
+    &.btn-shadow {
+      box-shadow: 0 0.125rem 0.625rem rgba($color1, .4), 0 0.0625rem 0.125rem rgba($color1, .5);
+
+      &:hover {
+        box-shadow: 0 0.125rem 0.625rem rgba($color1, .5), 0 0.0625rem 0.125rem rgba($color1, .6);
+      }
+    }
+  }
+}
+
+.btn.btn-shadow {
+  &.active {
+    box-shadow: 0 0 0 0 transparent !important;
+  }
+}
+
 // Links
 
 $link-color: $primary;
-$link-hover-color: darken($link-color, 15%);
+$link-hover-color: shade-color($link-color, 15%);
+
+// Generate Buttons
+
+@each $color, $value in $theme-colors {
+  .btn-#{$color} {
+    @include button-variant($value, $value);
+
+    &.btn-shadow {
+      box-shadow: 0 0.125rem 0.625rem rgba($value, .4), 0 0.0625rem 0.125rem rgba($value, .5);
+
+      &:hover {
+        box-shadow: 0 0.125rem 0.625rem rgba($value, .5), 0 0.0625rem 0.125rem rgba($value, .6);
+      }
+    }
+  }
+}
+
+@each $color, $value in $theme-colors {
+  .btn-shadow-#{$color} {
+    &:hover {
+      box-shadow: 0 0.125rem 0.625rem rgba($value, .4), 0 0.0625rem 0.125rem rgba($value, .5);
+    }
+  }
+}
 
 @each $color, $value in $theme-colors {
   .btn-outline-#{$color} {
@@ -51,13 +454,12 @@ $link-hover-color: darken($link-color, 15%);
 .btn {
   position: relative;
   @include transition($btn-transition);
-  font-size: $font-size-xs;
 }
 
 .btn-light {
-  border-color: darken(#f5f5f5, 10%);
+  border-color: shade-color(#f5f5f5, 10%);
 }
 
 .btn-outline-light {
-  color: darken(#f5f5f5, 40%);
+  color: shade-color(#f5f5f5, 40%);
 }

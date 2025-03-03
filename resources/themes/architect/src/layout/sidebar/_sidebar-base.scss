@@ -48,7 +48,7 @@
 .app-sidebar__heading {
   text-transform: uppercase;
   font-size: $font-size-xs;
-  margin: calc($layout-spacer-x / 2) 0;
+  margin: divide($layout-spacer-x, 2) 0;
   font-weight: bold;
   color: $primary;
   white-space: nowrap;

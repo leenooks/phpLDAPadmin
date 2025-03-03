@@ -4,7 +4,7 @@ $search-box-size: 42px;
 
 .search-wrapper {
   position: relative;
-  margin-right: calc($nav-link-padding-x / 1.5);
+  margin-right: divide($nav-link-padding-x, 1.5);
 
   .input-holder {
     height: $search-box-size;
@@ -97,7 +97,6 @@ $search-box-size: 42px;
     &::before,
     &::after {
       position: absolute;
-      // content: '';
       background: $primary;
       border-radius: 2px;
     }
@@ -155,7 +154,7 @@ $search-box-size: 42px;
       }
     }
 
-    & + .header-menu {
+    & + .header-megamenu {
       opacity: 0;
     }
 

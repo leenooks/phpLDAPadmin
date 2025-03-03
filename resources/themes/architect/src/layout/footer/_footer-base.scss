@@ -4,7 +4,7 @@
   height: $app-header-height;
 
   .app-footer__inner {
-    padding: 0 $layout-spacer-x 0 calc($layout-spacer-x / 2);
+    padding: 0 $layout-spacer-x 0 divide($layout-spacer-x, 2);
     height: $app-header-height;
 
     display: flex;
@@ -20,6 +20,49 @@
       margin-left: auto;
       display: flex;
     }
+  }
+}
+
+// Footer Dots Section
+
+.footer-dots {
+  display: flex;
+  align-items: center;
+  align-content: center;
+
+  .dots-separator {
+    height: 40px;
+    margin: 0 divide($layout-spacer-x, 2.5);
+    width: 1px;
+    background: $gray-200;
+  }
+}
+
+.dot-btn-wrapper {
+  padding: .5rem;
+  position: relative;
+  display: flex;
+  opacity: .7;
+  transition: opacity .2s;
+  cursor: pointer;
+  text-decoration: none;
+
+  .badge-abs {
+    right: 50%;
+
+    &.badge-dot-sm {
+      top: -2px;
+      margin-right: -3px;
+    }
+  }
+
+  .dot-btn-icon {
+    font-size: 1.8rem;
+  }
+
+  &:hover {
+    text-decoration: none;
+    opacity: 1;
   }
 }
 

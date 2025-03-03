@@ -1,0 +1,45 @@
+// Sidebar Animation
+
+.SidebarAnimation-appear {
+  transform: translateX(-30px);
+  opacity: 0;
+
+  &.SidebarAnimation-appear-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: all .4s linear;
+  }
+}
+
+// Tabs Animation
+
+.TabsAnimation-appear {
+  @extend .animated !optional;
+  @extend .fadeInUp !optional;
+}
+
+// Header Animation
+
+.HeaderAnimation-appear {
+  transform: translateY(-30px);
+  opacity: 0;
+
+  &.HeaderAnimation-appear-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all .4s linear;
+  }
+}
+
+// Main Animation
+
+.MainAnimation-appear {
+  transform: translateY(-30px);
+  opacity: 0;
+
+  &.MainAnimation-appear-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all .4s linear;
+  }
+}

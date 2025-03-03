@@ -1,3 +1,50 @@
+// Input groups
+
+.input-group {
+  .input-group-prepend {
+    div:not([class]) .react-datepicker__input-container,
+    & + div .react-datepicker__input-container {
+      .form-control {
+        @include border-start-radius(0);
+        @include border-end-radius($input-border-radius !important);
+      }
+    }
+  }
+
+  & > div:not([class]) {
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+
+    & .react-datepicker__input-container {
+      .form-control {
+        @include border-end-radius(0);
+      }
+
+    }
+  }
+}
+
+.input-group {
+  .input-group-prepend {
+    & + div {
+      position: relative;
+      flex: 1 1 auto;
+      width: 1%;
+    }
+  }
+
+  & > .react-datepicker-wrapper {
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+
+    & > .react-datepicker__input-container > .form-control {
+      @include border-end-radius(0);
+    }
+  }
+}
+
 // Forms Legend
 
 legend {

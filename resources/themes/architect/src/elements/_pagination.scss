@@ -11,6 +11,7 @@
       display: block;
       padding: $pagination-padding-y $pagination-padding-x;
       margin-left: -$pagination-border-width;
+      // line-height: $pagination-line-height;
       color: $pagination-color;
       background-color: $pagination-bg;
       border: $pagination-border-width solid $pagination-border-color;
@@ -66,5 +67,14 @@
       background-color: $pagination-disabled-bg;
       border-color: $pagination-disabled-border-color;
     }
+  }
+}
+
+// Pagination Rounded
+
+.pagination-rounded {
+  li a {
+    @include border-radius(50px !important);
+    margin: 0 divide($layout-spacer-x, 5);
   }
 }

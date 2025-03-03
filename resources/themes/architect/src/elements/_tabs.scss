@@ -43,13 +43,71 @@
   }
 }
 
+// Tabs alternate
+
+.tabs-lg-alternate {
+  &.card-header {
+    padding: 0;
+    height: auto;
+
+    .widget-number {
+      font-size: $h2-font-size;
+      font-weight: 300;
+    }
+
+    .tab-subheading {
+      padding: 5px 0 0;
+      opacity: .6;
+      transition: all .2s;
+    }
+
+    & > .nav {
+      margin: 0;
+
+      .nav-link {
+        padding: $layout-spacer-x 0;
+        border-right: $gray-200 solid 1px;
+        background: $gray-100;
+
+        &:hover {
+          background: $white;
+          .tab-subheading {
+            color: $black;
+            opacity: .9;
+          }
+        }
+
+        &::before {
+          background: $white;
+          border-radius: 0;
+        }
+
+        &.active {
+          background: $white;
+
+          .tab-subheading {
+            color: $black;
+            opacity: .9;
+          }
+        }
+      }
+
+      .nav-item:last-child {
+        .nav-link {
+          border-right: 0;
+        }
+      }
+    }
+  }
+}
+
 // Tabs animated
 
 .tabs-animated {
   .nav-link {
     position: relative;
-    padding: calc($layout-spacer-x / 1.5);
-    margin: 0 calc($layout-spacer-x / 2) 0 0;
+    padding: divide($layout-spacer-x, 1.5);
+    margin: 0 divide($layout-spacer-x, 2) 0 0;
     color: $body-color;
 
     &::before {
@@ -80,8 +138,8 @@
 
 .tabs-animated-shadow {
   .nav-link {
-    padding: calc($layout-spacer-x / 3) calc($layout-spacer-x / 2);
-    margin-bottom: calc($layout-spacer-x / 2);
+    padding: divide($layout-spacer-x, 3) divide($layout-spacer-x, 2);
+    margin-bottom: divide($layout-spacer-x, 2);
 
     span {
       position: relative;
@@ -131,7 +189,7 @@
 .body-tabs-shadow {
 
   .body-tabs-animated {
-    padding: calc($layout-spacer-x / 2) 0;
+    padding: divide($layout-spacer-x, 2) 0;
 
     .nav-link {
 
@@ -171,5 +229,23 @@
     padding: 0 $grid-gutter-width;
     margin-bottom: $grid-gutter-width;
     border-bottom: $gray-300 solid 1px;
+  }
+}
+
+.tabs-rounded-lg {
+  @include border-radius(120px);
+  background: $white;
+  padding: divide($layout-spacer-x, 2);
+  margin-bottom: $layout-spacer-x;
+
+  .nav-link {
+    margin-bottom: 0;
+    font-size: $font-size-lg;
+    padding: divide($layout-spacer-x, 2) divide($layout-spacer-x, 3);
+
+    &::before {
+      @include border-radius(120px !important);
+      box-shadow: 0 0 0 0 transparent;
+    }
   }
 }

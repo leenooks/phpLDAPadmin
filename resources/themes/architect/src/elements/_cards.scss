@@ -70,7 +70,7 @@
 .card-header,
 .card-title {
   text-transform: uppercase;
-  color: rgba(darken($primary, 40%), .7);
+  color: rgba(shade-color($primary, 40%), .7);
   font-weight: bold;
   font-size: $font-size-base;
 }
@@ -81,7 +81,7 @@
   border-bottom-width: 1px;
   padding-top: 0;
   padding-bottom: 0;
-  padding-right: calc($card-spacer-x / 2);
+  padding-right: divide($card-spacer-x, 2);
   height: 3.5rem;
 
   &.no-border {
@@ -109,11 +109,11 @@
 
   .header-icon {
     font-size: ($font-size-lg * 1.5);
-    margin-right: calc($card-spacer-x / 2);
+    margin-right: divide($card-spacer-x, 2);
   }
 
   & > .nav {
-    margin-left: calc($card-spacer-x / -2);
+    margin-left: divide($card-spacer-x, -2);
     height: 100%;
     width: 100%;
 
@@ -156,6 +156,24 @@
       }
     }
   }
+
+  &.card-header-tab-animation {
+    .nav .nav-link {
+      &::before {
+        transform: scale(0);
+        opacity: 1;
+        width: 90%;
+        left: 5%;
+      }
+
+      &.active,
+      &:hover {
+        &::before {
+          transform: scale(1);
+        }
+      }
+    }
+  }
 }
 
 .card-border {
@@ -163,10 +181,28 @@
   border-width: 1px;
 }
 
+.card-hover-shadow {
+  &:hover {
+    box-shadow: 0 0.46875rem 2.1875rem rgba(shade-color($primary, 50%), .03),
+    0 0.9375rem 1.40625rem rgba(shade-color($primary, 50%), .03),
+    0 0.25rem 0.53125rem rgba(shade-color($primary, 50%), .05),
+    0 0.125rem 0.1875rem rgba(shade-color($primary, 50%), .03);
+  }
+}
+
+.card-hover-shadow-2x {
+  &:hover {
+    box-shadow: 0 0.66875rem 2.3875rem rgba(shade-color($primary, 50%), .03),
+    0 1.1375rem 1.60625rem rgba(shade-color($primary, 50%), .03),
+    0 0.45rem 0.73125rem rgba(shade-color($primary, 50%), .05),
+    0 0.325rem 0.3875rem rgba(shade-color($primary, 50%), .03);
+  }
+}
+
 .card-subtitle {
   margin-bottom: $card-spacer-y;
   font-size: $font-size-sm;
-  color: rgba(darken($primary, 40%), .55);
+  color: rgba(shade-color($primary, 40%), .55);
 }
 
 @each $color, $value in $theme-colors {
@@ -183,4 +219,12 @@
 .card-header-lg {
   padding: ($card-spacer-y * 2) ($card-spacer-x * 2);
   height: auto;
+}
+
+.sticky-active-class {
+  .sticky-inner-wrapper {
+    & > div {
+      box-shadow: $box-shadow-default;
+    }
+  }
 }

@@ -48,11 +48,15 @@ $widget-spacer: $spacer;
     margin-top: $widget-spacer;
 
     .progress-sub-label {
-      margin-top: calc($widget-spacer / 3);
+      margin-top: divide($widget-spacer, 3);
       opacity: .5;
       display: flex;
       align-content: center;
       align-items: center;
+
+      .sub-label-left {
+
+      }
 
       .sub-label-right {
         margin-left: auto;

@@ -134,6 +134,14 @@
       .header-btn-lg {
         margin-left: .5rem;
         padding: 0 .5rem;
+
+        .hamburger-box {
+          margin-top: 5px;
+        }
+
+        & + .header-btn-lg {
+          display: none;
+        }
       }
 
       .app-header-left {
@@ -208,7 +216,7 @@
     }
 
     .page-title-actions {
-      margin: calc($grid-gutter-width / 2) auto 0;
+      margin: divide($grid-gutter-width, 2) auto 0;
     }
 
     .page-title-actions,
@@ -285,7 +293,7 @@
 
       .nav,
       .btn-actions-pane-right {
-        margin: calc($layout-spacer-x / 2) 0 0;
+        margin: divide($layout-spacer-x, 2) 0 0;
 
         .d-inline-block.ml-2 {
           width: 100% !important;
@@ -326,27 +334,27 @@
 
   .mbg-3,
   body .card.mb-3 {
-    margin-bottom: calc($grid-gutter-width / 2) !important;
+    margin-bottom: divide($grid-gutter-width, 2) !important;
   }
 
   .app-page-title {
-    padding: calc($grid-gutter-width / 2);
-    margin: calc($grid-gutter-width / -2) calc($grid-gutter-width / -2) calc($grid-gutter-width / 2);
+    padding: divide($grid-gutter-width, 2);
+    margin: divide($grid-gutter-width, -2) divide($grid-gutter-width, -2) divide($grid-gutter-width, 2);
 
     & + .body-tabs-layout {
-      margin-top: (calc($grid-gutter-width / -2)) !important;
+      margin-top: divide($grid-gutter-width, -2) !important;
     }
   }
 
   .body-tabs-line .body-tabs-layout {
-    margin-bottom: calc($grid-gutter-width / 2);
-    margin-left: calc($grid-gutter-width / -2);
-    margin-right: calc($grid-gutter-width / -2);
+    margin-bottom: divide($grid-gutter-width, 2);
+    margin-left: divide($grid-gutter-width, -2);
+    margin-right: divide($grid-gutter-width, -2);
     padding: 0 15px;
   }
 
   .body-tabs {
-    padding: 0 calc($grid-gutter-width / 2);
+    padding: 0 divide($grid-gutter-width, 2);
     display: block;
 
     .nav-item {
@@ -365,11 +373,11 @@
   body .card-header {
     height: auto;
     display: block;
-    padding: calc($layout-spacer-x / 2) $layout-spacer-x;
+    padding: divide($layout-spacer-x, 2) $layout-spacer-x;
     text-align: center;
 
     .btn-actions-pane-right {
-      padding: calc($layout-spacer-x / 2) 0 0;
+      padding: divide($layout-spacer-x, 2) 0 0;
     }
 
     .actions-icon-btn {
@@ -385,7 +393,7 @@
       }
 
       & > .nav {
-        margin: calc($layout-spacer-x / 2) 0 calc($layout-spacer-x / -2);
+        margin: divide($layout-spacer-x, 2) 0 divide($layout-spacer-x, -2);
         display: table !important;
         width: 100%;
 
@@ -417,11 +425,11 @@
   }
 
   .slick-slider-sm .slick-slider .slick-prev {
-    left: calc($grid-gutter-width / 2);
+    left: divide($grid-gutter-width, 2);
   }
 
   .slick-slider-sm .slick-slider .slick-next {
-    right: calc($grid-gutter-width / 2);
+    right: divide($grid-gutter-width, 2);
   }
 }
 

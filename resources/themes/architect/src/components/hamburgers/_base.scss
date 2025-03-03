@@ -53,7 +53,7 @@
 .hamburger-inner {
   display: block;
   top: 50%;
-  margin-top: calc($hamburger-layer-height / -2);
+  margin-top: divide($hamburger-layer-height, -2);
 
   &,
   &::before,
