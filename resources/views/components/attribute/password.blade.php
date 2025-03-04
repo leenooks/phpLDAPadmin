@@ -22,7 +22,7 @@
 	<div class="row">
 		<div class="offset-1 col-4 p-2">
 			<span class="p-0 m-0">
-				<button type="button" class="btn btn-transition btn-sm btn-outline-dark mt-3" data-bs-toggle="modal" data-bs-target="#userpassword_check-modal"><i class="fas fa-user-check"></i> @lang('Check Password')</button>
+				<button type="button" class="btn btn-sm btn-outline-dark mt-3" data-bs-toggle="modal" data-bs-target="#userpassword_check-modal"><i class="fas fa-user-check"></i> @lang('Check Password')</button>
 			</span>
 		</div>
 	</div>

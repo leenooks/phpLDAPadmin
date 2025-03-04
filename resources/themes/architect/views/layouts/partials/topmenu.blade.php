@@ -39,21 +39,67 @@
 				<button class="btn-close"></button>
 			</div>
 
-			<ul class="header-menu nav">
-				{{--
-				<li class="nav-item">
-					<a href="javascript:void(0);" class="nav-link">
-						<i class="nav-link-icon fas fa-database"></i> Link
-					</a>
+			<ul class="header-menu nav server-icon">
+				<li>
+					<button id="link-info" class="btn btn-light p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Server Info')" data-link="{{ url('info') }}">
+						<i class="fas fa-fw fa-info fs-5"></i>
+					</button>
 				</li>
-				--}}
+				<li>
+					<button id="link-schema" class="btn btn-light p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Schema Viewer')" data-link="{{ url('schema') }}">
+						<i class="fas fa-fw fa-fingerprint fs-5"></i>
+					</button>
+				</li>
+				<li>
+					<button id="link-import" class="btn btn-light p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Import')" data-link="{{ url('import') }}">
+						<i class="fas fa-fw fa-upload fs-5"></i>
+					</button>
+				</li>
+				<li>
+					<button id="link-debug" class="btn btn-light p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Debug')" data-link="{{ url('debug') }}">
+						<i class="fas fa-fw fa-toolbox fs-5"></i>
+					</button>
+				</li>
 			</ul>
 		</div>
 
 		<div class="app-header-right">
-			@if(! request()->isSecure())
-				<span class="badge bg-danger">WARNING - SESSION NOT SECURE</span>
-			@endif
+			<ul class="header-menu nav">
+				@if(! request()->isSecure())
+					<li>
+						<button class="btn btn-danger p-1 m-1" data-bs-custom-class="custom-tooltip-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="WARNING - SESSION NOT SECURE">
+							<i class="fas fa-fw fa-unlock-keyhole fs-5"></i>
+						</button>
+					</li>
+				@endif
+
+				@if(($x=Config::get('update_available')) && $x->action !== 'current')
+					<li>
+						@switch($x->action)
+							@case('unable')
+								<button class="btn btn-light opacity-2 p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Upstream Version Unavailable">
+									<i class="fas fa-fw fa-bolt fs-5"></i>
+								</button>
+								@break
+							@case('upgrade')
+								<button class="btn btn-warning p-1 m-1" data-bs-custom-class="custom-tooltip-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" title="Update Available:<br>{{ $x->version }}">
+									<i class="fas fa-fw fa-wrench fs-5"></i>
+								</button>
+								@break
+							@case('mismatch')
+								<button class="btn btn-light opacity-2 p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" title="Version Issue - Upstream<br>{{ $x->version }}">
+									<i class="fas fa-fw fa-exclamation fs-5"></i>
+								</button>
+								@break
+							@case('unknown')
+								<button class="btn btn-light opacity-2 p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" title="Version Issue - Unknown<br>{{ $x->version }}">
+									<i class="fas fa-fw fa-question fs-5"></i>
+								</button>
+								@break
+						@endswitch
+					</li>
+				@endif
+			</ul>
 
 			<div class="header-btn-lg pe-0">
 				<div class="widget-content p-0">
@@ -112,3 +158,38 @@
 		</div>
 	</div>
 </div>
+
+@section('page-scripts')
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('button[id^="link-"]').on('click',function(item) {
+				var content;
+
+				$.ajax({
+					url: $(this).data('link'),
+					method: 'GET',
+					dataType: 'html',
+					statusCode: {
+						404: function() {
+							$('.main-content').empty().append(content);
+						}
+					},
+					beforeSend: function() {
+						content = $('.main-content').contents();
+						$('.main-content').empty().append('<div class="fa-3x"><i class="fas fa-spinner fa-pulse"></i></div>');
+					}
+
+				}).done(function(html) {
+					$('.main-content').empty().append(html);
+
+				}).fail(function() {
+					alert('Well that didnt work?');
+				});
+
+				item.stopPropagation();
+
+				return false;
+			});
+		});
+	</script>
+@append

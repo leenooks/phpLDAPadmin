@@ -25,7 +25,7 @@
 						@switch($step)
 							@case(1)
 								<div class="row">
-									<div class="col-12 col-sm-6">
+									<div class="col-12 col-md-6">
 										<x-form.select
 											id="objectclass"
 											name="objectclass[]"
@@ -54,7 +54,7 @@
 					</form>
 
 					<div class="row d-none pt-3">
-						<div class="col-12 {{ $step > 1 ? 'offset-sm-2' : '' }} col-sm-4 col-lg-2">
+						<div class="col-12 {{ $step > 1 ? 'offset-sm-2' : '' }} col-lg-10">
 							<x-form.reset form="dn-create"/>
 							<x-form.submit action="Next" form="dn-create"/>
 						</div>

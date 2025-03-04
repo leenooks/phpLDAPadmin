@@ -149,7 +149,9 @@
 		function editmode() {
 			$('#dn-edit input[name="dn"]').val(dn);
 
-			$('button[id=entry-edit]').addClass('active').removeClass('btn-outline-dark').addClass('btn-outline-light');
+			$('button[id=entry-edit]')
+				.removeClass('btn-outline-dark')
+				.addClass('btn-dark');
 
 			// Find all input items and turn off readonly
 			$('input.form-control').each(function() {
@@ -199,15 +201,6 @@
 				// If there are no more options
 				if ($(this).find("option").length === 1)
 					$('#newattr-select').remove();
-			});
-
-			$('button[id=entry-edit]').on('click',function(item) {
-				item.preventDefault();
-
-				if ($(this).hasClass('active'))
-					return;
-
-				editmode();
 			});
 
 			$('#entry_export-download').on('click',function(item) {

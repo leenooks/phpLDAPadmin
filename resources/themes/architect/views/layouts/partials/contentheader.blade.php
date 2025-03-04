@@ -13,53 +13,53 @@
 			</div>
 		</div>
 
-		@if (isset($page_actions) || old())
-			<div class="page-title-actions">
-				<div class="page-title-actions">
-					<div class="d-inline-block dropdown">
-						<button type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle btn btn-primary">
-							<span class="btn-icon-wrapper pe-2 opacity-7">
-								<i class="fa fa-business-time fa-w-20"></i>
-							</span>
-							@lang('Entry Options')
-						</button>
-
-						<div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-							<ul class="nav flex-column">
-								@if ((isset($page_actions) && $page_actions->contains('edit')) || old())
-									<li class="nav-item">
-										<span class="nav-link pt-0 pb-1">
-											<button id="entry-edit" class="p-2 m-0 border-0 btn btn-transition btn-outline-dark w-100 text-start">
-												<i class="fas fa-fw fa-edit me-2"></i> @lang('Edit')
-											</button>
-										</span>
-									</li>
-								@endif
-
-								@if (isset($page_actions) && $page_actions->contains('export'))
-									<li class="nav-item">
-										<a class="nav-link pt-0 pb-1">
-											<button type="button" class="p-2 m-0 border-0 btn btn-transition btn-outline-dark w-100 text-start" data-bs-toggle="modal" data-bs-target="#entry_export-modal">
-												<i class="fas fa-fw fa-file-export me-2"></i> @lang('Export')
-											</button>
-										</a>
-									</li>
-								@endif
-
-								@if (isset($page_actions) && $page_actions->contains('copy'))
-									<li class="nav-item">
-										<a class="nav-link pt-0 pb-1">
-											<button class="p-2 m-0 border-0 btn btn-transition btn-outline-dark w-100 text-start">
-												<i class="fas fa-fw fa-truck-moving me-2"></i> @lang('Copy or Move')
-											</button>
-										</a>
-									</li>
-								@endif
-							</ul>
-						</div>
+		<div class="page-title-actions">
+			<div class="row">
+				<div class="col">
+					<div class="action-buttons float-end">
+						<ul class="nav">
+							@if(isset($page_actions) && $page_actions->contains('export'))
+								<li>
+									<span data-bs-toggle="modal" data-bs-target="#entry_export-modal">
+										<button class="btn btn-outline-dark p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Export')"><i class="fas fa-fw fa-download fs-5"></i></button>
+									</span>
+								</li>
+							@endif
+							@if(isset($page_actions) && $page_actions->contains('copy'))
+								<li>
+									<button class="btn btn-outline-dark p-1 m-1" id="entry-copy-move" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Copy/Move')"><i class="fas fa-fw fa-copy fs-5"></i></button>
+								</li>
+							@endif
+							@if((isset($page_actions) && $page_actions->contains('edit')) || old())
+								<li>
+									<button class="btn btn-outline-dark p-1 m-1" id="entry-edit" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Edit Entry')"><i class="fas fa-fw fa-edit fs-5"></i></button>
+								</li>
+							@endif
+							@if(isset($page_actions) && $page_actions->contains('delete'))
+								<li>
+									<button class="btn btn-outline-danger p-1 m-1" id="entry-delete" data-bs-custom-class="custom-tooltip-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Delete Entry')"><i class="fas fa-fw fa-trash-can fs-5"></i></button>
+								</li>
+							@endif
+						</ul>
 					</div>
 				</div>
 			</div>
-		@endif
+		</div>
 	</div>
 </div>
+
+@section('page-scripts')
+	<script type="text/javascript">
+		$(document).ready(function() {
+			console.log($('button[id=entry-edit]'));
+			$('button[id=entry-edit]').on('click',function(item) {
+				item.preventDefault();
+
+				if ($(this).hasClass('btn-dark'))
+					return;
+
+				editmode();
+			});
+		});
+	</script>
+@append

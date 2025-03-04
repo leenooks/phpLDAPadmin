@@ -155,12 +155,6 @@ ul.fancytree-container ul {
 }
 
 /** Server icons **/
-.closed-sidebar .server-icon {
-	display: none;
-}
-.closed-sidebar .app-sidebar:hover .server-icon, .sidebar-mobile-open .server-icon {
-	display: flex;
-}
 .font-icon-wrapper {
 	text-align: center;
 	border: #e9ecef solid 1px;

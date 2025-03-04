@@ -28,3 +28,48 @@ input.form-control.input-group-end {
 	border-bottom-right-radius: 4px !important;
 	border-top-right-radius: 4px !important;
 }
+
+.custom-tooltip-warning {
+	--bs-tooltip-bg: var(--bs-warning);
+	--bs-tooltip-color: black;
+}
+
+.custom-tooltip-danger {
+	--bs-tooltip-bg: var(--bs-danger);
+
+}
+
+.tooltip {
+	font-size: 85%;
+}
+
+/*
+.custom-tooltip-warning .tooltip-inner {
+	--bs-tooltip-bg: #ffffff;
+	--bs-tooltip-color: var(--bs-warning);
+	--bs-font-size: 85%;
+	border: 2px solid var(--bs-warning);
+	border-radius: 6px;
+}
+
+.custom-tooltip-warning .tooltip-arrow::before {
+	--bs-tooltip-bg: var(--bs-warning);
+}
+
+.custom-tooltip-danger .tooltip-inner {
+	--bs-tooltip-bg: #ffffff;
+	--bs-tooltip-color: var(--bs-danger);
+	--bs-font-size: 85%;
+	border: 2px solid var(--bs-danger);
+	border-radius: 6px;
+}
+
+.custom-tooltip-danger .tooltip-arrow::before {
+	--bs-tooltip-bg: var(--bs-danger);
+}
+*/
+
+/* hide the site icons when the search is opened */
+.search-wrapper.active + .header-menu.nav {
+	display: none;
+}
