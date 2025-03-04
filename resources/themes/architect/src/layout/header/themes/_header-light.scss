@@ -128,7 +128,7 @@
       .hamburger-inner,
       .hamburger-inner::before,
       .hamburger-inner::after {
-        background: $gray-800;
+        background: rgba(0, 0, 0, .8);
       }
     }
 

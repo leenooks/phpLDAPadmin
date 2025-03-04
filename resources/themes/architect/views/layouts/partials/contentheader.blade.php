@@ -6,11 +6,10 @@
 					<i class="@yield('page_icon','')"></i>
 				</div>
 			@endif
-			<div>
-				@yield('page_title','Page Title')
-				<div class="page-title-subheading">
-					@yield('page_subtitle','')
-				</div>
+
+			@yield('page_title','Page Title')
+			<div class="page-title-subheading">
+				@yield('page_subtitle','')
 			</div>
 		</div>
 

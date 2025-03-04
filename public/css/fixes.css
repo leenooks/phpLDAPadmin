@@ -143,11 +143,6 @@ ul.fancytree-container ul {
 	opacity: 0;
 }
 
-/* Fix ellipsis icon (top right) on small display with the light background */
-.closed-sidebar .app-header.header-text-light .app-header__menu .mobile-toggle-header-nav {
-	background: #343a40;
-}
-
 /* Hide tree when collapsed and show it when open */
 .sidebar-mobile-open:hover #tree, /* small */
 .fixed-sidebar #tree, /* wide */
@@ -180,47 +175,6 @@ ul.fancytree-container ul {
 .font-icon-wrapper i {
 	font-size: 1.2rem;
 }
-
-/*
-.font-icon-wrapper {
-	text-align: center;
-	border: $gray-200 solid 1px;
-	@include border-radius($border-radius);
-	margin: 0 0 10px;
-	padding: 5px;
-
-&.font-icon-lg {
-	 float: left;
-	 padding: 10px;
-	 text-align: center;
-	 margin-right: 15px;
-	 min-width: 64px;
-
-i {
-	font-size: $h1-font-size;
-}
-}
-
-&:hover {
-	 background: $gray-100;
-	 color: $primary;
-
-p {
-	color: $gray-600;
-}
-}
-
-i {
-	font-size: ($font-size-base * 1.5);
-}
-
-p {
-	color: $gray-500;
-	font-size: calc($font-size-sm / 1.2);
-	margin: 5px 0 0;
-}
-}
-*/
 
 /** Ensure our DN menu is at the top **/
 .app-page-title .page-title-wrapper {

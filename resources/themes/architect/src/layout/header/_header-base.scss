@@ -26,20 +26,6 @@
       align-items: center;
     }
 
-    .header-menu {
-      .nav-link {
-        color: $gray-600;
-
-        i {
-          color: $gray-500;
-        }
-
-        &:hover {
-          color: $gray-900;
-        }
-      }
-    }
-
     .app-header-right {
       align-items: center;
       display: flex;

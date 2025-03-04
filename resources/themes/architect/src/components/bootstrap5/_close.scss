@@ -3,10 +3,23 @@
 // If you want the anchor version, it requires `href="#"`.
 // See https://developer.mozilla.org/en-US/docs/Web/Events/click#Safari_Mobile
 
+.header-text-dark * .btn-close {
+  --#{$prefix}btn-close-color: #{$btn-close-color-dark};
+  --#{$prefix}btn-close-bg: #{ escape-svg($btn-close-bg-dark) };
+}
+.header-text-light *.btn-close {
+  --#{$prefix}btn-close-color: #{$btn-close-color-light};
+  --#{$prefix}btn-close-bg: #{ escape-svg($btn-close-bg-light) };
+}
+
 .btn-close {
   // scss-docs-start close-css-vars
   --#{$prefix}btn-close-color: #{$btn-close-color};
   --#{$prefix}btn-close-bg: #{ escape-svg($btn-close-bg) };
+  --#{$prefix}btn-close-color-light: #{$btn-close-color-light};
+  --#{$prefix}btn-close-bg-light: #{ escape-svg($btn-close-bg-light) };
+  --#{$prefix}btn-close-color-dark: #{$btn-close-color-dark};
+  --#{$prefix}btn-close-bg-dark: #{ escape-svg($btn-close-bg-dark) };
   --#{$prefix}btn-close-opacity: #{$btn-close-opacity};
   --#{$prefix}btn-close-hover-opacity: #{$btn-close-hover-opacity};
   --#{$prefix}btn-close-focus-shadow: #{$btn-close-focus-shadow};
