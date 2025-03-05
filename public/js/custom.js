@@ -36,11 +36,11 @@ function getNode(item) {
 			case 404:
 				$('.main-content').empty().append(e.responseText);
 				break;
-			case 409:
+			case 409:	// Not in root
 				location.replace('/#'+item);
 				break;
-			case 419:
-				alert('Session has expired, reloading the page and try again...');
+			case 419:	// Session Expired
+				location.replace('/#'+item);
 				location.reload();
 				break;
 			case 500:
