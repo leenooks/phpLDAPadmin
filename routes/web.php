@@ -43,6 +43,7 @@ Route::controller(HomeController::class)->group(function() {
 
 		Route::match(['get','post'],'entry/add','entry_add');
 		Route::post('entry/create','entry_create');
+		Route::post('entry/delete','entry_delete');
 		Route::get('entry/export/{id}','entry_export');
 		Route::post('entry/password/check/','entry_password_check');
 		Route::post('entry/attr/add/{id}','entry_attr_add');
@@ -51,5 +52,7 @@ Route::controller(HomeController::class)->group(function() {
 		Route::post('entry/update/pending','entry_pending_update');
 
 		Route::post('import/process/{type}','import');
+
+		Route::view('modal/delete/{dn}','modals.entry-delete');
 	});
 });

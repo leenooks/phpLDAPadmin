@@ -71,9 +71,16 @@
 @endsection
 
 @section('page-modals')
+	<!-- Frame Modals -->
+	<div class="modal fade" id="page-modal" tabindex="-1" aria-labelledby="label" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-fullscreen-lg-down">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+
 	<!-- EXPORT -->
 	<div class="modal fade" id="entry_export-modal" tabindex="-1" aria-labelledby="entry_export-label" aria-hidden="true">
-		<div class="modal-dialog modal-lg modal-fullscreen-xl-down">
+		<div class="modal-dialog modal-lg modal-fullscreen-lg-down">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h1 class="modal-title fs-5" id="entry_export-label">LDIF for {{ $dn }}</h1>
@@ -208,6 +215,34 @@
 
 				let ldif = $('#entry_export').find('pre:first'); // update this selector in your local version
 				download('ldap-export.ldif',ldif.html());
+			});
+
+			$('#page-modal').on('shown.bs.modal',function(item) {
+				var that = $(this).find('.modal-content');
+
+				switch ($(item.relatedTarget).attr('id')) {
+					case 'entry-delete':
+						$.ajax({
+							method: 'GET',
+							url: '{{ url('modal/delete') }}/'+dn,
+							dataType: 'html',
+							cache: false,
+							beforeSend: function() {
+								that.empty().append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
+							},
+							success: function(data) {
+								that.empty().html(data);
+							},
+							error: function(e) {
+								if (e.status != 412)
+									alert('That didnt work? Please try again....');
+							},
+						})
+						break;
+
+					default:
+						console.log('No action for button:'+$(item.relatedTarget).attr('id'));
+				}
 			});
 
 			$('#entry_export-modal').on('shown.bs.modal',function() {

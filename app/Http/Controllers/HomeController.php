@@ -156,6 +156,46 @@ class HomeController extends Controller
 			->withFragment($o->getDNSecure());
 	}
 
+	public function entry_delete(Request $request)
+	{
+		$dn = Crypt::decryptString($request->dn);
+
+		$o = config('server')->fetch($dn);
+
+		try {
+			$o->delete();
+
+		} catch (InsufficientAccessException $e) {
+			$request->flash();
+
+			switch ($x=$e->getDetailedError()->getErrorCode()) {
+				case 50:
+					return Redirect::to('/')
+						->withInput()
+						->withErrors(sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
+
+				default:
+					abort(599,$e->getDetailedError()->getErrorMessage());
+			}
+
+		} catch (LdapRecordException $e) {
+			$request->flash();
+
+			switch ($x=$e->getDetailedError()->getErrorCode()) {
+				case 8:
+					return Redirect::to('/')
+						->withInput()
+						->withErrors(sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
+
+				default:
+					abort(599,$e->getDetailedError()->getErrorMessage());
+			}
+		}
+
+		return Redirect::to('/')
+			->with('success',[sprintf('%s: %s',__('Deleted'),$dn)]);
+	}
+
 	public function entry_export(Request $request,string $id)
 	{
 		$dn = Crypt::decryptString($id);

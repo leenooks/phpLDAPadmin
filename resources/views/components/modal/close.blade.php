@@ -1,0 +1,1 @@
+<button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">@lang('Close')</button>

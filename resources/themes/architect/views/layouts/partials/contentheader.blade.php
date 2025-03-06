@@ -35,9 +35,12 @@
 									<button class="btn btn-outline-dark p-1 m-1" id="entry-edit" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Edit Entry')"><i class="fas fa-fw fa-edit fs-5"></i></button>
 								</li>
 							@endif
+							<!-- @todo Dont offer the delete button for an entry with children -->
 							@if(isset($page_actions) && $page_actions->contains('delete'))
 								<li>
-									<button class="btn btn-outline-danger p-1 m-1" id="entry-delete" data-bs-custom-class="custom-tooltip-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Delete Entry')"><i class="fas fa-fw fa-trash-can fs-5"></i></button>
+									<span id="entry-delete" data-bs-toggle="modal" data-bs-target="#page-modal">
+										<button class="btn btn-outline-danger p-1 m-1" data-bs-custom-class="custom-tooltip-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Delete Entry')"><i class="fas fa-fw fa-trash-can fs-5"></i></button>
+									</span>
 								</li>
 							@endif
 						</ul>
@@ -51,7 +54,6 @@
 @section('page-scripts')
 	<script type="text/javascript">
 		$(document).ready(function() {
-			console.log($('button[id=entry-edit]'));
 			$('button[id=entry-edit]').on('click',function(item) {
 				item.preventDefault();
 
