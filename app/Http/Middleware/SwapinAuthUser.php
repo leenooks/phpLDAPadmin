@@ -25,6 +25,9 @@ class SwapinAuthUser
 	{
 		$key = config('ldap.default');
 
+		if (! array_key_exists($key,config('ldap.connections')))
+			abort(599,sprintf('LDAP default server [%s] configuration doesnt exist?',$key));
+
 		/*
 		// Rebuild our connection with the authenticated user.
 		if (Session::has('username_encrypt') && Session::has('password_encrypt')) {
