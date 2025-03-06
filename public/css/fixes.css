@@ -69,10 +69,6 @@ table.dataTable thead .sorting {
 */
 
 /** Fancy Tree Fixes **/
-/*
-@todo The unopened lazy branches off the tree are off by 5px. see *-cdl. below
-@todo The last node is missing some dots, connecting to the previous node
-*/
 /* So our tree can be longer than the frame */
 .scrollbar-sidebar {
 	overflow: auto;
@@ -117,7 +113,7 @@ ul.fancytree-container ul {
 }
 .fancytree-node.fancytree-exp-n span.fancytree-expander,
 .fancytree-node.fancytree-exp-n span.fancytree-expander:hover { /* node */
-	margin-top: 4px;
+	margin-top: 3px;
 	background-position: 0 -63px;
 }
 .fancytree-node.fancytree-exp-nl span.fancytree-expander { /* node last */

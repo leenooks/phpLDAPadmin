@@ -1,6 +1,6 @@
 <!-- $o=Attribute::class -->
 <x-attribute.layout :edit="$edit" :new="$new" :o="$o">
-	@foreach (old($o->name_lc,$o->values) as $value)
+	@foreach(old($o->name_lc,$o->values) as $value)
 		@if ($edit)
 			<x-attribute.widget.objectclass :o="$o" :edit="$edit" :new="$new" :loop="$loop" :value="$value"/>
 		@else

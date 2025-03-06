@@ -241,6 +241,7 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 		// @todo
 
 		// objectClasses requiring this attribute
+		// @todo limit this to this DNs objectclasses
 		// eg: $result->put('required','Required by objectClasses: a,b');
 		if ($this->required_by->count())
 			$result->put(__('required'),sprintf('%s: %s',__('Required Attribute by ObjectClass(es)'),$this->required_by->join(',')));

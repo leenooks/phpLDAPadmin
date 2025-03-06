@@ -27,9 +27,6 @@
 
 							<div class="modal-footer">
 								<button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Next</button>
-								{{--
-								<button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal"><i class="fas fa-fw fa-spinner fa-spin d-none"></i> Next</button>
-								--}}
 							</div>
 						</div>
 					</div>
@@ -45,12 +42,12 @@
 							$('#new_objectclass-modal').on('shown.bs.modal',function() {
 								if (! rendered)
 									$.ajax({
-										type: 'POST',
-										cache: false,
+										method: 'POST',
 										url: '{{ url('entry/objectclass/add') }}',
 										data: {
 											oc: oc,
 										},
+										cache: false,
 										success: function(data) {
 											$('select#newoc').select2({
 												dropdownParent: $('#new_objectclass-modal'),
@@ -60,7 +57,7 @@
 											});
 										},
 										error: function(e) {
-											if (e.status != 412)
+											if (e.status !== 412)
 												alert('That didnt work? Please try again....');
 										},
 									});
@@ -70,11 +67,10 @@
 
 							// When the ObjectClass modal is closed, process what was selected
 							$('#new_objectclass-modal').on('hide.bs.modal',function() {
-								var c = {{ $o->values->count() }};		// @todo do we need this?
 								var newadded = $('select#newoc').val();
 
 								// If nothing selected, we dont have anything to do
-								if (added_oc.sort().join('|') == newadded.sort().join('|'))
+								if (added_oc.sort().join('|') === newadded.sort().join('|'))
 									return;
 
 								// Find out what was selected, and add them
@@ -84,50 +80,47 @@
 
 									// Add attribute to the page
 									$.ajax({
-										type: 'POST',
-										beforeSend: function() {},
-										success: function(data) {
-											$('#{{ $o->name }}').append(data);
-										},
-										error: function(e) {
-											if (e.status != 412)
-												alert('That didnt work? Please try again....');
-										},
+										method: 'POST',
 										url: '{{ url('entry/attr/add',[$o->name_lc]) }}',
 										data: {
 											noheader: true,
 											value: item,
 											objectclasses: oc,
-											loop: c++, // @todo can we omit loop and c
 										},
-										cache: false
+										cache: false,
+										success: function(data) {
+											$('#{{ $o->name }}').append(data);
+										},
+										error: function(e) {
+											if (e.status !== 412)
+												alert('That didnt work? Please try again....');
+										},
 									});
 
 									$.ajax({
-										type: 'POST',
-										beforeSend: function() {},
+										method: 'POST',
+										url: '{{ url('api/schema/objectclass/attrs') }}/'+item,
+										cache: false,
 										success: function(data) {
 											// Render any must attributes
 											if (data.must.length) {
 												data.must.forEach(function(item) {
 													// Add attribute to the page
 													$.ajax({
-														type: 'POST',
-														beforeSend: function() {},
-														success: function(data) {
-															$('#newattrs').append(data);
-														},
-														error: function(e) {
-															if (e.status != 412)
-																alert('That didnt work? Please try again....');
-														},
+														method: 'POST',
 														url: '{{ url('entry/attr/add') }}/'+item,
 														data: {
 															value: item,
 															objectclasses: oc,
-															loop: c++, // @todo can we omit loop and c
 														},
-														cache: false
+														cache: false,
+														success: function(data) {
+															$('#newattrs').append(data);
+														},
+														error: function(e) {
+															if (e.status !== 412)
+																alert('That didnt work? Please try again....');
+														},
 													});
 												})
 											}
@@ -135,19 +128,29 @@
 											// Add attributes to "Add new Attribute" that are now available
 											if (data.may.length) {
 												var newattr = $('select#newattr');
+												var oldoptions = $('select#newattr option').map((i,o)=>o.value).get();
 
-												// @todo It might be nice to re-sort these options
 												data.may.forEach(function(item) {
-													newattr.append(new Option(item,item,false,false));
+													if (! oldoptions.includes(item))
+														newattr.append(new Option(item,item,false,false));
 												});
+
+												// Sort the attributes
+												newattr
+													.append($('select#newattr option')
+														.remove()
+														.sort(function (a,b) {
+															let at = $(a).text(),
+																bt = $(b).text();
+															return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
+														}))
+													.val('');
 											}
 										},
 										error: function(e) {
-											if (e.status != 412)
+											if (e.status !== 412)
 												alert('That didnt work? Please try again....');
 										},
-										url: '{{ url('api/schema/objectclass/attrs') }}/'+item,
-										cache: false
 									});
 								});
 
@@ -156,10 +159,10 @@
 									if (newadded.indexOf(item) === -1) {
 										$('span#objectclass_'+item).empty();
 
-										// @todo Remove attributes from "Add new Attribute" that are no longer available
 										$.ajax({
-											type: 'POST',
-											beforeSend: function() {},
+											method: 'POST',
+											url: '{{ url('api/schema/objectclass/attrs') }}/'+item,
+											cache: false,
 											success: function(data) {
 												var attrs = [];
 
@@ -183,17 +186,11 @@
 
 													x.css('background-color','#f0c0c0').attr('readonly',true).attr('placeholder',x.val()).val('');
 												});
-
-												// remove the Add Values box
-												// Remove any keyed in values
-												// @todo remove any required attributes that are no longer defined as a result of removing this OC
 											},
 											error: function(e) {
-												if (e.status != 412)
+												if (e.status !== 412)
 													alert('That didnt work? Please try again....');
 											},
-											url: '{{ url('api/schema/objectclass/attrs') }}/'+item,
-											cache: false
 										});
 									}
 								});

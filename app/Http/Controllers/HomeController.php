@@ -96,7 +96,7 @@ class HomeController extends Controller
 	 */
 	public function entry_attr_add(Request $request,string $id): string
 	{
-		$xx = new \stdClass();
+		$xx = new \stdClass;
 		$xx->index = 0;
 
 		$x = $request->noheader
