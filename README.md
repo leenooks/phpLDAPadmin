@@ -32,7 +32,7 @@ Take a look at the [Docker Container](https://github.com/leenooks/phpLDAPadmin/w
 The update to v2 is progressing well - here is a list of work to do and done:
 
 - [X] Creating new LDAP entries
-- [ ] Delete existing LDAP entries
+- [X] Delete existing LDAP entries
 - [X] Updating existing LDAP Entries
   - [X] Password attributes
     - [X] Support different password hash options

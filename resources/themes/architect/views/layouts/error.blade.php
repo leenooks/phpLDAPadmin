@@ -11,16 +11,16 @@
 		<div class="app-container">
 			<div class="h-100 bg-animation">
 				<div class="d-flex h-100 justify-content-center align-items-center">
-					<div class="mx-auto app-login-box col-md-8">
+					<div class="mx-auto col-12 col-sm-8">
 
-						<div class="modal-dialog w-100 mx-auto">
+						<div class="modal-dialog modal-lg">
 							<div class="modal-content">
-								<div class="modal-header">
+								<div class="modal-header p-3">
 									<img class="w-25" src="{{ url('images/logo-h-lg.png') }}">
 									<span class="card-header-title text-danger ms-auto fs-4">@yield('title')</span>
 								</div>
 
-								<div class="modal-body">
+								<div class="modal-body p-3">
 									<div class="text-center">
 										<span class="badge text-danger fsize-2 mb-3">@yield('error')</span>
 									</div>

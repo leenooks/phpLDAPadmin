@@ -10,7 +10,7 @@
 		<div class="app-container">
 			<div class="h-100 bg-animation">
 				<div class="d-flex h-100 justify-content-center align-items-center">
-					<div class="mx-auto app-login-box col-md-8">
+					<div class="mx-auto col-12 col-sm-8">
 						<x-file-note file="login-note.html"/>
 
 						<div class="modal-dialog modal-lg">
