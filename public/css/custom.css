@@ -1,9 +1,3 @@
-img.jpegphoto {
-	display:block;
-	max-width:100px;
-	height:100px;
-}
-
 /** ensure our userpassword has select is next to the password input */
 div#userPassword .select2-container--bootstrap-5 .select2-selection {
 	font-size: inherit;
