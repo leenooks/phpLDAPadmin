@@ -68,12 +68,17 @@
 @section('page-scripts')
 	<script type="text/javascript">
 		var oc = {!! $oo->getObject('objectclass')->values !!};
+		var rdn_attr;
 
 		function editmode() {
 			// Find all input items and turn off readonly
 			$('input.form-control').each(function() {
 				// Except for objectClass - @todo show an "X" instead
 				if ($(this)[0].name.match(/^objectclass/))
+					return;
+
+				// Dont take of the readonly value for our RDN if it is set
+				if (rdn_attr && ($(this)[0].name === rdn_attr+'[]'))
 					return;
 
 				$(this).attr('readonly',false);

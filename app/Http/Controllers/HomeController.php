@@ -137,7 +137,7 @@ class HomeController extends Controller
 					abort(599,$e->getDetailedError()->getErrorMessage());
 			}
 
-		// @todo To test and valide this Exception is caught
+		// @todo when we create an entry, and it already exists, enable a redirect to it
 		} catch (LdapRecordException $e) {
 			$request->flash();
 
