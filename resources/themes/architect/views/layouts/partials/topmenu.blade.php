@@ -124,7 +124,7 @@
 						--}}
 						<div class="widget-content-left header-user-info ms-3">
 							<div class="widget-heading">
-								{{ $user->exists ? Arr::get($user->getAttribute('cn'),0,'Anonymous') : 'Anonymous' }}
+								{{ $user->exists ? Arr::get($user->getAttribute('cn'),0,Arr::get($user->getAttribute('entryuuid'),0,'Secret Person')) : 'Anonymous' }}
 							</div>
 							<div class="widget-subheading">
 								{{ $user->exists ? Arr::get($user->getAttribute('mail'),0,'') : '' }}
