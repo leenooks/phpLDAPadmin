@@ -248,3 +248,8 @@ select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__
 .input-group-text {
 	background-color: #fafafa;
 }
+
+/* Stop showing a border on our user's drop down menu when open */
+.btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
+	border-color: var(--bs-btn-bg);
+}
