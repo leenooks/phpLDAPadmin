@@ -46,6 +46,7 @@ The update to v2 is progressing well - here is a list of work to do and done:
   - [X] Delete extra values for Attributes that support multiple values
   - [ ] Delete Attributes
 - [ ] Templates to enable entries to conform to a custom standard
+  - [ ] Autopopulate attribute values
 - [X] Login to LDAP server
   - [X] Configure login by a specific attribute
 - [X] Logout LDAP server
@@ -53,6 +54,7 @@ The update to v2 is progressing well - here is a list of work to do and done:
 - [X] Import LDIF
 - [X] Schema Browser
 - [ ] Searching
+- [ ] Enforcing attribute uniqueness
 - [ ] Is there something missing?
 
 Support is known for these LDAP servers:

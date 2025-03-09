@@ -27,7 +27,7 @@
 							@endif
 							@if(isset($page_actions) && $page_actions->contains('copy'))
 								<li>
-									<button class="btn btn-outline-dark p-1 m-1" id="entry-copy-move" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Copy/Move')"><i class="fas fa-fw fa-copy fs-5"></i></button>
+									<button class="btn btn-outline-dark p-1 m-1" id="entry-copy-move" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Copy/Move')" disabled><i class="fas fa-fw fa-copy fs-5"></i></button>
 								</li>
 							@endif
 							@if((isset($page_actions) && $page_actions->contains('edit')) || old())

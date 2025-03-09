@@ -14,7 +14,7 @@
 							@if ($edit)
 								<br>
 								<!-- @todo TO IMPLEMENT -->
-								<span class="btn btn-sm btn-danger deletable d-none mt-3"><i class="fas fa-trash-alt"></i> @lang('Delete')</span>
+								<button class="btn btn-sm btn-danger deletable d-none mt-3" disabled><i class="fas fa-trash-alt"></i> @lang('Delete')</button>
 
 								<div class="invalid-feedback pb-2">
 									@if($e)
