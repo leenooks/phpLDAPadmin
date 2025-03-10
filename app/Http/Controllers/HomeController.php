@@ -383,6 +383,11 @@ class HomeController extends Controller
 			: view('frames.'.$key['cmd']))
 			->with('bases',$this->bases());
 
+		// If we are rendering a DN, rebuild our object
+		$o = config('server')->fetch($key['dn']);
+		foreach (collect(old())->except(['dn','_token']) as $attr => $value)
+			$o->{$attr} = $value;
+
 		return match ($key['cmd']) {
 			'create' => $view
 				->with('container',old('container',$key['dn']))
@@ -390,7 +395,8 @@ class HomeController extends Controller
 
 			'dn' => $view
 				->with('dn',$key['dn'])
-				->with('page_actions',collect(['edit'=>TRUE,'copy'=>TRUE])),
+				->with('o',$o)
+				->with('page_actions',collect(['edit'=>TRUE])),
 
 			'import' => $view,
 
