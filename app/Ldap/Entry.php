@@ -94,12 +94,10 @@ class Entry extends Model
 
 		$key = $this->normalizeAttributeKey($key);
 
-		if ((! $this->objects->get($key)) && $value) {
-			$this->objects->put($key,Factory::create($key,$value));
+		if ((! $this->objects->get($key)) && $value)
+			$this->objects->put($key,Factory::create($key,[]));
 
-		} elseif ($this->objects->get($key)) {
-			$this->objects->get($key)->value = $this->attributes[$key];
-		}
+		$this->objects->get($key)->value = $this->attributes[$key];
 
 		return $this;
 	}
@@ -164,7 +162,6 @@ class Entry extends Model
 	/**
 	 * Convert all our attribute values into an array of Objects
 	 *
-	 * @param array $attributes
 	 * @return Collection
 	 */
 	public function getAttributesAsObjects(): Collection
