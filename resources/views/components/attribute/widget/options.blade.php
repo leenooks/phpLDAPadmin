@@ -1,15 +1,18 @@
+@use(App\Classes\LDAP\Attribute\Binary\JpegPhoto)
+@use(App\Classes\LDAP\Attribute\ObjectClass)
 @php($clone=FALSE)
-@if($o->is_rdn)
-	<button class="btn btn-sm btn-outline-focus mt-3" disabled><i class="fas fa-fw fa-exchange"></i> @lang('Rename')</button>
-@elseif($edit && $o->can_addvalues)
-	<span class="p-0 m-0">
+<span class="p-0 m-0">
+	@if($o->is_rdn)
+		<br/>
+		<button class="btn btn-sm btn-outline-focus mt-3" disabled><i class="fas fa-fw fa-exchange"></i> @lang('Rename')</button>
+	@elseif($edit && $o->can_addvalues)
 		@switch(get_class($o))
-			@case('App\Classes\LDAP\Attribute\Binary\JpegPhoto')
+			@case(JpegPhoto::class)
 				<button @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name_lc }}" disabled><i class="fas fa-fw fa-plus"></i> @lang('Upload JpegPhoto')</button>
 
 				@break
 
-			@case('App\Classes\LDAP\Attribute\ObjectClass')
+			@case(ObjectClass::class)
 				<button type="button" @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) data-bs-toggle="modal" data-bs-target="#new_objectclass-modal"><i class="fas fa-fw fa-plus"></i> @lang('Add Objectclass')</button>
 
 				<!-- NEW OBJECT CLASS -->
@@ -37,42 +40,12 @@
 						$(document).ready(function() {
 							var added_oc = [];	// Object classes being added to this entry
 							var rendered = false;
+							var newadded = [];
 
-							// Show our ObjectClass modal so that we can add more objectclasses
-							$('#new_objectclass-modal').on('shown.bs.modal',function() {
-								if (! rendered)
-									$.ajax({
-										method: 'POST',
-										url: '{{ url('entry/objectclass/add') }}',
-										data: {
-											oc: oc,
-										},
-										cache: false,
-										success: function(data) {
-											$('select#newoc').select2({
-												dropdownParent: $('#new_objectclass-modal'),
-												theme: 'bootstrap-5',
-												multiple: true,
-												data: data,
-											});
-										},
-										error: function(e) {
-											if (e.status !== 412)
-												alert('That didnt work? Please try again....');
-										},
-									});
+							if (newadded.length)
+								process_oc();
 
-								rendered = true;
-							})
-
-							// When the ObjectClass modal is closed, process what was selected
-							$('#new_objectclass-modal').on('hide.bs.modal',function() {
-								var newadded = $('select#newoc').val();
-
-								// If nothing selected, we dont have anything to do
-								if (added_oc.sort().join('|') === newadded.sort().join('|'))
-									return;
-
+							function process_oc() {
 								// Find out what was selected, and add them
 								newadded.forEach(function (item) {
 									if (added_oc.indexOf(item) !== -1)
@@ -97,6 +70,7 @@
 										},
 									});
 
+									// Get a list of attributes already on the page, so we dont double up
 									$.ajax({
 										method: 'POST',
 										url: '{{ url('api/schema/objectclass/attrs') }}/'+item,
@@ -105,6 +79,9 @@
 											// Render any must attributes
 											if (data.must.length) {
 												data.must.forEach(function(item) {
+													if ($('attribute#'+item).length)
+														return;
+
 													// Add attribute to the page
 													$.ajax({
 														method: 'POST',
@@ -174,7 +151,7 @@
 														if (x.length) {
 															x.remove();
 
-														// Add this to the must attrs list, because its been rendered
+															// Add this to the must attrs list, because its been rendered
 														} else {
 															attrs.push(mayitem);
 														}
@@ -196,13 +173,51 @@
 								});
 
 								added_oc = newadded;
+							}
+
+							// Show our ObjectClass modal so that we can add more objectclasses
+							$('#new_objectclass-modal').on('shown.bs.modal',function() {
+								if (! rendered)
+									$.ajax({
+										method: 'POST',
+										url: '{{ url('entry/objectclass/add') }}',
+										data: {
+											oc: oc,
+										},
+										cache: false,
+										success: function(data) {
+											$('select#newoc').select2({
+												dropdownParent: $('#new_objectclass-modal'),
+												theme: 'bootstrap-5',
+												multiple: true,
+												data: data,
+											});
+										},
+										error: function(e) {
+											if (e.status !== 412)
+												alert('That didnt work? Please try again....');
+										},
+									});
+
+								rendered = true;
+							})
+
+							// When the ObjectClass modal is closed, process what was selected
+							$('#new_objectclass-modal').on('hide.bs.modal',function() {
+								newadded = $('select#newoc').val();
+
+								// If nothing selected, we dont have anything to do
+								if (added_oc.sort().join('|') === newadded.sort().join('|'))
+									return;
+
+								process_oc();
 							});
 						});
 					</script>
 				@append
 				@break
 
-			@case('App\Classes\LDAP\Attribute')
+			<!-- All other attributes -->
 			@default
 				@php($clone=TRUE)
 				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name }}-addnew"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</span>
@@ -222,5 +237,5 @@
 					@endif
 				@append
 		@endswitch
-	</span>
-@endif
+	@endif
+</span>

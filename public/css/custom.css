@@ -1,5 +1,5 @@
 /** ensure our userpassword has select is next to the password input */
-div#userPassword .select2-container--bootstrap-5 .select2-selection {
+attribute#userPassword .select2-container--bootstrap-5 .select2-selection {
 	font-size: inherit;
 	width: 9em;
 	border: #444054 1px solid;
@@ -11,7 +11,7 @@ div#userPassword .select2-container--bootstrap-5 .select2-selection {
 	border-top-right-radius: unset;
 }
 
-div#objectClass .input-group-end:not(input.form-control) {
+attribute#objectClass .input-group-end:not(input.form-control) {
 	position: absolute;
 	right: 1em;
 	top: 0.5em;
