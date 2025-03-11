@@ -39,14 +39,13 @@ class APIController extends Controller
 	 */
 	public function children(Request $request): Collection
 	{
-		$levels = $request->query('depth',1);
 		$dn = Crypt::decryptString($request->query('key'));
 
 		// Sometimes our key has a command, so we'll ignore it
 		if (str_starts_with($dn,'*') && ($x=strpos($dn,'|')))
 			$dn = substr($dn,$x+1);
 
-		Log::debug(sprintf('%s: Query [%s] - Levels [%d]',__METHOD__,$dn,$levels));
+		Log::debug(sprintf('%s: Query [%s]',__METHOD__,$dn));
 
 		return (config('server'))
 			->children($dn)
@@ -102,7 +101,7 @@ class APIController extends Controller
 	 * @param string $objectclass
 	 * @return array
 	 */
-	public function schema_objectclass_attrs(Request $request,string $objectclass): array
+	public function schema_objectclass_attrs(string $objectclass): array
 	{
 		$oc = config('server')->schema('objectclasses',$objectclass);
 
