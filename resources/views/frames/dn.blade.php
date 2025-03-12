@@ -170,7 +170,7 @@
 			});
 
 			// Our password type
-			$('div#userPassword .form-select').each(function() {
+			$('attribute#userPassword .form-select').each(function() {
 				$(this).prop('disabled',false);
 			})
 
