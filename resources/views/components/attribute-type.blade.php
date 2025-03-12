@@ -18,3 +18,5 @@
 		<x-attribute :o="$o" :edit="true" :new="$new ?? FALSE"/>
 	</div>
 </div>
+
+@yield($o->name_lc.'-scripts')

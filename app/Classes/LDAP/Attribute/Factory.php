@@ -27,6 +27,8 @@ class Factory
 		'entrydn' => Internal\DN::class,
 		'entryuuid' => Internal\UUID::class,
 		'etag' => Internal\Etag::class,
+		'krbprincipalkey' => KrbPrincipalKey::class,
+		'krbticketflags' => KrbTicketFlags::class,
 		'gidnumber' => GidNumber::class,
 		'hassubordinates' => Internal\HasSubordinates::class,
 		'jpegphoto' => Binary\JpegPhoto::class,

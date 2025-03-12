@@ -279,7 +279,11 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	 */
 	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
 	{
-		return view('components.attribute')
+		$view = view()->exists($x='components.attribute.'.$this->name_lc)
+			? view($x)
+			: view('components.attribute');
+
+		return $view
 			->with('o',$this)
 			->with('edit',$edit)
 			->with('old',$old)
