@@ -51,6 +51,9 @@
 			$('attribute#krbTicketFlags').find('i')
 				.on('click',function() {
 					var item = $(this);
+					if ($('form#dn-edit').attr('readonly'))
+						return;
+
 					var key = Number(item.attr('id').substring(1));
 
 					if (item.data('old') === undefined)

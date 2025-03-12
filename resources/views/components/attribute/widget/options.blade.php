@@ -220,7 +220,7 @@
 			<!-- All other attributes -->
 			@default
 				@php($clone=TRUE)
-				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name }}-addnew"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</span>
+				<button @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name }}-addnew"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</button>
 
 				@section('page-scripts')
 					@if($clone && $edit && $o->can_addvalues)

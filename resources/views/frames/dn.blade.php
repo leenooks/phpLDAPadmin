@@ -23,7 +23,7 @@
 				<div class="tab-content">
 					<!-- All Attributes -->
 					<div class="tab-pane active" id="attributes" role="tabpanel">
-						<form id="dn-edit" method="POST" class="needs-validation" action="{{ url('entry/update/pending') }}" novalidate>
+						<form id="dn-edit" method="POST" class="needs-validation" action="{{ url('entry/update/pending') }}" novalidate readonly>
 							@csrf
 
 							<input type="hidden" name="dn" value="">
@@ -156,9 +156,12 @@
 		function editmode() {
 			$('#dn-edit input[name="dn"]').val(dn);
 
+			$('form#dn-edit').attr('readonly',false);
 			$('button[id=entry-edit]')
 				.removeClass('btn-outline-dark')
-				.addClass('btn-dark');
+				.addClass('btn-dark')
+				.addClass('opacity-100')
+				.attr('disabled',true);
 
 			// Find all input items and turn off readonly
 			$('input.form-control').each(function() {
@@ -175,8 +178,8 @@
 			})
 
 			$('.row.d-none').removeClass('d-none');
-			$('.addable.d-none').removeClass('d-none');
-			$('.deletable.d-none').removeClass('d-none');
+			$('button.addable.d-none').removeClass('d-none');
+			$('button.deletable.d-none').removeClass('d-none');
 
 			@if($o->getMissingAttributes()->count())
 				$('#newattr-select.d-none').removeClass('d-none');
