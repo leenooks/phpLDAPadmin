@@ -39,8 +39,8 @@
 											</tr><tr>
 										@endif
 
-										<td>{{ $oo->render_item_old($xx) ?: '['.strtoupper(__('New Value')).']' }}</td>
-										<td>{{ $oo->render_item_new($xx) ?: '['.strtoupper(__('Deleted')).']' }}<input type="hidden" name="{{ $key }}[]" value="{{ Arr::get($oo->values,$xx) }}"></td>
+										<td>{{ (($r=$oo->render_item_old($xx)) !== NULL) ? $r : '['.strtoupper(__('New Value')).']' }}</td>
+										<td>{{ (($r=$oo->render_item_new($xx)) !== NULL) ? $r : '['.strtoupper(__('Deleted')).']' }}<input type="hidden" name="{{ $key }}[]" value="{{ Arr::get($oo->values,$xx) }}"></td>
 									@endfor
 								</tr>
 							@endforeach
