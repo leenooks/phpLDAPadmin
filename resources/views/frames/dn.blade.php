@@ -178,8 +178,8 @@
 			})
 
 			$('.row.d-none').removeClass('d-none');
-			$('button.addable.d-none').removeClass('d-none');
-			$('button.deletable.d-none').removeClass('d-none');
+			$('span.addable.d-none').removeClass('d-none');
+			$('span.deletable.d-none').removeClass('d-none');
 
 			@if($o->getMissingAttributes()->count())
 				$('#newattr-select.d-none').removeClass('d-none');
