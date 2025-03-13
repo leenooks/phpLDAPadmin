@@ -90,8 +90,8 @@
 			})
 
 			$('.row.d-none').removeClass('d-none');
-			$('.addable.d-none').removeClass('d-none');
-			$('.deletable.d-none').removeClass('d-none');
+			$('span.addable.d-none').removeClass('d-none');
+			$('span.deletable.d-none').removeClass('d-none');
 			$('#newattr-select.d-none').removeClass('d-none');
 		}
 

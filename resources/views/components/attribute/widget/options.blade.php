@@ -4,16 +4,16 @@
 <span class="p-0 m-0">
 	@if($o->is_rdn)
 		<br/>
-		<button class="btn btn-sm btn-outline-focus mt-3" disabled><i class="fas fa-fw fa-exchange"></i> @lang('Rename')</button>
+		<span class="btn btn-sm btn-outline-focus mt-3" disabled><i class="fas fa-fw fa-exchange"></i> @lang('Rename')</span>
 	@elseif($edit && $o->can_addvalues)
 		@switch(get_class($o))
 			@case(JpegPhoto::class)
-				<button @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name_lc }}" disabled><i class="fas fa-fw fa-plus"></i> @lang('Upload JpegPhoto')</button>
+				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name_lc }}" disabled><i class="fas fa-fw fa-plus"></i> @lang('Upload JpegPhoto')</span>
 
 				@break
 
 			@case(ObjectClass::class)
-				<button type="button" @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) data-bs-toggle="modal" data-bs-target="#new_objectclass-modal"><i class="fas fa-fw fa-plus"></i> @lang('Add Objectclass')</button>
+				<span type="button" @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) data-bs-toggle="modal" data-bs-target="#new_objectclass-modal"><i class="fas fa-fw fa-plus"></i> @lang('Add Objectclass')</span>
 
 				<!-- NEW OBJECT CLASS -->
 				<div class="modal fade" id="new_objectclass-modal" tabindex="-1" aria-labelledby="new_objectclass-label" aria-hidden="true" data-bs-backdrop="static">
