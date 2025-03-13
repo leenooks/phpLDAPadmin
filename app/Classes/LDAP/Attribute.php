@@ -17,31 +17,27 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	protected string $name;
 	private int $counter = 0;
 
-	protected ?AttributeType $schema = NULL;
-
-	/*
-	# Source of this attribute definition
-	protected $source;
-	*/
-
-	// Current and Old Values
-	protected Collection $values;
-
 	// Is this attribute an internal attribute
-	protected bool $is_internal = FALSE;
+	protected(set) bool $is_internal = FALSE;
 
 	// Is this attribute the RDN?
-	protected bool $is_rdn = FALSE;
+	public bool $is_rdn = FALSE;
 
 	// MIN/MAX number of values
-	protected int $min_values_count = 0;
-	protected int $max_values_count = 0;
+	protected(set) int $min_values_count = 0;
+	protected(set) int $max_values_count = 0;
 
 	// RFC3866 Language Tags
+	/* @deprecated use $values/$values_old when playing with language tags */
 	protected Collection $lang_tags;
 
+	// The schema's representation of this attribute
+	protected(set) ?AttributeType $schema;
+
 	// The old values for this attribute - helps with isDirty() to determine if there is an update pending
-	protected Collection $oldValues;
+	protected(set) Collection $values_old;
+	// Current Values
+	public Collection $values;
 
 	/*
 	# Has the attribute been modified
@@ -97,9 +93,10 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	public function __construct(string $name,array $values)
 	{
 		$this->name = $name;
-		$this->values = collect($values);
+		$this->values_old = collect($values);
+
+		$this->values = collect();
 		$this->lang_tags = collect();
-		$this->oldValues = collect($values);
 
 		$this->schema = (new Server)
 			->schema('attributetypes',$name);
@@ -132,18 +129,10 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 			'hints' => $this->hints(),
 			// Can this attribute be edited
 			'is_editable' => $this->schema ? $this->schema->{$key} : NULL,
-			// Is this an internal attribute
-			'is_internal' => isset($this->{$key}) && $this->{$key},
-			// Is this attribute the RDN
-			'is_rdn' => $this->is_rdn,
 			// We prefer the name as per the schema if it exists
 			'name' => $this->schema ? $this->schema->{$key} : $this->{$key},
 			// Attribute name in lower case
 			'name_lc' => strtolower($this->name),
-			// Old Values
-			'old_values' => $this->oldValues,
-			// Attribute values
-			'values' => $this->values,
 			// Required by Object Classes
 			'required_by' => $this->schema?->required_by_object_classes ?: collect(),
 			// Used in Object Classes
@@ -151,17 +140,6 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 
 			default => throw new \Exception('Unknown key:' . $key),
 		};
-	}
-
-	public function __set(string $key,mixed $values): void
-	{
-		switch ($key) {
-			case 'value':
-				$this->values = collect($values);
-				break;
-
-			default:
-		}
 	}
 
 	public function __toString(): string
@@ -260,13 +238,8 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	 */
 	public function isDirty(): bool
 	{
-		return ($this->oldValues->count() !== $this->values->count())
-			|| ($this->values->diff($this->oldValues)->count() !== 0);
-	}
-
-	public function oldValues(array $array): void
-	{
-		$this->oldValues = collect($array);
+		return ($this->values_old->count() !== $this->values->count())
+			|| ($this->values->diff($this->values_old)->count() !== 0);
 	}
 
 	/**
@@ -292,7 +265,7 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 
 	public function render_item_old(int $key): ?string
 	{
-		return Arr::get($this->old_values,$key);
+		return Arr::get($this->values_old,$key);
 	}
 
 	public function render_item_new(int $key): ?string
@@ -306,14 +279,10 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	 * @param string $tag
 	 * @param array $value
 	 * @return void
+	 * @deprecated
 	 */
 	public function setLangTag(string $tag,array $value): void
 	{
 		$this->lang_tags->put($tag,$value);
-	}
-
-	public function setRDN(): void
-	{
-		$this->is_rdn = TRUE;
 	}
 }

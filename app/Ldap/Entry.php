@@ -97,7 +97,7 @@ class Entry extends Model
 		if ((! $this->objects->get($key)) && $value)
 			$this->objects->put($key,Factory::create($key,[]));
 
-		$this->objects->get($key)->value = $this->attributes[$key];
+		$this->objects->get($key)->values = collect($this->attributes[$key]);
 
 		return $this;
 	}
@@ -155,7 +155,10 @@ class Entry extends Model
 			$x->addValue($value);
 
 		} else {
-			$this->objects->put($key,Attribute\Factory::create($key,Arr::wrap($value)));
+			$o = Attribute\Factory::create($key,[]);
+			$o->values = collect(Arr::wrap($value));
+
+			$this->objects->put($key,$o);
 		}
 	}
 
@@ -164,31 +167,30 @@ class Entry extends Model
 	 *
 	 * @return Collection
 	 */
-	public function getAttributesAsObjects(): Collection
+	private function getAttributesAsObjects(): Collection
 	{
 		$result = collect();
 
-		foreach ($this->attributes as $attribute => $value) {
-			// If the attribute name has language tags
+		foreach ($this->attributes as $attribute => $values) {
+			// If the attribute name has tags
 			$matches = [];
 			if (preg_match('/^([a-zA-Z]+)(;([a-zA-Z-;]+))+/',$attribute,$matches)) {
 				$attribute = $matches[1];
 
 				// If the attribute doesnt exist we'll create it
-				$o = Arr::get($result,$attribute,Factory::create($attribute,[]));
-				$o->setLangTag($matches[3],$value);
+				$o = Arr::get($result,$attribute,Factory::create($attribute,Arr::get($this->original,$attribute,[])));
+				$o->setLangTag($matches[3],$values);
 
 			} else {
-				$o = Factory::create($attribute,$value);
+				$o = Factory::create($attribute,Arr::get($this->original,$attribute,[]));
 			}
 
 			if (! $result->has($attribute)) {
 				// Set the rdn flag
-				if (preg_match('/^'.$attribute.'=/i',$this->dn))
-					$o->setRDN();
+				$o->is_rdn = preg_match('/^'.$attribute.'=/i',$this->dn);
 
-				// Store our original value to know if this attribute has changed
-				$o->oldValues(Arr::get($this->original,$attribute,[]));
+				// Store our new values to know if this attribute has changed
+				$o->values = collect($values);
 
 				$result->put($attribute,$o);
 			}

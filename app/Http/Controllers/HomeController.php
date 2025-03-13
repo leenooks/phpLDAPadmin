@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -44,8 +43,6 @@ class HomeController extends Controller
 
 	/**
 	 * Debug Page
-	 *
-	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
 	 */
 	public function debug()
 	{
@@ -56,10 +53,10 @@ class HomeController extends Controller
 	 * Create a new object in the LDAP server
 	 *
 	 * @param EntryAddRequest $request
-	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+	 * @return View
 	 * @throws InvalidUsage
 	 */
-	public function entry_add(EntryAddRequest $request)
+	public function entry_add(EntryAddRequest $request): \Illuminate\View\View
 	{
 		if (! old('step',$request->validated('step')))
 			abort(404);
@@ -92,15 +89,15 @@ class HomeController extends Controller
 	 *
 	 * @param Request $request
 	 * @param string $id
-	 * @return \Closure|\Illuminate\Contracts\View\View|string
+	 * @return \Illuminate\View\View
 	 */
-	public function entry_attr_add(Request $request,string $id): string
+	public function entry_attr_add(Request $request,string $id): \Illuminate\View\View
 	{
 		$xx = new \stdClass;
 		$xx->index = 0;
 
 		$x = $request->noheader
-			? (string)view(sprintf('components.attribute.widget.%s',$id))
+			? view(sprintf('components.attribute.widget.%s',$id))
 				->with('o',Factory::create($id,[]))
 				->with('value',$request->value)
 				->with('loop',$xx)
@@ -109,7 +106,7 @@ class HomeController extends Controller
 		return $x;
 	}
 
-	public function entry_create(EntryAddRequest $request)
+	public function entry_create(EntryAddRequest $request): \Illuminate\Http\RedirectResponse
 	{
 		$key = $this->request_key($request,collect(old()));
 
@@ -156,7 +153,7 @@ class HomeController extends Controller
 			->withFragment($o->getDNSecure());
 	}
 
-	public function entry_delete(Request $request)
+	public function entry_delete(Request $request): \Illuminate\Http\RedirectResponse
 	{
 		$dn = Crypt::decryptString($request->dn);
 
@@ -196,7 +193,7 @@ class HomeController extends Controller
 			->with('success',[sprintf('%s: %s',__('Deleted'),$dn)]);
 	}
 
-	public function entry_export(Request $request,string $id)
+	public function entry_export(Request $request,string $id): \Illuminate\View\View
 	{
 		$dn = Crypt::decryptString($id);
 
@@ -215,10 +212,10 @@ class HomeController extends Controller
 	/**
 	 * Render an available list of objectclasses for an Entry
 	 *
-	 * @param string $id
-	 * @return mixed
+	 * @param Request $request
+	 * @return Collection
 	 */
-	public function entry_objectclass_add(Request $request)
+	public function entry_objectclass_add(Request $request): Collection
 	{
 		$oc = Factory::create('objectclass',$request->oc);
 
@@ -242,7 +239,7 @@ class HomeController extends Controller
 				]);
 	}
 
-	public function entry_password_check(Request $request)
+	public function entry_password_check(Request $request): Collection
 	{
 		$dn = Crypt::decryptString($request->dn);
 		$o = config('server')->fetch($dn);
@@ -265,10 +262,10 @@ class HomeController extends Controller
 	 * Show a confirmation to update a DN
 	 *
 	 * @param EntryRequest $request
-	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
 	 * @throws ObjectNotFoundException
 	 */
-	public function entry_pending_update(EntryRequest $request)
+	public function entry_pending_update(EntryRequest $request): \Illuminate\Http\RedirectResponse|\Illuminate\View\View
 	{
 		$dn = Crypt::decryptString($request->dn);
 
@@ -276,6 +273,8 @@ class HomeController extends Controller
 
 		foreach ($request->except(['_token','dn','userpassword_hash','userpassword']) as $key => $value)
 			$o->{$key} = array_filter($value,fn($item)=>! is_null($item));
+
+		// @todo Need to handle incoming attributes that were modified by MD5Updates Trait (eg: jpegphoto)
 
 		// We need to process and encrypt the password
 		if ($request->userpassword) {
@@ -312,8 +311,10 @@ class HomeController extends Controller
 	 * @param EntryRequest $request
 	 * @return \Illuminate\Http\RedirectResponse
 	 * @throws ObjectNotFoundException
+	 * @todo When removing an attribute value, from a multi-value attribute, we have a ghost record showing after the update
+	 * @todo Need to check when removing a single attribute value, do we have a ghost as well? Might be because we are redirecting with input?
 	 */
-	public function entry_update(EntryRequest $request)
+	public function entry_update(EntryRequest $request): \Illuminate\Http\RedirectResponse
 	{
 		$dn = Crypt::decryptString($request->dn);
 
@@ -368,9 +369,9 @@ class HomeController extends Controller
 	 *
 	 * @param Request $request
 	 * @param Collection|null $old
-	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|View
+	 * @return \Illuminate\View\View
 	 */
-	public function frame(Request $request,?Collection $old=NULL): View
+	public function frame(Request $request,?Collection $old=NULL): \Illuminate\View\View
 	{
 		// If our index was not render from a root url, then redirect to it
 		if (($request->root().'/' !== url()->previous()) && $request->method() === 'POST')
@@ -385,7 +386,9 @@ class HomeController extends Controller
 
 		// If we are rendering a DN, rebuild our object
 		$o = config('server')->fetch($key['dn']);
-		foreach (collect(old())->except(['dn','_token']) as $attr => $value)
+
+		// @todo We need to dynamically exclude request items, so we dont need to add them here
+		foreach (collect(old())->except(['dn','_token','userpassword_hash']) as $attr => $value)
 			$o->{$attr} = $value;
 
 		return match ($key['cmd']) {
@@ -407,7 +410,7 @@ class HomeController extends Controller
 	/**
 	 * This is the main page render function
 	 */
-	public function home(Request $request)
+	public function home(Request $request): \Illuminate\View\View
 	{
 		// Did we come here as a result of a redirect
 		return count(old())
@@ -421,11 +424,11 @@ class HomeController extends Controller
 	 *
 	 * @param ImportRequest $request
 	 * @param string $type
-	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+	 * @return \Illuminate\View\View
 	 * @throws GeneralException
 	 * @throws VersionException
 	 */
-	public function import(ImportRequest $request,string $type)
+	public function import(ImportRequest $request,string $type): \Illuminate\View\View
 	{
 		switch ($type) {
 			case 'ldif':
@@ -461,9 +464,9 @@ class HomeController extends Controller
 	/**
 	 * LDAP Server INFO
 	 *
-	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+	 * @return \Illuminate\View\View
 	 */
-	public function info()
+	public function info(): \Illuminate\View\View
 	{
 		return view('frames.info')
 			->with('s',config('server'));
@@ -507,10 +510,10 @@ class HomeController extends Controller
 	 *
 	 * @note Our route will validate that types are valid.
 	 * @param Request $request
-	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+	 * @return \Illuminate\View\View
 	 * @throws InvalidUsage
 	 */
-	public function schema_frame(Request $request)
+	public function schema_frame(Request $request): \Illuminate\View\View
 	{
 		// If an invalid key, we'll 404
 		if ($request->type && $request->key && (! config('server')->schema($request->type)->has($request->key)))
@@ -536,9 +539,9 @@ class HomeController extends Controller
 	 * Return the image for the logged in user or anonymous
 	 *
 	 * @param Request $request
-	 * @return mixed
+	 * @return \Illuminate\Http\Response
 	 */
-	public function user_image(Request $request)
+	public function user_image(Request $request): \Illuminate\Http\Response
 	{
 		$image = NULL;
 		$content = NULL;

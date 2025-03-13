@@ -11,7 +11,7 @@ use App\Classes\LDAP\Attribute;
  */
 abstract class Internal extends Attribute
 {
-	protected bool $is_internal = TRUE;
+	protected(set) bool $is_internal = TRUE;
 
 	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
 	{

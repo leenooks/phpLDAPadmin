@@ -1,6 +1,6 @@
 <!-- $o=RDN::class -->
 <x-attribute.layout :edit="$edit ?? FALSE" :new="$new ?? FALSE" :o="$o">
-	@foreach($o->values as $value)
+	@foreach(($o->values->count() ? $o->values : ['']) as $value)
 		@if($edit)
 			<div class="input-group has-validation mb-3">
 				<select class="form-select @error('rdn')is-invalid @enderror" id="rdn" name="rdn">

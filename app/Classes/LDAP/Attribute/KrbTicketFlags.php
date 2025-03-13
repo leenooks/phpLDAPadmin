@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
  * Represents an attribute whose value is a Kerberos Ticket Flag
  * See RFC4120
  */
-class KrbTicketFlags extends Attribute
+final class KrbTicketFlags extends Attribute
 {
 	private const DISALLOW_POSTDATED	= 0x00000001;
 	private const DISALLOW_FORWARDABLE	= 0x00000002;

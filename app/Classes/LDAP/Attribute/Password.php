@@ -87,7 +87,7 @@ final class Password extends Attribute
 
 	public function render_item_old(int $key): ?string
 	{
-		$pw = Arr::get($this->oldValues,$key);
+		$pw = Arr::get($this->values_old,$key);
 		return $pw
 			? (((($x=$this->hash($pw)) && ($x::id() !== '*clear*')) ? sprintf('{%s}',$x::shortid()) : '').str_repeat('*',16))
 			: NULL;

@@ -29,9 +29,9 @@
 							</thead>
 
 							<tbody>
-							@foreach ($o->getAttributesAsObjects()->filter(fn($item)=>$item->isDirty()) as $key => $oo)
+							@foreach ($o->getObjects()->filter(fn($item)=>$item->isDirty()) as $key => $oo)
 								<tr>
-									<th rowspan="{{ $x=max($oo->values->keys()->max(),$oo->old_values->keys()->max())+1}}">
+									<th rowspan="{{ $x=max($oo->values->keys()->max(),$oo->values_old->keys()->max())+1}}">
 										<abbr title="{{ $oo->description }}">{{ $oo->name }}</abbr>
 									</th>
 									@for($xx=0;$xx<$x;$xx++)
