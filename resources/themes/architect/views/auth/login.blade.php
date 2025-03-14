@@ -22,7 +22,7 @@
 										<div class="h5 modal-title text-center">
 											<h4 class="mt-2">
 												<div class="app-logo mx-auto mb-3"><img class="w-75" src="{{ url('images/logo-h-lg.png') }}"></div>
-												<small>@lang('Sign in to') <strong>{{ config('server')->name }}</strong></small>
+												<small>@lang('Sign in to') <strong>{{ $server->name }}</strong></small>
 											</h4>
 										</div>
 

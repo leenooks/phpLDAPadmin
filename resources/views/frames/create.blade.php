@@ -1,7 +1,7 @@
 @extends('layouts.dn')
 
 @section('page_title')
-	@include('fragment.dn.header',['o'=>($oo=config('server')->fetch(old('container',$container)))])
+	@include('fragment.dn.header',['o'=>($oo=$server->fetch(old('container',$container)))])
 @endsection
 
 @section('main-content')
@@ -30,7 +30,7 @@
 											id="objectclass"
 											name="objectclass[]"
 											:label="__('Select a Structural ObjectClass...')"
-											:options="($oc=config('server')->schema('objectclasses'))
+											:options="($oc=$server->schema('objectclasses'))
 												->filter(fn($item)=>$item->isStructural())
 												->sortBy(fn($item)=>$item->name_lc)
 												->map(fn($item)=>['id'=>$item->name,'value'=>$item->name])"

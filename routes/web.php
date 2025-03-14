@@ -31,10 +31,10 @@ Route::get('logout',[LoginController::class,'logout']);
 Route::controller(HomeController::class)->group(function() {
 	Route::middleware(AllowAnonymous::class)->group(function() {
 		Route::get('/','home');
-		Route::get('info','info');
-		Route::get('debug','debug');
+		Route::view('info','frames.info');
+		Route::view('debug','debug');
 		Route::post('frame','frame');
-		Route::get('import','import_frame');
+		Route::view('import','frames.import');
 		Route::get('schema','schema_frame');
 
 		Route::group(['prefix'=>'user'],function() {

@@ -42,14 +42,6 @@ class HomeController extends Controller
 	}
 
 	/**
-	 * Debug Page
-	 */
-	public function debug()
-	{
-		return view('debug');
-	}
-
-	/**
 	 * Create a new object in the LDAP server
 	 *
 	 * @param EntryAddRequest $request
@@ -449,22 +441,6 @@ class HomeController extends Controller
 			->with('bases',$this->bases())
 			->with('result',$result)
 			->with('ldif',htmlspecialchars($x));
-	}
-
-	public function import_frame()
-	{
-		return view('frames.import');
-	}
-
-	/**
-	 * LDAP Server INFO
-	 *
-	 * @return \Illuminate\View\View
-	 */
-	public function info(): \Illuminate\View\View
-	{
-		return view('frames.info')
-			->with('s',config('server'));
 	}
 
 	/**

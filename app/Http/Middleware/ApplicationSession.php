@@ -25,6 +25,7 @@ class ApplicationSession
 	{
 		Config::set('server',new Server);
 
+		view()->share('server', Config::get('server'));
 		view()->share('user', auth()->user() ?: new User);
 
 		return $next($request);

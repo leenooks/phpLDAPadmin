@@ -32,7 +32,7 @@
 	<div class="scrollbar-sidebar">
 		<div class="app-sidebar__inner">
 			<ul class="vertical-nav-menu">
-				<li class="app-sidebar__heading">{{ config('server')->name }}</li>
+				<li class="app-sidebar__heading">{{ $server->name }}</li>
 				<li>
 					<i id="treeicon" class="metismenu-icon fa-fw fas fa-sitemap"></i>
 					<span class="f16" id="tree"></span>
