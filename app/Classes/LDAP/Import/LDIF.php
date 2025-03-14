@@ -46,7 +46,7 @@ class LDIF extends Import
 			if (! $line) {
 				if (! is_null($o)) {
 					// Add the last attribute;
-					$o->addAttribute($attribute,$base64encoded ? base64_decode($value) : $value);
+					$o->addAttributeItem($attribute,$base64encoded ? base64_decode($value) : $value);
 
 					Log::debug(sprintf('%s: Committing Entry [%s]',self::LOGKEY,$o->getDN()));
 
@@ -125,7 +125,7 @@ class LDIF extends Import
 							Log::debug(sprintf('%s: Adding Attribute [%s] value [%s] (%d)',self::LOGKEY,$attribute,$value,$c));
 
 							if ($value)
-								$o->addAttribute($attribute,$base64encoded ? base64_decode($value) : $value);
+								$o->addAttributeItem($attribute,$base64encoded ? base64_decode($value) : $value);
 							else
 								throw new GeneralException(sprintf('Attribute has no value [%s] (line %d)',$attribute,$c));
 						}
@@ -147,7 +147,7 @@ class LDIF extends Import
 		// We may still have a pending action
 		if ($action) {
 			// Add the last attribute;
-			$o->addAttribute($attribute,$base64encoded ? base64_decode($value) : $value);
+			$o->addAttributeItem($attribute,$base64encoded ? base64_decode($value) : $value);
 
 			Log::debug(sprintf('%s: Committing Entry [%s]',self::LOGKEY,$o->getDN()));
 

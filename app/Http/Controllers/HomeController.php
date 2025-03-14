@@ -69,7 +69,7 @@ class HomeController extends Controller
 			$o->objectclass = $x;
 
 			foreach($o->getAvailableAttributes()->filter(fn($item)=>$item->required) as $ao)
-				$o->addAttribute($ao,'');
+				$o->{$ao->name} = '';
 
 			$o->setRDNBase($key['dn']);
 		}
@@ -96,14 +96,14 @@ class HomeController extends Controller
 		$xx = new \stdClass;
 		$xx->index = 0;
 
-		$x = $request->noheader
+		$dn = $request->dn ? Crypt::decrypt($request->dn) : '';
+
+		return $request->noheader
 			? view(sprintf('components.attribute.widget.%s',$id))
-				->with('o',Factory::create($id,[]))
+				->with('o',Factory::create($dn,$id,[],$request->oc ?: []))
 				->with('value',$request->value)
 				->with('loop',$xx)
-			: (new AttributeType(Factory::create($id,[]),TRUE,collect($request->oc ?: [])))->render();
-
-		return $x;
+			: (new AttributeType(Factory::create($dn,$id,[],$request->oc ?: []),TRUE,collect($request->oc ?: [])))->render();
 	}
 
 	public function entry_create(EntryAddRequest $request): \Illuminate\Http\RedirectResponse
@@ -214,7 +214,8 @@ class HomeController extends Controller
 	 */
 	public function entry_objectclass_add(Request $request): Collection
 	{
-		$oc = Factory::create('objectclass',$request->oc);
+		$dn = $request->key ? Crypt::decryptString($request->dn) : '';
+		$oc = Factory::create($dn,'objectclass',$request->oc);
 
 		$ocs = $oc
 			->structural

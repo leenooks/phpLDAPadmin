@@ -15,9 +15,17 @@ final class ObjectClass extends Attribute
 	// The schema ObjectClasses for this objectclass of a DN
 	protected Collection $oc_schema;
 
-	public function __construct(string $name,array $values)
+	/**
+	 * Create an ObjectClass Attribute
+	 *
+	 * @param string $dn DN this attribute is used in
+	 * @param string $name Name of the attribute
+	 * @param array $values Current Values
+	 * @param array $oc ObjectClasses that the DN has, that includes this attribute
+	 */
+	public function __construct(string $dn,string $name,array $values,array $oc=[])
 	{
-		parent::__construct($name,$values);
+		parent::__construct($dn,$name,$values,$oc);
 
 		$this->oc_schema = config('server')
 			->schema('objectclasses')

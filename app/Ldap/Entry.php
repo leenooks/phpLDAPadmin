@@ -82,22 +82,22 @@ class Entry extends Model
 
 	/**
 	 * As attribute values are updated, or new ones created, we need to mirror that
-	 * into our $objects
+	 * into our $objects. This is called when we $o->key = $value
 	 *
 	 * @param string $key
 	 * @param mixed $value
 	 * @return $this
 	 */
-	public function setAttribute(string $key, mixed $value): static
+	public function setAttribute(string $key,mixed $value): static
 	{
 		parent::setAttribute($key,$value);
 
 		$key = $this->normalizeAttributeKey($key);
 
-		if ((! $this->objects->get($key)) && $value)
-			$this->objects->put($key,Factory::create($key,[]));
+		$o = $this->objects->get($key) ?: Factory::create($this->dn ?: '',$key,[],Arr::get($this->attributes,'objectclass',[]));
+		$o->values = collect($this->attributes[$key]);
 
-		$this->objects->get($key)->values = collect($this->attributes[$key]);
+		$this->objects->put($key,$o);
 
 		return $this;
 	}
@@ -140,7 +140,18 @@ class Entry extends Model
 
 	/* METHODS */
 
-	public function addAttribute(string $key,mixed $value): void
+	/**
+	 * Add an attribute to this entry, if the attribute already exists, then we'll add the value to the existing item.
+	 *
+	 * This is primarily used by LDIF imports, where attributes have multiple entries over multiple lines
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 * @return void
+	 * @throws AttributeException
+	 * @note Attributes added this way dont have objectclass information, and the Model::attributes are not populated
+	 */
+	public function addAttributeItem(string $key,mixed $value): void
 	{
 		// While $value is mixed, it can only be a string
 		if (! is_string($value))
@@ -151,15 +162,10 @@ class Entry extends Model
 		if (! config('server')->schema('attributetypes')->has($key))
 			throw new AttributeException(sprintf('Schema doesnt have attribute [%s]',$key));
 
-		if ($x=$this->objects->get($key)) {
-			$x->addValue($value);
+		$o = $this->objects->get($key) ?: Attribute\Factory::create($this->dn ?: '',$key,[]);
+		$o->addValue($value);
 
-		} else {
-			$o = Attribute\Factory::create($key,[]);
-			$o->values = collect(Arr::wrap($value));
-
-			$this->objects->put($key,$o);
-		}
+		$this->objects->put($key,$o);
 	}
 
 	/**
@@ -178,11 +184,11 @@ class Entry extends Model
 				$attribute = $matches[1];
 
 				// If the attribute doesnt exist we'll create it
-				$o = Arr::get($result,$attribute,Factory::create($attribute,Arr::get($this->original,$attribute,[])));
+				$o = Arr::get($result,$attribute,Factory::create($this->dn,$attribute,Arr::get($this->original,$attribute,[]),Arr::get($this->original,'objectclass',[])));
 				$o->setLangTag($matches[3],$values);
 
 			} else {
-				$o = Factory::create($attribute,Arr::get($this->original,$attribute,[]));
+				$o = Factory::create($this->dn,$attribute,Arr::get($this->original,$attribute,[]),Arr::get($this->original,'objectclass',[]));
 			}
 
 			if (! $result->has($attribute)) {
@@ -299,7 +305,7 @@ class Entry extends Model
 
 	private function getRDNObject(): Attribute\RDN
 	{
-		$o = new Attribute\RDN('dn',['']);
+		$o = new Attribute\RDN('','dn',['']);
 		// @todo for an existing object, return the base.
 		$o->setBase($this->rdnbase);
 		$o->setAttributes($this->getAvailableAttributes()->filter(fn($item)=>$item->required));

@@ -3,9 +3,9 @@
 namespace App\Classes\LDAP;
 
 use Illuminate\Support\Collection;
+use LdapRecord\LdapRecordException;
 
 use App\Exceptions\Import\GeneralException;
-use App\Exceptions\Import\ObjectExistsException;
 use App\Ldap\Entry;
 
 /**
@@ -48,7 +48,6 @@ abstract class Import
 	 * @param int $action
 	 * @return Collection
 	 * @throws GeneralException
-	 * @throws ObjectExistsException
 	 */
 	final protected function commit(Entry $o,int $action): Collection
 	{
@@ -57,15 +56,24 @@ abstract class Import
 				try {
 					$o->save();
 
-				} catch (\Exception $e) {
-					return collect([
-						'dn'=>$o->getDN(),
-						'result'=>sprintf('%d: %s (%s)',
-							($x=$e->getDetailedError())->getErrorCode(),
-							$x->getErrorMessage(),
-							$x->getDiagnosticMessage(),
-						)
-					]);
+				} catch (LdapRecordException $e) {
+					if ($e->getDetailedError())
+						return collect([
+							'dn'=>$o->getDN(),
+							'result'=>sprintf('%d: %s (%s)',
+								($x=$e->getDetailedError())->getErrorCode(),
+								$x->getErrorMessage(),
+								$x->getDiagnosticMessage(),
+							)
+						]);
+					else
+						return collect([
+							'dn'=>$o->getDN(),
+							'result'=>sprintf('%d: %s',
+								$e->getCode(),
+								$e->getMessage(),
+							)
+						]);
 				}
 
 				return collect(['dn'=>$o->getDN(),'result'=>__('Created')]);

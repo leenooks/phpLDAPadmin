@@ -34,10 +34,14 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	// The schema's representation of this attribute
 	protected(set) ?AttributeType $schema;
 
+	// The DN this object is in
+	protected(set) string $dn;
 	// The old values for this attribute - helps with isDirty() to determine if there is an update pending
 	protected(set) Collection $values_old;
 	// Current Values
 	public Collection $values;
+	// The other object classes of the entry that include this attribute
+	protected(set) Collection $oc;
 
 	/*
 	# Has the attribute been modified
@@ -90,12 +94,22 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	protected $postvalue = array();
 	*/
 
-	public function __construct(string $name,array $values)
+	/**
+	 * Create an Attribute
+	 *
+	 * @param string $dn DN this attribute is used in
+	 * @param string $name Name of the attribute
+	 * @param array $values Current Values
+	 * @param array $oc ObjectClasses that the DN has, that includes this attribute
+	 */
+	public function __construct(string $dn,string $name,array $values,array $oc=[])
 	{
+		$this->dn = $dn;
 		$this->name = $name;
 		$this->values_old = collect($values);
 
 		$this->values = collect();
+		$this->oc = collect($oc);
 		$this->lang_tags = collect();
 
 		$this->schema = (new Server)
