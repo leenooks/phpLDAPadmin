@@ -38,23 +38,23 @@
 			rdn_attr = $('select#rdn').val();
 
 			if (rdn_attr) {
-				$('#'+rdn_attr).find('input').attr('readonly',true);
+				$('#'+rdn_attr).find('input').first().attr('readonly',true);
 				set_rdn_value();
 			}
 
 			function set_rdn_value() {
 				if (rdn_attr && rdn_value_set)
-					$('#'+rdn_attr).find('input').val($('input#rdn_value').val());
+					$('#'+rdn_attr).find('input').first().val($('input#rdn_value').val());
 			}
 
 			$('select#rdn').on('change',function() {
 				// if rdn_attr is already set (and its now different), remove read only and clear value
 				if (rdn_attr)
-					$('#'+rdn_attr).find('input').attr('readonly',false).val('');
+					$('#'+rdn_attr).find('input').first().attr('readonly',false).val('');
 
 				// set RDN attribute read-only
 				if (rdn_attr = $(this).val())
-					$('#'+rdn_attr).find('input').attr('readonly',true).val('');
+					$('#'+rdn_attr).find('input').first().attr('readonly',true).val('');
 
 				set_rdn_value();
 			})
