@@ -320,11 +320,12 @@ final class AttributeType extends Base {
 	 * that is the list of objectClasses which must have this attribute.
 	 *
 	 * @param string $name The name of the objectClass to add.
+	 * @param bool $structural
 	 */
-	public function addRequiredByObjectClass(string $name): void
+	public function addRequiredByObjectClass(string $name,bool $structural): void
 	{
-		if (! $this->required_by_object_classes->contains($name))
-			$this->required_by_object_classes->push($name);
+		if (! $this->required_by_object_classes->has($name))
+			$this->required_by_object_classes->put($name,$structural);
 	}
 
 	/**
@@ -332,6 +333,7 @@ final class AttributeType extends Base {
 	 * that is the list of objectClasses which provide this attribute.
 	 *
 	 * @param string $name The name of the objectClass to add.
+	 * @param bool $structural
 	 */
 	public function addUsedInObjectClass(string $name,bool $structural): void
 	{
@@ -544,7 +546,7 @@ final class AttributeType extends Base {
 	 */
 	public function validation(array $array): ?array
 	{
-		// For each item in array, we need to get the OC heirachy
+		// For each item in array, we need to get the OC hierarchy
 		$heirachy = collect($array)
 			->filter()
 			->map(fn($item)=>config('server')

@@ -16,7 +16,9 @@ use App\Exceptions\InvalidUsage;
 
 class Entry extends Model
 {
+	// Our Attribute objects
 	private Collection $objects;
+	/* @deprecated */
 	private bool $noObjectAttributes = FALSE;
 	// For new entries, this is the container that this entry will be stored in
 	private string $rdnbase;
@@ -176,6 +178,7 @@ class Entry extends Model
 	private function getAttributesAsObjects(): Collection
 	{
 		$result = collect();
+		$entry_oc = Arr::get($this->attributes,'objectclass',[]);
 
 		foreach ($this->attributes as $attribute => $values) {
 			// If the attribute name has tags
@@ -184,17 +187,22 @@ class Entry extends Model
 				$attribute = $matches[1];
 
 				// If the attribute doesnt exist we'll create it
-				$o = Arr::get($result,$attribute,Factory::create($this->dn,$attribute,Arr::get($this->original,$attribute,[]),Arr::get($this->original,'objectclass',[])));
+				$o = Arr::get(
+					$result,
+					$attribute,
+					Factory::create(
+						$this->dn,
+						$attribute,
+						Arr::get($this->original,$attribute,[]),
+						$entry_oc,
+					));
 				$o->setLangTag($matches[3],$values);
 
 			} else {
-				$o = Factory::create($this->dn,$attribute,Arr::get($this->original,$attribute,[]),Arr::get($this->original,'objectclass',[]));
+				$o = Factory::create($this->dn,$attribute,Arr::get($this->original,$attribute,[]),$entry_oc);
 			}
 
 			if (! $result->has($attribute)) {
-				// Set the rdn flag
-				$o->is_rdn = preg_match('/^'.$attribute.'=/i',$this->dn);
-
 				// Store our new values to know if this attribute has changed
 				$o->values = collect($values);
 
@@ -306,7 +314,7 @@ class Entry extends Model
 	private function getRDNObject(): Attribute\RDN
 	{
 		$o = new Attribute\RDN('','dn',['']);
-		// @todo for an existing object, return the base.
+		// @todo for an existing object, rdnbase would be null, so dynamically get it from the DN.
 		$o->setBase($this->rdnbase);
 		$o->setAttributes($this->getAvailableAttributes()->filter(fn($item)=>$item->required));
 
@@ -430,6 +438,7 @@ class Entry extends Model
 	 * Dont convert our $this->attributes to $this->objects when creating a new Entry::class
 	 *
 	 * @return $this
+	 * @deprecated
 	 */
 	public function noObjectAttributes(): static
 	{

@@ -107,6 +107,24 @@
 						</td>
 					</tr>
 					<tr>
+						<td>@lang('Required by ObjectClasses')</td>
+						<td>
+							@if ($o->required_by_object_classes->count())
+								@foreach ($o->required_by_object_classes as $class => $structural)
+									@if($structural)
+										<strong>
+									@endif
+									<a class="objectclass" id="{{ strtolower($class) }}" href="#{{ strtolower($class) }}">{{ $class }}</a>
+									@if($structural)
+										</strong>
+									@endif
+								@endforeach
+							@else
+								@lang('(none)')
+							@endif
+						</td>
+					</tr>
+					<tr>
 						<td>@lang('Force as MAY by config')</td><td><strong>@lang($o->forced_as_may ? 'Yes' : 'No')</strong></td>
 					</tr>
 					</tbody>

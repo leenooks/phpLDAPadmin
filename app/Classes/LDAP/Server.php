@@ -428,7 +428,7 @@ final class Server
 						// Add Required By.
 						foreach ($must_attrs as $attr_name)
 							if ($this->attributetypes->has(strtolower($attr_name)))
-								$this->attributetypes[strtolower($attr_name)]->addRequiredByObjectClass($object_class->name);
+								$this->attributetypes[strtolower($attr_name)]->addRequiredByObjectClass($object_class->name,$object_class->isStructural());
 
 						// Force May
 						foreach ($object_class->getForceMayAttrs() as $attr_name)

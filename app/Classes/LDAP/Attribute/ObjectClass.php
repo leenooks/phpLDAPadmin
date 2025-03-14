@@ -21,15 +21,15 @@ final class ObjectClass extends Attribute
 	 * @param string $dn DN this attribute is used in
 	 * @param string $name Name of the attribute
 	 * @param array $values Current Values
-	 * @param array $oc ObjectClasses that the DN has, that includes this attribute
+	 * @param array $oc The objectclasses that the DN of this attribute has
 	 */
 	public function __construct(string $dn,string $name,array $values,array $oc=[])
 	{
-		parent::__construct($dn,$name,$values,$oc);
+		parent::__construct($dn,$name,$values,['top']);
 
 		$this->oc_schema = config('server')
 			->schema('objectclasses')
-			->filter(fn($item)=>$this->values->contains($item->name));
+			->filter(fn($item)=>$this->values->merge($this->values_old)->unique()->contains($item->name));
 	}
 
 	public function __get(string $key): mixed

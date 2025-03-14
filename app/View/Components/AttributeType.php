@@ -11,17 +11,15 @@ use App\Classes\LDAP\Attribute as LDAPAttribute;
 
 class AttributeType extends Component
 {
-	public Collection $oc;
-	public LDAPAttribute $o;
-	public bool $new;
+	private LDAPAttribute $o;
+	private bool $new;
 
 	/**
 	 * Create a new component instance.
 	 */
-	public function __construct(LDAPAttribute $o,bool $new=FALSE,?Collection $oc=NULL)
+	public function __construct(LDAPAttribute $o,bool $new=FALSE)
 	{
 		$this->o = $o;
-		$this->oc = $oc;
 		$this->new = $new;
 	}
 
@@ -32,7 +30,6 @@ class AttributeType extends Component
 	{
 		return view('components.attribute-type')
 			->with('o',$this->o)
-			->with('oc',$this->oc)
 			->with('new',$this->new);
 	}
 }

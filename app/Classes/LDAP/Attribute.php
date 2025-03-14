@@ -20,9 +20,6 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	// Is this attribute an internal attribute
 	protected(set) bool $is_internal = FALSE;
 
-	// Is this attribute the RDN?
-	public bool $is_rdn = FALSE;
-
 	// MIN/MAX number of values
 	protected(set) int $min_values_count = 0;
 	protected(set) int $max_values_count = 0;
@@ -40,7 +37,7 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	protected(set) Collection $values_old;
 	// Current Values
 	public Collection $values;
-	// The other object classes of the entry that include this attribute
+	// The objectclasses of the entry that has this attribute
 	protected(set) Collection $oc;
 
 	/*
@@ -100,7 +97,7 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	 * @param string $dn DN this attribute is used in
 	 * @param string $name Name of the attribute
 	 * @param array $values Current Values
-	 * @param array $oc ObjectClasses that the DN has, that includes this attribute
+	 * @param array $oc The objectclasses that the DN of this attribute has
 	 */
 	public function __construct(string $dn,string $name,array $values,array $oc=[])
 	{
@@ -143,6 +140,10 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 			'hints' => $this->hints(),
 			// Can this attribute be edited
 			'is_editable' => $this->schema ? $this->schema->{$key} : NULL,
+			// Objectclasses that required this attribute for an LDAP entry
+			'required' => $this->required(),
+			// Is this attribute an RDN attribute
+			'is_rdn' => $this->isRDN(),
 			// We prefer the name as per the schema if it exists
 			'name' => $this->schema ? $this->schema->{$key} : $this->{$key},
 			// Attribute name in lower case
@@ -232,11 +233,8 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 		// If this attribute name is an alias for the schema attribute name
 		// @todo
 
-		// objectClasses requiring this attribute
-		// @todo limit this to this DNs objectclasses
-		// eg: $result->put('required','Required by objectClasses: a,b');
-		if ($this->required_by->count())
-			$result->put(__('required'),sprintf('%s: %s',__('Required Attribute by ObjectClass(es)'),$this->required_by->join(',')));
+		if ($this->required()->count())
+			$result->put(__('required'),sprintf('%s: %s',__('Required Attribute by ObjectClass(es)'),$this->required()->join(', ')));
 
 		// This attribute has language tags
 		if ($this->lang_tags->count())
@@ -254,6 +252,22 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	{
 		return ($this->values_old->count() !== $this->values->count())
 			|| ($this->values->diff($this->values_old)->count() !== 0);
+	}
+
+	/**
+	 * Work out if this attribute is an RDN attribute
+	 *
+	 * @return bool
+	 */
+	public function isRDN(): bool
+	{
+		// If we dont have an DN, then we cant know
+		if (! $this->dn)
+			return FALSE;
+
+		$rdns = collect(explode('+',substr($this->dn,0,strpos($this->dn,','))));
+
+		return $rdns->filter(fn($item) => str_starts_with($item,$this->name.'='))->count() > 0;
 	}
 
 	/**
@@ -285,6 +299,19 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	public function render_item_new(int $key): ?string
 	{
 		return Arr::get($this->values,$key);
+	}
+
+	/**
+	 * Work out if this attribute is required by an objectClass the entry has
+	 *
+	 * @return Collection
+	 */
+	public function required(): Collection
+	{
+		// If we dont have any objectclasses then we cant know if it is required
+		return $this->oc->count()
+			? $this->oc->intersect($this->schema->required_by_object_classes->keys())->sort()
+			: collect();
 	}
 
 	/**
