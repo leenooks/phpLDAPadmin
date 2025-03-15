@@ -179,34 +179,34 @@ class Entry extends Model
 		$result = collect();
 		$entry_oc = Arr::get($this->attributes,'objectclass',[]);
 
-		foreach ($this->attributes as $attribute => $values) {
+		foreach ($this->attributes as $attrtag => $values) {
 			// If the attribute name has tags
 			$matches = [];
-			if (preg_match('/^([a-zA-Z]+)(;([a-zA-Z-;]+))+/',$attribute,$matches)) {
+			if (preg_match('/^([a-zA-Z]+);+([a-zA-Z-;]+)/',$attrtag,$matches)) {
 				$attribute = $matches[1];
-
-				// If the attribute doesnt exist we'll create it
-				$o = Arr::get(
-					$result,
-					$attribute,
-					Factory::create(
-						$this->dn,
-						$attribute,
-						Arr::get($this->original,$attribute,[]),
-						$entry_oc,
-					));
-				$o->setLangTag($matches[3],$values);
+				$tags = $matches[2];
 
 			} else {
-				$o = Factory::create($this->dn,$attribute,Arr::get($this->original,$attribute,[]),$entry_oc);
+				$attribute = $attrtag;
+				$tags = NULL;
 			}
 
-			if (! $result->has($attribute)) {
-				// Store our new values to know if this attribute has changed
-				$o->values = collect($values);
+			$orig = Arr::get($this->original,$attrtag,[]);
 
-				$result->put($attribute,$o);
-			}
+			// If the attribute doesnt exist we'll create it
+			$o = Arr::get(
+				$result,
+				$attribute,
+				Factory::create(
+					$this->dn,
+					$attribute,
+					[$tags=>$orig],
+					$entry_oc,
+				));
+
+			$o->values = $o->values->merge([$tags=>$values]);
+
+			$result->put($attribute,$o);
 		}
 
 		$sort = collect(config('pla.attr_display_order',[]))->map(fn($item)=>strtolower($item));
@@ -275,6 +275,35 @@ class Entry extends Model
 	}
 
 	/**
+	 * Identify the language tags (RFC 3866) used by this entry
+	 *
+	 * @return Collection
+	 */
+	public function getLangTags(): Collection
+	{
+		return $this->getObjects()
+			->map(fn($item)=>$item
+				->values
+				->keys()
+				->filter(fn($item)=>preg_match('/lang-[A-Za-z0-9-]+;?/',$item)))
+			->filter(fn($item)=>$item->count());
+	}
+
+	/**
+	 * Of all the items with lang tags, which ones have more than 1 lang tag
+	 *
+	 * @return Collection
+	 */
+	public function getLangMultiTags(): Collection
+	{
+		return $this->getLangTags()
+			->map(fn($item)=>$item->values()
+				->map(fn($item)=>explode(';',$item))
+				->filter(fn($item)=>count($item) > 1))
+			->filter(fn($item)=>$item->count());
+	}
+
+	/**
 	 * Get an attribute as an object
 	 *
 	 * @param string $key
@@ -297,6 +326,28 @@ class Entry extends Model
 			$this->objects = $this->getAttributesAsObjects();
 
 		return $this->objects;
+	}
+
+	/**
+	 * Find other attribute tags used by this entry
+	 *
+	 * @return Collection
+	 */
+	public function getOtherTags(): Collection
+	{
+		return $this->getObjects()
+			->map(fn($item)=>$item
+				->values
+				->keys()
+				->filter(fn($item)=>
+					$item && collect(explode(';',$item))->filter(
+						fn($item)=>
+							(! preg_match('/^lang-[A-Za-z0-9-]+$/',$item))
+							&& (! preg_match('/^binary$/',$item))
+						)
+						->count())
+			)
+			->filter(fn($item)=>$item->count());
 	}
 
 	/**

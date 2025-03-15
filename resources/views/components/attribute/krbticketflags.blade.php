@@ -1,23 +1,29 @@
 <!-- $o=KrbTicketFlags::class -->
 <x-attribute.layout :edit="$edit ?? FALSE" :new="$new ?? FALSE" :o="$o">
-	@foreach(($o->values->count() ? $o->values : ($new ? [0] : NULL)) as $value)
-		@if($edit)
-			<div id="32"></div>
-			<div id="16"></div>
+	<!-- krbticketflags cannot handle multivalue tags -->
+	@if($o->values->keys()->count() <= 1)
+		@foreach((count($o->values->first()) ? $o->values->first() : ($new ? [0] : NULL)) as $value)
+			@if($edit)
+				<div id="32"></div>
+				<div id="16"></div>
 
-			<div class="input-group has-validation mb-3">
-				<input type="hidden" @class(['form-control','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$loop->index)),'mb-1','border-focus'=>$o->values->contains($value)]) name="{{ $o->name_lc }}[]" value="{{ $value }}" @readonly(true)>
+				<div class="input-group has-validation mb-3">
+					<input type="hidden" @class(['form-control','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$loop->index)),'mb-1','border-focus'=>$o->values->contains($value)]) name="{{ $o->name_lc }}[]" value="{{ $value }}" @readonly(true)>
 
-				<div class="invalid-feedback pb-2">
-					@if($e)
-						{{ join('|',$e) }}
-					@endif
+					<div class="invalid-feedback pb-2">
+						@if($e)
+							{{ join('|',$e) }}
+						@endif
+					</div>
 				</div>
-			</div>
-		@else
-			{{ $value }}
-		@endif
-	@endforeach
+			@else
+				{{ $value }}
+			@endif
+		@endforeach
+
+	@else
+		<x-alert.attribute_tags_cant_manage :tags="$o->values->keys()"/>
+	@endif
 </x-attribute.layout>
 
 @section($o->name_lc.'-scripts')

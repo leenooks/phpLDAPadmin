@@ -26,6 +26,12 @@
 						<x-attribute :o="$o->getObject('entryuuid')" :na="__('Unknown')"/>
 					</th>
 				</tr>
+				@if(($x=$o->getLangTags())->count())
+					<tr class="mt-1">
+						<td class="p-0 pe-2">Tags</td>
+						<th class="p-0">{{ $x->flatMap(fn($item)=>$item->values())->unique()->join(', ') }}</th>
+					</tr>
+				@endif
 			</table>
 		</td>
 	</tr>
