@@ -133,11 +133,10 @@ class Entry extends Model
 	 * Return a key to use for sorting
 	 *
 	 * @return string
-	 * @todo This should be the DN in reverse order
 	 */
 	public function getSortKeyAttribute(): string
 	{
-		return $this->getDn();
+		return collect(explode(',',$this->getDn()))->reverse()->join(',');
 	}
 
 	/* METHODS */
