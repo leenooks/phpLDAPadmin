@@ -4,6 +4,60 @@
 	@include('fragment.dn.header',['o'=>($o ?? $o=$server->fetch($dn))])
 @endsection
 
+@section('page_actions')
+	<div class="row">
+		<div class="col">
+			<div class="action-buttons float-end">
+				<ul class="nav">
+					@if(isset($page_actions) && $page_actions->contains('export'))
+						<li>
+							<span data-bs-toggle="modal" data-bs-target="#entry_export-modal">
+								<button class="btn btn-outline-dark p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Export')"><i class="fas fa-fw fa-download fs-5"></i></button>
+							</span>
+						</li>
+					@endif
+					@if(isset($page_actions) && $page_actions->contains('copy'))
+						<li>
+							<button class="btn btn-outline-dark p-1 m-1" id="entry-copy-move" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Copy/Move')" disabled><i class="fas fa-fw fa-copy fs-5"></i></button>
+						</li>
+					@endif
+					@if((isset($page_actions) && $page_actions->contains('edit')) || old())
+						<li>
+							<button class="btn btn-outline-dark p-1 m-1" id="entry-edit" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Edit Entry')"><i class="fas fa-fw fa-edit fs-5"></i></button>
+						</li>
+					@endif
+					<!-- @todo Dont offer the delete button for an entry with children -->
+					@if(isset($page_actions) && $page_actions->contains('delete'))
+						<li>
+							<span id="entry-delete" data-bs-toggle="modal" data-bs-target="#page-modal">
+								<button class="btn btn-outline-danger p-1 m-1" data-bs-custom-class="custom-tooltip-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Delete Entry')"><i class="fas fa-fw fa-trash-can fs-5"></i></button>
+							</span>
+						</li>
+					@endif
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col">
+			@if(($x=$o->getOtherTags())->count())
+				<div class="ms-4 mt-4 alert alert-danger p-2" style="max-width: 30em; font-size: 0.80em;">
+					This entry has [<strong>{!! $x->flatten()->join('</strong>, <strong>') !!}</strong>] tags used by [<strong>{!! $x->keys()->join('</strong>, <strong>') !!}</strong>] that cant be managed by PLA. You can though manage those tags with an LDIF import.
+				</div>
+			@elseif(($x=$o->getLangMultiTags())->count())
+				<div class="ms-4 mt-4 alert alert-danger p-2" style="max-width: 30em; font-size: 0.80em;">
+					This entry has multi-language tags used by [<strong>{!! $x->keys()->join('</strong>, <strong>') !!}</strong>] that cant be managed by PLA. You can though manage those lang tags with an LDIF import.
+				</div>
+			@elseif(($x=$o->getLangTags())->count())
+				<div class="ms-4 mt-4 alert alert-warning p-2" style="max-width: 30em; font-size: 0.80em;">
+					This entry has language tags used by [<strong>{!! $x->keys()->join('</strong>, <strong>') !!}</strong>] that cant be managed by PLA yet. You can though manage those lang tags with an LDIF import.
+				</div>
+			@endif
+		</div>
+	</div>
+@endsection
+
 @section('main-content')
 	<x-note/>
 	<x-updated/>
