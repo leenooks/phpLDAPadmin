@@ -1,6 +1,7 @@
+<!-- @todo We are not handling redirect backs yet with updated passwords -->
 <!-- $o=Password::class -->
 <x-attribute.layout :edit="$edit ?? FALSE" :new="$new ?? FALSE" :o="$o">
-	@foreach($o->values as $value)
+	@foreach($o->values_old as $value)
 		@if($edit)
 			<div class="input-group has-validation mb-3">
 				<x-form.select id="userpassword_hash_{{$loop->index}}" name="userpassword_hash[]" :value="$o->hash($value)->id()" :options="$helpers" allowclear="false" :disabled="true"/>

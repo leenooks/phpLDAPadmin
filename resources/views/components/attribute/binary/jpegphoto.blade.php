@@ -2,7 +2,7 @@
 <!-- $o=Binary\JpegPhoto::class -->
 <x-attribute.layout :edit="$edit" :new="false" :o="$o">
 	<table class="table table-borderless p-0 m-0">
-		@foreach (($old ? $o->values_old : $o->values) as $value)
+		@foreach ($o->values_old as $value)
 			<tr>
 				@switch ($x=$f->buffer($value,FILEINFO_MIME_TYPE))
 					@case('image/jpeg')
