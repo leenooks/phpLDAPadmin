@@ -2,13 +2,14 @@
 
 namespace App\Ldap;
 
+use LdapRecord\Configuration\DomainConfiguration;
 use LdapRecord\Connection as ConnectionBase;
 use LdapRecord\LdapInterface;
 
 class Connection extends ConnectionBase
 {
 
-	public function __construct($config = [], LdapInterface $ldap = null)
+	public function __construct(DomainConfiguration|array $config=[],?LdapInterface $ldap=NULL)
 	{
 		parent::__construct($config,$ldap);
 

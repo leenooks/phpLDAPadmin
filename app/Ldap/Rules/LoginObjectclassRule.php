@@ -14,7 +14,7 @@ use LdapRecord\Models\Model as LdapRecord;
  */
 class LoginObjectclassRule implements Rule
 {
-    public function passes(LdapRecord $user, Eloquent $model = null): bool
+    public function passes(LdapRecord $user,?Eloquent $model=NULL): bool
     {
 		if ($x=config('pla.login.objectclass')) {
 			return count(array_intersect($user->objectclass,$x));

@@ -12,7 +12,7 @@ final class SMD5 extends Base
 		return $source === $this->encode($compare,$this->salted_salt($source));
 	}
 
-	public function encode(string $password,string $salt=NULL): string
+	public function encode(string $password,?string $salt=NULL): string
 	{
 		if (is_null($salt))
 			$salt = hex2bin(random_salt(self::salt));

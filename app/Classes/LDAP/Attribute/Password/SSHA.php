@@ -12,7 +12,7 @@ final class SSHA extends Base
 		return $source === $this->encode($compare,$this->salted_salt($source));
 	}
 
-	public function encode(string $password,string $salt=NULL): string
+	public function encode(string $password,?string $salt=NULL): string
 	{
 		return sprintf('{%s}%s',self::key,$this->salted_hash($password,'sha1',self::salt,$salt));
 	}
