@@ -36,7 +36,7 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	// The old values for this attribute - helps with isDirty() to determine if there is an update pending
 	protected(set) Collection $values_old;
 	// Current Values
-	public Collection $values;
+	protected Collection $values;
 	// The objectclasses of the entry that has this attribute
 	protected(set) Collection $oc;
 
@@ -152,9 +152,24 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 			'required_by' => $this->schema?->required_by_object_classes ?: collect(),
 			// Used in Object Classes
 			'used_in' => $this->schema?->used_in_object_classes ?: collect(),
+			// The current attribute values
+			'values' => $this->values,
 
 			default => throw new \Exception('Unknown key:' . $key),
 		};
+	}
+
+	public function __set(string $key,mixed $values)
+	{
+		switch ($key) {
+			case 'values':
+				if (is_null($values)) throw new \Exception('values is null?');
+				$this->values = $values;
+				break;
+
+			default:
+				throw new \Exception('Unknown key:'.$key);
+		}
 	}
 
 	public function __toString(): string

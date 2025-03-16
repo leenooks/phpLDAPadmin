@@ -22,6 +22,7 @@ class Factory
 	public const map = [
 		'createtimestamp' => Internal\Timestamp::class,
 		'creatorsname' => Internal\DN::class,
+		'configcontext' => Schema\Generic::class,
 		'contextcsn' => Internal\CSN::class,
 		'entrycsn' => Internal\CSN::class,
 		'entrydn' => Internal\DN::class,
@@ -34,6 +35,8 @@ class Factory
 		'jpegphoto' => Binary\JpegPhoto::class,
 		'modifytimestamp' => Internal\Timestamp::class,
 		'modifiersname' => Internal\DN::class,
+		'monitorcontext' => Schema\Generic::class,
+		'namingcontexts' => Schema\Generic::class,
 		'numsubordinates' => Internal\NumSubordinates::class,
 		'objectclass' => ObjectClass::class,
 		'pwdpolicysubentry' => Internal\PwdPolicySubentry::class,
@@ -42,6 +45,7 @@ class Factory
 		'supportedcontrol' => Schema\OID::class,
 		'supportedextension' => Schema\OID::class,
 		'supportedfeatures' => Schema\OID::class,
+		'supportedldapversion' => Schema\Generic::class,
 		'supportedsaslmechanisms' => Schema\Mechanisms::class,
 		'userpassword' => Password::class,
 	];

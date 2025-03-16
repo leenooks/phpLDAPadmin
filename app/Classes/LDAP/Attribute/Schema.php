@@ -30,7 +30,7 @@ abstract class Schema extends Attribute
 			while (! feof($f)) {
 				$line = trim(fgets($f));
 
-				if (! $line OR preg_match('/^#/',$line))
+				if ((! $line) || preg_match('/^#/',$line))
 					continue;
 
 				$fields = explode(':',$line);
@@ -41,12 +41,24 @@ abstract class Schema extends Attribute
 					'desc'=>Arr::get($fields,3,__('No description available, can you help with one?')),
 				]);
 			}
+
 			fclose($f);
 
 			return $result;
 		});
 
-		return Arr::get(($array ? $array->get($string) : []),$key);
+		return Arr::get(($array ? $array->get($string) : []),
+			$key,
+			__('No description available, can you help with one?'));
+	}
+
+	public function __get(string $key): mixed
+	{
+		return match ($key) {
+			// Schema items shouldnt have language tags, so our values should only have 1 key
+			'values'=>collect($this->values->first()),
+			default => parent::__get($key),
+		};
 	}
 
 	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
