@@ -1,5 +1,5 @@
 <!-- @todo We are not handling redirect backs yet with updated passwords -->
-<!-- $o=Password::class -->
+<!-- $o=KrbPrincipleKey::class -->
 <x-attribute.layout :edit="$edit ?? FALSE" :new="$new ?? FALSE" :o="$o">
 	@foreach($o->values_old as $value)
 		@if($edit)

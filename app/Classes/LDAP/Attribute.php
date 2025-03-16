@@ -19,6 +19,7 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 
 	// Is this attribute an internal attribute
 	protected(set) bool $is_internal = FALSE;
+	protected(set) bool $no_attr_tags = FALSE;
 
 	// MIN/MAX number of values
 	protected(set) int $min_values_count = 0;
@@ -34,9 +35,9 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	// The DN this object is in
 	protected(set) string $dn;
 	// The old values for this attribute - helps with isDirty() to determine if there is an update pending
-	protected(set) Collection $values_old;
+	private Collection $_values_old;
 	// Current Values
-	protected Collection $values;
+	private Collection $_values;
 	// The objectclasses of the entry that has this attribute
 	protected(set) Collection $oc;
 
@@ -153,7 +154,10 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 			// Used in Object Classes
 			'used_in' => $this->schema?->used_in_object_classes ?: collect(),
 			// The current attribute values
-			'values' => $this->values,
+			'values' => $this->no_attr_tags ? collect($this->_values->first()) : $this->_values,
+			// The original attribute values
+			'values_old' => $this->no_attr_tags ? collect($this->_values_old->first()) : $this->_values_old,
+
 
 			default => throw new \Exception('Unknown key:' . $key),
 		};
@@ -163,8 +167,11 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	{
 		switch ($key) {
 			case 'values':
-				if (is_null($values)) throw new \Exception('values is null?');
-				$this->values = $values;
+				$this->_values = $values;
+				break;
+
+			case 'values_old':
+				$this->_values_old = $values;
 				break;
 
 			default:

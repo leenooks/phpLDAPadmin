@@ -13,6 +13,8 @@ use Illuminate\Support\Collection;
  */
 final class KrbTicketFlags extends Attribute
 {
+	protected(set) bool $no_attr_tags = TRUE;
+
 	private const DISALLOW_POSTDATED	= 0x00000001;
 	private const DISALLOW_FORWARDABLE	= 0x00000002;
 	private const DISALLOW_TGT_BASED	= 0x00000004;

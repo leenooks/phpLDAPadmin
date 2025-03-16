@@ -1,1 +1,2 @@
-@include('components.attribute.krblastfailedauth')
+<!-- $o=NoAttrTags/Generic::class -->
+@include('components.form.disabled.datetime')

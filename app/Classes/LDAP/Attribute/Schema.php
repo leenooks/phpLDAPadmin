@@ -14,6 +14,7 @@ use App\Classes\LDAP\Attribute;
 abstract class Schema extends Attribute
 {
 	protected bool $internal = TRUE;
+	protected(set) bool $no_attr_tags = TRUE;
 
 	protected static function _get(string $filename,string $string,string $key): ?string
 	{
@@ -50,15 +51,6 @@ abstract class Schema extends Attribute
 		return Arr::get(($array ? $array->get($string) : []),
 			$key,
 			__('No description available, can you help with one?'));
-	}
-
-	public function __get(string $key): mixed
-	{
-		return match ($key) {
-			// Schema items shouldnt have language tags, so our values should only have 1 key
-			'values'=>collect($this->values->first()),
-			default => parent::__get($key),
-		};
 	}
 
 	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View

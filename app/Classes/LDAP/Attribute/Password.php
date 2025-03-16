@@ -15,6 +15,9 @@ use App\Traits\MD5Updates;
 final class Password extends Attribute
 {
 	use MD5Updates;
+
+	protected(set) bool $no_attr_tags = TRUE;
+
 	private const password_helpers = 'Classes/LDAP/Attribute/Password';
 	public const commands = 'App\\Classes\\LDAP\\Attribute\\Password\\';
 

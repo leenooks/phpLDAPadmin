@@ -15,6 +15,8 @@ final class KrbPrincipalKey extends Attribute
 {
 	use MD5Updates;
 
+	protected(set) bool $no_attr_tags = TRUE;
+
 	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
 	{
 		return view('components.attribute.krbprincipalkey')

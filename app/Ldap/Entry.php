@@ -282,6 +282,7 @@ class Entry extends Model
 	public function getLangTags(): Collection
 	{
 		return $this->getObjects()
+			->filter(fn($item)=>! $item->no_attr_tags)
 			->map(fn($item)=>$item
 				->values
 				->keys()
@@ -336,6 +337,7 @@ class Entry extends Model
 	public function getOtherTags(): Collection
 	{
 		return $this->getObjects()
+			->filter(fn($item)=>! $item->no_attr_tags)
 			->map(fn($item)=>$item
 				->values
 				->keys()
