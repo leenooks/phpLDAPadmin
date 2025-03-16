@@ -25,10 +25,6 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	protected(set) int $min_values_count = 0;
 	protected(set) int $max_values_count = 0;
 
-	// RFC3866 Language Tags
-	/* @deprecated use $values/$values_old when playing with language tags */
-	protected Collection $lang_tags;
-
 	// The schema's representation of this attribute
 	protected(set) ?AttributeType $schema;
 
@@ -108,7 +104,6 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 
 		$this->values = collect();
 		$this->oc = collect($oc);
-		$this->lang_tags = collect();
 
 		$this->schema = (new Server)
 			->schema('attributetypes',$name);
@@ -157,7 +152,6 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 			'values' => $this->no_attr_tags ? collect($this->_values->first()) : $this->_values,
 			// The original attribute values
 			'values_old' => $this->no_attr_tags ? collect($this->_values_old->first()) : $this->_values_old,
-
 
 			default => throw new \Exception('Unknown key:' . $key),
 		};
@@ -258,10 +252,6 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 		if ($this->required()->count())
 			$result->put(__('required'),sprintf('%s: %s',__('Required Attribute by ObjectClass(es)'),$this->required()->join(', ')));
 
-		// This attribute has language tags
-		if ($this->lang_tags->count())
-			$result->put(__('language tags'),sprintf('%s: %d',__('This Attribute has Language Tags'),$this->lang_tags->count()));
-
 		return $result->toArray();
 	}
 
@@ -334,18 +324,5 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 		return $this->oc->count()
 			? $this->oc->intersect($this->schema->required_by_object_classes->keys())->sort()
 			: collect();
-	}
-
-	/**
-	 * If this attribute has RFC3866 Language Tags, this will enable those values to be captured
-	 *
-	 * @param string $tag
-	 * @param array $value
-	 * @return void
-	 * @deprecated
-	 */
-	public function setLangTag(string $tag,array $value): void
-	{
-		$this->lang_tags->put($tag,$value);
 	}
 }
