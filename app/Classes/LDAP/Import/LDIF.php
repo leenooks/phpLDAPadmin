@@ -59,8 +59,6 @@ class LDIF extends Import
 					$base64encoded = FALSE;
 					$attribute = NULL;
 					$value = '';
-
-				// Else its a blank line
 				}
 
 				continue;
@@ -69,7 +67,7 @@ class LDIF extends Import
 			$m = [];
 			preg_match('/^([a-zA-Z0-9;-]+)(:+)\s+(.*)$/',$line,$m);
 
-			switch ($x=Arr::get($m,1)) {
+			switch (Arr::get($m,1)) {
 				case 'changetype':
 					if ($m[2] !== ':')
 						throw new GeneralException(sprintf('ChangeType cannot be base64 encoded set at [%d]. (line %d)',$version,$c));
@@ -133,7 +131,6 @@ class LDIF extends Import
 
 					// Start of a new attribute
 					$base64encoded = ($m[2] === '::');
-					// @todo Need to parse attributes with ';' options
 					$attribute = $m[1];
 					$value = $m[3];
 
@@ -160,7 +157,7 @@ class LDIF extends Import
 	}
 
 	public function readEntry() {
-		static $haveVersion = false;
+		static $haveVersion = FALSE;
 
 		if ($lines = $this->nextLines()) {
 
@@ -179,7 +176,7 @@ class LDIF extends Import
 				} else
 					$changetype = 'add';
 
-				$this->template = new Template($this->server_id,null,null,$changetype);
+				$this->template = new Template($this->server_id,NULL,NULL,$changetype);
 
 				switch ($changetype) {
 					case 'add':
@@ -201,7 +198,7 @@ class LDIF extends Import
 							return $this->error(sprintf('%s %s',_('DN does not exist'),$dn),$lines);
 
 						$this->template->setDN($dn);
-						$this->template->accept(false,true);
+						$this->template->accept(FALSE,TRUE);
 
 						return $this->getModifyDetails($lines);
 
@@ -228,6 +225,6 @@ class LDIF extends Import
 				return $this->error(_('A valid dn line is required'),$lines);
 
 		} else
-			return false;
+			return FALSE;
 	}
 }

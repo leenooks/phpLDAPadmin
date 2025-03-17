@@ -178,9 +178,13 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 		return $this->name;
 	}
 
-	public function addValue(string $value): void
+	public function addValue(string $tag,string $value): void
 	{
-		$this->values->push($value);
+		$this->_values->put(
+			$tag,
+			$this->_values
+				->get($tag,collect())
+				->push($value));
 	}
 
 	public function current(): mixed

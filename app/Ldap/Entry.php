@@ -16,6 +16,9 @@ use App\Exceptions\InvalidUsage;
 
 class Entry extends Model
 {
+	private const TAG_CHARS = 'a-zA-Z0-9-';
+	private const TAG_CHARS_LANG = 'lang-['.self::TAG_CHARS.']';
+
 	// Our Attribute objects
 	private Collection $objects;
 	/* @deprecated */
@@ -51,7 +54,11 @@ class Entry extends Model
 	public function getAttributes(): array
 	{
 		return $this->objects
-			->map(fn($item)=>$item->values)
+			->flatMap(fn($item)=>
+				($item->no_attr_tags)
+					? [strtolower($item->name)=>$item->values]
+					: $item->values
+						->flatMap(fn($v,$k)=>[strtolower($item->name.($k ? ';'.$k : ''))=>$v]))
 			->toArray();
 	}
 
@@ -158,15 +165,26 @@ class Entry extends Model
 		if (! is_string($value))
 			throw new \Exception('value should be a string');
 
-		$key = $this->normalizeAttributeKey($key);
+		$key = $this->normalizeAttributeKey(strtolower($key));
 
-		if (! config('server')->schema('attributetypes')->has($key))
-			throw new AttributeException(sprintf('Schema doesnt have attribute [%s]',$key));
+		// If the attribute name has tags
+		$matches = [];
+		if (preg_match(sprintf('/^([%s]+);+([%s;]+)/',self::TAG_CHARS,self::TAG_CHARS),$key,$matches)) {
+			$attribute = $matches[1];
+			$tags = $matches[2];
 
-		$o = $this->objects->get($key) ?: Attribute\Factory::create($this->dn ?: '',$key,[]);
-		$o->addValue($value);
+		} else {
+			$attribute = $key;
+			$tags = '';
+		}
 
-		$this->objects->put($key,$o);
+		if (! config('server')->schema('attributetypes')->has($attribute))
+			throw new AttributeException(sprintf('Schema doesnt have attribute [%s]',$attribute));
+
+		$o = $this->objects->get($attribute) ?: Attribute\Factory::create($this->dn ?: '',$attribute,[]);
+		$o->addValue($tags,$value);
+
+		$this->objects->put($attribute,$o);
 	}
 
 	/**
@@ -182,7 +200,7 @@ class Entry extends Model
 		foreach ($this->attributes as $attrtag => $values) {
 			// If the attribute name has tags
 			$matches = [];
-			if (preg_match('/^([a-zA-Z]+);+([a-zA-Z-;]+)/',$attrtag,$matches)) {
+			if (preg_match(sprintf('/^([%s]+);+([%s;]+)/',self::TAG_CHARS,self::TAG_CHARS),$attrtag,$matches)) {
 				$attribute = $matches[1];
 				$tags = $matches[2];
 
@@ -286,7 +304,7 @@ class Entry extends Model
 			->map(fn($item)=>$item
 				->values
 				->keys()
-				->filter(fn($item)=>preg_match('/lang-[A-Za-z0-9-]+;?/',$item)))
+				->filter(fn($item)=>preg_match(sprintf('/%s+;?/',self::TAG_CHARS_LANG),$item)))
 			->filter(fn($item)=>$item->count());
 	}
 
@@ -344,7 +362,7 @@ class Entry extends Model
 				->filter(fn($item)=>
 					$item && collect(explode(';',$item))->filter(
 						fn($item)=>
-							(! preg_match('/^lang-[A-Za-z0-9-]+$/',$item))
+							(! preg_match(sprintf('/^%s+$/',self::TAG_CHARS_LANG),$item))
 							&& (! preg_match('/^binary$/',$item))
 						)
 						->count())
