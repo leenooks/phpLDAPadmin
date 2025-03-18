@@ -1,10 +1,6 @@
 name: Create Docker Image
 run-name: ${{ gitea.actor }} Building Docker Image 🐳
-on:
-  push:
-    branches:
-      - '*'
-      - '!master'
+on: [push]
 env:
   DOCKER_HOST: tcp://127.0.0.1:2375
   ASSETS: c2780a3
