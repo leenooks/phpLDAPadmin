@@ -10,10 +10,10 @@
 
 <div class="modal-footer">
 	<x-modal.close/>
-	<button id="entry_export-download" type="button" class="btn btn-sm btn-primary">Download</button>
+	<button id="entry_export-download" type="button" class="btn btn-sm btn-primary">@lang('Download')</button>
 </div>
 
-<script>
+<script type="text/javascript">
 	function download(filename,text) {
 		var element = document.createElement('a');
 

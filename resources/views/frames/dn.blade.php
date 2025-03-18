@@ -113,42 +113,6 @@
 			<div class="modal-content"></div>
 		</div>
 	</div>
-
-	@if($up=$o->getObject('userpassword'))
-		<!-- CHECK USERPASSWORD -->
-		<div class="modal fade" id="userpassword_check-modal" tabindex="-1" aria-labelledby="userpassword_check-label" aria-hidden="true">
-			<div class="modal-dialog modal-lg modal-fullscreen-lg-down">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h1 class="modal-title fs-5" id="userpassword_check-label">Check Passwords for {{ $dn }}</h1>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-
-					<div class="modal-body">
-						<table class="table table-bordered p-1">
-							@foreach($up->values as $key => $value)
-								<tr>
-									<th>Check</th>
-									<td>{{ $up->render_item_old($key) }}</td>
-									<td>
-										<input type="password" style="width: 90%" name="password[{{$key}}]"> <i class="fas fa-fw fa-lock"></i>
-										<div class="invalid-feedback pb-2">
-											Invalid Password
-										</div>
-									</td>
-								</tr>
-							@endforeach
-						</table>
-					</div>
-
-					<div class="modal-footer">
-						<button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-sm btn-primary" id="userpassword_check-submit"><i class="fas fa-fw fa-spinner fa-spin d-none"></i> Check</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	@endif
 @endsection
 
 @section('page-scripts')
@@ -254,7 +218,7 @@
 								that = $('#entry_export');
 
 								$.ajax({
-									type: 'GET',
+									method: 'GET',
 									url: '{{ url('entry/export') }}/'+dn,
 									cache: false,
 									beforeSend: function() {
@@ -276,67 +240,29 @@
 						})
 						break;
 
+					case 'entry-userpassword-check':
+						$.ajax({
+							method: 'GET',
+							url: '{{ url('modal/userpassword-check') }}/'+dn,
+							dataType: 'html',
+							cache: false,
+							beforeSend: function() {
+								that.empty().append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
+							},
+							success: function(data) {
+								that.empty().html(data);
+							},
+							error: function(e) {
+								if (e.status !== 412)
+									alert('That didnt work? Please try again....');
+							},
+						})
+						break;
+
 					default:
 						console.log('No action for button:'+$(item.relatedTarget).attr('id'));
 				}
 			});
-
-			@if($up)
-				$('button[id=userpassword_check-submit]').on('click',function(item) {
-					var that = $(this);
-
-					var passwords = $('#userpassword_check-modal')
-						.find('input[name^="password["')
-						.map((key,item)=>item.value);
-
-					if (passwords.length === 0) return false;
-
-					$.ajax({
-						type: 'POST',
-						beforeSend: function() {
-							// Disable submit, add spinning icon
-							that.prop('disabled',true);
-							that.find('i').removeClass('d-none');
-						},
-						complete: function() {
-							that.prop('disabled',false);
-							that.find('i').addClass('d-none');
-						},
-						success: function(data) {
-							data.forEach(function(item,key) {
-								var i = $('#userpassword_check-modal')
-									.find('input[name="password['+key+']')
-									.siblings('i');
-
-								var feedback = $('#userpassword_check-modal')
-									.find('input[name="password['+key+']')
-									.siblings('div.invalid-feedback');
-
-								if (item === 'OK') {
-									i.removeClass('text-danger').addClass('text-success').removeClass('fa-lock').addClass('fa-lock-open');
-									if (feedback.is(':visible'))
-										feedback.hide();
-								} else {
-									i.removeClass('text-success').addClass('text-danger').removeClass('fa-lock-open').addClass('fa-lock');
-									if (! feedback.is(':visible'))
-										feedback.show();
-								}
-							})
-						},
-						error: function(e) {
-							if (e.status !== 412)
-								alert('That didnt work? Please try again....');
-						},
-						url: '{{ url('entry/password/check') }}',
-						data: {
-							dn: dn,
-							password: Array.from(passwords),
-						},
-						dataType: 'json',
-						cache: false
-					})
-				});
-			@endif
 
 			@if(old())
 				editmode();

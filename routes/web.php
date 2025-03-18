@@ -55,5 +55,6 @@ Route::controller(HomeController::class)->group(function() {
 
 		Route::view('modal/delete/{dn}','modals.entry-delete');
 		Route::view('modal/export/{dn}','modals.entry-export');
+		Route::view('modal/userpassword-check/{dn}','modals.entry-userpassword-check');
 	});
 });
