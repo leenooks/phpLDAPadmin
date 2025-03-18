@@ -54,5 +54,6 @@ Route::controller(HomeController::class)->group(function() {
 		Route::post('import/process/{type}','import');
 
 		Route::view('modal/delete/{dn}','modals.entry-delete');
+		Route::view('modal/export/{dn}','modals.entry-export');
 	});
 });

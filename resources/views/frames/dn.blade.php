@@ -11,7 +11,7 @@
 				<ul class="nav">
 					@if(isset($page_actions) && $page_actions->contains('export'))
 						<li>
-							<span data-bs-toggle="modal" data-bs-target="#entry_export-modal">
+							<span id="entry-export" data-bs-toggle="modal" data-bs-target="#page-modal">
 								<button class="btn btn-outline-dark p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Export')"><i class="fas fa-fw fa-download fs-5"></i></button>
 							</span>
 						</li>
@@ -114,27 +114,6 @@
 		</div>
 	</div>
 
-	<!-- EXPORT -->
-	<div class="modal fade" id="entry_export-modal" tabindex="-1" aria-labelledby="entry_export-label" aria-hidden="true">
-		<div class="modal-dialog modal-lg modal-fullscreen-lg-down">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="entry_export-label">LDIF for {{ $dn }}</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-
-				<div class="modal-body">
-					<div id="entry_export"><div class="fa-3x"><i class="fas fa-spinner fa-pulse fa-sm"></i></div></div>
-				</div>
-
-				<div class="modal-footer">
-					<button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-sm btn-primary" id="entry_export-download">Download</button>
-				</div>
-			</div>
-		</div>
-	</div>
-
 	@if($up=$o->getObject('userpassword'))
 		<!-- CHECK USERPASSWORD -->
 		<div class="modal fade" id="userpassword_check-modal" tabindex="-1" aria-labelledby="userpassword_check-label" aria-hidden="true">
@@ -176,18 +155,6 @@
 	<script type="text/javascript">
 		var dn = '{{ $o->getDNSecure() }}';
 		var oc = {!! $o->getObject('objectclass')->values !!};
-
-		function download(filename,text) {
-			var element = document.createElement('a');
-
-			element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-			element.setAttribute('download', filename);
-			element.style.display = 'none';
-			document.body.appendChild(element);
-
-			element.click();
-			document.body.removeChild(element);
-		}
 
 		function editmode() {
 			$('#dn-edit input[name="dn"]').val(dn);
@@ -231,7 +198,7 @@
 						$('#newattrs').append(data);
 					},
 					error: function(e) {
-						if (e.status != 412)
+						if (e.status !== 412)
 							alert('That didnt work? Please try again....');
 					},
 					url: '{{ url('entry/attr/add') }}/'+item.target.value,
@@ -247,13 +214,6 @@
 				// If there are no more options
 				if ($(this).find("option").length === 1)
 					$('#newattr-select').remove();
-			});
-
-			$('#entry_export-download').on('click',function(item) {
-				item.preventDefault();
-
-				let ldif = $('#entry_export').find('pre:first'); // update this selector in your local version
-				download('ldap-export.ldif',ldif.html());
 			});
 
 			$('#page-modal').on('shown.bs.modal',function(item) {
@@ -273,7 +233,44 @@
 								that.empty().html(data);
 							},
 							error: function(e) {
-								if (e.status != 412)
+								if (e.status !== 412)
+									alert('That didnt work? Please try again....');
+							},
+						})
+						break;
+
+					case 'entry-export':
+						$.ajax({
+							method: 'GET',
+							url: '{{ url('modal/export') }}/'+dn,
+							dataType: 'html',
+							cache: false,
+							beforeSend: function() {
+								that.empty().append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
+							},
+							success: function(data) {
+								that.empty().html(data);
+
+								that = $('#entry_export');
+
+								$.ajax({
+									type: 'GET',
+									url: '{{ url('entry/export') }}/'+dn,
+									cache: false,
+									beforeSend: function() {
+										that.empty().append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
+									},
+									success: function(data) {
+										that.empty().append(data);
+									},
+									error: function(e) {
+										if (e.status !== 412)
+											alert('That didnt work? Please try again....');
+									},
+								})
+							},
+							error: function(e) {
+								if (e.status !== 412)
 									alert('That didnt work? Please try again....');
 							},
 						})
@@ -283,21 +280,6 @@
 						console.log('No action for button:'+$(item.relatedTarget).attr('id'));
 				}
 			});
-
-			$('#entry_export-modal').on('shown.bs.modal',function() {
-				$.ajax({
-					type: 'GET',
-					success: function(data) {
-						$('#entry_export').empty().append(data);
-					},
-					error: function(e) {
-						if (e.status != 412)
-							alert('That didnt work? Please try again....');
-					},
-					url: '{{ url('entry/export') }}/'+dn,
-					cache: false
-				})
-			})
 
 			@if($up)
 				$('button[id=userpassword_check-submit]').on('click',function(item) {
@@ -342,7 +324,7 @@
 							})
 						},
 						error: function(e) {
-							if (e.status != 412)
+							if (e.status !== 412)
 								alert('That didnt work? Please try again....');
 						},
 						url: '{{ url('entry/password/check') }}',

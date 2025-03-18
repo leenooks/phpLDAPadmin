@@ -1,5 +1,5 @@
 <div class="modal-header bg-danger text-white">
-	<h1 class="modal-title fs-5" id="entry_export-label">
+	<h1 class="modal-title fs-5">
 		<i class="fas fa-fw fa-exclamation-triangle"></i> <strong>@lang('WARNING')</strong>: @lang('Delete') <strong>{{ Crypt::decryptString($dn) }}</strong>
 	</h1>
 	<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
