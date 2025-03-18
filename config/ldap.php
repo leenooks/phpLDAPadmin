@@ -123,16 +123,12 @@ return [
 	'validation' => [
 		'objectclass' => [
 			'objectclass'=>[
-				'required',
-				'array',
-				'min:1',
 				new HasStructuralObjectClass,
 			]
 		],
 		'gidnumber' => [
 			'gidnumber'=> [
 				'sometimes',
-				'array',
 				'max:1'
 			],
 			'gidnumber.*' => [
@@ -144,7 +140,6 @@ return [
 		'mail' => [
 			'mail'=>[
 				'sometimes',
-				'array',
 				'min:1'
 			],
 			'mail.*' => [
@@ -155,7 +150,6 @@ return [
 		'userpassword' => [
 			'userpassword' => [
 				'sometimes',
-				'array',
 				'min:1'
 			],
 			'userpassword.*' => [
@@ -166,7 +160,6 @@ return [
 		'uidnumber' => [
 			'uidnumber' => [
 				'sometimes',
-				'array',
 				'max:1'
 			],
 			'uidnumber.*' => [

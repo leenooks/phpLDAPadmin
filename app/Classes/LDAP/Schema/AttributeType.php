@@ -557,10 +557,13 @@ final class AttributeType extends Base {
 			->unique();
 
 		$validation = collect(Arr::get(config('ldap.validation'),$this->name_lc,[]));
+
+		// Add in schema required by conditions
 		if (($heirachy->intersect($this->required_by_object_classes->keys())->count() > 0)
 			&& (! collect($validation->get($this->name_lc))->contains('required'))) {
-			$validation->put($this->name_lc,array_merge(['required','min:1'],$validation->get($this->name_lc,[])))
-				->put($this->name_lc.'.*',array_merge(['required','min:1'],$validation->get($this->name_lc.'.*',[])));
+			$validation
+				->prepend(array_merge(['required','min:1'],$validation->get($this->name_lc.'.0',[])),$this->name_lc.'.0')
+				->prepend(array_merge(['required','array','min:1'],$validation->get($this->name_lc,[])),$this->name_lc);
 		}
 
 		return $validation->toArray();
