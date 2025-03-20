@@ -247,14 +247,15 @@ final class Server
 	 * @param string $dn
 	 * @return LDAPCollection|NULL
 	 */
-	public function children(string $dn): ?LDAPCollection
+	public function children(string $dn,array $attrs=['dn']): ?LDAPCollection
 	{
 		return ($x=(new Entry)
 			->on($this->connection)
 			->cache(Carbon::now()->addSeconds(Config::get('ldap.cache.time')))
-			->select(['*','hassubordinates'])
+			->select(array_merge($attrs,['hassubordinates']))
 			->setDn($dn)
 			->list()
+			->orderBy('dn')
 			->get()) ? $x : NULL;
 	}
 
