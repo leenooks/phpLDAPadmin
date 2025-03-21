@@ -24,7 +24,7 @@ abstract class SchemaItem {
 	# The description of this schema item.
 	protected $description = '';
 	# Boolean value indicating whether this objectClass is obsolete
-	private $is_obsolete = false;
+	protected $is_obsolete = false;
 
 	public function setOID($oid) {
 		if (DEBUG_ENABLED && (($fargs=func_get_args())||$fargs='NOARGS'))
