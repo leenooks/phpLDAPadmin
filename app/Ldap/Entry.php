@@ -14,6 +14,11 @@ use App\Classes\LDAP\Export\LDIF;
 use App\Exceptions\Import\AttributeException;
 use App\Exceptions\InvalidUsage;
 
+/**
+ * An Entry in an LDAP server
+ *
+ * @notes https://ldap.com/ldap-dns-and-rdns
+ */
 class Entry extends Model
 {
 	private const TAG_CHARS = 'a-zA-Z0-9-';
@@ -480,7 +485,7 @@ class Entry extends Model
 			return 'fas fa-theater-masks';
 
 		elseif (in_array('country',$objectclasses))
-			return sprintf('flag %s',strtolower(Arr::get($this->c,0)));
+			return sprintf('flag %s',strtolower(Arr::get($this->c ?: [],0)));
 
 		elseif (in_array('device',$objectclasses))
 			return 'fas fa-mobile-alt';
