@@ -1,6 +1,6 @@
 <!-- @todo We are not handling redirect backs yet with updated passwords -->
 <!-- $o=Password::class -->
-<x-attribute.layout :edit="$edit ?? FALSE" :new="$new ?? FALSE" :o="$o">
+<x-attribute.layout :edit="$edit ?? FALSE" :new="$new ?? FALSE" :o="$o" :langtag="$langtag">
 	@foreach($o->values_old as $value)
 		@if($edit)
 			<div class="input-group has-validation mb-3">

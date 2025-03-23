@@ -13,14 +13,16 @@ class AttributeType extends Component
 {
 	private LDAPAttribute $o;
 	private bool $new;
+	private string $langtag;
 
 	/**
 	 * Create a new component instance.
 	 */
-	public function __construct(LDAPAttribute $o,bool $new=FALSE)
+	public function __construct(LDAPAttribute $o,bool $new=FALSE,string $langtag='')
 	{
 		$this->o = $o;
 		$this->new = $new;
+		$this->langtag = $langtag;
 	}
 
 	/**
@@ -30,6 +32,7 @@ class AttributeType extends Component
 	{
 		return view('components.attribute-type')
 			->with('o',$this->o)
-			->with('new',$this->new);
+			->with('new',$this->new)
+			->with('langtag',$this->langtag);
 	}
 }

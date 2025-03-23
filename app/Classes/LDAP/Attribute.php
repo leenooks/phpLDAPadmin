@@ -178,14 +178,7 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 		return $this->name;
 	}
 
-	public function addValue(string $tag,string $value): void
-	{
-		$this->_values->put(
-			$tag,
-			$this->_values
-				->get($tag,collect())
-				->push($value));
-	}
+	/* INTERFACE */
 
 	public function current(): mixed
 	{
@@ -237,6 +230,24 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 		// We cannot clear values using array syntax
 	}
 
+	/* METHODS */
+
+	public function addValue(string $tag,array $values): void
+	{
+		$this->_values->put(
+			$tag,
+			array_unique(array_merge($this->_values
+				->get($tag,[]),$values)));
+	}
+
+	public function addValueOld(string $tag,array $values): void
+	{
+		$this->_values_old->put(
+			$tag,
+			array_unique(array_merge($this->_values_old
+				->get($tag,[]),$values)));
+	}
+
 	/**
 	 * Return the hints about this attribute, ie: RDN, Required, etc
 	 *
@@ -266,8 +277,10 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	 */
 	public function isDirty(): bool
 	{
-		return ($this->values_old->count() !== $this->values->count())
-			|| ($this->values->diff($this->values_old)->count() !== 0);
+		return (($a=$this->values_old->dot())->keys()->count() !== ($b=$this->values->dot())->keys()->count())
+			|| ($a->values()->count() !== $b->values()->count())
+			|| ($a->keys()->diff($b->keys())->count() !== 0)
+			|| ($a->values()->diff($b->values())->count() !== 0);
 	}
 
 	/**
@@ -328,5 +341,19 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 		return $this->oc->count()
 			? $this->oc->intersect($this->required_by->keys())->sort()
 			: collect();
+	}
+
+	public function tagValues(string $tag=''): Collection
+	{
+		return $this->_values
+			->filter(fn($item,$key)=>($key === $tag))
+			->values();
+	}
+
+	public function tagValuesOld(string $tag=''): Collection
+	{
+		return $this->_values_old
+			->filter(fn($item,$key)=>($key === $tag))
+			->values();
 	}
 }

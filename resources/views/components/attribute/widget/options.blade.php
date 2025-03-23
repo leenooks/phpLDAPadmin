@@ -4,7 +4,7 @@
 <span class="p-0 m-0">
 	@if($o->is_rdn)
 		<br/>
-		<span class="btn btn-sm btn-outline-focus mt-3" disabled><i class="fas fa-fw fa-exchange"></i> @lang('Rename')</span>
+		<button class="btn btn-sm btn-outline-focus mt-3" disabled><i class="fas fa-fw fa-exchange"></i> @lang('Rename')</button>
 	@elseif($edit && $o->can_addvalues)
 		@switch(get_class($o))
 			@case(JpegPhoto::class)

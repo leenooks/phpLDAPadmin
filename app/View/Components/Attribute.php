@@ -12,17 +12,19 @@ class Attribute extends Component
 	public bool $edit;
 	public bool $new;
 	public bool $old;
-	public ?string $na;
+	public string $langtag;
+	public ?string $na;	// Text to render if the LDAPAttribute is null
 
     /**
      * Create a new component instance.
      */
-    public function __construct(?LDAPAttribute $o,bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,?string $na=NULL)
+    public function __construct(?LDAPAttribute $o,bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag='',?string $na=NULL)
     {
 		$this->o = $o;
 		$this->edit = $edit;
 		$this->old = $old;
 		$this->new = $new;
+		$this->langtag = $langtag;
 		$this->na = $na;
     }
 

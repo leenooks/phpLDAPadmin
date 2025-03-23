@@ -30,7 +30,10 @@ input.form-control.input-group-end {
 
 .custom-tooltip-danger {
 	--bs-tooltip-bg: var(--bs-danger);
+}
 
+.custom-tooltip {
+	--bs-tooltip-bg: var(--bs-gray-900);
 }
 
 .tooltip {

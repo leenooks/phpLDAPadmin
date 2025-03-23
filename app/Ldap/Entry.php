@@ -309,7 +309,9 @@ class Entry extends Model
 			->map(fn($item)=>$item
 				->values
 				->keys()
-				->filter(fn($item)=>preg_match(sprintf('/%s+;?/',self::TAG_CHARS_LANG),$item)))
+				->filter(fn($item)=>preg_match(sprintf('/%s+;?/',self::TAG_CHARS_LANG),$item))
+				->map(fn($item)=>preg_replace('/lang-/','',$item))
+			)
 			->filter(fn($item)=>$item->count());
 	}
 

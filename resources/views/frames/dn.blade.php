@@ -1,7 +1,13 @@
 @extends('layouts.dn')
 
 @section('page_title')
-	@include('fragment.dn.header',['o'=>($o ?? $o=$server->fetch($dn))])
+	@include('fragment.dn.header',[
+		'o'=>($o ?? $o=$server->fetch($dn)),
+		'langtags'=>($langtags=$o->getLangTags()
+			->flatMap(fn($item)=>$item->values())
+			->unique()
+			->sort())
+	])
 @endsection
 
 @section('page_actions')
@@ -71,7 +77,7 @@
 	<div class="main-card mb-3 card">
 		<div class="card-body">
 			<div class="card-header-tabs">
-				<ul class="nav nav-tabs">
+				<ul class="nav nav-tabs mb-0">
 					<li class="nav-item"><a data-bs-toggle="tab" href="#attributes" class="nav-link active">@lang('Attributes')</a></li>
 					<li class="nav-item"><a data-bs-toggle="tab" href="#internal" class="nav-link">@lang('Internal')</a></li>
 					@env(['local'])
@@ -87,9 +93,57 @@
 
 							<input type="hidden" name="dn" value="">
 
-							@foreach ($o->getVisibleAttributes() as $ao)
-								<x-attribute-type :edit="true" :o="$ao"/>
-							@endforeach
+							<div class="card-header border-bottom-0">
+								<div class="btn-actions-pane-right">
+									<div role="group" class="btn-group-sm nav btn-group">
+										@foreach($langtags->prepend('')->push('+') as $tag)
+											<a data-bs-toggle="tab" href="#tab-lang-{{ $tag ?: '_default' }}" class="btn btn-outline-light border-dark-subtle @if(! $loop->index) active @endif @if($loop->last)ndisabled @endif">
+												@switch($tag)
+													@case('')
+														<i class="fas fa-fw fa-border-none" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" title="@lang('No Lang Tag')"></i>
+														@break
+
+													@case('+')
+														<!-- @todo To implement -->
+														<i class="fas fa-fw fa-plus text-dark" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" title="@lang('Add Lang Tag')"></i>
+														@break
+
+													@default
+														<span class="f16" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" title="{{ strtoupper($tag) }}"><i class="flag {{ $tag }}"></i></span>
+												@endswitch
+											</a>
+										@endforeach
+									</div>
+								</div>
+							</div>
+
+							<div class="card-body">
+								<div class="tab-content">
+									@foreach($langtags as $tag)
+										<div class="tab-pane @if(! $loop->index) active @endif" id="tab-lang-{{ $tag ?: '_default' }}" role="tabpanel">
+											@switch($tag)
+												@case('')
+													@foreach ($o->getVisibleAttributes($tag) as $ao)
+														<x-attribute-type :edit="true" :o="$ao" langtag=""/>
+													@endforeach
+													@break
+
+												@case('+')
+													<div class="ms-auto mt-4 alert alert-warning p-2" style="max-width: 30em; font-size: 0.80em;">
+														It is not possible to create new language tags at the moment. This functionality should come soon.<br>
+														You can create them with an LDIF import though.
+													</div>
+													@break
+
+												@default
+													@foreach ($o->getVisibleAttributes($langtag=sprintf('lang-%s',$tag)) as $ao)
+														<x-attribute-type :edit="true" :o="$ao" :langtag="$langtag"/>
+													@endforeach
+											@endswitch
+										</div>
+									@endforeach
+								</div>
+							</div>
 
 							@include('fragment.dn.add_attr')
 						</form>
