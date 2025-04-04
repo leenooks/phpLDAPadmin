@@ -209,7 +209,8 @@ final class Server
 	/**
 	 * Obtain the rootDSE for the server, that gives us server information
 	 *
-	 * @param null $connection
+	 * @param string|null $connection
+	 * @param Carbon|null $cachetime
 	 * @return Entry|null
 	 * @throws ObjectNotFoundException
 	 * @testedin TranslateOidTest::testRootDSE();
@@ -230,7 +231,7 @@ final class Server
 	/**
 	 * Get the Schema DN
 	 *
-	 * @param $connection
+	 * @param string|null $connection
 	 * @return string
 	 * @throws ObjectNotFoundException
 	 */
@@ -245,6 +246,7 @@ final class Server
 	 * Query the server for a DN and return its children and if those children have children.
 	 *
 	 * @param string $dn
+	 * @param array $attrs
 	 * @return LDAPCollection|NULL
 	 */
 	public function children(string $dn,array $attrs=['dn']): ?LDAPCollection
@@ -252,7 +254,10 @@ final class Server
 		return ($x=(new Entry)
 			->on($this->connection)
 			->cache(Carbon::now()->addSeconds(Config::get('ldap.cache.time')))
-			->select(array_merge($attrs,['hassubordinates']))
+			->select(array_merge($attrs,[
+				'hassubordinates',	// Needed for the tree to know if an entry has children
+				'c'					// Needed for the tree to show icons for countries
+			]))
 			->setDn($dn)
 			->list()
 			->orderBy('dn')
@@ -529,7 +534,6 @@ final class Server
 	 *
 	 * @param string $oid
 	 * @return LDAPSyntax|null
-	 * @throws InvalidUsage
 	 */
 	public function schemaSyntaxName(string $oid): ?LDAPSyntax
 	{

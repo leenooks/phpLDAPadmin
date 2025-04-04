@@ -330,7 +330,7 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
     	}
 		// If we dont have any objectclasses then we cant know if it is required
 		return $this->oc->count()
-			? $this->oc->intersect($this->schema->required_by_object_classes->keys())->sort()
+			? $this->oc->intersect($this->required_by->keys())->sort()
 			: collect();
 	}
 }
