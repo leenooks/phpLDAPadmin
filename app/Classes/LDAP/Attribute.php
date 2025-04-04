@@ -324,6 +324,10 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	 */
 	public function required(): Collection
 	{
+		//avoid passing null values that will cause a /frame 409 error
+		if ( !$this->oc || !$this->schema || !$this->schema->required_by_object_classes ) {
+        	return collect();
+    	}
 		// If we dont have any objectclasses then we cant know if it is required
 		return $this->oc->count()
 			? $this->oc->intersect($this->schema->required_by_object_classes->keys())->sort()
