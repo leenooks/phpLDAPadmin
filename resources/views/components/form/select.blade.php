@@ -66,7 +66,7 @@
 			@endif
 
 			@isset($options)
-				@if($options->count() === 1)
+				@if(($autoselect ?? FALSE) && $options->count() === 1)
 					$('#{{ $id ?? $name }}')
 						.val('{{ $options->first()['id'] }}')
 						.trigger("change")
