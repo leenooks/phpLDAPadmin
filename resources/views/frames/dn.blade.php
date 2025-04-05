@@ -9,25 +9,30 @@
 		<div class="col">
 			<div class="action-buttons float-end">
 				<ul class="nav">
-					@if(isset($page_actions) && $page_actions->contains('export'))
+					@if(isset($page_actions) && $page_actions->get('create'))
+						<li>
+							<button class="btn btn-outline-dark p-1 m-1" id="entry-copy-move" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('New Child')" disabled><i class="fas fa-fw fa-diagram-project fs-5"></i></button>
+						</li>
+					@endif
+					@if(isset($page_actions) && $page_actions->get('export'))
 						<li>
 							<span id="entry-export" data-bs-toggle="modal" data-bs-target="#page-modal">
 								<button class="btn btn-outline-dark p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Export')"><i class="fas fa-fw fa-download fs-5"></i></button>
 							</span>
 						</li>
 					@endif
-					@if(isset($page_actions) && $page_actions->contains('copy'))
+					@if(isset($page_actions) && $page_actions->get('copy'))
 						<li>
 							<button class="btn btn-outline-dark p-1 m-1" id="entry-copy-move" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Copy/Move')" disabled><i class="fas fa-fw fa-copy fs-5"></i></button>
 						</li>
 					@endif
-					@if((isset($page_actions) && $page_actions->contains('edit')) || old())
+					@if(isset($page_actions) && $page_actions->get('edit'))
 						<li>
 							<button class="btn btn-outline-dark p-1 m-1" id="entry-edit" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Edit Entry')"><i class="fas fa-fw fa-edit fs-5"></i></button>
 						</li>
 					@endif
 					<!-- @todo Dont offer the delete button for an entry with children -->
-					@if(isset($page_actions) && $page_actions->contains('delete'))
+					@if(isset($page_actions) && $page_actions->get('delete'))
 						<li>
 							<span id="entry-delete" data-bs-toggle="modal" data-bs-target="#page-modal">
 								<button class="btn btn-outline-danger p-1 m-1" data-bs-custom-class="custom-tooltip-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Delete Entry')"><i class="fas fa-fw fa-trash-can fs-5"></i></button>

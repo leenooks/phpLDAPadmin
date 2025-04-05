@@ -61,6 +61,7 @@ Support is known for these LDAP servers:
 - [X] OpenLDAP
 - [X] OpenDJ
 - [ ] Microsoft Active Directory
+- [ ] 389 Directory Server
 
 If there is an LDAP server that you have that you would like to have supported, please open an issue to request it.
 You might need to provide access, provide a copy or instructions to get an environment for testing. If you have enabled 

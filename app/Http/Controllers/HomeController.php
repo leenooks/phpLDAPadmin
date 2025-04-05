@@ -386,7 +386,13 @@ class HomeController extends Controller
 			'dn' => $view
 				->with('dn',$key['dn'])
 				->with('o',$o)
-				->with('page_actions',collect(['edit'=>TRUE])),
+				->with('page_actions',collect([
+					'copy'=>FALSE,
+					'create'=>FALSE,
+					'delete'=>TRUE,
+					'edit'=>TRUE,
+					'export'=>TRUE,
+				])),
 
 			'import' => $view,
 
