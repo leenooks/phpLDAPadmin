@@ -267,19 +267,22 @@ class HomeController extends Controller
 		// We need to process and encrypt the password
 		if ($request->userpassword) {
 			$passwords = [];
-			foreach ($request->userpassword as $key => $value) {
+			$po = $o->getObject('userpassword');
+			foreach (Arr::dot($request->userpassword) as $dotkey => $value) {
 				// If the password is still the MD5 of the old password, then it hasnt changed
-				if (($old=Arr::get($o->userpassword,$key)) && ($value === md5($old))) {
-					array_push($passwords,$old);
+				if (($old=Arr::get($po,$dotkey)) && ($value === md5($old))) {
+					$passwords[$dotkey] = $value;
 					continue;
 				}
 
 				if ($value) {
-					$type = Arr::get($request->userpassword_hash,$key);
-					array_push($passwords,Password::hash_id($type)->encode($value));
+					$type = Arr::get($request->userpassword_hash,$dotkey);
+					$passwords[$dotkey] = Password::hash_id($type)
+						->encode($value);
 				}
 			}
-			$o->userpassword = $passwords;
+
+			$o->userpassword = Arr::undot($passwords);
 		}
 
 		if (! $o->getDirty())

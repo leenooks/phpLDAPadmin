@@ -11,8 +11,8 @@ trait MD5Updates
 {
 	public function isDirty(): bool
 	{
-		foreach ($this->values->diff($this->values_old) as $key => $value)
-			if (md5(Arr::get($this->values_old,$key)) !== $value)
+		foreach ($this->values_old->dot()->keys()->merge($this->values->dot()->keys())->unique() as $dotkey)
+			if (md5(Arr::get($this->values_old->dot(),$dotkey)) !== Arr::get($this->values->dot(),$dotkey))
 				return TRUE;
 
 		return FALSE;

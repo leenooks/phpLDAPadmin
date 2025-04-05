@@ -12,7 +12,7 @@ use App\Ldap\Entry;
 /**
  * Represents an attribute of an LDAP Object
  */
-class Attribute implements \Countable, \ArrayAccess, \Iterator
+class Attribute implements \Countable, \ArrayAccess
 {
 	// Attribute Name
 	protected string $name;
@@ -181,44 +181,19 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 
 	/* INTERFACE */
 
-	public function current(): mixed
-	{
-		return $this->values->get($this->counter);
-	}
-
-	public function next(): void
-	{
-		$this->counter++;
-	}
-
-	public function key(): mixed
-	{
-		return $this->counter;
-	}
-
-	public function valid(): bool
-	{
-		return $this->values->has($this->counter);
-	}
-
-	public function rewind(): void
-	{
-		$this->counter = 0;
-	}
-
 	public function count(): int
 	{
-		return $this->values->count();
+		return $this->_values->dot()->count();
 	}
 
 	public function offsetExists(mixed $offset): bool
 	{
-		return ! is_null($this->values->has($offset));
+		return $this->_values->dot()->has($offset);
 	}
 
 	public function offsetGet(mixed $offset): mixed
 	{
-		return $this->values->get($offset);
+		return $this->_values->dot()->get($offset);
 	}
 
 	public function offsetSet(mixed $offset, mixed $value): void
@@ -323,12 +298,12 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 
 	public function render_item_old(string $dotkey): ?string
 	{
-		return Arr::get($this->_values_old->dot(),$dotkey);
+		return Arr::get($this->values_old->dot(),$dotkey);
 	}
 
 	public function render_item_new(string $dotkey): ?string
 	{
-		return Arr::get($this->_values->dot(),$dotkey);
+		return Arr::get($this->values->dot(),$dotkey);
 	}
 
 	/**
