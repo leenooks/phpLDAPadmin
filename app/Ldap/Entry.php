@@ -23,6 +23,7 @@ class Entry extends Model
 {
 	private const TAG_CHARS = 'a-zA-Z0-9-';
 	private const TAG_CHARS_LANG = 'lang-['.self::TAG_CHARS.']';
+	public const TAG_NOTAG = '_null_';
 
 	// Our Attribute objects
 	private Collection $objects;
@@ -53,8 +54,9 @@ class Entry extends Model
 	/**
 	 * This function overrides getAttributes to use our collection of Attribute objects instead of the models attributes.
 	 *
+	 * This returns an array that should be consistent with $this->attributes
+	 *
 	 * @return array
-	 * @note $this->attributes may not be updated with changes
 	 */
 	public function getAttributes(): array
 	{
@@ -63,7 +65,7 @@ class Entry extends Model
 				($item->no_attr_tags)
 					? [strtolower($item->name)=>$item->values]
 					: $item->values
-						->flatMap(fn($v,$k)=>[strtolower($item->name.($k ? ';'.$k : ''))=>$v]))
+						->flatMap(fn($v,$k)=>[strtolower($item->name.($k !== self::TAG_NOTAG ? ';'.$k : ''))=>$v]))
 			->toArray();
 	}
 
@@ -76,12 +78,10 @@ class Entry extends Model
 	{
 		$key = $this->normalizeAttributeKey($key);
 
-		// @todo Silently ignore keys of language tags - we should work with them
-		if (str_contains($key,';'))
-			return TRUE;
+		list($attribute,$tag) = $this->keytag($key);
 
-		return ((! array_key_exists($key,$this->original)) && (! $this->objects->has($key)))
-			|| (! $this->getObject($key)->isDirty());
+		return ((! array_key_exists($key,$this->original)) && (! $this->objects->has($attribute)))
+			|| (! $this->getObject($attribute)->isDirty());
 	}
 
 	public static function query(bool $noattrs=false): Builder
@@ -98,18 +98,22 @@ class Entry extends Model
 	 * As attribute values are updated, or new ones created, we need to mirror that
 	 * into our $objects. This is called when we $o->key = $value
 	 *
+	 * This function should update $this->attributes and correctly reflect changes in $this->objects
+	 *
 	 * @param string $key
 	 * @param mixed $value
 	 * @return $this
 	 */
 	public function setAttribute(string $key,mixed $value): static
 	{
-		parent::setAttribute($key,$value);
+		foreach ($value as $k => $v)
+			parent::setAttribute($key.($k !== self::TAG_NOTAG ? ';'.$k : ''),$v);
 
 		$key = $this->normalizeAttributeKey($key);
+		list($attribute,$tags) = $this->keytag($key);
 
-		$o = $this->objects->get($key) ?: Factory::create($this->dn ?: '',$key,[],Arr::get($this->attributes,'objectclass',[]));
-		$o->values = collect($this->attributes[$key]);
+		$o = $this->objects->get($attribute) ?: Factory::create($this->dn ?: '',$attribute,[],Arr::get($this->attributes,'objectclass',[]));
+		$o->values = collect($value);
 
 		$this->objects->put($key,$o);
 
@@ -173,21 +177,13 @@ class Entry extends Model
 		$key = $this->normalizeAttributeKey(strtolower($key));
 
 		// If the attribute name has tags
-		$matches = [];
-		if (preg_match(sprintf('/^([%s]+);+([%s;]+)/',self::TAG_CHARS,self::TAG_CHARS),$key,$matches)) {
-			$attribute = $matches[1];
-			$tags = $matches[2];
-
-		} else {
-			$attribute = $key;
-			$tags = '';
-		}
+		list($attribute,$tag) = $this->keytag($key);
 
 		if (! config('server')->schema('attributetypes')->has($attribute))
 			throw new AttributeException(sprintf('Schema doesnt have attribute [%s]',$attribute));
 
 		$o = $this->objects->get($attribute) ?: Attribute\Factory::create($this->dn ?: '',$attribute,[]);
-		$o->addValue($tags,$value);
+		$o->addValue($tag,[$value]);
 
 		$this->objects->put($attribute,$o);
 	}
@@ -203,16 +199,7 @@ class Entry extends Model
 		$entry_oc = Arr::get($this->attributes,'objectclass',[]);
 
 		foreach ($this->attributes as $attrtag => $values) {
-			// If the attribute name has tags
-			$matches = [];
-			if (preg_match(sprintf('/^([%s]+);+([%s;]+)/',self::TAG_CHARS,self::TAG_CHARS),$attrtag,$matches)) {
-				$attribute = $matches[1];
-				$tags = $matches[2];
-
-			} else {
-				$attribute = $attrtag;
-				$tags = NULL;
-			}
+			list($attribute,$tags) = $this->keytag($attrtag);
 
 			$orig = Arr::get($this->original,$attrtag,[]);
 
@@ -227,7 +214,8 @@ class Entry extends Model
 					$entry_oc,
 				));
 
-			$o->values = $o->values->merge([$tags=>$values]);
+			$o->addValue($tags,$values);
+			$o->addValueOld($tags,Arr::get($this->original,$attrtag));
 
 			$result->put($attribute,$o);
 		}
@@ -270,7 +258,7 @@ class Entry extends Model
 	{
 		$result = collect();
 
-		foreach ($this->objectclass as $oc)
+		foreach ($this->getObject('objectclass')->values as $oc)
 			$result = $result->merge(config('server')->schema('objectclasses',$oc)->attributes);
 
 		return $result;
@@ -369,7 +357,8 @@ class Entry extends Model
 				->filter(fn($item)=>
 					$item && collect(explode(';',$item))->filter(
 						fn($item)=>
-							(! preg_match(sprintf('/^%s+$/',self::TAG_CHARS_LANG),$item))
+							(! preg_match(sprintf('/^%s$/',self::TAG_NOTAG),$item))
+							&& (! preg_match(sprintf('/^%s+$/',self::TAG_CHARS_LANG),$item))
 							&& (! preg_match('/^binary$/',$item))
 						)
 						->count())
@@ -381,6 +370,9 @@ class Entry extends Model
 	 * Return a list of attributes without any values
 	 *
 	 * @return Collection
+	 * @todo Dont show attributes that are not provided by an objectclass, make a new function to show those
+	 *       This is for dynamic list items eg: labeledURI, which are not editable.
+	 *       We can highlight those values that are as a result of a dynamic module
 	 */
 	public function getMissingAttributes(): Collection
 	{
@@ -401,12 +393,14 @@ class Entry extends Model
 	/**
 	 * Return this list of user attributes
 	 *
+	 * @param string|null $tag If null return all tags
 	 * @return Collection
 	 */
-	public function getVisibleAttributes(): Collection
+	public function getVisibleAttributes(?string $tag=NULL): Collection
 	{
 		return $this->objects
-			->filter(fn($item)=>! $item->is_internal);
+			->filter(fn($item)=>! $item->is_internal)
+			->filter(fn($item)=>is_null($tag) || count($item->tagValues($tag)) > 0);
 	}
 
 	public function hasAttribute(int|string $key): bool
@@ -452,63 +446,90 @@ class Entry extends Model
 	 */
 	public function icon(): string
 	{
-		$objectclasses = array_map('strtolower',$this->objectclass);
+		$objectclasses = $this->getObject('objectclass')
+			->tagValues()
+			->map(fn($item)=>strtolower($item));
 
 		// Return icon based upon objectClass value
-		if (in_array('person',$objectclasses) ||
-			in_array('organizationalperson',$objectclasses) ||
-			in_array('inetorgperson',$objectclasses) ||
-			in_array('account',$objectclasses) ||
-			in_array('posixaccount',$objectclasses))
-
+		if ($objectclasses->intersect([
+			'account',
+			'inetorgperson',
+			'organizationalperson',
+			'person',
+			'posixaccount',
+		])->count())
 			return 'fas fa-user';
 
-		elseif (in_array('organization',$objectclasses))
+		elseif ($objectclasses->contains('organization'))
 			return 'fas fa-university';
 
-		elseif (in_array('organizationalunit',$objectclasses))
+		elseif ($objectclasses->contains('organizationalunit'))
 			return 'fas fa-object-group';
 
-		elseif (in_array('posixgroup',$objectclasses) ||
-			in_array('groupofnames',$objectclasses) ||
-			in_array('groupofuniquenames',$objectclasses) ||
-			in_array('group',$objectclasses))
-
+		elseif ($objectclasses->intersect([
+			'posixgroup',
+			'groupofnames',
+			'groupofuniquenames',
+			'group',
+		])->count())
 			return 'fas fa-users';
 
-		elseif (in_array('dcobject',$objectclasses) ||
-			in_array('domainrelatedobject',$objectclasses) ||
-			in_array('domain',$objectclasses) ||
-			in_array('builtindomain',$objectclasses))
-
+		elseif ($objectclasses->intersect([
+			'dcobject',
+			'domainrelatedobject',
+			'domain',
+			'builtindomain',
+		])->count())
 			return 'fas fa-network-wired';
 
-		elseif (in_array('alias',$objectclasses))
+		elseif ($objectclasses->contains('alias'))
 			return 'fas fa-theater-masks';
 
-		elseif (in_array('country',$objectclasses))
+		elseif ($objectclasses->contains('country'))
 			return sprintf('flag %s',strtolower(Arr::get($this->c ?: [],0)));
 
-		elseif (in_array('device',$objectclasses))
+		elseif ($objectclasses->contains('device'))
 			return 'fas fa-mobile-alt';
 
-		elseif (in_array('document',$objectclasses))
+		elseif ($objectclasses->contains('document'))
 			return 'fas fa-file-alt';
 
-		elseif (in_array('iphost',$objectclasses))
+		elseif ($objectclasses->contains('iphost'))
 			return 'fas fa-wifi';
 
-		elseif (in_array('room',$objectclasses))
+		elseif ($objectclasses->contains('room'))
 			return 'fas fa-door-open';
 
-		elseif (in_array('server',$objectclasses))
+		elseif ($objectclasses->contains('server'))
 			return 'fas fa-server';
 
-		elseif (in_array('openldaprootdse',$objectclasses))
+		elseif ($objectclasses->contains('openldaprootdse'))
 			return 'fas fa-info';
 
 		// Default
 		return 'fa-fw fas fa-cog';
+	}
+
+	/**
+	 * Given an LDAP attribute, this will return the attribute name and the tag
+	 * eg: description;lang-cn will return [description,lang-cn]
+	 *
+	 * @param string $key
+	 * @return array
+	 */
+	private function keytag(string $key): array
+	{
+		$matches = [];
+		if (preg_match(sprintf('/^([%s]+);+([%s;]+)/',self::TAG_CHARS,self::TAG_CHARS),$key,$matches)) {
+			$attribute = $matches[1];
+			$tags = $matches[2];
+
+		} else {
+			$attribute = $key;
+			$tags = self::TAG_NOTAG;
+		}
+
+		return [$attribute,$tags];
 	}
 
 	/**

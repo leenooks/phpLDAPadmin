@@ -1,3 +1,5 @@
+@use(App\Ldap\Entry)
+
 @extends('layouts.dn')
 
 @section('page_title')
@@ -80,9 +82,6 @@
 				<ul class="nav nav-tabs mb-0">
 					<li class="nav-item"><a data-bs-toggle="tab" href="#attributes" class="nav-link active">@lang('Attributes')</a></li>
 					<li class="nav-item"><a data-bs-toggle="tab" href="#internal" class="nav-link">@lang('Internal')</a></li>
-					@env(['local'])
-						<li class="nav-item"><a data-bs-toggle="tab" href="#debug" class="nav-link">@lang('Debug')</a></li>
-					@endenv
 				</ul>
 
 				<div class="tab-content">
@@ -92,14 +91,13 @@
 							@csrf
 
 							<input type="hidden" name="dn" value="">
-
 							<div class="card-header border-bottom-0">
 								<div class="btn-actions-pane-right">
 									<div role="group" class="btn-group-sm nav btn-group">
-										@foreach($langtags->prepend('')->push('+') as $tag)
+										@foreach($langtags->prepend(Entry::TAG_NOTAG)->push('+') as $tag)
 											<a data-bs-toggle="tab" href="#tab-lang-{{ $tag ?: '_default' }}" class="btn btn-outline-light border-dark-subtle @if(! $loop->index) active @endif @if($loop->last)ndisabled @endif">
 												@switch($tag)
-													@case('')
+													@case(Entry::TAG_NOTAG)
 														<i class="fas fa-fw fa-border-none" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" title="@lang('No Lang Tag')"></i>
 														@break
 
@@ -122,9 +120,9 @@
 									@foreach($langtags as $tag)
 										<div class="tab-pane @if(! $loop->index) active @endif" id="tab-lang-{{ $tag ?: '_default' }}" role="tabpanel">
 											@switch($tag)
-												@case('')
+												@case(Entry::TAG_NOTAG)
 													@foreach ($o->getVisibleAttributes($tag) as $ao)
-														<x-attribute-type :edit="true" :o="$ao" langtag=""/>
+														<x-attribute-type :edit="true" :o="$ao" :langtag="$tag"/>
 													@endforeach
 													@break
 
@@ -157,25 +155,10 @@
 					</div>
 
 					<!-- Internal Attributes -->
-					<div class="tab-pane" id="internal" role="tabpanel">
+					<div class="tab-pane mt-3" id="internal" role="tabpanel">
 						@foreach ($o->getInternalAttributes() as $ao)
 							<x-attribute-type :o="$ao"/>
 						@endforeach
-					</div>
-
-					<!-- Debug -->
-					<div class="tab-pane" id="debug" role="tabpanel">
-						<div class="row">
-							<div class="col-4">
-								@dump($o)
-							</div>
-							<div class="col-4">
-								@dump($o->getAttributes())
-							</div>
-							<div class="col-4">
-								@dump(['available'=>$o->getAvailableAttributes()->pluck('name'),'missing'=>$o->getMissingAttributes()->pluck('name')])
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>

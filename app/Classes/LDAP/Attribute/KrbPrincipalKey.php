@@ -26,18 +26,16 @@ final class KrbPrincipalKey extends Attribute
 			->with('new',$new);
 	}
 
-	public function render_item_old(int $key): ?string
+	public function render_item_old(string $dotkey): ?string
 	{
-		$pw = Arr::get($this->values_old,$key);
-		return $pw
+		return parent::render_item_old($dotkey)
 			? str_repeat('*',16)
 			: NULL;
 	}
 
-	public function render_item_new(int $key): ?string
+	public function render_item_new(string $dotkey): ?string
 	{
-		$pw = Arr::get($this->values,$key);
-		return $pw
+		return parent::render_item_new($dotkey)
 			? str_repeat('*',16)
 			: NULL;
 	}

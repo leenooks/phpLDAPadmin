@@ -1,7 +1,10 @@
 @extends('layouts.dn')
 
 @section('page_title')
-	@include('fragment.dn.header',['o'=>($oo=$server->fetch(old('container',$container)))])
+	@include('fragment.dn.header',[
+		'o'=>($oo=$server->fetch(old('container',$container))),
+		'langtags'=>collect(),
+	])
 @endsection
 
 @section('main-content')

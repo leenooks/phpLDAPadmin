@@ -3,9 +3,9 @@
 namespace App\Classes\LDAP\Attribute;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Attribute;
-use Illuminate\Support\Collection;
 
 /**
  * Represents an attribute whose value is a Kerberos Ticket Flag

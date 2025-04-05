@@ -1,21 +1,21 @@
 <!-- $o=KrbTicketFlags::class -->
 <x-attribute.layout :edit="$edit ?? FALSE" :new="$new ?? FALSE" :o="$o">
-	@foreach(($o->values->count() ? $o->values : ($new ? [0] : NULL)) as $value)
+	@foreach(Arr::get(old($o->name_lc,[$langtag=>$o->tagValues($langtag)]),$langtag,[]) as $key => $value)
 		@if($edit)
 			<div id="32"></div>
 			<div id="16"></div>
 
 			<div class="input-group has-validation mb-3">
-				<input type="hidden" @class(['form-control','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$loop->index)),'mb-1','border-focus'=>$o->values->contains($value)]) name="{{ $o->name_lc }}[]" value="{{ $value }}" @readonly(true)>
+				<input type="hidden" name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ $value }}" @readonly(true)>
 
 				<div class="invalid-feedback pb-2">
-					@if($e)
+					@if($e=$errors->get($o->name_lc.'.'.$loop->index))
 						{{ join('|',$e) }}
 					@endif
 				</div>
 			</div>
 		@else
-			{{ $value }}
+			{{ $o->render_item_old($langtag.'.'.$key) }}
 		@endif
 	@endforeach
 </x-attribute.layout>

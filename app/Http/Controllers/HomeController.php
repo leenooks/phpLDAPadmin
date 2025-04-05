@@ -58,10 +58,10 @@ class HomeController extends Controller
 		$o = new Entry;
 
 		if (count(array_filter($x=old('objectclass',$request->objectclass)))) {
-			$o->objectclass = $x;
+			$o->objectclass = [Entry::TAG_NOTAG=>$x];
 
 			foreach($o->getAvailableAttributes()->filter(fn($item)=>$item->required) as $ao)
-				$o->{$ao->name} = '';
+				$o->{$ao->name} = [Entry::TAG_NOTAG=>''];
 
 			$o->setRDNBase($key['dn']);
 		}
@@ -188,8 +188,6 @@ class HomeController extends Controller
 
 		$result = (new Entry)
 			->query()
-			//->cache(Carbon::now()->addSeconds(Config::get('ldap.cache.time')))
-			//->select(['*'])
 			->setDn($dn)
 			->recursive()
 			->get();

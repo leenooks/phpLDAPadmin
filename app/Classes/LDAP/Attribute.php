@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Schema\AttributeType;
+use App\Ldap\Entry;
 
 /**
  * Represents an attribute of an LDAP Object
@@ -100,9 +101,9 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 	{
 		$this->dn = $dn;
 		$this->name = $name;
-		$this->values_old = collect($values);
+		$this->_values = collect($values);
+		$this->_values_old = collect($values);
 
-		$this->values = collect();
 		$this->oc = collect($oc);
 
 		$this->schema = (new Server)
@@ -149,15 +150,15 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 			// Used in Object Classes
 			'used_in' => $this->schema?->used_in_object_classes ?: collect(),
 			// The current attribute values
-			'values' => $this->no_attr_tags ? collect($this->_values->first()) : $this->_values,
+			'values' => $this->no_attr_tags ? $this->tagValues() : $this->_values,
 			// The original attribute values
-			'values_old' => $this->no_attr_tags ? collect($this->_values_old->first()) : $this->_values_old,
+			'values_old' => $this->no_attr_tags ? $this->tagValuesOld() : $this->_values_old,
 
 			default => throw new \Exception('Unknown key:' . $key),
 		};
 	}
 
-	public function __set(string $key,mixed $values)
+	public function __set(string $key,mixed $values): void
 	{
 		switch ($key) {
 			case 'values':
@@ -320,14 +321,14 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 			->with('new',$new);
 	}
 
-	public function render_item_old(int $key): ?string
+	public function render_item_old(string $dotkey): ?string
 	{
-		return Arr::get($this->values_old,$key);
+		return Arr::get($this->_values_old->dot(),$dotkey);
 	}
 
-	public function render_item_new(int $key): ?string
+	public function render_item_new(string $dotkey): ?string
 	{
-		return Arr::get($this->values,$key);
+		return Arr::get($this->_values->dot(),$dotkey);
 	}
 
 	/**
@@ -343,17 +344,17 @@ class Attribute implements \Countable, \ArrayAccess, \Iterator
 			: collect();
 	}
 
-	public function tagValues(string $tag=''): Collection
+	public function tagValues(string $tag=Entry::TAG_NOTAG): Collection
 	{
-		return $this->_values
-			->filter(fn($item,$key)=>($key === $tag))
-			->values();
+		return collect($this->_values
+			->filter(fn($item,$key)=>($key===$tag))
+			->get($tag,[]));
 	}
 
-	public function tagValuesOld(string $tag=''): Collection
+	public function tagValuesOld(string $tag=Entry::TAG_NOTAG): Collection
 	{
-		return $this->_values_old
-			->filter(fn($item,$key)=>($key === $tag))
-			->values();
+		return collect($this->_values_old
+			->filter(fn($item,$key)=>($key===$tag))
+			->get($tag,[]));
 	}
 }

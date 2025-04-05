@@ -88,19 +88,23 @@ final class Password extends Attribute
 			->with('helpers',static::helpers()->map(fn($item,$key)=>['id'=>$key,'value'=>$key])->sort());
 	}
 
-	public function render_item_old(int $key): ?string
+	public function render_item_old(string $dotkey): ?string
 	{
-		$pw = Arr::get($this->values_old,$key);
+		$pw = parent::render_item_old($dotkey);
+
 		return $pw
-			? (((($x=$this->hash($pw)) && ($x::id() !== '*clear*')) ? sprintf('{%s}',$x::shortid()) : '').str_repeat('*',16))
+			? (((($x=$this->hash($pw)) && ($x::id() === '*clear*')) ? sprintf('{%s}',$x::shortid()) : '')
+				.str_repeat('*',16))
 			: NULL;
 	}
 
-	public function render_item_new(int $key): ?string
+	public function render_item_new(string $dotkey): ?string
 	{
-		$pw = Arr::get($this->values,$key);
+		$pw = parent::render_item_new($dotkey);
+
 		return $pw
-			? (((($x=$this->hash($pw)) && ($x::id() !== '*clear*')) ? sprintf('{%s}',$x::shortid()) : '').str_repeat('*',16))
+			? (((($x=$this->hash($pw)) && ($x::id() !== '*clear*')) ? sprintf('{%s}',$x::shortid()) : '')
+				.str_repeat('*',16))
 			: NULL;
 	}
 }

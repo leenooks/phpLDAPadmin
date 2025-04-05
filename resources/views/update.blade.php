@@ -1,7 +1,12 @@
 @extends('home')
 
 @section('page_title')
-	@include('fragment.dn.header')
+	@include('fragment.dn.header',[
+		'langtags'=>($langtags=$o->getLangTags()
+			->flatMap(fn($item)=>$item->values())
+			->unique()
+			->sort())
+	])
 @endsection
 
 @section('main-content')
@@ -23,6 +28,7 @@
 							<thead>
 							<tr>
 								<th>Attribute</th>
+								<th>Tag</th>
 								<th>OLD</th>
 								<th>NEW</th>
 							</tr>
@@ -31,17 +37,22 @@
 							<tbody>
 							@foreach ($o->getObjects()->filter(fn($item)=>$item->isDirty()) as $key => $oo)
 								<tr>
-									<th rowspan="{{ $x=max($oo->values->keys()->max(),$oo->values_old->keys()->max())+1}}">
+									<th rowspan="{{ $x=max($oo->values->dot()->keys()->count(),$oo->values_old->dot()->keys()->count())+1}}">
 										<abbr title="{{ $oo->description }}">{{ $oo->name }}</abbr>
 									</th>
-									@for($xx=0;$xx<$x;$xx++)
-										@if($xx)
+
+									@foreach($oo->values->dot()->keys()->merge($oo->values_old->dot()->keys())->unique() as $dotkey)
+										@if($loop->index)
 											</tr><tr>
 										@endif
 
-										<td>{{ (($r=$oo->render_item_old($xx)) !== NULL) ? $r : '['.strtoupper(__('New Value')).']' }}</td>
-										<td>{{ (($r=$oo->render_item_new($xx)) !== NULL) ? $r : '['.strtoupper(__('Deleted')).']' }}<input type="hidden" name="{{ $key }}[]" value="{{ Arr::get($oo->values,$xx) }}"></td>
-									@endfor
+										<th>
+											{{ $dotkey }}
+										</th>
+
+										<td>{{ (($r=$oo->render_item_old($dotkey)) !== NULL) ? $r : '['.strtoupper(__('New Value')).']' }}</td>
+										<td>{{ (($r=$oo->render_item_new($dotkey)) !== NULL) ? $r : '['.strtoupper(__('Deleted')).']' }}<input type="hidden" name="{{ $key }}[{{ collect(explode('.',$dotkey))->first() }}][]" value="{{ Arr::get($oo,$dotkey) }}"></td>
+									@endforeach
 								</tr>
 							@endforeach
 							</tbody>

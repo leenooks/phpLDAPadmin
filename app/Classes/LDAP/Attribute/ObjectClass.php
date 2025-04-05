@@ -29,17 +29,31 @@ final class ObjectClass extends Attribute
 	{
 		parent::__construct($dn,$name,$values,['top']);
 
-		$this->oc_schema = config('server')
-			->schema('objectclasses')
-			->filter(fn($item)=>$this->values_old->contains($item->name));
+		$this->set_oc_schema($this->tagValuesOld());
 	}
 
 	public function __get(string $key): mixed
 	{
 		return match ($key) {
-			'structural' => $this->oc_schema->filter(fn($item) => $item->isStructural()),
+			'structural' => $this->oc_schema->filter(fn($item)=>$item->isStructural()),
 			default => parent::__get($key),
 		};
+	}
+
+	public function __set(string $key,mixed $values): void
+	{
+		switch ($key) {
+			case 'values':
+				parent::__set($key,$values);
+
+				// We need to populate oc_schema, if we are a new OC and thus dont have any old values
+				if (! $this->values_old->count() && $this->values->count())
+					$this->set_oc_schema($this->tagValues());
+
+				break;
+
+			default: parent::__set($key,$values);
+		}
 	}
 
 	/**
@@ -62,5 +76,12 @@ final class ObjectClass extends Attribute
 			->with('edit',$edit)
 			->with('old',$old)
 			->with('new',$new);
+	}
+
+	private function set_oc_schema(Collection $tv): void
+	{
+		$this->oc_schema = config('server')
+			->schema('objectclasses')
+			->filter(fn($item)=>$tv->contains($item->name));
 	}
 }

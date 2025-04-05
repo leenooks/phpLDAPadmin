@@ -1,5 +1,4 @@
 <div class="row">
-
 	<div class="col-12 col-xl-3">
 		<select id="attributetype" class="form-control">
 			<option value="-all-">-all-</option>

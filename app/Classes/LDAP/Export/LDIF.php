@@ -5,6 +5,7 @@ namespace App\Classes\LDAP\Export;
 use Illuminate\Support\Str;
 
 use App\Classes\LDAP\Export;
+use App\Ldap\Entry;
 
 /**
  * Export from LDAP using an LDIF format
@@ -55,8 +56,8 @@ class LDIF extends Export
 						foreach ($tagvalues as $value) {
 							$result .= $this->multiLineDisplay(
 								Str::isAscii($value)
-									? sprintf('%s: %s',$ao->name.($tag ? ';'.$tag : ''),$value)
-									: sprintf('%s:: %s',$ao->name.($tag ? ';'.$tag : ''),base64_encode($value))
+									? sprintf('%s: %s',$ao->name.(($tag !== Entry::TAG_NOTAG) ? ';'.$tag : ''),$value)
+									: sprintf('%s:: %s',$ao->name.(($tag !== Entry::TAG_NOTAG) ? ';'.$tag : ''),base64_encode($value))
 							,$this->br);
 						}
 					}

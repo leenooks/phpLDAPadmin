@@ -3,7 +3,6 @@
 @php($clone=FALSE)
 <span class="p-0 m-0">
 	@if($o->is_rdn)
-		<br/>
 		<button class="btn btn-sm btn-outline-focus mt-3" disabled><i class="fas fa-fw fa-exchange"></i> @lang('Rename')</button>
 	@elseif($edit && $o->can_addvalues)
 		@switch(get_class($o))
@@ -229,8 +228,11 @@
 								// Create a new entry when Add Value clicked
 								$('#{{ $o->name }}-addnew.addable').click(function (item) {
 									var cln = $(this).parent().parent().find('input:last').parent().clone();
-									cln.find('input:last').attr('value','').attr('placeholder', '[@lang('NEW')]');
-									cln.appendTo('#'+item.currentTarget.id.replace('-addnew',''));
+									cln.find('input:last')
+										.attr('value','')
+										.attr('placeholder', '[@lang('NEW')]')
+										.addClass('border-focus')
+										.appendTo('#'+item.currentTarget.id.replace('-addnew',''));
 								});
 							});
 						</script>

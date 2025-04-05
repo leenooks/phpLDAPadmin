@@ -1,10 +1,10 @@
 <!-- @todo We are not handling redirect backs yet with updated passwords -->
 <!-- $o=KrbPrincipleKey::class -->
-<x-attribute.layout :edit="$edit ?? FALSE" :new="$new ?? FALSE" :o="$o">
-	@foreach($o->values_old as $value)
+<x-attribute.layout :edit="$edit ?? FALSE" :new="$new ?? FALSE" :o="$o" :langtag="$langtag">
+	@foreach($o->tagValuesOld($langtag) as $key => $value)
 		@if($edit)
 			<div class="input-group has-validation mb-3">
-				<input type="password" @class(['form-control','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$loop->index)),'mb-1','border-focus'=>$o->values->contains($value)]) name="{{ $o->name_lc }}[]" value="{{ md5($value) }}" @readonly(true)>
+				<input type="password" @class(['form-control','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$loop->index)),'mb-1','border-focus'=>! $o->tagValuesOld($langtag)->contains($value)]) name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ md5($value) }}" @readonly(true)>
 
 				<div class="invalid-feedback pb-2">
 					@if($e)
@@ -13,7 +13,7 @@
 				</div>
 			</div>
 		@else
-			{{ str_repeat('*',16) }}
+			{{ $o->render_item_old($langtag.'.'.$key) }}
 		@endif
 	@endforeach
 </x-attribute.layout>

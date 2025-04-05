@@ -4,10 +4,10 @@ namespace App\View\Components;
 
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 
 use App\Classes\LDAP\Attribute as LDAPAttribute;
+use App\Ldap\Entry;
 
 class AttributeType extends Component
 {
@@ -18,7 +18,7 @@ class AttributeType extends Component
 	/**
 	 * Create a new component instance.
 	 */
-	public function __construct(LDAPAttribute $o,bool $new=FALSE,string $langtag='')
+	public function __construct(LDAPAttribute $o,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG)
 	{
 		$this->o = $o;
 		$this->new = $new;
