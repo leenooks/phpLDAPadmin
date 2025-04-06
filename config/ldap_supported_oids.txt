@@ -54,6 +54,7 @@
 1.3.6.1.4.1.42.2.27.8.5.1:passwordPolicyRequest
 1.3.6.1.4.1.42.2.27.9.5.2:GetEffectiveRights control::May be used to determine what operations a given user may perform on a specified entry.
 1.3.6.1.4.1.1466.101.119.1:Dynamic Directory Services Refresh Request:RFC 2589
+1.3.6.1.4.1.1466.115.121.1.25:"guide" syntax-name:RFC 4517
 1.3.6.1.4.1.1466.20036:LDAP_NOTICE_OF_DISCONNECTION
 1.3.6.1.4.1.1466.20037:Transport Layer Security Extension:RFC 2830:This operation provides for TLS establishment in an LDAP association and is defined in terms of an LDAP extended request.
 1.3.6.1.4.1.1466.29539.1:LDAP_CONTROL_ATTR_SIZELIMIT
