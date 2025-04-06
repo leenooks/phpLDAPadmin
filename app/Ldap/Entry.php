@@ -189,6 +189,36 @@ class Entry extends Model
 	}
 
 	/**
+	 * Export this record
+	 *
+	 * @param string $method
+	 * @param string $scope
+	 * @return string
+	 * @throws \Exception
+	 */
+	public function export(string $method,string $scope): string
+	{
+		// @todo To implement
+		switch ($scope) {
+			case 'base':
+			case 'one':
+			case 'sub':
+				break;
+
+			default:
+				throw new \Exception('Export scope unknown:'.$scope);
+		}
+
+		switch ($method) {
+			case 'ldif':
+				return new LDIF(collect($this));
+
+			default:
+				throw new \Exception('Export method not implemented:'.$method);
+		}
+	}
+
+	/**
 	 * Convert all our attribute values into an array of Objects
 	 *
 	 * @return Collection
@@ -407,36 +437,6 @@ class Entry extends Model
 	{
 		return $this->objects
 			->has($key);
-	}
-
-	/**
-	 * Export this record
-	 *
-	 * @param string $method
-	 * @param string $scope
-	 * @return string
-	 * @throws \Exception
-	 */
-	public function export(string $method,string $scope): string
-	{
-		// @todo To implement
-		switch ($scope) {
-			case 'base':
-			case 'one':
-			case 'sub':
-				break;
-
-			default:
-				throw new \Exception('Export scope unknown:'.$scope);
-		}
-
-		switch ($method) {
-			case 'ldif':
-				return new LDIF(collect($this));
-
-			default:
-				throw new \Exception('Export method not implemented:'.$method);
-		}
 	}
 
 	/**

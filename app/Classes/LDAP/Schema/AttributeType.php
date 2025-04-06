@@ -6,6 +6,9 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
+use App\Classes\LDAP\Attribute;
+use App\Ldap\Entry;
+
 /**
  * Represents an LDAP AttributeType
  *
@@ -341,6 +344,11 @@ final class AttributeType extends Base {
 			$this->used_in_object_classes->put($name,$structural);
 	}
 
+	private function factory(): Attribute
+	{
+		return Attribute\Factory::create(dn:'',attribute:$this->name,values:[]);
+	}
+
 	/**
 	 * Gets the names of attributes that are an alias for this attribute (if any).
 	 *
@@ -548,6 +556,7 @@ final class AttributeType extends Base {
 	{
 		// For each item in array, we need to get the OC hierarchy
 		$heirachy = collect($array)
+			->flatten()
 			->filter()
 			->map(fn($item)=>config('server')
 				->schema('objectclasses',$item)
@@ -556,14 +565,17 @@ final class AttributeType extends Base {
 			->flatten()
 			->unique();
 
+		// Get any config validation
 		$validation = collect(Arr::get(config('ldap.validation'),$this->name_lc,[]));
+
+		$nolangtag = sprintf('%s.%s.0',$this->name_lc,Entry::TAG_NOTAG);
 
 		// Add in schema required by conditions
 		if (($heirachy->intersect($this->required_by_object_classes->keys())->count() > 0)
 			&& (! collect($validation->get($this->name_lc))->contains('required'))) {
 			$validation
-				->prepend(array_merge(['required','min:1'],$validation->get($this->name_lc.'.0',[])),$this->name_lc.'.0')
-				->prepend(array_merge(['required','array','min:1'],$validation->get($this->name_lc,[])),$this->name_lc);
+				->prepend(array_merge(['required','min:1'],$validation->get($nolangtag,[])),$nolangtag)
+				->prepend(array_merge(['required','array','min:1',($this->factory()->no_attr_tags ? 'max:1' : NULL)],$validation->get($this->name_lc,[])),$this->name_lc);
 		}
 
 		return $validation->toArray();

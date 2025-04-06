@@ -9,7 +9,7 @@
 				<input type="hidden" name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ $value }}" @readonly(true)>
 
 				<div class="invalid-feedback pb-2">
-					@if($e=$errors->get($o->name_lc.'.'.$loop->index))
+					@if($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index))
 						{{ join('|',$e) }}
 					@endif
 				</div>

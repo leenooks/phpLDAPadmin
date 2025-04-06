@@ -122,47 +122,47 @@ return [
 	 */
 	'validation' => [
 		'objectclass' => [
-			'objectclass'=>[
+			'objectclass.*'=>[
 				new HasStructuralObjectClass,
 			]
 		],
 		'gidnumber' => [
-			'gidnumber'=> [
+			'gidnumber.*'=> [
 				'sometimes',
 				'max:1'
 			],
-			'gidnumber.*' => [
+			'gidnumber.*.*' => [
 				'nullable',
 				'integer',
 				'max:65535'
 			]
 		],
 		'mail' => [
-			'mail'=>[
+			'mail.*'=>[
 				'sometimes',
 				'min:1'
 			],
-			'mail.*' => [
+			'mail.*.*' => [
 				'nullable',
 				'email'
 			]
 		],
 		'userpassword' => [
-			'userpassword' => [
+			'userpassword.*' => [
 				'sometimes',
 				'min:1'
 			],
-			'userpassword.*' => [
+			'userpassword.*.*' => [
 				'nullable',
 				'min:8'
 			]
 		],
 		'uidnumber' => [
-			'uidnumber' => [
+			'uidnumber.*' => [
 				'sometimes',
 				'max:1'
 			],
-			'uidnumber.*' => [
+			'uidnumber.*.*' => [
 				'nullable',
 				'integer',
 				'max:65535'

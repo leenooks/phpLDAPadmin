@@ -34,10 +34,11 @@ class EntryAddRequest extends FormRequest
 		if (request()->method() === 'GET')
 			return [];
 
+		$r = request() ?: collect();
 		return config('server')
 			->schema('attributetypes')
-			->intersectByKeys($this->request)
-			->map(fn($item)=>$item->validation(request()->get('objectclass')))
+			->intersectByKeys($r->all())
+			->map(fn($item)=>$item->validation($r->get('objectclass',[])))
 			->filter()
 			->flatMap(fn($item)=>$item)
 			->merge([
@@ -60,6 +61,12 @@ class EntryAddRequest extends FormRequest
 				'rdn_value' => 'required_if:step,2|string|min:1',
 				'step' => 'int|min:1|max:2',
 				'objectclass'=>[
+					'required',
+					'array',
+					'min:1',
+					'max:1',
+				],
+				'objectclass._null_'=>[
 					'required',
 					'array',
 					'min:1',

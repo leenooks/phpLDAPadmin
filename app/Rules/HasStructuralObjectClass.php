@@ -20,7 +20,7 @@ class HasStructuralObjectClass implements ValidationRule
      */
     public function validate(string $attribute,mixed $value,Closure $fail): void
     {
-		foreach ($value as $item)
+		foreach (collect($value)->dot() as $item)
 			if ($item && config('server')->schema('objectclasses',$item)->isStructural())
 				return;
 

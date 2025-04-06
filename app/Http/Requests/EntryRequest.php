@@ -13,10 +13,12 @@ class EntryRequest extends FormRequest
 	 */
 	public function rules(): array
 	{
+		$r = request() ?: collect();
+
 		return config('server')
 			->schema('attributetypes')
-			->intersectByKeys($this->request)
-			->map(fn($item)=>$item->validation(request()?->get('objectclass') ?: []))
+			->intersectByKeys($r->all())
+			->map(fn($item)=>$item->validation($r->get('objectclass',[])))
 			->filter()
 			->flatMap(fn($item)=>$item)
 			->toArray();

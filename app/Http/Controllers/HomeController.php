@@ -57,9 +57,10 @@ class HomeController extends Controller
 
 		$o = new Entry;
 
-		if (count(array_filter($x=old('objectclass',$request->objectclass)))) {
-			$o->objectclass = [Entry::TAG_NOTAG=>$x];
+		if (count($x=array_filter(old('objectclass',$request->objectclass)))) {
+			$o->objectclass = $x;
 
+			// Also add in our required attributes
 			foreach($o->getAvailableAttributes()->filter(fn($item)=>$item->required) as $ao)
 				$o->{$ao->name} = [Entry::TAG_NOTAG=>''];
 
@@ -375,8 +376,7 @@ class HomeController extends Controller
 		// If we are rendering a DN, rebuild our object
 		$o = config('server')->fetch($key['dn']);
 
-		// @todo We need to dynamically exclude request items, so we dont need to add them here
-		foreach (collect(old())->except(['dn','_token','userpassword_hash']) as $attr => $value)
+		foreach (collect(old())->except(['key','step','_token','userpassword_hash']) as $attr => $value)
 			$o->{$attr} = $value;
 
 		return match ($key['cmd']) {

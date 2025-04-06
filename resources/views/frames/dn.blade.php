@@ -62,10 +62,6 @@
 				<div class="ms-4 mt-4 alert alert-danger p-2" style="max-width: 30em; font-size: 0.80em;">
 					This entry has multi-language tags used by [<strong>{!! $x->keys()->join('</strong>, <strong>') !!}</strong>] that cant be managed by PLA. You can though manage those lang tags with an LDIF import.
 				</div>
-			@elseif(($x=$o->getLangTags())->count())
-				<div class="ms-4 mt-4 alert alert-warning p-2" style="max-width: 30em; font-size: 0.80em;">
-					This entry has language tags used by [<strong>{!! $x->keys()->join('</strong>, <strong>') !!}</strong>] that cant be managed by PLA yet. You can though manage those lang tags with an LDIF import.
-				</div>
 			@endif
 		</div>
 	</div>

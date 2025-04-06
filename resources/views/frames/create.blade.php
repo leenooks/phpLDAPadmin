@@ -1,3 +1,5 @@
+@use(App\Ldap\Entry)
+
 @extends('layouts.dn')
 
 @section('page_title')
@@ -31,7 +33,7 @@
 									<div class="col-12 col-md-6">
 										<x-form.select
 											id="objectclass"
-											name="objectclass[]"
+											name="objectclass[{{ Entry::TAG_NOTAG }}][]"
 											:label="__('Select a Structural ObjectClass...')"
 											:options="($oc=$server->schema('objectclasses'))
 												->filter(fn($item)=>$item->isStructural())
