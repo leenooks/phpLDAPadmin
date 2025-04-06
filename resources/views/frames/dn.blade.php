@@ -210,6 +210,15 @@
 		}
 
 		$(document).ready(function() {
+			$('button[id=entry-edit]').on('click',function(item) {
+				item.preventDefault();
+
+				if ($(this).hasClass('btn-dark'))
+					return;
+
+				editmode();
+			});
+
 			$('#newattr').on('change',function(item) {
 				$.ajax({
 					type: 'POST',

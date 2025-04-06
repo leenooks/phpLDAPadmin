@@ -18,18 +18,3 @@
 		</div>
 	</div>
 </div>
-
-@section('page-scripts')
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('button[id=entry-edit]').on('click',function(item) {
-				item.preventDefault();
-
-				if ($(this).hasClass('btn-dark'))
-					return;
-
-				editmode();
-			});
-		});
-	</script>
-@append
