@@ -5,7 +5,7 @@
 		<p>{{ __('Entry updated') }}</p>
 		<ul style="list-style-type: square;">
 			@foreach (session()->pull('updated') as $key => $o)
-				<li><abbr title="{{ $o->description }}">{{ $o->name }}</abbr>: {{ $o->values->map(fn($item,$key)=>$o->render_item_new($key))->join(',') }}</li>
+				<li><abbr title="{{ $o->description }}">{{ $o->name }}</abbr>: {{ $o->values->dot()->filter()->join(',') }}</li>
 			@endforeach
 		</ul>
 	</div>

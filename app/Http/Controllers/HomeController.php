@@ -349,7 +349,7 @@ class HomeController extends Controller
 
 		return Redirect::to('/')
 			->withInput()
-			->with('updated',collect($dirty)->map(fn($key,$item)=>$o->getObject($item)));
+			->with('updated',collect($dirty)->map(fn($item,$key)=>$o->getObject(collect(explode(';',$key))->first())));
 	}
 
 	/**
@@ -376,7 +376,7 @@ class HomeController extends Controller
 		// If we are rendering a DN, rebuild our object
 		$o = config('server')->fetch($key['dn']);
 
-		foreach (collect(old())->except(['key','step','_token','userpassword_hash']) as $attr => $value)
+		foreach (collect(old())->except(['key','dn','step','_token','userpassword_hash']) as $attr => $value)
 			$o->{$attr} = $value;
 
 		return match ($key['cmd']) {

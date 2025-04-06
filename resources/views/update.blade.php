@@ -50,8 +50,12 @@
 											{{ $dotkey }}
 										</th>
 
-										<td>{{ (($r=$oo->render_item_old($dotkey)) !== NULL) ? $r : '['.strtoupper(__('New Value')).']' }}</td>
-										<td>{{ (($r=$oo->render_item_new($dotkey)) !== NULL) ? $r : '['.strtoupper(__('Deleted')).']' }}<input type="hidden" name="{{ $key }}[{{ collect(explode('.',$dotkey))->first() }}][]" value="{{ Arr::get($oo,$dotkey) }}"></td>
+										@if((! Arr::get($oo->values_old->dot(),$dotkey)) && (! Arr::get($oo->values->dot(),$dotkey)))
+											<td colspan="2" class="text-center">@lang('Ignoring blank value')</td>
+										@else
+											<td>{{ (($r=$oo->render_item_old($dotkey)) !== NULL) ? $r : '['.strtoupper(__('New Value')).']' }}</td>
+											<td>{{ (($r=$oo->render_item_new($dotkey)) !== NULL) ? $r : '['.strtoupper(__('Deleted')).']' }}<input type="hidden" name="{{ $key }}[{{ collect(explode('.',$dotkey))->first() }}][]" value="{{ Arr::get($oo,$dotkey) }}"></td>
+										@endif
 									@endforeach
 								</tr>
 							@endforeach

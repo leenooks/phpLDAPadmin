@@ -253,10 +253,9 @@ class Attribute implements \Countable, \ArrayAccess
 	 */
 	public function isDirty(): bool
 	{
-		return (($a=$this->values_old->dot())->keys()->count() !== ($b=$this->values->dot())->keys()->count())
-			|| ($a->values()->count() !== $b->values()->count())
-			|| ($a->keys()->diff($b->keys())->count() !== 0)
-			|| ($a->values()->diff($b->values())->count() !== 0);
+		return (($a=$this->values_old->dot()->filter())->keys()->count() !== ($b=$this->values->dot()->filter())->keys()->count())
+			|| ($a->count() !== $b->count())
+			|| ($a->diff($b)->count() !== 0);
 	}
 
 	/**
