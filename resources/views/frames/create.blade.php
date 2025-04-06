@@ -10,8 +10,6 @@
 @endsection
 
 @section('main-content')
-	<x-error/>
-
 	<div class="row">
 		<div class="offset-1 col-10">
 			<div class="main-card mb-3 card">
@@ -34,6 +32,7 @@
 										<x-form.select
 											id="objectclass"
 											name="objectclass[{{ Entry::TAG_NOTAG }}][]"
+											old="objectclass.{{ Entry::TAG_NOTAG }}"
 											:label="__('Select a Structural ObjectClass...')"
 											:options="($oc=$server->schema('objectclasses'))
 												->filter(fn($item)=>$item->isStructural())
