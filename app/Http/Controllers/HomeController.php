@@ -236,7 +236,7 @@ class HomeController extends Controller
 		$password = $o->getObject('userpassword');
 
 		$result = collect();
-		foreach ($password as $key => $value) {
+		foreach ($password->values->dot() as $key => $value) {
 			$hash = $password->hash($value);
 			$compare = Arr::get($request->password,$key);
 			//Log::debug(sprintf('comparing [%s] with [%s] type [%s]',$value,$compare,$hash::id()),['object'=>$hash]);
