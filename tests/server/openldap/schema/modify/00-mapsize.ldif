@@ -1,0 +1,25 @@
+dn: olcDatabase={3}mdb,cn=config
+changetype: modify
+add: olcDbMaxSize
+olcDbMaxSize: 1073741824
+
+dn: olcDatabase={4}mdb,cn=config
+changetype: modify
+add: olcDbMaxSize
+olcDbMaxSize: 1073741824
+
+dn: olcDatabase={5}mdb,cn=config
+changetype: modify
+add: olcDbMaxSize
+olcDbMaxSize: 1073741824
+
+dn: olcDatabase={6}mdb,cn=config
+changetype: modify
+add: olcDbMaxSize
+olcDbMaxSize: 1073741824
+
+dn: olcDatabase={7}mdb,cn=config
+changetype: modify
+add: olcDbMaxSize
+olcDbMaxSize: 1073741824
+

@@ -1,0 +1,11 @@
+dn: olcOverlay=dynlist,olcDatabase={4}mdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcDynListConfig
+olcOverlay: dynlist
+olcDynListAttrSet: nisMailAlias labeledURI
+#olcDynListAttrSet: groupOfURLs memberURL memberOf
+#olcDynListAttrSet: groupOfURLs memberURL member+dgMemberOf
+#olcDynListAttrSet: groupOfURLs memberURL member
+#olcDynListAttrSet: groupOfURLs memberURL member
+#olcDynListAttrSet: groupOfURLs labeledURI member
