@@ -1,11 +1,11 @@
 <!-- $o=UserCertificate::class -->
-<x-attribute.layout :edit="$edit ?? FALSE" :new="$new ?? FALSE" :o="$o" langtag="binary">
+<x-attribute.layout :edit="$edit" :new="$new" :o="$o" langtag="binary">
 	@foreach($o->tagValuesOld('binary') as $key => $value)
 		@if($edit)
 			<input type="hidden" name="name={{ $o->name_lc }}[binary][]" value="{{ md5($value) }}">
 
 			<div class="input-group has-validation mb-3">
-				<textarea class="form-control mb-1 font-monospace" rows="{{ count(explode("\n",$x=$o->certificate())) }}" style="overflow:hidden" disabled>{{ $x }}</textarea>
+				<textarea class="form-control mb-1 font-monospace" rows="{{ count(explode("\n",$x=$o->certificate())) }}" style="overflow: hidden; font-size: 90%;" disabled>{{ $x }}</textarea>
 
 				<div class="invalid-feedback pb-2">
 					@if($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index))

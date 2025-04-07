@@ -15,7 +15,7 @@
 			</div>
 		</div>
 
-		<x-attribute :o="$o" :edit="true" :new="$new ?? FALSE" :langtag="$langtag"/>
+		<x-attribute :o="$o" :edit="$edit" :new="$new" :langtag="$langtag"/>
 	</div>
 </div>
 

@@ -1,5 +1,5 @@
 <!-- $o=RDN::class -->
-<x-attribute.layout :edit="$edit ?? FALSE" :new="$new ?? FALSE" :o="$o">
+<x-attribute.layout :edit="$edit" :new="$new" :o="$o">
 	@foreach(($o->values->count() ? $o->values : ['']) as $value)
 		@if($edit)
 			<div class="input-group has-validation mb-3">

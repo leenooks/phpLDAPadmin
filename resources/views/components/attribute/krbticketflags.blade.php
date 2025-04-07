@@ -1,5 +1,5 @@
 <!-- $o=KrbTicketFlags::class -->
-<x-attribute.layout :edit="$edit ?? FALSE" :new="$new ?? FALSE" :o="$o">
+<x-attribute.layout :edit="$edit" :new="$new" :o="$o">
 	@foreach(Arr::get(old($o->name_lc,[$langtag=>$o->tagValues($langtag)]),$langtag,[]) as $key => $value)
 		@if($edit)
 			<div id="32"></div>

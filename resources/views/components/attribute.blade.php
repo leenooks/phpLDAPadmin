@@ -1,10 +1,10 @@
 <!-- $o=Attribute::class -->
-<x-attribute.layout :edit="$edit ?? FALSE" :new="$new ?? FALSE" :o="$o">
+<x-attribute.layout :edit="$edit" :new="$new" :o="$o">
 	<div class="col-12">
-		@foreach(Arr::get(old($o->name_lc,[$langtag=>($new ?? FALSE) ? [NULL] : $o->tagValues($langtag)]),$langtag) as $key => $value)
-			@if(($edit ?? FALSE) && ! $o->is_rdn)
+		@foreach(Arr::get(old($o->name_lc,[$langtag=>$new ? [NULL] : $o->tagValues($langtag)]),$langtag,[]) as $key => $value)
+			@if($edit && (! $o->is_rdn))
 				<div class="input-group has-validation">
-					<input type="text" @class(['form-control','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index)),'mb-1','border-focus'=>! ($tv=$o->tagValuesOld($langtag))->contains($value)]) name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ $value }}" placeholder="{{ ! is_null($x=$tv->get($loop->index)) ? $x : '['.__('NEW').']' }}" @readonly(! ($new ?? FALSE))>
+					<input type="text" @class(['form-control','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index)),'mb-1','border-focus'=>! ($tv=$o->tagValuesOld($langtag))->contains($value)]) name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ $value }}" placeholder="{{ ! is_null($x=$tv->get($loop->index)) ? $x : '['.__('NEW').']' }}" @readonly(! $new) @disabled($o->isDynamic())>
 
 					<div class="invalid-feedback pb-2">
 						@if($e)

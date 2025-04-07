@@ -244,6 +244,7 @@
 
 			<!-- All other attributes -->
 			@default
+				@if($o->isDynamic()) @break @endif
 				@php($clone=TRUE)
 				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name }}-addnew"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</span>
 

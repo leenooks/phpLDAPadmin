@@ -487,6 +487,28 @@ final class AttributeType extends Base {
 	}
 
 	/**
+	 * For a list of objectclasses return all parent objectclasses as well
+	 *
+	 * @param Collection $ocs
+	 * @return Collection
+	 */
+	public function heirachy(Collection $ocs): Collection
+	{
+		$result = collect();
+
+		foreach ($ocs as $oc) {
+			$schema = config('server')
+				->schema('objectclasses',$oc)
+				->getParents(TRUE)
+				->pluck('name');
+
+			$result = $result->merge($schema)->push($oc);
+		}
+
+		return $result;
+	}
+
+	/**
 	 * @return bool
 	 * @deprecated use $this->forced_as_may
 	 */
@@ -555,15 +577,9 @@ final class AttributeType extends Base {
 	public function validation(array $array): ?array
 	{
 		// For each item in array, we need to get the OC hierarchy
-		$heirachy = collect($array)
+		$heirachy = $this->heirachy(collect($array)
 			->flatten()
-			->filter()
-			->map(fn($item)=>config('server')
-				->schema('objectclasses',$item)
-				->getSupClasses()
-				->push($item))
-			->flatten()
-			->unique();
+			->filter());
 
 		// Get any config validation
 		$validation = collect(Arr::get(config('ldap.validation'),$this->name_lc,[]));

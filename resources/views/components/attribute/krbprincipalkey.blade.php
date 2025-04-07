@@ -1,6 +1,6 @@
 <!-- @todo We are not handling redirect backs yet with updated passwords -->
 <!-- $o=KrbPrincipleKey::class -->
-<x-attribute.layout :edit="$edit ?? FALSE" :new="$new ?? FALSE" :o="$o" :langtag="$langtag">
+<x-attribute.layout :edit="$edit" :new="$new" :o="$o" :langtag="$langtag">
 	@foreach($o->tagValuesOld($langtag) as $key => $value)
 		@if($edit)
 			<div class="input-group has-validation mb-3">
