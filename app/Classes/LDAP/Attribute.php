@@ -16,7 +16,6 @@ class Attribute implements \Countable, \ArrayAccess
 {
 	// Attribute Name
 	protected string $name;
-	private int $counter = 0;
 
 	// Is this attribute an internal attribute
 	protected(set) bool $is_internal = FALSE;

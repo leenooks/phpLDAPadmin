@@ -54,7 +54,7 @@
 
 	<div class="row">
 		<div class="col">
-			@if(($x=$o->getOtherTags())->count())
+			@if(($x=$o->getOtherTags()->filter(fn($item)=>$item->diff(['binary'])->count()))->count())
 				<div class="ms-4 mt-4 alert alert-danger p-2" style="max-width: 30em; font-size: 0.80em;">
 					This entry has [<strong>{!! $x->flatten()->join('</strong>, <strong>') !!}</strong>] tags used by [<strong>{!! $x->keys()->join('</strong>, <strong>') !!}</strong>] that cant be managed by PLA. You can though manage those tags with an LDIF import.
 				</div>

@@ -389,7 +389,6 @@ class Entry extends Model
 						fn($item)=>
 							(! preg_match(sprintf('/^%s$/',self::TAG_NOTAG),$item))
 							&& (! preg_match(sprintf('/^%s+$/',self::TAG_CHARS_LANG),$item))
-							&& (! preg_match('/^binary$/',$item))
 						)
 						->count())
 			)
@@ -428,9 +427,17 @@ class Entry extends Model
 	 */
 	public function getVisibleAttributes(?string $tag=NULL): Collection
 	{
-		return $this->objects
-			->filter(fn($item)=>! $item->is_internal)
-			->filter(fn($item)=>is_null($tag) || count($item->tagValues($tag)) > 0);
+		static $cache = NULL;
+
+		if (is_null($cache)) {
+			$ot = $this->getOtherTags();
+
+			$cache = $this->objects
+				->filter(fn($item)=>! $item->is_internal)
+				->filter(fn($item)=>is_null($tag) || $ot->has($item->name_lc) || count($item->tagValues($tag)) > 0);
+		}
+
+		return $cache;
 	}
 
 	public function hasAttribute(int|string $key): bool
