@@ -2,6 +2,8 @@
 
 namespace App\View\Components;
 
+use Closure;
+use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 use App\Classes\LDAP\Attribute as LDAPAttribute;
@@ -32,13 +34,13 @@ class Attribute extends Component
 	/**
 	 * Get the view / contents that represent the component.
 	 *
-	 * @return \Illuminate\Contracts\View\View|\Closure|string
+	 * @return View|string
 	 */
-	public function render()
+	public function render(): View|string
 	{
 		return $this->o
 			? $this->o
-				->render($this->edit,$this->old,$this->new)
+				->render(edit: $this->edit,old: $this->old,new: $this->new)
 			: $this->na;
 	}
 }

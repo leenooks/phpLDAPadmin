@@ -97,7 +97,6 @@ class APIController extends Controller
 	/**
 	 * Return the required and additional attributes for an object class
 	 *
-	 * @param Request $request
 	 * @param string $objectclass
 	 * @return array
 	 */

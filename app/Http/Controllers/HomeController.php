@@ -93,11 +93,11 @@ class HomeController extends Controller
 
 		return $request->noheader
 			? view(sprintf('components.attribute.widget.%s',$id))
-				->with('o',Factory::create($dn,$id,[],$request->objectclasses))
+				->with('o',Factory::create(dn: $dn,attribute: $id,values: [],oc: $request->objectclasses))
 				->with('value',$request->value)
 				->with('langtag',Entry::TAG_NOTAG)
 				->with('loop',$xx)
-			: new AttributeType(Factory::create($dn,$id,[],$request->objectclasses),TRUE)
+			: new AttributeType(Factory::create($dn,$id,[],$request->objectclasses),new: TRUE,edit: TRUE)
 				->render();
 	}
 

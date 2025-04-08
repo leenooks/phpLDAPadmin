@@ -46,6 +46,9 @@
 									if (added_oc.indexOf(item) !== -1)
 										return;
 
+									// Add our new OC to the list of OCs
+									oc.push(item);
+
 									// Add attribute to the page
 									$.ajax({
 										method: 'POST',
@@ -146,7 +149,7 @@
 														if (x.length) {
 															x.remove();
 
-															// Add this to the must attrs list, because its been rendered
+														// Add this to the must attrs list, because its been rendered
 														} else {
 															attrs.push(mayitem);
 														}

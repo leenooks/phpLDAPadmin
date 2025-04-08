@@ -6,6 +6,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Attribute;
+use App\Ldap\Entry;
 
 /**
  * Represents an ObjectClass Attribute
@@ -74,6 +75,7 @@ final class ObjectClass extends Attribute
 		return view('components.attribute.objectclass')
 			->with('o',$this)
 			->with('edit',$edit)
+			->with('langtag',Entry::TAG_NOTAG)
 			->with('old',$old)
 			->with('new',$new);
 	}
