@@ -422,22 +422,22 @@ class Entry extends Model
 	/**
 	 * Return this list of user attributes
 	 *
-	 * @param string|null $tag If null return all tags
+	 * @param string $tag If null return all tags
 	 * @return Collection
 	 */
-	public function getVisibleAttributes(?string $tag=NULL): Collection
+	public function getVisibleAttributes(string $tag=''): Collection
 	{
-		static $cache = NULL;
+		static $cache = [];
 
-		if (is_null($cache)) {
+		if (! Arr::get($cache,$tag ?: '_all_')) {
 			$ot = $this->getOtherTags();
 
-			$cache = $this->objects
-				->filter(fn($item)=>! $item->is_internal)
-				->filter(fn($item)=>is_null($tag) || $ot->has($item->name_lc) || count($item->tagValues($tag)) > 0);
+			$cache[$tag ?: '_all_'] = $this->objects
+				->filter(fn($item)=>(! $item->is_internal) && ((! $item->no_attr_tags) || (! $tag) || ($tag === Entry::TAG_NOTAG)))
+				->filter(fn($item)=>(! $tag) || $ot->has($item->name_lc) || count($item->tagValues($tag)) > 0);
 		}
 
-		return $cache;
+		return $cache[$tag ?: '_all_'];
 	}
 
 	public function hasAttribute(int|string $key): bool

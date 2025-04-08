@@ -95,8 +95,10 @@ class HomeController extends Controller
 			? view(sprintf('components.attribute.widget.%s',$id))
 				->with('o',Factory::create($dn,$id,[],$request->objectclasses))
 				->with('value',$request->value)
+				->with('langtag',Entry::TAG_NOTAG)
 				->with('loop',$xx)
-			: new AttributeType(Factory::create($dn,$id,[],$request->objectclasses),TRUE)->render();
+			: new AttributeType(Factory::create($dn,$id,[],$request->objectclasses),TRUE)
+				->render();
 	}
 
 	public function entry_create(EntryAddRequest $request): \Illuminate\Http\RedirectResponse

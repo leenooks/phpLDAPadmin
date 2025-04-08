@@ -66,6 +66,7 @@ class LDIF extends Import
 
 			$m = [];
 			preg_match('/^([a-zA-Z0-9;-]+)(:+)\s+(.*)$/',$line,$m);
+			dump(['m'=>$m,'line'=>$line]);
 
 			switch (Arr::get($m,1)) {
 				case 'changetype':
@@ -156,7 +157,7 @@ class LDIF extends Import
 		return $result;
 	}
 
-	public function readEntry() {
+	public function xreadEntry() {
 		static $haveVersion = FALSE;
 
 		if ($lines = $this->nextLines()) {
@@ -218,7 +219,7 @@ class LDIF extends Import
 
 					default:
 						if (! $server->dnExists($dn))
-							return $this->error(_('Unkown change type'),$lines);
+							return $this->error(_('Unknown change type'),$lines);
 				}
 
 			} else
