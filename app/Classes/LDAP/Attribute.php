@@ -226,11 +226,14 @@ class Attribute implements \Countable, \ArrayAccess
 	/**
 	 * Return the hints about this attribute, ie: RDN, Required, etc
 	 *
-	 * @return array
+	 * @return Collection
 	 */
-	public function hints(): array
+	public function hints(): Collection
 	{
 		$result = collect();
+
+		if ($this->is_internal)
+			return $result;
 
 		// Is this Attribute an RDN
 		if ($this->is_rdn)
@@ -246,7 +249,7 @@ class Attribute implements \Countable, \ArrayAccess
 		if ($this->isDynamic())
 			$result->put(__('dynamic'),__('These are dynamic values present as a result of another attribute'));
 
-		return $result->toArray();
+		return $result;
 	}
 
 	/**

@@ -24,11 +24,11 @@ final class RDN extends Attribute
 		};
 	}
 
-	public function hints(): array
+	public function hints(): Collection
 	{
-		return [
+		return collect([
 			'required' => __('RDN is required')
-		];
+		]);
 	}
 
 	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
