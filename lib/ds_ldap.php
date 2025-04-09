@@ -204,10 +204,13 @@ class ldap extends DS {
 		if (function_exists('run_hook'))
 			run_hook('pre_connect',array('server_id'=>$this->index,'method'=>$method));
 
-		if ($this->getValue('server','port'))
-			$resource = ldap_connect($this->getValue('server','host'),$this->getValue('server','port'));
-		else
-			$resource = ldap_connect($this->getValue('server','host'));
+		$uri = $this->getValue('server','host');
+		if (strpos($uri, '://') === false) {
+			$uri = 'ldap://' . urlencode($uri);
+			if ($this->getValue('server','port'))
+				$uri .= ':' . $this->getValue('server','port');
+		}
+		$resource = ldap_connect($uri);
 
 		$this->noconnect = false;
 		$CACHE[$this->index][$method] = $resource;

@@ -98,7 +98,8 @@ class HTMLTree extends Tree {
 					$this->javascript .= '<div>';
 					$this->javascript .= '<input type="hidden" name="cmd" value="template_engine" />';
 					$this->javascript .= sprintf('<input type="hidden" name="server_id" value="%s" />',$server->getIndex());
-					$this->javascript .= sprintf('<input type="hidden" name="container" value="%s" />',htmlspecialchars($server->getContainer($base->getDN())));
+					$t = $server->getContainer($base->getDN());
+					$this->javascript .= sprintf('<input type="hidden" name="container" value="%s" />',htmlspecialchars(is_null($t)? '': $t));
 					$this->javascript .= sprintf('<input type="hidden" name="rdn" value="%s" />',get_rdn($base->getDN()));
 					$this->javascript .= sprintf('<input type="hidden" name="rdn_attribute[]" value="%s" />',$rdn[0]);
 					$this->javascript .= sprintf('<input type="hidden" name="new_values[%s][]" value="%s" />',$rdn[0],$rdn[1]);
