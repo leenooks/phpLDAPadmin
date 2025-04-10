@@ -2,14 +2,17 @@
 	<div class="col-12 col-xl-3">
 		<select id="objectclass" class="form-control">
 			<option value="-all-">-all-</option>
-			@foreach ($objectclasses as $o)
-				<option value="{{ $o->name_lc }}">{{ $o->name }}</option>
+			@foreach($objectclasses->groupBy(fn($item)=>$item->isStructural()) as $oo)
+				<optgroup label="{{ __($oo->first()->isStructural() ? 'Structural' : 'Auxillary') }} Object Class"></optgroup>
+				@foreach($oo as $o)
+					<option value="{{ $o->name_lc }}">{{ $o->name }}</option>
+				@endforeach
 			@endforeach
 		</select>
 	</div>
 
 	<div class="col-12 col-xl-9">
-		@foreach ($objectclasses as $o)
+		@foreach($objectclasses as $o)
 			<span id="oc-{{ $o->name_lc }}">
 				<table class="schema table table-sm table-bordered table-striped">
 					<thead>
@@ -32,10 +35,10 @@
 						<td>@lang('Inherits from')</td>
 						<td colspan="3">
 							<strong>
-								@if ($o->sup->count() === 0)
+								@if($o->sup->count() === 0)
 									@lang('(none)')
 								@else
-									@foreach ($o->sup as $sup)
+									@foreach($o->sup as $sup)
 										@if($loop->index)</strong> <strong>@endif
 										<a class="objectclass" id="{{ strtolower($sup) }}" href="#{{ strtolower($sup) }}">{{ $sup }}</a>
 									@endforeach
@@ -48,12 +51,12 @@
 						<td>@lang('Parent to')</td>
 						<td colspan="3">
 							<strong>
-								@if (strtolower($o->name) === 'top')
+								@if(strtolower($o->name) === 'top')
 									<a class="objectclass" id="-all-">(all)</a>
-								@elseif (! $o->getChildObjectClasses()->count())
+								@elseif(! $o->getChildObjectClasses()->count())
 									@lang('(none)')
 								@else
-									@foreach ($o->getChildObjectClasses() as $childoc)
+									@foreach($o->getChildObjectClasses() as $childoc)
 										@if($loop->index)</strong> <strong>@endif
 										<a class="objectclass" id="{{ strtolower($childoc) }}" href="#{{ strtolower($childoc) }}">{{ $childoc }}</a>
 									@endforeach
@@ -75,7 +78,7 @@
 								<tr>
 									<td>
 										<ul class="ps-3" style="list-style-type: square;">
-											@foreach ($o->getMustAttrs(TRUE) as $oo)
+											@foreach($o->getMustAttrs(TRUE) as $oo)
 												<li>{{ $oo->name }} @if($oo->source !== $o->name)[<strong><a class="objectclass" id="{{ strtolower($oo->source) }}" href="#{{ strtolower($oo->source) }}">{{ $oo->source }}</a></strong>]@endif</li>
 											@endforeach
 										</ul>
@@ -97,7 +100,7 @@
 								<tr>
 									<td>
 										<ul class="ps-3" style="list-style-type: square;">
-											@foreach ($o->getMayAttrs(TRUE) as $oo)
+											@foreach($o->getMayAttrs(TRUE) as $oo)
 												<li>{{ $oo->name }} @if($oo->source !== $o->name)[<strong><a class="objectclass" id="{{ strtolower($oo->source) }}" href="#{{ strtolower($oo->source) }}">{{ $oo->source }}</a></strong>]@endif</li>
 											@endforeach
 										</ul>
