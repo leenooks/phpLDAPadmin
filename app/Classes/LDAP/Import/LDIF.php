@@ -66,7 +66,6 @@ class LDIF extends Import
 
 			$m = [];
 			preg_match('/^([a-zA-Z0-9;-]+)(:+)\s+(.*)$/',$line,$m);
-			dump(['m'=>$m,'line'=>$line]);
 
 			switch (Arr::get($m,1)) {
 				case 'changetype':
