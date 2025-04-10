@@ -37,6 +37,9 @@ class Attribute implements \Countable, \ArrayAccess
 	// The objectclasses of the entry that has this attribute
 	protected(set) Collection $oc;
 
+	private const SYNTAX_CERTIFICATE = '1.3.6.1.4.1.1466.115.121.1.8';
+	private const SYNTAX_CERTIFICATE_LIST = '1.3.6.1.4.1.1466.115.121.1.9';
+
 	/*
 	# Has the attribute been modified
 	protected $modified = false;
@@ -121,6 +124,11 @@ class Attribute implements \Countable, \ArrayAccess
 		if ($server->isAttrUnique($this->name))
 			$this->unique = true;
 		*/
+	}
+
+	public function __call(string $name,array $arguments)
+	{
+		abort(555,'Method not handled: '.$name);
 	}
 
 	public function __get(string $key): mixed
@@ -303,9 +311,14 @@ class Attribute implements \Countable, \ArrayAccess
 	 */
 	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
 	{
-		$view = view()->exists($x='components.attribute.'.$this->name_lc)
-			? view($x)
-			: view('components.attribute');
+		$view = match ($this->schema->syntax_oid) {
+			self::SYNTAX_CERTIFICATE => view('components.syntax.certificate'),
+			self::SYNTAX_CERTIFICATE_LIST => view('components.syntax.certificatelist'),
+
+			default => view()->exists($x = 'components.attribute.' . $this->name_lc)
+				? view($x)
+				: view('components.attribute'),
+		};
 
 		return $view
 			->with('o',$this)
@@ -316,7 +329,12 @@ class Attribute implements \Countable, \ArrayAccess
 
 	public function render_item_old(string $dotkey): ?string
 	{
-		return Arr::get($this->values_old->dot(),$dotkey);
+		return match ($this->schema->syntax_oid) {
+			self::SYNTAX_CERTIFICATE => join("\n",str_split(base64_encode(Arr::get($this->values_old->dot(),$dotkey)),80)),
+			self::SYNTAX_CERTIFICATE_LIST => join("\n",str_split(base64_encode(Arr::get($this->values_old->dot(),$dotkey)),80)),
+
+			default => Arr::get($this->values_old->dot(),$dotkey),
+		};
 	}
 
 	public function render_item_new(string $dotkey): ?string

@@ -20,6 +20,9 @@ class Factory
 	 * Map of attributes to appropriate class
 	 */
 	public const map = [
+		'authorityrevocationlist' => CertificateList::class,
+		'cacertificate' => Certificate::class,
+		'certificaterevocationlist' => CertificateList::class,
 		'createtimestamp' => Internal\Timestamp::class,
 		'creatorsname' => Internal\DN::class,
 		'configcontext' => Schema\Generic::class,
@@ -52,7 +55,7 @@ class Factory
 		'supportedfeatures' => Schema\OID::class,
 		'supportedldapversion' => Schema\Generic::class,
 		'supportedsaslmechanisms' => Schema\Mechanisms::class,
-		'usercertificate' => UserCertificate::class,
+		'usercertificate' => Certificate::class,
 		'userpassword' => Password::class,
 	];
 

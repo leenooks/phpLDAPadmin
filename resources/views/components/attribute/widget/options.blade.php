@@ -1,12 +1,29 @@
+@use(App\Classes\LDAP\Attribute\Certificate)
+@use(App\Classes\LDAP\Attribute\CertificateList)
 @use(App\Classes\LDAP\Attribute\Binary\JpegPhoto)
 @use(App\Classes\LDAP\Attribute\ObjectClass)
-@use(App\Classes\LDAP\Attribute\UserCertificate)
 @php($clone=FALSE)
 <span class="p-0 m-0">
 	@if($o->is_rdn)
 		<button class="btn btn-sm btn-outline-focus mt-3" disabled><i class="fas fa-fw fa-exchange"></i> @lang('Rename')</button>
 	@elseif($edit && $o->can_addvalues)
 		@switch(get_class($o))
+			@case(Certificate::class)
+			@case(CertificateList::class)
+				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name }}-replace" disabled><i class="fas fa-fw fa-certificate"></i> @lang('Replace')</span>
+				@section('page-scripts')
+					<script type="text/javascript">
+							$(document).ready(function() {
+								$('#{{ $o->name }}-replace.addable').click(function(e) {
+									alert('Sorry, not implemented yet');
+									e.preventDefault();
+									return false;
+								});
+							});
+					</script>
+				@append
+				@break
+
 			@case(ObjectClass::class)
 				<span type="button" @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) data-bs-toggle="modal" data-bs-target="#new_objectclass-modal"><i class="fas fa-fw fa-plus"></i> @lang('Add Objectclass')</span>
 
@@ -221,21 +238,6 @@
 					<script type="text/javascript">
 							$(document).ready(function() {
 								$('#{{ $o->name }}-upload.addable').click(function(e) {
-									alert('Sorry, not implemented yet');
-									e.preventDefault();
-									return false;
-								});
-							});
-					</script>
-				@append
-				@break
-
-			@case(UserCertificate::class)
-				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name }}-replace" disabled><i class="fas fa-fw fa-certificate"></i> @lang('Replace Certificate')</span>
-				@section('page-scripts')
-					<script type="text/javascript">
-							$(document).ready(function() {
-								$('#{{ $o->name }}-replace.addable').click(function(e) {
 									alert('Sorry, not implemented yet');
 									e.preventDefault();
 									return false;

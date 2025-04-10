@@ -11,7 +11,7 @@ use App\Traits\MD5Updates;
 /**
  * Represents an attribute whose values is a binary user certificate
  */
-final class UserCertificate extends Attribute
+final class Certificate extends Attribute
 {
 	use MD5Updates;
 
@@ -36,11 +36,6 @@ final class UserCertificate extends Attribute
 	public function expires($key=0): Carbon
 	{
 		return Carbon::createFromTimestampUTC($this->cert_info('validTo_time_t',$key));
-	}
-
-	public function render_item_old(string $dotkey): ?string
-	{
-		return join("\n",str_split(base64_encode(parent::render_item_old($dotkey)),80));
 	}
 
 	public function subject($key=0): string

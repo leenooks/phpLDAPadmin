@@ -44,8 +44,10 @@ function getNode(item) {
 				location.reload();
 				break;
 			case 500:
+			case 555:	// Missing Method
 				$('.main-content').empty().append(e.responseText);
 				break;
+
 			default:
 				alert('Well that didnt work? Code ['+e.status+']');
 		}
