@@ -10,6 +10,9 @@ assignees: ''
 **Describe the bug**
 A clear and concise description of what the bug is. (One issue per report please.)
 
+**Version of PLA**
+What version of PLA are you using. Are you using the docker container, an distribution package or running from GIT source?
+
 **To Reproduce**
 Steps to reproduce the behavior:
 1. Go to '...'
