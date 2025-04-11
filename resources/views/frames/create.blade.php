@@ -70,8 +70,8 @@
 @endsection
 
 @section('page-scripts')
+
 	<script type="text/javascript">
-		var oc = {!! $oo->getObject('objectclass')->values !!};
 		var rdn_attr;
 
 		function editmode() {
@@ -100,31 +100,35 @@
 		}
 
 		$(document).ready(function() {
-			$('#newattr').on('change',function(item) {
-				$.ajax({
-					type: 'POST',
-					beforeSend: function() {},
-					success: function(data) {
-						$('#newattrs').append(data);
-					},
-					error: function(e) {
-						if (e.status != 412)
-							alert('That didnt work? Please try again....');
-					},
-					url: '{{ url('entry/attr/add') }}/'+item.target.value,
-					data: {
-						objectclasses: oc,
-					},
-					cache: false
+			@if($step === 2)
+				var oc = {!! $o->getObject('objectclass')->values !!};
+
+				$('#newattr').on('change',function(item) {
+					$.ajax({
+						type: 'POST',
+						url: '{{ url('entry/attr/add') }}/'+item.target.value,
+						data: {
+							objectclasses: oc,
+						},
+						cache: false,
+						beforeSend: function() {},
+						success: function(data) {
+							$('#newattrs').append(data);
+						},
+						error: function(e) {
+							if (e.status != 412)
+								alert('That didnt work? Please try again....');
+						},
+					});
+
+					// Remove the option from the list
+					$(this).find('[value="'+item.target.value+'"]').remove()
+
+					// If there are no more options
+					if ($(this).find("option").length === 1)
+						$('#newattr-select').remove();
 				});
-
-				// Remove the option from the list
-				$(this).find('[value="'+item.target.value+'"]').remove()
-
-				// If there are no more options
-				if ($(this).find("option").length === 1)
-					$('#newattr-select').remove();
-			});
+			@endif
 
 			editmode();
 		});
