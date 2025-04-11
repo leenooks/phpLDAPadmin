@@ -376,10 +376,12 @@ class HomeController extends Controller
 			->with('bases',$this->bases());
 
 		// If we are rendering a DN, rebuild our object
-		$o = config('server')->fetch($key['dn']);
+		if ($key['dn']) {
+			$o = config('server')->fetch($key['dn']);
 
-		foreach (collect(old())->except(['key','dn','step','_token','userpassword_hash']) as $attr => $value)
-			$o->{$attr} = $value;
+			foreach (collect(old())->except(['key','dn','step','_token','userpassword_hash']) as $attr => $value)
+				$o->{$attr} = $value;
+		}
 
 		return match ($key['cmd']) {
 			'create' => $view
