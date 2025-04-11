@@ -58,8 +58,7 @@ $use-all: true;
 "~animate-sass/animations/flippers/flipOutY";
 
 // LIGHTSPEED
-@import "~animate-sass/animations/lightspeed/lightSpeedIn",
-"~animate-sass/animations/lightspeed/lightSpeedOut";
+@import "./_animate-override";
 
 // ROTATE
 @import "~animate-sass/animations/rotate-enter/rotateIn",
