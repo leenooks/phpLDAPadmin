@@ -393,7 +393,7 @@ class HomeController extends Controller
 				->with('o',$o)
 				->with('page_actions',collect([
 					'copy'=>FALSE,
-					'create'=>FALSE,
+					'create'=>TRUE,
 					'delete'=>TRUE,
 					'edit'=>TRUE,
 					'export'=>TRUE,

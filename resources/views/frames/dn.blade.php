@@ -19,7 +19,7 @@
 				<ul class="nav">
 					@if(isset($page_actions) && $page_actions->get('create'))
 						<li>
-							<button class="btn btn-outline-dark p-1 m-1" id="entry-copy-move" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('New Child')" disabled><i class="fas fa-fw fa-diagram-project fs-5"></i></button>
+							<button class="btn btn-outline-dark p-1 m-1" id="entry-create" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Create Child Entry')"><i class="fas fa-fw fa-diagram-project fs-5"></i></button>
 						</li>
 					@endif
 					@if(isset($page_actions) && $page_actions->get('export'))
@@ -210,6 +210,11 @@
 		}
 
 		$(document).ready(function() {
+			$('button[id=entry-create]').on('click',function(item) {
+				location.replace('/#{{ Crypt::encryptString(sprintf('*%s|%s','create',$dn)) }}');
+				location.reload();
+			});
+
 			$('button[id=entry-edit]').on('click',function(item) {
 				item.preventDefault();
 
