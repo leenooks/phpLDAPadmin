@@ -379,7 +379,7 @@ class HomeController extends Controller
 		if ($key['dn']) {
 			$o = config('server')->fetch($key['dn']);
 
-			foreach (collect(old())->except(['key','dn','step','_token','userpassword_hash']) as $attr => $value)
+			foreach (collect(old())->except(['key','dn','step','_token','userpassword_hash','rdn','rdn_value']) as $attr => $value)
 				$o->{$attr} = $value;
 		}
 

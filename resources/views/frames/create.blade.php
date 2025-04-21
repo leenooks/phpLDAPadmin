@@ -10,6 +10,8 @@
 @endsection
 
 @section('main-content')
+	<x-error/>
+
 	<div class="row">
 		<div class="offset-1 col-10">
 			<div class="main-card mb-3 card">
