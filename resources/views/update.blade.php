@@ -37,7 +37,7 @@
 							<tbody>
 							@foreach ($o->getObjects()->filter(fn($item)=>$item->isDirty()) as $key => $oo)
 								<tr>
-									<th rowspan="{{ $x=max($oo->values->dot()->keys()->count(),$oo->values_old->dot()->keys()->count())+1}}">
+									<th rowspan="{{ $x=max($oo->values->dot()->keys()->count(),$oo->values_old->dot()->keys()->count())}}">
 										<abbr title="{{ $oo->description }}">{{ $oo->name }}</abbr>
 									</th>
 
@@ -54,7 +54,7 @@
 											<td colspan="2" class="text-center">@lang('Ignoring blank value')</td>
 										@else
 											<td>{{ (($r=$oo->render_item_old($dotkey)) !== NULL) ? $r : '['.strtoupper(__('New Value')).']' }}</td>
-											<td>{{ (($r=$oo->render_item_new($dotkey)) !== NULL) ? $r : '['.strtoupper(__('Deleted')).']' }}<input type="hidden" name="{{ $key }}[{{ collect(explode('.',$dotkey))->first() }}][]" value="{{ Arr::get($oo,$dotkey) }}"></td>
+											<td>{{ (($r=$oo->render_item_new($dotkey)) !== NULL) ? $r : '['.strtoupper(__('Deleted')).']' }}<input type="hidden" name="{{ $key }}[{{ $oo->no_attr_tags ? \App\Ldap\Entry::TAG_NOTAG : collect(explode('.',$dotkey))->first() }}][]" value="{{ Arr::get($oo->values->dot(),$dotkey) }}"></td>
 										@endif
 									@endforeach
 								</tr>
