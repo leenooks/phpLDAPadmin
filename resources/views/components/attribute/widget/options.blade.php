@@ -54,6 +54,9 @@
 							var rendered = false;
 							var newadded = [];
 
+							var oc = $('attribute#objectClass input[type=text]')
+								.map((key,item)=>{return $(item).val()}).toArray();
+
 							if (newadded.length)
 								process_oc();
 

@@ -103,9 +103,10 @@
 
 		$(document).ready(function() {
 			@if($step === 2)
-				var oc = {!! $o->getObject('objectclass')->values !!};
-
 				$('#newattr').on('change',function(item) {
+					var oc = $('attribute#objectClass input[type=text]')
+						.map((key,item)=>{return $(item).val()}).toArray();
+
 					$.ajax({
 						type: 'POST',
 						url: '{{ url('entry/attr/add') }}/'+item.target.value,

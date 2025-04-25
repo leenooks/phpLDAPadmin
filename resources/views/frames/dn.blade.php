@@ -174,7 +174,6 @@
 @section('page-scripts')
 	<script type="text/javascript">
 		var dn = '{{ $o->getDNSecure() }}';
-		var oc = {!! $o->getObject('objectclass')->values !!};
 
 		function editmode() {
 			$('#dn-edit input[name="dn"]').val(dn);
@@ -225,6 +224,9 @@
 			});
 
 			$('#newattr').on('change',function(item) {
+				var oc = $('attribute#objectClass input[type=text]')
+					.map((key,item)=>{return $(item).val()}).toArray();
+
 				$.ajax({
 					type: 'POST',
 					beforeSend: function() {},
