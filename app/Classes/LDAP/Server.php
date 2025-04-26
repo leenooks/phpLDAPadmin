@@ -181,12 +181,6 @@ final class Server
 		if (! $objects)
 			return collect($base->namingcontexts);
 
-		/**
-		 * @note While we are caching our baseDNs, it seems if we have more than 1,
-		 * our caching doesnt generate a hit on a subsequent call to this function (before the cache expires).
-		 * IE: If we have 5 baseDNs, it takes 5 calls to this function to cache them all.
-		 * @todo Possibly a bug with ldaprecord, so need to investigate
-		 */
 		$result = collect();
 		foreach ($base->namingcontexts as $dn)
 			$result->push((new Entry)->cache($cachetime)->findOrFail($dn));

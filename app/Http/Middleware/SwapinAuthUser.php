@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use LdapRecord\Container;
 
-use App\Ldap\Connection;
+use App\Ldap\Guard;
 
 class SwapinAuthUser
 {
@@ -37,7 +37,11 @@ class SwapinAuthUser
 		}
 
 		// We need to override our Connection object so that we can store and retrieve the logged in user and swap out the credentials to use them.
-		Container::getInstance()->addConnection(new Connection(config('ldap.connections.'.$key)),$key);
+		$c = Container::getInstance()
+			->getConnection($key);
+
+		$c->setConfiguration(config('ldap.connections.'.$key));
+		$c->setGuardResolver(fn()=>new Guard($c->getLdapConnection(),$c->getConfiguration()));
 
 		return $next($request);
 	}
