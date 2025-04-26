@@ -45,7 +45,7 @@ class HomeController extends Controller
 	 * Create a new object in the LDAP server
 	 *
 	 * @param EntryAddRequest $request
-	 * @return View
+	 * @return \Illuminate\View\View
 	 * @throws InvalidUsage
 	 */
 	public function entry_add(EntryAddRequest $request): \Illuminate\View\View
@@ -189,8 +189,7 @@ class HomeController extends Controller
 	{
 		$dn = Crypt::decryptString($id);
 
-		$result = (new Entry)
-			->query()
+		$result = Entry::query()
 			->setDn($dn)
 			->recursive()
 			->get();

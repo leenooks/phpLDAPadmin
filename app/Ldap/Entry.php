@@ -27,8 +27,6 @@ class Entry extends Model
 
 	// Our Attribute objects
 	private Collection $objects;
-	/* @deprecated */
-	private bool $noObjectAttributes = FALSE;
 	// For new entries, this is the container that this entry will be stored in
 	private string $rdnbase;
 
@@ -82,16 +80,6 @@ class Entry extends Model
 
 		return ((! array_key_exists($key,$this->original)) && (! $this->objects->has($attribute)))
 			|| (! $this->getObject($attribute)->isDirty());
-	}
-
-	public static function query(bool $noattrs=false): Builder
-	{
-		$o = new static;
-
-		if ($noattrs)
-			$o->noObjectAttributes();
-
-		return $o->newQuery();
 	}
 
 	/**
@@ -537,19 +525,6 @@ class Entry extends Model
 		}
 
 		return [$attribute,$tags];
-	}
-
-	/**
-	 * Dont convert our $this->attributes to $this->objects when creating a new Entry::class
-	 *
-	 * @return $this
-	 * @deprecated
-	 */
-	public function noObjectAttributes(): static
-	{
-		$this->noObjectAttributes = TRUE;
-
-		return $this;
 	}
 
 	public function setRDNBase(string $bdn): void
