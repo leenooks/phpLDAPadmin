@@ -5,7 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
-use App\Http\Middleware\{AllowAnonymous,ApplicationSession,CheckUpdate,SwapinAuthUser};
+use App\Http\Middleware\{AllowAnonymous,ApplicationSession,CheckUpdate,SwapinAuthUser,ViewVariables};
 
 return Application::configure(basePath: dirname(__DIR__))
 	->withRouting(
@@ -15,16 +15,19 @@ return Application::configure(basePath: dirname(__DIR__))
 		health: '/up',
 	)
 	->withMiddleware(function (Middleware $middleware) {
-		$middleware->appendToGroup('web', [
-			SwapinAuthUser::class,
-			ApplicationSession::class,
-			CheckUpdate::class,
-		]);
+		$middleware->appendToGroup(
+			group: 'web',
+			middleware: [
+				ApplicationSession::class,
+				SwapinAuthUser::class,
+				ViewVariables::class,
+				CheckUpdate::class,
+			]);
 
 		$middleware->prependToGroup('api', [
 			EncryptCookies::class,
-			SwapinAuthUser::class,
 			ApplicationSession::class,
+			SwapinAuthUser::class,
 			AllowAnonymous::class,
 		]);
 
