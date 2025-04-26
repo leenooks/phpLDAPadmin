@@ -3,7 +3,7 @@
 		<td class="p-1 pt-0" rowspan="2">
 			{!! ($x=$o->getObject('jpegphoto')) ? $x->render(FALSE,TRUE) : sprintf('<div class="page-title-icon f32 m-2"><i class="%s"></i></div>',$o->icon() ?? "fas fa-info") !!}
 		</td>
-		<td class="text-end align-bottom pb-0 mb-0 pt-2 pe-3 {{ $x ? 'ps-3' : '' }}"><strong>{{ $o->getDn() }}</strong></td>
+		<td class="text-end align-bottom pb-0 mb-0 pt-2 pe-3 {{ $x ? 'ps-3' : '' }}"><strong class="user-select-all">{{ $o->getDn() }}</strong></td>
 	</tr>
 	<tr>
 		<td class="align-bottom" style="font-size: 55%" colspan="2">

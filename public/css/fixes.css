@@ -253,3 +253,8 @@ select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__
 .btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
 	border-color: var(--bs-btn-bg);
 }
+
+/* limit selection to inside the modal */
+body.modal-open {
+	user-select: none;
+}

@@ -336,6 +336,11 @@
 				}
 			});
 
+			$('#page-modal').on('hide.bs.modal',function() {
+				// Clear any select ranges that occurred while the modal was open
+				document.getSelection().removeAllRanges();
+			});
+
 			@if(old())
 				editmode();
 			@endif

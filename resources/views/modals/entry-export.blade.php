@@ -5,7 +5,7 @@
 </div>
 
 <div class="modal-body">
-	<div id="entry_export"></div>
+	<div id="entry_export" style="user-select: text;"></div>
 </div>
 
 <div class="modal-footer">
