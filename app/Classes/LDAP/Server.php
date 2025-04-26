@@ -8,9 +8,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
 use LdapRecord\LdapRecordException;
 use LdapRecord\Models\Model;
 use LdapRecord\Query\Collection as LDAPCollection;
@@ -173,16 +171,6 @@ final class Server
 		} catch (LdapRecordException $e) {
 			switch ($e->getDetailedError()?->getErrorCode()) {
 				case 49:
-					// Since we failed authentication, we should delete our auth cookie
-					if (Cookie::has('password_encrypt')) {
-						Log::alert('Clearing user credentials and logging out');
-
-						Cookie::queue(Cookie::forget('password_encrypt'));
-						Cookie::queue(Cookie::forget('username_encrypt'));
-
-						Session::invalidate();
-					}
-
 					abort(401,$e->getDetailedError()->getErrorMessage());
 
 				default:
@@ -196,8 +184,8 @@ final class Server
 		/**
 		 * @note While we are caching our baseDNs, it seems if we have more than 1,
 		 * our caching doesnt generate a hit on a subsequent call to this function (before the cache expires).
-		 * IE: If we have 5 baseDNs, it takes 5 calls to this function to case them all.
-		 * @todo Possibly a bug wtih ldaprecord, so need to investigate
+		 * IE: If we have 5 baseDNs, it takes 5 calls to this function to cache them all.
+		 * @todo Possibly a bug with ldaprecord, so need to investigate
 		 */
 		$result = collect();
 		foreach ($base->namingcontexts as $dn)

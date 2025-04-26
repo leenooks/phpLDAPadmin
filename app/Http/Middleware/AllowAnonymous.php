@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Session;
 
 class AllowAnonymous
 {
@@ -19,7 +19,7 @@ class AllowAnonymous
 	{
 		if ((! config('pla.allow_guest',FALSE))
 			&& ($request->path() !== 'login')
-			&& ((! Cookie::has('username_encrypt')) || (! Cookie::has('password_encrypt'))))
+			&& ((! Session::has('username_encrypt')) || (! Session::has('password_encrypt'))))
 			return redirect()
 				->to('/login');
 
