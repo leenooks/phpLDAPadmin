@@ -58,7 +58,7 @@
 					return false;
 
 				$.ajax({
-					url: '{{ url('api/schema/view') }}',
+					url: '{{ url('ajax/schema/view') }}',
 					method: 'POST',
 					data: { type: type },
 					dataType: 'html',

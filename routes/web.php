@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\HomeController;
+use App\Http\Controllers\{AjaxController,HomeController};
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Middleware\AllowAnonymous;
 
@@ -58,3 +58,12 @@ Route::controller(HomeController::class)->group(function() {
 		Route::view('modal/userpassword-check/{dn}','modals.entry-userpassword-check');
 	});
 });
+
+Route::controller(AjaxController::class)
+	->prefix('ajax')
+	->group(function() {
+		Route::get('bases','bases');
+		Route::get('children','children');
+		Route::post('schema/view','schema_view');
+		Route::post('schema/objectclass/attrs/{id}','schema_objectclass_attrs');
+	});

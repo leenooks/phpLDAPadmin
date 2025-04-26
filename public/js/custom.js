@@ -59,7 +59,7 @@ $(document).ready(function() {
 	if (typeof basedn !== 'undefined') {
 		sources = basedn;
 	} else {
-		sources = { url: 'api/bases' };
+		sources = { url: 'ajax/bases' };
 	}
 
 	// Attach the fancytree widget to an existing <div id="tree"> element
@@ -95,7 +95,7 @@ $(document).ready(function() {
 		source: sources,
 		lazyLoad: function(event,data) {
 			data.result = {
-				url: '/api/children',
+				url: '/ajax/children',
 				data: {key: data.node.data.item,depth: 1}
 			};
 

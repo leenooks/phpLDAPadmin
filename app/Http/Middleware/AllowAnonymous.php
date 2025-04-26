@@ -17,7 +17,9 @@ class AllowAnonymous
 	 */
 	public function handle(Request $request,Closure $next): mixed
 	{
-		if (((! Cookie::has('username_encrypt')) || (! Cookie::has('password_encrypt'))) && (! config('pla.allow_guest',FALSE)))
+		if ((! config('pla.allow_guest',FALSE))
+			&& ($request->path() !== 'login')
+			&& ((! Cookie::has('username_encrypt')) || (! Cookie::has('password_encrypt'))))
 			return redirect()
 				->to('/login');
 

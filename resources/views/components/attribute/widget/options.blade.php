@@ -91,7 +91,7 @@
 									// Get a list of attributes already on the page, so we dont double up
 									$.ajax({
 										method: 'POST',
-										url: '{{ url('api/schema/objectclass/attrs') }}/'+item,
+										url: '{{ url('ajax/schema/objectclass/attrs') }}/'+item,
 										cache: false,
 										success: function(data) {
 											// Render any must attributes
@@ -156,7 +156,7 @@
 
 										$.ajax({
 											method: 'POST',
-											url: '{{ url('api/schema/objectclass/attrs') }}/'+item,
+											url: '{{ url('ajax/schema/objectclass/attrs') }}/'+item,
 											cache: false,
 											success: function(data) {
 												var attrs = [];

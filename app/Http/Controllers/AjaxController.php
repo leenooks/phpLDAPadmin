@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Server;
 
-class APIController extends Controller
+class AjaxController extends Controller
 {
 	/**
 	 * Get the LDAP server BASE DNs
