@@ -11,19 +11,19 @@
 				<tr class="mt-1">
 					<td class="p-0 pe-2">Created</td>
 					<th class="p-0">
-						<x-attribute :o="$o->getObject('createtimestamp')" :na="__('Unknown')"/> [<x-attribute :o="$o->getObject('creatorsname')" :na="__('Unknown')"/>]
+						<x-attribute :o="$o->getObject('createtimestamp')"/> [<x-attribute :o="$o->getObject('creatorsname')"/>]
 					</th>
 				</tr>
 				<tr class="mt-1">
 					<td class="p-0 pe-2">Modified</td>
 					<th class="p-0">
-						<x-attribute :o="$o->getObject('modifytimestamp')" :na="__('Unknown')"/> [<x-attribute :o="$o->getObject('modifiersname')" :na="__('Unknown')"/>]
+						<x-attribute :o="$o->getObject('modifytimestamp')"/> [<x-attribute :o="$o->getObject('modifiersname')"/>]
 					</th>
 				</tr>
 				<tr class="mt-1">
 					<td class="p-0 pe-2">UUID</td>
 					<th class="p-0">
-						<x-attribute :o="$o->getObject('entryuuid')" :na="__('Unknown')"/>
+						<x-attribute :o="$o->getObject('entryuuid')""/>
 					</th>
 				</tr>
 				@if($langtags->count())

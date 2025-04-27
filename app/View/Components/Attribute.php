@@ -2,7 +2,6 @@
 
 namespace App\View\Components;
 
-use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
@@ -16,19 +15,17 @@ class Attribute extends Component
 	public bool $new;
 	public bool $old;
 	public string $langtag;
-	public ?string $na;	// Text to render if the LDAPAttribute is null
 
 	/**
 	 * Create a new component instance.
 	 */
-	public function __construct(?LDAPAttribute $o,bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG,?string $na=NULL)
+	public function __construct(?LDAPAttribute $o,bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG)
 	{
 		$this->o = $o;
 		$this->edit = $edit;
 		$this->old = $old;
 		$this->new = $new;
 		$this->langtag = $langtag;
-		$this->na = $na;
 	}
 
 	/**
@@ -41,6 +38,6 @@ class Attribute extends Component
 		return $this->o
 			? $this->o
 				->render(edit: $this->edit,old: $this->old,new: $this->new)
-			: $this->na;
+			: __('Unknown');
 	}
 }

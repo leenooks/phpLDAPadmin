@@ -22,7 +22,6 @@ use App\Exceptions\Import\{GeneralException,VersionException};
 use App\Exceptions\InvalidUsage;
 use App\Http\Requests\{EntryRequest,EntryAddRequest,ImportRequest};
 use App\Ldap\Entry;
-use App\View\Components\AttributeType;
 
 class HomeController extends Controller
 {
@@ -90,15 +89,18 @@ class HomeController extends Controller
 		$xx->index = 0;
 
 		$dn = $request->dn ? Crypt::decrypt($request->dn) : '';
+		$o = Factory::create(dn: $dn,attribute: $id,values: [],oc: $request->objectclasses);
 
 		return $request->noheader
 			? view(sprintf('components.attribute.widget.%s',$id))
-				->with('o',Factory::create(dn: $dn,attribute: $id,values: [],oc: $request->objectclasses))
+				->with('o',$o)
 				->with('value',$request->value)
 				->with('langtag',Entry::TAG_NOTAG)
 				->with('loop',$xx)
-			: new AttributeType(Factory::create($dn,$id,[],$request->objectclasses),new: TRUE,edit: TRUE)
-				->render();
+			: view('components.attribute-type')
+				->with('o',$o)
+				->with('new',TRUE)
+				->with('edit',TRUE);
 	}
 
 	public function entry_create(EntryAddRequest $request): \Illuminate\Http\RedirectResponse
@@ -350,7 +352,8 @@ class HomeController extends Controller
 
 		return Redirect::to('/')
 			->withInput()
-			->with('updated',collect($dirty)->map(fn($item,$key)=>$o->getObject(collect(explode(';',$key))->first())));
+			->with('updated',collect($dirty)
+				->map(fn($item,$key)=>$o->getObject(collect(explode(';',$key))->first())));
 	}
 
 	/**
