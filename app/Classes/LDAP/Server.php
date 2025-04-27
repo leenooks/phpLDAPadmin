@@ -310,6 +310,7 @@ final class Server
 	 * as configured in config.php.
 	 *
 	 * @return boolean True if the specified attribute is configured to be force as a may attribute
+	 * @todo There are 3 isForceMay() functions - we only need one
 	 */
 	public function isForceMay($attr_name): bool
 	{

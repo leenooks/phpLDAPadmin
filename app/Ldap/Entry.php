@@ -69,8 +69,6 @@ class Entry extends Model
 
 	/**
 	 * Determine if the new and old values for a given key are equivalent.
-	 *
-	 * @todo This function barfs on language tags, eg: key = givenname;lang-ja
 	 */
 	protected function originalIsEquivalent(string $key): bool
 	{

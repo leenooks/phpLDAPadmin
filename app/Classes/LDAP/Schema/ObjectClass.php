@@ -43,7 +43,7 @@ final class ObjectClass extends Base
 	 *
 	 * @param string $line Schema Line
 	 * @param Server $server
-	 * @todo Change $server to $connection, no need to store the server object here
+	 * @todo Deprecate this $server variable? It is only used for isForceMay() determination, and that might be better done elsewhere?
 	 */
 	public function __construct(string $line,Server $server)
 	{
