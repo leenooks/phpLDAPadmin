@@ -31,7 +31,7 @@ class LdapUserRepository extends LdapUserRepositoryBase
 			return $this->query()->find($credentials['dn']);
 
 		// Look for a user using all our baseDNs
-		foreach (Server::baseDNs() as $base) {
+		foreach (Server::baseDNs(FALSE) as $base) {
 			$query = $this->query()->setBaseDn($base);
 
 			foreach ($credentials as $key => $value) {
@@ -67,7 +67,7 @@ class LdapUserRepository extends LdapUserRepositoryBase
 	public function findByGuid($guid): ?Model
 	{
 		// Look for a user using all our baseDNs
-		foreach (Server::baseDNs() as $base) {
+		foreach (Server::baseDNs(FALSE) as $base) {
 			$user = $this->query()->setBaseDn($base)->findByGuid($guid);
 
 			if ($user)

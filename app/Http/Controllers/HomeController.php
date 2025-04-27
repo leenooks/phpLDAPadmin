@@ -28,7 +28,7 @@ class HomeController extends Controller
 {
 	private function bases(): Collection
 	{
-		$base = Server::baseDNs() ?: collect();
+		$base = Server::baseDNs(TRUE) ?: collect();
 
 		return $base->transform(function($item) {
 			return [

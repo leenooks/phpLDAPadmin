@@ -1,11 +1,10 @@
-@use(App\Classes\LDAP\Server)
 @extends('layouts.dn')
 
 @section('page_title')
 	<table class="table table-borderless">
 		<tr>
 			<td style="border-radius: 5px;"><div class="page-title-icon f32"><i class="fas fa-fingerprint"></i></div></td>
-			<td class="top text-end align-text-top p-2"><strong>{{ Server::schemaDN() }}</strong></td>
+			<td class="top text-end align-text-top p-2"><strong>{{ $server->schemaDN() }}</strong></td>
 		</tr>
 	</table>
 @endsection

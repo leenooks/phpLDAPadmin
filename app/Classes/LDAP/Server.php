@@ -9,8 +9,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use LdapRecord\LdapRecordException;
 use LdapRecord\Models\Model;
+use LdapRecord\Query\Builder;
 use LdapRecord\Query\Collection as LDAPCollection;
 use LdapRecord\Query\ObjectNotFoundException;
 
@@ -20,8 +22,7 @@ use App\Ldap\Entry;
 
 final class Server
 {
-	// Connection information used for these object and children
-	private ?string $connection;
+	private const LOGKEY = 'SVR';
 
 	// This servers schema objectclasses
 	private Collection $attributetypes;
@@ -35,22 +36,24 @@ final class Server
 	public const OC_ABSTRACT = 0x02;
 	public const OC_AUXILIARY = 0x03;
 
-	public function __construct(?string $connection=NULL)
+	public function __construct()
 	{
-		$this->connection = $connection;
+		$this->attributetypes = collect();
+		$this->ldapsyntaxes = collect();
+		$this->matchingrules = collect();
+		$this->objectclasses = collect();
 	}
 
 	public function __get(string $key): mixed
 	{
 		return match($key) {
 			'attributetypes' => $this->attributetypes,
-			'connection' => $this->connection,
 			'ldapsyntaxes' => $this->ldapsyntaxes,
 			'matchingrules' => $this->matchingrules,
 			'objectclasses' => $this->objectclasses,
-			'config' => config('ldap.connections.'.config('ldap.default')),
+			'config' => config(sprintf('ldap.connections.%s',config('ldap.default'))),
 			'name' => Arr::get($this->config,'name',__('No Server Name Yet')),
-			default => throw new Exception('Unknown key:' . $key),
+			default => throw new Exception('Unknown key:'.$key),
 		};
 	}
 
@@ -60,20 +63,14 @@ final class Server
 	 * Gets the root DN of the specified LDAPServer, or throws an exception if it
 	 * can't find it.
 	 *
-	 * @param string|null $connection Return a collection of baseDNs
 	 * @param bool $objects Return a collection of Entry Models
 	 * @return Collection
-	 * @throws ObjectNotFoundException
 	 * @testedin GetBaseDNTest::testBaseDNExists();
-	 * @todo Need to allow for the scenario if the baseDN is not readable by ACLs
 	 */
-	public static function baseDNs(?string $connection=NULL,bool $objects=TRUE): Collection
+	public static function baseDNs(bool $objects=FALSE): Collection
 	{
-		$cachetime = Carbon::now()
-			->addSeconds(Config::get('ldap.cache.time'));
-
 		try {
-			$base = self::rootDSE($connection,$cachetime);
+			$rootdse = self::rootDSE();
 
 		/**
 		 * LDAP Error Codes:
@@ -179,50 +176,99 @@ final class Server
 		}
 
 		if (! $objects)
-			return collect($base->namingcontexts);
+			return collect($rootdse->namingcontexts);
 
-		$result = collect();
-		foreach ($base->namingcontexts as $dn)
-			$result->push((new Entry)->cache($cachetime)->findOrFail($dn));
+		return Cache::remember('basedns'.Session::id(),config('ldap.cache.time'),function() use ($rootdse) {
+			$result = collect();
 
-		return $result;
+			// @note: Incase our rootDSE didnt return a namingcontext, we'll have no base DNs
+			foreach (($rootdse->namingcontexts ?: []) as $dn)
+				$result->push(self::get($dn)->read()->find($dn));
+
+			return $result->filter();
+		});
+	}
+
+	/**
+	 * Work out if we should flush the cache when retrieving an entry
+	 *
+	 * @param string $dn
+	 * @return bool
+	 * @note: We dont need to flush the cache for internal LDAP attributes, as we dont change them
+	 */
+	private static function cacheflush(string $dn): bool
+	{
+		$cache = (! config('ldap.cache.enabled'))
+			|| match (strtolower($dn)) {
+				'','cn=schema','cn=subschema' => FALSE,
+				default => TRUE,
+			};
+
+		Log::debug(sprintf('%s:%s - %s',self::LOGKEY,$cache ? 'Caching' : 'Not Cached',$dn));
+		return $cache;
+	}
+
+	/**
+	 * Return our cache time as per the configuration
+	 *
+	 * @return Carbon
+	 */
+	private static function cachetime(): Carbon
+	{
+		return Carbon::now()
+			->addSeconds(Config::get('ldap.cache.time'));
+	}
+
+	/**
+	 * Generic Builder method to setup our queries consistently - mainly to ensure we cache results
+	 *
+	 * @param string $dn
+	 * @param array $attrs
+	 * @return Builder
+	 */
+	private static function get(string $dn,array $attrs=['*','+']): Builder
+	{
+		return Entry::query()
+			->setDN($dn)
+			->cache(
+				until: self::cachetime(),
+				flush: self::cacheflush($dn))
+			->select($attrs);
 	}
 
 	/**
 	 * Obtain the rootDSE for the server, that gives us server information
 	 *
-	 * @param string|null $connection
-	 * @param Carbon|null $cachetime
-	 * @return Entry|null
+	 * @return Model
 	 * @throws ObjectNotFoundException
 	 * @testedin TranslateOidTest::testRootDSE();
+	 * @note While we are using a static variable for in session performance, we'll also cache the result normally
 	 */
-	public static function rootDSE(?string $connection=NULL,?Carbon $cachetime=NULL): ?Model
+	public static function rootDSE(): Model
 	{
-		$e = new Entry;
+		static $rootdse = NULL;
 
-		return Entry::on($connection ?? $e->getConnectionName())
-			->cache($cachetime)
-			->in(NULL)
-			->read()
-			->select(['+'])
-			->whereHas('objectclass')
-			->firstOrFail();
+		if (is_null($rootdse))
+			$rootdse = self::get('',['+','*'])
+				->read()
+				->firstOrFail();
+
+		return $rootdse;
 	}
 
 	/**
 	 * Get the Schema DN
 	 *
-	 * @param string|null $connection
 	 * @return string
 	 * @throws ObjectNotFoundException
 	 */
-	public static function schemaDN(?string $connection=NULL): string
+	public static function schemaDN(): string
 	{
-		$cachetime = Carbon::now()->addSeconds(Config::get('ldap.cache.time'));
-
-		return collect(self::rootDSE($connection,$cachetime)->subschemasubentry)->first();
+		return collect(self::rootDSE()->subschemasubentry)
+			->first();
 	}
+
+	/* METHODS */
 
 	/**
 	 * Query the server for a DN and return its children and if those children have children.
@@ -233,17 +279,16 @@ final class Server
 	 */
 	public function children(string $dn,array $attrs=['dn']): ?LDAPCollection
 	{
-		return ($x=(new Entry)
-			->on($this->connection)
-			->cache(Carbon::now()->addSeconds(Config::get('ldap.cache.time')))
-			->select(array_merge($attrs,[
-				'hassubordinates',	// Needed for the tree to know if an entry has children
-				'c'					// Needed for the tree to show icons for countries
-			]))
-			->setDn($dn)
+		return $this
+			->get(
+				dn: $dn,
+				attrs: array_merge($attrs,[
+					'hassubordinates',	// Needed for the tree to know if an entry has children
+					'c'					// Needed for the tree to show icons for countries
+				]))
 			->list()
 			->orderBy('dn')
-			->get()) ? $x : NULL;
+			->get() ?: NULL;
 	}
 
 	/**
@@ -251,15 +296,13 @@ final class Server
 	 *
 	 * @param string $dn
 	 * @param array $attrs
-	 * @return Entry|null
+	 * @return Model|null
 	 */
-	public function fetch(string $dn,array $attrs=['*','+']): ?Entry
+	public function fetch(string $dn,array $attrs=['*','+']): ?Model
 	{
-		return ($x=(new Entry)
-			->on($this->connection)
-			->cache(Carbon::now()->addSeconds(Config::get('ldap.cache.time')))
-			->select($attrs)
-			->find($dn)) ? $x : NULL;
+		return $this->get($dn,$attrs)
+			->read()
+			->first() ?: NULL;
 	}
 
 	/**
@@ -303,34 +346,11 @@ final class Server
 			// First pass if we have already retrieved the schema item
 			switch ($item) {
 				case 'attributetypes':
-					if (isset($this->attributetypes))
-						return $this->attributetypes;
-					else
-						$this->attributetypes = collect();
-
-					break;
-
 				case 'ldapsyntaxes':
-					if (isset($this->ldapsyntaxes))
-						return $this->ldapsyntaxes;
-					else
-						$this->ldapsyntaxes = collect();
-
-					break;
-
 				case 'matchingrules':
-					if (isset($this->matchingrules))
-						return $this->matchingrules;
-					else
-						$this->matchingrules = collect();
-
-					break;
-
 				case 'objectclasses':
-					if (isset($this->objectclasses))
-						return $this->objectclasses;
-					else
-						$this->objectclasses = collect();
+					if ($this->{$item}->count())
+						return $this->{$item};
 
 					break;
 
@@ -340,7 +360,7 @@ final class Server
 			}
 
 			// Try to get the schema DN from the specified entry.
-			$schema_dn = $this->schemaDN($this->connection);
+			$schema_dn = $this->schemaDN();
 			$schema = $this->fetch($schema_dn);
 
 			// If our schema's null, we didnt find it.
@@ -349,7 +369,7 @@ final class Server
 
 			switch ($item) {
 				case 'attributetypes':
-					Log::debug('Attribute Types');
+					Log::debug(sprintf('%s:Attribute Types',self::LOGKEY));
 					// build the array of attribueTypes
 					//$syntaxes = $this->SchemaSyntaxes($dn);
 
@@ -367,7 +387,7 @@ final class Server
 						 * with its name set to the alias name, and all other data copied.*/
 
 						if ($o->aliases->count()) {
-							Log::debug(sprintf('\ Attribute [%s] has the following aliases [%s]',$o->name,$o->aliases->join(',')));
+							Log::debug(sprintf('%s:\ Attribute [%s] has the following aliases [%s]',self::LOGKEY,$o->name,$o->aliases->join(',')));
 
 							foreach ($o->aliases as $alias) {
 								$new_attr = clone $o;
@@ -427,7 +447,7 @@ final class Server
 					return $this->attributetypes;
 
 				case 'ldapsyntaxes':
-					Log::debug('LDAP Syntaxes');
+					Log::debug(sprintf('%s:LDAP Syntaxes',self::LOGKEY));
 
 					foreach ($schema->{$item} as $line) {
 						if (is_null($line) || ! strlen($line))
@@ -440,7 +460,7 @@ final class Server
 					return $this->ldapsyntaxes;
 
 				case 'matchingrules':
-					Log::debug('Matching Rules');
+					Log::debug(sprintf('%s:Matching Rules',self::LOGKEY));
 					$this->matchingruleuse = collect();
 
 					foreach ($schema->{$item} as $line) {
@@ -481,7 +501,7 @@ final class Server
 					return $this->matchingrules;
 
 				case 'objectclasses':
-					Log::debug('Object Classes');
+					Log::debug(sprintf('%s:Object Classes',self::LOGKEY));
 
 					foreach ($schema->{$item} as $line) {
 						if (is_null($line) || ! strlen($line))

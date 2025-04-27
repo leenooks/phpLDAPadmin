@@ -24,7 +24,7 @@
 						<td>BaseDN(s)</td>
 						<td>
 							<table class="table table-sm table-borderless">
-								@foreach($server->baseDNs()->sort(fn($item)=>$item->sort_key) as $item)
+								@foreach($server->baseDNs(TRUE)->sort(fn($item)=>$item->sort_key) as $item)
 									<tr>
 										<td class="ps-0">{{ $item->getDn() }}</td>
 									</tr>
