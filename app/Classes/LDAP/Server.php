@@ -361,7 +361,8 @@ final class Server
 
 			// Try to get the schema DN from the specified entry.
 			$schema_dn = $this->schemaDN();
-			$schema = $this->fetch($schema_dn);
+			// @note: 389DS does not return subschemaSubentry unless it is requested
+			$schema = $this->fetch($schema_dn,['*','+','subschemaSubentry']);
 
 			// If our schema's null, we didnt find it.
 			if (! $schema)

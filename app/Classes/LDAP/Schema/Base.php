@@ -20,7 +20,7 @@ abstract class Base {
 	protected string $name = '';
 
 	// The OID of this schema item.
-	protected string $oid;
+	protected string $oid = '';
 
 	# The description of this schema item.
 	protected string $description = '';

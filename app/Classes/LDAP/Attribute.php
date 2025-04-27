@@ -311,7 +311,7 @@ class Attribute implements \Countable, \ArrayAccess
 	 */
 	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
 	{
-		$view = match ($this->schema->syntax_oid) {
+		$view = match ($this->schema?->syntax_oid) {
 			self::SYNTAX_CERTIFICATE => view('components.syntax.certificate'),
 			self::SYNTAX_CERTIFICATE_LIST => view('components.syntax.certificatelist'),
 
