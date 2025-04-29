@@ -307,15 +307,17 @@ class Attribute implements \Countable, \ArrayAccess
 	 * @param bool $edit Render an edit form
 	 * @param bool $old Use old value
 	 * @param bool $new Enable adding values
+	 * @param string $langtag Langtag to use when rendering these attribute values
+	 * @param bool $updated Has the entry been updated (uses rendering highlights))
 	 * @return View
 	 */
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG,bool $updated=FALSE): View
 	{
 		$view = match ($this->schema?->syntax_oid) {
 			self::SYNTAX_CERTIFICATE => view('components.syntax.certificate'),
 			self::SYNTAX_CERTIFICATE_LIST => view('components.syntax.certificatelist'),
 
-			default => view()->exists($x = 'components.attribute.' . $this->name_lc)
+			default => view()->exists($x='components.attribute.'.$this->name_lc)
 				? view($x)
 				: view('components.attribute'),
 		};
@@ -324,7 +326,9 @@ class Attribute implements \Countable, \ArrayAccess
 			->with('o',$this)
 			->with('edit',$edit)
 			->with('old',$old)
-			->with('new',$new);
+			->with('new',$new)
+			->with('langtag',$langtag)
+			->with('updated',$updated);
 	}
 
 	public function render_item_old(string $dotkey): ?string

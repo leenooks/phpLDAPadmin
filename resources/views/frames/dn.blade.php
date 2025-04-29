@@ -51,27 +51,25 @@
 			</div>
 		</div>
 	</div>
+@endsection
 
-	<div class="row">
-		<div class="col">
-			@if(($x=$o->getOtherTags()->filter(fn($item)=>$item->diff(['binary'])->count()))->count())
-				<div class="ms-4 mt-4 alert alert-danger p-2" style="max-width: 30em; font-size: 0.80em;">
-					This entry has [<strong>{!! $x->flatten()->join('</strong>, <strong>') !!}</strong>] tags used by [<strong>{!! $x->keys()->join('</strong>, <strong>') !!}</strong>] that cant be managed by PLA. You can though manage those tags with an LDIF import.
-				</div>
-			@elseif(($x=$o->getLangMultiTags())->count())
-				<div class="ms-4 mt-4 alert alert-danger p-2" style="max-width: 30em; font-size: 0.80em;">
-					This entry has multi-language tags used by [<strong>{!! $x->keys()->join('</strong>, <strong>') !!}</strong>] that cant be managed by PLA. You can though manage those lang tags with an LDIF import.
-				</div>
-			@endif
+@section('page_status')
+	@if(($x=$o->getOtherTags()->filter(fn($item)=>$item->diff(['binary'])->count()))->count())
+		<div class="alert alert-danger p-2">
+			This entry has [<strong>{!! $x->flatten()->join('</strong>, <strong>') !!}</strong>] tags used by [<strong>{!! $x->keys()->join('</strong>, <strong>') !!}</strong>] that cant be managed by PLA. You can though manage those tags with an LDIF import.
 		</div>
-	</div>
+	@elseif(($x=$o->getLangMultiTags())->count())
+		<div class="alert alert-danger p-2">
+			This entry has multi-language tags used by [<strong>{!! $x->keys()->join('</strong>, <strong>') !!}</strong>] that cant be managed by PLA. You can though manage those lang tags with an LDIF import.
+		</div>
+	@endif
+
+	<x-note/>
+	<x-error/>
+	<x-updated/>
 @endsection
 
 @section('main-content')
-	<x-note/>
-	<x-updated/>
-	<x-error/>
-
 	<div class="main-card mb-3 card">
 		<div class="card-body">
 			<div class="card-header-tabs">
@@ -113,12 +111,13 @@
 
 							<div class="card-body">
 								<div class="tab-content">
+									@php($up=(session()->pull('updated') ?: collect()))
 									@foreach($langtags as $tag)
 										<div class="tab-pane @if(! $loop->index) active @endif" id="tab-lang-{{ $tag ?: '_default' }}" role="tabpanel">
 											@switch($tag)
 												@case(Entry::TAG_NOTAG)
 													@foreach ($o->getVisibleAttributes($tag) as $ao)
-														<x-attribute-type :edit="true" :o="$ao" :langtag="$tag"/>
+														<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :langtag="$tag" :updated="$up->contains($ao->name_lc)"/>
 													@endforeach
 													@break
 
@@ -131,7 +130,7 @@
 
 												@default
 													@foreach ($o->getVisibleAttributes($langtag=sprintf('lang-%s',$tag)) as $ao)
-														<x-attribute-type :edit="true" :o="$ao" :langtag="$langtag"/>
+														<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :langtag="$langtag" :updated="$up->contains($ao->name_lc)"/>
 													@endforeach
 											@endswitch
 										</div>
@@ -153,7 +152,7 @@
 					<!-- Internal Attributes -->
 					<div class="tab-pane mt-3" id="internal" role="tabpanel">
 						@foreach ($o->getInternalAttributes() as $ao)
-							<x-attribute-type :o="$ao"/>
+							<x-attribute-type :o="$ao" :edit="FALSE" :new="FALSE" :langtag="Entry::TAG_NOTAG" :updated="FALSE"/>
 						@endforeach
 					</div>
 				</div>

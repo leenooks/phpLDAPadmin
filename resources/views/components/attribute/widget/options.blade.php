@@ -2,6 +2,7 @@
 @use(App\Classes\LDAP\Attribute\CertificateList)
 @use(App\Classes\LDAP\Attribute\Binary\JpegPhoto)
 @use(App\Classes\LDAP\Attribute\ObjectClass)
+
 @php($clone=FALSE)
 <span class="p-0 m-0">
 	@if($o->is_rdn)

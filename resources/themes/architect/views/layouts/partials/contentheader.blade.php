@@ -13,8 +13,14 @@
 			</div>
 		</div>
 
-		<div class="page-title-actions">
-			@yield('page_actions')
+		<div class="page-title-items">
+			<div class="page-title-actions">
+				@yield('page_actions')
+			</div>
+
+			<div class="page-title-status pt-4">
+				@yield('page_status')
+			</div>
 		</div>
 	</div>
 </div>

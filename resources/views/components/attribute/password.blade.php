@@ -5,7 +5,7 @@
 		@if($edit)
 			<div class="input-group has-validation mb-3">
 				<x-form.select id="userpassword_hash_{{$loop->index}}" name="userpassword_hash[{{ $langtag }}][]" :value="$o->hash($value)->id()" :options="$helpers" allowclear="false" :disabled="true"/>
-				<input type="password" @class(['form-control','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index)),'mb-1','border-focus'=>! $o->tagValuesOld($langtag)->contains($value)]) name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ md5($value) }}" @readonly(true)>
+				<input type="password" @class(['form-control','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index)),'mb-1','border-focus'=>! $o->tagValuesOld($langtag)->contains($value),'bg-success-subtle'=>$updated]) name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ md5($value) }}" @readonly(true)>
 
 				<div class="invalid-feedback pb-2">
 					@if($e)

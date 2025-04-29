@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
 use App\Classes\LDAP\Attribute;
+use App\Ldap\Entry;
 
 /**
  * Represents an attribute whose values are schema related
@@ -53,7 +54,7 @@ abstract class Schema extends Attribute
 			__('No description available, can you help with one?'));
 	}
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG,bool $updated=FALSE): View
 	{
 		// @note Schema attributes cannot be edited
 		return view('components.attribute.internal')

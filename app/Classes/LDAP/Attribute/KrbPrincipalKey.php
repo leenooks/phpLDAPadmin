@@ -3,9 +3,9 @@
 namespace App\Classes\LDAP\Attribute;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Arr;
 
 use App\Classes\LDAP\Attribute;
+use App\Ldap\Entry;
 use App\Traits\MD5Updates;
 
 /**
@@ -17,13 +17,14 @@ final class KrbPrincipalKey extends Attribute
 
 	protected(set) bool $no_attr_tags = TRUE;
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG,bool $updated=FALSE): View
 	{
 		return view('components.attribute.krbprincipalkey')
 			->with('o',$this)
 			->with('edit',$edit)
 			->with('old',$old)
-			->with('new',$new);
+			->with('new',$new)
+			->with('updated',$updated);
 	}
 
 	public function render_item_old(string $dotkey): ?string

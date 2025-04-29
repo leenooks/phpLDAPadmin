@@ -5,6 +5,9 @@
 			<div class="col-12 bg-light text-dark p-2">
 				<strong><abbr title="{{ $o->description }}">{{ $o->name }}</abbr></strong>
 				<!-- Attribute Hints -->
+				@if($updated)
+					<span class="float-end small text-success ms-2" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip-success" title="@lang('Updated')"><i class="fas fa-fw fa-marker"></i> </span>
+				@endif
 				<span class="float-end small">
 					@foreach($o->hints as $name => $description)
 						@if ($loop->index),@endif
@@ -14,7 +17,7 @@
 			</div>
 		</div>
 
-		<x-attribute :o="$o" :edit="$edit ?? FALSE" :new="$new ?? FALSE" :langtag="$langtag ?? \App\Ldap\Entry::TAG_NOTAG"/>
+		<x-attribute :o="$o" :edit="$edit" :new="$new" :langtag="$langtag" :updated="$updated"/>
 	</div>
 </div>
 

@@ -23,6 +23,10 @@ input.form-control.input-group-end {
 	border-top-right-radius: 4px !important;
 }
 
+.custom-tooltip-success {
+	--bs-tooltip-bg: var(--bs-success);
+}
+
 .custom-tooltip-warning {
 	--bs-tooltip-bg: var(--bs-warning);
 	--bs-tooltip-color: black;
@@ -69,4 +73,13 @@ input.form-control.input-group-end {
 /* hide the site icons when the search is opened */
 .search-wrapper.active + .header-menu.nav {
 	display: none;
+}
+
+.page-title-wrapper .page-title-items {
+	margin-left: auto;
+	max-width: 50%;
+}
+
+.page-title-wrapper .page-title-items .page-title-status .alert {
+	font-size: 0.80em;
 }

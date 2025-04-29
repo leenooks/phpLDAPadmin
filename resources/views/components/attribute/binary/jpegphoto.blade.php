@@ -9,7 +9,7 @@
 					@default
 						<td>
 							<input type="hidden" name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ md5($value) }}">
-							<img alt="{{ $o->dn }}" @class(['border','rounded','p-2','m-0','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index))]) src="data:{{ $x }};base64, {{ base64_encode($value) }}" />
+							<img alt="{{ $o->dn }}" @class(['border','rounded','p-2','m-0','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index)),'bg-success-subtle'=>$updated]) src="data:{{ $x }};base64, {{ base64_encode($value) }}" />
 
 							@if($edit)
 								<br>

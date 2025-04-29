@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Attribute;
+use App\Ldap\Entry;
 use App\Traits\MD5Updates;
 
 /**
@@ -78,13 +79,14 @@ final class Password extends Attribute
 		return ($helpers=static::helpers())->has($id) ? new ($helpers->get($id)) : NULL;
 	}
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG,bool $updated=FALSE): View
 	{
 		return view('components.attribute.password')
 			->with('o',$this)
 			->with('edit',$edit)
 			->with('old',$old)
 			->with('new',$new)
+			->with('updated',$updated)
 			->with('helpers',static::helpers()->map(fn($item,$key)=>['id'=>$key,'value'=>$key])->sort());
 	}
 

@@ -9,11 +9,11 @@
 	])
 @endsection
 
-@section('main-content')
-	<x-note/>
-	<x-success/>
+@section('page_status')
 	<x-error/>
+@endsection
 
+@section('main-content')
 	<div class="main-card mb-3 card">
 		<form id="dn-update" method="POST" class="needs-validation" action="{{ url('entry/update/commit') }}" novalidate>
 			@csrf

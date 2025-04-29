@@ -19,13 +19,14 @@ class Attribute extends Component
 	/**
 	 * Create a new component instance.
 	 */
-	public function __construct(?LDAPAttribute $o,bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG)
+	public function __construct(?LDAPAttribute $o,bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG,bool $updated=FALSE)
 	{
 		$this->o = $o;
 		$this->edit = $edit;
 		$this->old = $old;
 		$this->new = $new;
 		$this->langtag = $langtag;
+		$this->updated = $updated;
 	}
 
 	/**
@@ -37,7 +38,7 @@ class Attribute extends Component
 	{
 		return $this->o
 			? $this->o
-				->render(edit: $this->edit,old: $this->old,new: $this->new)
+				->render(edit: $this->edit,old: $this->old,new: $this->new,langtag: $this->langtag,updated: $this->updated)
 			: __('Unknown');
 	}
 }

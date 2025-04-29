@@ -15,7 +15,7 @@ final class JpegPhoto extends Binary
 {
 	use MD5Updates;
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG,bool $updated=FALSE): View
 	{
 		return view('components.attribute.binary.jpegphoto')
 			->with('o',$this)
@@ -23,6 +23,7 @@ final class JpegPhoto extends Binary
 			->with('old',$old)
 			->with('new',$new)
 			->with('langtag',$langtag)
+			->with('updated',$updated)
 			->with('f',new \finfo);
 	}
 }

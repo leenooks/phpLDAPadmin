@@ -9,5 +9,4 @@ use App\Classes\LDAP\Attribute;
  */
 final class GidNumber extends Attribute
 {
-	protected(set) bool $no_attr_tags = FALSE;
 }

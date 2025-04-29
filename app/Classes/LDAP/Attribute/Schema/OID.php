@@ -5,6 +5,7 @@ namespace App\Classes\LDAP\Attribute\Schema;
 use Illuminate\Contracts\View\View;
 
 use App\Classes\LDAP\Attribute\Schema;
+use App\Ldap\Entry;
 
 /**
  * Represents an OID Attribute
@@ -34,7 +35,7 @@ final class OID extends Schema
 		return parent::_get(config_path('ldap_supported_oids.txt'),$string,$key);
 	}
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG,bool $updated=FALSE): View
 	{
 		// @note Schema attributes cannot be edited
 		return view('components.attribute.schema.oid')

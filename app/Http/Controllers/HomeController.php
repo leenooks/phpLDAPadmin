@@ -91,16 +91,18 @@ class HomeController extends Controller
 		$dn = $request->dn ? Crypt::decrypt($request->dn) : '';
 		$o = Factory::create(dn: $dn,attribute: $id,values: [],oc: $request->objectclasses);
 
-		return $request->noheader
+		$view = $request->noheader
 			? view(sprintf('components.attribute.widget.%s',$id))
-				->with('o',$o)
 				->with('value',$request->value)
-				->with('langtag',Entry::TAG_NOTAG)
 				->with('loop',$xx)
 			: view('components.attribute-type')
-				->with('o',$o)
 				->with('new',TRUE)
 				->with('edit',TRUE);
+
+		return $view
+			->with('o',$o)
+			->with('langtag',Entry::TAG_NOTAG)
+			->with('updated',FALSE);
 	}
 
 	public function entry_create(EntryAddRequest $request): \Illuminate\Http\RedirectResponse

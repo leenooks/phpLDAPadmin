@@ -70,14 +70,14 @@ final class ObjectClass extends Attribute
 			->contains($value);
 	}
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG,bool $updated=FALSE): View
 	{
 		return view('components.attribute.objectclass')
 			->with('o',$this)
 			->with('edit',$edit)
-			->with('langtag',Entry::TAG_NOTAG)
 			->with('old',$old)
-			->with('new',$new);
+			->with('new',$new)
+			->with('updated',$updated);
 	}
 
 	private function set_oc_schema(Collection $tv): void

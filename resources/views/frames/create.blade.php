@@ -9,9 +9,11 @@
 	])
 @endsection
 
-@section('main-content')
+@section('page_status')
 	<x-error/>
+@endsection
 
+@section('main-content')
 	<div class="row">
 		<div class="offset-1 col-10">
 			<div class="main-card mb-3 card">
