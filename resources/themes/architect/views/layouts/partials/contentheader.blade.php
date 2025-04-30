@@ -1,5 +1,5 @@
 <div class="app-page-title">
-	<div class="page-title-wrapper">
+	<div class="page-title-wrapper bg-white">
 		<div class="page-title-heading">
 			@if (trim($__env->yieldContent('page_icon')))
 				<div class="page-title-icon f32">
@@ -13,7 +13,7 @@
 			</div>
 		</div>
 
-		<div class="page-title-items">
+		<div class="page-title-items p-2">
 			<div class="page-title-actions">
 				@yield('page_actions')
 			</div>
