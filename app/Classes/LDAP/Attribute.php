@@ -18,7 +18,7 @@ class Attribute implements \Countable, \ArrayAccess
 	protected string $name;
 
 	// Is this attribute an internal attribute
-	protected(set) bool $is_internal = FALSE;
+	protected ?bool $_is_internal = NULL;
 	protected(set) bool $no_attr_tags = FALSE;
 
 	// MIN/MAX number of values
@@ -144,6 +144,8 @@ class Attribute implements \Countable, \ArrayAccess
 			'hints' => $this->hints(),
 			// Can this attribute be edited
 			'is_editable' => $this->schema ? $this->schema->{$key} : NULL,
+			// Is this an internal attribute
+			'is_internal' => is_null($this->_is_internal) ? ($this->used_in->count() === 0) : $this->_is_internal,
 			// Objectclasses that required this attribute for an LDAP entry
 			'required' => $this->required(),
 			// Is this attribute an RDN attribute
@@ -157,7 +159,7 @@ class Attribute implements \Countable, \ArrayAccess
 			// Used in Object Classes
 			'used_in' => $this->schema?->used_in_object_classes ?: collect(),
 			// The current attribute values
-			'values' => $this->no_attr_tags ? $this->tagValues() : $this->_values,
+			'values' => ($this->no_attr_tags || $this->is_internal) ? $this->tagValues() : $this->_values,
 			// The original attribute values
 			'values_old' => $this->no_attr_tags ? $this->tagValuesOld() : $this->_values_old,
 
@@ -313,6 +315,11 @@ class Attribute implements \Countable, \ArrayAccess
 	 */
 	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG,bool $updated=FALSE): View
 	{
+		if ($this->is_internal)
+			// @note Internal attributes cannot be edited
+			return view('components.attribute.internal')
+				->with('o',$this);
+
 		$view = match ($this->schema?->syntax_oid) {
 			self::SYNTAX_CERTIFICATE => view('components.syntax.certificate'),
 			self::SYNTAX_CERTIFICATE_LIST => view('components.syntax.certificatelist'),
