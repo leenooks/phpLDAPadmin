@@ -23,7 +23,7 @@
 				<tr class="mt-1">
 					<td class="p-0 pe-2">UUID</td>
 					<th class="p-0">
-						<x-attribute :o="$o->getObject('entryuuid')""/>
+						<x-attribute :o="$o->getObject('entryuuid')"/>
 					</th>
 				</tr>
 				@if($langtags->count())
