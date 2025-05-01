@@ -397,10 +397,10 @@ class HomeController extends Controller
 				->with('o',$o)
 				->with('page_actions',collect([
 					'copy'=>FALSE,
-					'create'=>TRUE,
-					'delete'=>TRUE,
-					'edit'=>TRUE,
-					'export'=>TRUE,
+					'create'=>($x=($o->getObjects()->except('entryuuid')->count() > 0)),
+					'delete'=>$x,
+					'edit'=>$x,
+					'export'=>$x,
 				])),
 
 			'import' => $view,

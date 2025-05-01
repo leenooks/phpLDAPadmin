@@ -274,7 +274,7 @@ class Entry extends Model
 	{
 		$result = collect();
 
-		foreach ($this->getObject('objectclass')->values as $oc)
+		foreach (($this->getObject('objectclass')?->values ?: []) as $oc)
 			$result = $result->merge(config('server')->schema('objectclasses',$oc)->attributes);
 
 		return $result;
@@ -439,9 +439,10 @@ class Entry extends Model
 	 */
 	public function icon(): string
 	{
-		$objectclasses = $this->getObject('objectclass')
-			->tagValues()
-			->map(fn($item)=>strtolower($item));
+		$objectclasses = ($x=$this->getObject('objectclass'))
+			? $x->tagValues()
+				->map(fn($item)=>strtolower($item))
+			: collect();
 
 		// Return icon based upon objectClass value
 		if ($objectclasses->intersect([

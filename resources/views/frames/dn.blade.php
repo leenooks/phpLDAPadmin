@@ -88,8 +88,14 @@
 							<div class="card-header border-bottom-0">
 								<div class="btn-actions-pane-right">
 									<div role="group" class="btn-group-sm nav btn-group">
-										@foreach($langtags->prepend(Entry::TAG_NOTAG)->push('+') as $tag)
-											<a data-bs-toggle="tab" href="#tab-lang-{{ $tag ?: '_default' }}" class="btn btn-outline-light border-dark-subtle @if(! $loop->index) active @endif @if($loop->last)ndisabled @endif">
+										@php
+											$langtags->prepend(Entry::TAG_NOTAG);
+											if (isset($page_actions) && $page_actions->get('edit'))
+												$langtags->push('+');
+										@endphp
+
+										@foreach($langtags as $tag)
+											<a data-bs-toggle="tab" href="#tab-lang-{{ $tag ?: '_default' }}" @class(['btn','btn-outline-light','border-dark-subtle','active'=>!$loop->index])>
 												@switch($tag)
 													@case(Entry::TAG_NOTAG)
 														<i class="fas fa-fw fa-border-none" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" title="@lang('No Lang Tag')"></i>
