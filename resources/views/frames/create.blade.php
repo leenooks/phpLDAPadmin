@@ -49,10 +49,10 @@
 								@break
 
 							@case(2)
-								<x-attribute-type :edit="true" :o="$o->getObject('rdn')"/>
+								<x-attribute-type :o="$o->getObject('rdn')" :edit="TRUE" :new="FALSE" :langtag="Entry::TAG_NOTAG" :updated="FALSE"/>
 
 								@foreach ($o->getVisibleAttributes() as $ao)
-									<x-attribute-type :edit="true" :o="$ao"/>
+									<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :langtag="Entry::TAG_NOTAG" :updated="FALSE"/>
 								@endforeach
 
 								@include('fragment.dn.add_attr')

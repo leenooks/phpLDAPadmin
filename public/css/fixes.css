@@ -245,6 +245,11 @@ select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__
 	padding: 0.25em 0.45em;
 }
 
+/* Remove the shadow outline on an opened box */
+.select2-container--bootstrap-5.select2-container--focus .select2-selection, .select2-container--bootstrap-5.select2-container--open .select2-selection {
+	box-shadow: none;
+}
+
 .input-group-text {
 	background-color: #fafafa;
 }
