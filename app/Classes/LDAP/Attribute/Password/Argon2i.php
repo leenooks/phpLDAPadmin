@@ -10,16 +10,16 @@ final class Argon2i extends Base
 
 	public static function subid(string $password): bool
 	{
-		return str_starts_with(base64_decode(self::password($password)),self::identifier.'$');
+		return str_starts_with(self::password($password),self::identifier.'$');
 	}
 
 	public function compare(string $source,string $compare): bool
 	{
-		return password_verify($compare,base64_decode($this->password($source)));
+		return password_verify($compare,$this->password($source));
 	}
 
 	public function encode(string $password): string
 	{
-		return sprintf('{%s}%s',self::key,base64_encode(password_hash($password,PASSWORD_ARGON2I)));
+		return sprintf('{%s}%s',self::key,password_hash($password,PASSWORD_ARGON2I));
 	}
 }
