@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\{AjaxController,HomeController};
+use App\Http\Controllers\{AjaxController,HomeController,SearchController};
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Middleware\AllowAnonymous;
 
@@ -27,6 +27,7 @@ Auth::routes([
 ]);
 
 Route::get('logout',[LoginController::class,'logout']);
+Route::post('search',[SearchController::class,'search']);
 
 Route::controller(HomeController::class)->group(function() {
 	Route::middleware(AllowAnonymous::class)->group(function() {

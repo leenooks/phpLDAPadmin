@@ -33,8 +33,12 @@
 		<div class="app-header-left">
 			<div class="search-wrapper">
 				<div class="input-holder">
-					<input type="text" class="search-input" placeholder="Type to search">
-					<button class="search-icon"><span></span></button>
+					<input type="text" class="search-input" id="search" placeholder="Type to search">
+					<button class="search-icon">
+						<span></span>
+						<div id="searching" class="d-none"><i class="fas fa-fw fa-spinner fa-pulse text-light"></i></div>
+					</button>
+					<div id="search_results" style="height: 300px; overflow: scroll"></div>
 				</div>
 				<button class="btn-close"></button>
 			</div>
@@ -160,6 +164,13 @@
 </div>
 
 @section('page-scripts')
+	<style>
+		#search_results ul.typeahead.dropdown-menu {
+			overflow: scroll;
+			max-height: 300px;
+		}
+	</style>
+
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('button[id^="link-"]').on('click',function(item) {
@@ -190,6 +201,70 @@
 
 				return false;
 			});
+
+			$('.search-wrapper input[id="search"]').typeahead({
+				autoSelect: false,
+				scrollHeight: 10,
+				theme: 'bootstrap5',
+				delay: 500,
+				minLength: 2,
+				items: {{ $search_limit ?? 100 }},
+				selectOnBlur: false,
+				appendTo: "#search_results",
+				source: function(query,process) {
+					search('{{ url('search') }}',query,process);
+				},
+				// Disable sorting and just return the items (items should be sorted by the ajax method)
+				sorter: function(items) {
+					return items;
+				},
+				matcher: function() { return true; },
+				// Disable sorting and just return the items (items should by the ajax method)
+				updater: function(item) {
+					// If item has a data value, then we'll use that
+					if (item.data && item.data.length)
+						return item.data;
+
+					if (! item.value)
+						return item.name+'=';
+
+					location.replace('/#'+item.value);
+					location.reload();
+					return '';
+				},
+			})
+				.on('keyup keypress',function(event) {
+					var key = event.keyCode || event.which;
+					if (key === 13) {
+						event.preventDefault();
+						return false;
+					}
+				});
 		});
+
+		var search = _.debounce(function(url,query,process){
+			$.ajax({
+				url : url,
+				type : 'POST',
+				data : 'term=' + query,
+				dataType : 'JSON',
+				async : true,
+				cache : false,
+				beforeSend : function() {
+					$('.search-wrapper div#searching').removeClass('d-none');
+					$('.search-wrapper .search-icon span').addClass('d-none');
+				},
+				success : function(data) {
+					// if json is null, means no match, won't do again.
+					if(data==null || (data.length===0)) return;
+
+					process(data);
+				},
+				complete : function() {
+					$('.search-wrapper div#searching').addClass('d-none');
+					$('.search-wrapper .search-icon span').removeClass('d-none');
+				}
+			})
+		}, 500);
 	</script>
 @append
