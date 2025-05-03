@@ -255,7 +255,9 @@
 			@default
 				@if($o->isDynamic()) @break @endif
 				@php($clone=TRUE)
-				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name }}-addnew"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</span>
+				@if($o->values_old->count())
+					<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name }}-addnew"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</span>
+				@endif
 
 				@section('page-scripts')
 					@if($clone && $edit && $o->can_addvalues)

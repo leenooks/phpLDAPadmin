@@ -1,7 +1,7 @@
 @use(App\Classes\LDAP\Attribute\Certificate)
 
 <!-- $o=Certificate::class -->
-<x-attribute.layout :edit="$edit" :new="$new" :o="$o" langtag="binary">
+<x-attribute.layout :edit="$edit" :new="$new" :o="$o">
 	@foreach($o->tagValuesOld('binary') as $key => $value)
 		<!-- If this attribute is not handle, it'll be an Attribute::class, we'll just render it normally -->
 		@if(($o instanceof Certificate) && $edit)

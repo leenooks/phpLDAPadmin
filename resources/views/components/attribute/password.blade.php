@@ -1,11 +1,11 @@
 <!-- @todo We are not handling redirect backs yet with updated passwords -->
 <!-- $o=Password::class -->
-<x-attribute.layout :edit="$edit" :new="$new" :o="$o" :langtag="$langtag">
-	@foreach($o->tagValuesOld($langtag) as $key => $value)
+<x-attribute.layout :edit="$edit" :new="$new" :o="$o">
+	@foreach(Arr::get(old($o->name_lc,[$langtag=>$new ? [NULL] : $o->tagValues($langtag)]),$langtag,[]) as $key => $value)
 		@if($edit)
 			<div class="input-group has-validation mb-3">
-				<x-form.select id="userpassword_hash_{{$loop->index}}" name="userpassword_hash[{{ $langtag }}][]" :value="$o->hash($value)->id()" :options="$helpers" allowclear="false" :disabled="true"/>
-				<input type="password" @class(['form-control','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index)),'mb-1','border-focus'=>! $o->tagValuesOld($langtag)->contains($value),'bg-success-subtle'=>$updated]) name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ md5($value) }}" @readonly(true)>
+				<x-form.select id="userpassword_hash_{{$loop->index}}" name="userpassword_hash[{{ $langtag }}][]" :value="$o->hash($new ? '' : $value)->id()" :options="$helpers" allowclear="false" :disabled="! $new"/>
+				<input type="password" @class(['form-control','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index)),'mb-1','border-focus'=>! $o->tagValuesOld($langtag)->contains($value),'bg-success-subtle'=>$updated]) name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ md5($value) }}" @readonly(! $new)>
 
 				<div class="invalid-feedback pb-2">
 					@if($e)

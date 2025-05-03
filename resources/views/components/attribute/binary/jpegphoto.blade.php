@@ -1,6 +1,6 @@
 <!-- @todo We are not handling redirect backs yet with updated photos -->
 <!-- $o=Binary\JpegPhoto::class -->
-<x-attribute.layout :edit="$edit" :new="$new" :o="$o" :langtag="$langtag">
+<x-attribute.layout :edit="$edit" :new="$new" :o="$o">
 	<table class="table table-borderless p-0 m-0">
 		@foreach($o->tagValuesOld() as $key => $value)
 			<tr>

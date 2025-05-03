@@ -18,6 +18,7 @@ final class Password extends Attribute
 	use MD5Updates;
 
 	protected(set) bool $no_attr_tags = TRUE;
+	protected(set) int $max_values_count = 1;
 
 	private const password_helpers = 'Classes/LDAP/Attribute/Password';
 	public const commands = 'App\\Classes\\LDAP\\Attribute\\Password\\';
