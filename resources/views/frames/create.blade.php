@@ -11,6 +11,7 @@
 
 @section('page_status')
 	<x-error/>
+	<x-failed/>
 @endsection
 
 @section('main-content')

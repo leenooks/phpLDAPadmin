@@ -67,6 +67,7 @@
 	<x-note/>
 	<x-error/>
 	<x-updated/>
+	<x-failed/>
 @endsection
 
 @section('main-content')

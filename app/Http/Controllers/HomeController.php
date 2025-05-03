@@ -127,7 +127,7 @@ class HomeController extends Controller
 				case 50:
 					return Redirect::to('/')
 						->withInput()
-						->withErrors(sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
+						->with('failed',sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
 
 				default:
 					abort(599,$e->getDetailedError()->getErrorMessage());
@@ -135,14 +135,14 @@ class HomeController extends Controller
 
 		// @todo when we create an entry, and it already exists, enable a redirect to it
 		} catch (LdapRecordException $e) {
-            return Redirect::back()
-                ->withInput()
-                ->withErrors(sprintf('%s: %s - %s: %s',
-                    __('LDAP Server Error Code'),
-                    $e->getDetailedError()->getErrorCode(),
-                    __($e->getDetailedError()->getErrorMessage()),
-                    $e->getDetailedError()->getDiagnosticMessage(),
-                ));
+			return Redirect::back()
+				->withInput()
+				->with('failed',sprintf('%s: %s - %s: %s',
+					__('LDAP Server Error Code'),
+					$e->getDetailedError()->getErrorCode(),
+					__($e->getDetailedError()->getErrorMessage()),
+					$e->getDetailedError()->getDiagnosticMessage(),
+				));
 		}
 
 		return Redirect::to('/')
@@ -165,7 +165,7 @@ class HomeController extends Controller
 				case 50:
 					return Redirect::to('/')
 						->withInput()
-						->withErrors(sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
+						->with('failed',sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
 
 				default:
 					abort(599,$e->getDetailedError()->getErrorMessage());
@@ -178,7 +178,7 @@ class HomeController extends Controller
 				case 8:
 					return Redirect::to('/')
 						->withInput()
-						->withErrors(sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
+						->with('failed',sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
 
 				default:
 					abort(599,$e->getDetailedError()->getErrorMessage());
@@ -335,21 +335,21 @@ class HomeController extends Controller
 				case 50:
 					return Redirect::to('/')
 						->withInput()
-						->withErrors(sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
+						->with('failed',sprintf('%s: %s (%s)',__('LDAP Server Error Code'),$x,__($e->getDetailedError()->getErrorMessage())));
 
 				default:
 					abort(599,$e->getDetailedError()->getErrorMessage());
 			}
 
 		} catch (LdapRecordException $e) {
-            return Redirect::to('/')
-                ->withInput()
-                ->withErrors(sprintf('%s: %s - %s: %s',
-                    __('LDAP Server Error Code'),
-                    $e->getDetailedError()->getErrorCode(),
-                    __($e->getDetailedError()->getErrorMessage()),
-                    $e->getDetailedError()->getDiagnosticMessage(),
-                ));
+			return Redirect::to('/')
+				->withInput()
+				->with('failed',sprintf('%s: %s - %s: %s',
+					__('LDAP Server Error Code'),
+					$e->getDetailedError()->getErrorCode(),
+					__($e->getDetailedError()->getErrorMessage()),
+					$e->getDetailedError()->getDiagnosticMessage(),
+				));
 		}
 
 		return Redirect::to('/')
