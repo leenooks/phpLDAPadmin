@@ -38,6 +38,7 @@ The update to v2 is progressing well - here is a list of work to do and done:
     - [X] Support different password hash options
     - [X] Validate password is correct
   - [ ] JpegPhoto Create/Delete
+  - [ ] Binary attribute upload
   - [X] JpegPhoto Display
   - [X] ObjectClass Add/Remove
     - [X] Add additional required attributes (for ObjectClass Addition)
@@ -53,7 +54,7 @@ The update to v2 is progressing well - here is a list of work to do and done:
 - [X] Export entries as an LDAP
 - [X] Import LDIF
 - [X] Schema Browser
-- [ ] Searching
+- [X] Searching
 - [ ] Enforcing attribute uniqueness
 - [ ] Is there something missing?
 
