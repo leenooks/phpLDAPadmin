@@ -13,7 +13,7 @@
 
 			<div class="row">
 				<div class="col-12 pt-2">
-					<x-form.select id="newattr" label="Select from..." :options="$o->getMissingAttributes()->sortBy('name')->unique('name')->map(fn($item)=>['id'=>$item->name,'value'=>$item->name_lc])"/>
+					<x-form.select id="newattr" label="Select from..." :options="$o->getMissingAttributes()->sortBy('name')->unique('name')->map(fn($item)=>['id'=>$item->name,'value'=>$item->name])"/>
 				</div>
 			</div>
 		</div>
