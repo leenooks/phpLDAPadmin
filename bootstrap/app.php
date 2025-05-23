@@ -16,8 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
 		$middleware->appendToGroup(
 			group: 'web',
 			middleware: [
-				AllowAnonymous::class,
 				ApplicationSession::class,
+				AllowAnonymous::class,
 				SwapinAuthUser::class,
 				ViewVariables::class,
 				CheckUpdate::class,
