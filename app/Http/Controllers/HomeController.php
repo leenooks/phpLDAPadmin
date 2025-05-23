@@ -114,7 +114,7 @@ class HomeController extends Controller
 		$o = new Entry;
 		$o->setDn($dn);
 
-		foreach ($request->except(['_token','key','step','rdn','rdn_value']) as $key => $value)
+		foreach ($request->except(['_token','key','step','rdn','rdn_value','userpassword_hash']) as $key => $value)
 			$o->{$key} = array_filter($value);
 
 		try {
