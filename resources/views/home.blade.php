@@ -62,7 +62,7 @@
 							<i class="fas fa-fw fa-file-export me-2"></i> LDIF Import/Export
 						</li>
 						<li class="ps-0 p-1">
-							<i class="fas fa-fw fa-clipboard-list me-2"></i> Build on RFC Standards
+							<i class="fas fa-fw fa-clipboard-list me-2"></i> Built using RFC Standards
 						</li>
 						<li class="ps-0 p-1">
 							<i class="fas fa-fw fa-pen-to-square me-2"></i> Open Source
