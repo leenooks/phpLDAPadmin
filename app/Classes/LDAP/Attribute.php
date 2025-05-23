@@ -106,10 +106,16 @@ class Attribute implements \Countable, \ArrayAccess
 		$this->_values = collect($values);
 		$this->_values_old = collect($values);
 
-		$this->oc = collect($oc);
-
-		$this->schema = (new Server)
+		$this->schema = config('server')
 			->schema('attributetypes',$name);
+
+		$this->oc = collect();
+
+		// Get the objectclass heirarchy for required attribute determination
+		foreach ($oc as $objectclass) {
+			$this->oc->push($objectclass);
+			$this->oc = $this->oc->merge(config('server')->schema('objectclasses',$objectclass)->getParents()->pluck('name'));
+		}
 
 		/*
 		# Should this attribute be hidden
