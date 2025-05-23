@@ -161,7 +161,7 @@ class Attribute implements \Countable, \ArrayAccess
 			// The current attribute values
 			'values' => ($this->no_attr_tags || $this->is_internal) ? $this->tagValues() : $this->_values,
 			// The original attribute values
-			'values_old' => $this->no_attr_tags ? $this->tagValuesOld() : $this->_values_old,
+			'values_old' => ($this->no_attr_tags || $this->is_internal) ? $this->tagValuesOld() : $this->_values_old,
 
 			default => throw new \Exception('Unknown key:' . $key),
 		};
@@ -338,6 +338,12 @@ class Attribute implements \Countable, \ArrayAccess
 			->with('updated',$updated);
 	}
 
+	/**
+	 * Return the value of the original old values
+	 *
+	 * @param string $dotkey
+	 * @return string|null
+	 */
 	public function render_item_old(string $dotkey): ?string
 	{
 		return match ($this->schema->syntax_oid) {
@@ -348,6 +354,12 @@ class Attribute implements \Countable, \ArrayAccess
 		};
 	}
 
+	/**
+	 * Return the value of the new values, which would include any pending udpates
+	 *
+	 * @param string $dotkey
+	 * @return string|null
+	 */
 	public function render_item_new(string $dotkey): ?string
 	{
 		return Arr::get($this->values->dot(),$dotkey);
@@ -366,6 +378,12 @@ class Attribute implements \Countable, \ArrayAccess
 			: collect();
 	}
 
+	/**
+	 * Return the new values for this attribute, which would include any pending updates
+	 *
+	 * @param string $tag
+	 * @return Collection
+	 */
 	public function tagValues(string $tag=Entry::TAG_NOTAG): Collection
 	{
 		return collect($this->_values
@@ -373,6 +391,12 @@ class Attribute implements \Countable, \ArrayAccess
 			->get($tag,[]));
 	}
 
+	/**
+	 * Return the original values for this attribute, as stored in the LDAP server
+	 *
+	 * @param string $tag
+	 * @return Collection
+	 */
 	public function tagValuesOld(string $tag=Entry::TAG_NOTAG): Collection
 	{
 		return collect($this->_values_old

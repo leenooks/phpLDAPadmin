@@ -1,5 +1,3 @@
-@use(App\Ldap\Entry)
-
 <!-- $o=Attribute::class -->
 <x-attribute.layout :edit="$edit=($edit ?? FALSE)" :new="$new=($new ?? FALSE)" :o="$o">
 	<div class="col-12">

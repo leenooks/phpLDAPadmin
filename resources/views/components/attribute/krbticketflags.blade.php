@@ -1,6 +1,6 @@
 <!-- $o=KrbTicketFlags::class -->
 <x-attribute.layout :edit="$edit" :new="$new" :o="$o">
-	@foreach(Arr::get(old($o->name_lc,[$langtag=>$o->tagValues($langtag)]),$langtag,[]) as $key => $value)
+	@foreach(($o->tagValues($langtag)->count() ? $o->tagValues($langtag) : [$langtag => NULL]) as $key => $value)
 		@if($edit)
 			<div id="32"></div>
 			<div id="16"></div>
