@@ -7,7 +7,6 @@ php=${PHP_DIR:-/app}
 composer=${COMPOSER_HOME:-/var/cache/composer}
 
 SITE_USER=${SITE_USER:-www-data}
-MEMCACHED_START=${MEMCACHED_START:-FALSE}
 RUN_USER=$(id -u)
 [ "${RUN_USER}" = "0" ] && USE_SU=1
 
@@ -39,12 +38,6 @@ echo "* Started with [$@]"
 
 # Run any container setup
 [ -x /sbin/init-container ] && /sbin/init-container
-
-# General Setup
-if [ -x /usr/bin/memcached -a "${MEMCACHED_START}" == "TRUE" ]; then
-	echo "* Starting MEMCACHED..."
-	/usr/bin/memcached -d -P /run/memcached/memcached.pid -u memcached
-fi
 
 # Laravel Specific
 if [ -r artisan -a -e ${php}/.env ]; then
