@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use LdapRecord\Container;
-use LdapRecord\Testing\DirectoryFake;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
 
 class LoginTest extends TestCase
@@ -18,12 +18,10 @@ class LoginTest extends TestCase
 
 	public function test_admin_dn_login()
 	{
-		$username = 'cn=Admin,dc=Test';
-		$password = 'test';
+		$this->assertTrue($this->login());
+		$this->assertTrue(Auth::check());
 
-		//DirectoryFake::setup();
-
-		$connection = Container::getDefaultConnection();
-		$this->assertTrue($connection->auth()->attempt($username,$password));
+		$this->assertTrue(Session::has('username_encrypt'));
+		$this->assertTrue(Session::has('password_encrypt'));
 	}
 }
