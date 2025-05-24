@@ -204,7 +204,7 @@ final class Server
 				default => TRUE,
 			};
 
-		Log::debug(sprintf('%s:%s - %s',self::LOGKEY,$cache ? 'Caching' : 'Not Cached',$dn));
+		Log::debug(sprintf('%s:%s - %s',self::LOGKEY,$cache ? 'DN CACHEABLE' : 'DN NOT cacheable',$dn));
 		return $cache;
 	}
 
@@ -216,7 +216,7 @@ final class Server
 	private static function cachetime(): Carbon
 	{
 		return Carbon::now()
-			->addSeconds(Config::get('ldap.cache.time'));
+			->addSeconds(Config::get('ldap.cache.time') ?: 0);
 	}
 
 	/**
@@ -232,7 +232,8 @@ final class Server
 			->setDN($dn)
 			->cache(
 				until: self::cachetime(),
-				flush: self::cacheflush($dn))
+				flush: self::cacheflush($dn)
+			)
 			->select($attrs);
 	}
 

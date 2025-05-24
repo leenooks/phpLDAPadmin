@@ -6,7 +6,6 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Crypt;
 use LdapRecord\Support\Arr;
 use LdapRecord\Models\Model;
-use LdapRecord\Query\Model\Builder;
 
 use App\Classes\LDAP\Attribute;
 use App\Classes\LDAP\Attribute\Factory;

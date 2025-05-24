@@ -35,7 +35,7 @@ class LDIF extends Import
 		// @todo When renaming DNs, the hotlink should point to the new entry on success, or the old entry on failure.
 		foreach (preg_split('/(\r?\n|\r)/',$this->input) as $line) {
 			$c++;
-			Log::debug(sprintf('%s: LDIF Line [%s]',self::LOGKEY,$line));
+			Log::debug(sprintf('%s:LDIF Line [%s]',self::LOGKEY,$line));
 			$line = trim($line);
 
 			// If the line starts with a comment, ignore it
@@ -48,7 +48,7 @@ class LDIF extends Import
 					// Add the last attribute;
 					$o->addAttributeItem($attribute,$base64encoded ? base64_decode($value) : $value);
 
-					Log::debug(sprintf('%s: Committing Entry [%s]',self::LOGKEY,$o->getDN()));
+					Log::debug(sprintf('%s:- Committing Entry [%s]',self::LOGKEY,$o->getDN()));
 
 					// Commit
 					$result->push($this->commit($o,$action));
@@ -95,7 +95,7 @@ class LDIF extends Import
 					// If $m is NULL, then this is the 2nd (or more) line of a base64 encoded value
 					if (! $m) {
 						$value .= $line;
-						Log::debug(sprintf('%s: Attribute [%s] adding [%s] (%d)',self::LOGKEY,$attribute,$line,$c));
+						Log::debug(sprintf('%s:- Attribute [%s] adding [%s] (%d)',self::LOGKEY,$attribute,$line,$c));
 
 						// add to last attr value
 						continue 2;
@@ -108,7 +108,7 @@ class LDIF extends Import
 								throw new GeneralException(sprintf('Previous Entry not complete? (line %d)',$c));
 
 							$dn = $base64encoded ? base64_decode($value) : $value;
-							Log::debug(sprintf('%s: Creating new entry:',self::LOGKEY,$dn));
+							Log::debug(sprintf('%s:Creating new entry:',self::LOGKEY,$dn));
 							//$o = Entry::find($dn);
 
 							// If it doesnt exist, we'll create it
@@ -120,7 +120,7 @@ class LDIF extends Import
 							$action = self::LDAP_IMPORT_ADD;
 
 						} else {
-							Log::debug(sprintf('%s: Adding Attribute [%s] value [%s] (%d)',self::LOGKEY,$attribute,$value,$c));
+							Log::debug(sprintf('%s:Adding Attribute [%s] value [%s] (%d)',self::LOGKEY,$attribute,$value,$c));
 
 							if ($value)
 								$o->addAttributeItem($attribute,$base64encoded ? base64_decode($value) : $value);
@@ -134,7 +134,7 @@ class LDIF extends Import
 					$attribute = $m[1];
 					$value = $m[3];
 
-					Log::debug(sprintf('%s: New Attribute [%s] with [%s] (%d)',self::LOGKEY,$attribute,$value,$c));
+					Log::debug(sprintf('%s:- New Attribute [%s] with [%s] (%d)',self::LOGKEY,$attribute,$value,$c));
 			}
 
 			if ($version !== 1)
@@ -146,7 +146,7 @@ class LDIF extends Import
 			// Add the last attribute;
 			$o->addAttributeItem($attribute,$base64encoded ? base64_decode($value) : $value);
 
-			Log::debug(sprintf('%s: Committing Entry [%s]',self::LOGKEY,$o->getDN()));
+			Log::debug(sprintf('%s:- Committing Entry [%s]',self::LOGKEY,$o->getDN()));
 
 			// Commit
 			$result->push($this->commit($o,$action));

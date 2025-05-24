@@ -3,6 +3,7 @@
 namespace App\Classes\LDAP;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use LdapRecord\LdapRecordException;
 
 use App\Exceptions\Import\GeneralException;
@@ -16,6 +17,8 @@ use App\Ldap\Entry;
  */
 abstract class Import
 {
+	private const LOGKEY = 'aI-';
+
 	// Valid LDIF commands
 	protected const LDAP_IMPORT_ADD = 1;
 	protected const LDAP_IMPORT_DELETE = 2;
@@ -57,6 +60,8 @@ abstract class Import
 					$o->save();
 
 				} catch (LdapRecordException $e) {
+					Log::error(sprintf('%s:Import Commit Error',self::LOGKEY),['e'=>$e->getMessage(),'detailed'=>$e->getDetailedError()]);
+
 					if ($e->getDetailedError())
 						return collect([
 							'dn'=>$o->getDN(),
@@ -75,6 +80,8 @@ abstract class Import
 							)
 						]);
 				}
+
+				Log::debug(sprintf('%s:Import Commited',self::LOGKEY));
 
 				return collect(['dn'=>$o->getDN(),'result'=>__('Created')]);
 

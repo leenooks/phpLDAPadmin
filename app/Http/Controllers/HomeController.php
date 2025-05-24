@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use LdapRecord\Exceptions\InsufficientAccessException;
 use LdapRecord\LdapRecordException;
@@ -435,6 +436,7 @@ class HomeController extends Controller
 		switch ($type) {
 			case 'ldif':
 				$import = new LDIFImport($x=($request->text ?: $request->file->get()));
+				Log::debug('Processing LDIF import',['data'=>$x,'import'=>$import]);
 				break;
 
 			default:
