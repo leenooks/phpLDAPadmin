@@ -17,7 +17,10 @@ class LoginObjectclassRule implements Rule
     public function passes(LdapRecord $user,?Eloquent $model=NULL): bool
     {
 		if ($x=config('pla.login.objectclass')) {
-			return count(array_intersect($user->objectclass,$x));
+			return count(array_intersect(
+				array_map('strtolower',$user?->objectclass ?: []),
+				array_map('strtolower',$x)
+			));
 
 		// Otherwise allow the user to login
 		} else {
