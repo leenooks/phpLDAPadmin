@@ -2,14 +2,14 @@
 	<div class="col-12 col-xl-3">
 		<select id="attributetype" class="form-control">
 			<option value="-all-">-all-</option>
-			@foreach ($attributetypes as $o)
+			@foreach($attributetypes as $o)
 				<option value="{{ $o->name_lc }}">{{ $o->name }}</option>
 			@endforeach
 		</select>
 	</div>
 
 	<div class="col-12 col-xl-9">
-		@foreach ($attributetypes as $o)
+		@foreach($attributetypes as $o)
 			<span id="at-{{ $o->name_lc }}">
 				<table class="schema table table-sm table-bordered table-striped">
 					<thead>
@@ -30,16 +30,16 @@
 					</tr>
 					<tr>
 						<td>@lang('Inherits from')</td>
-						<td><strong>@if ($o->sup_attribute)<a class="attributetype" id="{{ strtolower($o->sup_attribute) }}" href="#{{ strtolower($o->sup_attribute) }}">{{ $o->sup_attribute }}</a>@else @lang('(none)')@endif</strong></td>
+						<td><strong>@if($o->sup_attribute)<a class="attributetype" id="{{ strtolower($o->sup_attribute) }}" href="#{{ strtolower($o->sup_attribute) }}">{{ $o->sup_attribute }}</a>@else @lang('(none)')@endif</strong></td>
 					</tr>
 					<tr>
 						<td>@lang('Parent to')</td>
 						<td>
 							<strong>
-								@if (! $o->children->count())
+								@if(! $o->children->count())
 									@lang('(none)')
 								@else
-									@foreach ($o->children->sort() as $child)
+									@foreach($o->children->sort() as $child)
 										@if($loop->index)</strong> <strong>@endif
 										<a class="attributetype" id="{{ strtolower($child) }}" href="#{{ strtolower($child) }}">{{ $child }}</a>
 									@endforeach
@@ -77,9 +77,9 @@
 					<tr>
 						<td>@lang('Aliases')</td>
 						<td><strong>
-							@if ($o->aliases->count())
-								@foreach ($o->aliases as $alias)
-									@if ($loop->index)</strong> <strong>@endif
+							@if($o->aliases->count())
+								@foreach($o->aliases as $alias)
+									@if($loop->index)</strong> <strong>@endif
 									<a class="attributetype" id="{{ strtolower($alias) }}" href="#{{ strtolower($alias) }}">{{ $alias }}</a>
 								@endforeach
 							@else
@@ -90,8 +90,8 @@
 					<tr>
 						<td>@lang('Used by ObjectClasses')</td>
 						<td>
-							@if ($o->used_in_object_classes->count())
-								@foreach ($o->used_in_object_classes as $class => $structural)
+							@if($o->used_in_object_classes->count())
+								@foreach($o->used_in_object_classes as $class => $structural)
 									@if($structural)
 										<strong>
 									@endif
@@ -108,8 +108,8 @@
 					<tr>
 						<td>@lang('Required by ObjectClasses')</td>
 						<td>
-							@if ($o->required_by_object_classes->count())
-								@foreach ($o->required_by_object_classes as $class => $structural)
+							@if($o->required_by_object_classes->count())
+								@foreach($o->required_by_object_classes as $class => $structural)
 									@if($structural)
 										<strong>
 									@endif

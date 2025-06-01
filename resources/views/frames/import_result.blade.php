@@ -28,7 +28,7 @@
 										<th class="text-end">@lang('Line')</th>
 									</tr>
 									</thead>
-									@foreach ($result as $item)
+									@foreach($result as $item)
 										<tr>
 											<td>{{ $item->get('dn') }}</td>
 											<td>{{ $item->get('result') }}</td>

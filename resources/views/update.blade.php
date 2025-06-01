@@ -30,7 +30,7 @@
 							</thead>
 
 							<tbody>
-							@foreach ($o->getObjects()->filter(fn($item)=>$item->isDirty()) as $key => $oo)
+							@foreach($o->getObjects()->filter(fn($item)=>$item->isDirty()) as $key => $oo)
 								<tr>
 									<th rowspan="{{ $x=max($oo->values->dot()->keys()->count(),$oo->values_old->dot()->keys()->count())}}">
 										<abbr title="{{ $oo->description }}">{{ $oo->name }}</abbr>

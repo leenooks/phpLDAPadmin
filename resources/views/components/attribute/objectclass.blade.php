@@ -6,7 +6,7 @@
 				<x-attribute.widget.objectclass :o="$o" :edit="$edit" :new="$new" :langtag="$langtag" :updated="$updated" :value="$value" :loop="$loop" />
 			@else
 				{{ $o->render_item_old($key) }}
-				@if ($o->isStructural($value))
+				@if($o->isStructural($value))
 					<input type="hidden" name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ $value }}">
 					<span class="float-end">@lang('structural')</span>
 				@endif

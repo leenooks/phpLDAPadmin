@@ -49,7 +49,7 @@
 							@case(2)
 								<x-attribute-type :o="$o->getObject('rdn')" :edit="TRUE" :new="FALSE" :updated="FALSE"/>
 
-								@foreach ($o->getVisibleAttributes() as $ao)
+								@foreach($o->getVisibleAttributes() as $ao)
 									<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :updated="FALSE"/>
 								@endforeach
 
@@ -79,7 +79,7 @@
 		function editmode() {
 			// Find all input items and turn off readonly
 			$('input.form-control').each(function() {
-				// Except for objectClass - @todo show an "X" instead
+				// Except for objectClass
 				if ($(this)[0].name.match(/^objectclass/))
 					return;
 

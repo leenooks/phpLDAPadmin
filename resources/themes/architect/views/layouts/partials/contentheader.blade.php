@@ -1,7 +1,7 @@
 <div class="app-page-title">
 	<div class="page-title-wrapper bg-white">
 		<div class="page-title-heading">
-			@if (trim($__env->yieldContent('page_icon')))
+			@if(trim($__env->yieldContent('page_icon')))
 				<div class="page-title-icon f32">
 					<i class="@yield('page_icon','')"></i>
 				</div>

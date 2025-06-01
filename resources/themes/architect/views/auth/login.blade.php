@@ -46,13 +46,13 @@
 											</div>
 										</div>
 
-										@if (count($errors) > 0)
+										@if(count($errors) > 0)
 											<div class="row">
 												<div class="col">
 													<div class="alert alert-danger	 m-3">
 														<strong>Whoops!</strong> Something went wrong?<br><br>
 														<ul>
-															@foreach ($errors->all() as $error)
+															@foreach($errors->all() as $error)
 																<li>{{ $error }}</li>
 															@endforeach
 														</ul>

@@ -1,4 +1,4 @@
-@if (trim($__env->yieldContent('page_title')))
+@if(trim($__env->yieldContent('page_title')))
 	@include('architect::layouts.partials.contentheader')
 @endif
 

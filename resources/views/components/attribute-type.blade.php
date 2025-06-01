@@ -11,7 +11,7 @@
 							<sup>
 								[
 								@foreach($o->hints as $name => $description)
-									@if ($loop->index),@endif
+									@if($loop->index),@endif
 									<abbr title="{{ $description }}">{{ $name }}</abbr>
 								@endforeach
 								]

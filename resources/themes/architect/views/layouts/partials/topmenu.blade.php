@@ -142,7 +142,7 @@
 									<img width="35" height="35" class="rounded-circle p-1 bg-light" src="{{ url('user/image') }}" alt="">
 								</a>
 								<div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-									@if ($user->exists)
+									@if($user->exists)
 										<h6 tabindex="-1" class="dropdown-header text-center">User Menu</h6>
 										<div tabindex="-1" class="dropdown-divider"></div>
 										<a href="{{ url('logout') }}" tabindex="0" class="dropdown-item">

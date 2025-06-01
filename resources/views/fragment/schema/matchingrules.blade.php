@@ -2,14 +2,14 @@
 	<div class="col-12 col-xl-3">
 		<select id="matchingrule" class="form-control">
 			<option value="-all-">-all-</option>
-			@foreach ($matchingrules as $o)
+			@foreach($matchingrules as $o)
 				<option value="{{ $o->name_lc }}">{{ $o->name }}</option>
 			@endforeach
 		</select>
 	</div>
 
 	<div class="col-12 col-xl-9">
-		@foreach ($matchingrules as $o)
+		@foreach($matchingrules as $o)
 			<span id="me-{{ $o->name_lc }}">
 				<table class="schema table table-sm table-bordered table-striped">
 					<thead>
@@ -32,10 +32,10 @@
 						<td>@lang('Used by Attributes')</td>
 						<td>
 							<strong>
-								@if ($o->used_by_attrs->count() === 0)
+								@if($o->used_by_attrs->count() === 0)
 									@lang('(none)')
 								@else
-									@foreach ($o->used_by_attrs as $attr)
+									@foreach($o->used_by_attrs as $attr)
 										@if($loop->index)</strong> <strong>@endif
 										<a class="attributetype" id="{{ strtolower($attr) }}" href="#at-{{ strtolower($attr) }}">{{ $attr }}</a>
 									@endforeach

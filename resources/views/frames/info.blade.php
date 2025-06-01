@@ -13,7 +13,7 @@
 	<div class="main-card mb-3 card">
 		<div class="card-body">
 			<table class="table">
-				@foreach ($server->rootDSE()->getObjects() as $attribute => $ao)
+				@foreach($server->rootDSE()->getObjects() as $attribute => $ao)
 					<tr>
 						<th class="w-25">
 							{!! ($x=$server->schema('attributetypes',$attribute))

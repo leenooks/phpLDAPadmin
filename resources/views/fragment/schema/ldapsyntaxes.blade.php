@@ -9,14 +9,14 @@
 			</thead>
 
 			<tbody>
-			@foreach ($ldapsyntaxes as $o)
+			@foreach($ldapsyntaxes as $o)
 				<tr>
 					<td>
 						<abbr title="{{ $o->line }}">{{ $o->description }}</abbr>
-						@if ($o->binary_transfer_required)
+						@if($o->binary_transfer_required)
 							<span class="float-end"><i class="fas fa-fw fa-file-download"></i></span>
 						@endif
-						@if ($o->is_not_human_readable)
+						@if($o->is_not_human_readable)
 							<span class="float-end"><i class="fas fa-fw fa-tools"></i></span>
 						@endif
 					</td>
