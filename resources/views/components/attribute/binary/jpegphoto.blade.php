@@ -1,3 +1,5 @@
+@use(App\Ldap\Entry)
+
 <!-- @todo We are not handling redirect backs yet with updated photos -->
 <!-- $o=Binary\JpegPhoto::class -->
 <x-attribute.layout :edit="$edit" :new="$new" :o="$o">
@@ -8,8 +10,8 @@
 					@case('image/jpeg')
 					@default
 						<td>
-							<input type="hidden" name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ md5($value) }}">
-							<img alt="{{ $o->dn }}" @class(['border','rounded','p-2','m-0','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index)),'bg-success-subtle'=>$updated]) src="data:{{ $x }};base64, {{ base64_encode($value) }}" />
+							<input type="hidden" name="{{ $o->name_lc }}[{{ Entry::TAG_NOTAG }}][]" value="{{ md5($value) }}">
+							<img alt="{{ $o->dn }}" @class(['border','rounded','p-2','m-0','is-invalid'=>($e=$errors->get($o->name_lc.'.'.Entry::TAG_NOTAG.'.'.$loop->index)),'bg-success-subtle'=>$updated]) src="data:{{ $x }};base64, {{ base64_encode($value) }}" />
 
 							@if($edit)
 								<br>

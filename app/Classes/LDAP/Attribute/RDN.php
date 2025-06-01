@@ -14,6 +14,9 @@ use App\Ldap\Entry;
 final class RDN extends Attribute
 {
 	private string $base;
+
+	protected(set) bool $no_attr_tags = TRUE;
+
 	private Collection $attrs;
 
 	public function __get(string $key): mixed
@@ -32,7 +35,7 @@ final class RDN extends Attribute
 		]);
 	}
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG,bool $updated=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE): View
 	{
 		return view('components.attribute.rdn')
 			->with('o',$this);

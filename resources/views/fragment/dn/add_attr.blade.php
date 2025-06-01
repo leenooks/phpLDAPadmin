@@ -1,12 +1,13 @@
 <div id="newattrs"></div>
 
+<hr class="opacity-05">
+
 <!-- Add new attributes -->
 <div class="row">
-	<div class="col-12 col-sm-1 col-md-2"></div>
-	<div class="col-12 col-sm-10 col-md-8">
-		<div class="d-none" id="newattr-select">
+	<div class="col-12 offset-lg-1 col-lg-10">
+		<div class="d-none round" id="newattr-select">
 			<div class="row">
-				<div class="col-12 bg-dark text-light p-2">
+				<div class="col-12 bg-dark text-light p-2 rounded-2">
 					<i class="fas fa-plus-circle"></i> Add New Attribute
 				</div>
 			</div>

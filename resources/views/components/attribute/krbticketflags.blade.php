@@ -1,22 +1,24 @@
 <!-- $o=KrbTicketFlags::class -->
 <x-attribute.layout :edit="$edit" :new="$new" :o="$o">
-	@foreach(($o->tagValues($langtag)->count() ? $o->tagValues($langtag) : [$langtag => NULL]) as $key => $value)
-		@if($edit)
-			<div id="32"></div>
-			<div id="16"></div>
+	@foreach($o->langtags as $langtag)
+		@foreach(($o->tagValues($langtag)->count() ? $o->tagValues($langtag) : [$langtag => NULL]) as $key => $value)
+			@if($edit)
+				<div id="32"></div>
+				<div id="16"></div>
 
-			<div class="input-group has-validation mb-3">
-				<input type="hidden" name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ $value }}" @readonly(true)>
+				<div class="input-group has-validation mb-3">
+					<input type="hidden" name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ $value }}" @readonly(true)>
 
-				<div class="invalid-feedback pb-2">
-					@if($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index))
-						{{ join('|',$e) }}
-					@endif
+					<div class="invalid-feedback pb-2">
+						@if($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index))
+							{{ join('|',$e) }}
+						@endif
+					</div>
 				</div>
-			</div>
-		@else
-			{{ $o->render_item_old($langtag.'.'.$key) }}
-		@endif
+			@else
+				{{ $o->render_item_old($langtag.'.'.$key) }}
+			@endif
+		@endforeach
 	@endforeach
 </x-attribute.layout>
 
@@ -48,7 +50,7 @@
 			$('div#32').append(binary(31,16));
 			$('div#16').append(binary(15,0));
 
-			$('attribute#krbTicketFlags').find('i')
+			$('attribute#krbticketflags').find('i')
 				.on('click',function() {
 					var item = $(this);
 					if ($('form#dn-edit').attr('readonly'))
@@ -91,7 +93,7 @@
 						item.data('old',null);
 					}
 
-					$('attribute#krbTicketFlags').find('input').val(value);
+					$('attribute#krbticketflags').find('input').val(value);
 				});
 		}
 
@@ -102,7 +104,7 @@
 		} else {
 			krbticketflags();
 
-			$('attribute#krbTicketFlags').find('i')
+			$('attribute#krbticketflags').find('i')
 				.tooltip();
 		}
 	</script>

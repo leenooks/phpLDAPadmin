@@ -148,6 +148,13 @@ class Attribute implements \Countable, \ArrayAccess
 			'description' => $this->schema ? $this->schema->{$key} : NULL,
 			// Attribute hints
 			'hints' => $this->hints(),
+			// Attribute language tags
+			'langtags' => ($this->no_attr_tags || (! $this->_values->count()))
+				? collect(Entry::TAG_NOTAG)
+				: $this->_values
+					->keys()
+					->filter(fn($item)=>($item === Entry::TAG_NOTAG) || preg_match(sprintf('/%s;?/',Entry::TAG_CHARS_LANG),$item))
+					->sortBy(fn($item)=>($item === Entry::TAG_NOTAG) ? NULL : $item),
 			// Can this attribute be edited
 			'is_editable' => $this->schema ? $this->schema->{$key} : NULL,
 			// Is this an internal attribute
@@ -198,17 +205,23 @@ class Attribute implements \Countable, \ArrayAccess
 
 	public function count(): int
 	{
-		return $this->_values->dot()->count();
+		return $this->_values
+			->dot()
+			->count();
 	}
 
 	public function offsetExists(mixed $offset): bool
 	{
-		return $this->_values->dot()->has($offset);
+		return $this->_values
+			->dot()
+			->has($offset);
 	}
 
 	public function offsetGet(mixed $offset): mixed
 	{
-		return $this->_values->dot()->get($offset);
+		return $this->_values
+			->dot()
+			->get($offset);
 	}
 
 	public function offsetSet(mixed $offset, mixed $value): void
@@ -315,11 +328,10 @@ class Attribute implements \Countable, \ArrayAccess
 	 * @param bool $edit Render an edit form
 	 * @param bool $old Use old value
 	 * @param bool $new Enable adding values
-	 * @param string $langtag Langtag to use when rendering these attribute values
 	 * @param bool $updated Has the entry been updated (uses rendering highlights))
 	 * @return View
 	 */
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG,bool $updated=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE): View
 	{
 		if ($this->is_internal)
 			// @note Internal attributes cannot be edited
@@ -340,7 +352,6 @@ class Attribute implements \Countable, \ArrayAccess
 			->with('edit',$edit)
 			->with('old',$old)
 			->with('new',$new)
-			->with('langtag',$langtag)
 			->with('updated',$updated);
 	}
 
@@ -376,7 +387,7 @@ class Attribute implements \Countable, \ArrayAccess
 	 *
 	 * @return Collection
 	 */
-	public function required(): Collection
+	private function required(): Collection
 	{
 		// If we dont have any objectclasses then we cant know if it is required
 		return $this->oc->count()

@@ -1,15 +1,7 @@
-@use(App\Ldap\Entry)
-
 @extends('layouts.dn')
 
 @section('page_title')
-	@include('fragment.dn.header',[
-		'o'=>($o ?? $o=$server->fetch($dn)),
-		'langtags'=>($langtags=$o->getLangTags()
-			->flatMap(fn($item)=>$item->values())
-			->unique()
-			->sort())
-	])
+	@include('fragment.dn.header',['o'=>($o ?? $o=$server->fetch($dn))])
 @endsection
 
 @section('page_actions')
@@ -82,71 +74,52 @@
 				<div class="tab-content">
 					<!-- All Attributes -->
 					<div class="tab-pane active" id="attributes" role="tabpanel">
-						<form id="dn-edit" method="POST" class="needs-validation" action="{{ url('entry/update/pending') }}" novalidate readonly>
-							@csrf
-
-							<input type="hidden" name="dn" value="">
-							<div class="card-header border-bottom-0">
-								<div class="btn-actions-pane-right">
-									<div role="group" class="btn-group-sm nav btn-group">
-										@php
-											$langtags->prepend(Entry::TAG_NOTAG);
-											if (isset($page_actions) && $page_actions->get('edit'))
-												$langtags->push('+');
-										@endphp
-
-										@foreach($langtags as $tag)
-											<a data-bs-toggle="tab" href="#tab-lang-{{ $tag ?: '_default' }}" @class(['btn','btn-outline-light','border-dark-subtle','active'=>!$loop->index])>
-												@switch($tag)
-													@case(Entry::TAG_NOTAG)
-														<i class="fas fa-fw fa-border-none" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" title="@lang('No Lang Tag')"></i>
-														@break
-
-													@case('+')
-														<!-- @todo To implement -->
-														<i class="fas fa-fw fa-plus text-dark" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" title="@lang('Add Lang Tag')"></i>
-														@break
-
-													@default
-														<span class="f16" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" title="{{ strtoupper($tag) }}"><i class="flag {{ $tag }}"></i></span>
-												@endswitch
-											</a>
-										@endforeach
+						<div class="row pt-3">
+							<div class="col-12">
+								<div class="d-flex justify-content-center">
+									<div role="group" class="btn-group btn-group-sm nav pb-3">
+										<!-- It is assumed that the entry has atleast 1 template "default" -->
+										@if($o->templates->count() > 1)
+											@foreach($o->templates as $template => $name)
+												<span data-bs-toggle="tab" href="#template-{{$template}}" @class(['btn','btn-outline-focus','active'=>$loop->index === 0])>{{ $name }}</span>
+											@endforeach
+										@endif
 									</div>
 								</div>
-							</div>
 
-							<div class="card-body">
 								<div class="tab-content">
-									@php($up=(session()->pull('updated') ?: collect()))
-									@foreach($langtags as $tag)
-										<div class="tab-pane @if(! $loop->index) active @endif" id="tab-lang-{{ $tag ?: '_default' }}" role="tabpanel">
-											@switch($tag)
-												@case(Entry::TAG_NOTAG)
-													@foreach ($o->getVisibleAttributes($tag) as $ao)
-														<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :langtag="$tag" :updated="$up->contains($ao->name_lc)"/>
-													@endforeach
-													@break
+									@foreach($o->templates as $template => $name)
+										@switch($template)
+											@case('default')
+												<div @class(['tab-pane','active'=>$loop->index === 0]) id="template-{{$template}}" role="tabpanel">
+													<form id="dn-edit" method="POST" class="needs-validation" action="{{ url('entry/update/pending') }}" novalidate readonly>
+														@csrf
 
-												@case('+')
-													<div class="ms-auto mt-4 alert alert-warning p-2" style="max-width: 30em; font-size: 0.80em;">
-														It is not possible to create new language tags at the moment. This functionality should come soon.<br>
-														You can create them with an LDIF import though.
-													</div>
-													@break
+														<input type="hidden" name="dn" value="">
 
-												@default
-													@foreach ($o->getVisibleAttributes($langtag=sprintf('lang-%s',$tag)) as $ao)
-														<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :langtag="$langtag" :updated="$up->contains($ao->name_lc)"/>
-													@endforeach
-											@endswitch
-										</div>
+														<div class="card-body">
+															<div class="tab-content">
+																@php($up=(session()->pull('updated') ?: collect()))
+																@foreach($o->getVisibleAttributes() as $ao)
+																	<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :updated="$up->contains($ao->name_lc)"/>
+																@endforeach
+
+																@include('fragment.dn.add_attr')
+															</div>
+														</div>
+													</form>
+												</div>
+												@break
+
+											@default
+												<div @class(['tab-pane','active'=>$loop->index === 0]) id="template-{{$template}}" role="tabpanel">
+													<p>{{$name}}</p>
+												</div>
+										@endswitch
 									@endforeach
 								</div>
 							</div>
-
-							@include('fragment.dn.add_attr')
-						</form>
+						</div>
 
 						<div class="row d-none pt-3">
 							<div class="col-12 offset-sm-2 col-sm-4 col-lg-2">
@@ -158,8 +131,8 @@
 
 					<!-- Internal Attributes -->
 					<div class="tab-pane mt-3" id="internal" role="tabpanel">
-						@foreach ($o->getInternalAttributes() as $ao)
-							<x-attribute-type :o="$ao" :edit="FALSE" :new="FALSE" :langtag="Entry::TAG_NOTAG" :updated="FALSE"/>
+						@foreach($o->getInternalAttributes() as $ao)
+							<x-attribute-type :o="$ao" :edit="FALSE" :new="FALSE" :updated="FALSE"/>
 						@endforeach
 					</div>
 				</div>
@@ -201,7 +174,7 @@
 			});
 
 			// Our password type
-			$('attribute#userPassword .form-select').each(function() {
+			$('attribute#userpassword .form-select').each(function() {
 				$(this).prop('disabled',false);
 			})
 
@@ -230,7 +203,7 @@
 			});
 
 			$('#newattr').on('change',function(item) {
-				var oc = $('attribute#objectClass input[type=text]')
+				var oc = $('attribute#objectclass input[type=text]')
 					.map((key,item)=>{return $(item).val()}).toArray();
 
 				$.ajax({
@@ -278,7 +251,7 @@
 								if (e.status !== 412)
 									alert('That didnt work? Please try again....');
 							},
-						})
+						});
 						break;
 
 					case 'entry-export':

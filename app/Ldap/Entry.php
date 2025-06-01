@@ -21,11 +21,16 @@ use App\Exceptions\InvalidUsage;
 class Entry extends Model
 {
 	private const TAG_CHARS = 'a-zA-Z0-9-';
-	private const TAG_CHARS_LANG = 'lang-['.self::TAG_CHARS.']';
+	public const LANG_TAG_PREFIX = 'lang-';
+	public const TAG_CHARS_LANG = self::LANG_TAG_PREFIX.'['.self::TAG_CHARS.']+';
 	public const TAG_NOTAG = '_null_';
 
 	// Our Attribute objects
 	private Collection $objects;
+
+	// Templates that apply to this entry
+	private(set) Collection $templates;
+
 	// For new entries, this is the container that this entry will be stored in
 	private string $rdnbase;
 
@@ -34,6 +39,7 @@ class Entry extends Model
 	public function __construct(array $attributes = [])
 	{
 		$this->objects = collect();
+		$this->templates = collect(['default'=>__('LDAP Entry')]);
 
 		parent::__construct($attributes);
 	}
@@ -308,14 +314,7 @@ class Entry extends Model
 	public function getLangTags(): Collection
 	{
 		return $this->getObjects()
-			->filter(fn($item)=>! $item->no_attr_tags)
-			->map(fn($item)=>$item
-				->values
-				->keys()
-				->filter(fn($item)=>preg_match(sprintf('/%s+;?/',self::TAG_CHARS_LANG),$item))
-				->map(fn($item)=>preg_replace('/lang-/','',$item))
-			)
-			->filter(fn($item)=>$item->count());
+			->map(fn($item)=>$item->langtags);
 	}
 
 	/**
@@ -373,7 +372,7 @@ class Entry extends Model
 					$item && collect(explode(';',$item))->filter(
 						fn($item)=>
 							(! preg_match(sprintf('/^%s$/',self::TAG_NOTAG),$item))
-							&& (! preg_match(sprintf('/^%s+$/',self::TAG_CHARS_LANG),$item))
+							&& (! preg_match(sprintf('/^%s$/',self::TAG_CHARS_LANG),$item))
 						)
 						->count())
 			)

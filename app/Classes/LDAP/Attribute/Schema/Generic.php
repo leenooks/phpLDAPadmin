@@ -12,7 +12,7 @@ use App\Ldap\Entry;
  */
 class Generic extends Schema
 {
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG,bool $updated=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE): View
 	{
 		// @note Schema attributes cannot be edited
 		return view('components.attribute.schema.generic')

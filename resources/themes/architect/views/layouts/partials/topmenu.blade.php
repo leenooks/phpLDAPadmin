@@ -38,7 +38,7 @@
 						<span></span>
 						<div id="searching" class="d-none"><i class="fas fa-fw fa-spinner fa-pulse text-light"></i></div>
 					</button>
-					<div id="search_results" style="height: 300px; overflow: scroll"></div>
+					<div id="search_results" class="overflow-scroll" style="height: 300px;"></div>
 				</div>
 				<button class="btn-close"></button>
 			</div>
@@ -139,7 +139,7 @@
 							<div class="btn-group">
 								<a data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn">
 									<i class="fas fa-angle-down ms-2 opacity-8"></i>
-									<img width="35" height="35" class="rounded-circle" src="{{ url('user/image') }}" alt="" style="background-color: #eee;padding: 2px;">
+									<img width="35" height="35" class="rounded-circle p-1 bg-light" src="{{ url('user/image') }}" alt="">
 								</a>
 								<div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
 									@if ($user->exists)

@@ -1,12 +1,7 @@
 @extends('home')
 
 @section('page_title')
-	@include('fragment.dn.header',[
-		'langtags'=>($langtags=$o->getLangTags()
-			->flatMap(fn($item)=>$item->values())
-			->unique()
-			->sort())
-	])
+	@include('fragment.dn.header')
 @endsection
 
 @section('page_status')

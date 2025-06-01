@@ -6,7 +6,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 use App\Classes\LDAP\Attribute as LDAPAttribute;
-use App\Ldap\Entry;
 
 class Attribute extends Component
 {
@@ -14,18 +13,16 @@ class Attribute extends Component
 	public bool $edit;
 	public bool $new;
 	public bool $old;
-	public string $langtag;
 
 	/**
 	 * Create a new component instance.
 	 */
-	public function __construct(?LDAPAttribute $o,bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG,bool $updated=FALSE)
+	public function __construct(?LDAPAttribute $o,bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE)
 	{
 		$this->o = $o;
 		$this->edit = $edit;
 		$this->old = $old;
 		$this->new = $new;
-		$this->langtag = $langtag;
 		$this->updated = $updated;
 	}
 
@@ -38,7 +35,7 @@ class Attribute extends Component
 	{
 		return $this->o
 			? $this->o
-				->render(edit: $this->edit,old: $this->old,new: $this->new,langtag: $this->langtag,updated: $this->updated)
+				->render(edit: $this->edit,old: $this->old,new: $this->new,updated: $this->updated)
 			: __('Unknown');
 	}
 }

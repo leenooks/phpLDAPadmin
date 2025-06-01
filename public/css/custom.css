@@ -1,21 +1,22 @@
 /** ensure our userpassword has select is next to the password input */
-attribute#userPassword .select2-container--bootstrap-5 .select2-selection {
+attribute#userpassword .select2-container--bootstrap-5 .select2-selection {
 	font-size: inherit;
 	width: 9em;
 	border: var(--bs-gray-500) 1px solid;
 	background-color: #f0f0f0;
 }
 
-.input-group:first-child .select2-container--bootstrap-5 .select2-selection {
-	border-bottom-right-radius: unset;
-	border-top-right-radius: unset;
-}
-
-attribute#objectClass .input-group-end:not(input.form-control) {
+/* render the structural inside the input box */
+attribute#objectclass .input-group-end:not(input.form-control) {
 	position: absolute;
 	right: 1em;
 	top: 0.5em;
 	z-index: 5;
+}
+
+.input-group:first-child .select2-container--bootstrap-5 .select2-selection {
+	border-bottom-right-radius: unset;
+	border-top-right-radius: unset;
 }
 
 input.form-control.input-group-end {
@@ -82,4 +83,9 @@ input.form-control.input-group-end {
 
 .page-title-wrapper .page-title-items .page-title-status .alert {
 	font-size: 0.80em;
+}
+
+/* Square UL items */
+ul.square {
+	list-style-type: square;
 }

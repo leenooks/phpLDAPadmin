@@ -77,7 +77,7 @@
 								<tbody>
 								<tr>
 									<td>
-										<ul class="ps-3" style="list-style-type: square;">
+										<ul class="ps-3 square">
 											@foreach($o->getMustAttrs(TRUE) as $oo)
 												<li>{{ $oo->name }} @if($oo->source !== $o->name)[<strong><a class="objectclass" id="{{ strtolower($oo->source) }}" href="#{{ strtolower($oo->source) }}">{{ $oo->source }}</a></strong>]@endif</li>
 											@endforeach
@@ -99,7 +99,7 @@
 								<tbody>
 								<tr>
 									<td>
-										<ul class="ps-3" style="list-style-type: square;">
+										<ul class="ps-3 square">
 											@foreach($o->getMayAttrs(TRUE) as $oo)
 												<li>{{ $oo->name }} @if($oo->source !== $o->name)[<strong><a class="objectclass" id="{{ strtolower($oo->source) }}" href="#{{ strtolower($oo->source) }}">{{ $oo->source }}</a></strong>]@endif</li>
 											@endforeach

@@ -11,11 +11,11 @@
 		@switch(get_class($o))
 			@case(Certificate::class)
 			@case(CertificateList::class)
-				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name }}-replace" disabled><i class="fas fa-fw fa-certificate"></i> @lang('Replace')</span>
+				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name_lc }}-replace" disabled><i class="fas fa-fw fa-certificate"></i> @lang('Replace')</span>
 				@section('page-scripts')
 					<script type="text/javascript">
 							$(document).ready(function() {
-								$('#{{ $o->name }}-replace.addable').click(function(e) {
+								$('attribute#{{ $o->name_lc }}-replace.addable').click(function(e) {
 									alert('Sorry, not implemented yet');
 									e.preventDefault();
 									return false;
@@ -55,7 +55,7 @@
 							var rendered = false;
 							var newadded = [];
 
-							var oc = $('attribute#objectClass input[type=text]')
+							var oc = $('attribute#objectclass input[type=text]')
 								.map((key,item)=>{return $(item).val()}).toArray();
 
 							if (newadded.length)
@@ -81,7 +81,7 @@
 										},
 										cache: false,
 										success: function(data) {
-											$('#{{ $o->name }}').append(data);
+											$('attribute#{{ $o->name_lc }}').append(data);
 										},
 										error: function(e) {
 											if (e.status !== 412)
@@ -98,13 +98,13 @@
 											// Render any must attributes
 											if (data.must.length) {
 												data.must.forEach(function(item) {
-													if ($('attribute#'+item).length)
+													if ($('attribute#'+item.toLowerCase()).length)
 														return;
 
 													// Add attribute to the page
 													$.ajax({
 														method: 'POST',
-														url: '{{ url('entry/attr/add') }}/'+item,
+														url: '{{ url('entry/attr/add') }}/'+item.toLowerCase(),
 														data: {
 															value: item,
 															objectclasses: oc,
@@ -237,11 +237,11 @@
 				@break
 
 			@case(JpegPhoto::class)
-				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name }}-upload" disabled><i class="fas fa-fw fa-file-arrow-up"></i> @lang('Upload JpegPhoto')</span>
+				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name_lc }}-upload" disabled><i class="fas fa-fw fa-file-arrow-up"></i> @lang('Upload JpegPhoto')</span>
 				@section('page-scripts')
 					<script type="text/javascript">
 							$(document).ready(function() {
-								$('#{{ $o->name }}-upload.addable').click(function(e) {
+								$('#{{ $o->name_lc }}-upload.addable').click(function(e) {
 									alert('Sorry, not implemented yet');
 									e.preventDefault();
 									return false;
@@ -256,7 +256,7 @@
 				@if($o->isDynamic()) @break @endif
 				@php($clone=TRUE)
 				@if($o->values_old->count())
-					<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name }}-addnew"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</span>
+					<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) data-attribute="{{ $o->name }}" id="{{ $o->name_lc }}-addnew"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</span>
 				@endif
 
 				@section('page-scripts')
@@ -264,13 +264,16 @@
 						<script type="text/javascript">
 							$(document).ready(function() {
 								// Create a new entry when Add Value clicked
-								$('#{{ $o->name }}-addnew.addable').click(function (item) {
-									var cln = $(this).parent().parent().find('input:last').parent().clone();
-									cln.find('input:last')
+								$('#{{ $o->name_lc }}-addnew.addable').click(function(item) {
+									var attribute = $(this).data('attribute');
+									var active = $('attribute[id='+attribute+']').find('.tab-pane.active');
+
+									active.find('input:last')
+										.clone()
 										.attr('value','')
-										.attr('placeholder', '[@lang('NEW')]')
+										.attr('placeholder','[@lang('NEW')]')
 										.addClass('border-focus')
-										.appendTo('#'+item.currentTarget.id.replace('-addnew',''));
+										.appendTo(active);
 								});
 							});
 						</script>

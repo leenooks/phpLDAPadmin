@@ -50,7 +50,7 @@ final class KrbTicketFlags extends Attribute
 		return $helpers;
 	}
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG,bool $updated=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE): View
 	{
 		return view('components.attribute.krbticketflags')
 			->with('o',$this)

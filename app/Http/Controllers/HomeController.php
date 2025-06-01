@@ -356,7 +356,9 @@ class HomeController extends Controller
 		return Redirect::to('/')
 			->withInput()
 			->with('updated',collect($dirty)
-				->map(fn($item,$key)=>$o->getObject(collect(explode(';',$key))->first())));
+				->map(fn($item,$key)=>$o->getObject(collect(explode(';',$key))->first()))
+				->values()
+				->unique());
 	}
 
 	/**

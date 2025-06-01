@@ -3,10 +3,7 @@
 @extends('layouts.dn')
 
 @section('page_title')
-	@include('fragment.dn.header',[
-		'o'=>($oo=$server->fetch(old('container',$container))),
-		'langtags'=>collect(),
-	])
+	@include('fragment.dn.header',['o'=>($oo=$server->fetch(old('container',$container)))])
 @endsection
 
 @section('page_status')
@@ -50,10 +47,10 @@
 								@break
 
 							@case(2)
-								<x-attribute-type :o="$o->getObject('rdn')" :edit="TRUE" :new="FALSE" :langtag="Entry::TAG_NOTAG" :updated="FALSE"/>
+								<x-attribute-type :o="$o->getObject('rdn')" :edit="TRUE" :new="FALSE" :updated="FALSE"/>
 
 								@foreach ($o->getVisibleAttributes() as $ao)
-									<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :langtag="Entry::TAG_NOTAG" :updated="FALSE"/>
+									<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :updated="FALSE"/>
 								@endforeach
 
 								@include('fragment.dn.add_attr')
@@ -94,7 +91,7 @@
 			});
 
 			// Our password type
-			$('attribute#userPassword .form-select').each(function() {
+			$('attribute#userpassword .form-select').each(function() {
 				$(this).prop('disabled',false);
 			})
 
@@ -107,7 +104,7 @@
 		$(document).ready(function() {
 			@if($step === 2)
 				$('#newattr').on('change',function(item) {
-					var oc = $('attribute#objectClass input[type=text]')
+					var oc = $('attribute#objectclass input[type=text]')
 						.map((key,item)=>{return $(item).val()}).toArray();
 
 					$.ajax({

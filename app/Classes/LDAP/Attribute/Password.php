@@ -80,7 +80,7 @@ final class Password extends Attribute
 		return ($helpers=static::helpers())->has($id) ? new ($helpers->get($id)) : NULL;
 	}
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,string $langtag=Entry::TAG_NOTAG,bool $updated=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE): View
 	{
 		return view('components.attribute.password')
 			->with('o',$this)

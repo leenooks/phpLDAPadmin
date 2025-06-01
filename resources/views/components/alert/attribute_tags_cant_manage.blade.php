@@ -1,4 +1,4 @@
-<div class="alert alert-danger p-0" style="font-size: .80em;">
+<div class="alert alert-danger font-size-sm p-0">
 	<table class="table table-borderless table-danger p-0 m-0">
 		<tr>
 			<td class="align-top" style="width: 5%;"><i class="fas fa-fw fa-2x fa-exclamation-triangle"></i></td>
