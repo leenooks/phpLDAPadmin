@@ -10,7 +10,7 @@
         "ext-openssl": "*",
         "php": "^8.4",
         "directorytree/ldaprecord-laravel": "^3.0",
-        "laravel/framework": "^11.9",
+        "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
         "laravel/ui": "^4.5"
     },
