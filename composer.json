@@ -15,6 +15,7 @@
         "laravel/ui": "^4.5"
     },
     "require-dev": {
+        "amirami/localizator": "^0.14@dev",
         "barryvdh/laravel-debugbar": "^3.6",
         "fakerphp/faker": "^1.23",
         "mockery/mockery": "^1.6",

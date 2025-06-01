@@ -62,7 +62,7 @@
 					<div class="row d-none pt-3">
 						<div class="col-12 {{ $step > 1 ? 'offset-sm-2' : '' }} col-lg-10">
 							<x-form.reset form="dn-create"/>
-							<x-form.submit action="Next" form="dn-create"/>
+							<x-form.submit :action="__('Next')" form="dn-create"/>
 						</div>
 					</div>
 				</div>

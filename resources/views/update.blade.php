@@ -64,7 +64,7 @@
 		<div class="row p-3">
 			<div class="col-12 offset-sm-2 col-sm-4 col-lg-2 mx-auto">
 				<x-form.cancel/>
-				<x-form.submit action="Update" form="dn-update"/>
+				<x-form.submit :action="__('Update')" form="dn-update"/>
 			</div>
 		</div>
 

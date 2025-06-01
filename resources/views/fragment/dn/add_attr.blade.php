@@ -8,13 +8,13 @@
 		<div class="d-none round" id="newattr-select">
 			<div class="row">
 				<div class="col-12 bg-dark text-light p-2 rounded-2">
-					<i class="fas fa-plus-circle"></i> Add New Attribute
+					<i class="fas fa-plus-circle"></i> @lang('Add New Attribute')
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col-12 pt-2">
-					<x-form.select id="newattr" label="Select from..." :options="$o->getMissingAttributes()->sortBy('name')->unique('name')->map(fn($item)=>['id'=>$item->name,'value'=>$item->name])"/>
+					<x-form.select id="newattr" :label="__('Select from').'...'" :options="$o->getMissingAttributes()->sortBy('name')->unique('name')->map(fn($item)=>['id'=>$item->name,'value'=>$item->name])"/>
 				</div>
 			</div>
 		</div>

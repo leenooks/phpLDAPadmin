@@ -124,7 +124,7 @@
 						<div class="row d-none pt-3">
 							<div class="col-12 offset-sm-2 col-sm-4 col-lg-2">
 								<x-form.reset form="dn-edit"/>
-								<x-form.submit action="Update" form="dn-edit"/>
+								<x-form.submit :action="__('Update')" form="dn-edit"/>
 							</div>
 						</div>
 					</div>

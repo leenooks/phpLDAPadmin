@@ -56,7 +56,7 @@
 
 				<div class="card-footer">
 					<span class="ms-auto">
-						<x-form.submit action="Process" form="import-form"/>
+						<x-form.submit :action="__('Process')" form="import-form"/>
 					</span>
 				</div>
 			</div>

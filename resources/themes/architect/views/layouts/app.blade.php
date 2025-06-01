@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html translate="no">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" translate="no">
 	@section('htmlheader')
 		@include('architect::layouts.partials.htmlheader')
 	@show

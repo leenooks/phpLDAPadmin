@@ -4,7 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
-use App\Http\Middleware\{AllowAnonymous,ApplicationSession,CheckUpdate,SwapinAuthUser,ViewVariables};
+use App\Http\Middleware\{AcceptLanguage,AllowAnonymous,ApplicationSession,CheckUpdate,SwapinAuthUser,ViewVariables};
 
 return Application::configure(basePath: dirname(__DIR__))
 	->withRouting(
@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
 			group: 'web',
 			middleware: [
 				ApplicationSession::class,
+				AcceptLanguage::class,
 				AllowAnonymous::class,
 				SwapinAuthUser::class,
 				ViewVariables::class,

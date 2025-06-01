@@ -44,6 +44,12 @@
 						<td>Root URL</td>
 						<td>{{ request()->root() }}</td>
 					</tr>
+
+					<!-- Locale -->
+					<tr>
+						<td>Locale</td>
+						<td>{{ __('locale') }} [{{ config('app.locale') }}]</td>
+					</tr>
 					</tbody>
 				</table>
 			</div>
