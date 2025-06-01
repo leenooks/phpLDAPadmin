@@ -50,10 +50,6 @@
 		<div class="alert alert-danger p-2">
 			This entry has [<strong>{!! $x->flatten()->join('</strong>, <strong>') !!}</strong>] tags used by [<strong>{!! $x->keys()->join('</strong>, <strong>') !!}</strong>] that cant be managed by PLA. You can though manage those tags with an LDIF import.
 		</div>
-	@elseif(($x=$o->getLangMultiTags())->count())
-		<div class="alert alert-danger p-2">
-			This entry has multi-language tags used by [<strong>{!! $x->keys()->join('</strong>, <strong>') !!}</strong>] that cant be managed by PLA. You can though manage those lang tags with an LDIF import.
-		</div>
 	@endif
 
 	<x-note/>
