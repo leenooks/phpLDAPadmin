@@ -13,6 +13,7 @@ class Attribute extends Component
 	public bool $edit;
 	public bool $new;
 	public bool $old;
+	public bool $updated;
 
 	/**
 	 * Create a new component instance.
