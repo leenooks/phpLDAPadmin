@@ -16,9 +16,29 @@
 					@endif
 				</div>
 			</div>
-			<div class="input-helper">
-				@lang('Certificate Subject'): <strong>{{ $o->subject($loop->index) }}</strong><br/>
-				{{ ($expire=$o->expires($loop->index))->isPast() ? __('Expired') : __('Expires') }}: <strong>{{ $expire->format(config('pla.datetime_format','Y-m-d H:i:s')) }}</strong>
+			<div class="input-helper small">
+				<table class="table table-borderless w-75">
+					<tr >
+						<td class="p-0">@lang('Certificate Subject')</td>
+						<th class="p-0">{{ $o->subject($loop->index) }}</th>
+					</tr>
+					<tr>
+						<td class="p-0">{{ ($expire=$o->expires($loop->index))->isPast() ? __('Expired') : __('Expires') }}</td>
+						<th class="p-0">{{ $expire->format(config('pla.datetime_format','Y-m-d H:i:s')) }}</th>
+					</tr>
+					<tr>
+						<td class="p-0">@lang('Serial Number')</td>
+						<th class="p-0">{{ $o->cert_info('serialNumberHex',$loop->index) }}</th>
+					</tr>
+					<tr>
+						<td class="p-0">@lang('Subject Key Identifier')</td>
+						<th class="p-0">{{ $o->subject_key_identifier($loop->index) }}</th>
+					</tr>
+					<tr>
+						<td class="p-0">@lang('Authority Key Identifier')</td>
+						<th class="p-0">{{ $o->authority_key_identifier($loop->index) }}</th>
+					</tr>
+				</table>
 			</div>
 
 		@else
