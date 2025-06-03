@@ -38,7 +38,7 @@
 						<span></span>
 						<div id="searching" class="d-none"><i class="fas fa-fw fa-spinner fa-pulse text-light"></i></div>
 					</button>
-					<div id="search_results" class="overflow-scroll" style="height: 300px;"></div>
+					<div id="search_results"></div>
 				</div>
 				<button class="btn-close"></button>
 			</div>
@@ -164,13 +164,6 @@
 </div>
 
 @section('page-scripts')
-	<style>
-		#search_results ul.typeahead.dropdown-menu {
-			overflow: scroll;
-			max-height: 300px;
-		}
-	</style>
-
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('button[id^="link-"]').on('click',function(item) {

@@ -263,3 +263,9 @@ select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__
 body.modal-open {
 	user-select: none;
 }
+
+/* Fix our search results, implementing a scroll bar */
+#search_results ul.typeahead.dropdown-menu {
+	overflow-y: scroll;
+	max-height: 300px;
+}
