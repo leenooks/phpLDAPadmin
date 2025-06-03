@@ -1,7 +1,14 @@
 <!-- $o=CertificateList::class -->
 <x-attribute.layout :edit="$edit" :new="$new" :o="$o">
 	@foreach($o->tagValuesOld('binary') as $key => $value)
-		<!-- If this attribute is not handle, it'll be an Attribute::class, we'll just render it normally -->
-		<span class="form-control mb-1"><pre class="m-0">{{ $o->render_item_old('binary.'.$key) }}</pre></span>
+		<div class="input-group has-validation mb-3">
+			<textarea class="form-control mb-1 font-size-md font-monospace overflow-hidden" rows="{{ count(explode("\n",$x=$o->render_item_old('binary.'.$key))) }}" disabled>{{ $x }}</textarea>
+
+			<div class="invalid-feedback pb-2">
+				@if($e=$errors->get($o->name_lc.'.binary.'.$loop->index))
+					{{ join('|',$e) }}
+				@endif
+			</div>
+		</div>
 	@endforeach
 </x-attribute.layout>

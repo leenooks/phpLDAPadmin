@@ -3,7 +3,7 @@
 <!-- $o=Certificate::class -->
 <x-attribute.layout :edit="$edit" :new="$new" :o="$o">
 	@foreach($o->tagValuesOld('binary') as $key => $value)
-		<!-- If this attribute is not handle, it'll be an Attribute::class, we'll just render it normally -->
+		<!-- If this attribute is not handled, it'll be an Attribute::class, we'll just render it normally -->
 		@if(($o instanceof Certificate) && $edit)
 			<input type="hidden" name="name={{ $o->name_lc }}[binary][]" value="{{ md5($value) }}">
 
