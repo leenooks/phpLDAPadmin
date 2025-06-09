@@ -29,7 +29,7 @@ class SwapinAuthUser
 		if (! array_key_exists($key,config('ldap.connections')))
 			abort(599,sprintf('LDAP default server [%s] configuration doesnt exist?',$key));
 
-		if (Session::has('username_encrypt') && Session::has('password_encrypt')) {
+		if (($request->path() !== 'logout') && Session::has('username_encrypt') && Session::has('password_encrypt')) {
 			Config::set('ldap.connections.'.$key.'.username',Crypt::decryptString(Session::get('username_encrypt')));
 			Config::set('ldap.connections.'.$key.'.password',Crypt::decryptString(Session::get('password_encrypt')));
 
