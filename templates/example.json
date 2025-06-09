@@ -1,0 +1,25 @@
+{
+	"title": "Example entry",
+	"description": "This is the description",
+	"enabled": false,
+	"icon": "fa-star-of-life",
+	"rdn": "o",
+	"regexp": "/^$/",
+
+	"objectclasses": [
+		"organization"
+	],
+
+	"attributes": {
+		"attribute1": {
+			"display": "Attribute 1",
+			"hint": "This is an example",
+			"order": 1
+		},
+		"attribute2": {
+			"display": "Attribute 2",
+			"hint": "This is an example",
+			"order": 2
+		}
+	}
+}

@@ -1,0 +1,20 @@
+{
+	"title": "Generic: Organisational Unit",
+	"description": "New Organisational Unit",
+	"enabled": true,
+	"icon": "fa-layer-group",
+	"rdn": "ou",
+	"regexp": "/^o=.+,?/",
+
+	"objectclasses": [
+		"organizationalUnit"
+	],
+
+	"attributes": {
+		"ou": {
+			"display": "Organisational Unit",
+			"hint": "This is an example",
+			"order": 1
+		}
+	}
+}

@@ -74,53 +74,49 @@
 							<div class="col-12">
 								<div class="d-flex justify-content-center">
 									<div role="group" class="btn-group btn-group-sm nav pb-3">
-										<!-- It is assumed that the entry has atleast 1 template "default" -->
-										@if($o->templates->count() > 1)
-											@foreach($o->templates as $template => $name)
-												<span data-bs-toggle="tab" href="#template-{{$template}}" @class(['btn','btn-outline-focus','active'=>$loop->index === 0])>{{ $name }}</span>
-											@endforeach
+										<!-- If we have templates that cover this entry -->
+										@foreach($o->templates as $template => $name)
+											<span data-bs-toggle="tab" href="#template-{{$template}}" @class(['btn','btn-outline-focus','active'=>$loop->index === 0])><i class="fa fa-fw pe-2 {{ $o->template($template)->icon }}"></i> {{ $name }}</span>
+										@endforeach
+										@if($o->templates->count())
+											<span data-bs-toggle="tab" href="#template-default" @class(['btn','btn-outline-focus','p-1','active'=>(! $o->templates->count())])>{{ __('LDAP Entry') }}</span>
 										@endif
 									</div>
 								</div>
 
 								<div class="tab-content">
 									@foreach($o->templates as $template => $name)
-										@switch($template)
-											@case('default')
-												<div @class(['tab-pane','active'=>$loop->index === 0]) id="template-{{$template}}" role="tabpanel">
-													<form id="dn-edit" method="POST" class="needs-validation" action="{{ url('entry/update/pending') }}" novalidate readonly>
-														@csrf
-
-														<input type="hidden" name="dn" value="">
-
-														<div class="card-body">
-															<div class="tab-content">
-																@php($up=(session()->pull('updated') ?: collect()))
-																@foreach($o->getVisibleAttributes() as $ao)
-																	<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :updated="$up->contains($ao->name_lc)"/>
-																@endforeach
-
-																@include('fragment.dn.add_attr')
-															</div>
-														</div>
-													</form>
-												</div>
-												@break
-
-											@default
-												<div @class(['tab-pane','active'=>$loop->index === 0]) id="template-{{$template}}" role="tabpanel">
-													<p>{{$name}}</p>
-												</div>
-										@endswitch
+										<div @class(['tab-pane','active'=>$loop->index === 0]) id="template-{{$template}}" role="tabpanel">
+											@include('fragment.template.dn',['template'=>$template])
+										</div>
 									@endforeach
-								</div>
-							</div>
-						</div>
 
-						<div class="row d-none pt-3">
-							<div class="col-12 offset-sm-2 col-sm-4 col-lg-2">
-								<x-form.reset form="dn-edit"/>
-								<x-form.submit :action="__('Update')" form="dn-edit"/>
+									<div @class(['tab-pane','active'=>(! $o->templates->count())]) id="template-default" role="tabpanel">
+										<form id="dn-edit" method="POST" class="needs-validation" action="{{ url('entry/update/pending') }}" novalidate readonly>
+											@csrf
+
+											<input type="hidden" name="dn" value="">
+
+											<div class="card-body">
+												<div class="tab-content">
+													@php($up=(session()->pull('updated') ?: collect()))
+													@foreach($o->getVisibleAttributes() as $ao)
+														<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :updated="$up->contains($ao->name_lc)"/>
+													@endforeach
+
+													@include('fragment.dn.add_attr')
+												</div>
+											</div>
+										</form>
+
+										<div class="row d-none pt-3">
+											<div class="col-11 text-end">
+												<x-form.reset form="dn-edit"/>
+												<x-form.submit :action="__('Update')" form="dn-edit"/>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -162,7 +158,6 @@
 
 			// Find all input items and turn off readonly
 			$('input.form-control').each(function() {
-				// Except for objectClass - @todo show an "X" instead
 				if ($(this)[0].name.match(/^objectclass/))
 					return;
 

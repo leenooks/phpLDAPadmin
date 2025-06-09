@@ -1,0 +1,82 @@
+{
+	"title": "Generic: User Account",
+	"description": "New User Account",
+	"enabled": true,
+	"icon": "fa-user",
+	"rdn": "cn",
+	"regexp": "/^ou=.+,o=.+,?/",
+
+	"objectclasses": [
+		"inetOrgPerson",
+		"posixAccount"
+	],
+
+	"attributes": {
+		"givenName": {
+			"display": "First Name",
+			"onchange": [
+				"=autoFill(cn;%givenName% %sn%)",
+				"=autoFill(uid;%givenName|0-1/l%%sn/l%)"
+			],
+			"order": 1
+		},
+		"sn": {
+			"display": "Last Name",
+			"onchange": [
+				"=autoFill(cn;%givenName% %sn%)",
+				"=autoFill(uid;%givenName|0-1/l%%sn/l%)"
+			],
+			"order": 2
+		},
+		"cn": {
+			"display": "Common Name",
+			"readonly": true,
+			"order": 3
+		},
+		"uid": {
+			"display": "User ID",
+			"onchange": [
+				"=autoFill(homeDirectory;/home/users/%uid%)"
+			],
+			"order": 4
+		},
+		"userPassword": {
+			"display": "Password",
+			"order": 5
+		},
+		"uidNumber": {
+			"display": "UID Number",
+			"readonly": true,
+			"value": "=php.GetNextNumber(/;uidNumber)",
+			"order": 6
+		},
+		"gidNumber": {
+			"display": "UID Number",
+			"readonly": true,
+			"onchange": [
+				"=autoFill(homeDirectory;/home/users/%gidNumber|0-0/T%/%uid|3-%)"
+			],
+			"value": "=php.GetNextNumber(/;uidNumber)",
+			"value": "=php.PickList(/;(&(objectClass=posixGroup));gidNumber;%cn%;;;;cn)",
+			"order": 7
+		},
+		"homeDirectory": {
+			"display": "Home Directory",
+			"order": 8
+		},
+		"loginShell": {
+			"display": "Login Shell",
+			"select": {
+				"/bin/bash": "Bash",
+				"/bin/csh": "C Shell",
+				"/bin/dash": "Dash",
+				"/bin/sh": "Shell",
+				"/bin/tsh": "Turbo C Shell",
+				"/bin/zsh": "ZSH",
+				"/bin/false": "False",
+				"/usr/sbin/nologin": "No Login"
+			},
+			"order": 9
+		}
+	}
+}

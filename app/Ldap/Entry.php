@@ -4,9 +4,12 @@ namespace App\Ldap;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use LdapRecord\Support\Arr;
 use LdapRecord\Models\Model;
 
+use App\Classes\Template;
 use App\Classes\LDAP\Attribute;
 use App\Classes\LDAP\Attribute\Factory;
 use App\Classes\LDAP\Export\LDIF;
@@ -39,9 +42,19 @@ class Entry extends Model
 	public function __construct(array $attributes = [])
 	{
 		$this->objects = collect();
-		$this->templates = collect(['default'=>__('LDAP Entry')]);
 
 		parent::__construct($attributes);
+
+		// Load any templates
+		$x = Storage::disk(config('pla.template.dir'));
+		$this->templates = collect();
+
+		foreach (array_filter($x->files(),fn($item)=>Str::endsWith($item,'.json')) as $file)
+			$this->templates->put($file,new Template($file));
+
+		$this->templates = $this->templates
+			->filter(fn($item)=>(! $item->invalid) && $item->enabled)
+			->sortBy(fn($item)=>$item);
 	}
 
 	public function discardChanges(): static
@@ -129,6 +142,12 @@ class Entry extends Model
 
 		} else {
 			$this->objects = collect();
+		}
+
+		// Filter out our templates specific for this entry
+		if ($this->dn && (! in_array(strtolower($this->dn),['cn=subschema']))) {
+			$this->templates = $this->templates
+				->filter(fn($item)=>! count(array_diff($item->objectclasses,array_map('strtolower',Arr::get($this->attributes,'objectclass')))));
 		}
 
 		return $this;
@@ -530,5 +549,13 @@ class Entry extends Model
 			throw new InvalidUsage('Cannot set RDN base on existing entries');
 
 		$this->rdnbase = $bdn;
+
+		$this->templates = $this->templates
+			->filter(fn($item)=>(! $item->regexp) || preg_match($item->regexp,$bdn));
+	}
+
+	public function template(string $item): Template|Null
+	{
+		return Arr::get($this->templates,$item);
 	}
 }

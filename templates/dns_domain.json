@@ -1,0 +1,18 @@
+{
+	"title": "Generic: DNS Entry",
+	"description": "New DNS Entry",
+	"enabled": true,
+	"icon": "fa-globe",
+	"rdn": "dc",
+
+	"objectclasses": [
+		"dnsDomain"
+	],
+
+	"attributes": {
+		"dc": {
+			"display": "Domain Component",
+			"order": 1
+		}
+	}
+}
