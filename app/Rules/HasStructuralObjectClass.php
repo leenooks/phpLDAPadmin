@@ -24,6 +24,7 @@ class HasStructuralObjectClass implements ValidationRule
 			if ($item && config('server')->schema('objectclasses',$item)->isStructural())
 				return;
 
-		$fail('There isnt a Structural Objectclass.');
+		if (collect($value)->dot()->filter()->count())
+			$fail(__('There isnt a Structural Objectclass.'));
     }
 }

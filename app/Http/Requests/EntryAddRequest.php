@@ -66,12 +66,43 @@ class EntryAddRequest extends FormRequest
 					'min:1',
 					'max:1',
 				],
-				'objectclass._null_'=>[
-					'required',
+				'objectclass._null_' => [
+					function (string $attribute,mixed $value,\Closure $fail) {
+						$oc = collect($value)->dot()->filter();
+
+						// If this is step 1 and there is no objectclass, and no template, then fail
+						if ((! $oc->count())
+							&& (request()->post('step') == 1)
+							&& (! request()->post('template')))
+						{
+							$fail(__('Select an objectclass or a template'));
+						}
+
+						// Cant have both an objectclass and a template
+						if (request()->post('template') && $oc->count())
+							$fail(__('You cannot select a template and an objectclass'));
+					},
 					'array',
 					'min:1',
 					new HasStructuralObjectClass,
-				]
+				],
+				'template' => [
+					function (string $attribute,mixed $value,\Closure $fail) {
+						$oc = collect(request()->post('objectclass'))->dot()->filter();
+
+						// If this is step 1 and there is no objectclass, and no template, then fail
+						if ((! collect($value)->filter()->count())
+							&& (request()->post('step') == 1)
+							&& (! $oc->count()))
+						{
+							$fail(__('Select an objectclass or a template'));
+						}
+
+						// Cant have both an objectclass and a template
+						if ($oc->count() && strlen($value))
+							$fail(__('You cannot select a template and an objectclass'));
+					},
+				],
 			])
 			->toArray();
 	}

@@ -147,7 +147,7 @@ class Entry extends Model
 		// Filter out our templates specific for this entry
 		if ($this->dn && (! in_array(strtolower($this->dn),['cn=subschema']))) {
 			$this->templates = $this->templates
-				->filter(fn($item)=>! count(array_diff($item->objectclasses,array_map('strtolower',Arr::get($this->attributes,'objectclass')))));
+				->filter(fn($item)=>! count($item->objectclasses->diff(array_map('strtolower',Arr::get($this->attributes,'objectclass')))));
 		}
 
 		return $this;

@@ -9,7 +9,7 @@
 			@php($up=(session()->pull('updated') ?: collect()))
 			@php($attributes=$o->template($template)?->attributes)
 
-			@foreach($o->getVisibleAttributes()->filter(fn($item)=>in_array($item,$attributes)) as $ao)
+			@foreach($o->getVisibleAttributes()->filter(fn($item)=>$attributes->contains($item)) as $ao)
 				<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :updated="$up->contains($ao->name_lc)"/>
 			@endforeach
 		</div>

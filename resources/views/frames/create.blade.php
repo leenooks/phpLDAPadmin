@@ -17,7 +17,7 @@
 			<div class="main-card mb-3 card">
 
 				<div class="card-header">
-					@lang('Create New Entry') - @lang('Step') {{ $step }}
+					@lang('Create New Entry') - @lang('Step') {{ $step }} @if($template) <span class="ms-auto"><i class="fa fa-fw {{ $template->icon }}"></i> {{ $template->title }}</span>@endif
 				</div>
 
 				<div class="card-body">
@@ -30,19 +30,35 @@
 						@switch($step)
 							@case(1)
 								<div class="row">
-									<div class="col-12 col-md-6">
+									<div class="col-12 col-md-5">
 										<x-form.select
 											id="objectclass"
 											name="objectclass[{{ Entry::TAG_NOTAG }}][]"
 											old="objectclass.{{ Entry::TAG_NOTAG }}"
-											:label="__('Select a Structural ObjectClass...')"
+											:label="__('Select a Structural ObjectClass').'...'"
 											:options="($oc=$server->schema('objectclasses'))
 												->filter(fn($item)=>$item->isStructural())
 												->sortBy(fn($item)=>$item->name_lc)
 												->map(fn($item)=>['id'=>$item->name,'value'=>$item->name])"
-											multiple="false"
+											:allowclear="TRUE"
 										/>
 									</div>
+
+									@if($o->templates->count())
+										<div class="col-md-1">
+											<strong>@lang('OR')</strong>
+										</div>
+
+										<div class="col-12 col-md-5">
+											<x-form.select
+												name="template"
+												:label="__('Select a Template').'...'"
+												:options="$o->templates
+													->map(fn($item,$key)=>['id'=>$key,'value'=>$item->title])"
+												:allowclear="TRUE"
+											/>
+										</div>
+									@endif
 								</div>
 								@break
 
@@ -53,14 +69,15 @@
 									<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :updated="FALSE"/>
 								@endforeach
 
-								@include('fragment.dn.add_attr')
-
+								@if(! $template)
+									@include('fragment.dn.add_attr')
+								@endif
 								@break;
 						@endswitch
 					</form>
 
 					<div class="row d-none pt-3">
-						<div class="col-12 {{ $step > 1 ? 'offset-sm-2' : '' }} col-lg-10">
+						<div class="col-11 {{ $step > 1 ? 'text-end' : '' }} pe-0">
 							<x-form.reset form="dn-create"/>
 							<x-form.submit :action="__('Next')" form="dn-create"/>
 						</div>
@@ -102,7 +119,15 @@
 		}
 
 		$(document).ready(function() {
-			@if($step === 2)
+			@if($step === 1)
+				$('#objectclass').on('select2:open',function(){
+					$('#template').val(null).trigger('change');
+				});
+
+				$('#template').on('select2:open',function(){
+					$('#objectclass').val(null).trigger('change');
+				})
+			@elseif($step === 2)
 				$('#newattr').on('change',function(item) {
 					var oc = $('attribute#objectclass input[type=text]')
 						.map((key,item)=>{return $(item).val()}).toArray();

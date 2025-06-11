@@ -55,16 +55,24 @@ class HomeController extends Controller
 
 		$key = $this->request_key($request,collect(old()));
 
+		$template = NULL;
 		$o = new Entry;
+		$o->setRDNBase($key['dn']);
 
-		if (count($x=array_filter(old('objectclass',$request->objectclass)))) {
-			$o->objectclass = $x;
+		if (count($x=collect(old('objectclass',$request->validated('objectclass')))->dot()->filter())) {
+			$o->objectclass = Arr::undot($x);
 
 			// Also add in our required attributes
 			foreach($o->getAvailableAttributes()->filter(fn($item)=>$item->required) as $ao)
 				$o->{$ao->name} = [Entry::TAG_NOTAG=>''];
 
-			$o->setRDNBase($key['dn']);
+		} elseif ($request->validated('template')) {
+			$template = $o->template($request->validated('template'));
+			$o->objectclass = [Entry::TAG_NOTAG=>$template->objectclasses->toArray()];
+
+			// @todo We need to add aliases
+			foreach($o->getAvailableAttributes()->filter(fn($item)=>$template->attributes->contains($item)) as $ao)
+				$o->{$ao->name} = [Entry::TAG_NOTAG=>''];
 		}
 
 		$step = $request->step ? $request->step+1 : old('step');
@@ -74,6 +82,7 @@ class HomeController extends Controller
 			->with('bases',$this->bases())
 			->with('o',$o)
 			->with('step',$step)
+			->with('template',$template)
 			->with('container',old('container',$key['dn']));
 	}
 
@@ -383,7 +392,12 @@ class HomeController extends Controller
 			->with('bases',$this->bases());
 
 		// If we are rendering a DN, rebuild our object
-		if ($key['dn']) {
+		if ($key['cmd'] === 'create') {
+			$o = new Entry;
+			$o->setRDNBase($key['dn']);
+
+		} elseif ($key['dn']) {
+			// @todo Need to handle if DN is null, for example if the user's session expired and the ACLs dont let them retrieve $key['dn']
 			$o = config('server')->fetch($key['dn']);
 
 			foreach (collect(old())->except(['key','dn','step','_token','userpassword_hash','rdn','rdn_value']) as $attr => $value)
@@ -393,6 +407,8 @@ class HomeController extends Controller
 		return match ($key['cmd']) {
 			'create' => $view
 				->with('container',old('container',$key['dn']))
+				->with('o',$o)
+				->with('template',NULL)
 				->with('step',1),
 
 			'dn' => $view
