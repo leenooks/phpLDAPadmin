@@ -1,4 +1,4 @@
-<button id="form-reset" class="btn btn-outline-danger">@lang('Reset')</button>
+<button id="form-reset" class="btn btn-sm btn-outline-danger">@lang('Reset')</button>
 
 @section('page-scripts')
 	<script>

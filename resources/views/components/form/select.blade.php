@@ -2,27 +2,28 @@
 	@isset($name)
 		<input type="hidden" id="{{ $id ?? $name }}_disabled" name="{{ $name }}" value="" disabled>
 	@endisset
-	<select class="form-select @isset($name)@error((! empty($old)) ? $old : ($id ?? $name)) is-invalid @enderror @endisset" id="{{ $id ?? $name }}" @isset($name)name="{{ $name }}"@endisset @required(isset($required) && $required) @disabled(isset($disabled) && $disabled)>
-		@if((empty($value) && ! empty($options)) || isset($addnew) || isset($choose))
+
+	<select class="form-select @error($old ?? $id ?? $name) is-invalid @enderror" id="{{ $id ?? $name}}" @isset($name)name="{{ $name }}"@endisset @required($required ?? FALSE) @disabled($disabled ?? FALSE)>
+		@if((empty($value) && ! empty($options)) || isset($addnew))
 			<option value=""></option>
+
 			@isset($addnew)
 				<option value="new">{{ $addnew ?: 'Add New' }}</option>
 			@endisset
 		@endif
-
 		@isset($options)
 			@empty($groupby)
 				@foreach($options as $option)
 					@continue(! Arr::get($option,'value'))
-					<option value="{{ Arr::get($option,'id') }}" @selected(isset($name) && (Arr::get($option,'id') == old($old ?? $name,$value ?? '')))>{{ Arr::get($option,'value') }}</option>
+					<option value="{{ Arr::get($option,'id') }}" @selected(Arr::get($option,'id') == collect(old())->dot()->get(isset($old) ? $old.'.0' : ($id ?? $name)))>{{ Arr::get($option,'value') }}</option>
 				@endforeach
 
 			@else
 				@foreach($options->groupBy($groupby) as $group)
-					<optgroup label="{{ $groupby == 'active' ? (Arr::get($group->first(),$groupby) ? 'Active' : 'Not Active') : Arr::get($group->first(),$groupby) }}">
+					<optgroup label="{{ Arr::get($group->first(),$groupby) }}">
 						@foreach($group as $option)
 							@continue(! Arr::get($option,'value'))
-							<option value="{{ Arr::get($option,'id') }}" @selected(isset($name) && (Arr::get($option,'id') == old($old ?? $name,$value ?? '')))>{{ Arr::get($option,'value') }}</option>
+							<option value="{{ Arr::get($option,'id') }}" @selected(Arr::get($option,'id') == collect(old())->dot()->get(isset($old) ? $old.'.0' : ($id ?? $name)))>{{ Arr::get($option,'value') }}</option>
 						@endforeach
 					</optgroup>
 				@endforeach
