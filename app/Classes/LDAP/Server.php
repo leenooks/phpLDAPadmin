@@ -16,7 +16,7 @@ use LdapRecord\Query\Builder;
 use LdapRecord\Query\Collection as LDAPCollection;
 use LdapRecord\Query\ObjectNotFoundException;
 
-use App\Classes\LDAP\Schema\{AttributeType,Base,LDAPSyntax,MatchingRule,MatchingRuleUse,ObjectClass};
+use App\Classes\LDAP\Schema\{AttributeType,Base,LDAPSyntax,MatchingRule,ObjectClass};
 use App\Exceptions\InvalidUsage;
 use App\Ldap\Entry;
 
@@ -28,7 +28,6 @@ final class Server
 	private Collection $attributetypes;
 	private Collection $ldapsyntaxes;
 	private Collection $matchingrules;
-	private Collection $matchingruleuse;
 	private Collection $objectclasses;
 
 	/* ObjectClass Types */
@@ -176,7 +175,7 @@ final class Server
 		}
 
 		if (! $objects)
-			return collect($rootdse->namingcontexts);
+			return collect($rootdse->namingcontexts ?: []);
 
 		return Cache::remember('basedns'.Session::id(),config('ldap.cache.time'),function() use ($rootdse) {
 			$result = collect();
@@ -464,7 +463,6 @@ final class Server
 
 				case 'matchingrules':
 					Log::debug(sprintf('%s:Matching Rules',self::LOGKEY));
-					$this->matchingruleuse = collect();
 
 					foreach ($schema->{$item} as $line) {
 						if (is_null($line) || ! strlen($line))
@@ -474,31 +472,11 @@ final class Server
 						$this->matchingrules->put($o->name_lc,$o);
 					}
 
-					/*
-					 * For each MatchingRuleUse entry, add the attributes who use it to the
-					 * MatchingRule in the $rules array.
-					 */
-					if ($schema->matchingruleuse) {
-						foreach ($schema->matchingruleuse as $line) {
-							if (is_null($line) || ! strlen($line))
-								continue;
+					foreach ($this->schema('attributetypes') as $attr) {
+						$rule_key = strtolower($attr->getEquality());
 
-							$o = new MatchingRuleUse($line);
-							$this->matchingruleuse->put($o->name_lc,$o);
-
-							if ($this->matchingrules->has($o->name_lc) !== FALSE)
-								$this->matchingrules[$o->name_lc]->setUsedByAttrs($o->getUsedByAttrs());
-						}
-
-					} else {
-						/* No MatchingRuleUse entry in the subschema, so brute-forcing
-						 * the reverse-map for the "$rule->getUsedByAttrs()" data.*/
-						foreach ($this->schema('attributetypes') as $attr) {
-							$rule_key = strtolower($attr->getEquality());
-
-							if ($this->matchingrules->has($rule_key) !== FALSE)
-								$this->matchingrules[$rule_key]->addUsedByAttr($attr->name);
-						}
+						if ($this->matchingrules->has($rule_key) !== FALSE)
+							$this->matchingrules[$rule_key]->addUsedByAttr($attr->name);
 					}
 
 					return $this->matchingrules;
