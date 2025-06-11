@@ -17,21 +17,17 @@ class AjaxController extends Controller
 	 *
 	 * @return Collection
 	 * @throws \LdapRecord\Query\ObjectNotFoundException
-	 * @todo This should be consolidated with HomeController
 	 */
 	public function bases(): Collection
 	{
-		$base = Server::baseDNs(TRUE) ?: collect();
-
-		return $base
-			->transform(fn($item)=>
-				[
-					'title'=>$item->getRdn(),
-					'item'=>$item->getDNSecure(),
-					'lazy'=>TRUE,
-					'icon'=>'fa-fw fas fa-sitemap',
-					'tooltip'=>$item->getDn(),
-				]);
+		return Server::baseDNs()
+			->map(fn($item)=> [
+				'title'=>$item->getRdn(),
+				'item'=>$item->getDNSecure(),
+				'lazy'=>TRUE,
+				'icon'=>'fa-fw fas fa-sitemap',
+				'tooltip'=>$item->getDn(),
+			]);
 	}
 
 	/**

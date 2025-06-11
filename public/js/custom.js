@@ -59,7 +59,7 @@ $(document).ready(function() {
 	if (typeof basedn !== 'undefined') {
 		sources = basedn;
 	} else {
-		sources = { url: 'ajax/bases' };
+		sources = { url: '/ajax/bases' };
 	}
 
 	// Attach the fancytree widget to an existing <div id="tree"> element

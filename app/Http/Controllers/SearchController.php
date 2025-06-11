@@ -22,7 +22,7 @@ class SearchController extends Controller
 
 			$result = collect();
 
-			foreach ($so->baseDNs() as $base) {
+			foreach ($so->baseDNs(FALSE) as $base) {
 				$search = (new Entry)
 					->in($base);
 

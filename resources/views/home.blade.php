@@ -1,16 +1,5 @@
 @extends('architect::layouts.app')
 
-{{--
-@section('htmlheader_title')
-	@lang('Home')
-@endsection
-
-@section('page_title')
-@endsection
-@section('page_icon')
-@endsection
---}}
-
 @section('main-content')
 	<x-success/>
 
@@ -78,8 +67,6 @@
 
 @section('page-scripts')
 	<script type="text/javascript">
-		var basedn = {!! $bases->toJson() !!};
-
 		var subpage = window.location.hash;
 
 		$(document).ready(function() {

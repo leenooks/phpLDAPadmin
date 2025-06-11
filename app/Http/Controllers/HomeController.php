@@ -26,21 +26,6 @@ use App\Ldap\Entry;
 
 class HomeController extends Controller
 {
-	private function bases(): Collection
-	{
-		$base = Server::baseDNs(TRUE) ?: collect();
-
-		return $base->transform(function($item) {
-			return [
-				'title'=>$item->getRdn(),
-				'item'=>$item->getDNSecure(),
-				'lazy'=>TRUE,
-				'icon'=>'fa-fw fas fa-sitemap',
-				'tooltip'=>$item->getDn(),
-			];
-		});
-	}
-
 	/**
 	 * Create a new object in the LDAP server
 	 *
@@ -79,7 +64,6 @@ class HomeController extends Controller
 
 		return view('frame')
 			->with('subframe','create')
-			->with('bases',$this->bases())
 			->with('o',$o)
 			->with('step',$step)
 			->with('template',$template)
@@ -307,7 +291,6 @@ class HomeController extends Controller
 				->with('note',__('No attributes changed'));
 
 		return view('update')
-			->with('bases',$this->bases())
 			->with('dn',$dn)
 			->with('o',$o);
 	}
@@ -386,10 +369,9 @@ class HomeController extends Controller
 
 		$key = $this->request_key($request,$old);
 
-		$view = ($old
+		$view = $old
 			? view('frame')->with('subframe',$key['cmd'])
-			: view('frames.'.$key['cmd']))
-			->with('bases',$this->bases());
+			: view('frames.'.$key['cmd']);
 
 		// If we are rendering a DN, rebuild our object
 		if ($key['cmd'] === 'create') {
@@ -436,8 +418,7 @@ class HomeController extends Controller
 		// Did we come here as a result of a redirect
 		return count(old())
 			? $this->frame($request,collect(old()))
-			: view('home')
-				->with('bases',$this->bases());
+			: view('home');
 	}
 
 	/**
@@ -473,7 +454,6 @@ class HomeController extends Controller
 
 		return view('frame')
 			->with('subframe','import_result')
-			->with('bases',$this->bases())
 			->with('result',$result)
 			->with('ldif',htmlspecialchars($x));
 	}

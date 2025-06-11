@@ -30,6 +30,8 @@ final class Server
 	private Collection $matchingrules;
 	private Collection $objectclasses;
 
+	private Entry $rootDSE;
+
 	/* ObjectClass Types */
 	public const OC_STRUCTURAL = 0x01;
 	public const OC_ABSTRACT = 0x02;
@@ -37,6 +39,8 @@ final class Server
 
 	public function __construct()
 	{
+		$this->rootDSE = self::rootDSE();
+
 		$this->attributetypes = collect();
 		$this->ldapsyntaxes = collect();
 		$this->matchingrules = collect();
@@ -66,7 +70,7 @@ final class Server
 	 * @return Collection
 	 * @testedin GetBaseDNTest::testBaseDNExists();
 	 */
-	public static function baseDNs(bool $objects=FALSE): Collection
+	public static function baseDNs(bool $objects=TRUE): Collection
 	{
 		try {
 			$rootdse = self::rootDSE();
@@ -184,7 +188,7 @@ final class Server
 			foreach (($rootdse->namingcontexts ?: []) as $dn)
 				$result->push(self::get($dn)->read()->find($dn));
 
-			return $result->filter();
+			return $result->filter()->sort(fn($item)=>$item->sort_key);
 		});
 	}
 
@@ -254,18 +258,6 @@ final class Server
 				->firstOrFail();
 
 		return $rootdse;
-	}
-
-	/**
-	 * Get the Schema DN
-	 *
-	 * @return string
-	 * @throws ObjectNotFoundException
-	 */
-	public static function schemaDN(): string
-	{
-		return collect(self::rootDSE()->subschemasubentry)
-			->first();
 	}
 
 	/* METHODS */
@@ -510,6 +502,17 @@ final class Server
 		});
 
 		return is_null($key) ? $result : $result->get($key);
+	}
+
+	/**
+	 * Get the Schema DN
+	 *
+	 * @return string
+	 * @throws ObjectNotFoundException
+	 */
+	public function schemaDN(): string
+	{
+		return Arr::get($this->rootDSE->subschemasubentry,0);
 	}
 
 	/**
