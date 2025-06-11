@@ -10,7 +10,7 @@ class Template
 	private string $file;
 	private array $template;
 	private(set) bool $invalid = FALSE;
-	private string $reason = '';
+	private(set) string $reason = '';
 
 	public function __construct(string $file)
 	{

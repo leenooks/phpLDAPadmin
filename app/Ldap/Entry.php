@@ -3,7 +3,10 @@
 namespace App\Ldap;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use LdapRecord\Support\Arr;
@@ -41,20 +44,28 @@ class Entry extends Model
 
 	public function __construct(array $attributes = [])
 	{
-		$this->objects = collect();
-
 		parent::__construct($attributes);
 
+		$this->objects = collect();
+
 		// Load any templates
-		$x = Storage::disk(config('pla.template.dir'));
-		$this->templates = collect();
+		$this->templates =  Cache::remember('templates'.Session::id(),config('ldap.cache.time'),function() {
+			$template_dir = Storage::disk(config('pla.template.dir'));
+			$templates = collect();
 
-		foreach (array_filter($x->files(),fn($item)=>Str::endsWith($item,'.json')) as $file)
-			$this->templates->put($file,new Template($file));
+			foreach (array_filter($template_dir->files(),fn($item)=>Str::endsWith($item,'.json')) as $file) {
+				$to = new Template($file);
 
-		$this->templates = $this->templates
-			->filter(fn($item)=>(! $item->invalid) && $item->enabled)
-			->sortBy(fn($item)=>$item);
+				if ($to->invalid) {
+					Log::debug(sprintf('Template [%s] is not valid (%s) - ignoring',$file,$to->reason));
+
+				} else {
+					$templates->put($file,new Template($file));
+				}
+			}
+
+			return $templates;
+		});
 	}
 
 	public function discardChanges(): static
@@ -147,7 +158,9 @@ class Entry extends Model
 		// Filter out our templates specific for this entry
 		if ($this->dn && (! in_array(strtolower($this->dn),['cn=subschema']))) {
 			$this->templates = $this->templates
-				->filter(fn($item)=>! count($item->objectclasses->diff(array_map('strtolower',Arr::get($this->attributes,'objectclass')))));
+				->filter(fn($item)=>$item->enabled
+					&& (! count($item->objectclasses->diff(array_map('strtolower',Arr::get($this->attributes,'objectclass'))))))
+				->sortBy(fn($item)=>$item);
 		}
 
 		return $this;
