@@ -29,11 +29,5 @@ class AppServiceProvider extends ServiceProvider
 	public function boot(): void
 	{
 		$this->loadViewsFrom(__DIR__.'/../../resources/themes/architect/views/','architect');
-
-		// Enable pluck on collections to work on private values
-		Collection::macro('ppluck',
-			fn($attr)=>$this
-				->map(fn($item)=>$item->{$attr})
-				->values());
 	}
 }

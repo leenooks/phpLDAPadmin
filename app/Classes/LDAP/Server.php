@@ -30,7 +30,7 @@ final class Server
 	private Collection $matchingrules;
 	private Collection $objectclasses;
 
-	private Entry $rootDSE;
+	private Model $rootDSE;
 
 	/* ObjectClass Types */
 	public const OC_STRUCTURAL = 0x01;
@@ -418,22 +418,18 @@ final class Server
 
 					// Add the used in and required_by values.
 					foreach ($this->schema('objectclasses') as $object_class) {
-						$must_attrs = $object_class->getMustAttrNames();
-						$may_attrs = $object_class->getMayAttrNames();
-						$oclass_attrs = $must_attrs->merge($may_attrs)->unique();
-
 						// Add Used In.
-						foreach ($oclass_attrs as $attr_name)
+						foreach ($object_class->getAllAttrs()->pluck('name') as $attr_name)
 							if ($this->attributetypes->has(strtolower($attr_name)))
 								$this->attributetypes[strtolower($attr_name)]->addUsedInObjectClass($object_class->name,$object_class->isStructural());
 
 						// Add Required By.
-						foreach ($must_attrs as $attr_name)
+						foreach ($object_class->getMustAttrs()->pluck('name') as $attr_name)
 							if ($this->attributetypes->has(strtolower($attr_name)))
 								$this->attributetypes[strtolower($attr_name)]->addRequiredByObjectClass($object_class->name,$object_class->isStructural());
 
 						// Force May
-						foreach ($object_class->getForceMayAttrs() as $attr_name)
+						foreach ($object_class->may_force as $attr_name)
 							if ($this->attributetypes->has(strtolower($attr_name->name)))
 								$this->attributetypes[strtolower($attr_name->name)]->setForceMay();
 					}
@@ -486,7 +482,7 @@ final class Server
 
 					// Now go through and reference the parent/child relationships
 					foreach ($this->objectclasses as $o)
-						foreach ($o->getSupClasses() as $parent) {
+						foreach ($o->sup_classes as $parent) {
 							$parent = strtolower($parent);
 
 							if (! $this->objectclasses->contains($parent))

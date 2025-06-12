@@ -2,6 +2,8 @@
 
 namespace App\Classes\LDAP\Schema;
 
+use Illuminate\Support\Facades\Log;
+
 use App\Exceptions\InvalidUsage;
 
 /**
@@ -10,38 +12,38 @@ use App\Exceptions\InvalidUsage;
  * A schema item is an ObjectClass, an AttributeBype, a MatchingRule, or a Syntax.
  * All schema items have at least two things in common: An OID and a Description.
  */
-abstract class Base {
+abstract class Base
+{
+	private const LOGKEY = 'Sb-';
+
 	protected const DEBUG_VERBOSE = FALSE;
 
 	// Record the LDAP String
-	private string $line;
+	private(set) string $line;
 
 	// The schema item's name.
-	protected string $name = '';
+	protected(set) string $name = '';
 
 	// The OID of this schema item.
-	protected string $oid = '';
+	protected(set) string $oid = '';
 
 	# The description of this schema item.
-	protected string $description = '';
+	protected(set) string $description = '';
 
 	// Boolean value indicating whether this objectClass is obsolete
-	private bool $is_obsolete = FALSE;
+	private(set) bool $is_obsolete = FALSE;
 
 	public function __construct(string $line)
 	{
 		$this->line = $line;
+
+		$this->parse($line);
 	}
 
 	public function __get(string $key): mixed
 	{
 		switch ($key) {
-			case 'description': return $this->description;
-			case 'is_obsolete': return $this->is_obsolete;
-			case 'line': return $this->line;
-			case 'name': return $this->name;
 			case 'name_lc': return strtolower($this->name);
-			case 'oid': return $this->oid;
 
 			default:
 				throw new InvalidUsage('Unknown key:'.$key);
@@ -58,65 +60,91 @@ abstract class Base {
 		return $this->name;
 	}
 
-	/**
-	 * @return string
-	 * @deprecated replace with $class->description
-	 */
-	public function getDescription(): string
+	protected function parse(string $line): void
 	{
-		return $this->description;
+		$strings = preg_split('/[\s,]+/',$line,-1,PREG_SPLIT_DELIM_CAPTURE);
+
+		for ($i=0; $i < count($strings); $i++) {
+			$this->parse_chunk($strings,$i);
+		}
 	}
 
-	/**
-	 * Gets whether this item is flagged as obsolete by the LDAP server.
-	 *
-	 * @deprecated replace with $this->is_obsolete
-	 */
-	public function getIsObsolete(): bool
+	protected function parse_chunk(array $strings,int &$i): void
 	{
-		return $this->is_obsolete;
-	}
+		switch ($strings[$i]) {
+			case '(':
+			case ')':
+				break;
 
-	/**
-	 * Return the objects name.
-	 *
-	 * @param boolean $lower Return the name in lower case (default)
-	 * @return string The name
-	 * @deprecated use object->name
-	 */
-	public function getName(bool $lower=TRUE): string
-	{
-		return $lower ? strtolower($this->name) : $this->name;
-	}
+			case 'NAME':
+				if ($strings[$i+1] !== '(') {
+					do {
+						$this->name .= (strlen($this->name) ? ' ' : '').$strings[++$i];
+					} while (! preg_match('/\'$/s',$strings[$i]));
 
-	/**
-	 * Return the objects name.
-	 *
-	 * @return string The name
-	 * @deprecated use object->oid
-	 */
-	public function getOID(): string
-	{
-		return $this->oid;
-	}
+				} else {
+					$i++;
 
-	public function setDescription(string $desc): void
-	{
-		$this->description = $desc;
-	}
+					do {
+						$this->name .= (strlen($this->name) ? ' ' : '').$strings[++$i];
+					} while (! preg_match('/\'$/s',$strings[$i]));
 
-	/**
-	 * Sets this attribute's name.
-	 *
-	 * @param string $name The new name to give this attribute.
-	 */
-	public function setName($name): void
-	{
-		$this->name = $name;
-	}
+					do {
+						$i++;
+					} while (! preg_match('/\)+\)?/',$strings[$i]));
+				}
 
-	public function setOID(string $oid): void
-	{
-		$this->oid = $oid;
+				$this->name = preg_replace("/^\'(.*)\'$/",'$1',$this->name);
+
+				if (static::DEBUG_VERBOSE)
+					Log::debug(sprintf('%s:- Case NAME returned (%s)',self::LOGKEY,$this->name));
+				break;
+
+			case 'DESC':
+				do {
+					$this->description .= (strlen($this->description) ? ' ' : '').$strings[++$i];
+
+				} while (! preg_match('/\'$/s',$strings[$i]));
+
+				$this->description = preg_replace("/^\'(.*)\'$/",'$1',$this->description);
+
+				if (static::DEBUG_VERBOSE)
+					Log::debug(sprintf('%s:- Case DESC returned (%s)',self::LOGKEY,$this->description));
+				break;
+
+			case 'OBSOLETE':
+				$this->is_obsolete = TRUE;
+
+				if (static::DEBUG_VERBOSE)
+					Log::debug(sprintf('%s:- Case OBSOLETE returned (%s)',self::LOGKEY,$this->is_obsolete));
+				break;
+
+			// @note currently not captured
+			case 'X-SUBST':
+			case 'X-ORDERED':
+			case 'X-EQUALITY':
+			case 'X-ORIGIN':
+				$value = '';
+
+				do {
+					$value .= ($value ? ' ' : '').preg_replace('/^\'(.+)\'$/','$1',$strings[++$i]);
+
+				} while (! preg_match("/\'$/s",$strings[$i]));
+
+				if (static::DEBUG_VERBOSE)
+					Log::debug(sprintf('%s:- Case [%s] returned (%s) - IGNORED',self::LOGKEY,$strings[$i],$value));
+
+				break;
+
+			default:
+				if (preg_match('/[\d\.]+/i',$strings[$i]) && ($i === 1)) {
+					$this->oid = $strings[$i];
+
+					if (static::DEBUG_VERBOSE)
+						Log::debug(sprintf('%s:- Case default returned OID (%s)',self::LOGKEY,$this->oid));
+
+				} elseif ($strings[$i])
+					Log::alert(sprintf('%s:! Case default discovered a value NOT parsed (%s)',self::LOGKEY,$strings[$i]));
+		}
 	}
 }

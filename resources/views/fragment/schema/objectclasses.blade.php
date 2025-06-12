@@ -35,10 +35,10 @@
 						<td>@lang('Inherits from')</td>
 						<td colspan="3">
 							<strong>
-								@if($o->sup->count() === 0)
+								@if($o->sup_classes->count() === 0)
 									@lang('(none)')
 								@else
-									@foreach($o->sup as $sup)
+									@foreach($o->sup_classes as $sup)
 										@if($loop->index)</strong> <strong>@endif
 										<a class="objectclass" id="{{ strtolower($sup) }}" href="#{{ strtolower($sup) }}">{{ $sup }}</a>
 									@endforeach
@@ -53,10 +53,10 @@
 							<strong>
 								@if(strtolower($o->name) === 'top')
 									<a class="objectclass" id="-all-">(all)</a>
-								@elseif(! $o->getChildObjectClasses()->count())
+								@elseif(! $o->child_classes->count())
 									@lang('(none)')
 								@else
-									@foreach($o->getChildObjectClasses() as $childoc)
+									@foreach($o->child_classes as $childoc)
 										@if($loop->index)</strong> <strong>@endif
 										<a class="objectclass" id="{{ strtolower($childoc) }}" href="#{{ strtolower($childoc) }}">{{ $childoc }}</a>
 									@endforeach

@@ -16,8 +16,13 @@ use App\Exceptions\InvalidUsage;
  */
 final class ObjectClass extends Base
 {
+	private const LOGKEY = 'SOC';
+
+	// Array of objectClasses which inherit from this one
+	private(set) Collection $child_classes;
+
 	// Array of objectClass names from which this objectClass inherits
-	private Collection $sup_classes;
+	private(set) Collection $sup_classes;
 
 	// One of STRUCTURAL, ABSTRACT, or AUXILIARY
 	private int $type;
@@ -29,187 +34,14 @@ final class ObjectClass extends Base
 	private Collection $may_attrs;
 
 	// Arrays of attribute names that this objectClass has been forced to MAY attrs, due to configuration
-	private Collection $may_force;
-
-	// Array of objectClasses which inherit from this one
-	private Collection $child_objectclasses;
+	private(set) Collection $may_force;
 
 	private bool $is_obsolete;
-
-	/**
-	 * Creates a new ObjectClass object given a raw LDAP objectClass string.
-	 *
-	 * eg: ( 2.5.6.0 NAME 'top' DESC 'top of the superclass chain' ABSTRACT MUST objectClass )
-	 *
-	 * @param string $line Schema Line
-	 * @param Server $server
-	 * @todo Deprecate this $server variable? It is only used for isForceMay() determination, and that might be better done elsewhere?
-	 */
-	public function __construct(string $line,Server $server)
-	{
-		parent::__construct($line);
-
-		if (static::DEBUG_VERBOSE)
-			Log::debug(sprintf('Parsing ObjectClass [%s]',$line));
-
-		$strings = preg_split('/[\s,]+/',$line,-1,PREG_SPLIT_DELIM_CAPTURE);
-
-		// Init
-		$this->may_attrs = collect();
-		$this->may_force = collect();
-		$this->must_attrs = collect();
-		$this->sup_classes = collect();
-		$this->child_objectclasses = collect();
-
-		for ($i=0; $i < count($strings); $i++) {
-			switch ($strings[$i]) {
-				case '(':
-				case ')':
-					break;
-
-				case 'NAME':
-					if ($strings[$i+1] != '(') {
-						do {
-							$this->name .= (strlen($this->name) ? ' ' : '').$strings[++$i];
-
-						} while (! preg_match('/\'$/s',$strings[$i]));
-
-					} else {
-						$i++;
-
-						do {
-							$this->name .= (strlen($this->name) ? ' ' : '').$strings[++$i];
-
-						} while (! preg_match('/\'$/s',$strings[$i]));
-
-						do {
-							$i++;
-						} while (! preg_match('/\)+\)?/',$strings[$i]));
-					}
-
-					$this->name = preg_replace("/^\'(.*)\'$/",'$1',$this->name);
-
-					if (static::DEBUG_VERBOSE)
-						Log::debug(sprintf(sprintf('- Case NAME returned (%s)',$this->name)));
-					break;
-
-				case 'DESC':
-					do {
-						$this->description .= (strlen($this->description) ? ' ' : '').$strings[++$i];
-
-					} while (! preg_match('/\'$/s',$strings[$i]));
-
-					$this->description = preg_replace("/^\'(.*)\'$/",'$1',$this->description);
-
-					if (static::DEBUG_VERBOSE)
-						Log::debug(sprintf('- Case DESC returned (%s)',$this->description));
-					break;
-
-				case 'OBSOLETE':
-					$this->is_obsolete = TRUE;
-
-					if (static::DEBUG_VERBOSE)
-						Log::debug(sprintf('- Case OBSOLETE returned (%s)',$this->is_obsolete));
-					break;
-
-				case 'SUP':
-					if ($strings[$i+1] != '(') {
-						$this->sup_classes->push(preg_replace("/'/",'',$strings[++$i]));
-
-					} else {
-						$i++;
-
-						do {
-							$i++;
-
-							if ($strings[$i] != '$')
-								$this->sup_classes->push(preg_replace("/'/",'',$strings[$i]));
-
-						} while (! preg_match('/\)+\)?/',$strings[$i+1]));
-					}
-
-					if (static::DEBUG_VERBOSE)
-						Log::debug(sprintf('- Case SUP returned (%s)',$this->sup_classes->join(',')));
-					break;
-
-				case 'ABSTRACT':
-					$this->type = Server::OC_ABSTRACT;
-
-					if (static::DEBUG_VERBOSE)
-						Log::debug(sprintf('- Case ABSTRACT returned (%s)',$this->type));
-					break;
-
-				case 'STRUCTURAL':
-					$this->type = Server::OC_STRUCTURAL;
-
-					if (static::DEBUG_VERBOSE)
-						Log::debug(sprintf('- Case STRUCTURAL returned (%s)',$this->type));
-					break;
-
-				case 'AUXILIARY':
-					$this->type = Server::OC_AUXILIARY;
-
-					if (static::DEBUG_VERBOSE)
-						Log::debug(sprintf('- Case AUXILIARY returned (%s)',$this->type));
-					break;
-
-				case 'MUST':
-					$attrs = collect();
-
-					$i = $this->parseList(++$i,$strings,$attrs);
-
-					if (static::DEBUG_VERBOSE)
-						Log::debug(sprintf('= parseList returned %d (%s)',$i,$attrs->join(',')));
-
-					foreach ($attrs as $string) {
-						$attr = new ObjectClassAttribute($string,$this->name);
-
-						if ($server->isForceMay($attr->getName())) {
-							$this->may_force->push($attr);
-							$this->may_attrs->push($attr);
-
-						} else
-							$this->must_attrs->push($attr);
-					}
-
-					if (static::DEBUG_VERBOSE)
-						Log::debug(sprintf('- Case MUST returned (%s) (%s)',$this->must_attrs->join(','),$this->may_force->join(',')));
-					break;
-
-				case 'MAY':
-					$attrs = collect();
-
-					$i = $this->parseList(++$i,$strings,$attrs);
-
-					if (static::DEBUG_VERBOSE)
-						Log::debug(sprintf('parseList returned %d (%s)',$i,$attrs->join(',')));
-
-					foreach ($attrs as $string) {
-						$attr = new ObjectClassAttribute($string,$this->name);
-						$this->may_attrs->push($attr);
-					}
-
-					if (static::DEBUG_VERBOSE)
-						Log::debug(sprintf('- Case MAY returned (%s)',$this->may_attrs->join(',')));
-					break;
-
-				default:
-					if (preg_match('/[\d\.]+/i',$strings[$i]) && ($i === 1)) {
-						$this->oid = $strings[$i];
-						if (static::DEBUG_VERBOSE)
-							Log::debug(sprintf('- Case default returned (%s)',$this->oid));
-
-					} elseif ($strings[$i])
-						Log::alert(sprintf('! Case default discovered a value NOT parsed (%s)',$strings[$i]),['line'=>$line]);
-			}
-		}
-	}
 
 	public function __get(string $key): mixed
 	{
 		return match ($key) {
 			'attributes' => $this->getAllAttrs(TRUE),
-			'sup' => $this->sup_classes,
 			'type_name' => match ($this->type) {
 				Server::OC_STRUCTURAL => 'Structural',
 				Server::OC_ABSTRACT => 'Abstract',
@@ -229,11 +61,8 @@ final class ObjectClass extends Base
 	 */
 	public function getAllAttrs(bool $parents=FALSE): Collection
 	{
-		return $this->getMustAttrs($parents)
-			->transform(function($item) {
-				$item->required = true;
-				return $item;
-			})
+		return $this
+			->getMustAttrs($parents)
 			->merge($this->getMayAttrs($parents));
 	}
 
@@ -245,57 +74,8 @@ final class ObjectClass extends Base
 	 */
 	public function addChildObjectClass(string $name): void
 	{
-		if (! $this->child_objectclasses->contains($name))
-			$this->child_objectclasses->push($name);
-	}
-
-	/**
-	 * Returns the array of objectClass names which inherit from this objectClass.
-	 *
-	 * @return Collection Names of objectClasses which inherit from this objectClass.
-	 * @deprecated use $this->child_objectclasses
-	 */
-	public function getChildObjectClasses(): Collection
-	{
-		return $this->child_objectclasses;
-	}
-
-	/**
-	 * Behaves identically to addMustAttrs, but it operates on the MAY
-	 * attributes of this objectClass.
-	 *
-	 * @param array $attr An array of attribute names (strings) to add.
-	 */
-	private function addMayAttrs(array $attr): void
-	{
-		if (! is_array($attr) || ! count($attr))
-			return;
-
-		$this->may_attrs = $this->may_attrs->merge($attr)->unique();
-	}
-
-	/**
-	 * Adds the specified array of attributes to this objectClass' list of
-	 * MUST attributes. The resulting array of must attributes will contain
-	 * unique members.
-	 *
-	 * @param array $attr An array of attribute names (strings) to add.
-	 */
-	private function addMustAttrs(array $attr): void
-	{
-		if (! is_array($attr) || ! count($attr))
-			return;
-
-		$this->must_attrs = $this->must_attrs->merge($attr)->unique();
-	}
-
-	/**
-	 * @return Collection
-	 * @deprecated use $this->may_force
-	 */
-	public function getForceMayAttrs(): Collection
-	{
-		return $this->may_force;
+		if (! $this->child_classes->contains($name))
+			$this->child_classes->push($name);
 	}
 
 	/**
@@ -313,42 +93,16 @@ final class ObjectClass extends Base
 	 */
 	public function getMayAttrs(bool $parents=FALSE): Collection
 	{
-		// If we dont need our parents, then we'll just return ours.
-		if (! $parents)
-			return $this->may_attrs
-				->sortBy(fn($item)=>strtolower($item->name.$item->source));
-
 		$attrs = $this->may_attrs;
 
-		foreach ($this->getParents() as $object_class)
-			$attrs = $attrs->merge($object_class->getMayAttrs($parents));
-
-		// Remove any duplicates
-		$attrs = $attrs->unique(function($item) { return $item->name; });
+		if ($parents)
+			foreach ($this->getParents() as $object_class)
+				$attrs = $attrs->merge($object_class->getMayAttrs($parents));
 
 		// Return a sorted list
-		return $attrs->sortBy(function($item) { return strtolower($item->name.$item->source); });
-	}
-
-	/**
-	 * Gets an array of attribute names (strings) that entries of this ObjectClass must define.
-	 * This differs from getMayAttrs in that it returns an array of strings rather than
-	 * array of AttributeType objects
-	 *
-	 * @param bool $parents An array of ObjectClass objects to use when traversing
-	 *             the inheritance tree. This presents some what of a bootstrapping problem
-	 *             as we must fetch all objectClasses to determine through inheritance which
-	 *             attributes this objectClass provides.
-	 * @return Collection The array of allowed attribute names (strings).
-	 *
-	 * @throws InvalidUsage
-	 * @see getMustAttrs
-	 * @see getMayAttrs
-	 * @see getMustAttrNames
-	 */
-	public function getMayAttrNames(bool $parents=FALSE): Collection
-	{
-		return $this->getMayAttrs($parents)->ppluck('name');
+		return $attrs
+			->unique(fn($item)=>$item->name)
+			->sortBy(fn($item)=>strtolower($item->name.$item->source));
 	}
 
 	/**
@@ -365,41 +119,16 @@ final class ObjectClass extends Base
 	 */
 	public function getMustAttrs(bool $parents=FALSE): Collection
 	{
-		// If we dont need our parents, then we'll just return ours.
-		if (! $parents)
-			return $this->must_attrs->sortBy(function($item) { return strtolower($item->name.$item->source); });
-
 		$attrs = $this->must_attrs;
 
-		foreach ($this->getParents() as $object_class)
-			$attrs = $attrs->merge($object_class->getMustAttrs($parents));
-
-		// Remove any duplicates
-		$attrs = $attrs->unique(function($item) { return $item->name; });
+		if ($parents)
+			foreach ($this->getParents() as $object_class)
+				$attrs = $attrs->merge($object_class->getMustAttrs($parents));
 
 		// Return a sorted list
-		return $attrs->sortBy(function($item) { return strtolower($item->name.$item->source); });
-	}
-
-	/**
-	 * Gets an array of attribute names (strings) that entries of this ObjectClass must define.
-	 * This differs from getMustAttrs in that it returns an array of strings rather than
-	 * array of AttributeType objects
-	 *
-	 * @param bool $parents An array of ObjectClass objects to use when traversing
-	 *             the inheritance tree. This presents some what of a bootstrapping problem
-	 *             as we must fetch all objectClasses to determine through inheritance which
-	 *             attributes this objectClass provides.
-	 * @return Collection The array of allowed attribute names (strings).
-	 *
-	 * @throws InvalidUsage
-	 * @see getMustAttrs
-	 * @see getMayAttrs
-	 * @see getMayAttrNames
-	 */
-	public function getMustAttrNames(bool $parents=FALSE): Collection
-	{
-		return $this->getMustAttrs($parents)->ppluck('name');
+		return $attrs
+			->unique(fn($item)=>$item->name)
+			->sortBy(fn($item)=>strtolower($item->name.$item->source));
 	}
 
 	/**
@@ -427,27 +156,6 @@ final class ObjectClass extends Base
 	}
 
 	/**
-	 * Gets the objectClass names from which this objectClass inherits.
-	 *
-	 * @return Collection An array of objectClass names (strings)
-	 * @deprecated use $this->sup_classes;
-	 */
-	public function getSupClasses(): Collection
-	{
-		return $this->sup_classes;
-	}
-
-	/**
-	 * Gets the type of this objectClass: STRUCTURAL, ABSTRACT, or AUXILIARY.
-	 *
-	 * @deprecated use $this->type_name
-	 */
-	public function getType()
-	{
-		return $this->type;
-	}
-
-	/**
 	 * Return if this objectclass is auxiliary
 	 *
 	 * @return bool
@@ -462,32 +170,151 @@ final class ObjectClass extends Base
 	 */
 	public function isForceMay(string $attr): bool
 	{
-		return $this->may_force->ppluck('name')->contains($attr);
-	}
-
-	/**
-	 * Return if this objectClass is related to $oclass
-	 *
-	 * @param array $oclass ObjectClasses that this attribute may be related to
-	 * @return bool
-	 * @throws InvalidUsage
-	 */
-	public function isRelated(array $oclass): bool
-	{
-		// If I am in the array, we'll just return false
-		if (in_array_ignore_case($this->name,$oclass))
-			return FALSE;
-
-		foreach ($oclass as $object_class)
-			if ($object_class->isStructural() && in_array_ignore_case($this->name,$object_class->getParents()->pluck('name')))
-				return TRUE;
-
-		return FALSE;
+		return $this->may_force
+			->pluck('name')
+			->contains($attr);
 	}
 
 	public function isStructural(): bool
 	{
 		return $this->type === Server::OC_STRUCTURAL;
+	}
+
+	/**
+	 * Creates a new ObjectClass object given a raw LDAP objectClass string.
+	 *
+	 * eg: ( 2.5.6.0 NAME 'top' DESC 'top of the superclass chain' ABSTRACT MUST objectClass )
+	 *
+	 * @param string $line Schema Line
+	 */
+	protected function parse(string $line): void
+	{
+		Log::debug(sprintf('%s:Parsing ObjectClass [%s]',self::LOGKEY,$line));
+
+		// Init
+		$this->may_attrs = collect();
+		$this->may_force = collect();
+		$this->must_attrs = collect();
+		$this->sup_classes = collect();
+		$this->child_classes = collect();
+
+		parent::parse($line);
+	}
+
+	protected function parse_chunk(array $strings,int &$i): void
+	{
+		switch ($strings[$i]) {
+			case 'NAME':
+				if ($strings[$i+1] != '(') {
+					do {
+						$this->name .= (strlen($this->name) ? ' ' : '').$strings[++$i];
+
+					} while (! preg_match('/\'$/s',$strings[$i]));
+
+				} else {
+					$i++;
+
+					do {
+						$this->name .= (strlen($this->name) ? ' ' : '').$strings[++$i];
+
+					} while (! preg_match('/\'$/s',$strings[$i]));
+
+					do {
+						$i++;
+					} while (! preg_match('/\)+\)?/',$strings[$i]));
+				}
+
+				$this->name = preg_replace("/^\'(.*)\'$/",'$1',$this->name);
+
+				if (static::DEBUG_VERBOSE)
+					Log::debug(sprintf('%s:- Case NAME returned (%s)',self::LOGKEY,$this->name));
+				break;
+
+			case 'SUP':
+				if ($strings[$i+1] != '(') {
+					$this->sup_classes->push(preg_replace("/'/",'',$strings[++$i]));
+
+				} else {
+					$i++;
+
+					do {
+						$i++;
+
+						if ($strings[$i] != '$')
+							$this->sup_classes->push(preg_replace("/'/",'',$strings[$i]));
+
+					} while (! preg_match('/\)+\)?/',$strings[$i+1]));
+				}
+
+				if (static::DEBUG_VERBOSE)
+					Log::debug(sprintf('%s:- Case SUP returned (%s)',self::LOGKEY,$this->sup_classes->join(',')));
+				break;
+
+			case 'ABSTRACT':
+				$this->type = Server::OC_ABSTRACT;
+
+				if (static::DEBUG_VERBOSE)
+					Log::debug(sprintf('%s:- Case ABSTRACT returned (%s)',self::LOGKEY,$this->type));
+				break;
+
+			case 'STRUCTURAL':
+				$this->type = Server::OC_STRUCTURAL;
+
+				if (static::DEBUG_VERBOSE)
+					Log::debug(sprintf('%s:- Case STRUCTURAL returned (%s)',self::LOGKEY,$this->type));
+				break;
+
+			case 'AUXILIARY':
+				$this->type = Server::OC_AUXILIARY;
+
+				if (static::DEBUG_VERBOSE)
+					Log::debug(sprintf('%s:- Case AUXILIARY returned (%s)',self::LOGKEY,$this->type));
+				break;
+
+			case 'MUST':
+				$attrs = collect();
+
+				$i = $this->parseList(++$i,$strings,$attrs);
+
+				if (static::DEBUG_VERBOSE)
+					Log::debug(sprintf('%s:= parseList returned %d (%s)',self::LOGKEY,$i,$attrs->join(',')));
+
+				foreach ($attrs as $string) {
+					$attr = new ObjectClassAttribute($string,$this->name);
+
+					if (config('server')->isForceMay($attr->getName())) {
+						$this->may_force->push($attr);
+						$this->may_attrs->push($attr);
+
+					} else
+						$attr->required = TRUE;
+						$this->must_attrs->push($attr);
+				}
+
+				if (static::DEBUG_VERBOSE)
+					Log::debug(sprintf('%s:- Case MUST returned (%s) (%s)',self::LOGKEY,$this->must_attrs->join(','),$this->may_force->join(',')));
+				break;
+
+			case 'MAY':
+				$attrs = collect();
+
+				$i = $this->parseList(++$i,$strings,$attrs);
+
+				if (static::DEBUG_VERBOSE)
+					Log::debug(sprintf('%s:- parseList returned %d (%s)',self::LOGKEY,$i,$attrs->join(',')));
+
+				foreach ($attrs as $string) {
+					$attr = new ObjectClassAttribute($string,$this->name);
+					$this->may_attrs->push($attr);
+				}
+
+				if (static::DEBUG_VERBOSE)
+					Log::debug(sprintf('%s:- Case MAY returned (%s)',self::LOGKEY,$this->may_attrs->join(',')));
+				break;
+
+			default:
+				parent::parse_chunk($strings,$i);
+		}
 	}
 
 	/**
