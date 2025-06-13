@@ -50,10 +50,6 @@ final class Server
 	public function __get(string $key): mixed
 	{
 		return match($key) {
-			'attributetypes' => $this->attributetypes,
-			'ldapsyntaxes' => $this->ldapsyntaxes,
-			'matchingrules' => $this->matchingrules,
-			'objectclasses' => $this->objectclasses,
 			'config' => config(sprintf('ldap.connections.%s',config('ldap.default'))),
 			'name' => Arr::get($this->config,'name',__('No Server Name Yet')),
 			default => throw new Exception('Unknown key:'.$key),
@@ -298,15 +294,36 @@ final class Server
 	}
 
 	/**
-	 * This function determines if the specified attribute is contained in the force_may list
-	 * as configured in config.php.
+	 * Get an attribute key for an attributetype name
 	 *
-	 * @return boolean True if the specified attribute is configured to be force as a may attribute
-	 * @todo There are 3 isForceMay() functions - we only need one
+	 * @param string $key
+	 * @return int|bool
 	 */
-	public function isForceMay($attr_name): bool
+	public function get_attr_id(string $key): int|bool
 	{
-		return in_array($attr_name,config('pla.force_may',[]));
+		static $attributes = $this->schema('attributetypes');
+
+		$attrid = $attributes->search(fn($item)=>$item->names->contains($key));
+
+		// Second chance search using lowercase items (our Entry attribute keys are lowercase)
+		if ($attrid === FALSE)
+			$attrid = $attributes->search(fn($item)=>$item->names_lc->contains(strtolower($key)));
+
+		return $attrid;
+	}
+
+	/**
+	 * Given an OID, return the ldapsyntax for the OID
+	 *
+	 * @param string $oid
+	 * @return LDAPSyntax|null
+	 * @throws InvalidUsage
+	 */
+	public function get_syntax(string $oid): ?LDAPSyntax
+	{
+		return (($id=$this->schema('ldapsyntaxes')->search(fn($item)=>$item->oid === $oid)) !== FALSE)
+			? $this->ldapsyntaxes[$id]
+			: NULL;
 	}
 
 	/**
@@ -327,177 +344,157 @@ final class Server
 	 * @param string $item Schema Item to Fetch
 	 * @param string|null $key
 	 * @return Collection|LDAPSyntax|Base|NULL
+	 * @throws InvalidUsage
 	 */
 	public function schema(string $item,?string $key=NULL): Collection|LDAPSyntax|Base|NULL
 	{
 		// Ensure our item to fetch is lower case
 		$item = strtolower($item);
-		if ($key)
-			$key = strtolower($key);
 
-		$result = Cache::remember('schema'.$item,config('ldap.cache.time'),function() use ($item) {
-			// First pass if we have already retrieved the schema item
-			switch ($item) {
-				case 'attributetypes':
-				case 'ldapsyntaxes':
-				case 'matchingrules':
-				case 'objectclasses':
-					if ($this->{$item}->count())
-						return $this->{$item};
+		if (! $this->{$item}->count()) {
+			$this->{$item} = Cache::remember('schema.'.$item,config('ldap.cache.time'),function() use ($item) {
+				// Try to get the schema DN from the specified entry.
+				$schema_dn = $this->schemaDN();
+				// @note: 389DS does not return subschemaSubentry unless it is requested
+				$schema = $this->fetch($schema_dn,['*','+','subschemaSubentry']);
 
-					break;
+				// If our schema's null, we didnt find it.
+				if (! $schema)
+					throw new Exception('Couldnt find schema at:'.$schema_dn);
 
-				// This error message is not localized as only developers should ever see it
-				default:
-					throw new InvalidUsage('Invalid request to fetch schema: '.$item);
-			}
+				switch ($item) {
+					case 'attributetypes':
+						Log::debug(sprintf('%s:Attribute Types',self::LOGKEY));
+						// build the array of attribueTypes
+						//$syntaxes = $this->SchemaSyntaxes($dn);
 
-			// Try to get the schema DN from the specified entry.
-			$schema_dn = $this->schemaDN();
-			// @note: 389DS does not return subschemaSubentry unless it is requested
-			$schema = $this->fetch($schema_dn,['*','+','subschemaSubentry']);
+						foreach ($schema->{$item} as $line) {
+							if (is_null($line) || ! strlen($line))
+								continue;
 
-			// If our schema's null, we didnt find it.
-			if (! $schema)
-				throw new Exception('Couldnt find schema at:'.$schema_dn);
+							$o = new AttributeType($line);
+							$this->attributetypes->push($o);
+						}
 
-			switch ($item) {
-				case 'attributetypes':
-					Log::debug(sprintf('%s:Attribute Types',self::LOGKEY));
-					// build the array of attribueTypes
-					//$syntaxes = $this->SchemaSyntaxes($dn);
+						foreach ($this->attributetypes as $o) {
+							// Now go through and reference the parent/child relationships
+							if ($o->sup_attribute) {
+								$attrid = $this->get_attr_id($o->sup_attribute);
 
-					foreach ($schema->{$item} as $line) {
-						if (is_null($line) || ! strlen($line))
-							continue;
+								if (! $this->attributetypes[$attrid]->children->contains($o->oid))
+									$this->attributetypes[$attrid]->addChild($o->oid);
+							}
 
-						$o = new AttributeType($line);
-						$this->attributetypes->put($o->name_lc,$o);
-					}
+							// go through any children and add details if the child doesnt have them (ie, cn inherits name)
+							foreach ($o->children as $child) {
+								$attrid = $this->attributetypes->search(fn($o)=>$o->oid === $child);
 
-					// go back and add data from aliased attributeTypes
-					foreach ($this->attributetypes as $o) {
-						/* foreach of the attribute's aliases, create a new entry in the attrs array
-						 * with its name set to the alias name, and all other data copied.*/
-
-						if ($o->aliases->count()) {
-							Log::debug(sprintf('%s:\ Attribute [%s] has the following aliases [%s]',self::LOGKEY,$o->name,$o->aliases->join(',')));
-
-							foreach ($o->aliases as $alias) {
-								$new_attr = clone $o;
-								$new_attr->setName($alias);
-								$new_attr->addAlias($o->name);
-								$new_attr->removeAlias($alias);
-
-								$this->attributetypes->put(strtolower($alias),$new_attr);
+								/* only overwrite the child's SINGLE-VALUE property if the parent has it set, and the child doesnt
+								 * (note: All LDAP attributes default to multi-value if not explicitly set SINGLE-VALUE) */
+								if (! is_null($o->is_single_value) && is_null($this->attributetypes[$attrid]->is_single_value))
+									$this->attributetypes[$attrid]->setIsSingleValue($o->is_single_value);
 							}
 						}
-					}
 
-					// Now go through and reference the parent/child relationships
-					foreach ($this->attributetypes as $o)
-						if ($o->sup_attribute) {
-							$parent = strtolower($o->sup_attribute);
+						return $this->attributetypes;
 
-							if ($this->attributetypes->has($parent) !== FALSE)
-								$this->attributetypes[$parent]->addChild($o->name);
+					case 'ldapsyntaxes':
+						Log::debug(sprintf('%s:LDAP Syntaxes',self::LOGKEY));
+
+						foreach ($schema->{$item} as $line) {
+							if (is_null($line) || ! strlen($line))
+								continue;
+
+							$o = new LDAPSyntax($line);
+							$this->ldapsyntaxes->push($o);
 						}
 
-					// go through any children and add details if the child doesnt have them (ie, cn inherits name)
-					// @todo This doesnt traverse children properly, so children of children may not get the settings they should
-					foreach ($this->attributetypes as $parent) {
-						foreach ($parent->children as $child) {
-							$child = strtolower($child);
+						return $this->ldapsyntaxes;
 
-							/* only overwrite the child's SINGLE-VALUE property if the parent has it set, and the child doesnt
-							 * (note: All LDAP attributes default to multi-value if not explicitly set SINGLE-VALUE) */
-							if (! is_null($parent->is_single_value) && is_null($this->attributetypes[$child]->is_single_value))
-								$this->attributetypes[$child]->setIsSingleValue($parent->is_single_value);
-						}
-					}
+					case 'matchingrules':
+						Log::debug(sprintf('%s:Matching Rules',self::LOGKEY));
 
-					// Add the used in and required_by values.
-					foreach ($this->schema('objectclasses') as $object_class) {
-						// Add Used In.
-						foreach ($object_class->getAllAttrs()->pluck('name') as $attr_name)
-							if ($this->attributetypes->has(strtolower($attr_name)))
-								$this->attributetypes[strtolower($attr_name)]->addUsedInObjectClass($object_class->name,$object_class->isStructural());
+						foreach ($schema->{$item} as $line) {
+							if (is_null($line) || ! strlen($line))
+								continue;
 
-						// Add Required By.
-						foreach ($object_class->getMustAttrs()->pluck('name') as $attr_name)
-							if ($this->attributetypes->has(strtolower($attr_name)))
-								$this->attributetypes[strtolower($attr_name)]->addRequiredByObjectClass($object_class->name,$object_class->isStructural());
-
-						// Force May
-						foreach ($object_class->may_force as $attr_name)
-							if ($this->attributetypes->has(strtolower($attr_name->name)))
-								$this->attributetypes[strtolower($attr_name->name)]->setForceMay();
-					}
-
-					return $this->attributetypes;
-
-				case 'ldapsyntaxes':
-					Log::debug(sprintf('%s:LDAP Syntaxes',self::LOGKEY));
-
-					foreach ($schema->{$item} as $line) {
-						if (is_null($line) || ! strlen($line))
-							continue;
-
-						$o = new LDAPSyntax($line);
-						$this->ldapsyntaxes->put(strtolower($o->oid),$o);
-					}
-
-					return $this->ldapsyntaxes;
-
-				case 'matchingrules':
-					Log::debug(sprintf('%s:Matching Rules',self::LOGKEY));
-
-					foreach ($schema->{$item} as $line) {
-						if (is_null($line) || ! strlen($line))
-							continue;
-
-						$o = new MatchingRule($line);
-						$this->matchingrules->put($o->name_lc,$o);
-					}
-
-					foreach ($this->schema('attributetypes') as $attr) {
-						$rule_key = strtolower($attr->getEquality());
-
-						if ($this->matchingrules->has($rule_key) !== FALSE)
-							$this->matchingrules[$rule_key]->addUsedByAttr($attr->name);
-					}
-
-					return $this->matchingrules;
-
-				case 'objectclasses':
-					Log::debug(sprintf('%s:Object Classes',self::LOGKEY));
-
-					foreach ($schema->{$item} as $line) {
-						if (is_null($line) || ! strlen($line))
-							continue;
-
-						$o = new ObjectClass($line,$this);
-						$this->objectclasses->put($o->name_lc,$o);
-					}
-
-					// Now go through and reference the parent/child relationships
-					foreach ($this->objectclasses as $o)
-						foreach ($o->sup_classes as $parent) {
-							$parent = strtolower($parent);
-
-							if (! $this->objectclasses->contains($parent))
-								$this->objectclasses[$parent]->addChildObjectClass($o->name);
+							$o = new MatchingRule($line);
+							$this->matchingrules->push($o);
 						}
 
-					return $this->objectclasses;
+						foreach ($this->schema('attributetypes') as $attr) {
+							$rule_id = $this->matchingrules->search(fn($item)=>$item->oid === $attr->equality);
 
-				// Shouldnt get here
-				default:
-					throw new InvalidUsage('Invalid request to fetch schema: '.$item);
-			}
-		});
+							if ($rule_id !== FALSE)
+								$this->matchingrules[$rule_id]->addUsedByAttr($attr->name);
+						}
 
-		return is_null($key) ? $result : $result->get($key);
+						return $this->matchingrules;
+
+					case 'objectclasses':
+						Log::debug(sprintf('%s:Object Classes',self::LOGKEY));
+
+						foreach ($schema->{$item} as $line) {
+							if (is_null($line) || ! strlen($line))
+								continue;
+
+							$o = new ObjectClass($line);
+							$this->objectclasses->push($o);
+						}
+
+						foreach ($this->objectclasses as $o) {
+							// Now go through and reference the parent/child relationships
+							foreach ($o->sup_classes as $sup) {
+								$oc_id = $this->objectclasses->search(fn($item)=>$item->name === $sup);
+
+								if (($oc_id !== FALSE) &&  (! $this->objectclasses[$oc_id]->child_classes->contains($o->name)))
+									$this->objectclasses[$oc_id]->addChildObjectClass($o->name);
+							}
+
+							// Add the used in and required_by values for attributes.
+							foreach ($o->attributes as $attribute) {
+								if (($attrid = $this->schema('attributetypes')->search(fn($item)=>$item->oid === $attribute->oid)) !== FALSE) {
+									// Add Used In.
+									$this->attributetypes[$attrid]->addUsedInObjectClass($o->oid,$o->isStructural());
+
+									// Add Required By.
+									if ($attribute->is_must)
+										$this->attributetypes[$attrid]->addRequiredByObjectClass($o->oid,$o->isStructural());
+								}
+							}
+						}
+
+						// Put the updated attributetypes back in the cache
+						Cache::put('schema.attributetypes',$this->attributetypes,config('ldap.cache.time'));
+
+						return $this->objectclasses;
+
+					// Shouldnt get here
+					default:
+						throw new InvalidUsage('Invalid request to fetch schema: '.$item);
+				}
+			});
+		}
+
+		if (is_null($key))
+			return $this->{$item};
+
+		switch ($item) {
+			case 'attributetypes':
+				$attrid = $this->get_attr_id($key);
+
+				$attr = ($attrid === FALSE)
+					? new AttributeType($key)
+					: clone $this->{$item}->get($attrid);
+
+				$attr->setName($attr->names->get($attr->names_lc->search(strtolower($key))) ?: $key);
+
+				return $attr;
+
+			default:
+				return $this->{$item}->get($key)
+					?: $this->{$item}->first(fn($item)=>$item->name_lc === strtolower($key));
+		}
 	}
 
 	/**
@@ -509,16 +506,5 @@ final class Server
 	public function schemaDN(): string
 	{
 		return Arr::get($this->rootDSE->subschemasubentry,0);
-	}
-
-	/**
-	 * Given an OID, return the ldapsyntax for the OID
-	 *
-	 * @param string $oid
-	 * @return LDAPSyntax|null
-	 */
-	public function schemaSyntaxName(string $oid): ?LDAPSyntax
-	{
-		return $this->schema('ldapsyntaxes',$oid);
 	}
 }

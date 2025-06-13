@@ -70,6 +70,8 @@
 								@endforeach
 
 								@if(! $template)
+									<!-- @todo When we come back from validation the javascript to append a new attribute is not loaded -->
+									<!-- @todo When we render attributes with javascript, the javascript is not loaded -->
 									@include('fragment.dn.add_attr')
 								@endif
 								@break;

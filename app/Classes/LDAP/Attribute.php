@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Schema\AttributeType;
+use App\Exceptions\InvalidUsage;
 use App\Ldap\Entry;
 
 /**
@@ -14,9 +15,6 @@ use App\Ldap\Entry;
  */
 class Attribute implements \Countable, \ArrayAccess
 {
-	// Attribute Name
-	protected string $name;
-
 	// Is this attribute an internal attribute
 	protected ?bool $_is_internal = NULL;
 	protected(set) bool $no_attr_tags = FALSE;
@@ -98,11 +96,11 @@ class Attribute implements \Countable, \ArrayAccess
 	 * @param string $name Name of the attribute
 	 * @param array $values Current Values
 	 * @param array $oc The objectclasses that the DN of this attribute has
+	 * @throws InvalidUsage
 	 */
 	public function __construct(string $dn,string $name,array $values,array $oc=[])
 	{
 		$this->dn = $dn;
-		$this->name = $name;
 		$this->_values = collect($values);
 		$this->_values_old = collect($values);
 
@@ -113,8 +111,12 @@ class Attribute implements \Countable, \ArrayAccess
 
 		// Get the objectclass heirarchy for required attribute determination
 		foreach ($oc as $objectclass) {
-			$this->oc->push($objectclass);
-			$this->oc = $this->oc->merge(config('server')->schema('objectclasses',$objectclass)->getParents()->pluck('name'));
+			$soc = config('server')->schema('objectclasses',$objectclass);
+
+			if ($soc) {
+				$this->oc->push($soc->oid);
+				$this->oc = $this->oc->merge($soc->getParents()->pluck('oid'));
+			}
 		}
 
 		/*
@@ -140,8 +142,6 @@ class Attribute implements \Countable, \ArrayAccess
 	public function __get(string $key): mixed
 	{
 		return match ($key) {
-			// List all the attributes
-			'attributes' => $this->attributes(),
 			// Can this attribute have more values
 			'can_addvalues' => $this->schema && (! $this->schema->is_single_value) && ((! $this->max_values_count) || ($this->values->count() < $this->max_values_count)),
 			// Schema attribute description
@@ -164,7 +164,7 @@ class Attribute implements \Countable, \ArrayAccess
 			// Is this attribute an RDN attribute
 			'is_rdn' => $this->isRDN(),
 			// We prefer the name as per the schema if it exists
-			'name' => $this->schema ? $this->schema->{$key} : $this->{$key},
+			'name' => $this->schema->{$key},
 			// Attribute name in lower case
 			'name_lc' => strtolower($this->name),
 			// Required by Object Classes
@@ -268,9 +268,6 @@ class Attribute implements \Countable, \ArrayAccess
 		if ($this->is_rdn)
 			$result->put(__('rdn'),__('This attribute is required for the RDN'));
 
-		// If this attribute name is an alias for the schema attribute name
-		// @todo
-
 		if ($this->required()->count())
 			$result->put(__('required'),sprintf('%s: %s',__('Required Attribute by ObjectClass(es)'),$this->required()->join(', ')));
 
@@ -302,7 +299,7 @@ class Attribute implements \Countable, \ArrayAccess
 	{
 		return $this->schema->used_in_object_classes
 			->keys()
-			->intersect($this->schema->heirachy($this->oc))
+			->intersect($this->oc)
 			->count() === 0;
 	}
 
@@ -329,6 +326,7 @@ class Attribute implements \Countable, \ArrayAccess
 	 * @param bool $old Use old value
 	 * @param bool $new Enable adding values
 	 * @param bool $updated Has the entry been updated (uses rendering highlights))
+	 * @param string|null $template
 	 * @return View
 	 */
 	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?string $template=NULL): View

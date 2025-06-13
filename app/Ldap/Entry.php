@@ -202,7 +202,7 @@ class Entry extends Model
 		// If the attribute name has tags
 		list($attribute,$tag) = $this->keytag($key);
 
-		if (! config('server')->schema('attributetypes')->has($attribute))
+		if (config('server')->get_attr_id($attribute) === FALSE)
 			throw new AttributeException(sprintf('Schema doesnt have attribute [%s]',$attribute));
 
 		$o = $this->objects->get($attribute) ?: Attribute\Factory::create($this->dn ?: '',$attribute,[]);
@@ -312,7 +312,7 @@ class Entry extends Model
 		$result = collect();
 
 		foreach (($this->getObject('objectclass')?->values ?: []) as $oc)
-			$result = $result->merge(config('server')->schema('objectclasses',$oc)->attributes);
+			$result = $result->merge(config('server')->schema('objectclasses',$oc)->all_attributes);
 
 		return $result;
 	}
@@ -415,9 +415,6 @@ class Entry extends Model
 	 * Return a list of attributes without any values
 	 *
 	 * @return Collection
-	 * @todo Dont show attributes that are not provided by an objectclass, make a new function to show those
-	 *       This is for dynamic list items eg: labeledURI, which are not editable.
-	 *       We can highlight those values that are as a result of a dynamic module
 	 */
 	public function getMissingAttributes(): Collection
 	{
@@ -430,7 +427,7 @@ class Entry extends Model
 		$o = new Attribute\RDN('','dn',['']);
 		// @todo for an existing object, rdnbase would be null, so dynamically get it from the DN.
 		$o->setBase($this->rdnbase);
-		$o->setAttributes($this->getAvailableAttributes()->filter(fn($item)=>$item->required));
+		$o->setAttributes($this->getAvailableAttributes()->filter(fn($item)=>$item->is_must));
 
 		return $o;
 	}

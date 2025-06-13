@@ -8,7 +8,7 @@
 
 					@foreach($o->attrs->map(fn($item)=>['id'=>$item,'value'=>$item]) as $option)
 						@continue(! Arr::get($option,'value'))
-						<option value="{{ Arr::get($option,'id') }}" @selected(Arr::get($option,'id') == old('rdn',$value ?? ''))>{{ Arr::get($option,'value') }}</option>
+						<option value="{{ strtolower(Arr::get($option,'id')) }}" @selected(Arr::get($option,'id') == old('rdn',$value ?? ''))>{{ Arr::get($option,'value') }}</option>
 					@endforeach
 				</select>
 

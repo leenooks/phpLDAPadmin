@@ -35,9 +35,18 @@ class EntryAddRequest extends FormRequest
 			return [];
 
 		$r = request() ?: collect();
+		$rk = array_keys($r->all());
+
 		return config('server')
 			->schema('attributetypes')
-			->intersectByKeys($r->all())
+			->filter(fn($item)=>$item->names_lc->intersect($rk)->count())
+			->transform(function($item) use ($rk) {
+				// Set the attributetype name
+				if (($x=$item->names_lc->intersect($rk))->count() === 1)
+					$item->setName($x->pop());
+
+				return $item;
+			})
 			->map(fn($item)=>$item->validation($r->get('objectclass',[])))
 			->filter()
 			->flatMap(fn($item)=>$item)
