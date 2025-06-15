@@ -53,11 +53,4 @@ abstract class Schema extends Attribute
 			$key,
 			__('No description available, can you help with one?'));
 	}
-
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE): View
-	{
-		// @note Schema attributes cannot be edited
-		return view('components.attribute.internal')
-			->with('o',$this);
-	}
 }

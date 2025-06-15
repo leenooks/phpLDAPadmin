@@ -7,10 +7,9 @@
 	<div class="card-body">
 		<div class="tab-content">
 			@php($up=(session()->pull('updated') ?: collect()))
-			@php($attributes=$o->template($template)?->attributes)
 
-			@foreach($o->getVisibleAttributes()->filter(fn($item)=>$attributes->contains($item)) as $ao)
-				<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :updated="$up->contains($ao->name_lc)"/>
+			@foreach($o->getVisibleAttributes()->filter(fn($item)=>$template->attributes->contains($item->name_lc)) as $ao)
+				<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :template="$template->name" :updated="$up->contains($ao->name_lc)"/>
 			@endforeach
 		</div>
 	</div>

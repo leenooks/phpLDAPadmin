@@ -87,7 +87,7 @@
 								<div class="tab-content">
 									@foreach($o->templates as $template => $name)
 										<div @class(['tab-pane','active'=>$loop->index === 0]) id="template-{{$template}}" role="tabpanel">
-											@include('fragment.template.dn',['template'=>$template])
+											@include('fragment.template.dn',['template'=>$o->template($template)])
 										</div>
 									@endforeach
 

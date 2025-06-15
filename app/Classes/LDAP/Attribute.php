@@ -331,7 +331,7 @@ class Attribute implements \Countable, \ArrayAccess
 	 * @param bool $updated Has the entry been updated (uses rendering highlights))
 	 * @return View
 	 */
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?string $template=NULL): View
 	{
 		if ($this->is_internal)
 			// @note Internal attributes cannot be edited
@@ -352,6 +352,7 @@ class Attribute implements \Countable, \ArrayAccess
 			->with('edit',$edit)
 			->with('old',$old)
 			->with('new',$new)
+			->with('template',$template)
 			->with('updated',$updated);
 	}
 

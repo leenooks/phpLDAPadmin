@@ -14,17 +14,19 @@ class Attribute extends Component
 	public bool $new;
 	public bool $old;
 	public bool $updated;
+	public bool $template;
 
 	/**
 	 * Create a new component instance.
 	 */
-	public function __construct(?LDAPAttribute $o,bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE)
+	public function __construct(?LDAPAttribute $o,bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,string $template=NULL)
 	{
 		$this->o = $o;
 		$this->edit = $edit;
 		$this->old = $old;
 		$this->new = $new;
 		$this->updated = $updated;
+		$this->template = $template;
 	}
 
 	/**
@@ -36,7 +38,7 @@ class Attribute extends Component
 	{
 		return $this->o
 			? $this->o
-				->render(edit: $this->edit,old: $this->old,new: $this->new,updated: $this->updated)
+				->render(edit: $this->edit,old: $this->old,new: $this->new,template: $this->template,updated: $this->updated)
 			: __('Unknown');
 	}
 }

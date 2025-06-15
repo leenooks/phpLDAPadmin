@@ -12,7 +12,7 @@ use App\Ldap\Entry;
  */
 final class Timestamp extends Internal
 {
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?string $template=NULL): View
 	{
 		// @note Internal attributes cannot be edited
 		return view('components.attribute.internal.timestamp')

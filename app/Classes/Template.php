@@ -4,6 +4,7 @@ namespace App\Classes;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Template
 {
@@ -30,6 +31,7 @@ class Template
 	public function __get(string $key): mixed
 	{
 		return match ($key) {
+			'name' => Str::replaceEnd('.json','',$this->file),
 			'attributes' => collect(array_map('strtolower',array_keys(Arr::get($this->template,$key)))),
 			'objectclasses' => collect(array_map('strtolower',Arr::get($this->template,$key))),
 			'enabled' => Arr::get($this->template,$key,FALSE) && (! $this->invalid),

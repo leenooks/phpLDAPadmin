@@ -70,7 +70,7 @@ final class ObjectClass extends Attribute
 			->contains($value);
 	}
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?string $template=NULL): View
 	{
 		return view('components.attribute.objectclass')
 			->with('o',$this)
