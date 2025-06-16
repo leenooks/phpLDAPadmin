@@ -37,11 +37,11 @@ function getNode(item) {
 				$('.main-content').empty().append(e.responseText);
 				break;
 			case 409:	// Not in root
-				location.replace('/#'+item);
-				break;
 			case 419:	// Session Expired
 				location.replace('/#'+item);
-				location.reload();
+				// When the session expires, and we are in the tree, we need to force a reload
+				if (location.pathname === '/')
+					location.reload();
 				break;
 			case 500:
 			case 555:	// Missing Method
