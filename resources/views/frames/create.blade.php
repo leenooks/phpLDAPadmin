@@ -91,7 +91,6 @@
 @endsection
 
 @section('page-scripts')
-
 	<script type="text/javascript">
 		var rdn_attr;
 
