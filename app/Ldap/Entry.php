@@ -130,7 +130,7 @@ class Entry extends Model
 		$o = $this->objects->get($attribute) ?: Factory::create($this->dn ?: '',$attribute,[],Arr::get($this->attributes,'objectclass',[]));
 		$o->values = collect($value);
 
-		$this->objects->put($key,$o);
+		$this->addObjectItem($key,$o);
 
 		return $this;
 	}
@@ -159,8 +159,11 @@ class Entry extends Model
 		if ($this->dn && (! in_array(strtolower($this->dn),['cn=subschema']))) {
 			$this->templates = $this->templates
 				->filter(fn($item)=>$item->enabled
-					&& (! count($item->objectclasses->diff(array_map('strtolower',Arr::get($this->attributes,'objectclass'))))))
-				->sortBy(fn($item)=>$item);
+					&& (! $item->objectclasses
+						->map('strtolower')
+						->diff(array_map('strtolower',Arr::get($this->attributes,'objectclass')))
+						->count()))
+				->sortBy(fn($item)=>$item->title);
 		}
 
 		return $this;
@@ -208,7 +211,19 @@ class Entry extends Model
 		$o = $this->objects->get($attribute) ?: Attribute\Factory::create($this->dn ?: '',$attribute,[]);
 		$o->addValue($tag,[$value]);
 
-		$this->objects->put($attribute,$o);
+		$this->addObjectItem($attribute,$o);
+	}
+
+	/**
+	 * Add a new object item directly
+	 *
+	 * @param string $name
+	 * @param Attribute $o
+	 * @return void
+	 */
+	public function addObjectItem(string $name,Attribute $o): void
+	{
+		$this->objects->put($name,$o);
 	}
 
 	/**

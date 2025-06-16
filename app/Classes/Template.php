@@ -31,11 +31,12 @@ class Template
 	public function __get(string $key): mixed
 	{
 		return match ($key) {
-			'name' => Str::replaceEnd('.json','',$this->file),
-			'attributes' => collect(array_map('strtolower',array_keys(Arr::get($this->template,$key)))),
-			'objectclasses' => collect(array_map('strtolower',Arr::get($this->template,$key))),
+			'attributes' => collect(Arr::get($this->template,$key))->keys(),
 			'enabled' => Arr::get($this->template,$key,FALSE) && (! $this->invalid),
 			'icon','regexp','title' => Arr::get($this->template,$key),
+			'name' => Str::replaceEnd('.json','',$this->file),
+			'objectclasses' => collect(Arr::get($this->template,$key)),
+			'order' => collect(Arr::get($this->template,'attributes'))->map(fn($item)=>$item['order']),
 
 			default => throw new \Exception('Unknown key: '.$key),
 		};

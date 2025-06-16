@@ -58,8 +58,13 @@ class HomeController extends Controller
 			$template = $o->template($request->validated('template'));
 			$o->objectclass = [Entry::TAG_NOTAG=>$template->objectclasses->toArray()];
 
-			foreach ($o->getAvailableAttributes()->filter(fn($item)=>$item->names_lc->intersect($template->attributes)->count()) as $ao)
-				$o->{$ao->name} = [Entry::TAG_NOTAG=>''];
+			foreach ($o->getAvailableAttributes()
+				 ->filter(fn($item)=>$item->names_lc->intersect($template->attributes->map('strtolower'))->count())
+				 ->sortBy(fn($item)=>Arr::get($template->order,$item->name)) as $ao)
+			{
+				$o->addObjectItem($ao->name,
+					Factory::create(dn: '',attribute: $ao->name,values: [Entry::TAG_NOTAG=>''],oc: $o->objectclass));
+			}
 		}
 
 		$step = $request->step ? $request->step+1 : old('step');
