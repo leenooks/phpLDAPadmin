@@ -45,6 +45,17 @@ return [
 
 	/*
 	 |--------------------------------------------------------------------------
+	 | Base DNs
+	 |--------------------------------------------------------------------------
+	 |
+	 | Normally PLA will get the base DNs from the rootDSE's namingcontexts
+	 | entry. Instead of using that, you can define your own base DNs to use.
+	 |
+	 */
+	'base_dns' => ($x=env('LDAP_BASE_DN', NULL)) ? explode(',',$x) : NULL,
+
+	/*
+	 |--------------------------------------------------------------------------
 	 | Custom Date Format
 	 |--------------------------------------------------------------------------
 	 |

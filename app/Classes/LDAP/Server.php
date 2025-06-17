@@ -69,7 +69,7 @@ final class Server
 	public static function baseDNs(bool $objects=TRUE): Collection
 	{
 		try {
-			$rootdse = self::rootDSE();
+			$namingcontexts = collect(config('pla.base_dns') ?: self::rootDSE()?->namingcontexts);
 
 		/**
 		 * LDAP Error Codes:
@@ -175,13 +175,13 @@ final class Server
 		}
 
 		if (! $objects)
-			return collect($rootdse->namingcontexts ?: []);
+			return $namingcontexts;
 
-		return Cache::remember('basedns'.Session::id(),config('ldap.cache.time'),function() use ($rootdse) {
+		return Cache::remember('basedns'.Session::id(),config('ldap.cache.time'),function() use ($namingcontexts) {
 			$result = collect();
 
 			// @note: Incase our rootDSE didnt return a namingcontext, we'll have no base DNs
-			foreach (($rootdse->namingcontexts ?: []) as $dn)
+			foreach ($namingcontexts as $dn)
 				$result->push(self::get($dn)->read()->find($dn));
 
 			return $result->filter()->sort(fn($item)=>$item->sort_key);
@@ -298,6 +298,7 @@ final class Server
 	 *
 	 * @param string $key
 	 * @return int|bool
+	 * @throws InvalidUsage
 	 */
 	public function get_attr_id(string $key): int|bool
 	{
