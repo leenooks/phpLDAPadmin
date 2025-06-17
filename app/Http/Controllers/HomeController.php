@@ -26,6 +26,8 @@ use App\Ldap\Entry;
 
 class HomeController extends Controller
 {
+	private const LOGKEY = 'CHc';
+
 	/**
 	 * Create a new object in the LDAP server
 	 *

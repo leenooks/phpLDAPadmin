@@ -12,6 +12,8 @@ use App\Classes\LDAP\Server;
 
 class AjaxController extends Controller
 {
+	private const LOGKEY = 'CAc';
+
 	/**
 	 * Get the LDAP server BASE DNs
 	 *
@@ -42,7 +44,7 @@ class AjaxController extends Controller
 		if (str_starts_with($dn,'*') && ($x=strpos($dn,'|')))
 			$dn = substr($dn,$x+1);
 
-		Log::debug(sprintf('%s: Query [%s]',__METHOD__,$dn));
+		Log::debug(sprintf('%s:Query [%s]',self::LOGKEY,$dn));
 
 		return (config('server'))
 			->children($dn)

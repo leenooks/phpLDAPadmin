@@ -10,10 +10,12 @@ use Illuminate\Support\Facades\Log;
 
 class AcceptLanguage
 {
+	private const LOGKEY = 'MAL';
+
 	public function handle(Request $request,Closure $next): mixed
 	{
 		if ($locale=$this->parseHttpLocale($request)) {
-			Log::debug(sprintf('Accept Language changed from [%s] to [%s] from Browser (%s)',app()->getLocale(),$locale,$request->header('Accept-Language')));
+			Log::debug(sprintf('%s:Accept Language changed from [%s] to [%s] from Browser (%s)',self::LOGKEY,app()->getLocale(),$locale,$request->header('Accept-Language')));
 
 			app()->setLocale($locale);
 		}
