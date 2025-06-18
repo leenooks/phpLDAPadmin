@@ -6,6 +6,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 use App\Classes\LDAP\Attribute as LDAPAttribute;
+use App\Classes\Template;
 
 class Attribute extends Component
 {
@@ -14,12 +15,12 @@ class Attribute extends Component
 	public bool $new;
 	public bool $old;
 	public bool $updated;
-	public bool $template;
+	public ?Template $template;
 
 	/**
 	 * Create a new component instance.
 	 */
-	public function __construct(?LDAPAttribute $o,bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,string $template=NULL)
+	public function __construct(?LDAPAttribute $o,bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL)
 	{
 		$this->o = $o;
 		$this->edit = $edit;
@@ -38,7 +39,12 @@ class Attribute extends Component
 	{
 		return $this->o
 			? $this->o
-				->render(edit: $this->edit,old: $this->old,new: $this->new,template: $this->template,updated: $this->updated)
+				->render(
+					edit: $this->edit,
+					old: $this->old,
+					new: $this->new,
+					updated: $this->updated,
+					template: $this->template)
 			: __('Unknown');
 	}
 }

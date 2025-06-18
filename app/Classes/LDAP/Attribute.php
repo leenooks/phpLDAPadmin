@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Schema\AttributeType;
+use App\Classes\Template;
 use App\Exceptions\InvalidUsage;
 use App\Ldap\Entry;
 
@@ -326,10 +327,10 @@ class Attribute implements \Countable, \ArrayAccess
 	 * @param bool $old Use old value
 	 * @param bool $new Enable adding values
 	 * @param bool $updated Has the entry been updated (uses rendering highlights))
-	 * @param string|null $template
+	 * @param Template|null $template
 	 * @return View
 	 */
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?string $template=NULL): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
 		if ($this->is_internal)
 			// @note Internal attributes cannot be edited

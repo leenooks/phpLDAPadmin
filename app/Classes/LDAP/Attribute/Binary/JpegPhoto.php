@@ -5,7 +5,7 @@ namespace App\Classes\LDAP\Attribute\Binary;
 use Illuminate\Contracts\View\View;
 
 use App\Classes\LDAP\Attribute\Binary;
-use App\Ldap\Entry;
+use App\Classes\Template;
 use App\Traits\MD5Updates;
 
 /**
@@ -15,7 +15,7 @@ final class JpegPhoto extends Binary
 {
 	use MD5Updates;
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?string $template=NULL): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
 		return view('components.attribute.binary.jpegphoto')
 			->with('o',$this)

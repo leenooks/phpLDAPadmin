@@ -6,7 +6,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Attribute;
-use App\Ldap\Entry;
+use App\Classes\Template;
 
 /**
  * Represents the RDN for an Entry
@@ -35,7 +35,7 @@ final class RDN extends Attribute
 		]);
 	}
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?string $template=NULL): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
 		return view('components.attribute.rdn')
 			->with('o',$this);

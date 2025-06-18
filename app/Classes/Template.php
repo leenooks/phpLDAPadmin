@@ -20,6 +20,8 @@ class Template
 		$this->file = $file;
 
 		try {
+			// @todo Load in the proper attribute objects and objectclass objects
+			// @todo Make sure we have a structural objectclass, or make the template invalid
 			$this->template = json_decode($td->get($file),null,512,JSON_OBJECT_AS_ARRAY|JSON_THROW_ON_ERROR);
 
 		} catch (\JsonException $e) {
@@ -45,10 +47,5 @@ class Template
 	public function __isset(string $key): bool
 	{
 		return array_key_exists($key,$this->template);
-	}
-
-	public function __toString(): string
-	{
-		return $this->invalid ? '' : Arr::get($this->template,'title','No Template Name');
 	}
 }

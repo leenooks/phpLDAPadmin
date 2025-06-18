@@ -5,7 +5,7 @@ namespace App\Classes\LDAP\Attribute;
 use Illuminate\Contracts\View\View;
 
 use App\Classes\LDAP\Attribute;
-use App\Ldap\Entry;
+use App\Classes\Template;
 use App\Traits\MD5Updates;
 
 /**
@@ -17,7 +17,7 @@ final class KrbPrincipalKey extends Attribute
 
 	protected(set) bool $no_attr_tags = TRUE;
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?string $template=NULL): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
 		return view('components.attribute.krbprincipalkey')
 			->with('o',$this)

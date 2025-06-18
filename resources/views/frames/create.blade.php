@@ -66,7 +66,7 @@
 								<x-attribute-type :o="$o->getObject('rdn')" :edit="TRUE" :new="FALSE" :updated="FALSE"/>
 
 								@foreach($o->getVisibleAttributes() as $ao)
-									<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :updated="FALSE"/>
+									<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :template="$template" :updated="FALSE"/>
 								@endforeach
 
 								@if(! $template)

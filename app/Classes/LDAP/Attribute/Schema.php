@@ -2,12 +2,10 @@
 
 namespace App\Classes\LDAP\Attribute;
 
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
 use App\Classes\LDAP\Attribute;
-use App\Ldap\Entry;
 
 /**
  * Represents an attribute whose values are schema related

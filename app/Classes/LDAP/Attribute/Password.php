@@ -7,7 +7,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Attribute;
-use App\Ldap\Entry;
+use App\Classes\Template;
 use App\Traits\MD5Updates;
 
 /**
@@ -80,7 +80,7 @@ final class Password extends Attribute
 		return ($helpers=static::helpers())->has($id) ? new ($helpers->get($id)) : NULL;
 	}
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?string $template=NULL): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
 		return view('components.attribute.password')
 			->with('o',$this)

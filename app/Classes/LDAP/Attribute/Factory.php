@@ -3,7 +3,6 @@
 namespace App\Classes\LDAP\Attribute;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
 
 use App\Classes\LDAP\Attribute;
 

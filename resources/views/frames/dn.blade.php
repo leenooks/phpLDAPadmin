@@ -75,8 +75,8 @@
 								<div class="d-flex justify-content-center">
 									<div role="group" class="btn-group btn-group-sm nav pb-3">
 										<!-- If we have templates that cover this entry -->
-										@foreach($o->templates as $template => $name)
-											<span data-bs-toggle="tab" href="#template-{{$template}}" @class(['btn','btn-outline-focus','active'=>$loop->index === 0])><i class="fa fa-fw pe-2 {{ $o->template($template)->icon }}"></i> {{ $name }}</span>
+										@foreach($o->templates as $template)
+											<span data-bs-toggle="tab" href="#template-{{ $template->name }}" @class(['btn','btn-outline-focus','active'=>$loop->index === 0])><i class="fa fa-fw pe-2 {{ $template->icon }}"></i> {{ $template->title }}</span>
 										@endforeach
 										@if($o->templates->count())
 											<span data-bs-toggle="tab" href="#template-default" @class(['btn','btn-outline-focus','p-1','active'=>(! $o->templates->count())])>{{ __('LDAP Entry') }}</span>
@@ -85,9 +85,9 @@
 								</div>
 
 								<div class="tab-content">
-									@foreach($o->templates as $template => $name)
-										<div @class(['tab-pane','active'=>$loop->index === 0]) id="template-{{$template}}" role="tabpanel">
-											@include('fragment.template.dn',['template'=>$o->template($template)])
+									@foreach($o->templates as $template)
+										<div @class(['tab-pane','active'=>$loop->index === 0]) id="template-{{ $template->name }}" role="tabpanel">
+											@include('fragment.template.dn',['template'=>$template])
 										</div>
 									@endforeach
 

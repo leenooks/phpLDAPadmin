@@ -6,7 +6,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Attribute;
-use App\Ldap\Entry;
+use App\Classes\Template;
 
 /**
  * Represents an ObjectClass Attribute
@@ -70,7 +70,7 @@ final class ObjectClass extends Attribute
 			->contains($value);
 	}
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?string $template=NULL): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
 		return view('components.attribute.objectclass')
 			->with('o',$this)

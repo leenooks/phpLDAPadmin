@@ -6,7 +6,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Attribute;
-use App\Ldap\Entry;
+use App\Classes\Template;
 
 /**
  * Represents an attribute whose value is a Kerberos Ticket Flag
@@ -50,7 +50,7 @@ final class KrbTicketFlags extends Attribute
 		return $helpers;
 	}
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?string $template=NULL): View
+	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
 		return view('components.attribute.krbticketflags')
 			->with('o',$this)
