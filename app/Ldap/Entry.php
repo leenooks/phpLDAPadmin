@@ -130,7 +130,7 @@ class Entry extends Model
 		$o = $this->objects->get($attribute) ?: Factory::create($this->dn ?: '',$attribute,[],Arr::get($this->attributes,'objectclass',[]));
 		$o->values = collect($value);
 
-		$this->addObjectItem($key,$o);
+		$this->objects->put($key,$o);
 
 		return $this;
 	}
@@ -211,19 +211,7 @@ class Entry extends Model
 		$o = $this->objects->get($attribute) ?: Attribute\Factory::create($this->dn ?: '',$attribute,[]);
 		$o->addValue($tag,[$value]);
 
-		$this->addObjectItem($attribute,$o);
-	}
-
-	/**
-	 * Add a new object item directly
-	 *
-	 * @param string $name
-	 * @param Attribute $o
-	 * @return void
-	 */
-	public function addObjectItem(string $name,Attribute $o): void
-	{
-		$this->objects->put($name,$o);
+		$this->objects->put($key,$o);
 	}
 
 	/**
