@@ -169,6 +169,9 @@
 			$('button[id^="link-"]').on('click',function(item) {
 				var content;
 
+				// Remove our fancy-tree highlight, since we are rendering the frame
+				$('.fancytree-node.fancytree-active').removeClass('fancytree-active');
+
 				$.ajax({
 					url: $(this).data('link'),
 					method: 'GET',
