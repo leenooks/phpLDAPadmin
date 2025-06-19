@@ -29,7 +29,7 @@ class AjaxController extends Controller
 				'lazy'=>TRUE,
 				'icon'=>'fa-fw fas fa-sitemap',
 				'tooltip'=>$item->getDn(),
-			]);
+			])->values();
 	}
 
 	/**
