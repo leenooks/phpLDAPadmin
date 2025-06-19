@@ -3,7 +3,7 @@ run-name: ${{ gitea.actor }} Building Docker Image 🐳
 on: [push]
 env:
   DOCKER_HOST: tcp://127.0.0.1:2375
-  ASSETS: 3fcb8707
+  ASSETS: 2d732e5
 
 jobs:
   test:
