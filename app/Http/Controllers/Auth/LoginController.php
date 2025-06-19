@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
+use App\Exceptions\InvalidUsage;
 use App\Http\Controllers\Controller;
+use App\Ldap\Entry;
 
 class LoginController extends Controller
 {
@@ -49,6 +51,30 @@ class LoginController extends Controller
 			login_attr_name() => $request->get(login_attr_name()),
 			'password' => $request->get('password'),
 		];
+	}
+
+	/**
+	 * When attempt to login
+	 *
+	 * @param Request $request
+	 * @return void
+	 * @throws InvalidUsage
+	 */
+	public function attemptLogin(Request $request)
+	{
+		$attempt = $this->guard()->attempt(
+			$this->credentials($request), $request->boolean('remember')
+		);
+
+		// If the login failed, and PLA is set to use DN login, check if the entry exists.
+		// If the entry doesnt exist, it might be the root DN, which cannot be used to login
+		if ((! $attempt) && $request->dn && config('pla.login.alert_rootdn',TRUE)) {
+			$dn = config('server')->fetch($request->dn);
+			$o = new Entry;
+
+			if (! $dn && $o->getConnection()->getLdapConnection()->errNo() === 32)
+				abort(501,'Authentication set to DN, but the DN doesnt exist');
+		}
 	}
 
 	/**
