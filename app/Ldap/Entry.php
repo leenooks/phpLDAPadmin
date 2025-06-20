@@ -53,7 +53,10 @@ class Entry extends Model
 			$template_dir = Storage::disk(config('pla.template.dir'));
 			$templates = collect();
 
-			foreach (array_filter($template_dir->files(),fn($item)=>Str::endsWith($item,'.json')) as $file) {
+			foreach (array_filter($template_dir->files('.',TRUE),fn($item)=>Str::endsWith($item,'.json')) as $file) {
+				if (config('pla.template.exclude_system',FALSE) && Str::doesntContain($file,'/'))
+					continue;
+
 				$to = new Template($file);
 
 				if ($to->invalid) {
