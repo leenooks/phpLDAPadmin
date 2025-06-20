@@ -17,8 +17,8 @@ class EntryAddRequest extends FormRequest
 	public function messages(): array
 	{
 		return [
-			'rdn' => __('RDN is required.'),
-			'rdn_value' => __('RDN value is required.'),
+			'_rdn' => __('RDN is required.'),
+			'_rdn_value' => __('RDN value is required.'),
 		];
 	}
 
@@ -51,7 +51,7 @@ class EntryAddRequest extends FormRequest
 			->filter()
 			->flatMap(fn($item)=>$item)
 			->merge([
-				'key' => [
+				'_key' => [
 					'required',
 					new DNExists,
 					function (string $attribute,mixed $value,\Closure $fail) {
@@ -66,9 +66,9 @@ class EntryAddRequest extends FormRequest
 						}
 					},
 				],
-				'rdn' => 'required_if:step,2|string|min:1',
-				'rdn_value' => 'required_if:step,2|string|min:1',
-				'step' => 'int|min:1|max:2',
+				'_rdn' => 'required_if:_step,2|string|min:1',
+				'_rdn_value' => 'required_if:_step,2|string|min:1',
+				'_step' => 'int|min:1|max:2',
 				'objectclass'=>[
 					'required',
 					'array',
@@ -81,7 +81,7 @@ class EntryAddRequest extends FormRequest
 
 						// If this is step 1 and there is no objectclass, and no template, then fail
 						if ((! $oc->count())
-							&& (request()->post('step') == 1)
+							&& (request()->post('_step') == 1)
 							&& (! request()->post('template')))
 						{
 							$fail(__('Select an objectclass or a template'));
@@ -101,7 +101,7 @@ class EntryAddRequest extends FormRequest
 
 						// If this is step 1 and there is no objectclass, and no template, then fail
 						if ((! collect($value)->filter()->count())
-							&& (request()->post('step') == 1)
+							&& (request()->post('_step') == 1)
 							&& (! $oc->count()))
 						{
 							$fail(__('Select an objectclass or a template'));

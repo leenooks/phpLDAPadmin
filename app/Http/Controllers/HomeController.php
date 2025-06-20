@@ -28,6 +28,8 @@ class HomeController extends Controller
 {
 	private const LOGKEY = 'CHc';
 
+	private const INTERNAL_POST = ['_key','_rdn','_rdn_value','_step','_template','_token','_userpassword_hash'];
+
 	/**
 	 * Create a new object in the LDAP server
 	 *
@@ -37,7 +39,7 @@ class HomeController extends Controller
 	 */
 	public function entry_add(EntryAddRequest $request): \Illuminate\View\View
 	{
-		if (! old('step',$request->validated('step')))
+		if (! old('_step',$request->validated('_step')))
 			abort(404);
 
 		$key = $this->request_key($request,collect(old()));
@@ -46,7 +48,7 @@ class HomeController extends Controller
 		$o = new Entry;
 		$o->setRDNBase($key['dn']);
 
-		foreach (collect(old())->except(['_token','key','step','rdn','rdn_value','_template','userpassword_hash']) as $old => $value)
+		foreach (collect(old())->except(self::INTERNAL_POST) as $old => $value)
 			$o->{$old} = array_filter($value);
 
 		if (old('_template',$request->validated('template'))) {
@@ -69,7 +71,7 @@ class HomeController extends Controller
 				$o->{$ao->name} = [Entry::TAG_NOTAG=>''];
 		}
 
-		$step = $request->step ? $request->step+1 : old('step');
+		$step = $request->get('_step') ? $request->get('_step')+1 : old('_step');
 
 		return view('frame')
 			->with('subframe','create')
@@ -113,12 +115,12 @@ class HomeController extends Controller
 	{
 		$key = $this->request_key($request,collect(old()));
 
-		$dn = sprintf('%s=%s,%s',$request->rdn,$request->rdn_value,$key['dn']);
+		$dn = sprintf('%s=%s,%s',$request->get('_rdn'),$request->get('_rdn_value'),$key['dn']);
 
 		$o = new Entry;
 		$o->setDn($dn);
 
-		foreach ($request->except(['_token','key','step','rdn','rdn_value','_template','userpassword_hash']) as $key => $value)
+		foreach ($request->except(self::INTERNAL_POST) as $key => $value)
 			$o->{$key} = array_filter($value);
 
 		try {
@@ -214,7 +216,7 @@ class HomeController extends Controller
 	 */
 	public function entry_objectclass_add(Request $request): Collection
 	{
-		$dn = $request->key ? Crypt::decryptString($request->dn) : '';
+		$dn = $request->get('_key') ? Crypt::decryptString($request->dn) : '';
 		$oc = Factory::create($dn,'objectclass',$request->oc);
 
 		$ocs = $oc
@@ -269,7 +271,7 @@ class HomeController extends Controller
 
 		$o = config('server')->fetch($dn);
 
-		foreach ($request->except(['_token','dn','userpassword_hash','userpassword']) as $key => $value)
+		foreach ($request->except(['_token','dn','_userpassword_hash','userpassword']) as $key => $value)
 			$o->{$key} = array_filter($value,fn($item)=>! is_null($item));
 
 		// @todo Need to handle incoming attributes that were modified by MD5Updates Trait (eg: jpegphoto)
@@ -286,7 +288,7 @@ class HomeController extends Controller
 				}
 
 				if ($value) {
-					$type = Arr::get($request->userpassword_hash,$dotkey);
+					$type = Arr::get($request->get('_userpassword_hash'),$dotkey);
 					$passwords[$dotkey] = Password::hash_id($type)
 						->encode($value);
 				}
@@ -393,7 +395,7 @@ class HomeController extends Controller
 			// @todo Need to handle if DN is null, for example if the user's session expired and the ACLs dont let them retrieve $key['dn']
 			$o = config('server')->fetch($key['dn']);
 
-			foreach (collect(old())->except(['key','dn','step','_token','userpassword_hash','rdn','rdn_value']) as $attr => $value)
+			foreach (collect(old())->except(array_merge(self::INTERNAL_POST,['dn'])) as $attr => $value)
 				$o->{$attr} = $value;
 		}
 
@@ -481,8 +483,8 @@ class HomeController extends Controller
 		// Setup
 		$cmd = NULL;
 		$dn = NULL;
-		$key = $request->get('key',old('key'))
-			? Crypt::decryptString($request->get('key',old('key')))
+		$key = $request->get('_key',old('_key'))
+			? Crypt::decryptString($request->get('_key',old('_key')))
 			: NULL;
 
 		// Determine if our key has a command
@@ -494,9 +496,9 @@ class HomeController extends Controller
 				$dn = ($m[2] !== '_NOP') ? $m[2] : NULL;
 			}
 
-		} elseif (old('dn',$request->get('key'))) {
+		} elseif (old('dn',$request->get('_key'))) {
 			$cmd = 'dn';
-			$dn = Crypt::decryptString(old('dn',$request->get('key')));
+			$dn = Crypt::decryptString(old('dn',$request->get('_key')));
 		}
 
 		return ['cmd'=>$cmd,'dn'=>$dn];
@@ -513,12 +515,12 @@ class HomeController extends Controller
 	public function schema_frame(Request $request): \Illuminate\View\View
 	{
 		// If an invalid key, we'll 404
-		if ($request->type && $request->key && (! config('server')->schema($request->type)->has($request->key)))
+		if ($request->type && $request->get('_key') && (! config('server')->schema($request->type)->has($request->get('_key'))))
 			abort(404);
 
 		return view('frames.schema')
 			->with('type',$request->type)
-			->with('key',$request->key);
+			->with('key',$request->get('_key'));
 	}
 
 	/**

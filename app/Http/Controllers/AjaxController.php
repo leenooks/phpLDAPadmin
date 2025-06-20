@@ -38,7 +38,7 @@ class AjaxController extends Controller
 	 */
 	public function children(Request $request): Collection
 	{
-		$dn = Crypt::decryptString($request->query('key'));
+		$dn = Crypt::decryptString($request->query('_key'));
 
 		// Sometimes our key has a command, so we'll ignore it
 		if (str_starts_with($dn,'*') && ($x=strpos($dn,'|')))

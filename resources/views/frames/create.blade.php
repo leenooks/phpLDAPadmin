@@ -24,8 +24,8 @@
 					<form id="dn-create" method="POST" class="needs-validation" action="{{ url((int)$step === 2 ? 'entry/create' : 'entry/add') }}" enctype="multipart/form-data" novalidate>
 						@csrf
 
-						<input type="hidden" name="key" value="{{ Crypt::encryptString('*create|'.$container) }}">
-						<input type="hidden" name="step" value="{{ $step }}">
+						<input type="hidden" name="_key" value="{{ Crypt::encryptString('*create|'.$container) }}">
+						<input type="hidden" name="_step" value="{{ $step }}">
 
 						@switch($step)
 							@case(1)

@@ -15,7 +15,7 @@ function getNode(item) {
 	$.ajax({
 		url: '/frame',
 		method: 'POST',
-		data: { key: item },
+		data: { _key: item },
 		dataType: 'html',
 		beforeSend: function() {
 			content = $('.main-content')
@@ -96,7 +96,7 @@ $(document).ready(function() {
 		lazyLoad: function(event,data) {
 			data.result = {
 				url: '/ajax/children',
-				data: {key: data.node.data.item,depth: 1}
+				data: {_key: data.node.data.item,depth: 1}
 			};
 
 			expandChildren(data.tree.rootNode);

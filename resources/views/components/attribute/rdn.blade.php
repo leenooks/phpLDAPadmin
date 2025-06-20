@@ -3,24 +3,24 @@
 	@foreach(($o->values->count() ? $o->values : [NULL]) as $value)
 		@if($edit)
 			<div class="input-group has-validation mb-3">
-				<select class="form-select @error('rdn')is-invalid @enderror" id="rdn" name="rdn">
+				<select @class(['form-select','is-invalid'=>$errors->get('_rdn')]) id="rdn" name="_rdn">
 					<option value=""></option>
 
 					@foreach($o->attrs->map(fn($item)=>['id'=>$item,'value'=>$item]) as $option)
 						@continue(! Arr::get($option,'value'))
-						<option value="{{ strtolower(Arr::get($option,'id')) }}" @selected(Arr::get($option,'id') == old('rdn',$value ?? ''))>{{ Arr::get($option,'value') }}</option>
+						<option value="{{ strtolower(Arr::get($option,'id')) }}" @selected(Arr::get($option,'id') == old('_rdn',$value ?? ''))>{{ Arr::get($option,'value') }}</option>
 					@endforeach
 				</select>
 
 				<span class="input-group-text">=</span>
-				<input type="text" @class(['form-control','is-invalid'=>$errors->get('rdn_value')]) id="rdn_value" name="rdn_value" value="{{ old('rdn_value') }}" placeholder="rdn">
+				<input type="text" @class(['form-control','is-invalid'=>$errors->get('_rdn_value')]) id="rdn_value" name="_rdn_value" value="{{ old('_rdn_value') }}" placeholder="rdn">
 				<label class="input-group-text" for="inputGroupSelect02">,{{ $o->base }}</label>
 
 				<div class="invalid-feedback pb-2">
-					@error('rdn')
+					@error('_rdn')
 						{{ $message }}
 					@enderror
-					@error('rdn_value')
+					@error('_rdn_value')
 						{{ $message }}
 					@enderror
 				</div>

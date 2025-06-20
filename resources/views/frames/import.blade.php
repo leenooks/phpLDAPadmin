@@ -15,7 +15,7 @@
 			<div class="main-card mb-3 card">
 				<form id="import-form" action="{{ url('import/process/ldif') }}" method="POST" enctype="multipart/form-data">
 					@csrf
-					<input type="hidden" name="key" value="{{ Crypt::encryptString('*import|_NOP') }}">
+					<input type="hidden" name="_key" value="{{ Crypt::encryptString('*import|_NOP') }}">
 
 					<div class="card-header">
 						@lang('LDIF Import')

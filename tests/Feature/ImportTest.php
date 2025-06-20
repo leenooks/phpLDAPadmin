@@ -34,7 +34,7 @@ class ImportTest extends TestCase
 			->from('/import')
 			->post('/import/process/ldif',[
 				'_token' => csrf_token(),
-				'key'=>Crypt::encryptString('*import|_NOP'),
+				'_key'=>Crypt::encryptString('*import|_NOP'),
 				'file' => $file,
 			]);
 
