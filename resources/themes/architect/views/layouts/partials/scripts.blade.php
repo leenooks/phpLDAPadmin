@@ -18,3 +18,8 @@
 	<!-- Any Custom JS -->
 	<script src="{{ asset('js/custom.js') }}"></script>
 @endif
+
+@if(file_exists('js/template.js'))
+	<!-- Template Engine JS -->
+	<script src="{{ asset('js/template.js') }}"></script>
+@endif

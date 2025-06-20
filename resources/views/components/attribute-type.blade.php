@@ -6,7 +6,19 @@
 			<div class="col-12 bg-light text-dark p-2 rounded-2">
 				<span class="d-flex justify-content-between">
 					<span style="width: 20em;">
-						<strong class="align-middle"><abbr title="{{ $o->description }}">{{ $o->name }}</abbr></strong>
+						<strong class="align-middle"><abbr title="{{ (($x=$template?->attributeTitle($o->name)) ? $o->name.': ' : '').$o->description }}">{{ $x ?: $o->name }}</abbr></strong>
+						@if($new)
+							@if($template?->attributeReadOnly($o->name_lc))
+								<sup data-bs-toggle="tooltip" title="@lang('Input disabled by template')"><i class="fas fa-ban"></i></sup>
+							@endif
+							@if($template?->onChangeAttribute($o->name_lc))
+								<sup data-bs-toggle="tooltip" title="@lang('Value triggers an update to another attribute by template')"><i class="fas fa-keyboard"></i></sup>
+							@endif
+							@if ($template?->onChangeTarget($o->name_lc))
+								<sup data-bs-toggle="tooltip" title="@lang('Value calculated by template')"><i class="fas fa-wand-magic-sparkles"></i></sup>
+							@endif
+						@endif
+
 						@if($o->hints->count())
 							<sup>
 								[
@@ -47,7 +59,7 @@
 			</div>
 		</div>
 
-		<x-attribute :o="$o" :edit="$edit" :new="$new" :updated="$updated"/>
+		<x-attribute :o="$o" :edit="(! $template?->attributeReadOnly($o->name)) && $edit" :new="$new" :updated="$updated"/>
 	</div>
 </div>
 

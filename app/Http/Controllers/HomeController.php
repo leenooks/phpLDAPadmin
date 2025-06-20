@@ -46,18 +46,12 @@ class HomeController extends Controller
 		$o = new Entry;
 		$o->setRDNBase($key['dn']);
 
-		foreach (collect(old())->except(['_token','key','step','rdn','rdn_value','userpassword_hash']) as $old => $value)
+		foreach (collect(old())->except(['_token','key','step','rdn','rdn_value','_template','userpassword_hash']) as $old => $value)
 			$o->{$old} = array_filter($value);
 
-		if (count($x=collect(old('objectclass',$request->validated('objectclass')))->dot()->filter())) {
-			$o->objectclass = Arr::undot($x);
+		if (old('_template',$request->validated('template'))) {
+			$template = $o->template(old('_template',$request->validated('template')));
 
-			// Also add in our required attributes
-			foreach ($o->getAvailableAttributes()->filter(fn($item)=>$item->is_must) as $ao)
-				$o->{$ao->name} = [Entry::TAG_NOTAG=>''];
-
-		} elseif ($request->validated('template')) {
-			$template = $o->template($request->validated('template'));
 			$o->objectclass = [Entry::TAG_NOTAG=>$template->objectclasses->toArray()];
 
 			foreach ($o->getAvailableAttributes()
@@ -66,6 +60,13 @@ class HomeController extends Controller
 			{
 				$o->{$ao->name} = [Entry::TAG_NOTAG=>''];
 			}
+
+		} elseif (count($x=collect(old('objectclass',$request->validated('objectclass')))->dot()->filter())) {
+			$o->objectclass = Arr::undot($x);
+
+			// Also add in our required attributes
+			foreach ($o->getAvailableAttributes()->filter(fn($item)=>$item->is_must) as $ao)
+				$o->{$ao->name} = [Entry::TAG_NOTAG=>''];
 		}
 
 		$step = $request->step ? $request->step+1 : old('step');
@@ -104,6 +105,7 @@ class HomeController extends Controller
 		return $view
 			->with('o',$o)
 			->with('langtag',Entry::TAG_NOTAG)
+			->with('template',NULL)
 			->with('updated',FALSE);
 	}
 
@@ -116,7 +118,7 @@ class HomeController extends Controller
 		$o = new Entry;
 		$o->setDn($dn);
 
-		foreach ($request->except(['_token','key','step','rdn','rdn_value','userpassword_hash']) as $key => $value)
+		foreach ($request->except(['_token','key','step','rdn','rdn_value','_template','userpassword_hash']) as $key => $value)
 			$o->{$key} = array_filter($value);
 
 		try {
@@ -368,6 +370,7 @@ class HomeController extends Controller
 	 * @param Request $request
 	 * @param Collection|null $old
 	 * @return \Illuminate\View\View
+	 * @throws InvalidUsage
 	 */
 	public function frame(Request $request,?Collection $old=NULL): \Illuminate\View\View
 	{

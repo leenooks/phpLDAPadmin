@@ -34,3 +34,15 @@
 		</div>
 	</div>
 </x-attribute.layout>
+
+@if($new && ($x=$template?->onChange($o->name))?->count())
+	@section('page-scripts')
+		<!-- START: ONCHANGE PROCESSING {{ $o->name }} -->
+		<script type="text/javascript">
+			$('#{{ $o->name_lc }}').on('change',function() {
+				{!! $x->join('') !!}
+			});
+		</script>
+		<!-- END: ONCHANGE PROCESSING {{ $o->name }} -->
+	@append
+@endif

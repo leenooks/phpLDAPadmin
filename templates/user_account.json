@@ -4,7 +4,7 @@
 	"enabled": true,
 	"icon": "fa-user",
 	"rdn": "cn",
-	"regexp": "/^ou=.+,o=.+,?/",
+	"regexp": "/^ou=.+,?/",
 
 	"objectclasses": [
 		"inetOrgPerson",
@@ -15,7 +15,7 @@
 		"givenName": {
 			"display": "First Name",
 			"onchange": [
-				"=autoFill(cn;%givenName% %sn%)",
+				"=autoFill(cn;%givenName% %sn/U%)",
 				"=autoFill(uid;%givenName|0-1/l%%sn/l%)"
 			],
 			"order": 1
@@ -23,7 +23,7 @@
 		"sn": {
 			"display": "Last Name",
 			"onchange": [
-				"=autoFill(cn;%givenName% %sn%)",
+				"=autoFill(cn;%givenName% %sn/U%)",
 				"=autoFill(uid;%givenName|0-1/l%%sn/l%)"
 			],
 			"order": 2
@@ -51,8 +51,7 @@
 			"order": 6
 		},
 		"gidNumber": {
-			"display": "UID Number",
-			"readonly": true,
+			"display": "GID Number",
 			"onchange": [
 				"=autoFill(homeDirectory;/home/users/%gidNumber|0-0/T%/%uid|3-%)"
 			],

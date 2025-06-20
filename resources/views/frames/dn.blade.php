@@ -101,7 +101,7 @@
 												<div class="tab-content">
 													@php($up=(session()->pull('updated') ?: collect()))
 													@foreach($o->getVisibleAttributes() as $ao)
-														<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :updated="$up->contains($ao->name_lc)"/>
+														<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :template="NULL" :updated="$up->contains($ao->name)"/>
 													@endforeach
 
 													@include('fragment.dn.add_attr')
@@ -124,7 +124,7 @@
 					<!-- Internal Attributes -->
 					<div class="tab-pane mt-3" id="internal" role="tabpanel">
 						@foreach($o->getInternalAttributes() as $ao)
-							<x-attribute-type :o="$ao" :edit="FALSE" :new="FALSE" :updated="FALSE"/>
+							<x-attribute-type :o="$ao" :edit="FALSE" :new="FALSE" :template="$template ?? NULL" :updated="FALSE"/>
 						@endforeach
 					</div>
 				</div>
