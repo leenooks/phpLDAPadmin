@@ -1,4 +1,10 @@
 # phpLDAPadmin
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/leenooks/phpldapadmin)
+![Docker Pulls](https://img.shields.io/docker/pulls/phpldapadmin/phpldapadmin)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/leenooks/phpldapadmin/total)
+![GitHub Release Date](https://img.shields.io/github/release-date/leenooks/phpldapadmin)
+![GitHub commits since latest release](https://img.shields.io/github/commits-since/leenooks/phpldapadmin/latest)
+
 phpLDAPadmin is a web based LDAP data management tool for system administrators. It is commonly known and referred by many as "PLA".
 
 PLA is designed to be compliant with LDAP RFCs, enabling it to be used with any LDAP server.
@@ -27,38 +33,29 @@ Take a look at the [Docker Container](https://github.com/leenooks/phpLDAPadmin/w
 >
 > Open an issue (details below) with enough information for me to be able to recreate the problem. An `LDIF` will be invaluable if it is not handling data correctly.
 
-## Version 2 Progress
+## Templates
+Starting with v2.2, PLA reintroduces the template engine. Each point release going forward will improve the template 
+functionality. Check [releases](https://github.com/leenooks/phpLDAPadmin/releases) for details.
 
-The update to v2 is progressing well - here is a list of work to do and done:
+Templates in v2 are in JSON format (in v1 they were XML format). If you want to create your own templates you can use 
+the [example.json](/templates/example.json) template as a guide. Place your custom templates in a subdirectory
+under `templates`, eg: `templates/custom`, and they wont be overwritten by an update.
 
-- [X] Creating new LDAP entries
-- [X] Delete existing LDAP entries
-- [X] Updating existing LDAP Entries
-  - [X] Password attributes
-    - [X] Support different password hash options
-    - [X] Validate password is correct
+## Outstanding items
+Compare to v1.x, there are a couple of outstanding items to address
+
+Entry Editing:
   - [ ] JpegPhoto Create/Delete
   - [ ] Binary attribute upload
-  - [X] JpegPhoto Display
-  - [X] ObjectClass Add/Remove
-    - [X] Add additional required attributes (for ObjectClass Addition)
-    - [ ] Remove existing required attributes (for ObjectClass Removal)
-  - [X] Add additional values to Attributes that support multiple values
-  - [X] Delete extra values for Attributes that support multiple values
-  - [ ] Delete Attributes
-- [ ] Templates to enable entries to conform to a custom standard
-  - [ ] Autopopulate attribute values
-- [X] Login to LDAP server
-  - [X] Configure login by a specific attribute
-- [X] Logout LDAP server
-- [X] Export entries as an LDAP
-- [X] Import LDIF
-- [X] Schema Browser
-- [X] Searching
-- [ ] Enforcing attribute uniqueness
-- [ ] Is there something missing?
+  - [ ] If removing an objectClass, remove all attributes that only that objectclass provided
 
-Support is known for these LDAP servers:
+Templates Engine
+  - [ ] Present SELECT lists when an attribute is marked as `type=select`
+  - [ ] Enforcing attribute uniqueness
+
+Raise a [feature request](https://github.com/leenooks/phpLDAPadmin/issues/new) if there is a capability that you would like to see added to PLA.
+
+## Support is known for these LDAP servers:
 - [X] OpenLDAP
 - [X] OpenDJ
 - [ ] Microsoft Active Directory

@@ -45,6 +45,12 @@
 							<i class="fas fa-fw fa-sitemap me-2"></i> Hierarchical Tree View
 						</li>
 						<li class="ps-0 p-1">
+							<i class="fas fa-fw fa-clone me-2"></i> Creation and Modification Templates
+						</li>
+						<li class="ps-0 p-1">
+							<i class="fas fa-fw fa-magnifying-glass-chart me-2"></i> Data Rich Attribute Values
+						</li>
+						<li class="ps-0 p-1">
 							<i class="fas fa-fw fa-language me-2"></i> Multi-language Support
 						</li>
 						<li class="ps-0 p-1">
