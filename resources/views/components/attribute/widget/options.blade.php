@@ -38,7 +38,7 @@
 							</div>
 
 							<div class="modal-body">
-								<x-form.select id="newoc" name="newoc" :label="__('Select from').'...'"/>
+								<x-form.select id="newoc" :label="__('Select from').'...'"/>
 							</div>
 
 							<div class="modal-footer">
