@@ -106,6 +106,10 @@
 				if (rdn_attr && ($(this)[0].name === rdn_attr+'[]'))
 					return;
 
+				// Exclude attributes marked as noedit
+				if ($(this).hasClass('noedit'))
+					return;
+
 				$(this).attr('readonly',false);
 			});
 
