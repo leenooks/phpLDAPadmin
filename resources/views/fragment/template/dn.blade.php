@@ -8,7 +8,7 @@
 		<div class="tab-content">
 			@php($up=(session()->get('updated') ?: collect()))
 
-			@foreach($o->getVisibleAttributes()->filter(fn($item)=>$template->attributes->map('strtolower')->contains($item->name_lc)) as $ao)
+			@foreach($o->getVisibleAttributes()->filter(fn($item)=>$template->attributes->keys()->map('strtolower')->contains($item->name_lc)) as $ao)
 				<x-attribute-type :o="$ao" :edit="TRUE" :new="FALSE" :template="$template" :updated="$up->contains($ao->name)"/>
 			@endforeach
 		</div>
