@@ -7,8 +7,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use LdapRecord\Auth\BindException;
+use LdapRecord\Container;
 
-use App\Exceptions\InvalidUsage;
 use App\Http\Controllers\Controller;
 use App\Ldap\Entry;
 
@@ -57,8 +58,9 @@ class LoginController extends Controller
 	 * When attempt to login
 	 *
 	 * @param Request $request
-	 * @return void
-	 * @throws InvalidUsage
+	 * @return bool
+	 * @throws \LdapRecord\ConnectionException
+	 * @throws \LdapRecord\ContainerException
 	 */
 	public function attemptLogin(Request $request)
 	{
@@ -69,12 +71,26 @@ class LoginController extends Controller
 		// If the login failed, and PLA is set to use DN login, check if the entry exists.
 		// If the entry doesnt exist, it might be the root DN, which cannot be used to login
 		if ((! $attempt) && $request->dn && config('pla.login.alert_rootdn',TRUE)) {
+			// Double check our credentials, and see if they authenticate
+			try {
+				Container::getInstance()
+					->getConnection()
+					->auth()
+					->bind($request->get(login_attr_name()),$request->get('password'));
+
+			} catch (BindException $e) {
+				// Password incorrect, fail anyway
+				return FALSE;
+			}
+
 			$dn = config('server')->fetch($request->dn);
 			$o = new Entry;
 
 			if (! $dn && $o->getConnection()->getLdapConnection()->errNo() === 32)
-				abort(501,'Authentication set to DN, but the DN doesnt exist');
+				abort(501,'Authentication succeeded, but the DN doesnt exist');
 		}
+
+		return $attempt;
 	}
 
 	/**

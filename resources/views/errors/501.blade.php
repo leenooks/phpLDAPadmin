@@ -1,7 +1,7 @@
 @extends('architect::layouts.error')
 
 @section('error')
-	501: @lang('LDAP Authentication Error')
+	501: @lang('LDAP User Error')
 @endsection
 
 @section('content')
