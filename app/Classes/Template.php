@@ -13,7 +13,7 @@ class Template
 	private const LOGKEY = 'T--';
 
 	private(set) string $file;
-	private array $template;
+	private Collection $template;
 	private(set) bool $invalid = FALSE;
 	private(set) string $reason = '';
 	private Collection $on_change_target;
@@ -31,7 +31,7 @@ class Template
 		try {
 			// @todo Load in the proper attribute objects and objectclass objects
 			// @todo Make sure we have a structural objectclass, or make the template invalid
-			$this->template = json_decode($td->get($file),null,512,JSON_OBJECT_AS_ARRAY|JSON_THROW_ON_ERROR);
+			$this->template = collect(json_decode($td->get($file),null,512,JSON_OBJECT_AS_ARRAY|JSON_THROW_ON_ERROR));
 
 		} catch (\JsonException $e) {
 			$this->invalid = TRUE;
@@ -42,12 +42,11 @@ class Template
 	public function __get(string $key): mixed
 	{
 		return match ($key) {
-			'attributes' => collect(Arr::get($this->template,$key))->keys(),
-			'enabled' => Arr::get($this->template,$key,FALSE) && (! $this->invalid),
-			'icon','regexp','title' => Arr::get($this->template,$key),
+			'attributes','objectclasses' => collect($this->template->get($key)),
+			'enabled' => $this->template->get($key,FALSE) && (! $this->invalid),
+			'icon','regexp','title' => $this->template->get($key),
 			'name' => Str::replaceEnd('.json','',$this->file),
-			'objectclasses' => collect(Arr::get($this->template,$key)),
-			'order' => collect(Arr::get($this->template,'attributes'))->map(fn($item)=>$item['order']),
+			'order' => $this->attributes->map(fn($item)=>Arr::get($item,'order')),
 
 			default => throw new \Exception('Unknown key: '.$key),
 		};
@@ -55,7 +54,19 @@ class Template
 
 	public function __isset(string $key): bool
 	{
-		return array_key_exists($key,$this->template);
+		return $this->template->has($key);
+	}
+
+	/**
+	 * Return the configuration for an attribute
+	 *
+	 * @param string $attribute
+	 * @return array|NULL
+	 */
+	public function attribute(string $attribute): Collection|NULL
+	{
+		$key = $this->attributes->search(fn($item,$key)=>! strcasecmp($key,$attribute));
+		return collect($this->attributes->get($key));
 	}
 
 	/**
@@ -66,7 +77,7 @@ class Template
 	 */
 	public function attributeReadOnly(string $attribute): bool
 	{
-		return ($x=Arr::get($this->template,'attributes.'.$attribute.'.readonly')) && $x;
+		return ($x=$this->attribute($attribute)?->get('readonly')) && $x;
 	}
 
 	/**
@@ -77,7 +88,18 @@ class Template
 	 */
 	public function attributeTitle(string $attribute): string|NULL
 	{
-		return Arr::get($this->template,'attributes.'.$attribute.'.display');
+		return $this->attribute($attribute)?->get('display');
+	}
+
+	/**
+	 * Return the title we should use for an attribute
+	 *
+	 * @param string $attribute
+	 * @return string|NULL
+	 */
+	public function attributeType(string $attribute): string|NULL
+	{
+		return $this->attribute($attribute)?->get('type');
 	}
 
 	/**

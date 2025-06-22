@@ -57,7 +57,7 @@ class HomeController extends Controller
 			$o->objectclass = [Entry::TAG_NOTAG=>$template->objectclasses->toArray()];
 
 			foreach ($o->getAvailableAttributes()
-				 ->filter(fn($item)=>$item->names_lc->intersect($template->attributes->map('strtolower'))->count())
+				 ->filter(fn($item)=>$item->names_lc->intersect($template->attributes->keys()->map('strtolower'))->count())
 				 ->sortBy(fn($item)=>Arr::get($template->order,$item->name)) as $ao)
 			{
 				$o->{$ao->name} = [Entry::TAG_NOTAG=>''];

@@ -49,7 +49,7 @@ class Entry extends Model
 		$this->objects = collect();
 
 		// Load any templates
-		$this->templates =  Cache::remember('templates'.Session::id(),config('ldap.cache.time'),function() {
+		$this->templates = Cache::remember('templates'.Session::id(),config('ldap.cache.time'),function() {
 			$template_dir = Storage::disk(config('pla.template.dir'));
 			$templates = collect();
 

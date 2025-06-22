@@ -1,31 +1,32 @@
 {
-	"title": "Example entry",
-	"description": "This is the description",
-	"enabled": false,
-	"icon": "fa-star-of-life",
-	"rdn": "o",
-	"regexp": "/^$/",
+	"title": "Example entry",					// Title shown when selecting tempaltes
+	"description": "This is the description",	// Unused, only for documenting
+	"enabled": false,							// Whether template is enabled or not
+	"icon": "fa-star-of-life",					// Icon shown when rendering an existing entry that identifies as this template
+	"rdn": "o",									// @todo not implemented
+	"regexp": "/^$/",							// Regular expression that restricts where this template cna be used
 
-	"objectclasses": [
+	"objectclasses": [							// Objectclasses that entries will have if they use this template
 		"organization"
 	],
 
-	"attributes": {
-		"attribute1": {
-			"display": "Attribute 1",
-			"hint": "This is an example",
-			"order": 1
+	"attributes": {								// Attribute configuration
+		"attribute1": {							// LDAP attribute name
+			"display": "Attribute 1",			// Displayed when accepting input for this value
+			"hint": "This is an example",		// @todo not implemented
+			"type": null,						// Default is NULL, so use normal Attribute rendering type
+			"order": 1							// Order to show attributes
 		},
 		"attribute2": {
 			"display": "Attribute 2",
 			"hint": "This is an example",
-			"type": "input",	// Default is input
+			"type": "input",					// Force attribute to use template input
 			"order": 2
 		},
 		"attribute3": {
 			"display": "Attribute 3",
-			"type": "select",
-			"options": {
+			"type": "select",					// Force attribute to use template select
+			"options": {						// Select options
 				"/bin/bash": "Bash",
 				"/bin/csh": "C Shell",
 				"/bin/dash": "Dash",

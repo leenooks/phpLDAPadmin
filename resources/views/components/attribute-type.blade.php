@@ -9,13 +9,16 @@
 						<strong class="align-middle"><abbr title="{{ (($x=$template?->attributeTitle($o->name)) ? $o->name.': ' : '').$o->description }}">{{ $x ?: $o->name }}</abbr></strong>
 						@if($new)
 							@if($template?->attributeReadOnly($o->name_lc))
-								<sup data-bs-toggle="tooltip" title="@lang('Input disabled by template')"><i class="fas fa-ban"></i></sup>
+								<sup data-bs-toggle="tooltip" title="@lang('Input disabled')"><i class="fas fa-ban"></i></sup>
 							@endif
-							@if($template?->onChangeAttribute($o->name_lc))
-								<sup data-bs-toggle="tooltip" title="@lang('Value triggers an update to another attribute by template')"><i class="fas fa-keyboard"></i></sup>
+							@if($ca=$template?->onChangeAttribute($o->name_lc))
+								<sup data-bs-toggle="tooltip" title="@lang('Value triggers an update to another attribute')"><i class="fas fa-keyboard"></i></sup>
 							@endif
-							@if ($template?->onChangeTarget($o->name_lc))
-								<sup data-bs-toggle="tooltip" title="@lang('Value calculated by template')"><i class="fas fa-wand-magic-sparkles"></i></sup>
+							@if ($ct=$template?->onChangeTarget($o->name_lc))
+								<sup data-bs-toggle="tooltip" title="@lang('Value calculated from another attribute')"><i class="fas fa-wand-magic-sparkles"></i></sup>
+							@endif
+							@if((! $ca) && (! $ct) && $template?->attribute($o->name_lc))
+								<sup data-bs-toggle="tooltip" title="@lang('Attribute controlled by template')"><i class="fas fa-wand-magic"></i></sup>
 							@endif
 						@endif
 
@@ -59,7 +62,13 @@
 			</div>
 		</div>
 
-		<x-attribute :o="$o" :edit="(! $template?->attributeReadOnly($o->name)) && $edit" :new="$new" :updated="$updated"/>
+		@switch($template?->attributeType($o->name))
+			@case('type')
+				@break;
+
+			@default
+				<x-attribute :o="$o" :edit="(! $template?->attributeReadOnly($o->name)) && $edit" :new="$new" :updated="$updated"/>
+		@endswitch
 	</div>
 </div>
 
