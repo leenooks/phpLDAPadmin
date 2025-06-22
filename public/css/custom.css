@@ -14,9 +14,18 @@ attribute#objectclass .input-group-end:not(input.form-control) {
 	z-index: 5;
 }
 
-.input-group:first-child .select2-container--bootstrap-5 .select2-selection {
+/* select forms that have nothing next to them */
+.select-group:first-child .select2-container--bootstrap-5 .select2-selection {
+	border-radius: 4px !important;
+}
+
+.input-group:first-child:not(.select-group) .select2-container--bootstrap-5 .select2-selection {
 	border-bottom-right-radius: unset;
 	border-top-right-radius: unset;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+	font-size: 0.88em;
 }
 
 input.form-control.input-group-end {

@@ -63,7 +63,8 @@
 		</div>
 
 		@switch($template?->attributeType($o->name))
-			@case('type')
+			@case('select')
+				<x-attribute.template.select :o="$o" :template="$template" :edit="(! $template?->attributeReadOnly($o->name)) && $edit" :new="$new"/>
 				@break;
 
 			@default

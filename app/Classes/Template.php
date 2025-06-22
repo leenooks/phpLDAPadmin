@@ -70,6 +70,19 @@ class Template
 	}
 
 	/**
+	 * Return an template attributes select options
+	 *
+	 * @param string $attribute
+	 * @return Collection|NULL
+	 */
+	public function attributeOptions(string $attribute): Collection|NULL
+	{
+		return ($x=$this->attribute($attribute)?->get('options'))
+			? collect($x)->map(fn($item,$key)=>['id'=>$key,'value'=>$item])
+			: NULL;
+	}
+
+	/**
 	 * If the attribute has been marked as read-only
 	 *
 	 * @param string $attribute
