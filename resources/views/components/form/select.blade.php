@@ -15,7 +15,7 @@
 			@empty($groupby)
 				@foreach($options as $option)
 					@continue(! Arr::get($option,'value'))
-					<option value="{{ Arr::get($option,'id') }}" @selected(Arr::get($option,'id') == collect(old())->dot()->get(isset($old) ? $old.'.0' : ($id ?? $name)))>{{ Arr::get($option,'value') }}</option>
+					<option value="{{ Arr::get($option,'id') }}" @selected(Arr::get($option,'id') == collect(old())->dot()->get(isset($old) ? $old.'.0' : ($id ?? $name),$value ?? ''))>{{ Arr::get($option,'value') }}</option>
 				@endforeach
 
 			@else
@@ -23,7 +23,7 @@
 					<optgroup label="{{ Arr::get($group->first(),$groupby) }}">
 						@foreach($group as $option)
 							@continue(! Arr::get($option,'value'))
-							<option value="{{ Arr::get($option,'id') }}" @selected(Arr::get($option,'id') == collect(old())->dot()->get(isset($old) ? $old.'.0' : ($id ?? $name)))>{{ Arr::get($option,'value') }}</option>
+							<option value="{{ Arr::get($option,'id') }}" @selected(Arr::get($option,'id') == collect(old())->dot()->get(isset($old) ? $old.'.0' : ($id ?? $name),$value ?? ''))>{{ Arr::get($option,'value') }}</option>
 						@endforeach
 					</optgroup>
 				@endforeach
