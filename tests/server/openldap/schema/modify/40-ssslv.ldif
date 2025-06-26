@@ -1,0 +1,8 @@
+dn: olcOverlay=sssvlv,olcDatabase={4}mdb,cn=config
+changetype: add
+objectClass: olcOverlayConfig
+objectClass: olcSssVlvConfig
+olcOverlay: sssvlv
+olcSssVlvMax: 1
+olcSssVlvMaxKeys: 5
+olcSssVlvMaxPerConn: 5

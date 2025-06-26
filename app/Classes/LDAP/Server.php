@@ -275,7 +275,6 @@ final class Server
 					'c'					// Needed for the tree to show icons for countries
 				]))
 			->list()
-			->orderBy('dn')
 			->get() ?: NULL;
 	}
 
