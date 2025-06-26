@@ -18,7 +18,7 @@
 								<sup data-bs-toggle="tooltip" title="@lang('Value calculated from another attribute')"><i class="fas fa-wand-magic-sparkles"></i></sup>
 							@endif
 							@if((! $ca) && (! $ct) && $template?->attribute($o->name_lc))
-								<sup data-bs-toggle="tooltip" title="@lang('Attribute controlled by template')"><i class="fas fa-wand-magic"></i></sup>
+								<sup data-bs-toggle="tooltip" title="@lang('Value controlled by template')"><i class="fas fa-wand-magic"></i></sup>
 							@endif
 						@endif
 

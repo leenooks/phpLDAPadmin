@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use LdapRecord\Configuration\DomainConfiguration;
 use LdapRecord\Laravel\LdapRecord;
