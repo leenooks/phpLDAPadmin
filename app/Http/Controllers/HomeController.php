@@ -124,6 +124,13 @@ class HomeController extends Controller
 		foreach ($request->except(self::INTERNAL_POST) as $key => $value)
 			$o->{$key} = array_filter($value);
 
+		// We need to process and encrypt the password
+		if ($request->userpassword)
+			$o->userpassword = $this->password(
+				$o->getObject('userpassword'),
+				$request->userpassword,
+				$request->get('_userpassword_hash'));
+
 		try {
 			$o->save();
 
@@ -284,25 +291,11 @@ class HomeController extends Controller
 		// @todo Need to handle incoming attributes that were modified by MD5Updates Trait (eg: jpegphoto)
 
 		// We need to process and encrypt the password
-		if ($request->userpassword) {
-			$passwords = [];
-			$po = $o->getObject('userpassword');
-			foreach (Arr::dot($request->userpassword) as $dotkey => $value) {
-				// If the password is still the MD5 of the old password, then it hasnt changed
-				if (($old=Arr::get($po,$dotkey)) && ($value === md5($old))) {
-					$passwords[$dotkey] = $value;
-					continue;
-				}
-
-				if ($value) {
-					$type = Arr::get($request->get('_userpassword_hash'),$dotkey);
-					$passwords[$dotkey] = Password::hash_id($type)
-						->encode($value);
-				}
-			}
-
-			$o->userpassword = Arr::undot($passwords);
-		}
+		if ($request->userpassword)
+			$o->userpassword = $this->password(
+				$o->getObject('userpassword'),
+				$request->userpassword,
+				$request->get('_userpassword_hash'));
 
 		if (! $o->getDirty())
 			return back()
@@ -476,6 +469,28 @@ class HomeController extends Controller
 			->with('subframe','import_result')
 			->with('result',$result)
 			->with('ldif',htmlspecialchars($x));
+	}
+
+	private function password(Password $po,array $values,array $hash): array
+	{
+		// We need to process and encrypt the password
+		$passwords = [];
+
+		foreach (Arr::dot($values) as $dotkey => $value) {
+			// If the password is still the MD5 of the old password, then it hasnt changed
+			if (($old=Arr::get($po,$dotkey)) && ($value === md5($old))) {
+				$passwords[$dotkey] = $value;
+				continue;
+			}
+
+			if ($value) {
+				$type = Arr::get($hash,$dotkey);
+				$passwords[$dotkey] = Password::hash_id($type)
+					->encode($value);
+			}
+		}
+
+		return Arr::undot($passwords);
 	}
 
 	/**
