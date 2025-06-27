@@ -47,7 +47,7 @@
 		"uidNumber": {
 			"display": "UID Number",
 			"readonly": true,
-			"value": "=php.GetNextNumber(/;uidNumber)",
+			"value": "=getNextNumber(/;uidNumber)",
 			"order": 6
 		},
 		"gidNumber": {
@@ -55,8 +55,7 @@
 			"onchange": [
 				"=autoFill(homeDirectory;/home/users/%gidNumber|0-0/T%/%uid|3-%)"
 			],
-			"value": "=php.GetNextNumber(/;uidNumber)",
-			"value": "=php.PickList(/;(&(objectClass=posixGroup));gidNumber;%cn%;;;;cn)",
+			"value": "=getNextNumber(/;gidNumber)",
 			"order": 7
 		},
 		"homeDirectory": {

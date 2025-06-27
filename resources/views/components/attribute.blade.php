@@ -5,12 +5,25 @@
 			@foreach($o->langtags as $langtag)
 				<span @class(['tab-pane','active'=>$loop->index === 0]) id="langtag-{{ $o->name_lc }}-{{ $langtag }}" role="tabpanel">
 					@foreach(Arr::get(old($o->name_lc,[$langtag=>$new ? [NULL] : $o->tagValues($langtag)]),$langtag,[]) as $key => $value)
+						<!-- AutoValue Lock -->
+						@if($new && $template && ($av=$template->attributeValue($o->name_lc)))
+							<input type="hidden" name="_auto_value[{{ $o->name_lc }}]" value="{{ $av }}">
+						@endif
+
 						<div class="input-group has-validation">
-							@if($edit && (! $o->is_rdn))
-								<input type="text" @class(['form-control','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index)),'mb-1','border-focus'=>! ($tv=$o->tagValuesOld($langtag))->contains($value),'bg-success-subtle'=>$updated]) name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ $value }}" placeholder="{{ ! is_null($x=$tv->get($loop->index)) ? $x : '['.__('NEW').']' }}" @readonly(! $new) @disabled($o->isDynamic())>
-							@else
-								<input type="text" @class(['form-control','noedit','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index)),'mb-1','bg-success-subtle'=>$updated]) name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ $value }}" readonly>
-							@endif
+							<input type="text"
+								@class([
+									'form-control',
+									'noedit'=>(! $edit) || ($o->is_rdn),
+									'is-invalid'=>($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index)) || ($e=$errors->get('_auto_value.'.$o->name_lc)),
+									'mb-1',
+									'border-focus'=>! ($tv=$o->tagValuesOld($langtag))->contains($value),
+									'bg-success-subtle'=>$updated])
+								name="{{ $o->name_lc }}[{{ $langtag }}][]"
+								value="{{ $value ?: ($av ?? '') }}"
+								placeholder="{{ ! is_null($x=$tv->get($loop->index)) ? $x : '['.__('NEW').']' }}"
+								readonly
+								@disabled($o->isDynamic())>
 
 							<div class="invalid-feedback pb-2">
 								@if($e)

@@ -3,12 +3,17 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 use App\Rules\{DNExists,HasStructuralObjectClass};
 
 class EntryAddRequest extends FormRequest
 {
+	private const LOGKEY = 'EAR';
+
 	/**
 	 * Get the error messages for the defined validation rules.
 	 *
@@ -112,6 +117,23 @@ class EntryAddRequest extends FormRequest
 							$fail(__('You cannot select a template and an objectclass'));
 					},
 				],
+				'_auto_value' => 'nullable|array|min:1',
+				'_auto_value.*' => [
+					'nullable',
+					function (string $attribute,mixed $value,\Closure $fail) {
+						$attr = preg_replace('/^_auto_value\./','',$attribute);
+
+						// If the value has been overritten, then our auto_value is invalid
+						if (! collect(request()->get($attr))->dot()->contains($value))
+							return;
+
+						$cache = Cache::get($attr.':'.Session::id());
+						Log::debug(sprintf('%s:Autovalue for Attribute [%s] in Session [%s] Retrieved [%d](%d)',self::LOGKEY,$attr,Session::id(),$cache,$value));
+
+						if ($cache !== (int)$value)
+							$fail(__('Lock expired, please re-submit.'));
+					}
+				]
 			])
 			->toArray();
 	}

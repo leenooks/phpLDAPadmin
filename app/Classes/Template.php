@@ -4,13 +4,18 @@ namespace App\Classes;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+
+use App\Ldap\Entry;
 
 class Template
 {
 	private const LOGKEY = 'T--';
+	private const LOCK_TIME = 600;
 
 	private(set) string $file;
 	private Collection $template;
@@ -113,6 +118,154 @@ class Template
 	public function attributeType(string $attribute): string|NULL
 	{
 		return $this->attribute($attribute)?->get('type');
+	}
+
+	public function attributeValue(string $attribute): string|NULL
+	{
+		if ($x=$this->attribute($attribute)->get('value')) {
+			list($command,$args) = preg_split('/^=([a-zA-Z]+)\((.+)\)$/',$x,-1,PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY);
+
+			return match ($command) {
+				'getNextNumber' => $this->getNextNumber($args),
+				default => NULL,
+			};
+		}
+
+		return NULL;
+	}
+
+	/**
+	 * Get next number for an attribute
+	 *
+	 * As part of getting the next number, we'll use a lock to avoid any potential clashes. The lock is obtained by
+	 * two lock files:
+	 * a: Read a session lock (our session id), use that number if it exists, otherwise,
+	 * b: Query the ldap server for the attribute, sort by number
+	 * c: Read a system lock, if it exists, and use that as our start base (otherwise use a config() base)
+	 * d: Starting at base, find the next free number
+	 * e: When number identified, put it in the system lock with our session id
+	 * f: Put the number in our session lock, with a timeout
+	 * g: Read the system lock, make sure our session id is still in it, if not, go to (d) with our number as the base
+	 * h: Remove our session id from the system lock (our number is unique)
+	 *
+	 * When using the number to create an entry:
+	 * + Read our session lock, confirm the number is still in it, if not fail validation and bounce back
+	 * + Create the entry
+	 * + Delete our session lock
+	 *
+	 * @param string $arg
+	 * @return int|NULL
+	 */
+	private function getNextNumber(string $arg): int|NULL
+	{
+		if (! preg_match('/;/',$arg)) {
+			Log::alert(sprintf('%s:Invalid argument given to getNextNumber [%s]',self::LOGKEY,$arg));
+			return NULL;
+		}
+
+		list($start,$attr) = preg_split('(([^,]+);(\w+))',$arg,-1,PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+		$attr = strtolower($attr);
+
+		// If we recently got a number, return it
+		if ($number=Cache::get($attr.':'.Session::id()))
+			return $number;
+
+		$cache = Cache::get($attr.':system');
+		Log::debug(sprintf('%s:System Cache has',self::LOGKEY),['cache'=>$cache]);
+
+		if (! Arr::get($cache,'number'))
+			$number = config('pla.template.getnextnumber.'.$attr,0);
+		else
+			$number = Arr::get($cache,'number')+1;
+
+		Log::debug(sprintf('%s:Starting with [%d] for [%s]',self::LOGKEY,$number,$attr));
+
+		$o = config('server');
+		$bases = ($start === '/') ? $o->baseDNs() : collect($start);
+
+		$result = collect();
+		$complete = [];
+
+		do {
+			$sizelimit = FALSE;
+
+			// Get the current numbers
+			foreach ($bases as $base) {
+				if (Arr::get($complete,$dn=$base->getDN()))
+					continue;
+
+				$query = Entry::query()
+					->setDN($base)
+					->select([$attr])
+					->where($attr,'*')
+					->notFilter(fn($q)=>$q->where($attr,'<=',$number-1));
+
+				if ($result->count())
+					$query->notFilter(fn($q)=>$q->where($attr,'>=',$result->min()));
+
+				$result = $result->merge(($x=$query
+					->search()
+					->orderBy($attr)
+					->get())
+					->pluck($attr)
+					->flatten());
+
+				// If we hit a sizelimit on this run
+				$base_sizelimit = $query->getModel()->hasMore();
+				Log::debug(sprintf('%s:Query in [%s] returned [%d] entries and has more [%s]',self::LOGKEY,$base,$x->count(),$base_sizelimit ? 'TRUE' : 'FALSE'));
+
+				if (! $base_sizelimit)
+					$complete[$dn] = TRUE;
+				else
+					Log::info(sprintf('%s:Size Limit alert for [%s]',self::LOGKEY,$dn));
+
+				$sizelimit = $sizelimit || $base_sizelimit;
+			}
+
+			$result = $result
+				->sort()
+				->unique();
+
+			Log::debug(sprintf('%s:Result has [%s]',self::LOGKEY,$result->join('|')));
+
+			if ($result->count())
+				foreach ($result as $item) {
+					Log::debug(sprintf('%s:Checking [%d] against [%s]',self::LOGKEY,$number,$item));
+					if ($number < $item)
+						break;
+
+					$number += 1;
+				}
+
+			else
+				$number += 1;
+
+			// Remove redundant entries
+			$result = $result->filter(fn($item)=>$item>$number);
+
+			if ($sizelimit)
+				Log::debug(sprintf('%s:We got a sizelimit.',self::LOGKEY),['number'=>$number,'result_min'=>$result->min(),'result_count'=>$result->count()]);
+
+			/*
+			 * @todo This might need some additional work:
+			 * EG: if sizelimit is 5
+			 * if result has 1,2,3,4,20 [size limit]
+			 * we re-enquire (4=>20) and get 7,8,9,10,11 [size limit]
+			 * we re-enquire (4=>7) and get 5,6 [no size limit]
+			 * we calculate 12, and accept it because no size limit, but we didnt test for 12
+			 */
+		} while ($sizelimit);
+
+		// We found our number
+		Log::debug(sprintf('%s:Autovalue for Attribute [%s] in Session [%s] Storing [%d]',self::LOGKEY,$attr,Session::id(),$number));
+		Cache::put($attr.':system',['number'=>$number,'session'=>Session::id(),self::LOCK_TIME*2]);
+		Cache::put($attr.':'.Session::id(),$number,self::LOCK_TIME);
+		sleep(1);
+
+		// If the session still has our session ID, then our number is ours
+		return (Arr::get(Cache::get($attr.':system'),'session') === Session::id())
+			? $number
+			: NULL;
 	}
 
 	/**
@@ -242,7 +395,7 @@ class Template
 
 		$m = [];
 		// MATCH : 0 = highlevel match, 1 = attr, 2 = subst, 3 = mod, 4 = delimiter
-		preg_match_all('/%(\w+)(?:\|([0-9]*-[0-9])+)?(?:\/([klTUA]+))?(?:\|(.)?)?%/U',$string,$m);
+		preg_match_all('/%(\w+)(?:\|(\d*-\d)+)?(?:\/([klTUA]+))?(?:\|(.)?)?%/U',$string,$m);
 
 		foreach ($m[0] as $index => $null) {
 			$match_attr = strtolower($m[1][$index]);
@@ -255,14 +408,14 @@ class Template
 			$result .= sprintf("var %s;\n",$match_attr);
 
 			if (str_contains($match_mod,'k')) {
-				preg_match_all('/([0-9]+)/',trim($match_subst),$substrarray);
+				preg_match_all('/(\d+)/',trim($match_subst),$substrarray);
 
 				$delimiter = ($match_delim === '') ? ' ' : preg_quote($match_delim);
 				$result .= sprintf("   %s = %s.split('%s')[%s];\n",$match_attr,$match_attr,$delimiter,$substrarray[1][0] ?? '0');
 
 			} else {
 				// Work out the start and end chars needed from this value if we have a range specifier
-				preg_match_all('/([0-9]*)-([0-9]+)/',$match_subst,$substrarray);
+				preg_match_all('/(\d*)-(\d+)/',$match_subst,$substrarray);
 				if ((isset($substrarray[1][0]) && $substrarray[1][0]) || (isset($substrarray[2][0]) && $substrarray[2][0])) {
 					$result .= sprintf("%s = get_attribute('%s',%d,%s);\n",
 						$match_attr,$match_attr,

@@ -6,17 +6,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use LdapRecord\Exceptions\InsufficientAccessException;
 use LdapRecord\LdapRecordException;
 use LdapRecord\Query\ObjectNotFoundException;
 use Nette\NotImplementedException;
 
 use App\Classes\LDAP\Attribute\{Factory,Password};
-use App\Classes\LDAP\Server;
 use App\Classes\LDAP\Import\LDIF as LDIFImport;
 use App\Classes\LDAP\Export\LDIF as LDIFExport;
 use App\Exceptions\Import\{GeneralException,VersionException};
@@ -28,7 +29,7 @@ class HomeController extends Controller
 {
 	private const LOGKEY = 'CHc';
 
-	private const INTERNAL_POST = ['_key','_rdn','_rdn_value','_step','_template','_token','_userpassword_hash'];
+	private const INTERNAL_POST = ['_auto_value','_key','_rdn','_rdn_value','_step','_template','_token','_userpassword_hash'];
 
 	/**
 	 * Create a new object in the LDAP server
@@ -149,6 +150,12 @@ class HomeController extends Controller
 					__($e->getDetailedError()->getErrorMessage()),
 					$e->getDetailedError()->getDiagnosticMessage(),
 				));
+		}
+
+		// If there are an _auto_value attributes, we need to invalid those
+		foreach ($request->get('_auto_value') as $attr => $value) {
+			Log::debug(sprintf('%s:Removing auto_value attr [%s]',self::LOGKEY,$attr));
+			Cache::delete($attr.':'.Session::id());
 		}
 
 		return Redirect::to('/')

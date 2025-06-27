@@ -466,6 +466,21 @@ class Entry extends Model
 	}
 
 	/**
+	 * Did this query generate a size limit exception
+	 *
+	 * @return bool
+	 * @throws \LdapRecord\ContainerException
+	 */
+	public function hasMore(): bool
+	{
+		return $this->getConnectionContainer()
+			->getConnection()
+			->getLdapConnection()
+			->getDetailedError()
+			?->getErrorCode() === 4;
+	}
+
+	/**
 	 * Return an icon for a DN based on objectClass
 	 *
 	 * @return string

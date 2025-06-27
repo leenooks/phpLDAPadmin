@@ -95,5 +95,9 @@ return [
 	'template' => [
 		'dir' => env('LDAP_TEMPLATE_DRIVER','templates'),
 		'exclude_system' => env('LDAP_TEMPLATE_EXCLUDE_SYSTEM',FALSE),
+		'getnexnumber' => [
+			'gidnumber' => env('LDAP_TEMPLATE_GIDNUMBER_START', 1000),
+			'uidnumber' => env('LDAP_TEMPLATE_UIDNUMBER_START', 1000),
+		],
 	],
 ];
