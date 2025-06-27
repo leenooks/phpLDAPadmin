@@ -153,7 +153,7 @@ class HomeController extends Controller
 		}
 
 		// If there are an _auto_value attributes, we need to invalid those
-		foreach ($request->get('_auto_value') as $attr => $value) {
+		foreach ($request->get('_auto_value',[]) as $attr => $value) {
 			Log::debug(sprintf('%s:Removing auto_value attr [%s]',self::LOGKEY,$attr));
 			Cache::delete($attr.':'.Session::id());
 		}
