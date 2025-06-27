@@ -21,7 +21,11 @@
 								: $attribute !!}
 						</th>
 						<td>
-							<x-attribute :edit="false" :o="$ao"/>
+							@if($ao instanceof \App\Classes\LDAP\Attribute\Schema\OID)
+								<x-attribute :edit="false" :o="$ao"/>
+							@else
+								{!! $ao->values_old->dot()->join('<br>') !!}
+							@endif
 						</td>
 					</tr>
 				@endforeach

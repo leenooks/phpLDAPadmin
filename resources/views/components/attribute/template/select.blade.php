@@ -12,7 +12,7 @@
 						:options="$template->attributeOptions($o->name_lc)"
 						allowclear="true"
 						:disabled="! $new"
-						:readonly="FALSE"/>
+						:readonly="false"/>
 
 					<div class="invalid-feedback pb-2">
 						@if($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index))

@@ -40,7 +40,7 @@
 												->filter(fn($item)=>$item->isStructural())
 												->sortBy(fn($item)=>$item->name_lc)
 												->map(fn($item)=>['id'=>$item->name,'value'=>$item->name])"
-											:allowclear="TRUE"
+											:allowclear="true"
 										/>
 									</div>
 
@@ -55,7 +55,7 @@
 												:label="__('Select a Template').'...'"
 												:options="$o->templates
 													->map(fn($item,$key)=>['id'=>$key,'value'=>$item->title])"
-												:allowclear="TRUE"
+												:allowclear="true"
 											/>
 										</div>
 									@endif
@@ -64,10 +64,10 @@
 
 							@case(2)
 								<input type="hidden" name="_template" value="{{ $template?->file }}">
-								<x-attribute-type :o="$o->getObject('rdn')" :edit="TRUE" :new="TRUE" :template="$template" :updated="FALSE"/>
+								<x-attribute-type :o="$o->getObject('rdn')" :edit="true" :new="true" :template="$template" :updated="false"/>
 
 								@foreach($o->getVisibleAttributes() as $ao)
-									<x-attribute-type :o="$ao" :edit="TRUE" :new="TRUE" :template="$template" :updated="FALSE"/>
+									<x-attribute-type :o="$ao" :edit="true" :new="true" :template="$template" :updated="false"/>
 								@endforeach
 
 								@if(! $template)
