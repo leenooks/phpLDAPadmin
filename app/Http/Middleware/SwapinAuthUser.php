@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Classes\LDAP\Server;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -42,6 +43,8 @@ class SwapinAuthUser
 
 		$c->setConfiguration(config('ldap.connections.'.$key));
 		$c->setGuardResolver(fn()=>new Guard($c->getLdapConnection(),$c->getConfiguration()));
+
+		Config::set('server',new Server);
 
 		return $next($request);
 	}
