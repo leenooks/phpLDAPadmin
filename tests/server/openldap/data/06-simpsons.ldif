@@ -99,10 +99,7 @@ jpegphoto:: /9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkS
  Q05bKyt9PtEtrWPZEuSBkkkk5JJPJJJJJPJJoopOc5xu43SZGyMWYLDuXRRRRTU9f//Z
 l: Springfield
 mail: bart.simpson@simpsons.example.com
-mailHost: simpsons.host
-mailRoutingAddress: bsimpson@simpsons.example.com
 o: The Simpsons
-objectclass: inetLocalMailRecipient
 objectclass: inetOrgPerson
 objectclass: posixAccount
 objectclass: top
