@@ -48,12 +48,16 @@ Entry Editing:
   - [ ] JpegPhoto Create/Delete
   - [ ] Binary attribute upload
   - [ ] If removing an objectClass, remove all attributes that only that objectclass provided
+  - [ ] Rename an entry
+  - [ ] Group membership selection
+  - [ ] Attribute tag creation
 
 Templates Engine
-  - [ ] Present SELECT lists when an attribute is marked as `type=select`
   - [ ] Enforcing attribute uniqueness
 
 Raise a [feature request](https://github.com/leenooks/phpLDAPadmin/issues/new) if there is a capability that you would like to see added to PLA.
+
+Other items [under consideration](https://github.com/leenooks/phpLDAPadmin/issues?q=state%3Aopen%20label%3Aenhancement)
 
 ## Support is known for these LDAP servers:
 - [X] OpenLDAP
