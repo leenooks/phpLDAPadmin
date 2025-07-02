@@ -63,8 +63,8 @@ Route::controller(HomeController::class)->group(function() {
 Route::controller(AjaxController::class)
 	->prefix('ajax')
 	->group(function() {
-		Route::get('bases','bases');
-		Route::get('children','children');
+		Route::post('bases','bases');
+		Route::post('children','children');
 		Route::post('schema/view','schema_view');
 		Route::post('schema/objectclass/attrs/{id}','schema_objectclass_attrs');
 	});

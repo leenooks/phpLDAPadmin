@@ -38,7 +38,7 @@ class AjaxController extends Controller
 	 */
 	public function children(Request $request): Collection
 	{
-		$dn = Crypt::decryptString($request->query('_key'));
+		$dn = Crypt::decryptString($request->post('_key'));
 
 		// Sometimes our key has a command, so we'll ignore it
 		if (str_starts_with($dn,'*') && ($x=strpos($dn,'|')))
@@ -57,13 +57,18 @@ class AjaxController extends Controller
 					'tooltip'=>$item->getDn(),
 				])
 			->prepend(
-				[
-					'title'=>sprintf('[%s]',__('Create Entry')),
-					'item'=>Crypt::encryptString(sprintf('*%s|%s','create',$dn)),
-					'lazy'=>FALSE,
-					'icon'=>'fas fa-fw fa-square-plus text-warning',
-					'tooltip'=>__('Create new LDAP item here'),
-				]);
+				$request->create
+					? [
+						'title'=>sprintf('[%s]',__('Create Entry')),
+						'item'=>Crypt::encryptString(sprintf('*%s|%s','create',$dn)),
+						'lazy'=>FALSE,
+						'icon'=>'fas fa-fw fa-square-plus text-warning',
+						'tooltip'=>__('Create new LDAP item here'),
+					]
+					: []
+			)
+			->filter()
+			->values();
 	}
 
 	public function schema_view(Request $request)
