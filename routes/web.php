@@ -49,6 +49,7 @@ Route::controller(HomeController::class)->group(function() {
 		Route::post('entry/password/check/','entry_password_check');
 		Route::post('entry/attr/add/{id}','entry_attr_add');
 		Route::post('entry/objectclass/add','entry_objectclass_add');
+		Route::post('entry/rename','entry_rename');
 		Route::post('entry/update/commit','entry_update');
 		Route::post('entry/update/pending','entry_pending_update');
 
@@ -56,6 +57,7 @@ Route::controller(HomeController::class)->group(function() {
 
 		Route::view('modal/delete/{dn}','modals.entry-delete');
 		Route::view('modal/export/{dn}','modals.entry-export');
+		Route::view('modal/rename/{dn}','modals.entry-rename');
 		Route::view('modal/userpassword-check/{dn}','modals.entry-userpassword-check');
 	});
 });

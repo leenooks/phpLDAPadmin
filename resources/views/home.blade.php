@@ -2,6 +2,7 @@
 
 @section('main-content')
 	<x-success/>
+	<x-failed/>
 
 	<div class="card card-solid mb-3">
 		<div class="card-body">

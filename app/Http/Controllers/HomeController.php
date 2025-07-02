@@ -29,7 +29,7 @@ class HomeController extends Controller
 {
 	private const LOGKEY = 'CHc';
 
-	private const INTERNAL_POST = ['_auto_value','_key','_rdn','_rdn_value','_step','_template','_token','_userpassword_hash'];
+	private const INTERNAL_POST = ['_auto_value','_key','_rdn','_rdn_new','_rdn_value','_step','_template','_token','_userpassword_hash'];
 
 	/**
 	 * Create a new object in the LDAP server
@@ -307,6 +307,31 @@ class HomeController extends Controller
 			->with('o',$o);
 	}
 
+	public function entry_rename(Request $request): \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+	{
+		$from_dn = Crypt::decryptString($request->post('dn'));
+		Log::info(sprintf('%s:Renaming [%s] to [%s]',self::LOGKEY,$from_dn,$request->post('_rdn_new')));
+
+		$o = config('server')->fetch($from_dn);
+
+		if (! $o)
+			return back()
+				->withInput()
+				->with('note',__('DN doesnt exist'));
+
+		try {
+			$o->rename($request->post('_rdn_new'));
+
+		} catch (\Exception $e) {
+			return Redirect::to('/')
+				->with('failed',$e->getMessage());
+		}
+
+		return Redirect::to('/')
+			->withInput(['_key'=>Crypt::encryptString('*dn|'.$o->getDN())])
+			->with('success',sprintf('%s: %s',__('Entry renamed'),$from_dn));
+	}
+
 	/**
 	 * Update a DN entry
 	 *
@@ -505,8 +530,8 @@ class HomeController extends Controller
 		// Setup
 		$cmd = NULL;
 		$dn = NULL;
-		$key = $request->get('_key',old('_key'))
-			? Crypt::decryptString($request->get('_key',old('_key')))
+		$key = ($x=$request->get('_key',old('_key')))
+			? Crypt::decryptString($x)
 			: NULL;
 
 		// Determine if our key has a command
@@ -518,9 +543,9 @@ class HomeController extends Controller
 				$dn = ($m[2] !== '_NOP') ? $m[2] : NULL;
 			}
 
-		} elseif (old('dn',$request->get('_key'))) {
+		} elseif ($x=old('dn',$request->get('_key'))) {
 			$cmd = 'dn';
-			$dn = Crypt::decryptString(old('dn',$request->get('_key')));
+			$dn = Crypt::decryptString($x);
 		}
 
 		return ['cmd'=>$cmd,'dn'=>$dn];

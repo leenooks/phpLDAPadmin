@@ -6,7 +6,7 @@
 @php($clone=FALSE)
 <span class="p-0 m-0">
 	@if($o->is_rdn)
-		<button class="btn btn-sm btn-outline-focus mt-3" disabled><i class="fas fa-fw fa-exchange"></i> @lang('Rename')</button>
+		<span id="entry-rename" class="btn btn-sm btn-outline-focus mt-3" data-bs-toggle="modal" data-bs-target="#page-modal"><i class="fas fa-fw fa-exchange"></i> @lang('Rename')</span>
 	@elseif($edit && $o->can_addvalues)
 		@switch(get_class($o))
 			@case(Certificate::class)
@@ -26,7 +26,7 @@
 				@break
 
 			@case(ObjectClass::class)
-				<span type="button" @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) data-bs-toggle="modal" data-bs-target="#new_objectclass-modal"><i class="fas fa-fw fa-plus"></i> @lang('Add Objectclass')</span>
+				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) data-bs-toggle="modal" data-bs-target="#new_objectclass-modal"><i class="fas fa-fw fa-plus"></i> @lang('Add Objectclass')</span>
 
 				<!-- NEW OBJECT CLASS -->
 				<div class="modal fade" id="new_objectclass-modal" tabindex="-1" aria-labelledby="new_objectclass-label" aria-hidden="true" data-bs-backdrop="static">

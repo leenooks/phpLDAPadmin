@@ -48,7 +48,7 @@ Entry Editing:
   - [ ] JpegPhoto Create/Delete
   - [ ] Binary attribute upload
   - [ ] If removing an objectClass, remove all attributes that only that objectclass provided
-  - [ ] Rename an entry
+  - [ ] Move an entry
   - [ ] Group membership selection
   - [ ] Attribute tag creation
 

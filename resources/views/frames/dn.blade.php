@@ -281,6 +281,25 @@
 						})
 						break;
 
+					case 'entry-rename':
+						$.ajax({
+							method: 'GET',
+							url: '{{ url('modal/rename') }}/'+dn,
+							dataType: 'html',
+							cache: false,
+							beforeSend: function() {
+								that.empty().append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
+							},
+							success: function(data) {
+								that.empty().html(data);
+							},
+							error: function(e) {
+								if (e.status !== 412)
+									alert('That didnt work? Please try again....');
+							},
+						});
+						break;
+
 					default:
 						switch ($(item.relatedTarget).attr('name')) {
 							case 'entry-userpassword-check':
