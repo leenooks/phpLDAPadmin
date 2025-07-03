@@ -172,6 +172,8 @@ class Attribute implements \Countable, \ArrayAccess
 			'required_by' => $this->schema?->required_by_object_classes ?: collect(),
 			// Used in Object Classes
 			'used_in' => $this->schema?->used_in_object_classes ?: collect(),
+			// For single value attributes
+			'value' => $this->schema?->is_single_value ? $this->values->first() : NULL,
 			// The current attribute values
 			'values' => ($this->no_attr_tags || $this->is_internal) ? $this->tagValues() : $this->_values,
 			// The original attribute values
