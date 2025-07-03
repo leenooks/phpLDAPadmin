@@ -181,8 +181,11 @@ final class Server
 			$result = collect();
 
 			// @note: Incase our rootDSE didnt return a namingcontext, we'll have no base DNs
-			foreach ($namingcontexts as $dn)
-				$result->push(self::get($dn)->read()->find($dn));
+			foreach ($namingcontexts as $dn) {
+				$o = self::get($dn)->read()->find($dn);
+				$o->setBase();
+				$result->push($o);
+			}
 
 			return $result->filter()->sort(fn($item)=>$item->sort_key);
 		});
@@ -501,7 +504,6 @@ final class Server
 	 * Get the Schema DN
 	 *
 	 * @return string
-	 * @throws ObjectNotFoundException
 	 */
 	public function schemaDN(): string
 	{

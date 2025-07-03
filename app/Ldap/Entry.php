@@ -39,6 +39,7 @@ class Entry extends Model
 
 	// For new entries, this is the container that this entry will be stored in
 	private string $rdnbase;
+	private(set) bool $is_base;
 
 	/* OVERRIDES */
 
@@ -572,6 +573,16 @@ class Entry extends Model
 		}
 
 		return [$attribute,$tags];
+	}
+
+	/**
+	 * Is this entry a baseDN
+	 *
+	 * @return void
+	 */
+	public function setBase(): void
+	{
+		$this->is_base = TRUE;
 	}
 
 	public function setRDNBase(string $bdn): void

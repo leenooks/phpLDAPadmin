@@ -24,7 +24,7 @@ class AjaxController extends Controller
 	{
 		return Server::baseDNs()
 			->map(fn($item)=> [
-				'title'=>$item->getRdn(),
+				'title'=>$item->is_base ? $item->getDn() : $item->getRdn(),
 				'item'=>$item->getDNSecure(),
 				'lazy'=>TRUE,
 				'icon'=>'fa-fw fas fa-sitemap',
