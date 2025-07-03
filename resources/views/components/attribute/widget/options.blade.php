@@ -255,18 +255,18 @@
 			@default
 				@if($o->isDynamic()) @break @endif
 				@php($clone=TRUE)
-				@if($o->values_old->count())
-					<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) data-attribute="{{ $o->name }}" id="{{ $o->name_lc }}-addnew"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</span>
+				@if($o->values_old->count() && (! $template))
+					<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) data-attribute="{{ $o->name_lc }}" id="{{ $o->name_lc }}-addnew"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</span>
 				@endif
 
 				@section('page-scripts')
-					@if($clone && $edit && $o->can_addvalues)
+					@if((! $template) && $clone && $edit && $o->can_addvalues)
 						<script type="text/javascript">
 							$(document).ready(function() {
 								// Create a new entry when Add Value clicked
-								$('#{{ $o->name_lc }}-addnew.addable').click(function(item) {
+								$('form#dn-edit #{{ $o->name_lc }}-addnew.addable').click(function(item) {
 									var attribute = $(this).data('attribute');
-									var active = $('attribute[id='+attribute+']').find('.tab-pane.active');
+									var active = $('#template-default attribute[id='+attribute+']');
 
 									active.find('input:last')
 										.clone()

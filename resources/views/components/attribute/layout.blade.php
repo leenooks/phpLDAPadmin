@@ -4,7 +4,7 @@
 			{{ $slot }}
 		</attribute>
 
-		<x-attribute.widget.options :o="$o" :edit="$edit" :new="$new"/>
+		<x-attribute.widget.options :o="$o" :edit="$edit" :new="$new" :template="$template ?? FALSE"/>
 	</div>
 </div>
 

@@ -1,5 +1,5 @@
 <!-- $o=Attribute::class -->
-<x-attribute.layout :edit="$edit=($edit ?? FALSE)" :new="$new=($new ?? FALSE)" :o="$o">
+<x-attribute.layout :edit="$edit=($edit ?? FALSE)" :new="$new=($new ?? FALSE)" :o="$o" :template="$template">
 	<div class="col-12">
 		<div class="tab-content">
 			@foreach($o->langtags as $langtag)

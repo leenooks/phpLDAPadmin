@@ -46,7 +46,7 @@
 							</span>
 						@endif
 
-						@if((! $o->no_attr_tags) && (! $o->is_rdn))
+						@if((! $o->no_attr_tags) && (! $o->is_rdn) && (! $template))
 							<span data-bs-toggle="tab" href="#langtag-{{ $o->name_lc }}-+" class="bg-primary-subtle btn btn-outline-primary border-primary addable d-none">
 								<i class="fas fa-fw fa-plus text-dark" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" aria-label="Add Lang Tag" data-bs-original-title="Add Lang Tag"></i>
 							</span>
