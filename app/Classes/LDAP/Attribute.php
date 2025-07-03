@@ -191,6 +191,21 @@ class Attribute implements \Countable, \ArrayAccess
 	}
 
 	/**
+	 * If this attribute has changes, re-render the attribute values
+	 *
+	 * @return array
+	 */
+	public function getDirty(): array
+	{
+		$dirty = [];
+
+		if ($this->isDirty())
+			$dirty = [$this->name_lc => $this->_values->toArray()];
+
+		return $dirty;
+	}
+
+	/**
 	 * Return the hints about this attribute, ie: RDN, Required, etc
 	 *
 	 * @return Collection

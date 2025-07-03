@@ -102,6 +102,30 @@ class Entry extends Model
 	}
 
 	/**
+	 * This replaces the model's get dirty, given that we store LDAP attributes in $this->objects, replacing
+	 * $this->original/$this->attributes
+	 *
+	 * @return array
+	 */
+	public function getDirty(): array
+	{
+		$result = collect();
+
+		foreach ($this->objects as $o)
+			if ($o->isDirty())
+				$result = $result->merge($o->getDirty());
+
+		$result = $result
+			->flatMap(function($item,$attr) {
+				return ($x=collect($item))->count()
+					? $x->flatMap(fn($v,$k)=>[strtolower($attr.(($k !== self::TAG_NOTAG) ? ';'.$k : ''))=>$v])
+					: [strtolower($attr)=>[]];
+			});
+
+		return $result->toArray();
+	}
+
+	/**
 	 * Determine if the new and old values for a given key are equivalent.
 	 */
 	protected function originalIsEquivalent(string $key): bool
@@ -454,7 +478,7 @@ class Entry extends Model
 			$ot = $this->getOtherTags();
 
 			$cache[$tag ?: '_all_'] = $this->objects
-				->filter(fn($item)=>(! $item->is_internal) && ((! $item->no_attr_tags) || (! $tag) || ($tag === Entry::TAG_NOTAG)))
+				->filter(fn($item)=>(! $item->is_internal) && ((! $item->no_attr_tags) || (! $tag) || ($tag === self::TAG_NOTAG)))
 				->filter(fn($item)=>(! $tag) || $ot->has($item->name_lc) || count($item->tagValues($tag)) > 0);
 		}
 

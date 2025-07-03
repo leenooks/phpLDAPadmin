@@ -56,6 +56,7 @@ abstract class Import
 	{
 		switch ($action) {
 			case static::LDAP_IMPORT_ADD:
+			case static::LDAP_IMPORT_MODIFY:
 				try {
 					$o->save();
 
@@ -65,15 +66,17 @@ abstract class Import
 					if ($e->getDetailedError())
 						return collect([
 							'dn'=>$o->getDN(),
-							'result'=>sprintf('%d: %s (%s)',
+							'link'=>$o->getDNSecure(),
+							'result'=>sprintf('%d: %s%s',
 								($x=$e->getDetailedError())->getErrorCode(),
 								$x->getErrorMessage(),
-								$x->getDiagnosticMessage(),
+								$x->getDiagnosticMessage() ? ' ('.$x->getDiagnosticMessage().')' : '',
 							)
 						]);
 					else
 						return collect([
 							'dn'=>$o->getDN(),
+							'link'=>$o->getDNSecure(),
 							'result'=>sprintf('%d: %s',
 								$e->getCode(),
 								$e->getMessage(),
@@ -81,9 +84,13 @@ abstract class Import
 						]);
 				}
 
-				Log::debug(sprintf('%s:Import Commited',self::LOGKEY));
+				Log::debug(sprintf('%s:= Import Commited',self::LOGKEY));
 
-				return collect(['dn'=>$o->getDN(),'result'=>__('Created')]);
+				return collect([
+					'dn'=>$o->getDN(),
+					'link'=>$o->getDNSecure(),
+					'result'=>$action === self::LDAP_IMPORT_ADD ? __('Created') : __('Modified'),
+				]);
 
 			default:
 				throw new GeneralException('Unhandled action during commit: '.$action);

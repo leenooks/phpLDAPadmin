@@ -1,0 +1,5 @@
+# Delete actions
+version: 1
+dn: cn=Bart Simpson,ou=People,o=Simpsons
+changetype:modify
+delete: facsimiletelephonenumber

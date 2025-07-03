@@ -1,0 +1,12 @@
+# Multiple actions
+version: 1
+dn: cn=Bart Simpson,ou=People,o=Simpsons
+changetype: modify
+replace: mail
+mail: barts@email.com
+-
+add: mail
+mail: secondmail@example.com
+-
+add: facsimiletelephonenumber
+facsimiletelephonenumber: +1 555 222 4444

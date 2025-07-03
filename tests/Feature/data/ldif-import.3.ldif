@@ -1,0 +1,7 @@
+# Add lang-tag option with multiple values
+version: 1
+dn: cn=Bart Simpson,ou=People,o=Simpsons
+changetype: modify
+add: mail
+mail;lang-au: au-email@example.com
+mail;lang-cn: cn-email@example.com

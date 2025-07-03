@@ -30,7 +30,13 @@
 									</thead>
 									@foreach($result as $item)
 										<tr>
-											<td>{{ $item->get('dn') }}</td>
+											<td>
+												@if($x=$item->get('link'))
+													<a href="{{ url('/') }}#{{ $x }}">{{ $item->get('dn') }}</a>
+												@else
+													{{ $item->get('dn') }}
+												@endif
+											</td>
 											<td>{{ $item->get('result') }}</td>
 											<td class="text-end">{{ $item->get('line') }}</td>
 										</tr>

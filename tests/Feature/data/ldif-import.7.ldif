@@ -1,0 +1,12 @@
+version: 1
+dn: cn=Bart Simpson,ou=People,o=Simpsons
+changetype: modify
+delete:mail
+
+dn: cn=Bart Simpson,ou=People,o=Simpsons
+changetype: modify
+add: mail
+mail: notag1@simpsons.example.com
+mail: notag2@simpsons.example.com
+mail;lang-au: au-email@simpsons.example.com
+mail;lang-cn: cn-email@simpsons.example.com

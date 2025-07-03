@@ -1,0 +1,9 @@
+# Multiple values with tags and replace
+version: 1
+dn: cn=Bart Simpson,ou=People,o=Simpsons
+changetype: modify
+replace: mail
+mail: notag@example.com
+mail: notag1@example.com
+mail;lang-au: au-tag@example.com
+mail;lang-cn: cn-tag@example.com

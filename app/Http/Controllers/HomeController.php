@@ -538,9 +538,13 @@ class HomeController extends Controller
 			$result = $import->process();
 
 		} catch (NotImplementedException $e) {
+			Log::error(sprintf('Import Exception [%s]',$e->getMessage()));
+
 			abort(555,$e->getMessage());
 
 		} catch (\Exception $e) {
+			Log::error(sprintf('Import Exception [%s]',$e->getMessage()));
+
 			abort(598,$e->getMessage());
 		}
 
