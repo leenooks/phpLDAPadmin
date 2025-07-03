@@ -113,4 +113,27 @@ class AjaxController extends Controller
 			'may' => $oc->getMayAttrs()->pluck('name'),
 		];
 	}
+
+	public function subordinates(?string $dn=NULL): array
+	{
+		$dn = $dn ? Crypt::decryptString($dn) : '';
+
+		// Sometimes our key has a command, so we'll ignore it
+		if (str_starts_with($dn,'*') && ($x=strpos($dn,'|')))
+			$dn = substr($dn,$x+1);
+
+		$result = collect();
+		// If no DN, we'll find all children
+		if (! $dn)
+			foreach (Server::baseDNs() as $base)
+				$result = $result->merge(config('server')
+					->subordinates($base->getDN()));
+		else
+			$result = config('server')
+				->subordinates(collect(explode(',',$dn))->last());
+
+		return
+			$result->map(fn($item)=>['id'=>$item->getDNSecure(),'value'=>$item->getDN()])
+			->toArray();
+	}
 }

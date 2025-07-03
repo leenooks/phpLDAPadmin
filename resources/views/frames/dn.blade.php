@@ -23,7 +23,9 @@
 					@endif
 					@if($page_actions->get('copy'))
 						<li>
-							<button class="btn btn-outline-dark p-1 m-1" id="entry-copy-move" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Copy/Move')" disabled><i class="fas fa-fw fa-copy fs-5"></i></button>
+							<span id="entry-copy-move" data-bs-toggle="modal" data-bs-target="#page-modal">
+								<button class="btn btn-outline-dark p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Copy/Move')"><i class="fas fa-fw fa-copy fs-5"></i></button>
+							</span>
 						</li>
 					@endif
 					@if($page_actions->get('edit'))
@@ -226,6 +228,25 @@
 				var that = $(this).find('.modal-content');
 
 				switch ($(item.relatedTarget).attr('id')) {
+					case 'entry-copy-move':
+						$.ajax({
+							method: 'GET',
+							url: '{{ url('modal/copy-move') }}/'+dn,
+							dataType: 'html',
+							cache: false,
+							beforeSend: function() {
+								that.empty().append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
+							},
+							success: function(data) {
+								that.empty().html(data);
+							},
+							error: function(e) {
+								if (e.status !== 412)
+									alert('That didnt work? Please try again....');
+							},
+						});
+						break;
+
 					case 'entry-delete':
 						$.ajax({
 							method: 'GET',

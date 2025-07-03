@@ -509,4 +509,15 @@ final class Server
 	{
 		return Arr::get($this->rootDSE->subschemasubentry,0);
 	}
+
+	public function subordinates(string $dn,array $attrs=['dn']): ?LDAPCollection
+	{
+		return $this
+			->get(
+				dn: $dn,
+				attrs: array_merge($attrs,[]))
+			->rawFilter('(hassubordinates=TRUE)')
+			->search()
+			->get() ?: NULL;
+	}
 }

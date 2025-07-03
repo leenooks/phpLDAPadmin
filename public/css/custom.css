@@ -19,7 +19,7 @@ attribute#objectclass .input-group-end:not(input.form-control) {
 	border-radius: 4px !important;
 }
 
-.input-group:first-child:not(.select-group) .select2-container--bootstrap-5 .select2-selection {
+.input-group:first-child:not(.select-group):not(:last-child) .select2-container--bootstrap-5 .select2-selection {
 	border-bottom-right-radius: unset;
 	border-top-right-radius: unset;
 }
@@ -97,4 +97,9 @@ input.form-control.input-group-end {
 /* Square UL items */
 ul.square {
 	list-style-type: square;
+}
+
+/* Fix select2 selections when set up with d-none */
+select[class*="d-none"] + span.select2 {
+	display: none;
 }

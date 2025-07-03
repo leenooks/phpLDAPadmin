@@ -92,11 +92,12 @@ class Entry extends Model
 	public function getAttributes(): array
 	{
 		return $this->objects
+			->filter(fn($item)=>(! $item->is_internal))
 			->flatMap(fn($item)=>
-				($item->no_attr_tags)
+				$item->no_attr_tags
 					? [strtolower($item->name)=>$item->values]
 					: $item->values
-						->flatMap(fn($v,$k)=>[strtolower($item->name.($k !== self::TAG_NOTAG ? ';'.$k : ''))=>$v]))
+						->flatMap(fn($v,$k)=>[strtolower($item->name.(($k !== self::TAG_NOTAG) ? ';'.$k : ''))=>$v]))
 			->toArray();
 	}
 

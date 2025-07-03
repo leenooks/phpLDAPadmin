@@ -43,18 +43,21 @@ Route::controller(HomeController::class)->group(function() {
 		});
 
 		Route::match(['get','post'],'entry/add','entry_add');
+		Route::post('entry/attr/add/{id}','entry_attr_add');
 		Route::post('entry/create','entry_create');
+		Route::post('entry/copy-move','entry_copy_move');
 		Route::post('entry/delete','entry_delete');
 		Route::get('entry/export/{id}','entry_export');
 		Route::post('entry/password/check/','entry_password_check');
-		Route::post('entry/attr/add/{id}','entry_attr_add');
 		Route::post('entry/objectclass/add','entry_objectclass_add');
 		Route::post('entry/rename','entry_rename');
+
 		Route::post('entry/update/commit','entry_update');
 		Route::post('entry/update/pending','entry_pending_update');
 
 		Route::post('import/process/{type}','import');
 
+		Route::view('modal/copy-move/{dn}','modals.entry-copy-move');
 		Route::view('modal/delete/{dn}','modals.entry-delete');
 		Route::view('modal/export/{dn}','modals.entry-export');
 		Route::view('modal/rename/{dn}','modals.entry-rename');
@@ -69,4 +72,5 @@ Route::controller(AjaxController::class)
 		Route::post('children','children');
 		Route::post('schema/view','schema_view');
 		Route::post('schema/objectclass/attrs/{id}','schema_objectclass_attrs');
+		Route::post('subordinates','subordinates');
 	});

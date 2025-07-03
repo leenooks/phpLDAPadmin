@@ -112,6 +112,60 @@ class HomeController extends Controller
 			->with('updated',FALSE);
 	}
 
+	public function entry_copy_move(Request $request): \Illuminate\Http\RedirectResponse|\Illuminate\View\View
+	{
+		$from_dn = Crypt::decryptString($request->post('dn'));
+		Log::info(sprintf('%s:Renaming [%s] to [%s]',self::LOGKEY,$from_dn,$request->post('to_dn')));
+
+		$o = clone config('server')->fetch($from_dn);
+
+		if (! $o)
+			return back()
+				->withInput()
+				->with('note',__('DN doesnt exist'));
+
+		$o->setDN($request->post('to_dn'));
+		$o->exists = FALSE;
+
+		// Add the RDN attribute to match the new RDN
+		$rdn = collect(explode(',',$request->post('to_dn')))->first();
+
+		list($attr,$value) = explode('=',$rdn);
+		$o->{$attr} = [Entry::TAG_NOTAG => $o->getObject($attr)->tagValuesOld(Entry::TAG_NOTAG)->push($value)->unique()];
+
+		Log::info(sprintf('%s:Copying [%s] to [%s]',self::LOGKEY,$from_dn,$o->getDN()));
+
+		try {
+			$o->save();
+
+		} catch (LdapRecordException $e) {
+			return Redirect::to('/')
+				->withInput(['_key'=>Crypt::encryptString('*dn|'.$from_dn)])
+				->with('failed',sprintf('%s: %s - %s: %s',
+					__('LDAP Server Error Code'),
+					$e->getDetailedError()?->getErrorCode() ?: $e->getMessage(),
+					$e->getDetailedError()?->getErrorMessage() ?: $e->getFile(),
+					$e->getDetailedError()?->getDiagnosticMessage() ?: $e->getLine(),
+				));
+		}
+
+		if ($request->post('delete') && $request->post('delete') === '1') {
+			Log::info(sprintf('%s:Deleting [%s] after copy',self::LOGKEY,$from_dn));
+
+			$x = $this->entry_delete($request);
+
+			return ($x->getSession()->has('success'))
+				? Redirect::to('/')
+					->withInput(['_key'=>Crypt::encryptString('*dn|'.$o->getDN())])
+					->with('success',__('Entry copied and deleted'))
+				: $x;
+		}
+
+		return Redirect::to('/')
+			->withInput(['_key'=>Crypt::encryptString('*dn|'.$o->getDN())])
+			->with('success',__('Entry copied'));
+	}
+
 	public function entry_create(EntryAddRequest $request): \Illuminate\Http\RedirectResponse
 	{
 		$key = $this->request_key($request,collect(old()));
@@ -154,7 +208,7 @@ class HomeController extends Controller
 				->with('failed',sprintf('%s: %s - %s: %s',
 					__('LDAP Server Error Code'),
 					$e->getDetailedError()->getErrorCode(),
-					__($e->getDetailedError()->getErrorMessage()),
+					$e->getDetailedError()->getErrorMessage(),
 					$e->getDetailedError()->getDiagnosticMessage(),
 				));
 		}
@@ -377,7 +431,7 @@ class HomeController extends Controller
 				->with('failed',sprintf('%s: %s - %s: %s',
 					__('LDAP Server Error Code'),
 					$e->getDetailedError()->getErrorCode(),
-					__($e->getDetailedError()->getErrorMessage()),
+					$e->getDetailedError()->getErrorMessage(),
 					$e->getDetailedError()->getDiagnosticMessage(),
 				));
 		}
@@ -435,8 +489,8 @@ class HomeController extends Controller
 				->with('dn',$key['dn'])
 				->with('o',$o)
 				->with('page_actions',collect([
-					'copy'=>FALSE,
 					'create'=>($x=($o->getObjects()->except('entryuuid')->count() > 0)),
+					'copy'=>$x,
 					'delete'=>(! is_null($xx=$o->getObject('hassubordinates')->value)) && ($xx === 'FALSE'),
 					'edit'=>$x,
 					'export'=>$x,
