@@ -51,9 +51,10 @@
 		</div>
 	@endif
 
+	<x-success/>
+	<x-updated/>
 	<x-note/>
 	<x-error/>
-	<x-updated/>
 	<x-failed/>
 @endsection
 

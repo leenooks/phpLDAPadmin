@@ -206,7 +206,7 @@ class HomeController extends Controller
 		}
 
 		return Redirect::to('/')
-			->with('success',[sprintf('%s: %s',__('Deleted'),$dn)]);
+			->with('success',sprintf('%s: %s',__('Deleted'),$dn));
 	}
 
 	public function entry_export(Request $request,string $id): \Illuminate\View\View
@@ -298,7 +298,7 @@ class HomeController extends Controller
 				$request->get('_userpassword_hash'));
 
 		if (! $o->getDirty())
-			return back()
+			return Redirect::back()
 				->withInput()
 				->with('note',__('No attributes changed'));
 
@@ -315,7 +315,7 @@ class HomeController extends Controller
 		$o = config('server')->fetch($from_dn);
 
 		if (! $o)
-			return back()
+			return Redirect::back()
 				->withInput()
 				->with('note',__('DN doesnt exist'));
 
@@ -351,7 +351,7 @@ class HomeController extends Controller
 			$o->{$key} = array_filter($value);
 
 		if (! $dirty=$o->getDirty())
-			return back()
+			return Redirect::back()
 				->withInput()
 				->with('note',__('No attributes changed'));
 
