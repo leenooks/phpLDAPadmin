@@ -81,7 +81,7 @@
 											<span data-bs-toggle="tab" href="#template-{{ $template->name }}" @class(['btn','btn-outline-focus','active'=>$loop->index === 0])><i class="fa fa-fw pe-2 {{ $template->icon }}"></i> {{ $template->title }}</span>
 										@endforeach
 										@if($o->templates->count())
-											<span data-bs-toggle="tab" href="#template-default" @class(['btn','btn-outline-focus','p-1','active'=>(! $o->templates->count())])>{{ __('LDAP Entry') }}</span>
+											<span data-bs-toggle="tab" href="#template-default" @class(['btn','btn-outline-focus','p-1','active'=>(! $o->templates->count())])><i class="fa fa-fw fa-list pe-2"></i> {{ __('LDAP Entry') }}</span>
 										@endif
 									</div>
 								</div>

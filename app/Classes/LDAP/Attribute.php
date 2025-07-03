@@ -39,57 +39,6 @@ class Attribute implements \Countable, \ArrayAccess
 	private const SYNTAX_CERTIFICATE = '1.3.6.1.4.1.1466.115.121.1.8';
 	private const SYNTAX_CERTIFICATE_LIST = '1.3.6.1.4.1.1466.115.121.1.9';
 
-	/*
-	# Has the attribute been modified
-	protected $modified = false;
-	# Is the attribute being deleted because of an object class removal
-	protected $forcedelete = false;
-	# Is the attribute visible
-	protected $visible = false;
-	protected $forcehide = false;
-	# Is the attribute modifiable
-	protected $readonly = false;
-	# LDAP attribute type MUST/MAY
-	protected $ldaptype = null;
-	# Attribute property type (eg password, select, multiselect)
-	protected $type = '';
-	# Attribute value to keep unique
-	protected $unique = false;
-
-	# Display parameters
-	protected $display = '';
-	protected $icon = '';
-	protected $hint = '';
-	# Helper details
-	protected $helper = array();
-	protected $helpervalue = array();
-	# Onchange details
-	protected $onchange = array();
-	# Show spacer after this attribute is rendered
-	protected $spacer = false;
-	protected $verify = false;
-
-	# Component size
-	protected $size = 0;
-	# Value max length
-	protected $maxlength = 0;
-	# Text Area sizings
-	protected $cols = 0;
-	protected $rows = 0;
-
-	# Public for sorting
-	public $page = 1;
-	public $order = 255;
-	public $ordersort = 255;
-
-	# Schema Aliases for this attribute (stored in lowercase)
-	protected $aliases = array();
-
-	# Configuration for automatically generated values
-	protected $autovalue = array();
-	protected $postvalue = array();
-	*/
-
 	/**
 	 * Create an Attribute
 	 *
@@ -119,20 +68,6 @@ class Attribute implements \Countable, \ArrayAccess
 				$this->oc = $this->oc->merge($soc->getParents()->pluck('oid'));
 			}
 		}
-
-		/*
-		# Should this attribute be hidden
-		if ($server->isAttrHidden($this->name))
-			$this->forcehide = true;
-
-		# Should this attribute value be read only
-		if ($server->isAttrReadOnly($this->name))
-			$this->readonly = true;
-
-		# Should this attribute value be unique
-		if ($server->isAttrUnique($this->name))
-			$this->unique = true;
-		*/
 	}
 
 	public function __call(string $name,array $arguments)
