@@ -329,6 +329,11 @@ final class Server
 			: NULL;
 	}
 
+	public function hasMore(): bool
+	{
+		return (new Entry)->hasMore();
+	}
+
 	/**
 	 * Does this server support RFC3666 language tags
 	 * OID: 1.3.6.1.4.1.4203.1.5.4

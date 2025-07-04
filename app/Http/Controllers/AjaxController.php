@@ -67,6 +67,17 @@ class AjaxController extends Controller
 					]
 					: []
 			)
+			->push(
+				config('server')->hasMore()
+					? [
+						'title'=>sprintf('[%s]',__('Size Limit')),
+						'item'=>'',
+						'lazy'=>FALSE,
+						'icon'=>'fas fa-fw fa-triangle-exclamation text-danger',
+						'tooltip'=>__('There may be more entries'),
+					]
+					: []
+			)
 			->filter()
 			->values();
 	}

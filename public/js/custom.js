@@ -89,7 +89,7 @@ $(document).ready(function() {
 			types: 'active expanded focus selected'  // which status types to store
 		},
 		click: function(event,data) {
-			if (data.targetType === 'title')
+			if (data.targetType === 'title' && data.node.data.item)
 				getNode(data.node.data.item);
 		},
 		source: sources,
