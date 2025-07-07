@@ -38,7 +38,11 @@ class Template
 			// @todo Make sure we have a structural objectclass, or make the template invalid
 			$this->template = collect(json_decode($td->get($file),null,512,JSON_OBJECT_AS_ARRAY|JSON_THROW_ON_ERROR));
 
-		} catch (\JsonException $e) {
+			// Also test the regex is valid.
+			if ($this->template->has('regexp'))
+				preg_match($this->regexp,'');
+
+		} catch (\ErrorException|\JsonException $e) {
 			$this->invalid = TRUE;
 			$this->reason = $e->getMessage();
 		}

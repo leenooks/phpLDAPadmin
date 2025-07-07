@@ -61,7 +61,7 @@ class Entry extends Model
 				$to = new Template($file);
 
 				if ($to->invalid) {
-					Log::debug(sprintf('Template [%s] is not valid (%s) - ignoring',$file,$to->reason));
+					Log::alert(sprintf('Template [%s] is not valid (%s) - ignoring',$file,$to->reason));
 
 				} else {
 					$templates->put($file,new Template($file));
