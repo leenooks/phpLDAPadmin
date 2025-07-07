@@ -22,7 +22,7 @@
 								name="{{ $o->name_lc }}[{{ $langtag }}][]"
 								value="{{ $value ?: ($av ?? '') }}"
 								placeholder="{{ ! is_null($x=$tv->get($loop->index)) ? $x : '['.__('NEW').']' }}"
-								@readonly(! $edit)
+								@readonly(! $new)
 								@disabled($o->isDynamic())>
 
 							<div class="invalid-feedback pb-2">
