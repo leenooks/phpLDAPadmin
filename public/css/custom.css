@@ -1,9 +1,18 @@
-/** ensure our userpassword has select is next to the password input */
-attribute#userpassword .select2-container--bootstrap-5 .select2-selection {
-	font-size: inherit;
+/* ensure our password type select box shrinks and has the full boarder */
+attribute#userpassword .input-group > .form-select  {
+	flex-grow: 0;
 	width: 9em;
 	border: var(--bs-gray-500) 1px solid;
-	background-color: #f0f0f0;
+	z-index: 2;
+}
+
+attribute#userpassword .input-group .select2-container--bootstrap-5 {
+	flex-grow: 0;
+	margin-bottom: 0.25em !important;
+}
+
+attribute#userpassword .input-group > .select2-container--bootstrap-5 .select2-selection {
+	background-color: #eef2f4;
 }
 
 /* render the structural inside the input box */
@@ -12,20 +21,6 @@ attribute#objectclass .input-group-end:not(input.form-control) {
 	right: 1em;
 	top: 0.5em;
 	z-index: 5;
-}
-
-/* select forms that have nothing next to them */
-.select-group:first-child .select2-container--bootstrap-5 .select2-selection {
-	border-radius: 4px !important;
-}
-
-.input-group:first-child:not(.select-group):not(:last-child) .select2-container--bootstrap-5 .select2-selection {
-	border-bottom-right-radius: unset;
-	border-top-right-radius: unset;
-}
-
-.select2-container .select2-selection--single .select2-selection__rendered {
-	font-size: 0.88em;
 }
 
 input.form-control.input-group-end {

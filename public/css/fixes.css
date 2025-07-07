@@ -215,9 +215,17 @@ pre code .line::before {
 }
 
 /** select2 rendering fixes */
+.select2-container--bootstrap-5 .select2-selection {
+	border: var(--bs-gray-500) 1px solid;
+}
+
+/* Selection rendered size */
+.select2-container .select2-selection--single .select2-selection__rendered {
+	font-size: 95%;
+}
+
 /* The opened input box */
 .select2-container--bootstrap-5 .select2-dropdown .select2-search .select2-search__field {
-	line-height: 1.0;
 	border: 1px solid #aaa;
 }
 
@@ -226,23 +234,21 @@ pre code .line::before {
 	font-size: 95%;
 }
 
-select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__clear, .select2-container--bootstrap-5 .select2-selection--single .select2-selection__clear {
-	width: 0.5rem;
-	height: 0.5rem;
-}
-
+/* Place holder text */
 .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered .select2-selection__placeholder {
-	line-height: 1.0;
 	font-size: 90%;
 }
 
+/* Group options title rendering */
 .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option[role=group] .select2-results__group {
 	color: #212529;
 	font-weight: 800;
 }
 
+/* Multiple selected items rendering */
 .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
 	padding: 0.25em 0.45em;
+	font-size: 90%;
 }
 
 /* Remove the shadow outline on an opened box */
