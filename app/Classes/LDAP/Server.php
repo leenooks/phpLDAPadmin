@@ -463,11 +463,11 @@ final class Server
 							foreach ($o->attributes as $attribute) {
 								if (($attrid = $this->schema('attributetypes')->search(fn($item)=>$item->oid === $attribute->oid)) !== FALSE) {
 									// Add Used In.
-									$this->attributetypes[$attrid]->addUsedInObjectClass($o->oid,$o->isStructural());
+									$this->attributetypes[$attrid]->addUsedInObjectClass($o->name,$o->isStructural());
 
 									// Add Required By.
 									if ($attribute->is_must)
-										$this->attributetypes[$attrid]->addRequiredByObjectClass($o->oid,$o->isStructural());
+										$this->attributetypes[$attrid]->addRequiredByObjectClass($o->name,$o->isStructural());
 								}
 							}
 						}

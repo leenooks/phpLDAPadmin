@@ -88,11 +88,11 @@
 						<td>@lang('Used by ObjectClasses')</td>
 						<td>
 							@if($o->used_in_object_classes->count())
-								@foreach($o->used_in_object_classes as $class => $structural)
+								@foreach($o->used_in_object_classes as $name => $structural)
 									@if($structural)
 										<strong>
 									@endif
-									<a class="objectclass" id="{{ strtolower($class) }}" href="#{{ strtolower($class) }}">{{ $class }}</a>
+									<a class="objectclass" id="{{ strtolower($name) }}" href="#{{ strtolower($name) }}">{{ $name }}</a>
 									@if($structural)
 										</strong>
 									@endif

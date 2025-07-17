@@ -64,8 +64,8 @@ class Attribute implements \Countable, \ArrayAccess
 			$soc = config('server')->schema('objectclasses',$objectclass);
 
 			if ($soc) {
-				$this->oc->push($soc->oid);
-				$this->oc = $this->oc->merge($soc->getParents()->pluck('oid'));
+				$this->oc->push($soc->name);
+				$this->oc = $this->oc->merge($soc->getParents()->pluck('name'));
 			}
 		}
 	}
