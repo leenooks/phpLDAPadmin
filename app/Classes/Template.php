@@ -415,6 +415,7 @@ class Template
 				preg_match_all('/(\d+)/',trim($match_subst),$substrarray);
 
 				$delimiter = ($match_delim === '') ? ' ' : preg_quote($match_delim);
+				$result .= sprintf("%s = get_attribute('%s');\n",$match_attr,$match_attr);
 				$result .= sprintf("   %s = %s.split('%s')[%s];\n",$match_attr,$match_attr,$delimiter,$substrarray[1][0] ?? '0');
 
 			} else {
