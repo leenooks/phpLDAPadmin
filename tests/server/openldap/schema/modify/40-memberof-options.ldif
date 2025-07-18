@@ -1,0 +1,12 @@
+dn: olcOverlay=memberof,olcDatabase={4}mdb,cn=config
+changetype: add
+objectClass: olcMemberOf
+objectClass: olcOverlayConfig
+objectClass: olcConfig
+objectClass: top
+olcOverlay: memberof 
+olcMemberOfRefInt: TRUE
+olcMemberOfDangling: ignore
+olcMemberOfGroupOC: groupOfNames
+olcMemberOfMemberAD: member
+olcMemberOfMemberOfAD: memberOf

@@ -1,0 +1,21 @@
+#dn: dc=example.com
+#objectclass: domain
+#dc: example
+
+dn: ou=Group,dc=example.com
+objectclass: organizationalUnit
+ou: Group
+
+dn: ou=People,dc=example.com
+objectclass: organizationalUnit
+ou: People
+
+dn: uid=test1,ou=People,dc=example.com
+objectclass: account
+uid: test1
+
+dn: cn=testgroup,ou=Group,dc=example.com
+objectclass: groupOfNames
+cn: testgroup
+member: uid=test1,ou=People,dc=example.com
+
