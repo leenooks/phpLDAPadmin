@@ -131,7 +131,7 @@ class EntryAddRequest extends FormRequest
 						Log::debug(sprintf('%s:Autovalue for Attribute [%s] in Session [%s] Retrieved [%d](%d)',self::LOGKEY,$attr,Session::id(),$cache,$value));
 
 						if ($cache !== (int)$value)
-							$fail(__('Lock expired, please re-submit.'));
+							$fail(__('Lock expired, please re-submit'));
 					}
 				]
 			])
