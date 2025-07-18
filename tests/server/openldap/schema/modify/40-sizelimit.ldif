@@ -1,4 +1,4 @@
 dn: olcDatabase={4}mdb,cn=config
 changetype: modify
 add: olcSizeLimit
-olcSizeLimit: 5
+olcSizeLimit: 10

@@ -1,4 +1,3 @@
-
 dn: uid=usercert,dc=example.com
 cn: cn
 gidNumber: 1111
@@ -22,3 +21,4 @@ usercertificate;binary:: MIIC2TCCAkKgAwIBAgIBADANBgkqhkiG9w0BAQQFADBGMQswCQYD
  jmbIYVq2epd5iDjQ109SJ/V7b6DFw2NIl8CWeDPOOjL1E5M8dnlmCDeTR2TlBxqUZaBBJZPqzFdv
  xpxqsHC0HfkCXAnUe5MaefFNAH9WbxoB/A2pkXtT6WGWed+QsL5wyKJaO4oD9UD5T+x12aGsHcsD
  Cy3EVEaGEOl+/A==
+

@@ -24,3 +24,4 @@ objectclass: krbPrincipal
 objectclass: krbPrincipalAux
 objectclass: krbTicketPolicyAux
 objectclass: top
+

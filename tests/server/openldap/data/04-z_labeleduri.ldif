@@ -1,6 +1,6 @@
-
 dn: cn=tech_staff,dc=example.com
 cn: tech_staff
 labeleduri: ldap:///dc=example.com?uid?one?(|(cn=kerberos)(uidNumber=*))
 objectclass: nisMailAlias
 objectclass: labeledURIObject
+

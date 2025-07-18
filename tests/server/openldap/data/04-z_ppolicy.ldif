@@ -1,0 +1,26 @@
+dn: ou=Policies,dc=example.com
+ou: Policies
+objectClass: organizationalUnit
+
+dn: cn=passwordDefault,ou=Policies,dc=example.com
+cn: passwordDefault
+sn: passwordDefault
+objectClass: person
+objectClass: pwdPolicyChecker
+objectClass: pwdPolicy
+pwdAllowUserChange: TRUE
+pwdAttribute: userPassword
+pwdCheckQuality: 2
+pwdExpireWarning: 0
+pwdFailureCountInterval: 0
+pwdGraceAuthNLimit: 5
+pwdInHistory: 5
+pwdLockout: TRUE
+pwdLockoutDuration: 600
+pwdMaxAge: 0
+pwdMaxFailure: 10
+pwdMinAge: 0
+pwdMinLength: 12
+pwdMustChange: FALSE
+pwdSafeModify: FALSE
+

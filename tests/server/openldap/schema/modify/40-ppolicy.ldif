@@ -1,0 +1,6 @@
+dn: olcOverlay=ppolicy,olcDatabase={4}mdb,cn=config
+changetype: add
+objectClass: olcPPolicyConfig
+olcOverlay: ppolicy
+olcPPolicyDefault: cn=passwordDefault,ou=Policies,dc=example.com
+#olcPPolicyHashCleartext: TRUE
