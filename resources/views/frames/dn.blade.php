@@ -1,7 +1,7 @@
 @extends('layouts.dn')
 
 @section('page_title')
-	@include('fragment.dn.header',['o'=>($o ?? $o=$server->fetch($dn))])
+	@include('fragment.dn.header')
 @endsection
 
 @section('page_actions')
