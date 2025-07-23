@@ -89,6 +89,11 @@ will be looked at first :)
 Over the years, many, many, many people have supported PLA with either their time, their coding or with financial donations.
 I have tried to send an email to acknowledge each contribution, and if you havent seen anything personally from me, I am sorry, but please know that I do appreciate all the help I get, in whatever form it is provided.
 
+I also appreciate the support of the following organisations supporting open source projects:
+
+* [Docker Hub](https://www.docker.com/community/open-source/application/)
+* [JetBrains](https://jb.gg/OpenSource)
+
 Again, Thank You.
 
 ## License
