@@ -20,7 +20,11 @@
 				<table class="table table-borderless w-75">
 					<tr >
 						<td class="p-0">@lang('Certificate Subject')</td>
-						<th class="p-0">{{ $o->subject($loop->index) }}</th>
+						<th class="p-0">{{ $o->field('subject',$loop->index) }}</th>
+					</tr>
+					<tr >
+						<td class="p-0">@lang('Certificate Issuer')</td>
+						<th class="p-0">{{ $o->field('issuer',$loop->index) }}</th>
 					</tr>
 					<tr>
 						<td class="p-0">{{ ($expire=$o->expires($loop->index))->isPast() ? __('Expired') : __('Expires') }}</td>
