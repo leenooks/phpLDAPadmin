@@ -47,9 +47,9 @@ final class Certificate extends Attribute
 		return Carbon::createFromTimestampUTC($this->cert_info('validTo_time_t',$key));
 	}
 
-	public function subject(int $key=0): string
+	public function field(string $field,int $key=0): string
 	{
-		$subject = collect($this->cert_info('subject',$key))->reverse();
+		$subject = collect($this->cert_info($field,$key))->reverse();
 
 		return $subject->map(fn($item,$key)=>sprintf("%s=%s",$key,$item))->join(',');
 	}
