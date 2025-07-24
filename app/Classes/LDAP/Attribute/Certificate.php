@@ -20,11 +20,7 @@ final class Certificate extends Attribute
 
 	public function authority_key_identifier(int $key=0): string
 	{
-		$data = collect(explode("\n",$this->cert_info('extensions.authorityKeyIdentifier',$key)));
-		return $data
-			->filter(fn($item)=>Str::startsWith($item,'keyid:'))
-			->map(fn($item)=>Str::after($item,'keyid:'))
-			->first();
+		return $this->cert_info('extensions.authorityKeyIdentifier',$key);
 	}
 
 	public function certificate(int $key=0): string
