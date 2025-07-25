@@ -240,14 +240,14 @@ class LDIF extends Import
 
 		switch ($subaction) {
 			case 'add':
-				if (! $value)
+				if (! strlen($value))
 					throw new GeneralException(sprintf('Attribute has no value [%s] (line %d)',$attribute,$c));
 
 				$o->addAttributeItem($attribute,$value);
 				break;
 
 			case 'replace':
-				if (! $value)
+				if (! strlen($value))
 					throw new GeneralException(sprintf('Attribute has no value [%s] (line %d)',$attribute,$c));
 
 				if (! ($x=$o->getObject(($xx=strstr($attribute,';',TRUE)) ?: $attribute)))
