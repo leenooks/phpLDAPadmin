@@ -21,9 +21,12 @@ final class Certificate extends Attribute
 	public function authority_key_identifier(int $key=0): string
 	{
 		$data = collect(explode("\n",$this->cert_info('extensions.authorityKeyIdentifier',$key)));
-		return $data
-			->filter(fn($item)=>Str::startsWith($item,'keyid:'))
-			->map(fn($item)=>Str::after($item,'keyid:'))
+
+		return (($data->count() > 1)
+			? $data
+				->filter(fn($item)=>Str::startsWith($item,'keyid:'))
+				->map(fn($item)=>Str::after($item,'keyid:'))
+			: $data)
 			->first();
 	}
 
@@ -45,6 +48,13 @@ final class Certificate extends Attribute
 	public function expires(int $key=0): Carbon
 	{
 		return Carbon::createFromTimestampUTC($this->cert_info('validTo_time_t',$key));
+	}
+
+	public function issuer(int $key=0): string
+	{
+		$issuer = collect($this->cert_info('issuer',$key))->reverse();
+
+		return $issuer->map(fn($item,$key)=>sprintf("%s=%s",$key,$item))->join(',');
 	}
 
 	public function subject(int $key=0): string

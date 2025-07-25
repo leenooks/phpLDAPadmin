@@ -22,6 +22,10 @@
 						<td class="p-0">@lang('Certificate Subject')</td>
 						<th class="p-0">{{ $o->subject($loop->index) }}</th>
 					</tr>
+					<tr >
+						<td class="p-0">@lang('Certificate Issuer')</td>
+						<th class="p-0">{{ $o->issuer($loop->index) }}</th>
+					</tr>
 					<tr>
 						<td class="p-0">{{ ($expire=$o->expires($loop->index))->isPast() ? __('Expired') : __('Expires') }}</td>
 						<th class="p-0">{{ $expire->format(config('pla.datetime_format','Y-m-d H:i:s')) }}</th>
