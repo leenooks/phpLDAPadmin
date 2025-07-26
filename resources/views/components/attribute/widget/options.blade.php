@@ -14,13 +14,13 @@
 				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name_lc }}-replace" disabled><i class="fas fa-fw fa-certificate"></i> @lang('Replace')</span>
 				@section('page-scripts')
 					<script type="text/javascript">
-							$(document).ready(function() {
-								$('attribute#{{ $o->name_lc }}-replace.addable').click(function(e) {
-									alert('Sorry, not implemented yet');
-									e.preventDefault();
-									return false;
-								});
+						$(document).ready(function() {
+							$('attribute#{{ $o->name_lc }}-replace.addable').click(function(e) {
+								alert('Sorry, not implemented yet');
+								e.preventDefault();
+								return false;
 							});
+						});
 					</script>
 				@append
 				@break

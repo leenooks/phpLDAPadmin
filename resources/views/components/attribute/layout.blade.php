@@ -8,4 +8,6 @@
 	</div>
 </div>
 
+<!-- START {{ $o->name_lc }}-scripts -->
 @yield($o->name_lc.'-scripts')
+<!-- END {{ $o->name_lc }}-scripts -->

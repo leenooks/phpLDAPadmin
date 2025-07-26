@@ -142,6 +142,9 @@ class Entry extends Model
 	 * As attribute values are updated, or new ones created, we need to mirror that
 	 * into our $objects. This is called when we $o->key = $value
 	 *
+	 * If $value is an array, it should be an array of [tag => values]
+	 * If $value is a string, then the key may have the tag "attribute;tag = value", and the tag is taken from the key
+	 *
 	 * This function should update $this->attributes and correctly reflect changes in $this->objects
 	 *
 	 * @param string $key
@@ -157,7 +160,10 @@ class Entry extends Model
 		list($attribute,$tags) = $this->keytag($key);
 
 		$o = $this->objects->get($attribute) ?: Factory::create($this->dn ?: '',$attribute,[],Arr::get($this->attributes,'objectclass',[]));
-		$o->values = collect($value);
+
+		$o->values = collect(is_array($value)
+			? $value
+			: [$tags=>$value]);
 
 		$this->objects->put($key,$o);
 
