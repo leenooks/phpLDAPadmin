@@ -118,13 +118,12 @@ final class AttributeType extends Base
 	private function factory(): Attribute
 	{
 		return Attribute\Factory::create(
-			dn:'',
-			attribute:$this->name,
-			values:[]);
+			dn: '',
+			attribute: $this->name);
 	}
 
 	/**
-	 * For a list of objectclasses return all parent objectclasses as well
+	 * For a list of object classes return all parent object classes as well
 	 *
 	 * @param Collection $ocs
 	 * @return Collection
@@ -140,8 +139,8 @@ final class AttributeType extends Base
 			$result = $result
 				->merge($item
 					->getParents(TRUE)
-					->pluck('oid'))
-				->push($item->oid);
+					->pluck('name'))
+				->push($item->name);
 		}
 
 		return $result;

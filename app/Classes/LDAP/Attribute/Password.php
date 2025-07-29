@@ -80,15 +80,19 @@ final class Password extends Attribute
 		return ($helpers=static::helpers())->has($id) ? new ($helpers->get($id)) : NULL;
 	}
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
+	public function render(string $attrtag,int $index,bool $edit=FALSE,bool $editable=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
-		return view('components.attribute.password')
+		return view('components.attribute.value.password')
 			->with('o',$this)
+			->with('dotkey',$dotkey=$this->dotkey($attrtag,$index))
+			->with('value',($x=$this->_values->dot()->get($dotkey)) ? md5($x) : '')
 			->with('edit',$edit)
-			->with('old',$old)
+			->with('editable',$editable)
 			->with('new',$new)
-			->with('template',$template)
+			->with('attrtag',$attrtag)
+			->with('index',$index)
 			->with('updated',$updated)
+			->with('template',$template)
 			->with('helpers',static::helpers()->map(fn($item,$key)=>['id'=>$key,'value'=>$key])->sort());
 	}
 

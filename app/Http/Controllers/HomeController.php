@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Illuminate\View\ComponentAttributeBag;
+use Illuminate\View\View;
 use LdapRecord\Exceptions\InsufficientAccessException;
 use LdapRecord\LdapRecordException;
 use LdapRecord\Query\ObjectNotFoundException;
@@ -49,27 +51,30 @@ class HomeController extends Controller
 		$o = new Entry;
 		$o->setRDNBase($key['dn']);
 
-		foreach (collect(old())->except(self::INTERNAL_POST) as $old => $value)
-			$o->{$old} = array_filter($value);
+		if (($oldpost=collect(old())->except(self::INTERNAL_POST))->count()) {
+			foreach ($oldpost as $old => $value)
+				$o->{$old} = $value;
 
-		if (old('_template',$request->validated('template'))) {
-			$template = $o->template(old('_template',$request->validated('template')));
+		} else {
+			if (old('_template',$request->validated('template'))) {
+				$template = $o->template(old('_template',$request->validated('template')));
 
-			$o->objectclass = [Entry::TAG_NOTAG=>$template->objectclasses->toArray()];
+				$o->objectclass = [Entry::TAG_NOTAG=>$template->objectclasses->toArray()];
 
-			foreach ($o->getAvailableAttributes()
-				 ->filter(fn($item)=>$item->names_lc->intersect($template->attributes->keys()->map('strtolower'))->count())
-				 ->sortBy(fn($item)=>Arr::get($template->order,$item->name)) as $ao)
-			{
-				$o->{$ao->name} = [Entry::TAG_NOTAG=>''];
+				foreach ($o->getAvailableAttributes()
+					 ->filter(fn($item)=>$item->names_lc->intersect($template->attributes->keys()->map('strtolower'))->count())
+					 ->sortBy(fn($item)=>Arr::get($template->order,$item->name)) as $ao)
+				{
+					$o->{$ao->name} = [Entry::TAG_NOTAG=>['']];
+				}
+
+			} elseif (count($x=collect(old('objectclass',$request->validated('objectclass')))->dot()->filter())) {
+				$o->objectclass = Arr::undot($x);
+
+				// Also add in our required attributes
+				foreach ($o->getAvailableAttributes()->filter(fn($item)=>$item->is_must) as $ao)
+					$o->{$ao->name} = [Entry::TAG_NOTAG=>['']];
 			}
-
-		} elseif (count($x=collect(old('objectclass',$request->validated('objectclass')))->dot()->filter())) {
-			$o->objectclass = Arr::undot($x);
-
-			// Also add in our required attributes
-			foreach ($o->getAvailableAttributes()->filter(fn($item)=>$item->is_must) as $ao)
-				$o->{$ao->name} = [Entry::TAG_NOTAG=>''];
 		}
 
 		$step = $request->get('_step') ? $request->get('_step')+1 : old('_step');
@@ -91,23 +96,22 @@ class HomeController extends Controller
 	 */
 	public function entry_attr_add(Request $request,string $id): \Illuminate\View\View
 	{
-		$xx = new \stdClass;
-		$xx->index = 0;
-
-		$dn = $request->dn ? Crypt::decrypt($request->dn) : '';
-		$o = Factory::create(dn: $dn,attribute: $id,values: [],oc: $request->objectclasses);
+		$o = Factory::create(
+			dn: $request->dn ? Crypt::decrypt($request->dn) : '',
+			attribute: $id,
+			oc: $request->objectclasses);
 
 		$view = $request->noheader
-			? view(sprintf('components.attribute.widget.%s',$id))
+			? view(sprintf('components.attribute.value.%s',$id))
 				->with('value',$request->value)
-				->with('loop',$xx)
-			: view('components.attribute-type')
-				->with('new',TRUE)
-				->with('edit',TRUE);
+			: view('components.attribute');
 
 		return $view
 			->with('o',$o)
-			->with('langtag',Entry::TAG_NOTAG)
+			->with('edit',TRUE)
+			->with('attrtag',Entry::TAG_NOTAG)
+			->with('attributes',new ComponentAttributeBag(['class'=>'form-control mb-1']))
+			->with('dotkey',sprintf('%s.%s',Entry::TAG_NOTAG,0))
 			->with('template',NULL)
 			->with('updated',FALSE);
 	}
@@ -115,6 +119,7 @@ class HomeController extends Controller
 	public function entry_copy_move(Request $request): \Illuminate\Http\RedirectResponse|\Illuminate\View\View
 	{
 		$from_dn = Crypt::decryptString($request->post('dn'));
+		$to_dn = $request->post('to_dn');
 		Log::info(sprintf('%s:Renaming [%s] to [%s]',self::LOGKEY,$from_dn,$request->post('to_dn')));
 
 		$o = clone config('server')->fetch($from_dn);
@@ -124,11 +129,11 @@ class HomeController extends Controller
 				->withInput()
 				->with('note',__('DN doesnt exist'));
 
-		$o->setDN($request->post('to_dn'));
+		$o->setDN($to_dn);
 		$o->exists = FALSE;
 
 		// Add the RDN attribute to match the new RDN
-		$rdn = collect(explode(',',$request->post('to_dn')))->first();
+		$rdn = collect(explode(',',$to_dn))->first();
 
 		list($attr,$value) = explode('=',$rdn);
 		$o->{$attr} = [Entry::TAG_NOTAG => $o->getObject($attr)->tagValuesOld(Entry::TAG_NOTAG)->push($value)->unique()];
@@ -140,7 +145,7 @@ class HomeController extends Controller
 
 		} catch (LdapRecordException $e) {
 			return Redirect::to('/')
-				->withInput(['_key'=>Crypt::encryptString('*dn|'.$from_dn)])
+				->withInput(array_merge(['_key'=>Crypt::encryptString('*dn|'.$to_dn)],$o->getAttributes()))
 				->with('failed',sprintf('%s: %s - %s: %s',
 					__('LDAP Server Error Code'),
 					$e->getDetailedError()?->getErrorCode() ?: $e->getMessage(),
@@ -285,7 +290,7 @@ class HomeController extends Controller
 	public function entry_objectclass_add(Request $request): Collection
 	{
 		$dn = $request->get('_key') ? Crypt::decryptString($request->dn) : '';
-		$oc = Factory::create($dn,'objectclass',$request->oc);
+		$oc = Factory::create(dn: $dn,attribute: 'objectclass',values: $request->oc);
 
 		$ocs = $oc
 			->structural
@@ -296,7 +301,7 @@ class HomeController extends Controller
 					->filter(fn($item)=>$item->isAuxiliary())
 			)
 			// Remove the original objectlcasses
-			->filter(fn($item)=>(! $oc->values->contains($item)))
+			->filter(fn($item)=>(! $oc->_values->contains($item)))
 			->sortBy(fn($item)=>$item->name);
 
 		return $ocs->groupBy(fn($item)=>$item->isStructural())
@@ -311,16 +316,23 @@ class HomeController extends Controller
 	{
 		$dn = Crypt::decryptString($request->dn);
 		$o = config('server')->fetch($dn);
-
-		$password = $o->getObject('userpassword');
+		$po = $o->getObject('userpassword');
 
 		$result = collect();
-		foreach ($password->values->dot() as $key => $value) {
-			$hash = $password->hash($value);
-			$compare = Arr::get($request->password,$key);
-			//Log::debug(sprintf('comparing [%s] with [%s] type [%s]',$value,$compare,$hash::id()),['object'=>$hash]);
+		foreach ($request->password as $index => $value) {
+			$key = Arr::get($request->password,$index.'.key');
+			$form_value = Arr::get($request->password,$index.'.value');
+			$password = $po->_values->dot()->get($key);
 
-			$result->push((($compare !== NULL) && $hash->compare($value,$compare)) ? 'OK' :'FAIL');
+			$hash = $po->hash($password);
+
+			/*Log::debug(sprintf('comparing [%s] with [%s] type [%s]',
+				$form_value,
+				$password,
+				$hash::id()),
+				['object'=>$hash,'request'=>$request->password,'key'=>$key]);*/
+
+			$result->put($key,(strlen($form_value) && $hash->compare($password,$form_value)) ? 'OK' :'FAIL');
 		}
 
 		return $result;
@@ -440,7 +452,7 @@ class HomeController extends Controller
 			->withInput()
 			->with('updated',collect($dirty)
 				->map(fn($item,$key)=>$o->getObject(collect(explode(';',$key))->first()))
-				->values()
+				->keys()
 				->unique());
 	}
 
@@ -450,8 +462,10 @@ class HomeController extends Controller
 	 *
 	 * @param Request $request
 	 * @param Collection|null $old
-	 * @return \Illuminate\View\View
+	 * @return View
 	 * @throws InvalidUsage
+	 * @throws \Psr\Container\ContainerExceptionInterface
+	 * @throws \Psr\Container\NotFoundExceptionInterface
 	 */
 	public function frame(Request $request,?Collection $old=NULL): \Illuminate\View\View
 	{
@@ -466,17 +480,17 @@ class HomeController extends Controller
 			: view('frames.'.$key['cmd']);
 
 		// If we are rendering a DN, rebuild our object
-		if ($key['cmd'] === 'create') {
+		if (in_array($key['cmd'],['create'])) {
 			$o = new Entry;
 			$o->setRDNBase($key['dn']);
 
 		} elseif ($key['dn']) {
 			// @todo Need to handle if DN is null, for example if the user's session expired and the ACLs dont let them retrieve $key['dn']
 			$o = config('server')->fetch($key['dn']);
-
-			foreach (collect(old())->except(array_merge(self::INTERNAL_POST,['dn'])) as $attr => $value)
-				$o->{$attr} = $value;
 		}
+
+		foreach (collect(old())->except(array_merge(self::INTERNAL_POST,['dn'])) as $attr => $value)
+			$o->{$attr} = $value;
 
 		return match ($key['cmd']) {
 			'create' => $view
@@ -494,7 +508,8 @@ class HomeController extends Controller
 					'delete'=>(! is_null($xx=$o->getObject('hassubordinates')->value)) && ($xx === 'FALSE'),
 					'edit'=>$x,
 					'export'=>$x,
-				])),
+				]))
+				->with('updated',session()->pull('updated') ?: collect()),
 
 			'import' => $view,
 

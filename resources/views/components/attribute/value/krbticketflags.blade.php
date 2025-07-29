@@ -1,26 +1,16 @@
 <!-- $o=KrbTicketFlags::class -->
-<x-attribute.layout :edit="$edit" :new="$new" :o="$o">
-	@foreach($o->langtags as $langtag)
-		@foreach(($o->tagValues($langtag)->count() ? $o->tagValues($langtag) : [$langtag => NULL]) as $key => $value)
-			@if($edit)
-				<div id="32"></div>
-				<div id="16"></div>
+@if($editable)
+	<div id="32"></div>
+	<div id="16"></div>
 
-				<div class="input-group has-validation mb-3">
-					<input type="hidden" name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ $value }}" @readonly(true)>
+	<div class="input-group has-validation mb-3">
+		<input type="hidden" name="{{ $o->name_lc }}[{{ $attrtag }}][]" value="{{ $value }}" readonly>
 
-					<div class="invalid-feedback pb-2">
-						@if($e=$errors->get($o->name_lc.'.'.$langtag.'.'.$loop->index))
-							{{ join('|',$e) }}
-						@endif
-					</div>
-				</div>
-			@else
-				{{ $o->render_item_old($langtag.'.'.$key) }}
-			@endif
-		@endforeach
-	@endforeach
-</x-attribute.layout>
+		<x-form.invalid-feedback :errors="$errors->get($o->name_lc.'.'.$dotkey)"/>
+	</div>
+@else
+	{{ $value }}
+@endif
 
 @section($o->name_lc.'-scripts')
 	<script type="text/javascript">

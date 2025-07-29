@@ -54,7 +54,7 @@
 	@endif
 
 	<x-success/>
-	<x-updated/>
+	<x-updated :updated="$updated"/>
 	<x-note/>
 	<x-error/>
 	<x-failed/>
@@ -75,11 +75,12 @@
 						<div class="row pt-3">
 							<div class="col-12">
 								<div class="d-flex justify-content-center">
-									<div role="group" class="btn-group btn-group-sm nav pb-3">
+									<div class="btn-group btn-group-sm nav pb-3" role="group">
 										<!-- If we have templates that cover this entry -->
 										@foreach($o->templates as $template)
 											<span data-bs-toggle="tab" href="#template-{{ $template->name }}" @class(['btn','btn-outline-focus','active'=>$loop->index === 0])><i class="fa fa-fw pe-2 {{ $template->icon }}"></i> {{ $template->title }}</span>
 										@endforeach
+
 										@if($o->templates->count())
 											<span data-bs-toggle="tab" href="#template-default" @class(['btn','btn-outline-focus','p-1','active'=>(! $o->templates->count())])><i class="fa fa-fw fa-list pe-2"></i> {{ __('LDAP Entry') }}</span>
 										@endif
@@ -89,7 +90,7 @@
 								<div class="tab-content">
 									@foreach($o->templates as $template)
 										<div @class(['tab-pane','active'=>$loop->index === 0]) id="template-{{ $template->name }}" role="tabpanel">
-											@include('fragment.template.dn',['template'=>$template])
+											@include('fragment.template.dn',['template'=>$template,'updated'=>$updated])
 										</div>
 									@endforeach
 
@@ -101,9 +102,8 @@
 
 											<div class="card-body">
 												<div class="tab-content">
-													@php($up=(session()->pull('updated') ?: collect()))
 													@foreach($o->getVisibleAttributes() as $ao)
-														<x-attribute-type :o="$ao" :edit="true" :new="false" :template="null" :updated="$up->contains($ao->name)"/>
+														<x-attribute :o="$ao" :edit="false" :editable="true" :new="true" :template="null" :updated="$updated->contains($ao->name_lc)"/>
 													@endforeach
 
 													@include('fragment.dn.add_attr')
@@ -126,7 +126,7 @@
 					<!-- Internal Attributes -->
 					<div class="tab-pane mt-3" id="internal" role="tabpanel">
 						@foreach($o->getInternalAttributes() as $ao)
-							<x-attribute-type :o="$ao" :edit="false" :new="false" :template="$template ?? null" :updated="false"/>
+							<x-attribute :o="$ao" :edit="false" :new="false" :template="null" :updated="false"/>
 						@endforeach
 					</div>
 				</div>
@@ -171,6 +171,9 @@
 				$(this).prop('disabled',false);
 			})
 
+			// Objectclasses that can be removed
+			$('.input-group-end i.d-none').removeClass('d-none');
+
 			$('.row.d-none').removeClass('d-none');
 			$('span.addable.d-none').removeClass('d-none');
 			$('span.deletable.d-none').removeClass('d-none');
@@ -193,35 +196,6 @@
 					return;
 
 				editmode();
-			});
-
-			$('#newattr').on('change',function(item) {
-				var oc = $('attribute#objectclass input[type=text]')
-					.map((key,item)=>{return $(item).val()}).toArray();
-
-				$.ajax({
-					type: 'POST',
-					beforeSend: function() {},
-					success: function(data) {
-						$('#newattrs').append(data);
-					},
-					error: function(e) {
-						if (e.status !== 412)
-							alert('That didnt work? Please try again....');
-					},
-					url: '{{ url('entry/attr/add') }}/'+item.target.value,
-					data: {
-						objectclasses: oc,
-					},
-					cache: false
-				});
-
-				// Remove the option from the list
-				$(this).find('[value="'+item.target.value+'"]').remove()
-
-				// If there are no more options
-				if ($(this).find("option").length === 1)
-					$('#newattr-select').remove();
 			});
 
 			$('#page-modal').on('shown.bs.modal',function(item) {

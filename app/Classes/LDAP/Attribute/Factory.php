@@ -5,6 +5,7 @@ namespace App\Classes\LDAP\Attribute;
 use Illuminate\Support\Arr;
 
 use App\Classes\LDAP\Attribute;
+use App\Ldap\Entry;
 
 /**
  * This factory is used to return LDAP attributes as an object
@@ -19,9 +20,9 @@ class Factory
 	 * Map of attributes to appropriate class
 	 */
 	public const map = [
-		'authorityrevocationlist' => CertificateList::class,
-		'cacertificate' => Certificate::class,
-		'certificaterevocationlist' => CertificateList::class,
+		'authorityrevocationlist' => Binary\CertificateList::class,
+		'cacertificate' => Binary\Certificate::class,
+		'certificaterevocationlist' => Binary\CertificateList::class,
 		'createtimestamp' => Internal\Timestamp::class,
 		'configcontext' => Schema\Generic::class,
 		'krblastfailedauth' => Attribute\NoAttrTags\Generic::class,
@@ -42,7 +43,7 @@ class Factory
 		'supportedfeatures' => Schema\OID::class,
 		'supportedldapversion' => Schema\Generic::class,
 		'supportedsaslmechanisms' => Schema\Mechanisms::class,
-		'usercertificate' => Certificate::class,
+		'usercertificate' => Binary\Certificate::class,
 		'userpassword' => Password::class,
 	];
 
@@ -51,12 +52,15 @@ class Factory
 	 *
 	 * @param string $dn
 	 * @param string $attribute
-	 * @param array $values
+	 * @param array|NULL $values
 	 * @param array $oc
 	 * @return Attribute
 	 */
-	public static function create(string $dn,string $attribute,array $values,array $oc=[]): Attribute
+	public static function create(string $dn,string $attribute,?array $values=NULL,array $oc=[]): Attribute
 	{
+		if (is_null($values))
+			$values = [Entry::TAG_NOTAG=>['']];
+
 		$class = Arr::get(self::map,strtolower($attribute),Attribute::class);
 		return new $class($dn,$attribute,$values,$oc);
 	}

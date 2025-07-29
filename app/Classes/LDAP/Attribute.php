@@ -3,7 +3,6 @@
 namespace App\Classes\LDAP;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Schema\AttributeType;
@@ -30,14 +29,18 @@ class Attribute implements \Countable, \ArrayAccess
 	// The DN this object is in
 	protected(set) string $dn;
 	// The old values for this attribute - helps with isDirty() to determine if there is an update pending
-	private Collection $_values_old;
+	protected Collection $_values_old;
 	// Current Values
-	private Collection $_values;
+	private(set) Collection $_values;
 	// The objectclasses of the entry that has this attribute
 	protected(set) Collection $oc;
 
 	private const SYNTAX_CERTIFICATE = '1.3.6.1.4.1.1466.115.121.1.8';
 	private const SYNTAX_CERTIFICATE_LIST = '1.3.6.1.4.1.1466.115.121.1.9';
+	protected const CERTIFICATE_ENCODE_LENGTH = 76;
+
+	// If rendering is done in a table, with a <tr> for each value
+	protected(set) bool $render_tables = FALSE;
 
 	/**
 	 * Create an Attribute
@@ -45,14 +48,15 @@ class Attribute implements \Countable, \ArrayAccess
 	 * @param string $dn DN this attribute is used in
 	 * @param string $name Name of the attribute
 	 * @param array $values Current Values
-	 * @param array $oc The objectclasses that the DN of this attribute has
+	 * @param array $oc The object classes that the DN of this attribute has
 	 * @throws InvalidUsage
 	 */
 	public function __construct(string $dn,string $name,array $values,array $oc=[])
 	{
 		$this->dn = $dn;
-		$this->_values = collect($values);
-		$this->_values_old = collect($values);
+		$this->_values = collect($values)
+			->map(function($item) { if (is_array($item)) sort($item); return $item; });
+		$this->_values_old = $this->_values;
 
 		$this->schema = config('server')
 			->schema('attributetypes',$name);
@@ -70,16 +74,13 @@ class Attribute implements \Countable, \ArrayAccess
 		}
 	}
 
-	public function __call(string $name,array $arguments)
-	{
-		abort(555,'Method not handled: '.$name);
-	}
-
 	public function __get(string $key): mixed
 	{
 		return match ($key) {
+			// Binary attr tags
+			'binarytags' =>collect(),
 			// Can this attribute have more values
-			'can_addvalues' => $this->schema && (! $this->schema->is_single_value) && ((! $this->max_values_count) || ($this->values->count() < $this->max_values_count)),
+			'can_addvalues' => $this->schema && (! $this->schema->is_single_value) && ((! $this->max_values_count) || ($this->_values->count() < $this->max_values_count)),
 			// Schema attribute description
 			'description' => $this->schema ? $this->schema->{$key} : NULL,
 			// Attribute hints
@@ -108,11 +109,10 @@ class Attribute implements \Countable, \ArrayAccess
 			// Used in Object Classes
 			'used_in' => $this->schema?->used_in_object_classes ?: collect(),
 			// For single value attributes
-			'value' => $this->schema?->is_single_value ? $this->values->first() : NULL,
+			'value' => $this->schema?->is_single_value ? $this->_values->first() : NULL,
 			// The current attribute values
-			'values' => ($this->no_attr_tags || $this->is_internal) ? $this->tagValues() : $this->_values,
 			// The original attribute values
-			'values_old' => ($this->no_attr_tags || $this->is_internal) ? $this->tagValuesOld() : $this->_values_old,
+			'_values_old' => $this->_values_old,	// @todo collapse _values/_values_old to values/values_old
 
 			default => throw new \Exception('Unknown key:' . $key),
 		};
@@ -125,10 +125,6 @@ class Attribute implements \Countable, \ArrayAccess
 				$this->_values = $values;
 				break;
 
-			case 'values_old':
-				$this->_values_old = $values;
-				break;
-
 			default:
 				throw new \Exception('Unknown key:'.$key);
 		}
@@ -136,7 +132,7 @@ class Attribute implements \Countable, \ArrayAccess
 
 	public function __toString(): string
 	{
-		return $this->name;
+		return $this->_values->dot()->join("\n");
 	}
 
 	/* INTERFACE */
@@ -190,6 +186,11 @@ class Attribute implements \Countable, \ArrayAccess
 				->get($tag,[]),$values)));
 	}
 
+	protected function dotkey(string $attrtag,int $index): string
+	{
+		return sprintf('%s.%s',$attrtag,$index);
+	}
+
 	/**
 	 * If this attribute has changes, re-render the attribute values
 	 *
@@ -238,7 +239,7 @@ class Attribute implements \Countable, \ArrayAccess
 	 */
 	public function isDirty(): bool
 	{
-		return (($a=$this->values_old->dot()->filter())->keys()->count() !== ($b=$this->values->dot()->filter())->keys()->count())
+		return (($a=$this->_values_old->dot()->filter())->keys()->count() !== ($b=$this->_values->dot()->filter())->keys()->count())
 			|| ($a->count() !== $b->count())
 			|| ($a->diff($b)->count() !== 0);
 	}
@@ -275,36 +276,40 @@ class Attribute implements \Countable, \ArrayAccess
 	/**
 	 * Display the attribute value
 	 *
+	 * @param string $attrtag Attribute tag for the value being rendered
+	 * @param int $index Index of a multivalue attribute being rendered
 	 * @param bool $edit Render an edit form
-	 * @param bool $old Use old value
-	 * @param bool $new Enable adding values
-	 * @param bool $updated Has the entry been updated (uses rendering highlights))
-	 * @param Template|null $template
+	 * @param bool $editable Render the item as readonly; however, JavaScript can make it editable
+	 * @param bool $new Is the rendered attribute new (used to set border-focus)
+	 * @param bool $updated Has the entry been updated (used to set border-focus)
+	 * @param Template|null $template The template this value is being rendered with
 	 * @return View
 	 */
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
+	public function render(string $attrtag,int $index,bool $edit=FALSE,bool $editable=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
+		$dotkey = $this->dotkey($attrtag,$index);
+
+		// @note Internal attributes cannot be edited
 		if ($this->is_internal)
-			// @note Internal attributes cannot be edited
-			return view('components.attribute.internal')
-				->with('o',$this);
+			return view('components.attribute.value.internal')
+				->with('o',$this)
+				->with('value',$this->render_item_new($dotkey));
 
-		$view = match ($this->schema?->syntax_oid) {
-			self::SYNTAX_CERTIFICATE => view('components.syntax.certificate'),
-			self::SYNTAX_CERTIFICATE_LIST => view('components.syntax.certificatelist'),
-
-			default => view()->exists($x='components.attribute.'.$this->name_lc)
-				? view($x)
-				: view('components.attribute'),
-		};
+		$view = view()->exists($x='components.attribute.value.'.$this->name_lc)
+			? view($x)
+			: view('components.attribute.value');
 
 		return $view
 			->with('o',$this)
+			->with('dotkey',$dotkey)
+			->with('value',$this->render_item_new($dotkey))
 			->with('edit',$edit)
-			->with('old',$old)
+			->with('editable',$editable)
 			->with('new',$new)
-			->with('template',$template)
-			->with('updated',$updated);
+			->with('attrtag',$attrtag)
+			->with('index',$index)
+			->with('updated',$updated)
+			->with('template',$template);
 	}
 
 	/**
@@ -316,10 +321,10 @@ class Attribute implements \Countable, \ArrayAccess
 	public function render_item_old(string $dotkey): ?string
 	{
 		return match ($this->schema->syntax_oid) {
-			self::SYNTAX_CERTIFICATE => join("\n",str_split(base64_encode(Arr::get($this->values_old->dot(),$dotkey)),80)),
-			self::SYNTAX_CERTIFICATE_LIST => join("\n",str_split(base64_encode(Arr::get($this->values_old->dot(),$dotkey)),80)),
+			self::SYNTAX_CERTIFICATE => join("\n",str_split(base64_encode($this->_values_old->dot()->get($dotkey)),self::CERTIFICATE_ENCODE_LENGTH)),
+			self::SYNTAX_CERTIFICATE_LIST => join("\n",str_split(base64_encode($this->_values_old->dot()->get($dotkey)),self::CERTIFICATE_ENCODE_LENGTH)),
 
-			default => Arr::get($this->values_old->dot(),$dotkey),
+			default => $this->_values_old->dot()->get($dotkey),
 		};
 	}
 
@@ -331,7 +336,7 @@ class Attribute implements \Countable, \ArrayAccess
 	 */
 	public function render_item_new(string $dotkey): ?string
 	{
-		return Arr::get($this->values->dot(),$dotkey);
+		return $this->_values->dot()->get($dotkey);
 	}
 
 	/**

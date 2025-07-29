@@ -53,7 +53,7 @@
 		"gidNumber": {
 			"display": "GID Number",
 			"onchange": [
-				"=autoFill(homeDirectory;/home/users/%gidNumber|0-0/T%/%uid|3-%)"
+				"=autoFill(homeDirectory;/home/users/%gidNumber|0-0/T%/%uid|1-4%)"
 			],
 			"value": "=getNextNumber(/;gidNumber)",
 			"order": 7

@@ -20,3 +20,38 @@
 		</div>
 	</div>
 </div>
+
+@section('page-scripts')
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#newattr').on('change',function(item) {
+				var oc = $('attribute#objectclass input[type=text]')
+					.map((key,item)=>{return $(item).val()}).toArray();
+
+				$.ajax({
+					type: 'POST',
+					url: '{{ url('entry/attr/add') }}/'+item.target.value,
+					data: {
+						objectclasses: oc,
+					},
+					cache: false,
+					beforeSend: function() {},
+					success: function(data) {
+						$('#newattrs').append(data);
+					},
+					error: function(e) {
+						if (e.status !== 412)
+							alert('That didnt work? Please try again....');
+					}
+				});
+
+				// Remove the option from the list
+				$(this).find('[value="'+item.target.value+'"]').remove()
+
+				// If there are no more options
+				if ($(this).find("option").length === 1)
+					$('#newattr-select').remove();
+			});
+		});
+	</script>
+@append

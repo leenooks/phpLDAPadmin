@@ -2,11 +2,9 @@
 
 namespace App\Classes\LDAP\Attribute;
 
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Attribute;
-use App\Classes\Template;
 
 /**
  * Represents the RDN for an Entry
@@ -33,12 +31,6 @@ final class RDN extends Attribute
 		return collect([
 			'required' => __('RDN is required')
 		]);
-	}
-
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
-	{
-		return view('components.attribute.rdn')
-			->with('o',$this);
 	}
 
 	public function setAttributes(Collection $attrs): void

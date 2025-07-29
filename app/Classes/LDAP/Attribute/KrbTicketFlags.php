@@ -50,14 +50,19 @@ final class KrbTicketFlags extends Attribute
 		return $helpers;
 	}
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
+	public function render(string $attrtag,int $index,bool $edit=FALSE,bool $editable=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
-		return view('components.attribute.krbticketflags')
+		return view('components.attribute.value.krbticketflags')
 			->with('o',$this)
+			->with('dotkey',$dotkey=$this->dotkey($attrtag,$index))
+			->with('value',$this->render_item_new($dotkey))
 			->with('edit',$edit)
-			->with('old',$old)
+			->with('editable',$editable)
 			->with('new',$new)
+			->with('attrtag',$attrtag)
+			->with('index',$index)
 			->with('updated',$updated)
+			->with('template',$template)
 			->with('helper',static::helpers());
 	}
 }

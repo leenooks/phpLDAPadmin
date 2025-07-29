@@ -1,17 +1,15 @@
-@use(App\Classes\LDAP\Attribute\Certificate)
-@use(App\Classes\LDAP\Attribute\CertificateList)
-@use(App\Classes\LDAP\Attribute\Binary\JpegPhoto)
+@use(App\Classes\LDAP\Attribute\Binary\{Certificate,CertificateList,JpegPhoto})
 @use(App\Classes\LDAP\Attribute\ObjectClass)
 
 @php($clone=FALSE)
 <span class="p-0 m-0">
 	@if($o->is_rdn)
 		<span id="entry-rename" class="btn btn-sm btn-outline-focus mt-3" data-bs-toggle="modal" data-bs-target="#page-modal"><i class="fas fa-fw fa-exchange"></i> @lang('Rename')</span>
-	@elseif($edit && $o->can_addvalues)
+	@elseif(($edit || $editable) && $o->can_addvalues)
 		@switch(get_class($o))
 			@case(Certificate::class)
 			@case(CertificateList::class)
-				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name_lc }}-replace" disabled><i class="fas fa-fw fa-certificate"></i> @lang('Replace')</span>
+				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>$editable]) id="{{ $o->name_lc }}-replace" disabled><i class="fas fa-fw fa-certificate"></i> @lang('Replace')</span>
 				@section('page-scripts')
 					<script type="text/javascript">
 						$(document).ready(function() {
@@ -26,7 +24,7 @@
 				@break
 
 			@case(ObjectClass::class)
-				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) data-bs-toggle="modal" data-bs-target="#new_objectclass-modal"><i class="fas fa-fw fa-plus"></i> @lang('Add Objectclass')</span>
+				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>$editable]) data-bs-toggle="modal" data-bs-target="#new_objectclass-modal"><i class="fas fa-fw fa-plus"></i> @lang('Add Objectclass')</span>
 
 				<!-- NEW OBJECT CLASS -->
 				<div class="modal fade" id="new_objectclass-modal" tabindex="-1" aria-labelledby="new_objectclass-label" aria-hidden="true" data-bs-backdrop="static">
@@ -237,7 +235,7 @@
 				@break
 
 			@case(JpegPhoto::class)
-				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) id="{{ $o->name_lc }}-upload" disabled><i class="fas fa-fw fa-file-arrow-up"></i> @lang('Upload JpegPhoto')</span>
+				<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>$editable]) id="{{ $o->name_lc }}-upload" disabled><i class="fas fa-fw fa-file-arrow-up"></i> @lang('Upload JpegPhoto')</span>
 				@section('page-scripts')
 					<script type="text/javascript">
 							$(document).ready(function() {
@@ -255,12 +253,12 @@
 			@default
 				@if($o->isDynamic()) @break @endif
 				@php($clone=TRUE)
-				@if($o->values_old->count() && (! $template))
-					<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>(! $new)]) data-attribute="{{ $o->name_lc }}" id="{{ $o->name_lc }}-addnew"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</span>
+				@if($o->_values_old->count() && (! $template) && $new)
+					<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>$editable]) data-attribute="{{ $o->name_lc }}" id="{{ $o->name_lc }}-addnew"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</span>
 				@endif
 
 				@section('page-scripts')
-					@if((! $template) && $clone && $edit && $o->can_addvalues)
+					@if($o->can_addvalues && $clone && (! $template) && ($edit || $editable))
 						<script type="text/javascript">
 							$(document).ready(function() {
 								// Create a new entry when Add Value clicked

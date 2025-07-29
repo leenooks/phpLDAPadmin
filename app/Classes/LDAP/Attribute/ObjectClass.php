@@ -2,11 +2,10 @@
 
 namespace App\Classes\LDAP\Attribute;
 
-use Illuminate\Contracts\View\View;
+use App\Exceptions\InvalidUsage;
 use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Attribute;
-use App\Classes\Template;
 
 /**
  * Represents an ObjectClass Attribute
@@ -25,6 +24,7 @@ final class ObjectClass extends Attribute
 	 * @param string $name Name of the attribute
 	 * @param array $values Current Values
 	 * @param array $oc The objectclasses that the DN of this attribute has (ignored for objectclasses)
+	 * @throws InvalidUsage
 	 */
 	public function __construct(string $dn,string $name,array $values,array $oc=[])
 	{
@@ -48,7 +48,7 @@ final class ObjectClass extends Attribute
 				parent::__set($key,$values);
 
 				// We need to populate oc_schema, if we are a new OC and thus dont have any old values
-				if (! $this->values_old->count() && $this->values->count())
+				if (! $this->_values_old->count() && $this->_values->count())
 					$this->set_oc_schema($this->tagValues());
 
 				break;
@@ -68,16 +68,6 @@ final class ObjectClass extends Attribute
 		return $this->structural
 			->map(fn($item)=>$item->name)
 			->contains($value);
-	}
-
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
-	{
-		return view('components.attribute.objectclass')
-			->with('o',$this)
-			->with('edit',$edit)
-			->with('old',$old)
-			->with('new',$new)
-			->with('updated',$updated);
 	}
 
 	private function set_oc_schema(Collection $tv): void

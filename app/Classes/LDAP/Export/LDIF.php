@@ -42,25 +42,15 @@ class LDIF extends Export
 
 			// Display Attributes
 			foreach ($o->getObjects() as $ao) {
-				if ($ao->no_attr_tags)
-					foreach ($ao->values as $value) {
+				foreach ($ao->_values as $tag => $tagvalues) {
+					foreach ($tagvalues as $value) {
 						$result .= $this->multiLineDisplay(
 							Str::isAscii($value)
-								? sprintf('%s: %s',$ao->name,$value)
-								: sprintf('%s:: %s',$ao->name,base64_encode($value))
-							,$this->br);
+								? sprintf('%s: %s',$ao->name.(($tag !== Entry::TAG_NOTAG) ? ';'.$tag : ''),$value)
+								: sprintf('%s:: %s',$ao->name.(($tag !== Entry::TAG_NOTAG) ? ';'.$tag : ''),base64_encode($value))
+						,$this->br);
 					}
-
-				else
-					foreach ($ao->values as $tag => $tagvalues) {
-						foreach ($tagvalues as $value) {
-							$result .= $this->multiLineDisplay(
-								Str::isAscii($value)
-									? sprintf('%s: %s',$ao->name.(($tag !== Entry::TAG_NOTAG) ? ';'.$tag : ''),$value)
-									: sprintf('%s:: %s',$ao->name.(($tag !== Entry::TAG_NOTAG) ? ';'.$tag : ''),base64_encode($value))
-							,$this->br);
-						}
-					}
+				}
 			}
 		}
 

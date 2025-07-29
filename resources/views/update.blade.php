@@ -32,11 +32,11 @@
 							<tbody>
 							@foreach($o->getObjects()->filter(fn($item)=>$item->isDirty()) as $key => $oo)
 								<tr>
-									<th rowspan="{{ $x=max($oo->values->dot()->keys()->count(),$oo->values_old->dot()->keys()->count())}}">
+									<th rowspan="{{ $x=max($oo->_values->dot()->keys()->count(),$oo->_values_old->dot()->keys()->count())}}">
 										<abbr title="{{ $oo->description }}">{{ $oo->name }}</abbr>
 									</th>
 
-									@foreach($oo->values->dot()->keys()->merge($oo->values_old->dot()->keys())->unique() as $dotkey)
+									@foreach($oo->_values->dot()->keys()->merge($oo->_values_old->dot()->keys())->unique() as $dotkey)
 										@if($loop->index)
 											</tr><tr>
 										@endif
@@ -45,11 +45,11 @@
 											{{ $dotkey }}
 										</th>
 
-										@if((! Arr::get($oo->values_old->dot(),$dotkey)) && (! Arr::get($oo->values->dot(),$dotkey)))
+										@if((! Arr::get($oo->_values_old->dot(),$dotkey)) && (! Arr::get($oo->_values->dot(),$dotkey)))
 											<td colspan="2" class="text-center">@lang('Ignoring blank value')</td>
 										@else
-											<td>{{ (($r=$oo->render_item_old($dotkey)) !== NULL) ? $r : '['.strtoupper(__('New Value')).']' }}</td>
-											<td>{{ (($r=$oo->render_item_new($dotkey)) !== NULL) ? $r : '['.strtoupper(__('Deleted')).']' }}<input type="hidden" name="{{ $key }}[{{ $oo->no_attr_tags ? \App\Ldap\Entry::TAG_NOTAG : collect(explode('.',$dotkey))->first() }}][]" value="{{ Arr::get($oo->values->dot(),$dotkey) }}"></td>
+											<td>{{ ((($r=$oo->render_item_old($dotkey)) !== NULL) && strlen($r)) ? $r : '['.strtoupper(__('New Value')).']' }}</td>
+											<td>{{ (($r=$oo->render_item_new($dotkey)) !== NULL) ? $r : '['.strtoupper(__('Deleted')).']' }}<input type="hidden" name="{{ $key }}[{{ $oo->no_attr_tags ? \App\Ldap\Entry::TAG_NOTAG : collect(explode('.',$dotkey))->first() }}][]" value="{{ Arr::get($oo->_values->dot(),$dotkey) }}"></td>
 										@endif
 									@endforeach
 								</tr>

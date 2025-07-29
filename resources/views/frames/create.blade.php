@@ -40,7 +40,7 @@
 												->filter(fn($item)=>$item->isStructural())
 												->sortBy(fn($item)=>$item->name_lc)
 												->map(fn($item)=>['id'=>$item->name,'value'=>$item->name])"
-											:allowclear="true"
+											allowclear="true"
 										/>
 									</div>
 
@@ -55,7 +55,7 @@
 												:label="__('Select a Template').'...'"
 												:options="$o->templates
 													->map(fn($item,$key)=>['id'=>$key,'value'=>$item->title])"
-												:allowclear="true"
+												allowclear="true"
 											/>
 										</div>
 									@endif
@@ -64,10 +64,10 @@
 
 							@case(2)
 								<input type="hidden" name="_template" value="{{ $template?->file }}">
-								<x-attribute-type :o="$o->getObject('rdn')" :edit="true" :new="true" :template="$template" :updated="false"/>
+								<x-attribute :o="$o->rdn" :edit="true" :template="$template"/>
 
 								@foreach($o->getVisibleAttributes() as $ao)
-									<x-attribute-type :o="$ao" :edit="true" :new="true" :template="$template" :updated="false"/>
+									<x-attribute :o="$ao" :edit="true" :template="$template"/>
 								@endforeach
 
 								@if(! $template)
@@ -133,35 +133,6 @@
 				$('#template').on('select2:open',function(){
 					$('#objectclass').val(null).trigger('change');
 				})
-			@elseif($step === 2)
-				$('#newattr').on('change',function(item) {
-					var oc = $('attribute#objectclass input[type=text]')
-						.map((key,item)=>{return $(item).val()}).toArray();
-
-					$.ajax({
-						type: 'POST',
-						url: '{{ url('entry/attr/add') }}/'+item.target.value,
-						data: {
-							objectclasses: oc,
-						},
-						cache: false,
-						beforeSend: function() {},
-						success: function(data) {
-							$('#newattrs').append(data);
-						},
-						error: function(e) {
-							if (e.status != 412)
-								alert('That didnt work? Please try again....');
-						},
-					});
-
-					// Remove the option from the list
-					$(this).find('[value="'+item.target.value+'"]').remove()
-
-					// If there are no more options
-					if ($(this).find("option").length === 1)
-						$('#newattr-select').remove();
-				});
 			@endif
 
 			editmode();

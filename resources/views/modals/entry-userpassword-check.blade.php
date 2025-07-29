@@ -7,12 +7,13 @@
 
 <div class="modal-body">
 	<table class="table table-bordered p-1">
-		@foreach(($up=$o->getObject('userpassword'))->values->dot() as $dotkey => $value)
+		@foreach(($up=$o->getObject('userpassword'))->_values->dot() as $dotkey => $value)
 			<tr>
 				<th>Check</th>
 				<td>{{ $up->render_item_old($dotkey) }}</td>
 				<td>
-					<input type="password" style="width: 90%" name="password[{{ $dotkey }}]"> <i class="fas fa-fw fa-lock"></i>
+					<input type="password" style="width: 90%" name="password[{{ $dotkey }}]" data-dotkey="{{ $dotkey }}"> <i class="fas fa-fw fa-lock"></i>
+
 					<div class="invalid-feedback pb-2">
 						@lang('Invalid Password')
 					</div>
@@ -33,7 +34,9 @@
 
 		var passwords = $('#page-modal')
 			.find('input[name^="password["')
-			.map((key,item)=>item.value);
+			.map(function() {
+				return {'key': $(this).data('dotkey'), 'value': $(this).val()};
+			});
 
 		if (passwords.length === 0) return false;
 
@@ -56,7 +59,7 @@
 				that.find('i').addClass('d-none');
 			},
 			success: function(data) {
-				data.forEach(function(item,key) {
+				Object.keys(data).forEach(function(key) {
 					var i = $('#page-modal')
 						.find('input[name="password['+key+']')
 						.siblings('i');
@@ -65,7 +68,7 @@
 						.find('input[name="password['+key+']')
 						.siblings('div.invalid-feedback');
 
-					if (item === 'OK') {
+					if (data[key] === 'OK') {
 						i.removeClass('text-danger').addClass('text-success').removeClass('fa-lock').addClass('fa-lock-open');
 						if (feedback.is(':visible'))
 							feedback.hide();

@@ -4,7 +4,11 @@
 <table class="table table-borderless">
 	<tr class="border-bottom line-height-2">
 		<td class="p-1 pt-0" rowspan="2">
-			{!! ($x=$o->getObject('jpegphoto')) ? $x->render(FALSE,TRUE) : sprintf('<div class="page-title-icon f32 m-2"><i class="%s"></i></div>',$o->icon() ?? "fas fa-info") !!}
+			@if($x=$o->getObject('jpegphoto'))
+				<x-attribute.values :o="$x" :new="false"/>
+			@else
+				<div class="page-title-icon f32 m-2"><i class="{{ $o->icon() ?? 'fas fa-info' }}"></i></div>
+			@endif
 		</td>
 		<td class="text-end align-bottom pb-0 mb-0 pt-2 pe-3 {{ $x ? 'ps-3' : '' }}"><strong class="user-select-all">{{ $o->getDn() ?: $container }}</strong></td>
 	</tr>
@@ -15,19 +19,19 @@
 					<tr class="mt-1">
 						<td class="p-0 pe-2">Created</td>
 						<th class="p-0">
-							<x-attribute :o="$o->getObject('createtimestamp')"/> [<x-attribute :o="$o->getObject('creatorsname')"/>]
+							<x-attribute.values :o="$o->getObject('createtimestamp')" :new="false"/> [<x-attribute.values :o="$o->getObject('creatorsname')" :new="false"/>]
 						</th>
 					</tr>
 					<tr class="mt-1">
 						<td class="p-0 pe-2">Modified</td>
 						<th class="p-0">
-							<x-attribute :o="$o->getObject('modifytimestamp')"/> [<x-attribute :o="$o->getObject('modifiersname')"/>]
+							<x-attribute.values :o="$o->getObject('modifytimestamp')" :new="false"/> [<x-attribute.values :o="$o->getObject('modifiersname')" :new="false"/>]
 						</th>
 					</tr>
 					<tr class="mt-1">
 						<td class="p-0 pe-2">UUID</td>
 						<th class="p-0">
-							<x-attribute :o="$o->getObject('entryuuid')"/>
+							<x-attribute.values :o="$o->getObject('entryuuid')" :new="false"/>
 						</th>
 					</tr>
 					<!-- It is assumed that langtags contains at least Entry::TAG_NOTAG -->

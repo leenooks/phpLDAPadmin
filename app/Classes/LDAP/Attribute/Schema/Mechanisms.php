@@ -34,10 +34,12 @@ final class Mechanisms extends Schema
 		return parent::_get(config_path('ldap_supported_saslmechanisms.txt'),$string,$key);
 	}
 
-	public function render(bool $edit=FALSE,bool $old=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
+	public function render(string $attrtag,int $index,bool $edit=FALSE,bool $editable=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
 		// @note Schema attributes cannot be edited
-		return view('components.attribute.schema.mechanisms')
-			->with('o',$this);
+		return view('components.attribute.value.schema.mechanisms')
+			->with('o',$this)
+			->with('dotkey',$dotkey=$this->dotkey($attrtag,$index))
+			->with('value',$this->render_item_new($dotkey));
 	}
 }

@@ -1,3 +1,4 @@
+@use(App\Classes\LDAP\Attribute\Schema\OID)
 @extends('layouts.dn')
 
 @section('page_title')
@@ -21,11 +22,14 @@
 								: $attribute !!}
 						</th>
 						<td>
-							@if($ao instanceof \App\Classes\LDAP\Attribute\Schema\OID)
-								<x-attribute :edit="false" :o="$ao"/>
-							@else
-								{!! $ao->values_old->dot()->join('<br>') !!}
-							@endif
+							@switch(get_class($ao))
+								@case(OID::class)
+									<x-attribute.values :o="$ao" :new="false"/>
+									@break
+
+								@default
+									{!! collect(explode("\n",(string)$ao))->join('<br>') !!}
+							@endswitch
 						</td>
 					</tr>
 				@endforeach

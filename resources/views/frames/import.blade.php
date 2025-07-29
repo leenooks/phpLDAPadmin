@@ -43,6 +43,7 @@
 									<label for="ldif-file" class="pb-2"><strong>@lang('Or upload LDIF file')</strong></label><br>
 									<input type="file" class="form-control-file @error('file') is-invalid @enderror" name="file" accept=".ldif"><br>
 									<small class="form-text text-muted @error('file') is-invalid @enderror">@lang('Maximum file size') <strong>{{ ini_get('upload_max_filesize') }}</strong></small>
+
 									<div class="invalid-feedback pb-2">
 										@error('file')
 											{{ $message }}

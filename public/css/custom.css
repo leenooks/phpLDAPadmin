@@ -23,7 +23,7 @@ attribute#objectclass .input-group-end:not(input.form-control) {
 	z-index: 5;
 }
 
-input.form-control.input-group-end {
+input.form-control:has(+ .input-group-end) {
 	border-bottom-right-radius: 4px !important;
 	border-top-right-radius: 4px !important;
 }

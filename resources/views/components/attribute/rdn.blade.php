@@ -1,35 +1,37 @@
 <!-- $o=RDN::class -->
-<x-attribute.layout :edit="$edit" :new="$new" :o="$o">
-	@foreach(($o->values->count() ? $o->values : [NULL]) as $value)
-		@if($edit)
-			<div class="input-group has-validation mb-3">
-				<select @class(['form-select','is-invalid'=>$errors->get('_rdn')]) id="rdn" name="_rdn">
-					<option value=""></option>
+@if($edit)
+	<div class="input-group has-validation mb-3">
+		<select @class(['form-select','is-invalid'=>$errors->get('_rdn')]) id="rdn" name="_rdn">
+			<option value=""></option>
 
-					@foreach($o->attrs->map(fn($item)=>['id'=>$item,'value'=>$item]) as $option)
-						@continue(! Arr::get($option,'value'))
-						<option value="{{ strtolower(Arr::get($option,'id')) }}" @selected(Arr::get($option,'id') == old('_rdn',$value ?? ''))>{{ Arr::get($option,'value') }}</option>
-					@endforeach
-				</select>
+			@foreach($o->attrs->map(fn($item)=>['id'=>$item,'value'=>$item]) as $option)
+				@continue(! Arr::get($option,'value'))
+				<option value="{{ strtolower(Arr::get($option,'id')) }}" @selected(Arr::get($option,'id') == old('_rdn',$value ?? ''))>{{ Arr::get($option,'value') }}</option>
+			@endforeach
+		</select>
 
-				<span class="input-group-text">=</span>
-				<input type="text" @class(['form-control','is-invalid'=>$errors->get('_rdn_value')]) id="rdn_value" name="_rdn_value" value="{{ old('_rdn_value') }}" placeholder="rdn">
-				<label class="input-group-text" for="inputGroupSelect02">,{{ $o->base }}</label>
+		<span class="input-group-text">=</span>
+		<input type="text"
+			@class(['form-control','is-invalid'=>$errors->get('_rdn_value')])
+			id="rdn_value"
+			name="_rdn_value"
+			value="{{ old('_rdn_value') }}"
+			placeholder="rdn">
+		<label class="input-group-text">,{{ $o->base }}</label>
 
-				<div class="invalid-feedback pb-2">
-					@error('_rdn')
-						{{ $message }}
-					@enderror
-					@error('_rdn_value')
-						{{ $message }}
-					@enderror
-				</div>
-			</div>
-		@else
-			{{ $value }}
-		@endif
-	@endforeach
-</x-attribute.layout>
+		<div class="invalid-feedback pb-2">
+			@error('_rdn')
+				{{ $message }}
+			@enderror
+			@error('_rdn_value')
+				{{ $message }}
+			@enderror
+		</div>
+	</div>
+
+@else
+	{{ $value }}
+@endif
 
 @section('page-scripts')
 	<script type="text/javascript">
@@ -48,13 +50,19 @@
 			}
 
 			$('select#rdn').on('change',function() {
+				// If the selected attr has a value, use it
+				var rdn_value = $(this).val() ? $('#'+$(this).val()).find('input').first().val() : null;
+
+				if (rdn_value)
+					$('input#rdn_value').val(rdn_value);
+
 				// if rdn_attr is already set (and its now different), remove read only and clear value
 				if (rdn_attr)
 					$('#'+rdn_attr).find('input').first().attr('readonly',false).val('');
 
 				// set RDN attribute read-only
-				if (rdn_attr = $(this).val())
-					$('#'+rdn_attr).find('input').first().attr('readonly',true).val('');
+				if ((rdn_attr=$(this).val()) && rdn_attr)
+					$('#'+rdn_attr).find('input').first().attr('readonly',true);
 
 				set_rdn_value();
 			})

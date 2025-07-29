@@ -94,10 +94,8 @@ class Entry extends Model
 		return $this->objects
 			->filter(fn($item)=>(! $item->is_internal))
 			->flatMap(fn($item)=>
-				$item->no_attr_tags
-					? [strtolower($item->name)=>$item->values]
-					: $item->values
-						->flatMap(fn($v,$k)=>[strtolower($item->name.(($k !== self::TAG_NOTAG) ? ';'.$k : ''))=>$v]))
+				$item->_values
+					->flatMap(fn($v,$k)=>[strtolower($item->name.(($k !== self::TAG_NOTAG) ? ';'.$k : ''))=>$v]))
 			->toArray();
 	}
 
@@ -159,7 +157,7 @@ class Entry extends Model
 		$key = $this->normalizeAttributeKey($key);
 		list($attribute,$tags) = $this->keytag($key);
 
-		$o = $this->objects->get($attribute) ?: Factory::create($this->dn ?: '',$attribute,[],Arr::get($this->attributes,'objectclass',[]));
+		$o = $this->objects->get($attribute) ?: Factory::create(dn: $this->dn ?: '',attribute: $attribute,oc: Arr::get($this->attributes,'objectclass',[]));
 
 		$o->values = collect(is_array($value)
 			? $value
@@ -207,6 +205,22 @@ class Entry extends Model
 	/* ATTRIBUTES */
 
 	/**
+	 * Return an RDN object
+	 *
+	 * @return Attribute\RDN
+	 * @throws InvalidUsage
+	 */
+	public function getRDNAttribute(): Attribute\RDN
+	{
+		$o = new Attribute\RDN('','dn',[self::TAG_NOTAG=>['']]);
+		// @todo for an existing object, rdnbase would be null, so dynamically get it from the DN.
+		$o->setBase($this->rdnbase);
+		$o->setAttributes($this->getAvailableAttributes()->filter(fn($item)=>$item->is_must));
+
+		return $o;
+	}
+
+	/**
 	 * Return a key to use for sorting
 	 *
 	 * @return string
@@ -243,7 +257,7 @@ class Entry extends Model
 		if (config('server')->get_attr_id($attribute) === FALSE)
 			throw new AttributeException(sprintf('Schema doesnt have attribute [%s]',$attribute));
 
-		$o = $this->objects->get($attribute) ?: Attribute\Factory::create($this->dn ?: '',$attribute,[]);
+		$o = $this->objects->get($attribute) ?: Attribute\Factory::create(dn: $this->dn ?: '',attribute: $attribute);
 		$o->addValue($tag,[$value]);
 
 		$this->objects->put($key,$o);
@@ -299,10 +313,10 @@ class Entry extends Model
 				$result,
 				$attribute,
 				Factory::create(
-					$this->dn,
-					$attribute,
-					[$tags=>$orig],
-					$entry_oc,
+					dn: $this->dn,
+					attribute: $attribute,
+					values: [$tags=>$orig],
+					oc: $entry_oc,
 				));
 
 			$o->addValue($tags,$values);
@@ -349,7 +363,7 @@ class Entry extends Model
 	{
 		$result = collect();
 
-		foreach (($this->getObject('objectclass')?->values ?: []) as $oc)
+		foreach (($this->getObject('objectclass')?->_values->dot() ?: []) as $oc)
 			$result = $result->merge(config('server')->schema('objectclasses',$oc)->all_attributes);
 
 		return $result;
@@ -405,16 +419,12 @@ class Entry extends Model
 	 * Get an attribute as an object
 	 *
 	 * @param string $key
-	 * @return Attribute|null
+	 * @return Attribute|NULL
 	 */
-	public function getObject(string $key): Attribute|null
+	public function getObject(string $key): Attribute|NULL
 	{
-		return match ($key) {
-			'rdn' => $this->getRDNObject(),
-
-			default => $this->objects
-				->get($this->normalizeAttributeKey($key))
-		};
+		return $this->objects
+			->get($this->normalizeAttributeKey($key));
 	}
 
 	public function getObjects(): Collection
@@ -436,7 +446,7 @@ class Entry extends Model
 		return $this->getObjects()
 			->filter(fn($item)=>! $item->no_attr_tags)
 			->map(fn($item)=>$item
-				->values
+				->_values
 				->keys()
 				->filter(fn($item)=>
 					$item && collect(explode(';',$item))->filter(
@@ -460,35 +470,20 @@ class Entry extends Model
 			->filter(fn($a)=>(! $this->getVisibleAttributes()->contains(fn($b)=>($a->name === $b->name))));
 	}
 
-	private function getRDNObject(): Attribute\RDN
-	{
-		$o = new Attribute\RDN('','dn',['']);
-		// @todo for an existing object, rdnbase would be null, so dynamically get it from the DN.
-		$o->setBase($this->rdnbase);
-		$o->setAttributes($this->getAvailableAttributes()->filter(fn($item)=>$item->is_must));
-
-		return $o;
-	}
-
 	/**
 	 * Return this list of user attributes
 	 *
-	 * @param string $tag If null return all tags
 	 * @return Collection
 	 */
-	public function getVisibleAttributes(string $tag=''): Collection
+	public function getVisibleAttributes(): Collection
 	{
-		static $cache = [];
+		static $cache = collect();
 
-		if (! Arr::get($cache,$tag ?: '_all_')) {
-			$ot = $this->getOtherTags();
+		if (! $cache->count())
+			$cache = $this->objects
+				->filter(fn($item)=>(! $item->is_internal));
 
-			$cache[$tag ?: '_all_'] = $this->objects
-				->filter(fn($item)=>(! $item->is_internal) && ((! $item->no_attr_tags) || (! $tag) || ($tag === self::TAG_NOTAG)))
-				->filter(fn($item)=>(! $tag) || $ot->has($item->name_lc) || count($item->tagValues($tag)) > 0);
-		}
-
-		return $cache[$tag ?: '_all_'];
+		return $cache;
 	}
 
 	public function hasAttribute(int|string $key): bool
