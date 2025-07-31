@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\{AjaxController,HomeController,SearchController};
+use App\Http\Controllers\{AjaxController,EntryController,HomeController,SearchController};
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Middleware\AllowAnonymous;
 
@@ -29,39 +29,48 @@ Auth::routes([
 Route::get('logout',[LoginController::class,'logout']);
 Route::post('search',[SearchController::class,'search']);
 
+Route::controller(EntryController::class)
+	->prefix('entry')
+	->group(function() {
+		Route::middleware(AllowAnonymous::class)->group(function() {
+			Route::match(['get','post'],'add','add');
+			Route::post('attr/add/{id}','attr_add');
+			Route::post('copy-move','copy_move');
+			Route::post('create','create');
+			Route::post('delete','delete');
+			Route::get('export/{id}','export');
+			Route::view('import','frames.import');
+			Route::post('import/process/{type}','import_process');
+			Route::post('objectclass/add','objectclass_add');
+			Route::post('password/check','password_check');
+			Route::post('rename','rename');
+			Route::post('update/commit','update_commit');
+			Route::post('update/pending','update_pending');
+		});
+	});
+
 Route::controller(HomeController::class)->group(function() {
 	Route::middleware(AllowAnonymous::class)->group(function() {
 		Route::get('/','home');
-		Route::view('info','frames.info');
 		Route::view('debug','debug');
 		Route::post('frame','frame');
-		Route::view('import','frames.import');
-		Route::get('schema','schema_frame');
+
+		Route::group(['prefix'=>'modal'],function() {
+			Route::view('copy-move/{dn}','modals.entry-copy-move');
+			Route::view('delete/{dn}','modals.entry-delete');
+			Route::view('export/{dn}','modals.entry-export');
+			Route::view('rename/{dn}','modals.entry-rename');
+			Route::view('userpassword-check/{dn}','modals.entry-userpassword-check');
+		});
+
+		Route::group(['prefix'=>'server'],function() {
+			Route::view('info','frames.info');
+			Route::get('schema','frame_schema');
+		});
 
 		Route::group(['prefix'=>'user'],function() {
 			Route::get('image','user_image');
 		});
-
-		Route::match(['get','post'],'entry/add','entry_add');
-		Route::post('entry/attr/add/{id}','entry_attr_add');
-		Route::post('entry/create','entry_create');
-		Route::post('entry/copy-move','entry_copy_move');
-		Route::post('entry/delete','entry_delete');
-		Route::get('entry/export/{id}','entry_export');
-		Route::post('entry/password/check/','entry_password_check');
-		Route::post('entry/objectclass/add','entry_objectclass_add');
-		Route::post('entry/rename','entry_rename');
-
-		Route::post('entry/update/commit','entry_update');
-		Route::post('entry/update/pending','entry_pending_update');
-
-		Route::post('import/process/{type}','import');
-
-		Route::view('modal/copy-move/{dn}','modals.entry-copy-move');
-		Route::view('modal/delete/{dn}','modals.entry-delete');
-		Route::view('modal/export/{dn}','modals.entry-export');
-		Route::view('modal/rename/{dn}','modals.entry-rename');
-		Route::view('modal/userpassword-check/{dn}','modals.entry-userpassword-check');
 	});
 });
 

@@ -45,17 +45,17 @@
 
 			<ul class="header-menu nav server-icon">
 				<li>
-					<button id="link-info" class="btn btn-light p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Server Info')" data-link="{{ url('info') }}">
+					<button id="link-info" class="btn btn-light p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Server Info')" data-link="{{ url('server/info') }}">
 						<i class="fas fa-fw fa-info fs-5"></i>
 					</button>
 				</li>
 				<li>
-					<button id="link-schema" class="btn btn-light p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Schema Viewer')" data-link="{{ url('schema') }}">
+					<button id="link-schema" class="btn btn-light p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Schema Viewer')" data-link="{{ url('server/schema') }}">
 						<i class="fas fa-fw fa-fingerprint fs-5"></i>
 					</button>
 				</li>
 				<li>
-					<button id="link-import" class="btn btn-light p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Import')" data-link="{{ url('import') }}">
+					<button id="link-import" class="btn btn-light p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Import')" data-link="{{ url('entry/import') }}">
 						<i class="fas fa-fw fa-upload fs-5"></i>
 					</button>
 				</li>

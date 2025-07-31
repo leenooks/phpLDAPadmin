@@ -13,7 +13,7 @@
 	<div class="row">
 		<div class="offset-1 col-10">
 			<div class="main-card mb-3 card">
-				<form id="import-form" action="{{ url('import/process/ldif') }}" method="POST" enctype="multipart/form-data">
+				<form id="import-form" action="{{ url('entry/import/process/ldif') }}" method="POST" enctype="multipart/form-data">
 					@csrf
 					<input type="hidden" name="_key" value="{{ Crypt::encryptString('*import|_NOP') }}">
 
