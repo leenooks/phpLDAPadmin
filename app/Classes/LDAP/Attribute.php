@@ -29,9 +29,9 @@ class Attribute implements \Countable, \ArrayAccess
 	// The DN this object is in
 	protected(set) string $dn;
 	// The old values for this attribute - helps with isDirty() to determine if there is an update pending
-	protected Collection $_values_old;
+	protected(set) Collection $values_old;
 	// Current Values
-	private(set) Collection $_values;
+	private(set) Collection $values;
 	// The objectclasses of the entry that has this attribute
 	protected(set) Collection $oc;
 
@@ -54,9 +54,9 @@ class Attribute implements \Countable, \ArrayAccess
 	public function __construct(string $dn,string $name,array $values,array $oc=[])
 	{
 		$this->dn = $dn;
-		$this->_values = collect($values)
+		$this->values = collect($values)
 			->map(function($item) { if (is_array($item)) sort($item); return $item; });
-		$this->_values_old = $this->_values;
+		$this->values_old = $this->values;
 
 		$this->schema = config('server')
 			->schema('attributetypes',$name);
@@ -80,15 +80,15 @@ class Attribute implements \Countable, \ArrayAccess
 			// Binary attr tags
 			'binarytags' =>collect(),
 			// Can this attribute have more values
-			'can_addvalues' => $this->schema && (! $this->schema->is_single_value) && ((! $this->max_values_count) || ($this->_values->count() < $this->max_values_count)),
+			'can_addvalues' => $this->schema && (! $this->schema->is_single_value) && ((! $this->max_values_count) || ($this->values->count() < $this->max_values_count)),
 			// Schema attribute description
 			'description' => $this->schema ? $this->schema->{$key} : NULL,
 			// Attribute hints
 			'hints' => $this->hints(),
 			// Attribute language tags
-			'langtags' => ($this->no_attr_tags || (! $this->_values->count()))
+			'langtags' => ($this->no_attr_tags || (! $this->values->count()))
 				? collect(Entry::TAG_NOTAG)
-				: $this->_values
+				: $this->values
 					->keys()
 					->filter(fn($item)=>($item === Entry::TAG_NOTAG) || preg_match(sprintf('/%s;?/',Entry::TAG_CHARS_LANG),$item))
 					->sortBy(fn($item)=>($item === Entry::TAG_NOTAG) ? NULL : $item),
@@ -109,51 +109,36 @@ class Attribute implements \Countable, \ArrayAccess
 			// Used in Object Classes
 			'used_in' => $this->schema?->used_in_object_classes ?: collect(),
 			// For single value attributes
-			'value' => $this->schema?->is_single_value ? $this->_values->first() : NULL,
-			// The current attribute values
-			// The original attribute values
-			'_values_old' => $this->_values_old,	// @todo collapse _values/_values_old to values/values_old
+			'value' => $this->schema?->is_single_value ? $this->values->first() : NULL,
 
 			default => throw new \Exception('Unknown key:' . $key),
 		};
 	}
 
-	public function __set(string $key,mixed $values): void
-	{
-		switch ($key) {
-			case 'values':
-				$this->_values = $values;
-				break;
-
-			default:
-				throw new \Exception('Unknown key:'.$key);
-		}
-	}
-
 	public function __toString(): string
 	{
-		return $this->_values->dot()->join("\n");
+		return $this->values->dot()->join("\n");
 	}
 
 	/* INTERFACE */
 
 	public function count(): int
 	{
-		return $this->_values
+		return $this->values
 			->dot()
 			->count();
 	}
 
 	public function offsetExists(mixed $offset): bool
 	{
-		return $this->_values
+		return $this->values
 			->dot()
 			->has($offset);
 	}
 
 	public function offsetGet(mixed $offset): mixed
 	{
-		return $this->_values
+		return $this->values
 			->dot()
 			->get($offset);
 	}
@@ -172,18 +157,20 @@ class Attribute implements \Countable, \ArrayAccess
 
 	public function addValue(string $tag,array $values): void
 	{
-		$this->_values->put(
-			$tag,
-			array_unique(array_merge($this->_values
-				->get($tag,[]),$values)));
+		$this->values
+			->put(
+				$tag,
+				array_unique(array_filter(array_merge($this->values
+					->get($tag,[]),$values))));
 	}
 
 	public function addValueOld(string $tag,array $values): void
 	{
-		$this->_values_old->put(
-			$tag,
-			array_unique(array_merge($this->_values_old
-				->get($tag,[]),$values)));
+		$this->values_old
+			->put(
+				$tag,
+				array_unique(array_merge($this->values_old
+					->get($tag,[]),$values)));
 	}
 
 	protected function dotkey(string $attrtag,int $index): string
@@ -201,7 +188,7 @@ class Attribute implements \Countable, \ArrayAccess
 		$dirty = [];
 
 		if ($this->isDirty())
-			$dirty = [$this->name_lc => $this->_values->toArray()];
+			$dirty = [$this->name_lc => $this->values->toArray()];
 
 		return $dirty;
 	}
@@ -239,7 +226,7 @@ class Attribute implements \Countable, \ArrayAccess
 	 */
 	public function isDirty(): bool
 	{
-		return (($a=$this->_values_old->dot()->filter())->keys()->count() !== ($b=$this->_values->dot()->filter())->keys()->count())
+		return (($a=$this->values_old->dot()->filter())->keys()->count() !== ($b=$this->values->dot()->filter())->keys()->count())
 			|| ($a->count() !== $b->count())
 			|| ($a->diff($b)->count() !== 0);
 	}
@@ -321,10 +308,10 @@ class Attribute implements \Countable, \ArrayAccess
 	public function render_item_old(string $dotkey): ?string
 	{
 		return match ($this->schema->syntax_oid) {
-			self::SYNTAX_CERTIFICATE => join("\n",str_split(base64_encode($this->_values_old->dot()->get($dotkey)),self::CERTIFICATE_ENCODE_LENGTH)),
-			self::SYNTAX_CERTIFICATE_LIST => join("\n",str_split(base64_encode($this->_values_old->dot()->get($dotkey)),self::CERTIFICATE_ENCODE_LENGTH)),
+			self::SYNTAX_CERTIFICATE => join("\n",str_split(base64_encode($this->values_old->dot()->get($dotkey)),self::CERTIFICATE_ENCODE_LENGTH)),
+			self::SYNTAX_CERTIFICATE_LIST => join("\n",str_split(base64_encode($this->values_old->dot()->get($dotkey)),self::CERTIFICATE_ENCODE_LENGTH)),
 
-			default => $this->_values_old->dot()->get($dotkey),
+			default => $this->values_old->dot()->get($dotkey),
 		};
 	}
 
@@ -336,7 +323,7 @@ class Attribute implements \Countable, \ArrayAccess
 	 */
 	public function render_item_new(string $dotkey): ?string
 	{
-		return $this->_values->dot()->get($dotkey);
+		return $this->values->dot()->get($dotkey);
 	}
 
 	/**
@@ -352,6 +339,11 @@ class Attribute implements \Countable, \ArrayAccess
 			: collect();
 	}
 
+	public function setValues(Collection $values): void
+	{
+		$this->values = $values->filter();
+	}
+
 	/**
 	 * Return the new values for this attribute, which would include any pending updates
 	 *
@@ -360,7 +352,7 @@ class Attribute implements \Countable, \ArrayAccess
 	 */
 	public function tagValues(string $tag=Entry::TAG_NOTAG): Collection
 	{
-		return collect($this->_values
+		return collect($this->values
 			->filter(fn($item,$key)=>($key===$tag))
 			->get($tag,[]));
 	}
@@ -373,7 +365,7 @@ class Attribute implements \Countable, \ArrayAccess
 	 */
 	public function tagValuesOld(string $tag=Entry::TAG_NOTAG): Collection
 	{
-		return collect($this->_values_old
+		return collect($this->values_old
 			->filter(fn($item,$key)=>($key===$tag))
 			->get($tag,[]));
 	}

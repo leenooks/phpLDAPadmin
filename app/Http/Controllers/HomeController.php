@@ -34,6 +34,7 @@ class HomeController extends Controller
 			abort(409);
 
 		$key = request_key($request);
+		$o = NULL;
 
 		$view = $old
 			? view('frame')->with('subframe',$key['cmd'])
@@ -49,8 +50,9 @@ class HomeController extends Controller
 			$o = config('server')->fetch($key['dn']);
 		}
 
-		foreach (collect(old())->except(array_merge(EntryController::INTERNAL_POST,['dn'])) as $attr => $value)
-			$o->{$attr} = $value;
+		if ($o)
+			foreach (collect(old())->except(array_merge(EntryController::INTERNAL_POST,['dn'])) as $attr => $value)
+				$o->{$attr} = $value;
 
 		return match ($key['cmd']) {
 			'create' => $view

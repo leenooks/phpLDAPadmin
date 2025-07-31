@@ -48,7 +48,7 @@ final class ObjectClass extends Attribute
 				parent::__set($key,$values);
 
 				// We need to populate oc_schema, if we are a new OC and thus dont have any old values
-				if (! $this->_values_old->count() && $this->_values->count())
+				if (! $this->values_old->count() && $this->values->count())
 					$this->set_oc_schema($this->tagValues());
 
 				break;

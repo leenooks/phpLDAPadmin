@@ -20,7 +20,7 @@ final class Certificate extends Binary
 	public function __get(string $key): mixed
 	{
 		return match ($key) {
-			'binarytags'=> $this->_values
+			'binarytags'=> $this->values
 				->keys()
 				->filter(fn($item) => $item === 'binary'),
 
@@ -43,7 +43,7 @@ final class Certificate extends Binary
 	public function certificate(int $key=0): string
 	{
 		return sprintf("-----BEGIN CERTIFICATE-----\n%s\n-----END CERTIFICATE-----",
-			join("\n",str_split(base64_encode(Arr::get($this->_values_old,'binary.'.$key)),self::CERTIFICATE_ENCODE_LENGTH))
+			join("\n",str_split(base64_encode(Arr::get($this->values_old,'binary.'.$key)),self::CERTIFICATE_ENCODE_LENGTH))
 		);
 	}
 

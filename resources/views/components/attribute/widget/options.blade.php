@@ -79,7 +79,7 @@
 										},
 										cache: false,
 										success: function(data) {
-											$('attribute#{{ $o->name_lc }}').append(data);
+											$('attribute#{{ $o->name_lc }} .tab-content .tab-pane.active').append(data);
 										},
 										error: function(e) {
 											if (e.status !== 412)
@@ -253,8 +253,8 @@
 			@default
 				@if($o->isDynamic()) @break @endif
 				@php($clone=TRUE)
-				@if($o->_values_old->count() && (! $template) && $new)
-					<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>$editable]) data-attribute="{{ $o->name_lc }}" id="{{ $o->name_lc }}-addnew"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</span>
+				@if($o->values_old->count() && (! $template) && $new)
+					<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>$editable]) id="{{ $o->name_lc }}-addnew"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</span>
 				@endif
 
 				@section('page-scripts')
@@ -263,8 +263,8 @@
 							$(document).ready(function() {
 								// Create a new entry when Add Value clicked
 								$('form#dn-edit #{{ $o->name_lc }}-addnew.addable').click(function(item) {
-									var attribute = $(this).data('attribute');
-									var active = $('#template-default attribute[id='+attribute+']');
+									var attribute = $(this).closest('attribute');
+									var active = attribute.find('.tab-content .tab-pane.active');
 
 									active.find('input:last')
 										.clone()

@@ -42,7 +42,7 @@ class LDIF extends Export
 
 			// Display Attributes
 			foreach ($o->getObjects() as $ao) {
-				foreach ($ao->_values as $tag => $tagvalues) {
+				foreach ($ao->values as $tag => $tagvalues) {
 					foreach ($tagvalues as $value) {
 						$result .= $this->multiLineDisplay(
 							Str::isAscii($value)

@@ -3,7 +3,7 @@
 	<x-select class="mb-1"
 		id="userpassword_hash_{{$index}}_{{ $template?->name }}"
 		name="_userpassword_hash[{{ $attrtag }}][]"
-		:value="old('_userpassword_hash.'.$dotkey,$o->hash($o->_values->dot()->get($dotkey) ?: '')->id())"
+		:value="old('_userpassword_hash.'.$dotkey,$o->hash($o->values->dot()->get($dotkey) ?: '')->id())"
 		:options="$helpers"
 		allowclear="false"
 		:disabled="! $edit"/>

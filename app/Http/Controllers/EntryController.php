@@ -339,7 +339,7 @@ class EntryController extends Controller
 					->filter(fn($item)=>$item->isAuxiliary())
 			)
 			// Remove the original objectlcasses
-			->filter(fn($item)=>(! $oc->_values->contains($item)))
+			->filter(fn($item)=>(! $oc->values->contains($item)))
 			->sortBy(fn($item)=>$item->name);
 
 		return $ocs->groupBy(fn($item)=>$item->isStructural())
@@ -382,7 +382,7 @@ class EntryController extends Controller
 		foreach ($request->password as $index => $value) {
 			$key = Arr::get($request->password,$index.'.key');
 			$form_value = Arr::get($request->password,$index.'.value');
-			$password = $po->_values->dot()->get($key);
+			$password = $po->values->dot()->get($key);
 
 			$hash = $po->hash($password);
 

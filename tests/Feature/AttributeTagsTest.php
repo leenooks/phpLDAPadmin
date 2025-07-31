@@ -24,8 +24,8 @@ use Tests\TestCase;
  *    + ->tagValuesOld() return a Collection of old values
  *    + ->render_old_item() should be the raw value (unless an md5attribute, then the md5 value)
  *    + ->render_new_item() should be the raw value (unless an md5attribute, then the md5 value)
- *    + ->_values is array with only 1 key _null_ with an array of values
- *    + ->_values_old is array with only 1 key _null_ with an array of values
+ *    + ->values is array with only 1 key _null_ with an array of values
+ *    + ->values_old is array with only 1 key _null_ with an array of values
  *    + ->isDirty processing when there is a new value in the _null_ key and in another key (it should be ignored for no_attr_tags attributes)
  *    + ->isDirty processing when there is a new value, and its an md5 attribute
  *
@@ -68,13 +68,13 @@ class AttributeTagsTest extends TestCase
 		$this->assertInstanceOf(Attribute::class,$oo);
 
 		// ->values returns a Collection of values
-		// ->_values is array with only 1 key _null_ with an array of values
+		// ->values is array with only 1 key _null_ with an array of values
 		$this->assertCount(1,$oo->values);
 		$this->assertArrayHasKey(Entry::TAG_NOTAG,$oo->values);
 		$this->assertCount(1,$oo->values[Entry::TAG_NOTAG]);
 
 		// ->values_old return a Collection of old values
-		// ->_values_old is array with only 1 key _null_ with an array of values
+		// ->values_old is array with only 1 key _null_ with an array of values
 		$this->assertCount(1,$oo->values_old);
 		$this->assertArrayHasKey(Entry::TAG_NOTAG,$oo->values_old);
 		$this->assertCount(1,$oo->values_old[Entry::TAG_NOTAG]);
@@ -121,12 +121,12 @@ class AttributeTagsTest extends TestCase
 		$this->assertTrue($oo->no_attr_tags);
 
 		// ->values returns a Collection of values
-		// ->_values is array with only 1 key _null_ with an array of values
+		// ->values is array with only 1 key _null_ with an array of values
 		$this->assertCount(5,$oo->values);
 		$this->assertArrayNotHasKey(Entry::TAG_NOTAG,$oo->values);
 
 		// ->values_old return a Collection of old values
-		// ->_values_old is array with only 1 key _null_ with an array of values
+		// ->values_old is array with only 1 key _null_ with an array of values
 		$this->assertCount(4,$oo->values_old);
 		$this->assertArrayNotHasKey(Entry::TAG_NOTAG,$oo->values_old);
 
@@ -167,12 +167,12 @@ class AttributeTagsTest extends TestCase
 		$this->assertTrue($oo->no_attr_tags);
 
 		// ->values returns a Collection of values
-		// ->_values is array with only 1 key _null_ with an array of values
+		// ->values is array with only 1 key _null_ with an array of values
 		$this->assertCount(1,$oo->values);
 		$this->assertArrayNotHasKey(Entry::TAG_NOTAG,$oo->values);
 
 		// ->values_old return a Collection of old values
-		// ->_values_old is array with only 1 key _null_ with an array of values
+		// ->values_old is array with only 1 key _null_ with an array of values
 		$this->assertCount(1,$oo->values_old);
 		$this->assertArrayNotHasKey(Entry::TAG_NOTAG,$oo->values_old);
 
@@ -213,12 +213,12 @@ class AttributeTagsTest extends TestCase
 		$this->assertTrue($oo->no_attr_tags);
 
 		// ->values returns a Collection of values
-		// ->_values is array with only 1 key _null_ with an array of values
+		// ->values is array with only 1 key _null_ with an array of values
 		$this->assertCount(1,$oo->values);
 		$this->assertArrayNotHasKey(Entry::TAG_NOTAG,$oo->values);
 
 		// ->values_old return a Collection of old values
-		// ->_values_old is array with only 1 key _null_ with an array of values
+		// ->values_old is array with only 1 key _null_ with an array of values
 		$this->assertCount(1,$oo->values_old);
 		$this->assertArrayNotHasKey(Entry::TAG_NOTAG,$oo->values_old);
 

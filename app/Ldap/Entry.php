@@ -94,7 +94,7 @@ class Entry extends Model
 		return $this->objects
 			->filter(fn($item)=>(! $item->is_internal))
 			->flatMap(fn($item)=>
-				$item->_values
+				$item->values
 					->flatMap(fn($v,$k)=>[strtolower($item->name.(($k !== self::TAG_NOTAG) ? ';'.$k : ''))=>$v]))
 			->toArray();
 	}
@@ -151,7 +151,7 @@ class Entry extends Model
 	 */
 	public function setAttribute(string $key,mixed $value): static
 	{
-		foreach ($value as $k => $v)
+		foreach (array_filter($value) as $k => $v)
 			parent::setAttribute($key.($k !== self::TAG_NOTAG ? ';'.$k : ''),$v);
 
 		$key = $this->normalizeAttributeKey($key);
@@ -159,9 +159,9 @@ class Entry extends Model
 
 		$o = $this->objects->get($attribute) ?: Factory::create(dn: $this->dn ?: '',attribute: $attribute,oc: Arr::get($this->attributes,'objectclass',[]));
 
-		$o->values = collect(is_array($value)
+		$o->setValues(collect(is_array($value)
 			? $value
-			: [$tags=>$value]);
+			: [$tags=>$value]));
 
 		$this->objects->put($key,$o);
 
@@ -363,7 +363,7 @@ class Entry extends Model
 	{
 		$result = collect();
 
-		foreach (($this->getObject('objectclass')?->_values->dot() ?: []) as $oc)
+		foreach (($this->getObject('objectclass')?->values->dot() ?: []) as $oc)
 			$result = $result->merge(config('server')->schema('objectclasses',$oc)->all_attributes);
 
 		return $result;
@@ -446,7 +446,7 @@ class Entry extends Model
 		return $this->getObjects()
 			->filter(fn($item)=>! $item->no_attr_tags)
 			->map(fn($item)=>$item
-				->_values
+				->values
 				->keys()
 				->filter(fn($item)=>
 					$item && collect(explode(';',$item))->filter(

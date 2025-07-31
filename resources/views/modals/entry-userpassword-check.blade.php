@@ -7,7 +7,7 @@
 
 <div class="modal-body">
 	<table class="table table-bordered p-1">
-		@foreach(($up=$o->getObject('userpassword'))->_values->dot() as $dotkey => $value)
+		@foreach(($up=$o->getObject('userpassword'))->values->dot() as $dotkey => $value)
 			<tr>
 				<th>Check</th>
 				<td>{{ $up->render_item_old($dotkey) }}</td>

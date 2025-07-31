@@ -16,7 +16,7 @@ final class OID extends Schema
 	{
 		parent::__construct($dn,$name,$values,$oc);
 
-		$this->_values_old = $this->_values;
+		$this->values_old = $this->values;
 	}
 
 	/**

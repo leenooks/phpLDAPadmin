@@ -85,7 +85,7 @@ final class Password extends Attribute
 		return view('components.attribute.value.password')
 			->with('o',$this)
 			->with('dotkey',$dotkey=$this->dotkey($attrtag,$index))
-			->with('value',($x=$this->_values->dot()->get($dotkey)) ? md5($x) : '')
+			->with('value',($x=$this->values->dot()->get($dotkey)) ? md5($x) : '')
 			->with('edit',$edit)
 			->with('editable',$editable)
 			->with('new',$new)

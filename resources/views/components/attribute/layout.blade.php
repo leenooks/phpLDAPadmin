@@ -2,9 +2,9 @@
 	<div class="col-10 offset-1">
 		<attribute id="{{ $o->name_lc }}">
 			{{ $slot }}
-		</attribute>
 
-		<x-attribute.widget.options :o="$o" :edit="$edit" :editable="$editable" :new="$new" :template="$template ?? FALSE"/>
+			<x-attribute.widget.options :o="$o" :edit="$edit" :editable="$editable" :new="$new" :template="$template ?? FALSE"/>
+		</attribute>
 	</div>
 </div>
 

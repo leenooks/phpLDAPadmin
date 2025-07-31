@@ -83,6 +83,8 @@
 						@switch(get_class($o))
 							@case(RDN::class)
 								<x-attribute.rdn :o="$o" :edit="$edit"/>
+								@break
+
 							@default
 								<x-attribute.values :o="$o" :edit="$edit" :editable="$editable ?? FALSE" :new="$new ?? FALSE" :template="$template" :updated="$updated ?? FALSE"/>
 						@endswitch
