@@ -1,1 +1,8 @@
 blank_issues_enabled: false
+contact_links:
+    - name: 📘 Documentation
+      url: https://github.com/leenooks/phpldapadmin/wiki
+      about: Information on setting up and configuring PLA
+    - name: 💁 Question/Support
+      url: https://github.com/leenooks/phpldapadmin/discussions
+      about: Get (or provide) help using PLA
