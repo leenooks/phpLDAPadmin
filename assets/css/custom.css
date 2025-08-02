@@ -1,0 +1,8 @@
+/* Add your own custom styles here */
+footer div.container div.row {
+	padding-block: calc(var(--spacing) * 3) !important;
+}
+
+footer div.border-border {
+	display: none;
+}

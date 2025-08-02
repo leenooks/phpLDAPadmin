@@ -1,0 +1,29 @@
+{
+  "main": [
+    {
+      "name": "github",
+      "icon": "fab fa-github",
+      "link": "https://github.com/leenooks/phpldapadmin"
+    },
+    {
+      "name": "docker",
+      "icon": "fab fa-docker",
+      "link": "https://hub.docker.com/r/phpldapadmin/phpldapadmin"
+    },
+    {
+      "name": "wiki",
+      "icon": "fas fa-book",
+      "link": "https://github.com/leenooks/phpldapadmin/wiki"
+    },
+    {
+      "name": "help",
+      "icon": "fas fa-hand",
+      "link": "https://github.com/leenooks/phpLDAPadmin/discussions"
+    },
+    {
+      "name": "issues",
+      "icon": "fas fa-bug",
+      "link": "https://github.com/leenooks/phpLDAPadmin/issues/new/choose"
+    }
+  ]
+}

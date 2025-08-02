@@ -1,0 +1,49 @@
+############# English navigation ##############
+
+# main menu
+[[main]]
+name = "Home"
+url = "/"
+weight = 1
+
+[[main]]
+name = "GitHub"
+url = "https://github.com/leenooks/phpldapadmin"
+weight = 2
+
+[[main]]
+name = "Wiki"
+url = "https://github.com/leenooks/phpldapadmin/wiki"
+weight = 3
+
+[[main]]
+name = "Help"
+url = "https://github.com/leenooks/phpldapadmin/discussions"
+weight = 5
+
+[[main]]
+name = "Demo"
+weight = 4
+
+[[main]]
+parent = "Demo"
+name = "Openldap"
+url = "https://demo.phpldapadmin.org"
+weight = 1
+
+[[main]]
+parent = "Demo"
+name = "389 DS"
+url = "https://demo-389ds.phpldapadmin.org"
+weight = 2
+
+# footer menu
+#[[footer]]
+#name = "Github"
+#url = "/about"
+#weight = 1
+
+#[[footer]]
+#name = "Wiki"
+#url = "/elements"
+#weight = 2
