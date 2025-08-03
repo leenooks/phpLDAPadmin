@@ -16,18 +16,22 @@
 		<td class="align-bottom font-size-xs" colspan="2">
 			<table class="table table-condensed table-borderless w-100">
 				@if($o->entryuuid)
-					<tr class="mt-1">
-						<td class="p-0 pe-2">Created</td>
-						<th class="p-0">
-							<x-attribute.values :o="$o->getObject('createtimestamp')" :new="false"/> [<x-attribute.values :o="$o->getObject('creatorsname')" :new="false"/>]
-						</th>
-					</tr>
-					<tr class="mt-1">
-						<td class="p-0 pe-2">Modified</td>
-						<th class="p-0">
-							<x-attribute.values :o="$o->getObject('modifytimestamp')" :new="false"/> [<x-attribute.values :o="$o->getObject('modifiersname')" :new="false"/>]
-						</th>
-					</tr>
+					@if($x=$o->getObject('createtimestamp'))
+						<tr class="mt-1">
+							<td class="p-0 pe-2">Created</td>
+							<th class="p-0">
+								<x-attribute.values :o="$x" :new="false"/> [<x-attribute.values :o="$o->getObject('creatorsname')" :new="false"/>]
+							</th>
+						</tr>
+					@endif
+					@if($x=$o->getObject('modifytimestamp'))
+						<tr class="mt-1">
+							<td class="p-0 pe-2">Modified</td>
+							<th class="p-0">
+								<x-attribute.values :o="$x" :new="false"/> [<x-attribute.values :o="$o->getObject('modifiersname')" :new="false"/>]
+							</th>
+						</tr>
+					@endif
 					<tr class="mt-1">
 						<td class="p-0 pe-2">UUID</td>
 						<th class="p-0">

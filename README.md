@@ -64,6 +64,7 @@ Other items [under consideration](https://github.com/leenooks/phpLDAPadmin/issue
 - [X] OpenDJ
 - [ ] Microsoft Active Directory
 - [X] 389 Directory Server
+- [X] Apache DS
 
 If there is an LDAP server that you have that you would like to have supported, please open an issue to request it.
 You might need to provide access, provide a copy or instructions to get an environment for testing. If you have enabled 

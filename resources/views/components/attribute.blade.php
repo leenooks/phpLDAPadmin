@@ -8,7 +8,7 @@
 		<div class="row">
 			<div class="col-12 bg-light text-dark p-2 rounded-2">
 				<span class="d-flex justify-content-between">
-					<span style="width: 20em;">
+					<span class="w-50">
 						<strong class="align-middle"><abbr title="{{ (($x=$template?->attributeTitle($o->name)) ? $o->name.': ' : '').$o->description }}">{{ $x ?: $o->name }}</abbr></strong>
 
 						@if(! $o->is_internal)
