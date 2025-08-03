@@ -68,6 +68,8 @@ final class Server
 	 */
 	public static function baseDNs(bool $objects=TRUE): Collection
 	{
+		Log::debug(sprintf('%s:Fetching baseDNs [%s] objects',self::LOGKEY,$objects ? 'WITH' : 'withOUT'));
+
 		try {
 			$namingcontexts = collect(config('pla.base_dns') ?: self::rootDSE()?->namingcontexts);
 
@@ -174,6 +176,8 @@ final class Server
 			}
 		}
 
+		Log::debug(sprintf('%s:- Got namingcontexts',self::LOGKEY),['namingcontexts'=>$namingcontexts]);
+
 		if (! $objects)
 			return $namingcontexts;
 
@@ -230,13 +234,19 @@ final class Server
 	 */
 	private static function get(string $dn,array $attrs=['*','+']): Builder
 	{
-		return Entry::query()
+		Log::debug(sprintf('%s:Getting [%s]',self::LOGKEY,$dn));
+
+		$result = Entry::query()
 			->setDN($dn)
 			->cache(
 				until: self::cachetime(),
 				flush: self::cacheflush($dn)
 			)
 			->select($attrs);
+
+		Log::debug(sprintf('%s:= Got [%s]',self::LOGKEY,$dn));
+
+		return $result;
 	}
 
 	/**
@@ -255,6 +265,8 @@ final class Server
 			$rootdse = self::get('',['+','*'])
 				->read()
 				->firstOrFail();
+
+		Log::debug(sprintf('%s:Fetched rootDSE ',self::LOGKEY),['rootDSE'=>$rootdse]);
 
 		return $rootdse;
 	}
@@ -290,9 +302,28 @@ final class Server
 	 */
 	public function fetch(string $dn,array $attrs=['*','+']): ?Model
 	{
-		return $this->get($dn,$attrs)
+		static $depth = [];
+		$cd = Arr::get($depth,$dn,0);
+
+		Log::debug(sprintf('%s:Fetching [%s] depth [%d]',self::LOGKEY,$dn,$cd));
+
+		if ($cd > 2) {
+			Log::error(sprintf('%s:! Something is wrong, loop detecting triggered for [%s] (%d)',self::LOGKEY,$dn,$cd));
+
+			throw new InvalidUsage(sprintf('Something is wrong, loop detecting triggered for [%s] (%d)',$dn,$cd));
+		}
+
+		$depth[$dn] = $cd+1;
+
+		$result = $this->get($dn,$attrs)
 			->read()
 			->first() ?: NULL;
+
+		$depth[$dn] = $cd;
+
+		Log::debug(sprintf('%s:= Fetched [%s]',self::LOGKEY,$dn),['dn'=>$dn]);
+
+		return $result;
 	}
 
 	/**
@@ -356,19 +387,38 @@ final class Server
 	 */
 	public function schema(string $item,?string $key=NULL): Collection|LDAPSyntax|Base|NULL
 	{
+		Log::debug(sprintf('%s:Fetching SchemaItem [%s]',self::LOGKEY,$item),['key'=>$key,'already'=>$this->{$item}->count()]);
+
 		// Ensure our item to fetch is lower case
 		$item = strtolower($item);
 
 		if (! $this->{$item}->count()) {
+			Log::debug(sprintf('%s:/ SchemaItem NOT loaded [%s]',self::LOGKEY,$item),['count'=>$this->{$item}->count()]);
+
 			$this->{$item} = Cache::remember('schema.'.$item,config('ldap.cache.time'),function() use ($item) {
+				Log::debug(sprintf('%s:? Finding out SchemaDN',self::LOGKEY));
+
 				// Try to get the schema DN from the specified entry.
 				$schema_dn = $this->schemaDN();
+				Log::debug(sprintf('%s:/ Found out SchemaDN is [%s]',self::LOGKEY,$schema_dn));
+
 				// @note: 389DS does not return subschemaSubentry unless it is requested
-				$schema = $this->fetch($schema_dn,['*','+','subschemaSubentry']);
+				// @note: If the LDAP server doesnt return a subschemasubentry, then we end up looping
+				try {
+					Log::debug(sprintf('%s:/ Fetching schema at [%s]',self::LOGKEY,$schema_dn));
+
+					$schema = $this->fetch($schema_dn,['*','+','subschemaSubentry']);
+
+				} catch (InvalidUsage $e) {
+					abort(599,$e->getMessage());
+				}
 
 				// If our schema's null, we didnt find it.
-				if (! $schema)
+				if (! $schema) {
+					Log::error(sprintf('%s:! Couldnt find schema at [%s]',self::LOGKEY,$schema_dn));
+
 					throw new Exception('Couldnt find schema at:'.$schema_dn);
+				}
 
 				switch ($item) {
 					case 'attributetypes':
@@ -479,13 +529,18 @@ final class Server
 
 					// Shouldnt get here
 					default:
+						Log::alert(sprintf('%s:? Unknown item to fetch [%s] ',self::LOGKEY,$item));
 						throw new InvalidUsage('Invalid request to fetch schema: '.$item);
 				}
 			});
+
+			Log::debug(sprintf('%s:/ SchemaItem LOADED [%s] ',self::LOGKEY,$item),['count'=>$this->{$item}->count()]);
 		}
 
 		if (is_null($key))
 			return $this->{$item};
+
+		Log::debug(sprintf('%s:/ SchemaItem [%s] Looking for key [%s] ',self::LOGKEY,$item,$key));
 
 		switch ($item) {
 			case 'attributetypes':

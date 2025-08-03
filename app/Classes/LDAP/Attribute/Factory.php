@@ -3,6 +3,7 @@
 namespace App\Classes\LDAP\Attribute;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 use App\Classes\LDAP\Attribute;
 use App\Ldap\Entry;
@@ -62,6 +63,8 @@ class Factory
 			$values = [Entry::TAG_NOTAG=>['']];
 
 		$class = Arr::get(self::map,strtolower($attribute),Attribute::class);
+
+		Log::debug(sprintf('%s:Creating Attribute [%s] for [%s] using class [%s]',self::LOGKEY,$attribute,$dn,$class),['values'=>$values]);
 		return new $class($dn,$attribute,$values,$oc);
 	}
 }

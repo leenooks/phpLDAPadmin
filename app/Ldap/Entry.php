@@ -181,7 +181,7 @@ class Entry extends Model
 		parent::setRawAttributes($attributes);
 
 		// We only set our objects on DN entries (otherwise we might get into a recursion loop if this is the schema DN)
-		if ($this->dn && (! in_array($this->dn,Arr::get($this->attributes,'subschemasubentry',[])))) {
+		if ($this->dn && ($this->dn !== config('server')->schemaDN())) {
 			$this->objects = $this->getAttributesAsObjects();
 
 		} else {
