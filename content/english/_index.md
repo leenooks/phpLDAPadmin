@@ -20,6 +20,7 @@ features:
       - "**Data Rich** attribute values"
       - "**Multi-language** Support"
       - "Open-source"
+      - Tested with [**Openldap**](https://www.openldap.org), [**Apache Directory Server**](https://directory.apache.org/apacheds/), [**OpenDJ - Open Directory Server**](https://www.openidentityplatform.org/opendj), [**389 Directory Server**](https://www.port389.org/)
     button:
       enable: true
       label: "Get Started"

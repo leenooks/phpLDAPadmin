@@ -28,7 +28,7 @@ weight = 4
 [[main]]
 parent = "Demo"
 name = "Openldap"
-url = "https://demo.phpldapadmin.org"
+url = "https://demo-openldap.phpldapadmin.org"
 weight = 1
 
 [[main]]
@@ -36,6 +36,24 @@ parent = "Demo"
 name = "389 DS"
 url = "https://demo-389ds.phpldapadmin.org"
 weight = 2
+
+[[main]]
+parent = "Demo"
+name = "Apache DS"
+url = "https://demo-apacheds.phpldapadmin.org"
+weight = 2
+
+[[main]]
+parent = "Demo"
+name = "OpenDJ"
+url = "https://demo-opendj.phpldapadmin.org"
+weight = 2
+
+[[main]]
+parent = "Demo"
+name = "Development"
+url = "https://demo-dev.phpldapadmin.org"
+weight = 3
 
 # footer menu
 #[[footer]]
