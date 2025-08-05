@@ -55,7 +55,7 @@ class Attribute implements \Countable, \ArrayAccess
 	{
 		$this->dn = $dn;
 		$this->values = collect($values)
-			->map(function($item) { if (is_array($item)) sort($item); return $item; });
+			->map(function($item) { if (is_array($item)) asort($item); return $item; });
 		$this->values_old = $this->values;
 
 		$this->schema = config('server')

@@ -6,7 +6,7 @@
 
 			@foreach($o->attrs->map(fn($item)=>['id'=>$item,'value'=>$item]) as $option)
 				@continue(! Arr::get($option,'value'))
-				<option value="{{ strtolower(Arr::get($option,'id')) }}" @selected(Arr::get($option,'id') == old('_rdn',$value ?? ''))>{{ Arr::get($option,'value') }}</option>
+				<option value="{{ strtolower(Arr::get($option,'id')) }}" @selected(Arr::get($option,'id') == old('_rdn',$o->rdn_attr))>{{ Arr::get($option,'value') }}</option>
 			@endforeach
 		</select>
 
@@ -15,7 +15,7 @@
 			@class(['form-control','is-invalid'=>$errors->get('_rdn_value')])
 			id="rdn_value"
 			name="_rdn_value"
-			value="{{ old('_rdn_value') }}"
+			value="{{ old('_rdn_value',$o->rdn_value) }}"
 			placeholder="rdn">
 		<label class="input-group-text">,{{ $o->base }}</label>
 
@@ -30,7 +30,7 @@
 	</div>
 
 @else
-	{{ $value }}
+	{{ $o->rdn_value }}
 @endif
 
 @section('page-scripts')

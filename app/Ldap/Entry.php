@@ -38,7 +38,7 @@ class Entry extends Model
 	private(set) Collection $templates;
 
 	// For new entries, this is the container that this entry will be stored in
-	private string $rdnbase;
+	private string $rdnbase = '';
 	private(set) bool $is_base;
 
 	/* OVERRIDES */
@@ -212,9 +212,9 @@ class Entry extends Model
 	 */
 	public function getRDNAttribute(): Attribute\RDN
 	{
-		$o = new Attribute\RDN('','dn',[self::TAG_NOTAG=>['']]);
-		// @todo for an existing object, rdnbase would be null, so dynamically get it from the DN.
-		$o->setBase($this->rdnbase);
+		$rdn = explode('=',$this->getRdn());
+		$o = new Attribute\RDN('','dn',[self::TAG_NOTAG=>(array_filter($rdn) && (count($rdn) === 2)) ? [$rdn[0]=>$rdn[1]] : ['']]);
+		$o->setBase($this->getContainer());
 		$o->setAttributes($this->getAvailableAttributes()->filter(fn($item)=>$item->is_must));
 
 		return $o;
@@ -369,6 +369,11 @@ class Entry extends Model
 		return $result;
 	}
 
+	public function getContainer(): string
+	{
+		return $this->rdnbase ?: collect(explode(',',$this->getDn()))->skip(1)->join(',');
+	}
+
 	/**
 	 * Return a secure version of the DN
 	 * @param string $cmd
@@ -377,6 +382,11 @@ class Entry extends Model
 	public function getDNSecure(string $cmd=''): string
 	{
 		return Crypt::encryptString(($cmd ? sprintf('*%s|',$cmd) : '').$this->getDn());
+	}
+
+	public function getDNContainerSecure(string $cmd=''): string
+	{
+		return Crypt::encryptString(($cmd ? sprintf('*%s|',$cmd) : '').$this->getContainer());
 	}
 
 	/**
