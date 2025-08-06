@@ -1,16 +1,22 @@
 <!-- $o=Password::class -->
+@use(App\Ldap\Entry)
+
 <div class="input-group has-validation">
+	@if(! $o->isDirty())
+		<input type="hidden" name="{{ $o->name_lc }}[{{ $attrtag }}{{ Entry::TAG_MD5 }}][]" value="{{ md5($value) }}">
+	@endif
+
 	<x-select class="mb-1"
 		id="userpassword_hash_{{$index}}_{{ $template?->name }}"
-		name="_userpassword_hash[{{ $attrtag }}][]"
-		:value="old('_userpassword_hash.'.$dotkey,$o->hash($o->values->dot()->get($dotkey) ?: '')->id())"
+		name="{{ $o->name_lc }}[{{ $attrtag }}{{ Entry::TAG_HELPER }}][]"
+		:value="old($o->name_lc.'.'.$attrtag.Entry::TAG_HELPER.'.'.$index,$o->hash($o->values->dot()->get($dotkey) ?: '')->id())"
 		:options="$helpers"
 		allowclear="false"
 		:disabled="! $edit"/>
 	<input type="password"
 		{{ $attributes->class(['is-invalid'=>($e=$errors->get($o->name_lc.'.'.$dotkey))]) }}
 		name="{{ $o->name_lc }}[{{ $attrtag }}][]"
-		value="{{ Arr::get(old($o->name_lc),$dotkey,$value) }}"
+		value="{{ Arr::get(old($o->name_lc),$dotkey,md5($value)) }}"
 		@readonly(! $edit)>
 
 	<x-form.invalid-feedback :errors="$e"/>

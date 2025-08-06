@@ -31,7 +31,7 @@ class Attribute implements \Countable, \ArrayAccess
 	// The old values for this attribute - helps with isDirty() to determine if there is an update pending
 	protected(set) Collection $values_old;
 	// Current Values
-	private(set) Collection $values;
+	protected Collection $values;
 	// The objectclasses of the entry that has this attribute
 	protected(set) Collection $oc;
 
@@ -85,6 +85,11 @@ class Attribute implements \Countable, \ArrayAccess
 			'description' => $this->schema ? $this->schema->{$key} : NULL,
 			// Attribute hints
 			'hints' => $this->hints(),
+			// Keys with values
+			'keys' => $this->values
+				->keys()
+				->filter(fn($item)=>collect(Entry::TAG_NOVALUES)
+					->filter(fn($item)=>\Str::endsWith($key,$item))->count() === 0),
 			// Attribute language tags
 			'langtags' => ($this->no_attr_tags || (! $this->values->count()))
 				? collect(Entry::TAG_NOTAG)
@@ -110,6 +115,10 @@ class Attribute implements \Countable, \ArrayAccess
 			'used_in' => $this->schema?->used_in_object_classes ?: collect(),
 			// For single value attributes
 			'value' => $this->schema?->is_single_value ? $this->values->first() : NULL,
+			// This attribute's value, less special tags
+			'values' => $this->values
+				->only($this->keys)
+				->filter(fn($item)=>array_filter($item)),
 
 			default => throw new \Exception('Unknown key:' . $key),
 		};

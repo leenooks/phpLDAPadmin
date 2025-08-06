@@ -1,10 +1,12 @@
 <!-- $o=Binary\JpegPhoto::class -->
+@use(App\Ldap\Entry)
+
 <tr>
 	@switch($x=$f->buffer($o->isDirty() ? $value : $o->render_item_old($dotkey),FILEINFO_MIME_TYPE))
 		@case('image/jpeg')
 		@default
 			<td>
-				<input type="hidden" name="{{ $o->name_lc }}[{{ $attrtag }}][]" value="{{ md5($o->isDirty() ? $value : $o->render_item_old($dotkey)) }}">
+				<input type="hidden" name="{{ $o->name_lc }}[{{ $attrtag }}{{ $o->isDirty() ? '' : Entry::TAG_MD5 }}][]" value="{{ $o->isDirty() ? $o->render_item_new($dotkey) : md5($value) }}">
 				<img alt="{{ $o->dn }}"
 					@class([
 						'border',
@@ -12,7 +14,7 @@
 						'p-2',
 						'm-0',
 						'is-invalid'=>($e=$errors->get($o->name_lc.'.'.$dotkey)),'bg-success-subtle'=>$updated])
-					src="data:{{ $x }};base64, {{ base64_encode($o->isDirty() ? $value : $o->render_item_old($dotkey)) }}"/>
+					src="data:{{ $x }};base64, {{ $o->render_item_new($dotkey) }}"/>
 
 				@if($edit||$editable)
 					<br>

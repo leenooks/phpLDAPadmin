@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Attribute;
 use App\Classes\Template;
+use App\Ldap\Entry;
 use App\Traits\MD5Updates;
 
 /**
@@ -85,7 +86,7 @@ final class Password extends Attribute
 		return view('components.attribute.value.password')
 			->with('o',$this)
 			->with('dotkey',$dotkey=$this->dotkey($attrtag,$index))
-			->with('value',($x=$this->values->dot()->get($dotkey)) ? md5($x) : '')
+			->with('value',$this->values->dot()->get($dotkey))
 			->with('edit',$edit)
 			->with('editable',$editable)
 			->with('new',$new)
@@ -114,5 +115,41 @@ final class Password extends Attribute
 			? (((($x=$this->hash($pw)) && ($x::id() !== '*clear*')) ? sprintf('{%s}',$x::shortid()) : '')
 				.str_repeat('*',16))
 			: NULL;
+	}
+
+	public function setValues(Collection $values): void
+	{
+		$processed = [];
+
+		// If the attr tags are the same value as the md5 tag, then nothing has changed
+		foreach ($this->keys as $key) {
+			foreach ($values->get($key) as $index => $value) {
+				$md5value = $values->dot()->get($key.Entry::TAG_MD5.'.'.$index);
+				$helper = $values->dot()->get($key.Entry::TAG_HELPER.'.'.$index);
+
+				if ((! $md5value) || ($value !== $md5value)) {
+					if ($helper) {
+
+						$password = Password::hash_id($helper)
+							->encode($value);
+
+						$processed[$key.'.'.$index] = $password;
+
+					} else {
+						$processed[$key.'.'.$index] = $value;
+					}
+
+				} else {
+					$old = $this->values_old->dot()->get($key.'.'.$index);
+
+					if ($old && (md5($old) === $value))
+						$processed[$key.'.'.$index] = $old;
+
+					$processed[$key.Entry::TAG_MD5.'.'.$index] = $value;
+				}
+			}
+		}
+
+		parent::setValues($processed ? collect(Arr::undot($processed)) : $values);
 	}
 }

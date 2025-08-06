@@ -148,7 +148,11 @@ return [
 				'sometimes',
 				'min:1'
 			],
-			'userpassword.*.*' => [
+			sprintf('userpassword.%s%s.*',\App\Ldap\Entry::TAG_NOTAG,\App\Ldap\Entry::TAG_HELPER) => [
+				'nullable',
+				'min:4'
+			],
+			sprintf('userpassword.%s.*',\App\Ldap\Entry::TAG_NOTAG) => [
 				'nullable',
 				'min:8'
 			]

@@ -10,7 +10,7 @@
 		@endif
 
 		<!-- At this point $values is the original/updated values, however old() might have md5 values -->
-		@foreach(Arr::get(old($o->name_lc,$o->values ?: [$langtag=>[]]),$langtag,[]) as $key => $value)
+		@foreach(Arr::get(old($o->name_lc,$o->values ?: [$langtag=>[]]),$langtag,$o->values->get($langtag)) as $key => $value)
 			<x-attribute.value
 				@class([
 					'form-control',

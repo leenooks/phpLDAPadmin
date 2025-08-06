@@ -30,6 +30,9 @@ class Entry extends Model
 	public const LANG_TAG_PREFIX = 'lang-';
 	public const TAG_CHARS_LANG = self::LANG_TAG_PREFIX.'['.self::TAG_CHARS.']+';
 	public const TAG_NOTAG = '_null_';
+	public const TAG_MD5 = '_md5_';
+	public const TAG_HELPER = '_helper_';
+	public const TAG_NOVALUES = [self::TAG_MD5,self::TAG_HELPER];
 
 	// Our Attribute objects
 	private Collection $objects;

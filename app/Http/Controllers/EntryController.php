@@ -16,7 +16,7 @@ use LdapRecord\LdapRecordException;
 use LdapRecord\Query\ObjectNotFoundException;
 use Nette\NotImplementedException;
 
-use App\Classes\LDAP\Attribute\{Factory,Password};
+use App\Classes\LDAP\Attribute\Factory;
 use App\Classes\LDAP\Import\LDIF as LDIFImport;
 use App\Classes\LDAP\Export\LDIF as LDIFExport;
 use App\Exceptions\Import\{GeneralException,VersionException};
@@ -28,7 +28,7 @@ class EntryController extends Controller
 {
 	private const LOGKEY = 'CEc';
 
-	public const INTERNAL_POST = ['_auto_value','_key','_rdn','_rdn_new','_rdn_value','_step','_template','_token','_userpassword_hash'];
+	public const INTERNAL_POST = ['_auto_value','_key','_rdn','_rdn_new','_rdn_value','_step','_template','_token'];
 
 	/**
 	 * Create a new object in the LDAP server
@@ -179,13 +179,6 @@ class EntryController extends Controller
 
 		foreach ($request->except(self::INTERNAL_POST) as $key => $value)
 			$o->{$key} = array_filter($value);
-
-		// We need to process and encrypt the password
-		if ($request->userpassword)
-			$o->userpassword = $this->password(
-				$o->getObject('userpassword'),
-				$request->userpassword,
-				$request->get('_userpassword_hash'));
 
 		try {
 			$o->save();
@@ -350,28 +343,6 @@ class EntryController extends Controller
 				]);
 	}
 
-	private function password(Password $po,array $values,array $hash): array
-	{
-		// We need to process and encrypt the password
-		$passwords = [];
-
-		foreach (Arr::dot($values) as $dotkey => $value) {
-			// If the password is still the MD5 of the old password, then it hasnt changed
-			if (($old=Arr::get($po,$dotkey)) && ($value === md5($old))) {
-				$passwords[$dotkey] = $value;
-				continue;
-			}
-
-			if ($value) {
-				$type = Arr::get($hash,$dotkey);
-				$passwords[$dotkey] = Password::hash_id($type)
-					->encode($value);
-			}
-		}
-
-		return Arr::undot($passwords);
-	}
-
 	public function password_check(Request $request): Collection
 	{
 		$dn = Crypt::decryptString($request->dn);
@@ -494,17 +465,8 @@ class EntryController extends Controller
 
 		$o = config('server')->fetch($dn);
 
-		foreach ($request->except(['_token','dn','_userpassword_hash','userpassword']) as $key => $value)
+		foreach ($request->except(['_token','dn']) as $key => $value)
 			$o->{$key} = array_filter($value,fn($item)=>! is_null($item));
-
-		// @todo Need to handle incoming attributes that were modified by MD5Updates Trait (eg: jpegphoto)
-
-		// We need to process and encrypt the password
-		if ($request->userpassword)
-			$o->userpassword = $this->password(
-				$o->getObject('userpassword'),
-				$request->userpassword,
-				$request->get('_userpassword_hash'));
 
 		if (! $o->getDirty())
 			return Redirect::back()
