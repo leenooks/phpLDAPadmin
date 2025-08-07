@@ -120,6 +120,7 @@ class EntryController extends Controller
 		Log::info(sprintf('%s:Renaming [%s] to [%s]',self::LOGKEY,$key['dn'],$request->post('to_dn')));
 
 		$o = clone config('server')->fetch($key['dn']);
+		$oldrdn = $o->rdn;
 
 		if (! $o)
 			return back()
@@ -135,6 +136,15 @@ class EntryController extends Controller
 
 		list($attr,$value) = explode('=',$rdn);
 		$o->{$attr} = [Entry::TAG_NOTAG => $o->getObject($attr)->tagValuesOld(Entry::TAG_NOTAG)->push($value)->unique()->toArray()];
+
+		// Update the RDN attribute
+		if ($oldrdn->rdn_value !== $o->rdn->rdn_value)
+			$o->{$o->rdn->rdn_attr} = $o->getObject($o->rdn->rdn_attr)
+				->values
+				->dot()
+				->diff($oldrdn->values->dot())
+				->undot()
+				->toArray();
 
 		Log::info(sprintf('%s:Copying [%s] to [%s]',self::LOGKEY,$key['dn'],$o->getDN()));
 
