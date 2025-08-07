@@ -18,6 +18,8 @@ final class Password extends Attribute
 {
 	use MD5Updates;
 
+	public const obfuscate = '****************';
+
 	protected(set) bool $no_attr_tags = TRUE;
 	protected(set) int $max_values_count = 1;
 
@@ -103,7 +105,7 @@ final class Password extends Attribute
 
 		return $pw
 			? (((($x=$this->hash($pw)) && ($x::id() === '*clear*')) ? sprintf('{%s}',$x::shortid()) : '')
-				.str_repeat('*',16))
+				.self::obfuscate)
 			: NULL;
 	}
 
@@ -113,19 +115,20 @@ final class Password extends Attribute
 
 		return $pw
 			? (((($x=$this->hash($pw)) && ($x::id() !== '*clear*')) ? sprintf('{%s}',$x::shortid()) : '')
-				.str_repeat('*',16))
+				.self::obfuscate)
 			: NULL;
 	}
 
-	public function setValues(Collection $values): void
+	public function setValues(array $values): void
 	{
 		$processed = [];
+		$vals = collect($values);
 
 		// If the attr tags are the same value as the md5 tag, then nothing has changed
 		foreach ($this->keys as $key) {
-			foreach ($values->get($key) as $index => $value) {
-				$md5value = $values->dot()->get($key.Entry::TAG_MD5.'.'.$index);
-				$helper = $values->dot()->get($key.Entry::TAG_HELPER.'.'.$index);
+			foreach ($vals->get($key) as $index => $value) {
+				$md5value = $vals->dot()->get($key.Entry::TAG_MD5.'.'.$index);
+				$helper = $vals->dot()->get($key.Entry::TAG_HELPER.'.'.$index);
 
 				if ((! $md5value) || ($value !== $md5value)) {
 					if ($helper) {
@@ -150,6 +153,6 @@ final class Password extends Attribute
 			}
 		}
 
-		parent::setValues($processed ? collect(Arr::undot($processed)) : $values);
+		parent::setValues($processed ? Arr::undot($processed) : $values);
 	}
 }

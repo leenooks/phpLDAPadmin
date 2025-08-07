@@ -17,14 +17,14 @@ final class KrbPrincipalKey extends Attribute
 	public function render_item_old(string $dotkey): ?string
 	{
 		return parent::render_item_old($dotkey)
-			? str_repeat('*',16)
+			? Password::obfuscate
 			: NULL;
 	}
 
 	public function render_item_new(string $dotkey): ?string
 	{
 		return parent::render_item_new($dotkey)
-			? str_repeat('*',16)
+			? Password::obfuscate
 			: NULL;
 	}
 }

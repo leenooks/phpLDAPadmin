@@ -33,7 +33,7 @@ class HomeController extends Controller
 		if (($request->root().'/' !== url()->previous()) && $request->method() === 'POST')
 			abort(409);
 
-		$key = request_key($request);
+		$key = request_key($request->get('_key',old('_key')));
 		$o = NULL;
 
 		$view = $old
@@ -41,25 +41,36 @@ class HomeController extends Controller
 			: view('frames.'.$key['cmd']);
 
 		// If we are rendering a DN, rebuild our object
-		if (in_array($key['cmd'],['create'])) {
+		if (in_array($key['cmd'],['create','copy_move'])) {
 			$o = new Entry;
-			$o->setRDNBase($key['dn']);
+			$o->setDN($key['dn']);
+			$o->setRDNBase(dn_container($key['dn']));
 
 		} elseif ($key['dn']) {
 			// @todo Need to handle if DN is null, for example if the user's session expired and the ACLs dont let them retrieve $key['dn']
 			$o = config('server')->fetch($key['dn']);
 		}
 
-		if ($o)
-			foreach (collect(old())->except(array_merge(EntryController::INTERNAL_POST,['dn'])) as $attr => $value)
+		if ($o) {
+			// @note Need to add the objectclass value first, so that subsequent attributes are aware of the objectclasses
+			if ($x=old('objectclass'))
+				$o->objectclass = $x;
+
+			foreach (collect(old())->except(array_merge(EntryController::INTERNAL_POST,['dn','objectclass'])) as $attr => $value)
 				$o->{$attr} = $value;
+		}
 
 		return match ($key['cmd']) {
 			'create' => $view
 				->with('container',old('container',$key['dn']))
 				->with('o',$o)
 				->with('template',NULL)
-				->with('step',1),
+				->with('step',old('_step',1)),
+
+			'copy_move' => $view
+				->with('dn',$key['dn'])
+				->with('o',$o)
+				->with('template',NULL),
 
 			'dn' => $view
 				->with('dn',$key['dn'])

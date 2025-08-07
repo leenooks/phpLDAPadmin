@@ -14,7 +14,7 @@
 				<label for="rdn" class="form-label">@lang('New RDN')</label>
 				<div class="input-group mb-3">
 					<input type="text" id="rdn" name="_rdn_new" class="form-control w-25" placeholder="{{ $rdn=collect(explode(',',$x))->first() }}" value="{{ $rdn }}">
-					<span class="input-group-text" id="label">{{ collect(explode(',',$x))->skip(1)->join(',') }}</span>
+					<span class="input-group-text" id="label">{{ dn_container($x) }}</span>
 				</div>
 			</div>
 		</div>

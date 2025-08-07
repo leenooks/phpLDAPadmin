@@ -12,7 +12,7 @@
 	<br>
 	<form id="entry-rename-form" method="POST" action="{{ url('entry/copy-move') }}">
 		@csrf
-		<input type="hidden" name="dn" value="{{ $dn }}">
+		<input type="hidden" name="_key" value="{{ Crypt::encryptString('*copy_move|'.$x) }}">
 		<input type="hidden" name="to_dn" value="">
 
 		<div class="row pb-3">

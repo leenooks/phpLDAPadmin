@@ -42,7 +42,7 @@ class EntryController extends Controller
 		if (! old('_step',$request->validated('_step')))
 			abort(404);
 
-		$key = request_key($request);
+		$key = request_key($request->get('_key',old('_key')));
 
 		$template = NULL;
 		$o = new Entry;
@@ -115,17 +115,18 @@ class EntryController extends Controller
 
 	public function copy_move(Request $request): \Illuminate\Http\RedirectResponse|\Illuminate\View\View
 	{
-		$from_dn = Crypt::decryptString($request->post('dn'));
+		$key = request_key($request->get('_key',old('_key')));
 		$to_dn = $request->post('to_dn');
-		Log::info(sprintf('%s:Renaming [%s] to [%s]',self::LOGKEY,$from_dn,$request->post('to_dn')));
+		Log::info(sprintf('%s:Renaming [%s] to [%s]',self::LOGKEY,$key['dn'],$request->post('to_dn')));
 
-		$o = clone config('server')->fetch($from_dn);
+		$o = clone config('server')->fetch($key['dn']);
 
 		if (! $o)
 			return back()
 				->withInput()
 				->with('note',__('DN doesnt exist'));
 
+		// @todo as part of this clone/setDN activity, should we clear the old_values, and automatically set exists to FALSE?
 		$o->setDN($to_dn);
 		$o->exists = FALSE;
 
@@ -133,16 +134,27 @@ class EntryController extends Controller
 		$rdn = collect(explode(',',$to_dn))->first();
 
 		list($attr,$value) = explode('=',$rdn);
-		$o->{$attr} = [Entry::TAG_NOTAG => $o->getObject($attr)->tagValuesOld(Entry::TAG_NOTAG)->push($value)->unique()];
+		$o->{$attr} = [Entry::TAG_NOTAG => $o->getObject($attr)->tagValuesOld(Entry::TAG_NOTAG)->push($value)->unique()->toArray()];
 
-		Log::info(sprintf('%s:Copying [%s] to [%s]',self::LOGKEY,$from_dn,$o->getDN()));
+		Log::info(sprintf('%s:Copying [%s] to [%s]',self::LOGKEY,$key['dn'],$o->getDN()));
 
 		try {
 			$o->save();
 
 		} catch (LdapRecordException $e) {
+			Log::alert(sprintf('%s:Copying failed with [%s], redirecting to edit [%s]',self::LOGKEY,$e->getMessage(),$to_dn));
+
+			if ($request->post('delete') && $request->post('delete') === '1')
+				Log::alert(sprintf('%s:Delete operation cancelled, DN [%s] not deleted',self::LOGKEY,$key['dn']));
+
 			return Redirect::to('/')
-				->withInput(array_merge(['_key'=>Crypt::encryptString('*dn|'.$to_dn)],$o->getAttributes()))
+				->withInput(
+					$o->getObjects()
+						->filter(fn($item)=>! $item->is_internal)
+						->map(fn($item)=>$item->values_rendered->toArray())
+						->merge(['_key'=>$o->getDNSecure('copy_move')])
+						->toArray()
+				)
 				->with('failed',sprintf('%s: %s - %s: %s',
 					__('LDAP Server Error Code'),
 					$e->getDetailedError()?->getErrorCode() ?: $e->getMessage(),
@@ -152,7 +164,7 @@ class EntryController extends Controller
 		}
 
 		if ($request->post('delete') && $request->post('delete') === '1') {
-			Log::info(sprintf('%s:Deleting [%s] after copy',self::LOGKEY,$from_dn));
+			Log::info(sprintf('%s:Deleting [%s] after copy',self::LOGKEY,$key['dn']));
 
 			$x = $this->entry_delete($request);
 
@@ -170,7 +182,7 @@ class EntryController extends Controller
 
 	public function create(EntryAddRequest $request): \Illuminate\Http\RedirectResponse
 	{
-		$key = request_key($request);
+		$key = request_key($request->get('_key',old('_key')));
 
 		$dn = sprintf('%s=%s,%s',$request->get('_rdn'),$request->get('_rdn_value'),$key['dn']);
 

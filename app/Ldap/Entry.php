@@ -162,9 +162,9 @@ class Entry extends Model
 
 		$o = $this->objects->get($attribute) ?: Factory::create(dn: $this->dn ?: '',attribute: $attribute,oc: Arr::get($this->attributes,'objectclass',[]));
 
-		$o->setValues(collect(is_array($value)
+		$o->setValues(is_array($value)
 			? $value
-			: [$tags=>$value]));
+			: [$tags=>$value]);
 
 		$this->objects->put($key,$o);
 
@@ -374,7 +374,7 @@ class Entry extends Model
 
 	public function getContainer(): string
 	{
-		return $this->rdnbase ?: collect(explode(',',$this->getDn()))->skip(1)->join(',');
+		return $this->rdnbase ?: dn_container($this->getDn());
 	}
 
 	/**

@@ -1,9 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Crypt;
+
+function dn_container($string): string
+{
+	return collect(explode(',',$string))->skip(1)->join(',');
+}
 
 function login_attr_description(): string
 {
@@ -37,18 +40,17 @@ function random_salt(int $length): string
 /**
  * For any incoming request, work out the command and DN involved
  *
- * @param Request $request
- * @param Collection|null $old
+ * @param string|null $string $string
  * @return array
  */
-function request_key(Request $request): array
+function request_key(?string $string): array
 {
-	// Setup
+	if (is_null($string))
+		return [];
+
 	$cmd = NULL;
 	$dn = NULL;
-	$key = ($x=$request->get('_key',old('_key')))
-		? Crypt::decryptString($x)
-		: NULL;
+	$key = Crypt::decryptString($string);
 
 	// Determine if our key has a command
 	if (str_contains($key,'|')) {
@@ -59,9 +61,9 @@ function request_key(Request $request): array
 			$dn = ($m[2] !== '_NOP') ? $m[2] : NULL;
 		}
 
-	} elseif ($x=old('dn',$request->get('_key'))) {
+	} else {
 		$cmd = 'dn';
-		$dn = Crypt::decryptString($x);
+		$dn = $key;
 	}
 
 	return ['cmd'=>$cmd,'dn'=>$dn];

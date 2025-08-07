@@ -1,4 +1,5 @@
 <!-- $o=Password::class -->
+@use(App\Classes\LDAP\Attribute\Password)
 @use(App\Ldap\Entry)
 
 <div class="input-group has-validation">
@@ -14,12 +15,12 @@
 		allowclear="false"
 		:disabled="! $edit"/>
 	<input type="password"
-		{{ $attributes->class(['is-invalid'=>($e=$errors->get($o->name_lc.'.'.$dotkey))]) }}
+		{{ $attributes->class(['is-invalid'=>($e=$errors->get($o->name_lc.'.'.$dotkey)) || $value === Password::obfuscate]) }}
 		name="{{ $o->name_lc }}[{{ $attrtag }}][]"
 		value="{{ Arr::get(old($o->name_lc),$dotkey,md5($value)) }}"
 		@readonly(! $edit)>
 
-	<x-form.invalid-feedback :errors="$e"/>
+	<x-form.invalid-feedback :errors="$e" alt="{{ $value === Password::obfuscate ? __('Please (re)enter password') : '' }}"/>
 </div>
 
 @if(($edit || $editable) && $o->tagValuesOld($attrtag)->dot()->filter()->count())

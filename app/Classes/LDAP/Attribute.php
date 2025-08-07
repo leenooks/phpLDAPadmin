@@ -119,6 +119,13 @@ class Attribute implements \Countable, \ArrayAccess
 			'values' => $this->values
 				->only($this->keys)
 				->filter(fn($item)=>array_filter($item)),
+			// Return the values as they would be rendered
+			'values_rendered' => $this->values
+				->only($this->keys)
+				->filter(fn($item)=>array_filter($item))
+				->dot()
+				->map(fn($item,$key)=>$this->render_item_new($key))
+				->undot(),
 
 			default => throw new \Exception('Unknown key:' . $key),
 		};
@@ -348,9 +355,9 @@ class Attribute implements \Countable, \ArrayAccess
 			: collect();
 	}
 
-	public function setValues(Collection $values): void
+	public function setValues(array $values): void
 	{
-		$this->values = $values->filter();
+		$this->values = collect($values)->filter();
 	}
 
 	/**
