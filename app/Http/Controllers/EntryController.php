@@ -176,7 +176,7 @@ class EntryController extends Controller
 		if ($request->post('delete') && $request->post('delete') === '1') {
 			Log::info(sprintf('%s:Deleting [%s] after copy',self::LOGKEY,$key['dn']));
 
-			$x = $this->entry_delete($request);
+			$x = $this->delete($request);
 
 			return ($x->getSession()->has('success'))
 				? Redirect::to('/')
