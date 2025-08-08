@@ -9,7 +9,6 @@ use Tests\TestCase;
 /**
  * This unit will test Attributes that are:
  * + no_attr_tag attributes vs those with attr_tags, AND
- * + md5 attributes vs those that are not md5 attributes
  *
  * objectClass (a no_attr_tags_attribute)
  * userPassword (a no_attr_tags_attribute, and an md5 attribute)
@@ -22,20 +21,17 @@ use Tests\TestCase;
  *    + ->values_old return a Collection of old values
  *    + ->tagValues() returns a Collection of values
  *    + ->tagValuesOld() return a Collection of old values
- *    + ->render_old_item() should be the raw value (unless an md5attribute, then the md5 value)
- *    + ->render_new_item() should be the raw value (unless an md5attribute, then the md5 value)
+ *    + ->render_item_old() should be a rendered value (unless an md5attribute, then the base64encoded value)
+ *    + ->render_item_new() should be a rendered value (unless an md5attribute, then the base64encoded value)
  *    + ->values is array with only 1 key _null_ with an array of values
  *    + ->values_old is array with only 1 key _null_ with an array of values
- *    + ->isDirty processing when there is a new value in the _null_ key and in another key (it should be ignored for no_attr_tags attributes)
- *    + ->isDirty processing when there is a new value, and its an md5 attribute
  *
  * The goal here is that
- * + no_attr_tags attributes return an array of values not indexed by an attr_tag
  * + attr_tag attributes are an array of values indexed by an attr_tag
  * + md5 attributes will render the md5 value, and compare the md5 value when determining if it has changed
  *
- * This will mean that our views then can render attributes with tagValues() and render_xxx_item() without just by calling
- * those methods with the langtag for the attribute rendering
+ * This will mean that our views will render attributes with render_item_xxx() using $dotkey as the value to render, or
+ * with $value (the raw value for that index) if it needs to be presented/obfuscated in a specific way
  *
  * Attributes that are no_attr_tag attributes should not render anything in non-default langtag views
  */
@@ -60,7 +56,7 @@ class AttributeTagsTest extends TestCase
 		$o = $this->read();
 		$new = ['newbart'];
 		$o->uid = [
-			'_null_' => $new,
+			Entry::TAG_NOTAG => $new,
 		];
 
 		$oo = $o->getObject('uid');
@@ -69,13 +65,13 @@ class AttributeTagsTest extends TestCase
 
 		// ->values returns a Collection of values
 		// ->values is array with only 1 key _null_ with an array of values
-		$this->assertCount(1,$oo->values);
+		$this->assertCount(1,$oo->values->dot());
 		$this->assertArrayHasKey(Entry::TAG_NOTAG,$oo->values);
 		$this->assertCount(1,$oo->values[Entry::TAG_NOTAG]);
 
 		// ->values_old return a Collection of old values
 		// ->values_old is array with only 1 key _null_ with an array of values
-		$this->assertCount(1,$oo->values_old);
+		$this->assertCount(1,$oo->values_old->dot());
 		$this->assertArrayHasKey(Entry::TAG_NOTAG,$oo->values_old);
 		$this->assertCount(1,$oo->values_old[Entry::TAG_NOTAG]);
 
@@ -112,7 +108,7 @@ class AttributeTagsTest extends TestCase
 		];
 
 		$o->objectclass = [
-			'_null_' => $newoc,
+			Entry::TAG_NOTAG => $newoc,
 		];
 
 		$oo = $o->getObject('objectclass');
@@ -122,13 +118,13 @@ class AttributeTagsTest extends TestCase
 
 		// ->values returns a Collection of values
 		// ->values is array with only 1 key _null_ with an array of values
-		$this->assertCount(5,$oo->values);
-		$this->assertArrayNotHasKey(Entry::TAG_NOTAG,$oo->values);
+		$this->assertCount(5,$oo->values->dot());
+		$this->assertArrayHasKey(Entry::TAG_NOTAG,$oo->values);
 
 		// ->values_old return a Collection of old values
 		// ->values_old is array with only 1 key _null_ with an array of values
-		$this->assertCount(4,$oo->values_old);
-		$this->assertArrayNotHasKey(Entry::TAG_NOTAG,$oo->values_old);
+		$this->assertCount(4,$oo->values_old->dot());
+		$this->assertArrayHasKey(Entry::TAG_NOTAG,$oo->values_old);
 
 		// ->tagValues() returns a Collection of values
 		$this->assertCount(5,$oo->tagValues());
@@ -137,9 +133,9 @@ class AttributeTagsTest extends TestCase
 		$this->assertCount(4,$oo->tagValuesOld());
 
 		// ->render_item_old() should be the raw value (unless an md5attribute, then the md5 value)
-		$this->assertEquals('inetOrgPerson',$oo->render_item_old('0'));
+		$this->assertEquals('inetOrgPerson',$oo->render_item_old(Entry::TAG_NOTAG.'.0'));
 		// ->render_item_new() should be the raw value (unless an md5attribute, then the md5 value)
-		$this->assertEquals('inetLocalMailRecipient',$oo->render_item_new('4'));
+		$this->assertEquals('inetLocalMailRecipient',$oo->render_item_new(Entry::TAG_NOTAG.'.4'));
 
 		// ->isDirty processing when there is a new value in the _null_ key and in another key (it should be ignored for no_attr_tags attributes)
 		// ->isDirty processing when there is a new value, and its an md5 attribute
@@ -152,13 +148,12 @@ class AttributeTagsTest extends TestCase
 
 	public function test_userpassword()
 	{
-		// Test ObjectClass, which can NOT have attribute tags
 		$o = $this->read();
 		$new = [
 			'test1234',
 		];
 		$o->userpassword = [
-			'_null_' => $new,
+			Entry::TAG_NOTAG => $new,
 		];
 
 		$oo = $o->getObject('userpassword');
@@ -168,13 +163,13 @@ class AttributeTagsTest extends TestCase
 
 		// ->values returns a Collection of values
 		// ->values is array with only 1 key _null_ with an array of values
-		$this->assertCount(1,$oo->values);
-		$this->assertArrayNotHasKey(Entry::TAG_NOTAG,$oo->values);
+		$this->assertCount(1,$oo->values->dot());
+		$this->assertArrayHasKey(Entry::TAG_NOTAG,$oo->values);
 
 		// ->values_old return a Collection of old values
 		// ->values_old is array with only 1 key _null_ with an array of values
-		$this->assertCount(1,$oo->values_old);
-		$this->assertArrayNotHasKey(Entry::TAG_NOTAG,$oo->values_old);
+		$this->assertCount(1,$oo->values_old->dot());
+		$this->assertArrayHasKey(Entry::TAG_NOTAG,$oo->values_old);
 
 		// ->tagValues() returns a Collection of values
 		$this->assertCount(1,$oo->tagValues());
@@ -183,12 +178,10 @@ class AttributeTagsTest extends TestCase
 		$this->assertCount(1,$oo->tagValuesOld());
 
 		// ->render_item_old() should be the raw value (unless an md5attribute, then the md5 value)
-		$this->assertEquals('{*clear*}****************',$oo->render_item_old('0'));
+		$this->assertEquals('****************',$oo->render_item_old(Entry::TAG_NOTAG.'.0'));
 		// ->render_item_new() should be the raw value (unless an md5attribute, then the md5 value)
-		$this->assertEquals('****************',$oo->render_item_new('0'));
+		$this->assertEquals('{*clear*}****************',$oo->render_item_new(Entry::TAG_NOTAG.'.0'));
 
-		// ->isDirty processing when there is a new value in the _null_ key and in another key (it should be ignored for no_attr_tags attributes)
-		// ->isDirty processing when there is a new value, and its an md5 attribute
 		$this->assertTrue($oo->isDirty());
 		$this->assertCount(3,$x=$o->getDirty());
 		$this->assertArrayHasKey('userpassword',$x);
@@ -204,7 +197,7 @@ class AttributeTagsTest extends TestCase
 			'd88d98df6727f87376c93e9676978146',		// eatmyshorts
 		];
 		$o->userpassword = [
-			'_null_' => $new,
+			Entry::TAG_NOTAG => ['eatmyshorts'],
 		];
 
 		$oo = $o->getObject('userpassword');
@@ -214,13 +207,13 @@ class AttributeTagsTest extends TestCase
 
 		// ->values returns a Collection of values
 		// ->values is array with only 1 key _null_ with an array of values
-		$this->assertCount(1,$oo->values);
-		$this->assertArrayNotHasKey(Entry::TAG_NOTAG,$oo->values);
+		$this->assertCount(1,$oo->values->dot());
+		$this->assertArrayHasKey(Entry::TAG_NOTAG,$oo->values);
 
 		// ->values_old return a Collection of old values
 		// ->values_old is array with only 1 key _null_ with an array of values
-		$this->assertCount(1,$oo->values_old);
-		$this->assertArrayNotHasKey(Entry::TAG_NOTAG,$oo->values_old);
+		$this->assertCount(1,$oo->values_old->dot());
+		$this->assertArrayHasKey(Entry::TAG_NOTAG,$oo->values_old);
 
 		// ->tagValues() returns a Collection of values
 		$this->assertCount(1,$oo->tagValues());
@@ -229,12 +222,10 @@ class AttributeTagsTest extends TestCase
 		$this->assertCount(1,$oo->tagValuesOld());
 
 		// ->render_item_old() should be the raw value (unless an md5attribute, then the md5 value)
-		$this->assertEquals('{*clear*}****************',$oo->render_item_old('0'));
+		$this->assertEquals('****************',$oo->render_item_old(Entry::TAG_NOTAG.'.0'));
 		// ->render_item_new() should be the raw value (unless an md5attribute, then the md5 value)
-		$this->assertEquals('****************',$oo->render_item_new('0'));
+		$this->assertEquals('{*clear*}****************',$oo->render_item_new(Entry::TAG_NOTAG.'.0'));
 
-		// ->isDirty processing when there is a new value in the _null_ key and in another key (it should be ignored for no_attr_tags attributes)
-		// ->isDirty processing when there is a new value, and its an md5 attribute
 		$this->assertFalse($oo->isDirty());
 		$this->assertCount(2,$x=$o->getDirty());
 		$this->assertArrayNotHasKey('userpassword',$x);

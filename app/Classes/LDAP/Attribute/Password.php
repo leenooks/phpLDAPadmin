@@ -126,7 +126,7 @@ final class Password extends Attribute
 
 		// If the attr tags are the same value as the md5 tag, then nothing has changed
 		foreach ($this->keys as $key) {
-			foreach ($vals->get($key) as $index => $value) {
+			foreach ($vals->get($key,[]) as $index => $value) {
 				$md5value = $vals->dot()->get($key.Entry::TAG_MD5.'.'.$index);
 				$helper = $vals->dot()->get($key.Entry::TAG_HELPER.'.'.$index);
 

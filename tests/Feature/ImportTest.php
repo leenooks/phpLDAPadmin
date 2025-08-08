@@ -34,8 +34,8 @@ class ImportTest extends TestCase
 
 		$response = $this
 			->actingAs(Auth::user())
-			->from('/import')
-			->post('/import/process/ldif',[
+			->from('/entry/import')
+			->post('/entry/import/process/ldif',[
 				'_token' => csrf_token(),
 				'_key'=>Crypt::encryptString('*import|_NOP'),
 				'file' => $file,
@@ -49,7 +49,7 @@ class ImportTest extends TestCase
 		$this->assertTrue($x->exists);
 		$this->assertCount(4,$x->getObject('objectclass'));
 		$this->assertCount(4,$x->getObject('objectClass'));
-		$this->assertCount(0,array_diff(['inetOrgPerson','posixAccount','top','shadowAccount'],$x->getObject('objectClass')->values->toArray()));
+		$this->assertCount(0,array_diff(['inetOrgPerson','posixAccount','top','shadowAccount'],$x->getObject('objectClass')->values->dot()->toArray()));
 		$this->assertCount(1,$x->getObject('mail'));
 		$this->assertContains(Entry::TAG_NOTAG.'.0',$x->getObject('mail')->values->dot()->keys());
 		$this->assertContains('bart.simpson@example.com',$x->getObject('mail')->values->dot());
@@ -70,8 +70,8 @@ class ImportTest extends TestCase
 
 		$response = $this
 			->actingAs(Auth::user())
-			->from('/import')
-			->post('/import/process/ldif',[
+			->from('/entry/import')
+			->post('/entry/import/process/ldif',[
 				'_token' => csrf_token(),
 				'_key'=>Crypt::encryptString('*import|_NOP'),
 				'file' => $file,
@@ -84,7 +84,7 @@ class ImportTest extends TestCase
 		$this->assertTrue($x->exists);
 		$this->assertCount(4,$x->getObject('objectclass'));
 
-		$this->assertCount(1,$x->getObject('mail')->values);
+		$this->assertCount(1,$x->getObject('mail')->values->keys());
 		$this->assertCount(2,$x->getObject('mail')->tagValues());
 		$this->assertCount(0,array_diff(['barts@email.com','secondmail@example.com'],$x->getObject('mail')->values->dot()->values()->toArray()));
 
@@ -107,8 +107,8 @@ class ImportTest extends TestCase
 
 		$response = $this
 			->actingAs(Auth::user())
-			->from('/import')
-			->post('/import/process/ldif',[
+			->from('/entry/import')
+			->post('/entry/import/process/ldif',[
 				'_token' => csrf_token(),
 				'_key'=>Crypt::encryptString('*import|_NOP'),
 				'file' => $file,
@@ -142,8 +142,8 @@ class ImportTest extends TestCase
 
 		$response = $this
 			->actingAs(Auth::user())
-			->from('/import')
-			->post('/import/process/ldif',[
+			->from('/entry/import')
+			->post('/entry/import/process/ldif',[
 				'_token' => csrf_token(),
 				'_key'=>Crypt::encryptString('*import|_NOP'),
 				'file' => $file,
@@ -156,7 +156,7 @@ class ImportTest extends TestCase
 		$this->assertTrue($x->exists);
 		$this->assertCount(4,$x->getObject('objectclass'));
 
-		$this->assertCount(3,$x->getObject('mail')->values);
+		$this->assertCount(3,$x->getObject('mail')->values->keys());
 		$this->assertCount(4,$x->getObject('mail')->values->dot());
 		$this->assertCount(2,$x->getObject('mail')->tagValues());
 		$this->assertCount(1,$x->getObject('mail')->tagValues('lang-au'));
@@ -178,8 +178,8 @@ class ImportTest extends TestCase
 
 		$response = $this
 			->actingAs(Auth::user())
-			->from('/import')
-			->post('/import/process/ldif',[
+			->from('/entry/import')
+			->post('/entry/import/process/ldif',[
 				'_token' => csrf_token(),
 				'_key'=>Crypt::encryptString('*import|_NOP'),
 				'file' => $file,
@@ -215,8 +215,8 @@ class ImportTest extends TestCase
 
 		$response = $this
 			->actingAs(Auth::user())
-			->from('/import')
-			->post('/import/process/ldif',[
+			->from('/entry/import')
+			->post('/entry/import/process/ldif',[
 				'_token' => csrf_token(),
 				'_key'=>Crypt::encryptString('*import|_NOP'),
 				'file' => $file,
@@ -247,8 +247,8 @@ class ImportTest extends TestCase
 
 		$response = $this
 			->actingAs(Auth::user())
-			->from('/import')
-			->post('/import/process/ldif',[
+			->from('/entry/import')
+			->post('/entry/import/process/ldif',[
 				'_token' => csrf_token(),
 				'_key'=>Crypt::encryptString('*import|_NOP'),
 				'file' => $file,
@@ -278,8 +278,8 @@ class ImportTest extends TestCase
 
 		$response = $this
 			->actingAs(Auth::user())
-			->from('/import')
-			->post('/import/process/ldif',[
+			->from('/entry/import')
+			->post('/entry/import/process/ldif',[
 				'_token' => csrf_token(),
 				'_key'=>Crypt::encryptString('*import|_NOP'),
 				'file' => $file,
