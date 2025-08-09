@@ -6,7 +6,6 @@ use Illuminate\Contracts\View\View;
 
 use App\Classes\LDAP\Attribute\Binary;
 use App\Classes\Template;
-use App\Ldap\Entry;
 
 /**
  * Represents an JpegPhoto Attribute
@@ -14,6 +13,7 @@ use App\Ldap\Entry;
 final class JpegPhoto extends Binary
 {
 	protected(set) bool $render_tables = TRUE;
+	protected(set) bool $base64_values = TRUE;
 
 	public function render(string $attrtag,int $index,bool $edit=FALSE,bool $editable=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
@@ -39,39 +39,5 @@ final class JpegPhoto extends Binary
 	public function render_item_new(string $dotkey): ?string
 	{
 		return base64_encode(parent::render_item_new($dotkey));
-	}
-
-	public function setValues(array $values): void
-	{
-		$processed = [];
-		$vals = collect($values);
-
-		// If the attr tags are the same value as the md5 tag, then nothing has changed
-		foreach ($this->keys as $key) {
-			if ($vals->has($key))
-				foreach ($vals->get($key) as $index => $value) {
-					$md5value = $vals->dot()->get($key.Entry::TAG_MD5.'.'.$index);
-
-					if ((! $md5value) || ($value !== $md5value)) {
-						$processed[$key.'.'.$index] = base64_decode($value);
-
-					} else {
-						$processed[$key.Entry::TAG_MD5.'.'.$index] = $value;
-					}
-				}
-
-			// We dont have an new values
-			else {
-				// If the old value matches the MD5, copy that.
-				foreach ($vals->get($key.Entry::TAG_MD5,[]) as $index => $value) {
-					$old = $this->values_old->dot()->get($key.'.'.$index);
-
-					if ($old && (md5($old) === $value))
-						$processed[$key.Entry::TAG_MD5.'.'.$index] = md5($old);
-				}
-			}
-		}
-
-		parent::setValues($processed ? \Arr::undot($processed) : $values);
 	}
 }

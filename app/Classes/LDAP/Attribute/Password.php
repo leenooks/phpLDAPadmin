@@ -3,7 +3,6 @@
 namespace App\Classes\LDAP\Attribute;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Attribute;
@@ -55,7 +54,7 @@ final class Password extends Attribute
 		$m = [];
 		preg_match('/^{([A-Z0-9]+)}(.*)$/',$password,$m);
 
-		$hash = Arr::get($m,1,'*clear*');
+		$hash = \Arr::get($m,1,'*clear*');
 
 		if (($potential=static::helpers()->filter(fn($hasher)=>str_starts_with($hasher::key,$hash)))->count() > 1) {
 			foreach ($potential as $item) {
@@ -104,7 +103,7 @@ final class Password extends Attribute
 		$pw = parent::render_item_old($dotkey);
 
 		return $pw
-			? (((($x=$this->hash($pw)) && ($x::id() === '*clear*')) ? sprintf('{%s}',$x::shortid()) : '')
+			? (((($x=$this->hash($pw)) && ($x->id() !== '*clear*')) ? sprintf('{%s}',$x->shortid()) : '')
 				.self::obfuscate)
 			: NULL;
 	}
@@ -114,45 +113,26 @@ final class Password extends Attribute
 		$pw = parent::render_item_new($dotkey);
 
 		return $pw
-			? (((($x=$this->hash($pw)) && ($x::id() !== '*clear*')) ? sprintf('{%s}',$x::shortid()) : '')
-				.self::obfuscate)
+			? ((($x=$this->hash($pw)) && ($x->id() === '*clear*')) ? sprintf('{%s}%s',$x->shortid(),self::obfuscate) : $pw)
 			: NULL;
 	}
 
-	public function setValues(array $values): void
+	protected function setValuesHelper(Collection $values): Collection
 	{
-		$processed = [];
-		$vals = collect($values);
+		$processed = collect();
 
 		// If the attr tags are the same value as the md5 tag, then nothing has changed
 		foreach ($this->keys as $key) {
-			foreach ($vals->get($key,[]) as $index => $value) {
-				$md5value = $vals->dot()->get($key.Entry::TAG_MD5.'.'.$index);
-				$helper = $vals->dot()->get($key.Entry::TAG_HELPER.'.'.$index);
+			foreach ($values->get($key,[]) as $index => $value) {
+				$helper = $values->dot()->get($key.Entry::TAG_HELPER.'.'.$index);
 
-				if ((! $md5value) || ($value !== $md5value)) {
-					if ($helper) {
-
-						$password = Password::hash_id($helper)
-							->encode($value);
-
-						$processed[$key.'.'.$index] = $password;
-
-					} else {
-						$processed[$key.'.'.$index] = $value;
-					}
-
-				} else {
-					$old = $this->values_old->dot()->get($key.'.'.$index);
-
-					if ($old && (md5($old) === $value))
-						$processed[$key.'.'.$index] = $old;
-
-					$processed[$key.Entry::TAG_MD5.'.'.$index] = $value;
-				}
+				$processed->put($key.'.'.$index,
+					($value && $helper && ($helper !== self::hash($value)->id()))
+						? self::hash_id($helper)->encode($value)
+						: $value);
 			}
 		}
 
-		parent::setValues($processed ? Arr::undot($processed) : $values);
+		return $processed->undot();
 	}
 }

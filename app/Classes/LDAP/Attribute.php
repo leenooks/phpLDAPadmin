@@ -18,6 +18,7 @@ class Attribute implements \Countable, \ArrayAccess
 	// Is this attribute an internal attribute
 	protected ?bool $_is_internal = NULL;
 	protected(set) bool $no_attr_tags = FALSE;
+	protected(set) bool $base64_values = FALSE;
 
 	// MIN/MAX number of values
 	protected(set) int $min_values_count = 0;
@@ -210,6 +211,18 @@ class Attribute implements \Countable, \ArrayAccess
 	}
 
 	/**
+	 * Does this attribute values have a helper to process the values
+	 *
+	 * @param array $values
+	 * @return bool
+	 */
+	protected function getHelpers(array $values): Collection
+	{
+		return collect($values)->keys()
+			->filter(fn($item)=>\Str::endsWith($item,Entry::TAG_HELPER));
+	}
+
+	/**
 	 * Return the hints about this attribute, ie: RDN, Required, etc
 	 *
 	 * @return Collection
@@ -357,7 +370,23 @@ class Attribute implements \Countable, \ArrayAccess
 
 	public function setValues(array $values): void
 	{
-		$this->values = collect($values)->filter();
+		$this->values =
+			($this->getHelpers($values)->count())
+				? $this->setValuesHelper(collect($values))
+				: collect($values)
+					->map(fn($item)=>$this->base64_values ? array_map('base64_decode',$item) : $item);
+	}
+
+	/**
+	 * Process TAG_HELPER values, typically in sub classes
+	 *
+	 * @param Collection $values
+	 * @return Collection
+	 * @note This method should be overridden in a child class
+	 */
+	protected function setValuesHelper(Collection $values): Collection
+	{
+		return $values;
 	}
 
 	/**

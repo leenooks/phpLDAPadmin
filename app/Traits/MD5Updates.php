@@ -55,4 +55,54 @@ trait MD5Updates
 		// No changes
 		return FALSE;
 	}
+
+	/**
+	 * Process values that belong to an attribute with MD5Trait
+	 *
+	 * If the $attrtag value equals the same value as the ${attrtag}TAG_MD5 value then the value hasnt changed
+	 * If there is no $attrtag value, but there is an ${attrtag}TAG_MD5 value, then the value hasnt changed
+	 * If the ($attrtag) value is empty, its been removed as normal
+	 *
+	 * If the $attrtag value has another value, then (eg: ${attrtag}TAG_HELPER) then pass the value (if not empty)
+	 * to the helper. This should be done by the attribute::class of the entry, so parent::setValue() should be called
+	 * first before processing the TAG_HELPER.
+	 *
+	 * @param array $values
+	 * @return void
+	 */
+	public function setValues(array $values): void
+	{
+		$processed = [];
+		$vals = collect($values);
+
+		// If the attr tags are the same value as the md5 tag, then nothing has changed
+		foreach ($this->keys as $key) {
+			if ($vals->has($key))
+				foreach ($vals->get($key) as $index => $value) {
+					$md5value = $vals->dot()->get($key.Entry::TAG_MD5.'.'.$index);
+
+					if ($md5value) {
+						$processed[$key.'.'.$index] =
+							($value === $md5value)
+								? $this->values_old->dot()->get($key.'.'.$index)
+								: $value;
+					}
+				}
+
+			// We dont have an new values
+			else {
+				// If the old value matches the MD5, copy that.
+				foreach ($vals->get($key.Entry::TAG_MD5,[]) as $index => $value) {
+					$old = $this->values_old->dot()->get($key.'.'.$index);
+
+					if ($old && (md5($old) === $value))
+						$processed[$key.'.'.$index] = base64_encode($old);
+				}
+			}
+		}
+
+		$helpers = $this->getHelpers($values);
+
+		parent::setValues($processed ? collect($values)->only($helpers)->dot()->merge($processed)->undot()->toArray() : $values);
+	}
 }
