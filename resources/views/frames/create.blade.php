@@ -51,6 +51,7 @@
 
 										<div class="col-12 col-md-5">
 											<x-form.select
+												id="template"
 												name="template"
 												:label="__('Select a Template').'...'"
 												:options="$o->templates

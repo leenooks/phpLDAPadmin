@@ -33,18 +33,20 @@ class HomeController extends Controller
 		if (($request->root().'/' !== url()->previous()) && $request->method() === 'POST')
 			abort(409);
 
-		$key = request_key($request->get('_key',old('_key')));
+		$key = request_key($request->get('_key',old('_key',old('dn'))));
 		$o = NULL;
 
 		$view = $old
 			? view('frame')->with('subframe',$key['cmd'])
 			: view('frames.'.$key['cmd']);
-
 		// If we are rendering a DN, rebuild our object
-		if (in_array($key['cmd'],['create','copy_move'])) {
+		if ($key['cmd'] === 'create') {
+			$o = new Entry;
+			$o->setRDNBase($key['dn']);
+
+		} elseif ($key['cmd'] === 'copy_move') {
 			$o = new Entry;
 			$o->setDN($key['dn']);
-			$o->setRDNBase(dn_container($key['dn']));
 
 		} elseif ($key['dn']) {
 			// @todo Need to handle if DN is null, for example if the user's session expired and the ACLs dont let them retrieve $key['dn']

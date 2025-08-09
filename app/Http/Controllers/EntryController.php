@@ -28,7 +28,7 @@ class EntryController extends Controller
 {
 	private const LOGKEY = 'CEc';
 
-	public const INTERNAL_POST = ['_auto_value','_key','_rdn','_rdn_new','_rdn_value','_step','_template','_token'];
+	public const INTERNAL_POST = ['_auto_value','_key','_rdn','_rdn_new','_rdn_value','_step','_template','_token','template'];
 
 	/**
 	 * Create a new object in the LDAP server
