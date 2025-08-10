@@ -118,12 +118,10 @@ class Attribute implements \Countable, \ArrayAccess
 			'value' => $this->schema?->is_single_value ? $this->values->first() : NULL,
 			// This attribute's value, less special tags
 			'values' => $this->values
-				->only($this->keys)
-				->filter(fn($item)=>array_filter($item)),
+				->only($this->keys),
 			// Return the values as they would be rendered
 			'values_rendered' => $this->values
 				->only($this->keys)
-				->filter(fn($item)=>array_filter($item))
 				->dot()
 				->map(fn($item,$key)=>$this->render_item_new($key))
 				->undot(),
@@ -177,8 +175,8 @@ class Attribute implements \Countable, \ArrayAccess
 		$this->values
 			->put(
 				$tag,
-				array_unique(array_filter(array_merge($this->values
-					->get($tag,[]),$values))));
+				array_unique(array_merge($this->values
+					->get($tag,[]),$values)));
 	}
 
 	public function addValueOld(string $tag,array $values): void

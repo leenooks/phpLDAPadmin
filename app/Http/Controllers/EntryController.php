@@ -343,7 +343,7 @@ class EntryController extends Controller
 	public function objectclass_add(Request $request): Collection
 	{
 		$dn = $request->get('_key') ? Crypt::decryptString($request->dn) : '';
-		$oc = Factory::create(dn: $dn,attribute: 'objectclass',values: $request->oc);
+		$oc = Factory::create(dn: $dn,attribute: 'objectclass',values: [Entry::TAG_NOTAG=>$request->oc]);
 
 		$ocs = $oc
 			->structural

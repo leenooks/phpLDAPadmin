@@ -135,7 +135,7 @@ class Entry extends Model
 	 */
 	public function setAttribute(string $key,mixed $value): static
 	{
-		foreach (array_filter($value) as $k => $v)
+		foreach ($value as $k => $v)
 			parent::setAttribute($key.($k !== self::TAG_NOTAG ? ';'.$k : ''),$v);
 
 		$key = $this->normalizeAttributeKey($key);
