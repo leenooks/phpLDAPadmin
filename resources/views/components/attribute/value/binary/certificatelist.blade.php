@@ -1,8 +1,11 @@
 <!-- $o=CertificateList::class -->
 <div class="input-group has-validation mb-3">
-	<textarea class="form-control mb-1 font-size-md font-monospace overflow-hidden"
-		rows="{{ count(explode("\n",$x=($o->isDirty() ? $value : $o->render_item_old($dotkey)))) }}"
-		disabled>{{ $x }}</textarea>
+	<textarea {{ $attributes->class([
+		'font-size-md font-monospace overflow-hidden',
+		'is-invalid'=>($e=$errors->get($o->name_lc.'.'.$dotkey))]) }}
+		name="{{ $o->name_lc }}[{{ $attrtag }}][]"
+		rows="{{ max(count(explode("\n",$x=($o->isDirty() ? $value : $o->render_item_old($dotkey)))),5) }}"
+		@readonly(! $edit)>{{ $x }}</textarea>
 
 	<x-form.invalid-feedback :errors="$errors->get($o->name_lc.'.'.$dotkey)"/>
 </div>

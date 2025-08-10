@@ -36,8 +36,6 @@ class Attribute implements \Countable, \ArrayAccess
 	// The objectclasses of the entry that has this attribute
 	protected(set) Collection $oc;
 
-	private const SYNTAX_CERTIFICATE = '1.3.6.1.4.1.1466.115.121.1.8';
-	private const SYNTAX_CERTIFICATE_LIST = '1.3.6.1.4.1.1466.115.121.1.9';
 	protected const CERTIFICATE_ENCODE_LENGTH = 76;
 
 	// If rendering is done in a table, with a <tr> for each value
@@ -334,12 +332,7 @@ class Attribute implements \Countable, \ArrayAccess
 	 */
 	public function render_item_old(string $dotkey): ?string
 	{
-		return match ($this->schema->syntax_oid) {
-			self::SYNTAX_CERTIFICATE => join("\n",str_split(base64_encode($this->values_old->dot()->get($dotkey)),self::CERTIFICATE_ENCODE_LENGTH)),
-			self::SYNTAX_CERTIFICATE_LIST => join("\n",str_split(base64_encode($this->values_old->dot()->get($dotkey)),self::CERTIFICATE_ENCODE_LENGTH)),
-
-			default => $this->values_old->dot()->get($dotkey),
-		};
+		return $this->values_old->dot()->get($dotkey);
 	}
 
 	/**

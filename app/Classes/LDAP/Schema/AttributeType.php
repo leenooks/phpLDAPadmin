@@ -339,7 +339,11 @@ final class AttributeType extends Base
 		// Get any config validation
 		$validation = collect(Arr::get(config('ldap.validation'),$this->name_lc,[]));
 
-		$nolangtag = sprintf('%s.%s.0',$this->name_lc,Entry::TAG_NOTAG);
+		$nolangtag = sprintf('%s.%s.0',
+			$this->name_lc,
+			in_array($this->name_lc,config('ldap.attrtags.only_binary'))
+				? 'binary'
+				: Entry::TAG_NOTAG);
 
 		// Add in schema required by conditions
 		if (($heirachy->intersect($this->required_by_object_classes->keys())->count() > 0)

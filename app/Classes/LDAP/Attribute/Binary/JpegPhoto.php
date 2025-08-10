@@ -30,14 +30,4 @@ final class JpegPhoto extends Binary
 			->with('template',$template)
 			->with('f',new \finfo);
 	}
-
-	public function render_item_old(string $dotkey): ?string
-	{
-		return base64_encode(parent::render_item_old($dotkey));
-	}
-
-	public function render_item_new(string $dotkey): ?string
-	{
-		return base64_encode(parent::render_item_new($dotkey));
-	}
 }

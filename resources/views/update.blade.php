@@ -1,5 +1,4 @@
 @use(App\Ldap\Entry)
-@use(Illuminate\Support\Str)
 
 @extends('home')
 
@@ -48,11 +47,16 @@
 											{{ preg_replace('/('.Entry::TAG_NOTAG.')?\.[0-9]+$/','',$dotkey) }}
 										</th>
 
-										@if((! Arr::get($oo->values_old->dot(),$dotkey)) && (! Arr::get($oo->values->dot(),$dotkey)))
+										@if((! $oo->values_old->dot()->get($dotkey)) && (! $oo->values->dot()->get($dotkey)))
 											<td colspan="2" class="text-center">@lang('Ignoring blank value')</td>
 										@else
 											<td>{{ ((($r=$oo->render_item_old($dotkey)) !== NULL) && strlen($r)) ? $r : '['.strtoupper(__('New Value')).']' }}</td>
-											<td>{{ (($r=$oo->render_item_new($dotkey)) !== NULL) ? $r : '['.strtoupper(__('Deleted')).']' }}<input type="hidden" name="{{ $key }}[{{ $oo->no_attr_tags ? \App\Ldap\Entry::TAG_NOTAG : collect(explode('.',$dotkey))->first() }}][]" value="{{ Arr::get($oo->values->dot(),$dotkey) }}"></td>
+											<td>
+												{{ (($r=$oo->render_item_new($dotkey)) !== NULL) ? $r : '['.strtoupper(__('Deleted')).']' }}
+												<input type="hidden"
+													name="{{ $key }}[{{ collect(explode('.',$dotkey))->first() }}][]"
+													value="{{ $r }}">
+											</td>
 										@endif
 									@endforeach
 								</tr>

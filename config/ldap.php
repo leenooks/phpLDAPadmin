@@ -108,6 +108,10 @@ return [
 		'time' => env('LDAP_CACHE_TIME',5*60),		// Seconds
 	],
 
+	'attrtags' => [
+		'only_binary' => explode(',',strtolower(env('LDAP_ATTRTAG_BINARY_ONLY', 'userCertificate'))),
+	],
+
 	/*
 	 |--------------------------------------------------------------------------
 	 | Validation
@@ -117,13 +121,23 @@ return [
 	 |
 	 */
 	'validation' => [
+		'cacertificate' => [
+			'cacertificate.*'=> [
+				'sometimes',
+				'max:1'
+			],
+			'cacertificate.binary.*' => [
+				'required',
+				new \App\Rules\CertificateIsBinary,
+			],
+		],
 		'objectclass' => [
 			'objectclass.*'=>[
 				new HasStructuralObjectClass,
 			]
 		],
 		'gidnumber' => [
-			'gidnumber.*'=> [
+			'gidnumber.*' => [
 				'sometimes',
 				'max:1'
 			],
@@ -167,6 +181,15 @@ return [
 				'integer',
 				'max:65535'
 			]
+		],
+		'usercertificate' => [
+			'usercertificate.*'=> [
+				'sometimes',
+				'max:1'
+			],
+			'usercertificate.binary.*' => [
+				new \App\Rules\CertificateIsBinary,
+			],
 		],
 	],
 ];

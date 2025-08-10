@@ -166,6 +166,11 @@
 				$(this).attr('readonly',false);
 			});
 
+			// Find all input items and turn off readonly
+			$('textarea.form-control').each(function() {
+				$(this).attr('readonly',false);
+			});
+
 			// Our password type
 			$('attribute#userpassword .form-select').each(function() {
 				$(this).prop('disabled',false);
