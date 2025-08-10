@@ -35,14 +35,50 @@ class Template
 
 		try {
 			// @todo Load in the proper attribute objects and objectclass objects
-			// @todo Make sure we have a structural objectclass, or make the template invalid
 			$this->template = collect(json_decode($td->get($file),null,512,JSON_OBJECT_AS_ARRAY|JSON_THROW_ON_ERROR));
 
+			// Test all objectclasses exist, and one is structural
+			if ($this->template->has('objectclasses')) {
+				$havestructural = FALSE;
+				$ocs = collect($this->template->get('objectclasses'));
+
+				foreach (clone $ocs as $key => $oc) {
+					$soc = config('server')->schema('objectclasses',$oc);
+
+					if (! $soc) {
+						Log::alert(sprintf('%s:Ignoring objectclass [%s] in template [%s], the server doesnt know about it',self::LOGKEY,$oc,$this->file));
+
+						$ocs->forget($key);
+						continue;
+					}
+
+					if ($soc->isStructural())
+						$havestructural = TRUE;
+				}
+
+				$this->template->put('objectclasses',$ocs);
+
+				if (! $havestructural) {
+					Log::alert(sprintf('%s:Invalidating template [%s], the no structurual objectclasses defined',self::LOGKEY,$this->file));
+
+					$this->invalid = TRUE;
+					$this->reason = 'No STRUCTURAL objectclass';
+				}
+
+			} else {
+				Log::alert(sprintf('%s:Invalidating template [%s], the no objectclasses defined',self::LOGKEY,$this->file));
+
+				$this->invalid = TRUE;
+				$this->reason = 'No objectclasses';
+			}
+
 			// Also test the regex is valid.
-			if ($this->template->has('regexp'))
+			if ((! $this->invalid) && $this->template->has('regexp'))
 				preg_match($this->regexp,'');
 
 		} catch (\ErrorException|\JsonException $e) {
+			Log::alert(sprintf('%s:Invalidating template [%s], an error was thrown with message [%s]',self::LOGKEY,$this->file,$e->getMessage()));
+
 			$this->invalid = TRUE;
 			$this->reason = $e->getMessage();
 		}

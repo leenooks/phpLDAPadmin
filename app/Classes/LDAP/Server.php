@@ -261,12 +261,13 @@ final class Server
 	{
 		static $rootdse = NULL;
 
-		if (is_null($rootdse))
+		if (is_null($rootdse)) {
 			$rootdse = self::get('',['+','*'])
 				->read()
 				->firstOrFail();
 
-		Log::debug(sprintf('%s:Fetched rootDSE ',self::LOGKEY),['rootDSE'=>$rootdse]);
+			Log::debug(sprintf('%s:Fetched rootDSE ',self::LOGKEY),['rootDSE'=>$rootdse]);
+		}
 
 		return $rootdse;
 	}

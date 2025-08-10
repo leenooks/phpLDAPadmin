@@ -26,6 +26,8 @@ use App\Exceptions\InvalidUsage;
  */
 class Entry extends Model
 {
+	private const LOGKEY = 'E--';
+
 	private const TAG_CHARS = 'a-zA-Z0-9-';
 	public const LANG_TAG_PREFIX = 'lang-';
 	public const TAG_CHARS_LANG = self::LANG_TAG_PREFIX.'['.self::TAG_CHARS.']+';
@@ -51,28 +53,7 @@ class Entry extends Model
 		parent::__construct($attributes);
 
 		$this->objects = collect();
-
-		// Load any templates
-		$this->templates = Cache::remember('templates'.Session::id(),config('ldap.cache.time'),function() {
-			$template_dir = Storage::disk(config('pla.template.dir'));
-			$templates = collect();
-
-			foreach (array_filter($template_dir->files('.',TRUE),fn($item)=>Str::endsWith($item,'.json')) as $file) {
-				if (config('pla.template.exclude_system',FALSE) && Str::doesntContain($file,'/'))
-					continue;
-
-				$to = new Template($file);
-
-				if ($to->invalid) {
-					Log::alert(sprintf('Template [%s] is not valid (%s) - ignoring',$file,$to->reason));
-
-				} else {
-					$templates->put($file,new Template($file));
-				}
-			}
-
-			return $templates;
-		});
+		$this->templates = collect();
 	}
 
 	public function discardChanges(): static
@@ -192,8 +173,8 @@ class Entry extends Model
 		}
 
 		// Filter out our templates specific for this entry
-		if ($this->dn && (! in_array(strtolower($this->dn),['cn=subschema']))) {
-			$this->templates = $this->templates
+		if ($this->dn && ($this->dn !== config('server')->schemaDN())) {
+			$this->templates = $this->templates()
 				->filter(fn($item)=>$item->enabled
 					&& (! $item->objectclasses
 						->map('strtolower')
@@ -631,12 +612,32 @@ class Entry extends Model
 
 		$this->rdnbase = $bdn;
 
-		$this->templates = $this->templates
+		// Load any templates
+		$this->templates = $this->templates()
 			->filter(fn($item)=>(! $item->regexp) || preg_match($item->regexp,$bdn));
 	}
 
-	public function template(string $item): Template|Null
+	private function templates(): Collection
 	{
-		return Arr::get($this->templates,$item);
+		return Cache::remember('templates'.Session::id(),config('ldap.cache.time'),function() {
+			$template_dir = Storage::disk(config('pla.template.dir'));
+			$templates = collect();
+
+			foreach (array_filter($template_dir->files('.',TRUE),fn($item)=>Str::endsWith($item,'.json')) as $file) {
+				if (config('pla.template.exclude_system',FALSE) && Str::doesntContain($file,'/'))
+					continue;
+
+				$to = new Template($file);
+
+				if ($to->invalid) {
+					Log::alert(sprintf('%s:Template [%s] is not valid (%s) - ignoring',self::LOGKEY,$file,$to->reason));
+
+				} else {
+					$templates->put($file,$to);
+				}
+			}
+
+			return $templates;
+		});
 	}
 }

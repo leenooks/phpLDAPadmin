@@ -54,7 +54,7 @@ class EntryController extends Controller
 
 		} else {
 			if (old('_template',$request->validated('template'))) {
-				$template = $o->template(old('_template',$request->validated('template')));
+				$template = $o->templates->get(old('_template',$request->validated('template')));
 
 				$o->objectclass = [Entry::TAG_NOTAG=>$template->objectclasses->toArray()];
 
