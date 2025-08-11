@@ -1,7 +1,5 @@
 <?php
 
-use App\Rules\HasStructuralObjectClass;
-
 return [
 
 	/*
@@ -31,6 +29,7 @@ return [
 	'connections' => [
 
 		'ldap' => [
+			'name' => env('LDAP_NAME','LDAP Server'),
 			'hosts' => [env('LDAP_HOST', '127.0.0.1')],
 			'username' => env('LDAP_USERNAME', 'cn=user,dc=local,dc=com'),
 			'password' => env('LDAP_PASSWORD', 'secret'),
@@ -38,10 +37,14 @@ return [
 			'timeout' => env('LDAP_TIMEOUT', 5),
 			'use_ssl' => env('LDAP_SSL', false),
 			'use_tls' => env('LDAP_TLS', false),
-			'name' => env('LDAP_NAME','LDAP Server'),
+			'use_sasl' => env('LDAP_SASL', false),
+			'sasl_options' => [
+				// 'mech' => 'GSSAPI',
+			],
 		],
 
 		'ldaps' => [
+			'name' => env('LDAP_NAME','LDAPS Server'),
 			'hosts' => [env('LDAP_HOST', '127.0.0.1')],
 			'username' => env('LDAP_USERNAME', 'cn=user,dc=local,dc=com'),
 			'password' => env('LDAP_PASSWORD', 'secret'),
@@ -49,10 +52,14 @@ return [
 			'timeout' => env('LDAP_TIMEOUT', 5),
 			'use_ssl' => env('LDAP_SSL', true),
 			'use_tls' => env('LDAP_TLS', false),
-			'name' => env('LDAP_NAME','LDAPS Server'),
+			'use_sasl' => env('LDAP_SASL', false),
+			'sasl_options' => [
+				// 'mech' => 'GSSAPI',
+			],
 		],
 
 		'starttls' => [
+			'name' => env('LDAP_NAME','LDAP-TLS Server'),
 			'hosts' => [env('LDAP_HOST', '127.0.0.1')],
 			'username' => env('LDAP_USERNAME', 'cn=user,dc=local,dc=com'),
 			'password' => env('LDAP_PASSWORD', 'secret'),
@@ -60,21 +67,11 @@ return [
 			'timeout' => env('LDAP_TIMEOUT', 5),
 			'use_ssl' => env('LDAP_SSL', false),
 			'use_tls' => env('LDAP_TLS', true),
-			'name' => env('LDAP_NAME','LDAP-TLS Server'),
+			'use_sasl' => env('LDAP_SASL', false),
+			'sasl_options' => [
+				// 'mech' => 'GSSAPI',
+			],
 		],
-
-		/*
-		'opendj' => [
-			'hosts' => ['opendj'],
-			'username' => 'cn=Directory Manager',
-			'password' => 'password',
-			'port' => 1389,
-			'timeout' => env('LDAP_TIMEOUT', 5),
-			'use_ssl' => env('LDAP_SSL', false),
-			'use_tls' => env('LDAP_TLS', false),
-			'name' => 'OpenDJ Server',
-		],
-		*/
 
 	],
 
@@ -89,7 +86,11 @@ return [
 	|
 	*/
 
-	'logging' => env('LDAP_LOGGING', true),
+	'logging' => [
+		'enabled' => env('LDAP_LOGGING', false),
+		'channel' => env('LOG_CHANNEL', 'stack'),
+		'level' => env('LOG_LEVEL', 'info'),
+	],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -133,7 +134,7 @@ return [
 		],
 		'objectclass' => [
 			'objectclass.*'=>[
-				new HasStructuralObjectClass,
+				new \App\Rules\HasStructuralObjectClass,
 			]
 		],
 		'gidnumber' => [
