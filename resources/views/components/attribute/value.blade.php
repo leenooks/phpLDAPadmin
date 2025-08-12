@@ -1,8 +1,8 @@
 <div class="input-group has-validation">
 	<input type="text"
-		{{ $attributes->class(['is-invalid'=>($e=$errors->get($o->name_lc.'.'.$dotkey))]) }}
+		{{ $attributes->class(['is-invalid'=>($e=array_merge($errors->get($o->name_lc.'.'.$dotkey),$errors->get('_auto_value.'.$o->name_lc)))]) }}
 		name="{{ $o->name_lc }}[{{ $attrtag }}][]"
-		value="{{ strlen($value) ? $value : ($av ?? '') }}"
+		value="{{ $value }}"
 		placeholder="{{ $value ?: '['.__('NEW').']' }}"
 		@readonly(! $edit)
 		@disabled($o->isDynamic())>

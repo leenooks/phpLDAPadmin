@@ -52,9 +52,11 @@ class EntryController extends Controller
 			foreach ($oldpost as $old => $value)
 				$o->{$old} = $value;
 
+				$template = $o->templates->get(old('_template'));
+
 		} else {
-			if (old('_template',$request->validated('template'))) {
-				$template = $o->templates->get(old('_template',$request->validated('template')));
+			if ($x=old('_template',$request->validated('template'))) {
+				$template = $o->templates->get($x);
 
 				$o->objectclass = [Entry::TAG_NOTAG=>$template->objectclasses->toArray()];
 

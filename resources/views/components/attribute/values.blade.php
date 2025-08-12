@@ -5,7 +5,7 @@
 		@endif
 
 		<!-- AutoValue Lock -->
-		@if($new && $template && ($av=$template->attributeValue($o->name_lc)))
+		@if((old() || ($edit ?? FALSE)) && ($template ?? NULL) && ($av=$template->attributeValue($o->name_lc)))
 			<input type="hidden" name="_auto_value[{{ $o->name_lc }}]" value="{{ $av }}">
 		@endif
 
@@ -18,6 +18,7 @@
 					'border-focus'=>$o->isDirty() || (! strlen($value)),
 					'bg-success-subtle'=>$updated ?? FALSE])
 				:o="$o"
+				:value="$av ?? $value"
 				:attrtag="$langtag"
 				:index="$key"
 				:edit="$edit ?? FALSE"
