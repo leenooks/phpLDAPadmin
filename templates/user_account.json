@@ -75,6 +75,7 @@
 				"/bin/false": "False",
 				"/usr/sbin/nologin": "No Login"
 			},
+			"value": "/bin/zsh",
 			"order": 9
 		}
 	}

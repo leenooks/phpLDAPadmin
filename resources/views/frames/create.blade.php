@@ -80,7 +80,7 @@
 						@endswitch
 					</form>
 
-					<div class="row d-none pt-3">
+					<div class="row pt-3">
 						<div class="col-11 {{ $step > 1 ? 'text-end' : '' }} pe-0">
 							<x-form.reset form="dn-create"/>
 							<x-form.submit :action="__('Next')" form="dn-create"/>
@@ -96,35 +96,6 @@
 	<script type="text/javascript">
 		var rdn_attr;
 
-		function editmode() {
-			// Find all input items and turn off readonly
-			$('input.form-control').each(function() {
-				// Except for objectClass
-				if ($(this)[0].name.match(/^objectclass/))
-					return;
-
-				// Dont take of the readonly value for our RDN if it is set
-				if (rdn_attr && ($(this)[0].name === rdn_attr+'[]'))
-					return;
-
-				// Exclude attributes marked as noedit
-				if ($(this).hasClass('noedit'))
-					return;
-
-				$(this).attr('readonly',false);
-			});
-
-			// Our password type
-			$('attribute#userpassword .form-select').each(function() {
-				$(this).prop('disabled',false);
-			})
-
-			$('.row.d-none').removeClass('d-none');
-			$('span.addable.d-none').removeClass('d-none');
-			$('span.deletable.d-none').removeClass('d-none');
-			$('#newattr-select.d-none').removeClass('d-none');
-		}
-
 		$(document).ready(function() {
 			@if($step === 1)
 				$('#objectclass').on('select2:open',function(){
@@ -135,8 +106,6 @@
 					$('#objectclass').val(null).trigger('change');
 				})
 			@endif
-
-			editmode();
 		});
 	</script>
 @append

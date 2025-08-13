@@ -163,10 +163,18 @@ class Template
 	public function attributeValue(string $attribute): string|NULL
 	{
 		if ($x=$this->attribute($attribute)->get('value')) {
-			list($command,$args) = preg_split('/^=([a-zA-Z]+)\((.+)\)$/',$x,-1,PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY);
+
+			if (preg_match('/^=([a-zA-Z]+)\((.+)\)$/',$x)) {
+				list($command,$args) = preg_split('/^=([a-zA-Z]+)\((.+)\)$/',$x,-1,PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY);
+
+			} else {
+				$command = 'value';
+				$args = $x;
+			}
 
 			return match ($command) {
 				'getNextNumber' => $this->getNextNumber($args),
+				'value' => $x,
 				default => NULL,
 			};
 		}
@@ -339,12 +347,9 @@ class Template
 	}
 
 	/**
-	 * Process the attributes for onChange JavaScript
-	 */
-	/**
 	 * Return the onchange JavaScript for attribute
 	 *
-	 * @return Collection
+	 * @return void
 	 */
 	private function onChangeProcessing(): void
 	{

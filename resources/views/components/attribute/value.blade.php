@@ -4,7 +4,7 @@
 		name="{{ $o->name_lc }}[{{ $attrtag }}][]"
 		value="{{ $value }}"
 		placeholder="{{ $value ?: '['.__('NEW').']' }}"
-		@readonly(! $edit)
+		@readonly(! $edit || ($template && $template->attributeReadOnly($o->name_lc)))
 		@disabled($o->isDynamic())>
 
 	<x-form.invalid-feedback :errors="$e"/>

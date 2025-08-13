@@ -8,11 +8,10 @@
 				'border-focus'=>! $o->tagValuesOld($langtag)->contains($value)])
 			id="{{ $o->name_lc }}_{{$loop->index}}{{$template?->name ?: ''}}"
 			name="{{ $o->name_lc }}[{{ $langtag }}][]"
-			:value="$value"
+			:value="$template->attributeValue($o->name_lc) ?? $value"
 			:options="$template->attributeOptions($o->name_lc)"
 			allowclear="true"
-			:disabled="! $edit"
-			:readonly="false"/>
+			:disabled="! $edit"/>
 
 		<x-form.invalid-feedback :errors="$e"/>
 	@endforeach
