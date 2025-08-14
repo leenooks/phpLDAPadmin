@@ -173,8 +173,8 @@ class Attribute implements \Countable, \ArrayAccess
 		$this->values
 			->put(
 				$tag,
-				array_unique(array_merge($this->values
-					->get($tag,[]),$values)));
+				array_unique(array_merge(array_filter($this->values
+					->get($tag,[])),$values)));
 	}
 
 	public function addValueOld(string $tag,array $values): void

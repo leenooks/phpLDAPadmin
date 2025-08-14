@@ -65,7 +65,7 @@ $(document).ready(function() {
 	// Attach the fancytree widget to an existing <div id="tree"> element
 	// and pass the tree options as an argument to the fancytree() function:
 	$('#tree').fancytree({
-		clickFolderMode: 2,	// 1:activate, 2:expand, 3:activate and expand, 4:activate (dblclick expands)
+		clickFolderMode: 3,	// 1:activate, 2:expand, 3:activate and expand, 4:activate (dblclick expands)
 		extensions: ['persist'],
 		autoCollapse: true, // Automatically collapse all siblings, when a node is expanded.
 		autoScroll: true, // Automatically scroll nodes into visible area.

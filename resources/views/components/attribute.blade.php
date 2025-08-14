@@ -88,15 +88,6 @@
 							@default
 								<x-attribute.values :o="$o" :edit="$edit" :editable="$editable ?? FALSE" :new="$new ?? FALSE" :template="$template" :updated="$updated ?? FALSE"/>
 						@endswitch
-
-						@if($edit && (! $o->is_rdn))
-							<span @class(['tab-pane']) id="langtag-{{ $o->name_lc }}-+" role="tabpanel">
-								<span class="d-flex font-size-sm alert alert-warning p-2">
-									It is not possible to create new language tags at the moment. This functionality should come soon.<br>
-									You can create them with an LDIF import though.
-								</span>
-							</span>
-						@endif
 				@endswitch
 			</div>
 		</x-attribute.layout>
