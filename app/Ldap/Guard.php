@@ -12,7 +12,7 @@ class Guard extends GuardBase
 {
 	public function attempt(string $username, string $password, bool $stayBound = false): bool
 	{
-		Log::info(sprintf('Attempting login for [%s] with password [%s]',$username,($password ? Password::obfuscate : str_repeat('?',16))));
+		Log::info(sprintf('ALG:Attempting login for [%s] with password [%s]',$username,($password ? Password::obfuscate : str_repeat('?',16))));
 
 		if ($result = parent::attempt($username,$password,$stayBound)) {
 			// Store user details so we can swap in auth details in SwapinAuthUser
