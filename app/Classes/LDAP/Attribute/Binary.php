@@ -14,6 +14,17 @@ abstract class Binary extends Attribute
 
 	protected(set) bool $base64_values = TRUE;
 
+	public function __get(string $key): mixed
+	{
+		return match ($key) {
+			'binarytags' => $this->values
+				->keys()
+				->filter(fn($item)=>$item==='binary'),
+
+			default => parent::__get($key)
+		};
+	}
+
 	public function render_item_old(string $dotkey): ?string
 	{
 		return base64_encode(parent::render_item_old($dotkey));

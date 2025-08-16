@@ -26,4 +26,14 @@ final class CertificateList extends Binary
 			->with('updated',$updated)
 			->with('template',$template);
 	}
+
+	public function render_item_old(string $dotkey): ?string
+	{
+		return join("\n",str_split(parent::render_item_old($dotkey),self::CERTIFICATE_ENCODE_LENGTH));
+	}
+
+	public function render_item_new(string $dotkey): ?string
+	{
+		return join("\n",str_split(parent::render_item_new($dotkey),self::CERTIFICATE_ENCODE_LENGTH));
+	}
 }

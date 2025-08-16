@@ -20,17 +20,6 @@ final class Certificate extends Binary
 
 	private array $_object = [];
 
-	public function __get(string $key): mixed
-	{
-		return match ($key) {
-			'binarytags' => $this->values
-				->keys()
-				->filter(fn($item)=>$item==='binary'),
-
-			default => parent::__get($key)
-		};
-	}
-
 	public function authority_key_identifier(string $dotkey): string
 	{
 		$data = collect(explode("\n",collect($this->cert_info($dotkey)->get('extensions'))->get('authorityKeyIdentifier','')));
@@ -117,8 +106,10 @@ final class Certificate extends Binary
 		$vals = collect($values)->dot()->map(function ($item) {
 			$item = preg_replace('/^(-+[A-Z\s]+-+\r\n)?/','',$item);
 			$item = preg_replace('/(\r\n-+[A-Z\s]+-+)?$/','',$item);
+
 			return $item;
-		})->undot()->toArray();
+		})->undot()
+			->toArray();
 
 		parent::setValues($vals);
 	}
@@ -127,11 +118,14 @@ final class Certificate extends Binary
 	{
 		$subject = collect($this->cert_info($dotkey)->get('subject'))->reverse();
 
-		return $subject->map(fn($item,$key)=>sprintf("%s=%s",$key,$item))->join(',');
+		return $subject
+			->map(fn($item,$key)=>sprintf("%s=%s",$key,$item))
+			->join(',');
 	}
 
 	public function subject_key_identifier(string $dotkey): string
 	{
-		return collect($this->cert_info($dotkey)->get('extensions'))->get('subjectKeyIdentifier','');
+		return collect($this->cert_info($dotkey)->get('extensions'))
+			->get('subjectKeyIdentifier','');
 	}
 }
