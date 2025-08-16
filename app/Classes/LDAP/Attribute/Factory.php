@@ -53,15 +53,12 @@ class Factory
 	 *
 	 * @param string $dn
 	 * @param string $attribute
-	 * @param array|NULL $values
+	 * @param array $values
 	 * @param array $oc
 	 * @return Attribute
 	 */
-	public static function create(string $dn,string $attribute,?array $values=NULL,array $oc=[]): Attribute
+	public static function create(string $dn,string $attribute,array $values,array $oc=[]): Attribute
 	{
-		if (is_null($values))
-			$values = [Entry::TAG_NOTAG=>['']];
-
 		$class = Arr::get(self::map,strtolower($attribute),Attribute::class);
 
 		Log::debug(sprintf('%s:Creating Attribute [%s] for [%s] using class [%s]',self::LOGKEY,$attribute,$dn,$class),['values'=>$values]);

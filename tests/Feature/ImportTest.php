@@ -299,4 +299,49 @@ class ImportTest extends TestCase
 		$this->assertCount(2,$x->getObject('mail')->tagValues('lang-cn'));
 		$this->assertCount(2,array_diff(['notag1@simpsons.example.com','notag2@simpsons.example.com','au-tag@simpsons.example.com','cn-tag@simpsons.example.com'],$x->getObject('mail')->values->dot()->values()->toArray()));
 	}
+
+	/**
+	 * This test:
+	 * + importing an entry with multiple binary values
+	 * + binary values are first
+	 * + some attributes dont have other values
+	 *
+	 * Thus:
+	 * + Attribute Objects should only have binary attrtags
+	 *
+	 * @return void
+	 */
+	public function testLDIF_Import_Binary() {
+		$dn = 'cn=Root,dc=example.com';
+		$import_file = __DIR__.'/data/ldif-certs.ldif';
+
+		$this->assertTrue($this->login());
+
+		// Check that it doesnt exist
+		if ($x=config('server')->fetch($dn))
+			$x->delete();
+
+		$file = new UploadedFile($import_file,basename($import_file),null,null,true);
+
+		$response = $this
+			->actingAs(Auth::user())
+			->from('/entry/import')
+			->post('/entry/import/process/ldif',[
+				'_token' => csrf_token(),
+				'_key'=>Crypt::encryptString('*import|_NOP'),
+				'file' => $file,
+			]);
+
+		$response->assertSuccessful();
+
+		// Check that it hsa been created
+		$this->assertEquals($dn,$x=config('server')->fetch($dn));
+		$this->assertTrue($x->exists);
+		$this->assertCount(2,$x->getObject('objectclass'));
+
+		$this->assertCount(1,$x->getObject('authorityrevocationlist')->values);
+		$this->assertCount(1,$x->getObject('authorityrevocationlist')->values->dot());
+		$this->assertCount(0,$x->getObject('authorityrevocationlist')->tagValues());
+		$this->assertCount(1,$x->getObject('authorityrevocationlist')->tagValues('binary'));
+	}
 }

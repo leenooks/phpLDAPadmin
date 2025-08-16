@@ -98,7 +98,9 @@ class EntryController extends Controller
 		$o = Factory::create(
 			dn: $request->dn ? Crypt::decrypt($request->dn) : '',
 			attribute: $id,
-			oc: $request->objectclasses);
+			values: [Entry::TAG_NOTAG=>['']],
+			oc: $request->objectclasses
+		);
 
 		$view = $request->noheader
 			? view(sprintf('components.attribute.value.%s',$id))
@@ -320,12 +322,12 @@ class EntryController extends Controller
 			$result = $import->process();
 
 		} catch (NotImplementedException $e) {
-			Log::error(sprintf('Import Exception [%s]',$e->getMessage()));
+			Log::error(sprintf('Import Exception [%s]',$e->getMessage()),['line'=>$e->getLine(),'file'=>$e->getFile()]);
 
 			abort(555,$e->getMessage());
 
 		} catch (\Exception $e) {
-			Log::error(sprintf('Import Exception [%s]',$e->getMessage()));
+			Log::error(sprintf('Import Exception [%s]',$e->getMessage()),['line'=>$e->getLine(),'file'=>$e->getFile()]);
 
 			abort(598,$e->getMessage());
 		}
@@ -345,7 +347,11 @@ class EntryController extends Controller
 	public function objectclass_add(Request $request): Collection
 	{
 		$dn = $request->get('_key') ? Crypt::decryptString($request->dn) : '';
-		$oc = Factory::create(dn: $dn,attribute: 'objectclass',values: [Entry::TAG_NOTAG=>$request->oc]);
+		$oc = Factory::create(
+			dn: $dn,
+			attribute: 'objectclass',
+			values: [Entry::TAG_NOTAG=>$request->oc]
+		);
 
 		$ocs = $oc
 			->structural

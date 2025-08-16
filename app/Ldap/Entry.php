@@ -135,17 +135,26 @@ class Entry extends Model
 	 */
 	public function setAttribute(string $key,mixed $value): static
 	{
+		if (! is_array($value))
+			throw new \Exception('Value must be an array');
+
 		foreach ($value as $k => $v)
 			parent::setAttribute($key.($k !== self::TAG_NOTAG ? ';'.$k : ''),$v);
 
 		$key = $this->normalizeAttributeKey($key);
-		list($attribute,$tags) = $this->keytag($key);
+		list($attribute,$tag) = $this->keytag($key);
 
-		$o = $this->objects->get($attribute) ?: Factory::create(dn: $this->dn ?: '',attribute: $attribute,oc: Arr::get($this->attributes,'objectclass',[]));
+		$o = $this->objects->get($attribute)
+			?: Factory::create(
+				dn: $this->dn ?: '',
+				attribute: $attribute,
+				values: [$tag=>Arr::get($this->original,$tag,[])],
+				oc: Arr::get($this->attributes,'objectclass',[]));
 
-		$o->setValues(is_array($value)
-			? $value
-			: [$tags=>$value]);
+		if (is_array($value))
+			$o->setValues($value);
+		else
+			$o->addValue($tag,$value);
 
 		$this->objects->put($key,$o);
 
@@ -197,7 +206,7 @@ class Entry extends Model
 	public function getRDNAttribute(): Attribute\RDN
 	{
 		$rdn = explode('=',$this->getRdn());
-		$o = new Attribute\RDN('','dn',[self::TAG_NOTAG=>(array_filter($rdn) && (count($rdn) === 2)) ? [$rdn[0]=>$rdn[1]] : ['']]);
+		$o = new Attribute\RDN('','dn',[self::TAG_NOTAG=>(array_filter($rdn) && (count($rdn) === 2)) ? [$rdn[0]=>$rdn[1]] : [NULL]]);
 		$o->setBase($this->getContainer());
 		$o->setAttributes($this->getAvailableAttributes()->filter(fn($item)=>$item->is_must));
 
@@ -227,12 +236,8 @@ class Entry extends Model
 	 * @throws AttributeException
 	 * @note Attributes added this way dont have objectclass information, and the Model::attributes are not populated
 	 */
-	public function addAttributeItem(string $key,mixed $value): void
+	public function addAttributeItem(string $key,string $value): void
 	{
-		// While $value is mixed, it can only be a string
-		if (! is_string($value))
-			throw new \Exception('value should be a string');
-
 		$key = $this->normalizeAttributeKey(strtolower($key));
 
 		// If the attribute name has tags
@@ -241,10 +246,16 @@ class Entry extends Model
 		if (config('server')->get_attr_id($attribute) === FALSE)
 			throw new AttributeException(sprintf('Schema doesnt have attribute [%s]',$attribute));
 
-		$o = $this->objects->get($attribute) ?: Attribute\Factory::create(dn: $this->dn ?: '',attribute: $attribute);
+		$o = $this->objects->get($attribute)
+			?: Factory::create(
+				dn: $this->dn ?: '',
+				attribute: $attribute,
+				values: [$tag=>Arr::get($this->original,$tag,[])],
+			);
+
 		$o->addValue($tag,[$value]);
 
-		$this->objects->put($key,$o);
+		$this->objects->put($attribute,$o);
 	}
 
 	/**
@@ -287,10 +298,9 @@ class Entry extends Model
 		$result = collect();
 		$entry_oc = Arr::get($this->attributes,'objectclass',[]);
 
-		foreach ($this->attributes as $attrtag => $values) {
-			list($attribute,$tags) = $this->keytag($attrtag);
-
-			$orig = Arr::get($this->original,$attrtag,[]);
+		// Set the initial attributes
+		foreach ($this->original as $attrtag => $values) {
+			list($attribute,$tag) = $this->keytag($attrtag);
 
 			// If the attribute doesnt exist we'll create it
 			$o = Arr::get(
@@ -299,12 +309,32 @@ class Entry extends Model
 				Factory::create(
 					dn: $this->dn,
 					attribute: $attribute,
-					values: [$tags=>$orig],
+					values: [$tag=>$values],
 					oc: $entry_oc,
 				));
 
-			$o->addValue($tags,$values);
-			$o->addValueOld($tags,Arr::get($this->original,$attrtag));
+			$o->addValueOld($tag,$values);
+			$o->addValue($tag,$values);
+
+			$result->put($attribute,$o);
+		}
+
+		// Get any changes
+		foreach ($this->attributes as $attrtag => $values) {
+			list($attribute,$tag) = $this->keytag($attrtag);
+
+			// If the attribute doesnt exist we'll create it
+			$o = Arr::get(
+				$result,
+				$attribute,
+				Factory::create(
+					dn: $this->dn,
+					attribute: $attribute,
+					values: [$tag=>Arr::get($this->original,$attrtag,[])],
+					oc: $entry_oc,
+				));
+
+			$o->addValue($tag,$values);
 
 			$result->put($attribute,$o);
 		}
@@ -629,12 +659,8 @@ class Entry extends Model
 
 				$to = new Template($file);
 
-				if ($to->invalid) {
-					Log::alert(sprintf('%s:Template [%s] is not valid (%s) - ignoring',self::LOGKEY,$file,$to->reason));
-
-				} else {
+				if (! $to->invalid)
 					$templates->put($file,$to);
-				}
 			}
 
 			return $templates;

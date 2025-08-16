@@ -12,13 +12,6 @@ use App\Classes\Template;
  */
 final class OID extends Schema
 {
-	public function __construct(string $dn,string $name,array $values,array $oc=[])
-	{
-		parent::__construct($dn,$name,$values,$oc);
-
-		$this->values_old = $this->values;
-	}
-
 	/**
 	 * Given an LDAP OID number, returns a verbose description of the OID.
 	 * This function parses ldap_supported_oids.txt and looks up the specified

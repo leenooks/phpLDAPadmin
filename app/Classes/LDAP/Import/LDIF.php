@@ -46,6 +46,7 @@ class LDIF extends Import
 			// If the line starts with a dash, its more updates to the same entry
 			if (preg_match('/^-/',$line)) {
 				Log::debug(sprintf('%s:/ DASH Line [%s] (%d)',self::LOGKEY,$line,$c),['action'=>$action,'subaction'=>$subaction,'attribute'=>$attribute,'value'=>$value]);
+
 				if ($attribute)
 					$o = $this->entry($o,$attribute,$subaction,$base64encoded ? base64_decode($value) : $value,$c);
 
@@ -100,6 +101,18 @@ class LDIF extends Import
 				if ($base64encoded) {
 					Log::debug(sprintf('%s:- Completing base64 attribute [%s]',self::LOGKEY,$attribute));
 
+					if (! $o) {
+						$o = $this->item($dn,$action);
+						Log::debug(sprintf('%s:+ Created Object for [%s]',self::LOGKEY,$dn));
+
+						if (! $o) {
+							$result->push(collect(['dn'=>$dn,'result'=>__('Entry doesnt exist')]));
+							$result->last()->put('line',$c);
+
+							continue;
+						}
+					}
+
 					$o = $this->entry($o,$attribute,$subaction,base64_decode($value),$c);
 
 					$attribute = NULL;
@@ -111,49 +124,28 @@ class LDIF extends Import
 				// If we are base64encoded, we need to loop around
 				if ($base64encoded) {
 					$attribute = $m[1];
-					Log::debug(sprintf('%s:/ Retrieving base64 attribute [%s] (%c)',self::LOGKEY,$attribute,$c));
+
+					Log::debug(sprintf('%s:/ Retrieving base64 attribute [%s] (%d)',self::LOGKEY,$attribute,$c));
 
 					continue;
 				}
 			}
 
-			// changetype needs to be after the dn, and if it isnt we'll assume add.
-			if ($dn && Arr::get($m,1) !== 'changetype') {
-				if ($action === self::LDAP_IMPORT_ADD) {
-					Log::debug(sprintf('%s:Creating new entry [%s]:',self::LOGKEY,$dn),['o'=>$o]);
-					$o = new Entry;
-					$o->setDn($dn);
-					$dn = NULL;
-
-				} else {
-					Log::debug(sprintf('%s:Looking for existing entry [%s]:',self::LOGKEY,$dn),['o'=>$o]);
-					$o = Entry::find($dn);
-					$dn = NULL;
-
-					if (! $o) {
-						$result->push(collect(['dn'=>$dn,'result'=>__('Entry doesnt exist')]));
-						$result->last()->put('line',$c);;
-
-						continue;
-					}
-				}
-			}
-
 			switch (Arr::get($m,1)) {
 				case 'dn':
+					if (! is_null($o))
+						throw new GeneralException(sprintf('Previous Entry not complete? (line %d)',$c));
+
 					$dn = $base64encoded ? base64_decode($value) : $value;
 					Log::debug(sprintf('%s:# Got DN [%s]:',self::LOGKEY,$dn));
 
 					$value = '';
 					$base64encoded = FALSE;
-					break;
+					continue 2;
 
 				case 'changetype':
 					if ($m[2] !== ':')
 						throw new GeneralException(sprintf('changetype cannot be base64 encoded set at [%d]. (line %d)',$version,$c));
-
-					if (! is_null($o))
-						throw new GeneralException(sprintf('Previous Entry not complete? (line %d)',$c));
 
 					Log::debug(sprintf('%s:- Action [%s]',self::LOGKEY,$m[3]));
 
@@ -177,7 +169,15 @@ class LDIF extends Import
 							throw new NotImplementedException(sprintf('Unknown change type [%s]? (line %d)',$m[3],$c));
 					}
 
-					break;
+					$o = $this->item($dn,$action);
+					Log::debug(sprintf('%s:+ Created Object for [%s]',self::LOGKEY,$dn));
+
+					if (! $o) {
+						$result->push(collect(['dn'=>$dn,'result'=>__('Entry doesnt exist')]));
+						$result->last()->put('line',$c);
+					}
+
+					continue 2;
 
 				case 'add':
 				case 'replace':
@@ -185,13 +185,15 @@ class LDIF extends Import
 						throw new GeneralException(sprintf('%s action can only be used with changetype: modify (line %d)',$m[1],$c));
 
 					$subaction = $m[1];
-					break;
+
+					continue 2;
 
 				case 'delete':
 					$subaction = $m[1];
 					$attribute = $m[3];
-					$value = NULL;
-					break;
+					$value = '';
+
+					continue 2;
 
 				case 'version':
 					if (! is_null($version))
@@ -201,22 +203,37 @@ class LDIF extends Import
 						throw new VersionException(sprintf('Version cannot be base64 encoded set at [%d]. (line %d)',$version,$c));
 
 					$version = (int)$m[3];
-					break;
+
+					continue 2;
 
 				// Treat it as an attribute
 				default:
 					// Start of a new attribute
 					$attribute = $m[1];
 					Log::debug(sprintf('%s:- Working with Attribute [%s] with [%s] (%d)',self::LOGKEY,$attribute,$value,$c));
-
-					// We are ready to create the entry or add the attribute
-					$o = $this->entry($o,$attribute,$subaction,$base64encoded ? base64_decode($value) : $value,$c);
-					$attribute = NULL;
-					$value = NULL;
 			}
 
 			if ($version !== 1)
 				throw new VersionException('LDIF import cannot handle version: '.($version ?: __('NOT DEFINED')));
+
+			// If we have version, dn and the attribute is changetype or an attribute, we can create our object.
+			if ((Arr::get($m,1) !== 'dn') && $dn) {
+				if (! $o) {
+					$o = $this->item($dn,$action);
+
+					if (! $o) {
+						$result->push(collect(['dn'=>$dn,'result'=>__('Entry doesnt exist')]));
+						$result->last()->put('line',$c);
+					}
+				}
+
+				$dn = NULL;
+			}
+
+			// We are ready to create the entry or add the attribute
+			$o = $this->entry($o,$attribute,$subaction,$base64encoded ? base64_decode($value) : $value,$c);
+			$attribute = NULL;
+			$value = '';
 		}
 
 		// We may still have a pending action
@@ -224,7 +241,7 @@ class LDIF extends Import
 			if ($attribute)
 				$o = $this->entry($o,$attribute,$subaction,$base64encoded ? base64_decode($value) : $value,$c);
 
-			Log::debug(sprintf('%s:- Committing Entry (Final) [%s]',self::LOGKEY,$o->getDN()));
+			Log::debug(sprintf('%s:- Committing Entry (Final) [%s]',self::LOGKEY,$o->getDN()),['dirty'=>$o->getDirty()]);
 
 			// Commit
 			$result->push($this->commit($o,$action));
@@ -232,6 +249,23 @@ class LDIF extends Import
 		}
 
 		return $result;
+	}
+
+	private function item(string $dn,int $action): ?Entry
+	{
+		if ($action === self::LDAP_IMPORT_ADD) {
+			Log::debug(sprintf('%s:Creating new entry [%s]:',self::LOGKEY,$dn));
+
+			$o = new Entry;
+			$o->setDn($dn);
+
+		} else {
+			Log::debug(sprintf('%s:Looking for existing entry [%s]:',self::LOGKEY,$dn));
+
+			$o = Entry::find($dn);
+		}
+
+		return $o;
 	}
 
 	private function entry(Entry $o,string $attribute,string $subaction,?string $value,int $c): Entry
@@ -250,12 +284,13 @@ class LDIF extends Import
 				if (! strlen($value))
 					throw new GeneralException(sprintf('Attribute has no value [%s] (line %d)',$attribute,$c));
 
-				if (! ($x=$o->getObject(($xx=strstr($attribute,';',TRUE)) ?: $attribute)))
+				if (! ($x=$o->getObject(strstr($attribute,';',TRUE) ?: $attribute)))
 					throw new \Exception(sprintf('Attribute [%s] doesnt exist in [%s] (line %d)',$attribute,$o->getDn(),$c));
 
 				// If the attribute has changed, we'll assume this is an additional value for it
 				if ($x->isDirty()) {
 					Log::debug(sprintf('%s:/ Attribute [%s] has changed, assuming add',self::LOGKEY,$attribute));
+
 					$o->addAttributeItem($attribute,$value);
 
 				} else
@@ -274,6 +309,7 @@ class LDIF extends Import
 				throw new \Exception('Unknown subaction:'.$subaction);
 		}
 
+		Log::debug(sprintf('%s:%% Entry [%s] now has [%d] attributes',self::LOGKEY,$o->getDN(),$o->getObjects()->count()));
 		return $o;
 	}
 }

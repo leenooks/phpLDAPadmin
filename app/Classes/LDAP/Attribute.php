@@ -49,6 +49,9 @@ class Attribute implements \Countable, \ArrayAccess
 	 * @param array $values Current Values
 	 * @param array $oc The object classes that the DN of this attribute has
 	 * @throws InvalidUsage
+	 * @note It is assumed when creating an object it is unchanged (new entry or existing entry), thus values_old and
+	 *       values are the same - and by definition the object is unchanged and wouldnt trigger any updates.
+	 *       To update the object, new values need to be set by calling addValue()
 	 */
 	public function __construct(string $dn,string $name,array $values,array $oc=[])
 	{
@@ -118,8 +121,7 @@ class Attribute implements \Countable, \ArrayAccess
 			'values' => $this->values
 				->only($this->keys),
 			// Return the values as they would be rendered
-			'values_rendered' => $this->values
-				->only($this->keys)
+			'values_rendered' => $this->__get('values')
 				->dot()
 				->map(fn($item,$key)=>$this->render_item_new($key))
 				->undot(),
@@ -173,10 +175,18 @@ class Attribute implements \Countable, \ArrayAccess
 		$this->values
 			->put(
 				$tag,
-				array_unique(array_merge(array_filter($this->values
-					->get($tag,[])),$values)));
+				array_unique(
+					array_filter(
+						array_merge($this->values->get($tag,[]),$values))));
 	}
 
+	/**
+	 * Used when setting up an attribiute, mainly to add additional tag values to the original object
+	 *
+	 * @param string $tag
+	 * @param array $values
+	 * @return void
+	 */
 	public function addValueOld(string $tag,array $values): void
 	{
 		$this->values_old
@@ -210,7 +220,7 @@ class Attribute implements \Countable, \ArrayAccess
 	 * Does this attribute values have a helper to process the values
 	 *
 	 * @param array $values
-	 * @return bool
+	 * @return Collection
 	 */
 	protected function getHelpers(array $values): Collection
 	{
