@@ -1,3 +1,5 @@
+const current_base_location = (document.getElementsByTagName('base')[0] ? document.getElementsByTagName('base')[0].href : '/').replace(/\/+$/, '');
+
 function expandChildren(node) {
 	if (node.data.autoExpand && !node.isExpanded()) {
 		node.setExpanded(true);
@@ -13,7 +15,7 @@ function expandChildren(node) {
 
 function getNode(item) {
 	$.ajax({
-		url: '/frame',
+		url: current_base_location+'/frame',
 		method: 'POST',
 		data: { _key: item },
 		dataType: 'html',
@@ -38,9 +40,9 @@ function getNode(item) {
 				break;
 			case 409:	// Not in root
 			case 419:	// Session Expired
-				location.replace('/#'+item);
+				location.replace((current_base_location || '/')+'#'+item);
 				// When the session expires, and we are in the tree, we need to force a reload
-				if (location.pathname === '/')
+				if (location.pathname.replace(/\/+$/, '') === current_base_location)
 					location.reload();
 				break;
 			case 500:
@@ -59,7 +61,7 @@ $(document).ready(function() {
 	if (typeof basedn !== 'undefined') {
 		sources = basedn;
 	} else {
-		sources = { method: 'POST', url: '/ajax/bases' };
+		sources = { method: 'POST', url: current_base_location + '/ajax/bases' };
 	}
 
 	// Attach the fancytree widget to an existing <div id="tree"> element
@@ -96,7 +98,7 @@ $(document).ready(function() {
 		lazyLoad: function(event,data) {
 			data.result = {
 				method: 'POST',
-				url: '/ajax/children',
+				url: current_base_location+'/ajax/children',
 				data: {_key: data.node.data.item,create: true}
 			};
 
