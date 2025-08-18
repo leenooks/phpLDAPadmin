@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Log;
 
 class CheckUpdate
 {
-	private const UPDATE_SERVER = 'https://version.phpldapadmin.org';
 	private const UPDATE_TIME = 60*60*6;
 
 	/**
@@ -36,13 +35,17 @@ class CheckUpdate
 	public function terminate(): void
 	{
 		Cache::remember('upstream_version',self::UPDATE_TIME,function() {
+			if (!(boolean)config('pla.update_check')) {
+				return NULL;
+			}
+
 			// CURL call to URL to see if there is a new version
 			Log::debug(sprintf('CU_:Checking for updates for [%s]',config('app.version')));
 
 			$client = new Client;
 
 			try {
-				$response = $client->request('POST',sprintf('%s/%s',self::UPDATE_SERVER,strtolower(config('app.version'))));
+				$response = $client->request('POST',sprintf('%s/%s',config('pla.update_check_server'),strtolower(config('app.version'))));
 
 				if ($response->getStatusCode() === 200) {
 					$result = json_decode($response->getBody());

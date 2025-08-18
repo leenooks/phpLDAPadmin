@@ -100,4 +100,14 @@ return [
 			'uidnumber' => env('LDAP_TEMPLATE_UIDNUMBER_START', 1000),
 		],
 	],
+
+	/*
+	 * Toggle whether PLA will check for new updates.
+	 */
+	'update_check' => env('APP_UPDATE_CHECK', TRUE),
+
+	/*
+	 * Configure the server used by PLA when checking for new updates.
+	 */
+	'update_check_server' => env('APP_UPDATE_CHECK_SERVER', 'https://version.phpldapadmin.org'),
 ];
