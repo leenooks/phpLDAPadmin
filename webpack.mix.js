@@ -18,4 +18,5 @@ mix.js([
 		'resources/js/bootstrap3-typeahead.js',
 		'resources/themes/architect/src/init.js'
 	],'public/js').extract()
+	.setResourceRoot("..")
 	.sass('resources/sass/app.scss','public/css');

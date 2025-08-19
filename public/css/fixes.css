@@ -5,7 +5,7 @@ body {
 */
 
 .logo-src {
-	background: url('/images/logo-h.png');
+	background: url('../images/logo-h.png');
 	width: 152px !important;
 }
 
