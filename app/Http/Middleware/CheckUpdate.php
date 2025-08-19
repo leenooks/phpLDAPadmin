@@ -35,7 +35,7 @@ class CheckUpdate
 	public function terminate(): void
 	{
 		Cache::remember('upstream_version',self::UPDATE_TIME,function() {
-			if (!(boolean)config('pla.update_check')) {
+			if (!config('pla.update_check')) {
 				return NULL;
 			}
 
