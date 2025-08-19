@@ -36,13 +36,24 @@ class CheckUpdate
 	public function terminate(): void
 	{
 		Cache::remember('upstream_version',self::UPDATE_TIME,function() {
+			if (! config('pla.update.enabled',TRUE)) {
+				$return = new \stdClass;
+				$return->action = 'disabled';
+
+				return $return;
+			}
+
 			// CURL call to URL to see if there is a new version
 			Log::debug(sprintf('CU_:Checking for updates for [%s]',config('app.version')));
 
 			$client = new Client;
 
 			try {
-				$response = $client->request('POST',sprintf('%s/%s',self::UPDATE_SERVER,strtolower(config('app.version'))));
+				$response = $client->request(
+					method: 'POST',
+					uri: sprintf('%s/%s',self::UPDATE_SERVER,strtolower(config('app.version'))),
+					options: config('pla.update.proxy',[]),
+				);
 
 				if ($response->getStatusCode() === 200) {
 					$result = json_decode($response->getBody());

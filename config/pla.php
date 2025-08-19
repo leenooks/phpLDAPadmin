@@ -100,4 +100,9 @@ return [
 			'uidnumber' => env('LDAP_TEMPLATE_UIDNUMBER_START', 1000),
 		],
 	],
+
+	'update' => [
+		'enabled' => env('LDAP_UPDATE_ENABLED',FALSE),
+		'proxy' => explode(',',env('LDAP_UPDATE_PROXY')),
+	]
 ];

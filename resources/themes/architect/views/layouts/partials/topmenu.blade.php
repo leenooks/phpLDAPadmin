@@ -79,24 +79,29 @@
 
 				@if(($x=Config::get('update_available')) && $x->action !== 'current')
 					<li>
-						@switch($x->action)
+						@switch($x->action ?? NULL)
 							@case('unable')
 								<button class="btn btn-light opacity-2 p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Upstream Version Unavailable">
 									<i class="fas fa-fw fa-bolt fs-5"></i>
 								</button>
 								@break
 							@case('upgrade')
-								<button class="btn btn-warning p-1 m-1" data-bs-custom-class="custom-tooltip-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" title="Update Available:<br>{{ $x->version }}">
+								<button class="btn btn-warning p-1 m-1" data-bs-custom-class="custom-tooltip-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" title="@lang('Update Available'):<br>{{ $x->version }}">
 									<i class="fas fa-fw fa-wrench fs-5"></i>
 								</button>
 								@break
 							@case('mismatch')
-								<button class="btn btn-light opacity-2 p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" title="Version Issue - Upstream<br>{{ $x->version }}">
+								<button class="btn btn-light opacity-2 p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" title="@lang('Version Issue') - @lang('Upstream')<br>{{ $x->version }}">
 									<i class="fas fa-fw fa-exclamation fs-5"></i>
 								</button>
 								@break
-							@case('unknown')
-								<button class="btn btn-light opacity-2 p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" title="Version Issue - Unknown<br>{{ $x->version }}">
+							@case('disabled')
+								<button class="btn btn-light opacity-2 p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" title="@lang('Version update check disabled by config')">
+									<i class="fas fa-fw fa-ban fs-5"></i>
+								</button>
+								@break
+							@default()
+								<button class="btn btn-light opacity-2 p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-html="true" title="@lang('Version Issue') - @lang('Unknown')<br>{{ $x->version }}">
 									<i class="fas fa-fw fa-question fs-5"></i>
 								</button>
 								@break
