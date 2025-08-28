@@ -343,7 +343,13 @@ final class AttributeType extends Base
 			&& (! collect($validation->get($this->name_lc))->contains('required'))) {
 			$validation
 				->prepend(array_merge(['required','min:1'],$validation->get($nolangtag,[])),$nolangtag)
-				->prepend(array_merge(['required','array','min:1',(Attribute\Factory::create(dn: '',attribute: $this->name,values: [Entry::TAG_NOTAG=>['']])->no_attr_tags ? 'max:1' : NULL)],$validation->get($this->name_lc,[])),$this->name_lc);
+				->prepend(array_merge([
+					'required',
+					'array',
+					'min:1',
+					(($x=Attribute\Factory::create(dn: '',attribute: $this->name,values: [Entry::TAG_NOTAG=>['']]))->no_attr_tags ? 'max:'.($x->hasHelper() ? 2 : 1) : NULL)
+				],
+					$validation->get($this->name_lc,[])),$this->name_lc);
 		}
 
 		return $validation->toArray();

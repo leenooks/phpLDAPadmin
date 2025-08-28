@@ -25,7 +25,7 @@ final class Password extends Attribute
 	private const password_helpers = 'Classes/LDAP/Attribute/Password';
 	public const commands = 'App\\Classes\\LDAP\\Attribute\\Password\\';
 
-	private static function helpers(): Collection
+	protected static function helpers(): Collection
 	{
 		$helpers = collect();
 

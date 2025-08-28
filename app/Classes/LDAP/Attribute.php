@@ -168,6 +168,13 @@ class Attribute implements \Countable, \ArrayAccess
 		// We cannot clear values using array syntax
 	}
 
+	/* STATIC METHODS */
+
+	protected static function helpers(): Collection
+	{
+		return collect();
+	}
+
 	/* METHODS */
 
 	public function addValue(string $tag,array $values): void
@@ -226,6 +233,16 @@ class Attribute implements \Countable, \ArrayAccess
 	{
 		return collect($values)->keys()
 			->filter(fn($item)=>\Str::endsWith($item,Entry::TAG_HELPER));
+	}
+
+	/**
+	 * Need to allow for post input that might have helper keys, which affects validation
+	 *
+	 * @return bool
+	 */
+	public function hasHelper(): bool
+	{
+		return $this->helpers()->count() > 0;
 	}
 
 	/**
