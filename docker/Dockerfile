@@ -1,7 +1,7 @@
 FROM dunglas/frankenphp:php8.4-alpine
 
-ARG BUILD_VERSION=2.0.0-dev
-ARG BUILD_REVISION=00000000
+ARG BUILD_VERSION
+ARG BUILD_REVISION
 
 LABEL org.opencontainers.image.vendor="Deon George"
 LABEL org.opencontainers.image.licenses=GPLv2
