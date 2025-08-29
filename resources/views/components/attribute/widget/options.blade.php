@@ -86,6 +86,9 @@
 										success: function(data) {
 											// Render any must attributes
 											if (data.must.length) {
+												var newattr = $('select#rdn');
+												var oldoptions = $('select#rdn option').map((i,o)=>o.value).get();
+
 												data.must.forEach(function(item) {
 													if ($('attribute#'+item.toLowerCase()).length)
 														return;
@@ -107,6 +110,21 @@
 																alert('That didnt work? Please try again....');
 														},
 													});
+
+													// If this is a new entry, add the required attributes to the RDN
+													if (! oldoptions.includes(item))
+														newattr.append(new Option(item,item,false,false));
+
+													// Sort the attributes
+													newattr
+														.append($('select#rdn option')
+															.remove()
+															.sort(function (a,b) {
+																let at = $(a).text(),
+																	bt = $(b).text();
+																return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
+															}))
+														.val('');
 												})
 											}
 
