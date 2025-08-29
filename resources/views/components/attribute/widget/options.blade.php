@@ -79,6 +79,9 @@
 									$.ajax({
 										method: 'POST',
 										url: '{{ url('ajax/schema/objectclass/attrs') }}/'+item,
+										data: {
+											attrs: $('attribute').map(function () { return $(this).attr('id'); }).toArray()
+										},
 										cache: false,
 										success: function(data) {
 											// Render any must attributes

@@ -115,13 +115,18 @@ class AjaxController extends Controller
 	 * @param string $objectclass
 	 * @return array
 	 */
-	public function schema_objectclass_attrs(string $objectclass): array
+	public function schema_objectclass_attrs(Request $request,string $objectclass): array
 	{
 		$oc = config('server')->schema('objectclasses',$objectclass);
+		$existing = $request->get('attrs',[]);
 
 		return [
-			'must' => $oc->getMustAttrs()->pluck('name'),
-			'may' => $oc->getMayAttrs()->pluck('name'),
+			'must' => $oc->getMustAttrs()
+				->filter(fn($item)=>! $item->names->intersect($existing)->count())
+				->pluck('name'),
+			'may' => $oc->getMayAttrs()
+				->filter(fn($item)=>! $item->names->intersect($existing)->count())
+				->pluck('name'),
 		];
 	}
 
