@@ -38,7 +38,7 @@
 										<abbr title="{{ $oo->description }}">{{ $oo->name }}</abbr>
 									</th>
 
-									@foreach($oo->values->dot()->keys()->merge($oo->values_old->dot()->keys())->unique() as $dotkey)
+									@foreach($oo->values->dot()->filter()->keys()->merge($oo->values_old->dot()->filter()->keys())->unique() as $dotkey)
 										@if($loop->index)
 											</tr><tr>
 										@endif

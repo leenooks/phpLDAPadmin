@@ -45,7 +45,7 @@ trait MD5Updates
 		}
 
 		// Process the remaining
-		foreach ($this->values_old->except($processed)->dot()->keys()->merge($this->values->except($md5keys)->dot()->filter()->keys())->unique() as $dotkey) {
+		foreach ($this->values_old->except($processed)->dot()->filter()->keys()->merge($this->values->except($md5keys)->dot()->filter()->keys())->unique() as $dotkey) {
 			\Log::debug(sprintf('MD5:Checking normal key [%s] for attribute [%s]',$dotkey,$this->name),['old'=>$this->values_old->dot()->get($dotkey),'new'=>$this->values->dot()->get($dotkey)]);
 
 			if ($this->values_old->dot()->get($dotkey) !== $this->values->dot()->get($dotkey))
