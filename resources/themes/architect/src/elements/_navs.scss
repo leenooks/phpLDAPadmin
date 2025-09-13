@@ -41,7 +41,7 @@
 .nav-item {
   &.nav-item-header {
     text-transform: uppercase;
-    font-size: divide($font-size-base, 1.2);
+    font-size: math.div($font-size-base, 1.2);
     color: $gray-600;
     font-weight: bold;
     padding: $nav-link-padding-y $nav-link-padding-x;

@@ -1,3 +1,6 @@
+@use "sass:map";
+@use "sass:math";
+
 // GENERIC
 
 $enable-caret: true;
@@ -26,7 +29,7 @@ $black: #000;
 
 $grays: ();
 
-$grays: map-merge(
+$grays: map.merge(
                 (
                         "100": $gray-100,
                         "200": $gray-200,
@@ -81,7 +84,7 @@ $custom-colors: (
   "alternate": $alt
 );
 
-$theme-colors: map-merge( $theme-colors, $custom-colors);
+$theme-colors: map.merge( $theme-colors, $custom-colors);
 
 // BOOTSTRAP OVERWRITES
 
@@ -90,7 +93,7 @@ $headings-font-weight: 400;
 $font-size-base: 0.88rem;
 $font-size-lg: ($font-size-base * 1.25);
 $font-size-sm: ($font-size-base * 1.1);
-$font-size-xs: divide($font-size-base, 1.1);
+$font-size-xs: math.div($font-size-base, 1.1);
 
 $btn-transition: color .15s, background-color .15s, border-color .15s, box-shadow .15s;
 $btn-focus-width: 0;

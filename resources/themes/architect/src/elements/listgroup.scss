@@ -33,7 +33,7 @@
 .rm-list-borders {
   .list-group-item {
     border: 0;
-    padding: divide($card-spacer-y, 1.5) 0;
+    padding: math.div($card-spacer-y, 1.5) 0;
   }
 }
 

@@ -9,6 +9,11 @@
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
  */
 
+// SASS MODULES (new syntax)
+@use "sass:map";
+@use "sass:math";
+@use "sass:color";
+
 // BOOTSTRAP 5 VARIABLES
 
 // 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
@@ -16,6 +21,7 @@
 
 // 2. Include any default variable overrides here
 
+//@import "bootstrap/scss/variables";
 @import "themes/layout-variables";
 
 // 3. Include remainder of required Bootstrap stylesheets
@@ -39,26 +45,27 @@
 @import "components/bootstrap5/buttons";
 @import "components/bootstrap5/transitions";
 @import "components/bootstrap5/dropdown";
+//@import "bootstrap/scss/dropdown";
 @import "components/bootstrap5/button-group";
 @import "components/bootstrap5/nav";
 @import "components/bootstrap5/navbar";
 @import "components/bootstrap5/card";
-// @import "components/bootstrap5/accordion";
+//@import "components/bootstrap5/accordion";
 @import "components/bootstrap5/breadcrumb";
 @import "components/bootstrap5/pagination";
 @import "components/bootstrap5/badge";
 @import "components/bootstrap5/alert";
-// @import "components/bootstrap5/progress";
+//@import "components/bootstrap5/progress";
 @import "components/bootstrap5/list-group";
 @import "components/bootstrap5/close";
-// @import "components/bootstrap5/toasts";
+//@import "components/bootstrap5/toasts";
 @import "components/bootstrap5/modal";
 @import "components/bootstrap5/tooltip";
-// @import "components/bootstrap5/popover";
-// @import "components/bootstrap5/carousel";
-// @import "components/bootstrap5/spinners";
-// @import "components/bootstrap5/offcanvas";
-// @import "components/bootstrap5/placeholders";
+//@import "components/bootstrap5/popover";
+//@import "components/bootstrap5/carousel";
+//@import "components/bootstrap5/spinners";
+//@import "components/bootstrap5/offcanvas";
+//@import "components/bootstrap5/placeholders";
 @import "components/bootstrap5/helpers";
 @import "components/bootstrap5/utilities/api";
 
@@ -80,7 +87,7 @@
 @import "elements/badges";
 @import "elements/cards";
 @import "elements/tabs";
-// @import "elements/accordions";
+//@import "elements/accordions";
 @import "elements/modals";
 @import "elements/navs";
 @import "elements/listgroup";
@@ -93,7 +100,7 @@
 
 // COMPONENTS
 // Perfect Scrollbar
-// @import "components/perfect-scrollbar/perfect-scrollbar";
+//@import "components/perfect-scrollbar/perfect-scrollbar";
 
 // FontAwesome
 @import "components/icons/fontawesome/fontawesome";
@@ -102,14 +109,14 @@
 // Hamburger button
 @import "components/hamburgers/hamburgers";
 // Notifications
-// @import "components/notifications/toastr";
+//@import "components/notifications/toastr";
 // Popovers & Tooltips
 @import "components/popovers-tooltips/popovers-tooltips";
 // Calendar
-// @import "components/calendar/calendar";
+//@import "components/calendar/calendar";
 // Maps
-// @import "components/maps/vector-maps";
+//@import "components/maps/vector-maps";
 // Responsive
 @import "layout/responsive/responsive-base";
 // DEMO
-// @import "demo-ui/demo";
+//@import "demo-ui/demo";

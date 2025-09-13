@@ -10,7 +10,6 @@ import 'jquery.fancytree/dist/modules/jquery.fancytree.edit';
 import 'jquery.fancytree/dist/modules/jquery.fancytree.filter';
 import 'jquery.fancytree/dist/modules/jquery.fancytree.glyph';
 import 'jquery.fancytree/dist/modules/jquery.fancytree.persist';
-// import 'jquery-ui/dist/jquery-ui'; // USED?
 
 // Bootstrap - included in architectui
 // import 'bootstrap/dist/js/bootstrap.bundle';

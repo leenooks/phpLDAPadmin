@@ -4,7 +4,7 @@ $search-box-size: 42px;
 
 .search-wrapper {
   position: relative;
-  margin-right: divide($nav-link-padding-x, 1.5);
+  margin-right: math.div($nav-link-padding-x, 1.5);
 
   .input-holder {
     height: $search-box-size;

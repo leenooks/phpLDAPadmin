@@ -48,7 +48,7 @@ $widget-spacer: $spacer;
     margin-top: $widget-spacer;
 
     .progress-sub-label {
-      margin-top: divide($widget-spacer, 3);
+      margin-top: math.div($widget-spacer, 3);
       opacity: .5;
       display: flex;
       align-content: center;

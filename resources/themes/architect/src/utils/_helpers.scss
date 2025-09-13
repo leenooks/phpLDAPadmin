@@ -1,3 +1,5 @@
+@use "sass:math";
+
 // Helpers imports
 @import "helpers/opacity";
 // @import "helpers/grayscale";
@@ -90,20 +92,20 @@
   font-size: 1.3rem !important;
 }
 
-.font-size-xs {
-  font-size: .6rem !important;
-}
-
-.font-size-sm {
-  font-size: .8rem !important;
-}
-
 .font-size-md {
   font-size: .9rem !important;
 }
 
 .font-size-lg {
   font-size: 1.1rem !important;
+}
+
+.font-size-sm {
+  font-size: .8rem !important;
+}
+
+.font-size-xs {
+  font-size: .6rem !important;
 }
 
 // No Shadow
@@ -292,7 +294,7 @@
 
 .tabs-animated {
   .nav-item {
-    margin: 0 divide($layout-spacer-x, 2) 0 0;
+    margin: 0 math.div($layout-spacer-x, 2) 0 0;
   }
 }
 

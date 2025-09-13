@@ -217,7 +217,7 @@
     }
 
     .page-title-actions {
-      margin: divide($grid-gutter-width, 2) auto 0;
+      margin: math.div($grid-gutter-width, 2) auto 0;
     }
 
     .page-title-actions,
@@ -294,7 +294,7 @@
 
       .nav,
       .btn-actions-pane-right {
-        margin: divide($layout-spacer-x, 2) 0 0;
+        margin: math.div($layout-spacer-x, 2) 0 0;
 
         .d-inline-block.ml-2 {
           width: 100% !important;
@@ -335,27 +335,27 @@
 
   .mbg-3,
   body .card.mb-3 {
-    margin-bottom: divide($grid-gutter-width, 2) !important;
+    margin-bottom: math.div($grid-gutter-width, 2) !important;
   }
 
   .app-page-title {
-    padding: divide($grid-gutter-width, 2);
-    margin: divide($grid-gutter-width, -2) divide($grid-gutter-width, -2) divide($grid-gutter-width, 2);
+    padding: math.div($grid-gutter-width, 2);
+    margin: math.div($grid-gutter-width, -2) math.div($grid-gutter-width, -2) math.div($grid-gutter-width, 2);
 
     & + .body-tabs-layout {
-      margin-top: divide($grid-gutter-width, -2) !important;
+      margin-top: math.div($grid-gutter-width, -2) !important;
     }
   }
 
   .body-tabs-line .body-tabs-layout {
-    margin-bottom: divide($grid-gutter-width, 2);
-    margin-left: divide($grid-gutter-width, -2);
-    margin-right: divide($grid-gutter-width, -2);
+    margin-bottom: math.div($grid-gutter-width, 2);
+    margin-left: math.div($grid-gutter-width, -2);
+    margin-right: math.div($grid-gutter-width, -2);
     padding: 0 15px;
   }
 
   .body-tabs {
-    padding: 0 divide($grid-gutter-width, 2);
+    padding: 0 math.div($grid-gutter-width, 2);
     display: block;
 
     .nav-item {
@@ -374,11 +374,11 @@
   body .card-header {
     height: auto;
     display: block;
-    padding: divide($layout-spacer-x, 2) $layout-spacer-x;
+    padding: math.div($layout-spacer-x, 2) $layout-spacer-x;
     text-align: center;
 
     .btn-actions-pane-right {
-      padding: divide($layout-spacer-x, 2) 0 0;
+      padding: math.div($layout-spacer-x, 2) 0 0;
     }
 
     .actions-icon-btn {
@@ -394,7 +394,7 @@
       }
 
       & > .nav {
-        margin: divide($layout-spacer-x, 2) 0 divide($layout-spacer-x, -2);
+        margin: math.div($layout-spacer-x, 2) 0 math.div($layout-spacer-x, -2);
         display: table !important;
         width: 100%;
 
@@ -426,11 +426,11 @@
   }
 
   .slick-slider-sm .slick-slider .slick-prev {
-    left: divide($grid-gutter-width, 2);
+    left: math.div($grid-gutter-width, 2);
   }
 
   .slick-slider-sm .slick-slider .slick-next {
-    right: divide($grid-gutter-width, 2);
+    right: math.div($grid-gutter-width, 2);
   }
 }
 

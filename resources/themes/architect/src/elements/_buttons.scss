@@ -1,3 +1,5 @@
+@use "sass:math";
+
 // Buttons
 
 // 2x Outline Border
@@ -49,13 +51,13 @@ $btn-block-spacing-y:         .5rem !default;
 
   &.btn-icon-right {
     .btn-icon-wrapper {
-      margin-left: divide($spacer, 2);
+      margin-left: math.div($spacer, 2);
       margin-right: 0;
     }
   }
 
   .btn-icon-wrapper {
-    margin-right: divide($spacer, 2);
+    margin-right: math.div($spacer, 2);
     margin-left: 0;
     margin-top: 0;
     font-size: 17px;
@@ -159,7 +161,7 @@ $btn-block-spacing-y:         .5rem !default;
 
   &.btn-icon-bottom {
     .btn-icon-wrapper {
-      margin: divide($spacer, 5) 0 5px;
+      margin: math.div($spacer, 5) 0 5px;
     }
   }
 
