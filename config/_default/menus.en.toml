@@ -12,18 +12,23 @@ url = "https://github.com/leenooks/phpldapadmin"
 weight = 2
 
 [[main]]
+name = "Docker"
+url = "https://hub.docker.com/r/phpldapadmin/phpldapadmin"
+weight = 3
+
+[[main]]
 name = "Wiki"
 url = "https://github.com/leenooks/phpldapadmin/wiki"
-weight = 3
+weight = 4
 
 [[main]]
 name = "Help"
 url = "https://github.com/leenooks/phpldapadmin/discussions"
-weight = 5
+weight = 6
 
 [[main]]
 name = "Demo"
-weight = 4
+weight = 5
 
 [[main]]
 parent = "Demo"
