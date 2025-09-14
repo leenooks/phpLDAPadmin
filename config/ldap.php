@@ -165,7 +165,7 @@ return [
 			],
 			sprintf('userpassword.%s%s.*',\App\Ldap\Entry::TAG_NOTAG,\App\Ldap\Entry::TAG_HELPER) => [
 				'nullable',
-				'min:4'
+				'min:3'
 			],
 			sprintf('userpassword.%s.*',\App\Ldap\Entry::TAG_NOTAG) => [
 				'nullable',

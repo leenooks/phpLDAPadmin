@@ -52,9 +52,13 @@ final class Password extends Attribute
 	public static function hash(string $password): ?Attribute\Password\Base
 	{
 		$m = [];
-		preg_match('/^{([A-Z0-9]+)}(.*)$/',$password,$m);
+		preg_match('/^{([a-zA-Z0-9]+)}(.*)$/',$password,$m);
 
-		$hash = \Arr::get($m,1,'*clear*');
+		$hash = strtoupper($x=\Arr::get($m,1,'*clear*'));
+
+		// If our hash in the password is not in upper case, then convert it, as we use uppercase hashes to find the right class
+		if ($hash !== $x)
+			$password = preg_replace('/^{'.$x.'}/','{'.$hash.'}',$password);
 
 		if (($potential=static::helpers()->filter(fn($hasher)=>str_starts_with($hasher::key,$hash)))->count() > 1) {
 			foreach ($potential as $item) {
