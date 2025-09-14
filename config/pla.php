@@ -102,7 +102,7 @@ return [
 	],
 
 	'update' => [
-		'enabled' => env('LDAP_UPDATE_ENABLED',FALSE),
+		'enabled' => env('LDAP_UPDATE_ENABLED',TRUE),
 		'proxy' => explode(',',env('LDAP_UPDATE_PROXY','')),
 	]
 ];
