@@ -13,7 +13,7 @@ function expandChildren(node) {
 
 function getNode(item) {
 	$.ajax({
-		url: '/frame',
+		url: web_base+'/frame',
 		method: 'POST',
 		data: { _key: item },
 		dataType: 'html',
@@ -37,11 +37,27 @@ function getNode(item) {
 				$('.main-content').empty().append(e.responseText);
 				break;
 			case 409:	// Not in root
-			case 419:	// Session Expired
-				location.replace('/#'+item);
-				// When the session expires, and we are in the tree, we need to force a reload
-				if (location.pathname === '/')
+				// There is an unusual problem, that location.replace() is not being replaced, when, for example:
+				// * When running in a subpath
+				// * The rendered URL has a slash on the end
+				// * The rendered page is a form, etc /entry/add, and the user clicks on the tree
+				workaround = location.href;
+				location.assign(web_base+'/#'+item);
+
+				if ((web_base_path === '/') && (location.pathname === '/'))
 					location.reload();
+
+				else if ((! location.href.match('/\/$/')) && (workaround !== location.href))
+					location.reload();
+
+				break;
+			case 419:	// Session Expired
+				workaround = location.href;
+				location.replace(web_base+'/#'+item);
+
+				if ((! location.href.match('/\/$/')) && (workaround !== location.href))
+					location.reload();
+
 				break;
 			case 500:
 			case 555:	// Missing Method
@@ -59,7 +75,7 @@ $(document).ready(function() {
 	if (typeof basedn !== 'undefined') {
 		sources = basedn;
 	} else {
-		sources = { method: 'POST', url: '/ajax/bases' };
+		sources = { method: 'POST', url: web_base+'/ajax/bases' };
 	}
 
 	// Attach the fancytree widget to an existing <div id="tree"> element
@@ -96,7 +112,7 @@ $(document).ready(function() {
 		lazyLoad: function(event,data) {
 			data.result = {
 				method: 'POST',
-				url: '/ajax/children',
+				url: web_base+'/ajax/children',
 				data: {_key: data.node.data.item,create: true}
 			};
 

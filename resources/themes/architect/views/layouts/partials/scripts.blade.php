@@ -1,8 +1,11 @@
-<script type="text/javascript" src="{{ asset('/js/vendor.js') }}"></script>
-<script type="text/javascript" src="{{ asset('/js/manifest.js') }}"></script>
-<script type="text/javascript" src="{{ asset('/js/app.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/vendor.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/manifest.js') }}"></script>
+<script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
 
 <script type="text/javascript">
+	const web_base = '{{ request()->root() }}';
+	const web_base_path = '{{ Request::header('X-Forwarded-Prefix','/') }}'
+
 	// Our CSRF token to each interaction
 	$.ajaxSetup({
 		headers: {

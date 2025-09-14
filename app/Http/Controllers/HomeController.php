@@ -30,7 +30,7 @@ class HomeController extends Controller
 	public function frame(Request $request,?Collection $old=NULL): \Illuminate\View\View
 	{
 		// If our index was not render from a root url, then redirect to it
-		if (($request->root().'/' !== url()->previous()) && $request->method() === 'POST')
+		if (($request->root().($request->getBasePath() ? '' : '/') !== url()->previous()) && ($request->method() === 'POST'))
 			abort(409);
 
 		$key = request_key($request->get('_key',old('_key',old('dn'))));

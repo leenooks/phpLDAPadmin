@@ -229,7 +229,7 @@
 					if (! item.value)
 						return item.name+'=';
 
-					location.replace('/#'+item.value);
+					location.replace(web_base+'/#'+item.value);
 					location.reload();
 					return '';
 				},

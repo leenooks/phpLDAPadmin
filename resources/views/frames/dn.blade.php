@@ -190,8 +190,9 @@
 
 		$(document).ready(function() {
 			$('button[id=entry-create]').on('click',function(item) {
-				location.replace('/#{{ Crypt::encryptString(sprintf('*%s|%s','create',$dn)) }}');
-				location.reload();
+				location.replace(web_base+'/#{{ Crypt::encryptString(sprintf('*%s|%s','create',$dn)) }}');
+				if (web_base_path === '/')
+					location.reload();
 			});
 
 			$('button[id=entry-edit]').on('click',function(item) {
