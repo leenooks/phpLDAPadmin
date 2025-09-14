@@ -3,7 +3,6 @@ run-name: ${{ gitea.actor }} Building Docker Image 🐳
 on: [push]
 env:
   DOCKER_HOST: tcp://127.0.0.1:2375
-  ASSETS: 2.3.1
 
 jobs:
   test:
@@ -65,10 +64,7 @@ jobs:
           public/js/app.js
           public/js/manifest.js
           public/js/vendor.js
-        #key: build-pla-page-assets-${{ hashFiles('**/package-lock.json') }}
-        key: build-pla-page-assets-${{ env.ASSETS }}
-        #restore-keys: |
-        #  build-pla-page-assets-
+        key: pla-page-assets-${{ env.GITHUB_SHA }}
 
   build:
     strategy:
@@ -128,10 +124,7 @@ jobs:
           public/js/app.js
           public/js/manifest.js
           public/js/vendor.js
-        #key: build-pla-page-assets-${{ hashFiles('**/package-lock.json') }}
-        key: build-pla-page-assets-${{ env.ASSETS }}
-        #restore-keys: |
-        #  build-pla-page-assets-
+        key: pla-page-assets-${{ env.GITHUB_SHA }}
 
     - if: ${{ steps.cache-page-assets.outputs.cache-hit != 'true' }}
       name: List the state of page assets
