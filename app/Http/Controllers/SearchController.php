@@ -44,12 +44,12 @@ class SearchController extends Controller
 		} else {
 			$attrs = $so
 				->schema('attributetypes')
-				->sortBy('name')
-				->filter(fn($item)=>Str::contains($item->name_lc,strtolower($request->term)));
+				->sortBy('names_lc')
+				->filter(fn($item)=>Str::contains($item->names_lc,strtolower($request->term)));
 
 			return $attrs
 				->map(fn($item)=>[
-					'name'=>$item->name,
+					'name'=>$item->names->first(),
 					'value'=>'',
 					'category'=>__('Select attribute...')
 				])
