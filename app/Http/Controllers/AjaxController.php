@@ -48,14 +48,21 @@ class AjaxController extends Controller
 
 		return (config('server'))
 			->children($dn)
-			->transform(fn($item)=>
-				[
+			->transform(function ($item) {
+
+				$hs  = strtoupper((string) Arr::get($item->getAttribute('hassubordinates'), 0));
+				$num = (int) Arr::get($item->getAttribute('numsubordinates'), 0);
+
+				$lazy = ($hs === 'TRUE') || ($num > 0);
+
+				return [
 					'title'=>$item->getRdn(),
 					'item'=>$item->getDNSecure(),
 					'icon'=>$item->icon(),
-					'lazy'=>Arr::get($item->getAttribute('hassubordinates'),0) == 'TRUE',
+					'lazy'=>$lazy,
 					'tooltip'=>$item->getDn(),
-				])
+				];
+			})
 			->prepend(
 				$request->create
 					? [
