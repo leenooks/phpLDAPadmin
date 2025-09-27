@@ -46,14 +46,15 @@ class AjaxController extends Controller
 
 		Log::debug(sprintf('%s:Query [%s]',self::LOGKEY,$dn));
 
-		return (config('server'))
+		return config('server')
 			->children($dn)
 			->transform(fn($item)=>
 				[
 					'title'=>$item->getRdn(),
 					'item'=>$item->getDNSecure(),
 					'icon'=>$item->icon(),
-					'lazy'=>Arr::get($item->getAttribute('hassubordinates'),0) == 'TRUE',
+					'lazy'=>(strcasecmp(Arr::get($item->getAttribute('hassubordinates'),0),'TRUE') === 0)
+						|| Arr::get($item->getAttribute('numsubordinates'),0),
 					'tooltip'=>$item->getDn(),
 				])
 			->prepend(
