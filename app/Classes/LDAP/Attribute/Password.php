@@ -17,6 +17,8 @@ final class Password extends Attribute
 {
 	use MD5Updates;
 
+	private const LOGKEY = 'AP-';
+
 	public const obfuscate = '****************';
 
 	protected(set) bool $no_attr_tags = TRUE;
@@ -66,10 +68,14 @@ final class Password extends Attribute
 					return new $item;
 			}
 
-			throw new \Exception(sprintf('Couldnt figure out a password hash for %s',$password));
+			// If we get here, we'll treat it as clear text
+			\Log::alert(sprintf('%s:? Couldnt figure out a password hash for %s, assuming CLEAR',self::LOGKEY,$password));
+			return new Attribute\Password\Clear;
 
+		// No Password type candidates, we'll treat it as clear text
 		} elseif (! $potential->count()) {
-			throw new \Exception(sprintf('Couldnt figure out a password hash for %s',$password));
+			\Log::alert(sprintf('%s:? Couldnt figure out a password hash for %s, no candidates, assuming CLEAR',self::LOGKEY,$password));
+			return new Attribute\Password\Clear;
 		}
 
 		return new ($potential->pop());

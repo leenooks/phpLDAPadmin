@@ -11,7 +11,7 @@ final class Crypt extends Base
 
 	public static function subid(string $password): bool
 	{
-		return preg_match('/^[\w]{2}/',self::password($password));
+		return preg_match('/^[.\/\w]{2}/',self::password($password));
 	}
 
 	public function compare(string $source,string $compare): bool
