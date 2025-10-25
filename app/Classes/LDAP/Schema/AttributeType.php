@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 use App\Classes\LDAP\Attribute;
 use App\Exceptions\InvalidUsage;
+use App\Interfaces\MD5Updates;
 use App\Ldap\Entry;
 
 /**
@@ -347,7 +348,13 @@ final class AttributeType extends Base
 					'required',
 					'array',
 					'min:1',
-					(($x=Attribute\Factory::create(dn: '',attribute: $this->name,values: [Entry::TAG_NOTAG=>['']]))->no_attr_tags ? 'max:'.($x->hasHelper() ? 2 : 1) : NULL)
+					(($x=Attribute\Factory::create(
+						dn: '',
+						attribute: $this->name,
+						values: [Entry::TAG_NOTAG=>['']])
+					)->no_attr_tags
+						? 'max:'.($x->hasHelper() ? 2 : 1)+(($x instanceof MD5Updates) ? 1 : 0)
+						: NULL)
 				],
 					$validation->get($this->name_lc,[])),$this->name_lc);
 		}

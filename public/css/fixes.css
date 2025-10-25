@@ -221,7 +221,8 @@ pre code .line::before {
 
 /* Selection rendered size */
 .select2-container .select2-selection--single .select2-selection__rendered {
-	font-size: 95%;
+	font-size: 85%;
+	padding: 2px;
 }
 
 /* The opened input box */

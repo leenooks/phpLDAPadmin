@@ -3,7 +3,7 @@
 @use(App\Ldap\Entry)
 
 <div class="input-group has-validation">
-	@if(! $o->isDirty())
+	@if(! $o->isDirty() && $value)
 		<input type="hidden" name="{{ $o->name_lc }}[{{ $attrtag }}{{ Entry::TAG_MD5 }}][]" value="{{ md5($value) }}">
 	@endif
 

@@ -3,12 +3,13 @@
 namespace App\Classes\LDAP\Attribute;
 
 use App\Classes\LDAP\Attribute;
+use App\Interfaces\MD5Updates as MD5Interface;
 use App\Traits\MD5Updates;
 
 /**
  * Represents an attribute whose values are passwords
  */
-final class KrbPrincipalKey extends Attribute
+final class KrbPrincipalKey extends Attribute implements MD5Interface
 {
 	use MD5Updates;
 

@@ -3,12 +3,13 @@
 namespace App\Classes\LDAP\Attribute;
 
 use App\Classes\LDAP\Attribute;
+use App\Interfaces\MD5Updates as MD5Interface;
 use App\Traits\MD5Updates;
 
 /**
  * Represents an attribute whose values are binary
  */
-abstract class Binary extends Attribute
+abstract class Binary extends Attribute implements MD5Interface
 {
 	use MD5Updates;
 
