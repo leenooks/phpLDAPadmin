@@ -11,7 +11,7 @@
 			:value="$value ?: $template->attributeValue($o->name_lc)"
 			:options="$template->attributeOptions($o->name_lc)"
 			allowclear="true"
-			:disabled="! $edit"/>
+			:edit="$edit"/>
 
 		<x-form.invalid-feedback :errors="$e"/>
 	@endforeach

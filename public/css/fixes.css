@@ -217,12 +217,7 @@ pre code .line::before {
 /** select2 rendering fixes */
 .select2-container--bootstrap-5 .select2-selection {
 	border: var(--bs-gray-500) 1px solid;
-}
-
-/* Selection rendered size */
-.select2-container .select2-selection--single .select2-selection__rendered {
-	font-size: 85%;
-	padding: 2px;
+	font-size: inherit;
 }
 
 /* The opened input box */

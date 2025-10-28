@@ -171,10 +171,10 @@
 				$(this).attr('readonly',false);
 			});
 
-			// Our password type
-			$('attribute#userpassword .form-select').each(function() {
+			// Any select areas that are disabled
+			$('attribute .form-select').each(function() {
 				$(this).prop('disabled',false);
-			})
+			});
 
 			// Objectclasses that can be removed
 			$('.input-group-end i.d-none').removeClass('d-none');

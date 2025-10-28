@@ -7,19 +7,26 @@
 @endisset
 
 <div class="input-group">
-	<x-select :id="$id ?? NULL" :name="$name ?? NULL" :old="$old ?? NULL" :options="$options ?? []" :value="$value ?? NULL" :class="$class ?? NULL"/>
-
-	@isset($name)
-		<span class="invalid-feedback">
-			@error((! empty($old)) ? $old : ($id ?? $name))
-				{{ $message }}
-			@elseif(isset($feedback))
-				{{ $feedback }}
-			@enderror
-		</span>
-	@endisset
-
-	@isset($helper)
-		<span class="input-helper">{!! html_entity_decode($helper) !!}</span>
-	@endif
+	<x-select
+		:id="$id ?? NULL"
+		:name="$name ?? NULL"
+		:old="$old ?? NULL"
+		:options="$options ?? []"
+		:value="$value ?? NULL"
+		:class="$class ?? NULL"
+		:disabled="! ($edit ?? FALSE)"/>
 </div>
+
+@isset($name)
+	<span class="invalid-feedback">
+		@error((! empty($old)) ? $old : ($id ?? $name))
+			{{ $message }}
+		@elseif(isset($feedback))
+			{{ $feedback }}
+		@enderror
+	</span>
+@endisset
+
+@isset($helper)
+	<span class="input-helper">{!! html_entity_decode($helper) !!}</span>
+@endif
