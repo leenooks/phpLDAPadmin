@@ -145,7 +145,7 @@ return [
 			'gidnumber.*.*' => [
 				'nullable',
 				'integer',
-				'max:65535'
+				'min:1'
 			]
 		],
 		'mail' => [
@@ -180,7 +180,7 @@ return [
 			'uidnumber.*.*' => [
 				'nullable',
 				'integer',
-				'max:65535'
+				'min:1'
 			]
 		],
 		'usercertificate' => [
