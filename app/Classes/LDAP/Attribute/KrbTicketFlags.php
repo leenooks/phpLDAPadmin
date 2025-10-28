@@ -29,7 +29,7 @@ final class KrbTicketFlags extends Attribute
 	private const DISALLOW_SVR			= 0x00001000;
 	private const PWCHANGE_SERVICE		= 0x00002000;
 
-	private static function helpers(): Collection
+	protected static function helpers(): Collection
 	{
 		$helpers = collect([
 			log(self::DISALLOW_POSTDATED,2) => __('KRB_DISALLOW_POSTDATED'),
