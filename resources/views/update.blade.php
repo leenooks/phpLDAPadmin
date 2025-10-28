@@ -38,7 +38,7 @@
 										<abbr title="{{ $oo->description }}">{{ $oo->name }}</abbr>
 									</th>
 
-									@foreach($oo->values->dot()->filter()->keys()->merge($oo->values_old->dot()->filter()->keys())->unique() as $dotkey)
+									@foreach($oo->values->dot()->filter(fn($item)=>! is_null($item))->keys()->merge($oo->values_old->dot()->filter(fn($item)=>! is_null($item))->keys())->unique() as $dotkey)
 										@if($loop->index)
 											</tr><tr>
 										@endif
@@ -47,7 +47,7 @@
 											{{ preg_replace('/('.Entry::TAG_NOTAG.')?\.[0-9]+$/','',$dotkey) }}
 										</th>
 
-										@if((! $oo->values_old->dot()->get($dotkey)) && (! $oo->values->dot()->get($dotkey)))
+										@if((is_null($oo->values_old->dot()->get($dotkey))) && (is_null($oo->values->dot()->get($dotkey))))
 											<td colspan="2" class="text-center">@lang('Ignoring blank value')</td>
 										@else
 											<td>{{ ((($r=$oo->render_item_old($dotkey)) !== NULL) && strlen($r)) ? $r : '['.strtoupper(__('New Value')).']' }}</td>

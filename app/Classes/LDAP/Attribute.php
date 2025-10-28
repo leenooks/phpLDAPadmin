@@ -58,7 +58,7 @@ class Attribute implements \Countable, \ArrayAccess
 		$this->dn = $dn;
 		$this->values = collect($values)
 			->map(function($item) { if (is_array($item)) asort($item); return $item; });
-		$this->values_old = clone $this->values;
+		$this->values_old = (clone $this->values)->filter(fn($item)=>count($item));
 
 		$this->schema = config('server')
 			->schema('attributetypes',$name);
@@ -184,7 +184,7 @@ class Attribute implements \Countable, \ArrayAccess
 				$tag,
 				array_unique(
 					array_filter(
-						array_merge($this->values->get($tag,[]),$values))));
+						array_merge($this->values->get($tag,NULL),$values),fn($item)=>! is_null($item))));
 	}
 
 	/**
@@ -278,7 +278,7 @@ class Attribute implements \Countable, \ArrayAccess
 	 */
 	public function isDirty(): bool
 	{
-		return (($a=$this->values_old->dot()->filter())->keys()->count() !== ($b=$this->values->dot()->filter())->keys()->count())
+		return (($a=$this->values_old->dot()->filter(fn($item)=>is_array($item) ? count($item) : ! is_null($item)))->keys()->count() !== ($b=$this->values->dot()->filter(fn($item)=>! is_null($item)))->keys()->count())
 			|| ($a->count() !== $b->count())
 			|| ($a->diff($b)->count() !== 0);
 	}

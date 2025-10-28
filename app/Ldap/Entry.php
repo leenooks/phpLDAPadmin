@@ -5,7 +5,6 @@ namespace App\Ldap;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -132,6 +131,7 @@ class Entry extends Model
 	 * @param string $key
 	 * @param mixed $value
 	 * @return $this
+	 * @throws \Exception
 	 */
 	public function setAttribute(string $key,mixed $value): static
 	{
