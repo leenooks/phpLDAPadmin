@@ -10,7 +10,7 @@
 	<x-select class="mb-1"
 		id="userpassword_hash_{{$index}}_{{ $template?->name }}"
 		name="{{ $o->name_lc }}[{{ $attrtag }}{{ Entry::TAG_HELPER }}][]"
-		:value="old($o->name_lc.'.'.$attrtag.Entry::TAG_HELPER.'.'.$index,$o->hash($o->values->dot()->get($dotkey) ?: '')->id())"
+		:value="old($o->name_lc.'.'.$attrtag.Entry::TAG_HELPER.'.'.$index,$template?->attribute($o->name_lc)?->get('helper') ?: $o->hash($o->values->dot()->get($dotkey) ?: '')->id())"
 		:options="$helpers"
 		allowclear="false"
 		:disabled="! $edit"/>
