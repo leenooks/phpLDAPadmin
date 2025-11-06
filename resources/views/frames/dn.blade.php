@@ -176,6 +176,11 @@
 				$(this).prop('disabled',false);
 			});
 
+			// Any attribute select areas
+			$('#newattr.form-select').each(function() {
+				$(this).prop('disabled',false);
+			});
+
 			// Objectclasses that can be removed
 			$('.input-group-end i.d-none').removeClass('d-none');
 

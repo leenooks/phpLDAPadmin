@@ -41,6 +41,7 @@
 												->sortBy(fn($item)=>$item->name_lc)
 												->map(fn($item)=>['id'=>$item->name,'value'=>$item->name])"
 											allowclear="true"
+											:edit="true"
 										/>
 									</div>
 
@@ -57,6 +58,7 @@
 												:options="$o->templates
 													->map(fn($item,$key)=>['id'=>$key,'value'=>$item->title])"
 												allowclear="true"
+												:edit="true"
 											/>
 										</div>
 									@endif
