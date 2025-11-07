@@ -184,7 +184,7 @@ class Attribute implements \Countable, \ArrayAccess
 				$tag,
 				array_unique(
 					array_filter(
-						array_merge($this->values->get($tag,NULL),$values),fn($item)=>! is_null($item))));
+						array_merge($this->values->get($tag,[]),$values),fn($item)=>! is_null($item))));
 	}
 
 	/**
