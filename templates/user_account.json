@@ -42,6 +42,7 @@
 		},
 		"userPassword": {
 			"display": "Password",
+			"helper": "ARGON2ID",
 			"order": 5
 		},
 		"uidNumber": {

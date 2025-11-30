@@ -36,7 +36,13 @@
 				"/bin/false": "False",
 				"/usr/sbin/nologin": "No Login"
 			},
+			"value": "/bin/zsh",				// Preselect a default value
 			"order": 8
+		},
+		"userPassword": {						// Password attributes have a helper with a select list
+			"display": "Password",
+			"helper": "ARGON2ID",				// Default selected helper
+			"order": 5
 		}
 	}
 }
