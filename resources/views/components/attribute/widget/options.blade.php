@@ -185,9 +185,12 @@
 												}
 
 												data.must.concat(attrs).forEach(function(attr) {
-													var x = $('#'+attr).find('input');
+													var x = $('#'+attr.toLowerCase()).find('input');
 
-													x.css('background-color','#f0c0c0').attr('readonly',true).attr('placeholder',x.val()).val('');
+													x.css('background-color','#f0c0c0')
+														.attr('readonly',true)
+														.attr('placeholder',x.val())
+														.val('');
 												});
 											},
 											error: function(e) {
