@@ -1,7 +1,6 @@
 # phpLDAPadmin
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/leenooks/phpldapadmin)
 ![Docker Pulls](https://img.shields.io/docker/pulls/phpldapadmin/phpldapadmin)
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/leenooks/phpldapadmin/total)
 ![GitHub Release Date](https://img.shields.io/github/release-date/leenooks/phpldapadmin)
 ![GitHub commits since latest release](https://img.shields.io/github/commits-since/leenooks/phpldapadmin/latest)
 
