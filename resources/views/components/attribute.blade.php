@@ -102,6 +102,12 @@
 			$('#{{ $o->name_lc }}').on('change',function() {
 				{!! $x->join('') !!}
 			});
+
+			$('attribute').on('change',function() {
+				if (rdn_attr === $(this).attr('id')) {
+					$('#rdn_value').val($(this).find('input').val());
+				}
+			});
 		</script>
 		<!-- END: ONCHANGE PROCESSING {{ $o->name }} -->
 	@append
