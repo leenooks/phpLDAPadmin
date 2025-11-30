@@ -1,0 +1,4 @@
+dn: olcDatabase={0}config,cn=config
+changetype: modify
+replace: olcAccess
+olcAccess: to * by dn.exact="cn=AdminUser,dc=Test" read by * none break

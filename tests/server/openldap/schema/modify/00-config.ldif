@@ -2,6 +2,3 @@ dn: olcDatabase={0}config,cn=config
 changetype: modify
 add: olcRootPW
 olcRootPW:: c2VjcmV0
-
-add: olcRootDN
-olcRootDN: cn=config
