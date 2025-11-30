@@ -50,6 +50,12 @@
 						<td>Locale</td>
 						<td>{{ __('locale') }} [{{ config('app.locale') }}]</td>
 					</tr>
+
+					<!-- PHP Version -->
+					<tr>
+						<td>PHP Version</td>
+						<td>{{ phpversion() }}/{{ app()->version() }}</td>
+					</tr>
 					</tbody>
 				</table>
 			</div>
