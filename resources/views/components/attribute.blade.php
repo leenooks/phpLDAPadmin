@@ -82,7 +82,7 @@
 					@default
 						@switch(get_class($o))
 							@case(RDN::class)
-								<x-attribute.rdn :o="$o" :edit="$edit"/>
+								<x-attribute.rdn :o="$o" :edit="$edit" :template="$template"/>
 								@break
 
 							@default

@@ -6,7 +6,11 @@
 
 			@foreach($o->attrs->map(fn($item)=>['id'=>$item,'value'=>$item]) as $option)
 				@continue(! Arr::get($option,'value'))
-				<option value="{{ strtolower(Arr::get($option,'id')) }}" @selected(Arr::get($option,'id') == old('_rdn',$o->rdn_attr))>{{ Arr::get($option,'value') }}</option>
+				<option
+					value="{{ strtolower(Arr::get($option,'id')) }}"
+					@selected(Arr::get($option,'id') == old('_rdn',$o->rdn_attr ?: $template?->rdn))>
+					{{ Arr::get($option,'value') }}
+				</option>
 			@endforeach
 		</select>
 

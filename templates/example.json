@@ -3,7 +3,7 @@
 	"description": "This is the description",	// Unused, only for documenting
 	"enabled": false,							// Whether template is enabled or not
 	"icon": "fa-star-of-life",					// Icon shown when rendering an existing entry that identifies as this template
-	"rdn": "o",									// @todo not implemented
+	"rdn": "o",									// Preselect the RDN from the RDN attributes
 	"regexp": "/^$/",							// Regular expression that restricts where this template cna be used
 
 	"objectclasses": [							// Objectclasses that entries will have if they use this template

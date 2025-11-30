@@ -89,7 +89,7 @@ class Template
 		return match ($key) {
 			'attributes','objectclasses' => collect($this->template->get($key)),
 			'enabled' => $this->template->get($key,FALSE) && (! $this->invalid),
-			'icon','regexp','title' => $this->template->get($key),
+			'icon','rdn','regexp','title' => $this->template->get($key),
 			'name' => Str::replaceEnd('.json','',$this->file),
 			'order' => $this->attributes->map(fn($item)=>Arr::get($item,'order')),
 
