@@ -123,7 +123,7 @@ class EntryAddRequest extends FormRequest
 					function (string $attribute,mixed $value,\Closure $fail) {
 						$attr = preg_replace('/^_auto_value\./','',$attribute);
 
-						// If the value has been overritten, then our auto_value is invalid
+						// If the value has been overwritten, then our auto_value is invalid
 						if (! collect(request()->get($attr))->dot()->contains($value))
 							return;
 

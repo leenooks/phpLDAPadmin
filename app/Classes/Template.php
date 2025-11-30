@@ -110,12 +110,14 @@ class Template
 	 */
 	public function attribute(string $attribute): Collection|NULL
 	{
-		$key = $this->attributes->search(fn($item,$key)=>! strcasecmp($key,$attribute));
+		$key = $this->attributes
+			->search(fn($item,$key)=>! strcasecmp($key,$attribute));
+
 		return collect($this->attributes->get($key));
 	}
 
 	/**
-	 * Return an template attributes select options
+	 * Return a template attributes select options
 	 *
 	 * @param string $attribute
 	 * @return Collection|NULL
@@ -314,6 +316,17 @@ class Template
 		return (Arr::get(Cache::get($attr.':system'),'session') === Session::id())
 			? $number
 			: NULL;
+	}
+
+	/**
+	 * Return if an attribute is automatically calculated
+	 *
+	 * @param $attribute
+	 * @return bool
+	 */
+	public function isAttributeCalculated($attribute): bool
+	{
+		return preg_match('/^=([a-zA-Z]+)/',$this->attribute($attribute)->get('value'));
 	}
 
 	/**

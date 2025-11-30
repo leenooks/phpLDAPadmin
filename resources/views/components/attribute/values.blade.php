@@ -5,7 +5,7 @@
 		@endif
 
 		<!-- AutoValue Lock -->
-		@if((old() || ($edit ?? FALSE)) && ($template ?? NULL) && ($av=$template->attributeValue($o->name_lc)))
+		@if((old() || ($edit ?? FALSE)) && ($template ?? NULL) && ($av=$template->attributeValue($o->name_lc)) && $template->isAttributeCalculated($o->name_lc))
 			<input type="hidden" name="_auto_value[{{ $o->name_lc }}]" value="{{ $av }}">
 		@endif
 
