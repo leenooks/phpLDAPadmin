@@ -133,11 +133,20 @@
 						--}}
 						<div class="widget-content-left header-user-info ms-3">
 							<div class="widget-heading">
-								{{ $user->exists ? Arr::get($user->getAttribute('cn'),0,Arr::get($user->getAttribute('entryuuid'),0,'Secret Person')) : 'Anonymous' }}
+								@if($user->exists)
+									{{ Arr::get($user->getAttribute('cn'),0,Arr::get($user->getAttribute('entryuuid'),0,__('Secret Person'))) }}
+								@elseif(Session::get('username_encrypt') && ($dnrdn=dn_rdn(Crypt::decryptString(Session::get('username_encrypt')))))
+									{{ $dnrdn }}
+								@else
+									@lang('Anonymous')
+								@endif
 							</div>
-							<div class="widget-subheading">
-								{{ $user->exists ? Arr::get($user->getAttribute('mail'),0,'') : '' }}
-							</div>
+
+							@if($user->exists)
+								<div class="widget-subheading">
+									{{ Arr::get($user->getAttribute('mail'),0,'') }}
+								</div>
+							@endif
 						</div>
 
 						<div class="widget-content-left">
@@ -147,7 +156,7 @@
 									<img width="35" height="35" class="rounded-circle p-1 bg-light" src="{{ url('user/image') }}" alt="">
 								</a>
 								<div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
-									@if($user->exists)
+									@if($user->exists || isset($dnrdn))
 										<h6 tabindex="-1" class="dropdown-header text-center">User Menu</h6>
 										<div tabindex="-1" class="dropdown-divider"></div>
 										<a href="{{ url('logout') }}" tabindex="0" class="dropdown-item">

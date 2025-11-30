@@ -8,6 +8,11 @@ function dn_container($string): string
 	return collect(explode(',',$string))->skip(1)->join(',');
 }
 
+function dn_rdn($string): string
+{
+	return collect(explode(',',$string))->first();
+}
+
 function login_attr_description(): string
 {
 	return Arr::get(config('pla.login.attr'),login_attr_name());
