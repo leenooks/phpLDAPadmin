@@ -71,7 +71,7 @@ class EntryController extends Controller
 				$o->objectclass = Arr::undot($x);
 
 				// Also add in our required attributes
-				foreach ($o->getAvailableAttributes()->filter(fn($item)=>$item->is_must) as $ao)
+				foreach ($o->getAvailableAttributes()->filter(fn($item)=>$item->is_must && ($item->name_lc !== 'objectclass')) as $ao)
 					$o->{$ao->name} = [Entry::TAG_NOTAG=>['']];
 			}
 		}
