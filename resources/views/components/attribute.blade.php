@@ -48,16 +48,18 @@
 
 					@if((! $o->is_internal) && (! $template))
 						<div class="btn-group-sm nav btn-group" role="group">
-							@if((! $o->no_attr_tags) && ($has_default=$o->langtags->contains(Entry::TAG_NOTAG)))
-								<span data-bs-toggle="tab" href="#langtag-{{ $o->name_lc }}-{{ Entry::TAG_NOTAG }}" @class(['btn','btn-outline-light','border-dark-subtle','active','addable d-none'=>$o->langtags->count() === 1])>
-									<i class="fas fa-fw fa-border-none" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" aria-label="No Lang Tag" data-bs-original-title="No Lang Tag"></i>
-								</span>
-							@endif
+							@if(! $o->no_attr_tags)
+								@if($has_default=$o->langtags->contains(Entry::TAG_NOTAG))
+									<span data-bs-toggle="tab" href="#langtag-{{ $o->name_lc }}-{{ Entry::TAG_NOTAG }}" @class(['btn','btn-outline-light','border-dark-subtle','active','addable d-none'=>$o->langtags->count() === 1])>
+										<i class="fas fa-fw fa-border-none" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" aria-label="No Lang Tag" data-bs-original-title="No Lang Tag"></i>
+									</span>
+								@endif
 
-							@if((! $o->no_attr_tags) && (! $o->is_rdn) && (! $template))
-								<span data-bs-toggle="tab" href="#langtag-{{ $o->name_lc }}-+" class="bg-primary-subtle btn btn-outline-primary border-primary addable d-none">
-									<i class="fas fa-fw fa-plus text-dark" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" aria-label="Add Lang Tag" data-bs-original-title="Add Lang Tag"></i>
-								</span>
+								@if((! $o->is_rdn) && (! $template))
+									<span data-bs-toggle="tab" href="#langtag-{{ $o->name_lc }}-+" class="bg-primary-subtle btn btn-outline-primary border-primary addable d-none">
+										<i class="fas fa-fw fa-plus text-dark" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" aria-label="Add Lang Tag" data-bs-original-title="Add Lang Tag"></i>
+									</span>
+								@endif
 							@endif
 
 							@foreach(($langtags=$o->langtags->filter(fn($item)=>$item !== Entry::TAG_NOTAG)) as $langtag)

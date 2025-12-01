@@ -14,6 +14,8 @@ final class ObjectClass extends Attribute
 {
 	protected(set) bool $no_attr_tags = TRUE;
 
+	protected(set) bool $modal_editable = TRUE;
+
 	// The schema ObjectClasses for this objectclass of a DN
 	protected Collection $oc_schema;
 

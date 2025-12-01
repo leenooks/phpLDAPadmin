@@ -1,11 +1,11 @@
 @use(App\Classes\LDAP\Attribute\Binary\{Certificate,CertificateList,JpegPhoto})
 @use(App\Classes\LDAP\Attribute\ObjectClass)
 
-@php($clone=FALSE)
 <span class="p-0 m-0">
 	@if($o->is_rdn)
 		<span id="entry-rename" class="btn btn-sm btn-outline-focus mt-3" data-bs-toggle="modal" data-bs-target="#page-modal"><i class="fas fa-fw fa-exchange"></i> @lang('Rename')</span>
-	@elseif(($edit || $editable) && $o->can_addvalues)
+
+	@elseif(($edit || $editable) && $o->can_addvalues && (! $o->isDynamic()))
 		@switch(get_class($o))
 			@case(Certificate::class)
 			@case(CertificateList::class)
@@ -263,14 +263,12 @@
 
 			<!-- All other attributes -->
 			@default
-				@if($o->isDynamic()) @break @endif
-				@php($clone=TRUE)
 				@if($o->values_old->count() && (! $template) && $new)
 					<span @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>$editable]) id="{{ $o->name_lc }}-addnew"><i class="fas fa-fw fa-plus"></i> @lang('Add Value')</span>
 				@endif
 
 				@section('page-scripts')
-					@if($o->can_addvalues && $clone && (! $template) && ($edit || $editable))
+					@if($o->can_addvalues && (! $template) && ($edit || $editable))
 						<script type="text/javascript">
 							$(document).ready(function() {
 								// Create a new entry when Add Value clicked

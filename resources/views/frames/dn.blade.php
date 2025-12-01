@@ -147,6 +147,7 @@
 @section('page-scripts')
 	<script type="text/javascript">
 		var dn = '{{ $o->getDNSecure() }}';
+		var pagemodal_eventhandled = false;
 
 		function editmode() {
 			$('#dn-edit input[name="dn"]').val(dn);
@@ -159,10 +160,7 @@
 				.attr('disabled',true);
 
 			// Find all input items and turn off readonly
-			$('input.form-control').each(function() {
-				if ($(this)[0].name.match(/^objectclass/))
-					return;
-
+			$('input.form-control').not('.modal_edit').each(function() {
 				$(this).attr('readonly',false);
 			});
 
@@ -186,7 +184,8 @@
 
 			$('.row.d-none').removeClass('d-none');
 			$('span.addable.d-none').removeClass('d-none');
-			$('span.deletable.d-none').removeClass('d-none');
+			$('button.addable.d-none').removeClass('d-none');
+			$('button.deletable.d-none').removeClass('d-none');
 
 			@if($o->getMissingAttributes()->count())
 				$('#newattr-select.d-none').removeClass('d-none');
@@ -210,6 +209,10 @@
 			});
 
 			$('#page-modal').on('shown.bs.modal',function(item) {
+				// If the event was already handled, nothing to do here
+				if (pagemodal_eventhandled)
+					return;
+
 				var that = $(this).find('.modal-content');
 
 				switch ($(item.relatedTarget).attr('id')) {
@@ -220,7 +223,7 @@
 							dataType: 'html',
 							cache: false,
 							beforeSend: function() {
-								that.empty().append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
+								that.append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
 							},
 							success: function(data) {
 								that.empty().html(data);
@@ -239,7 +242,7 @@
 							dataType: 'html',
 							cache: false,
 							beforeSend: function() {
-								that.empty().append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
+								that.append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
 							},
 							success: function(data) {
 								that.empty().html(data);
@@ -258,7 +261,7 @@
 							dataType: 'html',
 							cache: false,
 							beforeSend: function() {
-								that.empty().append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
+								that.append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
 							},
 							success: function(data) {
 								that.empty().html(data);
@@ -270,7 +273,7 @@
 									url: '{{ url('entry/export') }}/'+dn,
 									cache: false,
 									beforeSend: function() {
-										that.empty().append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
+										that.append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
 									},
 									success: function(data) {
 										that.empty().append(data);
@@ -295,7 +298,7 @@
 							dataType: 'html',
 							cache: false,
 							beforeSend: function() {
-								that.empty().append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
+								that.append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
 							},
 							success: function(data) {
 								that.empty().html(data);
@@ -316,7 +319,7 @@
 									dataType: 'html',
 									cache: false,
 									beforeSend: function() {
-										that.empty().append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
+										that.append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
 									},
 									success: function(data) {
 										that.empty().html(data);
@@ -329,7 +332,7 @@
 								break;
 
 							default:
-								console.log('No action for button:'+$(item.relatedTarget).attr('id'));
+								console.log('No action for button:'+$(item.relatedTarget).attr('id')+'/'+$(item.relatedTarget).attr('name'));
 						}
 				}
 			});
@@ -337,6 +340,8 @@
 			$('#page-modal').on('hide.bs.modal',function() {
 				// Clear any select ranges that occurred while the modal was open
 				document.getSelection().removeAllRanges();
+				// Empty the modal so we dont have a flicker if we open a new one
+				$(this).find('.modal-content').empty();
 			});
 
 			@if(old())

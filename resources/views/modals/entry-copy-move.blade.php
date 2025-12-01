@@ -118,7 +118,6 @@
 					cache: false,
 					beforeSend: function() {
 						newdn = that.text();
-						console.log(newdn);
 						that.empty().append('<span class="p-3"><i class="fas fa-xs fa-spinner fa-pulse"></i></span>');
 					},
 					success: function(data) {

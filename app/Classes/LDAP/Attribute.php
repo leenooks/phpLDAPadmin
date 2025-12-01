@@ -36,6 +36,9 @@ class Attribute implements \Countable, \ArrayAccess
 	// The objectclasses of the entry that has this attribute
 	protected(set) Collection $oc;
 
+	/** @var bool Is this attribute edited via a modal */
+	protected(set) bool $modal_editable = FALSE;
+
 	protected const CERTIFICATE_ENCODE_LENGTH = 76;
 
 	// If rendering is done in a table, with a <tr> for each value

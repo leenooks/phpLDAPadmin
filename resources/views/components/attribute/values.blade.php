@@ -4,17 +4,18 @@
 			<table class="table table-borderless p-0 m-0">
 		@endif
 
-		<!-- AutoValue Lock -->
 		@if((old() || ($edit ?? FALSE)) && ($template ?? NULL) && ($av=$template->attributeValue($o->name_lc)) && $template->isAttributeCalculated($o->name_lc))
+			<!-- AutoValue Lock -->
 			<input type="hidden" name="_auto_value[{{ $o->name_lc }}]" value="{{ $av }}">
 		@endif
 
-		<!-- At this point $values is the original/updated values, however old() might have md5 values -->
+		{{-- At this point $values is the original/updated values, however old() might have md5 values --}}
 		@foreach(Arr::get(old($o->name_lc,$o->values ?: [$langtag=>['']]),$langtag,$o->values->get($langtag,[''])) as $key => $value)
 			<x-attribute.value
 				@class([
 					'form-control',
 					'mb-1',
+					'modal_edit'=>$o->modal_editable,
 					'border-focus'=>$o->isDirty() || (! strlen($value)),
 					'bg-success-subtle'=>$updated ?? FALSE])
 				:o="$o"
