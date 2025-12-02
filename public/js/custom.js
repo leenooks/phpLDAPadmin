@@ -113,7 +113,12 @@ $(document).ready(function() {
 			data.result = {
 				method: 'POST',
 				url: web_base+'/ajax/children',
-				data: {_key: data.node.data.item,create: true}
+				data: {_key: data.node.data.item,create: true},
+				error: function(e) {
+					if (e.status === 419) {	// Session Expired
+						window.location.reload();
+					}
+				}
 			};
 
 			expandChildren(data.tree.rootNode);
