@@ -90,7 +90,7 @@
 								<div class="tab-content">
 									@foreach($o->templates as $template)
 										<div @class(['tab-pane','active'=>$loop->index === 0]) id="template-{{ $template->name }}" role="tabpanel">
-											@include('fragment.template.dn',['template'=>$template,'updated'=>$updated])
+											@include('fragment.template.attrs',['template'=>$template,'updated'=>$updated])
 										</div>
 									@endforeach
 
@@ -150,6 +150,9 @@
 		var pagemodal_eventhandled = false;
 
 		function editmode() {
+			// Switch focus to the default templte
+			$('span[href="#template-default"]').click();
+
 			$('#dn-edit input[name="dn"]').val(dn);
 
 			$('form#dn-edit').attr('readonly',false);
@@ -160,17 +163,17 @@
 				.attr('disabled',true);
 
 			// Find all input items and turn off readonly
-			$('input.form-control').not('.modal_edit').each(function() {
+			$('input.form-control').not('.modal_edit, .no-edit').each(function() {
 				$(this).attr('readonly',false);
 			});
 
 			// Find all input items and turn off readonly
-			$('textarea.form-control').each(function() {
+			$('textarea.form-control').not('.no-edit').each(function() {
 				$(this).attr('readonly',false);
 			});
 
 			// Any select areas that are disabled
-			$('attribute .form-select').each(function() {
+			$('attribute .form-select').not('.no-edit').each(function() {
 				$(this).prop('disabled',false);
 			});
 

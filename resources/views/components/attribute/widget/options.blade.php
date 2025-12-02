@@ -2,7 +2,7 @@
 @use(App\Classes\LDAP\Attribute\ObjectClass)
 
 <span class="p-0 m-0">
-	@if($o->is_rdn)
+	@if($o->is_rdn && $editable)
 		<span id="entry-rename" class="btn btn-sm btn-outline-focus mt-3" data-bs-toggle="modal" data-bs-target="#page-modal"><i class="fas fa-fw fa-exchange"></i> @lang('Rename')</span>
 
 	@elseif(($edit || $editable) && $o->can_addvalues && (! $o->isDynamic()))
@@ -42,7 +42,8 @@
 							var newadded = [];
 
 							var oc = $('attribute#objectclass input[type=text]')
-								.map((key,item)=>{return $(item).val()}).toArray();
+								.map((key,item)=>$(item).val())
+								.toArray();
 
 							if (newadded.length)
 								process_oc();
@@ -65,6 +66,7 @@
 											value: item,
 											objectclasses: oc,
 										},
+										dataType: 'html',
 										cache: false,
 										success: function(data) {
 											$('attribute#{{ $o->name_lc }} .tab-content .tab-pane.active').append(data);

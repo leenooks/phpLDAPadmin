@@ -7,9 +7,10 @@
 		<input type="hidden" name="{{ $o->name_lc }}[{{ $attrtag }}{{ Entry::TAG_MD5 }}][]" value="{{ md5($value) }}">
 	@endif
 
-	<x-select class="mb-1"
+	<x-select
 		id="userpassword_hash_{{$index}}_{{ $template?->name }}"
 		name="{{ $o->name_lc }}[{{ $attrtag }}{{ Entry::TAG_HELPER }}][]"
+		@class(['mb-1','no-edit'=>(! $editable)])
 		:value="old($o->name_lc.'.'.$attrtag.Entry::TAG_HELPER.'.'.$index,
 			$template?->attribute($o->name_lc)?->get('helper') ?: $o->hash($o->values->dot()->get($dotkey) ?: '')
 			->id())"

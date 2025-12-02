@@ -15,6 +15,7 @@
 				@class([
 					'form-control',
 					'mb-1',
+					'no-edit'=>(! ($editable ?? FALSE)),
 					'modal_edit'=>$o->modal_editable,
 					'border-focus'=>$o->isDirty() || (! strlen($value)),
 					'bg-success-subtle'=>$updated ?? FALSE])
