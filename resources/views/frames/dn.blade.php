@@ -181,7 +181,6 @@
 			$('.input-group-end i.d-none').removeClass('d-none');
 
 			$('.row.d-none').removeClass('d-none');
-			$('span.addable.d-none').removeClass('d-none');
 			$('button.addable.d-none').removeClass('d-none');
 			$('button.deletable.d-none').removeClass('d-none');
 
