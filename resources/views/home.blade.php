@@ -81,7 +81,7 @@
 			if (subpage) {
 				// Clear the hash
 				history.replaceState(null,null,' ');
-				getNode(subpage.substring(1));
+				get_frame(subpage.substring(1));
 			}
 		});
 	</script>

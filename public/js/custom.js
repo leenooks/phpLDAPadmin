@@ -12,7 +12,7 @@ function expandChildren(node) {
 }
 
 // Render a sub page via an ajax method
-function getNode(item) {
+function get_frame(item) {
 	$.ajax({
 		url: web_base+'/frame',
 		method: 'POST',
@@ -108,7 +108,7 @@ $(document).ready(function() {
 		},
 		click: function(event,data) {
 			if (data.targetType === 'title' && data.node.data.item)
-				getNode(data.node.data.item);
+				get_frame(data.node.data.item);
 		},
 		source: sources,
 		lazyLoad: function(event,data) {
