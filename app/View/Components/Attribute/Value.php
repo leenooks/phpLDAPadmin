@@ -22,7 +22,6 @@ class Value extends Component
 	private(set) bool $updated;			// Can we work this out, because >old != >new
 	private(set) ?Template $template;	// Template this value is being rendered with - needed for JavaScript and CSS id's
 
-
 	public function __construct(LDAPAttribute $o,string $attrtag,int $index,bool $edit=FALSE,bool $new=FALSE,bool $editable=FALSE,bool $updated=FALSE,?Template $template=NULL) {
 		$this->o = $o;
 		$this->attrtag = $attrtag;

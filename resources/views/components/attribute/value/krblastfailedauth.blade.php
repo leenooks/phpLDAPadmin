@@ -1,2 +1,2 @@
 <!-- $o=NoAttrTags/Generic::class -->
-@include('components.form.disabled.datetime')
+@include('components.attribute.value.disabled.datetime')

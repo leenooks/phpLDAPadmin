@@ -1,4 +1,4 @@
-@use(App\Classes\LDAP\Attribute\Schema\OID)
+@use(App\Classes\LDAP\Attribute\Schema\{Mechanisms,OID})
 
 @extends('layouts.frame')
 
@@ -24,6 +24,7 @@
 						</th>
 						<td>
 							@switch(get_class($ao))
+								@case(Mechanisms::class)
 								@case(OID::class)
 									<x-attribute.values :o="$ao" :new="false"/>
 									@break

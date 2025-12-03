@@ -6,7 +6,7 @@
 		@case('image/jpeg')
 		@default
 			<td>
-				<input type="hidden" name="{{ $o->name_lc }}[{{ $attrtag }}{{ $o->isDirty() ? '' : Entry::TAG_MD5 }}][]" value="{{ $o->isDirty() ? $o->render_item_new($dotkey) : md5($value) }}">
+				<input type="hidden" name="{{ $o->name_lc }}[{{ $attrtag }}{{ $o->isDirty() ? '' : Entry::TAG_MD5 }}][]" value="{{ $o->isDirty() ? $o->render_item_new($dotkey) : md5($o->values->dot()->get($dotkey)) }}">
 				<img alt="{{ $o->dn }}"
 					@class([
 						'border',

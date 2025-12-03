@@ -135,7 +135,9 @@ class Attribute implements \Countable, \ArrayAccess
 
 	public function __toString(): string
 	{
-		return $this->values->dot()->join("\n");
+		return $this->values
+			->dot()
+			->join("\n");
 	}
 
 	/* INTERFACE */
@@ -320,6 +322,7 @@ class Attribute implements \Countable, \ArrayAccess
 	 *
 	 * @param string $attrtag Attribute tag for the value being rendered
 	 * @param int $index Index of a multivalue attribute being rendered
+	 * @param View|null $view View to use for this attribute
 	 * @param bool $edit Render an edit form
 	 * @param bool $editable Render the item as readonly; however, JavaScript can make it editable
 	 * @param bool $new Is the rendered attribute new (used to set border-focus)
@@ -327,21 +330,20 @@ class Attribute implements \Countable, \ArrayAccess
 	 * @param Template|null $template The template this value is being rendered with
 	 * @return View
 	 */
-	public function render(string $attrtag,int $index,bool $edit=FALSE,bool $editable=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
+	public function render(string $attrtag,int $index,?View $view=NULL,bool $edit=FALSE,bool $editable=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
 		$dotkey = $this->dotkey($attrtag,$index);
 
 		// @note Internal attributes cannot be edited
 		if ($this->is_internal)
-			return view('components.attribute.value.internal')
+			return ($view ?: view('components.attribute.value.internal'))
 				->with('o',$this)
 				->with('value',$this->render_item_new($dotkey));
 
-		$view = view()->exists($x='components.attribute.value.'.$this->name_lc)
-			? view($x)
-			: view('components.attribute.value');
-
-		return $view
+		return ($view ?:
+			(view()->exists($x='components.attribute.value.'.$this->name_lc)
+				? view($x)
+				: view('components.attribute.value')))
 			->with('o',$this)
 			->with('dotkey',$dotkey)
 			->with('value',$this->render_item_new($dotkey))

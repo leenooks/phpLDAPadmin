@@ -93,20 +93,20 @@ final class Password extends Attribute implements MD5Interface
 		return ($helpers=static::helpers())->has($id) ? new ($helpers->get($id)) : NULL;
 	}
 
-	public function render(string $attrtag,int $index,bool $edit=FALSE,bool $editable=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
+	public function render(string $attrtag,int $index,?View $view=NULL,bool $edit=FALSE,bool $editable=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
-		return view('components.attribute.value.password')
-			->with('o',$this)
-			->with('dotkey',$dotkey=$this->dotkey($attrtag,$index))
-			->with('value',$this->values->dot()->get($dotkey))
-			->with('edit',$edit)
-			->with('editable',$editable)
-			->with('new',$new)
-			->with('attrtag',$attrtag)
-			->with('index',$index)
-			->with('updated',$updated)
-			->with('template',$template)
-			->with('helpers',static::helpers()->map(fn($item,$key)=>['id'=>$key,'value'=>$key])->sort());
+		return parent::render(
+			attrtag: $attrtag,
+			index: $index,
+			view: view('components.attribute.value.password')
+				->with('helpers',static::helpers()
+					->map(fn($item,$key)=>['id'=>$key,'value'=>$key])
+					->sort()),
+			edit: $edit,
+			editable: $editable,
+			new: $new,
+			updated: $updated,
+			template: $template);
 	}
 
 	public function render_item_old(string $dotkey): ?string

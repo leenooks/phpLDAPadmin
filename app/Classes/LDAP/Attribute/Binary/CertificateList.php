@@ -12,19 +12,17 @@ use App\Classes\Template;
  */
 final class CertificateList extends Binary
 {
-	public function render(string $attrtag,int $index,bool $edit=FALSE,bool $editable=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
+	public function render(string $attrtag,int $index,?View $view=NULL,bool $edit=FALSE,bool $editable=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
-		return view('components.attribute.value.binary.certificatelist')
-			->with('o',$this)
-			->with('dotkey',$dotkey=$this->dotkey($attrtag,$index))
-			->with('value',$this->render_item_new($dotkey))
-			->with('edit',$edit)
-			->with('editable',$editable)
-			->with('new',$new)
-			->with('attrtag',$attrtag)
-			->with('index',$index)
-			->with('updated',$updated)
-			->with('template',$template);
+		return parent::render(
+			attrtag: $attrtag,
+			index: $index,
+			view: view('components.attribute.value.binary.certificatelist'),
+			edit: $edit,
+			editable: $editable,
+			new: $new,
+			updated: $updated,
+			template: $template);
 	}
 
 	public function render_item_old(string $dotkey): ?string

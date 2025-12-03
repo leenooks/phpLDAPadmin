@@ -1,2 +1,2 @@
 <!-- $o=NoAttrTags/Generic::class -->
-@include('components.form.disabled.input')
+@include('components.attribute.value.disabled.input')

@@ -35,12 +35,12 @@ final class OID extends Schema
 		return parent::_get(config_path('ldap_supported_oids.txt'),$string,$key);
 	}
 
-	public function render(string $attrtag,int $index,bool $edit=FALSE,bool $editable=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
+	public function render(string $attrtag,int $index,?View $view=NULL,bool $edit=FALSE,bool $editable=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
 		// @note Schema attributes cannot be edited
-		return view('components.attribute.value.schema.oid')
-			->with('o',$this)
-			->with('dotkey',$dotkey=$this->dotkey($attrtag,$index))
-			->with('value',$this->render_item_new($dotkey));
+		return parent::render(
+			attrtag: $attrtag,
+			index: $index,
+			view: view('components.attribute.value.schema.oid'));
 	}
 }

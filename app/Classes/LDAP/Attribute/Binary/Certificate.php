@@ -4,7 +4,6 @@ namespace App\Classes\LDAP\Attribute\Binary;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
@@ -16,8 +15,6 @@ use App\Classes\Template;
  */
 final class Certificate extends Binary
 {
-	private const LOGKEY = 'ACF';
-
 	private array $_object = [];
 
 	public function authority_key_identifier(string $dotkey): string
@@ -75,19 +72,17 @@ final class Certificate extends Binary
 		return $issuer->map(fn($item,$key)=>sprintf("%s=%s",$key,$item))->join(',');
 	}
 
-	public function render(string $attrtag,int $index,bool $edit=FALSE,bool $editable=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
+	public function render(string $attrtag,int $index,?View $view=NULL,bool $edit=FALSE,bool $editable=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
-		return view('components.attribute.value.binary.certificate')
-			->with('o',$this)
-			->with('dotkey',$dotkey=$this->dotkey($attrtag,$index))
-			->with('value',$this->render_item_new($dotkey))
-			->with('edit',$edit)
-			->with('editable',$editable)
-			->with('new',$new)
-			->with('attrtag',$attrtag)
-			->with('index',$index)
-			->with('updated',$updated)
-			->with('template',$template);
+		return parent::render(
+			attrtag: $attrtag,
+			index: $index,
+			view: view('components.attribute.value.binary.certificate'),
+			edit: $edit,
+			editable: $editable,
+			new: $new,
+			updated: $updated,
+			template: $template);
 	}
 
 	public function render_item_old(string $dotkey): ?string
