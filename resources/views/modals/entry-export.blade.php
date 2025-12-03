@@ -30,7 +30,7 @@
 		$('button[id=entry_export-download]').on('click',function(item) {
 			item.preventDefault();
 
-			let ldif = $('#entry_export').find('pre:first');
+			let ldif = $('#entry_export pre:first');
 			download('ldap-export.ldif',ldif.html());
 		});
 	});

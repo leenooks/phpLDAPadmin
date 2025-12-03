@@ -40,7 +40,7 @@
 			$('div#32').append(binary(31,16));
 			$('div#16').append(binary(15,0));
 
-			$('attribute#krbticketflags').find('i')
+			$('attribute#krbticketflags i')
 				.on('click',function() {
 					var item = $(this);
 					if ($('form#dn-edit').attr('readonly'))
@@ -83,7 +83,7 @@
 						item.data('old',null);
 					}
 
-					$('attribute#krbticketflags').find('input').val(value);
+					$('attribute#krbticketflags input').val(value);
 				});
 		}
 
@@ -93,9 +93,6 @@
 
 		} else {
 			krbticketflags();
-
-			$('attribute#krbticketflags').find('i')
-				.tooltip();
 		}
 	</script>
 @endsection

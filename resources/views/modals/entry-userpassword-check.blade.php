@@ -32,13 +32,13 @@
 	$('button[id=userpassword_check-submit]').on('click',function(item) {
 		var that = $(this);
 
-		var passwords = $('#page-modal')
-			.find('input[name^="password["')
-			.map(function() {
-				return {'key': $(this).data('dotkey'), 'value': $(this).val()};
+		var passwords = $('#page-modal input[name^="password["')
+			.map((index,item) => {
+				return {'key': $(item).data('dotkey'), 'value': $(item).val()};
 			});
 
-		if (passwords.length === 0) return false;
+		if (passwords.length === 0)
+			return false;
 
 		$.ajax({
 			method: 'POST',
@@ -60,21 +60,29 @@
 			},
 			success: function(data) {
 				Object.keys(data).forEach(function(key) {
-					var i = $('#page-modal')
-						.find('input[name="password['+key+']')
+					var password = $('#page-modal input[name="password['+key+']');
+
+					var i = password
 						.siblings('i');
 
-					var feedback = $('#page-modal')
-						.find('input[name="password['+key+']')
+					var feedback = password
 						.siblings('div.invalid-feedback');
 
 					if (data[key] === 'OK') {
-						i.removeClass('text-danger').addClass('text-success').removeClass('fa-lock').addClass('fa-lock-open');
+						i.removeClass('text-danger')
+							.addClass('text-success')
+							.removeClass('fa-lock')
+							.addClass('fa-lock-open');
+
 						if (feedback.is(':visible'))
 							feedback.hide();
 
 					} else {
-						i.removeClass('text-success').addClass('text-danger').removeClass('fa-lock-open').addClass('fa-lock');
+						i.removeClass('text-success')
+							.addClass('text-danger')
+							.removeClass('fa-lock-open')
+							.addClass('fa-lock');
+
 						if (! feedback.is(':visible'))
 							feedback.show();
 					}
