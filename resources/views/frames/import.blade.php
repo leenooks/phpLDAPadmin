@@ -1,4 +1,4 @@
-@extends('layouts.dn')
+@extends('layouts.frame')
 
 @section('page_title')
 	<table class="table table-borderless">

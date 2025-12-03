@@ -1,5 +1,6 @@
 @use(App\Classes\LDAP\Attribute\Schema\OID)
-@extends('layouts.dn')
+
+@extends('layouts.frame')
 
 @section('page_title')
 	<table class="table table-borderless">

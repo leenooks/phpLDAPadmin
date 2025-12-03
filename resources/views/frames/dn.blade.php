@@ -1,4 +1,4 @@
-@extends('layouts.dn')
+@extends('layouts.frame')
 
 @section('page_title')
 	@include('fragment.dn.header')
