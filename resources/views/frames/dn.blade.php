@@ -16,16 +16,16 @@
 					@endif
 					@if($page_actions->get('export'))
 						<li>
-							<span id="entry-export" data-bs-toggle="modal" data-bs-target="#page-modal">
-								<button class="btn btn-outline-dark p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Export')"><i class="fas fa-fw fa-download fs-5"></i></button>
-							</span>
+							<button type="button" class="btn btn-outline-dark p-1 m-1" name="entry-export" data-bs-toggle="modal" data-bs-target="#page-modal">
+								<span data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Export')"><i class="fas fa-fw fa-download fs-5"></i></span>
+							</button>
 						</li>
 					@endif
 					@if($page_actions->get('copy'))
 						<li>
-							<span id="entry-copy-move" data-bs-toggle="modal" data-bs-target="#page-modal">
-								<button class="btn btn-outline-dark p-1 m-1" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Copy/Move')"><i class="fas fa-fw fa-copy fs-5"></i></button>
-							</span>
+							<button type="button" class="btn btn-outline-dark p-1 m-1" name="entry-copy-move" data-bs-toggle="modal" data-bs-target="#page-modal">
+								<span data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Copy/Move')"><i class="fas fa-fw fa-copy fs-5"></i></span>
+							</button>
 						</li>
 					@endif
 					@if($page_actions->get('edit'))
@@ -35,9 +35,9 @@
 					@endif
 					@if($page_actions->get('delete'))
 						<li>
-							<span id="entry-delete" data-bs-toggle="modal" data-bs-target="#page-modal">
-								<button class="btn btn-outline-danger p-1 m-1" data-bs-custom-class="custom-tooltip-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Delete Entry')"><i class="fas fa-fw fa-trash-can fs-5"></i></button>
-							</span>
+							<button type="button" class="btn btn-outline-danger p-1 m-1" name="entry-delete" data-bs-toggle="modal" data-bs-target="#page-modal">
+								<span data-bs-custom-class="custom-tooltip-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="@lang('Delete Entry')"><i class="fas fa-fw fa-trash-can fs-5"></i></span>
+							</button>
 						</li>
 					@endif
 				</ul>
@@ -212,7 +212,7 @@
 
 				var that = $(this).find('.modal-content');
 
-				switch ($(item.relatedTarget).attr('id')) {
+				switch ($(item.relatedTarget).attr('name')) {
 					case 'entry-copy-move':
 						$.ajax({
 							method: 'GET',
@@ -287,26 +287,23 @@
 
 						break;
 
+					case 'entry-userpassword-check':
+						$.ajax({
+							method: 'GET',
+							url: '{{ url('modal/userpassword-check') }}/'+dn,
+							dataType: 'html',
+							cache: false,
+							beforeSend: before_send_spinner(that)
+
+						}).done(function(html) {
+							that.empty().append(html);
+
+						}).fail(ajax_error);
+
+						break;
+
 					default:
-						switch ($(item.relatedTarget).attr('name')) {
-							case 'entry-userpassword-check':
-								$.ajax({
-									method: 'GET',
-									url: '{{ url('modal/userpassword-check') }}/'+dn,
-									dataType: 'html',
-									cache: false,
-									beforeSend: before_send_spinner(that)
-
-								}).done(function(html) {
-									that.empty().append(html);
-
-								}).fail(ajax_error);
-
-								break;
-
-							default:
-								console.log('No action for button:'+$(item.relatedTarget).attr('id')+'/'+$(item.relatedTarget).attr('name'));
-						}
+						console.log('No action for button:'+$(item.relatedTarget).attr('name'));
 				}
 			});
 
