@@ -1,5 +1,5 @@
 @use(App\Classes\LDAP\Attribute\Binary\{Certificate,CertificateList,JpegPhoto})
-@use(App\Classes\LDAP\Attribute\ObjectClass)
+@use(App\Classes\LDAP\Attribute\{Member,ObjectClass})
 
 <span class="p-0 m-0">
 	@if($o->is_rdn && $editable)
@@ -9,6 +9,52 @@
 		@switch(get_class($o))
 			@case(Certificate::class)
 			@case(CertificateList::class)
+				@break
+
+			@case(Member::class)
+				<button type="button" name="member-manage" @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>$editable]) data-bs-toggle="modal" data-bs-target="#page-modal"><i class="fas fa-fw fa-plus"></i> @lang('Add Member')</button>
+
+				@section('page-scripts')
+					<script type="text/javascript">
+						$(document).ready(function() {
+							// Show our ObjectClass modal so that we can add more objectclasses
+							$('#page-modal').on('shown.bs.modal',function(item) {
+								pagemodal_eventhandled = ($(item.relatedTarget).attr('name') === 'member-manage');
+
+								// Make sure the event is for us
+								if (! pagemodal_eventhandled)
+									return;
+
+								var that = $(this).find('.modal-content');
+
+								$.ajax({
+									method: 'GET',
+									url: '{{ url('modal/member-manage') }}/'+dn,
+									dataType: 'html',
+									cache: false,
+									beforeSend: before_send_spinner(that),
+
+								}).done(function(html) {
+									that.empty().html(html);
+
+								}).fail(ajax_error)
+							});
+
+							$('#page-modal').on('hide.bs.modal',function() {
+								// Go through the updated items and ensure the input-group-end reflects that the entry exists
+								update_from_modal('member',attribute_values('destination','select','option')).forEach(function(item) {
+									$('attribute#member [value="'+item+'"]')
+										.next('.input-group-end')
+										.removeClass('text-danger')
+										.removeClass('text-black-50')
+										.addClass('text-success')
+										.empty()
+										.append('<i class="fas fa-fw fa-plus"></i>')
+								});
+							});
+						});
+					</script>
+				@append
 				@break
 
 			@case(ObjectClass::class)

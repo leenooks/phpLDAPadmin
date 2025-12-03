@@ -35,6 +35,7 @@ class Factory
 		'krbticketflags' => KrbTicketFlags::class,
 		'gidnumber' => GidNumber::class,
 		'jpegphoto' => Binary\JpegPhoto::class,
+		'member' => Member::class,
 		'modifytimestamp' => Internal\Timestamp::class,
 		'monitorcontext' => Schema\Generic::class,
 		'namingcontexts' => Schema\Generic::class,

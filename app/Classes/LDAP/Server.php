@@ -335,6 +335,22 @@ final class Server
 	}
 
 	/**
+	 * Get the baseDN for a given DN
+	 *
+	 * @param string $dn
+	 * @return Entry
+	 */
+	public function get_base(string $dn): Entry
+	{
+		foreach (self::baseDNs() as $base) {
+			if (\Str::endsWith($dn,$base->getDn()))
+				break;
+		}
+
+		return $base;
+	}
+
+	/**
 	 * Get an attribute key for an attributetype name
 	 *
 	 * @param string $key
@@ -578,13 +594,13 @@ final class Server
 		return Arr::get($this->rootDSE->subschemasubentry,0);
 	}
 
-	public function subordinates(string $dn,array $attrs=['dn']): ?LDAPCollection
+	public function subordinates(string $dn,array $attrs=['dn'],bool $containers=TRUE): ?LDAPCollection
 	{
 		return $this
 			->get(
 				dn: $dn,
 				attrs: array_merge($attrs,[]))
-			->rawFilter('(hassubordinates=TRUE)')
+			->rawFilter(sprintf('(hassubordinates=%s)',$containers ? 'TRUE' : 'FALSE'))
 			->search()
 			->get() ?: NULL;
 	}

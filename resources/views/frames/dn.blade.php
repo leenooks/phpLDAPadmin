@@ -195,6 +195,41 @@
 			@endif
 		}
 
+		// This function will update values that are altered from a modal
+		function update_from_modal(attr,modal_data) {
+			// Existing Values
+			var existing = attribute_values(attr);
+			var addition = [];
+
+			// Add New Values
+			modal_data.forEach(function (item) {
+				if (existing.indexOf(item) === -1) {
+					// Add attribute to the page
+					var active = $('attribute#'+attr)
+						.find('.tab-content .tab-pane.active');
+
+					var clone = active.find('div.input-group:last')
+						.clone()
+						.appendTo(active);
+
+					clone.find('input')
+						.attr('value',item)
+						.addClass('border-focus')
+
+					addition.push(item);
+				}
+			});
+
+			// Remove Values
+			existing.forEach(function(item) {
+				if (modal_data.indexOf(item) === -1) {
+					$('attribute#'+attr+' input[value="'+item+'"]').closest('div.input-group').empty();
+				}
+			});
+
+			return addition;
+		}
+
 		$(document).ready(function() {
 			$('button[id=entry-create]').on('click',function(item) {
 				location.replace(web_base+'/#{{ Crypt::encryptString(sprintf('*%s|%s','create',$dn)) }}');

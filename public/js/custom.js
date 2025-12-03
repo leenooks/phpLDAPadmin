@@ -11,6 +11,7 @@ function expandChildren(node) {
 	}
 }
 
+// Render a sub page via an ajax method
 function getNode(item) {
 	$.ajax({
 		url: web_base+'/frame',
@@ -18,6 +19,7 @@ function getNode(item) {
 		data: { _key: item },
 		dataType: 'html',
 		beforeSend: function() {
+			// In case we want to redirect back to the original page
 			content = $('.main-content')
 				.contents();
 
@@ -133,3 +135,20 @@ $(document).ready(function() {
 		}
 	});
 });
+
+// Handle our error message for .ajax() calls
+let ajax_error = function(e) {
+	alert('That didnt work? Please try again.... ('+e.status+')');
+};
+
+// Render a spinner when doing an ajax call
+function before_send_spinner(that) {
+	that.append('<span class="ps-3"><i class="fas fa-2x fa-spinner fa-spin-pulse"></i></span>');
+}
+
+// Find all values of an attribute in the form
+function attribute_values(attr,container='attribute',input='input') {
+	return $(container+'#'+attr+' '+(input === 'input' ? 'input[type=text]' : input))
+		.map((index,element)=>$(element).val())
+		.toArray()
+}

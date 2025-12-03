@@ -16,7 +16,7 @@ attribute#userpassword .input-group > .select2-container--bootstrap-5 .select2-s
 }
 
 /* render the structural inside the input box */
-attribute#objectclass .input-group-end:not(input.form-control) {
+attribute .input-group-end:not(input.form-control) {
 	position: absolute;
 	right: 1em;
 	top: 0.5em;

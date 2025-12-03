@@ -83,6 +83,25 @@ class AjaxController extends Controller
 			->values();
 	}
 
+	/**
+	 * Return a list of elegible members for a groupOfNames
+	 *
+	 * @param Request $request
+	 * @return Collection
+	 */
+	public function member_member(Request $request): Collection
+	{
+		// Find the base that the request is
+		$base = config('server')
+			->get_base(Crypt::decryptString($request->dn));
+
+		return config('server')
+			->subordinates($base->getDN(),['dn'],FALSE)
+			->map(fn($item)=>$item->getDn())
+			->diff($request->existing)
+			->values();
+	}
+
 	public function schema_view(Request $request)
 	{
 		$server = new Server;
@@ -113,6 +132,7 @@ class AjaxController extends Controller
 	/**
 	 * Return the required and additional attributes for an object class
 	 *
+	 * @param Request $request
 	 * @param string $objectclass
 	 * @return array
 	 */

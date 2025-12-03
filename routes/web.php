@@ -59,6 +59,7 @@ Route::controller(HomeController::class)->group(function() {
 			Route::view('copy-move/{dn}','modals.entry-copy-move');
 			Route::view('delete/{dn}','modals.entry-delete');
 			Route::view('export/{dn}','modals.entry-export');
+			Route::view('member-manage/{dn}','modals.member-manage');
 			Route::view('rename/{dn}','modals.entry-rename');
 			Route::view('userpassword-check/{dn}','modals.entry-userpassword-check');
 		});
@@ -79,6 +80,7 @@ Route::controller(AjaxController::class)
 	->group(function() {
 		Route::post('bases','bases');
 		Route::post('children','children');
+		Route::post('member/member','member_member');
 		Route::post('schema/view','schema_view');
 		Route::post('schema/objectclass/attrs/{id}','schema_objectclass_attrs');
 		Route::post('subordinates','subordinates');
