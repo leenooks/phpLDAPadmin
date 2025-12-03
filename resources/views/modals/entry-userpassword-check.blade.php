@@ -58,40 +58,37 @@
 				that.prop('disabled',false);
 				that.find('i').addClass('d-none');
 			},
-			success: function(data) {
-				Object.keys(data).forEach(function(key) {
-					var password = $('#page-modal input[name="password['+key+']');
 
-					var i = password
-						.siblings('i');
+		}).done(function(data) {
+			Object.keys(data).forEach(function(key) {
+				var password = $('#page-modal input[name="password['+key+']');
 
-					var feedback = password
-						.siblings('div.invalid-feedback');
+				var i = password
+					.siblings('i');
 
-					if (data[key] === 'OK') {
-						i.removeClass('text-danger')
-							.addClass('text-success')
-							.removeClass('fa-lock')
-							.addClass('fa-lock-open');
+				var feedback = password
+					.siblings('div.invalid-feedback');
 
-						if (feedback.is(':visible'))
-							feedback.hide();
+				if (data[key] === 'OK') {
+					i.removeClass('text-danger')
+						.addClass('text-success')
+						.removeClass('fa-lock')
+						.addClass('fa-lock-open');
 
-					} else {
-						i.removeClass('text-success')
-							.addClass('text-danger')
-							.removeClass('fa-lock-open')
-							.addClass('fa-lock');
+					if (feedback.is(':visible'))
+						feedback.hide();
 
-						if (! feedback.is(':visible'))
-							feedback.show();
-					}
-				})
-			},
-			error: function(e) {
-				if (e.status !== 412)
-					alert('That didnt work? Please try again....');
-			},
-		})
+				} else {
+					i.removeClass('text-success')
+						.addClass('text-danger')
+						.removeClass('fa-lock-open')
+						.addClass('fa-lock');
+
+					if (! feedback.is(':visible'))
+						feedback.show();
+				}
+			})
+
+		}).fail(ajax_error);
 	});
 </script>

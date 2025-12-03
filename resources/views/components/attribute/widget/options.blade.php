@@ -37,7 +37,7 @@
 								}).done(function(html) {
 									that.empty().html(html);
 
-								}).fail(ajax_error)
+								}).fail(ajax_error);
 							});
 
 							$('#page-modal').on('hide.bs.modal',function() {
@@ -117,14 +117,11 @@
 										},
 										dataType: 'html',
 										cache: false,
-										success: function(data) {
-											$('attribute#{{ $o->name_lc }} .tab-content .tab-pane.active').append(data);
-										},
-										error: function(e) {
-											if (e.status !== 412)
-												alert('That didnt work? Please try again....');
-										},
-									});
+
+									}).done(function(html) {
+										$('attribute#{{ $o->name_lc }} .tab-content .tab-pane.active').append(html);
+
+									}).fail(ajax_error);
 
 									// Get a list of attributes already on the page, so we dont double up
 									$.ajax({
@@ -133,65 +130,42 @@
 										data: {
 											attrs: $('attribute').map(function () { return $(this).attr('id'); }).toArray()
 										},
+										dataType: 'json',
 										cache: false,
-										success: function(data) {
-											// Render any must attributes
-											if (data.must.length) {
-												var newattr = $('select#rdn');
-												var oldoptions = $('select#rdn option').map((i,o)=>o.value).get();
 
-												data.must.forEach(function(item) {
-													if ($('attribute#'+item.toLowerCase()).length)
-														return;
+									}).done(function(data) {
+										// Render any must attributes
+										if (data.must.length) {
+											var newattr = $('select#rdn');
+											var oldoptions = $('select#rdn option').map((i,o)=>o.value).get();
 
-													// Add attribute to the page
-													$.ajax({
-														method: 'POST',
-														url: '{{ url('entry/attr/add') }}/'+item.toLowerCase(),
-														data: {
-															value: item,
-															objectclasses: oc,
-														},
-														cache: false,
-														success: function(data) {
-															$('#newattrs').append(data);
-														},
-														error: function(e) {
-															if (e.status !== 412)
-																alert('That didnt work? Please try again....');
-														},
-													});
+											data.must.forEach(function(item) {
+												if ($('attribute#'+item.toLowerCase()).length)
+													return;
 
-													// If this is a new entry, add the required attributes to the RDN
-													if (! oldoptions.includes(item))
-														newattr.append(new Option(item,item,false,false));
+												// Add attribute to the page
+												$.ajax({
+													method: 'POST',
+													url: '{{ url('entry/attr/add') }}/'+item.toLowerCase(),
+													data: {
+														value: item,
+														objectclasses: oc,
+													},
+													dataType: 'html',
+													cache: false,
 
-													// Sort the attributes
-													newattr
-														.append($('select#rdn option')
-															.remove()
-															.sort(function (a,b) {
-																let at = $(a).text(),
-																	bt = $(b).text();
-																return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
-															}))
-														.val('');
-												})
-											}
+												}).done(function(html) {
+													$('#newattrs').append(html);
 
-											// Add attributes to "Add new Attribute" that are now available
-											if (data.may.length) {
-												var newattr = $('select#newattr');
-												var oldoptions = $('select#newattr option').map((i,o)=>o.value).get();
+												}).fail(ajax_error);
 
-												data.may.forEach(function(item) {
-													if (! oldoptions.includes(item))
-														newattr.append(new Option(item,item,false,false));
-												});
+												// If this is a new entry, add the required attributes to the RDN
+												if (! oldoptions.includes(item))
+													newattr.append(new Option(item,item,false,false));
 
 												// Sort the attributes
 												newattr
-													.append($('select#newattr option')
+													.append($('select#rdn option')
 														.remove()
 														.sort(function (a,b) {
 															let at = $(a).text(),
@@ -199,13 +173,32 @@
 															return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
 														}))
 													.val('');
-											}
-										},
-										error: function(e) {
-											if (e.status !== 412)
-												alert('That didnt work? Please try again....');
-										},
-									});
+											})
+										}
+
+										// Add attributes to "Add new Attribute" that are now available
+										if (data.may.length) {
+											var newattr = $('select#newattr');
+											var oldoptions = $('select#newattr option').map((i,o)=>o.value).get();
+
+											data.may.forEach(function(item) {
+												if (! oldoptions.includes(item))
+													newattr.append(new Option(item,item,false,false));
+											});
+
+											// Sort the attributes
+											newattr
+												.append($('select#newattr option')
+													.remove()
+													.sort(function (a,b) {
+														let at = $(a).text(),
+															bt = $(b).text();
+														return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
+													}))
+												.val('');
+										}
+
+									}).fail(ajax_error);
 								});
 
 								// Loop through added_oc, and remove anything not in newadded
@@ -217,38 +210,36 @@
 											method: 'POST',
 											url: '{{ url('ajax/schema/objectclass/attrs') }}/'+item,
 											cache: false,
-											success: function(data) {
-												var attrs = [];
+											dataType: 'json',
 
-												// Remove attributes from "Add new Attribute" that are no longer available
-												if (data.may.length) {
-													data.may.forEach(function(mayitem) {
-														var x = $("select#newattr option[value='"+mayitem+"']");
+										}).done(function(data) {
+											var attrs = [];
 
-														if (x.length) {
-															x.remove();
+											// Remove attributes from "Add new Attribute" that are no longer available
+											if (data.may.length) {
+												data.may.forEach(function(mayitem) {
+													var x = $("select#newattr option[value='"+mayitem+"']");
 
-														// Add this to the must attrs list, because its been rendered
-														} else {
-															attrs.push(mayitem);
-														}
-													});
-												}
+													if (x.length) {
+														x.remove();
 
-												data.must.concat(attrs).forEach(function(attr) {
-													var x = $('#'+attr.toLowerCase()+' input');
-
-													x.css('background-color','#f0c0c0')
-														.attr('readonly',true)
-														.attr('placeholder',x.val())
-														.val('');
+													// Add this to the must attrs list, because its been rendered
+													} else {
+														attrs.push(mayitem);
+													}
 												});
-											},
-											error: function(e) {
-												if (e.status !== 412)
-													alert('That didnt work? Please try again....');
-											},
-										});
+											}
+
+											data.must.concat(attrs).forEach(function(attr) {
+												var x = $('#'+attr.toLowerCase()+' input');
+
+												x.css('background-color','#f0c0c0')
+													.attr('readonly',true)
+													.attr('placeholder',x.val())
+													.val('');
+											});
+
+										}).fail(ajax_error);
 									}
 								});
 
@@ -264,20 +255,18 @@
 										data: {
 											oc: oc,
 										},
+										dataType: 'json',
 										cache: false,
-										success: function(data) {
-											$('select#newoc').select2({
-												dropdownParent: $('#new_objectclass-modal'),
-												theme: 'bootstrap-5',
-												multiple: true,
-												data: data,
-											});
-										},
-										error: function(e) {
-											if (e.status !== 412)
-												alert('That didnt work? Please try again....');
-										},
-									});
+
+									}).done(function(data) {
+										$('select#newoc').select2({
+											dropdownParent: $('#new_objectclass-modal'),
+											theme: 'bootstrap-5',
+											multiple: true,
+											data: data,
+										});
+
+									}).fail(ajax_error);
 
 								rendered = true;
 							})

@@ -34,16 +34,13 @@
 					data: {
 						objectclasses: oc,
 					},
+					dataType: 'html',
 					cache: false,
-					beforeSend: function() {},
-					success: function(data) {
-						$('#newattrs').append(data);
-					},
-					error: function(e) {
-						if (e.status !== 412)
-							alert('That didnt work? Please try again....');
-					}
-				});
+
+				}).done(function(html) {
+					$('#newattrs').append(html);
+
+				}).fail(ajax_error);
 
 				// Remove the option from the list
 				$(this).find('[value="'+item.target.value+'"]').remove()

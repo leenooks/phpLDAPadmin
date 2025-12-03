@@ -187,8 +187,8 @@
 				$('.fancytree-node.fancytree-active').removeClass('fancytree-active');
 
 				$.ajax({
-					url: $(this).data('link'),
 					method: 'GET',
+					url: $(this).data('link'),
 					dataType: 'html',
 					statusCode: {
 						404: function() {
@@ -197,15 +197,13 @@
 					},
 					beforeSend: function() {
 						content = $('.main-content').contents();
-						$('.main-content').empty().append('<div class="fa-3x"><i class="fas fa-spinner fa-pulse"></i></div>');
+						before_send_spinner($('.main-content').empty())
 					}
 
 				}).done(function(html) {
 					$('.main-content').empty().append(html);
 
-				}).fail(function() {
-					alert('Well that didnt work?');
-				});
+				}).fail(ajax_error);
 
 				item.stopPropagation();
 

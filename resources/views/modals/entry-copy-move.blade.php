@@ -32,9 +32,9 @@
 					<span class="input-group-text" id="label">@lang('Select Base of Entry')</span>
 					<input type="text" id="rdn" class="form-control d-none" style="width:20%;" placeholder="{{ $rdn=collect(explode(',',$x))->first() }}" value="{{ $rdn }}">
 					<span class="input-group-text p-1 d-none">,</span>
-					<select class="form-select w-25 d-none" id="rename-subbase" disabled style="width:30%;"></select>
+					<select class="form-select w-10 d-none" id="rename-subbase" disabled style="width:5%;"></select>
 					<span class="input-group-text p-1 d-none">,</span>
-					<select class="form-select w-25" id="rename-base" style="width:30%;" disabled></select>
+					<select class="form-select w-10" id="rename-base" style="width:5%;" disabled></select>
 				</div>
 			</div>
 		</div>
@@ -66,25 +66,23 @@
 			url: '{{ url('ajax/subordinates') }}',
 			dataType: 'json',
 			cache: false,
-			beforeSend: function() {
-				that.empty().append('<span class="p-3"><i class="fas fa-xs fa-spinner fa-pulse"></i></span>');
-			},
-			success: function(data) {
-				that.empty().html('<small class="fs-5">[@lang('Select Base')]</small>');
+			beforeSend: before_send_spinner(that)
 
-				$('#rename-base').children().remove();
-				$('#rename-base').append('<option value=""></option>');
-				data.forEach(function(item) {
-					$('#rename-base').append('<option value="'+item.id+'">'+item.value+'</option>');
-				});
+		}).done(function(data) {
+			that.empty().html('<small class="fs-5">[@lang('Select Base')]</small>');
 
-				$('#rename-base').prop('disabled',false);
-			},
-			error: function(e) {
-				if (e.status !== 412)
-					alert('That didnt work? Please try again....');
-			},
-		});
+			$('#rename-base')
+				.children()
+				.remove();
+
+			$('#rename-base')
+				.append('<option value=""></option>');
+
+			data.forEach((item)=>$('#rename-base').append(new Option(item.value,item.id,false,false)));
+
+			$('#rename-base').prop('disabled',false);
+
+		}).fail(ajax_error);
 
 		// The base DN container
 		$('#rename-base').select2({
@@ -118,23 +116,24 @@
 					cache: false,
 					beforeSend: function() {
 						newdn = that.text();
-						that.empty().append('<span class="p-3"><i class="fas fa-xs fa-spinner fa-pulse"></i></span>');
+						before_send_spinner(that);
 					},
-					success: function(data) {
-						that.empty().text(newdn);
-						$('#rename-subbase').children().remove();
-						$('#rename-subbase').append('<option value=""></option>');
-						data.forEach(function(item) {
-							$('#rename-subbase').append('<option value="'+item.item+'">'+item.title+'</option>');
-						});
 
-						$('#rename-subbase').prop('disabled',false);
-					},
-					error: function(e) {
-						if (e.status !== 412)
-							alert('That didnt work? Please try again....');
-					},
-				});
+				}).done(function(data) {
+					that.empty().text(newdn)
+
+					$('#rename-subbase')
+						.children()
+						.remove();
+
+					$('#rename-subbase')
+						.append('<option value=""></option>');
+
+					data.forEach((item)=>$('#rename-subbase').append(new Option(item.title,item.item,false,false)));
+
+					$('#rename-subbase').prop('disabled',false);
+
+				}).fail(ajax_error);
 			});
 
 		// Optional make a child a new branch

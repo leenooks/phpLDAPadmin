@@ -220,17 +220,13 @@
 							url: '{{ url('modal/copy-move') }}/'+dn,
 							dataType: 'html',
 							cache: false,
-							beforeSend: function() {
-								that.append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
-							},
-							success: function(data) {
-								that.empty().html(data);
-							},
-							error: function(e) {
-								if (e.status !== 412)
-									alert('That didnt work? Please try again....');
-							},
-						});
+							beforeSend: before_send_spinner(that)
+
+						}).done(function(html) {
+							that.empty().append(html);
+
+						}).fail(ajax_error);
+
 						break;
 
 					case 'entry-delete':
@@ -239,17 +235,13 @@
 							url: '{{ url('modal/delete') }}/'+dn,
 							dataType: 'html',
 							cache: false,
-							beforeSend: function() {
-								that.append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
-							},
-							success: function(data) {
-								that.empty().html(data);
-							},
-							error: function(e) {
-								if (e.status !== 412)
-									alert('That didnt work? Please try again....');
-							},
-						});
+							beforeSend: before_send_spinner(that)
+
+						}).done(function(html) {
+							that.empty().append(html);
+
+						}).fail(ajax_error);
+
 						break;
 
 					case 'entry-export':
@@ -258,35 +250,27 @@
 							url: '{{ url('modal/export') }}/'+dn,
 							dataType: 'html',
 							cache: false,
-							beforeSend: function() {
-								that.append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
-							},
-							success: function(data) {
-								that.empty().html(data);
+							beforeSend: before_send_spinner(that)
 
-								that = $('#entry_export');
+						}).done(function(html) {
+							that.empty().html(html);
 
-								$.ajax({
-									method: 'GET',
-									url: '{{ url('entry/export') }}/'+dn,
-									cache: false,
-									beforeSend: function() {
-										that.append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
-									},
-									success: function(data) {
-										that.empty().append(data);
-									},
-									error: function(e) {
-										if (e.status !== 412)
-											alert('That didnt work? Please try again....');
-									},
-								})
-							},
-							error: function(e) {
-								if (e.status !== 412)
-									alert('That didnt work? Please try again....');
-							},
-						})
+							that = $('#entry_export');
+
+							$.ajax({
+								method: 'GET',
+								url: '{{ url('entry/export') }}/'+dn,
+								dataType: 'html',
+								cache: false,
+								beforeSend: before_send_spinner(that)
+
+							}).done(function(html) {
+								that.empty().append(html);
+
+							}).fail(ajax_error);
+
+						}).fail(ajax_error);
+
 						break;
 
 					case 'entry-rename':
@@ -295,17 +279,13 @@
 							url: '{{ url('modal/rename') }}/'+dn,
 							dataType: 'html',
 							cache: false,
-							beforeSend: function() {
-								that.append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
-							},
-							success: function(data) {
-								that.empty().html(data);
-							},
-							error: function(e) {
-								if (e.status !== 412)
-									alert('That didnt work? Please try again....');
-							},
-						});
+							beforeSend: before_send_spinner(that)
+
+						}).done(function(html) {
+							that.empty().append(html);
+
+						}).fail(ajax_error);
+
 						break;
 
 					default:
@@ -316,17 +296,13 @@
 									url: '{{ url('modal/userpassword-check') }}/'+dn,
 									dataType: 'html',
 									cache: false,
-									beforeSend: function() {
-										that.append('<span class="p-3"><i class="fas fa-3x fa-spinner fa-pulse"></i></span>');
-									},
-									success: function(data) {
-										that.empty().html(data);
-									},
-									error: function(e) {
-										if (e.status !== 412)
-											alert('That didnt work? Please try again....');
-									},
-								})
+									beforeSend: before_send_spinner(that)
+
+								}).done(function(html) {
+									that.empty().append(html);
+
+								}).fail(ajax_error);
+
 								break;
 
 							default:
@@ -338,6 +314,7 @@
 			$('#page-modal').on('hide.bs.modal',function() {
 				// Clear any select ranges that occurred while the modal was open
 				document.getSelection().removeAllRanges();
+
 				// Empty the modal so we dont have a flicker if we open a new one
 				$(this).find('.modal-content').empty();
 			});

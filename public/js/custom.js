@@ -20,12 +20,8 @@ function get_frame(item) {
 		dataType: 'html',
 		beforeSend: function() {
 			// In case we want to redirect back to the original page
-			content = $('.main-content')
-				.contents();
-
-			$('.main-content')
-				.empty()
-				.append('<div class="fa-3x"><i class="fas fa-spinner fa-pulse"></i></div>');
+			content = $('.main-content').contents();
+			before_send_spinner($('.main-content').empty());
 		}
 
 	}).done(function(html) {

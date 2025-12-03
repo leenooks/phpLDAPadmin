@@ -96,11 +96,11 @@
 			},
 			dataType: 'json',
 			cache: false,
-			success: function(data) {
-				data.forEach((item)=>$('select#source').append(new Option(item,item,false,false)));
-			},
-			error: ajax_error,
-		})
+
+		}).done(function(data) {
+			data.forEach((item)=>$('select#source').append(new Option(item,item,false,false)));
+
+		}).fail(ajax_error);
 
 		$('#btnSwap').click(function(e) {
 			$('select')

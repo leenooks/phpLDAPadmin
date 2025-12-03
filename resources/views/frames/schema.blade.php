@@ -50,9 +50,10 @@
 		var loaded = [];
 
 		$(document).ready(function() {
-			$('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (item) {
+			$('a[data-bs-toggle="tab"]').on('shown.bs.tab',function(item) {
 				// activated tab
 				var type = $(item.target).attr('href').substring(1);
+
 				if (loaded[type])
 					return false;
 
@@ -66,9 +67,7 @@
 					$('div[id="schema.'+type+'"]').empty().append(html);
 					loaded[type] = true;
 
-				}).fail(function() {
-					alert('Failed');
-				});
+				}).fail(ajax_error);
 
 				item.stopPropagation();
 			});
