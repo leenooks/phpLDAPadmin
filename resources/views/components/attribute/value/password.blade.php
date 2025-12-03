@@ -12,7 +12,9 @@
 		name="{{ $o->name_lc }}[{{ $attrtag }}{{ Entry::TAG_HELPER }}][]"
 		@class(['mb-1','no-edit'=>(! $editable)])
 		:value="old($o->name_lc.'.'.$attrtag.Entry::TAG_HELPER.'.'.$index,
-			$template?->attribute($o->name_lc)?->get('helper') ?: $o->hash($o->values->dot()->get($dotkey) ?: '')
+			((! $o->values->dot()->get($dotkey)) && ($x=$template?->attribute($o->name_lc)?->get('helper')))
+				? $x
+				: $o->hash($o->values->dot()->get($dotkey) ?: '')
 			->id())"
 		:options="$helpers"
 		allowclear="false"
