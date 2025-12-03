@@ -94,12 +94,18 @@
 	</div>
 @endsection
 
+@section('page-modals')
+	<x-page-modal/>
+@endsection
+
 @section('page-scripts')
 	<script type="text/javascript">
-		var rdn_attr;
+		var dn = '{{ Crypt::encryptString($container) }}';
 
-		$(document).ready(function() {
-			@if($step === 1)
+		@if($step === 1)
+			var rdn_attr;
+
+			$(document).ready(function() {
 				$('#objectclass').on('select2:open',function(){
 					$('#template').val(null).trigger('change');
 				});
@@ -107,7 +113,7 @@
 				$('#template').on('select2:open',function(){
 					$('#objectclass').val(null).trigger('change');
 				})
-			@endif
-		});
+			});
+		@endif
 	</script>
 @append

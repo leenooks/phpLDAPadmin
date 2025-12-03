@@ -41,16 +41,19 @@
 							});
 
 							$('#page-modal').on('hide.bs.modal',function() {
-								// Go through the updated items and ensure the input-group-end reflects that the entry exists
-								update_from_modal('member',attribute_values('destination','select','option')).forEach(function(item) {
-									$('attribute#member [value="'+item+'"]')
-										.next('.input-group-end')
-										.removeClass('text-danger')
-										.removeClass('text-black-50')
-										.addClass('text-success')
-										.empty()
-										.append('<i class="fas fa-fw fa-plus"></i>')
-								});
+								var updates = attribute_values('destination','select','option');
+
+								if (updates.length)
+									// Go through the updated items and ensure the input-group-end reflects that the entry exists
+									update_from_modal('member',updates).forEach(function(item) {
+										$('attribute#member [value="'+item+'"]')
+											.next('.input-group-end')
+											.removeClass('text-danger')
+											.removeClass('text-black-50')
+											.addClass('text-success')
+											.empty()
+											.append('<i class="fas fa-fw fa-plus"></i>')
+									});
 							});
 						});
 					</script>

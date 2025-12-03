@@ -1,6 +1,6 @@
 <div class="modal-header bg-dark text-white">
 	<h1 class="modal-title fs-5">
-		<i class="fas fa-fw fa-users"></i> @lang('Membership Maintenance for') <strong>{{ $x=Crypt::decryptString($dn) }}</strong>
+		<i class="fas fa-fw fa-users"></i> @isset($dn)@lang('Membership Maintenance for') <strong>{{ $x=Crypt::decryptString($dn) }}</strong>@else @lang('Add to New Entry') @endisset
 	</h1>
 </div>
 
@@ -82,6 +82,7 @@
 	$(document).ready(function() {
 		// Populate the existing members
 		$('attribute#member input[type=text]')
+			.filter((index,element)=>$(element).val())
 			.each((index,element)=>
 				$('select#destination').append(new Option($(element).val(),$(element).val(),false,false)));
 
