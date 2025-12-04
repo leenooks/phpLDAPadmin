@@ -25,6 +25,8 @@ RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini \
 	&& sed -i -e 's/^memory_limit = 128M/memory_limit = 256M/' /usr/local/etc/php/php.ini \
 	&& sed -i -e 's/^expose_php = On/expose_php = Off/' /usr/local/etc/php/php.ini
 
+COPY docker/opcache.ini /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
+
 # Support for LDAPS queries
 RUN echo "TLS_REQCERT never" >> /etc/openldap/ldap.conf
 
