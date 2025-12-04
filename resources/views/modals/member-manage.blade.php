@@ -6,8 +6,8 @@
 
 <div class="modal-body">
 	<div class="member-box">
-		<label>@lang('Group Members')</label>
-		<select class="form-control" id="destination" multiple></select>
+		<label>@lang('Available Members')</label>
+		<select class="form-control" id="source" multiple></select>
 	</div>
 
 	<div class="select-arrows text-center">
@@ -17,8 +17,8 @@
 	</div>
 
 	<div class="member-box">
-		<label>@lang('Available Members')</label>
-		<select class="form-control" id="source" multiple></select>
+		<label>@lang('Group Members')</label>
+		<select class="form-control" id="destination" multiple></select>
 	</div>
 </div>
 
