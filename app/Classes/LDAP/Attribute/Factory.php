@@ -45,6 +45,7 @@ class Factory
 		'supportedfeatures' => Schema\OID::class,
 		'supportedldapversion' => Schema\Generic::class,
 		'supportedsaslmechanisms' => Schema\Mechanisms::class,
+		'uniquemember' => Member::class,
 		'usercertificate' => Binary\Certificate::class,
 		'userpassword' => Password::class,
 	];

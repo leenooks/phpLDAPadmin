@@ -98,3 +98,35 @@ ul.square {
 select[class*="d-none"] + span.select2 {
 	display: none;
 }
+
+/* Member Modal */
+div.modal .modal-body {
+	.member-box {
+		float: left;
+		width: 45%;
+		label {
+			font-weight: bold;
+			padding-bottom: 5px;
+		}
+		select {
+			height: 25em;
+			padding: 0;
+			option {
+				padding: 4px 10px 4px 10px;
+			}
+			option:hover {
+				background: var(--bs-light);
+			}
+		}
+	 }
+
+	.select-arrows {
+		float: left;
+		width: 10%;
+		padding-top: 5em;
+		input {
+			width: 70%;
+			margin-bottom: 5px;
+		}
+	}
+}

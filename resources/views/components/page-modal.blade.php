@@ -4,3 +4,7 @@
 		<div class="modal-content"></div>
 	</div>
 </div>
+
+<script type="text/javascript">
+	var modal_attr;
+</script>

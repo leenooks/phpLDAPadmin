@@ -26,37 +26,6 @@
 	<x-modal.close/>
 </div>
 
-<style>
-	.member-box {
-		float: left;
-		width: 45%;
-		label {
-			font-weight: bold;
-			padding-bottom: 5px;
-		}
-		select {
-			height: 25em;
-			padding: 0;
-			option {
-				padding: 4px 10px 4px 10px;
-			}
-			option:hover {
-				background: var(--bs-light);
-			}
-		}
-	}
-
-	.select-arrows {
-		float: left;
-		width: 10%;
-		padding-top: 5em;
-		input {
-			width: 70%;
-			margin-bottom: 5px;
-		}
-	}
-</style>
-
 <script type="text/javascript">
 	// Moves selected item(s) from sourceList to destinationList
 	$.fn.moveToList = function(sourceList,destinationList) {
@@ -81,7 +50,7 @@
 
 	$(document).ready(function() {
 		// Populate the existing members
-		$('attribute#member input[type=text]')
+		$('attribute#'+modal_attr+' input[type=text]')
 			.filter((index,element)=>$(element).val())
 			.each((index,element)=>
 				$('select#destination').append(new Option($(element).val(),$(element).val(),false,false)));
@@ -91,7 +60,7 @@
 			method: 'POST',
 			url: '{{ url('ajax/member/member') }}',
 			data: {
-				existing: attribute_values('member'),
+				existing: attribute_values(modal_attr),
 				dn: dn,
 			},
 			dataType: 'json',
@@ -102,7 +71,17 @@
 
 		}).fail(ajax_error);
 
-		$('#btnSwap').click(function(e) {
+		$('select#source').on('dblclick',function(item) {
+			$('select')
+				.moveToList('#source','#destination');
+		})
+
+		$('select#destination').on('dblclick',function(item) {
+			$('select')
+				.moveToList('#destination','#source');
+		})
+
+		$('button#btnSwap').on('click',function(e) {
 			$('select')
 				.moveToList('#destination','#source')
 				.moveToList('#source','#destination');
@@ -110,12 +89,12 @@
 			e.preventDefault();
 		});
 
-		$('#btnAllRight').click(function(e) {
+		$('button#btnAllRight').on('click',function(e) {
 			$('select').moveAllToList('#destination','#source');
 			e.preventDefault();
 		});
 
-		$('#btnAllLeft').click(function(e) {
+		$('button#btnAllLeft').on('click',function(e) {
 			$('select').moveAllToList('#source','#destination');
 			e.preventDefault();
 		});

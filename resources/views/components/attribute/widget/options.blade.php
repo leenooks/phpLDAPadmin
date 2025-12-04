@@ -12,7 +12,7 @@
 				@break
 
 			@case(Member::class)
-				<button type="button" name="member-manage" @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>$editable]) data-bs-toggle="modal" data-bs-target="#page-modal"><i class="fas fa-fw fa-plus"></i> @lang('Add Member')</button>
+				<button type="button" name="member-manage" @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>$editable]) data-attr={{ $o->name_lc }} data-bs-toggle="modal" data-bs-target="#page-modal"><i class="fas fa-fw fa-plus"></i> @lang('Add Member')</button>
 
 				@section('page-scripts')
 					<script type="text/javascript">
@@ -26,6 +26,7 @@
 									return;
 
 								var that = $(this).find('.modal-content');
+								modal_attr = $(item.relatedTarget).data('attr');
 
 								$.ajax({
 									method: 'GET',
@@ -45,8 +46,8 @@
 
 								if (updates.length)
 									// Go through the updated items and ensure the input-group-end reflects that the entry exists
-									update_from_modal('member',updates).forEach(function(item) {
-										$('attribute#member [value="'+item+'"]')
+									update_from_modal(modal_attr,updates).forEach(function(item) {
+										$('attribute#'+modal_attr+' [value="'+item+'"]')
 											.next('.input-group-end')
 											.removeClass('text-danger')
 											.removeClass('text-black-50')
@@ -291,7 +292,7 @@
 				@section('page-scripts')
 					<script type="text/javascript">
 							$(document).ready(function() {
-								$('#{{ $o->name_lc }}-upload.addable').click(function(e) {
+								$('#{{ $o->name_lc }}-upload.addable').on('click',function(e) {
 									alert('Sorry, not implemented yet');
 									e.preventDefault();
 									return false;
@@ -312,7 +313,7 @@
 						<script type="text/javascript">
 							$(document).ready(function() {
 								// Create a new entry when Add Value clicked
-								$('form#dn-edit #{{ $o->name_lc }}-addnew.addable').click(function(item) {
+								$('form#dn-edit #{{ $o->name_lc }}-addnew.addable').on('click',function() {
 									var attribute = $(this).closest('attribute');
 									var active = attribute.find('.tab-content .tab-pane.active');
 
