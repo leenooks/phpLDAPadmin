@@ -6,8 +6,8 @@
 
 <div class="modal-body">
 	<div class="member-box">
-		<label>@lang('Group Members')</label>
-		<select class="form-control" id="destination" multiple></select>
+		<label>@lang('Available Members')</label>
+		<select class="form-control" id="source" multiple></select>
 	</div>
 
 	<div class="select-arrows text-center">
@@ -17,8 +17,8 @@
 	</div>
 
 	<div class="member-box">
-		<label>@lang('Available Members')</label>
-		<select class="form-control" id="source" multiple></select>
+		<label>@lang('Group Members')</label>
+		<select class="form-control" id="destination" multiple></select>
 	</div>
 </div>
 
@@ -26,6 +26,7 @@
 	<x-modal.close/>
 </div>
 
+<!-- JS:member-manage -->
 <script type="text/javascript">
 	// Moves selected item(s) from sourceList to destinationList
 	$.fn.moveToList = function(sourceList,destinationList) {
@@ -90,12 +91,12 @@
 		});
 
 		$('button#btnAllRight').on('click',function(e) {
-			$('select').moveAllToList('#destination','#source');
+			$('select').moveAllToList('#source','#destination');
 			e.preventDefault();
 		});
 
 		$('button#btnAllLeft').on('click',function(e) {
-			$('select').moveAllToList('#source','#destination');
+			$('select').moveAllToList('#destination','#source');
 			e.preventDefault();
 		});
 	});
