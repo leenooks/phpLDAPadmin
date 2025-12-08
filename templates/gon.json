@@ -1,0 +1,22 @@
+{
+	"title": "Generic: Group of Names",
+	"description": "New Group of Names",
+	"enabled": true,
+	"icon": "fa-layer-group",
+	"rdn": "cn",
+
+	"objectclasses": [
+		"groupOfNames"
+	],
+
+	"attributes": {
+                "cn": {
+                        "display": "Common Name",
+                        "order": 1
+                },
+		"member": {
+			"display": "Members",
+			"order": 2
+		}
+	}
+}

@@ -51,7 +51,7 @@
 
 	$(document).ready(function() {
 		// Populate the existing members
-		$('attribute#'+modal_attr+' input[type=text]')
+		$('attribute#'+modal_attr+' input[type=text]:not(.no-edit)')
 			.filter((index,element)=>$(element).val())
 			.each((index,element)=>
 				$('select#destination').append(new Option($(element).val(),$(element).val(),false,false)));

@@ -144,7 +144,7 @@ function before_send_spinner(that) {
 
 // Find all values of an attribute in the form
 function attribute_values(attr,container='attribute',input='input') {
-	return $(container+'#'+attr+' '+(input === 'input' ? 'input[type=text]' : input))
+	return $(container+'#'+attr+' '+(input === 'input' ? 'input[type=text]:not(.no-edit)' : input))
 		.map((index,element)=>$(element).val())
 		.toArray()
 }
@@ -159,7 +159,7 @@ function update_from_modal(attr,modal_data) {
 	modal_data.forEach(function (item) {
 		if (existing.indexOf(item) === -1) {
 			// Add attribute to the page
-			var active = $('attribute#'+attr)
+			var active = $('form#dn-edit attribute#'+attr)
 				.find('.tab-content .tab-pane.active');
 
 			var clone = active.find('div.input-group:last')
@@ -177,12 +177,16 @@ function update_from_modal(attr,modal_data) {
 	// Remove Values
 	existing.forEach(function(item) {
 		if (modal_data.indexOf(item) === -1) {
-			$('attribute#'+attr+' input[value="'+item+'"]').closest('div.input-group').empty();
+			$('form#dn-edit attribute#'+attr+' input[value="'+item+'"]')
+				.closest('div.input-group')
+				.empty();
 		}
 	});
 
 	// For new entries, there is a blank input box, we'll clear that too
-	$('attribute#'+attr+' input[value=""]').closest('div.input-group').empty();
+	$('form#dn-edit attribute#'+attr+' input[value=""]')
+		.closest('div.input-group')
+		.empty();
 
 	return addition;
 }
