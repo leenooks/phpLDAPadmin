@@ -83,8 +83,17 @@ class HomeController extends Controller
 				->with('page_actions',collect([
 					'create'=>($x=($o->getObjects()->except('entryuuid')->count() > 0)),
 					'copy'=>$x,
-					'delete'=>is_null($xx=($o->getObject('hassubordinates') ?: $o->getObject('numSubordinates'))?->value)
-						|| (collect($xx)->filter(fn($item)=>$item !== 'FALSE')->count() === 0),
+					'delete'=>is_null(
+							$xx = ($o->getObject('hassubordinates')
+								?: $o->getObject('numSubordinates')
+							)?->value
+						)
+						|| collect((array) $xx)
+							->filter(function ($item) {
+								$v = strtoupper((string) $item);
+								return $v !== 'FALSE' && $v !== '0';
+							})
+							->count() === 0,
 					'edit'=>$x,
 					'export'=>$x,
 				]))
