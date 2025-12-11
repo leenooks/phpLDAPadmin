@@ -45,7 +45,7 @@ Route::controller(EntryController::class)
 			Route::post('password/check','password_check');
 			Route::post('rename','rename');
 			Route::post('update/commit','update_commit');
-			Route::post('update/pending','update_pending');
+			Route::match(['get','post'],'update/pending','update_pending');
 		});
 	});
 

@@ -495,20 +495,28 @@ class EntryController extends Controller
 	 */
 	public function update_pending(EntryRequest $request): \Illuminate\Http\RedirectResponse|\Illuminate\View\View
 	{
-		$dn = Crypt::decryptString($request->dn);
+		try {
+			$dn = Crypt::decryptString($request->dn);
 
-		$o = config('server')->fetch($dn);
+			$o = config('server')->fetch($dn);
 
-		foreach ($request->except(['_token','dn']) as $key => $value)
-			$o->{$key} = array_filter($value,fn($item)=>! is_null($item));
+			foreach ($request->except(['_token','dn']) as $key => $value)
+				$o->{$key} = array_filter($value,fn($item)=>! is_null($item));
 
-		if (! $o->getDirty())
-			return Redirect::back()
-				->withInput()
-				->with('note',__('No attributes changed'));
+			if (! $o->getDirty())
+				return Redirect::back()
+					->withInput()
+					->with('note',__('No attributes changed'));
 
-		return view('update')
-			->with('dn',$dn)
-			->with('o',$o);
+			return view('update')
+				->with('dn',$dn)
+				->with('o',$o);
+
+		// @note One way we get here is if validation failed on post (which it shouldnt, since validation should have run on rendering this page)
+		} catch (\Exception $e) {
+			Log::error(sprintf('%s:! Something bad just happened while updating [%s]',self::LOGKEY,$e->getMessage()));
+
+			abort(500,$e->getMessage());
+		}
 	}
 }

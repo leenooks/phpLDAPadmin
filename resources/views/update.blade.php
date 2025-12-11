@@ -55,7 +55,7 @@
 												{{ (($r=$oo->render_item_new($dotkey)) !== NULL) ? $r : '['.strtoupper(__('Deleted')).']' }}
 												<input type="hidden"
 													name="{{ $key }}[{{ collect(explode('.',$dotkey))->first() }}][]"
-													value="{{ $oo->values->dot()->get($dotkey) }}">
+													value="{{ $r }}">
 											</td>
 										@endif
 									@endforeach
