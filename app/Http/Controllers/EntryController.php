@@ -61,8 +61,12 @@ class EntryController extends Controller
 				$o->objectclass = [Entry::TAG_NOTAG=>$template->objectclasses->toArray()];
 
 				foreach ($o->getAvailableAttributes()
-					 ->filter(fn($item)=>$item->names_lc->intersect($template->attributes->keys()->map('strtolower'))->count())
-					 ->sortBy(fn($item)=>Arr::get($template->order,$item->name)) as $ao)
+					->filter(fn($item)=>
+						$item->names_lc
+							->intersect($template->attributes->keys()->map('strtolower'))
+							->count()
+						|| $item->is_must
+					)->sortBy(fn($item)=>Arr::get($template->order,$item->name_lc)) as $ao)
 				{
 					$o->{$ao->name} = [Entry::TAG_NOTAG=>['']];
 				}
