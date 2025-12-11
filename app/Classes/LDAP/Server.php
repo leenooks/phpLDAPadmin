@@ -294,6 +294,7 @@ final class Server
 			->get(
 				dn: $dn,
 				attrs: array_merge($attrs,[
+					'numsubordinates',	// Needed for the tree to know if an entry has children
 					'hassubordinates',	// Needed for the tree to know if an entry has children
 					'c'					// Needed for the tree to show icons for countries
 				]))

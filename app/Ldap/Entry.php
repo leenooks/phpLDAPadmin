@@ -223,6 +223,12 @@ class Entry extends Model
 		return collect(explode(',',$this->getDn()))->reverse()->join(',');
 	}
 
+	public function getHasChildrenAttribute(): bool
+	{
+		return (strcasecmp(Arr::get($this->getAttribute('hassubordinates',[]),0),'TRUE') === 0)
+			|| Arr::get($this->getAttribute('numsubordinates',[]),0) > 0;
+	}
+
 	/* METHODS */
 
 	/**

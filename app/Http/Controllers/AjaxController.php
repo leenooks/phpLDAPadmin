@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Collection;
@@ -53,8 +52,7 @@ class AjaxController extends Controller
 					'title'=>$item->getRdn(),
 					'item'=>$item->getDNSecure(),
 					'icon'=>$item->icon(),
-					'lazy'=>(strcasecmp(Arr::get($item->getAttribute('hassubordinates'),0),'TRUE') === 0)
-						|| Arr::get($item->getAttribute('numsubordinates'),0),
+					'lazy'=>$item->has_children,
 					'tooltip'=>$item->getDn(),
 				])
 			->prepend(
