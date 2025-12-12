@@ -91,7 +91,7 @@ class Template
 			'enabled' => $this->template->get($key,FALSE) && (! $this->invalid),
 			'icon','rdn','regexp','title' => $this->template->get($key),
 			'name' => Str::replaceEnd('.json','',$this->file),
-			'order' => $this->attributes->map(fn($item)=>Arr::get($item,'order')),
+			'order' => $this->attributes->flatMap(fn($item,$key)=>[strtolower($key)=>Arr::get($item,'order')]),
 
 			default => throw new \Exception('Unknown key: '.$key),
 		};
