@@ -13,7 +13,7 @@
 			<div class="app-main">
 				@include('architect::layouts.partials.sidebarmenu')
 
-				<div class="app-main__outer">
+				<main class="app-main__outer">
 					<div class="app-main__inner">
 						<div class="main-content">
 							@if(trim($__env->yieldContent('page_title')))
@@ -31,7 +31,7 @@
 					</div>
 
 					@include('architect::layouts.partials.contentfooter')
-				</div>
+				</main>
 			</div>
 		</div>
 

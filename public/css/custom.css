@@ -130,3 +130,15 @@ div.modal .modal-body {
 		}
 	}
 }
+
+/* Sidebar resize */
+aside .draghandle {
+	position: absolute;
+	z-index: 100;
+	width: 8px;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	cursor: col-resize;
+	float: right;
+}

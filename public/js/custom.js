@@ -190,3 +190,43 @@ function update_from_modal(attr,modal_data) {
 
 	return addition;
 }
+
+/* Sidebar resize */
+var aside = $('aside.app-sidebar');
+
+$('aside .draghandle').on('mousedown',function(event) {
+	// Ignore if closed
+	if ($('.close-sidebar-btn').hasClass('is-active'))
+		return;
+
+	event.preventDefault();
+
+	window.addEventListener('mousemove',Resize,false);
+	window.addEventListener('mouseup',stopResize,false);
+})
+
+$('.close-sidebar-btn:not(is-active)').on('click',function(event) {
+	aside.css('width','');
+	$('.app-header').css('margin-left','');
+	$('main.app-main__outer').css('padding-left','');
+})
+
+function Resize(e) {
+	var mouseX = e.clientX - aside.offset().left;
+
+	if (mouseX < 250) {
+		aside.css('width','');
+		$('.app-header').css('margin-left','');
+		$('main.app-main__outer').css('padding-left','');
+
+	} else {
+		aside.css('width',mouseX+'px');
+		$('.app-header').css('margin-left',mouseX+'px');
+		$('main.app-main__outer').css('padding-left',mouseX+'px');
+	}
+}
+
+function stopResize() {
+	window.removeEventListener('mousemove',Resize,false);
+	window.removeEventListener('mouseup',stopResize,false);
+}

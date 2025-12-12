@@ -1,4 +1,4 @@
-<div class="app-sidebar sidebar-shadow">
+<aside class="app-sidebar sidebar-shadow">
 	<div class="app-header__logo">
 		<div class="logo-src"></div>
 		<div class="header__pane ms-auto">
@@ -40,4 +40,5 @@
 			</ul>
 		</div>
 	</div>
-</div>
+	<div class="draghandle"></div>
+</aside>
