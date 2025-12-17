@@ -159,7 +159,7 @@ function update_from_modal(attr,modal_data) {
 	modal_data.forEach(function (item) {
 		if (existing.indexOf(item) === -1) {
 			// Add attribute to the page
-			var active = $('form#dn-edit attribute#'+attr)
+			var active = $('form[id^="dn-"] attribute#'+attr)
 				.find('.tab-content .tab-pane.active');
 
 			var clone = active.find('div.input-group:last')
@@ -177,14 +177,14 @@ function update_from_modal(attr,modal_data) {
 	// Remove Values
 	existing.forEach(function(item) {
 		if (modal_data.indexOf(item) === -1) {
-			$('form#dn-edit attribute#'+attr+' input[value="'+item+'"]')
+			$('form[id^="dn-"] attribute#'+attr+' input[value="'+item+'"]')
 				.closest('div.input-group')
 				.empty();
 		}
 	});
 
 	// For new entries, there is a blank input box, we'll clear that too
-	$('form#dn-edit attribute#'+attr+' input[value=""]')
+	$('form[id^="dn-"] attribute#'+attr+' input[value=""]')
 		.closest('div.input-group')
 		.empty();
 
