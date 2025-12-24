@@ -115,5 +115,13 @@
 				})
 			});
 		@endif
+
+		// Render the options list, if there are options
+		@if((! $template) && $o->getMissingAttributes()->count())
+			$('#newattr-select.d-none')
+				.removeClass('d-none')
+				.find('select')
+				.attr('disabled',false);
+		@endif
 	</script>
 @append
