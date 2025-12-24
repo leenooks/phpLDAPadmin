@@ -66,6 +66,13 @@
 			$('#newattr').on('change',function(item) {
 				attr_render(item);
 			});
+
+			@if($o->getMissingAttributes()->count())
+				$('#newattr-select.d-none')
+					.removeClass('d-none')
+					.find('select')
+					.attr('disabled',false);
+			@endif
 		});
 	</script>
 @append
