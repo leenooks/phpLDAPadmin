@@ -39,49 +39,74 @@
 
 @section('page-scripts')
 	<script type="text/javascript">
+		<!-- component.attribute.rdn -->
+		var rdn_value;
+		var rdn_attr;
+		var rdn_options_sort = false;
+
+		// Set the RDN attribute's value
+		function rdn_value_set() {
+			if (rdn_attr && rdn_value)
+				$('attribute#'+rdn_attr+' input:first')
+					.val($('input#rdn_value').val());
+		}
+
+		function rdn_options() {
+			return $('select#rdn option')
+				.map((key,item)=>item.value)
+				.toArray();
+		}
+
+		function sort_rdn_options() {
+			// Sort the RDN attributes
+			if (rdn_options_sort) {
+				$('select#rdn')
+					.append($('select#rdn option')
+						.remove()
+						.sort(sort_text))
+					.val('');
+
+				rdn_options_sort = false;
+			}
+		}
+
 		$(document).ready(function() {
-			var rdn_value_set = $('input#rdn_value').val();
 			rdn_attr = $('select#rdn').val();
+			rdn_value = $('input#rdn_value').val();
 
 			if (rdn_attr) {
 				$('#'+rdn_attr+' input:first')
 					.attr('readonly',true);
 
-				set_rdn_value();
-			}
-
-			function set_rdn_value() {
-				if (rdn_attr && rdn_value_set)
-					$('#'+rdn_attr+' input:first')
-						.val($('input#rdn_value').val());
+				rdn_value_set();
 			}
 
 			$('select#rdn').on('change',function() {
-				// If the selected attr has a value, use it
-				var rdn_value = $(this).val()
-					? $('#'+$(this).val()+' input:first').val()
-					: null;
+				// Reset the RDN value to the new attribute, or blank
+				rdn_value = $(this).val()
+					? $('attribute#'+$(this).val()+' input:first').val()
+					: '';
 
-				if (rdn_value)
-					$('input#rdn_value').val(rdn_value);
+				$('input#rdn_value').val(rdn_value);
 
 				// if rdn_attr is already set (and its now different), remove read only and clear value
 				if (rdn_attr)
-					$('#'+rdn_attr+' input:first')
+					$('attribute#'+rdn_attr+' input:first')
 						.attr('readonly',false).val('');
 
 				// set RDN attribute read-only
 				if ((rdn_attr=$(this).val()) && rdn_attr)
-					$('#'+rdn_attr+' input:first')
+					$('attribute#'+rdn_attr+' input:first')
 						.attr('readonly',true);
 
-				set_rdn_value();
+				rdn_value_set();
 			})
 
+			// If the value is changed, update the attribute
 			$('input#rdn_value').on('change',function() {
-				rdn_value_set = $(this).val();
+				rdn_value = $(this).val();
 
-				set_rdn_value();
+				rdn_value_set();
 			})
 		});
 	</script>

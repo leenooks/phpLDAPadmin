@@ -23,31 +23,48 @@
 
 @section('page-scripts')
 	<script type="text/javascript">
+		<!-- fragment.dn.add_attr -->
+		function newattr_options() {
+			return $('select#newattr option')
+				.map((key,item)=>item.value)
+				.toArray();
+		}
+
+		// Add an attribute to a page
+		function attr_render(item) {
+			$.ajax({
+				type: 'POST',
+				url: '{{ url('entry/attr/add') }}/'+item.target.value,
+				data: {
+					objectclasses: oc_rendered(),
+				},
+				dataType: 'html',
+				cache: false,
+
+			}).done(function(html) {
+				$('#newattrs').append(html);
+
+			}).fail(ajax_error);
+
+			// Add the attr to the RDN
+			if (! rdn_options().includes(item.target.value)) {
+				$('select#rdn').append(new Option(item.target.value,item.target.value));
+
+				rdn_options_sort = true;
+				sort_rdn_options();
+			}
+
+			// Remove the option from the new attr list
+			$('#newattr').find('[value="'+item.target.value+'"]').remove();
+
+			// If there are no more options
+			if ($('#newattr').find('option').length === 1)
+				$('#newattr-select').addClass('d-none');
+		}
+
 		$(document).ready(function() {
 			$('#newattr').on('change',function(item) {
-				var oc = $('attribute#objectclass input[type=text]')
-					.map((key,item)=>{return $(item).val()}).toArray();
-
-				$.ajax({
-					type: 'POST',
-					url: '{{ url('entry/attr/add') }}/'+item.target.value,
-					data: {
-						objectclasses: oc,
-					},
-					dataType: 'html',
-					cache: false,
-
-				}).done(function(html) {
-					$('#newattrs').append(html);
-
-				}).fail(ajax_error);
-
-				// Remove the option from the list
-				$(this).find('[value="'+item.target.value+'"]').remove()
-
-				// If there are no more options
-				if ($(this).find("option").length === 1)
-					$('#newattr-select').remove();
+				attr_render(item);
 			});
 		});
 	</script>

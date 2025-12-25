@@ -252,6 +252,11 @@ pre code .line::before {
 	box-shadow: none;
 }
 
+/* Make the cross on the multiple select option smaller */
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice .select2-selection__choice__remove {
+	height: 0.25rem;
+}
+
 .input-group-text {
 	background-color: #fafafa;
 }

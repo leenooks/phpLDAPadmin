@@ -86,35 +86,51 @@
 
 				@section('page-scripts')
 					<script type="text/javascript">
-						$(document).ready(function() {
-							var added_oc = [];	// Object classes being added to this entry
-							var rendered = false;
-							var newadded = [];
+						<!-- attribte.widget.options/objectclass -->
+						// Sort select lists
+						const sort_text = function(a,b) {
+							let at = $(a).text(),
+								bt = $(b).text();
+							return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
+						}
 
-							var oc = $('attribute#objectclass input[type=text]')
-								.map((key,item)=>$(item).val())
+						// Rendered OC values
+						function oc_rendered() {
+							return $('attribute#objectclass input[type=text]')
+								.map((key,item)=>item.value)
 								.toArray();
+						}
 
-							if (newadded.length)
-								process_oc();
+						$(document).ready(function() {
+							var modal_rendered = false;
+							var oc_added = [];		// Object classes being added to this entry
+							var oc_from_modal = [];
+							var attr_dependancy = [];
+
+							// Determine which attrs are dependant on objectclasses
+							$('attribute').map(function(key,item) {
+								attr_dependancy[item.id] = 1;
+							});
+
+							newattr_options().forEach(function(item) {
+								if (item.length)
+									attr_dependancy[item] = 1;
+							})
 
 							function process_oc() {
 								// Find out what was selected, and add them
-								newadded.forEach(function (item) {
-									if (added_oc.indexOf(item) !== -1)
+								oc_from_modal.forEach(function(item) {
+									if (oc_added.indexOf(item) !== -1)
 										return;
 
-									// Add our new OC to the list of OCs
-									oc.push(item);
-
-									// Add attribute to the page
+									// Add objectclass value to the page
 									$.ajax({
 										method: 'POST',
 										url: '{{ url('entry/attr/add',[$o->name_lc]) }}',
 										data: {
 											noheader: true,
 											value: item,
-											objectclasses: oc,
+											objectclasses: oc_rendered(),
 										},
 										dataType: 'html',
 										cache: false,
@@ -122,90 +138,84 @@
 									}).done(function(html) {
 										$('attribute#{{ $o->name_lc }} .tab-content .tab-pane.active').append(html);
 
-									}).fail(ajax_error);
+										// Get a list of attributes for this new objectclass, taking into account what is on the page
+										$.ajax({
+											method: 'POST',
+											url: '{{ url('ajax/schema/objectclass/attrs') }}/'+item,
+											dataType: 'json',
+											cache: false,
 
-									// Get a list of attributes already on the page, so we dont double up
-									$.ajax({
-										method: 'POST',
-										url: '{{ url('ajax/schema/objectclass/attrs') }}/'+item,
-										data: {
-											attrs: $('attribute').map(function () { return $(this).attr('id'); }).toArray()
-										},
-										dataType: 'json',
-										cache: false,
+										}).done(function(data) {
+											// Render any must attributes
+											if (data.must.length) {
+												data.must.forEach(function(item) {
+													if (attr_dependancy[item] === undefined)
+														attr_dependancy[item] = 0;
 
-									}).done(function(data) {
-										// Render any must attributes
-										if (data.must.length) {
-											var newattr = $('select#rdn');
-											var oldoptions = $('select#rdn option').map((i,o)=>o.value).get();
+													attr_dependancy[item]++;
 
-											data.must.forEach(function(item) {
-												if ($('attribute#'+item.toLowerCase()).length)
-													return;
+													// If the item is already rendered, we dont need to do anything
+													if ($('attribute#'+item.toLowerCase()).length)
+														return;
 
-												// Add attribute to the page
-												$.ajax({
-													method: 'POST',
-													url: '{{ url('entry/attr/add') }}/'+item.toLowerCase(),
-													data: {
-														value: item,
-														objectclasses: oc,
-													},
-													dataType: 'html',
-													cache: false,
+													// Add attribute to the page
+													$.ajax({
+														method: 'POST',
+														url: '{{ url('entry/attr/add') }}/'+item.toLowerCase(),
+														data: {
+															value: item,
+															objectclasses: oc_rendered(),
+														},
+														dataType: 'html',
+														cache: false,
 
-												}).done(function(html) {
-													$('#newattrs').append(html);
+													}).done(function(html) {
+														$('#newattrs').append(html);
 
-												}).fail(ajax_error);
+													}).fail(ajax_error);
 
-												// If this is a new entry, add the required attributes to the RDN
-												if (! oldoptions.includes(item))
-													newattr.append(new Option(item,item,false,false));
+													// If this is a new entry, add the required attributes to the RDN
+													if (! rdn_options().includes(item)) {
+														$('select#rdn').append(new Option(item,item));
+														rdn_options_sort = true;
+													}
+
+													// Remove the new attributes from the newattr select list.
+													$('#newattr').find('[value="'+item+'"]').remove()
+												});
+
+												sort_rdn_options();
+											}
+
+											// Add attributes to "Add new Attribute" that are now available
+											if (data.may.length) {
+												data.may.forEach(function(item) {
+													if (attr_dependancy[item] === undefined)
+														attr_dependancy[item] = 0;
+
+													attr_dependancy[item]++;
+
+													if (! newattr_options().includes(item))
+														$('select#newattr').append(new Option(item,item));
+												});
 
 												// Sort the attributes
-												newattr
-													.append($('select#rdn option')
+												$('select#newattr')
+													.append($('select#newattr option')
 														.remove()
-														.sort(function (a,b) {
-															let at = $(a).text(),
-																bt = $(b).text();
-															return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
-														}))
+														.sort(sort_text))
 													.val('');
-											})
-										}
+											}
 
-										// Add attributes to "Add new Attribute" that are now available
-										if (data.may.length) {
-											var newattr = $('select#newattr');
-											var oldoptions = $('select#newattr option').map((i,o)=>o.value).get();
-
-											data.may.forEach(function(item) {
-												if (! oldoptions.includes(item))
-													newattr.append(new Option(item,item,false,false));
-											});
-
-											// Sort the attributes
-											newattr
-												.append($('select#newattr option')
-													.remove()
-													.sort(function (a,b) {
-														let at = $(a).text(),
-															bt = $(b).text();
-														return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
-													}))
-												.val('');
-										}
+										}).fail(ajax_error);
 
 									}).fail(ajax_error);
 								});
 
-								// Loop through added_oc, and remove anything not in newadded
-								added_oc.forEach(function(item) {
-									if (newadded.indexOf(item) === -1) {
-										$('span#objectclass_'+item).empty();
+								// Loop through oc_added, and remove anything not in oc_from_modal
+								oc_added.forEach(function(item) {
+									if (oc_from_modal.indexOf(item) === -1) {
+										$('span#objectclass_'+item).remove();
 
 										$.ajax({
 											method: 'POST',
@@ -218,43 +228,49 @@
 
 											// Remove attributes from "Add new Attribute" that are no longer available
 											if (data.may.length) {
-												data.may.forEach(function(mayitem) {
-													var x = $("select#newattr option[value='"+mayitem+"']");
+												data.may.forEach(function(item) {
+													var x = $("select#newattr option[value='"+item+"']");
 
 													if (x.length) {
 														x.remove();
 
 													// Add this to the must attrs list, because its been rendered
 													} else {
-														attrs.push(mayitem);
+														attrs.push(item);
 													}
 												});
 											}
 
-											data.must.concat(attrs).forEach(function(attr) {
-												var x = $('#'+attr.toLowerCase()+' input');
+											data.must.concat(attrs).forEach(function(item) {
+												attr_dependancy[item]--;
 
-												x.css('background-color','#f0c0c0')
-													.attr('readonly',true)
-													.attr('placeholder',x.val())
-													.val('');
+												if (attr_dependancy[item] === 0) {
+													// Remove the rendered attribute
+													$('attribute#'+item.toLowerCase())
+														.parentsUntil('div#newattrs')
+														.last()
+														.remove();
+
+													// Remove the option from the RDN
+													$('select#rdn').find('[value="'+item+'"]').remove();
+												}
 											});
 
 										}).fail(ajax_error);
 									}
 								});
 
-								added_oc = newadded;
+								oc_added = oc_from_modal;
 							}
 
 							// Show our ObjectClass modal so that we can add more objectclasses
 							$('#new_objectclass-modal').on('shown.bs.modal',function() {
-								if (! rendered)
+								if (! modal_rendered)
 									$.ajax({
 										method: 'POST',
 										url: '{{ url('entry/objectclass/add') }}',
 										data: {
-											oc: oc,
+											oc: oc_rendered(),
 										},
 										dataType: 'json',
 										cache: false,
@@ -269,18 +285,16 @@
 
 									}).fail(ajax_error);
 
-								rendered = true;
+								modal_rendered = true;
 							})
 
 							// When the ObjectClass modal is closed, process what was selected
 							$('#new_objectclass-modal').on('hide.bs.modal',function() {
-								newadded = $('select#newoc').val();
+								oc_from_modal = $('select#newoc').val();
 
-								// If nothing selected, we dont have anything to do
-								if (added_oc.sort().join('|') === newadded.sort().join('|'))
-									return;
-
-								process_oc();
+								// If nothing selected, we dont have anything to do, otherwise reprocess the objectclasses
+								if (oc_added.sort().join('|') !== oc_from_modal.sort().join('|'))
+									process_oc();
 							});
 						});
 					</script>

@@ -141,6 +141,7 @@
 
 @section('page-scripts')
 	<script type="text/javascript">
+		<!-- dn -->
 		var dn = '{{ $o->getDNSecure() }}';
 		var pagemodal_eventhandled = false;
 

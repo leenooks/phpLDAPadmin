@@ -208,7 +208,7 @@ class Entry extends Model
 		$rdn = explode('=',$this->getRdn());
 		$o = new Attribute\RDN('','dn',[self::TAG_NOTAG=>(array_filter($rdn) && (count($rdn) === 2)) ? [$rdn[0]=>$rdn[1]] : [NULL]]);
 		$o->setBase($this->getContainer());
-		$o->setAttributes($this->getAvailableAttributes()->filter(fn($item)=>$item->is_must));
+		$o->setAttributes($this->objects->pluck('schema'));
 
 		return $o;
 	}
