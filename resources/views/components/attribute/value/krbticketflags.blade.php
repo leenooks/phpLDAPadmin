@@ -1,20 +1,17 @@
 <!-- $o=KrbTicketFlags::class -->
-@if($editable)
-	<div id="32"></div>
-	<div id="16"></div>
+<div id="32"></div>
+<div id="16"></div>
 
-	<div class="input-group has-validation mb-3">
-		<input type="hidden" name="{{ $o->name_lc }}[{{ $attrtag }}][]" value="{{ $value }}" readonly>
+<div class="input-group has-validation mb-3">
+	<input type="hidden" name="{{ $o->name_lc }}[{{ $attrtag }}][]" value="{{ $value }}" readonly>
 
-		<x-form.invalid-feedback :errors="$errors->get($o->name_lc.'.'.$dotkey)"/>
-	</div>
-@else
-	{{ $value }}
-@endif
+	<x-form.invalid-feedback :errors="$errors->get($o->name_lc.'.'.$dotkey)"/>
+</div>
 
 @section($o->name_lc.'-scripts')
 	<script type="text/javascript">
-		var value = {{ $value ?? 0 }};
+		<!-- components.attribute.value.krbticketflags -->
+		var value = {{ $value ?: 0 }};
 		var label = {!! $helper !!};
 
 		function tooltip(bit) {
@@ -40,51 +37,50 @@
 			$('div#32').append(binary(31,16));
 			$('div#16').append(binary(15,0));
 
-			$('attribute#krbticketflags i')
-				.on('click',function() {
-					var item = $(this);
-					if ($('form#dn-edit').attr('readonly'))
-						return;
+			$('attribute#krbticketflags i').on('click',function() {
+				var item = $(this);
+				if ($('form#dn-edit').attr('readonly'))
+					return;
 
-					var key = Number(item.attr('id').substring(1));
+				var key = Number(item.attr('id').substring(1));
 
-					if (item.data('old') === undefined)
-						item.data('old',null);
+				if (item.data('old') === undefined)
+					item.data('old',null);
 
-					item.toggleClass('text-success');
+				item.toggleClass('text-success');
 
-					// has the item changed?
-					if (item.data('old') === null) {
-						// It was set to 1
-						if (item.hasClass('bi-1-square-fill')) {
-							item.data('old',1);
-							item.removeClass('bi-1-square-fill').addClass('bi-0-square-fill');
+				// has the item changed?
+				if (item.data('old') === null) {
+					// It was set to 1
+					if (item.hasClass('bi-1-square-fill')) {
+						item.data('old',1);
+						item.removeClass('bi-1-square-fill').addClass('bi-0-square-fill');
 
-							value -= Math.pow(2,key);
+						value -= Math.pow(2,key);
 
-						// It was set to 0
-						} else if (item.hasClass('bi-0-square')) {
-							item.data('old',0);
-							item.removeClass('bi-0-square').addClass('bi-1-square-fill');
+					// It was set to 0
+					} else if (item.hasClass('bi-0-square')) {
+						item.data('old',0);
+						item.removeClass('bi-0-square').addClass('bi-1-square-fill');
 
-							value += Math.pow(2,key);
-						}
-
-					} else {
-						if (item.data('old') === 0) {
-							item.removeClass('bi-1-square-fill').addClass('bi-0-square');
-							value -= Math.pow(2,key);
-
-						} else {
-							item.removeClass('bi-0-square-fill').addClass('bi-1-square-fill');
-							value += Math.pow(2,key);
-						}
-
-						item.data('old',null);
+						value += Math.pow(2,key);
 					}
 
-					$('attribute#krbticketflags input').val(value);
-				});
+				} else {
+					if (item.data('old') === 0) {
+						item.removeClass('bi-1-square-fill').addClass('bi-0-square');
+						value -= Math.pow(2,key);
+
+					} else {
+						item.removeClass('bi-0-square-fill').addClass('bi-1-square-fill');
+						value += Math.pow(2,key);
+					}
+
+					item.data('old',null);
+				}
+
+				$('attribute#krbticketflags input').val(value);
+			});
 		}
 
 		// When returning to a Entry after an update, jquery hasnt loaded yet, so make sure we defer this to after the page has run
