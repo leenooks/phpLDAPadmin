@@ -90,9 +90,14 @@
 				$('input#rdn_value').val(rdn_value);
 
 				// if rdn_attr is already set (and its now different), remove read only and clear value
-				if (rdn_attr)
-					$('attribute#'+rdn_attr+' input:first')
-						.attr('readonly',false).val('');
+				if (rdn_attr) {
+					var x = $('attribute#'+rdn_attr+' input:first');
+
+					x.val('');
+
+					if (! x.hasClass('no-edit'))
+						x.attr('readonly',false);
+				}
 
 				// set RDN attribute read-only
 				if ((rdn_attr=$(this).val()) && rdn_attr)
