@@ -134,7 +134,7 @@
 						<div class="widget-content-left header-user-info ms-3">
 							<div class="widget-heading">
 								@if($user->exists)
-									{{ Arr::get($user->getAttribute('cn'),0,Arr::get($user->getAttribute('entryuuid'),0,__('Secret Person'))) }}
+									<a id="user" class="text-light" href="#" data-link="{{ $user->getDNSecure() }}">{{ $user->getFirstAttribute('cn',$user->getFirstAttribute($user->getGuidKey(),__('Secret Person'))) }}</a>
 								@elseif(Session::get('username_encrypt') && ($dnrdn=dn_rdn(Crypt::decryptString(Session::get('username_encrypt')))))
 									{{ $dnrdn }}
 								@else
@@ -144,7 +144,7 @@
 
 							@if($user->exists)
 								<div class="widget-subheading">
-									{{ Arr::get($user->getAttribute('mail'),0,'') }}
+									{{ $user->getFirstAttribute('mail','') }}
 								</div>
 							@endif
 						</div>
@@ -180,6 +180,12 @@
 @section('page-scripts')
 	<script type="text/javascript">
 		$(document).ready(function() {
+			$('a#user').on('click',function(item) {
+				get_frame($(this).data('link'));
+
+				item.stopPropagation();
+			});
+
 			$('button[id^="link-"]').on('click',function(item) {
 				var content;
 

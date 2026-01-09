@@ -88,7 +88,7 @@
 					<script type="text/javascript">
 						<!-- attribte.widget.options/objectclass -->
 						// Sort select lists
-						const sort_text = function(a,b) {
+						var sort_text = function(a,b) {
 							let at = $(a).text(),
 								bt = $(b).text();
 							return (at > bt) ? 1 : ((at < bt) ? -1 : 0);

@@ -2,6 +2,7 @@
 
 namespace App\Ldap;
 
+use Illuminate\Support\Facades\Crypt;
 use LdapRecord\Models\OpenLDAP\User as Model;
 
 use App\Exceptions\InvalidConfiguration;
@@ -43,5 +44,10 @@ class User extends Model
 	public function getDn(): string
 	{
 		return $this->exists ? parent::getDn() : 'Anonymous';
+	}
+
+	public function getDNSecure(string $cmd=''): string
+	{
+		return Crypt::encryptString(($cmd ? sprintf('*%s|',$cmd) : '').$this->getDn());
 	}
 }
