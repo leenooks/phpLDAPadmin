@@ -92,6 +92,11 @@ return [
 		'alert_rootdn' => env('LDAP_ALERT_ROOTDN',TRUE) && strtolower(env('LDAP_LOGIN_ATTR','uid')) === 'dn',
 	],
 
+	/*
+	 * The key that will be used for unique handling of entries
+	 */
+	'guidkey' => env('LDAP_GUIDKEY','entryuuid'),
+
 	'template' => [
 		'dir' => env('LDAP_TEMPLATE_DRIVER','templates'),
 		'exclude_system' => env('LDAP_TEMPLATE_EXCLUDE_SYSTEM',FALSE),

@@ -15,6 +15,8 @@ use App\Ldap\Entry;
 
 class LoginController extends Controller
 {
+	private const LOGKEY = 'CAl';
+
 	/*
 	|--------------------------------------------------------------------------
 	| Login Controller
@@ -64,9 +66,15 @@ class LoginController extends Controller
 	 */
 	public function attemptLogin(Request $request)
 	{
-		$attempt = $this->guard()->attempt(
-			$this->credentials($request), $request->boolean('remember')
-		);
+		try {
+			$attempt = $this->guard()->attempt(
+				$this->credentials($request), $request->boolean('remember')
+			);
+
+		} catch (\Throwable $e) {
+			Log::error(sprintf('%s:! Authentication may have succeeded, but an error [%s] was thrown',self::LOGKEY,$e->getMessage()));
+			return FALSE;
+		}
 
 		// If the login failed, and PLA is set to use DN login, check if the entry exists.
 		// If the entry doesnt exist, it might be the root DN, which cannot be used to login
@@ -86,7 +94,7 @@ class LoginController extends Controller
 			$dn = config('server')->fetch($request->dn);
 			$o = new Entry;
 
-			if (! $dn && $o->getConnection()->getLdapConnection()->errNo() === 32)
+			if ((! $dn) && $o->getConnection()->getLdapConnection()->errNo() === 32)
 				abort(501,'Authentication succeeded, but the DN doesnt exist');
 		}
 
@@ -102,16 +110,9 @@ class LoginController extends Controller
 	 */
 	public function logout(Request $request)
 	{
-		$user = Auth::user();
-
 		$this->guard()->logout();
 		$request->session()->invalidate();
 		$request->session()->regenerateToken();
-
-		if ($response = $this->loggedOut($request)) {
-			Log::info(sprintf('Logged out [%s]',$user->dn));
-			return $response;
-		}
 
 		return $request->wantsJson()
 			? new JsonResponse([], 204)

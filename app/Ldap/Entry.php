@@ -51,6 +51,7 @@ class Entry extends Model
 	{
 		parent::__construct($attributes);
 
+		$this->guidKey = config('pla.guidkey');
 		$this->objects = collect();
 		$this->templates = collect();
 	}

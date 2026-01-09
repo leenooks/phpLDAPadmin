@@ -6,7 +6,7 @@
 	<table class="table table-borderless">
 		<tr>
 			<td><div class="page-title-icon f32"><i class="fas fa-info"></i></div></td>
-			<td class="top text-end align-text-top p-2"><strong>@lang('Server Info')</strong><br><small>{{ $server->rootDSE()->entryuuid[0] ?? '' }}</small></td>
+			<td class="top text-end align-text-top p-2"><strong>@lang('Server Info')</strong><br><small>{{ ($x=$server->rootDSE())->getFirstAttribute($x->getGuidKey()) }}</small></td>
 		</tr>
 	</table>
 @endsection

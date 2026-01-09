@@ -15,42 +15,40 @@
 	<tr>
 		<td class="align-bottom font-size-xs" colspan="2">
 			<table class="table table-condensed table-borderless w-100">
-				@if($o->entryuuid)
-					@if($x=$o->getObject('createtimestamp'))
-						<tr class="mt-1">
-							<td class="p-0 pe-2">Created</td>
-							<th class="p-0">
-								<x-attribute.values :o="$x" :new="false"/> [<x-attribute.values :o="$o->getObject('creatorsname')" :new="false"/>]
-							</th>
-						</tr>
-					@endif
-					@if($x=$o->getObject('modifytimestamp'))
-						<tr class="mt-1">
-							<td class="p-0 pe-2">Modified</td>
-							<th class="p-0">
-								<x-attribute.values :o="$x" :new="false"/> [<x-attribute.values :o="$o->getObject('modifiersname')" :new="false"/>]
-							</th>
-						</tr>
-					@endif
+				@if($x=$o->getObject('createtimestamp'))
 					<tr class="mt-1">
-						<td class="p-0 pe-2">UUID</td>
+						<td class="p-0 pe-2">@lang('Created')</td>
 						<th class="p-0">
-							<x-attribute.values :o="$o->getObject('entryuuid')" :new="false"/>
+							<x-attribute.values :o="$x" :new="false"/> [<x-attribute.values :o="$o->getObject('creatorsname')" :new="false"/>]
 						</th>
 					</tr>
-					<!-- It is assumed that langtags contains at least Entry::TAG_NOTAG -->
-					@if(($x=$o->getLangTags()
-						->flatMap(fn($item)=>$item->values())
-						->unique()
-						->sort()
-						->filter(fn($item)=>($item !== Entry::TAG_NOTAG))
-						->map(fn($item)=>preg_replace('/'.Entry::LANG_TAG_PREFIX.'/','',$item)))
-						->count())
-						<tr class="mt-1">
-							<td class="p-0 pe-2">Tags</td>
-							<th class="p-0">{{ $x->join(', ') }}</th>
-						</tr>
-					@endif
+				@endif
+				@if($x=$o->getObject('modifytimestamp'))
+					<tr class="mt-1">
+						<td class="p-0 pe-2">@lang('Modified')</td>
+						<th class="p-0">
+							<x-attribute.values :o="$x" :new="false"/> [<x-attribute.values :o="$o->getObject('modifiersname')" :new="false"/>]
+						</th>
+					</tr>
+				@endif
+				<tr class="mt-1">
+					<td class="p-0 pe-2">UUID</td>
+					<th class="p-0">
+						<x-attribute.values :o="$o->getObject($o->getGuidKey())" :new="false"/>
+					</th>
+				</tr>
+				<!-- It is assumed that langtags contains at least Entry::TAG_NOTAG -->
+				@if(($x=$o->getLangTags()
+					->flatMap(fn($item)=>$item->values())
+					->unique()
+					->sort()
+					->filter(fn($item)=>($item !== Entry::TAG_NOTAG))
+					->map(fn($item)=>preg_replace('/'.Entry::LANG_TAG_PREFIX.'/','',$item)))
+					->count())
+					<tr class="mt-1">
+						<td class="p-0 pe-2">Tags</td>
+						<th class="p-0">{{ $x->join(', ') }}</th>
+					</tr>
 				@endif
 			</table>
 		</td>

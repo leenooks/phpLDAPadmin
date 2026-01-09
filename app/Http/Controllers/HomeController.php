@@ -81,7 +81,7 @@ class HomeController extends Controller
 				->with('dn',$key['dn'])
 				->with('o',$o)
 				->with('page_actions',collect([
-					'create'=>($x=($o->getObjects()->except('entryuuid')->count() > 0)),
+					'create'=>($x=($o->getObjects()->except($o->getGuidKey())->count() > 0)),
 					'copy'=>$x,
 					'delete'=>! $o->has_children,
 					'edit'=>$x,
