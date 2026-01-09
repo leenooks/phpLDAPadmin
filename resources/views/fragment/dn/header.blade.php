@@ -31,12 +31,14 @@
 						</th>
 					</tr>
 				@endif
-				<tr class="mt-1">
-					<td class="p-0 pe-2">UUID</td>
-					<th class="p-0">
-						<x-attribute.values :o="$o->getObject($o->getGuidKey())" :new="false"/>
-					</th>
-				</tr>
+				@if($x=$o->getObject($o->getGuidKey()))
+					<tr class="mt-1">
+						<td class="p-0 pe-2">UUID</td>
+						<th class="p-0">
+							<x-attribute.values :o="$x" :new="false"/>
+						</th>
+					</tr>
+				@endif
 				<!-- It is assumed that langtags contains at least Entry::TAG_NOTAG -->
 				@if(($x=$o->getLangTags()
 					->flatMap(fn($item)=>$item->values())
