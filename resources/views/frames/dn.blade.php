@@ -106,7 +106,7 @@
 														<x-attribute :o="$ao" :edit="false" :editable="true" :new="true" :template="null" :updated="$updated->contains($ao->name_lc)"/>
 													@endforeach
 
-													@include('fragment.dn.add_attr')
+													@include('fragment.dn.add_attr',['edit'=>FALSE])
 												</div>
 											</div>
 										</form>

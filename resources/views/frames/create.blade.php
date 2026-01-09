@@ -75,7 +75,7 @@
 
 								@if(! $template)
 									<!-- @todo When we come back from validation the javascript to append a new attribute is not loaded -->
-									@include('fragment.dn.add_attr')
+									@include('fragment.dn.add_attr',['edit'=>TRUE])
 								@endif
 								@break;
 						@endswitch

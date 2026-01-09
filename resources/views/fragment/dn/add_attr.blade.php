@@ -67,7 +67,7 @@
 				attr_render(item);
 			});
 
-			@if($o->getMissingAttributes()->count())
+			@if($edit && $o->getMissingAttributes()->count())
 				$('#newattr-select.d-none')
 					.removeClass('d-none')
 					.find('select')
