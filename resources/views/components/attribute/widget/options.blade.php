@@ -333,7 +333,7 @@
 
 									active.find('input:last')
 										.clone()
-										.attr('value','')
+										.val('')
 										.attr('placeholder','[@lang('NEW')]')
 										.addClass('border-focus')
 										.appendTo(active);
