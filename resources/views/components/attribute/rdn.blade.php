@@ -93,9 +93,7 @@
 				if (rdn_attr) {
 					var x = $('attribute#'+rdn_attr+' input:first');
 
-					x.val('');
-
-					if (! x.hasClass('no-edit'))
+					if ((! x.hasClass('no-edit')) && (! x.hasClass('modal-edit')))
 						x.attr('readonly',false);
 				}
 
@@ -103,6 +101,9 @@
 				if ((rdn_attr=$(this).val()) && rdn_attr)
 					$('attribute#'+rdn_attr+' input:first')
 						.attr('readonly',true);
+
+				// If the underlying attribute is a modal edit, then dont enable it to be edited
+				$('input#rdn_value').attr('readonly',$('attribute#'+rdn_attr+' input:first').hasClass('modal-edit'));
 
 				rdn_value_set();
 			})

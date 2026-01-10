@@ -159,7 +159,7 @@
 				.attr('disabled',true);
 
 			// Find all input items and turn off readonly
-			$('input.form-control').not('.modal_edit, .no-edit').each(function() {
+			$('input.form-control').not('.modal-edit, .no-edit').each(function() {
 				$(this).attr('readonly',false);
 			});
 

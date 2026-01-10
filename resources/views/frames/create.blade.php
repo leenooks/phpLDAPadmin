@@ -103,8 +103,6 @@
 		var dn = '{{ Crypt::encryptString($container) }}';
 
 		@if($step === 1)
-			var rdn_attr;
-
 			$(document).ready(function() {
 				$('#objectclass').on('select2:open',function(){
 					$('#template').val(null).trigger('change');

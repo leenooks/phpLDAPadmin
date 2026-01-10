@@ -96,8 +96,8 @@
 	</div>
 </div>
 
-<!-- Template javascript -->
-@if(($x=$template?->onChange($o->name))?->count())
+<!-- Template javascript, only for new entries -->
+@if((! $o->dn) && ($x=$template?->onChange($o->name))?->count())
 	@section('page-scripts')
 		<!-- START: ONCHANGE PROCESSING {{ $o->name }} -->
 		<script type="text/javascript">
