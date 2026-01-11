@@ -7,7 +7,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\View\View;
 
 use App\Exceptions\InvalidUsage;
 use App\Ldap\Entry;
@@ -22,7 +21,7 @@ class HomeController extends Controller
 	 *
 	 * @param Request $request
 	 * @param Collection|null $old
-	 * @return View
+	 * @return \Illuminate\View\View
 	 * @throws InvalidUsage
 	 * @throws \Psr\Container\ContainerExceptionInterface
 	 * @throws \Psr\Container\NotFoundExceptionInterface

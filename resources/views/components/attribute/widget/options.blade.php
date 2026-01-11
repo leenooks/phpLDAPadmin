@@ -3,7 +3,7 @@
 
 <span class="p-0 m-0">
 	@if($o->is_rdn && $editable)
-		<span id="entry-rename" class="btn btn-sm btn-outline-focus mt-3" data-bs-toggle="modal" data-bs-target="#page-modal"><i class="fas fa-fw fa-exchange"></i> @lang('Rename')</span>
+		<button type="button" class="btn btn-sm btn-outline-focus mt-3" name="entry-rename" data-bs-toggle="modal" data-bs-target="#page-modal"><i class="fas fa-fw fa-exchange"></i> @lang('Rename')</button>
 
 	@elseif(($edit || $editable) && $o->can_addvalues && (! $o->isDynamic()))
 		@switch(get_class($o))

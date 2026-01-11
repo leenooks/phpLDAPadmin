@@ -173,7 +173,7 @@ ul.fancytree-container ul {
 
 /** Change the background on our read-only form items **/
 .form-control:disabled, .form-control[readonly] {
-	background-color: #f9f9f9;
+	background-color: var(--bs-gray-100);
 }
 
 /** Make our placeholder text on forms lighter **/
@@ -258,7 +258,7 @@ pre code .line::before {
 }
 
 .input-group-text {
-	background-color: #fafafa;
+	background-color: var(--bs-gray-100);
 }
 
 /* Stop showing a border on our user's drop down menu when open */

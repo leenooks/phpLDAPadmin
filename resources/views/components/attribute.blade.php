@@ -47,7 +47,7 @@
 					</span>
 
 					@if((! $o->is_internal) && (! $template))
-						<div class="btn-group-sm nav btn-group" role="group">
+						<div class="btn-group btn-group-sm nav" role="group">
 							@if(! $o->no_attr_tags)
 								@if($has_default=$o->langtags->contains(Entry::TAG_NOTAG))
 									<button type="button" data-bs-toggle="tab" href="#langtag-{{ $o->name_lc }}-{{ Entry::TAG_NOTAG }}" @class(['btn','btn-outline-light','border-dark-subtle','active','addable d-none'=>$o->langtags->count() === 1])>
