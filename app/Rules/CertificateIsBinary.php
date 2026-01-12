@@ -5,13 +5,11 @@ namespace App\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
+use App\Traits\SetState;
+
 class CertificateIsBinary implements ValidationRule
 {
-	// Required for artisan optimize
-	public static function __set_state(array $array): self
-	{
-		return new self;
-	}
+	use SetState;
 
     /**
      * Run the validation rule.
