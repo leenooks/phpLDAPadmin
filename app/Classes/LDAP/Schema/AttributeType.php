@@ -122,7 +122,7 @@ final class AttributeType extends Base
 	 * @param Collection $ocs
 	 * @return Collection
 	 */
-	private function heirachy(Collection $ocs): Collection
+	private function hierarchy(Collection $ocs): Collection
 	{
 		$result = collect();
 
@@ -326,7 +326,7 @@ final class AttributeType extends Base
 	public function validation(array $array): ?array
 	{
 		// For each item in array, we need to get the OC hierarchy
-		$heirachy = $this->heirachy(collect($array)
+		$hierarchy = $this->hierarchy(collect($array)
 			->flatten()
 			->filter());
 
@@ -340,7 +340,7 @@ final class AttributeType extends Base
 				: Entry::TAG_NOTAG);
 
 		// Add in schema required by conditions
-		if (($heirachy->intersect($this->required_by_object_classes->keys())->count() > 0)
+		if (($hierarchy->intersect($this->required_by_object_classes->keys())->count() > 0)
 			&& (! collect($validation->get($this->name_lc))->contains('required'))) {
 			$validation
 				->prepend(array_merge(['required','min:1'],$validation->get($nolangtag,[])),$nolangtag)
