@@ -6,7 +6,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
 use App\Classes\LDAP\Attribute;
-use App\Ldap\Entry;
 
 /**
  * This factory is used to return LDAP attributes as an object
@@ -40,6 +39,7 @@ class Factory
 		'monitorcontext' => Schema\Generic::class,
 		'namingcontexts' => Schema\Generic::class,
 		'objectclass' => ObjectClass::class,
+		'sambaacctflags' => SambaAcctFlags::class,
 		'supportedcontrol' => Schema\OID::class,
 		'supportedextension' => Schema\OID::class,
 		'supportedfeatures' => Schema\OID::class,

@@ -15,6 +15,22 @@ attribute#userpassword .input-group > .select2-container--bootstrap-5 .select2-s
 	background-color: #eef2f4;
 }
 
+attribute#sambaacctflags .input-group > .btn-group {
+	input:checked + label {
+		color: var(--bs-btn-active-color);
+	}
+
+	label:not(.btn-outline-success) {
+		color: var(--bs-body-color);
+	}
+
+	label {
+		border-color: var(--bs-border-color);
+		width: 2em;
+		padding: 0.25em 0.5em;
+	}
+}
+
 /* render the structural inside the input box */
 attribute .input-group-end:not(input.form-control) {
 	position: absolute;

@@ -27,11 +27,17 @@ class Entry extends Model
 {
 	private const LOGKEY = 'E--';
 
+	/** @var string regex used to identify tags */
 	private const TAG_CHARS = 'a-zA-Z0-9-';
+	/** @var string prefix used for langtags */
 	public const LANG_TAG_PREFIX = 'lang-';
 	public const TAG_CHARS_LANG = self::LANG_TAG_PREFIX.'['.self::TAG_CHARS.']+';
+	/** @var string For attributes that dont have any tags */
 	public const TAG_NOTAG = '_null_';
 	public const TAG_MD5 = '_md5_';
+	/** @var string For attributes that are manipulated internally before sending to the LDAP server */
+	public const TAG_INTERNAL = '_internal_';
+	/** @var string For attributes that has additional processing by the value of the helper */
 	public const TAG_HELPER = '_helper_';
 	public const TAG_NOVALUES = [self::TAG_MD5,self::TAG_HELPER];
 

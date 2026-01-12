@@ -193,7 +193,7 @@ class Attribute implements \Countable, \ArrayAccess
 	}
 
 	/**
-	 * Used when setting up an attribiute, mainly to add additional tag values to the original object
+	 * Used when setting up an attribute, mainly to add additional tag values to the original object
 	 *
 	 * @param string $tag
 	 * @param array $values
@@ -231,13 +231,25 @@ class Attribute implements \Countable, \ArrayAccess
 	/**
 	 * Does this attribute values have a helper to process the values
 	 *
-	 * @param array $values
+	 * @param Collection $values
 	 * @return Collection
 	 */
-	protected function getHelpers(array $values): Collection
+	protected function getHelpers(Collection $values): Collection
 	{
-		return collect($values)->keys()
+		return $values->keys()
 			->filter(fn($item)=>\Str::endsWith($item,Entry::TAG_HELPER));
+	}
+
+	/**
+	 * Does this attribute have values that need to be re-assembled internally
+	 *
+	 * @param Collection $values
+	 * @return Collection
+	 */
+	protected function getInternal(Collection $values): Collection
+	{
+		return $values->keys()
+			->filter(fn($item)=>\Str::endsWith($item,Entry::TAG_INTERNAL));
 	}
 
 	/**
@@ -393,10 +405,15 @@ class Attribute implements \Countable, \ArrayAccess
 
 	public function setValues(array $values): void
 	{
+		$values = collect($values);
+
+		if ($this->getInternal($values)->count())
+			$values = $this->setValuesInternal($values);
+
 		$this->values =
 			($this->getHelpers($values)->count())
-				? $this->setValuesHelper(collect($values))
-				: collect($values)
+				? $this->setValuesHelper($values)
+				: $values
 					->map(fn($item)=>$this->base64_values ? array_map('base64_decode',$item) : $item);
 	}
 
@@ -408,6 +425,18 @@ class Attribute implements \Countable, \ArrayAccess
 	 * @note This method should be overridden in a child class
 	 */
 	protected function setValuesHelper(Collection $values): Collection
+	{
+		return $values;
+	}
+
+	/**
+	 * Process TAG_INTERNAL values, typically in sub classes
+	 *
+	 * @param Collection $values
+	 * @return Collection
+	 * @note This method should be overridden in a child class
+	 */
+	protected function setValuesInternal(Collection $values): Collection
 	{
 		return $values;
 	}
