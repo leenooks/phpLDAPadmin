@@ -21,12 +21,8 @@
 		<select class="form-control" id="destination" multiple></select>
 	</div>
 
-	<div class="row">
-		<div class="col">
-			<div class="input-group">
-				<input type="text" class="form-control mt-3" id="member-filter" placeholder="@lang('Filter Members')">
-			</div>
-		</div>
+	<div class="input-group">
+		<input type="text" class="form-control mt-3" id="member-filter" placeholder="@lang('Filter Members')">
 	</div>
 </div>
 
@@ -109,21 +105,21 @@
 		});
 
 		$('input#member-filter').on('keyup',function(e) {
-			var filter = $(this).val().toLowerCase();
+			filter($(this).val().toLowerCase());
+		});
 
+		var filter = _.debounce(function(filter) {
 			$('select#source option').each(function() {
 				var option = $(this).text().toLowerCase();
 
-				// Use toggle() to show if text matches, hide otherwise
 				$(this).toggle(option.indexOf(filter) > -1);
 			});
 
 			$('select#destination option').each(function() {
 				var option = $(this).text().toLowerCase();
 
-				// Use toggle() to show if text matches, hide otherwise
 				$(this).toggle(option.indexOf(filter) > -1);
 			});
-		});
+		}, 500);
 	});
 </script>
