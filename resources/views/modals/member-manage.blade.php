@@ -20,6 +20,14 @@
 		<label>@lang('Group Members')</label>
 		<select class="form-control" id="destination" multiple></select>
 	</div>
+
+	<div class="row">
+		<div class="col">
+			<div class="input-group">
+				<input type="text" class="form-control mt-3" id="member-filter" placeholder="@lang('Filter Members')">
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="modal-footer">
@@ -98,6 +106,24 @@
 		$('button#btnAllLeft').on('click',function(e) {
 			$('select').moveAllToList('#destination','#source');
 			e.preventDefault();
+		});
+
+		$('input#member-filter').on('keyup',function(e) {
+			var filter = $(this).val().toLowerCase();
+
+			$('select#source option').each(function() {
+				var option = $(this).text().toLowerCase();
+
+				// Use toggle() to show if text matches, hide otherwise
+				$(this).toggle(option.indexOf(filter) > -1);
+			});
+
+			$('select#destination option').each(function() {
+				var option = $(this).text().toLowerCase();
+
+				// Use toggle() to show if text matches, hide otherwise
+				$(this).toggle(option.indexOf(filter) > -1);
+			});
 		});
 	});
 </script>
