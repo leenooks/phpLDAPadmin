@@ -62,6 +62,7 @@ Route::controller(HomeController::class)->group(function() {
 			Route::view('member-manage/{dn}','modals.member-manage');
 			Route::view('rename/{dn}','modals.entry-rename');
 			Route::view('userpassword-check/{dn}','modals.entry-userpassword-check');
+			Route::view('values-show/{dn}','modals.values-show');
 		});
 
 		Route::group(['prefix'=>'server'],function() {

@@ -146,7 +146,7 @@ function before_send_spinner(that) {
 function attribute_values(attr,container='attribute',input='input') {
 	return $(container+'#'+attr+' '+(input === 'input' ? 'input[type=text]:not(.no-edit)' : input))
 		.map((index,element)=>$(element).val())
-		.toArray()
+		.toArray();
 }
 
 // This function will update values that are altered from a modal
@@ -160,9 +160,9 @@ function update_from_modal(attr,modal_data) {
 		if (existing.indexOf(item) === -1) {
 			// Add attribute to the page
 			var active = $('form[id^="dn-"] attribute#'+attr)
-				.find('.tab-content .tab-pane.active');
+				.find('.tab-content .tab-pane.active div.input-group:last');
 
-			var clone = active.find('div.input-group:last')
+			var clone = active
 				.clone()
 				.appendTo(active);
 
@@ -179,7 +179,11 @@ function update_from_modal(attr,modal_data) {
 		if (modal_data.indexOf(item) === -1) {
 			$('form[id^="dn-"] attribute#'+attr+' input[value="'+item+'"]')
 				.closest('div.input-group')
-				.empty();
+				.remove();
+
+			// For the extra values that are not shown
+			$('form[id^="dn-"] attribute#'+attr+' input[value="'+item+'"]')
+				.remove();
 		}
 	});
 
@@ -187,6 +191,11 @@ function update_from_modal(attr,modal_data) {
 	$('form[id^="dn-"] attribute#'+attr+' input[value=""]')
 		.closest('div.input-group')
 		.empty();
+
+	// If we have a button, update it
+	var button = $('button#extra-'+attr);
+	if (button.length)
+		button.html(button.html().replace(/\d+/,$('form[id^="dn-"] attribute#'+attr+' input.d-none').length));
 
 	return addition;
 }

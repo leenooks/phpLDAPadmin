@@ -303,6 +303,25 @@
 
 						break;
 
+					case 'values-show':
+						modal_attr = $(item.relatedTarget).data('attr');
+						modal_tag = $(item.relatedTarget).data('tag');
+						console.log('model_attr:',modal_attr);
+
+						$.ajax({
+							method: 'GET',
+							url: '{{ url('modal/values-show') }}/'+dn,
+							dataType: 'html',
+							cache: false,
+							beforeSend: before_send_spinner(that)
+
+						}).done(function(html) {
+							that.empty().append(html);
+
+						}).fail(ajax_error);
+
+						break;
+
 					default:
 						console.log('No action for button:'+$(item.relatedTarget).attr('name'));
 				}

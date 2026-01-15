@@ -10,7 +10,7 @@
 		@endif
 
 		{{-- At this point $values is the original/updated values, however old() might have md5 values --}}
-		@foreach(Arr::get(old($o->name_lc,$o->values ?: [$langtag=>['']]),$langtag,$o->values->get($langtag,[''])) as $key => $value)
+		@foreach(($values=collect(Arr::get(old($o->name_lc,$o->values ?: [$langtag=>['']]),$langtag,$o->values->get($langtag,['']))))->take(config('pla.limit.values')) as $key => $value)
 			<x-attribute.value
 				@class([
 					'form-control',
@@ -28,6 +28,16 @@
 				:new="$new ?? FALSE"
 				:template="$template ?? NULL"/>
 		@endforeach
+
+		@foreach(($x=$values->skip(config('pla.limit.values'))->filter()) as $key => $value)
+			<input type="text" class="d-none" name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ $value }}">
+		@endforeach
+
+		@if($x->count())
+			<button type="button" class="btn btn-sm btn-outline-light mt-2" id="extra-{{ $o->name_lc }}" name="values-show" data-attr="{{ $o->name_lc }}" data-tag="{{ $langtag }}" data-bs-toggle="modal" data-bs-target="#page-modal">
+				@lang(':count more values ',['count'=>$x->count()]) &hellip;
+			</button>
+		@endif
 
 		@if($o->render_tables && (! $loop->index))
 			</table>

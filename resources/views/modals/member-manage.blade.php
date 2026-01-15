@@ -58,7 +58,7 @@
 		$('attribute#'+modal_attr+' input[type=text]:not(.no-edit)')
 			.filter((index,element)=>$(element).val())
 			.each((index,element)=>
-				$('select#destination').append(new Option($(element).val(),$(element).val(),false,false)));
+				$('select#destination').append(new Option($(element).val(),$(element).val())));
 
 		// Populate the potential members
 		$.ajax({
@@ -72,16 +72,16 @@
 			cache: false,
 
 		}).done(function(data) {
-			data.forEach((item)=>$('select#source').append(new Option(item,item,false,false)));
+			data.forEach((item)=>$('select#source').append(new Option(item,item)));
 
 		}).fail(ajax_error);
 
-		$('select#source').on('dblclick',function(item) {
+		$('select#source').on('dblclick',function() {
 			$('select')
 				.moveToList('#source','#destination');
 		})
 
-		$('select#destination').on('dblclick',function(item) {
+		$('select#destination').on('dblclick',function() {
 			$('select')
 				.moveToList('#destination','#source');
 		})
@@ -96,11 +96,13 @@
 
 		$('button#btnAllRight').on('click',function(e) {
 			$('select').moveAllToList('#source','#destination');
+
 			e.preventDefault();
 		});
 
 		$('button#btnAllLeft').on('click',function(e) {
 			$('select').moveAllToList('#destination','#source');
+
 			e.preventDefault();
 		});
 

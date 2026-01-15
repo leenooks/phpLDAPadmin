@@ -97,6 +97,13 @@ return [
 	 */
 	'guidkey' => env('LDAP_GUIDKEY','entryuuid'),
 
+	/*
+	 * Limit the number of attribute values to show at a time
+	 */
+	'limit' => [
+		'values' => env('LDAP_LIMIT_VALUES',10),
+	],
+
 	'template' => [
 		'dir' => env('LDAP_TEMPLATE_DRIVER','templates'),
 		'exclude_system' => env('LDAP_TEMPLATE_EXCLUDE_SYSTEM',FALSE),
