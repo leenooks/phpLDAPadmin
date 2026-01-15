@@ -9,4 +9,4 @@ olcSuffix: dc=example.com
 olcAccess: to dn.base="" by dn="cn=admin,dc=Test" write by * read
 olcAccess: to * by dn="cn=AdminUser,dc=Test" write by anonymous write by * write
 olcRootDN: cn=admin,dc=example.com
-olcRootPW: {SSHA}e8xGdXmL+mSD3u/389YHeM+dpqFCUSyq
+olcRootPW: {SSHA}jTir88DPr8nLdxS0DTmR5LrhWtlKfKKB

@@ -11,4 +11,4 @@ olcAccess: to dn.base="" by dn="cn=admin,dc=Test" write by * read
 olcAccess: to attrs=userPassword,shadowLastChange by dn="cn=admin,dc=Test" write by anonymous auth by self write by * none
 olcAccess: to * by dn="cn=admin,o=Simpsons" write by dn="cn=admin,dc=Test" write by * read
 olcRootDN: cn=admin,o=Simpsons
-olcRootPW: {SSHA}e8xGdXmL+mSD3u/389YHeM+dpqFCUSyq
+olcRootPW: {SSHA}jTir88DPr8nLdxS0DTmR5LrhWtlKfKKB
