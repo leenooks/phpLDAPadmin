@@ -101,6 +101,12 @@
 								.toArray();
 						}
 
+						function newattr_options() {
+							return $('select#newattr option')
+								.map((key,item)=>item.value)
+								.toArray();
+						}
+
 						$(document).ready(function() {
 							var modal_rendered = false;
 							var oc_added = [];		// Object classes being added to this entry

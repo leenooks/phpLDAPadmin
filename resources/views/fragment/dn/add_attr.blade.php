@@ -24,12 +24,6 @@
 @section('page-scripts')
 	<script type="text/javascript">
 		<!-- fragment.dn.add_attr -->
-		function newattr_options() {
-			return $('select#newattr option')
-				.map((key,item)=>item.value)
-				.toArray();
-		}
-
 		// Add an attribute to a page
 		function attr_render(item) {
 			$.ajax({
