@@ -6,7 +6,7 @@
 
 <div class="modal-body">
 	<div class="member-box">
-		<label>@lang('Available Members')</label>
+		<label>@lang('Available Members') <i class="fas fa-fw fa-spinner fa-pulse"></i></label>
 		<select class="form-control" id="source" multiple></select>
 	</div>
 
@@ -73,6 +73,8 @@
 
 		}).done(function(data) {
 			data.forEach((item)=>$('select#source').append(new Option(item,item)));
+
+			$('div.member-box label i').addClass('d-none');
 
 		}).fail(ajax_error);
 
