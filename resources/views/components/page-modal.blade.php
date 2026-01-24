@@ -7,4 +7,5 @@
 
 <script type="text/javascript">
 	var modal_attr;
+	var modal_tag;
 </script>

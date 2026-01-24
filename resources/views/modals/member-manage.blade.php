@@ -55,7 +55,7 @@
 
 	$(document).ready(function() {
 		// Populate the existing members
-		$('attribute#'+modal_attr+' input[type=text]:not(.no-edit)')
+		$('div#template-default attribute#'+modal_attr+' input[type=text][name^="'+modal_attr+'['+modal_tag+']"]:not(.no-edit)')
 			.filter((index,element)=>$(element).val())
 			.each((index,element)=>
 				$('select#destination').append(new Option($(element).val(),$(element).val())));
@@ -109,19 +109,19 @@
 		$('input#member-filter').on('keyup',function(e) {
 			filter($(this).val().toLowerCase());
 		});
-
-		var filter = _.debounce(function(filter) {
-			$('select#source option').each(function() {
-				var option = $(this).text().toLowerCase();
-
-				$(this).toggle(option.indexOf(filter) > -1);
-			});
-
-			$('select#destination option').each(function() {
-				var option = $(this).text().toLowerCase();
-
-				$(this).toggle(option.indexOf(filter) > -1);
-			});
-		}, 500);
 	});
+
+	var filter = _.debounce(function(filter) {
+		$('select#source option').each(function() {
+			var option = $(this).text().toLowerCase();
+
+			$(this).toggle(option.indexOf(filter) > -1);
+		});
+
+		$('select#destination option').each(function() {
+			var option = $(this).text().toLowerCase();
+
+			$(this).toggle(option.indexOf(filter) > -1);
+		});
+	}, 500);
 </script>

@@ -1,5 +1,6 @@
 @use(App\Classes\LDAP\Attribute\Binary\{Certificate,CertificateList,JpegPhoto})
 @use(App\Classes\LDAP\Attribute\{Member,ObjectClass})
+@use(App\Ldap\Entry)
 
 <span class="p-0 m-0">
 	@if($o->is_rdn && $editable)
@@ -12,7 +13,7 @@
 				@break
 
 			@case(Member::class)
-				<button type="button" name="member-manage" @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>$editable]) data-attr={{ $o->name_lc }} data-bs-toggle="modal" data-bs-target="#page-modal"><i class="fas fa-fw fa-plus"></i> @lang('Add Member')</button>
+				<button type="button" name="member-manage" @class(['btn','btn-sm','btn-outline-primary','mt-3','addable','d-none'=>$editable]) data-attr="{{ $o->name_lc }}" data-bs-toggle="modal" data-bs-target="#page-modal"><i class="fas fa-fw fa-plus"></i> @lang('Add Member')</button>
 
 				@section('page-scripts')
 					<script type="text/javascript">
@@ -27,6 +28,7 @@
 
 								var that = $(this).find('.modal-content');
 								modal_attr = $(item.relatedTarget).data('attr');
+								modal_tag = '{{ Entry::TAG_NOTAG }}';
 
 								$.ajax({
 									method: 'GET',
@@ -337,14 +339,15 @@
 								// Create a new entry when Add Value clicked
 								$('form#dn-edit #{{ $o->name_lc }}-addnew.addable').on('click',function() {
 									var attribute = $(this).closest('attribute');
-									var active = attribute.find('.tab-content .tab-pane.active');
+									var active = attribute.find('.tab-content .tab-pane.active div.input-group:last');
 
-									active.find('input:last')
+									active
 										.clone()
+										.insertAfter(active)
+										.find('input:last')
 										.val('')
 										.attr('placeholder','[@lang('NEW')]')
 										.addClass('border-focus')
-										.appendTo(active);
 								});
 							});
 						</script>
