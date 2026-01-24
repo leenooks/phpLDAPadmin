@@ -181,9 +181,11 @@
 													}).fail(ajax_error);
 
 													// If this is a new entry, add the required attributes to the RDN
-													if (! rdn_options().includes(item)) {
-														$('select#rdn').append(new Option(item,item));
-														rdn_options_sort = true;
+													if ($('select#rdn')) {
+														if (! rdn_options().includes(item)) {
+															$('select#rdn').append(new Option(item,item));
+															rdn_options_sort = true;
+														}
 													}
 
 													// Remove the new attributes from the newattr select list.

@@ -41,11 +41,13 @@
 			}).fail(ajax_error);
 
 			// Add the attr to the RDN
-			if (! rdn_options().includes(item.target.value)) {
-				$('select#rdn').append(new Option(item.target.value,item.target.value));
+			if ($('select#rdn')) {
+				if (! rdn_options().includes(item.target.value)) {
+					$('select#rdn').append(new Option(item.target.value,item.target.value));
 
-				rdn_options_sort = true;
-				sort_rdn_options();
+					rdn_options_sort = true;
+					sort_rdn_options();
+				}
 			}
 
 			// Remove the option from the new attr list
