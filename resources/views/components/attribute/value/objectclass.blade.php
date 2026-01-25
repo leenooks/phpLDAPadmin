@@ -2,7 +2,9 @@
 <span id="objectclass_{{$value}}">
 	<div class="input-group has-validation">
 		<input type="text"
-			{{ $attributes->class(['is-invalid'=>($e=$errors->get($o->name_lc.'.'.$dotkey))]) }}
+			{{ $attributes->only('class')->class([
+				'is-invalid'=>($e=$errors->get($o->name_lc.'.'.$dotkey))
+			]) }}
 			name="{{ $o->name_lc }}[{{ $attrtag }}][]"
 			value="{{ $value }}"
 			readonly>

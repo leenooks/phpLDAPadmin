@@ -20,12 +20,14 @@
 		allowclear="false"
 		:disabled="! $edit"/>
 	<input type="password"
-		{{ $attributes->class(['is-invalid'=>($e=$errors->get($o->name_lc.'.'.$dotkey)) || $value === '{*clear*}'.Password::obfuscate]) }}
+		{{ $attributes->only('class')->class([
+			'is-invalid'=>($e=$errors->get($o->name_lc.'.'.$dotkey)) || ($value === '{*CLEAR*}'.Password::obfuscate)
+		]) }}
 		name="{{ $o->name_lc }}[{{ $attrtag }}][]"
 		value="{{ Arr::get(old($o->name_lc),$dotkey,md5($o->values->dot()->get($dotkey))) }}"
 		@readonly(! $edit)>
 
-	<x-form.invalid-feedback :errors="$e" alt="{{ $value === '{*clear*}'.Password::obfuscate ? __('Please (re)enter password') : '' }}"/>
+	<x-form.invalid-feedback :errors="$e" alt="{{ ($value === '{*CLEAR*}'.Password::obfuscate) ? __('Please (re)enter password') : '' }}"/>
 </div>
 
 @if(($edit || $editable) && $o->tagValuesOld($attrtag)->dot()->filter()->count())
