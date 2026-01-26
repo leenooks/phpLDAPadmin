@@ -4,7 +4,7 @@
 
 <div class="input-group has-validation">
 	@if($value && (! $o->isDirty()))
-		<input type="hidden" name="{{ $o->name_lc }}[{{ $attrtag }}{{ Entry::TAG_MD5 }}][]" value="{{ md5($value) }}">
+		<input type="hidden" name="{{ $o->name_lc }}[{{ $attrtag }}{{ Entry::TAG_MD5 }}][]" value="{{ md5($o->values->dot()->get($dotkey)) }}">
 	@endif
 
 	<x-select
@@ -22,7 +22,7 @@
 	<input type="password"
 		{{ $attributes->class(['is-invalid'=>($e=$errors->get($o->name_lc.'.'.$dotkey)) || $value === '{*clear*}'.Password::obfuscate]) }}
 		name="{{ $o->name_lc }}[{{ $attrtag }}][]"
-		value="{{ Arr::get(old($o->name_lc),$dotkey,md5($value)) }}"
+		value="{{ Arr::get(old($o->name_lc),$dotkey,md5($o->values->dot()->get($dotkey))) }}"
 		@readonly(! $edit)>
 
 	<x-form.invalid-feedback :errors="$e" alt="{{ $value === '{*clear*}'.Password::obfuscate ? __('Please (re)enter password') : '' }}"/>
