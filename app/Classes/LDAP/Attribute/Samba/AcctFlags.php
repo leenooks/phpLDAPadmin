@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes\LDAP\Attribute;
+namespace App\Classes\LDAP\Attribute\Samba;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
@@ -27,7 +27,7 @@ use App\Ldap\Entry;
  * W    A workstation trust account.
  * X    Password does not expire.
  */
-final class SambaAcctFlags extends Attribute
+final class AcctFlags extends Attribute
 {
 	protected(set) bool $no_attr_tags = TRUE;
 
@@ -57,7 +57,7 @@ final class SambaAcctFlags extends Attribute
 		return parent::render(
 			attrtag: $attrtag,
 			index: $index,
-			view: view('components.attribute.value.sambaacctflags'),
+			view: view('components.attribute.value.samba.acctflags'),
 			edit: $edit,
 			editable: $editable,
 			new: $new,

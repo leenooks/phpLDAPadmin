@@ -65,6 +65,12 @@ input.form-control:has(+ .input-group-end) {
 	font-size: 85%;
 }
 
+/* enable mouseover but disable checking a input/label checkbox combo */
+label.readonly-checkbox:active {
+	pointer-events: none !important;
+	opacity: 0.9; /* Optional: visually indicate it is disabled */
+}
+
 /*
 .custom-tooltip-warning .tooltip-inner {
 	--bs-tooltip-bg: #ffffff;

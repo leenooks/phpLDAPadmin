@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 
 use App\Traits\SetState;
+use App\Classes\LDAP\Attribute\Samba\AcctFlags;
 
 class SambaAcctFlags implements ValidationRule
 {
@@ -13,7 +14,7 @@ class SambaAcctFlags implements ValidationRule
 
 	public function validate(string $attribute,mixed $value,Closure $fail): void
 	{
-		if (($x=collect($value)->keys()->diff(collect(\App\Classes\LDAP\Attribute\SambaAcctFlags::values)->keys()))->count())
+		if (($x=collect($value)->keys()->diff(collect(AcctFlags::values)->keys()))->count())
 			$fail(__('The following are invalid items: '.$x->join(',')));
 	}
 }

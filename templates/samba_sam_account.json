@@ -1,0 +1,100 @@
+{
+	"title": "Generic: Samba Account",
+	"description": "New Samba Account",
+	"enabled": true,
+	"icon": "fa-id-badge",
+	"rdn": "uid",
+	"regexp": "/^ou=.+,?/",
+
+	"objectclasses": [
+		"inetOrgPerson",
+		"posixAccount",
+		"sambaSamAccount"
+	],
+
+	"attributes": {
+		"givenName": {
+			"display": "First Name",
+			"onchange": [
+				"=autoFill(cn;%givenName% %sn/U%)",
+				"=autoFill(uid;%givenName|0-1/l%%sn/l%)"
+			],
+			"order": 1
+		},
+		"sn": {
+			"display": "Last Name",
+			"onchange": [
+				"=autoFill(cn;%givenName% %sn/U%)",
+				"=autoFill(uid;%givenName|0-1/l%%sn/l%)"
+			],
+			"order": 2
+		},
+		"cn": {
+			"display": "Common Name",
+			"readonly": true,
+			"order": 3
+		},
+		"uid": {
+			"display": "User ID",
+			"onchange": [
+				"=autoFill(homeDirectory;/home/users/%uid%)"
+			],
+			"order": 4
+		},
+		"userPassword": {
+			"display": "Account Password",
+			"helper": "ARGON2ID",
+			"onchange": [
+				"=autoFill(sambaLMPassword;%userpassword%)",
+				"=autoFill(sambaNTPassword;%userpassword%)"
+			],
+			"order": 5
+		},
+		"sambaLMPassword": {
+			"display": "Samba LM Password",
+			"order": 6
+		},
+		"sambaNTPassword": {
+			"display": "Samba NT Password",
+			"order": 7
+		},
+		"sambaAcctFlags": {
+			"display": "Samba Account Flags",
+			"order": 8
+		},
+		"uidNumber": {
+			"display": "UID Number",
+			"readonly": true,
+			"value": "=getNextNumber(/;uidNumber)",
+			"order": 9
+		},
+		"gidNumber": {
+			"display": "GID Number",
+			"onchange": [
+				"=autoFill(homeDirectory;/home/users/%gidNumber|0-0/T%/%uid|1-4%)"
+			],
+			"value": "=getNextNumber(/;gidNumber)",
+			"order": 9
+		},
+		"homeDirectory": {
+			"display": "Home Directory",
+			"order": 10
+		},
+		"loginShell": {
+			"display": "Login Shell",
+			"type": "select",
+			"options": {
+				"/bin/bash": "Bash",
+				"/bin/csh": "C Shell",
+				"/bin/dash": "Dash",
+				"/bin/sh": "Shell",
+				"/bin/tsh": "Turbo C Shell",
+				"/bin/zsh": "ZSH",
+				"/bin/false": "False",
+				"/usr/sbin/nologin": "No Login"
+			},
+			"value": "/bin/zsh",
+			"order": 11
+		}
+	}
+}
