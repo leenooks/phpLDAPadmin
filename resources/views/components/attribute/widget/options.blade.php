@@ -183,7 +183,7 @@
 													}).fail(ajax_error);
 
 													// If this is a new entry, add the required attributes to the RDN
-													if ($('select#rdn')) {
+													if ($('select#rdn').length) {
 														if (! rdn_options().includes(item)) {
 															$('select#rdn').append(new Option(item,item));
 															rdn_options_sort = true;
