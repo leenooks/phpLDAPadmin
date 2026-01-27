@@ -2,21 +2,16 @@
 
 namespace App\Classes\LDAP\Attribute;
 
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 
-use App\Classes\LDAP\Attribute;
-use App\Classes\Template;
+use App\Interfaces\NoAttrTag;
 
 /**
  * Represents an attribute whose values are schema related
  */
-abstract class Schema extends Attribute
+abstract class Schema extends Internal implements NoAttrTag
 {
-	protected bool $internal = TRUE;
-	protected(set) bool $no_attr_tags = TRUE;
-
 	protected static function _get(string $filename,string $string,string $key): ?string
 	{
 		$array = Cache::remember($filename,86400,function() use ($filename) {

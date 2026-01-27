@@ -3,11 +3,11 @@
 namespace App\Classes\LDAP\Attribute\NoAttrTags;
 
 use App\Classes\LDAP\Attribute;
+use App\Interfaces\NoAttrTag;
 
 /**
  * Represents an Attribute that doesnt have Lang Tags
  */
-class Generic extends Attribute
+class Generic extends Attribute implements NoAttrTag
 {
-	protected(set) bool $no_attr_tags = TRUE;
 }

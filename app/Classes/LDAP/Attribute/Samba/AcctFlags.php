@@ -7,6 +7,7 @@ use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Attribute;
 use App\Classes\Template;
+use App\Interfaces\NoAttrTag;
 use App\Ldap\Entry;
 
 /**
@@ -27,10 +28,8 @@ use App\Ldap\Entry;
  * W    A workstation trust account.
  * X    Password does not expire.
  */
-final class AcctFlags extends Attribute
+final class AcctFlags extends Attribute implements NoAttrTag
 {
-	protected(set) bool $no_attr_tags = TRUE;
-
 	public const values = [
 		'D' => 'Account is disabled',
 		'H' => 'Home directory is required',

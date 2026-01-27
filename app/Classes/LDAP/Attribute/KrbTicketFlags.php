@@ -7,15 +7,14 @@ use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Attribute;
 use App\Classes\Template;
+use App\Interfaces\NoAttrTag;
 
 /**
  * Represents an attribute whose value is a Kerberos Ticket Flag
  * See RFC4120
  */
-final class KrbTicketFlags extends Attribute
+final class KrbTicketFlags extends Attribute implements NoAttrTag
 {
-	protected(set) bool $no_attr_tags = TRUE;
-
 	private const DISALLOW_POSTDATED	= 0x00000001;
 	private const DISALLOW_FORWARDABLE	= 0x00000002;
 	private const DISALLOW_TGT_BASED	= 0x00000004;

@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use App\Classes\LDAP\Schema\AttributeType;
 use App\Classes\Template;
 use App\Exceptions\InvalidUsage;
+use App\Interfaces\{Base64Value,ForceSingleValue,InternalAttribute,ModalEditable,NoAttrTag};
 use App\Ldap\Entry;
 
 /**
@@ -17,29 +18,27 @@ class Attribute implements \Countable, \ArrayAccess
 {
 	// Is this attribute an internal attribute
 	protected ?bool $_is_internal = NULL;
-	protected(set) bool $no_attr_tags = FALSE;
-	protected(set) bool $base64_values = FALSE;
+	private(set) bool $no_attr_tags = FALSE;
+	private(set) bool $base64_values = FALSE;
 
 	// MIN/MAX number of values
-	protected(set) int $min_values_count = 0;
-	protected(set) int $max_values_count = 0;
+	private(set) int $min_values_count = 1;	// 0 means not user editable
+	private(set) int $max_values_count = 0;	// 0 means no limit
 
 	// The schema's representation of this attribute
-	protected(set) ?AttributeType $schema;
+	private(set) ?AttributeType $schema;
 
 	// The DN this object is in
-	protected(set) string $dn;
+	private(set) string $dn;
 	// The old values for this attribute - helps with isDirty() to determine if there is an update pending
-	protected(set) Collection $values_old;
+	private(set) Collection $values_old;
 	// Current Values
-	protected Collection $values;
+	private Collection $values;
 	// The objectclasses of the entry that has this attribute
-	protected(set) Collection $oc;
+	private(set) Collection $oc;
 
 	/** @var bool Is this attribute edited via a modal */
-	protected(set) bool $modal_editable = FALSE;
-
-	protected const CERTIFICATE_ENCODE_LENGTH = 76;
+	private(set) bool $modal_editable = FALSE;
 
 	// If rendering is done in a table, with a <tr> for each value
 	protected(set) bool $render_tables = FALSE;
@@ -77,6 +76,21 @@ class Attribute implements \Countable, \ArrayAccess
 				$this->oc = $this->oc->merge($soc->getParents()->pluck('name'));
 			}
 		}
+
+		if ($this instanceof Base64Value)
+			$this->base64_values = TRUE;
+
+		if ($this instanceof ForceSingleValue)
+			$this->max_values_count = 1;
+
+		if ($this instanceof InternalAttribute)
+			$this->_is_internal = TRUE;
+
+		if ($this instanceof NoAttrTag)
+			$this->no_attr_tags = TRUE;
+
+		if ($this instanceof ModalEditable)
+			$this->modal_editable = TRUE;
 	}
 
 	public function __get(string $key): mixed

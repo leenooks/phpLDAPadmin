@@ -4,7 +4,7 @@
 
 @if($value && (! $o->isDirty()))
 	<input type="hidden" name="{{ $o->name_lc }}[{{ $attrtag }}{{ Entry::TAG_MD5 }}][]" value="{{ md5($value) }}">
-	<input type="hidden" name="{{ $o->name_lc }}[{{ $attrtag }}{{ Entry::TAG_HELPER }}][]" value="{{ $o->encoding }}">
+	<input type="hidden" name="{{ $o->name_lc }}[{{ $attrtag }}{{ Entry::TAG_HELPER }}][]" value="{{ $o::encoding }}">
 @endif
 
 <div class="input-group has-validation">

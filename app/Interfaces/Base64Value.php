@@ -2,6 +2,6 @@
 
 namespace App\Interfaces;
 
-interface MD5Updates
+interface Base64Value
 {
 }

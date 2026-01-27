@@ -6,16 +6,15 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Attribute;
+use App\Interfaces\NoAttrTag;
 use App\Ldap\Entry;
 
 /**
  * Represents the RDN for an Entry
  */
-final class RDN extends Attribute
+final class RDN extends Attribute implements NoAttrTag
 {
 	private string $base;
-
-	protected(set) bool $no_attr_tags = TRUE;
 
 	private Collection $attrs;
 

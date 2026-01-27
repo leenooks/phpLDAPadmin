@@ -15,14 +15,6 @@ use App\Ldap\Entry;
  */
 trait SambaPassword
 {
-	public function __construct(string $dn,string $name,array $values,array $oc=[])
-	{
-		$this->no_attr_tags = TRUE;
-		$this->max_values_count = 1;
-
-		parent::__construct($dn,$name,$values,$oc);
-	}
-
 	/**
 	 * Return the object that will process a password
 	 *
