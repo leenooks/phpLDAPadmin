@@ -15,7 +15,7 @@ attribute#userpassword .input-group > .select2-container--bootstrap-5 .select2-s
 	background-color: #eef2f4;
 }
 
-attribute#sambaacctflags .input-group > .btn-group {
+attribute .input-group > .btn-group {
 	input:checked + label {
 		color: var(--bs-btn-active-color);
 	}

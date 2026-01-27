@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes\LDAP\Attribute;
+namespace App\Classes\LDAP\Attribute\Kerberos;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use App\Classes\LDAP\Attribute;
 use App\Classes\Template;
 use App\Interfaces\NoAttrTag;
+use App\Ldap\Entry;
 
 /**
  * Represents an attribute whose value is a Kerberos Ticket Flag
@@ -30,7 +31,7 @@ final class KrbTicketFlags extends Attribute implements NoAttrTag
 
 	protected static function helpers(): Collection
 	{
-		$helpers = collect([
+		return collect([
 			log(self::DISALLOW_POSTDATED,2) => __('KRB_DISALLOW_POSTDATED'),
 			log(self::DISALLOW_FORWARDABLE,2) => __('KRB_DISALLOW_FORWARDABLE'),
 			log(self::DISALLOW_TGT_BASED,2) => __('KRB_DISALLOW_TGT_BASED'),
@@ -45,8 +46,13 @@ final class KrbTicketFlags extends Attribute implements NoAttrTag
 			log(self::PWCHANGE_SERVICE,2) => __('KRB_PWCHANGE_SERVICE'),
 		])
 		->replace(config('pla.krb.bits',[]));
+	}
 
-		return $helpers;
+	public function isset(int $key): bool
+	{
+		static $value = (int)\Arr::first(\Arr::get($this->values_old,Entry::TAG_NOTAG));
+
+		return ($value & (1<<$key)) !== 0;
 	}
 
 	public function render(string $attrtag,int $index,?View $view=NULL,bool $edit=FALSE,bool $editable=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
@@ -54,12 +60,18 @@ final class KrbTicketFlags extends Attribute implements NoAttrTag
 		return parent::render(
 			attrtag: $attrtag,
 			index: $index,
-			view: view('components.attribute.value.krbticketflags')
+			view: view('components.attribute.value.kerberos.krbticketflags')
 				->with('helper',static::helpers()),
 			edit: $edit,
 			editable: $editable,
 			new: $new,
 			updated: $updated,
 			template: $template);
+	}
+
+	protected function setValuesInternal(Collection $values): Collection
+	{
+		// Javascript returns the value, so we can just drop the internal input values
+		return $values->except(Entry::TAG_INTERNAL);
 	}
 }

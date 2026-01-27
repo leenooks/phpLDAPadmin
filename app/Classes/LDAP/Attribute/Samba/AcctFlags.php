@@ -30,7 +30,7 @@ use App\Ldap\Entry;
  */
 final class AcctFlags extends Attribute implements NoAttrTag
 {
-	public const values = [
+	private const values = [
 		'D' => 'Account is disabled',
 		'H' => 'Home directory is required',
 		'I' => 'Inter-domain trust account',
@@ -44,6 +44,11 @@ final class AcctFlags extends Attribute implements NoAttrTag
 		'X' => 'Password does not expire',
 	];
 
+	protected static function helpers(): Collection
+	{
+		return collect(self::values);
+	}
+
 	public function isset(string $key): bool
 	{
 		static $value = preg_replace('/^\[(.*)\]$/','$1',\Arr::first(\Arr::get($this->values_old,Entry::TAG_NOTAG)));
@@ -56,7 +61,8 @@ final class AcctFlags extends Attribute implements NoAttrTag
 		return parent::render(
 			attrtag: $attrtag,
 			index: $index,
-			view: view('components.attribute.value.samba.acctflags'),
+			view: view('components.attribute.value.samba.acctflags')
+				->with('helper',static::helpers()),
 			edit: $edit,
 			editable: $editable,
 			new: $new,

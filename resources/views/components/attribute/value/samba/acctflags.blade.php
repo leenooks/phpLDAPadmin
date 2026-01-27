@@ -3,9 +3,9 @@
 <!-- $o=SambaAcctFlags::class -->
 <div class="input-group has-validation mb-3">
 	<span @class(['btn-group btn-group-sm','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$dotkey))]) role="group">
-		@foreach($o::values as $k => $v)
+		@foreach($helper as $k => $v)
 			<input type="checkbox" class="btn-check" id="samba_af_{{ $k }}" name="{{ $o->name_lc }}[{{ Entry::TAG_INTERNAL }}][0][{{ $k }}]" value="1" @checked(($updated && $o->isset($k)) || old('sambaacctflags.'.Entry::TAG_INTERNAL.'.0.'.$k,$o->isset($k) && (! count(old()))))>
-			<label @class(['btn','btn-outline-dark'=>(! ($x=$o->isset($k))),'btn-dark'=>$x,'readonly-checkbox'=>$template && $o->dn]) for="samba_af_{{ $k }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __($v) }}">{{ $k }}</label>
+			<label @class(['btn','btn-outline-dark'=>(! ($x=$o->isset($k))),'btn-dark'=>$x,'readonly-checkbox'=>(! $edit) || ($template && $o->dn)]) for="samba_af_{{ $k }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ __($v) }}">{{ $k }}</label>
 		@endforeach
 	</span>
 
@@ -13,12 +13,13 @@
 </div>
 
 @section($o->name_lc.'-scripts')
+	<!-- components.attribute.value.samba.acctflags -->
 	<script type="text/javascript">
 		function sambaaccctflags() {
 			function toggleSelect(label) {
 				// Initial rendering of selected elements
 				if (! label) {
-					$('attribute#sambaacctflags input').each(function(key,item) {
+					$('attribute#{{ $o->name_lc }} input').each(function(key,item) {
 						if ({{ $updated ? 'true' : 'false' }} && $(this).next('label').hasClass('btn-dark') && item.checked)
 							$(this).next('label').toggleClass('btn-success').toggleClass('btn-dark');
 
@@ -42,7 +43,7 @@
 			}
 
 			$(document).ready(function() {
-				$('form[id^="dn-"] attribute#sambaacctflags label')
+				$('form[id^="dn-"] attribute#{{ $o->name_lc }} label')
 					.off('click')
 					.on('click',function(item) {
 						item.preventDefault();

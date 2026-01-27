@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes\LDAP\Attribute;
+namespace App\Classes\LDAP\Attribute\Kerberos;
 
 use App\Classes\LDAP\Attribute;
 use App\Interfaces\{MD5Update,NoAttrTag};
@@ -16,14 +16,14 @@ final class KrbPrincipalKey extends Attribute implements MD5Update,NoAttrTag
 	public function render_item_old(string $dotkey): ?string
 	{
 		return parent::render_item_old($dotkey)
-			? Password::obfuscate
+			? Attribute\Password::obfuscate
 			: NULL;
 	}
 
 	public function render_item_new(string $dotkey): ?string
 	{
 		return parent::render_item_new($dotkey)
-			? Password::obfuscate
+			? Attribute\Password::obfuscate
 			: NULL;
 	}
 }

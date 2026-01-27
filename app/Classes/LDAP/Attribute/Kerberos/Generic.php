@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes\LDAP\Attribute\NoAttrTags;
+namespace App\Classes\LDAP\Attribute\Kerberos;
 
 use App\Classes\LDAP\Attribute;
 use App\Interfaces\NoAttrTag;
