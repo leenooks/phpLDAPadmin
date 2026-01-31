@@ -71,12 +71,19 @@ class EntryController extends Controller
 					$o->{$ao->name} = [Entry::TAG_NOTAG=>['']];
 				}
 
+				// Add pwdReset if defined in template (it's an operational attribute not in objectclass)
+				if ($template->attributes->keys()->map('strtolower')->contains('pwdreset'))
+					$o->pwdReset = [Entry::TAG_NOTAG=>['FALSE']];
+
 			} elseif (count($x=collect(old('objectclass',$request->validated('objectclass')))->dot()->filter())) {
 				$o->objectclass = Arr::undot($x);
 
 				// Also add in our required attributes
 				foreach ($o->getAvailableAttributes()->filter(fn($item)=>$item->is_must && ($item->name_lc !== 'objectclass')) as $ao)
 					$o->{$ao->name} = [Entry::TAG_NOTAG=>['']];
+
+				// Add ppolicy virtual attributes for user entries
+				$this->addPPolicyAttributesIfNeeded($o);
 			}
 		}
 
@@ -518,5 +525,22 @@ class EntryController extends Controller
 
 			abort(500,$e->getMessage());
 		}
+	}
+
+	/**
+	 * Add ppolicy virtual attributes to user entries if applicable
+	 *
+	 * @param Entry $o
+	 * @return void
+	 */
+	private function addPPolicyAttributesIfNeeded(Entry $o): void
+	{
+		// Only add for user entries (uses Entry::isUserEntry())
+		if (! $o->isUserEntry())
+			return;
+
+		// Add pwdReset attribute with default value FALSE if not already present
+		if (! $o->hasAttribute('pwdreset'))
+			$o->pwdReset = [Entry::TAG_NOTAG=>['FALSE']];
 	}
 }

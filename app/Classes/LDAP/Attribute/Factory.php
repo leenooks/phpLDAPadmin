@@ -48,6 +48,7 @@ class Factory
 		'uniquemember' => Member::class,
 		'usercertificate' => Binary\Certificate::class,
 		'userpassword' => Password::class,
+		'pwdreset' => PwdReset::class,
 	];
 
 	/**

@@ -78,6 +78,10 @@
 			},
 			"value": "/bin/zsh",
 			"order": 9
+		},
+		"pwdReset": {
+			"display": "Password must be changed at next login",
+			"order": 10
 		}
 	}
 }
