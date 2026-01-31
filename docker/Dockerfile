@@ -46,8 +46,10 @@ RUN mkdir -p ${COMPOSER_HOME} \
 	&& ([ -r auth.json ] && mv auth.json ${COMPOSER_HOME}) || true \
 	&& touch .composer.refresh \
 	&& mv .env.example .env \
-	&& FORCE_PERMS=1 BUILD=1 /sbin/init-docker \
-	&& rm -rf ${COMPOSER_HOME}/* composer.lock
+	&& chgrp -R ${SITE_USER} /app \
+	&& BUILD=1 APP_TIMEZONE=UTC FORCE_PERMS=1 /sbin/init-docker \
+	&& chmod g+w /app/.env \
+	&& rm -rf ${COMPOSER_HOME}/* composer.lock storage/logs/*.log /tmp/opcache/*
 
 WORKDIR /app
 USER ${SITE_USER}

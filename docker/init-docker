@@ -1,10 +1,11 @@
 #!/bin/bash
 
 set -e
-role=${CONTAINER_ROLE:-app}
-env=${APP_ENV:-production}
 php=${PHP_DIR:-/app}
+
+roles=(${CONTAINER_ROLE:-app})
 composer=${COMPOSER_HOME:-/var/cache/composer}
+APP_ENV=${APP_ENV:-production}
 
 SITE_USER=${SITE_USER:-www-data}
 RUN_USER=$(id -u)
@@ -20,6 +21,13 @@ function mp() {
 	mountpoint -q $1
 	local mp=$?
 	set -e
+
+	if [ $mp -eq 0 ]; then
+		echo "[${1}] IS a mount point" >&2
+	else
+		echo "[${1}] is NOT mount point" >&2
+	fi
+
 	echo ${mp}
 }
 
@@ -41,14 +49,14 @@ echo "* Started with [$@]"
 
 # Laravel Specific
 if [ -r artisan -a -e ${php}/.env ]; then
-	echo "* Laravel Setup..."
+	echo "* Laravel Setup... [${roles[@]}]"
 	mp=$(mp ${php})
-	echo "  - ${php} is an external mount point ${mp}"
 
-	# Only adjust perms if this is an external mountpoint
-	if [ -n "${BUILD}" -o -n "${FORCE_PERMS}" -o ${mp} -eq 0 ]; then
-		if [ -n "${BUILD}" -o -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ]; then
-			echo "  - Setting Permissions..."
+	# Only adjust perms if this is an external mountpoint - set FORCE_PERMS to force to occur
+	if [[ -n "${FORCE_PERMS}" || ${mp} -eq 0 ]]; then
+		# We only do this if we are not local and SKIP_PERM is not set
+		if [[ -n "${FORCE_PERMS}" || ( "${APP_ENV}" != "local" && -z "${SKIP_PERM}" ) ]]; then
+			echo "  - Setting Permissions...[APP_ENV:${APP_ENV}] [SKIP_PERM:${SKIP_PERM}]"
 			# Make sure our permissions are appropraite
 			find ${php} -type f -exec chmod 640 {} \;
 			find ${php} -type d -exec chmod 750 {} \;
@@ -56,13 +64,9 @@ if [ -r artisan -a -e ${php}/.env ]; then
 			find ${php}/public -type d -exec chmod 755 {} \;
 			chmod o+rx ${php}
 			chmod a+rx ${php}/artisan
-			chown -R ${SITE_USER}:www-data ${php}
-
-			#if [ "${SITE_USER}" -ne "www-data" ]; then
-			#	echo " - Extended Permissions for ${SITE_USER}..."
-			#	chown -R www-data:www-data ${php}/storage ${php}/bootstrap ${php}/composer.*
-			#	[ -e ${php}/vendor ] && chown -R www-data:www-data ${php}/vendor
-			#fi
+			[ -e ${php}/init-php.sh ] && chmod a+rx ${php}/init-php.sh
+			chown -R ${SITE_USER}:www-data ${php}/storage ${php}/bootstrap ${php}/composer.*
+			[ -e ${php}/vendor ] && chown -R ${SITE_USER}:www-data ${php}/vendor
 		fi
 	fi
 
@@ -71,100 +75,122 @@ if [ -r artisan -a -e ${php}/.env ]; then
 		echo "  - Composer installing dependancies..."
 
 		rm -f ${php}/bootstrap/cache/*.php
-		if [ "${env}" != "local" ]; then
+		if [ "${APP_ENV}" != "local" ]; then
 			NODEV="--no-dev"
 		fi
 
 		mp=$(mp ${composer})
-		echo "  - [${composer}] is a mount point [${mp}]"
 
-		if [ -n "${BUILD}" -o -n "${FORCE_PERMS}" -o ${mp} -eq 0 ]; then
-			[ -n "${BUILD}" -o -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ] && chown -R ${SITE_USER}:www-data ${composer}
+		if [[ -n "${FORCE_PERMS}" || ${mp} -eq 0 ]]; then
+			[[ -n "${FORCE_PERMS}" || ( "${APP_ENV}" != "local" && -z "${SKIP_PERM}" ) ]] && chown -R ${SITE_USER}:www-data ${composer}
 			[ ! -d ${php}/vendor ] && mkdir -m 750 ${php}/vendor && chown ${SITE_USER}:www-data ${php}/vendor
-			[ -n "${BUILD}" -o -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ] && chmod g+w ${php}
+			[[ -n "${FORCE_PERMS}" || ( "${APP_ENV}" != "local" && -z "${SKIP_PERM}" ) ]] && chmod g+w ${php}
 		fi
 
 		CMD="composer install --optimize-autoloader ${NODEV}"
 		(( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}) && ( test -e .composer.refresh && rm -f .composer.refresh )
-		[ -n "${BUILD}" -o -n "${FORCE_PERMS}" -o "${env}" != "local" -a -z "${SKIP_PERM}" ] && [ ${mp} -eq 0 ] && chmod g-w ${php}
+		[[ -n "${FORCE_PERMS}" || ( "${APP_ENV}" != "local" && -z "${SKIP_PERM}" ) ]] && [ ${mp} -eq 0 ] && chmod g-w ${php}
+	fi
+
+	# If this is a docker build BUILD=1 we can exit
+	if [ -n "${BUILD}" ]; then
+		echo "- All done, exiting due to build..."
+		exit 0
 	fi
 
 	# Generate our Encryption Key
-	[ -z "${BUILD}" ] && [ -z "${APP_KEY}" ] \
+	[ -z "${APP_KEY}" ] \
 		&& grep -qe '^APP_KEY=$' .env \
-		&& echo '  + Encryption Key auto created, replace with with "artisan key:generate --force"' \
+		&& echo '  + Encryption Key auto created, replace with "artisan key:generate --force"' \
 		&& ./artisan key:generate
 
 	# We only check for non mount points, in case this container has the app inside
 	mp=$(mp ${php})
-	if [ -z "${BUILD}" -a ${mp} -eq 1 ]; then
+	if [ ${mp} -eq 1 ]; then
 		echo "  - Caching configuration..."
 		CMD="php artisan optimize"
 		( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}
 	fi
 
-	if [ "${role}" = "app" ]; then
-		if [ "${env}" != "local" ]; then
-			if [ -z "${IGNORE_MIGRATION}" ]; then
-				if [ -r .migrate ]; then
-					echo "  - Running migration..."
-					# If DB_HOST not set, source the env file
-					[ -z "${DB_HOST}" -a -r .env ] && . .env
+	for role in ${roles[@]}; do
+		case ${role} in
+			'app')
+				echo "  - Starting APP..."
+				if [ "${APP_ENV}" != "local" ]; then
+					if [ -z "${IGNORE_MIGRATION}" ]; then
+						if [ -r .migrate ]; then
+							echo "  - Running migration..."
+							# If DB_HOST not set, source the env file
+							[ -z "${DB_HOST}" -a -r .env ] && . .env
 
-					wait_for_db
+							wait_for_db
 
-					CMD="php artisan migrate"
-					(( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}) && rm -f .migrate
+							CMD="php artisan migrate"
+							(( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}) && rm -f .migrate
+						fi
+					else
+						[ -r .migrate ] && echo "! NOTE: Migration ignored due to IGNORE_MIGRATION"
+					fi
+
+					# If passport is installed
+					if [ -d ${php}/vendor/laravel/passport ]; then
+						echo "  - Generating OAUTH keys ..."
+						set +e
+						CMD="php artisan passport:keys"
+						( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}
+						set -e
+					fi
 				fi
-			else
-				[ -r .migrate ] && echo "! NOTE: Migration ignored due to IGNORE_MIGRATION"
-			fi
 
-			# If passport is installed
-			if [ -d ${php}/vendor/laravel/passport ]; then
-				echo "  - Generating OAUTH keys ..."
+				if [ "${LOCAL_QUEUE}" = "TRUE" ]; then
+					echo "  - Starting local queue for [$(hostname)${LOCAL_QUEUES:+,${LOCAL_QUEUES}}] with job timeout of [${WORK_TIMEOUT:-90}], trying [${WORK_TRIES:-1}] times..."
+					CMD="(while true; do php ${PHP_OPTIONS} artisan queue:work --verbose --tries=${WORK_TRIES:-1} --timeout=${WORK_TIMEOUT:-90} --queue=$(hostname)${LOCAL_QUEUES:+,${LOCAL_QUEUES}} ${WORK_MEMORY:+--memory=${WORK_MEMORY}} ${WORK_ONCE:+--once}; done) &"
+					( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}
+				fi
+
 				set +e
-				CMD="php artisan passport:keys"
-				( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}
-				set -e
-			fi
-		fi
+				[ -x ${php}/init-php.sh ] && (( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${php}/init-php.sh &" ) || ${php}/init-php.sh &)
 
-		if [ "${LOCAL_QUEUE}" = "TRUE" ]; then
-			echo "  - Starting local queue for [$(hostname)${LOCAL_QUEUES:+,${LOCAL_QUEUES}}] with job timeout of [${WORK_TIMEOUT:-90}], trying [${WORK_TRIES:-1}] times..."
-			CMD="(while true; do php ${PHP_OPTIONS} artisan queue:work --verbose --tries=${WORK_TRIES:-1} --timeout=${WORK_TIMEOUT:-90} --queue=$(hostname)${LOCAL_QUEUES:+,${LOCAL_QUEUES}} ${WORK_MEMORY:+--memory=${WORK_MEMORY}} ${WORK_ONCE:+--once}; done) &"
-			( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}
-		fi
+				exec /usr/local/bin/docker-php-entrypoint "$@"
+				;;
 
-		set +e
-		[ -x init-php.sh ] && (( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "init-php.sh &" ) || init-php.sh &)
+			'queue')
+				QUEUE_CMD=work
 
-		exec /usr/local/bin/docker-php-entrypoint "$@"
+				if [ "${APP_ENV}" == "local" ]; then
+					QUEUE_CMD=listen
+				fi
 
-	elif [ "$role" = "queue" ]; then
-		QUEUE_CMD=work
+				echo "  - Running the queue..."
+				# We'll delay starting in case the app is caching
+				sleep 15
 
-		if [ "${env}" == "local" ]; then
-			QUEUE_CMD=listen
-		fi
+				wait_for_db
 
-		echo "  - Running the queue..."
-		# We'll delay starting in case the app is caching
-		sleep 15
+				CMD="php ${PHP_OPTIONS} artisan queue:${QUEUE_CMD} --verbose --tries=${WORK_TRIES:-1} --timeout=${WORK_TIMEOUT:-90} ${WORK_QUEUES:+--queue=${WORK_QUEUES}} ${WORK_MEMORY:+--memory=${WORK_MEMORY}} ${WORK_ONCE:+--once}"
+				( ( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD} ) &
+				echo "  - QUEUE running as PID [$!]"
+				;;
 
-		wait_for_db
+			'scheduler')
+				echo "  - Running the scheduler..."
+				# We'll delay starting in case the app is caching
+				sleep 15
 
-		CMD="while true; do php ${PHP_OPTIONS} artisan queue:${QUEUE_CMD} --verbose --tries=${WORK_TRIES:-1} --timeout=${WORK_TIMEOUT:-90} ${WORK_QUEUES:+--queue=${WORK_QUEUES}} ${WORK_MEMORY:+--memory=${WORK_MEMORY}} ${WORK_ONCE:+--once}; done"
-		( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}
+				CMD="php ${PHP_OPTIONS} artisan schedule:work --verbose --no-interaction"
+				( ( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD} ) &
+				echo "  - SCHEDULER running as PID [$!]"
+				;;
 
-	elif [ "$role" = "scheduler" ]; then
-		echo "  - Running the scheduler..."
-		# We'll delay starting in case the app is caching
-		sleep 15
+			*)
+				echo "! Dont know how to handle role [${role}]"
+				;;
+		esac
+	done
 
-		CMD="while true; do php ${PHP_OPTIONS} artisan schedule:work --verbose --no-interaction; done"
-		( [ -n "${USE_SU}" ] && su ${SITE_USER} -s /bin/sh -c "${CMD}" ) || ${CMD}
-	fi
+	# For queue/scheduler, wait for background jobs to finish (which should never happen)
+	echo "- Waiting for background jobs to finish [${roles[@]}]"
+	wait
 
 else
 	echo "? NO container role \"${role}\", AND/OR no laravel install, just starting php-fpm"
