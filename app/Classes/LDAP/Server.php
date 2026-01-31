@@ -432,7 +432,8 @@ final class Server
 				try {
 					Log::debug(sprintf('%s:/ Fetching schema at [%s]',self::LOGKEY,$schema_dn));
 
-					$schema = $this->fetch($schema_dn,['*','+','subschemaSubentry']);
+					// @note OpenBSD/ldapd doesnt return the schema with +, it needs to call schema attributes explicitly
+					$schema = $this->fetch($schema_dn,['*','+','subschemaSubentry',$item]);
 
 				} catch (InvalidUsage $e) {
 					abort(599,$e->getMessage());

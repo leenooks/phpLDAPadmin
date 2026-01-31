@@ -19,7 +19,7 @@
 					<tr class="mt-1">
 						<td class="p-0 pe-2">@lang('Created')</td>
 						<th class="p-0">
-							<x-attribute.values :o="$x" :new="false"/> [<x-attribute.values :o="$o->getObject('creatorsname')" :new="false"/>]
+							<x-attribute.values :o="$x" :new="false"/> @if($x=$o->getObject('creatorsname'))[<x-attribute.values :o="$x" :new="false"/>]@endif
 						</th>
 					</tr>
 				@endif
@@ -27,10 +27,11 @@
 					<tr class="mt-1">
 						<td class="p-0 pe-2">@lang('Modified')</td>
 						<th class="p-0">
-							<x-attribute.values :o="$x" :new="false"/> [<x-attribute.values :o="$o->getObject('modifiersname')" :new="false"/>]
+							<x-attribute.values :o="$x" :new="false"/> @if($x=$o->getObject('modifiersname'))[<x-attribute.values :o="$x" :new="false"/>]@endif
 						</th>
 					</tr>
 				@endif
+				<!-- for lldap this is not treated as internal, so renders incorrectly -->
 				@if($x=$o->getObject($o->getGuidKey()))
 					<tr class="mt-1">
 						<td class="p-0 pe-2">UUID</td>

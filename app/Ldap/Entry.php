@@ -391,7 +391,7 @@ class Entry extends Model
 		$result = collect();
 
 		foreach (($this->getObject('objectclass')?->values->dot() ?: []) as $oc)
-			$result = $result->merge(config('server')->schema('objectclasses',$oc)->all_attributes);
+			$result = $result->merge(config('server')->schema('objectclasses',$oc)?->all_attributes);
 
 		return $result;
 	}
