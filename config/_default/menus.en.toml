@@ -56,6 +56,12 @@ weight = 2
 
 [[main]]
 parent = "Demo"
+name = "LLDAP"
+url = "https://demo.phpldapadmin.org/lldap"
+weight = 2
+
+[[main]]
+parent = "Demo"
 name = "Development"
 url = "https://demo-dev.phpldapadmin.org"
 weight = 3
