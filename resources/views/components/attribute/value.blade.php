@@ -1,6 +1,6 @@
 <div class="input-group has-validation">
 	<input type="text"
-		{{ $attributes->class([
+		{{ $attributes->only('class')->class([
 			'is-invalid'=>($e=array_merge($errors->get($o->name_lc.'.'.$dotkey),$errors->get('_auto_value.'.$o->name_lc))),
 			'no-edit'=>$o->isRDN(),
 		]) }}

@@ -7,23 +7,20 @@ use Illuminate\Support\Collection;
 
 use App\Classes\LDAP\Attribute;
 use App\Classes\Template;
-use App\Interfaces\MD5Updates as MD5Interface;
+use App\Interfaces\{ForceSingleValue,MD5Update,NoAttrTag};
 use App\Ldap\Entry;
 use App\Traits\MD5Updates;
 
 /**
  * Represents an attribute whose values are passwords
  */
-final class Password extends Attribute implements MD5Interface
+final class Password extends Attribute implements MD5Update,ForceSingleValue,NoAttrTag
 {
 	use MD5Updates;
 
 	private const LOGKEY = 'AP-';
 
 	public const obfuscate = '****************';
-
-	protected(set) bool $no_attr_tags = TRUE;
-	protected(set) int $max_values_count = 1;
 
 	private const password_helpers = 'Classes/LDAP/Attribute/Password';
 	public const commands = 'App\\Classes\\LDAP\\Attribute\\Password\\';
@@ -57,7 +54,7 @@ final class Password extends Attribute implements MD5Interface
 		$m = [];
 		preg_match('/^{([a-zA-Z0-9]+)}(.*)$/',$password,$m);
 
-		$hash = strtoupper($x=\Arr::get($m,1,'*clear*'));
+		$hash = strtoupper($x=\Arr::get($m,1,'*CLEAR*'));
 
 		// If our hash in the password is not in upper case, then convert it, as we use uppercase hashes to find the right class
 		if ($hash !== $x)
@@ -114,7 +111,7 @@ final class Password extends Attribute implements MD5Interface
 		$pw = parent::render_item_old($dotkey);
 
 		return $pw
-			? (((($x=$this->hash($pw)) && ($x->id() !== '*clear*')) ? sprintf('{%s}',$x->shortid()) : '')
+			? (((($x=$this->hash($pw)) && ($x->id() !== '*CLEAR*')) ? sprintf('{%s}',$x->shortid()) : '')
 				.self::obfuscate)
 			: NULL;
 	}
@@ -124,7 +121,8 @@ final class Password extends Attribute implements MD5Interface
 		$pw = parent::render_item_new($dotkey);
 
 		return $pw
-			? ((($x=$this->hash($pw)) && ($x->id() === '*clear*')) ? sprintf('{%s}%s',$x->shortid(),self::obfuscate) : $pw)
+			? (((($x=$this->hash($pw)) && ($x->id() !== '*CLEAR*')) ? sprintf('{%s}',$x->shortid()) : '')
+				.self::obfuscate)
 			: NULL;
 	}
 

@@ -5,14 +5,16 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
+        "php": "^8.4",
         "ext-fileinfo": "*",
         "ext-ldap": "*",
+        "ext-iconv": "*",
         "ext-openssl": "*",
-        "php": "^8.4",
         "directorytree/ldaprecord-laravel": "^3.0",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
-        "laravel/ui": "^4.5"
+        "laravel/ui": "^4.5",
+        "phpseclib/phpseclib": "^3.0"
     },
     "require-dev": {
         "amirami/localizator": "^0.14@dev",

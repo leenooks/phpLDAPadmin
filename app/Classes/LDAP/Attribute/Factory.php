@@ -6,7 +6,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
 use App\Classes\LDAP\Attribute;
-use App\Ldap\Entry;
 
 /**
  * This factory is used to return LDAP attributes as an object
@@ -26,13 +25,13 @@ class Factory
 		'certificaterevocationlist' => Binary\CertificateList::class,
 		'createtimestamp' => Internal\Timestamp::class,
 		'configcontext' => Schema\Generic::class,
-		'krblastfailedauth' => Attribute\NoAttrTags\Generic::class,
-		'krblastpwdchange' => Attribute\NoAttrTags\Generic::class,
-		'krblastsuccessfulauth' => Attribute\NoAttrTags\Generic::class,
-		'krbpasswordexpiration' => Attribute\NoAttrTags\Generic::class,
-		'krbloginfailedcount' => Attribute\NoAttrTags\Generic::class,
-		'krbprincipalkey' => KrbPrincipalKey::class,
-		'krbticketflags' => KrbTicketFlags::class,
+		'krblastfailedauth' => Kerberos\Generic::class,
+		'krblastpwdchange' => Kerberos\Generic::class,
+		'krblastsuccessfulauth' => Kerberos\Generic::class,
+		'krbpasswordexpiration' => Kerberos\Generic::class,
+		'krbloginfailedcount' => Kerberos\Generic::class,
+		'krbprincipalkey' => Kerberos\KrbPrincipalKey::class,
+		'krbticketflags' => Kerberos\KrbTicketFlags::class,
 		'gidnumber' => GidNumber::class,
 		'jpegphoto' => Binary\JpegPhoto::class,
 		'member' => Member::class,
@@ -40,6 +39,9 @@ class Factory
 		'monitorcontext' => Schema\Generic::class,
 		'namingcontexts' => Schema\Generic::class,
 		'objectclass' => ObjectClass::class,
+		'sambaacctflags' => Samba\AcctFlags::class,
+		'sambalmpassword' => Samba\LMPassword::class,
+		'sambantpassword' => Samba\NTPassword::class,
 		'supportedcontrol' => Schema\OID::class,
 		'supportedextension' => Schema\OID::class,
 		'supportedfeatures' => Schema\OID::class,

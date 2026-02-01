@@ -66,7 +66,7 @@
 						<td>@lang('Collective')</td><td><strong>@lang($o->is_collective ? 'Yes' : 'No')</strong></td>
 					</tr>
 					<tr>
-						<td>@lang('User Modification')</td><td><strong>@lang($o->is_no_user_modification ? 'Yes' : 'No')</strong></td>
+						<td>@lang('User Modification')</td><td><strong>@lang($o->is_no_user_modification ? 'No' : 'Yes')</strong></td>
 					</tr>
 					<tr>
 						<td>@lang('Usage')</td><td><strong>{{ $o->usage ?: __('(not specified)') }}</strong></td>

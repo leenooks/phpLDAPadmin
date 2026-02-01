@@ -21,8 +21,9 @@ class Value extends Component
 	private(set) bool $new;				// Render "Add" if the attribute allows multiple values @todo change to "add"
 	private(set) bool $updated;			// Can we work this out, because >old != >new
 	private(set) ?Template $template;	// Template this value is being rendered with - needed for JavaScript and CSS id's
+	private(set) ?string $value;		// The attributes value
 
-	public function __construct(LDAPAttribute $o,string $attrtag,int $index,bool $edit=FALSE,bool $new=FALSE,bool $editable=FALSE,bool $updated=FALSE,?Template $template=NULL) {
+	public function __construct(LDAPAttribute $o,string $attrtag,int $index,?string $value='',bool $edit=FALSE,bool $new=FALSE,bool $editable=FALSE,bool $updated=FALSE,?Template $template=NULL) {
 		$this->o = $o;
 		$this->attrtag = $attrtag;
 		$this->index = $index;
@@ -31,6 +32,7 @@ class Value extends Component
 		$this->new = $new;
 		$this->updated = $updated;
 		$this->template = $template;
+		$this->value = $value;
 	}
 
 	public function render(): View|string
