@@ -352,6 +352,15 @@ class Entry extends Model
 			$result->put($attribute,$o);
 		}
 
+		// Ensure ppolicy operational attributes exist for user entries so they stay editable even when absent on the server
+		if ($this->isUserEntry() && (! $result->has('pwdreset')))
+			$result->put('pwdreset',Factory::create(
+				dn: $this->dn,
+				attribute: 'pwdReset',
+				values: [self::TAG_NOTAG=>['FALSE']],
+				oc: $entry_oc,
+			));
+
 		$sort = collect(config('pla.attr_display_order',[]))->map(fn($item)=>strtolower($item));
 
 		// Order the attributes

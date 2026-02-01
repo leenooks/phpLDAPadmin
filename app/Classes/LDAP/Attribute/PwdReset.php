@@ -6,15 +6,19 @@ use Illuminate\Contracts\View\View;
 
 use App\Classes\LDAP\Attribute;
 use App\Classes\Template;
+use App\Interfaces\{ForceSingleValue,NoAttrTag};
+use App\Ldap\Entry;
 
 /**
  * Represents the pwdReset attribute from OpenLDAP ppolicy overlay
  */
-final class PwdReset extends Attribute
+final class PwdReset extends Attribute implements ForceSingleValue,NoAttrTag
 {
-	protected(set) bool $no_attr_tags = TRUE;
-	protected(set) int $max_values_count = 1;
-	protected ?bool $_is_internal = FALSE;
+	public function __construct(string $dn, string $name, array $values, array $oc = [])
+	{
+		parent::__construct($dn, $name, $values, $oc);
+		$this->_is_internal = FALSE;
+	}
 
 	/**
 	 * Override properties to handle NULL schema gracefully for this virtual attribute
@@ -60,24 +64,27 @@ final class PwdReset extends Attribute
 	 * pwdReset is an operational attribute (ppolicy overlay) that:
 	 * - Can only be set to TRUE (server manages FALSE/removal automatically)
 	 * - When set to TRUE, user must change password at next login
-	 * - FALSE values or empty values should not be sent to the server
+	 * - When set to FALSE we keep the attribute present with value FALSE to remain editable
 	 */
 	public function getDirty(): array
 	{
-		$dirty = [];
-
 		if (! $this->isDirty())
-			return $dirty;
+			return [];
 
-		// Only send TRUE values - FALSE/empty is managed by server
-		$trueValues = collect($this->values->toArray())
-			->map(fn($values)=>collect($values)->filter(fn($v)=>strtoupper(trim($v)) === 'TRUE')->values()->toArray())
+		$normalized = collect($this->values->toArray())
+			->map(fn($values)=>collect($values)
+				->map(fn($v)=>strtoupper(trim($v)) === 'TRUE' ? 'TRUE' : 'FALSE')
+				->values()
+				->toArray());
+
+		// If any TRUE values exist, send only the TRUEs; otherwise send FALSE to keep attribute present
+		$trueValues = $normalized
+			->map(fn($values)=>collect($values)->filter(fn($v)=>$v === 'TRUE')->values()->toArray())
 			->filter(fn($values)=>count($values) > 0);
 
-		if ($trueValues->isNotEmpty())
-			$dirty = [$this->name_lc => $trueValues->toArray()];
-
-		return $dirty;
+		return $trueValues->isNotEmpty()
+			? [$this->name_lc => $trueValues->toArray()]
+			: [$this->name_lc => [Entry::TAG_NOTAG => ['FALSE']]];
 	}
 
 	public function render_item_old(string $dotkey): ?string
