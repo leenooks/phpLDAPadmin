@@ -427,13 +427,12 @@ final class Server
 				$schema_dn = $this->schemaDN();
 				Log::debug(sprintf('%s:/ Found out SchemaDN is [%s]',self::LOGKEY,$schema_dn));
 
-				// @note: 389DS does not return subschemaSubentry unless it is requested
 				// @note: If the LDAP server doesnt return a subschemasubentry, then we end up looping
 				try {
 					Log::debug(sprintf('%s:/ Fetching schema at [%s]',self::LOGKEY,$schema_dn));
 
 					// @note OpenBSD/ldapd doesnt return the schema with +, it needs to call schema attributes explicitly
-					$schema = $this->fetch($schema_dn,['*','+','subschemaSubentry',$item]);
+					$schema = $this->fetch($schema_dn,[$item]);
 
 				} catch (InvalidUsage $e) {
 					abort(599,$e->getMessage());
@@ -449,10 +448,8 @@ final class Server
 				switch ($item) {
 					case 'attributetypes':
 						Log::debug(sprintf('%s:Attribute Types',self::LOGKEY));
-						// build the array of attribueTypes
-						//$syntaxes = $this->SchemaSyntaxes($dn);
 
-						foreach ($schema->{$item} as $line) {
+						foreach ($schema->{$item} ?: [] as $line) {
 							if (is_null($line) || ! strlen($line))
 								continue;
 
@@ -485,7 +482,7 @@ final class Server
 					case 'ldapsyntaxes':
 						Log::debug(sprintf('%s:LDAP Syntaxes',self::LOGKEY));
 
-						foreach ($schema->{$item} as $line) {
+						foreach ($schema->{$item} ?: [] as $line) {
 							if (is_null($line) || ! strlen($line))
 								continue;
 
@@ -498,7 +495,7 @@ final class Server
 					case 'matchingrules':
 						Log::debug(sprintf('%s:Matching Rules',self::LOGKEY));
 
-						foreach ($schema->{$item} as $line) {
+						foreach ($schema->{$item} ?: [] as $line) {
 							if (is_null($line) || ! strlen($line))
 								continue;
 
@@ -518,7 +515,7 @@ final class Server
 					case 'objectclasses':
 						Log::debug(sprintf('%s:Object Classes',self::LOGKEY));
 
-						foreach ($schema->{$item} as $line) {
+						foreach ($schema->{$item} ?: [] as $line) {
 							if (is_null($line) || ! strlen($line))
 								continue;
 
@@ -593,7 +590,8 @@ final class Server
 	 */
 	public function schemaDN(): string
 	{
-		return Arr::get($this->rootDSE->subschemasubentry,0);
+		return $this->rootDSE
+			->getFirstAttribute('subschemaSubentry','');
 	}
 
 	public function subordinates(string $dn,array $attrs=['dn'],bool $containers=TRUE): ?LDAPCollection
