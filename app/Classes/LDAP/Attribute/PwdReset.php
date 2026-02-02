@@ -71,15 +71,12 @@ final class PwdReset extends Attribute implements ForceSingleValue,NoAttrTag
 		if (! $this->isDirty())
 			return [];
 
-		$normalized = collect($this->values->toArray())
-			->map(fn($values)=>collect($values)
-				->map(fn($v)=>strtoupper(trim($v)) === 'TRUE' ? 'TRUE' : 'FALSE')
-				->values()
-				->toArray());
+		$normalized = $this->values
+			->map(fn($values)=>array_values(array_map(fn($v)=>strtoupper(trim($v)) === 'TRUE' ? 'TRUE' : 'FALSE',$values)));
 
 		// If any TRUE values exist, send only the TRUEs; otherwise send FALSE to keep attribute present
 		$trueValues = $normalized
-			->map(fn($values)=>collect($values)->filter(fn($v)=>$v === 'TRUE')->values()->toArray())
+			->map(fn($values)=>array_values(array_filter($values,fn($v)=>$v === 'TRUE')))
 			->filter(fn($values)=>count($values) > 0);
 
 		return $trueValues->isNotEmpty()

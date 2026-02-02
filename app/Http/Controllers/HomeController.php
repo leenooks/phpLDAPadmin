@@ -49,7 +49,8 @@ class HomeController extends Controller
 			$o->setDN($key['dn']);
 
 		} elseif ($key['dn']) {
-			$o = config('server')->fetch($key['dn']);
+			// Request ppolicy operational attributes explicitly when viewing an entry
+			$o = config('server')->fetch($key['dn'], ['*','+','pwdReset']);
 		}
 
 		if ($o) {
