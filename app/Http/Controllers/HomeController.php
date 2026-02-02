@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -136,7 +135,7 @@ class HomeController extends Controller
 		$content = NULL;
 
 		if (Auth::check()) {
-			$image = Arr::get(Auth::user()->getAttribute('jpegphoto'),0);
+			$image = Auth::user()->getFirstAttribute('jpegphoto');
 			$content = 'image/jpeg';
 		}
 

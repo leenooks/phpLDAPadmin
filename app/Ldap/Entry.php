@@ -232,8 +232,8 @@ class Entry extends Model
 
 	public function getHasChildrenAttribute(): bool
 	{
-		return (strcasecmp(Arr::get($this->getAttribute('hassubordinates',[]),0),'TRUE') === 0)
-			|| Arr::get($this->getAttribute('numsubordinates',[]),0) > 0;
+		return (strcasecmp($this->getFirstAttribute('hassubordinates'),'TRUE') === 0)
+			|| $this->getFirstAttribute('numsubordinates') > 0;
 	}
 
 	/* METHODS */
@@ -592,7 +592,7 @@ class Entry extends Model
 			return 'fas fa-theater-masks';
 
 		elseif ($objectclasses->contains('country'))
-			return sprintf('flag %s',strtolower(Arr::get($this->c ?: [],0)));
+			return sprintf('flag %s',strtolower($this->getFirstAttribute('c')));
 
 		elseif ($objectclasses->contains('device'))
 			return 'fas fa-mobile-alt';
