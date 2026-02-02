@@ -6,7 +6,7 @@
 <div class="input-group has-validation mb-1">
 	<span @class(['btn-group btn-group-sm','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$dotkey))]) role="group">
 		@for($bit=31;$bit>=16;$bit--)
-			<input type="checkbox" class="btn-check" id="kerb_tf_{{ $bit }}" name="{{ $o->name_lc }}[{{ Entry::TAG_INTERNAL }}][0][{{ $bit }}]" value="1" @checked(($updated && $o->isset($k)) || old('krbticketflags.'.Entry::TAG_INTERNAL.'.0.'.$bit,$o->isset($bit) && (! count(old()))))>
+			<input type="checkbox" class="btn-check" id="kerb_tf_{{ $bit }}" name="{{ $o->name_lc }}[{{ Entry::TAG_INTERNAL }}][0][{{ $bit }}]" value="1" @checked(($updated && $o->isset($bit)) || old('krbticketflags.'.Entry::TAG_INTERNAL.'.0.'.$bit,$o->isset($bit) && (! count(old()))))>
 			<label @class(['btn','btn-outline-dark'=>(! ($x=$o->isset($bit))),'btn-dark'=>$x,'readonly-checkbox'=>$template && $o->dn]) for="kerb_tf_{{ $bit }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ $helper->get($bit,__('Bit').' '.$bit) }}">{{ $x ? 1 : 0 }}</label>
 		@endfor
 	</span>
@@ -15,7 +15,7 @@
 <div class="input-group has-validation mb-3">
 	<span @class(['btn-group btn-group-sm','is-invalid'=>($e=$errors->get($o->name_lc.'.'.$dotkey))]) role="group">
 		@for($bit=15;$bit>=0;$bit--)
-			<input type="checkbox" class="btn-check" id="kerb_tf_{{ $bit }}" name="{{ $o->name_lc }}[{{ Entry::TAG_INTERNAL }}][0][{{ $bit }}]" value="1" @checked(($updated && $o->isset($k)) || old('krbticketflags.'.Entry::TAG_INTERNAL.'.0.'.$bit,$o->isset($bit) && (! count(old()))))>
+			<input type="checkbox" class="btn-check" id="kerb_tf_{{ $bit }}" name="{{ $o->name_lc }}[{{ Entry::TAG_INTERNAL }}][0][{{ $bit }}]" value="1" @checked(($updated && $o->isset($bit)) || old('krbticketflags.'.Entry::TAG_INTERNAL.'.0.'.$bit,$o->isset($bit) && (! count(old()))))>
 			<label @class(['btn','btn-outline-dark'=>(! ($x=$o->isset($bit))),'btn-dark'=>$x,'readonly-checkbox'=>(! $edit) || ($template && $o->dn)]) for="kerb_tf_{{ $bit }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{ $helper->get($bit,__('Bit').' '.$bit) }}" readonly>{{ $x ? 1 : 0 }}</label>
 		@endfor
 	</span>

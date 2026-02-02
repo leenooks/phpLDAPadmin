@@ -30,7 +30,7 @@ use App\Ldap\Entry;
  */
 final class AcctFlags extends Attribute implements NoAttrTag
 {
-	private const values = [
+	public const values = [
 		'D' => 'Account is disabled',
 		'H' => 'Home directory is required',
 		'I' => 'Inter-domain trust account',
