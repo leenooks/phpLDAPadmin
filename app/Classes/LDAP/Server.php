@@ -362,13 +362,8 @@ final class Server
 	{
 		static $attributes = $this->schema('attributetypes');
 
-		$attrid = $attributes->search(fn($item)=>$item->names->contains($key));
-
-		// Second chance search using lowercase items (our Entry attribute keys are lowercase)
-		if ($attrid === FALSE)
-			$attrid = $attributes->search(fn($item)=>$item->names_lc->contains(strtolower($key)));
-
-		return $attrid;
+		return $attributes
+			->search(fn($item)=>$item->names_lc->contains(strtolower($key)));
 	}
 
 	/**
