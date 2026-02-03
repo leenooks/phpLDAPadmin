@@ -469,13 +469,19 @@ class Entry extends Model
 			->get($this->normalizeAttributeKey($key));
 	}
 
+	/**
+	 * Return all the (non-internal) objects
+	 *
+	 * @return Collection
+	 */
 	public function getObjects(): Collection
 	{
 		// In case we havent built our objects yet (because they werent available while determining the schema DN)
 		if ((! $this->objects->count()) && $this->attributes)
 			$this->objects = $this->getAttributesAsObjects();
 
-		return $this->objects;
+		return $this->objects
+			->filter(fn($item)=>! $item->is_internal);
 	}
 
 	/**
