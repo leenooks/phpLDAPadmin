@@ -309,9 +309,12 @@ class Attribute implements \Countable, \ArrayAccess
 	 */
 	public function isDirty(): bool
 	{
-		return (($a=$this->values_old->dot()->filter(fn($item)=>is_array($item) ? count($item) : ! is_null($item)))->keys()->count() !== ($b=$this->values->dot()->filter(fn($item)=>! is_null($item)))->keys()->count())
-			|| ($a->count() !== $b->count())
-			|| ($a->diff($b)->count() !== 0);
+		$old = $this->values_old->dot()->filter(fn($item)=>is_array($item) ? count($item) : ! is_null($item));
+		$new = $this->values->dot()->filter(fn($item)=>! is_null($item));
+
+		return ($old->keys()->count() !== $new->keys()->count())
+			|| ($old->count() !== $new->count())
+			|| ($old->diff($new)->count() !== 0);
 	}
 
 	/**
