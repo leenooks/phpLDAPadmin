@@ -232,8 +232,13 @@ class Entry extends Model
 
 	public function getHasChildrenAttribute(): bool
 	{
-		return (strcasecmp($this->getFirstAttribute('hassubordinates'),'TRUE') === 0)
-			|| $this->getFirstAttribute('numsubordinates') > 0;
+		// If the ldap server doesnt return subordinates as per RFC 4512
+		if (! (config('server')->get_attr_id('hassubordinates') || config('server')->get_attr_id('numsubordinates')))
+			return config('server')->children($this->dn)->count() > 0;
+
+		else
+			return (strcasecmp($this->getFirstAttribute('hassubordinates'),'TRUE') === 0)
+				|| $this->getFirstAttribute('numsubordinates') > 0;
 	}
 
 	/* METHODS */
