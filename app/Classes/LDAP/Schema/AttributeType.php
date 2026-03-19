@@ -44,6 +44,7 @@ final class AttributeType extends Base
 
 	// An array of names (including aliases) that this attribute is known by
 	private(set) Collection $names;
+	private(set) Collection $names_lc;
 
 	// The ordering of the attributeType
 	private(set) ?string $ordering = NULL;
@@ -69,14 +70,6 @@ final class AttributeType extends Base
 
 	// An array of objectClasses which use this attributeType (must be set by caller)
 	private(set) Collection $used_in_object_classes;
-
-	public function __get(string $key): mixed
-	{
-		return match ($key) {
-			'names_lc' => $this->names->map('strtolower'),
-			default => parent::__get($key)
-		};
-	}
 
 	/**
 	 * Children of this attribute type that inherit from this one
@@ -151,6 +144,7 @@ final class AttributeType extends Base
 
 		// Init
 		$this->names = collect();
+		$this->names_lc = collect();
 		$this->children = collect();
 		$this->used_in_object_classes = collect();
 		$this->required_by_object_classes = collect();
@@ -194,6 +188,8 @@ final class AttributeType extends Base
 				}
 
 				$this->names = $this->names->push(preg_replace("/^\'(.*)\'$/",'$1',$name))->sort();
+				$this->names_lc = $this->names->map('strtolower');
+
 				$this->forced_as_may = $this->names_lc
 					->intersect(array_map('strtolower',config('pla.force_may',[])))
 					->count() > 0;

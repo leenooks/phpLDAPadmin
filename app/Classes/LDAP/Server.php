@@ -361,9 +361,10 @@ final class Server
 	public function get_attr_id(string $key): int|bool
 	{
 		static $attributes = $this->schema('attributetypes');
+		$key = strtolower($key);
 
 		return $attributes
-			->search(fn($item)=>$item->names_lc->contains(strtolower($key)));
+			->search(fn($item)=>$item->names_lc->contains($key));
 	}
 
 	/**
