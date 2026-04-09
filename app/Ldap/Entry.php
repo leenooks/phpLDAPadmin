@@ -357,6 +357,15 @@ class Entry extends Model
 			$result->put($attribute,$o);
 		}
 
+		// Ensure ppolicy operational attributes exist for user entries so they stay editable even when absent on the server
+		if ($this->isUserEntry() && (! $result->has('pwdreset')))
+			$result->put('pwdreset',Factory::create(
+				dn: $this->dn,
+				attribute: 'pwdReset',
+				values: [self::TAG_NOTAG=>['FALSE']],
+				oc: $entry_oc,
+			));
+
 		$sort = collect(config('pla.attr_display_order',[]))->map(fn($item)=>strtolower($item));
 
 		// Order the attributes
@@ -508,8 +517,26 @@ class Entry extends Model
 	 */
 	public function getMissingAttributes(): Collection
 	{
-		return $this->getAvailableAttributes()
+		$missing = $this->getAvailableAttributes()
 			->filter(fn($a)=>(! $this->getVisibleAttributes()->contains(fn($b)=>($a->name === $b->name))));
+
+		// Add ppolicy operational attributes for user entries
+		if ($this->isUserEntry()) {
+			$ppolicyAttrs = ['pwdReset'];
+
+			foreach ($ppolicyAttrs as $attrName) {
+				$attrLower = strtolower($attrName);
+
+				// Only add if not already present in entry or missing list
+				if (! $this->hasAttribute($attrLower) && ! $missing->contains(fn($item)=>strtolower($item->name) === $attrLower)) {
+					$schema = config('server')->schema('attributetypes',$attrName);
+					if ($schema)
+						$missing->push($schema);
+				}
+			}
+		}
+
+		return $missing;
 	}
 
 	/**
@@ -532,6 +559,20 @@ class Entry extends Model
 	{
 		return $this->objects
 			->has($key);
+	}
+
+	/**
+	 * Check if this entry is a user-like entry based on objectclasses
+	 *
+	 * @return bool
+	 */
+	public function isUserEntry(): bool
+	{
+		static $userObjectClasses = ['posixaccount','inetorgperson','person','account','organizationalperson'];
+
+		$entryOCs = $this->getObject('objectclass')?->tagValues()->map(fn($item)=>strtolower(trim($item))) ?? collect();
+
+		return $entryOCs->intersect($userObjectClasses)->isNotEmpty();
 	}
 
 	/**
