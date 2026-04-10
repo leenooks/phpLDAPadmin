@@ -163,8 +163,8 @@ function update_from_modal(attr,modal_data) {
 				.find('.tab-content .tab-pane.active div.input-group:last');
 
 			var clone = active
-				.clone()
-				.appendTo(active);
+				.clone();
+			active.after(clone);
 
 			clone.find('input')
 				.attr('value',item)
