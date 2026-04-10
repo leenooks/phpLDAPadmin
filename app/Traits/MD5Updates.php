@@ -54,7 +54,7 @@ trait MD5Updates
 					$old = $this->values_old->dot()->get($key.'.'.$index);
 
 					if ($old && (md5($old) === $value))
-						$processed->put($key.'.'.$index,$old);
+						$processed->put($key.'.'.$index,base64_encode($old));
 				}
 			}
 		}
