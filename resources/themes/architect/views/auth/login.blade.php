@@ -5,6 +5,8 @@
 @endsection
 
 @section('content')
+	<x-success/>
+
 	<!-- /.login-logo -->
 	<div class="app-container app-theme-white body-tabs-shadow">
 		<div class="app-container">
