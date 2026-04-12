@@ -14,37 +14,23 @@ class SearchController extends Controller
 	public function search(Request $request): Collection
 	{
 		$so = config('server');
+		$term = preg_replace('/[;\'"()]+.*$/','',$request->term);
 
 		// We are searching for a value
-		if (strpos($request->term,'=')) {
-			list($attr,$value) = explode('=',$request->term,2);
-			$value = trim($value);
+		if (strpos($term,'=')) {
+			list($attr,$value) = explode('=',$term,2);
 			$ao = $so
 				->schema('attributetypes',$attr);
 
-			$result = collect();
+			$value = trim($value);
+			if (! Str::contains($value,'*'))
+				$value .= '*';
 
+			$result = collect();
 			foreach ($so->baseDNs(FALSE) as $base) {
 				$search = (new Entry)
-					->in($base);
-
-				$wildcard = FALSE;
-
-				// If the attribute supports substring queries
-				if ($ao->sub_str_rule) {
-					if (Str::startsWith($value,'*')) {
-						$wildcard = TRUE;
-						$search = $search->whereEndsWith($attr,substr($value,1));
-
-					} elseif ($wildcard=Str::endsWith($value,'*')) {
-						$search = $search->whereStartsWith($attr,substr($value,0,-1));
-
-					} else
-						$search = $search->whereStartsWith($attr,$value);
-
-				} else {
-					$search = $search->where($attr,'*');
-				}
+					->in($base)
+					->whereRaw($attr,'=',$value);
 
 				$result = $result->merge($search->get($attr));
 			}
@@ -53,12 +39,11 @@ class SearchController extends Controller
 				->map(fn($item)=>[
 					'name'=>$item->getDN(),
 					'value'=>Crypt::encryptString($item->getDN()),
-					'category'=>sprintf('%s%s: [%s=%s%s]',
+					'category'=>sprintf('%s%s: [%s=%s]',
 						__('Result'),
 						$ao->sub_str_rule ? '' : sprintf('(%s)', __('No Sub Search')),
 						$attr,
-						$ao->sub_str_rule ? $value : '',
-						($wildcard ? '' : '*'))
+						$value)
 				]);
 
 		// We are searching for an attribute
