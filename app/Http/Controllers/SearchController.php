@@ -41,7 +41,7 @@ class SearchController extends Controller
 					'value'=>Crypt::encryptString($item->getDN()),
 					'category'=>sprintf('%s%s: [%s=%s]',
 						__('Result'),
-						$ao->sub_str_rule ? '' : sprintf('(%s)', __('No Sub Search')),
+						$ao->sub_str_rule() ? '' : sprintf('(%s)', __('No Sub Search')),
 						$attr,
 						$value)
 				]);

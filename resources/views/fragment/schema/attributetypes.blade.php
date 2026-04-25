@@ -54,7 +54,7 @@
 						<td>@lang('Ordering')</td><td><strong>{{ $o->ordering ?: __('(not specified)') }}</strong></td>
 					</tr>
 					<tr>
-						<td>@lang('Substring Rule')</td><td><strong>{{ $o->sub_str_rule ?: __('(not specified)') }}</strong></td>
+						<td>@lang('Substring Rule')</td><td><strong>{{ $o->sub_str_rule() ?: __('(not specified)') }}</strong></td>
 					</tr>
 					<tr>
 						<td>@lang('Syntax')</td><td><strong>{{ ($o->syntax_oid && $x=$server->get_syntax($o->syntax_oid)) ? $x->description : __('(unknown syntax)') }} @if($o->syntax_oid)({{ $o->syntax_oid }})@endif</strong></td>

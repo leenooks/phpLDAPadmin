@@ -277,6 +277,16 @@ final class AttributeType extends Base
 	}
 
 	/**
+	 * Return this attributes parent
+	 *
+	 * @return self
+	 */
+	private function parent(): self
+	{
+		return config('server')->schema('attributetypes',$this->sup_attribute);
+	}
+
+	/**
 	 * Sets whether this attribute is single-valued.
 	 *
 	 * @param boolean $is
@@ -309,6 +319,19 @@ final class AttributeType extends Base
 			throw new InvalidUsage(sprintf('Cannot set attribute name to [%s], its not an alias for [%s]',$name,$this->names->join(',')));
 
 		$this->name = $name;
+	}
+
+	/**
+	 * Return the sub_str_rule, which is either defined on this attribute, or a parent
+	 *
+	 * @return string|null
+	 */
+	public function sub_str_rule(): ?string
+	{
+		if ($this->sub_str_rule)
+			return $this->sub_str_rule;
+
+		return $this->sup_attribute ? $this->parent()->sub_str_rule() : NULL;
 	}
 
 	/**
