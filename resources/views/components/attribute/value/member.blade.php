@@ -21,8 +21,10 @@
 </div>
 
 @section('page-scripts')
+	<!-- attribute.value.member -->
 	<script type="text/javascript">
 		$(document).ready(function() {
+			// When clicking on a member, redirect to that entry
 			$('attribute#{{ $o->name_lc }} a').on('click',function() {
 				location.replace(web_base+$(this).attr('href'));
 				location.reload();
@@ -30,4 +32,4 @@
 			})
 		});
 	</script>
-@endsection
+@append

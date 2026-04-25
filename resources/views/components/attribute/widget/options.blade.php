@@ -44,11 +44,11 @@
 							});
 
 							$('#page-modal').on('hide.bs.modal',function() {
-								var updates = attribute_values('destination','select','option');
+								var updated = update_from_modal(modal_attr,attribute_values('destination','select','option'));
 
-								if (updates.length)
+								if (updated.length)
 									// Go through the updated items and ensure the input-group-end reflects that the entry exists
-									update_from_modal(modal_attr,updates).forEach(function(item) {
+									updated.forEach(function(item) {
 										$('attribute#'+modal_attr+' [value="'+item+'"]')
 											.next('.input-group-end')
 											.removeClass('text-danger')
@@ -61,6 +61,7 @@
 						});
 					</script>
 				@append
+
 				@break
 
 			@case(ObjectClass::class)
@@ -94,13 +95,6 @@
 							let at = $(a).text(),
 								bt = $(b).text();
 							return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
-						}
-
-						// Rendered OC values
-						function oc_rendered() {
-							return $('attribute#objectclass input[type=text]')
-								.map((key,item)=>item.value)
-								.toArray();
 						}
 
 						function newattr_options() {

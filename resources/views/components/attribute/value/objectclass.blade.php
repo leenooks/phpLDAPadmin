@@ -19,3 +19,17 @@
 		<x-form.invalid-feedback :errors="$e"/>
 	</div>
 </span>
+
+@section('page-scripts')
+	<!-- attribute.value.objectclass -->
+	<script type="text/javascript">
+		if (typeof oc_rendered !== 'function') {
+			// Rendered OC values
+			function oc_rendered() {
+				return $('attribute#objectclass input[type=text]')
+					.map((key,item)=>item.value)
+					.toArray();
+			}
+		}
+	</script>
+@append

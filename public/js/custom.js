@@ -149,7 +149,7 @@ function attribute_values(attr,container='attribute',input='input') {
 		.toArray();
 }
 
-// This function will update values that are altered from a modal
+// This function will update values that are altered from a modal, and return with any new values
 function update_from_modal(attr,modal_data) {
 	// Existing Values
 	var existing = attribute_values(attr);
@@ -163,8 +163,9 @@ function update_from_modal(attr,modal_data) {
 				.find('.tab-content .tab-pane.active div.input-group:last');
 
 			var clone = active
-				.clone()
-				.appendTo(active);
+				.clone();
+
+			active.after(clone);
 
 			clone.find('input')
 				.attr('value',item)
@@ -173,6 +174,16 @@ function update_from_modal(attr,modal_data) {
 			addition.push(item);
 		}
 	});
+
+	// If all the entries are removed, we need to leave a single input box
+	if (! modal_data.length) {
+		var clear = existing.shift();
+
+		$('form[id^="dn-"] attribute#'+attr+' input[value="'+clear+'"]')
+			.attr('value',"")
+			.next('.input-group-end')
+			.empty();
+	}
 
 	// Remove Values
 	existing.forEach(function(item) {
@@ -187,16 +198,18 @@ function update_from_modal(attr,modal_data) {
 		}
 	});
 
-	// For new entries, there is a blank input box, we'll clear that too
-	$('form[id^="dn-"] attribute#'+attr+' input[value=""]')
-		.closest('div.input-group')
-		.empty();
+	// For new entries, there is a blank input box, we'll clear that too, except the first one
+	if (existing.length > 1)
+		$('form[id^="dn-"] attribute#'+attr+' input[value=""]')
+			.closest('div.input-group')
+			.empty();
 
 	// If we have a button, update it
 	var button = $('button#extra-'+attr);
 	if (button.length)
 		button.html(button.html().replace(/\d+/,$('form[id^="dn-"] attribute#'+attr+' input.d-none').length));
 
+	// We return with new additions
 	return addition;
 }
 
