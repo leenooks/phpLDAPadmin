@@ -452,7 +452,7 @@ class EntryController extends Controller
 				->with('note',__('No attributes changed'));
 
 		// If the logged in user is changing their password, they'll need to relogin
-		$relogin = ($o->getDn() === \Auth::user()->getDn()) && array_key_exists('userpassword',$o->getDirty());
+		$relogin = (\Auth::user() && ($o->getDn() === \Auth::user()->getDn())) && array_key_exists('userpassword',$o->getDirty());
 
 		try {
 			$o->update($request->except(['_token','dn']));
