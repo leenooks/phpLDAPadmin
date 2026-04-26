@@ -299,7 +299,8 @@ final class Server
 					'c'					// Needed for the tree to show icons for countries
 				]))
 			->list()
-			->get() ?: NULL;
+			->get()
+			->sort() ?: NULL;
 	}
 
 	/**
