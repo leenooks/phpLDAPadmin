@@ -10,10 +10,9 @@
 			id="{{ $o->name_lc }}_{{$loop->index}}{{$template?->name ?: ''}}"
 			name="{{ $o->name_lc }}[{{ $langtag }}][]"
 			:value="$value ?: $template->attributeValue($o->name_lc)"
-			:options="$template->attributeOptions($o->name_lc)"
+			:options="$template->attributeOptions($o->name_lc,$value)"
 			allowclear="true"
+			:feedback="Arr::get($e,0)"
 			:edit="$edit"/>
-
-		<x-form.invalid-feedback :errors="$e"/>
 	@endforeach
 @endforeach

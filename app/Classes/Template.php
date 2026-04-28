@@ -16,9 +16,18 @@ class Template
 {
 	private const LOGKEY = 'T--';
 	private const LOCK_TIME = 600;
+	/**
+	 * Template value regex, used to determine LDAP values that are transformed before being used or returned
+	 * + Arg 1 - Attribute Name, eg: firstName
+	 * + Arg 2 - Char delimiter, eg: |n (return first n chars), |n- (return chars from n to end), |n-m (only return chars to n-m)
+	 * + Arg 3 - Slash Option, eg: l (lower case), U (upper case),
+	 * + Arg 4 - Delimiter char, used to tokenise values
+	 */
+	private const VALUE_REGEX = '/%(\w+)(?:\|((?:\d+-)?\d*))?(?:\/([klTCUA]+))?(?:\|(.)?)?%/U';
 
 	private(set) string $file;
 	private Collection $template;
+	private ?string $container = NULL;
 	private(set) bool $invalid = FALSE;
 	private(set) string $reason = '';
 	private Collection $on_change_target;
@@ -97,6 +106,18 @@ class Template
 		};
 	}
 
+	public function __set(string $key,mixed $value): void
+	{
+		switch ($key) {
+			case 'container':
+				$this->container = $value;
+				break;
+
+			default:
+				throw new \Exception('Unknown key: '.$key);
+		}
+	}
+
 	public function __isset(string $key): bool
 	{
 		return $this->template->has($key);
@@ -122,11 +143,24 @@ class Template
 	 * @param string $attribute
 	 * @return Collection|NULL
 	 */
-	public function attributeOptions(string $attribute): Collection|NULL
+	public function attributeOptions(string $attribute,mixed $value=NULL): Collection|NULL
 	{
-		return ($x=$this->attribute($attribute)?->get('options'))
-			? collect($x)->map(fn($item,$key)=>['id'=>$key,'value'=>$item])
-			: NULL;
+		if ($x=$this->attribute($attribute)?->get('options')) {
+			if (is_array($x))
+				return collect($x)->map(fn($item,$key)=>['id'=>$key,'value'=>$item])->when($value,fn($item)=>$item->prepend(['id'=>$value,'value'=>$value]));
+
+			// Check if this is a pick list
+			elseif (preg_match('/^=([a-zA-Z]+)\((.+)\)$/',$x)) {
+				list($command,$args) = preg_split('/^=([a-zA-Z]+)\((.+)\)$/',$x,-1,PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY);
+
+				return match ($command) {
+					'getSelectList' => $this->getSelectList($args)->when($value,fn($item)=>$item->prepend(['id'=>$value,'value'=>$value])),
+					default => NULL,
+				};
+			}
+		}
+
+		return NULL;
 	}
 
 	/**
@@ -165,7 +199,6 @@ class Template
 	public function attributeValue(string $attribute): string|NULL
 	{
 		if ($x=$this->attribute($attribute)->get('value')) {
-
 			if (preg_match('/^=([a-zA-Z]+)\((.+)\)$/',$x)) {
 				list($command,$args) = preg_split('/^=([a-zA-Z]+)\((.+)\)$/',$x,-1,PREG_SPLIT_DELIM_CAPTURE|PREG_SPLIT_NO_EMPTY);
 
@@ -203,7 +236,9 @@ class Template
 	 * + Create the entry
 	 * + Delete our session lock
 	 *
-	 * @param string $arg
+	 * @param string $arg Semicolon delimited with 2 values start;attr, where:
+	 * 					  + start which branch of the LDAP tree we start looking for attr values
+	 * 					  + attr is the LDAP attribute we are looking at
 	 * @return int|NULL
 	 */
 	private function getNextNumber(string $arg): int|NULL
@@ -319,6 +354,153 @@ class Template
 	}
 
 	/**
+	 * Search the directory and return a list of options, based on existing entries
+	 *
+	 * @param string $arg Semicolon delimited with 9 arguments:
+	 *  Mandatory Arguments:
+	 *  * arg 0
+	 *    - container, to query from current position
+	 *    - "/",".",".." => get container parent as usual
+	 *
+	 *  * arg 1
+	 *    - LDAP filter. May include '%attr%', it will be expanded.
+	 *
+	 *  * arg2
+	 *    - list attribute key
+	 *
+	 *  Optional Arguments:
+	 *  * arg 3
+	 *    - select display (plus modifier /C: Capitalize, /l to convert to lowercase, |{1,x} to cut chars)
+	 *    - replaced by %arg 2% if not given
+	 *
+	 *  * arg 4
+	 *    - the value furnished in output - must include attribute id. replaced by arg 2 if not given
+	 *
+	 *  * arg 5 (for MultiList)
+	 *    - size of displayed list (default: 10 lines)
+	 *
+	 * Example:
+	 * + getSelectList(/;(objectClass=posixAccount);uid)
+	 *   Generate a list of all uid's
+	 *
+	 * + getSelectList(/;(&(objectClass=posixAccount)(uid=groupA*));uid;%cn/U% (%gidNumber%);%cn/U% (%gidNumber%);
+	 *   Find all uids that start with groupA,
+	 *   present a list of keys with an uppercase common name and gidnumber in parentheses
+	 *   with values of an uppercase common name and gidnumber in parentheses
+	 *
+	 * @return Collection|NULL
+	 *
+	 * Examples:
+	 * + PickList(/;(&(objectClass=posixGroup));gidNumber;%git%)
+	 * + PickList(/;(&(objectClass=posixAccount));loginShell;%loginShell%)
+	 */
+	private function getSelectList(string $arg): Collection|NULL
+	{
+		if (! preg_match('/;/',$arg)) {
+			Log::alert(sprintf('%s:! Invalid argument given to getSelectList [%s]',self::LOGKEY,$arg));
+
+			return NULL;
+		}
+
+		$args = explode(';',$arg);
+		if ((count($args) < 3) || (count($args) > 8)) {
+			Log::alert(sprintf('%s:! Invalid number of arguments given to getSelectList [%d]',self::LOGKEY,count($args)));
+
+			return NULL;
+		}
+
+		// Default to search the whole directory if no container is provided
+		$container = match ($x=Arr::get($args,0,$this->container)) {
+			'/' => config('server')->baseDNs(FALSE),
+			'.' => [$this->container],
+			'..' => [config('server')->parent($this->container)],
+			default => [$x],
+		};
+
+		// Process filter (arg 1), eventually replace %attr% by its value set in a previous page.
+		$m = [];
+		$query = Arr::get($args,1);
+		preg_match_all(self::VALUE_REGEX,$query,$m);
+
+		if (Arr::get($m,1))
+			foreach ($m[1] as $arg) {
+				$value = Arr::get($this->template->get('attributes'),$arg.'.value');
+
+				// $m[2] is the chars limiter
+				foreach (Arr::get($m,2,[]) as $arg)
+					$value = $this->substring($value,$arg);
+
+				// $m[3] is the char modifier
+				foreach (Arr::get($m,3,[]) as $arg)
+					$value = $this->modstring($value,$arg);
+
+				$query = preg_replace('#'.preg_quote($m[0][0]).'#',$value,$query);
+			}
+
+		$result = collect();
+
+		// Display format
+		$displayargs = [];
+		$display = empty($args[3]) ? "%{$args[2]}%" : $args[3];
+		preg_match_all(self::VALUE_REGEX,$display,$displayargs);
+
+		// Value format
+		$valueargs = [];
+		$value = empty($args[4]) ? "%{$args[3]}%" : $args[4];
+		preg_match_all(self::VALUE_REGEX,$value,$valueargs);
+
+		// Search for values
+		foreach ($container as $base) {
+			$search = (new Entry)
+				->in($base)
+				->rawFilter($query);
+
+			$result = $result->merge($search->get(collect($displayargs[1])->merge($valueargs[1])->unique()->toArray()));
+		}
+
+		// Process the result
+		return $result
+			->flatMap(function($item) use ($args,$display,$displayargs,$value,$valueargs) {
+				// Go through each display argument and resolve it
+				foreach ($displayargs[1] as $k=>$arg) {
+					if (! ($x=$item->getFirstAttribute($arg)))
+						return NULL;
+
+					// $displayargs[2] is the chars limiter
+					if ($displayargs[2][$k])
+						$x = $this->substring($x,$displayargs[2][$k]);
+
+					// $displayargs[3] is the char modifier
+					if ($displayargs[3][$k])
+						$x = $this->modstring($x,$displayargs[3][$k]);
+
+					$display = preg_replace('#'.preg_quote($displayargs[0][$k]).'#',$x,$display);
+				}
+
+				// Go through each display argument and resolve it
+				foreach ($valueargs[1] as $k=>$arg) {
+					if (! ($x=$item->getFirstAttribute($arg)))
+						continue;
+
+					// $displayargs[2] is the chars limiter
+					if ($valueargs[2][$k])
+						$x = $this->substring($x,$valueargs[2][$k]);
+
+					// $displayargs[3] is the char modifier
+					if ($valueargs[3][$k])
+						$x = $this->modstring($x,$valueargs[3][$k]);
+
+					$value = preg_replace('#'.preg_quote($valueargs[0][$k]).'#',$x,$value);
+				}
+
+				return [$display=>['id'=>$display,'value'=>$value]];
+			})
+			->filter()
+			->unique()
+			->sortKeys();
+	}
+
+	/**
 	 * Return if an attribute is automatically calculated
 	 *
 	 * @param $attribute
@@ -327,6 +509,24 @@ class Template
 	public function isAttributeCalculated($attribute): bool
 	{
 		return preg_match('/^=([a-zA-Z]+)/',$this->attribute($attribute)->get('value'));
+	}
+
+	/**
+	 * Return a modified string
+	 *
+	 * @param string $string
+	 * @param string $mod
+	 * @return string
+	 */
+	private function modstring(string $string,string $mod): string
+	{
+		return match ($mod) {
+			'l' => mb_strtolower($string),
+			'U' => mb_strtoupper($string),
+			'C' => mb_ucfirst($string),
+
+			default => $string,
+		};
 	}
 
 	/**
@@ -402,6 +602,28 @@ class Template
 	}
 
 	/**
+	 * Handle returning a substring
+	 *
+	 * @param string $string Raw string to process
+	 * @param string $limit Which chars to return
+	 * @return string
+	 */
+	private function substring(string $string,string $limit): string
+	{
+		// If limit is n-, we'll return the remaining chars starting from offset n
+		if (Str::endsWith($limit,'-'))
+			return Str::substr($string,substr($limit,0,-1));
+
+		// Otherwise return the chars between n-m, or the first n chars.
+		$m = [];
+		preg_match_all('/(\d+)-?(\d+)?/',$limit,$m);
+
+		return $m[2][0]
+			? Str::substr($string,$m[1][0],$m[2][0]-$m[1][0])
+			: Str::substr($string,0,$m[1][0]);
+	}
+
+	/**
 	 * autoFill - javascript to have one attribute fill the value of another
 	 *
 	 * args: is a literal string, with two parts, delimited by a semi-colon ;
@@ -439,6 +661,7 @@ class Template
 	{
 		if (! preg_match('/;/',$arg)) {
 			Log::alert(sprintf('%s:Invalid argument given to autofill [%s]',self::LOGKEY,$arg));
+
 			return '';
 		}
 
@@ -449,11 +672,9 @@ class Template
 		$this->on_change_target->put(strtolower($attr),$string);
 
 		$output = $string;
-		//$result .= sprintf("\n// %s\n",$arg);
 
 		$m = [];
-		// MATCH : 0 = highlevel match, 1 = attr, 2 = subst, 3 = mod, 4 = delimiter
-		preg_match_all('/%(\w+)(?:\|(\d*-\d)+)?(?:\/([klTUA]+))?(?:\|(.)?)?%/U',$string,$m);
+		preg_match_all(self::VALUE_REGEX,$string,$m);
 
 		foreach ($m[0] as $index => $null) {
 			$match_attr = strtolower($m[1][$index]);
@@ -483,6 +704,8 @@ class Template
 				} else {
 					$result .= sprintf("%s = get_attribute('%s');\n",$match_attr,$match_attr);
 				}
+
+				$result .= sprintf("if (%s === undefined) %s = '';",$match_attr,$match_attr);
 			}
 
 			if (str_contains($match_mod,'l'))

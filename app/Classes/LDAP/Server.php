@@ -399,6 +399,13 @@ final class Server
 		return in_array('1.3.6.1.4.1.4203.1.5.4',$this->rootDSE()->supportedfeatures);
 	}
 
+	public function parent(string $dn): string
+	{
+		$base = $this->get_base($dn);
+
+		return $dn === $base->getDn() ? $base->getDn() : dn_container($dn);
+	}
+
 	/**
 	 * Return the server's schema
 	 *

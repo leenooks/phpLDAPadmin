@@ -81,6 +81,7 @@ class EntryController extends Controller
 		}
 
 		$step = $request->get('_step') ? $request->get('_step')+1 : old('_step');
+		$template->container = old('container',$key['dn']);
 
 		return view('frame')
 			->with('subframe','create')

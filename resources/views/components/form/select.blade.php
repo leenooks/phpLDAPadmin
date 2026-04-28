@@ -15,17 +15,17 @@
 		:value="$value ?? NULL"
 		:class="$class ?? NULL"
 		:disabled="! ($edit ?? FALSE)"/>
-</div>
 
-@isset($name)
-	<span class="invalid-feedback">
-		@error((! empty($old)) ? $old : ($id ?? $name))
-			{{ $message }}
-		@elseif(isset($feedback))
-			{{ $feedback }}
-		@enderror
-	</span>
-@endisset
+	@isset($name)
+		<span class="invalid-feedback">
+			@error($old ?? $id ?? $name)
+				{{ $message }}
+			@elseif(isset($feedback))
+				{{ $feedback }}
+			@enderror
+		</span>
+	@endisset
+</div>
 
 @isset($helper)
 	<span class="input-helper">{!! html_entity_decode($helper) !!}</span>

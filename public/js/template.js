@@ -5,6 +5,12 @@
 function get_attribute(attribute,start,end) {
 	var val = $('#'+attribute).find('input').val();
 
+	if (! val)
+		val = $('#'+attribute).find('select').val();
+
+	if (! val)
+		return undefined;
+
 	return ((start !== undefined) && (end !== undefined))
 		? val.substring(start,end)
 		: val;
@@ -12,6 +18,9 @@ function get_attribute(attribute,start,end) {
 
 // Put a value to an attribute
 function put_attribute(attribute,result) {
+	if (result === undefined)
+		return;
+
 	// Get the value, if the value hasnt changed, then we dont need to do anything
 	if (get_attribute(attribute) === result)
 		return;
