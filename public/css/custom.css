@@ -44,6 +44,12 @@ input.form-control:has(+ .input-group-end) {
 	border-top-right-radius: 4px !important;
 }
 
+/* Fix select2 corners to be rounded */
+.input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+	border-top-right-radius: 4px !important;
+	border-bottom-right-radius: 4px !important;
+}
+
 .custom-tooltip-success {
 	--bs-tooltip-bg: var(--bs-success);
 }

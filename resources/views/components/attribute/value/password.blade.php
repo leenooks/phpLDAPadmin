@@ -2,11 +2,11 @@
 @use(App\Classes\LDAP\Attribute\Password)
 @use(App\Ldap\Entry)
 
-<div class="input-group has-validation">
-	@if($value && (! $o->isDirty()))
-		<input type="hidden" name="{{ $o->name_lc }}[{{ $attrtag }}{{ Entry::TAG_MD5 }}][]" value="{{ md5($o->values->dot()->get($dotkey)) }}">
-	@endif
+@if($value && (! $o->isDirty()))
+	<input type="hidden" name="{{ $o->name_lc }}[{{ $attrtag }}{{ Entry::TAG_MD5 }}][]" value="{{ md5($o->values->dot()->get($dotkey)) }}">
+@endif
 
+<div class="input-group has-validation">
 	<x-select
 		id="userpassword_hash_{{$index}}_{{ $template?->name }}"
 		name="{{ $o->name_lc }}[{{ $attrtag }}{{ Entry::TAG_HELPER }}][]"
