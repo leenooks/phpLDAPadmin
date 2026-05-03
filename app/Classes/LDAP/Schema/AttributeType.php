@@ -27,6 +27,8 @@ final class AttributeType extends Base
 	// This attribute has been forced a MAY attribute by the configuration.
 	private(set) bool $forced_as_may = FALSE;
 
+	private(set) bool $forced_managed = FALSE;
+
 	// boolean: is collective?
 	private(set) bool $is_collective = FALSE;
 
@@ -304,6 +306,11 @@ final class AttributeType extends Base
 	public function setMust(): void
 	{
 		$this->is_must = TRUE;
+	}
+
+	public function setManaged(): void
+	{
+		$this->forced_managed = TRUE;
 	}
 
 	/**

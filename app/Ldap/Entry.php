@@ -184,6 +184,23 @@ class Entry extends Model
 		if ($this->dn && ($this->dn !== config('server')->schemaDN())) {
 			$this->objects = $this->getAttributesAsObjects();
 
+			// See if we need to add in force_managed attributes
+			foreach (config('pla.force_managed') as $attr => $ocs) {
+				// If the attribute is already define, nothing to do here
+				if ($this->objects->has(strtolower($attr))) {
+					$this->objects->get(strtolower($attr))->schema->setManaged();
+
+					continue;
+				}
+
+				if (collect($this->getObject('objectclass')->values->get(self::TAG_NOTAG))->intersect($ocs)->count()) {
+					$ao = Factory::create($this->dn,$attr,[self::TAG_NOTAG=>['FALSE']]);
+					$ao->schema->setManaged();
+
+					$this->objects->put($attr,$ao);
+				}
+			}
+
 		} else {
 			$this->objects = collect();
 		}

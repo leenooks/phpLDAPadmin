@@ -78,6 +78,23 @@ return [
 	'force_may' => [],
 
 	/*
+	 * These internal attributes will be forced as regular attributes if they exist, for the objectclasses present
+	 * in the entry
+	 *
+	 * LDAP servers that implement password policy, eg: OpenLDAP, this enables pwdReset to be treated as a normal
+	 * attriute and thus modifiable.
+	 *
+	 * This value is a json encoded array where, 'attribute key' points to an array of 'objectclasss'.
+	 * eg: To present pwdReset internal attribute if the entry has a posixAccount or shadowAccount, use:
+	 *
+	 # 'force_managed' => '{"pwdReset":["posixAccount","shadowAccount"]}',
+	 *
+	 * This json encoded array can be created with
+	 * php -r "echo json_encode(['attribute1'=>['objectclass1','objectclass2','attribute2'=>['objectclass3']]);"
+	 */
+	'force_managed' => json_decode(env('LDAP_FORCE_MANAGED','{}'),TRUE),
+
+	/*
 	 * If 'login,attr' is used above such that phpLDAPadmin will search for your DN
 	 * at login, you may restrict the search to a specific objectClasses. EG, set this
 	 * to array('posixAccount') or array('inetOrgPerson',..), depending upon your

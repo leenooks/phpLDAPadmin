@@ -23,8 +23,9 @@ class Factory
 		'authorityrevocationlist' => Binary\CertificateList::class,
 		'cacertificate' => Binary\Certificate::class,
 		'certificaterevocationlist' => Binary\CertificateList::class,
-		'createtimestamp' => Internal\Timestamp::class,
 		'configcontext' => Schema\Generic::class,
+		'gidnumber' => GidNumber::class,
+		'jpegphoto' => Binary\JpegPhoto::class,
 		'krblastfailedauth' => Kerberos\Generic::class,
 		'krblastpwdchange' => Kerberos\Generic::class,
 		'krblastsuccessfulauth' => Kerberos\Generic::class,
@@ -32,10 +33,7 @@ class Factory
 		'krbloginfailedcount' => Kerberos\Generic::class,
 		'krbprincipalkey' => Kerberos\KrbPrincipalKey::class,
 		'krbticketflags' => Kerberos\KrbTicketFlags::class,
-		'gidnumber' => GidNumber::class,
-		'jpegphoto' => Binary\JpegPhoto::class,
 		'member' => Member::class,
-		'modifytimestamp' => Internal\Timestamp::class,
 		'monitorcontext' => Schema\Generic::class,
 		'namingcontexts' => Schema\Generic::class,
 		'objectclass' => ObjectClass::class,
@@ -63,7 +61,21 @@ class Factory
 	 */
 	public static function create(string $dn,string $attribute,array $values,array $oc=[]): Attribute
 	{
-		$class = Arr::get(self::map,strtolower($attribute),Attribute::class);
+		$class = Arr::get(self::map,strtolower($attribute));
+
+		// If we dont have a defined attribute type, assign it a generic one
+		// @todo this doesnt work with noattrtag,internal interfaces - need a better way to determine those settings
+		if (is_null($class)) {
+			$s = config('server')->schema('attributetypes',$attribute);
+
+			$class = match (strtolower($s->equality)) {
+				'booleanmatch' => Equality\Boolean::class,
+				'generalizedtimematch' => Internal\Timestamp::class,
+
+				default => Attribute::class,
+			};
+
+		}
 
 		Log::debug(sprintf('%s:Creating Attribute [%s] for [%s] using class [%s]',self::LOGKEY,$attribute,$dn,$class),['values'=>$values]);
 		return new $class($dn,$attribute,$values,$oc);
