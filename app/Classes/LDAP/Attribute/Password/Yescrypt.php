@@ -4,7 +4,7 @@ namespace App\Classes\LDAP\Attribute\Password;
 
 final class Yescrypt extends Base
 {
-	public const key = 'YESCRYPT';
+	public const key = 'CRYPT';
 	protected const subkey = 'yescrypt';
 	protected const identifier = '$y$';
 
