@@ -81,15 +81,18 @@ class EntryController extends Controller
 		}
 
 		// See if we need to add in force_managed attributes
-		foreach (config('pla.force_managed') as $attr => $ocs) {
-			if ($template->objectclasses->intersect($ocs)->count()) {
-				$o->setAttribute($attr,[Entry::TAG_NOTAG=>['FALSE']]);
-				$o->getObject($attr)->schema->setManaged();
+		if ($template) {
+			foreach (config('pla.force_managed') as $attr => $ocs) {
+				if ($template->objectclasses->intersect($ocs)->count()) {
+					$o->setAttribute($attr,[Entry::TAG_NOTAG=>['FALSE']]);
+					$o->getObject($attr)->schema->setManaged();
+				}
 			}
+
+			$template->container = old('container',$key['dn']);
 		}
 
 		$step = $request->get('_step') ? $request->get('_step')+1 : old('_step');
-		$template->container = old('container',$key['dn']);
 
 		return view('frame')
 			->with('subframe','create')
