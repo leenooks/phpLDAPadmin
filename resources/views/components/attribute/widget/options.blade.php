@@ -35,7 +35,7 @@
 									url: '{{ url('modal/member-manage') }}/'+dn,
 									dataType: 'html',
 									cache: false,
-									beforeSend: before_send_spinner(that),
+									beforeSend: ajax_before_send_spinner(that),
 
 								}).done(function(html) {
 									that.empty().html(html);
@@ -44,7 +44,7 @@
 							});
 
 							$('#page-modal').on('hide.bs.modal',function() {
-								var updated = update_from_modal(modal_attr,attribute_values('destination','select','option'));
+								var updated = modal_update(modal_attr,attribute_values('destination','select','option'));
 
 								if (updated.length)
 									// Go through the updated items and ensure the input-group-end reflects that the entry exists
@@ -132,7 +132,7 @@
 										data: {
 											noheader: true,
 											value: item,
-											objectclasses: oc_rendered(),
+											objectclasses: attribute_values_oc(),
 										},
 										dataType: 'html',
 										cache: false,
@@ -166,7 +166,7 @@
 														url: '{{ url('entry/attr/add') }}/'+item.toLowerCase(),
 														data: {
 															value: item,
-															objectclasses: oc_rendered(),
+															objectclasses: attribute_values_oc(),
 														},
 														dataType: 'html',
 														cache: false,
@@ -274,7 +274,7 @@
 										method: 'POST',
 										url: '{{ url('entry/objectclass/add') }}',
 										data: {
-											oc: oc_rendered(),
+											oc: attribute_values_oc(),
 										},
 										dataType: 'json',
 										cache: false,

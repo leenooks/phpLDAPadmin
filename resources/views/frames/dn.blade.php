@@ -223,7 +223,7 @@
 							url: '{{ url('modal/copy-move') }}/'+dn,
 							dataType: 'html',
 							cache: false,
-							beforeSend: before_send_spinner(that)
+							beforeSend: ajax_before_send_spinner(that)
 
 						}).done(function(html) {
 							that.empty().append(html);
@@ -238,7 +238,7 @@
 							url: '{{ url('modal/delete') }}/'+dn,
 							dataType: 'html',
 							cache: false,
-							beforeSend: before_send_spinner(that)
+							beforeSend: ajax_before_send_spinner(that)
 
 						}).done(function(html) {
 							that.empty().append(html);
@@ -253,7 +253,7 @@
 							url: '{{ url('modal/export') }}/'+dn,
 							dataType: 'html',
 							cache: false,
-							beforeSend: before_send_spinner(that)
+							beforeSend: ajax_before_send_spinner(that)
 
 						}).done(function(html) {
 							that.empty().html(html);
@@ -265,7 +265,7 @@
 								url: '{{ url('entry/export') }}/'+dn,
 								dataType: 'html',
 								cache: false,
-								beforeSend: before_send_spinner(that)
+								beforeSend: ajax_before_send_spinner(that)
 
 							}).done(function(html) {
 								that.empty().append(html);
@@ -282,7 +282,7 @@
 							url: '{{ url('modal/rename') }}/'+dn,
 							dataType: 'html',
 							cache: false,
-							beforeSend: before_send_spinner(that)
+							beforeSend: ajax_before_send_spinner(that)
 
 						}).done(function(html) {
 							that.empty().append(html);
@@ -297,7 +297,7 @@
 							url: '{{ url('modal/userpassword-check') }}/'+dn,
 							dataType: 'html',
 							cache: false,
-							beforeSend: before_send_spinner(that)
+							beforeSend: ajax_before_send_spinner(that)
 
 						}).done(function(html) {
 							that.empty().append(html);
@@ -316,7 +316,7 @@
 							url: '{{ url('modal/values-show') }}/'+dn,
 							dataType: 'html',
 							cache: false,
-							beforeSend: before_send_spinner(that)
+							beforeSend: ajax_before_send_spinner(that)
 
 						}).done(function(html) {
 							that.empty().append(html);

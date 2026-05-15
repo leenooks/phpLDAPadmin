@@ -30,7 +30,7 @@
 				type: 'POST',
 				url: '{{ url('entry/attr/add') }}/'+item.target.value,
 				data: {
-					objectclasses: oc_rendered(),
+					objectclasses: attribute_values_oc(),
 				},
 				dataType: 'html',
 				cache: false,

@@ -1,18 +1,15 @@
-function expandChildren(node) {
-	if (node.data.autoExpand && !node.isExpanded()) {
-		node.setExpanded(true);
-	}
+// Handle our error message for .ajax() calls
+let ajax_error = function(e) {
+	alert('That didnt work? Please try again.... ('+e.status+')');
+};
 
-	if (node.children && node.children.length > 0) {
-		try {
-			node.children.forEach(expandChildren);
-		} catch (error) {
-		}
-	}
+// Render a spinner when doing an ajax call
+function ajax_before_send_spinner(that) {
+	that.append('<span class="ps-3"><i class="fas fa-2x fa-spinner fa-spin-pulse"></i></span>');
 }
 
 // Render a sub page via an ajax method
-function get_frame(item) {
+function ajax_frame_get(item) {
 	$.ajax({
 		url: web_base+'/frame',
 		method: 'POST',
@@ -21,7 +18,7 @@ function get_frame(item) {
 		beforeSend: function() {
 			// In case we want to redirect back to the original page
 			content = $('.main-content').contents();
-			before_send_spinner($('.main-content').empty());
+			ajax_before_send_spinner($('.main-content').empty());
 		}
 
 	}).done(function(html) {
@@ -68,16 +65,6 @@ function get_frame(item) {
 	});
 }
 
-// Handle our error message for .ajax() calls
-let ajax_error = function(e) {
-	alert('That didnt work? Please try again.... ('+e.status+')');
-};
-
-// Render a spinner when doing an ajax call
-function before_send_spinner(that) {
-	that.append('<span class="ps-3"><i class="fas fa-2x fa-spinner fa-spin-pulse"></i></span>');
-}
-
 // Find all values of an attribute in the form
 function attribute_values(attr,container='attribute',input='input') {
 	return $(container+'#'+attr+' '+(input === 'input' ? 'input[type=text]:not(.no-edit)' : input))
@@ -86,14 +73,14 @@ function attribute_values(attr,container='attribute',input='input') {
 }
 
 // Rendered OC values
-function oc_rendered() {
+function attribute_values_oc() {
 	return $('attribute#objectclass input')
 		.map((key,item)=>item.value)
 		.toArray();
 }
 
 // This function will update values that are altered from a modal, and return with any new values
-function update_from_modal(attr,modal_data) {
+function modal_update(attr,modal_data) {
 	// Existing Values
 	var existing = attribute_values(attr);
 	var addition = [];
@@ -154,4 +141,17 @@ function update_from_modal(attr,modal_data) {
 
 	// We return with new additions
 	return addition;
+}
+
+function tree_expand_children(node) {
+	if (node.data.autoExpand && !node.isExpanded()) {
+		node.setExpanded(true);
+	}
+
+	if (node.children && node.children.length > 0) {
+		try {
+			node.children.forEach(tree_expand_children);
+		} catch (error) {
+		}
+	}
 }

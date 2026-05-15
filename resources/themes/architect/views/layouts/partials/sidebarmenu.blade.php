@@ -121,7 +121,7 @@
 				},
 				click: function(event,data) {
 					if (data.targetType === 'title' && data.node.data.item)
-						get_frame(data.node.data.item);
+						ajax_frame_get(data.node.data.item);
 				},
 				source: sources,
 				lazyLoad: function(event,data) {
@@ -136,7 +136,7 @@
 						}
 					};
 
-					expandChildren(data.tree.rootNode);
+					tree_expand_children(data.tree.rootNode);
 				},
 				keydown: function(event,data){
 					switch( $.ui.fancytree.eventToString(data.originalEvent) ) {
