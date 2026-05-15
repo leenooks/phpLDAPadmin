@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes\LDAP\Attribute\Equality;
+namespace App\Classes\LDAP\Attribute\Syntax;
 
 use Illuminate\Contracts\View\View;
 
@@ -26,7 +26,7 @@ final class Boolean extends Attribute implements NoAttrTag
 		return parent::render(
 			attrtag: $attrtag,
 			index: $index,
-			view: view('components.attribute.value.equality.boolean'),
+			view: view('components.attribute.value.syntax.boolean'),
 			edit: $edit,
 			editable: $editable,
 			new: $new,

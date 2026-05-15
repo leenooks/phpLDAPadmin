@@ -68,9 +68,10 @@ class Factory
 		if (is_null($class)) {
 			$s = config('server')->schema('attributetypes',$attribute);
 
-			$class = match (strtolower($s->equality)) {
-				'booleanmatch' => Equality\Boolean::class,
-				'generalizedtimematch' => Internal\Timestamp::class,
+			$class = match (strtolower($s->syntax)) {
+				'1.3.6.1.4.1.1466.115.121.1.7' => Syntax\Boolean::class,
+				'1.3.6.1.4.1.1466.115.121.1.24' => Syntax\Timestamp::class,
+				'1.3.6.1.4.1.1466.115.121.1.40' => Syntax\OctectString::class,
 
 				default => Attribute::class,
 			};

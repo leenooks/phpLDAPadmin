@@ -367,14 +367,14 @@ class Attribute implements \Countable, \ArrayAccess
 		if ($this->is_internal)
 			return ($view ?: view('components.attribute.value.internal'))
 				->with('o',$this)
+				->with('dotkey',$dotkey)
 				->with('value',$this->render_item_new($dotkey));
 
 		return ($view ?:
 			(view()->exists($x='components.attribute.value.'.$this->name_lc)
 				? view($x)
-				: view('components.attribute.value')))
+				: view('components.attribute.value'))
 			->with('o',$this)
-			->with('dotkey',$dotkey)
 			->with('value',$this->render_item_new($dotkey))
 			->with('edit',$edit)
 			->with('editable',$editable)
@@ -382,7 +382,8 @@ class Attribute implements \Countable, \ArrayAccess
 			->with('attrtag',$attrtag)
 			->with('index',$index)
 			->with('updated',$updated)
-			->with('template',$template);
+			->with('template',$template))
+			->with('dotkey',$dotkey);
 	}
 
 	/**
