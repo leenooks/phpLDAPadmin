@@ -18,13 +18,27 @@ LABEL org.opencontainers.image.version=${BUILD_VERSION}
 LABEL org.opencontainers.image.revision=${BUILD_REVISION}
 
 # Additional extensions:
-RUN PHPIZE_DEPS="autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c"\
+ENV PHPIZE_DEPS="autoconf dpkg-dev dpkg file g++ gcc libc-dev make pkgconf re2c"\
 	PHP_CFLAGS=-"fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64"\
 	PHP_CPPFLAGS=-"fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64"\
-	PHP_LDFLAGS="-Wl,-O1 -pie"\
-	install-php-extensions \
-	ldap \
-	igbinary msgpack memcached
+	PHP_LDFLAGS="-Wl,-O1 -pie"
+
+RUN install-php-extensions ldap igbinary msgpack memcached
+
+# xpass required for yescrypt passwords
+RUN cd /tmp \
+        && apk --no-cache add build-base git perl linux-headers \
+        && git clone https://github.com/remicollet/php-xpass.git \
+        && export installLibXCrypt_version=4.4.36 \
+        && wget https://github.com/besser82/libxcrypt/releases/download/v$installLibXCrypt_version/libxcrypt-$installLibXCrypt_version.tar.xz \
+        && tar xJf libxcrypt-$installLibXCrypt_version.tar.xz \
+        && cd libxcrypt-$installLibXCrypt_version \
+        && ./configure --prefix /usr --disable-werror \
+        && make install \
+        && docker-php-ext-configure /tmp/php-xpass --with-xpass-dlopen \
+        && docker-php-ext-install /tmp/php-xpass \
+        && rm -r /tmp/php-xpass /tmp/libxcrypt-$installLibXCrypt_version \
+        && apk --no-cache del build-base git perl linux-headers
 
 # Tune PHP
 RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini \
