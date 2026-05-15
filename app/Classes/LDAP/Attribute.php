@@ -119,7 +119,7 @@ class Attribute implements \Countable, \ArrayAccess
 			// Can this attribute be edited
 			'is_editable' => $this->schema ? $this->schema->{$key} : NULL,
 			// Is this an internal attribute
-			'is_internal' => $this->_is_internal ?: (($this->used_in->count() === 0) && (! $this->schema?->forced_managed)),
+			'is_internal' => ($this->_is_internal || $this->schema->is_no_user_modification) ?: (($this->used_in->count() === 0) && (! $this->schema?->forced_managed)),
 			// Objectclasses that required this attribute for an LDAP entry
 			'required' => $this->required(),
 			// Is this attribute an RDN attribute
