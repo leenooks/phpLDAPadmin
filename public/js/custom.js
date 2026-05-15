@@ -149,6 +149,13 @@ function attribute_values(attr,container='attribute',input='input') {
 		.toArray();
 }
 
+// Rendered OC values
+function oc_rendered() {
+	return $('attribute#objectclass input')
+		.map((key,item)=>item.value)
+		.toArray();
+}
+
 // This function will update values that are altered from a modal, and return with any new values
 function update_from_modal(attr,modal_data) {
 	// Existing Values
