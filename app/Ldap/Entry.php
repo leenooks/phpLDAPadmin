@@ -193,7 +193,7 @@ class Entry extends Model
 					continue;
 				}
 
-				if (collect($this->getObject('objectclass')->values->get(self::TAG_NOTAG))->intersect($ocs)->count()) {
+				if (collect($this->getObject('objectclass')?->values->get(self::TAG_NOTAG))->intersect($ocs)->count()) {
 					$ao = Factory::create($this->dn,$attr,[self::TAG_NOTAG=>['FALSE']]);
 					$ao->schema->setManaged();
 
@@ -211,7 +211,7 @@ class Entry extends Model
 				->filter(fn($item)=>$item->enabled
 					&& (! $item->objectclasses
 						->map('strtolower')
-						->diff(array_map('strtolower',Arr::get($this->attributes,'objectclass')))
+						->diff(array_map('strtolower',Arr::get($this->attributes,'objectclass',[])))
 						->count()))
 				->sortBy(fn($item)=>$item->title);
 		}
