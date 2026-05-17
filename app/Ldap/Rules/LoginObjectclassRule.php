@@ -14,17 +14,26 @@ use LdapRecord\Models\Model as LdapRecord;
  */
 class LoginObjectclassRule implements Rule
 {
-    public function passes(LdapRecord $user,?Eloquent $model=NULL): bool
-    {
+	private const LOGKEY = 'LOR';
+
+	public function passes(LdapRecord $user,?Eloquent $model=NULL): bool
+	{
 		if ($x=config('pla.login.objectclass')) {
-			return count(array_intersect(
+			$result = count(array_intersect(
 				array_map('strtolower',$user?->objectclass ?: []),
 				array_map('strtolower',$x)
 			));
 
+			if ($result === 0)
+				\Log::alert(sprintf('%s:User login denied for [%s], not using an approved objectclass',self::LOGKEY,$user->getDN()));
+
+			return $result > 0;
+
 		// Otherwise allow the user to login
 		} else {
+			\Log::debug(sprintf('%s:No login rules, permitting login',self::LOGKEY));
+
 			return TRUE;
 		}
-    }
+	}
 }

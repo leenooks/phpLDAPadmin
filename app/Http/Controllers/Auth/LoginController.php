@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use LdapRecord\Auth\BindException;
 use LdapRecord\Container;
@@ -66,14 +66,25 @@ class LoginController extends Controller
 	 */
 	public function attemptLogin(Request $request)
 	{
+		Log::debug(sprintf('%s:Attempting login for [%s]',self::LOGKEY,$request->input(login_attr_name())));
+		$login = $this->credentials($request);
+
 		try {
-			$attempt = $this->guard()->attempt(
-				$this->credentials($request), $request->boolean('remember')
-			);
+			$attempt = $this->guard()->attempt($login,$request->boolean('remember'));
 
 		} catch (\Throwable $e) {
 			Log::error(sprintf('%s:! Authentication may have succeeded, but an error [%s] was thrown',self::LOGKEY,$e->getMessage()));
+
 			return FALSE;
+		}
+
+		// Store user details so we can swap in auth details in SwapinAuthUser
+		if ($attempt)
+			session()->put('password_encrypt',Crypt::encryptString(\Arr::get($login,'password')));
+
+		else {
+			session()->forget('username_encrypt');
+			Log::debug(sprintf('%s:Login attempt failed for [%s]',self::LOGKEY,$request->input(login_attr_name())));
 		}
 
 		// If the login failed, and PLA is set to use DN login, check if the entry exists.
