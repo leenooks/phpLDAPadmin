@@ -75,6 +75,8 @@ return [
                 'model' => App\Ldap\User::class,
                 'rules' => [
                         App\Ldap\Rules\LoginObjectclassRule::class,
+                        App\Ldap\Rules\LoginGroupRule::class,
+                        App\Ldap\Rules\LoginBaseDnRule::class,
                 ],
         ],
     ],

@@ -107,6 +107,10 @@ return [
 		'objectclass' => explode(',',env('LDAP_LOGIN_OBJECTCLASS', 'posixAccount')),
 		// Alert if DN is being used, and the login fails, and the the DN doesnt exist
 		'alert_rootdn' => env('LDAP_ALERT_ROOTDN',TRUE) && strtolower(env('LDAP_LOGIN_ATTR','uid')) === 'dn',
+		// Group that users must be part of to login (null if unrestricted)
+		'group' => env('LDAP_LOGIN_GROUP', null),
+		// Base DN for allowed logins (will default to RootDN if null)
+		'base' => env('LDAP_LOGIN_BASE_DN', null),
 	],
 
 	/*
