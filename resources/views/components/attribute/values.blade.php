@@ -30,7 +30,7 @@
 		@endforeach
 
 		@foreach(($x=$values->skip(config('pla.limit.values'))->filter()) as $key => $value)
-			<input type="text" class="d-none" name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ $value }}">
+			<input type="text" @class(['d-none','no-edit'=>(! ($editable ?? FALSE) && ($o->dn))]) name="{{ $o->name_lc }}[{{ $langtag }}][]" value="{{ $value }}">
 		@endforeach
 
 		@if($x->count())
