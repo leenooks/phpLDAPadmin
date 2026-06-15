@@ -149,7 +149,7 @@
 			// Switch focus to the default templte
 			$('span[href="#template-default"]').click();
 
-			$('#dn-edit input[name="dn"]').val(dn);
+			$('form#dn-edit input[name="dn"]').val(dn);
 
 			$('form#dn-edit').attr('readonly',false);
 			$('button[id=entry-edit]')
@@ -159,34 +159,37 @@
 				.attr('disabled',true);
 
 			// Find all input items and turn off readonly
-			$('input.form-control').not('.modal-edit, .no-edit').each(function() {
+			$('form#dn-edit input.form-control').not('.modal-edit, .no-edit').each(function() {
 				$(this).attr('readonly',false);
 			});
 
 			// Find all input items and turn off readonly
-			$('textarea.form-control').not('.no-edit').each(function() {
+			$('form#dn-edit textarea.form-control').not('.no-edit').each(function() {
 				$(this).attr('readonly',false);
 			});
 
 			// Any select areas that are disabled
-			$('attribute .form-select').not('.no-edit').each(function() {
+			$('form#dn-edit attribute .form-select').not('.no-edit').each(function() {
 				$(this).prop('disabled',false);
 			});
 
 			// Any attribute select areas
-			$('#newattr.form-select').each(function() {
+			$('form#dn-edit #newattr.form-select').each(function() {
 				$(this).prop('disabled',false);
 			});
 
 			// Objectclasses that can be removed
-			$('.input-group-end i.d-none').removeClass('d-none');
+			$('form#dn-edit .input-group-end i.d-none').removeClass('d-none');
 
-			$('.row.d-none').removeClass('d-none');
-			$('button.addable.d-none').removeClass('d-none');
-			$('button.deletable.d-none').removeClass('d-none');
+			$('form#dn-edit + div.row.d-none').removeClass('d-none');
+			$('form#dn-edit button.addable.d-none').removeClass('d-none');
+			$('form#dn-edit button.deletable.d-none').removeClass('d-none');
+
+			// Any readonly-checkbox
+			$('form#dn-edit .readonly-checkbox').removeClass('readonly-checkbox');
 
 			@if($o->getMissingAttributes()->count())
-				$('#newattr-select.d-none').removeClass('d-none');
+				$('form#dn-edit #newattr-select.d-none').removeClass('d-none');
 			@endif
 		}
 
@@ -220,7 +223,7 @@
 							url: '{{ url('modal/copy-move') }}/'+dn,
 							dataType: 'html',
 							cache: false,
-							beforeSend: before_send_spinner(that)
+							beforeSend: ajax_before_send_spinner(that)
 
 						}).done(function(html) {
 							that.empty().append(html);
@@ -235,7 +238,7 @@
 							url: '{{ url('modal/delete') }}/'+dn,
 							dataType: 'html',
 							cache: false,
-							beforeSend: before_send_spinner(that)
+							beforeSend: ajax_before_send_spinner(that)
 
 						}).done(function(html) {
 							that.empty().append(html);
@@ -250,7 +253,7 @@
 							url: '{{ url('modal/export') }}/'+dn,
 							dataType: 'html',
 							cache: false,
-							beforeSend: before_send_spinner(that)
+							beforeSend: ajax_before_send_spinner(that)
 
 						}).done(function(html) {
 							that.empty().html(html);
@@ -262,7 +265,7 @@
 								url: '{{ url('entry/export') }}/'+dn,
 								dataType: 'html',
 								cache: false,
-								beforeSend: before_send_spinner(that)
+								beforeSend: ajax_before_send_spinner(that)
 
 							}).done(function(html) {
 								that.empty().append(html);
@@ -279,7 +282,7 @@
 							url: '{{ url('modal/rename') }}/'+dn,
 							dataType: 'html',
 							cache: false,
-							beforeSend: before_send_spinner(that)
+							beforeSend: ajax_before_send_spinner(that)
 
 						}).done(function(html) {
 							that.empty().append(html);
@@ -294,7 +297,7 @@
 							url: '{{ url('modal/userpassword-check') }}/'+dn,
 							dataType: 'html',
 							cache: false,
-							beforeSend: before_send_spinner(that)
+							beforeSend: ajax_before_send_spinner(that)
 
 						}).done(function(html) {
 							that.empty().append(html);
@@ -313,7 +316,7 @@
 							url: '{{ url('modal/values-show') }}/'+dn,
 							dataType: 'html',
 							cache: false,
-							beforeSend: before_send_spinner(that)
+							beforeSend: ajax_before_send_spinner(that)
 
 						}).done(function(html) {
 							that.empty().append(html);

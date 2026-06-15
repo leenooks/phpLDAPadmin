@@ -224,6 +224,8 @@ class LDIF extends Import
 					if (! $o) {
 						$result->push(collect(['dn'=>$dn,'result'=>__('Entry doesnt exist')]));
 						$result->last()->put('line',$c);
+
+						break;
 					}
 				}
 

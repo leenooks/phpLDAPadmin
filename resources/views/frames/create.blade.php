@@ -15,7 +15,6 @@
 	<div class="row">
 		<div class="offset-1 col-10">
 			<div class="main-card mb-3 card">
-
 				<div class="card-header">
 					@lang('Create New Entry') - @lang('Step') {{ $step }} @if($template) <span class="ms-auto"><i class="fa fa-fw {{ $template->icon }}"></i> {{ $template->title }}</span>@endif
 				</div>

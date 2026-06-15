@@ -80,6 +80,18 @@ class EntryController extends Controller
 			}
 		}
 
+		// See if we need to add in force_managed attributes
+		if ($template) {
+			foreach (config('pla.force_managed') as $attr => $ocs) {
+				if ($template->objectclasses->intersect($ocs)->count()) {
+					$o->setAttribute($attr,[Entry::TAG_NOTAG=>['FALSE']]);
+					$o->getObject($attr)->schema->setManaged();
+				}
+			}
+
+			$template->container = old('container',$key['dn']);
+		}
+
 		$step = $request->get('_step') ? $request->get('_step')+1 : old('_step');
 
 		return view('frame')
@@ -451,6 +463,9 @@ class EntryController extends Controller
 				->withInput()
 				->with('note',__('No attributes changed'));
 
+		// If the logged in user is changing their password, they'll need to relogin
+		$relogin = (\Auth::user() && ($o->getDn() === \Auth::user()->getDn())) && array_key_exists('userpassword',$o->getDirty());
+
 		try {
 			$o->update($request->except(['_token','dn']));
 
@@ -476,6 +491,13 @@ class EntryController extends Controller
 					$e->getDetailedError()->getErrorMessage(),
 					$e->getDetailedError()->getDiagnosticMessage(),
 				));
+		}
+
+		if ($relogin) {
+			session()->invalidate();
+
+			return Redirect::to('/login')
+				->with('success',__('Password changed successfully. Please log in with your new password.'));
 		}
 
 		return Redirect::to('/')

@@ -181,7 +181,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('a#user').on('click',function(item) {
-				get_frame($(this).data('link'));
+				ajax_frame_get($(this).data('link'));
 
 				item.stopPropagation();
 			});
@@ -203,7 +203,7 @@
 					},
 					beforeSend: function() {
 						content = $('.main-content').contents();
-						before_send_spinner($('.main-content').empty())
+						ajax_before_send_spinner($('.main-content').empty())
 					}
 
 				}).done(function(html) {

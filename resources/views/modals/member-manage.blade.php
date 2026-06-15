@@ -30,7 +30,7 @@
 	<x-modal.close/>
 </div>
 
-<!-- JS:member-manage -->
+<!-- modals.member-manage -->
 <script type="text/javascript">
 	// Moves selected item(s) from sourceList to destinationList
 	$.fn.moveToList = function(sourceList,destinationList) {
@@ -55,7 +55,7 @@
 
 	$(document).ready(function() {
 		// Populate the existing members
-		$('div#template-default attribute#'+modal_attr+' input[type=text][name^="'+modal_attr+'['+modal_tag+']"]:not(.no-edit)')
+		$('attribute#'+modal_attr+' input[type=text][name^="'+modal_attr+'['+modal_tag+']"]:not(.no-edit)')
 			.filter((index,element)=>$(element).val())
 			.each((index,element)=>
 				$('select#destination').append(new Option($(element).val(),$(element).val())));

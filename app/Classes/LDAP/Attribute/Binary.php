@@ -3,17 +3,17 @@
 namespace App\Classes\LDAP\Attribute;
 
 use App\Classes\LDAP\Attribute;
-use App\Interfaces\MD5Updates as MD5Interface;
+use App\Interfaces\{Base64Value,MD5Update};
 use App\Traits\MD5Updates;
 
 /**
  * Represents an attribute whose values are binary
  */
-abstract class Binary extends Attribute implements MD5Interface
+abstract class Binary extends Attribute implements Base64Value,MD5Update
 {
 	use MD5Updates;
 
-	protected(set) bool $base64_values = TRUE;
+	protected const CERTIFICATE_ENCODE_LENGTH = 76;
 
 	public function __get(string $key): mixed
 	{

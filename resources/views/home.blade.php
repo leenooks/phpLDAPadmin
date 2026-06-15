@@ -81,7 +81,7 @@
 			if (subpage) {
 				// Clear the hash
 				history.replaceState(null,null,' ');
-				get_frame(subpage.substring(1));
+				ajax_frame_get(subpage.substring(1));
 			}
 		});
 	</script>

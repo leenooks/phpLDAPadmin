@@ -35,7 +35,7 @@
 									url: '{{ url('modal/member-manage') }}/'+dn,
 									dataType: 'html',
 									cache: false,
-									beforeSend: before_send_spinner(that),
+									beforeSend: ajax_before_send_spinner(that),
 
 								}).done(function(html) {
 									that.empty().html(html);
@@ -44,11 +44,11 @@
 							});
 
 							$('#page-modal').on('hide.bs.modal',function() {
-								var updates = attribute_values('destination','select','option');
+								var updated = modal_update(modal_attr,attribute_values('destination','select','option'));
 
-								if (updates.length)
+								if (updated.length)
 									// Go through the updated items and ensure the input-group-end reflects that the entry exists
-									update_from_modal(modal_attr,updates).forEach(function(item) {
+									updated.forEach(function(item) {
 										$('attribute#'+modal_attr+' [value="'+item+'"]')
 											.next('.input-group-end')
 											.removeClass('text-danger')
@@ -61,6 +61,7 @@
 						});
 					</script>
 				@append
+
 				@break
 
 			@case(ObjectClass::class)
@@ -94,13 +95,6 @@
 							let at = $(a).text(),
 								bt = $(b).text();
 							return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
-						}
-
-						// Rendered OC values
-						function oc_rendered() {
-							return $('attribute#objectclass input[type=text]')
-								.map((key,item)=>item.value)
-								.toArray();
 						}
 
 						function newattr_options() {
@@ -138,7 +132,7 @@
 										data: {
 											noheader: true,
 											value: item,
-											objectclasses: oc_rendered(),
+											objectclasses: attribute_values_oc(),
 										},
 										dataType: 'html',
 										cache: false,
@@ -172,7 +166,7 @@
 														url: '{{ url('entry/attr/add') }}/'+item.toLowerCase(),
 														data: {
 															value: item,
-															objectclasses: oc_rendered(),
+															objectclasses: attribute_values_oc(),
 														},
 														dataType: 'html',
 														cache: false,
@@ -183,7 +177,7 @@
 													}).fail(ajax_error);
 
 													// If this is a new entry, add the required attributes to the RDN
-													if ($('select#rdn')) {
+													if ($('select#rdn').length) {
 														if (! rdn_options().includes(item)) {
 															$('select#rdn').append(new Option(item,item));
 															rdn_options_sort = true;
@@ -280,7 +274,7 @@
 										method: 'POST',
 										url: '{{ url('entry/objectclass/add') }}',
 										data: {
-											oc: oc_rendered(),
+											oc: attribute_values_oc(),
 										},
 										dataType: 'json',
 										cache: false,

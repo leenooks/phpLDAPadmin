@@ -2,20 +2,17 @@
 
 namespace App\Classes\LDAP\Attribute;
 
-use App\Exceptions\InvalidUsage;
 use Illuminate\Support\Collection;
 
+use App\Exceptions\InvalidUsage;
+use App\Interfaces\{ModalEditable,NoAttrTag};
 use App\Classes\LDAP\Attribute;
 
 /**
  * Represents an ObjectClass Attribute
  */
-final class ObjectClass extends Attribute
+final class ObjectClass extends Attribute implements NoAttrTag,ModalEditable
 {
-	protected(set) bool $no_attr_tags = TRUE;
-
-	protected(set) bool $modal_editable = TRUE;
-
 	// The schema ObjectClasses for this objectclass of a DN
 	protected Collection $oc_schema;
 

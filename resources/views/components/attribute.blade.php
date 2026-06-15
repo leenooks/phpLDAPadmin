@@ -96,6 +96,13 @@
 	</div>
 </div>
 
+<!-- If this is an ajax call to add new attributes, we need to render any javascript -->
+@if(request()->path() === 'entry/attr/add/member')
+	<!-- START AJAX scripts -->
+	@yield('page-scripts')
+	<!-- END AJAX scripts -->
+@endif
+
 <!-- Template javascript, only for new entries -->
 @if((! $o->dn) && ($x=$template?->onChange($o->name))?->count())
 	@section('page-scripts')

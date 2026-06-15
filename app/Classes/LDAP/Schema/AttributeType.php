@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 
 use App\Classes\LDAP\Attribute;
 use App\Exceptions\InvalidUsage;
-use App\Interfaces\MD5Updates;
+use App\Interfaces\MD5Update;
 use App\Ldap\Entry;
 
 /**
@@ -27,6 +27,8 @@ final class AttributeType extends Base
 	// This attribute has been forced a MAY attribute by the configuration.
 	private(set) bool $forced_as_may = FALSE;
 
+	private(set) bool $forced_managed = FALSE;
+
 	// boolean: is collective?
 	private(set) bool $is_collective = FALSE;
 
@@ -44,6 +46,7 @@ final class AttributeType extends Base
 
 	// An array of names (including aliases) that this attribute is known by
 	private(set) Collection $names;
+	private(set) Collection $names_lc;
 
 	// The ordering of the attributeType
 	private(set) ?string $ordering = NULL;
@@ -69,14 +72,6 @@ final class AttributeType extends Base
 
 	// An array of objectClasses which use this attributeType (must be set by caller)
 	private(set) Collection $used_in_object_classes;
-
-	public function __get(string $key): mixed
-	{
-		return match ($key) {
-			'names_lc' => $this->names->map('strtolower'),
-			default => parent::__get($key)
-		};
-	}
 
 	/**
 	 * Children of this attribute type that inherit from this one
@@ -151,6 +146,7 @@ final class AttributeType extends Base
 
 		// Init
 		$this->names = collect();
+		$this->names_lc = collect();
 		$this->children = collect();
 		$this->used_in_object_classes = collect();
 		$this->required_by_object_classes = collect();
@@ -194,6 +190,8 @@ final class AttributeType extends Base
 				}
 
 				$this->names = $this->names->push(preg_replace("/^\'(.*)\'$/",'$1',$name))->sort();
+				$this->names_lc = $this->names->map('strtolower');
+
 				$this->forced_as_may = $this->names_lc
 					->intersect(array_map('strtolower',config('pla.force_may',[])))
 					->count() > 0;
@@ -281,6 +279,16 @@ final class AttributeType extends Base
 	}
 
 	/**
+	 * Return this attributes parent
+	 *
+	 * @return self
+	 */
+	private function parent(): self
+	{
+		return config('server')->schema('attributetypes',$this->sup_attribute);
+	}
+
+	/**
 	 * Sets whether this attribute is single-valued.
 	 *
 	 * @param boolean $is
@@ -300,6 +308,11 @@ final class AttributeType extends Base
 		$this->is_must = TRUE;
 	}
 
+	public function setManaged(): void
+	{
+		$this->forced_managed = TRUE;
+	}
+
 	/**
 	 * Sets this attribute's name.
 	 *
@@ -313,6 +326,19 @@ final class AttributeType extends Base
 			throw new InvalidUsage(sprintf('Cannot set attribute name to [%s], its not an alias for [%s]',$name,$this->names->join(',')));
 
 		$this->name = $name;
+	}
+
+	/**
+	 * Return the sub_str_rule, which is either defined on this attribute, or a parent
+	 *
+	 * @return string|null
+	 */
+	public function sub_str_rule(): ?string
+	{
+		if ($this->sub_str_rule)
+			return $this->sub_str_rule;
+
+		return $this->sup_attribute ? $this->parent()->sub_str_rule() : NULL;
 	}
 
 	/**
@@ -353,7 +379,7 @@ final class AttributeType extends Base
 						attribute: $this->name,
 						values: [Entry::TAG_NOTAG=>['']])
 					)->no_attr_tags
-						? 'max:'.($x->hasHelper() ? 2 : 1)+(($x instanceof MD5Updates) ? 1 : 0)
+						? 'max:'.($x->hasHelper() ? 2 : 1)+(($x instanceof MD5Update) ? 1 : 0)
 						: NULL)
 				],
 					$validation->get($this->name_lc,[])),$this->name_lc);

@@ -132,11 +132,6 @@ return [
 				new \App\Rules\CertificateIsBinary,
 			],
 		],
-		'objectclass' => [
-			'objectclass.*'=>[
-				new \App\Rules\HasStructuralObjectClass,
-			]
-		],
 		'gidnumber' => [
 			'gidnumber.*' => [
 				'sometimes',
@@ -158,6 +153,30 @@ return [
 				'email'
 			]
 		],
+		'objectclass' => [
+			'objectclass.*'=>[
+				new \App\Rules\HasStructuralObjectClass,
+			]
+		],
+		'sambaacctflags' => [
+			'sambaacctflags.'.\App\Ldap\Entry::TAG_INTERNAL.'.0' => [
+				'sometimes',
+				'array',
+				'max:11',
+				new \App\Rules\SambaAcctFlags,
+			],
+		],
+		'uidnumber' => [
+			'uidnumber.*' => [
+				'sometimes',
+				'max:1'
+			],
+			'uidnumber.*.*' => [
+				'nullable',
+				'integer',
+				'min:1'
+			]
+		],
 		'userpassword' => [
 			'userpassword.*' => [
 				'sometimes',
@@ -170,17 +189,6 @@ return [
 			sprintf('userpassword.%s.*',\App\Ldap\Entry::TAG_NOTAG) => [
 				'nullable',
 				'min:8'
-			]
-		],
-		'uidnumber' => [
-			'uidnumber.*' => [
-				'sometimes',
-				'max:1'
-			],
-			'uidnumber.*.*' => [
-				'nullable',
-				'integer',
-				'min:1'
 			]
 		],
 		'usercertificate' => [

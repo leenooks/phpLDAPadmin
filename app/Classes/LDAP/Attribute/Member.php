@@ -6,13 +6,11 @@ use Illuminate\Contracts\View\View;
 
 use App\Classes\LDAP\Attribute;
 use App\Classes\Template;
+use App\Interfaces\{ModalEditable,NoAttrTag};
 use App\Ldap\Entry;
 
-final class Member extends Attribute
+final class Member extends Attribute implements NoAttrTag,ModalEditable
 {
-	protected(set) bool $no_attr_tags = TRUE;
-	protected(set) bool $modal_editable = TRUE;
-
 	public function dn_exists(string $dn): bool
 	{
 		return Entry::query()->setDN($dn)->exists();

@@ -66,7 +66,7 @@
 			url: '{{ url('ajax/subordinates') }}',
 			dataType: 'json',
 			cache: false,
-			beforeSend: before_send_spinner(that)
+			beforeSend: ajax_before_send_spinner(that)
 
 		}).done(function(data) {
 			that.empty().html('<small class="fs-5">[@lang('Select Base')]</small>');
@@ -116,7 +116,7 @@
 					cache: false,
 					beforeSend: function() {
 						newdn = that.text();
-						before_send_spinner(that);
+						ajax_before_send_spinner(that);
 					},
 
 				}).done(function(data) {

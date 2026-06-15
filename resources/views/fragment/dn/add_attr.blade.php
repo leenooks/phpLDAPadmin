@@ -30,7 +30,7 @@
 				type: 'POST',
 				url: '{{ url('entry/attr/add') }}/'+item.target.value,
 				data: {
-					objectclasses: oc_rendered(),
+					objectclasses: attribute_values_oc(),
 				},
 				dataType: 'html',
 				cache: false,
@@ -41,7 +41,7 @@
 			}).fail(ajax_error);
 
 			// Add the attr to the RDN
-			if ($('select#rdn')) {
+			if ($('select#rdn').length) {
 				if (! rdn_options().includes(item.target.value)) {
 					$('select#rdn').append(new Option(item.target.value,item.target.value));
 

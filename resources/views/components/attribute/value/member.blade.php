@@ -1,9 +1,11 @@
 <div class="input-group has-validation">
 	<input type="text"
-		   {{ $attributes->class(['is-invalid'=>($e=$errors->get($o->name_lc.'.'.$dotkey))]) }}
-		   name="{{ $o->name_lc }}[{{ $attrtag }}][]"
-		   value="{{ $value }}"
-		   readonly>
+		{{ $attributes->only('class')->class([
+			'is-invalid'=>($e=$errors->get($o->name_lc.'.'.$dotkey))
+		]) }}
+		name="{{ $o->name_lc }}[{{ $attrtag }}][]"
+		value="{{ $value }}"
+		readonly>
 
 	@if($value)
 		@if($o->dn_exists($value))
@@ -19,8 +21,10 @@
 </div>
 
 @section('page-scripts')
+	<!-- attribute.value.member -->
 	<script type="text/javascript">
 		$(document).ready(function() {
+			// When clicking on a member, redirect to that entry
 			$('attribute#{{ $o->name_lc }} a').on('click',function() {
 				location.replace(web_base+$(this).attr('href'));
 				location.reload();
@@ -28,4 +32,4 @@
 			})
 		});
 	</script>
-@endsection
+@append

@@ -19,7 +19,7 @@
 	<x-modal.close/>
 </div>
 
-<!-- JS:member-manage -->
+<!-- modals.values-show -->
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('label#attr').append(modal_attr)

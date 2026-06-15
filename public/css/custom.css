@@ -15,6 +15,22 @@ attribute#userpassword .input-group > .select2-container--bootstrap-5 .select2-s
 	background-color: #eef2f4;
 }
 
+attribute .input-group > .btn-group {
+	input:checked + label {
+		color: var(--bs-btn-active-color);
+	}
+
+	label:not(.btn-outline-success) {
+		color: var(--bs-body-color);
+	}
+
+	label {
+		border-color: var(--bs-border-color);
+		width: 2em;
+		padding: 0.25em 0.5em;
+	}
+}
+
 /* render the structural inside the input box */
 attribute .input-group-end:not(input.form-control) {
 	position: absolute;
@@ -26,6 +42,12 @@ attribute .input-group-end:not(input.form-control) {
 input.form-control:has(+ .input-group-end) {
 	border-bottom-right-radius: 4px !important;
 	border-top-right-radius: 4px !important;
+}
+
+/* Fix select2 corners to be rounded */
+.input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating) {
+	border-top-right-radius: 4px !important;
+	border-bottom-right-radius: 4px !important;
 }
 
 .custom-tooltip-success {
@@ -47,6 +69,12 @@ input.form-control:has(+ .input-group-end) {
 
 .tooltip {
 	font-size: 85%;
+}
+
+/* enable mouseover but disable checking a input/label checkbox combo */
+label.readonly-checkbox:active {
+	pointer-events: none !important;
+	opacity: 0.9; /* Optional: visually indicate it is disabled */
 }
 
 /*

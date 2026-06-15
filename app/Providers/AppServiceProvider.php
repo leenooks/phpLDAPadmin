@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Http\Middleware\TrustProxies;
 use Illuminate\Support\ServiceProvider;
 use LdapRecord\Configuration\DomainConfiguration;
 use LdapRecord\Laravel\LdapRecord;
@@ -28,5 +29,10 @@ class AppServiceProvider extends ServiceProvider
 	public function boot(): void
 	{
 		$this->loadViewsFrom(__DIR__.'/../../resources/themes/architect/views/','architect');
+
+		// Enabling config setting of trusted proxies
+		$this->app->afterResolving(TrustProxies::class, function(TrustProxies $middleware) {
+			$middleware->at(config('app.trust_proxies',[]));
+		});
 	}
 }

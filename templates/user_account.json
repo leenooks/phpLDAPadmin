@@ -36,7 +36,7 @@
 		"uid": {
 			"display": "User ID",
 			"onchange": [
-				"=autoFill(homeDirectory;/home/users/%uid%)"
+				"=autoFill(homeDirectory;/home/%gidNumber%/%uid%)"
 			],
 			"order": 4
 		},
@@ -53,10 +53,11 @@
 		},
 		"gidNumber": {
 			"display": "GID Number",
+			"type": "select",
 			"onchange": [
-				"=autoFill(homeDirectory;/home/users/%gidNumber|0-0/T%/%uid|1-4%)"
+				"=autoFill(homeDirectory;/home/%gidNumber%/%uid%)"
 			],
-			"value": "=getNextNumber(/;gidNumber)",
+			"options": "=getSelectList(/;(objectClass=posixGroup);gidNumber;%gidNumber%;%cn/C% [%gidNumber%])",
 			"order": 7
 		},
 		"homeDirectory": {

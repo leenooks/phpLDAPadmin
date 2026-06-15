@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Classes\LDAP\Attribute\Internal;
+namespace App\Classes\LDAP\Attribute\Syntax;
 
 use Illuminate\Contracts\View\View;
 

@@ -299,7 +299,8 @@ final class Server
 					'c'					// Needed for the tree to show icons for countries
 				]))
 			->list()
-			->get() ?: NULL;
+			->get()
+			->sort() ?: NULL;
 	}
 
 	/**
@@ -361,14 +362,10 @@ final class Server
 	public function get_attr_id(string $key): int|bool
 	{
 		static $attributes = $this->schema('attributetypes');
+		$key = strtolower($key);
 
-		$attrid = $attributes->search(fn($item)=>$item->names->contains($key));
-
-		// Second chance search using lowercase items (our Entry attribute keys are lowercase)
-		if ($attrid === FALSE)
-			$attrid = $attributes->search(fn($item)=>$item->names_lc->contains(strtolower($key)));
-
-		return $attrid;
+		return $attributes
+			->search(fn($item)=>$item->names_lc->contains($key));
 	}
 
 	/**
@@ -402,6 +399,13 @@ final class Server
 		return in_array('1.3.6.1.4.1.4203.1.5.4',$this->rootDSE()->supportedfeatures);
 	}
 
+	public function parent(string $dn): string
+	{
+		$base = $this->get_base($dn);
+
+		return $dn === $base->getDn() ? $base->getDn() : dn_container($dn);
+	}
+
 	/**
 	 * Return the server's schema
 	 *
@@ -427,12 +431,12 @@ final class Server
 				$schema_dn = $this->schemaDN();
 				Log::debug(sprintf('%s:/ Found out SchemaDN is [%s]',self::LOGKEY,$schema_dn));
 
-				// @note: 389DS does not return subschemaSubentry unless it is requested
 				// @note: If the LDAP server doesnt return a subschemasubentry, then we end up looping
 				try {
 					Log::debug(sprintf('%s:/ Fetching schema at [%s]',self::LOGKEY,$schema_dn));
 
-					$schema = $this->fetch($schema_dn,['*','+','subschemaSubentry']);
+					// @note OpenBSD/ldapd doesnt return the schema with +, it needs to call schema attributes explicitly
+					$schema = $this->fetch($schema_dn,[$item]);
 
 				} catch (InvalidUsage $e) {
 					abort(599,$e->getMessage());
@@ -448,10 +452,8 @@ final class Server
 				switch ($item) {
 					case 'attributetypes':
 						Log::debug(sprintf('%s:Attribute Types',self::LOGKEY));
-						// build the array of attribueTypes
-						//$syntaxes = $this->SchemaSyntaxes($dn);
 
-						foreach ($schema->{$item} as $line) {
+						foreach ($schema->{$item} ?: [] as $line) {
 							if (is_null($line) || ! strlen($line))
 								continue;
 
@@ -484,7 +486,7 @@ final class Server
 					case 'ldapsyntaxes':
 						Log::debug(sprintf('%s:LDAP Syntaxes',self::LOGKEY));
 
-						foreach ($schema->{$item} as $line) {
+						foreach ($schema->{$item} ?: [] as $line) {
 							if (is_null($line) || ! strlen($line))
 								continue;
 
@@ -497,7 +499,7 @@ final class Server
 					case 'matchingrules':
 						Log::debug(sprintf('%s:Matching Rules',self::LOGKEY));
 
-						foreach ($schema->{$item} as $line) {
+						foreach ($schema->{$item} ?: [] as $line) {
 							if (is_null($line) || ! strlen($line))
 								continue;
 
@@ -517,7 +519,7 @@ final class Server
 					case 'objectclasses':
 						Log::debug(sprintf('%s:Object Classes',self::LOGKEY));
 
-						foreach ($schema->{$item} as $line) {
+						foreach ($schema->{$item} ?: [] as $line) {
 							if (is_null($line) || ! strlen($line))
 								continue;
 
@@ -592,7 +594,8 @@ final class Server
 	 */
 	public function schemaDN(): string
 	{
-		return Arr::get($this->rootDSE->subschemasubentry,0);
+		return $this->rootDSE
+			->getFirstAttribute('subschemaSubentry','');
 	}
 
 	public function subordinates(string $dn,array $attrs=['dn'],bool $containers=TRUE): ?LDAPCollection

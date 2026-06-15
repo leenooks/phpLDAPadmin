@@ -27,11 +27,17 @@ class Entry extends Model
 {
 	private const LOGKEY = 'E--';
 
+	/** @var string regex used to identify tags */
 	private const TAG_CHARS = 'a-zA-Z0-9-';
+	/** @var string prefix used for langtags */
 	public const LANG_TAG_PREFIX = 'lang-';
 	public const TAG_CHARS_LANG = self::LANG_TAG_PREFIX.'['.self::TAG_CHARS.']+';
+	/** @var string For attributes that dont have any tags */
 	public const TAG_NOTAG = '_null_';
 	public const TAG_MD5 = '_md5_';
+	/** @var string For attributes that are manipulated internally before sending to the LDAP server */
+	public const TAG_INTERNAL = '_internal_';
+	/** @var string For attributes that has additional processing by the value of the helper */
 	public const TAG_HELPER = '_helper_';
 	public const TAG_NOVALUES = [self::TAG_MD5,self::TAG_HELPER];
 
@@ -178,6 +184,23 @@ class Entry extends Model
 		if ($this->dn && ($this->dn !== config('server')->schemaDN())) {
 			$this->objects = $this->getAttributesAsObjects();
 
+			// See if we need to add in force_managed attributes
+			foreach (config('pla.force_managed') as $attr => $ocs) {
+				// If the attribute is already define, nothing to do here
+				if ($this->objects->has(strtolower($attr))) {
+					$this->objects->get(strtolower($attr))->schema->setManaged();
+
+					continue;
+				}
+
+				if (collect($this->getObject('objectclass')?->values->get(self::TAG_NOTAG))->intersect($ocs)->count()) {
+					$ao = Factory::create($this->dn,$attr,[self::TAG_NOTAG=>['FALSE']]);
+					$ao->schema->setManaged();
+
+					$this->objects->put($attr,$ao);
+				}
+			}
+
 		} else {
 			$this->objects = collect();
 		}
@@ -188,7 +211,7 @@ class Entry extends Model
 				->filter(fn($item)=>$item->enabled
 					&& (! $item->objectclasses
 						->map('strtolower')
-						->diff(array_map('strtolower',Arr::get($this->attributes,'objectclass')))
+						->diff(array_map('strtolower',Arr::get($this->attributes,'objectclass',[])))
 						->count()))
 				->sortBy(fn($item)=>$item->title);
 		}
@@ -226,8 +249,13 @@ class Entry extends Model
 
 	public function getHasChildrenAttribute(): bool
 	{
-		return (strcasecmp(Arr::get($this->getAttribute('hassubordinates',[]),0),'TRUE') === 0)
-			|| Arr::get($this->getAttribute('numsubordinates',[]),0) > 0;
+		// If the ldap server doesnt return subordinates as per RFC 4512
+		if (! (config('server')->get_attr_id('hassubordinates') || config('server')->get_attr_id('numsubordinates')))
+			return config('server')->children($this->dn)->count() > 0;
+
+		else
+			return (strcasecmp($this->getFirstAttribute('hassubordinates'),'TRUE') === 0)
+				|| $this->getFirstAttribute('numsubordinates') > 0;
 	}
 
 	/* METHODS */
@@ -385,7 +413,7 @@ class Entry extends Model
 		$result = collect();
 
 		foreach (($this->getObject('objectclass')?->values->dot() ?: []) as $oc)
-			$result = $result->merge(config('server')->schema('objectclasses',$oc)->all_attributes);
+			$result = $result->merge(config('server')->schema('objectclasses',$oc)?->all_attributes);
 
 		return $result;
 	}
@@ -586,7 +614,7 @@ class Entry extends Model
 			return 'fas fa-theater-masks';
 
 		elseif ($objectclasses->contains('country'))
-			return sprintf('flag %s',strtolower(Arr::get($this->c ?: [],0)));
+			return sprintf('flag %s',strtolower($this->getFirstAttribute('c')));
 
 		elseif ($objectclasses->contains('device'))
 			return 'fas fa-mobile-alt';
