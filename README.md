@@ -4,6 +4,8 @@
 ![GitHub Release Date](https://img.shields.io/github/release-date/leenooks/phpldapadmin)
 ![GitHub commits since latest release](https://img.shields.io/github/commits-since/leenooks/phpldapadmin/latest)
 
+[![Packaging status](https://repology.org/badge/vertical-allrepos/phpldapadmin.svg)](https://repology.org/project/phpldapadmin/versions)
+
 phpLDAPadmin is a web based LDAP data management tool for system administrators. It is commonly known and referred by many as "PLA".
 
 PLA is designed to be compliant with LDAP RFCs, enabling it to be used with any LDAP server.
@@ -65,12 +67,12 @@ Raise a [feature request](https://github.com/leenooks/phpLDAPadmin/issues/new) i
 Other items [under consideration](https://github.com/leenooks/phpLDAPadmin/issues?q=state%3Aopen%20label%3Aenhancement)
 
 ## Support is known for these LDAP servers:
-- [X] OpenLDAP
-- [X] OpenDJ
-- [ ] Microsoft Active Directory
 - [X] 389 Directory Server
 - [X] Apache DS
 - [X] OpenBSD ldapd
+- [X] OpenLDAP
+- [X] OpenDJ
+- [X] Samba Active Directory
 
 If there is an LDAP server that you have that you would like to have supported, please open an issue to request it.
 You might need to provide access, provide a copy or instructions to get an environment for testing. If you have enabled 
