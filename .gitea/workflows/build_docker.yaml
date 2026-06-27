@@ -1,8 +1,13 @@
 name: Create Docker Image
 run-name: ${{ gitea.actor }} Building Docker Image 🐳
-on: [push]
+on:
+  push:
+    branches:
+      - '2.*-dev'
+    tags:
+      - '2.*'
 env:
-  DOCKER_HOST: tcp://127.0.0.1:2375
+  VERSION: ${{ gitea.ref_name == 'master' && 'latest' || gitea.ref_name }}
 
 jobs:
   test:
@@ -15,8 +20,8 @@ jobs:
     name: Test Application
     runs-on: docker-${{ matrix.arch }}
     container:
-      image: docker:dind
-      privileged: true
+      image: docker:cli
+      privileged: false
 
     steps:
     - name: Environment Setup
@@ -37,25 +42,9 @@ jobs:
         npm i
         npm run prod
 
-#    - name: Run Tests
-#      run: |
-#        mv .env.testing .env
-#        # Install Composer and project dependencies.
-#        mkdir -p ${COMPOSER_HOME}
-#        if [ -n "${{ secrets.COMPOSER_GITHUB_TOKEN }}" ]; then composer config github-oauth.github.com ${{ secrets.COMPOSER_GITHUB_TOKEN }}; fi
-#        composer install
-#        # Generate an application key. Re-cache.
-#        php artisan key:generate
-#        php artisan migrate
-#        php artisan db:seed
-#        # run laravel tests
-#        # XDEBUG_MODE=coverage php vendor/bin/phpunit --coverage-text --colors=never
-
     - name: Cache page assets
       id: cache-page-assets
-      uses: actions/cache@v3
-#      env:
-#        cache-name: page-assets
+      uses: actions/cache@v6
       with:
         path: |
           public/css/app.css
@@ -81,6 +70,8 @@ jobs:
       privileged: true
     env:
       ARCH: ${{ matrix.arch }}
+      VERSIONARCH: ${{ env.VERSION }}-${{ env.ARCH }}
+      DOCKER_HOST: tcp://127.0.0.1:2375
 
     steps:
     - name: Environment Setup
@@ -90,8 +81,9 @@ jobs:
         # Some pre-reqs
         apk add git curl nodejs npm tar zstd
         # Start docker
-        ( dockerd --host=tcp://0.0.0.0:2375 --tls=false & ) && sleep 3
-        ## Some debugging info
+        dockerd --host=tcp://127.0.0.1:2375 --tls=false &
+        until docker info > /dev/null 2>&1; do echo "Waiting for docker..."; sleep 1; done
+        # Some debugging info
         # docker info && docker version
         # env|sort
 
@@ -102,7 +94,7 @@ jobs:
         echo "registry=${registry##http*://}" >> "$GITHUB_OUTPUT"
 
     - name: Container Registry Login
-      uses: docker/login-action@v2
+      uses: docker/login-action@v3
       with:
         registry: ${{ steps.registry.outputs.registry }}
         username: ${{ gitea.actor }}
@@ -113,9 +105,7 @@ jobs:
 
     - name: Cache page assets
       id: cache-page-assets
-      uses: actions/cache@v3
-#      env:
-#        cache-name: page-assets
+      uses: actions/cache@v6
       with:
         path: |
           public/css/app.css
@@ -125,32 +115,22 @@ jobs:
           public/js/manifest.js
           public/js/vendor.js
         key: pla-page-assets-${{ env.GITHUB_SHA }}
-
-    - if: ${{ steps.cache-page-assets.outputs.cache-hit != 'true' }}
-      name: List the state of page assets
-      continue-on-error: false
-      run: |
-        echo CACHE-MISS:${{ steps.cache-page-assets.outputs.cache-hit }}
-        ls -al public/css/
-        ls -al public/js/
+        fail-on-cache-miss: true
 
     - name: Record version and Delete Unnecessary files
       id: prebuild
       run: |
         echo ${GITHUB_SHA::8} > VERSION
-        # [ "${GITHUB_REF_TYPE}" -eq "tag" ] && echo v${GITHUB_REF_NAME}-rel > public/VERSION
         rm -rf .git* tests/ storage/app/test/
         cat VERSION public/VERSION
-        # ls -al public/css/
-        # ls -al public/js/
 
     - name: Build and Push Docker Image
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
         context: .
         file: docker/Dockerfile
         push: true
-        tags: "${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.GITHUB_REF_NAME }}-${{ env.ARCH }}"
+        tags: "${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSIONARCH }}"
         build-args: |
           BUILD_REVISION=${{ env.GITHUB_SHA }}
           BUILD_VERSION=v${{ env.GITHUB_REF_NAME }}
@@ -159,8 +139,8 @@ jobs:
     name: Final Docker Image Manifest
     runs-on: docker-x86_64
     container:
-      image: docker:dind
-      privileged: true
+      image: docker:cli
+      privileged: false
     needs: [build]
 
     steps:
@@ -170,8 +150,6 @@ jobs:
         if [ -n "${HTTP_PROXY}" ]; then echo "HTTP PROXY [${HTTP_PROXY}]"; sed -i -e s'/https/http/' /etc/apk/repositories; fi
         # Some pre-reqs
         apk add git curl nodejs
-        # Start docker
-        ( dockerd --host=tcp://0.0.0.0:2375 --tls=false & ) && sleep 3
 
     - name: Registry FQDN Setup
       id: registry
@@ -180,7 +158,7 @@ jobs:
         echo "registry=${registry##http*://}" >> "$GITHUB_OUTPUT"
 
     - name: Container Registry Login
-      uses: docker/login-action@v2
+      uses: docker/login-action@v3
       with:
         registry: ${{ steps.registry.outputs.registry }}
         username: ${{ gitea.actor }}
@@ -188,8 +166,8 @@ jobs:
 
     - name: Build Docker Manifest
       run: |
-        docker manifest create ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.GITHUB_REF_NAME }} \
-          ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.GITHUB_REF_NAME }}-x86_64 \
-          ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.GITHUB_REF_NAME }}-arm64
-        docker manifest push --purge ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.GITHUB_REF_NAME }}
-        echo "Built container: ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.GITHUB_REF_NAME }}"
+        docker buildx imagetools create \
+          --tag ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }} \
+          ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }}-x86_64 \
+          ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }}-arm64
+        echo "Built container: ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }}"
