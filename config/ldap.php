@@ -17,6 +17,20 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Treat the LDAP passwords as encrypted
+	|--------------------------------------------------------------------------
+	|
+	| This will treat the passwords stored in connections.key.password as
+	| encrypted (with the APP_KEY).
+	|
+	| @note: If the APP_KEY changes, then the passwords will need to be updated
+	|
+	*/
+
+	'password_enc' => env('LDAP_PASSWORD_ENC', FALSE),
+
+	/*
+	|--------------------------------------------------------------------------
 	| LDAP Connections
 	|--------------------------------------------------------------------------
 	|
