@@ -44,6 +44,10 @@
 							});
 
 							$('#page-modal').on('hide.bs.modal',function() {
+								// Only handle the close if the member-manage modal was the one open
+								if (! $(this).find('select#destination').length)
+									return;
+
 								var updated = modal_update(modal_attr,attribute_values('destination','select','option'));
 
 								if (updated.length)
