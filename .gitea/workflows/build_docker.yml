@@ -26,19 +26,14 @@ jobs:
     steps:
     - name: Environment Setup
       run: |
-        # If we have a proxy use it
         if [ -n "${HTTP_PROXY}" ]; then echo "HTTP PROXY [${HTTP_PROXY}]"; sed -i -e s'/https/http/' /etc/apk/repositories; fi
-        # Some pre-reqs
         apk add git nodejs npm tar zstd
-        ## Some debugging info
-        # env|sort
 
     - name: Code Checkout
       uses: actions/checkout@v4
 
     - name: Build Assets
       run: |
-        # Build assets
         npm ci
         npm run build
 
@@ -48,44 +43,47 @@ jobs:
       with:
         path: |
           public/build
-        key: pla-page-assets-${{ env.GITHUB_SHA }}
+        key: pla-page-assets-${{ gitea.sha }}
 
   build:
     strategy:
       matrix:
-        arch:
-        - x86_64
-        - arm64
+        include:
+        - arch: x86_64
+          goarch: amd64
+        - arch: arm64
+          goarch: arm64
+        - arch: s390x
+          goarch: s390x
+
     needs: [test]
 
     name: Build Docker Image
     runs-on: docker-${{ matrix.arch }}
     container:
-      image: docker:dind
-      privileged: true
+      image: alpine
+      privileged: false
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
     env:
-      ARCH: ${{ matrix.arch }}
-      VERSIONARCH: ${{ env.VERSION }}-${{ env.ARCH }}
-      DOCKER_HOST: tcp://127.0.0.1:2375
+      DOCKER_HOST: unix:///var/run/docker.sock
 
     steps:
     - name: Environment Setup
       run: |
-        # If we have a proxy use it
         if [ -n "${HTTP_PROXY}" ]; then echo "HTTP PROXY [${HTTP_PROXY}]"; sed -i -e s'/https/http/' /etc/apk/repositories; fi
-        # Some pre-reqs
-        apk add git curl nodejs npm tar zstd
-        # Start docker
-        dockerd --host=tcp://127.0.0.1:2375 --tls=false &
+        apk add git curl nodejs npm tar zstd docker-cli docker-cli-buildx
         until docker info > /dev/null 2>&1; do echo "Waiting for docker..."; sleep 1; done
-        # Some debugging info
-        # docker info && docker version
-        # env|sort
+
+    - name: Set build variables
+      run: |
+        echo "VERSIONARCH=${{ env.VERSION }}-${{ matrix.arch }}" >> $GITHUB_ENV
+        echo "SHORT_SHA=$(echo ${{ gitea.sha }} | cut -c1-8)" >> $GITHUB_ENV
 
     - name: Registry FQDN Setup
       id: registry
       run: |
-        registry=${{ github.server_url }}
+        registry=${{ gitea.server_url }}
         echo "registry=${registry##http*://}" >> "$GITHUB_OUTPUT"
 
     - name: Container Registry Login
@@ -104,15 +102,20 @@ jobs:
       with:
         path: |
           public/build
-        key: pla-page-assets-${{ env.GITHUB_SHA }}
+        key: pla-page-assets-${{ gitea.sha }}
         fail-on-cache-miss: true
 
     - name: Record version and Delete Unnecessary files
       id: prebuild
       run: |
-        echo ${GITHUB_SHA::8} > VERSION
+        echo ${SHORT_SHA} > VERSION
         rm -rf .git* tests/ storage/app/test/
         cat VERSION public/VERSION
+
+    - name: Setup Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      with:
+        driver: docker
 
     - name: Build and Push Docker Image
       uses: docker/build-push-action@v6
@@ -120,10 +123,12 @@ jobs:
         context: .
         file: docker/Dockerfile
         push: true
-        tags: "${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSIONARCH }}"
+        pull: true
+        tags: "${{ steps.registry.outputs.registry }}/${{ gitea.repository }}:${{ env.VERSIONARCH }}"
         build-args: |
-          BUILD_REVISION=${{ env.GITHUB_SHA }}
-          BUILD_VERSION=v${{ env.GITHUB_REF_NAME }}
+          BUILD_REVISION=${{ gitea.sha }}
+          BUILD_VERSION=v${{ gitea.ref_name }}
+          BUILD_ARCH=${{ matrix.goarch }}
 
   manifest:
     name: Final Docker Image Manifest
@@ -136,15 +141,13 @@ jobs:
     steps:
     - name: Environment Setup
       run: |
-        # If we have a proxy use it
         if [ -n "${HTTP_PROXY}" ]; then echo "HTTP PROXY [${HTTP_PROXY}]"; sed -i -e s'/https/http/' /etc/apk/repositories; fi
-        # Some pre-reqs
         apk add git curl nodejs
 
     - name: Registry FQDN Setup
       id: registry
       run: |
-        registry=${{ github.server_url }}
+        registry=${{ gitea.server_url }}
         echo "registry=${registry##http*://}" >> "$GITHUB_OUTPUT"
 
     - name: Container Registry Login
@@ -157,7 +160,8 @@ jobs:
     - name: Build Docker Manifest
       run: |
         docker buildx imagetools create \
-          --tag ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }} \
-          ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }}-x86_64 \
-          ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }}-arm64
-        echo "Built container: ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }}"
+          --tag ${{ steps.registry.outputs.registry }}/${{ gitea.repository }}:${{ env.VERSION }} \
+          ${{ steps.registry.outputs.registry }}/${{ gitea.repository }}:${{ env.VERSION }}-x86_64 \
+          ${{ steps.registry.outputs.registry }}/${{ gitea.repository }}:${{ env.VERSION }}-s390x \
+          ${{ steps.registry.outputs.registry }}/${{ gitea.repository }}:${{ env.VERSION }}-arm64
+        echo "Built container: ${{ steps.registry.outputs.registry }}/${{ gitea.repository }}:${{ env.VERSION }}"
