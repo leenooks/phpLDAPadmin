@@ -45,6 +45,8 @@
 
 @section('page-scripts')
 	<script type="text/javascript">
+		var aside;
+
 		function resize(e) {
 			var mouseX = e.clientX - aside.offset().left;
 
@@ -65,10 +67,9 @@
 			window.removeEventListener('mouseup',stopResize,false);
 		}
 
-		/* Sidebar resize */
-		var aside = $('aside.app-sidebar');
-
 		$(document).ready(function() {
+			/* Sidebar resize */
+			aside = $('aside.app-sidebar');
 			$('aside .draghandle').on('mousedown',function(event) {
 				// Ignore if closed
 				if ($('.close-sidebar-btn').hasClass('is-active'))

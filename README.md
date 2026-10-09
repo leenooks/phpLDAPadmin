@@ -4,6 +4,8 @@
 ![GitHub Release Date](https://img.shields.io/github/release-date/leenooks/phpldapadmin)
 ![GitHub commits since latest release](https://img.shields.io/github/commits-since/leenooks/phpldapadmin/latest)
 
+<img src="https://repology.org/badge/vertical-allrepos/phpldapadmin.svg" align="left" alt="Packaging status">
+
 phpLDAPadmin is a web based LDAP data management tool for system administrators. It is commonly known and referred by many as "PLA".
 
 PLA is designed to be compliant with LDAP RFCs, enabling it to be used with any LDAP server.
@@ -65,16 +67,26 @@ Raise a [feature request](https://github.com/leenooks/phpLDAPadmin/issues/new) i
 Other items [under consideration](https://github.com/leenooks/phpLDAPadmin/issues?q=state%3Aopen%20label%3Aenhancement)
 
 ## Support is known for these LDAP servers:
-- [X] OpenLDAP
-- [X] OpenDJ
-- [ ] Microsoft Active Directory
 - [X] 389 Directory Server
 - [X] Apache DS
 - [X] OpenBSD ldapd
+- [X] OpenLDAP
+- [X] OpenDJ
+- [X] Samba Active Directory
 
 If there is an LDAP server that you have that you would like to have supported, please open an issue to request it.
 You might need to provide access, provide a copy or instructions to get an environment for testing. If you have enabled 
 support for an LDAP server not listed above, please provide a pull request for consideration.
+
+## PLA is available on the following architectures
+This project is providing a docker image for the following architectures.
+
+- [X] x86_64
+- [X] arm64
+- [ ] s390x (planned)
+
+PLA runs wherever PHP runs, so while there are docker images for the above platforms, it should run on other architectures where PHP runs.
+If it doesnt, please open an issue to support it. You might need to also provide an environment for development and testing as well, without that your issue might be closed until an environment is available.
 
 ## Upgrading
 Upgrading PLA from v1 to v2 is a manual upgrade.
@@ -107,6 +119,7 @@ I have tried to email acknowledge each contribution, and if you haven't seen any
 I also appreciate the support of the following organisations supporting open source projects:
 
 * [Docker Hub](https://www.docker.com/community/open-source/application/)
+* [IBM](https://community.ibm.com/zsystems/l1cc)
 * [JetBrains](https://jb.gg/OpenSource)
 
 Again, Thank You.

@@ -10,5 +10,5 @@ package.json
 package-lock.json
 phpunit.xml
 vendor/
-webpack.mix.js
+vite.config.js
 yarn.lock

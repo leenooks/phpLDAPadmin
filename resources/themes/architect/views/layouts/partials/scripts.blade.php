@@ -1,20 +1,24 @@
-<script type="text/javascript" src="{{ asset('js/vendor.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/manifest.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
-
 <script type="text/javascript">
 	const web_base = '{{ request()->root() }}';
-	const web_base_path = '{{ Request::header('X-Forwarded-Prefix','/') }}'
-
-	// Our CSRF token to each interaction
-	$.ajaxSetup({
-		headers: {
-			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-		}
-	});
-
-	// Work out our timezone.
+	const web_base_path = '{{ Request::header('X-Forwarded-Prefix','/') }}';
 	const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+</script>
+
+@vite([
+    'resources/js/app.js',
+    'resources/themes/architect/src/init.js',
+])
+
+<script type="text/javascript">
+	// Runs after Vite modules have executed (DOMContentLoaded fires after all deferred/module scripts)
+	document.addEventListener('DOMContentLoaded', function() {
+		// Our CSRF token to each interaction
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		});
+	});
 </script>
 
 @if(file_exists('js/custom.js'))

@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Classes\LDAP\Server;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -11,6 +10,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use LdapRecord\Container;
 
+use App\Classes\LDAP\Server;
+use App\Ldap\DomainConfiguration;
 use App\Ldap\Guard;
 
 class SwapinAuthUser
@@ -41,7 +42,7 @@ class SwapinAuthUser
 		$c = Container::getInstance()
 			->getConnection($key);
 
-		$c->setConfiguration(config('ldap.connections.'.$key));
+		$c->setConfiguration(new DomainConfiguration(config('ldap.connections.'.$key)));
 		$c->setGuardResolver(fn()=>new Guard($c->getLdapConnection(),$c->getConfiguration()));
 
 		Config::set('server',new Server);

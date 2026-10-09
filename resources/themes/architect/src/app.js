@@ -1,12 +1,10 @@
 // Imports
 
-import $ from "jquery";
 import * as bootstrap from 'bootstrap';
-import 'metismenu';
 
-// Stylesheets
-
-// import './assets/base.scss';
+// jQuery, metismenu, and all other jQuery plugins are loaded as synchronous
+// globals in the HTML head — use window.$ directly.
+const $ = window.$;
 
 $(document).ready(() => {
 
