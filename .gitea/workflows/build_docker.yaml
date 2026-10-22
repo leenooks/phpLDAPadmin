@@ -69,9 +69,7 @@ jobs:
       image: docker:dind
       privileged: true
     env:
-      ARCH: ${{ matrix.arch }}
-      VERSIONARCH: ${{ env.VERSION }}-${{ env.ARCH }}
-      DOCKER_HOST: tcp://127.0.0.1:2375
+      DOCKER_HOST: unix:///var/run/docker.sock
 
     steps:
     - name: Environment Setup
@@ -80,17 +78,19 @@ jobs:
         if [ -n "${HTTP_PROXY}" ]; then echo "HTTP PROXY [${HTTP_PROXY}]"; sed -i -e s'/https/http/' /etc/apk/repositories; fi
         # Some pre-reqs
         apk add git curl nodejs npm tar zstd
-        # Start docker
-        dockerd --host=tcp://127.0.0.1:2375 --tls=false &
-        until docker info > /dev/null 2>&1; do echo "Waiting for docker..."; sleep 1; done
         # Some debugging info
         # docker info && docker version
         # env|sort
 
+    - name: Set build variables
+      run: |
+        echo "VERSIONARCH=${{ env.VERSION }}-${{ matrix.arch }}" >> $GITHUB_ENV
+        echo "SHORT_SHA=$(echo ${{ gitea.sha }} | cut -c1-8)" >> $GITHUB_ENV
+
     - name: Registry FQDN Setup
       id: registry
       run: |
-        registry=${{ github.server_url }}
+        registry=${{ gitea.server_url }}
         echo "registry=${registry##http*://}" >> "$GITHUB_OUTPUT"
 
     - name: Container Registry Login
@@ -130,7 +130,7 @@ jobs:
         context: .
         file: docker/Dockerfile
         push: true
-        tags: "${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSIONARCH }}"
+        tags: "${{ steps.registry.outputs.registry }}/${{ gitea.repository }}:${{ env.VERSIONARCH }}"
         build-args: |
           BUILD_REVISION=${{ env.GITHUB_SHA }}
           BUILD_VERSION=v${{ env.GITHUB_REF_NAME }}
@@ -154,7 +154,7 @@ jobs:
     - name: Registry FQDN Setup
       id: registry
       run: |
-        registry=${{ github.server_url }}
+        registry=${{ gitea.server_url }}
         echo "registry=${registry##http*://}" >> "$GITHUB_OUTPUT"
 
     - name: Container Registry Login
@@ -167,7 +167,7 @@ jobs:
     - name: Build Docker Manifest
       run: |
         docker buildx imagetools create \
-          --tag ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }} \
-          ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }}-x86_64 \
-          ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }}-arm64
-        echo "Built container: ${{ steps.registry.outputs.registry }}/${{ env.GITHUB_REPOSITORY }}:${{ env.VERSION }}"
+          --tag ${{ steps.registry.outputs.registry }}/${{ gitea.repository }}:${{ env.VERSION }} \
+          ${{ steps.registry.outputs.registry }}/${{ gitea.repository }}:${{ env.VERSION }}-x86_64 \
+          ${{ steps.registry.outputs.registry }}/${{ gitea.repository }}:${{ env.VERSION }}-arm64
+        echo "Built container: ${{ steps.registry.outputs.registry }}/${{ gitea.repository }}:${{ env.VERSION }}"
