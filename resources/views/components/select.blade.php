@@ -1,5 +1,7 @@
 <select class="form-select {{ $class }} @error($old ?? $id ?? $name) is-invalid @enderror" id="{{ $id ?? $name}}" @isset($name)name="{{ $name }}"@endisset @required($required ?? FALSE) @disabled($disabled ?? FALSE)>
-	@if((empty($value) && ! empty($options)) || isset($addnew))
+	{{-- @note If the options already have an empty value (eg: a template select), we dont need another --}}
+	@php($empty_option=collect($options ?? [])->first(fn($item)=>Arr::get($item,'id') === ''))
+	@if((empty($value) && ! empty($options) && (! $empty_option)) || isset($addnew))
 		<option value=""></option>
 
 		@isset($addnew)
@@ -48,7 +50,11 @@
 				dropdownAutoWidth: false,
 				width: 'style',
 				allowClear: {{ $allowclear ?? 'false' }},
+				// @note select2 hides the option with an empty value from the list when there is a placeholder, so if it is
+				//       one of our options (eg: a template select) it must remain selectable
+				@if(isset($placeholder) || (! $empty_option))
 				placeholder: '{{ $placeholder ?? '' }}',
+				@endif
 				multiple: {{ $multiple ?? 'false' }},
 				@isset($addvalues)
 				tags: true,
