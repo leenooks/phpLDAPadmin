@@ -194,10 +194,12 @@ class Entry extends Model
 				}
 
 				if (collect($this->getObject('objectclass')?->values->get(self::TAG_NOTAG))->intersect($ocs)->count()) {
-					$ao = Factory::create($this->dn,$attr,[self::TAG_NOTAG=>['FALSE']]);
+					// @note Only boolean attributes have a default value (FALSE) that we can present, other attributes
+					//       are presented without a value, so that they can be added (eg: ppolicy's pwdAccountLockedTime)
+					$ao = Factory::create($this->dn,$attr,(Factory::getClass($attr) === Attribute\Syntax\Boolean::class) ? [self::TAG_NOTAG=>['FALSE']] : []);
 					$ao->schema->setManaged();
 
-					$this->objects->put($attr,$ao);
+					$this->objects->put(strtolower($attr),$ao);
 				}
 			}
 

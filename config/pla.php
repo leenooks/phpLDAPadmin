@@ -89,6 +89,12 @@ return [
 	 *
 	 # 'force_managed' => '{"pwdReset":["posixAccount","shadowAccount"]}',
 	 *
+	 * Boolean attributes that the entry doesnt have default to FALSE, other attributes are presented without a value
+	 * so that they can be added. If a template for the entry defines the attribute with a select list, that list is
+	 * used when editing, eg: to lock an account with ppolicy's pwdAccountLockedTime:
+	 *
+	 # "pwdAccountLockedTime": {"display": "Account Locked", "type": "select", "options": {"": "No", "000001010000Z": "Yes (permanently)"}}
+	 *
 	 * This json encoded array can be created with
 	 * php -r "echo json_encode(['attribute1'=>['objectclass1','objectclass2','attribute2'=>['objectclass3']]);"
 	 */

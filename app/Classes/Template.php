@@ -146,8 +146,9 @@ class Template
 	public function attributeOptions(string $attribute,mixed $value=NULL): Collection|NULL
 	{
 		if ($x=$this->attribute($attribute)?->get('options')) {
+			// @note Only add the current value if it is not one of our options, otherwise it is listed twice
 			if (is_array($x))
-				return collect($x)->map(fn($item,$key)=>['id'=>$key,'value'=>$item])->when($value,fn($item)=>$item->prepend(['id'=>$value,'value'=>$value]));
+				return collect($x)->map(fn($item,$key)=>['id'=>(string)$key,'value'=>$item])->when($value && (! array_key_exists($value,$x)),fn($item)=>$item->prepend(['id'=>$value,'value'=>$value]));
 
 			// Check if this is a pick list
 			elseif (preg_match('/^=([a-zA-Z]+)\((.+)\)$/',$x)) {
