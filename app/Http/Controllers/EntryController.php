@@ -17,6 +17,7 @@ use LdapRecord\Query\ObjectNotFoundException;
 use Nette\NotImplementedException;
 
 use App\Classes\LDAP\Attribute\Factory;
+use App\Classes\LDAP\Attribute\Syntax\Boolean;
 use App\Classes\LDAP\Import\LDIF as LDIFImport;
 use App\Classes\LDAP\Export\LDIF as LDIFExport;
 use App\Exceptions\Import\{GeneralException,VersionException};
@@ -83,7 +84,8 @@ class EntryController extends Controller
 		// See if we need to add in force_managed attributes
 		if ($template) {
 			foreach (config('pla.force_managed') as $attr => $ocs) {
-				if ($template->objectclasses->intersect($ocs)->count()) {
+				// @note Only boolean attributes have a default value (FALSE) that we can present
+				if ((Factory::getClass($attr) === Boolean::class) && $template->objectclasses->intersect($ocs)->count()) {
 					$o->setAttribute($attr,[Entry::TAG_NOTAG=>['FALSE']]);
 					$o->getObject($attr)->schema->setManaged();
 				}

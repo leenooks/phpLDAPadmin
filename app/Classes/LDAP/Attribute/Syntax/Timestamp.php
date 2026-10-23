@@ -5,13 +5,17 @@ namespace App\Classes\LDAP\Attribute\Syntax;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 
-use App\Classes\LDAP\Attribute\Internal;
+use App\Classes\LDAP\Attribute;
 use App\Classes\Template;
+use App\Interfaces\NoAttrTag;
 
 /**
  * Represents an attribute whose values are timestamps
+ *
+ * @note Timestamps are internal (read only) unless the schema allows them to be modified and they are used by an
+ *       objectclass or have been forced managed (eg: ppolicy's pwdAccountLockedTime).
  */
-final class Timestamp extends Internal
+final class Timestamp extends Attribute implements NoAttrTag
 {
 	/**
 	 * Convert a timestamp value into a Carbon object
@@ -56,9 +60,21 @@ final class Timestamp extends Internal
 
 	public function render(string $attrtag,int $index,?View $view=NULL,bool $edit=FALSE,bool $editable=FALSE,bool $new=FALSE,bool $updated=FALSE,?Template $template=NULL): View
 	{
+		// @note Internal attributes cannot be edited
+		if ($this->is_internal)
+			return parent::render(
+				attrtag: $attrtag,
+				index: $index,
+				view: view('components.attribute.value.internal.timestamp'));
+
 		return parent::render(
 			attrtag: $attrtag,
 			index: $index,
-			view: view('components.attribute.value.internal.timestamp'));
+			view: $view,
+			edit: $edit,
+			editable: $editable,
+			new: $new,
+			updated: $updated,
+			template: $template);
 	}
 }
