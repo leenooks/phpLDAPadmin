@@ -5,6 +5,7 @@ banner:
   content: "(LDAP User's might find it useful too!)
 <p style='text-align:left;padding-bottom:1em;'><strong>phpLDAPadmin</strong> [or PLA for short] is an <strong>LDAP</strong> [Lightweight Directory Access Protocol] <strong>data management tool</strong> for administrators.</p>
 <p style='text-align:left;padding-bottom:1em;'>PLA provides an <strong>easy-to-use</strong> interface for <strong>browsing</strong>, <strong>searching</strong>, and <strong>modifying</strong> data in an LDAP server. Essentially, it's a user-friendly alternative to using command-line tools for LDAP management.</p>
+<p style='text-align:left;padding-bottom:1em;'>PLA runs anywhere that PHP runs, from a small Raspberry Pi (which is hosting the demo servers), to an IBM Mainframe (thanks IBM!)</p>
 <p style='text-align:left;padding-bottom:1em;'>Try out a <strong>demo</strong> from the links above, or install it from <a href='https://hub.docker.com/r/phpldapadmin/phpldapadmin' style='color: blue;'>docker</a> or <a href='https://github.com/leenooks/phpldapadmin' style='color: blue;'>github</a>.</p>"
   image: "/images/screenshot.png"
   button:

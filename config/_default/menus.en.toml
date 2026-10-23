@@ -74,6 +74,12 @@ weight = 2
 
 [[main]]
 parent = "Demo"
+name = "Mainframe Openldap"
+url = "https://demo-s390.phpldapadmin.org"
+weight = 2
+
+[[main]]
+parent = "Demo"
 name = "Development"
 url = "https://demo.phpldapadmin.org/dev"
 weight = 3
