@@ -62,7 +62,8 @@ abstract class Base
 
 	protected function parse(string $line): void
 	{
-		$strings = preg_split('/[\s,]+/',$line,-1,PREG_SPLIT_DELIM_CAPTURE);
+		preg_match_all('/\'(?:\\\\.|[^\'\\\\])*\'|[()]|\$|[^\s(),$]+/',$line,$matches);
+		$strings = $matches[0];
 
 		for ($i=0; $i < count($strings); $i++) {
 			$this->parse_chunk($strings,$i);
@@ -77,24 +78,15 @@ abstract class Base
 				break;
 
 			case 'NAME':
-				if ($strings[$i+1] !== '(') {
-					do {
-						$this->name .= (strlen($this->name) ? ' ' : '').$strings[++$i];
-					} while (! preg_match('/\'$/s',$strings[$i]));
+				if (($strings[$i+1] ?? NULL) === '(') {
+					$i += 2;
+					$this->name = preg_replace("/^\'(.*)\'$/",'$1',$strings[$i]);
 
-				} else {
-					$i++;
-
-					do {
-						$this->name .= (strlen($this->name) ? ' ' : '').$strings[++$i];
-					} while (! preg_match('/\'$/s',$strings[$i]));
-
-					do {
+					while (isset($strings[$i]) && $strings[$i] !== ')')
 						$i++;
-					} while (! preg_match('/\)+\)?/',$strings[$i]));
-				}
 
-				$this->name = preg_replace("/^\'(.*)\'$/",'$1',$this->name);
+				} else
+					$this->name = preg_replace("/^\'(.*)\'$/",'$1',$strings[++$i]);
 
 				if (static::DEBUG_VERBOSE)
 					Log::debug(sprintf('%s:- Case NAME returned (%s)',self::LOGKEY,$this->name));
@@ -124,27 +116,47 @@ abstract class Base
 			case 'X-ORDERED':
 			case 'X-EQUALITY':
 			case 'X-ORIGIN':
-				$value = '';
-
-				do {
-					$value .= ($value ? ' ' : '').preg_replace('/^\'(.+)\'$/','$1',$strings[++$i]);
-
-				} while (! preg_match("/\'$/s",$strings[$i]));
-
-				if (static::DEBUG_VERBOSE)
-					Log::debug(sprintf('%s:- Case [%s] returned (%s) - IGNORED',self::LOGKEY,$strings[$i],$value));
-
+				$this->skipExtensionValue($strings,$i);
 				break;
 
 			default:
-				if (preg_match('/[\d\.]+/i',$strings[$i]) && ($i === 1)) {
+				if (preg_match('/^X-/i',$strings[$i])) {
+					$this->skipExtensionValue($strings,$i);
+
+				} elseif ($i === 1) {
 					$this->oid = $strings[$i];
 
 					if (static::DEBUG_VERBOSE)
 						Log::debug(sprintf('%s:- Case default returned OID (%s)',self::LOGKEY,$this->oid));
 
 				} elseif ($strings[$i])
-					Log::alert(sprintf('%s:! Case default discovered a value NOT parsed (%s)',self::LOGKEY,$strings[$i]));
+					Log::alert(sprintf('%s:! Case default discovered a value NOT parsed (%s)',self::LOGKEY,$strings[$i]),[
+						'parser'=>static::class,
+						'token_index'=>$i,
+						'schema'=>$this->line,
+					]);
 		}
+	}
+
+	protected function skipExtensionValue(array $strings,int &$i): void
+	{
+		if (($strings[$i+1] ?? NULL) !== '(') {
+			if (isset($strings[$i+1]))
+				$i++;
+
+			return;
+		}
+
+		$depth = 0;
+
+		do {
+			$i++;
+
+			if ($strings[$i] === '(')
+				$depth++;
+			elseif ($strings[$i] === ')')
+				$depth--;
+
+		} while (isset($strings[$i]) && $depth > 0);
 	}
 }

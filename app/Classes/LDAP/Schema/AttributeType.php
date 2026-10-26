@@ -158,38 +158,14 @@ final class AttributeType extends Base
 	{
 		switch ($strings[$i]) {
 			case 'NAME':
-				$name = '';
+				if (($strings[$i+1] ?? NULL) === '(') {
+					for ($i += 2; isset($strings[$i]) && $strings[$i] !== ')'; $i++)
+						$this->names->push(preg_replace("/^\'(.*)\'$/",'$1',$strings[$i]));
 
-				// @note Some schema's return a (' instead of a ( '
-				// @note This attribute format has no aliases
-				if ($strings[$i+1] !== '(' && ! preg_match('/^\(/',$strings[$i+1])) {
-					do {
-						$name .= ($name ? ' ' : '').$strings[++$i];
+				} else
+					$this->names->push(preg_replace("/^\'(.*)\'$/",'$1',$strings[++$i]));
 
-					} while (! preg_match("/\'$/s",$strings[$i]));
-
-				} else {
-					$i++;
-
-					do {
-						// In case we came here because of a ('
-						if (preg_match('/^\(/',$strings[$i]))
-							$strings[$i] = preg_replace('/^\(/','',$strings[$i]);
-						else
-							$i++;
-
-						$name .= ($name ? ' ' : '').$strings[++$i];
-
-					} while (! preg_match("/\'$/s",$strings[$i]));
-
-					// Add alias names for this attribute
-					while ($strings[++$i] !== ')') {
-						$alias = preg_replace("/^\'(.*)\'$/",'$1',$strings[$i]);
-						$this->names->push($alias);
-					}
-				}
-
-				$this->names = $this->names->push(preg_replace("/^\'(.*)\'$/",'$1',$name))->sort();
+				$this->names = $this->names->sort();
 				$this->names_lc = $this->names->map('strtolower');
 
 				$this->forced_as_may = $this->names_lc

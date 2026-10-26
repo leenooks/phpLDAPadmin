@@ -118,6 +118,10 @@
 											</div>
 										</div>
 									</div>
+
+									@if($aci=$o->getObject('aci'))
+										<x-attribute :o="$aci" :edit="false" :editable="false" :new="false" :template="null" :updated="false"/>
+									@endif
 								</div>
 							</div>
 						</div>
@@ -125,7 +129,7 @@
 
 					<!-- Internal Attributes -->
 					<div class="tab-pane mt-3" id="internal" role="tabpanel">
-						@foreach($o->getInternalAttributes() as $ao)
+						@foreach($o->getInternalAttributes()->reject(fn($item)=>$item->name_lc === 'aci') as $ao)
 							<x-attribute :o="$ao" :edit="false" :new="false" :template="null" :updated="false"/>
 						@endforeach
 					</div>

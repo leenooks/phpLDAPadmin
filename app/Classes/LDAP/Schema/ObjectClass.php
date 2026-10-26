@@ -189,20 +189,9 @@ final class ObjectClass extends Base
 	{
 		switch ($strings[$i]) {
 			case 'SUP':
-				if ($strings[$i+1] !== '(') {
-					$this->sup_classes->push(preg_replace("/'/",'',$strings[++$i]));
-
-				} else {
-					$i++;
-
-					do {
-						$i++;
-
-						if ($strings[$i] !== '$')
-							$this->sup_classes->push(preg_replace("/'/",'',$strings[$i]));
-
-					} while (! preg_match('/\)+\)?/',$strings[$i+1]));
-				}
+				$sup_classes = collect();
+				$i = $this->parseList(++$i,$strings,$sup_classes);
+				$this->sup_classes = $this->sup_classes->merge($sup_classes);
 
 				if (static::DEBUG_VERBOSE)
 					Log::debug(sprintf('%s:- Case SUP returned (%s)',self::LOGKEY,$this->sup_classes->join(',')));
@@ -274,49 +263,14 @@ final class ObjectClass extends Base
 	 */
 	private function parseList(int $i,array $strings,Collection &$attrs): int
 	{
-		$string = $strings[$i];
-
-		if (! preg_match('/^\(/',$string)) {
-			// A bareword only - can be terminated by a ) if the last item
-			if (preg_match('/\)+$/',$string))
-				$string = preg_replace('/\)+$/','',$string);
-
-			$attrs->push($string);
-
-		} elseif (preg_match('/^\(.*\)$/',$string)) {
-			$string = preg_replace('/^\(/','',$string);
-			$string = preg_replace('/\)+$/','',$string);
-
-			$attrs->push($string);
+		if (($strings[$i] ?? NULL) !== '(') {
+			if (isset($strings[$i]) && $strings[$i] !== ')')
+				$attrs->push($strings[$i]);
 
 		} else {
-			// Handle the opening cases first
-			if ($string === '(') {
-				$i++;
-
-			} elseif (preg_match('/^\(./',$string)) {
-				$string = preg_replace('/^\(/','',$string);
-				$attrs->push($string);
-				$i++;
-			}
-
-			// Token is either a name, a $ or a ')'
-			// NAME can be terminated by one or more ')'
-			while (! preg_match('/\)+$/',$strings[$i])) {
-				$string = $strings[$i];
-
-				if ($string === '$') {
-					$i++;
-					continue;
-				}
-
-				if (preg_match('/\)$/',$string))
-					$string = preg_replace('/\)+$/','',$string);
-				else
-					$i++;
-
-				$attrs->push($string);
-			}
+			for ($i++; isset($strings[$i]) && $strings[$i] !== ')'; $i++)
+				if ($strings[$i] !== '$')
+					$attrs->push($strings[$i]);
 		}
 
 		$attrs = $attrs->sort();
