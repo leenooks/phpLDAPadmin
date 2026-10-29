@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use LdapRecord\LdapRecordException;
 use LdapRecord\Models\Model;
-use LdapRecord\Query\Builder;
+use LdapRecord\Query\Model\Builder;
 use LdapRecord\Query\Collection as LDAPCollection;
 use LdapRecord\Query\ObjectNotFoundException;
 

@@ -14,8 +14,19 @@
 	<title>{{ config('app.name') }} - @yield('htmlheader_title','🥇 An LDAP Administration Tool')</title>
 	<link rel="shortcut icon" href="{{ asset(config('app.favicon','favicon.png')) }}"/>
 
+	<!-- Core libraries loaded synchronously so window.$, window._, $.ui, and
+	     all jQuery plugins are available before any inline scripts execute.
+	     Vite modules are type="module" (deferred); these must be plain <script> tags. -->
+	<script src="{{ asset('js/jquery.min.js') }}"></script>
+	<script src="{{ asset('js/jquery-ui.min.js') }}"></script>
+	<script src="{{ asset('js/lodash.min.js') }}"></script>
+	<script src="{{ asset('js/jquery.fancytree.min.js') }}"></script>
+	<script src="{{ asset('js/metismenu.min.js') }}"></script>
+	<script src="{{ asset('js/select2.min.js') }}"></script>
+	<script src="{{ asset('js/bootstrap3-typeahead.js') }}"></script>
+
 	<!-- App CSS -->
-	<link rel="stylesheet" href="{{ asset('css/app.css') }}">
+	@vite(['resources/sass/app.scss'])
 
 	<!-- Google Font: Source Sans Pro -->
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ str_replace(' ','+',config('app.font') ?: 'IBM Plex Sans') }}:wght@300&display=swap">

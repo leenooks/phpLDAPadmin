@@ -17,6 +17,20 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
+	| Treat the LDAP passwords as encrypted
+	|--------------------------------------------------------------------------
+	|
+	| This will treat the passwords stored in connections.key.password as
+	| encrypted (with the APP_KEY).
+	|
+	| @note: If the APP_KEY changes, then the passwords will need to be updated
+	|
+	*/
+
+	'password_enc' => env('LDAP_PASSWORD_ENC', FALSE),
+
+	/*
+	|--------------------------------------------------------------------------
 	| LDAP Connections
 	|--------------------------------------------------------------------------
 	|
@@ -35,8 +49,8 @@ return [
 			'password' => env('LDAP_PASSWORD', ''),
 			'port' => env('LDAP_PORT', 389),
 			'timeout' => env('LDAP_TIMEOUT', 5),
-			'use_ssl' => env('LDAP_SSL', false),
 			'use_tls' => env('LDAP_TLS', false),
+			'use_starttls' => env('LDAP_STARTTLS', false),
 			'use_sasl' => env('LDAP_SASL', false),
 			'sasl_options' => [
 				// 'mech' => 'GSSAPI',
@@ -50,8 +64,8 @@ return [
 			'password' => env('LDAP_PASSWORD', ''),
 			'port' => env('LDAP_PORT', 636),
 			'timeout' => env('LDAP_TIMEOUT', 5),
-			'use_ssl' => env('LDAP_SSL', true),
 			'use_tls' => env('LDAP_TLS', false),
+			'use_starttls' => env('LDAP_STARTTLS', true),
 			'use_sasl' => env('LDAP_SASL', false),
 			'sasl_options' => [
 				// 'mech' => 'GSSAPI',
@@ -65,8 +79,8 @@ return [
 			'password' => env('LDAP_PASSWORD', ''),
 			'port' => env('LDAP_PORT', 389),
 			'timeout' => env('LDAP_TIMEOUT', 5),
-			'use_ssl' => env('LDAP_SSL', false),
 			'use_tls' => env('LDAP_TLS', true),
+			'use_starttls' => env('LDAP_STARTTLS', false),
 			'use_sasl' => env('LDAP_SASL', false),
 			'sasl_options' => [
 				// 'mech' => 'GSSAPI',

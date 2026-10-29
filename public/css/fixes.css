@@ -73,6 +73,12 @@ table.dataTable thead .sorting {
 .scrollbar-sidebar {
 	overflow: auto;
 }
+/* ...including when a closed sidebar is hover-opened (Medium Screen, < 1250px):
+   the theme sets overflow:hidden !important on that state, which blocks wheel,
+   trackpad and scrollbar, so an expanded branch below the fold is unreachable. */
+.closed-sidebar:not(.sidebar-mobile-open) .app-sidebar:hover .scrollbar-sidebar {
+	overflow: auto !important;
+}
 /* Tree Placement */
 #tree > ul {
 	padding-left: 0;

@@ -1,6 +1,5 @@
 /node_modules
-/public/hot
-/public/storage
+/public/build
 /storage/*.key
 /vendor
 .env
@@ -16,4 +15,3 @@ public/js/vendor.js
 public/js/manifest.js
 public/fonts/vendor
 public/images/vendor
-public/mix-manifest.json

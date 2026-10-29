@@ -5,25 +5,22 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.4",
+        "php": "^8.5",
         "ext-fileinfo": "*",
         "ext-ldap": "*",
         "ext-iconv": "*",
         "ext-openssl": "*",
-        "directorytree/ldaprecord-laravel": "^3.0",
-        "laravel/framework": "^12.0",
-        "laravel/sanctum": "^4.0",
-        "laravel/ui": "^4.5",
+        "directorytree/ldaprecord-laravel": "^4.0",
+        "laravel/framework": "^13.0",
+        "laravel/ui": "^4.6",
         "phpseclib/phpseclib": "^3.0"
     },
     "require-dev": {
-        "amirami/localizator": "^0.14@dev",
-        "barryvdh/laravel-debugbar": "^3.6",
-        "fakerphp/faker": "^1.23",
+        "barryvdh/laravel-debugbar": "^4.2",
+        "fakerphp/faker": "^1.24",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.1",
-        "phpunit/phpunit": "^11.0.1",
-        "spatie/laravel-ignition": "^2.4"
+        "phpunit/phpunit": "^13.1"
     },
     "autoload": {
         "files": [

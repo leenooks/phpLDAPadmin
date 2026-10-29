@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp:php8.4-alpine AS base
+FROM dunglas/frankenphp:php8.5-alpine AS base
 RUN apk --no-cache upgrade && apk --no-cache del libcap mailcap tar && apk add --no-cache bash
 
 FROM scratch
