@@ -64,8 +64,8 @@ return [
 			'password' => env('LDAP_PASSWORD', ''),
 			'port' => env('LDAP_PORT', 636),
 			'timeout' => env('LDAP_TIMEOUT', 5),
-			'use_tls' => env('LDAP_TLS', false),
-			'use_starttls' => env('LDAP_STARTTLS', true),
+			'use_tls' => env('LDAP_TLS', true),
+			'use_starttls' => env('LDAP_STARTTLS', false),
 			'use_sasl' => env('LDAP_SASL', false),
 			'sasl_options' => [
 				// 'mech' => 'GSSAPI',
@@ -79,8 +79,8 @@ return [
 			'password' => env('LDAP_PASSWORD', ''),
 			'port' => env('LDAP_PORT', 389),
 			'timeout' => env('LDAP_TIMEOUT', 5),
-			'use_tls' => env('LDAP_TLS', true),
-			'use_starttls' => env('LDAP_STARTTLS', false),
+			'use_tls' => env('LDAP_TLS', false),
+			'use_starttls' => env('LDAP_STARTTLS', true),
 			'use_sasl' => env('LDAP_SASL', false),
 			'sasl_options' => [
 				// 'mech' => 'GSSAPI',
