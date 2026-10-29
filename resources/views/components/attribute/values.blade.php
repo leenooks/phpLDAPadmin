@@ -4,7 +4,8 @@
 			<table class="table table-borderless p-0 m-0">
 		@endif
 
-		@if((old() || ($edit ?? FALSE)) && ($template ?? NULL) && ($av=$template->attributeValue($o->name_lc)) && $template->isAttributeCalculated($o->name_lc))
+		{{-- Calculated values (eg: getNextNumber()) only apply to new entries --}}
+		@if((old() || ($edit ?? FALSE)) && (! $o->dn) && ($template ?? NULL) && ($av=$template->attributeValue($o->name_lc)) && $template->isAttributeCalculated($o->name_lc))
 			<!-- AutoValue Lock -->
 			<input type="hidden" name="_auto_value[{{ $o->name_lc }}]" value="{{ $av }}">
 		@endif
