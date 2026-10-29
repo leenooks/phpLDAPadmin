@@ -43,6 +43,7 @@ RUN cd /tmp \
 # Tune PHP
 RUN cp ${PHP_INI_DIR}/php.ini-production ${PHP_INI_DIR}/php.ini \
 	&& sed -i -e 's/^memory_limit = 128M/memory_limit = 256M/' ${PHP_INI_DIR}/php.ini \
+	&& sed -i -e 's/^max_execution_time = 30/max_execution_time = ${PHP_MAX_EXECUTION_TIME:-30}/' ${PHP_INI_DIR}/php.ini \
 	&& sed -i -e 's/^expose_php = On/expose_php = Off/' ${PHP_INI_DIR}/php.ini
 
 COPY docker/opcache.ini ${PHP_INI_DIR}/conf.d/docker-php-ext-opcache.ini
