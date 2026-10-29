@@ -449,9 +449,11 @@ class Template
 		$value = empty($args[4]) ? "%{$args[3]}%" : $args[4];
 		preg_match_all(self::VALUE_REGEX,$value,$valueargs);
 
-		// Search for values
+		// Search for values, using raw results since hydrating Entry models for large result sets is slow
 		foreach ($container as $base) {
 			$search = (new Entry)
+				->getConnection()
+				->query()
 				->in($base)
 				->rawFilter($query);
 
@@ -463,7 +465,7 @@ class Template
 			->flatMap(function($item) use ($args,$display,$displayargs,$value,$valueargs) {
 				// Go through each display argument and resolve it
 				foreach ($displayargs[1] as $k=>$arg) {
-					if (! ($x=$item->getFirstAttribute($arg)))
+					if (! ($x=Arr::get($item,strtolower($arg).'.0')))
 						return NULL;
 
 					// $displayargs[2] is the chars limiter
@@ -479,7 +481,7 @@ class Template
 
 				// Go through each display argument and resolve it
 				foreach ($valueargs[1] as $k=>$arg) {
-					if (! ($x=$item->getFirstAttribute($arg)))
+					if (! ($x=Arr::get($item,strtolower($arg).'.0')))
 						continue;
 
 					// $displayargs[2] is the chars limiter
