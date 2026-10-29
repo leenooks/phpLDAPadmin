@@ -26,7 +26,7 @@
 		console.log('modal_tag:',modal_tag);
 
 		// Populate the existing members
-		$('div#template-default attribute#'+modal_attr+' input[type=text][name^="'+modal_attr+'['+modal_tag+']"]:not(.no-edit)')
+		$('attribute#'+modal_attr+' input[type=text][name^="'+modal_attr+'['+modal_tag+']"]:not(.no-edit)')
 			.filter((index,element)=>$(element).val())
 			.each((index,element)=>
 				$('select#source').append(new Option($(element).val(),$(element).val())));
