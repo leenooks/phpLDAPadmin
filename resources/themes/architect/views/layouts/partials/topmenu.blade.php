@@ -246,14 +246,25 @@
 					location.reload();
 					return '';
 				},
-			})
-				.on('keyup keypress',function(event) {
-					var key = event.keyCode || event.which;
-					if (key === 13) {
-						event.preventDefault();
+			});
+
+			// Prevent Enter from triggering typeahead select() → hide().
+			// The typeahead binds its keyup via $.proxy at init time, so patching the instance method
+			// has no effect — we must unbind the original handler and re-bind a wrapper instead.
+			var search_wrapper = $('.search-wrapper input[id="search"]');
+			var ta = search_wrapper.data('typeahead');
+			if (ta) {
+				var _origKeyup = $.proxy(ta.keyup, ta);
+				search_wrapper.off('keyup.bootstrap3Typeahead');
+				search_wrapper.on('keyup.bootstrap3Typeahead', function(e) {
+					if ((e.keyCode || e.which) === 13) {
+						e.preventDefault();
+						e.stopPropagation();
 						return false;
 					}
+					return _origKeyup(e);
 				});
+			}
 		});
 
 		var search = _.debounce(function(url,query,process){
