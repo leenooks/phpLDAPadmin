@@ -114,16 +114,19 @@
 	});
 
 	var filter = _.debounce(function(filter) {
-		$('select#source option').each(function() {
-			var option = $(this).text().toLowerCase();
+		var select = $('select#source');
 
-			$(this).toggle(option.indexOf(filter) > -1);
-		});
+		// Restore options hidden by a previous filter run
+		select.append(select.data('filtered') || $());
 
-		$('select#destination option').each(function() {
-			var option = $(this).text().toLowerCase();
+		// Detach non-matching options - hiding <option> with CSS is not supported in all browsers
+		select.data('filtered',select.find('option').filter(function() {
+			return $(this).text().toLowerCase().indexOf(filter) === -1;
+		}).detach());
 
-			$(this).toggle(option.indexOf(filter) > -1);
-		});
+		// Keep the visible list sorted
+		select.append(select.find('option').detach().sort(function(a,b) {
+			return $(a).text().localeCompare($(b).text());
+		}));
 	}, 500);
 </script>
