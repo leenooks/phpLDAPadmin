@@ -61,7 +61,7 @@ abstract class Import
 					$o->save();
 
 				} catch (LdapRecordException $e) {
-					Log::error(sprintf('%s:Import Commit Error',self::LOGKEY),['e'=>$e->getMessage(),'detailed'=>$e->getDetailedError()]);
+					Log::error(sprintf('%s:Import Commit Error',self::LOGKEY),['e'=>$e->getMessage(),'detailed'=>$e->getDetailedError(),'dn'=>serialize($o->getDN())]);
 
 					if ($e->getDetailedError())
 						return collect([

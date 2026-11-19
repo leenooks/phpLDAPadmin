@@ -73,7 +73,6 @@ class LDIF extends Import
 					$result->last()->put('line',$c);
 
 					$o = NULL;
-					$action = NULL;
 					$base64encoded = FALSE;
 					$attribute = NULL;
 					$value = '';
@@ -136,8 +135,14 @@ class LDIF extends Import
 					if (! is_null($o))
 						throw new GeneralException(sprintf('Previous Entry not complete? (line %d)',$c));
 
+					// Validate that the DN is in fact a DN, ie: objects of attr=value
+					if ((($x=ldap_explode_dn($value,0)) === FALSE) || (! Arr::get($x,'count'))) {
+						Log::alert(sprintf('%s:! Bad DN in import [%s] on line %d',self::LOGKEY,$value,$line));
+						throw new GeneralException(sprintf('Bad DN in import on line %d.',$line));
+					}
+
 					$dn = $base64encoded ? base64_decode($value) : $value;
-					Log::debug(sprintf('%s:# Got DN [%s]:',self::LOGKEY,$dn));
+					Log::info(sprintf('%s:# Importing DN [%s]',self::LOGKEY,$dn));
 
 					$value = '';
 					$base64encoded = FALSE;

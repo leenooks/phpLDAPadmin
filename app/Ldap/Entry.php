@@ -430,7 +430,10 @@ class Entry extends Model
 	 */
 	public function getDNSecure(string $cmd=''): string
 	{
-		return Crypt::encryptString(($cmd ? sprintf('*%s|',$cmd) : '').$this->getDn());
+		// Only provide a link if the DN actually exists
+		return $this->exists
+			? Crypt::encryptString(($cmd ? sprintf('*%s|',$cmd) : '').$this->getDn())
+			: '';
 	}
 
 	public function getDNContainerSecure(string $cmd=''): string

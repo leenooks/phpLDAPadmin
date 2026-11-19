@@ -112,7 +112,7 @@ class EntryController extends Controller
 	public function attr_add(Request $request,string $id): \Illuminate\View\View
 	{
 		$o = Factory::create(
-			dn: $request->dn ? Crypt::decrypt($request->dn) : '',
+			dn: $request->dn ? Crypt::decryptString($request->dn) : '',
 			attribute: $id,
 			values: [Entry::TAG_NOTAG=>['']],
 			oc: $request->objectclasses
