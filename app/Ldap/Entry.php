@@ -193,7 +193,9 @@ class Entry extends Model
 					continue;
 				}
 
-				if (collect($this->getObject('objectclass')?->values->get(self::TAG_NOTAG))->intersect($ocs)->count()) {
+				// @note Only boolean attributes have a default value (FALSE) that we can present, other attributes
+				//       are only managed if the entry has them
+				if ((Factory::getClass($attr) === Attribute\Syntax\Boolean::class) && collect($this->getObject('objectclass')?->values->get(self::TAG_NOTAG))->intersect($ocs)->count()) {
 					$ao = Factory::create($this->dn,$attr,[self::TAG_NOTAG=>['FALSE']]);
 					$ao->schema->setManaged();
 

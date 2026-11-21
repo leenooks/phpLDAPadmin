@@ -324,6 +324,10 @@ class Attribute implements \Countable, \ArrayAccess
 	 */
 	public function isDynamic(): bool
 	{
+		// Attributes that are forced managed are maintained by the user, even though no objectclass uses them
+		if ($this->schema?->forced_managed)
+			return FALSE;
+
 		return $this->schema->used_in_object_classes
 			->keys()
 			->intersect($this->oc)
