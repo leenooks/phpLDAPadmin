@@ -103,7 +103,8 @@
 											<div class="card-body">
 												<div class="tab-content">
 													@foreach($o->getVisibleAttributes() as $ao)
-														<x-attribute :o="$ao" :edit="false" :editable="true" :new="true" :template="null" :updated="$updated->contains($ao->name_lc)"/>
+														{{-- Forced managed attributes may use a template's select list, eg: to lock an account with ppolicy's pwdAccountLockedTime --}}
+														<x-attribute :o="$ao" :edit="false" :editable="true" :new="true" :template="$ao->schema?->forced_managed ? $o->templates->first(fn($item)=>$item->attributeType($ao->name) === 'select') : NULL" :updated="$updated->contains($ao->name_lc)"/>
 													@endforeach
 
 													@include('fragment.dn.add_attr',['edit'=>FALSE])

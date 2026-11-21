@@ -61,6 +61,20 @@ class Factory
 	 */
 	public static function create(string $dn,string $attribute,array $values,array $oc=[]): Attribute
 	{
+		$class = self::getClass($attribute);
+
+		Log::debug(sprintf('%s:Creating Attribute [%s] for [%s] using class [%s]',self::LOGKEY,$attribute,$dn,$class),['values'=>$values]);
+		return new $class($dn,$attribute,$values,$oc);
+	}
+
+	/**
+	 * Return the class that represents an attribute
+	 *
+	 * @param string $attribute
+	 * @return string
+	 */
+	public static function getClass(string $attribute): string
+	{
 		$class = Arr::get(self::map,strtolower($attribute));
 
 		// If we dont have a defined attribute type, assign it a generic one
@@ -78,7 +92,6 @@ class Factory
 
 		}
 
-		Log::debug(sprintf('%s:Creating Attribute [%s] for [%s] using class [%s]',self::LOGKEY,$attribute,$dn,$class),['values'=>$values]);
-		return new $class($dn,$attribute,$values,$oc);
+		return $class;
 	}
 }

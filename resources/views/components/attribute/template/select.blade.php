@@ -7,7 +7,8 @@
 				'mb-1',
 				'no-edit'=>(! $editable ?? FALSE),
 				'border-focus'=>! $o->tagValuesOld($langtag)->contains($value)])
-			id="{{ $o->name_lc }}_{{$loop->index}}{{$template?->name ?: ''}}"
+			{{-- @note An existing entry renders the template select in both the template (read only) and edit tabs --}}
+			id="{{ $o->name_lc }}_{{$loop->index}}{{$template?->name ?: ''}}{{ ($editable ?? FALSE) ? '_edit' : '' }}"
 			name="{{ $o->name_lc }}[{{ $langtag }}][]"
 			:value="$value ?: $template->attributeValue($o->name_lc)"
 			:options="$template->attributeOptions($o->name_lc,$value)"
